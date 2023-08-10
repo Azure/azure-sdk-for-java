@@ -1,6 +1,6 @@
 # Release History
 
-## 4.1.0-beta.3 (Unreleased)
+## 4.1.0 (2023-08-10)
 
 ### Features Added
 - Added class `DocumentAnalysisFeature`, added properties `Barcodes`, `KeyValuePairs`, and `Languages` as add-on capabilities.

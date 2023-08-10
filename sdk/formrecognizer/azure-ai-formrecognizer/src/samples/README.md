@@ -11,7 +11,7 @@ urlFragment: formrecognizer-java-samples
 
 # Azure Form Recognizer client library samples for Java
 
-Azure Form Recognizer samples are a set of self-contained Java programs that demonstrate interacting with Azure Form Recognizer service
+Azure Form Recognizer samples are a set of self-contained Java programs that demonstrate interacting with Azure Form Recognizer service/ Document Intelligence
 using the client library. Each sample focuses on a specific scenario and can be executed independently.
 
 ## Key concepts
@@ -40,11 +40,12 @@ All of these samples need the endpoint to your Form Recognizer resource ([instru
 | [AnalyzeReceiptsFromUrl][analyze_receipts_from_url] and [AnalyzeReceiptsFromUrlAsync][analyze_receipts_from_url_async]                           | Analyze data from a URL of a US sales receipt using a prebuilt model                                                             |
 | [AnalyzeTaxW2][analyze_w2] and [AnalyzeTaxW2Async][analyze_w2_async]                                                                             | Analyze data from a file of a US W2 Tax document using a prebuilt model                                                          |
 | [AnalyzeCustomDocumentFromUrl][analyze_custom_documents] and [AnalyzeCustomDocumentAsync][analyze_custom_documents_async]                        | Analyze forms with your custom model                                                                                             |
-| [BuildDocumentModel][build_model] and [BuildDocumentModelAsync][build_model_async]                                                                               | Build a custom document analysis model                                                                                           |
+| [BuildDocumentModel][build_model] and [BuildDocumentModelAsync][build_model_async]                                                               | Build a custom document analysis model                                                                                           |
 | [ManageCustomModels][manage_custom_models] and [ManageCustomModelsAsync][manage_custom_models_async]                                             | Manage the custom models in your account                                                                                         |
-| [CopyDocumentModel][copy_model] and [CopyDocumentModelAsync][copy_model_async]                                                                                   | Copy custom model from one Form Recognizer resource to another                                                                   |
-| [ComposeDocumentModel][compose_model] and [ComposeDocumentModelAsync][compose_model_async]                                                                       | Creates a composed model from a collection of existing built models with labels                                                  |
+| [CopyDocumentModel][copy_model] and [CopyDocumentModelAsync][copy_model_async]                                                                   | Copy custom model from one Form Recognizer resource to another                                                                   |
+| [ComposeDocumentModel][compose_model] and [ComposeDocumentModelAsync][compose_model_async]                                                       | Creates a composed model from a collection of existing built models with labels                                                  |
 | [GetOperation][get_operation] and [GetOperationAsync][get_operation_async]                                                                       | Get/list all document model associated with the Form Recognizer resource                                                         |
+| [BuildDocumentClassifier][build_classifier] and [BuildDocumentClassifierAsync][build_classifier_async]                                           | Build custom classifier models that combine layout and language features                                                         |
 
 ## Troubleshooting
 Troubleshooting steps can be found [here][SDK_README_TROUBLESHOOTING].
@@ -103,5 +104,7 @@ Guidelines][SDK_README_CONTRIBUTING] for more information.
 [analyze_w2_async]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/AnalyzeTaxW2Async.java
 [get_operation]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/administration/GetOperationSummary.java
 [get_operation_async]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/administration/GetOperationSummaryAsync.java
+[build_classifier]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/administration/BuildDocumentClassifier.java
+[build_classifier_async]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/administration/BuildDocumentClassifierAsync.java
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fformrecognizer%2Fazure-ai-formrecognizer%2FREADME.png)
