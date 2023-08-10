@@ -349,6 +349,7 @@ public final class BatchNodesImpl {
         Mono<Response<Void>> disableScheduling(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
+                @HeaderParam("content-type") String contentType,
                 @PathParam("poolId") String poolId,
                 @PathParam("nodeId") String nodeId,
                 @HeaderParam("accept") String accept,
@@ -370,6 +371,7 @@ public final class BatchNodesImpl {
         Response<Void> disableSchedulingSync(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
+                @HeaderParam("content-type") String contentType,
                 @PathParam("poolId") String poolId,
                 @PathParam("nodeId") String nodeId,
                 @HeaderParam("accept") String accept,
@@ -2095,13 +2097,16 @@ public final class BatchNodesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> disableSchedulingWithResponseAsync(
             String poolId, String nodeId, RequestOptions requestOptions) {
+        final String contentType = "application/json; odata=minimalmetadata";
         final String accept = "application/json";
         RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
         requestOptionsLocal.addRequestCallback(
                 requestLocal -> {
                     if (requestLocal.getBody() != null
                             && requestLocal.getHeaders().get(HttpHeaderName.CONTENT_TYPE) == null) {
-                        requestLocal.getHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/json");
+                        requestLocal
+                                .getHeaders()
+                                .set(HttpHeaderName.CONTENT_TYPE, "application/json; odata=minimalmetadata");
                     }
                 });
         return FluxUtil.withContext(
@@ -2109,6 +2114,7 @@ public final class BatchNodesImpl {
                         service.disableScheduling(
                                 this.client.getEndpoint(),
                                 this.client.getServiceVersion().getVersion(),
+                                contentType,
                                 poolId,
                                 nodeId,
                                 accept,
@@ -2163,18 +2169,22 @@ public final class BatchNodesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> disableSchedulingWithResponse(String poolId, String nodeId, RequestOptions requestOptions) {
+        final String contentType = "application/json; odata=minimalmetadata";
         final String accept = "application/json";
         RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
         requestOptionsLocal.addRequestCallback(
                 requestLocal -> {
                     if (requestLocal.getBody() != null
                             && requestLocal.getHeaders().get(HttpHeaderName.CONTENT_TYPE) == null) {
-                        requestLocal.getHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/json");
+                        requestLocal
+                                .getHeaders()
+                                .set(HttpHeaderName.CONTENT_TYPE, "application/json; odata=minimalmetadata");
                     }
                 });
         return service.disableSchedulingSync(
                 this.client.getEndpoint(),
                 this.client.getServiceVersion().getVersion(),
+                contentType,
                 poolId,
                 nodeId,
                 accept,

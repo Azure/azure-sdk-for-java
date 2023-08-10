@@ -27,7 +27,7 @@ public class FileTests extends BatchServiceClientTestBase {
         poolId = getStringIdWithUserNamePrefix("-testpool");
         if(getTestMode() == TestMode.RECORD) {
             try {
-                createIfNotExistIaaSPool(poolId);
+                livePool = createIfNotExistIaaSPool(poolId);
             } catch (Exception e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
