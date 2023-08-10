@@ -24,6 +24,7 @@ This troubleshooting guide covers failure investigation techniques, common error
 - [Troubleshoot WorkloadIdentityCredential authentication issues](#troubleshoot-workloadidentitycredential-authentication-issues)
 - [Get additional help](#get-additional-help)
 
+
 ## Handle Azure Identity exceptions
 
 ### ClientAuthenticationException

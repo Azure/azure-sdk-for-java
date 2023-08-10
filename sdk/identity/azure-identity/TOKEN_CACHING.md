@@ -34,6 +34,12 @@ With persistent disk token caching enabled, the library first determines if a va
 - Ensures the app can continue to function during an Azure AD outage or disruption.
 - Avoids having to prompt users to authenticate each time the process is restarted.
 
+#### Implementation Note
+
+The cache is broken into two files to allow for separate caching of Continuous Access Evaluation (CAE) vs non-CAE credentials. The default filename is `msal` but can be specified through `TokenCachePersistenceOptions.setName()`. The filenames end in `.cae` or `.nocae` respectively.
+
+This note is provided only for troubleshooting purposes. This is an implementation detail and can change in the future.
+
 #### Code sample
 
 The sample showcases how to activate persistence token caching in the credentials offered by the Azure Identity library. You need to specify `TokenCachePersistenceOptions` on the credential builder to activate persistent token caching.
