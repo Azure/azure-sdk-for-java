@@ -898,7 +898,7 @@ public class CosmosBulkAsyncTest extends BatchTestBase {
         Flux<CosmosItemOperation> inputFlux = Flux
             .fromIterable(cosmosItemOperations)
             .delayElements(Duration.ofMillis(100));
-        final BulkExecutorWithOrderingPreserved<BulkExecutorTest> executor = new BulkExecutorWithOrderingPreserved<>(
+        final BulkExecutorWithOrderingPreserved<CosmosBulkAsyncTest> executor = new BulkExecutorWithOrderingPreserved<>(
             this.bulkAsyncContainer,
             inputFlux,
             cosmosBulkExecutionOptions);
@@ -911,7 +911,7 @@ public class CosmosBulkAsyncTest extends BatchTestBase {
         }
 
 
-        List<CosmosBulkOperationResponse<BulkExecutorTest>> bulkResponse =
+        List<CosmosBulkOperationResponse<CosmosBulkAsyncTest>> bulkResponse =
             Flux.deferContextual(context -> executor.execute()).collect(Collectors.toList()).block();
 
         try {
@@ -919,7 +919,7 @@ public class CosmosBulkAsyncTest extends BatchTestBase {
             assertThat(bulkResponse.size()).isEqualTo(totalRequest);
 
             for (int i = 0; i < cosmosItemOperations.size(); i++) {
-                CosmosBulkOperationResponse<BulkExecutorTest> operationResponse = bulkResponse.get(i);
+                CosmosBulkOperationResponse<CosmosBulkAsyncTest> operationResponse = bulkResponse.get(i);
                 com.azure.cosmos.models.CosmosBulkItemResponse cosmosBulkItemResponse =
                     operationResponse.getResponse();
 
@@ -978,7 +978,7 @@ public class CosmosBulkAsyncTest extends BatchTestBase {
         Flux<CosmosItemOperation> inputFlux = Flux
             .fromIterable(cosmosItemOperations)
             .delayElements(Duration.ofMillis(100));
-        final BulkExecutorWithOrderingPreserved<BulkExecutorTest> executor = new BulkExecutorWithOrderingPreserved<>(
+        final BulkExecutorWithOrderingPreserved<CosmosBulkAsyncTest> executor = new BulkExecutorWithOrderingPreserved<>(
             this.bulkAsyncContainer,
             inputFlux,
             cosmosBulkExecutionOptions);
@@ -987,7 +987,7 @@ public class CosmosBulkAsyncTest extends BatchTestBase {
             .configureFaultInjectionRules(this.bulkAsyncContainer,
                 Arrays.asList(rule))
             .block();
-        List<CosmosBulkOperationResponse<BulkExecutorTest>> bulkResponse =
+        List<CosmosBulkOperationResponse<CosmosBulkAsyncTest>> bulkResponse =
             Flux.deferContextual(context -> executor.execute()).collect(Collectors.toList()).block();
 
         try {
@@ -995,7 +995,7 @@ public class CosmosBulkAsyncTest extends BatchTestBase {
 
 
             for (int i = 0; i < cosmosItemOperations.size(); i++) {
-                CosmosBulkOperationResponse<BulkExecutorTest> operationResponse = bulkResponse.get(i);
+                CosmosBulkOperationResponse<CosmosBulkAsyncTest> operationResponse = bulkResponse.get(i);
                 com.azure.cosmos.models.CosmosBulkItemResponse cosmosBulkItemResponse =
                     operationResponse.getResponse();
                 assertThat(cosmosBulkItemResponse).isNull();

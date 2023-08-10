@@ -4,6 +4,7 @@
 
 #### Features Added
 * Added a flag for allowing customers to preserve ordering in bulk mode. See [PR 35892](https://github.com/Azure/azure-sdk-for-java/pull/35892)
+
 #### Breaking Changes
 
 #### Bugs Fixed
