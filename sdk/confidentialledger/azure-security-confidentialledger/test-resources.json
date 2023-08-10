@@ -33,12 +33,24 @@
 				"description": "Application object ID for the test application"
 			}
 		},
-		"testApplicationSecret": {
-			"type": "string",
-			"metadata": {
-				"description": "Application secret for the test application"
-			}
-		}
+    "testApplicationSecret": {
+      "type": "string",
+      "metadata": {
+        "description": "Application secret for the test application"
+      }
+    },
+    "ConfidentialLedgerPrincipalPEM": {
+      "type": "string",
+      "metadata": {
+        "description": "The certificate to configure as a certBasedSecurityPrincipal."
+      }
+    },
+    "ConfidentialLedgerPrincipalPEMPK": {
+      "type": "string",
+      "metadata": {
+        "description": "The certificate to configure as a certBasedSecurityPrincipal."
+      }
+    }
 	},
 	"functions": [],
 	"variables": {},
