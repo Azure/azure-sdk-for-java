@@ -30,7 +30,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.fail;
 
-public class CallAutomationAsyncClientAutomatedLiveTests extends CallAutomationAutomatedLiveTestBase {
+public class CallAutomationAsyncClientAutomatedLiveTests extends CallAutomationLiveTestBase {
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     @DisabledIfEnvironmentVariable(

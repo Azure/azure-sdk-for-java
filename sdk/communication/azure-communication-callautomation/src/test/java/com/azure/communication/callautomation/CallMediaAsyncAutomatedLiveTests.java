@@ -40,7 +40,7 @@ import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.fail;
 
-public class CallMediaAsyncAutomatedLiveTests extends CallAutomationAutomatedLiveTestBase {
+public class CallMediaAsyncAutomatedLiveTests extends CallAutomationLiveTestBase {
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     @DisabledIfEnvironmentVariable(
