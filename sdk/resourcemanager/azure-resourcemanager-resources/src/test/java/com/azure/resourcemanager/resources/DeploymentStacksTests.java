@@ -14,13 +14,11 @@ import com.azure.resourcemanager.resources.models.DeploymentStackPropertiesActio
 import com.azure.resourcemanager.resources.models.DeploymentStacksDeleteDetachEnum;
 import com.azure.resourcemanager.resources.models.DeploymentStacksParametersLink;
 import com.azure.resourcemanager.resources.models.DeploymentStacksTemplateLink;
-import com.azure.resourcemanager.resources.models.ResourceGroup;
 import com.azure.resourcemanager.resources.models.ResourceGroups;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.Collections;
-import java.util.stream.Collectors;
 
 public class DeploymentStacksTests extends ResourceManagementTest {
 
