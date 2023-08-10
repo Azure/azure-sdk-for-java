@@ -18,6 +18,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest(classes = LoadConfigsTest.class)
 @TestPropertySource(properties = {
+    // When the connection-string of an App Configuration store is specified, need to set "authMethod" as "ConnectionString".
+    // So that only SecretClientBuilder is customized.
     "authMethod=" + Constants.CONNECTION_STRING,
     "spring.cloud.azure.appconfiguration.stores[0].connection-string=${APP_CONFIGURATION_CONNECTION_STRING}",
     "spring.cloud.azure.appconfiguration.stores[0].feature-flags.enabled= true" })

@@ -19,6 +19,8 @@ import com.azure.spring.cloud.feature.management.web.FeatureManagerSnapshot;
 
 @SpringBootTest(classes = LoadConfigsTest.class)
 @TestPropertySource(properties = {
+    // When the endpoint of an App Configuration store is specified, need to set "authMethod" as "AzureActiveDirectory".
+    // So that ConfigurationClientBuilder and SecretClientBuilder are both customized.
     "authMethod=" + Constants.AZURE_ACTIVE_DIRECTORY,
     "spring.cloud.azure.appconfiguration.stores[0].endpoint= ${STORE_NAME}",
     "spring.cloud.azure.appconfiguration.stores[0].feature-flags.enabled= true" })

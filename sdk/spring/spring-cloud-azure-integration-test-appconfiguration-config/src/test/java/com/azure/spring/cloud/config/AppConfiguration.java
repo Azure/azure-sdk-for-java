@@ -12,6 +12,11 @@ import com.azure.spring.cloud.feature.management.filters.PercentageFilter;
 @Configuration
 public class AppConfiguration {
 
+    /**
+     * Define the authentication method to App Configuration store, it should be set by properties in test case.
+     * When set to "AzureActiveDirectory", need to customize token credential using ConfigurationClientBuilder.
+     * When set to "ConnectionString", no need to customize token credential using ConfigurationClientBuilder.
+     */
     @Value("${authMethod}")
     private String authMethod;
 
