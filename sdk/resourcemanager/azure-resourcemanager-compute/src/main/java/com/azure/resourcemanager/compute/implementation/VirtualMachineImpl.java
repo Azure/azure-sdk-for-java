@@ -9,6 +9,7 @@ import com.azure.core.management.SubResource;
 import com.azure.core.management.provider.IdentifierProvider;
 import com.azure.core.management.serializer.SerializerFactory;
 import com.azure.core.util.Context;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
@@ -115,6 +116,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.Callable;
@@ -195,6 +197,8 @@ class VirtualMachineImpl
     private DeleteOptions primaryNetworkInterfaceDeleteOptions;
     // delete options for secondary network interface
     private final Map<String, DeleteOptions> secondaryNetworkInterfaceDeleteOptions = new HashMap<>();
+    // default delete options for secondary network interfaces
+    private DeleteOptions secondaryNetworkInterfaceDefaultDeleteOptions;
 
     // Snapshot of the updateParameter when update() is called, used to compare whether there is modification to VM during updateResourceAsync
     private VirtualMachineUpdateInner updateParameterSnapshotOnUpdate;
@@ -1999,6 +2003,28 @@ class VirtualMachineImpl
     }
 
     @Override
+    public DeleteOptions primaryNetworkInterfaceDeleteOptions() {
+        String nicId = primaryNetworkInterfaceId();
+        return networkInterfaceDeleteOptions(nicId);
+    }
+
+    @Override
+    public DeleteOptions networkInterfaceDeleteOptions(String networkInterfaceId) {
+        if (CoreUtils.isNullOrEmpty(networkInterfaceId)
+            || this.innerModel().networkProfile() == null
+            || this.innerModel().networkProfile().networkInterfaces() == null) {
+            return null;
+        }
+        return this.innerModel().networkProfile()
+            .networkInterfaces()
+            .stream()
+            .filter(nic -> networkInterfaceId.equals(nic.id()))
+            .findAny()
+            .map(NetworkInterfaceReference::deleteOption)
+            .orElse(null);
+    }
+
+    @Override
     public VirtualMachinePriorityTypes priority() {
         return this.innerModel().priority();
     }
@@ -2175,6 +2201,8 @@ class VirtualMachineImpl
         creatableSecondaryNetworkInterfaceKeys.clear();
         existingSecondaryNetworkInterfacesToAssociate.clear();
         secondaryNetworkInterfaceDeleteOptions.clear();
+        primaryNetworkInterfaceDeleteOptions = null;
+        secondaryNetworkInterfaceDefaultDeleteOptions = null;
     }
 
     VirtualMachineImpl withUnmanagedDataDisk(UnmanagedDataDiskImpl dataDisk) {
@@ -2208,9 +2236,116 @@ class VirtualMachineImpl
     }
 
     @Override
+    public VirtualMachineImpl withOsDiskDeleteOptions(DeleteOptions deleteOptions) {
+        if (deleteOptions == null
+            || this.innerModel().storageProfile() == null || this.innerModel().storageProfile().osDisk() == null) {
+            return null;
+        }
+        this.innerModel().storageProfile().osDisk().withDeleteOption(diskDeleteOptionsFromDeleteOptions(deleteOptions));
+        return this;
+    }
+
+    @Override
     public VirtualMachineImpl withPrimaryNetworkInterfaceDeleteOptions(DeleteOptions deleteOptions) {
         this.primaryNetworkInterfaceDeleteOptions = deleteOptions;
         return this;
+    }
+
+    @Override
+    public VirtualMachineImpl withSecondaryNetworkInterfacesDeleteOptions(DeleteOptions deleteOptions) {
+        // sets delete options for existing secondary network interfaces
+        if (this.innerModel().networkProfile() != null
+            && this.innerModel().networkProfile().networkInterfaces() != null) {
+            this.innerModel().networkProfile().networkInterfaces()
+                .stream()
+                .filter(nic -> !Objects.equals(primaryNetworkInterfaceId(), nic.id()))
+                .forEach(nic -> nic.withDeleteOption(deleteOptions));
+        }
+
+        // sets delete options for newly attached secondary network interfaces
+        this.secondaryNetworkInterfaceDeleteOptions.keySet()
+            .forEach(
+                nicId -> this.secondaryNetworkInterfaceDeleteOptions.put(nicId, deleteOptions));
+
+        // sets delete options for future secondary network interfaces to attach
+        this.secondaryNetworkInterfaceDefaultDeleteOptions = deleteOptions;
+        return this;
+    }
+
+    @Override
+    public VirtualMachineImpl withNetworkInterfaceDeleteOptions(String networkInterfaceId, DeleteOptions deleteOptions) {
+        if (!CoreUtils.isNullOrEmpty(networkInterfaceId)) {
+            if (networkInterfaceId.equals(primaryNetworkInterfaceId())) {
+                return withPrimaryNetworkInterfaceDeleteOptions(deleteOptions);
+            }
+
+            // try newly attached secondary network interfaces
+            this.secondaryNetworkInterfaceDeleteOptions.put(networkInterfaceId, deleteOptions);
+
+            // try existing network interfaces
+            if (this.innerModel().networkProfile() != null
+                && this.innerModel().networkProfile().networkInterfaces() != null) {
+                this.innerModel().networkProfile().networkInterfaces()
+                    .stream()
+                    .filter(nic -> networkInterfaceId.equals(nic.id()))
+                    .forEach(nic -> nic.withDeleteOption(deleteOptions));
+            }
+        }
+        return this;
+    }
+
+    @Override
+    public VirtualMachineImpl withNetworkInterfacesDeleteOptions(DeleteOptions deleteOptions) {
+        // set for existing network interfaces
+        if (this.innerModel().networkProfile() != null
+            && this.innerModel().networkProfile().networkInterfaces() != null) {
+            this.innerModel().networkProfile().networkInterfaces()
+                .forEach(nic -> nic.withDeleteOption(deleteOptions));
+        }
+        // set for primary network interfaces (in case of override afterwards)
+        this.primaryNetworkInterfaceDeleteOptions = deleteOptions;
+
+        // set for newly attached secondary network interfaces
+        this.secondaryNetworkInterfaceDeleteOptions.keySet()
+            .forEach(
+                nicId -> this.secondaryNetworkInterfaceDeleteOptions.put(nicId, deleteOptions));
+        return this;
+    }
+
+    @Override
+    public VirtualMachineImpl withDataDiskDeleteOptions(int lun, DeleteOptions deleteOptions) {
+        if (lun == -1) {
+            return this;
+        }
+
+        // try existing data disks
+        VirtualMachineDataDisk dataDisk = dataDisks().get(lun);
+        if (dataDisk != null) {
+            this.innerModel().storageProfile().dataDisks()
+                .stream()
+                .filter(disk -> disk.lun() == lun)
+                .forEach(disk -> disk.withDeleteOption(diskDeleteOptionsFromDeleteOptions(deleteOptions)));
+        }
+
+        // try newly attached data disks (auto-assigned luns don't count)
+        this.managedDataDisks.setDeleteOptions(lun, deleteOptions);
+        return this;
+    }
+
+    @Override
+    public VirtualMachineImpl withDataDisksDeleteOptions(DeleteOptions deleteOptions) {
+        // set delete options for existing data disks
+        if (this.innerModel().storageProfile() != null
+            && this.innerModel().storageProfile().dataDisks() != null) {
+            this.innerModel().storageProfile().dataDisks()
+                .forEach(disk -> disk.withDeleteOption(diskDeleteOptionsFromDeleteOptions(deleteOptions)));
+        }
+
+        // set delete options for newly attached data disks
+        this.managedDataDisks.setDeleteOptions(deleteOptions);
+
+        // set default delete options for future data disks to attach
+        return withDataDiskDefaultDeleteOptions(deleteOptions);
     }
 
     AzureEnvironment environment() {
@@ -2397,10 +2532,17 @@ class VirtualMachineImpl
                 NetworkInterfaceReference nicReference = new NetworkInterfaceReference();
                 nicReference.withPrimary(true);
                 nicReference.withId(primaryNetworkInterface.id());
-                if (this.primaryNetworkInterfaceDeleteOptions != null) {
-                    nicReference.withDeleteOption(this.primaryNetworkInterfaceDeleteOptions);
-                }
                 this.innerModel().networkProfile().networkInterfaces().add(nicReference);
+            }
+        }
+
+        // sets the delete options for primary network interface
+        if (this.primaryNetworkInterfaceDeleteOptions != null) {
+            String primaryNetworkInterfaceId = primaryNetworkInterfaceId();
+            if (primaryNetworkInterfaceId != null) {
+                this.innerModel().networkProfile().networkInterfaces().stream()
+                    .filter(nic -> primaryNetworkInterfaceId.equals(nic.id()))
+                    .forEach(nic -> nic.withDeleteOption(this.primaryNetworkInterfaceDeleteOptions));
             }
         }
 
@@ -2414,6 +2556,9 @@ class VirtualMachineImpl
             if (secondaryNetworkInterfaceDeleteOptions.containsKey(creatableSecondaryNetworkInterfaceKey)) {
                 DeleteOptions deleteOptions
                     = secondaryNetworkInterfaceDeleteOptions.get(creatableSecondaryNetworkInterfaceKey);
+                if (deleteOptions == null) {
+                    deleteOptions = secondaryNetworkInterfaceDefaultDeleteOptions;
+                }
                 nicReference.withDeleteOption(deleteOptions);
             }
             this.innerModel().networkProfile().networkInterfaces().add(nicReference);
@@ -2423,6 +2568,7 @@ class VirtualMachineImpl
             NetworkInterfaceReference nicReference = new NetworkInterfaceReference();
             nicReference.withPrimary(false);
             nicReference.withId(secondaryNetworkInterface.id());
+            nicReference.withDeleteOption(secondaryNetworkInterfaceDefaultDeleteOptions);
             this.innerModel().networkProfile().networkInterfaces().add(nicReference);
         }
     }
@@ -2850,6 +2996,46 @@ class VirtualMachineImpl
 
         void setDefaultEncryptionSet(String diskEncryptionSetId) {
             this.defaultDiskEncryptionSet = new DiskEncryptionSetParameters().withId(diskEncryptionSetId);
+        }
+
+        void setDeleteOptions(DeleteOptions deleteOptions) {
+            DiskDeleteOptionTypes diskDeleteOptionTypes = diskDeleteOptionsFromDeleteOptions(deleteOptions);
+            for (DataDisk dataDisk : this.newDisksToAttach.values()) {
+                dataDisk.withDeleteOption(diskDeleteOptionTypes);
+            }
+            for (DataDisk dataDisk : this.existingDisksToAttach) {
+                dataDisk.withDeleteOption(diskDeleteOptionTypes);
+            }
+            for (DataDisk dataDisk : this.implicitDisksToAssociate) {
+                dataDisk.withDeleteOption(diskDeleteOptionTypes);
+            }
+            for (DataDisk dataDisk : this.newDisksFromImage) {
+                dataDisk.withDeleteOption(diskDeleteOptionTypes);
+            }
+        }
+
+        public void setDeleteOptions(int lun, DeleteOptions deleteOptions) {
+            DiskDeleteOptionTypes diskDeleteOptionTypes = diskDeleteOptionsFromDeleteOptions(deleteOptions);
+            for (DataDisk dataDisk : this.newDisksToAttach.values()) {
+                if (dataDisk.lun() == lun) {
+                    dataDisk.withDeleteOption(diskDeleteOptionTypes);
+                }
+            }
+            for (DataDisk dataDisk : this.existingDisksToAttach) {
+                if (dataDisk.lun() == lun) {
+                    dataDisk.withDeleteOption(diskDeleteOptionTypes);
+                }
+            }
+            for (DataDisk dataDisk : this.implicitDisksToAssociate) {
+                if (dataDisk.lun() == lun) {
+                    dataDisk.withDeleteOption(diskDeleteOptionTypes);
+                }
+            }
+            for (DataDisk dataDisk : this.newDisksFromImage) {
+                if (dataDisk.lun() == lun) {
+                    dataDisk.withDeleteOption(diskDeleteOptionTypes);
+                }
+            }
         }
 
         void setDataDisksDefaults() {
