@@ -65,7 +65,6 @@ public final class DocumentBarcode {
      * Set the polygon property: Bounding polygon of the barcode.
      *
      * @param polygon the polygon value to set.
-     * @return the DocumentBarcode object itself.
      */
     void setPolygon(List<Point> polygon) {
         this.polygon = polygon;
