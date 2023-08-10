@@ -426,6 +426,13 @@ public interface VirtualMachine
     /** @return the time at which the Virtual Machine resource was created */
     OffsetDateTime timeCreated();
 
+    /**
+     * Gets the delete options for the primary network interface.
+     *
+     * @return the delete options for the primary network interface
+     */
+    DeleteOptions primaryNetworkInterfaceDeleteOptions();
+
     // Setters
     //
 
@@ -2492,6 +2499,50 @@ public interface VirtualMachine
              */
             Update withoutVTpm();
         }
+
+        /** The stage of the VM update allowing to change delete options of resources attached to this VM . */
+        interface WithDeleteOptions {
+            /**
+             * Specifies delete options for the OS disk of the VM.
+             *
+             * @param deleteOptions delete options for the OS disk
+             * @return the next stage of the update
+             */
+            Update withOsDiskDeleteOptions(DeleteOptions deleteOptions);
+
+            /**
+             * Specifies delete options for the primary network interface of the VM.
+             *
+             * @param deleteOptions delete options for the primary network interface
+             * @return the next stage of the update
+             */
+            Update withPrimaryNetworkInterfaceDeleteOptions(DeleteOptions deleteOptions);
+
+            /**
+             * Specifies delete options for the network interfaces attached to the VM.
+             *
+             * @param deleteOptions delete options for the network interfaces
+             * @return the next stage of the update
+             */
+            Update withNetworkInterfacesDeleteOptions(DeleteOptions deleteOptions);
+
+            /**
+             * Specifies delete options for the data disk
+             *
+             * @param lun the disk LUN
+             * @param deleteOptions delete options for the data disk
+             * @return the next stage of the update
+             */
+            Update withDataDiskDeleteOptions(int lun, DeleteOptions deleteOptions);
+
+            /**
+             * Specifies delete options for the data disks attached to the VM.
+             *
+             * @param deleteOptions delete options for the data disks
+             * @return the next stage of the update
+             */
+            Update withDataDisksDeleteOptions(DeleteOptions deleteOptions);
+        }
     }
 
     /** The template for an update operation, containing all the settings that can be modified. */
@@ -2510,7 +2561,8 @@ public interface VirtualMachine
             UpdateStages.WithLicenseType,
             UpdateStages.WithAdditionalCapacities,
             UpdateStages.WithOSDisk,
-            UpdateStages.WithSecurityFeatures {
+            UpdateStages.WithSecurityFeatures,
+            UpdateStages.WithDeleteOptions {
         /**
          * Specifies the encryption settings for the OS Disk.
          *
