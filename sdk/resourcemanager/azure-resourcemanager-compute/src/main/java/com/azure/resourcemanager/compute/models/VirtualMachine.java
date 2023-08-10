@@ -436,6 +436,7 @@ public interface VirtualMachine
     /**
      * Gets the delete options for the given network interface.
      *
+     * @param networkInterfaceId resource ID of the network interface
      * @return the delete options for the network interface
      */
     DeleteOptions networkInterfaceDeleteOptions(String networkInterfaceId);
