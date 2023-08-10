@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.monitor.query;
 
 import com.azure.core.annotation.ReturnType;
@@ -7,6 +10,7 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.monitor.query.implementation.metricsbatch.AzureMonitorMetricBatch;
 import com.azure.monitor.query.implementation.metricsbatch.models.MetricResultsResponse;
 import com.azure.monitor.query.implementation.metricsbatch.models.MetricResultsResponseValuesItem;
@@ -27,6 +31,8 @@ import static com.azure.monitor.query.implementation.metrics.models.MetricsHelpe
  */
 @ServiceClient(builder = MetricsBatchQueryClientBuilder.class)
 public final class MetricsBatchQueryClient {
+    private static final ClientLogger LOGGER = new ClientLogger(MetricsBatchQueryClient.class);
+
     private final AzureMonitorMetricBatch serviceClient;
 
     MetricsBatchQueryClient(AzureMonitorMetricBatch azureMonitorMetricBatch) {
@@ -54,16 +60,22 @@ public final class MetricsBatchQueryClient {
      * @param metricsNamespace The namespace of the metrics to query.
      * @param context The context to associate with this operation.
      * @return A time-series metrics result for the requested metric names.
+     * @throws IllegalArgumentException thrown if {@code resourceUris}, {@code metricsNames} or {@code metricsNamespace} are empty.
+     * @throws NullPointerException thrown if {@code resourceUris}, {@code metricsNames} or {@code metricsNamespace} are null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<MetricsBatchResult> queryBatchWithResponse(List<String> resourceUris, List<String> metricsNames,
                                                                String metricsNamespace, Context context) {
         if (CoreUtils.isNullOrEmpty(Objects.requireNonNull(resourceUris, "'resourceUris cannot be null."))) {
-            throw new IllegalArgumentException("resourceUris cannot be empty");
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("resourceUris cannot be empty"));
         }
 
         if (CoreUtils.isNullOrEmpty(Objects.requireNonNull(metricsNames, "metricsNames cannot be null"))) {
-            throw new IllegalArgumentException("metricsNames cannot be empty");
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("metricsNames cannot be empty"));
+        }
+
+        if (CoreUtils.isNullOrEmpty(Objects.requireNonNull(metricsNamespace, "metricsNamespace cannot be null"))) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("metricsNamespace cannot be empty"));
         }
 
         String subscriptionId = getSubscriptionFromResourceId(resourceUris.get(0));
