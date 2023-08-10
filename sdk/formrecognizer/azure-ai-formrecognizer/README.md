@@ -59,20 +59,20 @@ add the direct dependency to your project as follows.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-ai-formrecognizer</artifactId>
-    <version>4.0.9</version>
+    <version>4.1.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
-> Note: This version of the client library defaults to the `"2022-08-31"` version of the service.
+> Note: This version of the client library defaults to the `"2023-07-31"` version of the service.
 
 This table shows the relationship between SDK versions and supported API versions of the service:
 
-|SDK version|Supported API version of service
-|-|-
-|3.0.x | 2.0
-|3.1.X - 3.1.12| 2.0, 2.1 (default)
-|4.0.0-beta.1 - Latest GA release| 2022-08-31 (default)
-|4.1.0-beta.1 - Latest beta release| V2023_02_28_preview
+| SDK version    |Supported API version of service
+|----------------|-
+| 3.0.x          | 2.0
+| 3.1.X - 3.1.12 | 2.0, 2.1 (default)
+| 4.0.0          | 2.0, 2.1, 2022-08-31 (default)
+| 4.1.0          | 2.0, 2.1, 2022-08-31, 2023-07-31 (default)
 
 > Note: Starting with version 4.0.X, a new set of clients were introduced to leverage the newest features
 > of the Form Recognizer service. Please see the [Migration Guide][migration_guide] for detailed instructions on how to update application
@@ -81,6 +81,7 @@ This table shows the relationship between SDK versions and supported API version
 
 |API version|Supported clients
 |-|-
+|2023-07-31 | DocumentAnalysisClient and DocumentModelAdministrationClient
 |2022-08-31 | DocumentAnalysisClient and DocumentModelAdministrationClient
 |2.1 | FormRecognizerClient and FormTrainingClient
 |2.0 | FormRecognizerClient and FormTrainingClient

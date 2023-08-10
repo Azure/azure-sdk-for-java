@@ -201,7 +201,6 @@ public class DocumentAnalysisAsyncClientJavaDocCodeSnippets {
     public void beginClassifyDocumentFromUrl() {
         // BEGIN: com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisAsyncClient.beginClassifyDocumentFromUrl#string-string
         String documentUrl = "{document_url}";
-        // analyze a receipt using prebuilt model
         String classifierId = "custom-trained-classifier-id";
 
         documentAnalysisAsyncClient.beginClassifyDocumentFromUrl(classifierId, documentUrl)
