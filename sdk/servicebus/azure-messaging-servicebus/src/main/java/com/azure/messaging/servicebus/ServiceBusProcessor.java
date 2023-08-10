@@ -268,7 +268,7 @@ final class ServiceBusProcessor {
 
         /**
          * Retry spec to roll to the next {@link SessionsMessagePump} with a back-off. If the spec is asked for retry after
-         * the {@link SessionProcessor.RollingSessionsMessagePump} is disposed of (due to {@link SessionProcessor} closure),
+         * the {@link RollingMessagePump} is disposed of (due to {@link ServiceBusProcessor} closure),
          * then an exception {@link RollingMessagePump#DISPOSED_ERROR} will be emitted.
          *
          * @return the retry spec.
