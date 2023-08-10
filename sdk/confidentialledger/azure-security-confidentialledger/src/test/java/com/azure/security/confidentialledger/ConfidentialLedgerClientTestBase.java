@@ -41,8 +41,8 @@ class ConfidentialLedgerClientTestBase extends TestBase {
     @Override
     protected void beforeTest() {
         ConfidentialLedgerCertificateClientBuilder confidentialLedgerCertificateClientBuilder = new ConfidentialLedgerCertificateClientBuilder()
-            .certificateEndpoint("https://identity.confidential-ledger.core.azure.com")
-            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
+            .certificateEndpoint(ConfidentialLedgerEnvironment.getConfidentialLedgerIdentityUrl())
+            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS));
 
         if (getTestMode() == TestMode.PLAYBACK) {
             confidentialLedgerCertificateClientBuilder
@@ -58,10 +58,8 @@ class ConfidentialLedgerClientTestBase extends TestBase {
 
         confidentialLedgerCertificateClient = confidentialLedgerCertificateClientBuilder.buildClient();
 
-        String ledgerName = Configuration.getGlobalConfiguration().get("LEDGER_NAME", "java-sdk-live-tests-ledger");
-
         Response<BinaryData> ledgerIdentityWithResponse = confidentialLedgerCertificateClient
-            .getLedgerIdentityWithResponse(ledgerName, null);
+            .getLedgerIdentityWithResponse(ConfidentialLedgerEnvironment.getConfidentialLedgerName(), null);
         BinaryData identityResponse = ledgerIdentityWithResponse.getValue();
         ObjectMapper mapper = new ObjectMapper();
         JsonNode jsonNode = null;
