@@ -198,6 +198,16 @@ public class InteractiveBrowserCredentialBuilder extends AadCredentialBuilderBas
     }
 
     /**
+     * Configures the options for customizing the browser for interactive authentication.
+     * @param browserCustomizationOptions the browser customization options
+     * @return An updated instance of this builder with the browser customization options configured.
+     */
+    public InteractiveBrowserCredentialBuilder browserCustomizationOptions(BrowserCustomizationOptions browserCustomizationOptions) {
+        this.identityClientOptions.setBrowserCustomizationOptions(browserCustomizationOptions);
+        return this;
+    }
+
+    /**
      * Creates a new {@link InteractiveBrowserCredential} with the current configurations.
      *
      * @return a {@link InteractiveBrowserCredential} with the current configurations.

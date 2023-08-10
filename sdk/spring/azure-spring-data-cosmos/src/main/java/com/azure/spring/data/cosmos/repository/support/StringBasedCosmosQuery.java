@@ -70,8 +70,7 @@ public class StringBasedCosmosQuery extends AbstractCosmosQuery {
             if (!("").equals(paramName)) {
                 String inParamCheck = "array_contains(@" + paramName.toLowerCase(Locale.US);
                 if (parameters[paramIndex] instanceof Collection && !modifiedExpandedQuery.contains(inParamCheck)) {
-                    List<String> expandParam = ((Collection<?>) parameters[paramIndex]).stream()
-                        .map(Object::toString).collect(Collectors.toList());
+                    List<Object> expandParam = ((Collection<?>) parameters[paramIndex]).stream().collect(Collectors.toList());
                     List<String> expandedParamKeys = new ArrayList<>();
                     for (int arrayIndex = 0; arrayIndex < expandParam.size(); arrayIndex++) {
                         expandedParamKeys.add("@" + paramName + arrayIndex);

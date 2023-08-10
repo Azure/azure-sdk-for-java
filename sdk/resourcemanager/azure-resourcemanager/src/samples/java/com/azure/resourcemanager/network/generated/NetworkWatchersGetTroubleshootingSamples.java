@@ -9,7 +9,7 @@ import com.azure.resourcemanager.network.models.TroubleshootingParameters;
 /** Samples for NetworkWatchers GetTroubleshooting. */
 public final class NetworkWatchersGetTroubleshootingSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-02-01/examples/NetworkWatcherTroubleshootGet.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-04-01/examples/NetworkWatcherTroubleshootGet.json
      */
     /**
      * Sample code: Get troubleshooting.

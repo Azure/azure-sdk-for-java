@@ -17,6 +17,10 @@ public final class ListQueueServicesInner {
     @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<QueueServicePropertiesInner> value;
 
+    /** Creates an instance of ListQueueServicesInner class. */
+    public ListQueueServicesInner() {
+    }
+
     /**
      * Get the value property: List of queue services returned.
      *

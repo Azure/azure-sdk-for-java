@@ -71,6 +71,7 @@ public class ReadmeSamples {
         AzureNamedKeyCredential azureNamedKeyCredential =
             new AzureNamedKeyCredential("<<azure-service-sas-key-name>>", "<<azure-service-sas-key>>");
         ServiceBusReceiverAsyncClient receiver = new ServiceBusClientBuilder()
+            .fullyQualifiedNamespace("<<fully-qualified-namespace>>")
             .credential(azureNamedKeyCredential)
             .receiver()
             .queueName("<<queue-name>>")
