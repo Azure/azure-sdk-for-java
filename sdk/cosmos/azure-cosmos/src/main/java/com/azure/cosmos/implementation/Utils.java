@@ -107,12 +107,9 @@ public class Utils {
 
     private static ObjectMapper createAndInitializeDurationObjectMapper() {
         ObjectMapper objectMapper = new ObjectMapper();
-        SimpleFilterProvider filterProvider = new SimpleFilterProvider();
         objectMapper.registerModule(new SimpleModule()
                 .addSerializer(Duration.class, ToStringSerializer.instance)
-//                .addDeserializer(Duration.class, DurationDeserializer.INSTANCE)
                 .addSerializer(Instant.class, ToStringSerializer.instance));
-  //          .setFilterProvider(filterProvider);
         return objectMapper;
     }
 
