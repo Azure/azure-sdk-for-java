@@ -1,5 +1,11 @@
 # Release History
 
+## 2.30.0-beta.1 (2023-08-11)
+
+### Features Added
+
+- Supported Deployment Stack as preview. See https://learn.microsoft.com/azure/azure-resource-manager/bicep/deployment-stacks
+
 ## 2.29.0 (2023-07-28)
 
 ### Bugs Fixed

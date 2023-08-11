@@ -85,6 +85,12 @@
     "package": "com.azure.resourcemanager.cosmos",
     "args": "--tag=package-2023-04"
   },
+  "deploymentstack": {
+    "dir": "azure-resourcemanager-resources",
+    "source": "specification/resources/resource-manager/readme.md",
+    "package": "com.azure.resourcemanager.resources",
+    "args": "--tag=package-deploymentstacks-2022-08-preview --add-inner=Deployment"
+  },
   "dns": {
     "dir": "azure-resourcemanager-dns",
     "source": "specification/dns/resource-manager/readme.md",
