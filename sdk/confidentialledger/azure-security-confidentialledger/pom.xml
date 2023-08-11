@@ -32,7 +32,7 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <javaModulesSurefireArgLine>
-      --add-exports com.azure.cure/com.azure.core.implementation=ALL-UNNAMED
+      --add-exports com.azure.core/com.azure.core.implementation=ALL-UNNAMED
       --add-exports com.azure.core/com.azure.core.implementation.jackson=ALL-UNNAMED
       --add-exports com.azure.core/com.azure.core.implementation.util=ALL-UNNAMED
 
