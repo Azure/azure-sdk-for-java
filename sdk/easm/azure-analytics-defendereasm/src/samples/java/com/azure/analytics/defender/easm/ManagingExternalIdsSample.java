@@ -6,10 +6,6 @@ import com.azure.analytics.defender.easm.models.AssetUpdateData;
 import com.azure.analytics.defender.easm.models.Task;
 import com.azure.core.util.Configuration;
 import com.azure.identity.InteractiveBrowserCredentialBuilder;
-import com.azure.resourcemanager.defendereasm.EASMClient;
-import com.azure.resourcemanager.defendereasm.EASMClientBuilder;
-import com.azure.resourcemanager.defendereasm.models.AssetUpdateRequest;
-import com.azure.resourcemanager.defendereasm.models.TaskResponse;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -17,12 +13,39 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * External IDs can be a useful method of keeping track of assets in multiple systems, but it can be time consuming to
+ * manually tag each asset. In this example, we'll take a look at how you can, with a map of name/kind/external id, tag
+ * each asset in your inventory with an external id automatically using the SDK
+ *
+ * Set the following environment variables before running the sample:
+ *     1) SUBSCRIPTION_ID - the subscription id for your resource
+ *     2) WORKSPACE_NAME - the workspace name for your resource
+ *     3) RESOURCE_GROUP - the resource group for your resource
+ *     4) REGION - the azure region your resource is in
+ *     5) MAPPING - a json file with an external id mapping, like so:
+ *
+ *     [
+ *  *         {
+ *  *             'name': 'example.com',
+ *  *             'kind': 'host',
+ *  *             'external_id': 'EXT040'
+ *  *         },
+ *  *         {
+ *  *             'name': 'example.com',
+ *  *             'kind': 'domain',
+ *  *             'external_id': 'EXT041'
+ *  *         }
+ *  *     ]
+ *
+ */
 public class ManagingExternalIdsSample {
     public static void main(String[] args) throws JsonProcessingException {
         String subscriptionId = Configuration.getGlobalConfiguration().get("SUBSCRIPTIONID");
         String workspaceName = Configuration.getGlobalConfiguration().get("WORKSPACENAME");
         String resourceGroupName = Configuration.getGlobalConfiguration().get("RESOURCEGROUPNAME");
-        String endpoint = Configuration.getGlobalConfiguration().get("ENDPOINT");
+        String region = Configuration.getGlobalConfiguration().get("REGION");
+        String endpoint = "https://" + region + ".easm.defender.microsoft.com";
         String externalIdMapping = Configuration.getGlobalConfiguration().get("MAPPING");
 
         EasmClient easmClient = new EasmClientBuilder()

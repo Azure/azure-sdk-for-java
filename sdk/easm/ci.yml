@@ -9,10 +9,10 @@ trigger:
   paths:
     include:
       - sdk/easm/ci.yml
-      - sdk/easm/azure-analytics-easm/
+      - sdk/easm/azure-analytics-defendereasm/
     exclude:
       - sdk/easm/pom.xml
-      - sdk/easm/azure-analytics-easm/pom.xml
+      - sdk/easm/azure-analytics-defendereasm/pom.xml
 
 pr:
   branches:
@@ -24,10 +24,10 @@ pr:
   paths:
     include:
       - sdk/easm/ci.yml
-      - sdk/easm/azure-analytics-easm/
+      - sdk/easm/azure-analytics-defendereasm/
     exclude:
       - sdk/easm/pom.xml
-      - sdk/easm/azure-analytics-easm/pom.xml
+      - sdk/easm/azure-analytics-defendereasm/pom.xml
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
@@ -35,6 +35,6 @@ extends:
     ServiceDirectory: easm
     EnableBatchRelease: true
     Artifacts:
-      - name: azure-analytics-easm
+      - name: azure-analytics-defendereasm
         groupId: com.azure.analytics
-        safeName: azureanalyticseasm
+        safeName: azureanalyticsdefendereasm

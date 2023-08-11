@@ -12,6 +12,17 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+/**
+ * This sample demonstrates how to create and manage discovery runs in a workspace
+ *
+ *  Set the following environment variables before running the sample:
+ *     1) SUBSCRIPTION_ID - the subscription id for your resource
+ *     2) WORKSPACE_NAME - the workspace name for your resource
+ *     3) RESOURCE_GROUP - the resource group for your resource
+ *     4) REGION - the azure region your resource is in
+ *     5) HOSTS - a comma separated list of hosts you would like to run discovery on
+ *     6) DOMAINS - a comma separated list of hosts you would like to run discovery on
+ */
 public class DiscoveryRunsSample {
     public static void main(String[] args) {
 
@@ -19,7 +30,8 @@ public class DiscoveryRunsSample {
         String subscriptionId = Configuration.getGlobalConfiguration().get("SUBSCRIPTIONID");
         String workspaceName = Configuration.getGlobalConfiguration().get("WORKSPACENAME");
         String resourceGroupName = Configuration.getGlobalConfiguration().get("RESOURCEGROUPNAME");
-        String endpoint = Configuration.getGlobalConfiguration().get("ENDPOINT");
+        String region = Configuration.getGlobalConfiguration().get("REGION");
+        String endpoint = "https://" + region + ".easm.defender.microsoft.com";
         String discoveryGroupName = "Sample Disco";
         String discoveryGroupDescription = "This is a sample description for a discovery group";
 

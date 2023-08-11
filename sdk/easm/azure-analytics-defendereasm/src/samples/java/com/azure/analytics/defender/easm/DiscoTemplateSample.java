@@ -7,20 +7,27 @@ import com.azure.analytics.defender.easm.models.DiscoGroupData;
 import com.azure.analytics.defender.easm.models.DiscoTemplate;
 import com.azure.core.util.Configuration;
 import com.azure.identity.InteractiveBrowserCredentialBuilder;
-import com.azure.resourcemanager.defendereasm.EASMClient;
-import com.azure.resourcemanager.defendereasm.EASMClientBuilder;
-import com.azure.resourcemanager.defendereasm.models.DiscoGroupRequest;
-import com.azure.resourcemanager.defendereasm.models.DiscoGroupResult;
-import com.azure.resourcemanager.defendereasm.models.DiscoTemplateResult;
+
 
 import java.util.Scanner;
 
+/**
+ * This sample shows you how to use the discovery_groups module to create discovery groups using templates provided by the discovery_templates module of the EasmClient
+ *
+ * Set the following environment variables before running the sample:
+ *     1) SUBSCRIPTIONID - the subscription id for your resource
+ *     2) WORKSPACENAME - the workspace name for your resource
+ *     3) RESOURCEGROUPNAME - the resource group for your resource
+ *     4) REGION - the azure region your resource is in
+ *     5) PARTIAL_NAME - the search term for the templates. used for a case insensitive "contains" search
+ */
 public class DiscoTemplateSample {
     public static void main(String[] args) {
         String subscriptionId = Configuration.getGlobalConfiguration().get("SUBSCRIPTIONID");
         String workspaceName = Configuration.getGlobalConfiguration().get("WORKSPACENAME");
         String resourceGroupName = Configuration.getGlobalConfiguration().get("RESOURCEGROUPNAME");
-        String endpoint = Configuration.getGlobalConfiguration().get("ENDPOINT");
+        String region = Configuration.getGlobalConfiguration().get("REGION");
+        String endpoint = "https://" + region + ".easm.defender.microsoft.com";
 
         EasmClient easmClient = new EasmClientBuilder()
                 .endpoint(endpoint)
