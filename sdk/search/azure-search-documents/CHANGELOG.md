@@ -2,7 +2,20 @@
 
 ## 11.6.0-beta.8 (2023-08-11)
 
+### Features Added
+
+- Added FieldBuilder support for float data types.
+- Added support for multi-vector searches.
+- Adjusted method for setting `fields` in `SearchQueryVector` from `SearchQueryVector setFields(String)` to `SearchQueryVector setFields(String...)` for convenience.
+
+### Breaking Changes
+
+- `SearchOptions` method `SearchOptions setVector(SearchQueryVector)` has been replaced with `SearchOptions setVectors(SearchQueryVector...)` and `SearchOptions setVectors(List<SearchQueryVector>)`
+- `SearchOptions` method `SearchQueryVector getVector()` has been replaced with `List<SearchQueryVector> getVectors()`
+
 ### Other Changes
+
+- Added sample for multi-vector search.
 
 #### Dependency Updates
 
