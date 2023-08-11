@@ -1473,7 +1473,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 headers.put(HttpConstants.HttpHeaders.DEDICATED_GATEWAY_PER_REQUEST_CACHE_STALENESS,
                     String.valueOf(Utils.getMaxIntegratedCacheStalenessInMillis(options.getDedicatedGatewayRequestOptions())));
             }
-            if (options.getDedicatedGatewayRequestOptions().getBypassIntegratedCache() != null) {
+            if (options.getDedicatedGatewayRequestOptions().getBypassIntegratedCache()) {
                 headers.put(HttpConstants.HttpHeaders.DEDICATED_GATEWAY_PER_REQUEST_BYPASS_CACHE,
                     String.valueOf(options.getDedicatedGatewayRequestOptions().getBypassIntegratedCache()));
             }

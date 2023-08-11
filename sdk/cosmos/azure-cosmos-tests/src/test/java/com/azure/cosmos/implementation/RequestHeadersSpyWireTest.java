@@ -64,7 +64,6 @@ public class RequestHeadersSpyWireTest extends TestSuiteBase {
 
         DedicatedGatewayRequestOptions dedicatedOptions3 = new DedicatedGatewayRequestOptions();
         dedicatedOptions3.setMaxIntegratedCacheStaleness(Duration.ofSeconds(10));
-        dedicatedOptions3.setBypassIntegratedCache(null);
         CosmosQueryRequestOptions options3 = new CosmosQueryRequestOptions();
         options3.setDedicatedGatewayRequestOptions(dedicatedOptions3);
 
@@ -99,7 +98,6 @@ public class RequestHeadersSpyWireTest extends TestSuiteBase {
 
         DedicatedGatewayRequestOptions dedicatedOptions3 = new DedicatedGatewayRequestOptions();
         dedicatedOptions3.setMaxIntegratedCacheStaleness(Duration.ofSeconds(10));
-        dedicatedOptions3.setBypassIntegratedCache(null);
         CosmosItemRequestOptions options3 = new CosmosItemRequestOptions();
         options3.setDedicatedGatewayRequestOptions(dedicatedOptions3);
 
@@ -224,6 +222,27 @@ public class RequestHeadersSpyWireTest extends TestSuiteBase {
             .hasMessage("MaxIntegratedCacheStaleness duration cannot be negative");
     }
 
+    @Ignore // This test has to be run against sqlx endpoint
+    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    public void readItemWithCacheBypass() {
+        DedicatedGatewayRequestOptions dedicatedGatewayRequestOptions = new DedicatedGatewayRequestOptions();
+        dedicatedGatewayRequestOptions.setMaxIntegratedCacheStaleness((Duration.ofMillis(500)));
+        dedicatedGatewayRequestOptions.setBypassIntegratedCache(true);
+        CosmosItemRequestOptions cosmosItemRequestOptions = new CosmosItemRequestOptions();
+        cosmosItemRequestOptions.setDedicatedGatewayRequestOptions(dedicatedGatewayRequestOptions);
+
+        String documentLink = getDocumentLink();
+
+        client.clearCapturedRequests();
+
+        RequestOptions requestOptions = ModelBridgeInternal.toRequestOptions(cosmosItemRequestOptions);
+        requestOptions.setPartitionKey(new PartitionKey(DOCUMENT_ID));
+        ResourceResponse<Document> response = client.readDocument(documentLink, requestOptions).block();
+        String responseHeader = response.getResponseHeaders().get("x-ms-cosmos-cache-bypass");
+        assertThat(responseHeader).isNotNull();
+        assertThat(Boolean.parseBoolean(responseHeader)).isTrue();
+    }
+
     private void validateRequestHasDedicatedGatewayHeaders(HttpRequest httpRequest,
                                                            DedicatedGatewayRequestOptions options) {
         Map<String, String> headers = httpRequest.headers().toMap();
@@ -234,7 +253,7 @@ public class RequestHeadersSpyWireTest extends TestSuiteBase {
             assertThat(durationInMillis).isEqualTo(String.valueOf(options
                 .getMaxIntegratedCacheStaleness()
                 .toMillis()));
-            if (options.getBypassIntegratedCache() != null) {
+            if (options.getBypassIntegratedCache()) {
                 assertThat(headers.containsKey(HttpConstants.HttpHeaders.DEDICATED_GATEWAY_PER_REQUEST_BYPASS_CACHE)).isTrue();
                 String bypassIntegratedCache =
                     headers.get(HttpConstants.HttpHeaders.DEDICATED_GATEWAY_PER_REQUEST_BYPASS_CACHE);
