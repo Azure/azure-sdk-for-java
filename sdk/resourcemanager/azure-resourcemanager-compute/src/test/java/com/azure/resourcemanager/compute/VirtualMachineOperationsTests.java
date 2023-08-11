@@ -1626,6 +1626,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
             .withSubnet("subnet2", "10.0.1.16/28")
             .create();
 
+        // OS disk, primary and secondary nics, data disk delete options all set to DELETE
         VirtualMachine vm = computeManager.virtualMachines()
             .define(vmName)
             .withRegion(region)
@@ -1656,6 +1657,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
         Assertions.assertEquals(DeleteOptions.DELETE, vm.primaryNetworkInterfaceDeleteOptions());
         Assertions.assertTrue(vm.dataDisks().values().stream().allMatch(disk -> DeleteOptions.DELETE.equals(disk.deleteOptions())));
 
+        // update delete options all to DETACH, except for secondary nic
         vm.update()
             .withOsDiskDeleteOptions(DeleteOptions.DETACH)
             .withPrimaryNetworkInterfaceDeleteOptions(DeleteOptions.DETACH)
@@ -1685,6 +1687,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
         vm.powerOff();
         vm.deallocate();
 
+        // update all back to DELETE, including a newly added data disk and a secondary nic
         vm.update()
             .withPrimaryNetworkInterfaceDeleteOptions(DeleteOptions.DELETE)
             .withDataDisksDeleteOptions(DeleteOptions.DELETE)
