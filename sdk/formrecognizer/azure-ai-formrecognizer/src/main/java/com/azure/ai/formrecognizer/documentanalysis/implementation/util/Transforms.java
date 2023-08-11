@@ -84,6 +84,7 @@ public class Transforms {
     public static AnalyzeResult toAnalyzeResultOperation(
         com.azure.ai.formrecognizer.documentanalysis.implementation.models.AnalyzeResult innerAnalyzeResult) {
         AnalyzeResult analyzeResult = new AnalyzeResult();
+        AnalyzeResultHelper.setServiceVersion(analyzeResult, innerAnalyzeResult.getApiVersion());
 
         // add documents
         if (!CoreUtils.isNullOrEmpty(innerAnalyzeResult.getDocuments())) {
@@ -275,6 +276,7 @@ public class Transforms {
                 DocumentBarcodeHelper.setValue(documentBarcode, innerBarcode.getValue());
                 DocumentBarcodeHelper.setConfidence(documentBarcode, innerBarcode.getConfidence());
                 DocumentBarcodeHelper.setSpan(documentBarcode, getDocumentSpan(innerBarcode.getSpan()));
+                DocumentBarcodeHelper.setBoundingPolygon(documentBarcode, toPolygonPoints(innerBarcode.getPolygon()));
                 return documentBarcode;
             })
                 .collect(Collectors.toList());
@@ -293,6 +295,7 @@ public class Transforms {
                 DocumentFormulaHelper.setValue(documentFormula, innerFormula.getValue());
                 DocumentFormulaHelper.setConfidence(documentFormula, innerFormula.getConfidence());
                 DocumentFormulaHelper.setSpan(documentFormula, getDocumentSpan(innerFormula.getSpan()));
+                DocumentFormulaHelper.setBoundingPolygon(documentFormula, toPolygonPoints(innerFormula.getPolygon()));
                 return documentFormula;
             }).collect(Collectors.toList());
         }
@@ -415,6 +418,7 @@ public class Transforms {
             DocumentModelDetailsHelper.setCreatedOn(documentModelDetails, modelDetails.getCreatedDateTime());
             DocumentModelDetailsHelper.setTags(documentModelDetails, modelDetails.getTags());
             DocumentModelDetailsHelper.setExpiresOn(documentModelDetails, modelDetails.getExpirationDateTime());
+            DocumentModelDetailsHelper.setServiceVersion(documentModelDetails, modelDetails.getApiVersion());
         }
         return documentModelDetails;
     }
@@ -584,20 +588,28 @@ public class Transforms {
             }
         } else if (com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentFieldType.ADDRESS.equals(
             innerDocumentField.getType())) {
-            if (innerDocumentField.getValueAddress() == null) {
+            com.azure.ai.formrecognizer.documentanalysis.implementation.models.AddressValue innerValueAddress =
+                innerDocumentField.getValueAddress();
+            if (innerValueAddress == null) {
                 DocumentFieldHelper.setValue(documentField, null);
             } else {
                 AddressValue addressValue = new AddressValue();
-                AddressValueHelper.setCity(addressValue, innerDocumentField.getValueAddress().getCity());
+                AddressValueHelper.setCity(addressValue, innerValueAddress.getCity());
                 AddressValueHelper.setStreetAddress(addressValue,
-                    innerDocumentField.getValueAddress().getStreetAddress());
+                    innerValueAddress.getStreetAddress());
                 AddressValueHelper.setCountryRegion(addressValue,
-                    innerDocumentField.getValueAddress().getCountryRegion());
-                AddressValueHelper.setHouseNumber(addressValue, innerDocumentField.getValueAddress().getHouseNumber());
-                AddressValueHelper.setRoad(addressValue, innerDocumentField.getValueAddress().getRoad());
-                AddressValueHelper.setPoBox(addressValue, innerDocumentField.getValueAddress().getPoBox());
-                AddressValueHelper.setPostalCode(addressValue, innerDocumentField.getValueAddress().getPostalCode());
-                AddressValueHelper.setState(addressValue, innerDocumentField.getValueAddress().getState());
+                    innerValueAddress.getCountryRegion());
+                AddressValueHelper.setHouseNumber(addressValue, innerValueAddress.getHouseNumber());
+                AddressValueHelper.setRoad(addressValue, innerValueAddress.getRoad());
+                AddressValueHelper.setPoBox(addressValue, innerValueAddress.getPoBox());
+                AddressValueHelper.setPostalCode(addressValue, innerValueAddress.getPostalCode());
+                AddressValueHelper.setState(addressValue, innerValueAddress.getState());
+                AddressValueHelper.setUnit(addressValue, innerValueAddress.getUnit());
+                AddressValueHelper.setCityDistrict(addressValue, innerValueAddress.getCityDistrict());
+                AddressValueHelper.setStateDistrict(addressValue, innerValueAddress.getStateDistrict());
+                AddressValueHelper.setSuburb(addressValue, innerValueAddress.getSuburb());
+                AddressValueHelper.setHouse(addressValue, innerValueAddress.getHouse());
+                AddressValueHelper.setLevel(addressValue, innerValueAddress.getLevel());
                 DocumentFieldHelper.setValue(documentField, addressValue);
             }
         }
@@ -665,6 +677,8 @@ public class Transforms {
                 DocumentModelSummaryHelper.setCreatedOn(documentModelSummary, modelSummary.getCreatedDateTime());
                 DocumentModelSummaryHelper.setTags(documentModelSummary, modelSummary.getTags());
                 DocumentModelSummaryHelper.setExpiresOn(documentModelSummary, modelSummary.getExpirationDateTime());
+                DocumentModelSummaryHelper.setServiceVersion(documentModelSummary,
+                    modelSummary.getApiVersion());
                 return documentModelSummary;
             }).collect(Collectors.toList());
     }
@@ -699,6 +713,7 @@ public class Transforms {
             OperationDetailsHelper.setResourceLocation(operationDetails, innerOperationDetails.getResourceLocation());
             OperationDetailsHelper.setError(operationDetails, toResponseError(innerOperationDetails.getError()));
             OperationDetailsHelper.setTags(operationDetails, innerOperationDetails.getTags());
+            OperationDetailsHelper.setServiceVersion(operationDetails, innerOperationDetails.getApiVersion());
         }
         return operationDetails;
     }
@@ -819,7 +834,7 @@ public class Transforms {
         DocumentClassifierDetailsHelper.setClassifierId(classifierDetails, inner.getClassifierId());
         DocumentClassifierDetailsHelper.setDescription(classifierDetails, inner.getDescription());
         DocumentClassifierDetailsHelper.setDocTypes(classifierDetails, fromInnerDocTypes(inner.getDocTypes()));
-        DocumentClassifierDetailsHelper.setApiVersion(classifierDetails, inner.getApiVersion());
+        DocumentClassifierDetailsHelper.setServiceVersion(classifierDetails, inner.getApiVersion());
         DocumentClassifierDetailsHelper.setCreatedOn(classifierDetails, inner.getCreatedDateTime());
         DocumentClassifierDetailsHelper.setExpiresOn(classifierDetails, inner.getExpirationDateTime());
 
