@@ -103,7 +103,7 @@
         }
       },
       "PROTOCOLS": "[\"Tcp\"]",
-      "ProfileFlag": [ "-Pmulti-master", "-Pfast", "-Pdirect", "-Psplit", "-Pquery" ],
+      "ProfileFlag": [ "-Pmulti-master", "-Pfast", "-Pdirect", "-Pquery" ],
       "Agent": {
         "ubuntu": { "OSVmImage": "MMSUbuntu20.04", "Pool": "azsdk-pool-mms-ubuntu-2004-general" }
       }
@@ -116,7 +116,7 @@
           "ArmTemplateParameters": "@{ enableMultipleWriteLocations = $false; defaultConsistencyLevel = 'Session'; enableMultipleRegions = $true; enablePartitionMerge = $true}"
         }
       },
-      "ProfileFlag": [ "-Pmulti-region", "-Psplit" ],
+      "ProfileFlag": "-Pmulti-region",
       "PROTOCOLS": "[\"Tcp\"]",
       "PREFERRED_LOCATIONS": null,
       "Agent": {

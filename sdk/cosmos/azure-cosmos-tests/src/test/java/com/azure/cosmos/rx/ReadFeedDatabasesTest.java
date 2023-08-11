@@ -32,7 +32,7 @@ public class ReadFeedDatabasesTest extends TestSuiteBase {
         super(clientBuilder);
     }
 
-    @Test(groups = { "simple" }, timeOut = FEED_TIMEOUT)
+    @Test(groups = { "query" }, timeOut = FEED_TIMEOUT)
     public void readDatabases() throws Exception {
         int maxItemCount = 2;
 
