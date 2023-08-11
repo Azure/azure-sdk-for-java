@@ -13,6 +13,7 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Factory;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 
 import java.time.Duration;
@@ -43,6 +44,13 @@ public class RequestHeadersSpyWireTest extends TestSuiteBase {
     @Factory(dataProvider = "clientBuilders")
     public RequestHeadersSpyWireTest(Builder clientBuilder) {
         super(clientBuilder);
+    }
+
+    @DataProvider(name="cacheBypassValues")
+    public Object[][] cacheBypassValues()
+    {
+        Object [][] values = {{true}, {false}};
+        return values;
     }
 
     @DataProvider(name = "maxIntegratedCacheStalenessDurationProviderQueryOptions")
@@ -223,11 +231,11 @@ public class RequestHeadersSpyWireTest extends TestSuiteBase {
     }
 
     @Ignore // This test has to be run against sqlx endpoint
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
-    public void readItemWithCacheBypass() {
+    @Test(groups = { "simple" }, timeOut = TIMEOUT, dataProvider = "cacheBypassValues")
+    public void readItemWithCacheBypass(boolean cacheBypass) {
         DedicatedGatewayRequestOptions dedicatedGatewayRequestOptions = new DedicatedGatewayRequestOptions();
         dedicatedGatewayRequestOptions.setMaxIntegratedCacheStaleness((Duration.ofMillis(500)));
-        dedicatedGatewayRequestOptions.setBypassIntegratedCache(true);
+        dedicatedGatewayRequestOptions.setBypassIntegratedCache(cacheBypass);
         CosmosItemRequestOptions cosmosItemRequestOptions = new CosmosItemRequestOptions();
         cosmosItemRequestOptions.setDedicatedGatewayRequestOptions(dedicatedGatewayRequestOptions);
 
@@ -238,9 +246,14 @@ public class RequestHeadersSpyWireTest extends TestSuiteBase {
         RequestOptions requestOptions = ModelBridgeInternal.toRequestOptions(cosmosItemRequestOptions);
         requestOptions.setPartitionKey(new PartitionKey(DOCUMENT_ID));
         ResourceResponse<Document> response = client.readDocument(documentLink, requestOptions).block();
-        String responseHeader = response.getResponseHeaders().get("x-ms-cosmos-cache-bypass");
-        assertThat(responseHeader).isNotNull();
-        assertThat(Boolean.parseBoolean(responseHeader)).isTrue();
+        if (cacheBypass) {
+            String responseHeader = response.getResponseHeaders().get("x-ms-cosmos-cache-bypass");
+            assertThat(responseHeader).isNotNull();
+            assertThat(Boolean.parseBoolean(responseHeader)).isTrue();
+        }
+        else {
+            assertThat(response.getResponseHeaders().containsKey("x-ms-cosmos-cache-bypass")).isFalse();
+        }
     }
 
     private void validateRequestHasDedicatedGatewayHeaders(HttpRequest httpRequest,
