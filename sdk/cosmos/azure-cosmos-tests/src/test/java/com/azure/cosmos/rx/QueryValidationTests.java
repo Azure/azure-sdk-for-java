@@ -77,9 +77,8 @@ public class QueryValidationTests extends TestSuiteBase {
         random = new Random();
     }
 
-    @BeforeClass(groups = {"simple"}, timeOut = SETUP_TIMEOUT)
+    @BeforeClass(groups = {"simple", "split"}, timeOut = SETUP_TIMEOUT)
     public void beforeClass() throws Exception {
-        System.setProperty("COSMOS.QUERYPLAN_CACHING_ENABLED", "true");
         client = this.getClientBuilder().buildAsyncClient();
         createdDatabase = getSharedCosmosDatabase(client);
         createdContainer = getSharedMultiPartitionCosmosContainer(client);
@@ -371,8 +370,7 @@ public class QueryValidationTests extends TestSuiteBase {
         assertThat(contextClient.getQueryPlanCache().containsKey(sqlQuerySpec.getQueryText())).isFalse();
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT * 40)
-    @Ignore("TODO 32129 - reenable after fixing flakiness.")
+    @Test(groups = {"split"}, timeOut = TIMEOUT * 40)
     public void splitQueryContinuationToken() throws Exception {
         String containerId = "splittestcontainer_" + UUID.randomUUID();
         int itemCount = 20;

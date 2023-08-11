@@ -82,7 +82,7 @@ public class ProactiveOpenConnectionsProcessorTest extends BatchTestBase {
         super(clientBuilder);
     }
 
-    @BeforeClass(groups = {"multi-region"})
+    @BeforeClass(groups = {"split"})
     public void beforeClass() {
         try {
             this.client = getClientBuilder().buildAsyncClient();
@@ -142,7 +142,7 @@ public class ProactiveOpenConnectionsProcessorTest extends BatchTestBase {
         assertThat(recordedSignalsCount.get()).isEqualTo(elementsSize);
     }
 
-    @Test(groups = {"multi-region"})
+    @Test(groups = {"split"})
     public void recordNewAddressesAfterSplitTest() {
         String containerId = "containerForWarmup" + UUID.randomUUID();
         String databaseId = cosmosAsyncDatabase.getId();
