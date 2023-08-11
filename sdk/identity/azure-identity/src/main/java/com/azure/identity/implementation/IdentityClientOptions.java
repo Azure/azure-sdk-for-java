@@ -75,7 +75,7 @@ public final class IdentityClientOptions implements Cloneable {
     private Duration credentialProcessTimeout = Duration.ofSeconds(10);
 
     private boolean isChained;
-    private boolean enableSupportLogging;
+    private boolean enableUnsafeSupportLogging;
 
     /**
      * Creates an instance of IdentityClientOptions with default settings.
@@ -730,16 +730,16 @@ public final class IdentityClientOptions implements Cloneable {
      * Gets the status whether support logging is enabled or not.
      * @return the flag indicating if support logging is enabled or not.
      */
-    public boolean isSupportLoggingEnabled() {
-        return enableSupportLogging;
+    public boolean isUnsafeSupportLoggingEnabled() {
+        return enableUnsafeSupportLogging;
     }
 
     /**
      * Enables additional support logging (including PII) for MSAL based credentials.
      * @return the updated client options
      */
-    public IdentityClientOptions enableSupportLogging() {
-        this.enableSupportLogging = true;
+    public IdentityClientOptions enableUnsafeSupportLogging() {
+        this.enableUnsafeSupportLogging = true;
         return this;
     }
 
@@ -776,8 +776,8 @@ public final class IdentityClientOptions implements Cloneable {
         if (!isInstanceDiscoveryEnabled()) {
             clone.disableInstanceDiscovery();
         }
-        if (isSupportLoggingEnabled()) {
-            clone.enableSupportLogging();
+        if (isUnsafeSupportLoggingEnabled()) {
+            clone.enableUnsafeSupportLogging();
         }
         return clone;
     }
