@@ -2309,6 +2309,9 @@ class VirtualMachineImpl
         this.secondaryNetworkInterfaceDeleteOptions.keySet()
             .forEach(
                 nicId -> this.secondaryNetworkInterfaceDeleteOptions.put(nicId, deleteOptions));
+
+        // sets delete options for future secondary network interfaces to attach
+        this.secondaryNetworkInterfaceDefaultDeleteOptions = deleteOptions;
         return this;
     }
 
