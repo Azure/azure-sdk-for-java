@@ -33,7 +33,7 @@ public class ReadFeedUdfsTest extends TestSuiteBase {
         super(clientBuilder);
     }
 
-    @Test(groups = { "simple" }, timeOut = FEED_TIMEOUT)
+    @Test(groups = { "query" }, timeOut = FEED_TIMEOUT)
     public void readUserDefinedFunctions() throws Exception {
         int maxItemCount = 2;
 
@@ -54,7 +54,7 @@ public class ReadFeedUdfsTest extends TestSuiteBase {
         validateQuerySuccess(feedObservable.byPage(maxItemCount), validator, FEED_TIMEOUT);
     }
 
-    @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
+    @BeforeClass(groups = { "query" }, timeOut = SETUP_TIMEOUT)
     public void before_ReadFeedUdfsTest() {
         client = getClientBuilder().buildAsyncClient();
         createdCollection = getSharedMultiPartitionCosmosContainer(client);
@@ -67,7 +67,7 @@ public class ReadFeedUdfsTest extends TestSuiteBase {
         waitIfNeededForReplicasToCatchUp(getClientBuilder());
     }
 
-    @AfterClass(groups = { "simple" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
+    @AfterClass(groups = { "query" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
         safeClose(client);
     }

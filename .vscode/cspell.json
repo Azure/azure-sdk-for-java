@@ -679,7 +679,8 @@
         "Pfast",
         "Pdirect",
 	      "Pmulti",
-        "Psplit"
+        "Psplit",
+        "Pquery"
       ]
     },
     {
