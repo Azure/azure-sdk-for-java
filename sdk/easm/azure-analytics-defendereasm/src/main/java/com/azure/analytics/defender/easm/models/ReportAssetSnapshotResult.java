@@ -14,7 +14,7 @@ import java.time.OffsetDateTime;
  * asset data can be retrieved from the asset endpoints.
  */
 @Immutable
-public final class ReportAssetSnapshotResponse {
+public final class ReportAssetSnapshotResult {
     /*
      * The name of the metric.
      */
@@ -55,11 +55,11 @@ public final class ReportAssetSnapshotResponse {
      */
     @Generated
     @JsonProperty(value = "assets")
-    private AssetPageResponse assets;
+    private AssetPageResult assets;
 
-    /** Creates an instance of ReportAssetSnapshotResponse class. */
+    /** Creates an instance of ReportAssetSnapshotResult class. */
     @Generated
-    private ReportAssetSnapshotResponse() {}
+    private ReportAssetSnapshotResult() {}
 
     /**
      * Get the displayName property: The name of the metric.
@@ -117,7 +117,7 @@ public final class ReportAssetSnapshotResponse {
      * @return the assets value.
      */
     @Generated
-    public AssetPageResponse getAssets() {
+    public AssetPageResult getAssets() {
         return this.assets;
     }
 }

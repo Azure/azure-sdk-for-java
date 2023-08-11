@@ -1,13 +1,17 @@
 package java.com.azure.analytics.defender.easm;
 
-import com.azure.analytics.defender.easm.DiscoveryGroupsClient;
-import com.azure.analytics.defender.easm.DiscoveryTemplatesClient;
-import com.azure.analytics.defender.easm.EasmDefenderClientBuilder;
+import com.azure.analytics.defender.easm.EasmClient;
+import com.azure.analytics.defender.easm.EasmClientBuilder;
 import com.azure.analytics.defender.easm.models.DiscoGroup;
 import com.azure.analytics.defender.easm.models.DiscoGroupData;
 import com.azure.analytics.defender.easm.models.DiscoTemplate;
 import com.azure.core.util.Configuration;
 import com.azure.identity.InteractiveBrowserCredentialBuilder;
+import com.azure.resourcemanager.defendereasm.EASMClient;
+import com.azure.resourcemanager.defendereasm.EASMClientBuilder;
+import com.azure.resourcemanager.defendereasm.models.DiscoGroupRequest;
+import com.azure.resourcemanager.defendereasm.models.DiscoGroupResult;
+import com.azure.resourcemanager.defendereasm.models.DiscoTemplateResult;
 
 import java.util.Scanner;
 
@@ -18,26 +22,22 @@ public class DiscoTemplateSample {
         String resourceGroupName = Configuration.getGlobalConfiguration().get("RESOURCEGROUPNAME");
         String endpoint = Configuration.getGlobalConfiguration().get("ENDPOINT");
 
-        EasmDefenderClientBuilder easmDefenderClientBuilder = new EasmDefenderClientBuilder()
-                                                                .endpoint(endpoint)
-                                                                .subscriptionId(subscriptionId)
-                                                                .workspaceName(workspaceName)
-                                                                .resourceGroupName(resourceGroupName)
-                                                                .credential(new InteractiveBrowserCredentialBuilder().build());
-
-        // We initialize the discovery templates and group clients
-        DiscoveryTemplatesClient discoveryTemplatesClient = easmDefenderClientBuilder.buildDiscoveryTemplatesClient();
-        DiscoveryGroupsClient discoveryGroupsClient = easmDefenderClientBuilder.buildDiscoveryGroupsClient();
+        EasmClient easmClient = new EasmClientBuilder()
+                .endpoint(endpoint)
+                .subscriptionId(subscriptionId)
+                .workspaceName(workspaceName)
+                .resourceGroupName(resourceGroupName)
+                .credential(new InteractiveBrowserCredentialBuilder().build())
+                .buildClient();
 
         // The discoveryTemplatesList method can be used to find a discovery template using a filter.
         // The endpoint will return templates based on a partial match on the name field.
 
         String partialName = Configuration.getGlobalConfiguration().get("PARTIAL_NAME");
         System.out.println("Partial name is " + partialName);
-        discoveryTemplatesClient.list(partialName, 0, 25)
-                .getValue()
-                .forEach((discoTemplateResponse -> {
-                    System.out.println(discoTemplateResponse.getId() + ": " + discoTemplateResponse.getDisplayName());
+        easmClient.listDiscoTemplate(partialName, 0, 25)
+                .forEach((discoTemplateResult -> {
+                    System.out.println(discoTemplateResult.getId() + ": " + discoTemplateResult.getDisplayName());
                 }));
 
         // To get more detail about a disco template, we can use the discoveryTemplatesGet method.
@@ -48,22 +48,22 @@ public class DiscoTemplateSample {
         Scanner scanner = new Scanner(System.in);
         String templateId = scanner.nextLine();
 
-        DiscoTemplate discoTemplateResponse = discoveryTemplatesClient.get(templateId);
+        DiscoTemplate discoTemplateResult = easmClient.getDiscoTemplate(templateId);
 
-        System.out.println("Chosen template id: " + discoTemplateResponse.getId());
+        System.out.println("Chosen template id: " + discoTemplateResult.getId());
         System.out.println("The following names will be used:");
-        discoTemplateResponse.getNames().forEach(System.out::println);
+        discoTemplateResult.getNames().forEach(System.out::println);
         System.out.println("The following seeds will be used:");
-        discoTemplateResponse.getSeeds().forEach(discoSource -> {
+        discoTemplateResult.getSeeds().forEach(discoSource -> {
             System.out.println(discoSource.getKind() + ", " + discoSource.getName());
         });
 
         String groupName = "Sample discovery group";
-        DiscoGroupData discoGroupData = new DiscoGroupData().setTemplateId(templateId);
+        DiscoGroupData discoGroupRequest = new DiscoGroupData().setTemplateId(templateId);
 
-        DiscoGroup discoGroup = discoveryGroupsClient.put(groupName, discoGroupData);
+        DiscoGroup discoGroupResult = easmClient.putDiscoGroup(groupName, discoGroupRequest);
 
-        discoveryGroupsClient.run(groupName);
+        easmClient.runDiscoGroup(groupName);
 
 
     }

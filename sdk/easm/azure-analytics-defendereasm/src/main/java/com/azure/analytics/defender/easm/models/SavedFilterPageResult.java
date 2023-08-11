@@ -7,11 +7,12 @@ package com.azure.analytics.defender.easm.models;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.List;
 
-/** The DataConnectionPageResponse model. */
+/** The SavedFilterPageResponse model. */
 @Immutable
-public final class DataConnectionPageResponse {
+public final class SavedFilterPageResult {
     /*
      * The total number of items available in the full result set.
      */
@@ -31,11 +32,11 @@ public final class DataConnectionPageResponse {
      */
     @Generated
     @JsonProperty(value = "value")
-    private List<DataConnection> value;
+    private List<SavedFilter> value;
 
-    /** Creates an instance of DataConnectionPageResponse class. */
+    /** Creates an instance of SavedFilterPageResponse class. */
     @Generated
-    private DataConnectionPageResponse() {}
+    private SavedFilterPageResult() {}
 
     /**
      * Get the totalElements property: The total number of items available in the full result set.
@@ -63,7 +64,7 @@ public final class DataConnectionPageResponse {
      * @return the value value.
      */
     @Generated
-    public List<DataConnection> getValue() {
+    public List<SavedFilter> getValue() {
         return this.value;
     }
 }

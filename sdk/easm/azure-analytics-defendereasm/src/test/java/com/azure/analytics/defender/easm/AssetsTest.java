@@ -1,25 +1,21 @@
 package com.azure.analytics.defender.easm;
 
-import com.azure.analytics.defender.easm.generated.EasmDefenderClientTestBase;
+import com.azure.analytics.defender.easm.generated.EasmClientTestBase;
 import com.azure.analytics.defender.easm.models.*;
-import com.azure.core.http.HttpClient;
-import com.azure.core.http.policy.HttpLogDetailLevel;
-import com.azure.core.http.policy.HttpLogOptions;
-import com.azure.core.util.Configuration;
+import com.azure.core.http.rest.PagedIterable;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 
-public class AssetsTest extends EasmDefenderClientTestBase {
-    
-    private String assetName = "ku.edu";
+public class AssetsTest extends EasmClientTestBase {
+
+    private String assetName = "kumed.com";
     private String assetKind = "domain";
     private String filter = "name = " + assetName + " and type = " + assetKind;
-    private String assetId = assetKind + "$$" + assetName;
-    private String observationAssetId = "71830a02-2037-5b7f-c644-8c940b89ceea";
-
+    private String assetId = assetKind + "$$" + "kumc.edu";
     private Class<?> getAssetResourceClass(String kind){
         switch(kind){
             case "as":
@@ -45,30 +41,27 @@ public class AssetsTest extends EasmDefenderClientTestBase {
 
     @Test
     public void testAssetsListWithResponse(){
-        AssetPageResponse assetPageResponse = assetsClient.list(filter, "lastSeen", 0, 25, null);
-        AssetResource AssetResource = assetPageResponse.getValue().get(0);
-        assertEquals(assetName, AssetResource.getName());
-        assertInstanceOf(getAssetResourceClass(assetKind), AssetResource);
-        // assertTrue(AssetResource.getUuid().matches(UUID_REGEX));
 
+        CountPagedIterable<AssetResource> assetPageResponse = easmClient.listAssetResource(filter, "lastSeen", 0, 25, null);
+        AssetResource assetResponse = assetPageResponse.iterator().next();
+        assertEquals(assetName, assetResponse.getName());
+        assertInstanceOf(getAssetResourceClass(assetKind), assetResponse);
     }
 
     @Test
     public void testAssetsUpdateWithResponse(){
-        AssetUpdateData assetUpdateRequest = new AssetUpdateData().setExternalId("new_external_id");
-        Task taskResponse = assetsClient.update(filter, assetUpdateRequest);
+        AssetUpdateData assetUpdateData = new AssetUpdateData().setExternalId("new_external_id");
+        Task taskResponse = easmClient.updateAssets(filter, assetUpdateData);
         assertEquals(TaskState.COMPLETE, taskResponse.getState());
         assertEquals(TaskPhase.COMPLETE, taskResponse.getPhase());
-        // assertTrue(taskResponse.getId().matches(UUID_REGEX));
-
+        //assertTrue(taskResponse.getId().matches(UUID_REGEX));
     }
-
+//
     @Test
     public void testAssetsGetWithResponse(){
-        AssetResource AssetResource = assetsClient.get(assetId);
-        assertEquals(assetName, AssetResource.getName());
-        assertInstanceOf(getAssetResourceClass(assetKind), AssetResource);
-       // assertTrue(AssetResource.getUuid().matches(UUID_REGEX));
+        AssetResource assetResponse = easmClient.getAssetResource(assetId);
+        assertInstanceOf(getAssetResourceClass(assetKind), assetResponse);
+        //assertTrue(assetResponse.getUuid().matches(UUID_REGEX));
     }
 
 }

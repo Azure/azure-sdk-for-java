@@ -12,7 +12,7 @@ import java.util.List;
 
 /** The collection of asset summaries. */
 @Immutable
-public final class AssetSummaryResponse {
+public final class AssetSummaryResult {
     /*
      * The name of the summary response.  Depending on the request time this will either be the asset filter, risk
      * category, or risk metric.
@@ -84,11 +84,11 @@ public final class AssetSummaryResponse {
      */
     @Generated
     @JsonProperty(value = "children")
-    private List<AssetSummaryResponse> children;
+    private List<AssetSummaryResult> children;
 
-    /** Creates an instance of AssetSummaryResponse class. */
+    /** Creates an instance of AssetSummaryResult class. */
     @Generated
-    private AssetSummaryResponse() {}
+    private AssetSummaryResult() {}
 
     /**
      * Get the displayName property: The name of the summary response. Depending on the request time this will either be
@@ -190,7 +190,7 @@ public final class AssetSummaryResponse {
      * @return the children value.
      */
     @Generated
-    public List<AssetSummaryResponse> getChildren() {
+    public List<AssetSummaryResult> getChildren() {
         return this.children;
     }
 }

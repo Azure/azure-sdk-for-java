@@ -1,14 +1,17 @@
 package com.azure.analytics.defender.easm;
 
-import com.azure.analytics.defender.easm.generated.EasmDefenderClientTestBase;
+import com.azure.analytics.defender.easm.generated.EasmClientTestBase;
+import com.azure.analytics.defender.easm.models.CountPagedIterable;
 import com.azure.analytics.defender.easm.models.DiscoTemplate;
-import com.azure.analytics.defender.easm.models.DiscoTemplatePageResponse;
+import com.azure.analytics.defender.easm.models.DiscoTemplatePageResult;
+import com.azure.core.http.rest.Page;
+import com.azure.core.http.rest.PagedIterable;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class DiscoveryTemplatesTest extends EasmDefenderClientTestBase {
+public class DiscoveryTemplatesTest extends EasmClientTestBase {
 
     String templateId = "43488";
     String partialName = "ku";
@@ -16,16 +19,15 @@ public class DiscoveryTemplatesTest extends EasmDefenderClientTestBase {
     @Test
     public void testdiscoveryTemplatesListWithResponse(){
 
-        DiscoTemplatePageResponse discoTemplatePageResponse = discoveryTemplatesClient.list(partialName, 0, 25);
-        DiscoTemplate discoTemplateResponse = discoTemplatePageResponse.getValue().get(0);
+        CountPagedIterable<DiscoTemplate> discoTemplatePageResponse = easmClient.listDiscoTemplate(partialName, 0, 25);
+        DiscoTemplate discoTemplateResponse = discoTemplatePageResponse.stream().iterator().next();
         assertTrue(discoTemplateResponse.getName().toLowerCase().contains(partialName));
         assertNotNull(discoTemplateResponse.getId());
-
     }
 
     @Test
     public void testdiscoveryTemplatesGetWithResponse(){
-        DiscoTemplate discoTemplateResponse = discoveryTemplatesClient.get(templateId);
+        DiscoTemplate discoTemplateResponse = easmClient.getDiscoTemplate(templateId);
         assertNotNull(discoTemplateResponse.getName());
         assertNotNull(discoTemplateResponse.getId());
     }

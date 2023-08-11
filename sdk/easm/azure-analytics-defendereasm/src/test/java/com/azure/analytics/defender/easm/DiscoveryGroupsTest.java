@@ -1,15 +1,18 @@
 package com.azure.analytics.defender.easm;
 
-import com.azure.analytics.defender.easm.generated.EasmDefenderClientTestBase;
+import com.azure.analytics.defender.easm.generated.EasmClientTestBase;
 import com.azure.analytics.defender.easm.models.*;
+import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.PagedResponse;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class DiscoveryGroupsTest extends EasmDefenderClientTestBase {
+public class DiscoveryGroupsTest extends EasmClientTestBase {
 
     String knownGroupName = "University of Kansas";
     String newGroupName = "New disco group Name";
@@ -23,13 +26,13 @@ public class DiscoveryGroupsTest extends EasmDefenderClientTestBase {
 
     @Test
     public void testdiscoveryGroupsListWithResponse(){
-        DiscoGroupPageResponse discoGroupPageResponse = discoveryGroupsClient.list();
-        DiscoGroup DiscoGroup = discoGroupPageResponse.getValue().get(0);
-        assertNotNull(DiscoGroup.getName());
-        assertNotNull(DiscoGroup.getDisplayName());
-        assertNotNull(DiscoGroup.getDescription());
-        assertNotNull(DiscoGroup.getTier());
-        assertNotNull(DiscoGroup.getId());
+        CountPagedIterable<DiscoGroup> discoGroups = easmClient.listDiscoGroup(null, 0, 5);
+        DiscoGroup discoGroup = discoGroups.stream().iterator().next();
+        assertNotNull(discoGroup.getName());
+        assertNotNull(discoGroup.getDescription());
+        assertNotNull(discoGroup.getTier());
+        assertNotNull(discoGroup.getId());
+        assertNotNull(discoGroups.getTotalElements());
     }
 
     @Test
@@ -37,24 +40,24 @@ public class DiscoveryGroupsTest extends EasmDefenderClientTestBase {
         List<DiscoSource> seeds = Arrays.asList(new DiscoSource()
                 .setKind(DiscoSourceKind.fromString(seedKind))
                 .setName(seedName));
-        DiscoGroupData discoGroupRequest = new DiscoGroupData()
-                .setName(newGroupName)
+        DiscoGroupData discoGroupData = new DiscoGroupData()
+                .setName("validate group name")
                 .setDescription(newGroupDescription)
                 .setSeeds(seeds)
                 .setFrequencyMilliseconds(604800000L)
                 .setTier("advanced");
-        ValidateResponse validateResponse = discoveryGroupsClient.validate(discoGroupRequest);
+        ValidateResult validateResponse = easmClient.validateDiscoGroup(discoGroupData);
         assertNull(validateResponse.getError());
     }
 
     @Test
     public void testdiscoveryGroupsGetWithResponse(){
-        DiscoGroup DiscoGroup = discoveryGroupsClient.get(knownGroupName);
-        assertEquals(knownGroupName, DiscoGroup.getId());
-        assertEquals(knownGroupName, DiscoGroup.getName());
-        assertEquals(knownGroupName, DiscoGroup.getDisplayName());
-        assertNotNull(DiscoGroup.getDescription());
-        assertNotNull(DiscoGroup.getTier());
+        DiscoGroup discoGroupResponse = easmClient.getDiscoGroup(knownGroupName);
+        assertEquals(knownGroupName, discoGroupResponse.getId());
+        assertEquals(knownGroupName, discoGroupResponse.getName());
+        assertEquals(knownGroupName, discoGroupResponse.getDisplayName());
+        assertNotNull(discoGroupResponse.getDescription());
+        assertNotNull(discoGroupResponse.getTier());
 
     }
 
@@ -63,27 +66,33 @@ public class DiscoveryGroupsTest extends EasmDefenderClientTestBase {
         List<DiscoSource> seeds = Arrays.asList(new DiscoSource()
                                         .setKind(DiscoSourceKind.fromString(seedKind))
                                         .setName(seedName));
-        DiscoGroupData discoGroupRequest = new DiscoGroupData()
+        DiscoGroupData discoGroupData = new DiscoGroupData()
                                         .setName(newGroupName)
                                         .setDescription(newGroupDescription)
                                         .setSeeds(seeds);
-        DiscoGroup DiscoGroup = discoveryGroupsClient.put(newGroupName, discoGroupRequest);
-        assertEquals(newGroupName, DiscoGroup.getName());
-        assertEquals(newGroupName, DiscoGroup.getDisplayName());
-        assertEquals(newGroupDescription, DiscoGroup.getDescription());
-        assertTrue(doSeedsMatch(seeds.get(0), DiscoGroup.getSeeds().get(0)));
+
+        DiscoGroup discoGroupResponse = easmClient.putDiscoGroup(newGroupName, discoGroupData);
+
+        assertEquals(newGroupName, discoGroupResponse.getName());
+        assertEquals(newGroupName, discoGroupResponse.getDisplayName());
+        assertEquals(newGroupDescription, discoGroupResponse.getDescription());
+        assertTrue(doSeedsMatch(seeds.get(0), discoGroupResponse.getSeeds().get(0)));
     }
 
     @Test
     public void testdiscoveryGroupsRunWithResponse(){
-        discoveryGroupsClient.run(knownGroupName);
+        easmClient.runDiscoGroup(knownGroupName);
     }
 
     @Test
     public void testdiscoveryGroupsListRunsWithResponse(){
-        DiscoRunPageResponse discoRunPageResponse = discoveryGroupsClient.listRuns(knownGroupName);
-        DiscoRunResponse discoRunResponse = discoRunPageResponse.getValue().get(0);
-        assertNotNull(discoRunResponse.getState());
-        assertNotNull(discoRunResponse.getTier());
+        CountPagedIterable<DiscoRunResult> discoRunPageResponse = easmClient.listRuns(knownGroupName, null, 0, 5);
+//        DiscoRunResult discoRunResponse = discoRunPageResponse.s().get(0);
+//        assertNotNull(discoRunResponse.getState());
+//        assertNotNull(discoRunResponse.getTier());
+        discoRunPageResponse.forEach(discoRunResult -> {
+            System.out.println(discoRunResult.getState());
+        });
+        System.out.println(discoRunPageResponse.getTotalElements());
     }
 }

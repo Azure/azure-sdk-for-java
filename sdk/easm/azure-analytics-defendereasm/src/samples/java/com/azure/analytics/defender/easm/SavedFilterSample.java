@@ -1,8 +1,7 @@
 package java.com.azure.analytics.defender.easm;
 
-import com.azure.analytics.defender.easm.AssetsClient;
-import com.azure.analytics.defender.easm.EasmDefenderClientBuilder;
-import com.azure.analytics.defender.easm.SavedFiltersClient;
+import com.azure.analytics.defender.easm.EasmClient;
+import com.azure.analytics.defender.easm.EasmClientBuilder;
 import com.azure.analytics.defender.easm.models.AssetUpdateData;
 import com.azure.analytics.defender.easm.models.AssetUpdateState;
 import com.azure.analytics.defender.easm.models.SavedFilter;
@@ -26,36 +25,34 @@ public class SavedFilterSample {
         String resourceGroupName = Configuration.getGlobalConfiguration().get("RESOURCEGROUPNAME");
         String endpoint = Configuration.getGlobalConfiguration().get("ENDPOINT");
 
-        EasmDefenderClientBuilder easmDefenderClientBuilder = new EasmDefenderClientBuilder()
+        EasmClient easmClient = new EasmClientBuilder()
             .endpoint(endpoint)
             .subscriptionId(subscriptionId)
             .workspaceName(workspaceName)
             .resourceGroupName(resourceGroupName)
-            .credential(new InteractiveBrowserCredentialBuilder().build());
-
-        SavedFiltersClient savedFiltersClient = easmDefenderClientBuilder.buildSavedFiltersClient();
-        AssetsClient assetsClient = easmDefenderClientBuilder.buildAssetsClient();
+            // For the purposes of this demo, I've chosen the InteractiveBrowserCredential but any credential will work.
+            .credential(new InteractiveBrowserCredentialBuilder().build())
+            .buildClient();
 
         String savedFilterName = "Sample saved filter";
-        SavedFilterData savedFilterData = new SavedFilterData("IP Address = 1.1.1.1", "Monitored Addresses");
+        SavedFilterData savedFilterRequest = new SavedFilterData("IP Address = 1.1.1.1", "Monitored Addresses");
 
-        savedFiltersClient.put(savedFilterName, savedFilterData);
+        easmClient.putSavedFilter(savedFilterName, savedFilterRequest);
 
-        String monitorFilter = savedFiltersClient.get(savedFilterName).getFilter();
+        String monitorFilter = easmClient.getSavedFilter(savedFilterName).getFilter();
 
-        savedFiltersClient.list(monitorFilter, 0, 10)
-                .getValue()
+        easmClient.listSavedFilter(monitorFilter, 0, 10)
                 .forEach(SavedFilterSample::monitor);
 
-        AssetUpdateData assetUpdateData = new AssetUpdateData().setState(AssetUpdateState.CONFIRMED);
-        assetsClient.update(monitorFilter, assetUpdateData);
+        AssetUpdateData assetUpdateRequest = new AssetUpdateData().setState(AssetUpdateState.CONFIRMED);
+        easmClient.updateAssets(monitorFilter, assetUpdateRequest);
 
         // Should your needs change, the filter can be updated with no need to update the scripts it's used in
         // Simply submit a new `savedFiltersPut` request to replace the old description and filter with a new set
 
-        SavedFilterData newSavedFilterData = new SavedFilterData("IP Address = 0.0.0.0", "Monitoring Addresses");
+        SavedFilterData newSavedFilterRequest = new SavedFilterData("IP Address = 0.0.0.0", "Monitoring Addresses");
 
-        savedFiltersClient.put(savedFilterName, newSavedFilterData);
+        easmClient.putSavedFilter(savedFilterName, newSavedFilterRequest);
 
     }
 }

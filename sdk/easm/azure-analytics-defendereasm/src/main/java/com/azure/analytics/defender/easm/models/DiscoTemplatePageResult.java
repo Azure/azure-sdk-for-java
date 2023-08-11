@@ -7,11 +7,12 @@ package com.azure.analytics.defender.easm.models;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.List;
 
 /** The DiscoTemplatePageResponse model. */
 @Immutable
-public final class DiscoTemplatePageResponse {
+public final class DiscoTemplatePageResult {
     /*
      * The total number of items available in the full result set.
      */
@@ -35,7 +36,7 @@ public final class DiscoTemplatePageResponse {
 
     /** Creates an instance of DiscoTemplatePageResponse class. */
     @Generated
-    private DiscoTemplatePageResponse() {}
+    private DiscoTemplatePageResult() {}
 
     /**
      * Get the totalElements property: The total number of items available in the full result set.

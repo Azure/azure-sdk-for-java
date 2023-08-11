@@ -4,7 +4,7 @@
 
 package com.azure.analytics.defender.easm;
 
-import com.azure.analytics.defender.easm.implementation.EasmDefenderClientImpl;
+import com.azure.analytics.defender.easm.implementation.EasmClientImpl;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.client.traits.ConfigurationTrait;
@@ -40,29 +40,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-/** A builder for creating a new instance of the EasmDefenderClient type. */
-@ServiceClientBuilder(
-        serviceClients = {
-            AssetsClient.class,
-            DataConnectionsClient.class,
-            DiscoveryGroupsClient.class,
-            DiscoveryTemplatesClient.class,
-            ReportsClient.class,
-            SavedFiltersClient.class,
-            TasksClient.class,
-            AssetsAsyncClient.class,
-            DataConnectionsAsyncClient.class,
-            DiscoveryGroupsAsyncClient.class,
-            DiscoveryTemplatesAsyncClient.class,
-            ReportsAsyncClient.class,
-            SavedFiltersAsyncClient.class,
-            TasksAsyncClient.class
-        })
-public final class EasmDefenderClientBuilder
-        implements HttpTrait<EasmDefenderClientBuilder>,
-                ConfigurationTrait<EasmDefenderClientBuilder>,
-                TokenCredentialTrait<EasmDefenderClientBuilder>,
-                EndpointTrait<EasmDefenderClientBuilder> {
+/** A builder for creating a new instance of the EasmClient type. */
+@ServiceClientBuilder(serviceClients = {EasmClient.class, EasmAsyncClient.class})
+public final class EasmClientBuilder
+        implements HttpTrait<EasmClientBuilder>,
+                ConfigurationTrait<EasmClientBuilder>,
+                TokenCredentialTrait<EasmClientBuilder>,
+                EndpointTrait<EasmClientBuilder> {
     @Generated private static final String SDK_NAME = "name";
 
     @Generated private static final String SDK_VERSION = "version";
@@ -76,9 +60,9 @@ public final class EasmDefenderClientBuilder
 
     @Generated private final List<HttpPipelinePolicy> pipelinePolicies;
 
-    /** Create an instance of the EasmDefenderClientBuilder. */
+    /** Create an instance of the EasmClientBuilder. */
     @Generated
-    public EasmDefenderClientBuilder() {
+    public EasmClientBuilder() {
         this.pipelinePolicies = new ArrayList<>();
     }
 
@@ -90,7 +74,7 @@ public final class EasmDefenderClientBuilder
     /** {@inheritDoc}. */
     @Generated
     @Override
-    public EasmDefenderClientBuilder pipeline(HttpPipeline pipeline) {
+    public EasmClientBuilder pipeline(HttpPipeline pipeline) {
         if (this.pipeline != null && pipeline == null) {
             LOGGER.info("HttpPipeline is being set to 'null' when it was previously configured.");
         }
@@ -106,7 +90,7 @@ public final class EasmDefenderClientBuilder
     /** {@inheritDoc}. */
     @Generated
     @Override
-    public EasmDefenderClientBuilder httpClient(HttpClient httpClient) {
+    public EasmClientBuilder httpClient(HttpClient httpClient) {
         this.httpClient = httpClient;
         return this;
     }
@@ -119,7 +103,7 @@ public final class EasmDefenderClientBuilder
     /** {@inheritDoc}. */
     @Generated
     @Override
-    public EasmDefenderClientBuilder httpLogOptions(HttpLogOptions httpLogOptions) {
+    public EasmClientBuilder httpLogOptions(HttpLogOptions httpLogOptions) {
         this.httpLogOptions = httpLogOptions;
         return this;
     }
@@ -132,7 +116,7 @@ public final class EasmDefenderClientBuilder
     /** {@inheritDoc}. */
     @Generated
     @Override
-    public EasmDefenderClientBuilder clientOptions(ClientOptions clientOptions) {
+    public EasmClientBuilder clientOptions(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
         return this;
     }
@@ -145,7 +129,7 @@ public final class EasmDefenderClientBuilder
     /** {@inheritDoc}. */
     @Generated
     @Override
-    public EasmDefenderClientBuilder retryOptions(RetryOptions retryOptions) {
+    public EasmClientBuilder retryOptions(RetryOptions retryOptions) {
         this.retryOptions = retryOptions;
         return this;
     }
@@ -153,7 +137,7 @@ public final class EasmDefenderClientBuilder
     /** {@inheritDoc}. */
     @Generated
     @Override
-    public EasmDefenderClientBuilder addPolicy(HttpPipelinePolicy customPolicy) {
+    public EasmClientBuilder addPolicy(HttpPipelinePolicy customPolicy) {
         Objects.requireNonNull(customPolicy, "'customPolicy' cannot be null.");
         pipelinePolicies.add(customPolicy);
         return this;
@@ -167,7 +151,7 @@ public final class EasmDefenderClientBuilder
     /** {@inheritDoc}. */
     @Generated
     @Override
-    public EasmDefenderClientBuilder configuration(Configuration configuration) {
+    public EasmClientBuilder configuration(Configuration configuration) {
         this.configuration = configuration;
         return this;
     }
@@ -180,7 +164,7 @@ public final class EasmDefenderClientBuilder
     /** {@inheritDoc}. */
     @Generated
     @Override
-    public EasmDefenderClientBuilder credential(TokenCredential tokenCredential) {
+    public EasmClientBuilder credential(TokenCredential tokenCredential) {
         this.tokenCredential = tokenCredential;
         return this;
     }
@@ -193,7 +177,7 @@ public final class EasmDefenderClientBuilder
     /** {@inheritDoc}. */
     @Generated
     @Override
-    public EasmDefenderClientBuilder endpoint(String endpoint) {
+    public EasmClientBuilder endpoint(String endpoint) {
         this.endpoint = endpoint;
         return this;
     }
@@ -207,10 +191,10 @@ public final class EasmDefenderClientBuilder
      * Sets The ID of the target subscription.
      *
      * @param subscriptionId the subscriptionId value.
-     * @return the EasmDefenderClientBuilder.
+     * @return the EasmClientBuilder.
      */
     @Generated
-    public EasmDefenderClientBuilder subscriptionId(String subscriptionId) {
+    public EasmClientBuilder subscriptionId(String subscriptionId) {
         this.subscriptionId = subscriptionId;
         return this;
     }
@@ -224,10 +208,10 @@ public final class EasmDefenderClientBuilder
      * Sets The name of the Resource Group.
      *
      * @param resourceGroupName the resourceGroupName value.
-     * @return the EasmDefenderClientBuilder.
+     * @return the EasmClientBuilder.
      */
     @Generated
-    public EasmDefenderClientBuilder resourceGroupName(String resourceGroupName) {
+    public EasmClientBuilder resourceGroupName(String resourceGroupName) {
         this.resourceGroupName = resourceGroupName;
         return this;
     }
@@ -241,10 +225,10 @@ public final class EasmDefenderClientBuilder
      * Sets The name of the Workspace.
      *
      * @param workspaceName the workspaceName value.
-     * @return the EasmDefenderClientBuilder.
+     * @return the EasmClientBuilder.
      */
     @Generated
-    public EasmDefenderClientBuilder workspaceName(String workspaceName) {
+    public EasmClientBuilder workspaceName(String workspaceName) {
         this.workspaceName = workspaceName;
         return this;
     }
@@ -258,10 +242,10 @@ public final class EasmDefenderClientBuilder
      * Sets Service version.
      *
      * @param serviceVersion the serviceVersion value.
-     * @return the EasmDefenderClientBuilder.
+     * @return the EasmClientBuilder.
      */
     @Generated
-    public EasmDefenderClientBuilder serviceVersion(EASMDefenderServiceVersion serviceVersion) {
+    public EasmClientBuilder serviceVersion(EASMDefenderServiceVersion serviceVersion) {
         this.serviceVersion = serviceVersion;
         return this;
     }
@@ -275,26 +259,26 @@ public final class EasmDefenderClientBuilder
      * Sets The retry policy that will attempt to retry failed requests, if applicable.
      *
      * @param retryPolicy the retryPolicy value.
-     * @return the EasmDefenderClientBuilder.
+     * @return the EasmClientBuilder.
      */
     @Generated
-    public EasmDefenderClientBuilder retryPolicy(RetryPolicy retryPolicy) {
+    public EasmClientBuilder retryPolicy(RetryPolicy retryPolicy) {
         this.retryPolicy = retryPolicy;
         return this;
     }
 
     /**
-     * Builds an instance of EasmDefenderClientImpl with the provided parameters.
+     * Builds an instance of EasmClientImpl with the provided parameters.
      *
-     * @return an instance of EasmDefenderClientImpl.
+     * @return an instance of EasmClientImpl.
      */
     @Generated
-    private EasmDefenderClientImpl buildInnerClient() {
+    private EasmClientImpl buildInnerClient() {
         HttpPipeline localPipeline = (pipeline != null) ? pipeline : createHttpPipeline();
         EASMDefenderServiceVersion localServiceVersion =
                 (serviceVersion != null) ? serviceVersion : EASMDefenderServiceVersion.getLatest();
-        EasmDefenderClientImpl client =
-                new EasmDefenderClientImpl(
+        EasmClientImpl client =
+                new EasmClientImpl(
                         localPipeline,
                         JacksonAdapter.createDefaultSerializerAdapter(),
                         endpoint,
@@ -347,144 +331,24 @@ public final class EasmDefenderClientBuilder
     }
 
     /**
-     * Builds an instance of AssetsAsyncClient class.
+     * Builds an instance of EasmAsyncClient class.
      *
-     * @return an instance of AssetsAsyncClient.
+     * @return an instance of EasmAsyncClient.
      */
     @Generated
-    public AssetsAsyncClient buildAssetsAsyncClient() {
-        return new AssetsAsyncClient(buildInnerClient().getAssets());
+    public EasmAsyncClient buildAsyncClient() {
+        return new EasmAsyncClient(buildInnerClient());
     }
 
     /**
-     * Builds an instance of DataConnectionsAsyncClient class.
+     * Builds an instance of EasmClient class.
      *
-     * @return an instance of DataConnectionsAsyncClient.
+     * @return an instance of EasmClient.
      */
     @Generated
-    public DataConnectionsAsyncClient buildDataConnectionsAsyncClient() {
-        return new DataConnectionsAsyncClient(buildInnerClient().getDataConnections());
+    public EasmClient buildClient() {
+        return new EasmClient(buildInnerClient());
     }
 
-    /**
-     * Builds an instance of DiscoveryGroupsAsyncClient class.
-     *
-     * @return an instance of DiscoveryGroupsAsyncClient.
-     */
-    @Generated
-    public DiscoveryGroupsAsyncClient buildDiscoveryGroupsAsyncClient() {
-        return new DiscoveryGroupsAsyncClient(buildInnerClient().getDiscoveryGroups());
-    }
-
-    /**
-     * Builds an instance of DiscoveryTemplatesAsyncClient class.
-     *
-     * @return an instance of DiscoveryTemplatesAsyncClient.
-     */
-    @Generated
-    public DiscoveryTemplatesAsyncClient buildDiscoveryTemplatesAsyncClient() {
-        return new DiscoveryTemplatesAsyncClient(buildInnerClient().getDiscoveryTemplates());
-    }
-
-    /**
-     * Builds an instance of ReportsAsyncClient class.
-     *
-     * @return an instance of ReportsAsyncClient.
-     */
-    @Generated
-    public ReportsAsyncClient buildReportsAsyncClient() {
-        return new ReportsAsyncClient(buildInnerClient().getReports());
-    }
-
-    /**
-     * Builds an instance of SavedFiltersAsyncClient class.
-     *
-     * @return an instance of SavedFiltersAsyncClient.
-     */
-    @Generated
-    public SavedFiltersAsyncClient buildSavedFiltersAsyncClient() {
-        return new SavedFiltersAsyncClient(buildInnerClient().getSavedFilters());
-    }
-
-    /**
-     * Builds an instance of TasksAsyncClient class.
-     *
-     * @return an instance of TasksAsyncClient.
-     */
-    @Generated
-    public TasksAsyncClient buildTasksAsyncClient() {
-        return new TasksAsyncClient(buildInnerClient().getTasks());
-    }
-
-    /**
-     * Builds an instance of AssetsClient class.
-     *
-     * @return an instance of AssetsClient.
-     */
-    @Generated
-    public AssetsClient buildAssetsClient() {
-        return new AssetsClient(buildInnerClient().getAssets());
-    }
-
-    /**
-     * Builds an instance of DataConnectionsClient class.
-     *
-     * @return an instance of DataConnectionsClient.
-     */
-    @Generated
-    public DataConnectionsClient buildDataConnectionsClient() {
-        return new DataConnectionsClient(buildInnerClient().getDataConnections());
-    }
-
-    /**
-     * Builds an instance of DiscoveryGroupsClient class.
-     *
-     * @return an instance of DiscoveryGroupsClient.
-     */
-    @Generated
-    public DiscoveryGroupsClient buildDiscoveryGroupsClient() {
-        return new DiscoveryGroupsClient(buildInnerClient().getDiscoveryGroups());
-    }
-
-    /**
-     * Builds an instance of DiscoveryTemplatesClient class.
-     *
-     * @return an instance of DiscoveryTemplatesClient.
-     */
-    @Generated
-    public DiscoveryTemplatesClient buildDiscoveryTemplatesClient() {
-        return new DiscoveryTemplatesClient(buildInnerClient().getDiscoveryTemplates());
-    }
-
-    /**
-     * Builds an instance of ReportsClient class.
-     *
-     * @return an instance of ReportsClient.
-     */
-    @Generated
-    public ReportsClient buildReportsClient() {
-        return new ReportsClient(buildInnerClient().getReports());
-    }
-
-    /**
-     * Builds an instance of SavedFiltersClient class.
-     *
-     * @return an instance of SavedFiltersClient.
-     */
-    @Generated
-    public SavedFiltersClient buildSavedFiltersClient() {
-        return new SavedFiltersClient(buildInnerClient().getSavedFilters());
-    }
-
-    /**
-     * Builds an instance of TasksClient class.
-     *
-     * @return an instance of TasksClient.
-     */
-    @Generated
-    public TasksClient buildTasksClient() {
-        return new TasksClient(buildInnerClient().getTasks());
-    }
-
-    private static final ClientLogger LOGGER = new ClientLogger(EasmDefenderClientBuilder.class);
+    private static final ClientLogger LOGGER = new ClientLogger(EasmClientBuilder.class);
 }

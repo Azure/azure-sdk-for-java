@@ -1,13 +1,11 @@
 package java.com.azure.analytics.defender.easm;
 
-import com.azure.analytics.defender.easm.DiscoveryGroupsClient;
-import com.azure.analytics.defender.easm.EasmDefenderClientBuilder;
-import com.azure.analytics.defender.easm.models.DiscoGroupData;
-import com.azure.analytics.defender.easm.models.DiscoRunPageResponse;
-import com.azure.analytics.defender.easm.models.DiscoSource;
-import com.azure.analytics.defender.easm.models.DiscoSourceKind;
+import com.azure.analytics.defender.easm.EasmClient;
+import com.azure.analytics.defender.easm.EasmClientBuilder;
+import com.azure.analytics.defender.easm.models.*;
 import com.azure.core.util.Configuration;
 import com.azure.identity.InteractiveBrowserCredentialBuilder;
+
 
 import java.util.Arrays;
 import java.util.List;
@@ -25,14 +23,14 @@ public class DiscoveryRunsSample {
         String discoveryGroupName = "Sample Disco";
         String discoveryGroupDescription = "This is a sample description for a discovery group";
 
-        EasmDefenderClientBuilder easmDefenderClientBuilder = new EasmDefenderClientBuilder()
-            .endpoint(endpoint)
-            .subscriptionId(subscriptionId)
-            .workspaceName(workspaceName)
-            .resourceGroupName(resourceGroupName)
-            .credential(new InteractiveBrowserCredentialBuilder().build());
-
-        DiscoveryGroupsClient discoveryGroupsClient = easmDefenderClientBuilder.buildDiscoveryGroupsClient();
+        EasmClient easmClient = new EasmClientBuilder()
+                .endpoint(endpoint)
+                .subscriptionId(subscriptionId)
+                .workspaceName(workspaceName)
+                .resourceGroupName(resourceGroupName)
+                // For the purposes of this demo, I've chosen the InteractiveBrowserCredential but any credential will work.
+                .credential(new InteractiveBrowserCredentialBuilder().build())
+                .buildClient();
 
         // In order to start discovery runs, we must first create a discovery group, which is a collection of known assets that we can pivot off of.
         // These are created using the discoveryGroupsPut method
@@ -46,18 +44,17 @@ public class DiscoveryRunsSample {
 
         DiscoGroupData discoGroupRequest = new DiscoGroupData().setName(discoveryGroupName).setDescription(discoveryGroupDescription).setSeeds(seeds);
 
-        discoveryGroupsClient.put(discoveryGroupName, discoGroupRequest);
+        easmClient.putDiscoGroup(discoveryGroupName, discoGroupRequest);
 
         // Discovery groups created through the API's `put` method aren't run automatically, so we need to start the run ourselves.
-        discoveryGroupsClient.run(discoveryGroupName);
+        easmClient.runDiscoGroup(discoveryGroupName);
 
-        discoveryGroupsClient.list()
-                .getValue()
+        easmClient.listDiscoGroup()
                 .forEach((discoGroupResponse -> {
                     System.out.println(discoGroupResponse.getName());
-                    DiscoRunPageResponse discoRunPageResponse = discoveryGroupsClient.listRuns(discoGroupResponse.getName());
+                    CountPagedIterable<DiscoRunResult> discoRunPageResponse = easmClient.listRuns(discoGroupResponse.getName(), null, 0, 5);
                     long elementsToPrint = discoRunPageResponse.getTotalElements() > 5 ? 5 : discoRunPageResponse.getTotalElements();
-                    discoRunPageResponse.getValue().subList(0, (int) elementsToPrint).forEach(discoRunResponse -> {
+                    discoRunPageResponse.forEach(discoRunResponse -> {
                         System.out.println(" - started: " + discoRunResponse.getStartedDate()
                                             + ", finished: " + discoRunResponse.getCompletedDate()
                                             + ", assets found: " + discoRunResponse.getTotalAssetsFoundCount());

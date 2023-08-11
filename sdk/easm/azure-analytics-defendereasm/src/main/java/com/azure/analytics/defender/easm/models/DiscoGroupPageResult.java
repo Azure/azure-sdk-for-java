@@ -6,12 +6,13 @@ package com.azure.analytics.defender.easm.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
+import com.azure.core.http.rest.PagedResponseBase;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The DiscoGroupPageResponse model. */
+/** The DiscoGroupPageResult model. */
 @Immutable
-public final class DiscoGroupPageResponse {
+public final class DiscoGroupPageResult {
     /*
      * The total number of items available in the full result set.
      */
@@ -33,9 +34,9 @@ public final class DiscoGroupPageResponse {
     @JsonProperty(value = "value")
     private List<DiscoGroup> value;
 
-    /** Creates an instance of DiscoGroupPageResponse class. */
+    /** Creates an instance of DiscoGroupPageResult class. */
     @Generated
-    private DiscoGroupPageResponse() {}
+    private DiscoGroupPageResult() {}
 
     /**
      * Get the totalElements property: The total number of items available in the full result set.

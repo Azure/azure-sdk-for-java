@@ -7,24 +7,18 @@ package com.azure.analytics.defender.easm.models;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.List;
 
-/** The page of assets that match the provided metric. */
+/** The DataConnectionPageResponse model. */
 @Immutable
-public final class AssetPageResponse {
+public final class DataConnectionPageResult {
     /*
      * The total number of items available in the full result set.
      */
     @Generated
     @JsonProperty(value = "totalElements")
     private Long totalElements;
-
-    /*
-     * The cursor mark to be used on the next request.  Not set if using paging.
-     */
-    @Generated
-    @JsonProperty(value = "mark")
-    private String mark;
 
     /*
      * The link to access the next page of results.  Not set if at the end of the result set.
@@ -38,11 +32,11 @@ public final class AssetPageResponse {
      */
     @Generated
     @JsonProperty(value = "value")
-    private List<AssetResource> value;
+    private List<DataConnection> value;
 
-    /** Creates an instance of AssetPageResponse class. */
+    /** Creates an instance of DataConnectionPageResponse class. */
     @Generated
-    private AssetPageResponse() {}
+    private DataConnectionPageResult() {}
 
     /**
      * Get the totalElements property: The total number of items available in the full result set.
@@ -52,16 +46,6 @@ public final class AssetPageResponse {
     @Generated
     public Long getTotalElements() {
         return this.totalElements;
-    }
-
-    /**
-     * Get the mark property: The cursor mark to be used on the next request. Not set if using paging.
-     *
-     * @return the mark value.
-     */
-    @Generated
-    public String getMark() {
-        return this.mark;
     }
 
     /**
@@ -80,7 +64,7 @@ public final class AssetPageResponse {
      * @return the value value.
      */
     @Generated
-    public List<AssetResource> getValue() {
+    public List<DataConnection> getValue() {
         return this.value;
     }
 }

@@ -49,18 +49,18 @@ public final class PageAsset extends InventoryAsset {
     private List<ObservedBoolean> successful;
 
     /*
-     * The httpResponseCodes property.
+     * The httpResultCodes property.
      */
     @Generated
-    @JsonProperty(value = "httpResponseCodes")
-    private List<ObservedInteger> httpResponseCodes;
+    @JsonProperty(value = "httpResultCodes")
+    private List<ObservedInteger> httpResultCodes;
 
     /*
-     * The httpResponseMessages property.
+     * The httpResultMessages property.
      */
     @Generated
-    @JsonProperty(value = "httpResponseMessages")
-    private List<ObservedString> httpResponseMessages;
+    @JsonProperty(value = "httpResultMessages")
+    private List<ObservedString> httpResultMessages;
 
     /*
      * The responseTimes property.
@@ -273,11 +273,11 @@ public final class PageAsset extends InventoryAsset {
     private List<ObservedString> finalUrls;
 
     /*
-     * The finalResponseCodes property.
+     * The finalResultCodes property.
      */
     @Generated
-    @JsonProperty(value = "finalResponseCodes")
-    private List<ObservedInteger> finalResponseCodes;
+    @JsonProperty(value = "finalResultCodes")
+    private List<ObservedInteger> finalResultCodes;
 
     /*
      * The parkedPage property.
@@ -495,23 +495,23 @@ public final class PageAsset extends InventoryAsset {
     }
 
     /**
-     * Get the httpResponseCodes property: The httpResponseCodes property.
+     * Get the httpResultCodes property: The httpResultCodes property.
      *
-     * @return the httpResponseCodes value.
+     * @return the httpResultCodes value.
      */
     @Generated
-    public List<ObservedInteger> getHttpResponseCodes() {
-        return this.httpResponseCodes;
+    public List<ObservedInteger> getHttpResultCodes() {
+        return this.httpResultCodes;
     }
 
     /**
-     * Get the httpResponseMessages property: The httpResponseMessages property.
+     * Get the httpResultMessages property: The httpResultMessages property.
      *
-     * @return the httpResponseMessages value.
+     * @return the httpResultMessages value.
      */
     @Generated
-    public List<ObservedString> getHttpResponseMessages() {
-        return this.httpResponseMessages;
+    public List<ObservedString> getHttpResultMessages() {
+        return this.httpResultMessages;
     }
 
     /**
@@ -815,13 +815,13 @@ public final class PageAsset extends InventoryAsset {
     }
 
     /**
-     * Get the finalResponseCodes property: The finalResponseCodes property.
+     * Get the finalResultCodes property: The finalResultCodes property.
      *
-     * @return the finalResponseCodes value.
+     * @return the finalResultCodes value.
      */
     @Generated
-    public List<ObservedInteger> getFinalResponseCodes() {
-        return this.finalResponseCodes;
+    public List<ObservedInteger> getFinalResultCodes() {
+        return this.finalResultCodes;
     }
 
     /**

@@ -7,11 +7,12 @@ package com.azure.analytics.defender.easm.models;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.List;
 
-/** The SavedFilterPageResponse model. */
+/** The TaskPageResponse model. */
 @Immutable
-public final class SavedFilterPageResponse {
+public final class TaskPageResult {
     /*
      * The total number of items available in the full result set.
      */
@@ -31,11 +32,11 @@ public final class SavedFilterPageResponse {
      */
     @Generated
     @JsonProperty(value = "value")
-    private List<SavedFilter> value;
+    private List<Task> value;
 
-    /** Creates an instance of SavedFilterPageResponse class. */
+    /** Creates an instance of TaskPageResponse class. */
     @Generated
-    private SavedFilterPageResponse() {}
+    private TaskPageResult() {}
 
     /**
      * Get the totalElements property: The total number of items available in the full result set.
@@ -63,7 +64,7 @@ public final class SavedFilterPageResponse {
      * @return the value value.
      */
     @Generated
-    public List<SavedFilter> getValue() {
+    public List<Task> getValue() {
         return this.value;
     }
 }

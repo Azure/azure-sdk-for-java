@@ -1,14 +1,15 @@
 package com.azure.analytics.defender.easm;
 
-import com.azure.analytics.defender.easm.generated.EasmDefenderClientTestBase;
+import com.azure.analytics.defender.easm.generated.EasmClientTestBase;
 import com.azure.analytics.defender.easm.models.*;
+import com.azure.core.http.rest.PagedIterable;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class DataConnectionsTest extends EasmDefenderClientTestBase {
+public class DataConnectionsTest extends EasmClientTestBase {
 
-    String dataConnectionName = "shad-data";
+    String dataConnectionName = "sample-dc";
     String newDataConnectionName = "sample-dc";
     String clusterName = "sample-cluster";
     String databaseName = "sample-db";
@@ -16,10 +17,11 @@ public class DataConnectionsTest extends EasmDefenderClientTestBase {
 
     @Test
     public void testdataConnectionsListWithResponse(){
-        DataConnectionPageResponse dataConnectionPageResponse = dataConnectionsClient.list();
-        DataConnection DataConnection = dataConnectionPageResponse.getValue().get(0);
-        assertNotNull(DataConnection.getName());
-        assertNotNull(DataConnection.getDisplayName());
+        CountPagedIterable<DataConnection> dataConnectionPageResult = easmClient.listDataConnection();
+        DataConnection dataConnection = dataConnectionPageResult.stream().iterator().next();
+        assertNotNull(dataConnection.getName());
+        assertNotNull(dataConnection.getDisplayName());
+
     }
 
     @Test
@@ -32,13 +34,13 @@ public class DataConnectionsTest extends EasmDefenderClientTestBase {
                 .setName(newDataConnectionName)
                 .setContent(DataConnectionContent.ASSETS)
                 .setFrequency(DataConnectionFrequency.DAILY);
-        ValidateResponse response = dataConnectionsClient.validate(request);
+        ValidateResult response = easmClient.validateDataConnection(request);
         assertNull(response.getError());
     }
 
     @Test
     public void testdataConnectionsGetWithResponse(){
-        DataConnection response = dataConnectionsClient.get(dataConnectionName);
+        DataConnection response = easmClient.getDataConnection(dataConnectionName);
         assertEquals(dataConnectionName, response.getName());
         assertEquals(dataConnectionName, response.getDisplayName());
     }
@@ -50,16 +52,17 @@ public class DataConnectionsTest extends EasmDefenderClientTestBase {
                                                                     .setDatabaseName(databaseName)
                                                                     .setRegion("eastus");
         AzureDataExplorerDataConnectionData request = new AzureDataExplorerDataConnectionData(properties)
+                                                            .setName(newDataConnectionName)
                                                             .setContent(DataConnectionContent.ASSETS)
                                                             .setFrequency(DataConnectionFrequency.DAILY);
-        DataConnection DataConnection = dataConnectionsClient.put(newDataConnectionName, request);
+        DataConnection dataConnectionResponse = easmClient.putDataConnection(newDataConnectionName, request);
 
-        assertEquals(newDataConnectionName, DataConnection.getName());
-        assertEquals(newDataConnectionName, DataConnection.getDisplayName());
+        assertEquals(newDataConnectionName, dataConnectionResponse.getName());
+        assertEquals(newDataConnectionName, dataConnectionResponse.getDisplayName());
     }
 
     @Test
     public void testdataConnectionsDeleteWithResponse(){
-        dataConnectionsClient.delete(dataConnectionName);
+        easmClient.deleteDataConnection(dataConnectionName);
     }
 }

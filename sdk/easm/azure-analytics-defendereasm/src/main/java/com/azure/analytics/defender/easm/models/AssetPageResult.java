@@ -9,15 +9,22 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The TaskPageResponse model. */
+/** The page of assets that match the provided metric. */
 @Immutable
-public final class TaskPageResponse {
+public final class AssetPageResult {
     /*
      * The total number of items available in the full result set.
      */
     @Generated
     @JsonProperty(value = "totalElements")
     private Long totalElements;
+
+    /*
+     * The cursor mark to be used on the next request.  Not set if using paging.
+     */
+    @Generated
+    @JsonProperty(value = "mark")
+    private String mark;
 
     /*
      * The link to access the next page of results.  Not set if at the end of the result set.
@@ -31,11 +38,11 @@ public final class TaskPageResponse {
      */
     @Generated
     @JsonProperty(value = "value")
-    private List<Task> value;
+    private List<AssetResource> value;
 
-    /** Creates an instance of TaskPageResponse class. */
+    /** Creates an instance of AssetPageResult class. */
     @Generated
-    private TaskPageResponse() {}
+    private AssetPageResult() {}
 
     /**
      * Get the totalElements property: The total number of items available in the full result set.
@@ -45,6 +52,16 @@ public final class TaskPageResponse {
     @Generated
     public Long getTotalElements() {
         return this.totalElements;
+    }
+
+    /**
+     * Get the mark property: The cursor mark to be used on the next request. Not set if using paging.
+     *
+     * @return the mark value.
+     */
+    @Generated
+    public String getMark() {
+        return this.mark;
     }
 
     /**
@@ -63,7 +80,7 @@ public final class TaskPageResponse {
      * @return the value value.
      */
     @Generated
-    public List<Task> getValue() {
+    public List<AssetResource> getValue() {
         return this.value;
     }
 }

@@ -81,7 +81,7 @@ public final class DiscoGroup {
      */
     @Generated
     @JsonProperty(value = "latestRun")
-    private DiscoRunResponse latestRun;
+    private DiscoRunResult latestRun;
 
     /*
      * The date for the disco group was created.
@@ -201,7 +201,7 @@ public final class DiscoGroup {
      * @return the latestRun value.
      */
     @Generated
-    public DiscoRunResponse getLatestRun() {
+    public DiscoRunResult getLatestRun() {
         return this.latestRun;
     }
 

@@ -12,7 +12,7 @@ import java.util.List;
 
 /** The latest run of this disco group with some limited information, null if the group has never been run. */
 @Immutable
-public final class DiscoRunResponse {
+public final class DiscoRunResult {
     /*
      * The date for when the disco run was created in the system.
      */
@@ -76,9 +76,9 @@ public final class DiscoRunResponse {
     @JsonProperty(value = "names")
     private List<String> names;
 
-    /** Creates an instance of DiscoRunResponse class. */
+    /** Creates an instance of DiscoRunResult class. */
     @Generated
-    private DiscoRunResponse() {}
+    private DiscoRunResult() {}
 
     /**
      * Get the submittedDate property: The date for when the disco run was created in the system.

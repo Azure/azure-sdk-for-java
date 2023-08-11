@@ -1,15 +1,17 @@
 package com.azure.analytics.defender.easm;
 
-import com.azure.analytics.defender.easm.generated.EasmDefenderClientTestBase;
-import com.azure.analytics.defender.easm.models.SavedFilter;
+import com.azure.analytics.defender.easm.generated.EasmClientTestBase;
+import com.azure.analytics.defender.easm.models.CountPagedIterable;
 import com.azure.analytics.defender.easm.models.SavedFilterData;
-import com.azure.analytics.defender.easm.models.SavedFilterPageResponse;
+import com.azure.analytics.defender.easm.models.SavedFilter;
+import com.azure.analytics.defender.easm.models.SavedFilterPageResult;
+import com.azure.core.http.rest.PagedIterable;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-public class SavedFiltersTest extends EasmDefenderClientTestBase {
+public class SavedFiltersTest extends EasmClientTestBase {
 
     String deleteSavedFilterName = "put_filter";
     String putSavedFilterName = "put_filter";
@@ -18,15 +20,16 @@ public class SavedFiltersTest extends EasmDefenderClientTestBase {
 
     @Test
     public void testsavedFiltersListWithResponse(){
-        SavedFilterPageResponse savedFilterPageResponse = savedFiltersClient.list();
-        SavedFilter savedFilterResponse = savedFilterPageResponse.getValue().get(0);
+        CountPagedIterable<SavedFilter> savedFilters = easmClient.listSavedFilter();
+        SavedFilter savedFilterResponse = savedFilters.stream().iterator().next();
         assertNotNull(savedFilterResponse.getId());
         assertNotNull(savedFilterResponse.getDescription());
+
     }
 
     @Test
     public void testsavedFiltersGetWithResponse(){
-        SavedFilter savedFilterResponse = savedFiltersClient.get(knownExistingFilter);
+        SavedFilter savedFilterResponse = easmClient.getSavedFilter(knownExistingFilter);
         assertEquals(knownExistingFilter, savedFilterResponse.getId());
         assertEquals(knownExistingFilter, savedFilterResponse.getName());
         assertNotNull(savedFilterResponse.getDisplayName());
@@ -36,17 +39,17 @@ public class SavedFiltersTest extends EasmDefenderClientTestBase {
 
     @Test
     public void testsavedFiltersPutWithResponse(){
-        SavedFilterData savedFilterRequest = new SavedFilterData(filter, "Sample description");
-        SavedFilter savedFilterResponse = savedFiltersClient.put(putSavedFilterName, savedFilterRequest);
+        SavedFilterData savedFilterData = new SavedFilterData(filter, "Sample description");
+        SavedFilter savedFilterResponse = easmClient.putSavedFilter(putSavedFilterName, savedFilterData);
         assertEquals(putSavedFilterName, savedFilterResponse.getName());
         assertEquals(putSavedFilterName, savedFilterResponse.getId());
         assertEquals(putSavedFilterName, savedFilterResponse.getDisplayName());
-        assertEquals(savedFilterRequest.getDescription(), savedFilterResponse.getDescription());
+        assertEquals(savedFilterData.getDescription(), savedFilterResponse.getDescription());
     }
 
     @Test
     public void testsavedFiltersDeleteWithResponse(){
-        savedFiltersClient.delete(deleteSavedFilterName);
+        easmClient.deleteSavedFilter(deleteSavedFilterName);
     }
 
 }

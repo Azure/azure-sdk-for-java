@@ -1,12 +1,15 @@
 package java.com.azure.analytics.defender.easm;
 
-import com.azure.analytics.defender.easm.AssetsClient;
-import com.azure.analytics.defender.easm.EasmDefenderClientBuilder;
-import com.azure.analytics.defender.easm.TasksClient;
+import com.azure.analytics.defender.easm.EasmClient;
+import com.azure.analytics.defender.easm.EasmClientBuilder;
 import com.azure.analytics.defender.easm.models.AssetUpdateData;
 import com.azure.analytics.defender.easm.models.Task;
 import com.azure.core.util.Configuration;
 import com.azure.identity.InteractiveBrowserCredentialBuilder;
+import com.azure.resourcemanager.defendereasm.EASMClient;
+import com.azure.resourcemanager.defendereasm.EASMClientBuilder;
+import com.azure.resourcemanager.defendereasm.models.AssetUpdateRequest;
+import com.azure.resourcemanager.defendereasm.models.TaskResponse;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -22,15 +25,14 @@ public class ManagingExternalIdsSample {
         String endpoint = Configuration.getGlobalConfiguration().get("ENDPOINT");
         String externalIdMapping = Configuration.getGlobalConfiguration().get("MAPPING");
 
-        EasmDefenderClientBuilder easmDefenderClientBuilder = new EasmDefenderClientBuilder()
+        EasmClient easmClient = new EasmClientBuilder()
             .endpoint(endpoint)
             .subscriptionId(subscriptionId)
             .workspaceName(workspaceName)
             .resourceGroupName(resourceGroupName)
-            .credential(new InteractiveBrowserCredentialBuilder().build());
-
-        AssetsClient assetsClient = easmDefenderClientBuilder.buildAssetsClient();
-        TasksClient tasksClient = easmDefenderClientBuilder.buildTasksClient();
+            // For the purposes of this demo, I've chosen the InteractiveBrowserCredential but any credential will work.
+            .credential(new InteractiveBrowserCredentialBuilder().build())
+            .buildClient();
 
         // We can update each asset and append the tracking id of the update to our update ID list, so that
         // we can keep track of the progress on each update later
@@ -50,22 +52,21 @@ public class ManagingExternalIdsSample {
                     mappingInstance.get("kind") +
                     " AND name = " +
                     mappingInstance.get("name");
-            Task task = assetsClient.update(filter, assetUpdateRequest);
-            updateIds.add(task.getId());
+            Task taskResponse = easmClient.updateAssets(filter, assetUpdateRequest);
+            updateIds.add(taskResponse.getId());
         });
 
-        // We can view the progress of each update using the `get` method of the tasks client
+        // We can view the progress of each update using the tasksGet method
         updateIds.forEach(id -> {
-            Task task = tasksClient.get(id);
-            System.out.println(task.getId() + ": " + task.getState());
+            Task taskResponse = easmClient.getTask(id);
+            System.out.println(taskResponse.getId() + ": " + taskResponse.getState());
         });
 
-        // The updates can be viewed using the `list` method of the assets client by creating a filter that matches on each
+        // The updates can be viewed using the `assetsList` method by creating a filter that matches on each
         // external id using an `in` query
         String assetFilter = "External ID in ".concat(String.join(", ", externalIds));
 
-        assetsClient.list(assetFilter, "lastSeen", 0, 25, null)
-                .getValue()
+        easmClient.listAssetResource(assetFilter, "lastSeen", 0, 25, null)
                 .forEach(assetResponse -> {
                     System.out.println(assetResponse.getExternalId() + ", " + assetResponse.getName());
                 });

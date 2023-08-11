@@ -9,19 +9,19 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The ReportAssetSummaryResponse model. */
+/** The ReportAssetSummaryResult model. */
 @Immutable
-public final class ReportAssetSummaryResponse {
+public final class ReportAssetSummaryResult {
     /*
      * The collection of asset summaries.
      */
     @Generated
     @JsonProperty(value = "assetSummaries")
-    private List<AssetSummaryResponse> assetSummaries;
+    private List<AssetSummaryResult> assetSummaries;
 
-    /** Creates an instance of ReportAssetSummaryResponse class. */
+    /** Creates an instance of ReportAssetSummaryResult class. */
     @Generated
-    private ReportAssetSummaryResponse() {}
+    private ReportAssetSummaryResult() {}
 
     /**
      * Get the assetSummaries property: The collection of asset summaries.
@@ -29,7 +29,7 @@ public final class ReportAssetSummaryResponse {
      * @return the assetSummaries value.
      */
     @Generated
-    public List<AssetSummaryResponse> getAssetSummaries() {
+    public List<AssetSummaryResult> getAssetSummaries() {
         return this.assetSummaries;
     }
 }

@@ -9,9 +9,9 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The DiscoRunPageResponse model. */
+/** The DiscoRunPageResult model. */
 @Immutable
-public final class DiscoRunPageResponse {
+public final class DiscoRunPageResult {
     /*
      * The total number of items available in the full result set.
      */
@@ -31,11 +31,11 @@ public final class DiscoRunPageResponse {
      */
     @Generated
     @JsonProperty(value = "value")
-    private List<DiscoRunResponse> value;
+    private List<DiscoRunResult> value;
 
-    /** Creates an instance of DiscoRunPageResponse class. */
+    /** Creates an instance of DiscoRunPageResult class. */
     @Generated
-    private DiscoRunPageResponse() {}
+    private DiscoRunPageResult() {}
 
     /**
      * Get the totalElements property: The total number of items available in the full result set.
@@ -63,7 +63,7 @@ public final class DiscoRunPageResponse {
      * @return the value value.
      */
     @Generated
-    public List<DiscoRunResponse> getValue() {
+    public List<DiscoRunResult> getValue() {
         return this.value;
     }
 }
