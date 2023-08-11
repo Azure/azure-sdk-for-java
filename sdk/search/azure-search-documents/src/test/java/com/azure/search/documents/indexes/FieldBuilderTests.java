@@ -256,11 +256,15 @@ public class FieldBuilderTests {
         // 18. name = 'floatList', OData type = COMPLEX
         private List<Float> floatList;
 
-        public List<Float> getFloatList() { return floatList; }
+        public List<Float> getFloatList() {
+            return floatList;
+        }
 
         // 19. name = 'floatArray', OData type = COMPLEX
         private Float[] floatArray;
-        public Float[] getFloatArray() { return floatArray; }
+        public Float[] getFloatArray() {
+            return floatArray;
+        }
     }
 
     @Test
