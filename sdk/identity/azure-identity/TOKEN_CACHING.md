@@ -16,7 +16,8 @@ Token caching, via the Azure Identity library, allows the app to store this acce
 
 **Note:** When Azure Identity library credentials are used with Azure service libraries (for example, Azure Blob Storage), the in-memory token caching is active in the `HttpPipeline` layer as well. All `TokenCredential` implementations are supported there, including custom implementations external to the Azure Identity library.
 
-As there are many levels of cache it is not possible to clear the cache.
+#### Caching cannot be disabled
+As there are many levels of cache it is not possible disable in-memory caching. The in-memory cache may be cleared by creating a new credential instance.
 
 ### Persistent token caching
 
