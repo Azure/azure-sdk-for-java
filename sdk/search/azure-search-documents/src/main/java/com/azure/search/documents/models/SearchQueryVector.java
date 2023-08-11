@@ -90,8 +90,8 @@ public final class SearchQueryVector implements JsonSerializable<SearchQueryVect
      * @param fields the fields value to set.
      * @return the SearchQueryVector object itself.
      */
-    public SearchQueryVector setFields(String fields) {
-        this.fields = fields;
+    public SearchQueryVector setFields(String... fields) {
+        this.fields = String.join(",", fields);
         return this;
     }
 
@@ -135,16 +135,5 @@ public final class SearchQueryVector implements JsonSerializable<SearchQueryVect
 
                     return deserializedSearchQueryVector;
                 });
-    }
-
-    /**
-     * Sets the fields property: Vector Fields of type Collection(Edm.Single) to be included in the vector searched.
-     *
-     * @param fields the fields value.
-     * @return the SearchQueryVector object itself.
-     */
-    public SearchQueryVector setFields(String... fields) {
-        this.fields = String.join(",", fields);
-        return this;
     }
 }

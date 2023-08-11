@@ -126,15 +126,7 @@ public class SearchIndexCustomizations extends Customization {
             "     * @return the SearchQueryVector object itself.\n" +
             "     */";
 
-        classCustomization.addMethod("/**\n" +
-            "     * Sets the fields property: Vector Fields of type Collection(Edm.Single) to be included in the vector searched.\n" +
-            "     * @param fields the fields value.\n" +
-            "     * @return the SearchQueryVector object itself.\n" +
-            "     */\n" +
-            "    public SearchQueryVector setFields(String... fields) {\n" +
-            "        this.fields = String.join(\",\", fields);\n" +
-            "        return this;\n" +
-            "    }");
+        classCustomization.getMethod(methodName).replaceParameters(parameter).replaceBody(body);
 
     }
 
