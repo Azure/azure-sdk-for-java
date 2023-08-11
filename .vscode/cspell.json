@@ -678,7 +678,8 @@
       "words": [
         "Pfast",
         "Pdirect",
-	"Pmulti"
+	      "Pmulti",
+        "Psplit"
       ]
     },
     {
