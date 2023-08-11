@@ -465,6 +465,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
                     assertThat(queryDiagnostics).contains("queryPlanDiagnosticsContext");
                     assertThat(queryDiagnostics).contains("startTimeUTC");
                     assertThat(queryDiagnostics).contains("endTimeUTC");
+                    assertThat(queryDiagnostics).contains("durationInMilliSecs");
                     String requestTimeLine = OBJECT_MAPPER.writeValueAsString(feedResponse.getCosmosDiagnostics().getFeedResponseDiagnostics().getQueryPlanDiagnosticsContext().getRequestTimeline());
                     assertThat(requestTimeLine).contains("connectionConfigured");
                     assertThat(requestTimeLine).contains("requestSent");

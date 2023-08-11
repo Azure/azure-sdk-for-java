@@ -110,9 +110,9 @@ public class Utils {
         SimpleFilterProvider filterProvider = new SimpleFilterProvider();
         objectMapper.registerModule(new SimpleModule()
                 .addSerializer(Duration.class, ToStringSerializer.instance)
-                .addDeserializer(Duration.class, DurationDeserializer.INSTANCE)
-                .addSerializer(Instant.class, ToStringSerializer.instance))
-            .setFilterProvider(filterProvider);
+//                .addDeserializer(Duration.class, DurationDeserializer.INSTANCE)
+                .addSerializer(Instant.class, ToStringSerializer.instance));
+  //          .setFilterProvider(filterProvider);
         return objectMapper;
     }
 
@@ -384,7 +384,7 @@ public class Utils {
     }
 
     public static ObjectMapper getDurationEnabledObjectMapper() {
-        return Utils.durationEnabledObjectMapper;
+        return durationEnabledObjectMapper;
     }
 
     /**

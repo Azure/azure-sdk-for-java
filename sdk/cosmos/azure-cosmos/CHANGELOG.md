@@ -15,6 +15,7 @@
 * Fixed an issue to update the last unhealthy timestamp for an `Uri` instance only when transitioning to `Unhealthy` from a different health status -  See [36083](https://github.com/Azure/azure-sdk-for-java/pull/36083)
 
 #### Other Changes
+* Query metrics diagnostics changed to JSON format. - See [PR 35761](https://github.com/Azure/azure-sdk-for-java/pull/35761)
 
 ### 4.48.0 (2023-07-18)
 
@@ -24,7 +25,6 @@
   with the region in the direct connectivity mode. - See [PR 35586](https://github.com/Azure/azure-sdk-for-java/pull/35586)
 
 #### Other Changes
-* Query metrics diagnostics changed to JSON format. - See [PR 35761](https://github.com/Azure/azure-sdk-for-java/pull/35761)
 * Added fault injection support for Gateway connection mode - See [PR 35378](https://github.com/Azure/azure-sdk-for-java/pull/35378)
 
 ### 4.47.0 (2023-06-26)
