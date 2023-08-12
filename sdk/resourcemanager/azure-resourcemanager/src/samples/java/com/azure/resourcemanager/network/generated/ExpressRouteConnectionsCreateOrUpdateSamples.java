@@ -14,7 +14,7 @@ import java.util.Arrays;
 /** Samples for ExpressRouteConnections CreateOrUpdate. */
 public final class ExpressRouteConnectionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-02-01/examples/ExpressRouteConnectionCreate.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-04-01/examples/ExpressRouteConnectionCreate.json
      */
     /**
      * Sample code: ExpressRouteConnectionCreate.

@@ -9,27 +9,18 @@ import okio.BufferedSource;
 import okio.Okio;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.jupiter.api.parallel.Execution;
-import uk.org.webcompere.systemstubs.environment.EnvironmentVariables;
-import uk.org.webcompere.systemstubs.jupiter.SystemStub;
-import uk.org.webcompere.systemstubs.jupiter.SystemStubsExtension;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.HashMap;
+import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.parallel.ExecutionMode.SAME_THREAD;
 
-@Execution(SAME_THREAD) // disable parallel test run
-@ExtendWith(SystemStubsExtension.class)
 public class AttachStatsbeatTest {
-
-    @SystemStub
-    EnvironmentVariables envVars = new EnvironmentVariables();
 
     private AttachStatsbeat attachStatsbeat;
 
@@ -63,23 +54,26 @@ public class AttachStatsbeatTest {
 
     @Test
     public void testAppSvcResourceProviderId() {
-        envVars.set("WEBSITE_SITE_NAME", "test_site_name");
-        envVars.set("WEBSITE_HOME_STAMPNAME", "test_stamp_name");
+        Map<String, String> envVars = new HashMap<>();
+        envVars.put("WEBSITE_SITE_NAME", "test_site_name");
+        envVars.put("WEBSITE_HOME_STAMPNAME", "test_stamp_name");
 
-        assertThat(AttachStatsbeat.initResourceProviderId(ResourceProvider.RP_APPSVC, null))
+        assertThat(AttachStatsbeat.initResourceProviderId(ResourceProvider.RP_APPSVC, null, envVars::get))
             .isEqualTo("test_site_name/test_stamp_name");
     }
 
     @Test
     public void testFunctionsResourceProviderId() {
-        envVars.set("WEBSITE_HOSTNAME", "test_function_name");
-        assertThat(AttachStatsbeat.initResourceProviderId(ResourceProvider.RP_FUNCTIONS, null))
+        Map<String, String> envVars = new HashMap<>();
+        envVars.put("WEBSITE_HOSTNAME", "test_function_name");
+
+        assertThat(AttachStatsbeat.initResourceProviderId(ResourceProvider.RP_FUNCTIONS, null, envVars::get))
             .isEqualTo("test_function_name");
     }
 
     @Test
     public void testAksResourceProviderId() {
-        assertThat(AttachStatsbeat.initResourceProviderId(ResourceProvider.RP_AKS, null))
+        assertThat(AttachStatsbeat.initResourceProviderId(ResourceProvider.RP_AKS, null, key -> null))
             .isEqualTo("unknown");
     }
 

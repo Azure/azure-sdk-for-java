@@ -36,6 +36,10 @@ public final class OperationInner {
     @JsonProperty(value = "properties")
     private OperationProperties innerOperationProperties;
 
+    /** Creates an instance of OperationInner class. */
+    public OperationInner() {
+    }
+
     /**
      * Get the name property: Operation name: {provider}/{resource}/{operation}.
      *

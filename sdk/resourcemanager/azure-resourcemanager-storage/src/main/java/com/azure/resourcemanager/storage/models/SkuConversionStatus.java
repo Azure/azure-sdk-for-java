@@ -20,6 +20,15 @@ public final class SkuConversionStatus extends ExpandableStringEnum<SkuConversio
     public static final SkuConversionStatus FAILED = fromString("Failed");
 
     /**
+     * Creates a new instance of SkuConversionStatus value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SkuConversionStatus() {
+    }
+
+    /**
      * Creates or finds a SkuConversionStatus from its string representation.
      *
      * @param name a name to look for.

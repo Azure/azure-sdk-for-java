@@ -291,9 +291,7 @@ public final class ServiceBusTracer {
                 startOptions.setAttribute(MESSAGE_ENQUEUED_TIME_ATTRIBUTE_NAME, message.getEnqueuedTime().toEpochSecond());
             }
 
-            Context span = tracer.start(spanName, startOptions, parent);
-            ContextAccessor.setContext(message, span);
-            return span;
+            return tracer.start(spanName, startOptions, parent);
         }
 
         return parent;

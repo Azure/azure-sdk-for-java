@@ -7,6 +7,7 @@ import com.azure.cosmos.implementation.JsonSerializable;
 import com.azure.cosmos.implementation.RequestOptions;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.patch.PatchUtil;
+import com.azure.cosmos.models.CosmosItemOperation;
 import com.azure.cosmos.models.CosmosItemOperationType;
 import com.azure.cosmos.models.CosmosPatchOperations;
 import com.azure.cosmos.models.ModelBridgeInternal;
@@ -20,7 +21,7 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
  *
  * @param <TInternal> The type of item.
  */
-public final class ItemBulkOperation<TInternal, TContext> extends CosmosItemOperationBase {
+public final class ItemBulkOperation<TInternal, TContext> extends CosmosItemOperationBase implements Comparable<CosmosItemOperation> {
 
     private final TInternal item;
     private final TContext context;
@@ -30,6 +31,8 @@ public final class ItemBulkOperation<TInternal, TContext> extends CosmosItemOper
     private final RequestOptions requestOptions;
     private String partitionKeyJson;
     private BulkOperationRetryPolicy bulkOperationRetryPolicy;
+    /** index for preserve ordering in Bulk Executor */
+    private int index;
 
     public ItemBulkOperation(
         CosmosItemOperationType operationType,
@@ -47,6 +50,7 @@ public final class ItemBulkOperation<TInternal, TContext> extends CosmosItemOper
         this.item = item;
         this.context = context;
         this.requestOptions = requestOptions;
+        this.index = 0;
     }
 
     /**
@@ -105,6 +109,16 @@ public final class ItemBulkOperation<TInternal, TContext> extends CosmosItemOper
         return jsonSerializable;
     }
 
+    public void setIndex(int index) {
+        // Only want to set the index the first time it is encountered in the bulk executor
+        if (this.index == 0) {
+            this.index = index;
+        }
+    }
+
+    public int getIndex() {
+        return index;
+    }
     TInternal getItemInternal() {
         return this.item;
     }
@@ -149,5 +163,24 @@ public final class ItemBulkOperation<TInternal, TContext> extends CosmosItemOper
 
     void setRetryPolicy(BulkOperationRetryPolicy bulkOperationRetryPolicy) {
         this.bulkOperationRetryPolicy = bulkOperationRetryPolicy;
+    }
+
+    @Override
+    public int compareTo(CosmosItemOperation operation) {
+        if (operation instanceof ItemBulkOperation) {
+            ItemBulkOperation<?, ?> bulkOperation = (ItemBulkOperation<?, ?>) operation;
+            return this.index - bulkOperation.index;
+        }
+        return 0;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return super.equals(obj);
+    }
+
+    @Override
+    public int hashCode() {
+        return super.hashCode();
     }
 }

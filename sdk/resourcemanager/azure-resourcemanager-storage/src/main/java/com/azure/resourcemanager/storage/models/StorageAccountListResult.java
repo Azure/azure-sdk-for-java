@@ -25,6 +25,10 @@ public final class StorageAccountListResult {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
+    /** Creates an instance of StorageAccountListResult class. */
+    public StorageAccountListResult() {
+    }
+
     /**
      * Get the value property: Gets the list of storage accounts and their properties.
      *

@@ -7,7 +7,7 @@ package com.azure.resourcemanager.network.generated;
 /** Samples for DscpConfiguration ListByResourceGroup. */
 public final class DscpConfigurationListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-02-01/examples/DscpConfigurationList.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-04-01/examples/DscpConfigurationList.json
      */
     /**
      * Sample code: Get Dscp Configuration.

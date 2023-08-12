@@ -7,7 +7,7 @@ package com.azure.resourcemanager.network.generated;
 /** Samples for AvailableEndpointServices List. */
 public final class AvailableEndpointServicesListSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-02-01/examples/EndpointServicesList.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-04-01/examples/EndpointServicesList.json
      */
     /**
      * Sample code: EndpointServicesList.

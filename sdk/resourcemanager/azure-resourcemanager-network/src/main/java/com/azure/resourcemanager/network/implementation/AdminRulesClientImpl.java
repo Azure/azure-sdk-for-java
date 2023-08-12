@@ -200,7 +200,7 @@ public final class AdminRulesClientImpl implements AdminRulesClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter ruleCollectionName is required and cannot be null."));
         }
-        final String apiVersion = "2023-02-01";
+        final String apiVersion = "2023-04-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -286,7 +286,7 @@ public final class AdminRulesClientImpl implements AdminRulesClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter ruleCollectionName is required and cannot be null."));
         }
-        final String apiVersion = "2023-02-01";
+        final String apiVersion = "2023-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -514,7 +514,7 @@ public final class AdminRulesClientImpl implements AdminRulesClient {
         if (ruleName == null) {
             return Mono.error(new IllegalArgumentException("Parameter ruleName is required and cannot be null."));
         }
-        final String apiVersion = "2023-02-01";
+        final String apiVersion = "2023-04-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -588,7 +588,7 @@ public final class AdminRulesClientImpl implements AdminRulesClient {
         if (ruleName == null) {
             return Mono.error(new IllegalArgumentException("Parameter ruleName is required and cannot be null."));
         }
-        final String apiVersion = "2023-02-01";
+        final String apiVersion = "2023-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -740,7 +740,7 @@ public final class AdminRulesClientImpl implements AdminRulesClient {
         } else {
             adminRule.validate();
         }
-        final String apiVersion = "2023-02-01";
+        final String apiVersion = "2023-04-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -821,7 +821,7 @@ public final class AdminRulesClientImpl implements AdminRulesClient {
         } else {
             adminRule.validate();
         }
-        final String apiVersion = "2023-02-01";
+        final String apiVersion = "2023-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -988,7 +988,7 @@ public final class AdminRulesClientImpl implements AdminRulesClient {
         if (ruleName == null) {
             return Mono.error(new IllegalArgumentException("Parameter ruleName is required and cannot be null."));
         }
-        final String apiVersion = "2023-02-01";
+        final String apiVersion = "2023-04-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1065,7 +1065,7 @@ public final class AdminRulesClientImpl implements AdminRulesClient {
         if (ruleName == null) {
             return Mono.error(new IllegalArgumentException("Parameter ruleName is required and cannot be null."));
         }
-        final String apiVersion = "2023-02-01";
+        final String apiVersion = "2023-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

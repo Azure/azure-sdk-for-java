@@ -14,6 +14,15 @@ public final class BlobInventoryPolicyName extends ExpandableStringEnum<BlobInve
     public static final BlobInventoryPolicyName DEFAULT = fromString("default");
 
     /**
+     * Creates a new instance of BlobInventoryPolicyName value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public BlobInventoryPolicyName() {
+    }
+
+    /**
      * Creates or finds a BlobInventoryPolicyName from its string representation.
      *
      * @param name a name to look for.

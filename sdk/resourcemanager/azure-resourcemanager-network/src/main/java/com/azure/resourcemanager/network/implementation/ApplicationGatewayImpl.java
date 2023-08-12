@@ -37,7 +37,10 @@ import com.azure.resourcemanager.network.models.ApplicationGatewayRequestRouting
 import com.azure.resourcemanager.network.models.ApplicationGatewaySku;
 import com.azure.resourcemanager.network.models.ApplicationGatewaySkuName;
 import com.azure.resourcemanager.network.models.ApplicationGatewaySslCertificate;
+import com.azure.resourcemanager.network.models.ApplicationGatewaySslCipherSuite;
 import com.azure.resourcemanager.network.models.ApplicationGatewaySslPolicy;
+import com.azure.resourcemanager.network.models.ApplicationGatewaySslPolicyName;
+import com.azure.resourcemanager.network.models.ApplicationGatewaySslPolicyType;
 import com.azure.resourcemanager.network.models.ApplicationGatewaySslProtocol;
 import com.azure.resourcemanager.network.models.ApplicationGatewayTier;
 import com.azure.resourcemanager.network.models.ApplicationGatewayUrlPathMap;
@@ -688,6 +691,29 @@ class ApplicationGatewayImpl
     public ApplicationGatewayImpl withNewWebApplicationFirewallPolicy(Creatable<WebApplicationFirewallPolicy> creatable) {
         ensureWafV2();
         this.creatableWafPolicy = this.addDependency(creatable);
+        return this;
+    }
+
+    @Override
+    public ApplicationGatewayImpl withPredefinedSslPolicy(ApplicationGatewaySslPolicyName policyName) {
+        return withSslPolicy(
+            new ApplicationGatewaySslPolicy()
+                .withPolicyName(policyName)
+                .withPolicyType(ApplicationGatewaySslPolicyType.PREDEFINED));
+    }
+
+    @Override
+    public ApplicationGatewayImpl withCustomV2SslPolicy(ApplicationGatewaySslProtocol minProtocolVersion, List<ApplicationGatewaySslCipherSuite> cipherSuites) {
+        return withSslPolicy(
+            new ApplicationGatewaySslPolicy()
+                .withPolicyType(ApplicationGatewaySslPolicyType.CUSTOM_V2)
+                .withMinProtocolVersion(minProtocolVersion)
+                .withCipherSuites(cipherSuites));
+    }
+
+    @Override
+    public ApplicationGatewayImpl withSslPolicy(ApplicationGatewaySslPolicy sslPolicy) {
+        this.innerModel().withSslPolicy(sslPolicy);
         return this;
     }
 
@@ -1501,6 +1527,11 @@ class ApplicationGatewayImpl
             .manager()
             .webApplicationFirewallPolicies()
             .getByIdAsync(this.innerModel().firewallPolicy().id());
+    }
+
+    @Override
+    public ApplicationGatewaySslPolicy sslPolicy() {
+        return this.innerModel().sslPolicy();
     }
 
     @Override
