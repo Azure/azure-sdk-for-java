@@ -39,7 +39,7 @@ With persistent disk token caching enabled, the library first determines if a va
 
 #### Implementation Note
 
-The cache is stored in two files to allow for separate caching of Continuous Access Evaluation (CAE) vs non-CAE credentials. The default filename is `msal` but can be specified through `TokenCachePersistenceOptions.setName()`. The filenames end in `.cae` or `.nocae` respectively.
+The cache is stored in two files to allow for separate caching of Continuous Access Evaluation (CAE) vs non-CAE credentials. The default filename is `msal.cache` but can be specified through `TokenCachePersistenceOptions.setName()`. The filenames end in `.cae` or `.nocae` respectively.
 
 This note is provided only for troubleshooting purposes. This is an implementation detail and can change in the future.
 
