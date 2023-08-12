@@ -4,14 +4,12 @@
 package com.azure.storage.file.share;
 
 import com.azure.core.http.HttpHeaderName;
-import com.azure.core.http.rest.Page;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.HttpClientOptions;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.policy.RequestRetryOptions;
-import com.azure.storage.common.policy.RetryPolicyType;
 import com.azure.storage.file.share.models.CloseHandlesInfo;
 import com.azure.storage.file.share.models.HandleItem;
 import com.azure.storage.file.share.models.NtfsFileAttributes;
@@ -38,7 +36,6 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
-import spock.lang.Retry;
 
 import java.io.File;
 import java.time.Duration;
@@ -46,14 +43,11 @@ import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.EnumSet;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -67,13 +61,13 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class DirectoryApiTests extends FileShareTestBase {
-    ShareDirectoryClient primaryDirectoryClient;
-    ShareClient shareClient;
-    String directoryPath;
-    String shareName;
-    static Map<String, String> testMetadata;
-    FileSmbProperties smbProperties;
-    static String filePermission = "O:S-1-5-21-2127521184-1604012920-1887927527-21560751G:S-1-5-21-2127521184-1604012920-1887927527-513D:AI(A;;FA;;;SY)(A;;FA;;;BA)(A;;0x1200a9;;;S-1-5-21-397955417-626881126-188441444-3053964)S:NO_ACCESS_CONTROL";
+    private ShareDirectoryClient primaryDirectoryClient;
+    private ShareClient shareClient;
+    private String directoryPath;
+    private String shareName;
+    private static Map<String, String> testMetadata;
+    private FileSmbProperties smbProperties;
+    private static final String FILE_PERMISSION = "O:S-1-5-21-2127521184-1604012920-1887927527-21560751G:S-1-5-21-2127521184-1604012920-1887927527-513D:AI(A;;FA;;;SY)(A;;FA;;;BA)(A;;0x1200a9;;;S-1-5-21-397955417-626881126-188441444-3053964)S:NO_ACCESS_CONTROL";
 
 
     @BeforeEach
@@ -91,7 +85,8 @@ public class DirectoryApiTests extends FileShareTestBase {
     public void getDirectoryUrl() {
         String accountName = StorageSharedKeyCredential
             .fromConnectionString(ENVIRONMENT.getPrimaryAccount().getConnectionString()).getAccountName();
-        String expectURL = String.format("https://%s.file.core.windows.net/%s/%s", accountName, shareName, directoryPath);
+        String expectURL = String.format("https://%s.file.core.windows.net/%s/%s", accountName, shareName,
+            directoryPath);
         String directoryURL = primaryDirectoryClient.getDirectoryUrl();
         assertEquals(expectURL, directoryURL);
     }
@@ -100,7 +95,8 @@ public class DirectoryApiTests extends FileShareTestBase {
     public void getShareSnapshotUrl() {
         String accountName = StorageSharedKeyCredential
             .fromConnectionString(ENVIRONMENT.getPrimaryAccount().getConnectionString()).getAccountName();
-        String expectURL = String.format("https://%s.file.core.windows.net/%s/%s", accountName, shareName, directoryPath);
+        String expectURL = String.format("https://%s.file.core.windows.net/%s/%s", accountName, shareName,
+            directoryPath);
 
         ShareSnapshotInfo shareSnapshotInfo = shareClient.createSnapshot();
         expectURL = expectURL + "?sharesnapshot=" + shareSnapshotInfo.getSnapshot();
@@ -158,11 +154,10 @@ public class DirectoryApiTests extends FileShareTestBase {
     @Test
     public void createDirectoryError() {
         String testShareName = generateShareName();
-        directoryBuilderHelper(testShareName, directoryPath).buildDirectoryClient().create();
 
         ShareStorageException e = assertThrows(ShareStorageException.class,
-            () -> primaryDirectoryClient.createWithResponse(null, null, null, null, null));
-        FileTestHelper.assertExceptionStatusCodeAndMessage(e, 404, ShareErrorCode.SHARE_NOT_FOUND);
+            () -> directoryBuilderHelper(testShareName, directoryPath).buildDirectoryClient().create());
+        assertExceptionStatusCodeAndMessage(e, 404, ShareErrorCode.SHARE_NOT_FOUND);
     }
 
     @Test
@@ -174,7 +169,7 @@ public class DirectoryApiTests extends FileShareTestBase {
     @Test
     public void createDirectoryWithFilePermission() {
         Response<ShareDirectoryInfo> resp =
-            primaryDirectoryClient.createWithResponse(null, filePermission, null, null, null);
+            primaryDirectoryClient.createWithResponse(null, FILE_PERMISSION, null, null, null);
 
         assertEquals(201, resp.getStatusCode());
         assertNotNull(resp.getValue().getSmbProperties().getFilePermissionKey());
@@ -188,7 +183,7 @@ public class DirectoryApiTests extends FileShareTestBase {
 
     @Test
     public void createDirectoryWithFilePermissionKey() {
-        String filePermissionKey = shareClient.createPermission(filePermission);
+        String filePermissionKey = shareClient.createPermission(FILE_PERMISSION);
         smbProperties.setFileCreationTime(testResourceNamer.now())
             .setFileLastWriteTime(testResourceNamer.now())
             .setFilePermissionKey(filePermissionKey);
@@ -208,14 +203,16 @@ public class DirectoryApiTests extends FileShareTestBase {
 
     @Test
     public void createDirectoryWithNtfsAttributes() {
-        String filePermissionKey = shareClient.createPermission(filePermission);
-        EnumSet<NtfsFileAttributes> attributes = EnumSet.of(NtfsFileAttributes.HIDDEN, NtfsFileAttributes.DIRECTORY);
+        String filePermissionKey = shareClient.createPermission(FILE_PERMISSION);
+        EnumSet<NtfsFileAttributes> attributes =
+            EnumSet.of(NtfsFileAttributes.HIDDEN, NtfsFileAttributes.DIRECTORY);
         smbProperties.setFileCreationTime(testResourceNamer.now())
             .setFileLastWriteTime(testResourceNamer.now())
             .setFilePermissionKey(filePermissionKey)
             .setNtfsFileAttributes(attributes);
 
-        var resp = primaryDirectoryClient.createWithResponse(smbProperties, null, null, null, null);
+        Response<ShareDirectoryInfo> resp = primaryDirectoryClient.createWithResponse(smbProperties, null, null, null,
+            null);
 
         assertEquals(201, resp.getStatusCode());
         assertNotNull(resp.getValue().getSmbProperties().getFilePermissionKey());
@@ -227,15 +224,15 @@ public class DirectoryApiTests extends FileShareTestBase {
         assertNotNull(resp.getValue().getSmbProperties().getFileId());
     }
 
-    @DisabledIf("FileShareTestBase#olderThan20210608ServiceVersion")
+    @DisabledIf("com.azure.storage.file.share.FileShareTestBase#olderThan20210608ServiceVersion")
     @Test
     public void createChangeTime() {
         OffsetDateTime changeTime = testResourceNamer.now();
         primaryDirectoryClient.createWithResponse(new FileSmbProperties().setFileChangeTime(changeTime), null, null,
             null, null);
 
-        assertTrue(compareDatesWithPrecision(primaryDirectoryClient.getProperties().getSmbProperties().getFileChangeTime(),
-            changeTime));
+        assertTrue(compareDatesWithPrecision(
+            primaryDirectoryClient.getProperties().getSmbProperties().getFileChangeTime(), changeTime));
     }
 
     @ParameterizedTest
@@ -246,13 +243,14 @@ public class DirectoryApiTests extends FileShareTestBase {
             primaryDirectoryClient.createWithResponse(properties, permission, null, null, null));
     }
 
-    private static Stream<List<String>> permissionAndKeySupplier() {
-        return Stream.of(
-            Arrays.asList("filePermissionKey", filePermission),
-            Arrays.asList(null, new String(FileTestHelper.getRandomBuffer(9 * Constants.KB))));
+    private static Stream<String[]> permissionAndKeySupplier() {
+        return Stream.of(new String[]{"filePermissionKey", FILE_PERMISSION},
+            new String[]{null, new String(FileTestHelper.getRandomBuffer(9 * Constants.KB))});
+            //Arrays.asList("filePermissionKey", FILE_PERMISSION),
+            //Arrays.asList(null, new String(FileTestHelper.getRandomBuffer(9 * Constants.KB))));
     }
 
-    @DisabledIf("FileShareTestBase#olderThan20221102ServiceVersion")
+    @DisabledIf("com.azure.storage.file.share.FileShareTestBase#olderThan20221102ServiceVersion")
     @ParameterizedTest
     @ValueSource(booleans = {true, false})
     public void createTrailingDot(boolean allowTrailingDot) {
@@ -278,7 +276,7 @@ public class DirectoryApiTests extends FileShareTestBase {
         }
     }
 
-    @DisabledIf("FileShareTestBase#olderThan20210410ServiceVersion")
+    @DisabledIf("com.azure.storage.file.share.FileShareTestBase#olderThan20210410ServiceVersion")
     @Test
     public void createDirectoryOAuth() {
         ShareServiceClient oAuthServiceClient = getOAuthServiceClient(new ShareServiceClientBuilder()
@@ -317,8 +315,10 @@ public class DirectoryApiTests extends FileShareTestBase {
         ShareDirectoryCreateOptions options = new ShareDirectoryCreateOptions();
         ShareDirectoryClient primaryDirectoryClient = shareClient.getDirectoryClient(generatePathName());
 
-        Response<ShareDirectoryInfo> initialResponse = primaryDirectoryClient.createIfNotExistsWithResponse(options, null, null);
-        Response<ShareDirectoryInfo> secondResponse = primaryDirectoryClient.createIfNotExistsWithResponse(options, null, null);
+        Response<ShareDirectoryInfo> initialResponse =
+            primaryDirectoryClient.createIfNotExistsWithResponse(options, null, null);
+        Response<ShareDirectoryInfo> secondResponse =
+            primaryDirectoryClient.createIfNotExistsWithResponse(options, null, null);
 
         assertResponseStatusCode(initialResponse, 201);
         assertResponseStatusCode(secondResponse, 409);
@@ -332,7 +332,7 @@ public class DirectoryApiTests extends FileShareTestBase {
 
     @Test
     public void createIfNotExistsDirectoryWithFilePermission() {
-        ShareDirectoryCreateOptions options = new ShareDirectoryCreateOptions().setFilePermission(filePermission);
+        ShareDirectoryCreateOptions options = new ShareDirectoryCreateOptions().setFilePermission(FILE_PERMISSION);
         Response<ShareDirectoryInfo> resp = primaryDirectoryClient.createIfNotExistsWithResponse(options, null, null);
 
         assertResponseStatusCode(resp, 201);
@@ -348,7 +348,7 @@ public class DirectoryApiTests extends FileShareTestBase {
 
     @Test
     public void createIfNotExistsDirectoryWithFilePermissionKey() {
-        String filePermissionKey = shareClient.createPermission(filePermission);
+        String filePermissionKey = shareClient.createPermission(FILE_PERMISSION);
         smbProperties.setFileCreationTime(testResourceNamer.now())
             .setFileLastWriteTime(testResourceNamer.now())
             .setFilePermissionKey(filePermissionKey);
@@ -369,7 +369,7 @@ public class DirectoryApiTests extends FileShareTestBase {
 
     @Test
     public void createIfNotExistsDirectoryWithNtfsAttributes() {
-        String filePermissionKey = shareClient.createPermission(filePermission);
+        String filePermissionKey = shareClient.createPermission(FILE_PERMISSION);
         EnumSet<NtfsFileAttributes> attributes = EnumSet.of(NtfsFileAttributes.HIDDEN, NtfsFileAttributes.DIRECTORY);
         smbProperties.setFileCreationTime(testResourceNamer.now())
             .setFileLastWriteTime(testResourceNamer.now())
@@ -408,7 +408,7 @@ public class DirectoryApiTests extends FileShareTestBase {
         assertResponseStatusCode(primaryDirectoryClient.deleteWithResponse(null, null), 202);
     }
 
-    @DisabledIf("FileShareTestBase#olderThan20221102ServiceVersion")
+    @DisabledIf("com.azure.storage.file.share.FileShareTestBase#olderThan20221102ServiceVersion")
     @Test
     public void deleteTrailingDot() {
         shareClient = getShareClient(shareName, true, null);
@@ -417,7 +417,7 @@ public class DirectoryApiTests extends FileShareTestBase {
         assertResponseStatusCode(directoryClient.deleteWithResponse(null, null), 202);
     }
 
-    @DisabledIf("FileShareTestBase#olderThan20210410ServiceVersion")
+    @DisabledIf("com.azure.storage.file.share.FileShareTestBase#olderThan20210410ServiceVersion")
     @Test
     public void deleteDirectoryOAuth() {
         ShareServiceClient oAuthServiceClient =
@@ -486,7 +486,7 @@ public class DirectoryApiTests extends FileShareTestBase {
         assertNotNull(resp.getValue().getSmbProperties().getFileId());
     }
 
-    @DisabledIf("FileShareTestBase#olderThan20221102ServiceVersion")
+    @DisabledIf("com.azure.storage.file.share.FileShareTestBase#olderThan20221102ServiceVersion")
     @Test
     public void getPropertiesTrailingDot() {
         shareClient = getShareClient(shareName, true, null);
@@ -511,10 +511,11 @@ public class DirectoryApiTests extends FileShareTestBase {
 
     }
 
-    @DisabledIf("FileShareTestBase#olderThan20210410ServiceVersion")
+    @DisabledIf("com.azure.storage.file.share.FileShareTestBase#olderThan20210410ServiceVersion")
     @Test
     public void getPropertiesOAuth() {
-        ShareServiceClient oAuthServiceClient = getOAuthServiceClient(new ShareServiceClientBuilder().shareTokenIntent(ShareTokenIntent.BACKUP));
+        ShareServiceClient oAuthServiceClient =
+            getOAuthServiceClient(new ShareServiceClientBuilder().shareTokenIntent(ShareTokenIntent.BACKUP));
         String dirName = generatePathName();
         ShareDirectoryClient dirClient = oAuthServiceClient.getShareClient(shareName).getDirectoryClient(dirName);
 
@@ -523,11 +524,16 @@ public class DirectoryApiTests extends FileShareTestBase {
 
         assertEquals(createInfo.getETag(), properties.getETag());
         assertEquals(createInfo.getLastModified(), properties.getLastModified());
-        assertEquals(createInfo.getSmbProperties().getFilePermissionKey(), properties.getSmbProperties().getFilePermissionKey());
-        assertEquals(createInfo.getSmbProperties().getNtfsFileAttributes(), properties.getSmbProperties().getNtfsFileAttributes());
-        assertEquals(createInfo.getSmbProperties().getFileLastWriteTime(), properties.getSmbProperties().getFileLastWriteTime());
-        assertEquals(createInfo.getSmbProperties().getFileCreationTime(), properties.getSmbProperties().getFileCreationTime());
-        assertEquals(createInfo.getSmbProperties().getFileChangeTime(), properties.getSmbProperties().getFileChangeTime());
+        assertEquals(createInfo.getSmbProperties().getFilePermissionKey(),
+            properties.getSmbProperties().getFilePermissionKey());
+        assertEquals(createInfo.getSmbProperties().getNtfsFileAttributes(),
+            properties.getSmbProperties().getNtfsFileAttributes());
+        assertEquals(createInfo.getSmbProperties().getFileLastWriteTime(),
+            properties.getSmbProperties().getFileLastWriteTime());
+        assertEquals(createInfo.getSmbProperties().getFileCreationTime(),
+            properties.getSmbProperties().getFileCreationTime());
+        assertEquals(createInfo.getSmbProperties().getFileChangeTime(),
+            properties.getSmbProperties().getFileChangeTime());
         assertEquals(createInfo.getSmbProperties().getParentId(), properties.getSmbProperties().getParentId());
         assertEquals(createInfo.getSmbProperties().getFileId(), properties.getSmbProperties().getFileId());
     }
@@ -536,13 +542,14 @@ public class DirectoryApiTests extends FileShareTestBase {
     public void getPropertiesError() {
         ShareStorageException e = assertThrows(ShareStorageException.class,
             () -> primaryDirectoryClient.getPropertiesWithResponse(null, null));
-        assertExceptionStatusCodeAndMessage(e, 404, ShareErrorCode.SHARE_NOT_FOUND);
+        assertExceptionStatusCodeAndMessage(e, 404, ShareErrorCode.RESOURCE_NOT_FOUND);
     }
 
     @Test
     public void setPropertiesFilePermission() {
         primaryDirectoryClient.create();
-        Response<ShareDirectoryInfo> resp = primaryDirectoryClient.setPropertiesWithResponse(null, filePermission, null, null);
+        Response<ShareDirectoryInfo> resp = primaryDirectoryClient.setPropertiesWithResponse(null, FILE_PERMISSION,
+            null, null);
 
         assertResponseStatusCode(resp, 200);
         assertNotNull(resp.getValue().getSmbProperties());
@@ -557,13 +564,14 @@ public class DirectoryApiTests extends FileShareTestBase {
 
     @Test
     public void setPropertiesFilePermissionKey() {
-        String filePermissionKey = shareClient.createPermission(filePermission);
+        String filePermissionKey = shareClient.createPermission(FILE_PERMISSION);
         smbProperties.setFileCreationTime(testResourceNamer.now())
             .setFileLastWriteTime(testResourceNamer.now())
             .setFilePermissionKey(filePermissionKey);
 
         primaryDirectoryClient.create();
-        Response<ShareDirectoryInfo> resp = primaryDirectoryClient.setPropertiesWithResponse(smbProperties, null, null, null);
+        Response<ShareDirectoryInfo> resp = primaryDirectoryClient.setPropertiesWithResponse(smbProperties, null, null,
+            null);
         assertResponseStatusCode(resp, 200);
         assertNotNull(resp.getValue().getSmbProperties());
         assertNotNull(resp.getValue().getSmbProperties().getFilePermissionKey());
@@ -575,20 +583,21 @@ public class DirectoryApiTests extends FileShareTestBase {
         assertNotNull(resp.getValue().getSmbProperties().getFileId());
     }
 
-    @DisabledIf("FileShareTestBase#olderThan20210608ServiceVersion")
+    @DisabledIf("com.azure.storage.file.share.FileShareTestBase#olderThan20210608ServiceVersion")
     @Test
     public void setHttpHeadersChangeTime() {
         primaryDirectoryClient.create();
-        String filePermissionKey = shareClient.createPermission(filePermission);
+        String filePermissionKey = shareClient.createPermission(FILE_PERMISSION);
         OffsetDateTime changeTime = testResourceNamer.now();
         smbProperties.setFileChangeTime(testResourceNamer.now())
             .setFilePermissionKey(filePermissionKey);
 
         primaryDirectoryClient.setProperties(new FileSmbProperties().setFileChangeTime(changeTime), null);
-        compareDatesWithPrecision(primaryDirectoryClient.getProperties().getSmbProperties().getFileChangeTime(), changeTime);
+        compareDatesWithPrecision(primaryDirectoryClient.getProperties().getSmbProperties().getFileChangeTime(),
+            changeTime);
     }
 
-    @DisabledIf("FileShareTestBase#olderThan20221102ServiceVersion")
+    @DisabledIf("com.azure.storage.file.share.FileShareTestBase#olderThan20221102ServiceVersion")
     @Test
     public void setHttpHeadersTrailingDot() {
         shareClient = getShareClient(shareName, true, null);
@@ -600,7 +609,7 @@ public class DirectoryApiTests extends FileShareTestBase {
         assertResponseStatusCode(res, 200);
     }
 
-    @DisabledIf("FileShareTestBase#olderThan20210410ServiceVersion")
+    @DisabledIf("com.azure.storage.file.share.FileShareTestBase#olderThan20210410ServiceVersion")
     @Test
     public void setHttpHeadersOAuth() {
         ShareServiceClient oAuthServiceClient = getOAuthServiceClient(new ShareServiceClientBuilder()
@@ -608,7 +617,8 @@ public class DirectoryApiTests extends FileShareTestBase {
         String dirName = generatePathName();
         ShareDirectoryClient dirClient = oAuthServiceClient.getShareClient(shareName).getDirectoryClient(dirName);
         dirClient.create();
-        Response<ShareDirectoryInfo> res = dirClient.setPropertiesWithResponse(new FileSmbProperties(), null, null, null);
+        Response<ShareDirectoryInfo> res = dirClient.setPropertiesWithResponse(new FileSmbProperties(), null, null,
+            null);
         assertResponseStatusCode(res, 200);
     }
 
@@ -637,7 +647,7 @@ public class DirectoryApiTests extends FileShareTestBase {
         assertEquals(updatedMetadata, getPropertiesAfter.getMetadata());
     }
 
-    @DisabledIf("FileShareTestBase#olderThan20221102ServiceVersion")
+    @DisabledIf("com.azure.storage.file.share.FileShareTestBase#olderThan20221102ServiceVersion")
     @Test
     public void setMetadataTrailingDot() {
         shareClient = getShareClient(shareName, true, null);
@@ -648,7 +658,8 @@ public class DirectoryApiTests extends FileShareTestBase {
         Map<String, String> updatedMetadata = Collections.singletonMap("update", "value");
 
         ShareDirectoryProperties getPropertiesBefore = directoryClient.getProperties();
-        Response<ShareDirectorySetMetadataInfo> setPropertiesResponse = directoryClient.setMetadataWithResponse(updatedMetadata, null, null);
+        Response<ShareDirectorySetMetadataInfo> setPropertiesResponse =
+            directoryClient.setMetadataWithResponse(updatedMetadata, null, null);
         ShareDirectoryProperties getPropertiesAfter = directoryClient.getProperties();
 
         assertEquals(testMetadata, getPropertiesBefore.getMetadata());
@@ -656,7 +667,7 @@ public class DirectoryApiTests extends FileShareTestBase {
         assertEquals(updatedMetadata, getPropertiesAfter.getMetadata());
     }
 
-    @DisabledIf("FileShareTestBase#olderThan20210410ServiceVersion")
+    @DisabledIf("com.azure.storage.file.share.FileShareTestBase#olderThan20210410ServiceVersion")
     @Test
     public void setMetadataOAuth() {
         ShareServiceClient oAuthServiceClient = getOAuthServiceClient(new ShareServiceClientBuilder()
@@ -667,7 +678,8 @@ public class DirectoryApiTests extends FileShareTestBase {
         Map<String, String> updatedMetadata = Collections.singletonMap("update", "value");
 
         ShareDirectoryProperties getPropertiesBefore = dirClient.getProperties();
-        Response<ShareDirectorySetMetadataInfo> setPropertiesResponse = dirClient.setMetadataWithResponse(updatedMetadata, null, null);
+        Response<ShareDirectorySetMetadataInfo> setPropertiesResponse =
+            dirClient.setMetadataWithResponse(updatedMetadata, null, null);
         ShareDirectoryProperties getPropertiesAfter = dirClient.getProperties();
 
         assertEquals(testMetadata, getPropertiesBefore.getMetadata());
@@ -679,8 +691,6 @@ public class DirectoryApiTests extends FileShareTestBase {
     public void setMetadataError() {
         primaryDirectoryClient.create();
         Map<String, String> errorMetadata = Collections.singletonMap("", "value");
-        primaryDirectoryClient.setMetadata(errorMetadata);
-
         ShareStorageException e = assertThrows(ShareStorageException.class,
             () -> primaryDirectoryClient.setMetadata(errorMetadata));
         assertExceptionStatusCodeAndMessage(e, 400, ShareErrorCode.EMPTY_METADATA_KEY);
@@ -732,7 +742,7 @@ public class DirectoryApiTests extends FileShareTestBase {
     }
 
 
-    @DisabledIf("FileShareTestBase#olderThan20201002ServiceVersion")
+    @DisabledIf("com.azure.storage.file.share.FileShareTestBase#olderThan20201002ServiceVersion")
     @ParameterizedTest
     @MethodSource("listFilesAndDirectoriesArgsSupplier")
     public void listFilesAndDirectoriesArgs(String extraPrefix, Integer maxResults, int numOfResults) {
@@ -768,11 +778,12 @@ public class DirectoryApiTests extends FileShareTestBase {
             Arguments.of("noOp", 3, 0));
     }
 
-    @DisabledIf("FileShareTestBase#olderThan20201002ServiceVersion")
+    @DisabledIf("com.azure.storage.file.share.FileShareTestBase#olderThan20201002ServiceVersion")
     @ParameterizedTest
     @CsvSource(value = {"false,false,false,false", "true,false,false,false", "false,true,false,false",
         "false,false,true,false", "false,false,false,true", "true,true,true,true"})
-    public void listFilesAndDirectoriesExtendedInfoArgs(boolean timestamps, boolean etag, boolean attributes, boolean permissionKey) {
+    public void listFilesAndDirectoriesExtendedInfoArgs(boolean timestamps, boolean etag, boolean attributes,
+        boolean permissionKey) {
         primaryDirectoryClient.create();
         List<String> nameList = new ArrayList<>();
         String dirPrefix = generatePathName();
@@ -796,7 +807,8 @@ public class DirectoryApiTests extends FileShareTestBase {
             .setIncludeETag(etag)
             .setIncludeAttributes(attributes)
             .setIncludePermissionKey(permissionKey);
-        List<ShareFileItem> returnedFileList = primaryDirectoryClient.listFilesAndDirectories(options, null, null).stream().collect(Collectors.toList());
+        List<ShareFileItem> returnedFileList = primaryDirectoryClient.listFilesAndDirectories(options, null, null)
+            .stream().collect(Collectors.toList());
 
         for (int i = 0; i < nameList.size(); i++) {
             assertEquals(nameList.get(i), returnedFileList.get(i).getName());
@@ -804,7 +816,7 @@ public class DirectoryApiTests extends FileShareTestBase {
     }
 
     @Test
-    @DisabledIf("FileShareTestBase#olderThan20201002ServiceVersion")
+    @DisabledIf("com.azure.storage.file.share.FileShareTestBase#olderThan20201002ServiceVersion")
     public void listFilesAndDirectoriesExtendedInfoResults() {
         ShareDirectoryClient parentDir = primaryDirectoryClient;
         parentDir.create();
@@ -834,36 +846,36 @@ public class DirectoryApiTests extends FileShareTestBase {
         assertEquals(dirListItem.getName(), new File(dir.getDirectoryPath()).getName());
         assertTrue(dirListItem.isDirectory());
         assertNotNull(dirListItem.getId());
-        assertFalse(dirListItem.getId().isBlank());
+        assertFalse(isAllWhitespace(dirListItem.getId()));
 
         assertEquals(EnumSet.of(NtfsFileAttributes.DIRECTORY), dirListItem.getFileAttributes());
         assertNotNull(dirListItem.getPermissionKey());
-        assertFalse(dirListItem.getPermissionKey().isBlank());
+        assertFalse(isAllWhitespace(dirListItem.getPermissionKey()));
         assertNotNull(dirListItem.getProperties().getCreatedOn());
         assertNotNull(dirListItem.getProperties().getLastAccessedOn());
         assertNotNull(dirListItem.getProperties().getLastWrittenOn());
         assertNotNull(dirListItem.getProperties().getChangedOn());
         assertNotNull(dirListItem.getProperties().getLastModified());
         assertNotNull(dirListItem.getProperties().getETag());
-        assertFalse(dirListItem.getProperties().getETag().isBlank());
+        assertFalse(isAllWhitespace(dirListItem.getProperties().getETag()));
         assertEquals(fileListItem.getName(), new File(file.getFilePath()).getName());
         assertFalse(fileListItem.isDirectory());
         assertNotNull(fileListItem.getId());
-        assertFalse(fileListItem.getId().isBlank());
+        assertFalse(isAllWhitespace(fileListItem.getId()));
         assertEquals(EnumSet.of(NtfsFileAttributes.ARCHIVE), fileListItem.getFileAttributes());
         assertNotNull(fileListItem.getPermissionKey());
-        assertFalse(fileListItem.getPermissionKey().isBlank());
+        assertFalse(isAllWhitespace(fileListItem.getPermissionKey()));
         assertNotNull(fileListItem.getProperties().getCreatedOn());
         assertNotNull(fileListItem.getProperties().getLastAccessedOn());
         assertNotNull(fileListItem.getProperties().getLastWrittenOn());
         assertNotNull(fileListItem.getProperties().getChangedOn());
         assertNotNull(fileListItem.getProperties().getLastModified());
         assertNotNull(fileListItem.getProperties().getETag());
-        assertFalse(fileListItem.getProperties().getETag().isBlank());
+        assertFalse(isAllWhitespace(fileListItem.getProperties().getETag()));
     }
 
     @Test
-    @DisabledIf("FileShareTestBase#olderThan20211202ServiceVersion")
+    @DisabledIf("com.azure.storage.file.share.FileShareTestBase#olderThan20211202ServiceVersion")
     public void listFilesAndDirectoriesEncoded() {
         String specialCharDirectoryName = "directory\uFFFE";
         String specialCharFileName = "file\uFFFE";
@@ -883,7 +895,7 @@ public class DirectoryApiTests extends FileShareTestBase {
     }
 
     @Test
-    @DisabledIf("FileShareTestBase#olderThan20211202ServiceVersion")
+    @DisabledIf("com.azure.storage.file.share.FileShareTestBase#olderThan20211202ServiceVersion")
     public void listFilesAndDirectoriesEncodedContinuationToken() {
         // Test implementation
         String specialCharFileName0 = "file0\uFFFE";
@@ -903,7 +915,7 @@ public class DirectoryApiTests extends FileShareTestBase {
     }
 
     @Test
-    @DisabledIf("FileShareTestBase#olderThan20211202ServiceVersion")
+    @DisabledIf("com.azure.storage.file.share.FileShareTestBase#olderThan20211202ServiceVersion")
     public void listFilesAndDirectoriesEncodedPrefix() {
         String specialCharDirectoryName = "directory\uFFFE";
 
@@ -919,10 +931,12 @@ public class DirectoryApiTests extends FileShareTestBase {
     }
 
     @Test
-    @DisabledIf("FileShareTestBase#olderThan20210410ServiceVersion")
+    @DisabledIf("com.azure.storage.file.share.FileShareTestBase#olderThan20210410ServiceVersion")
     public void testListFilesAndDirectoriesOAuth() {
-        ShareDirectoryClient dirClient = getOAuthServiceClient(new ShareServiceClientBuilder().shareTokenIntent(ShareTokenIntent.BACKUP))
-            .getShareClient(shareName).getDirectoryClient(generatePathName());
+        ShareDirectoryClient dirClient = getOAuthServiceClient(new ShareServiceClientBuilder()
+            .shareTokenIntent(ShareTokenIntent.BACKUP))
+            .getShareClient(shareName)
+            .getDirectoryClient(generatePathName());
         dirClient.create();
 
         List<String> fileNames = new ArrayList<>();
@@ -968,8 +982,8 @@ public class DirectoryApiTests extends FileShareTestBase {
             }
         }
 
-        for (PagedResponse<ShareFileItem> page :
-            primaryDirectoryClient.listFilesAndDirectories(prefix, null, null, null).iterableByPage(1)) {
+        for (PagedResponse<ShareFileItem> page
+            : primaryDirectoryClient.listFilesAndDirectories(prefix, null, null, null).iterableByPage(1)) {
             assertEquals(1, page.getValue().size());
         }
     }
@@ -992,7 +1006,7 @@ public class DirectoryApiTests extends FileShareTestBase {
     }
 
     @Test
-    @DisabledIf("FileShareTestBase#olderThan20221102ServiceVersion")
+    @DisabledIf("com.azure.storage.file.share.FileShareTestBase#olderThan20221102ServiceVersion")
     public void listHandlesTrailingDot() {
         shareClient = getShareClient(shareName, true, null);
         String directoryName = generatePathName() + ".";
@@ -1005,7 +1019,7 @@ public class DirectoryApiTests extends FileShareTestBase {
     }
 
     @Test
-    @DisabledIf("FileShareTestBase#olderThan20210410ServiceVersion")
+    @DisabledIf("com.azure.storage.file.share.FileShareTestBase#olderThan20210410ServiceVersion")
     public void listHandlesOAuth() {
         ShareServiceClient oAuthServiceClient = getOAuthServiceClient(new ShareServiceClientBuilder()
             .shareTokenIntent(ShareTokenIntent.BACKUP));
@@ -1026,7 +1040,7 @@ public class DirectoryApiTests extends FileShareTestBase {
     }
 
     @Test
-    @DisabledIf("FileShareTestBase#olderThan20190707ServiceVersion")
+    @DisabledIf("com.azure.storage.file.share.FileShareTestBase#olderThan20190707ServiceVersion")
     public void forceCloseHandleMin() {
         primaryDirectoryClient.create();
         CloseHandlesInfo handlesClosedInfo = primaryDirectoryClient.forceCloseHandle("1");
@@ -1041,7 +1055,7 @@ public class DirectoryApiTests extends FileShareTestBase {
     }
 
     @Test
-    @DisabledIf("FileShareTestBase#olderThan20210410ServiceVersion")
+    @DisabledIf("com.azure.storage.file.share.FileShareTestBase#olderThan20210410ServiceVersion")
     public void forceCloseHandleOAuth() {
         ShareServiceClient oAuthServiceClient = getOAuthServiceClient(new ShareServiceClientBuilder()
             .shareTokenIntent(ShareTokenIntent.BACKUP));
@@ -1055,7 +1069,7 @@ public class DirectoryApiTests extends FileShareTestBase {
     }
 
     @Test
-    @DisabledIf("FileShareTestBase#olderThan20190707ServiceVersion")
+    @DisabledIf("com.azure.storage.file.share.FileShareTestBase#olderThan20190707ServiceVersion")
     public void forceCloseAllHandlesMin() {
         primaryDirectoryClient.create();
         CloseHandlesInfo handlesClosedInfo = primaryDirectoryClient.forceCloseAllHandles(false, null, null);
@@ -1064,7 +1078,7 @@ public class DirectoryApiTests extends FileShareTestBase {
     }
 
     @Test
-    @DisabledIf("FileShareTestBase#olderThan20221102ServiceVersion")
+    @DisabledIf("com.azure.storage.file.share.FileShareTestBase#olderThan20221102ServiceVersion")
     public void forceCloseAllHandlesTrailingDot() {
         shareClient = getShareClient(shareName, true, null);
         ShareDirectoryClient directoryClient = shareClient.getDirectoryClient(generatePathName() + ".");
@@ -1075,24 +1089,25 @@ public class DirectoryApiTests extends FileShareTestBase {
     }
 
     @Test
-    @DisabledIf("FileShareTestBase#olderThan20210410ServiceVersion")
+    @DisabledIf("com.azure.storage.file.share.FileShareTestBase#olderThan20210410ServiceVersion")
     public void renameMin() {
         primaryDirectoryClient.create();
         assertDoesNotThrow(() -> primaryDirectoryClient.rename(generatePathName()));
     }
 
     @Test
-    @DisabledIf("FileShareTestBase#olderThan20210410ServiceVersion")
+    @DisabledIf("com.azure.storage.file.share.FileShareTestBase#olderThan20210410ServiceVersion")
     public void renameWithResponse() {
         primaryDirectoryClient.create();
-        Response<ShareDirectoryClient> resp = primaryDirectoryClient.renameWithResponse(new ShareFileRenameOptions(generatePathName()), null, null);
+        Response<ShareDirectoryClient> resp = primaryDirectoryClient.renameWithResponse(
+            new ShareFileRenameOptions(generatePathName()), null, null);
         ShareDirectoryClient renamedClient = resp.getValue();
         assertDoesNotThrow(renamedClient::getProperties);
         assertThrows(ShareStorageException.class, () -> primaryDirectoryClient.getProperties());
     }
 
     @Test
-    @DisabledIf("FileShareTestBase#olderThan20210410ServiceVersion")
+    @DisabledIf("com.azure.storage.file.share.FileShareTestBase#olderThan20210410ServiceVersion")
     public void renameDifferentDirectory() {
         primaryDirectoryClient.create();
         ShareDirectoryClient destinationClient = shareClient.getDirectoryClient(generatePathName());
@@ -1104,7 +1119,7 @@ public class DirectoryApiTests extends FileShareTestBase {
         assertEquals(destinationPath, resultClient.getDirectoryPath());
     }
 
-    @DisabledIf("FileShareTestBase#olderThan20210410ServiceVersion")
+    @DisabledIf("com.azure.storage.file.share.FileShareTestBase#olderThan20210410ServiceVersion")
     @ParameterizedTest
     @ValueSource(booleans = {true, false})
     public void renameReplaceIfExists(boolean replaceIfExists) {
@@ -1120,15 +1135,17 @@ public class DirectoryApiTests extends FileShareTestBase {
         assertEquals(replaceIfExists, !exception);
     }
 
-    @DisabledIf("FileShareTestBase#olderThan20210410ServiceVersion")
+    @DisabledIf("com.azure.storage.file.share.FileShareTestBase#olderThan20210410ServiceVersion")
     @ParameterizedTest
     @ValueSource(booleans = {true, false})
     public void renameIgnoreReadOnly(boolean ignoreReadOnly) {
         primaryDirectoryClient.create();
-        FileSmbProperties props = new FileSmbProperties().setNtfsFileAttributes(EnumSet.of(NtfsFileAttributes.READ_ONLY));
+        FileSmbProperties props = new FileSmbProperties().setNtfsFileAttributes(
+            EnumSet.of(NtfsFileAttributes.READ_ONLY));
         ShareFileClient destinationFile = shareClient.getFileClient(generatePathName());
         destinationFile.createWithResponse(512L, null, props, null, null, null, null, null);
-        ShareFileRenameOptions options = new ShareFileRenameOptions(destinationFile.getFilePath()).setIgnoreReadOnly(ignoreReadOnly).setReplaceIfExists(true);
+        ShareFileRenameOptions options = new ShareFileRenameOptions(destinationFile.getFilePath())
+            .setIgnoreReadOnly(ignoreReadOnly).setReplaceIfExists(true);
         boolean exception = false;
         try {
             primaryDirectoryClient.renameWithResponse(options, null, null);
@@ -1139,17 +1156,18 @@ public class DirectoryApiTests extends FileShareTestBase {
     }
 
     @Test
-    @DisabledIf("FileShareTestBase#olderThan20210410ServiceVersion")
+    @DisabledIf("com.azure.storage.file.share.FileShareTestBase#olderThan20210410ServiceVersion")
     public void renameFilePermission() {
         primaryDirectoryClient.create();
         String filePermission = "O:S-1-5-21-2127521184-1604012920-1887927527-21560751G:S-1-5-21-2127521184-1604012920-1887927527-513D:AI(A;;FA;;;SY)(A;;FA;;;BA)(A;;0x1200a9;;;S-1-5-21-397955417-626881126-188441444-3053964)";
-        ShareFileRenameOptions options = new ShareFileRenameOptions(generatePathName()).setFilePermission(filePermission);
+        ShareFileRenameOptions options = new ShareFileRenameOptions(generatePathName())
+            .setFilePermission(filePermission);
         ShareDirectoryClient destClient = primaryDirectoryClient.renameWithResponse(options, null, null).getValue();
         assertNotNull(destClient.getProperties().getSmbProperties().getFilePermissionKey());
     }
 
     @Test
-    @DisabledIf("FileShareTestBase#olderThan20210410ServiceVersion")
+    @DisabledIf("com.azure.storage.file.share.FileShareTestBase#olderThan20210410ServiceVersion")
     public void renameFilePermissionAndKeySet() {
         primaryDirectoryClient.create();
         String filePermission = "O:S-1-5-21-2127521184-1604012920-1887927527-21560751G:S-1-5-21-2127521184-1604012920-1887927527-513D:AI(A;;FA;;;SY)(A;;FA;;;BA)(A;;0x1200a9;;;S-1-5-21-397955417-626881126-188441444-3053964)";
@@ -1162,7 +1180,7 @@ public class DirectoryApiTests extends FileShareTestBase {
     }
 
     @Test
-    @DisabledIf("FileShareTestBase#olderThan20210410ServiceVersion")
+    @DisabledIf("com.azure.storage.file.share.FileShareTestBase#olderThan20210410ServiceVersion")
     public void renameFileSmbProperties() {
         primaryDirectoryClient.create();
         String filePermission = "O:S-1-5-21-2127521184-1604012920-1887927527-21560751G:S-1-5-21-2127521184-1604012920-1887927527-513D:AI(A;;FA;;;SY)(A;;FA;;;BA)(A;;0x1200a9;;;S-1-5-21-397955417-626881126-188441444-3053964)";
@@ -1184,7 +1202,7 @@ public class DirectoryApiTests extends FileShareTestBase {
     }
 
     @Test
-    @DisabledIf("FileShareTestBase#olderThan20210410ServiceVersion")
+    @DisabledIf("com.azure.storage.file.share.FileShareTestBase#olderThan20210410ServiceVersion")
     public void renameMetadata() {
         primaryDirectoryClient.create();
         String key = "update";
@@ -1200,7 +1218,7 @@ public class DirectoryApiTests extends FileShareTestBase {
     }
 
     @Test
-    @DisabledIf("FileShareTestBase#olderThan20210410ServiceVersion")
+    @DisabledIf("com.azure.storage.file.share.FileShareTestBase#olderThan20210410ServiceVersion")
     public void renameOAuth() {
         ShareServiceClient oAuthServiceClient = getOAuthServiceClient(new ShareServiceClientBuilder()
             .shareTokenIntent(ShareTokenIntent.BACKUP));
@@ -1218,14 +1236,14 @@ public class DirectoryApiTests extends FileShareTestBase {
     }
 
     @Test
-    @DisabledIf("FileShareTestBase#olderThan20210410ServiceVersion")
+    @DisabledIf("com.azure.storage.file.share.FileShareTestBase#olderThan20210410ServiceVersion")
     public void renameError() {
         primaryDirectoryClient = shareClient.getDirectoryClient(generatePathName());
         assertThrows(ShareStorageException.class, () -> primaryDirectoryClient.rename(generatePathName()));
     }
 
     @Test
-    @DisabledIf("FileShareTestBase#olderThan20210410ServiceVersion")
+    @DisabledIf("com.azure.storage.file.share.FileShareTestBase#olderThan20210410ServiceVersion")
     public void renameDestAC() {
         primaryDirectoryClient.create();
         String pathName = generatePathName();
@@ -1239,7 +1257,7 @@ public class DirectoryApiTests extends FileShareTestBase {
     }
 
     @Test
-    @DisabledIf("FileShareTestBase#olderThan20210410ServiceVersion")
+    @DisabledIf("com.azure.storage.file.share.FileShareTestBase#olderThan20210410ServiceVersion")
     public void renameDestACFail() {
         primaryDirectoryClient.create();
         String pathName = generatePathName();
@@ -1254,7 +1272,7 @@ public class DirectoryApiTests extends FileShareTestBase {
     }
 
     @Test
-    @DisabledIf("FileShareTestBase#olderThan20210212ServiceVersion")
+    @DisabledIf("com.azure.storage.file.share.FileShareTestBase#olderThan20210212ServiceVersion")
     public void testRenameSASToken() {
         ShareFileSasPermission permissions = new ShareFileSasPermission()
             .setReadPermission(true)
@@ -1279,7 +1297,7 @@ public class DirectoryApiTests extends FileShareTestBase {
     }
 
     @Test
-    @DisabledIf("FileShareTestBase#olderThan20221102ServiceVersion")
+    @DisabledIf("com.azure.storage.file.share.FileShareTestBase#olderThan20221102ServiceVersion")
     public void renameTrailingDot() {
         shareClient = getShareClient(shareName, true, true);
 
@@ -1327,13 +1345,13 @@ public class DirectoryApiTests extends FileShareTestBase {
 
         assertResponseStatusCode(
             primaryDirectoryClient.createSubdirectoryWithResponse("testCreateSubDirectory",
-                null, filePermission, null, null, null), 201);
+                null, FILE_PERMISSION, null, null, null), 201);
     }
 
     @Test
     public void createSubDirectoryFilePermissionKey() {
         primaryDirectoryClient.create();
-        String filePermissionKey = shareClient.createPermission(filePermission);
+        String filePermissionKey = shareClient.createPermission(FILE_PERMISSION);
         smbProperties.setFileCreationTime(testResourceNamer.now())
             .setFileLastWriteTime(testResourceNamer.now())
             .setFilePermissionKey(filePermissionKey);
@@ -1382,8 +1400,8 @@ public class DirectoryApiTests extends FileShareTestBase {
     @Test
     public void createIfNotExistsSubDirectoryMetadata() {
         primaryDirectoryClient.create();
-        assertResponseStatusCode(primaryDirectoryClient.createSubdirectoryIfNotExistsWithResponse("testCreateSubDirectory",
-            new ShareDirectoryCreateOptions().setMetadata(testMetadata), null, null), 201);
+        assertResponseStatusCode(primaryDirectoryClient.createSubdirectoryIfNotExistsWithResponse(
+            "testCreateSubDirectory", new ShareDirectoryCreateOptions().setMetadata(testMetadata), null, null), 201);
     }
 
     @Test
@@ -1402,20 +1420,22 @@ public class DirectoryApiTests extends FileShareTestBase {
     @Test
     public void createIfNotExistsSubDirectoryFilePermission() {
         primaryDirectoryClient.create();
-        assertResponseStatusCode(primaryDirectoryClient.createSubdirectoryIfNotExistsWithResponse("testCreateSubDirectory",
-            new ShareDirectoryCreateOptions().setFilePermission(filePermission), null, null), 201);
+        assertResponseStatusCode(primaryDirectoryClient.createSubdirectoryIfNotExistsWithResponse(
+            "testCreateSubDirectory", new ShareDirectoryCreateOptions().setFilePermission(FILE_PERMISSION), null, null),
+            201);
     }
 
     @Test
     public void testCreateIfNotExistsSubDirectoryFilePermissionKey() {
         primaryDirectoryClient.create();
-        String filePermissionKey = shareClient.createPermission(filePermission);
+        String filePermissionKey = shareClient.createPermission(FILE_PERMISSION);
         smbProperties.setFileCreationTime(testResourceNamer.now())
             .setFileLastWriteTime(testResourceNamer.now())
             .setFilePermissionKey(filePermissionKey);
 
-        assertResponseStatusCode(primaryDirectoryClient.createSubdirectoryIfNotExistsWithResponse("testCreateSubDirectory",
-            new ShareDirectoryCreateOptions().setSmbProperties(smbProperties), null, null), 201);
+        assertResponseStatusCode(primaryDirectoryClient.createSubdirectoryIfNotExistsWithResponse(
+            "testCreateSubDirectory", new ShareDirectoryCreateOptions().setSmbProperties(smbProperties), null, null),
+            201);
     }
 
     @Test
@@ -1425,7 +1445,8 @@ public class DirectoryApiTests extends FileShareTestBase {
         primaryDirectoryClient.create();
         primaryDirectoryClient.createSubdirectory(subDirectoryName);
 
-        FileTestHelper.assertResponseStatusCode(primaryDirectoryClient.deleteSubdirectoryWithResponse(subDirectoryName, null, null), 202);
+        FileTestHelper.assertResponseStatusCode(primaryDirectoryClient.deleteSubdirectoryWithResponse(subDirectoryName,
+            null, null), 202);
     }
 
     @Test
@@ -1468,23 +1489,17 @@ public class DirectoryApiTests extends FileShareTestBase {
     public void createFile() {
         primaryDirectoryClient.create();
         FileTestHelper.assertResponseStatusCode(
-            primaryDirectoryClient.createFileWithResponse("testCreateFile", 1024, null, null, null, null, null, null), 201);
+            primaryDirectoryClient.createFileWithResponse("testCreateFile", 1024, null, null, null, null, null, null),
+            201);
     }
 
     @ParameterizedTest
-    @MethodSource("createFileInvalidArgsSupplier")
+    @MethodSource("com.azure.storage.file.share.FileShareTestBase#createFileInvalidArgsSupplier")
     public void createFileInvalidArgs(String fileName, long maxSize, int statusCode, ShareErrorCode errMsg) {
         primaryDirectoryClient.create();
         ShareStorageException e = assertThrows(ShareStorageException.class,
             () -> primaryDirectoryClient.createFileWithResponse(fileName, maxSize, null, null, null, null, null, null));
         assertExceptionStatusCodeAndMessage(e, statusCode, errMsg);
-    }
-
-    private static Stream<Arguments> createFileInvalidArgsSupplier() {
-        return Stream.of(
-            Arguments.of("testfile:", 1024, 400, ShareErrorCode.INVALID_RESOURCE_NAME),
-            Arguments.of("fileName", -1, 400, ShareErrorCode.OUT_OF_RANGE_INPUT)
-        );
     }
 
     @Test
@@ -1496,27 +1511,19 @@ public class DirectoryApiTests extends FileShareTestBase {
 
         assertResponseStatusCode(
             primaryDirectoryClient.createFileWithResponse("testCreateFile", 1024, httpHeaders, smbProperties,
-                filePermission, testMetadata, null, null), 201);
+                FILE_PERMISSION, testMetadata, null, null), 201);
     }
 
     @ParameterizedTest
-    @MethodSource("createFileMaxOverloadInvalidArgsSupplier")
+    @MethodSource("com.azure.storage.file.share.FileShareTestBase#createFileMaxOverloadInvalidArgsSupplier")
     public void createFileMaxOverloadInvalidArgs(String fileName, long maxSize, ShareFileHttpHeaders httpHeaders,
-    Map<String, String> metadata, ShareErrorCode errMsg) {
+        Map<String, String> metadata, ShareErrorCode errMsg) {
         primaryDirectoryClient.create();
-        ShareStorageException e = assertThrows(ShareStorageException.class, () -> primaryDirectoryClient.createFileWithResponse(
-            fileName, maxSize, httpHeaders, null, null, metadata, null, null));
+        ShareStorageException e = assertThrows(ShareStorageException.class,
+            () -> primaryDirectoryClient.createFileWithResponse(fileName, maxSize, httpHeaders, null, null, metadata,
+                null, null));
 
         assertExceptionStatusCodeAndMessage(e, 400, errMsg);
-    }
-
-    private static Stream<Arguments> createFileMaxOverloadInvalidArgsSupplier() {
-        return Stream.of(
-            Arguments.of("testfile:", 1024, null, testMetadata, ShareErrorCode.INVALID_RESOURCE_NAME),
-            Arguments.of("fileName", -1, null, testMetadata, ShareErrorCode.OUT_OF_RANGE_INPUT),
-            Arguments.of("fileName", 1024, new ShareFileHttpHeaders().setContentMd5(new byte[0]), testMetadata, ShareErrorCode.INVALID_HEADER_VALUE),
-            Arguments.of("fileName", 1024, null, Collections.singletonMap("key", "value"), ShareErrorCode.EMPTY_METADATA_KEY)
-        );
     }
 
     @Test

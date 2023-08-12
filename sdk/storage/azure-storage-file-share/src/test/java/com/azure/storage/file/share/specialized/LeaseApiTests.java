@@ -11,7 +11,6 @@ import com.azure.storage.file.share.ShareDirectoryClient;
 import com.azure.storage.file.share.ShareFileClient;
 import com.azure.storage.file.share.ShareServiceClient;
 import com.azure.storage.file.share.ShareServiceClientBuilder;
-import com.azure.storage.file.share.ShareServiceVersion;
 import com.azure.storage.file.share.models.LeaseDurationType;
 import com.azure.storage.file.share.models.LeaseStateType;
 import com.azure.storage.file.share.models.ShareErrorCode;
@@ -26,7 +25,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledIf;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
-import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
@@ -46,12 +44,11 @@ public class LeaseApiTests extends FileShareTestBase {
     private ShareFileClient primaryFileClient;
     private ShareClient shareClient;
     private String shareName;
-    private String filePath;
 
     @BeforeEach
     public void setup() {
         shareName = generateShareName();
-        filePath = generatePathName();
+        String filePath = generatePathName();
         shareClient = shareBuilderHelper(shareName).buildClient();
         shareClient.create();
         primaryFileClient = fileBuilderHelper(shareName, filePath).buildFileClient();
@@ -87,11 +84,13 @@ public class LeaseApiTests extends FileShareTestBase {
         assertEquals(200, releaseResponse.getStatusCode());
     }
 
-    @DisabledIf("com.azure.storage.file.share.FileShareTestBase#olderThan20221102ServiceVersion")
+    @DisabledIf("com.azure.storage.file.share.FileShareTestBase#olderThan20210410ServiceVersion")
     @Test
     public void acquireAndReleaseFileLeaseOAuth() {
-        ShareServiceClient oAuthServiceClient = getOAuthServiceClient(new ShareServiceClientBuilder().shareTokenIntent(ShareTokenIntent.BACKUP));
-        ShareDirectoryClient dirClient = oAuthServiceClient.getShareClient(shareName).getDirectoryClient(generatePathName());
+        ShareServiceClient oAuthServiceClient = getOAuthServiceClient(new ShareServiceClientBuilder()
+            .shareTokenIntent(ShareTokenIntent.BACKUP));
+        ShareDirectoryClient dirClient = oAuthServiceClient.getShareClient(shareName)
+            .getDirectoryClient(generatePathName());
         dirClient.create();
         ShareFileClient fileClient = dirClient.getFileClient(generatePathName());
         fileClient.create(Constants.KB);
@@ -169,8 +168,10 @@ public class LeaseApiTests extends FileShareTestBase {
     @DisabledIf("com.azure.storage.file.share.FileShareTestBase#olderThan20210410ServiceVersion")
     @Test
     public void breakFileLeaseOAuth() {
-        ShareServiceClient oAuthServiceClient = getOAuthServiceClient(new ShareServiceClientBuilder().shareTokenIntent(ShareTokenIntent.BACKUP));
-        ShareDirectoryClient dirClient = oAuthServiceClient.getShareClient(shareName).getDirectoryClient(generatePathName());
+        ShareServiceClient oAuthServiceClient = getOAuthServiceClient(new ShareServiceClientBuilder()
+            .shareTokenIntent(ShareTokenIntent.BACKUP));
+        ShareDirectoryClient dirClient = oAuthServiceClient.getShareClient(shareName)
+            .getDirectoryClient(generatePathName());
         dirClient.create();
         ShareFileClient fileClient = dirClient.getFileClient(generatePathName());
         fileClient.create(Constants.KB);
@@ -208,7 +209,8 @@ public class LeaseApiTests extends FileShareTestBase {
     @Test
     public void changeFileLeaseMin() {
         String leaseID = setupFileLeaseCondition(primaryFileClient, RECEIVED_LEASE_ID);
-        assertDoesNotThrow(() -> createLeaseClient(primaryFileClient, leaseID).changeLease(testResourceNamer.randomUuid()));
+        assertDoesNotThrow(() -> createLeaseClient(primaryFileClient, leaseID)
+            .changeLease(testResourceNamer.randomUuid()));
     }
 
     @DisabledIf("com.azure.storage.file.share.FileShareTestBase#olderThan20221102ServiceVersion")
@@ -229,9 +231,10 @@ public class LeaseApiTests extends FileShareTestBase {
     @DisabledIf("com.azure.storage.file.share.FileShareTestBase#olderThan20210410ServiceVersion")
     @Test
     public void changeFileLeaseOAuth() {
-        ShareServiceClient oAuthServiceClient =
-            getOAuthServiceClient(new ShareServiceClientBuilder().shareTokenIntent(ShareTokenIntent.BACKUP));
-        ShareDirectoryClient dirClient = oAuthServiceClient.getShareClient(shareName).getDirectoryClient(generatePathName());
+        ShareServiceClient oAuthServiceClient = getOAuthServiceClient(new ShareServiceClientBuilder()
+            .shareTokenIntent(ShareTokenIntent.BACKUP));
+        ShareDirectoryClient dirClient = oAuthServiceClient.getShareClient(shareName)
+            .getDirectoryClient(generatePathName());
         dirClient.create();
         ShareFileClient fileClient = dirClient.getFileClient(generatePathName());
         fileClient.create(Constants.KB);
@@ -254,8 +257,9 @@ public class LeaseApiTests extends FileShareTestBase {
 
     @DisabledIf("com.azure.storage.file.share.FileShareTestBase#olderThan20200210ServiceVersion")
     @ParameterizedTest
-    @MethodSource("changeFileLeaseErrorSupplier")
-    public void acquireShareLease(String proposedID, int leaseTime, LeaseStateType leaseState, LeaseDurationType leaseDuration) {
+    @MethodSource("acquireShareLeaseSupplier")
+    public void acquireShareLease(String proposedID, int leaseTime, LeaseStateType leaseState,
+        LeaseDurationType leaseDuration) {
         ShareLeaseClient leaseClient = createLeaseClient(shareClient, proposedID);
 
         Response<String> leaseResponse = leaseClient.acquireLeaseWithResponse(new ShareAcquireLeaseOptions()
@@ -269,7 +273,7 @@ public class LeaseApiTests extends FileShareTestBase {
         assertEquals(leaseDuration, properties.getLeaseDuration());
     }
 
-    private static Stream<Arguments> changeFileLeaseErrorSupplier() {
+    private static Stream<Arguments> acquireShareLeaseSupplier() {
         return Stream.of(
             Arguments.of(null, -1, LeaseStateType.LEASED, LeaseDurationType.INFINITE),
             Arguments.of(null, 25, LeaseStateType.LEASED, LeaseDurationType.FIXED),
@@ -381,7 +385,8 @@ public class LeaseApiTests extends FileShareTestBase {
     @Test
     public void releaseShareLease() {
         String leaseID = setupShareLeaseCondition(shareClient, RECEIVED_LEASE_ID);
-        Response<Void> releaseLeaseResponse = createLeaseClient(shareClient, leaseID).releaseLeaseWithResponse(null, null);
+        Response<Void> releaseLeaseResponse = createLeaseClient(shareClient, leaseID)
+            .releaseLeaseWithResponse(null, null);
 
         assertEquals(LeaseStateType.AVAILABLE, shareClient.getProperties().getLeaseState());
         validateBasicHeaders(releaseLeaseResponse.getHeaders());
@@ -420,7 +425,7 @@ public class LeaseApiTests extends FileShareTestBase {
 
     @DisabledIf("com.azure.storage.file.share.FileShareTestBase#olderThan20200210ServiceVersion")
     @ParameterizedTest
-    @CsvSource(value = {"-1,null", "-1,20", "20,15"})
+    @MethodSource("breakShareLeaseSupplier")
     public void breakShareLease(int leaseTime, Long breakPeriod) {
         ShareLeaseClient leaseClient = createLeaseClient(shareClient, testResourceNamer.randomUuid());
         leaseClient.acquireLeaseWithResponse(new ShareAcquireLeaseOptions().setDuration(leaseTime), null, null);
@@ -436,12 +441,16 @@ public class LeaseApiTests extends FileShareTestBase {
         }
     }
 
+    private static Stream<Arguments> breakShareLeaseSupplier() {
+        return Stream.of(Arguments.of(-1, null), Arguments.of(-1, 20), Arguments.of(20, 15));
+    }
+
     @DisabledIf("com.azure.storage.file.share.FileShareTestBase#olderThan20200210ServiceVersion")
     @Test
     public void breakShareLeaseMin() {
         setupShareLeaseCondition(shareClient, RECEIVED_LEASE_ID);
-        assertEquals(202, createLeaseClient(shareClient).breakLeaseWithResponse(new ShareBreakLeaseOptions(), null, null)
-            .getStatusCode());
+        assertEquals(202, createLeaseClient(shareClient).breakLeaseWithResponse(new ShareBreakLeaseOptions(), null,
+            null).getStatusCode());
     }
 
     @DisabledIf("com.azure.storage.file.share.FileShareTestBase#olderThan20200210ServiceVersion")
@@ -450,7 +459,8 @@ public class LeaseApiTests extends FileShareTestBase {
         String shareSnapshot = shareClient.createSnapshot().getSnapshot();
         ShareClient sc = shareBuilderHelper(shareClient.getShareName(), shareSnapshot).buildClient();
         String leaseID = setupShareLeaseCondition(sc, RECEIVED_LEASE_ID);
-        assertEquals(202, createLeaseClient(sc, leaseID).breakLeaseWithResponse(new ShareBreakLeaseOptions(), null, null).getStatusCode());
+        assertEquals(202, createLeaseClient(sc, leaseID).breakLeaseWithResponse(new ShareBreakLeaseOptions(), null,
+            null).getStatusCode());
 
 
     }
@@ -477,7 +487,8 @@ public class LeaseApiTests extends FileShareTestBase {
         Response<String> changeLeaseResponse = leaseClient.changeLeaseWithResponse(newLeaseId, null, null);
         assertEquals(newLeaseId, changeLeaseResponse.getValue());
         assertEquals(leaseClient.getLeaseId(), changeLeaseResponse.getValue());
-        assertEquals(200, createLeaseClient(shareClient, newLeaseId).releaseLeaseWithResponse(null, null).getStatusCode());
+        assertEquals(200, createLeaseClient(shareClient, newLeaseId).releaseLeaseWithResponse(null, null)
+            .getStatusCode());
         validateBasicHeaders(changeLeaseResponse.getHeaders());
     }
 
@@ -495,11 +506,14 @@ public class LeaseApiTests extends FileShareTestBase {
         String shareSnapshot = shareClient.createSnapshot().getSnapshot();
         ShareClient sc = shareBuilderHelper(shareClient.getShareName(), shareSnapshot).buildClient();
         String leaseID = setupShareLeaseCondition(sc, RECEIVED_LEASE_ID);
-
-        Response<String> resp = createLeaseClient(shareClient, leaseID)
+        System.err.println("lease id after setting shareleasecondition: " + leaseID);
+        Response<String> resp = createLeaseClient(sc, leaseID)
             .changeLeaseWithResponse(testResourceNamer.randomUuid(), null,  null);
+        System.err.println("share name: " + sc.getShareName());
+        System.err.println("lease id after changing lease: " + resp.getValue());
         assertEquals(200, resp.getStatusCode());
-        createLeaseClient(shareClient, resp.getValue()).releaseLeaseWithResponse(null, null);
+        createLeaseClient(sc, resp.getValue()).releaseLeaseWithResponse(null, null);
+        //sleepIfLiveTesting(10000);
     }
 
     @Test
@@ -507,7 +521,7 @@ public class LeaseApiTests extends FileShareTestBase {
         String shareSnapshot = "2020-08-19T19:26:08.0000000Z";
         ShareClient sc = shareBuilderHelper(shareClient.getShareName(), shareSnapshot).buildClient();
         assertThrows(ShareStorageException.class,
-            () -> createLeaseClient(shareClient).changeLease(testResourceNamer.randomUuid()));
+            () -> createLeaseClient(sc).changeLease(testResourceNamer.randomUuid()));
     }
 
     @Test

@@ -624,10 +624,11 @@ class LeaseAPITest extends APISpec {
         def shareSnapshot = shareClient.createSnapshot().getSnapshot()
         def shareClient = shareBuilderHelper(shareClient.getShareName(), shareSnapshot).buildClient()
         def leaseID = setupShareLeaseCondition(shareClient, receivedLeaseID)
-
+        System.err.println("lease id after setting shareleasecondition: " + leaseID)
         when:
         def resp = createLeaseClient(shareClient, leaseID).changeLeaseWithResponse(namer.getRandomUuid(), null,  null)
-
+        System.err.println("share name: " + shareClient.getShareName())
+        System.err.println("lease id after changing lease: " + resp.getValue())
         then:
         resp.getStatusCode() == 200
         createLeaseClient(shareClient, resp.getValue()).releaseLeaseWithResponse(null, null)

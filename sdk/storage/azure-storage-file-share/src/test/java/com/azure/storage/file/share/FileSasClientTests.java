@@ -35,7 +35,7 @@ class FileSasClientTests extends FileShareTestBase {
     private ShareServiceClient primaryFileServiceClient;
     private String shareName;
 
-    private String filePath = "filename";
+    private final String filePath = "filename";
     private String data;
 
     @BeforeEach

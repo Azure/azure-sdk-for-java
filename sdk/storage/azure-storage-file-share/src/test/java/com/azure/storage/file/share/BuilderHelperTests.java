@@ -5,6 +5,7 @@ package com.azure.storage.file.share;
 
 import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipeline;
@@ -55,7 +56,7 @@ public class BuilderHelperTests {
         return new HttpRequest(
             HttpMethod.HEAD,
             new URL(url),
-            new HttpHeaders().put("Content-Length", "0"),
+            new HttpHeaders().set(HttpHeaderName.CONTENT_LENGTH, "0"),
             Flux.empty());
     }
 
@@ -155,7 +156,8 @@ public class BuilderHelperTests {
     }
 
     /**
-     * Tests that a user application id will be honored in the UA string when using the service client builder's default pipeline.
+     * Tests that a user application id will be honored in the UA string when using the service client builder's default
+     * pipeline.
      */
     @ParameterizedTest
     @MethodSource("customApplicationIdInUAStringSupplier")
@@ -180,7 +182,8 @@ public class BuilderHelperTests {
     }
 
     /**
-     * Tests that a user application id will be honored in the UA string when using the share client builder's default pipeline.
+     * Tests that a user application id will be honored in the UA string when using the share client builder's default
+     * pipeline.
      */
     @ParameterizedTest
     @MethodSource("customApplicationIdInUAStringSupplier")
@@ -206,7 +209,8 @@ public class BuilderHelperTests {
     }
 
     /**
-     * Tests that a user application id will be honored in the UA string when using the file client builder's default pipeline.
+     * Tests that a user application id will be honored in the UA string when using the file client builder's default
+     * pipeline.
      */
     @ParameterizedTest
     @MethodSource("customApplicationIdInUAStringSupplier")
@@ -498,11 +502,11 @@ public class BuilderHelperTests {
         @Override
         public Mono<HttpResponse> send(HttpRequest request) {
             if (firstDate == null) {
-                firstDate = convertToDateObject(request.getHeaders().getValue("Date"));
+                firstDate = convertToDateObject(request.getHeaders().getValue(HttpHeaderName.DATE));
                 return Mono.error(new IOException("IOException!"));
             }
 
-            assert !firstDate.equals(convertToDateObject(request.getHeaders().getValue("Date")));
+            assert !firstDate.equals(convertToDateObject(request.getHeaders().getValue(HttpHeaderName.DATE)));
             return Mono.just(new MockHttpResponse(request, 200));
         }
 
@@ -525,10 +529,10 @@ public class BuilderHelperTests {
 
         @Override
         public Mono<HttpResponse> send(HttpRequest request) {
-            if (CoreUtils.isNullOrEmpty(request.getHeaders().getValue("User-Agent"))) {
+            if (CoreUtils.isNullOrEmpty(request.getHeaders().getValue(HttpHeaderName.USER_AGENT))) {
                 throw new RuntimeException("Failed to set 'User-Agent' header.");
             }
-            assert request.getHeaders().getValue("User-Agent").startsWith(expectedUA);
+            assert request.getHeaders().getValue(HttpHeaderName.USER_AGENT).startsWith(expectedUA);
             return Mono.just(new MockHttpResponse(request, 200));
         }
     }

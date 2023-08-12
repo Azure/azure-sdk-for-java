@@ -4,6 +4,7 @@
 package com.azure.storage.file.share;
 
 import com.azure.core.http.HttpHeaderName;
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.Constants;
@@ -24,6 +25,7 @@ import com.azure.storage.file.share.models.ShareRootSquash;
 import com.azure.storage.file.share.models.ShareSignedIdentifier;
 import com.azure.storage.file.share.models.ShareSnapshotInfo;
 import com.azure.storage.file.share.models.ShareSnapshotsDeleteOptionType;
+import com.azure.storage.file.share.models.ShareStatistics;
 import com.azure.storage.file.share.models.ShareStorageException;
 import com.azure.storage.file.share.models.ShareTokenIntent;
 import com.azure.storage.file.share.options.ShareCreateOptions;
@@ -50,6 +52,7 @@ import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.EnumSet;
 import java.util.Iterator;
@@ -57,7 +60,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
 
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
@@ -70,7 +72,7 @@ public class ShareApiTest extends FileShareTestBase {
     private String shareName;
     private static Map<String, String> testMetadata;
     private FileSmbProperties smbProperties;
-    private static final String filePermission = "O:S-1-5-21-2127521184-1604012920-1887927527-21560751G:S-1-5-21-2127521184-1604012920-1887927527-513D:AI(A;;FA;;;SY)(A;;FA;;;BA)(A;;0x1200a9;;;S-1-5-21-397955417-626881126-188441444-3053964)S:NO_ACCESS_CONTROL";
+    private static final String FILE_PERMISSION = "O:S-1-5-21-2127521184-1604012920-1887927527-21560751G:S-1-5-21-2127521184-1604012920-1887927527-513D:AI(A;;FA;;;SY)(A;;FA;;;BA)(A;;0x1200a9;;;S-1-5-21-397955417-626881126-188441444-3053964)S:NO_ACCESS_CONTROL";
 
     @BeforeEach
     public void setup() {
@@ -252,7 +254,8 @@ public class ShareApiTest extends FileShareTestBase {
     @Test
     public void createIfNotExistsShareThatAlreadyExists() {
         ShareClient client = premiumFileServiceClient.getShareClient(generateShareName());
-        Response<ShareInfo> initialResponse = client.createIfNotExistsWithResponse(new ShareCreateOptions(), null, null);
+        Response<ShareInfo> initialResponse = client.createIfNotExistsWithResponse(new ShareCreateOptions(), null,
+            null);
         Response<ShareInfo> secondResponse = client.createIfNotExistsWithResponse(new ShareCreateOptions(), null, null);
         assertEquals(initialResponse.getStatusCode(), 201);
         assertEquals(secondResponse.getStatusCode(), 409);
@@ -261,7 +264,8 @@ public class ShareApiTest extends FileShareTestBase {
     @DisabledIf("com.azure.storage.file.share.FileShareTestBase#olderThan20191212ServiceVersion")
     @ParameterizedTest
     @MethodSource("createIfNotExistsShareWithArgsSupplier")
-    public void createIfNotExistsShareWithArgs(Map<String, String> metadata, Integer quota, ShareAccessTier accessTier) {
+    public void createIfNotExistsShareWithArgs(Map<String, String> metadata, Integer quota,
+        ShareAccessTier accessTier) {
         assertResponseStatusCode(primaryShareClient.createIfNotExistsWithResponse(new ShareCreateOptions()
             .setMetadata(metadata).setQuotaInGb(quota).setAccessTier(accessTier), null, null), 201);
     }
@@ -311,7 +315,8 @@ public class ShareApiTest extends FileShareTestBase {
         primaryShareClient.create();
         String shareSnapshotName = generatePathName();
 
-        Response<ShareSnapshotInfo> createSnapshotResponse = primaryShareClient.createSnapshotWithResponse(testMetadata, null, null);
+        Response<ShareSnapshotInfo> createSnapshotResponse = primaryShareClient.createSnapshotWithResponse(testMetadata,
+            null, null);
         ShareClient shareSnapshotClient = new ShareClientBuilder().shareName(shareSnapshotName)
             .connectionString(ENVIRONMENT.getPrimaryAccount().getConnectionString())
             .snapshot(createSnapshotResponse.getValue().getSnapshot())
@@ -429,7 +434,8 @@ public class ShareApiTest extends FileShareTestBase {
         primaryShareClient.create();
         String leaseID = setupShareLeaseCondition(primaryShareClient, GARBAGE_LEASE_ID);
         assertThrows(ShareStorageException.class, () -> primaryShareClient.deleteIfExistsWithResponse(
-            new ShareDeleteOptions().setRequestConditions(new ShareRequestConditions().setLeaseId(leaseID)), null, null));
+            new ShareDeleteOptions().setRequestConditions(new ShareRequestConditions().setLeaseId(leaseID)), null,
+            null));
     }
 
     @Test
@@ -505,7 +511,7 @@ public class ShareApiTest extends FileShareTestBase {
 
     @EnabledIf("com.azure.storage.file.share.FileShareTestBase#isPlaybackMode")
     @ParameterizedTest
-    @MethodSource("getPropertiesPremiumSupplier")
+    @MethodSource("com.azure.storage.file.share.FileShareTestBase#getPropertiesPremiumSupplier")
     public void getPropertiesPremium(String protocol, ShareRootSquash rootSquash) {
         ShareProtocols enabledProtocol = ModelHelper.parseShareProtocols(protocol);
 
@@ -518,7 +524,6 @@ public class ShareApiTest extends FileShareTestBase {
 
         assertResponseStatusCode(getPropertiesResponse, 200);
         assertEquals(testMetadata, shareProperties.getMetadata());
-        assertNotNull(shareProperties.getQuota());
         assertNotNull(shareProperties.getNextAllowedQuotaDowngradeTime());
         assertNotNull(shareProperties.getProvisionedEgressMBps());
         assertNotNull(shareProperties.getProvisionedIngressMBps());
@@ -528,19 +533,10 @@ public class ShareApiTest extends FileShareTestBase {
         assertEquals(shareProperties.getRootSquash(), rootSquash);
     }
 
-    private static Stream<Arguments> getPropertiesPremiumSupplier() {
-        return Stream.of(
-            Arguments.of(Constants.HeaderConstants.SMB_PROTOCOL, null),
-            Arguments.of(Constants.HeaderConstants.NFS_PROTOCOL, ShareRootSquash.ALL_SQUASH),
-            Arguments.of(Constants.HeaderConstants.NFS_PROTOCOL, ShareRootSquash.NO_ROOT_SQUASH),
-            Arguments.of(Constants.HeaderConstants.NFS_PROTOCOL, ShareRootSquash.ROOT_SQUASH)
-        );
-    }
-
     @ParameterizedTest
     @EnabledIf("com.azure.storage.file.share.FileShareTestBase#isPlaybackMode")
     public void setPremiumProperties() {
-        List<ShareRootSquash> rootSquashes = List.of(
+        List<ShareRootSquash> rootSquashes = Arrays.asList(
             ShareRootSquash.ALL_SQUASH,
             ShareRootSquash.NO_ROOT_SQUASH,
             ShareRootSquash.ROOT_SQUASH);
@@ -565,7 +561,7 @@ public class ShareApiTest extends FileShareTestBase {
                     .plusDays(1))
                 .setPermissions("r"));
 
-        List<ShareSignedIdentifier> ids = List.of(identifier);
+        List<ShareSignedIdentifier> ids = Arrays.asList(identifier);
         primaryShareClient.setAccessPolicy(ids);
         assertEquals(primaryShareClient.getAccessPolicy().iterator().next().getId(), "0000");
     }
@@ -585,7 +581,7 @@ public class ShareApiTest extends FileShareTestBase {
                 .setStartsOn(testResourceNamer.now())
                 .setExpiresOn(testResourceNamer.now().plusDays(2))
                 .setPermissions("w"));
-        List<ShareSignedIdentifier> ids = List.of(identifier, identifier2);
+        List<ShareSignedIdentifier> ids = Arrays.asList(identifier, identifier2);
 
         Response<ShareInfo> response = primaryShareClient.setAccessPolicyWithResponse(ids, null, null);
         Iterator<ShareSignedIdentifier> receivedIdentifiers = primaryShareClient.getAccessPolicy().iterator();
@@ -639,7 +635,7 @@ public class ShareApiTest extends FileShareTestBase {
                     .plusDays(1))
                 .setPermissions("r"));
 
-        List<ShareSignedIdentifier> ids = List.of(identifier);
+        List<ShareSignedIdentifier> ids = Arrays.asList(identifier);
         primaryShareClient.setAccessPolicy(ids);
 
         ShareSignedIdentifier id = primaryShareClient.getAccessPolicy().iterator().next();
@@ -653,578 +649,464 @@ public class ShareApiTest extends FileShareTestBase {
     @DisabledIf("com.azure.storage.file.share.FileShareTestBase#olderThan20200210ServiceVersion")
     @Test
     public void getAccessPolicyLease() {
-        setup:
-        primaryShareClient.create()
-        def leaseID = setupShareLeaseCondition(primaryShareClient, RECEIVED_LEASE_ID)
-
-        when:
-        def response = primaryShareClient.getAccessPolicy(new ShareGetAccessPolicyOptions().setRequestConditions(new ShareRequestConditions().setLeaseId(leaseID)))
-
-        then:
-        !response.iterator().hasNext()
-    }
-
-    public void getAccess() policy lease error() {
-        setup:
-        primaryShareClient.create()
-        def leaseID = setupShareLeaseCondition(primaryShareClient, GARBAGE_LEASE_ID)
-
-        when:
-        primaryShareClient.getAccessPolicy(new ShareGetAccessPolicyOptions().setRequestConditions(new ShareRequestConditions().setLeaseId(leaseID))).iterator().hasNext()
-
-        then:
-        assertThrows(ShareStorageException.class, () ->
-    }
-
-    public void getAccess() policy error() {
-        when:
-        primaryShareClient.getAccessPolicy().iterator().hasNext()
-
-        then:
-        ShareStorageException e = assertThrows(ShareStorageException.class, () ->
-        assertExceptionStatusCodeAndMessage(e, 404, ShareErrorCode.SHARE_NOT_FOUND)
-    }
-
-    public void setProperties() quota() {
-        given:
-        primaryShareClient.createWithResponse(null, 1, null, null)
-
-        when:
-        def getQuotaBeforeResponse = primaryShareClient.getProperties()
-        def setQuotaResponse = primaryShareClient.setQuotaWithResponse(2, null, null)
-        def getQuotaAfterResponse = primaryShareClient.getProperties()
-
-        then:
-        getQuotaBeforeResponse.getQuota(), 1
-        assertResponseStatusCode(setQuotaResponse, 200)
-        getQuotaAfterResponse.getQuota(), 2
-    }
-
-    @DisabledIf("com.azure.storage.file.share.FileShareTestBase#olderThan20191212ServiceVersion")
-    public void setProperties() access tier() {
-        given:
-        primaryShareClient.createWithResponse(new ShareCreateOptions().setAccessTier(ShareAccessTier.HOT), null, null)
-        def time = testResourceNamer.now().truncatedTo(ChronoUnit.SECONDS)
-
-        when:
-        def getAccessTierBeforeResponse = primaryShareClient.getProperties()
-        def setAccessTierResponse = primaryShareClient.setPropertiesWithResponse(new ShareSetPropertiesOptions().setAccessTier(ShareAccessTier.TRANSACTION_OPTIMIZED), null, null)
-        def getAccessTierAfterResponse = primaryShareClient.getProperties()
-
-        then:
-        getAccessTierBeforeResponse.getAccessTier(), ShareAccessTier.HOT.toString()
-        assertResponseStatusCode(setAccessTierResponse, 200)
-        getAccessTierAfterResponse.getAccessTier(), ShareAccessTier.TRANSACTION_OPTIMIZED.toString()
-        getAccessTierAfterResponse.getAccessTierChangeTime().isEqual(time) || getAccessTierAfterResponse.getAccessTierChangeTime().isAfter(time.minusSeconds(1))
-        getAccessTierAfterResponse.getAccessTierChangeTime().isBefore(time.plusMinutes(1))
-        getAccessTierAfterResponse.getAccessTierTransitionState(), "pending-from-hot"
-    }
-
-    @DisabledIf("com.azure.storage.file.share.FileShareTestBase#olderThan20200210ServiceVersion")
-    public void setProperties() lease() {
-        given:
-        primaryShareClient.createWithResponse(new ShareCreateOptions().setAccessTier(ShareAccessTier.HOT), null, null)
-        def leaseID = setupShareLeaseCondition(primaryShareClient, RECEIVED_LEASE_ID)
-
-        when:
-        def setAccessTierResponse = primaryShareClient.setPropertiesWithResponse(
-            new ShareSetPropertiesOptions().setAccessTier(ShareAccessTier.COOL).setRequestConditions(new ShareRequestConditions().setLeaseId(leaseID)), null, null)
-
-        then:
-        assertResponseStatusCode(setAccessTierResponse, 200)
-    }
-
-    @DisabledIf("com.azure.storage.file.share.FileShareTestBase#olderThan20200210ServiceVersion")
-    public void setProperties() lease error() {
-        given:
-        primaryShareClient.createWithResponse(new ShareCreateOptions().setAccessTier(ShareAccessTier.HOT), null, null)
-        def leaseID = setupShareLeaseCondition(primaryShareClient, GARBAGE_LEASE_ID)
-
-        when:
-        def setAccessTierResponse = primaryShareClient.setPropertiesWithResponse(
-            new ShareSetPropertiesOptions().setAccessTier(ShareAccessTier.COOL).setRequestConditions(new ShareRequestConditions().setLeaseId(leaseID)), null, null)
-
-        then:
-        assertThrows(ShareStorageException.class, () ->
-    }
-
-    public void setPropertiesError() {
-        when:
-        primaryShareClient.setProperties(new ShareSetPropertiesOptions())
-        then:
-        ShareStorageException e = assertThrows(ShareStorageException.class, () ->
-        assertExceptionStatusCodeAndMessage(e, 404, ShareErrorCode.SHARE_NOT_FOUND)
-    }
-
-    public void setMetadata() {
-        given:
-        primaryShareClient.createWithResponse(testMetadata, null, null, null)
-        def metadataAfterSet = Collections.singletonMap("afterset", "value")
-
-        when:
-        def getMetadataBeforeResponse = primaryShareClient.getProperties()
-        def setMetadataResponse = primaryShareClient.setMetadataWithResponse(metadataAfterSet, null, null)
-        def getMetadataAfterResponse = primaryShareClient.getProperties()
-
-        then:
-        testMetadata, getMetadataBeforeResponse.getMetadata()
-        assertResponseStatusCode(setMetadataResponse, 200)
-        metadataAfterSet, getMetadataAfterResponse.getMetadata()
-    }
-
-    @DisabledIf("com.azure.storage.file.share.FileShareTestBase#olderThan20200210ServiceVersion")
-    public void setMetadata() lease() {
-        given:
-        primaryShareClient.createWithResponse(null, 1, null, null)
-        def leaseID = setupShareLeaseCondition(primaryShareClient, RECEIVED_LEASE_ID)
-
-        when:
-        def resp = primaryShareClient.setMetadataWithResponse(new ShareSetMetadataOptions().setRequestConditions(new ShareRequestConditions().setLeaseId(leaseID)), null, null)
-
-        then:
-        assertResponseStatusCode(resp, 200)
-    }
-
-    public void setMetadata() lease error() {
-        given:
-        primaryShareClient.createWithResponse(null, 1, null, null)
-        def leaseID = setupShareLeaseCondition(primaryShareClient, GARBAGE_LEASE_ID)
-
-        when:
-        primaryShareClient.setMetadataWithResponse(
-            new ShareSetMetadataOptions().setRequestConditions(new ShareRequestConditions().setLeaseId(leaseID)), null, null)
-
-        then:
-        assertThrows(ShareStorageException.class, () ->
-    }
-
-    public void setMetadataError() {
-        when:
-        primaryShareClient.setMetadata(testMetadata)
-
-        then:
-        ShareStorageException e = assertThrows(ShareStorageException.class, () ->
-        assertExceptionStatusCodeAndMessage(e, 404, ShareErrorCode.SHARE_NOT_FOUND)
-    }
-
-    @ParameterizedTest
-    public void getStatistics() {
-        setup:
-        primaryShareClient.create()
-        primaryShareClient.createFile("tempFile", (long) size)
-
-        when:
-        def resp = primaryShareClient.getStatisticsWithResponse(null, null)
-
-        then:
-        assertResponseStatusCode(resp, 200)
-        resp.getValue().getShareUsageInBytes(), size
-        resp.getValue().getShareUsageInGB(), gigabytes
-
-        where:
-        size                    || gigabytes
-        0                       || 0
-        Constants.KB            || 1
-        Constants.GB            || 1
-        (long) 3 * Constants.GB || 3
-    }
-
-    @DisabledIf("com.azure.storage.file.share.FileShareTestBase#olderThan20200210ServiceVersion")
-    public void getStatistics() lease() {
-        setup:
-        primaryShareClient.create()
-        def leaseID = setupShareLeaseCondition(primaryShareClient, RECEIVED_LEASE_ID)
-
-        when:
-        def resp = primaryShareClient.getStatisticsWithResponse(new ShareGetStatisticsOptions().setRequestConditions(new ShareRequestConditions().setLeaseId(leaseID)), null, null)
-
-        then:
-        assertResponseStatusCode(resp, 200)
-    }
-
-    @DisabledIf("com.azure.storage.file.share.FileShareTestBase#olderThan20200210ServiceVersion")
-    public void getStatistics() lease error() {
-        setup:
-        primaryShareClient.create()
-        def leaseID = setupShareLeaseCondition(primaryShareClient, GARBAGE_LEASE_ID)
-
-        when:
-        def resp = primaryShareClient.getStatisticsWithResponse(new ShareGetStatisticsOptions().setRequestConditions(new ShareRequestConditions().setLeaseId(leaseID)), null, null)
-
-        then:
-        assertThrows(ShareStorageException.class, () ->
-    }
-
-    public void getStatisticsError() {
-        when:
-        primaryShareClient.getStatistics()
-
-        then:
-        ShareStorageException e = assertThrows(ShareStorageException.class, () ->
-        assertExceptionStatusCodeAndMessage(e, 404, ShareErrorCode.SHARE_NOT_FOUND)
-    }
-
-    public void createDirectory() {
-        given:
-        primaryShareClient.create()
-
-        expect:
-        assertResponseStatusCode(
-            primaryShareClient.createDirectoryWithResponse("testCreateDirectory", null, null, null, null, null), 201)
-    }
-
-    public void createDirectory() file permission() {
-        given:
-        primaryShareClient.create()
-        expect:
-        assertResponseStatusCode(
-            primaryShareClient.createDirectoryWithResponse("testCreateDirectory", null, filePermission, null, null, null), 201)
-    }
-
-    public void createDirectory() file permission key() {
-        given:
-        primaryShareClient.create()
-        def filePermissionKey = primaryShareClient.createPermission(filePermission)
-        smbProperties.setFileCreationTime(testResourceNamer.now())
-            .setFileLastWriteTime(testResourceNamer.now())
-            .setFilePermissionKey(filePermissionKey)
-        expect:
-        assertResponseStatusCode(
-            primaryShareClient.createDirectoryWithResponse("testCreateDirectory", smbProperties, null, null, null, null), 201)
-    }
-
-    public void createDirectory() invalid name() {
-        given:
-        primaryShareClient.create()
-
-        when:
-        primaryShareClient.createDirectory("test/directory")
-
-        then:
-        ShareStorageException e = assertThrows(ShareStorageException.class, () ->
-        assertExceptionStatusCodeAndMessage(e, 404, ShareErrorCode.PARENT_NOT_FOUND)
-    }
-
-    public void createDirectory() metadata() {
-        given:
-        primaryShareClient.create()
-
-        expect:
-        assertResponseStatusCode(
-            primaryShareClient.createDirectoryWithResponse("testCreateDirectory", null, null, testMetadata, null, null), 201)
-    }
-
-    public void createDirectory() metadata error() {
-        given:
-        primaryShareClient.create()
-
-        when:
-        primaryShareClient.createDirectoryWithResponse("testdirectory", null, null, Collections.singletonMap("", "value"), null, null)
-
-        then:
-        ShareStorageException e = assertThrows(ShareStorageException.class, () ->
-        assertExceptionStatusCodeAndMessage(e, 400, ShareErrorCode.EMPTY_METADATA_KEY)
-    }
-
-    public void createIf() NotExists directory() {
-        given:
-        primaryShareClient.create()
-
-        expect:
-        assertResponseStatusCode(
-            primaryShareClient.createDirectoryIfNotExistsWithResponse("testCreateDirectory", new ShareDirectoryCreateOptions(), null, null), 201)
-    }
-
-    public void createIf() NotExists directory file permission() {
-        given:
-        primaryShareClient.create()
-        expect:
-        assertResponseStatusCode(
-            primaryShareClient.createDirectoryIfNotExistsWithResponse("testCreateDirectory", new ShareDirectoryCreateOptions().setFilePermission(filePermission), null, null), 201)
-    }
-
-    public void createIf() not exist directory file permission key() {
-        given:
-        primaryShareClient.create()
-        def filePermissionKey = primaryShareClient.createPermission(filePermission)
-        smbProperties.setFileCreationTime(testResourceNamer.now())
-            .setFileLastWriteTime(testResourceNamer.now())
-            .setFilePermissionKey(filePermissionKey)
-        expect:
-        assertResponseStatusCode(
-            primaryShareClient.createDirectoryIfNotExistsWithResponse("testCreateDirectory", new ShareDirectoryCreateOptions().setSmbProperties(smbProperties), null, null), 201)
-    }
-
-    public void createIf() NotExists directory invalid name() {
-        given:
-        primaryShareClient.create()
-
-        when:
-        primaryShareClient.createDirectoryIfNotExists("test/directory")
-
-        then:
-        ShareStorageException e = assertThrows(ShareStorageException.class, () ->
-        assertExceptionStatusCodeAndMessage(e, 404, ShareErrorCode.PARENT_NOT_FOUND)
-    }
-
-    public void createIf() NotExists directory metadata() {
-        given:
-        primaryShareClient.create()
-
-        expect:
-        assertResponseStatusCode(
-            primaryShareClient.createDirectoryIfNotExistsWithResponse("testCreateDirectory", new ShareDirectoryCreateOptions().setMetadata( testMetadata), null, null), 201)
-    }
-
-    public void createIf() NotExists directory metadata error() {
-        given:
-        primaryShareClient.create()
-
-        when:
-        primaryShareClient.createDirectoryIfNotExistsWithResponse("testdirectory", new ShareDirectoryCreateOptions().setMetadata(Collections.singletonMap("", "value")), null, null)
-
-        then:
-        ShareStorageException e = assertThrows(ShareStorageException.class, () ->
-        assertExceptionStatusCodeAndMessage(e, 400, ShareErrorCode.EMPTY_METADATA_KEY)
-    }
-
-    public void createIf() NotExists directory that already exists() {
-        setup:
-        def client = premiumFileServiceClient.getShareClient(generateShareName())
-        client.create()
-        def initialResponse = client.createDirectoryIfNotExistsWithResponse("testCreateDirectory", new ShareDirectoryCreateOptions(), null, null)
-
-        when:
-        def secondResponse = client.createDirectoryIfNotExistsWithResponse("testCreateDirectory", new ShareDirectoryCreateOptions(), null, null)
-
-        then:
-        initialResponse.getStatusCode(), 201
-        secondResponse.getStatusCode(), 409
-    }
-
-    public void createFile() {
-        given:
-        primaryShareClient.create()
-
-        expect:
-        assertResponseStatusCode(
-            primaryShareClient.createFileWithResponse("testCreateFile", 1024, null, null, null, null, null, null), 201)
-    }
-
-    public void createFile() file permission() {
-        given:
-        primaryShareClient.create()
-        expect:
-        assertResponseStatusCode(
-            primaryShareClient.createFileWithResponse("testCreateFile", 1024, null, null, filePermission, null, null, null), 201)
-    }
-
-    public void createFile() file permission key() {
-        given:
-        primaryShareClient.create()
-        def filePermissionKey = primaryShareClient.createPermission(filePermission)
-        smbProperties.setFileCreationTime(testResourceNamer.now())
-            .setFileLastWriteTime(testResourceNamer.now())
-            .setFilePermissionKey(filePermissionKey)
-
-        expect:
-        assertResponseStatusCode(
-            primaryShareClient.createFileWithResponse("testCreateFile", 1024, null, smbProperties, null, null, null, null), 201)
-    }
-
-    @ParameterizedTest
-    public void createFile() invalid args() {
-        given:
-        primaryShareClient.create()
-
-        when:
-        primaryShareClient.createFileWithResponse(fileName, maxSize, null, null, null, null, null, null)
-        then:
-        ShareStorageException e = assertThrows(ShareStorageException.class, () ->
-        assertExceptionStatusCodeAndMessage(e, statusCode, errMsg)
-
-        where:
-        fileName    | maxSize | statusCode | errMsg
-        "testfile:" | 1024    | 400        | ShareErrorCode.INVALID_RESOURCE_NAME
-        "fileName"  | -1      | 400        | ShareErrorCode.OUT_OF_RANGE_INPUT
-
-    }
-
-    public void createFile() maxOverload() {
-        given:
-        primaryShareClient.create()
-        smbProperties.setFileCreationTime(testResourceNamer.now())
-            .setFileLastWriteTime(testResourceNamer.now())
-        expect:
-        assertResponseStatusCode(
-            primaryShareClient.createFileWithResponse("testCreateFile", 1024, null, smbProperties, filePermission, testMetadata, null, null), 201)
-    }
-
-    @ParameterizedTest
-    public void createFile() maxOverload invalid args() {
-        given:
-        primaryShareClient.create()
-
-        when:
-        primaryShareClient.createFileWithResponse(fileName, maxSize, httpHeaders, null, null, metadata, null, null)
-
-        then:
-        ShareStorageException e = assertThrows(ShareStorageException.class, () ->
-        assertExceptionStatusCodeAndMessage(e, 400, errMsg)
-
-        where:
-        fileName    | maxSize | httpHeaders                                           | metadata                              | errMsg
-        "testfile:" | 1024    | null                                                  | testMetadata                          | ShareErrorCode.INVALID_RESOURCE_NAME
-        "fileName"  | -1      | null                                                  | testMetadata                          | ShareErrorCode.OUT_OF_RANGE_INPUT
-        "fileName"  | 1024    | new ShareFileHttpHeaders().setContentMd5(new byte[0]) | testMetadata                          | ShareErrorCode.INVALID_HEADER_VALUE
-        "fileName"  | 1024    | null                                                  | Collections.singletonMap("", "value") | ShareErrorCode.EMPTY_METADATA_KEY
-    }
-
-    public void createFile() in root directory() {
-        given:
-        primaryShareClient.create()
-        ShareDirectoryClient directoryClient = primaryShareClient.getRootDirectoryClient();
-
-        expect:
-        assertResponseStatusCode(
-            directoryClient.createFileWithResponse("testCreateFile", 1024, null, null, null, null, null, null), 201)
-    }
-
-    public void deleteDirectory() {
-        given:
-        def directoryName = "testCreateDirectory"
-        primaryShareClient.create()
-        primaryShareClient.createDirectory(directoryName)
-
-        expect:
-        assertResponseStatusCode(primaryShareClient.deleteDirectoryWithResponse(directoryName, null, null), 202)
-    }
-
-    public void deleteDirectoryError() {
-        given:
-        primaryShareClient.create()
-
-        when:
-        primaryShareClient.deleteDirectory("testdirectory")
-
-        then:
-        ShareStorageException e = assertThrows(ShareStorageException.class, () ->
-        assertExceptionStatusCodeAndMessage(e, 404, ShareErrorCode.RESOURCE_NOT_FOUND)
-    }
-
-    public void deleteIf() exists directory() {
-        given:
-        def directoryName = "testCreateDirectory"
-        primaryShareClient.create()
-        primaryShareClient.createDirectory(directoryName)
-
-        expect:
-        assert assertResponseStatusCode(primaryShareClient.deleteDirectoryIfExistsWithResponse(directoryName, null, null), 202)
-    }
-
-    public void deleteIf() exists directory min() {
-        given:
-        def directoryName = "testCreateDirectory"
-        primaryShareClient.create()
-        primaryShareClient.createDirectory(directoryName)
-
-        expect:
-        assert primaryShareClient.deleteDirectoryIfExists(directoryName)
-    }
-
-    public void deleteIf() exists directory that DoesNot exist() {
-        given:
-        def directoryName = "testCreateDirectory"
-        primaryShareClient.create()
-
-        when:
-        def response = primaryShareClient.deleteDirectoryIfExistsWithResponse(directoryName, null, null)
-
-        then:
-        !response.getValue()
-        response.getStatusCode(), 404
-    }
-
-    public void deleteFile() {
-        given:
-        def fileName = "testCreateFile"
-        primaryShareClient.create()
-        primaryShareClient.createFile(fileName, 1024)
-
-        expect:
-        assertResponseStatusCode(
-            primaryShareClient.deleteFileWithResponse(fileName, null, null), 202)
-    }
-
-    public void deleteFileError() {
-        given:
-        primaryShareClient.create()
-
-        when:
-        primaryShareClient.deleteFile("testdirectory")
-
-        then:
-        ShareStorageException e = assertThrows(ShareStorageException.class, () ->
-        assertExceptionStatusCodeAndMessage(e, 404, ShareErrorCode.RESOURCE_NOT_FOUND)
-    }
-
-    public void deleteIf() exists file() {
-        given:
-        def fileName = "testCreateFile"
-        primaryShareClient.create()
-        primaryShareClient.createFile(fileName, 1024)
-
-        expect:
-        assertResponseStatusCode(
-            primaryShareClient.deleteFileIfExistsWithResponse(fileName, null, null, null), 202)
-    }
-
-    public void deleteIf() exists file min() {
-        given:
-        def fileName = "testCreateFile"
-        primaryShareClient.create()
-        primaryShareClient.createFile(fileName, 1024)
-
-        expect:
-        primaryShareClient.deleteFileIfExists(fileName)
+        primaryShareClient.create();
+        String leaseID = setupShareLeaseCondition(primaryShareClient, RECEIVED_LEASE_ID);
+        PagedIterable<ShareSignedIdentifier> response = primaryShareClient.getAccessPolicy(
+            new ShareGetAccessPolicyOptions().setRequestConditions(new ShareRequestConditions().setLeaseId(leaseID)));
+        assertFalse(response.iterator().hasNext());
     }
 
     @Test
-    public void deleteIf() exists file that DoesNot exist() {
-        given:
-        primaryShareClient.create()
+    public void getAccessPolicyLeaseError() {
+        primaryShareClient.create();
+        String leaseID = setupShareLeaseCondition(primaryShareClient, GARBAGE_LEASE_ID);
+        assertThrows(ShareStorageException.class, () ->
+            primaryShareClient.getAccessPolicy(new ShareGetAccessPolicyOptions()
+                .setRequestConditions(new ShareRequestConditions().setLeaseId(leaseID))).iterator().hasNext());
+    }
 
-        when:
-        def response = primaryShareClient.deleteFileIfExistsWithResponse("testCreateFile", null, null, null)
+    @Test
+    public void getAccessPolicyError() {
+        ShareStorageException e = assertThrows(ShareStorageException.class, () ->
+            primaryShareClient.getAccessPolicy().iterator().hasNext());
+        assertExceptionStatusCodeAndMessage(e, 404, ShareErrorCode.SHARE_NOT_FOUND);
+    }
 
-        then:
-        !response.getValue()
+    @Test
+    public void setPropertiesQuota() {
+        primaryShareClient.createWithResponse(null, 1, null, null);
+
+        ShareProperties getQuotaBeforeResponse = primaryShareClient.getProperties();
+        Response<ShareInfo> setQuotaResponse = primaryShareClient.setQuotaWithResponse(2, null, null);
+        ShareProperties getQuotaAfterResponse = primaryShareClient.getProperties();
+
+        assertEquals(getQuotaBeforeResponse.getQuota(), 1);
+        assertResponseStatusCode(setQuotaResponse, 200);
+        assertEquals(getQuotaAfterResponse.getQuota(), 2);
+    }
+
+    @DisabledIf("com.azure.storage.file.share.FileShareTestBase#olderThan20191212ServiceVersion")
+    @Test
+    public void setPropertiesAccessTier() {
+        primaryShareClient.createWithResponse(new ShareCreateOptions().setAccessTier(ShareAccessTier.HOT), null, null);
+        OffsetDateTime time = testResourceNamer.now().truncatedTo(ChronoUnit.SECONDS);
+
+        ShareProperties getAccessTierBeforeResponse = primaryShareClient.getProperties();
+        Response<ShareInfo> setAccessTierResponse = primaryShareClient.setPropertiesWithResponse(
+            new ShareSetPropertiesOptions().setAccessTier(ShareAccessTier.TRANSACTION_OPTIMIZED), null, null);
+        ShareProperties getAccessTierAfterResponse = primaryShareClient.getProperties();
+
+        assertEquals(getAccessTierBeforeResponse.getAccessTier(), ShareAccessTier.HOT.toString());
+        assertResponseStatusCode(setAccessTierResponse, 200);
+        assertEquals(getAccessTierAfterResponse.getAccessTier(), ShareAccessTier.TRANSACTION_OPTIMIZED.toString());
+        assertNotNull(getAccessTierAfterResponse.getAccessTierChangeTime());
+        assertTrue(getAccessTierAfterResponse.getAccessTierChangeTime().isEqual(time)
+            || getAccessTierAfterResponse.getAccessTierChangeTime().isAfter(time.minusSeconds(1)));
+        assertTrue(getAccessTierAfterResponse.getAccessTierChangeTime().isBefore(time.plusMinutes(1)));
+        assertEquals(getAccessTierAfterResponse.getAccessTierTransitionState(), "pending-from-hot");
+    }
+
+    @DisabledIf("com.azure.storage.file.share.FileShareTestBase#olderThan20200210ServiceVersion")
+    @Test
+    public void setPropertiesLease() {
+        primaryShareClient.createWithResponse(new ShareCreateOptions().setAccessTier(ShareAccessTier.HOT), null, null);
+        String leaseID = setupShareLeaseCondition(primaryShareClient, RECEIVED_LEASE_ID);
+
+        Response<ShareInfo> setAccessTierResponse = primaryShareClient.setPropertiesWithResponse(
+            new ShareSetPropertiesOptions().setAccessTier(ShareAccessTier.COOL)
+                .setRequestConditions(new ShareRequestConditions().setLeaseId(leaseID)), null, null);
+
+        assertResponseStatusCode(setAccessTierResponse, 200);
+    }
+
+    @DisabledIf("com.azure.storage.file.share.FileShareTestBase#olderThan20200210ServiceVersion")
+    @Test
+    public void setPropertiesLeaseError() {
+        primaryShareClient.createWithResponse(new ShareCreateOptions().setAccessTier(ShareAccessTier.HOT), null, null);
+        String leaseID = setupShareLeaseCondition(primaryShareClient, GARBAGE_LEASE_ID);
+
+        assertThrows(ShareStorageException.class, () -> primaryShareClient.setPropertiesWithResponse(
+            new ShareSetPropertiesOptions()
+                .setAccessTier(ShareAccessTier.COOL)
+                .setRequestConditions(new ShareRequestConditions().setLeaseId(leaseID)), null, null));
+    }
+
+    @Test
+    public void setPropertiesError() {
+        ShareStorageException e = assertThrows(ShareStorageException.class, () ->
+            primaryShareClient.setProperties(new ShareSetPropertiesOptions()));
+        assertExceptionStatusCodeAndMessage(e, 404, ShareErrorCode.SHARE_NOT_FOUND);
+    }
+
+    @Test
+    public void setMetadata() {
+        primaryShareClient.createWithResponse(testMetadata, null, null, null);
+        Map<String, String> metadataAfterSet = Collections.singletonMap("afterset", "value");
+
+        ShareProperties getMetadataBeforeResponse = primaryShareClient.getProperties();
+        Response<ShareInfo> setMetadataResponse = primaryShareClient.setMetadataWithResponse(metadataAfterSet, null,
+            null);
+        ShareProperties getMetadataAfterResponse = primaryShareClient.getProperties();
+
+        assertEquals(testMetadata, getMetadataBeforeResponse.getMetadata());
+        assertResponseStatusCode(setMetadataResponse, 200);
+        assertEquals(metadataAfterSet, getMetadataAfterResponse.getMetadata());
+    }
+
+    @DisabledIf("com.azure.storage.file.share.FileShareTestBase#olderThan20200210ServiceVersion")
+    @Test
+    public void setMetadataLease() {
+        primaryShareClient.createWithResponse(null, 1, null, null);
+        String leaseID = setupShareLeaseCondition(primaryShareClient, RECEIVED_LEASE_ID);
+
+        Response<ShareInfo> resp = primaryShareClient.setMetadataWithResponse(new ShareSetMetadataOptions()
+            .setRequestConditions(new ShareRequestConditions().setLeaseId(leaseID)), null, null);
+
+        assertResponseStatusCode(resp, 200);
+    }
+
+    @Test
+    public void setMetadataLeaseError() {
+        primaryShareClient.createWithResponse(null, 1, null, null);
+        String leaseID = setupShareLeaseCondition(primaryShareClient, GARBAGE_LEASE_ID);
+
+        assertThrows(ShareStorageException.class, () -> primaryShareClient.setMetadataWithResponse(
+            new ShareSetMetadataOptions().setRequestConditions(
+                new ShareRequestConditions().setLeaseId(leaseID)), null, null));
+    }
+
+    @Test
+    public void setMetadataError() {
+        ShareStorageException e = assertThrows(ShareStorageException.class, () ->
+            primaryShareClient.setMetadata(testMetadata));
+        assertExceptionStatusCodeAndMessage(e, 404, ShareErrorCode.SHARE_NOT_FOUND);
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.storage.file.share.FileShareTestBase#getStatisticsSupplier")
+    public void getStatistics(long size, int gigabytes) {
+        primaryShareClient.create();
+        primaryShareClient.createFile("tempFile", size);
+        Response<ShareStatistics> resp = primaryShareClient.getStatisticsWithResponse(null, null);
+        assertResponseStatusCode(resp, 200);
+        assertEquals(resp.getValue().getShareUsageInBytes(), size);
+        assertEquals(resp.getValue().getShareUsageInGB(), gigabytes);
+    }
+
+    @DisabledIf("com.azure.storage.file.share.FileShareTestBase#olderThan20200210ServiceVersion")
+    @Test
+    public void getStatisticsLease() {
+        primaryShareClient.create();
+        String leaseID = setupShareLeaseCondition(primaryShareClient, RECEIVED_LEASE_ID);
+        Response<ShareStatistics> resp = primaryShareClient.getStatisticsWithResponse(new ShareGetStatisticsOptions()
+            .setRequestConditions(new ShareRequestConditions().setLeaseId(leaseID)), null, null);
+        assertResponseStatusCode(resp, 200);
+    }
+
+    @DisabledIf("com.azure.storage.file.share.FileShareTestBase#olderThan20200210ServiceVersion")
+    @Test
+    public void getStatisticsLeaseError() {
+        primaryShareClient.create();
+        String leaseID = setupShareLeaseCondition(primaryShareClient, GARBAGE_LEASE_ID);
+        assertThrows(ShareStorageException.class, () -> primaryShareClient.getStatisticsWithResponse(
+            new ShareGetStatisticsOptions()
+                .setRequestConditions(new ShareRequestConditions().setLeaseId(leaseID)), null, null));
+    }
+
+    @Test
+    public void getStatisticsError() {
+        ShareStorageException e = assertThrows(ShareStorageException.class, () -> primaryShareClient.getStatistics());
+        assertExceptionStatusCodeAndMessage(e, 404, ShareErrorCode.SHARE_NOT_FOUND);
+    }
+
+    @Test
+    public void createDirectory() {
+        primaryShareClient.create();
+        assertResponseStatusCode(
+            primaryShareClient.createDirectoryWithResponse("testCreateDirectory", null, null, null, null, null), 201);
+    }
+
+    @Test
+    public void createDirectoryFilePermission() {
+        primaryShareClient.create();
+        assertResponseStatusCode(primaryShareClient.createDirectoryWithResponse("testCreateDirectory", null,
+            FILE_PERMISSION, null, null, null), 201);
+    }
+
+    @Test
+    public void createDirectoryFilePermissionKey() {
+        primaryShareClient.create();
+        String filePermissionKey = primaryShareClient.createPermission(FILE_PERMISSION);
+        smbProperties.setFileCreationTime(testResourceNamer.now())
+            .setFileLastWriteTime(testResourceNamer.now())
+            .setFilePermissionKey(filePermissionKey);
+        assertResponseStatusCode(
+            primaryShareClient.createDirectoryWithResponse("testCreateDirectory", smbProperties, null, null, null,
+                null), 201);
+    }
+
+    @Test
+    public void createDirectoryInvalidName() {
+        primaryShareClient.create();
+        ShareStorageException e = assertThrows(ShareStorageException.class, () ->
+            primaryShareClient.createDirectory("test/directory"));
+        assertExceptionStatusCodeAndMessage(e, 404, ShareErrorCode.PARENT_NOT_FOUND);
+    }
+
+    @Test
+    public void createDirectoryMetadata() {
+        primaryShareClient.create();
+        assertResponseStatusCode(primaryShareClient.createDirectoryWithResponse("testCreateDirectory", null, null,
+            testMetadata, null, null), 201);
+    }
+
+    @Test
+    public void createDirectoryMetadataError() {
+        primaryShareClient.create();
+        ShareStorageException e = assertThrows(ShareStorageException.class, () ->
+            primaryShareClient.createDirectoryWithResponse("testdirectory", null, null,
+                Collections.singletonMap("", "value"), null, null));
+        assertExceptionStatusCodeAndMessage(e, 400, ShareErrorCode.EMPTY_METADATA_KEY);
+    }
+
+    @Test
+    public void createIfNotExistsDirectory() {
+        primaryShareClient.create();
+        assertResponseStatusCode(primaryShareClient.createDirectoryIfNotExistsWithResponse("testCreateDirectory",
+            new ShareDirectoryCreateOptions(), null, null), 201);
+    }
+
+    @Test
+    public void createIfNotExistsDirectoryFilePermission() {
+        primaryShareClient.create();
+        assertResponseStatusCode(primaryShareClient.createDirectoryIfNotExistsWithResponse("testCreateDirectory",
+            new ShareDirectoryCreateOptions().setFilePermission(FILE_PERMISSION), null, null), 201);
+    }
+
+    @Test
+    public void createIfNotExistsDirectoryFilePermissionKey() {
+        primaryShareClient.create();
+        String filePermissionKey = primaryShareClient.createPermission(FILE_PERMISSION);
+        smbProperties.setFileCreationTime(testResourceNamer.now())
+            .setFileLastWriteTime(testResourceNamer.now())
+            .setFilePermissionKey(filePermissionKey);
+        assertResponseStatusCode(primaryShareClient.createDirectoryIfNotExistsWithResponse("testCreateDirectory",
+            new ShareDirectoryCreateOptions().setSmbProperties(smbProperties), null, null), 201);
+    }
+
+    @Test
+    public void createIfNotExistsDirectoryInvalidName() {
+        primaryShareClient.create();
+        ShareStorageException e = assertThrows(ShareStorageException.class, () ->
+            primaryShareClient.createDirectoryIfNotExists("test/directory"));
+        assertExceptionStatusCodeAndMessage(e, 404, ShareErrorCode.PARENT_NOT_FOUND);
+    }
+
+    @Test
+    public void createIfNotExistsDirectoryMetadata() {
+        primaryShareClient.create();
+        assertResponseStatusCode(primaryShareClient.createDirectoryIfNotExistsWithResponse("testCreateDirectory",
+            new ShareDirectoryCreateOptions().setMetadata(testMetadata), null, null), 201);
+    }
+
+    @Test
+    public void createIfNotExistsDirectoryMetadataError() {
+        primaryShareClient.create();
+        ShareStorageException e = assertThrows(ShareStorageException.class, () ->
+            primaryShareClient.createDirectoryIfNotExistsWithResponse("testdirectory",
+                new ShareDirectoryCreateOptions().setMetadata(Collections.singletonMap("", "value")), null, null));
+        assertExceptionStatusCodeAndMessage(e, 400, ShareErrorCode.EMPTY_METADATA_KEY);
+    }
+
+    @Test
+    public void createIfNotExistsDirectoryThatAlreadyExists() {
+        ShareClient client = premiumFileServiceClient.getShareClient(generateShareName());
+        client.create();
+        Response<ShareDirectoryClient> initialResponse = client.createDirectoryIfNotExistsWithResponse(
+            "testCreateDirectory", new ShareDirectoryCreateOptions(), null, null);
+        Response<ShareDirectoryClient> secondResponse = client.createDirectoryIfNotExistsWithResponse(
+            "testCreateDirectory", new ShareDirectoryCreateOptions(), null, null);
+
+        assertResponseStatusCode(initialResponse, 201);
+        assertResponseStatusCode(secondResponse, 409);
+    }
+
+    @Test
+    public void createFile() {
+        primaryShareClient.create();
+        assertResponseStatusCode(
+            primaryShareClient.createFileWithResponse("testCreateFile", 1024, null, null, null, null, null, null), 201);
+    }
+
+    @Test
+    public void createFileFilePermission() {
+        primaryShareClient.create();
+        assertResponseStatusCode(primaryShareClient.createFileWithResponse("testCreateFile", 1024, null, null,
+            FILE_PERMISSION, null, null, null), 201);
+    }
+
+    @Test
+    public void createFileFilePermissionKey() {
+        primaryShareClient.create();
+        String filePermissionKey = primaryShareClient.createPermission(FILE_PERMISSION);
+        smbProperties.setFileCreationTime(testResourceNamer.now())
+            .setFileLastWriteTime(testResourceNamer.now())
+            .setFilePermissionKey(filePermissionKey);
+
+        assertResponseStatusCode(primaryShareClient.createFileWithResponse("testCreateFile", 1024, null, smbProperties,
+            null, null, null, null), 201);
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.storage.file.share.FileShareTestBase#createFileInvalidArgsSupplier")
+    public void createFileInvalidArgs(String fileName, long maxSize, int statusCode, ShareErrorCode errMsg) {
+        primaryShareClient.create();
+        ShareStorageException e = assertThrows(ShareStorageException.class,
+            () -> primaryShareClient.createFileWithResponse(fileName, maxSize, null, null, null, null, null, null));
+        assertExceptionStatusCodeAndMessage(e, statusCode, errMsg);
+    }
+
+    @Test
+    public void createFileMaxOverload() {
+        primaryShareClient.create();
+        smbProperties.setFileCreationTime(testResourceNamer.now())
+            .setFileLastWriteTime(testResourceNamer.now());
+        assertResponseStatusCode(primaryShareClient.createFileWithResponse("testCreateFile", 1024, null, smbProperties,
+            FILE_PERMISSION, testMetadata, null, null), 201);
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.storage.file.share.FileShareTestBase#createFileMaxOverloadInvalidArgsSupplier")
+    public void createFileMaxOverloadInvalidArgs(String fileName, long maxSize, ShareFileHttpHeaders httpHeaders,
+        Map<String, String> metadata, ShareErrorCode errMsg) {
+        primaryShareClient.create();
+        ShareStorageException e = assertThrows(ShareStorageException.class, () ->
+            primaryShareClient.createFileWithResponse(fileName, maxSize, httpHeaders, null, null, metadata, null,
+                null));
+        assertExceptionStatusCodeAndMessage(e, 400, errMsg);
+    }
+
+    @Test
+    public void createFileInRootDirectory() {
+        primaryShareClient.create();
+        ShareDirectoryClient directoryClient = primaryShareClient.getRootDirectoryClient();
+        assertResponseStatusCode(
+            directoryClient.createFileWithResponse("testCreateFile", 1024, null, null, null, null, null, null), 201);
+    }
+
+    @Test
+    public void deleteDirectory() {
+        String directoryName = "testCreateDirectory";
+        primaryShareClient.create();
+        primaryShareClient.createDirectory(directoryName);
+
+        assertResponseStatusCode(primaryShareClient.deleteDirectoryWithResponse(directoryName, null, null), 202);
+    }
+
+    @Test
+    public void deleteDirectoryError() {
+        primaryShareClient.create();
+        ShareStorageException e = assertThrows(ShareStorageException.class, () ->
+            primaryShareClient.deleteDirectory("testdirectory"));
+        assertExceptionStatusCodeAndMessage(e, 404, ShareErrorCode.RESOURCE_NOT_FOUND);
+    }
+
+    @Test
+    public void deleteIfExistsDirectory() {
+        String directoryName = "testCreateDirectory";
+        primaryShareClient.create();
+        primaryShareClient.createDirectory(directoryName);
+        assertResponseStatusCode(primaryShareClient.deleteDirectoryIfExistsWithResponse(directoryName, null, null),
+            202);
+    }
+
+    @Test
+    public void deleteIfExistsDirectoryMin() {
+        String directoryName = "testCreateDirectory";
+        primaryShareClient.create();
+        primaryShareClient.createDirectory(directoryName);
+        assertTrue(primaryShareClient.deleteDirectoryIfExists(directoryName));
+    }
+
+    @Test
+    public void deleteIfExistsDirectoryThatDoesNotExist() {
+        String directoryName = "testCreateDirectory";
+        primaryShareClient.create();
+        Response<Boolean> response = primaryShareClient.deleteDirectoryIfExistsWithResponse(directoryName, null, null);
+        assertFalse(response.getValue());
+        assertResponseStatusCode(response, 404);
+    }
+
+    @Test
+    public void deleteFile() {
+        String fileName = "testCreateFile";
+        primaryShareClient.create();
+        primaryShareClient.createFile(fileName, 1024);
+
+        assertResponseStatusCode(
+            primaryShareClient.deleteFileWithResponse(fileName, null, null), 202);
+    }
+
+    @Test
+    public void deleteFileError() {
+        primaryShareClient.create();
+        ShareStorageException e = assertThrows(ShareStorageException.class, () ->
+            primaryShareClient.deleteFile("testdirectory"));
+        assertExceptionStatusCodeAndMessage(e, 404, ShareErrorCode.RESOURCE_NOT_FOUND);
+    }
+
+    @Test
+    public void deleteIfExistsFile() {
+        String fileName = "testCreateFile";
+        primaryShareClient.create();
+        primaryShareClient.createFile(fileName, 1024);
+
+        assertResponseStatusCode(
+            primaryShareClient.deleteFileIfExistsWithResponse(fileName, null, null, null), 202);
+    }
+
+    @Test
+    public void deleteIfExistsFileMin() {
+        String fileName = "testCreateFile";
+        primaryShareClient.create();
+        primaryShareClient.createFile(fileName, 1024);
+        assertTrue(primaryShareClient.deleteFileIfExists(fileName));
+    }
+
+    @Test
+    public void deleteIfExistsFileThatDoesNotExist() {
+        primaryShareClient.create();
+        Response<Boolean> response = primaryShareClient.deleteFileIfExistsWithResponse("testCreateFile", null, null,
+            null);
+
+        assertFalse(response.getValue());
         assertResponseStatusCode(response, 404);
     }
 
     @Test
     public void createPermission() {
         primaryShareClient.create();
-        assertResponseStatusCode(primaryShareClient.createPermissionWithResponse(filePermission, null), 201);
+        assertResponseStatusCode(primaryShareClient.createPermissionWithResponse(FILE_PERMISSION, null), 201);
     }
 
     @Test
     public void createAndGetPermission() {
         primaryShareClient.create();
-        String permissionKey = primaryShareClient.createPermission(filePermission);
+        String permissionKey = primaryShareClient.createPermission(FILE_PERMISSION);
         String permission = primaryShareClient.getPermission(permissionKey);
-        assertEquals(permission, filePermission);
+        assertEquals(permission, FILE_PERMISSION);
     }
 
     @DisabledIf("com.azure.storage.file.share.FileShareTestBase#olderThan20210410ServiceVersion")
     @Test
     public void createAndGetPermissionOAuth() {
         primaryShareClient.create();
-        ShareServiceClient oAuthServiceClient = getOAuthServiceClient(new ShareServiceClientBuilder().shareTokenIntent(ShareTokenIntent.BACKUP));
+        ShareServiceClient oAuthServiceClient = getOAuthServiceClient(new ShareServiceClientBuilder()
+            .shareTokenIntent(ShareTokenIntent.BACKUP));
         ShareClient shareClient = oAuthServiceClient.getShareClient(shareName);
-        String permissionKey = shareClient.createPermission(filePermission);
+        String permissionKey = shareClient.createPermission(FILE_PERMISSION);
         String permission = shareClient.getPermission(permissionKey);
-        assertEquals(permission, filePermission);
+        assertEquals(permission, FILE_PERMISSION);
     }
 
     @Test
@@ -1238,7 +1120,8 @@ public class ShareApiTest extends FileShareTestBase {
     @Test
     public void getPermissionError() {
         primaryShareClient.create();
-        ShareStorageException e = assertThrows(ShareStorageException.class, () -> primaryShareClient.getPermissionWithResponse("abcde", null));
+        ShareStorageException e = assertThrows(ShareStorageException.class, () ->
+            primaryShareClient.getPermissionWithResponse("abcde", null));
         assertExceptionStatusCodeAndMessage(e, 400, ShareErrorCode.INVALID_HEADER_VALUE);
     }
 
@@ -1268,7 +1151,8 @@ public class ShareApiTest extends FileShareTestBase {
     }
 
     @Test
-    // This tests the policy is in the right place because if it were added per retry, it would be after the credentials and auth would fail because we changed a signed header.
+    // This tests the policy is in the right place because if it were added per retry, it would be after the credentials
+    // and auth would fail because we changed a signed header.
     public void perCallPolicy() {
         primaryShareClient.create();
         ShareClient shareClient = shareBuilderHelper(primaryShareClient.getShareName())

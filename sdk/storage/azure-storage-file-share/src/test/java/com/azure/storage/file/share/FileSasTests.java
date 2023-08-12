@@ -4,6 +4,7 @@
 package com.azure.storage.file.share;
 
 import com.azure.core.credential.AzureSasCredential;
+import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.sas.AccountSasPermission;
@@ -87,13 +88,14 @@ public class FileSasTests extends FileShareTestBase {
     }
 
     private static Stream<Arguments> fileSASPermissionsParseSupplier() {
-        return Stream.of(Arguments.of("r", true, false, false, false),
+        return Stream.of(
+            Arguments.of("r", true, false, false, false),
             Arguments.of("w", false, true, false, false),
             Arguments.of("d", false, false, true, false),
             Arguments.of("c", false, false, false, true),
             Arguments.of("rcwd", true, true, true, true),
             Arguments.of("dcwr", true, true, true, true));
-        }
+    }
 
     @Test
     public void fileSASPermissionsParseIA() {
@@ -271,8 +273,8 @@ public class FileSasTests extends FileShareTestBase {
 
         OffsetDateTime expiryTime = testResourceNamer.now().plusDays(1);
 
-    StorageSharedKeyCredential credential = StorageSharedKeyCredential
-        .fromConnectionString(ENVIRONMENT.getPrimaryAccount().getConnectionString());
+        StorageSharedKeyCredential credential = StorageSharedKeyCredential
+            .fromConnectionString(ENVIRONMENT.getPrimaryAccount().getConnectionString());
         String sasWithId = new ShareServiceSasSignatureValues()
             .setIdentifier(identifier.getId())
             .setShareName(primaryShareClient.getShareName())
@@ -364,14 +366,14 @@ public class FileSasTests extends FileShareTestBase {
         String pathName = generatePathName();
 
         ShareServiceClient sc = getServiceClientBuilder(null, primaryFileServiceClient.getFileServiceUrl() + "?" + sas,
-            null).buildClient();
+            (HttpPipelinePolicy) null).buildClient();
         sc.createShare(shareName);
 
         ShareClient sharec = getShareClientBuilder(primaryFileServiceClient.getFileServiceUrl() + "/" + shareName + "?"
             + sas).buildClient();
         sharec.createFile(pathName, 1024);
 
-        ShareFileClient fc = getFileClient((StorageSharedKeyCredential)null,
+        ShareFileClient fc = getFileClient((StorageSharedKeyCredential) null,
             primaryFileServiceClient.getFileServiceUrl() + "/" + shareName + "/" + pathName + "?" + sas);
         assertDoesNotThrow(() -> fc.download(new ByteArrayOutputStream()));
     }
@@ -467,50 +469,50 @@ public class FileSasTests extends FileShareTestBase {
             .buildClient()
             .getProperties());
 
-    assertDoesNotThrow(() -> instrument(new ShareClientBuilder()
+        assertDoesNotThrow(() -> instrument(new ShareClientBuilder()
             .endpoint(primaryShareClient.getShareUrl())
             .credential(new AzureSasCredential(sas)))
             .buildClient()
             .getProperties());
 
-    assertDoesNotThrow(() -> instrument(new ShareClientBuilder()
+        assertDoesNotThrow(() -> instrument(new ShareClientBuilder()
             .endpoint(primaryShareClient.getShareUrl() + "?" + sas))
             .buildClient()
             .getProperties());
 
-    assertDoesNotThrow(() -> instrument(new ShareFileClientBuilder()
+        assertDoesNotThrow(() -> instrument(new ShareFileClientBuilder()
             .endpoint(primaryShareClient.getShareUrl())
             .resourcePath(pathName)
             .sasToken(sas))
             .buildDirectoryClient()
             .getProperties());
 
-    assertDoesNotThrow(() -> instrument(new ShareFileClientBuilder()
+        assertDoesNotThrow(() -> instrument(new ShareFileClientBuilder()
             .endpoint(primaryShareClient.getShareUrl())
             .resourcePath(pathName)
             .credential(new AzureSasCredential(sas)))
             .buildDirectoryClient()
             .getProperties());
 
-    assertDoesNotThrow(() -> instrument(new ShareFileClientBuilder()
+        assertDoesNotThrow(() -> instrument(new ShareFileClientBuilder()
             .endpoint(primaryShareClient.getShareUrl() + "?" + sas)
             .resourcePath(pathName))
             .buildDirectoryClient()
             .getProperties());
 
-    assertDoesNotThrow(() -> instrument(new ShareServiceClientBuilder()
+        assertDoesNotThrow(() -> instrument(new ShareServiceClientBuilder()
             .endpoint(primaryShareClient.getShareUrl())
             .sasToken(sas))
             .buildClient()
             .getProperties());
 
-    assertDoesNotThrow(() -> instrument(new ShareServiceClientBuilder()
+        assertDoesNotThrow(() -> instrument(new ShareServiceClientBuilder()
             .endpoint(primaryShareClient.getShareUrl())
             .credential(new AzureSasCredential(sas)))
             .buildClient()
             .getProperties());
 
-    assertDoesNotThrow(() -> instrument(new ShareServiceClientBuilder()
+        assertDoesNotThrow(() -> instrument(new ShareServiceClientBuilder()
             .endpoint(primaryShareClient.getShareUrl() + "?" + sas))
             .buildClient()
             .getProperties());

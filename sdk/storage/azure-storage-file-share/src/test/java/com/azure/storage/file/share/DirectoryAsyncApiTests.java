@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.storage.file.share;
 
 import com.azure.core.http.rest.Response;
@@ -40,11 +43,7 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
-
-
-
-
-public class DirectoryAsyncApiTests extends FileShareTestBase{
+public class DirectoryAsyncApiTests extends FileShareTestBase {
 
     private ShareDirectoryAsyncClient primaryDirectoryAsyncClient;
     private ShareClient shareClient;
@@ -52,7 +51,7 @@ public class DirectoryAsyncApiTests extends FileShareTestBase{
     private String shareName;
     private static Map<String, String> testMetadata;
     private FileSmbProperties smbProperties;
-    private static final String filePermission = "O:S-1-5-21-2127521184-1604012920-1887927527-21560751G:S-1-5-21-2127521184-1604012920-1887927527-513D:AI(A;;FA;;;SY)(A;;FA;;;BA)(A;;0x1200a9;;;S-1-5-21-397955417-626881126-188441444-3053964)S:NO_ACCESS_CONTROL";
+    private static final String FILE_PERMISSION = "O:S-1-5-21-2127521184-1604012920-1887927527-21560751G:S-1-5-21-2127521184-1604012920-1887927527-513D:AI(A;;FA;;;SY)(A;;FA;;;BA)(A;;0x1200a9;;;S-1-5-21-397955417-626881126-188441444-3053964)S:NO_ACCESS_CONTROL";
 
     @BeforeEach
     public void setup() {
@@ -67,8 +66,10 @@ public class DirectoryAsyncApiTests extends FileShareTestBase{
 
     @Test
     public void getDirectoryURL() {
-        String accountName = StorageSharedKeyCredential.fromConnectionString(ENVIRONMENT.getPrimaryAccount().getConnectionString()).getAccountName();
-        String expectURL = String.format("https://%s.file.core.windows.net/%s/%s", accountName, shareName, directoryPath);
+        String accountName = StorageSharedKeyCredential.fromConnectionString(ENVIRONMENT.getPrimaryAccount()
+            .getConnectionString()).getAccountName();
+        String expectURL = String.format("https://%s.file.core.windows.net/%s/%s", accountName, shareName,
+            directoryPath);
         String directoryURL = primaryDirectoryAsyncClient.getDirectoryUrl();
         assertEquals(expectURL, directoryURL);
     }
@@ -89,7 +90,7 @@ public class DirectoryAsyncApiTests extends FileShareTestBase{
     @Test
     public void createDirectory() {
         StepVerifier.create(primaryDirectoryAsyncClient.createWithResponse(null, null, null))
-            .assertNext( it -> assertResponseStatusCode(it, 201)).verifyComplete();
+            .assertNext(it -> assertResponseStatusCode(it, 201)).verifyComplete();
     }
 
     @Test
@@ -108,7 +109,7 @@ public class DirectoryAsyncApiTests extends FileShareTestBase{
 
     @Test
     public void createDirectoryWithFilePermission() {
-        StepVerifier.create(primaryDirectoryAsyncClient.createWithResponse(null, filePermission, testMetadata))
+        StepVerifier.create(primaryDirectoryAsyncClient.createWithResponse(null, FILE_PERMISSION, testMetadata))
             .assertNext(it -> {
                 assertResponseStatusCode(it, 201);
                 assertNotNull(it.getValue().getSmbProperties());
@@ -119,12 +120,12 @@ public class DirectoryAsyncApiTests extends FileShareTestBase{
                 assertNotNull(it.getValue().getSmbProperties().getFileChangeTime());
                 assertNotNull(it.getValue().getSmbProperties().getParentId());
                 assertNotNull(it.getValue().getSmbProperties().getFileId());
-        }).verifyComplete();
+            }).verifyComplete();
     }
 
     @Test
     public void createDirectoryWithFilePermKey() {
-        String filePermissionKey = shareClient.createPermission(filePermission);
+        String filePermissionKey = shareClient.createPermission(FILE_PERMISSION);
         smbProperties.setFileCreationTime(testResourceNamer.now())
             .setFileLastWriteTime(testResourceNamer.now())
             .setFilePermissionKey(filePermissionKey);
@@ -145,8 +146,8 @@ public class DirectoryAsyncApiTests extends FileShareTestBase{
 
     @Test
     public void createIfNotExistsDirectory() {
-        StepVerifier.create(primaryDirectoryAsyncClient.createIfNotExistsWithResponse(new ShareDirectoryCreateOptions()))
-            .assertNext(it -> assertResponseStatusCode(it, 201)).verifyComplete();
+        StepVerifier.create(primaryDirectoryAsyncClient.createIfNotExistsWithResponse(
+            new ShareDirectoryCreateOptions())).assertNext(it -> assertResponseStatusCode(it, 201)).verifyComplete();
     }
 
     @Test
@@ -183,7 +184,7 @@ public class DirectoryAsyncApiTests extends FileShareTestBase{
     @Test
     public void createIfNotExistsDirectoryWithFilePermission() {
         StepVerifier.create(primaryDirectoryAsyncClient.createIfNotExistsWithResponse(new ShareDirectoryCreateOptions()
-            .setFilePermission(filePermission).setMetadata(testMetadata)))
+            .setFilePermission(FILE_PERMISSION).setMetadata(testMetadata)))
             .assertNext(it -> {
                 assertResponseStatusCode(it, 201);
                 assertNotNull(it.getValue().getSmbProperties());
@@ -199,7 +200,7 @@ public class DirectoryAsyncApiTests extends FileShareTestBase{
 
     @Test
     public void createIfNotExistsDirectoryWithFilePermKey() {
-        String filePermissionKey = shareClient.createPermission(filePermission);
+        String filePermissionKey = shareClient.createPermission(FILE_PERMISSION);
         smbProperties.setFileCreationTime(testResourceNamer.now())
             .setFileLastWriteTime(testResourceNamer.now())
             .setFilePermissionKey(filePermissionKey);
@@ -298,7 +299,7 @@ public class DirectoryAsyncApiTests extends FileShareTestBase{
     @Test
     public void setPropertiesFilePermission() {
         primaryDirectoryAsyncClient.createWithResponse(null, null, null).block();
-        StepVerifier.create(primaryDirectoryAsyncClient.setPropertiesWithResponse(null, filePermission))
+        StepVerifier.create(primaryDirectoryAsyncClient.setPropertiesWithResponse(null, FILE_PERMISSION))
             .assertNext(it -> {
                 assertResponseStatusCode(it, 200);
                 assertNotNull(it.getValue().getSmbProperties());
@@ -314,7 +315,7 @@ public class DirectoryAsyncApiTests extends FileShareTestBase{
 
     @Test
     public void setPropertiesFilePermissionKey() {
-        String filePermissionKey = shareClient.createPermission(filePermission);
+        String filePermissionKey = shareClient.createPermission(FILE_PERMISSION);
         smbProperties.setFileCreationTime(testResourceNamer.now())
             .setFileLastWriteTime(testResourceNamer.now())
             .setFilePermissionKey(filePermissionKey);
@@ -337,7 +338,7 @@ public class DirectoryAsyncApiTests extends FileShareTestBase{
     public void setPropertiesError() {
         primaryDirectoryAsyncClient.createWithResponse(null, null, null).block();
         FileSmbProperties properties = new FileSmbProperties().setFilePermissionKey("filePermissionKey");
-        StepVerifier.create(primaryDirectoryAsyncClient.setProperties(properties, filePermission))
+        StepVerifier.create(primaryDirectoryAsyncClient.setProperties(properties, FILE_PERMISSION))
             .verifyErrorSatisfies(it -> assertInstanceOf(IllegalArgumentException.class, it));
 
         StepVerifier.create(primaryDirectoryAsyncClient.setProperties(null,
@@ -400,22 +401,10 @@ public class DirectoryAsyncApiTests extends FileShareTestBase{
         assertArrayEquals(expectedDirectories, foundDirectories.toArray());
     }
 
-    private static Stream<List<String[]>> listFilesAndDirectoriesSupplier() {
+    private static Stream<Arguments> listFilesAndDirectoriesSupplier() {
         return Stream.of(
-            new ArrayList<String[]>() {
-                {
-                    add(new String[]{"a", "b", "c"});
-                    add(new String[]{"d", "e"});
-                }
-
-            },
-            new ArrayList<String[]>() {
-                {
-                    add(new String[]{"a", "c", "e"});
-                    add(new String[]{"b", "d"});
-                }
-
-            });
+            Arguments.of(new String[]{"a", "b", "c"}, new String[]{"d", "e"}),
+            Arguments.of(new String[]{"a", "c", "e"}, new String[]{"b", "d"}));
     }
 
     /**
@@ -426,7 +415,7 @@ public class DirectoryAsyncApiTests extends FileShareTestBase{
      *                               -> listOp6 (file)
      *              -> listOp2 (file)
      */
-    @DisabledIf("olderThan20201002ServiceVersion")
+    @DisabledIf("com.azure.storage.file.share.FileShareTestBase#olderThan20201002ServiceVersion")
     @ParameterizedTest
     @MethodSource("listFilesAndDirectoriesArgsSupplier")
     public void listFilesAndDirectoriesArgs(String extraPrefix, Integer maxResults, int numOfResults) {
@@ -483,7 +472,7 @@ public class DirectoryAsyncApiTests extends FileShareTestBase{
                 assertExceptionStatusCodeAndMessage(it, 404, ShareErrorCode.RESOURCE_NOT_FOUND));
     }
 
-    @DisabledIf("olderThan20190707ServiceVersion")
+    @DisabledIf("com.azure.storage.file.share.FileShareTestBase#olderThan20190707ServiceVersion")
     @Test
     public void forceCloseHandleMin() {
         primaryDirectoryAsyncClient.create().block();
@@ -502,7 +491,7 @@ public class DirectoryAsyncApiTests extends FileShareTestBase{
             .verifyErrorSatisfies(it -> assertInstanceOf(ShareStorageException.class, it));
     }
 
-    @DisabledIf("olderThan20190707ServiceVersion")
+    @DisabledIf("com.azure.storage.file.share.FileShareTestBase#olderThan20190707ServiceVersion")
     @Test
     public void forceCloseAllHandlesMin() {
         primaryDirectoryAsyncClient.create().block();
@@ -532,40 +521,43 @@ public class DirectoryAsyncApiTests extends FileShareTestBase{
     @Test
     public void createSubDirectoryMetadata() {
         primaryDirectoryAsyncClient.create().block();
-        StepVerifier.create(primaryDirectoryAsyncClient.createSubdirectoryWithResponse("testCreateSubDirectory", null, null, testMetadata))
+        StepVerifier.create(primaryDirectoryAsyncClient.createSubdirectoryWithResponse("testCreateSubDirectory", null,
+                null, testMetadata))
             .assertNext(it -> assertResponseStatusCode(it, 201)).verifyComplete();
     }
 
     @Test
     public void createSubDirectoryMetadataError() {
         primaryDirectoryAsyncClient.create().block();
-        StepVerifier.create(primaryDirectoryAsyncClient.createSubdirectoryWithResponse("testsubdirectory", null, null, Collections.singletonMap("", "value")))
-            .verifyErrorSatisfies(it -> assertExceptionStatusCodeAndMessage(it, 400, ShareErrorCode.EMPTY_METADATA_KEY));
+        StepVerifier.create(primaryDirectoryAsyncClient.createSubdirectoryWithResponse("testsubdirectory", null, null,
+            Collections.singletonMap("", "value"))).verifyErrorSatisfies(
+                it -> assertExceptionStatusCodeAndMessage(it, 400, ShareErrorCode.EMPTY_METADATA_KEY));
 
     }
 
     @Test
     public void createSubDirectoryFilePermission() {
         primaryDirectoryAsyncClient.create().block();
-        StepVerifier.create(primaryDirectoryAsyncClient.createSubdirectoryWithResponse("testCreateSubDirectory", null, filePermission, null))
-            .assertNext(it -> assertResponseStatusCode(it, 201)).verifyComplete();
+        StepVerifier.create(primaryDirectoryAsyncClient.createSubdirectoryWithResponse("testCreateSubDirectory", null,
+            FILE_PERMISSION, null)).assertNext(it -> assertResponseStatusCode(it, 201)).verifyComplete();
     }
 
     @Test
     public void createSubDirectoryFilePermKey() {
-        String filePermissionKey = shareClient.createPermission(filePermission);
+        String filePermissionKey = shareClient.createPermission(FILE_PERMISSION);
         smbProperties.setFileCreationTime(testResourceNamer.now())
             .setFileLastWriteTime(testResourceNamer.now())
             .setFilePermissionKey(filePermissionKey);
         primaryDirectoryAsyncClient.create().block();
-        StepVerifier.create(primaryDirectoryAsyncClient.createSubdirectoryWithResponse("testCreateSubDirectory", smbProperties, null, null))
-            .assertNext(it -> assertResponseStatusCode(it, 201)).verifyComplete();
+        StepVerifier.create(primaryDirectoryAsyncClient.createSubdirectoryWithResponse("testCreateSubDirectory",
+            smbProperties, null, null)).assertNext(it -> assertResponseStatusCode(it, 201)).verifyComplete();
     }
 
     @Test
     public void createIfNotExistsSubDirectory() {
         primaryDirectoryAsyncClient.create().block();
-        StepVerifier.create(primaryDirectoryAsyncClient.createSubdirectoryIfNotExistsWithResponse("testCreateSubDirectory", new ShareDirectoryCreateOptions()))
+        StepVerifier.create(primaryDirectoryAsyncClient.createSubdirectoryIfNotExistsWithResponse(
+            "testCreateSubDirectory", new ShareDirectoryCreateOptions()))
             .assertNext(it -> assertResponseStatusCode(it, 201)).verifyComplete();
     }
 
@@ -573,7 +565,7 @@ public class DirectoryAsyncApiTests extends FileShareTestBase{
     public void createIfNotExistsSubDirectoryInvalidName() {
         primaryDirectoryAsyncClient.create().block();
         StepVerifier.create(primaryDirectoryAsyncClient.createSubdirectoryIfNotExists("test/subdirectory"))
-        .verifyErrorSatisfies(it -> assertExceptionStatusCodeAndMessage(it, 404, ShareErrorCode.PARENT_NOT_FOUND));
+            .verifyErrorSatisfies(it -> assertExceptionStatusCodeAndMessage(it, 404, ShareErrorCode.PARENT_NOT_FOUND));
     }
 
     @Test
@@ -582,10 +574,12 @@ public class DirectoryAsyncApiTests extends FileShareTestBase{
         ShareDirectoryAsyncClient client = primaryDirectoryAsyncClient.getDirectoryAsyncClient(generatePathName());
         client.create().block();
         Response<ShareDirectoryAsyncClient> initialResponse =
-            client.createSubdirectoryIfNotExistsWithResponse(subdirectoryName, new ShareDirectoryCreateOptions()).block();
+            client.createSubdirectoryIfNotExistsWithResponse(subdirectoryName,
+                new ShareDirectoryCreateOptions()).block();
 
         Response<ShareDirectoryAsyncClient> secondResponse =
-            client.createSubdirectoryIfNotExistsWithResponse(subdirectoryName, new ShareDirectoryCreateOptions()).block();
+            client.createSubdirectoryIfNotExistsWithResponse(subdirectoryName,
+                new ShareDirectoryCreateOptions()).block();
 
         assertNotNull(initialResponse);
         assertNotNull(secondResponse);
@@ -596,8 +590,8 @@ public class DirectoryAsyncApiTests extends FileShareTestBase{
     @Test
     public void createIfNotExistsSubDirectoryMetadata() {
         primaryDirectoryAsyncClient.create().block();
-        StepVerifier.create(primaryDirectoryAsyncClient.createSubdirectoryIfNotExistsWithResponse("testCreateSubDirectory",
-            new ShareDirectoryCreateOptions().setMetadata(testMetadata)))
+        StepVerifier.create(primaryDirectoryAsyncClient.createSubdirectoryIfNotExistsWithResponse(
+            "testCreateSubDirectory", new ShareDirectoryCreateOptions().setMetadata(testMetadata)))
             .assertNext(it -> assertResponseStatusCode(it, 201)).verifyComplete();
     }
 
@@ -607,26 +601,27 @@ public class DirectoryAsyncApiTests extends FileShareTestBase{
         StepVerifier.create(primaryDirectoryAsyncClient
             .createSubdirectoryIfNotExistsWithResponse("testsubdirectory", new ShareDirectoryCreateOptions()
                 .setMetadata(Collections.singletonMap("", "value"))))
-            .verifyErrorSatisfies(it -> assertExceptionStatusCodeAndMessage(it, 400, ShareErrorCode.EMPTY_METADATA_KEY));
+            .verifyErrorSatisfies(it -> assertExceptionStatusCodeAndMessage(it, 400,
+                ShareErrorCode.EMPTY_METADATA_KEY));
     }
 
     @Test
     public void createIfNotExistsSubDirectoryFilePermission() {
         primaryDirectoryAsyncClient.create().block();
-        StepVerifier.create(primaryDirectoryAsyncClient.createSubdirectoryIfNotExistsWithResponse("testCreateSubDirectory",
-                new ShareDirectoryCreateOptions().setFilePermission(filePermission)))
+        StepVerifier.create(primaryDirectoryAsyncClient.createSubdirectoryIfNotExistsWithResponse(
+            "testCreateSubDirectory", new ShareDirectoryCreateOptions().setFilePermission(FILE_PERMISSION)))
             .assertNext(it -> assertResponseStatusCode(it, 201)).verifyComplete();
     }
 
     @Test
     public void createIfNotExistsSubDirectoryFilePermKey() {
-        String filePermissionKey = shareClient.createPermission(filePermission);
+        String filePermissionKey = shareClient.createPermission(FILE_PERMISSION);
         smbProperties.setFileCreationTime(testResourceNamer.now())
             .setFileLastWriteTime(testResourceNamer.now())
             .setFilePermissionKey(filePermissionKey);
         primaryDirectoryAsyncClient.create().block();
-        StepVerifier.create(primaryDirectoryAsyncClient.createSubdirectoryIfNotExistsWithResponse("testCreateSubDirectory",
-            new ShareDirectoryCreateOptions().setSmbProperties(smbProperties)))
+        StepVerifier.create(primaryDirectoryAsyncClient.createSubdirectoryIfNotExistsWithResponse(
+            "testCreateSubDirectory", new ShareDirectoryCreateOptions().setSmbProperties(smbProperties)))
             .assertNext(it -> assertResponseStatusCode(it, 201)).verifyComplete();
     }
 
@@ -643,7 +638,8 @@ public class DirectoryAsyncApiTests extends FileShareTestBase{
     public void deleteSubDirectoryError() {
         primaryDirectoryAsyncClient.create().block();
         StepVerifier.create(primaryDirectoryAsyncClient.deleteSubdirectoryWithResponse("testsubdirectory"))
-            .verifyErrorSatisfies(it -> assertExceptionStatusCodeAndMessage(it, 404, ShareErrorCode.RESOURCE_NOT_FOUND));
+            .verifyErrorSatisfies(it -> assertExceptionStatusCodeAndMessage(it, 404,
+                ShareErrorCode.RESOURCE_NOT_FOUND));
     }
 
     @Test
@@ -681,21 +677,16 @@ public class DirectoryAsyncApiTests extends FileShareTestBase{
     @Test
     public void createFile() {
         primaryDirectoryAsyncClient.create().block();
-        StepVerifier.create(primaryDirectoryAsyncClient.createFileWithResponse("testCreateFile", 1024, null, null, null, null))
-            .assertNext(it -> assertResponseStatusCode(it, 201)).verifyComplete();
+        StepVerifier.create(primaryDirectoryAsyncClient.createFileWithResponse("testCreateFile", 1024, null, null, null,
+                null)).assertNext(it -> assertResponseStatusCode(it, 201)).verifyComplete();
     }
 
     @ParameterizedTest
-    @MethodSource("createFileInvalidArgsSupplier")
+    @MethodSource("com.azure.storage.file.share.FileShareTestBase#createFileInvalidArgsSupplier")
     public void createFileInvalidArgs(String fileName, long maxSize, int statusCode, ShareErrorCode errMsg) {
         primaryDirectoryAsyncClient.create().block();
-        StepVerifier.create(primaryDirectoryAsyncClient.createFileWithResponse(fileName, maxSize, null, null, null, null))
-            .verifyErrorSatisfies(it -> assertExceptionStatusCodeAndMessage(it, statusCode, errMsg));
-    }
-
-    private static Stream<Arguments> createFileInvalidArgsSupplier() {
-        return Stream.of(Arguments.of("testfile:", 1024, 400, ShareErrorCode.INVALID_RESOURCE_NAME),
-            Arguments.of("fileName", -1, 400, ShareErrorCode.OUT_OF_RANGE_INPUT));
+        StepVerifier.create(primaryDirectoryAsyncClient.createFileWithResponse(fileName, maxSize, null, null, null,
+                null)).verifyErrorSatisfies(it -> assertExceptionStatusCodeAndMessage(it, statusCode, errMsg));
     }
 
     @Test
@@ -706,24 +697,27 @@ public class DirectoryAsyncApiTests extends FileShareTestBase{
         smbProperties.setFileCreationTime(testResourceNamer.now())
             .setFileLastWriteTime(testResourceNamer.now());
 
-        StepVerifier.create(primaryDirectoryAsyncClient.createFileWithResponse("testCreateFile", 1024, httpHeaders, smbProperties, filePermission, testMetadata))
+        StepVerifier.create(primaryDirectoryAsyncClient.createFileWithResponse("testCreateFile", 1024, httpHeaders,
+                smbProperties, FILE_PERMISSION, testMetadata))
             .assertNext(it -> assertResponseStatusCode(it, 201)).verifyComplete();
     }
 
     @ParameterizedTest
+    @MethodSource("createFileMaxInvalidArgsSupplier")
     public void createFileMaxOverloadInvalidArgs(String fileName, long maxSize, ShareFileHttpHeaders httpHeaders,
         Map<String, String> metadata, ShareErrorCode errMsg) {
         primaryDirectoryAsyncClient.create().block();
-        StepVerifier.create(primaryDirectoryAsyncClient.createFileWithResponse(fileName, maxSize, httpHeaders, null, null, metadata))
-            .verifyErrorSatisfies(it -> assertExceptionStatusCodeAndMessage(it, 400, errMsg)
-        );
+        StepVerifier.create(primaryDirectoryAsyncClient.createFileWithResponse(fileName, maxSize, httpHeaders, null,
+            null, metadata)).verifyErrorSatisfies(it -> assertExceptionStatusCodeAndMessage(it, 400, errMsg));
     }
 
     private static Stream<Arguments> createFileMaxInvalidArgsSupplier() {
         return Stream.of(Arguments.of("testfile:", 1024, null, testMetadata, ShareErrorCode.INVALID_RESOURCE_NAME),
             Arguments.of("fileName", -1, 400, testMetadata, ShareErrorCode.OUT_OF_RANGE_INPUT),
-            Arguments.of("fileName", 1024, new ShareFileHttpHeaders().setContentMd5(new byte[0]), testMetadata, ShareErrorCode.INVALID_HEADER_VALUE),
-            Arguments.of("fileName", 1024, null, Collections.singletonMap("", "value"), ShareErrorCode.EMPTY_METADATA_KEY)
+            Arguments.of("fileName", 1024, new ShareFileHttpHeaders().setContentMd5(new byte[0]), testMetadata,
+                ShareErrorCode.INVALID_HEADER_VALUE),
+            Arguments.of("fileName", 1024, null, Collections.singletonMap("", "value"),
+                ShareErrorCode.EMPTY_METADATA_KEY)
             );
     }
 
@@ -731,7 +725,8 @@ public class DirectoryAsyncApiTests extends FileShareTestBase{
     public void createFileLease() {
         primaryDirectoryAsyncClient.create().block();
         primaryDirectoryAsyncClient.getFileClient("testCreateFile").create(512).block();
-        String leaseId = createLeaseClient(primaryDirectoryAsyncClient.getFileClient("testCreateFile")).acquireLease().block();
+        String leaseId = createLeaseClient(primaryDirectoryAsyncClient.getFileClient("testCreateFile")).acquireLease()
+            .block();
 
         StepVerifier.create(primaryDirectoryAsyncClient.createFileWithResponse("testCreateFile", 1024, null, null, null,
             null, new ShareRequestConditions().setLeaseId(leaseId))).expectNextCount(1).verifyComplete();

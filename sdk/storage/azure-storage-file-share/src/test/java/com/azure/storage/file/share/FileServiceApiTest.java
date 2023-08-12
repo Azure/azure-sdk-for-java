@@ -52,20 +52,20 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class FileServiceApiTest extends FileShareTestBase {
     static String shareName;
 
-    private static final Map<String, String> testMetadata = Collections.singletonMap("testmetadata", "value");
-    private static final String reallyLongString = "thisisareallylongstringthatexceedsthe64characterlimitallowedoncertainproperties";
-    private static List<ShareCorsRule> TOO_MANY_RULES = new ArrayList<>();
-    private static final List<ShareCorsRule> INVALID_ALLOWED_HEADER = Collections.singletonList(new ShareCorsRule().setAllowedHeaders(reallyLongString));
-    private static final List<ShareCorsRule> INVALID_EXPOSED_HEADER = Collections.singletonList(new ShareCorsRule().setExposedHeaders(reallyLongString));
-    private static final List<ShareCorsRule> INVALID_ALLOWED_ORIGIN = Collections.singletonList(new ShareCorsRule().setAllowedOrigins(reallyLongString));
+    private static final Map<String, String> TEST_METADATA = Collections.singletonMap("testmetadata", "value");
+    private static final String REALLY_LONG_STRING = "thisisareallylongstringthatexceedsthe64characterlimitallowedoncertainproperties";
+    private static List<ShareCorsRule> tooManyRules = new ArrayList<>();
+    private static final List<ShareCorsRule> INVALID_ALLOWED_HEADER = Collections.singletonList(new ShareCorsRule().setAllowedHeaders(REALLY_LONG_STRING));
+    private static final List<ShareCorsRule> INVALID_EXPOSED_HEADER = Collections.singletonList(new ShareCorsRule().setExposedHeaders(REALLY_LONG_STRING));
+    private static final List<ShareCorsRule> INVALID_ALLOWED_ORIGIN = Collections.singletonList(new ShareCorsRule().setAllowedOrigins(REALLY_LONG_STRING));
     private static final List<ShareCorsRule> INVALID_ALLOWED_METHOD = Collections.singletonList(new ShareCorsRule().setAllowedMethods("NOTAREALHTTPMETHOD"));
 
     @BeforeAll
     public static void setupSpec() {
         for (int i = 0; i < 6; i++) {
-            TOO_MANY_RULES.add(new ShareCorsRule());
+            tooManyRules.add(new ShareCorsRule());
         }
-        TOO_MANY_RULES = Collections.unmodifiableList(TOO_MANY_RULES);
+        tooManyRules = Collections.unmodifiableList(tooManyRules);
     }
 
     @BeforeEach
@@ -76,7 +76,8 @@ public class FileServiceApiTest extends FileShareTestBase {
 
     @Test
     public void getFileServiceURL() {
-        String accountName = StorageSharedKeyCredential.fromConnectionString(ENVIRONMENT.getPrimaryAccount().getConnectionString()).getAccountName();
+        String accountName = StorageSharedKeyCredential.fromConnectionString(ENVIRONMENT.getPrimaryAccount()
+            .getConnectionString()).getAccountName();
         String expectURL = String.format("https://%s.file.core.windows.net", accountName);
         String fileServiceURL = primaryFileServiceClient.getFileServiceUrl();
         assertEquals(expectURL, fileServiceURL);
@@ -90,7 +91,8 @@ public class FileServiceApiTest extends FileShareTestBase {
 
     @Test
     public void createShare() {
-        Response<ShareClient> createShareResponse = primaryFileServiceClient.createShareWithResponse(shareName, null, null, null, null);
+        Response<ShareClient> createShareResponse = primaryFileServiceClient.createShareWithResponse(shareName, null,
+            null, null, null);
         assertResponseStatusCode(createShareResponse, 201);
     }
 
@@ -98,13 +100,13 @@ public class FileServiceApiTest extends FileShareTestBase {
     @Test
     public void createShareMaxOverloads() {
         Response<ShareClient> createShareResponse = primaryFileServiceClient.createShareWithResponse(shareName,
-            new ShareCreateOptions().setQuotaInGb(1).setMetadata(testMetadata).setAccessTier(ShareAccessTier.HOT),
+            new ShareCreateOptions().setQuotaInGb(1).setMetadata(TEST_METADATA).setAccessTier(ShareAccessTier.HOT),
             null, null);
         assertResponseStatusCode(createShareResponse, 201);
     }
 
     @ParameterizedTest
-    @MethodSource("createShareWithInvalidArgsSupplier")
+    @MethodSource("com.azure.storage.file.share.FileShareTestBase#createFileServiceShareWithInvalidArgsSupplier")
     public void createShareWithInvalidArgs(Map<String, String> metadata, Integer quota, int statusCode,
         ShareErrorCode errMsg) {
         ShareStorageException e = assertThrows(ShareStorageException.class, () ->
@@ -112,16 +114,11 @@ public class FileServiceApiTest extends FileShareTestBase {
         assertExceptionStatusCodeAndMessage(e, statusCode, errMsg);
     }
 
-    private static Stream<Arguments> createShareWithInvalidArgsSupplier() {
-        return Stream.of(
-            Arguments.of(Collections.singletonMap("invalid#", "value"), 1, 400, ShareErrorCode.INVALID_METADATA),
-            Arguments.of(testMetadata, -1, 400, ShareErrorCode.INVALID_HEADER_VALUE));
-    }
-
     @Test
     public void deleteShare() {
         primaryFileServiceClient.createShare(shareName);
-        Response<Void> deleteShareResponse = primaryFileServiceClient.deleteShareWithResponse(shareName, null, null, null);
+        Response<Void> deleteShareResponse = primaryFileServiceClient.deleteShareWithResponse(shareName, null, null,
+            null);
         assertResponseStatusCode(deleteShareResponse, 202);
     }
 
@@ -143,7 +140,7 @@ public class FileServiceApiTest extends FileShareTestBase {
             ShareItem share = new ShareItem().setProperties(new ShareProperties().setQuota(i + 1))
                 .setName(shareName + i);
             if (i == 2) {
-                share.setMetadata(testMetadata);
+                share.setMetadata(TEST_METADATA);
             }
 
             testShares.add(share);
@@ -159,7 +156,7 @@ public class FileServiceApiTest extends FileShareTestBase {
         Iterator<ShareItem> shares = primaryFileServiceClient.listShares(options, null, null).iterator();
 
         for (int i = 0; i < limits; i++) {
-            FileTestHelper.assertSharesAreEqual(testShares.pop(), shares.next(), includeMetadata, includeSnapshot,
+            assertSharesAreEqual(testShares.pop(), shares.next(), includeMetadata, includeSnapshot,
                 includeDeleted);
         }
         assertTrue(includeDeleted || !shares.hasNext());
@@ -184,7 +181,7 @@ public class FileServiceApiTest extends FileShareTestBase {
         options.setPrefix(shareName);
         for (int i = 0; i < 4; i++) {
             ShareItem share = new ShareItem().setName(shareName + i).setProperties(new ShareProperties().setQuota(2))
-                .setMetadata(testMetadata);
+                .setMetadata(TEST_METADATA);
             ShareClient shareClient = primaryFileServiceClient.getShareClient(share.getName());
             shareClient.createWithResponse(share.getMetadata(), share.getProperties().getQuota(), null, null);
             if (i == 2) {
@@ -212,8 +209,10 @@ public class FileServiceApiTest extends FileShareTestBase {
         return Stream.of(
             Arguments.of(new ListSharesOptions(), 3, false, false, false),
             Arguments.of(new ListSharesOptions().setIncludeMetadata(true), 3, true, false, false),
-            Arguments.of(new ListSharesOptions().setIncludeMetadata(true).setIncludeSnapshots(true), 4, true, true, false),
-            Arguments.of(new ListSharesOptions().setIncludeMetadata(true).setIncludeSnapshots(true).setIncludeDeleted(true), 5, true, true, true)
+            Arguments.of(new ListSharesOptions().setIncludeMetadata(true).setIncludeSnapshots(true), 4, true, true,
+                false),
+            Arguments.of(new ListSharesOptions().setIncludeMetadata(true).setIncludeSnapshots(true)
+                .setIncludeDeleted(true), 5, true, true, true)
         );
     }
 
@@ -318,7 +317,9 @@ public class FileServiceApiTest extends FileShareTestBase {
     }
 
     @ParameterizedTest
-    public void setAndGetPropertiesWithInvalidArgs(List<ShareCorsRule> coreList, int statusCode, ShareErrorCode errMsg) {
+    @MethodSource("setAndGetPropertiesWithInvalidArgsSupplier")
+    public void setAndGetPropertiesWithInvalidArgs(List<ShareCorsRule> coreList, int statusCode,
+        ShareErrorCode errMsg) {
         ShareRetentionPolicy retentionPolicy = new ShareRetentionPolicy().setEnabled(true).setDays(3);
         ShareMetrics metrics = new ShareMetrics().setEnabled(true).setIncludeApis(false)
             .setRetentionPolicy(retentionPolicy).setVersion("1.0");
@@ -332,7 +333,7 @@ public class FileServiceApiTest extends FileShareTestBase {
     }
 
     private static Stream<Arguments> setAndGetPropertiesWithInvalidArgsSupplier() {
-        return Stream.of(Arguments.of(TOO_MANY_RULES, 400, ShareErrorCode.INVALID_XML_DOCUMENT),
+        return Stream.of(Arguments.of(tooManyRules, 400, ShareErrorCode.INVALID_XML_DOCUMENT),
             Arguments.of(INVALID_ALLOWED_HEADER, 400, ShareErrorCode.INVALID_XML_DOCUMENT),
             Arguments.of(INVALID_EXPOSED_HEADER, 400, ShareErrorCode.INVALID_XML_DOCUMENT),
             Arguments.of(INVALID_ALLOWED_ORIGIN, 400, ShareErrorCode.INVALID_XML_DOCUMENT),
@@ -384,12 +385,14 @@ public class FileServiceApiTest extends FileShareTestBase {
     @DisabledIf("com.azure.storage.file.share.FileShareTestBase#olderThan20191212ServiceVersion")
     @Test
     public void restoreShareError() {
-        assertThrows(ShareStorageException.class, () -> primaryFileServiceClient.undeleteShare(generateShareName(), "01D60F8BB59A4652"));
+        assertThrows(ShareStorageException.class, () -> primaryFileServiceClient.undeleteShare(generateShareName(),
+            "01D60F8BB59A4652"));
     }
 
     @DisabledIf("com.azure.storage.file.share.FileShareTestBase#isServiceVersionSpecified")
     @Test
-    // This tests the policy is in the right place because if it were added per retry, it would be after the credentials and auth would fail because we changed a signed header.
+    // This tests the policy is in the right place because if it were added per retry, it would be after the credentials
+    // and auth would fail because we changed a signed header.
     public void perCallPolicy() {
         ShareServiceClient serviceClient = getServiceClient(ENVIRONMENT.getPrimaryAccount().getCredential(),
             primaryFileServiceClient.getFileServiceUrl(), getPerCallVersionPolicy());

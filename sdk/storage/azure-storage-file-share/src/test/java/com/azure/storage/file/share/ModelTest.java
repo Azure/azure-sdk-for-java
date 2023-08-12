@@ -47,7 +47,8 @@ public class ModelTest {
         assertEquals("Archive", NtfsFileAttributes.toString(EnumSet.of(NtfsFileAttributes.ARCHIVE)));
         assertEquals("Temporary", NtfsFileAttributes.toString(EnumSet.of(NtfsFileAttributes.TEMPORARY)));
         assertEquals("Offline", NtfsFileAttributes.toString(EnumSet.of(NtfsFileAttributes.OFFLINE)));
-        assertEquals("NotContentIndexed", NtfsFileAttributes.toString(EnumSet.of(NtfsFileAttributes.NOT_CONTENT_INDEXED)));
+        assertEquals("NotContentIndexed",
+            NtfsFileAttributes.toString(EnumSet.of(NtfsFileAttributes.NOT_CONTENT_INDEXED)));
         assertEquals("NoScrubData", NtfsFileAttributes.toString(EnumSet.of(NtfsFileAttributes.NO_SCRUB_DATA)));
         assertEquals("ReadOnly|Directory|Offline|NoScrubData",
             NtfsFileAttributes.toString(EnumSet.of(NtfsFileAttributes.READ_ONLY, NtfsFileAttributes.NO_SCRUB_DATA,

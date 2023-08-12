@@ -6,7 +6,14 @@ package com.azure.storage.file.share;
 import com.azure.core.client.traits.HttpTrait;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenRequestContext;
-import com.azure.core.http.*;
+import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpHeaderName;
+import com.azure.core.http.HttpHeaders;
+import com.azure.core.http.HttpPipelineCallContext;
+import com.azure.core.http.HttpPipelineNextPolicy;
+import com.azure.core.http.HttpPipelinePosition;
+import com.azure.core.http.HttpRequest;
+import com.azure.core.http.HttpResponse;
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
 import com.azure.core.http.okhttp.OkHttpAsyncHttpClientBuilder;
 import com.azure.core.http.policy.HttpPipelinePolicy;
@@ -21,11 +28,25 @@ import com.azure.core.util.Context;
 import com.azure.core.util.ServiceVersion;
 import com.azure.identity.EnvironmentCredentialBuilder;
 import com.azure.storage.common.StorageSharedKeyCredential;
+import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.test.shared.ServiceVersionValidationPolicy;
 import com.azure.storage.common.test.shared.TestAccount;
 import com.azure.storage.common.test.shared.TestDataFactory;
 import com.azure.storage.common.test.shared.TestEnvironment;
-import com.azure.storage.file.share.models.*;
+import com.azure.storage.file.share.models.ClearRange;
+import com.azure.storage.file.share.models.FileRange;
+import com.azure.storage.file.share.models.ListSharesOptions;
+import com.azure.storage.file.share.models.PermissionCopyModeType;
+import com.azure.storage.file.share.models.ShareCorsRule;
+import com.azure.storage.file.share.models.ShareErrorCode;
+import com.azure.storage.file.share.models.ShareFileHttpHeaders;
+import com.azure.storage.file.share.models.ShareItem;
+import com.azure.storage.file.share.models.ShareMetrics;
+import com.azure.storage.file.share.models.ShareRetentionPolicy;
+import com.azure.storage.file.share.models.ShareRootSquash;
+import com.azure.storage.file.share.models.ShareServiceProperties;
+import com.azure.storage.file.share.models.ShareSnapshotsDeleteOptionType;
+import com.azure.storage.file.share.models.ShareStorageException;
 import com.azure.storage.file.share.options.ShareAcquireLeaseOptions;
 import com.azure.storage.file.share.options.ShareBreakLeaseOptions;
 import com.azure.storage.file.share.options.ShareDeleteOptions;
@@ -42,7 +63,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Method;
 import java.net.URL;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.OffsetDateTime;
@@ -109,11 +129,19 @@ public class FileShareTestBase extends TestProxyTestBase {
 
         // Ignore changes to the order of query parameters and wholly ignore the 'sv' (service version) query parameter
         // in SAS tokens.
-        interceptorManager.addMatchers(Arrays.asList(new CustomMatcher()
+        interceptorManager.addMatchers(Collections.singletonList(new CustomMatcher()
+            .setComparingBodies(false)
+            .setHeadersKeyOnlyMatch(Arrays.asList("x-ms-lease-id", "x-ms-proposed-lease-id", "If-Modified-Since",
+                "If-Unmodified-Since", "x-ms-expiry-time", "x-ms-source-if-modified-since",
+                "x-ms-source-if-unmodified-since", "x-ms-source-lease-id", "x-ms-encryption-key-sha256"))
             .setQueryOrderingIgnored(true)
             .setIgnoredQueryParameters(Arrays.asList("sv"))));
 
+        primaryFileServiceClient = getServiceClient(ENVIRONMENT.getPrimaryAccount());
+        primaryFileServiceAsyncClient = getServiceAsyncClient(ENVIRONMENT.getPrimaryAccount());
 
+        premiumFileServiceClient = getServiceClient(ENVIRONMENT.getPremiumFileAccount());
+        premiumFileServiceAsyncClient = getServiceAsyncClient(ENVIRONMENT.getPremiumFileAccount());
     }
 
     private static String getCrc32(String input) {
@@ -133,17 +161,34 @@ public class FileShareTestBase extends TestProxyTestBase {
         }
 
         ShareServiceClient cleanupFileServiceClient = new ShareServiceClientBuilder()
+            .httpClient(getHttpClient())
             .connectionString(getPrimaryConnectionString())
+            //.credential(ENVIRONMENT.getPrimaryAccount().getCredential())
+            //.endpoint(ENVIRONMENT.getPrimaryAccount().getFileEndpoint())
+            //.connectionString(getPrimaryConnectionString())
             .buildClient();
 
-        for (ShareItem share : cleanupFileServiceClient.listShares(new ListSharesOptions().setPrefix(prefix), null, Context.NONE)) {
+        for (ShareItem share : cleanupFileServiceClient.listShares(new ListSharesOptions().setPrefix(prefix), null,
+            Context.NONE)) {
             ShareClient shareClient = cleanupFileServiceClient.getShareClient(share.getName());
-
-            if (share.getProperties().getLeaseState() == LeaseStateType.LEASED) {
-                createLeaseClient(shareClient).breakLeaseWithResponse(new ShareBreakLeaseOptions().setBreakPeriod(Duration.ofSeconds(0)), null, null);
+            shareClient.getSnapshotId();
+            System.err.println("Cleaning share: " + share.getName());
+            System.err.println("state of share: " + share.getProperties().getLeaseState());
+//            if (share.getProperties().getLeaseState() == LeaseStateType.LEASED) {
+            try {
+                System.err.println("share name that is leased: " + shareClient.getShareName());
+                createLeaseClient(shareClient).breakLeaseWithResponse(
+                    new ShareBreakLeaseOptions().setBreakPeriod(Duration.ofSeconds(0)), null, null);
+                System.err.println("released share: " + shareClient.getShareName());
+            } catch (ShareStorageException e) {
+                System.err.println("exception thrown: " + e.getMessage());
             }
 
-            shareClient.deleteWithResponse(new ShareDeleteOptions().setDeleteSnapshotsOptions(ShareSnapshotsDeleteOptionType.INCLUDE), null, null);
+//            }
+            System.err.println("right before delete call: " + shareClient.getShareName());
+            shareClient.deleteWithResponse(new ShareDeleteOptions()
+                .setDeleteSnapshotsOptions(ShareSnapshotsDeleteOptionType.INCLUDE), null, null);
+
         }
     }
 
@@ -195,7 +240,9 @@ public class FileShareTestBase extends TestProxyTestBase {
         HttpPipelinePolicy... policies) {
         ShareServiceClientBuilder builder = new ShareServiceClientBuilder().endpoint(endpoint);
         for (HttpPipelinePolicy policy : policies) {
-            builder.addPolicy(policy);
+            if (policy != null) {
+                builder.addPolicy(policy);
+            }
         }
 
         instrument(builder);
@@ -548,7 +595,7 @@ public class FileShareTestBase extends TestProxyTestBase {
         return new HttpPipelinePolicy() {
             @Override
             public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-                context.getHttpRequest().setHeader("x-ms-version","2017-11-09");
+                context.getHttpRequest().setHeader(X_MS_VERSION, "2017-11-09");
                 return next.process();
             }
             @Override
@@ -629,10 +676,10 @@ public class FileShareTestBase extends TestProxyTestBase {
         if (expected == null) {
             return actual == null;
         } else {
-            return Objects.equals(expected.isEnabled(), actual.isEnabled()) &&
-                Objects.equals(expected.isIncludeApis(), actual.isIncludeApis()) &&
-                Objects.equals(expected.getVersion(), actual.getVersion()) &&
-                assertRetentionPoliciesAreEqual(expected.getRetentionPolicy(), actual.getRetentionPolicy());
+            return Objects.equals(expected.isEnabled(), actual.isEnabled())
+                && Objects.equals(expected.isIncludeApis(), actual.isIncludeApis())
+                && Objects.equals(expected.getVersion(), actual.getVersion())
+                && assertRetentionPoliciesAreEqual(expected.getRetentionPolicy(), actual.getRetentionPolicy());
         }
     }
 
@@ -640,8 +687,8 @@ public class FileShareTestBase extends TestProxyTestBase {
         if (expected == null) {
             return actual == null;
         } else {
-            return Objects.equals(expected.getDays(), actual.getDays()) &&
-                Objects.equals(expected.isEnabled(), actual.isEnabled());
+            return Objects.equals(expected.getDays(), actual.getDays())
+                && Objects.equals(expected.isEnabled(), actual.isEnabled());
         }
     }
 
@@ -665,10 +712,10 @@ public class FileShareTestBase extends TestProxyTestBase {
         if (expected == null) {
             return actual == null;
         } else {
-            return Objects.equals(expected.getAllowedHeaders(), actual.getAllowedHeaders()) &&
-                Objects.equals(expected.getAllowedMethods(), actual.getAllowedMethods()) &&
-                Objects.equals(expected.getAllowedOrigins(), actual.getAllowedOrigins()) &&
-                Objects.equals(expected.getMaxAgeInSeconds(), actual.getMaxAgeInSeconds());
+            return Objects.equals(expected.getAllowedHeaders(), actual.getAllowedHeaders())
+                && Objects.equals(expected.getAllowedMethods(), actual.getAllowedMethods())
+                && Objects.equals(expected.getAllowedOrigins(), actual.getAllowedOrigins())
+                && Objects.equals(expected.getMaxAgeInSeconds(), actual.getMaxAgeInSeconds());
         }
     }
 
@@ -691,10 +738,47 @@ public class FileShareTestBase extends TestProxyTestBase {
         if (expected == null) {
             return actual == null;
         } else {
-            return assertMetricsAreEqual(expected.getHourMetrics(), actual.getHourMetrics()) &&
-                assertMetricsAreEqual(expected.getMinuteMetrics(), actual.getMinuteMetrics()) &&
-                assertCorsAreEqual(expected.getCors(), actual.getCors());
+            return assertMetricsAreEqual(expected.getHourMetrics(), actual.getHourMetrics())
+                && assertMetricsAreEqual(expected.getMinuteMetrics(), actual.getMinuteMetrics())
+                && assertCorsAreEqual(expected.getCors(), actual.getCors());
         }
+    }
+
+    protected static boolean assertSharesAreEqual(ShareItem expected, ShareItem actual, boolean includeMetadata,
+        boolean includeSnapshot) {
+        return assertSharesAreEqual(expected, actual, includeMetadata, includeSnapshot, false);
+    }
+
+    protected static boolean assertSharesAreEqual(ShareItem expected, ShareItem actual, boolean includeMetadata,
+        boolean includeSnapshot, boolean includeDeleted) {
+        if (expected == null) {
+            return actual == null;
+        } else {
+            if (!Objects.equals(expected.getName(), actual.getName())) {
+                return false;
+            }
+
+            if (includeMetadata && !Objects.equals(expected.getMetadata(), actual.getMetadata())) {
+                return false;
+            }
+            if (includeSnapshot && !Objects.equals(expected.getSnapshot(), actual.getSnapshot())) {
+                return false;
+            }
+
+            if (expected.getProperties() == null) {
+                return actual.getProperties() == null;
+            } else {
+                if (includeDeleted && (expected.getProperties().getDeletedTime() == null
+                    ^ actual.getProperties().getDeletedTime() == null)) {
+                    return false;
+                }
+                return Objects.equals(expected.getProperties().getQuota(), actual.getProperties().getQuota());
+            }
+        }
+    }
+
+    protected static boolean isAllWhitespace(String input) {
+        return input.matches("\\s*");
     }
 
     protected static Stream<Arguments> startCopyWithCopySourceFileErrorSupplier() {
@@ -724,6 +808,41 @@ public class FileShareTestBase extends TestProxyTestBase {
             Arguments.of(false, true, false, false, PermissionCopyModeType.OVERRIDE),
             Arguments.of(false, false, true, false, PermissionCopyModeType.SOURCE),
             Arguments.of(false, false, false, true, PermissionCopyModeType.SOURCE));
+    }
+
+    protected static Stream<Arguments> getPropertiesPremiumSupplier() {
+        return Stream.of(
+            Arguments.of(Constants.HeaderConstants.SMB_PROTOCOL, null),
+            Arguments.of(Constants.HeaderConstants.NFS_PROTOCOL, ShareRootSquash.ALL_SQUASH),
+            Arguments.of(Constants.HeaderConstants.NFS_PROTOCOL, ShareRootSquash.NO_ROOT_SQUASH),
+            Arguments.of(Constants.HeaderConstants.NFS_PROTOCOL, ShareRootSquash.ROOT_SQUASH)
+        );
+    }
+
+    protected static Stream<Arguments> getStatisticsSupplier() {
+        return Stream.of(
+            Arguments.of(0, 0),
+            Arguments.of(Constants.KB, 1),
+            Arguments.of(Constants.GB, 1),
+            Arguments.of((long) 3 * Constants.GB, 3));
+    }
+
+    protected static Stream<Arguments> createFileInvalidArgsSupplier() {
+        return Stream.of(Arguments.of("testfile:", 1024, 400, ShareErrorCode.INVALID_RESOURCE_NAME),
+            Arguments.of("fileName", -1, 400, ShareErrorCode.OUT_OF_RANGE_INPUT));
+    }
+
+    protected static Stream<Arguments> createFileMaxOverloadInvalidArgsSupplier() {
+        return Stream.of(Arguments.of("testfile:", 1024, null, Collections.singletonMap("testmetadata", "value"), ShareErrorCode.INVALID_RESOURCE_NAME),
+            Arguments.of("fileName", -1, null, Collections.singletonMap("testmetadata", "value"), ShareErrorCode.OUT_OF_RANGE_INPUT),
+            Arguments.of("fileName", 1024, new ShareFileHttpHeaders().setContentMd5(new byte[0]), Collections.singletonMap("testmetadata", "value"), ShareErrorCode.INVALID_HEADER_VALUE),
+            Arguments.of("fileName", 1024, null, Collections.singletonMap("", "value"), ShareErrorCode.EMPTY_METADATA_KEY));
+    }
+
+    protected static Stream<Arguments> createFileServiceShareWithInvalidArgsSupplier() {
+        return Stream.of(
+            Arguments.of(Collections.singletonMap("testmetadata", "value"), 1, 400, ShareErrorCode.INVALID_METADATA),
+            Arguments.of(Collections.singletonMap("testmetadata", "value"), -1, 400, ShareErrorCode.INVALID_HEADER_VALUE));
     }
 
     protected static boolean olderThan20190707ServiceVersion() {

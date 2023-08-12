@@ -77,12 +77,18 @@ class APISpec extends StorageSpec {
                 .buildClient()
             for (def share : cleanupFileServiceClient.listShares(new ListSharesOptions().setPrefix(namer.getResourcePrefix()), null, Context.NONE)) {
                 def shareClient = cleanupFileServiceClient.getShareClient(share.getName())
-
+                System.err.println("Cleaning share: " + share.getName())
+                System.err.println("state of share: " + share.getProperties().getLeaseState())
                 if (share.getProperties().getLeaseState() == LeaseStateType.LEASED) {
-                    createLeaseClient(shareClient).breakLeaseWithResponse(new ShareBreakLeaseOptions().setBreakPeriod(Duration.ofSeconds(0)), null, null)
+                    System.err.println("share name that is leased: " + shareClient.getShareName())
+                    createLeaseClient(shareClient).breakLeaseWithResponse(new ShareBreakLeaseOptions()
+                        .setBreakPeriod(Duration.ofSeconds(0)), null, null)
+                    System.err.println("released share: " + shareClient.getShareName())
                 }
 
-                shareClient.deleteWithResponse(new ShareDeleteOptions().setDeleteSnapshotsOptions(ShareSnapshotsDeleteOptionType.INCLUDE), null, null)
+                shareClient.deleteWithResponse(new ShareDeleteOptions()
+                    .setDeleteSnapshotsOptions(ShareSnapshotsDeleteOptionType.INCLUDE), null, null)
+                System.err.println(shareClient.getShareName())
             }
         }
     }
