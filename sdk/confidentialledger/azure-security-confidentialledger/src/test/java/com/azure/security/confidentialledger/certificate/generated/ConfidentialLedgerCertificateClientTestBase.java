@@ -12,12 +12,17 @@ import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.azure.security.confidentialledger.ConfidentialLedgerEnvironment;
 import com.azure.security.confidentialledger.certificate.ConfidentialLedgerCertificateClient;
 import com.azure.security.confidentialledger.certificate.ConfidentialLedgerCertificateClientBuilder;
 import java.time.OffsetDateTime;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 import reactor.core.publisher.Mono;
 
 class ConfidentialLedgerCertificateClientTestBase extends TestBase {
+    protected static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+
     protected ConfidentialLedgerCertificateClient confidentialLedgerCertificateClient;
 
     @Override
@@ -25,10 +30,10 @@ class ConfidentialLedgerCertificateClientTestBase extends TestBase {
         ConfidentialLedgerCertificateClientBuilder confidentialLedgerCertificateClientbuilder =
                 new ConfidentialLedgerCertificateClientBuilder()
                         .certificateEndpoint(
-                                Configuration.getGlobalConfiguration()
-                                        .get("CERTIFICATEENDPOINT", "certificateendpoint"))
+                            ConfidentialLedgerEnvironment.getConfidentialLedgerIdentityUrl())
                         .httpClient(HttpClient.createDefault())
                         .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
+
         if (getTestMode() == TestMode.PLAYBACK) {
             confidentialLedgerCertificateClientbuilder
                     .httpClient(interceptorManager.getPlaybackClient())
