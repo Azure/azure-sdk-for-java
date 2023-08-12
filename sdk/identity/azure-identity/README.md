@@ -540,7 +540,7 @@ Configuration is attempted in the above order. For example, if values for a clie
 
 ## Continuous Access Evaluation
 
-Accessing resources protected by [Continuous Access Evaluation](https://learn.microsoft.com/azure/active-directory/conditional-access/concept-continuous-access-evaluation) (CAE) is possible on a per-request basis. This can be enabled using the [`TokenRequestContext.setCaeEnabled(boolean)` api](https://learn.microsoft.com/java/api/com.azure.core.credential.tokenrequestcontext?view=azure-java-stable#com-azure-core-credential-tokenrequestcontext-setcaeenabled(boolean)).
+Accessing resources protected by [Continuous Access Evaluation](https://learn.microsoft.com/azure/active-directory/conditional-access/concept-continuous-access-evaluation) (CAE) is possible on a per-request basis. This can be enabled using the [`TokenRequestContext.setCaeEnabled(boolean)` api](https://learn.microsoft.com/java/api/com.azure.core.credential.tokenrequestcontext?view=azure-java-stable#com-azure-core-credential-tokenrequestcontext-setcaeenabled(boolean)). CAE is not supported for developer credentials.
 
 ## Token caching
 Token caching is a feature provided by the Azure Identity library that allows apps to:
