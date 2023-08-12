@@ -127,7 +127,9 @@ public final class ServiceBusTracer {
             String errorCondition = null;
             if (throwable instanceof AmqpException) {
                 AmqpException exception = (AmqpException) throwable;
-                errorCondition = exception.getErrorCondition().getErrorCondition();
+                if (exception.getErrorCondition() != null) {
+                    errorCondition = exception.getErrorCondition().getErrorCondition();
+                }
             }
 
             try {
@@ -289,9 +291,7 @@ public final class ServiceBusTracer {
                 startOptions.setAttribute(MESSAGE_ENQUEUED_TIME_ATTRIBUTE_NAME, message.getEnqueuedTime().toEpochSecond());
             }
 
-            Context span = tracer.start(spanName, startOptions, parent);
-            ContextAccessor.setContext(message, span);
-            return span;
+            return tracer.start(spanName, startOptions, parent);
         }
 
         return parent;

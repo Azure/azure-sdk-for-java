@@ -3,8 +3,8 @@
 
 package com.azure.cosmos.implementation.directconnectivity.rntbd;
 
-import com.azure.cosmos.implementation.IOpenConnectionsHandler;
 import com.azure.cosmos.implementation.UserAgentContainer;
+import com.azure.cosmos.implementation.directconnectivity.AddressSelector;
 import com.azure.cosmos.implementation.directconnectivity.IAddressResolver;
 import com.azure.cosmos.implementation.directconnectivity.Uri;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -117,7 +117,12 @@ public interface RntbdEndpoint extends AutoCloseable {
 
         int evictions();
 
-        RntbdEndpoint createIfAbsent(URI serviceEndpoint, Uri addressUri, ProactiveOpenConnectionsProcessor proactiveOpenConnectionsProcessor, int minRequiredChannelsForEndpoint);
+        RntbdEndpoint createIfAbsent(
+            URI serviceEndpoint,
+            Uri addressUri,
+            ProactiveOpenConnectionsProcessor proactiveOpenConnectionsProcessor,
+            int minRequiredChannelsForEndpoint,
+            AddressSelector addressSelector);
 
         RntbdEndpoint get(URI physicalAddress);
 
@@ -303,6 +308,21 @@ public interface RntbdEndpoint extends AutoCloseable {
         @JsonProperty
         public long timeoutDetectionOnWriteTimeLimitInNanos() {
             return this.options.timeoutDetectionOnWriteTimeLimit().toNanos();
+        }
+
+        @JsonProperty
+        public long nonRespondingChannelReadDelayTimeLimitInNanos() {
+            return this.options.nonRespondingChannelReadDelayTimeLimit().toNanos();
+        }
+
+        @JsonProperty
+        public int cancellationCountSinceLastReadThreshold() {
+            return this.options.cancellationCountSinceLastReadThreshold();
+        }
+
+        @JsonProperty
+        public int minConnectionPoolSizePerEndpoint() {
+            return this.options.minConnectionPoolSizePerEndpoint();
         }
 
         @Override

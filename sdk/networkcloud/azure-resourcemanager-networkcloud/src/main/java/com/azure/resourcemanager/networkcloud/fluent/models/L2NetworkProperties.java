@@ -16,6 +16,12 @@ import java.util.List;
 @Fluent
 public final class L2NetworkProperties {
     /*
+     * The list of resource IDs for the other Microsoft.NetworkCloud resources that have attached this network.
+     */
+    @JsonProperty(value = "associatedResourceIds", access = JsonProperty.Access.WRITE_ONLY)
+    private List<String> associatedResourceIds;
+
+    /*
      * The resource ID of the Network Cloud cluster this L2 network is associated with.
      */
     @JsonProperty(value = "clusterId", access = JsonProperty.Access.WRITE_ONLY)
@@ -34,12 +40,14 @@ public final class L2NetworkProperties {
     private String detailedStatusMessage;
 
     /*
-     * The list of Hybrid AKS cluster resource ID(s) that are associated with this L2 network.
+     * Field Deprecated. These fields will be empty/omitted. The list of Hybrid AKS cluster resource ID(s) that are
+     * associated with this L2 network.
      */
     @JsonProperty(value = "hybridAksClustersAssociatedIds", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> hybridAksClustersAssociatedIds;
 
     /*
+     * Field Deprecated. The field was previously optional, now it will have no defined behavior and will be ignored.
      * The network plugin type for Hybrid AKS.
      */
     @JsonProperty(value = "hybridAksPluginType")
@@ -65,14 +73,24 @@ public final class L2NetworkProperties {
     private L2NetworkProvisioningState provisioningState;
 
     /*
-     * The list of virtual machine resource ID(s), excluding any Hybrid AKS virtual machines, that are currently using
-     * this L2 network.
+     * Field Deprecated. These fields will be empty/omitted. The list of virtual machine resource ID(s), excluding any
+     * Hybrid AKS virtual machines, that are currently using this L2 network.
      */
     @JsonProperty(value = "virtualMachinesAssociatedIds", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> virtualMachinesAssociatedIds;
 
     /** Creates an instance of L2NetworkProperties class. */
     public L2NetworkProperties() {
+    }
+
+    /**
+     * Get the associatedResourceIds property: The list of resource IDs for the other Microsoft.NetworkCloud resources
+     * that have attached this network.
+     *
+     * @return the associatedResourceIds value.
+     */
+    public List<String> associatedResourceIds() {
+        return this.associatedResourceIds;
     }
 
     /**
@@ -103,8 +121,8 @@ public final class L2NetworkProperties {
     }
 
     /**
-     * Get the hybridAksClustersAssociatedIds property: The list of Hybrid AKS cluster resource ID(s) that are
-     * associated with this L2 network.
+     * Get the hybridAksClustersAssociatedIds property: Field Deprecated. These fields will be empty/omitted. The list
+     * of Hybrid AKS cluster resource ID(s) that are associated with this L2 network.
      *
      * @return the hybridAksClustersAssociatedIds value.
      */
@@ -113,7 +131,8 @@ public final class L2NetworkProperties {
     }
 
     /**
-     * Get the hybridAksPluginType property: The network plugin type for Hybrid AKS.
+     * Get the hybridAksPluginType property: Field Deprecated. The field was previously optional, now it will have no
+     * defined behavior and will be ignored. The network plugin type for Hybrid AKS.
      *
      * @return the hybridAksPluginType value.
      */
@@ -122,7 +141,8 @@ public final class L2NetworkProperties {
     }
 
     /**
-     * Set the hybridAksPluginType property: The network plugin type for Hybrid AKS.
+     * Set the hybridAksPluginType property: Field Deprecated. The field was previously optional, now it will have no
+     * defined behavior and will be ignored. The network plugin type for Hybrid AKS.
      *
      * @param hybridAksPluginType the hybridAksPluginType value to set.
      * @return the L2NetworkProperties object itself.
@@ -184,8 +204,9 @@ public final class L2NetworkProperties {
     }
 
     /**
-     * Get the virtualMachinesAssociatedIds property: The list of virtual machine resource ID(s), excluding any Hybrid
-     * AKS virtual machines, that are currently using this L2 network.
+     * Get the virtualMachinesAssociatedIds property: Field Deprecated. These fields will be empty/omitted. The list of
+     * virtual machine resource ID(s), excluding any Hybrid AKS virtual machines, that are currently using this L2
+     * network.
      *
      * @return the virtualMachinesAssociatedIds value.
      */

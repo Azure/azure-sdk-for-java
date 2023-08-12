@@ -60,10 +60,10 @@ public final class VolumesBreakReplicationMockTests {
         manager
             .volumes()
             .breakReplication(
-                "lgy",
-                "vutpthjoxo",
-                "smsks",
-                "pi",
+                "joxslhvnhla",
+                "rqnkkzjcjbtr",
+                "aehvvibrxjjstoq",
+                "eitpkxztmo",
                 new BreakReplicationRequest().withForceBreakReplication(false),
                 com.azure.core.util.Context.NONE);
     }

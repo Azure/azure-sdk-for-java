@@ -32,7 +32,7 @@ public final class AdministratorsGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"principalType\":\"ServicePrincipal\",\"principalName\":\"gylgqgitxmedjvcs\",\"objectId\":\"n\",\"tenantId\":\"wncwzzhxgktrmg\"},\"id\":\"napkteoellw\",\"name\":\"tfdygpfqb\",\"type\":\"ac\"}";
+            "{\"properties\":{\"principalType\":\"User\",\"principalName\":\"oegrpkhjwn\",\"objectId\":\"qsluicp\",\"tenantId\":\"gk\"},\"id\":\"lvmbmpaxmodfvuef\",\"name\":\"wsbpfvm\",\"type\":\"yhrfouyftaakcpw\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -63,12 +63,12 @@ public final class AdministratorsGetWithResponseMockTests {
         ActiveDirectoryAdministrator response =
             manager
                 .administrators()
-                .getWithResponse("tfolhbnx", "nalaulppg", "dtpnapnyiropuhp", com.azure.core.util.Context.NONE)
+                .getWithResponse("dopcjwvnh", "ld", "mgxcxrslpm", com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals(PrincipalType.SERVICE_PRINCIPAL, response.principalType());
-        Assertions.assertEquals("gylgqgitxmedjvcs", response.principalName());
-        Assertions.assertEquals("n", response.objectId());
-        Assertions.assertEquals("wncwzzhxgktrmg", response.tenantId());
+        Assertions.assertEquals(PrincipalType.USER, response.principalType());
+        Assertions.assertEquals("oegrpkhjwn", response.principalName());
+        Assertions.assertEquals("qsluicp", response.objectId());
+        Assertions.assertEquals("gk", response.tenantId());
     }
 }

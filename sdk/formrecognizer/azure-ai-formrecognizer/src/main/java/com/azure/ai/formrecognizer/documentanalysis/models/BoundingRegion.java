@@ -9,7 +9,7 @@ import com.azure.core.annotation.Immutable;
 import java.util.List;
 
 /**
- * Bounding polygon on a specific page of the input.
+ * Model representing the bounding polygon on a specific page of the input.
  */
 @Immutable
 public final class BoundingRegion {
@@ -36,7 +36,6 @@ public final class BoundingRegion {
      * Set the pageNumber property: 1-based page number of page containing the bounding region.
      *
      * @param pageNumber the pageNumber value to set.
-     * @return the BoundingRegion object itself.
      */
     private void setPageNumber(int pageNumber) {
         this.pageNumber = pageNumber;
@@ -59,7 +58,6 @@ public final class BoundingRegion {
      * relative to the element orientation.
      *
      * @param boundingPolygon the boundingPolygon value to set.
-     * @return the BoundingRegion object itself.
      */
     private void setBoundingPolygon(List<Point> boundingPolygon) {
         this.boundingPolygon = boundingPolygon;

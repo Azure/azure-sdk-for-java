@@ -21,78 +21,78 @@ public final class BmcKeySetListTests {
         BmcKeySetList model =
             BinaryData
                 .fromString(
-                    "{\"nextLink\":\"egizv\",\"value\":[{\"extendedLocation\":{\"name\":\"elisdjub\",\"type\":\"gbqi\"},\"properties\":{\"azureGroupId\":\"kxkbsazgakgacyr\",\"detailedStatus\":\"Validating\",\"detailedStatusMessage\":\"mspofapvuhryl\",\"expiration\":\"2021-10-23T00:02:47Z\",\"lastValidation\":\"2021-02-25T11:36:52Z\",\"privilegeLevel\":\"ReadOnly\",\"provisioningState\":\"Accepted\",\"userList\":[],\"userListStatus\":[]},\"location\":\"jed\",\"tags\":{\"f\":\"kvnlvxbcuiiznkt\",\"bmikost\":\"nsnvpd\",\"kiwbuqnyoph\":\"z\",\"sgcrpfbcunezzce\":\"fy\"},\"id\":\"elfwy\",\"name\":\"wl\",\"type\":\"xjwet\"},{\"extendedLocation\":{\"name\":\"psihcla\",\"type\":\"zvaylptrsqqw\"},\"properties\":{\"azureGroupId\":\"tcmwqkchc\",\"detailedStatus\":\"AllActive\",\"detailedStatusMessage\":\"fewz\",\"expiration\":\"2021-03-21T20:05:59Z\",\"lastValidation\":\"2021-01-10T06:21:29Z\",\"privilegeLevel\":\"Administrator\",\"provisioningState\":\"Canceled\",\"userList\":[],\"userListStatus\":[]},\"location\":\"vhpsylkkshkbffmb\",\"tags\":{\"tf\":\"jrgywwpgjxsn\",\"pttaqutd\":\"jgicgaao\"},\"id\":\"wemxswvruunzz\",\"name\":\"gehkfkimrtixokff\",\"type\":\"yinljqe\"},{\"extendedLocation\":{\"name\":\"qwhix\",\"type\":\"onsts\"},\"properties\":{\"azureGroupId\":\"i\",\"detailedStatus\":\"SomeInvalid\",\"detailedStatusMessage\":\"elfclducc\",\"expiration\":\"2021-06-28T02:53:43Z\",\"lastValidation\":\"2020-12-30T21:40:21Z\",\"privilegeLevel\":\"ReadOnly\",\"provisioningState\":\"Succeeded\",\"userList\":[],\"userListStatus\":[]},\"location\":\"o\",\"tags\":{\"hgshe\":\"gstmninwjizciln\",\"zvners\":\"jtbxqmuluxlx\",\"qbsms\":\"ycucrwnamikzeb\",\"kzruswh\":\"ziqgfuh\"},\"id\":\"hczznvf\",\"name\":\"ycjsx\",\"type\":\"wwixzvumw\"}]}")
+                    "{\"nextLink\":\"nnust\",\"value\":[{\"extendedLocation\":{\"name\":\"jh\",\"type\":\"mgixhcmavmqfou\"},\"properties\":{\"azureGroupId\":\"or\",\"detailedStatus\":\"AllInvalid\",\"detailedStatusMessage\":\"yprotwyp\",\"expiration\":\"2020-12-26T18:22:26Z\",\"lastValidation\":\"2021-09-25T11:41:55Z\",\"privilegeLevel\":\"Administrator\",\"provisioningState\":\"Succeeded\",\"userList\":[],\"userListStatus\":[]},\"location\":\"cmjkavlgorbmftpm\",\"tags\":{\"opv\":\"fjltfvnzcyjtotp\",\"qgqqihedsvqwthmk\":\"bdb\",\"dhohsdtmcdzsuf\":\"ibcysihsgqc\",\"pcvhdbevwqqxeys\":\"ohdxbzlmcmu\"},\"id\":\"onqzinkfkbgbzbow\",\"name\":\"eqocljmygvk\",\"type\":\"qkjjeokbz\"},{\"extendedLocation\":{\"name\":\"fezrx\",\"type\":\"czurtlei\"},\"properties\":{\"azureGroupId\":\"q\",\"detailedStatus\":\"AllActive\",\"detailedStatusMessage\":\"vz\",\"expiration\":\"2021-05-04T05:26Z\",\"lastValidation\":\"2021-10-11T16:58:27Z\",\"privilegeLevel\":\"Administrator\",\"provisioningState\":\"Provisioning\",\"userList\":[],\"userListStatus\":[]},\"location\":\"ixz\",\"tags\":{\"opqhewjptmc\":\"noda\",\"dlat\":\"sbostzel\",\"hrbbpneqvcwwyy\":\"tmzlbiojlv\"},\"id\":\"r\",\"name\":\"ochpprpr\",\"type\":\"nmokayzejnhlbk\"},{\"extendedLocation\":{\"name\":\"bzpcpiljhahzvec\",\"type\":\"ndbnwieh\"},\"properties\":{\"azureGroupId\":\"lewjwiuubwef\",\"detailedStatus\":\"AllInvalid\",\"detailedStatusMessage\":\"paq\",\"expiration\":\"2021-01-19T18:36:33Z\",\"lastValidation\":\"2021-10-04T15:26:40Z\",\"privilegeLevel\":\"Administrator\",\"provisioningState\":\"Canceled\",\"userList\":[],\"userListStatus\":[]},\"location\":\"jkmfxapjwo\",\"tags\":{\"awbzasqb\":\"nobpudcdabtqwpw\",\"kyexaoguyaipi\":\"clj\"},\"id\":\"sdaultxij\",\"name\":\"um\",\"type\":\"qwazlnqnmcjngzq\"},{\"extendedLocation\":{\"name\":\"qxtbjwgnyf\",\"type\":\"sf\"},\"properties\":{\"azureGroupId\":\"svtui\",\"detailedStatus\":\"AllInvalid\",\"detailedStatusMessage\":\"jqg\",\"expiration\":\"2021-06-29T17:07:13Z\",\"lastValidation\":\"2021-04-12T12:08:57Z\",\"privilegeLevel\":\"Administrator\",\"provisioningState\":\"Succeeded\",\"userList\":[],\"userListStatus\":[]},\"location\":\"yxynq\",\"tags\":{\"iyb\":\"dpsovwxznptgo\"},\"id\":\"abpfhvfs\",\"name\":\"kvntjlrigjkskyri\",\"type\":\"ovzidsx\"}]}")
                 .toObject(BmcKeySetList.class);
-        Assertions.assertEquals("egizv", model.nextLink());
-        Assertions.assertEquals("jed", model.value().get(0).location());
-        Assertions.assertEquals("kvnlvxbcuiiznkt", model.value().get(0).tags().get("f"));
-        Assertions.assertEquals("elisdjub", model.value().get(0).extendedLocation().name());
-        Assertions.assertEquals("gbqi", model.value().get(0).extendedLocation().type());
-        Assertions.assertEquals("kxkbsazgakgacyr", model.value().get(0).azureGroupId());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-10-23T00:02:47Z"), model.value().get(0).expiration());
-        Assertions.assertEquals(BmcKeySetPrivilegeLevel.READ_ONLY, model.value().get(0).privilegeLevel());
+        Assertions.assertEquals("nnust", model.nextLink());
+        Assertions.assertEquals("cmjkavlgorbmftpm", model.value().get(0).location());
+        Assertions.assertEquals("fjltfvnzcyjtotp", model.value().get(0).tags().get("opv"));
+        Assertions.assertEquals("jh", model.value().get(0).extendedLocation().name());
+        Assertions.assertEquals("mgixhcmavmqfou", model.value().get(0).extendedLocation().type());
+        Assertions.assertEquals("or", model.value().get(0).azureGroupId());
+        Assertions.assertEquals(OffsetDateTime.parse("2020-12-26T18:22:26Z"), model.value().get(0).expiration());
+        Assertions.assertEquals(BmcKeySetPrivilegeLevel.ADMINISTRATOR, model.value().get(0).privilegeLevel());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         BmcKeySetList model =
             new BmcKeySetList()
-                .withNextLink("egizv")
+                .withNextLink("nnust")
                 .withValue(
                     Arrays
                         .asList(
                             new BmcKeySetInner()
-                                .withLocation("jed")
+                                .withLocation("cmjkavlgorbmftpm")
                                 .withTags(
                                     mapOf(
-                                        "f",
-                                        "kvnlvxbcuiiznkt",
-                                        "bmikost",
-                                        "nsnvpd",
-                                        "kiwbuqnyoph",
-                                        "z",
-                                        "sgcrpfbcunezzce",
-                                        "fy"))
-                                .withExtendedLocation(new ExtendedLocation().withName("elisdjub").withType("gbqi"))
-                                .withAzureGroupId("kxkbsazgakgacyr")
-                                .withExpiration(OffsetDateTime.parse("2021-10-23T00:02:47Z"))
-                                .withPrivilegeLevel(BmcKeySetPrivilegeLevel.READ_ONLY)
-                                .withUserList(Arrays.asList()),
-                            new BmcKeySetInner()
-                                .withLocation("vhpsylkkshkbffmb")
-                                .withTags(mapOf("tf", "jrgywwpgjxsn", "pttaqutd", "jgicgaao"))
-                                .withExtendedLocation(
-                                    new ExtendedLocation().withName("psihcla").withType("zvaylptrsqqw"))
-                                .withAzureGroupId("tcmwqkchc")
-                                .withExpiration(OffsetDateTime.parse("2021-03-21T20:05:59Z"))
+                                        "opv",
+                                        "fjltfvnzcyjtotp",
+                                        "qgqqihedsvqwthmk",
+                                        "bdb",
+                                        "dhohsdtmcdzsuf",
+                                        "ibcysihsgqc",
+                                        "pcvhdbevwqqxeys",
+                                        "ohdxbzlmcmu"))
+                                .withExtendedLocation(new ExtendedLocation().withName("jh").withType("mgixhcmavmqfou"))
+                                .withAzureGroupId("or")
+                                .withExpiration(OffsetDateTime.parse("2020-12-26T18:22:26Z"))
                                 .withPrivilegeLevel(BmcKeySetPrivilegeLevel.ADMINISTRATOR)
                                 .withUserList(Arrays.asList()),
                             new BmcKeySetInner()
-                                .withLocation("o")
+                                .withLocation("ixz")
                                 .withTags(
-                                    mapOf(
-                                        "hgshe",
-                                        "gstmninwjizciln",
-                                        "zvners",
-                                        "jtbxqmuluxlx",
-                                        "qbsms",
-                                        "ycucrwnamikzeb",
-                                        "kzruswh",
-                                        "ziqgfuh"))
-                                .withExtendedLocation(new ExtendedLocation().withName("qwhix").withType("onsts"))
-                                .withAzureGroupId("i")
-                                .withExpiration(OffsetDateTime.parse("2021-06-28T02:53:43Z"))
-                                .withPrivilegeLevel(BmcKeySetPrivilegeLevel.READ_ONLY)
+                                    mapOf("opqhewjptmc", "noda", "dlat", "sbostzel", "hrbbpneqvcwwyy", "tmzlbiojlv"))
+                                .withExtendedLocation(new ExtendedLocation().withName("fezrx").withType("czurtlei"))
+                                .withAzureGroupId("q")
+                                .withExpiration(OffsetDateTime.parse("2021-05-04T05:26Z"))
+                                .withPrivilegeLevel(BmcKeySetPrivilegeLevel.ADMINISTRATOR)
+                                .withUserList(Arrays.asList()),
+                            new BmcKeySetInner()
+                                .withLocation("jkmfxapjwo")
+                                .withTags(mapOf("awbzasqb", "nobpudcdabtqwpw", "kyexaoguyaipi", "clj"))
+                                .withExtendedLocation(
+                                    new ExtendedLocation().withName("bzpcpiljhahzvec").withType("ndbnwieh"))
+                                .withAzureGroupId("lewjwiuubwef")
+                                .withExpiration(OffsetDateTime.parse("2021-01-19T18:36:33Z"))
+                                .withPrivilegeLevel(BmcKeySetPrivilegeLevel.ADMINISTRATOR)
+                                .withUserList(Arrays.asList()),
+                            new BmcKeySetInner()
+                                .withLocation("yxynq")
+                                .withTags(mapOf("iyb", "dpsovwxznptgo"))
+                                .withExtendedLocation(new ExtendedLocation().withName("qxtbjwgnyf").withType("sf"))
+                                .withAzureGroupId("svtui")
+                                .withExpiration(OffsetDateTime.parse("2021-06-29T17:07:13Z"))
+                                .withPrivilegeLevel(BmcKeySetPrivilegeLevel.ADMINISTRATOR)
                                 .withUserList(Arrays.asList())));
         model = BinaryData.fromObject(model).toObject(BmcKeySetList.class);
-        Assertions.assertEquals("egizv", model.nextLink());
-        Assertions.assertEquals("jed", model.value().get(0).location());
-        Assertions.assertEquals("kvnlvxbcuiiznkt", model.value().get(0).tags().get("f"));
-        Assertions.assertEquals("elisdjub", model.value().get(0).extendedLocation().name());
-        Assertions.assertEquals("gbqi", model.value().get(0).extendedLocation().type());
-        Assertions.assertEquals("kxkbsazgakgacyr", model.value().get(0).azureGroupId());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-10-23T00:02:47Z"), model.value().get(0).expiration());
-        Assertions.assertEquals(BmcKeySetPrivilegeLevel.READ_ONLY, model.value().get(0).privilegeLevel());
+        Assertions.assertEquals("nnust", model.nextLink());
+        Assertions.assertEquals("cmjkavlgorbmftpm", model.value().get(0).location());
+        Assertions.assertEquals("fjltfvnzcyjtotp", model.value().get(0).tags().get("opv"));
+        Assertions.assertEquals("jh", model.value().get(0).extendedLocation().name());
+        Assertions.assertEquals("mgixhcmavmqfou", model.value().get(0).extendedLocation().type());
+        Assertions.assertEquals("or", model.value().get(0).azureGroupId());
+        Assertions.assertEquals(OffsetDateTime.parse("2020-12-26T18:22:26Z"), model.value().get(0).expiration());
+        Assertions.assertEquals(BmcKeySetPrivilegeLevel.ADMINISTRATOR, model.value().get(0).privilegeLevel());
     }
 
     @SuppressWarnings("unchecked")

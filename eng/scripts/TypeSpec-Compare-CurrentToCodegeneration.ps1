@@ -51,5 +51,10 @@ if ($LastExitCode -ne 0) {
 The following files are out of date:
 $status
 "
-  exit $LASTEXITCODE
+  exit 1
+}
+
+# Delete out TypeSpec temporary folders if they still exist.
+Get-ChildItem -Path $Directory -Filter TempTypeSpecFiles -Recurse -Directory | ForEach-Object {
+    Remove-Item -Path $_.FullName -Recurse -Force
 }

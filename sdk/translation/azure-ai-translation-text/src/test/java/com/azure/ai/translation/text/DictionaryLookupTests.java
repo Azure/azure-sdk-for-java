@@ -4,15 +4,16 @@ package com.azure.ai.translation.text;
 
 import com.azure.ai.translation.text.models.DictionaryLookupItem;
 import com.azure.ai.translation.text.models.InputTextItem;
+import org.junit.jupiter.api.Test;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import org.junit.jupiter.api.Test;
 
 public class DictionaryLookupTests extends TextTranslationClientBase {
     @Test
-    public void singleInputItem() throws Exception {
+    public void singleInputItem() {
 
         ArrayList<InputTextItem> content = new ArrayList<>();
         content.add(new InputTextItem("fly"));
@@ -24,13 +25,13 @@ public class DictionaryLookupTests extends TextTranslationClientBase {
     }
 
     @Test
-    public void multipleInputItems() throws Exception {
+    public void multipleInputItems() {
 
         ArrayList<InputTextItem> content = new ArrayList<>();
         content.add(new InputTextItem("fly"));
         content.add(new InputTextItem("fox"));
 
         List<DictionaryLookupItem> response = getTranslationClient().lookupDictionaryEntries("en", "es", content, null);
-        assertTrue(response.size() == 2);
+        assertEquals(2, response.size());
     }
 }

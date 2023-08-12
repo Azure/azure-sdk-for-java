@@ -21,6 +21,10 @@
 - [ListByResourceGroup](#sqlvirtualmachinegroups_listbyresourcegroup)
 - [Update](#sqlvirtualmachinegroups_update)
 
+## SqlVirtualMachineTroubleshoot
+
+- [Troubleshoot](#sqlvirtualmachinetroubleshoot_troubleshoot)
+
 ## SqlVirtualMachines
 
 - [CreateOrUpdate](#sqlvirtualmachines_createorupdate)
@@ -43,7 +47,7 @@ import java.util.Arrays;
 /** Samples for AvailabilityGroupListeners CreateOrUpdate. */
 public final class AvailabilityGroupListenersCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/sqlvirtualmachine/resource-manager/Microsoft.SqlVirtualMachine/preview/2022-07-01-preview/examples/CreateOrUpdateAvailabilityGroupListener.json
+     * x-ms-original-file: specification/sqlvirtualmachine/resource-manager/Microsoft.SqlVirtualMachine/preview/2022-08-01-preview/examples/CreateOrUpdateAvailabilityGroupListener.json
      */
     /**
      * Sample code: Creates or updates an availability group listener using load balancer. This is used for VMs present
@@ -81,7 +85,7 @@ public final class AvailabilityGroupListenersCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/sqlvirtualmachine/resource-manager/Microsoft.SqlVirtualMachine/preview/2022-07-01-preview/examples/CreateOrUpdateAvailabilityGroupListenerWithMultiSubnet.json
+     * x-ms-original-file: specification/sqlvirtualmachine/resource-manager/Microsoft.SqlVirtualMachine/preview/2022-08-01-preview/examples/CreateOrUpdateAvailabilityGroupListenerWithMultiSubnet.json
      */
     /**
      * Sample code: Creates or updates an availability group listener. This is used for VMs present in multi subnet.
@@ -123,12 +127,10 @@ public final class AvailabilityGroupListenersCreateOrUpdateSamples {
 ### AvailabilityGroupListeners_Delete
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for AvailabilityGroupListeners Delete. */
 public final class AvailabilityGroupListenersDeleteSamples {
     /*
-     * x-ms-original-file: specification/sqlvirtualmachine/resource-manager/Microsoft.SqlVirtualMachine/preview/2022-07-01-preview/examples/DeleteAvailabilityGroupListener.json
+     * x-ms-original-file: specification/sqlvirtualmachine/resource-manager/Microsoft.SqlVirtualMachine/preview/2022-08-01-preview/examples/DeleteAvailabilityGroupListener.json
      */
     /**
      * Sample code: Deletes an availability group listener.
@@ -137,7 +139,9 @@ public final class AvailabilityGroupListenersDeleteSamples {
      */
     public static void deletesAnAvailabilityGroupListener(
         com.azure.resourcemanager.sqlvirtualmachine.SqlVirtualMachineManager manager) {
-        manager.availabilityGroupListeners().delete("testrg", "testvmgroup", "agl-test", Context.NONE);
+        manager
+            .availabilityGroupListeners()
+            .delete("testrg", "testvmgroup", "agl-test", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -145,12 +149,10 @@ public final class AvailabilityGroupListenersDeleteSamples {
 ### AvailabilityGroupListeners_Get
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for AvailabilityGroupListeners Get. */
 public final class AvailabilityGroupListenersGetSamples {
     /*
-     * x-ms-original-file: specification/sqlvirtualmachine/resource-manager/Microsoft.SqlVirtualMachine/preview/2022-07-01-preview/examples/GetAvailabilityGroupListener.json
+     * x-ms-original-file: specification/sqlvirtualmachine/resource-manager/Microsoft.SqlVirtualMachine/preview/2022-08-01-preview/examples/GetAvailabilityGroupListener.json
      */
     /**
      * Sample code: Gets an availability group listener.
@@ -159,7 +161,9 @@ public final class AvailabilityGroupListenersGetSamples {
      */
     public static void getsAnAvailabilityGroupListener(
         com.azure.resourcemanager.sqlvirtualmachine.SqlVirtualMachineManager manager) {
-        manager.availabilityGroupListeners().getWithResponse("testrg", "testvmgroup", "agl-test", null, Context.NONE);
+        manager
+            .availabilityGroupListeners()
+            .getWithResponse("testrg", "testvmgroup", "agl-test", null, com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -167,12 +171,10 @@ public final class AvailabilityGroupListenersGetSamples {
 ### AvailabilityGroupListeners_ListByGroup
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for AvailabilityGroupListeners ListByGroup. */
 public final class AvailabilityGroupListenersListByGroupSamples {
     /*
-     * x-ms-original-file: specification/sqlvirtualmachine/resource-manager/Microsoft.SqlVirtualMachine/preview/2022-07-01-preview/examples/ListByGroupAvailabilityGroupListener.json
+     * x-ms-original-file: specification/sqlvirtualmachine/resource-manager/Microsoft.SqlVirtualMachine/preview/2022-08-01-preview/examples/ListByGroupAvailabilityGroupListener.json
      */
     /**
      * Sample code: Lists all availability group listeners in a SQL virtual machine group.
@@ -181,7 +183,7 @@ public final class AvailabilityGroupListenersListByGroupSamples {
      */
     public static void listsAllAvailabilityGroupListenersInASQLVirtualMachineGroup(
         com.azure.resourcemanager.sqlvirtualmachine.SqlVirtualMachineManager manager) {
-        manager.availabilityGroupListeners().listByGroup("testrg", "testvmgroup", Context.NONE);
+        manager.availabilityGroupListeners().listByGroup("testrg", "testvmgroup", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -189,12 +191,10 @@ public final class AvailabilityGroupListenersListByGroupSamples {
 ### Operations_List
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for Operations List. */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: specification/sqlvirtualmachine/resource-manager/Microsoft.SqlVirtualMachine/preview/2022-07-01-preview/examples/ListOperation.json
+     * x-ms-original-file: specification/sqlvirtualmachine/resource-manager/Microsoft.SqlVirtualMachine/preview/2022-08-01-preview/examples/ListOperation.json
      */
     /**
      * Sample code: Lists all of the available SQL Virtual Machine Rest API operations.
@@ -203,7 +203,7 @@ public final class OperationsListSamples {
      */
     public static void listsAllOfTheAvailableSQLVirtualMachineRestAPIOperations(
         com.azure.resourcemanager.sqlvirtualmachine.SqlVirtualMachineManager manager) {
-        manager.operations().list(Context.NONE);
+        manager.operations().list(com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -220,7 +220,7 @@ import java.util.Map;
 /** Samples for SqlVirtualMachineGroups CreateOrUpdate. */
 public final class SqlVirtualMachineGroupsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/sqlvirtualmachine/resource-manager/Microsoft.SqlVirtualMachine/preview/2022-07-01-preview/examples/CreateOrUpdateSqlVirtualMachineGroup.json
+     * x-ms-original-file: specification/sqlvirtualmachine/resource-manager/Microsoft.SqlVirtualMachine/preview/2022-08-01-preview/examples/CreateOrUpdateSqlVirtualMachineGroup.json
      */
     /**
      * Sample code: Creates or updates a SQL virtual machine group.
@@ -245,7 +245,7 @@ public final class SqlVirtualMachineGroupsCreateOrUpdateSamples {
                     .withClusterOperatorAccount("testrp@testdomain.com")
                     .withSqlServiceAccount("sqlservice@testdomain.com")
                     .withStorageAccountUrl("https://storgact.blob.core.windows.net/")
-                    .withStorageAccountPrimaryKey("<primary storage access key>")
+                    .withStorageAccountPrimaryKey("fakeTokenPlaceholder")
                     .withClusterSubnetType(ClusterSubnetType.MULTI_SUBNET))
             .create();
     }
@@ -266,12 +266,10 @@ public final class SqlVirtualMachineGroupsCreateOrUpdateSamples {
 ### SqlVirtualMachineGroups_Delete
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for SqlVirtualMachineGroups Delete. */
 public final class SqlVirtualMachineGroupsDeleteSamples {
     /*
-     * x-ms-original-file: specification/sqlvirtualmachine/resource-manager/Microsoft.SqlVirtualMachine/preview/2022-07-01-preview/examples/DeleteSqlVirtualMachineGroup.json
+     * x-ms-original-file: specification/sqlvirtualmachine/resource-manager/Microsoft.SqlVirtualMachine/preview/2022-08-01-preview/examples/DeleteSqlVirtualMachineGroup.json
      */
     /**
      * Sample code: Deletes a SQL virtual machine group.
@@ -280,7 +278,7 @@ public final class SqlVirtualMachineGroupsDeleteSamples {
      */
     public static void deletesASQLVirtualMachineGroup(
         com.azure.resourcemanager.sqlvirtualmachine.SqlVirtualMachineManager manager) {
-        manager.sqlVirtualMachineGroups().delete("testrg", "testvmgroup", Context.NONE);
+        manager.sqlVirtualMachineGroups().delete("testrg", "testvmgroup", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -288,12 +286,10 @@ public final class SqlVirtualMachineGroupsDeleteSamples {
 ### SqlVirtualMachineGroups_GetByResourceGroup
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for SqlVirtualMachineGroups GetByResourceGroup. */
 public final class SqlVirtualMachineGroupsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/sqlvirtualmachine/resource-manager/Microsoft.SqlVirtualMachine/preview/2022-07-01-preview/examples/GetSqlVirtualMachineGroup.json
+     * x-ms-original-file: specification/sqlvirtualmachine/resource-manager/Microsoft.SqlVirtualMachine/preview/2022-08-01-preview/examples/GetSqlVirtualMachineGroup.json
      */
     /**
      * Sample code: Gets a SQL virtual machine group.
@@ -302,7 +298,9 @@ public final class SqlVirtualMachineGroupsGetByResourceGroupSamples {
      */
     public static void getsASQLVirtualMachineGroup(
         com.azure.resourcemanager.sqlvirtualmachine.SqlVirtualMachineManager manager) {
-        manager.sqlVirtualMachineGroups().getByResourceGroupWithResponse("testrg", "testvmgroup", Context.NONE);
+        manager
+            .sqlVirtualMachineGroups()
+            .getByResourceGroupWithResponse("testrg", "testvmgroup", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -310,12 +308,10 @@ public final class SqlVirtualMachineGroupsGetByResourceGroupSamples {
 ### SqlVirtualMachineGroups_List
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for SqlVirtualMachineGroups List. */
 public final class SqlVirtualMachineGroupsListSamples {
     /*
-     * x-ms-original-file: specification/sqlvirtualmachine/resource-manager/Microsoft.SqlVirtualMachine/preview/2022-07-01-preview/examples/ListSubscriptionSqlVirtualMachineGroup.json
+     * x-ms-original-file: specification/sqlvirtualmachine/resource-manager/Microsoft.SqlVirtualMachine/preview/2022-08-01-preview/examples/ListSubscriptionSqlVirtualMachineGroup.json
      */
     /**
      * Sample code: Gets all SQL virtual machine groups in a subscription.
@@ -324,7 +320,7 @@ public final class SqlVirtualMachineGroupsListSamples {
      */
     public static void getsAllSQLVirtualMachineGroupsInASubscription(
         com.azure.resourcemanager.sqlvirtualmachine.SqlVirtualMachineManager manager) {
-        manager.sqlVirtualMachineGroups().list(Context.NONE);
+        manager.sqlVirtualMachineGroups().list(com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -332,12 +328,10 @@ public final class SqlVirtualMachineGroupsListSamples {
 ### SqlVirtualMachineGroups_ListByResourceGroup
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for SqlVirtualMachineGroups ListByResourceGroup. */
 public final class SqlVirtualMachineGroupsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/sqlvirtualmachine/resource-manager/Microsoft.SqlVirtualMachine/preview/2022-07-01-preview/examples/ListByResourceGroupSqlVirtualMachineGroup.json
+     * x-ms-original-file: specification/sqlvirtualmachine/resource-manager/Microsoft.SqlVirtualMachine/preview/2022-08-01-preview/examples/ListByResourceGroupSqlVirtualMachineGroup.json
      */
     /**
      * Sample code: Gets all SQL virtual machine groups in a resource group.
@@ -346,7 +340,7 @@ public final class SqlVirtualMachineGroupsListByResourceGroupSamples {
      */
     public static void getsAllSQLVirtualMachineGroupsInAResourceGroup(
         com.azure.resourcemanager.sqlvirtualmachine.SqlVirtualMachineManager manager) {
-        manager.sqlVirtualMachineGroups().listByResourceGroup("testrg", Context.NONE);
+        manager.sqlVirtualMachineGroups().listByResourceGroup("testrg", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -354,7 +348,6 @@ public final class SqlVirtualMachineGroupsListByResourceGroupSamples {
 ### SqlVirtualMachineGroups_Update
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.sqlvirtualmachine.models.SqlVirtualMachineGroup;
 import java.util.HashMap;
 import java.util.Map;
@@ -362,7 +355,7 @@ import java.util.Map;
 /** Samples for SqlVirtualMachineGroups Update. */
 public final class SqlVirtualMachineGroupsUpdateSamples {
     /*
-     * x-ms-original-file: specification/sqlvirtualmachine/resource-manager/Microsoft.SqlVirtualMachine/preview/2022-07-01-preview/examples/UpdateSqlVirtualMachineGroup.json
+     * x-ms-original-file: specification/sqlvirtualmachine/resource-manager/Microsoft.SqlVirtualMachine/preview/2022-08-01-preview/examples/UpdateSqlVirtualMachineGroup.json
      */
     /**
      * Sample code: Updates a SQL virtual machine group tags.
@@ -374,7 +367,7 @@ public final class SqlVirtualMachineGroupsUpdateSamples {
         SqlVirtualMachineGroup resource =
             manager
                 .sqlVirtualMachineGroups()
-                .getByResourceGroupWithResponse("testrg", "testvmgroup", Context.NONE)
+                .getByResourceGroupWithResponse("testrg", "testvmgroup", com.azure.core.util.Context.NONE)
                 .getValue();
         resource.update().withTags(mapOf("mytag", "myval")).apply();
     }
@@ -392,9 +385,48 @@ public final class SqlVirtualMachineGroupsUpdateSamples {
 }
 ```
 
+### SqlVirtualMachineTroubleshoot_Troubleshoot
+
+```java
+import com.azure.resourcemanager.sqlvirtualmachine.fluent.models.SqlVmTroubleshootingInner;
+import com.azure.resourcemanager.sqlvirtualmachine.models.TroubleshootingAdditionalProperties;
+import com.azure.resourcemanager.sqlvirtualmachine.models.TroubleshootingScenario;
+import com.azure.resourcemanager.sqlvirtualmachine.models.UnhealthyReplicaInfo;
+import java.time.OffsetDateTime;
+
+/** Samples for SqlVirtualMachineTroubleshoot Troubleshoot. */
+public final class SqlVirtualMachineTroubleshootTroubleshootSamples {
+    /*
+     * x-ms-original-file: specification/sqlvirtualmachine/resource-manager/Microsoft.SqlVirtualMachine/preview/2022-08-01-preview/examples/TroubleshootSqlVirtualMachine.json
+     */
+    /**
+     * Sample code: Start SQL virtual machine troubleshooting operation.
+     *
+     * @param manager Entry point to SqlVirtualMachineManager.
+     */
+    public static void startSQLVirtualMachineTroubleshootingOperation(
+        com.azure.resourcemanager.sqlvirtualmachine.SqlVirtualMachineManager manager) {
+        manager
+            .sqlVirtualMachineTroubleshoots()
+            .troubleshoot(
+                "testrg",
+                "testvm",
+                new SqlVmTroubleshootingInner()
+                    .withStartTimeUtc(OffsetDateTime.parse("2022-07-09T17:10:00Z"))
+                    .withEndTimeUtc(OffsetDateTime.parse("2022-07-09T22:10:00Z"))
+                    .withTroubleshootingScenario(TroubleshootingScenario.UNHEALTHY_REPLICA)
+                    .withProperties(
+                        new TroubleshootingAdditionalProperties()
+                            .withUnhealthyReplicaInfo(new UnhealthyReplicaInfo().withAvailabilityGroupName("AG1"))),
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
 ### SqlVirtualMachines_CreateOrUpdate
 
 ```java
+import com.azure.resourcemanager.sqlvirtualmachine.models.AadAuthenticationSettings;
 import com.azure.resourcemanager.sqlvirtualmachine.models.AdditionalFeaturesServerConfigurations;
 import com.azure.resourcemanager.sqlvirtualmachine.models.AssessmentDayOfWeek;
 import com.azure.resourcemanager.sqlvirtualmachine.models.AssessmentSettings;
@@ -428,7 +460,7 @@ import java.util.Arrays;
 /** Samples for SqlVirtualMachines CreateOrUpdate. */
 public final class SqlVirtualMachinesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/sqlvirtualmachine/resource-manager/Microsoft.SqlVirtualMachine/preview/2022-07-01-preview/examples/CreateOrUpdateSqlVirtualMachineStorageConfigurationEXTEND.json
+     * x-ms-original-file: specification/sqlvirtualmachine/resource-manager/Microsoft.SqlVirtualMachine/preview/2022-08-01-preview/examples/CreateOrUpdateSqlVirtualMachineStorageConfigurationEXTEND.json
      */
     /**
      * Sample code: Creates or updates a SQL virtual machine for Storage Configuration Settings to EXTEND Data, Log or
@@ -454,7 +486,7 @@ public final class SqlVirtualMachinesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/sqlvirtualmachine/resource-manager/Microsoft.SqlVirtualMachine/preview/2022-07-01-preview/examples/CreateOrUpdateVirtualMachineWithVMGroup.json
+     * x-ms-original-file: specification/sqlvirtualmachine/resource-manager/Microsoft.SqlVirtualMachine/preview/2022-08-01-preview/examples/CreateOrUpdateVirtualMachineWithVMGroup.json
      */
     /**
      * Sample code: Creates or updates a SQL virtual machine and joins it to a SQL virtual machine group.
@@ -472,15 +504,15 @@ public final class SqlVirtualMachinesCreateOrUpdateSamples {
                 "/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/testrg/providers/Microsoft.Compute/virtualMachines/testvm2")
             .withWsfcDomainCredentials(
                 new WsfcDomainCredentials()
-                    .withClusterBootstrapAccountPassword("<Password>")
-                    .withClusterOperatorAccountPassword("<Password>")
-                    .withSqlServiceAccountPassword("<Password>"))
+                    .withClusterBootstrapAccountPassword("fakeTokenPlaceholder")
+                    .withClusterOperatorAccountPassword("fakeTokenPlaceholder")
+                    .withSqlServiceAccountPassword("fakeTokenPlaceholder"))
             .withWsfcStaticIp("10.0.0.7")
             .create();
     }
 
     /*
-     * x-ms-original-file: specification/sqlvirtualmachine/resource-manager/Microsoft.SqlVirtualMachine/preview/2022-07-01-preview/examples/CreateOrUpdateSqlVirtualMachineAutomatedBackupWeekly.json
+     * x-ms-original-file: specification/sqlvirtualmachine/resource-manager/Microsoft.SqlVirtualMachine/preview/2022-08-01-preview/examples/CreateOrUpdateSqlVirtualMachineAutomatedBackupWeekly.json
      */
     /**
      * Sample code: Creates or updates a SQL virtual machine for Automated Back up Settings with Weekly and Days of the
@@ -514,8 +546,8 @@ public final class SqlVirtualMachinesCreateOrUpdateSamples {
                     .withRetentionPeriod(17)
                     .withStorageAccountUrl("https://teststorage.blob.core.windows.net/")
                     .withStorageContainerName("testcontainer")
-                    .withStorageAccessKey("<primary storage access key>")
-                    .withPassword("<Password>")
+                    .withStorageAccessKey("fakeTokenPlaceholder")
+                    .withPassword("fakeTokenPlaceholder")
                     .withBackupSystemDbs(true)
                     .withBackupScheduleType(BackupScheduleType.MANUAL)
                     .withFullBackupFrequency(FullBackupFrequencyType.WEEKLY)
@@ -531,7 +563,7 @@ public final class SqlVirtualMachinesCreateOrUpdateSamples {
                             .withConnectivityType(ConnectivityType.PRIVATE)
                             .withPort(1433)
                             .withSqlAuthUpdateUsername("sqllogin")
-                            .withSqlAuthUpdatePassword("<password>"))
+                            .withSqlAuthUpdatePassword("fakeTokenPlaceholder"))
                     .withSqlWorkloadTypeUpdateSettings(
                         new SqlWorkloadTypeUpdateSettings().withSqlWorkloadType(SqlWorkloadType.OLTP))
                     .withSqlStorageUpdateSettings(
@@ -545,7 +577,7 @@ public final class SqlVirtualMachinesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/sqlvirtualmachine/resource-manager/Microsoft.SqlVirtualMachine/preview/2022-07-01-preview/examples/CreateOrUpdateSqlVirtualMachineStorageConfigurationNEW.json
+     * x-ms-original-file: specification/sqlvirtualmachine/resource-manager/Microsoft.SqlVirtualMachine/preview/2022-08-01-preview/examples/CreateOrUpdateSqlVirtualMachineStorageConfigurationNEW.json
      */
     /**
      * Sample code: Creates or updates a SQL virtual machine for Storage Configuration Settings to NEW Data, Log and
@@ -584,7 +616,7 @@ public final class SqlVirtualMachinesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/sqlvirtualmachine/resource-manager/Microsoft.SqlVirtualMachine/preview/2022-07-01-preview/examples/CreateOrUpdateSqlVirtualMachineMAX.json
+     * x-ms-original-file: specification/sqlvirtualmachine/resource-manager/Microsoft.SqlVirtualMachine/preview/2022-08-01-preview/examples/CreateOrUpdateSqlVirtualMachineMAX.json
      */
     /**
      * Sample code: Creates or updates a SQL virtual machine with max parameters.
@@ -617,8 +649,8 @@ public final class SqlVirtualMachinesCreateOrUpdateSamples {
                     .withRetentionPeriod(17)
                     .withStorageAccountUrl("https://teststorage.blob.core.windows.net/")
                     .withStorageContainerName("testcontainer")
-                    .withStorageAccessKey("<primary storage access key>")
-                    .withPassword("<Password>")
+                    .withStorageAccessKey("fakeTokenPlaceholder")
+                    .withPassword("fakeTokenPlaceholder")
                     .withBackupSystemDbs(true)
                     .withBackupScheduleType(BackupScheduleType.MANUAL)
                     .withFullBackupFrequency(FullBackupFrequencyType.DAILY)
@@ -633,7 +665,7 @@ public final class SqlVirtualMachinesCreateOrUpdateSamples {
                             .withConnectivityType(ConnectivityType.PRIVATE)
                             .withPort(1433)
                             .withSqlAuthUpdateUsername("sqllogin")
-                            .withSqlAuthUpdatePassword("<password>"))
+                            .withSqlAuthUpdatePassword("fakeTokenPlaceholder"))
                     .withSqlWorkloadTypeUpdateSettings(
                         new SqlWorkloadTypeUpdateSettings().withSqlWorkloadType(SqlWorkloadType.OLTP))
                     .withSqlStorageUpdateSettings(
@@ -651,7 +683,9 @@ public final class SqlVirtualMachinesCreateOrUpdateSamples {
                             .withMinServerMemoryMB(0)
                             .withMaxServerMemoryMB(128)
                             .withIsLpimEnabled(true)
-                            .withIsIfiEnabled(true)))
+                            .withIsIfiEnabled(true))
+                    .withAzureAdAuthenticationSettings(
+                        new AadAuthenticationSettings().withClientId("11111111-2222-3333-4444-555555555555")))
             .withAssessmentSettings(
                 new AssessmentSettings()
                     .withEnable(true)
@@ -667,7 +701,7 @@ public final class SqlVirtualMachinesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/sqlvirtualmachine/resource-manager/Microsoft.SqlVirtualMachine/preview/2022-07-01-preview/examples/CreateOrUpdateSqlVirtualMachineMIN.json
+     * x-ms-original-file: specification/sqlvirtualmachine/resource-manager/Microsoft.SqlVirtualMachine/preview/2022-08-01-preview/examples/CreateOrUpdateSqlVirtualMachineMIN.json
      */
     /**
      * Sample code: Creates or updates a SQL virtual machine with min parameters.
@@ -691,12 +725,10 @@ public final class SqlVirtualMachinesCreateOrUpdateSamples {
 ### SqlVirtualMachines_Delete
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for SqlVirtualMachines Delete. */
 public final class SqlVirtualMachinesDeleteSamples {
     /*
-     * x-ms-original-file: specification/sqlvirtualmachine/resource-manager/Microsoft.SqlVirtualMachine/preview/2022-07-01-preview/examples/DeleteSqlVirtualMachine.json
+     * x-ms-original-file: specification/sqlvirtualmachine/resource-manager/Microsoft.SqlVirtualMachine/preview/2022-08-01-preview/examples/DeleteSqlVirtualMachine.json
      */
     /**
      * Sample code: Deletes a SQL virtual machine.
@@ -705,7 +737,7 @@ public final class SqlVirtualMachinesDeleteSamples {
      */
     public static void deletesASQLVirtualMachine(
         com.azure.resourcemanager.sqlvirtualmachine.SqlVirtualMachineManager manager) {
-        manager.sqlVirtualMachines().delete("testrg", "testvm1", Context.NONE);
+        manager.sqlVirtualMachines().delete("testrg", "testvm1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -713,12 +745,10 @@ public final class SqlVirtualMachinesDeleteSamples {
 ### SqlVirtualMachines_GetByResourceGroup
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for SqlVirtualMachines GetByResourceGroup. */
 public final class SqlVirtualMachinesGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/sqlvirtualmachine/resource-manager/Microsoft.SqlVirtualMachine/preview/2022-07-01-preview/examples/GetSqlVirtualMachine.json
+     * x-ms-original-file: specification/sqlvirtualmachine/resource-manager/Microsoft.SqlVirtualMachine/preview/2022-08-01-preview/examples/GetSqlVirtualMachine.json
      */
     /**
      * Sample code: Gets a SQL virtual machine.
@@ -727,7 +757,9 @@ public final class SqlVirtualMachinesGetByResourceGroupSamples {
      */
     public static void getsASQLVirtualMachine(
         com.azure.resourcemanager.sqlvirtualmachine.SqlVirtualMachineManager manager) {
-        manager.sqlVirtualMachines().getByResourceGroupWithResponse("testrg", "testvm", null, Context.NONE);
+        manager
+            .sqlVirtualMachines()
+            .getByResourceGroupWithResponse("testrg", "testvm", null, com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -735,12 +767,10 @@ public final class SqlVirtualMachinesGetByResourceGroupSamples {
 ### SqlVirtualMachines_List
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for SqlVirtualMachines List. */
 public final class SqlVirtualMachinesListSamples {
     /*
-     * x-ms-original-file: specification/sqlvirtualmachine/resource-manager/Microsoft.SqlVirtualMachine/preview/2022-07-01-preview/examples/ListSubscriptionSqlVirtualMachine.json
+     * x-ms-original-file: specification/sqlvirtualmachine/resource-manager/Microsoft.SqlVirtualMachine/preview/2022-08-01-preview/examples/ListSubscriptionSqlVirtualMachine.json
      */
     /**
      * Sample code: Gets all SQL virtual machines in a subscription.
@@ -749,7 +779,7 @@ public final class SqlVirtualMachinesListSamples {
      */
     public static void getsAllSQLVirtualMachinesInASubscription(
         com.azure.resourcemanager.sqlvirtualmachine.SqlVirtualMachineManager manager) {
-        manager.sqlVirtualMachines().list(Context.NONE);
+        manager.sqlVirtualMachines().list(com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -757,12 +787,10 @@ public final class SqlVirtualMachinesListSamples {
 ### SqlVirtualMachines_ListByResourceGroup
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for SqlVirtualMachines ListByResourceGroup. */
 public final class SqlVirtualMachinesListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/sqlvirtualmachine/resource-manager/Microsoft.SqlVirtualMachine/preview/2022-07-01-preview/examples/ListByResourceGroupSqlVirtualMachine.json
+     * x-ms-original-file: specification/sqlvirtualmachine/resource-manager/Microsoft.SqlVirtualMachine/preview/2022-08-01-preview/examples/ListByResourceGroupSqlVirtualMachine.json
      */
     /**
      * Sample code: Gets all SQL virtual machines in a resource group.
@@ -771,7 +799,7 @@ public final class SqlVirtualMachinesListByResourceGroupSamples {
      */
     public static void getsAllSQLVirtualMachinesInAResourceGroup(
         com.azure.resourcemanager.sqlvirtualmachine.SqlVirtualMachineManager manager) {
-        manager.sqlVirtualMachines().listByResourceGroup("testrg", Context.NONE);
+        manager.sqlVirtualMachines().listByResourceGroup("testrg", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -779,12 +807,10 @@ public final class SqlVirtualMachinesListByResourceGroupSamples {
 ### SqlVirtualMachines_ListBySqlVmGroup
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for SqlVirtualMachines ListBySqlVmGroup. */
 public final class SqlVirtualMachinesListBySqlVmGroupSamples {
     /*
-     * x-ms-original-file: specification/sqlvirtualmachine/resource-manager/Microsoft.SqlVirtualMachine/preview/2022-07-01-preview/examples/ListBySqlVirtualMachineGroupSqlVirtualMachine.json
+     * x-ms-original-file: specification/sqlvirtualmachine/resource-manager/Microsoft.SqlVirtualMachine/preview/2022-08-01-preview/examples/ListBySqlVirtualMachineGroupSqlVirtualMachine.json
      */
     /**
      * Sample code: Gets the list of sql virtual machines in a SQL virtual machine group.
@@ -793,7 +819,7 @@ public final class SqlVirtualMachinesListBySqlVmGroupSamples {
      */
     public static void getsTheListOfSqlVirtualMachinesInASQLVirtualMachineGroup(
         com.azure.resourcemanager.sqlvirtualmachine.SqlVirtualMachineManager manager) {
-        manager.sqlVirtualMachines().listBySqlVmGroup("testrg", "testvm", Context.NONE);
+        manager.sqlVirtualMachines().listBySqlVmGroup("testrg", "testvm", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -801,21 +827,19 @@ public final class SqlVirtualMachinesListBySqlVmGroupSamples {
 ### SqlVirtualMachines_Redeploy
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for SqlVirtualMachines Redeploy. */
 public final class SqlVirtualMachinesRedeploySamples {
     /*
-     * x-ms-original-file: specification/sqlvirtualmachine/resource-manager/Microsoft.SqlVirtualMachine/preview/2022-07-01-preview/examples/RedeploySqlVirtualMachine.json
+     * x-ms-original-file: specification/sqlvirtualmachine/resource-manager/Microsoft.SqlVirtualMachine/preview/2022-08-01-preview/examples/RedeploySqlVirtualMachine.json
      */
     /**
-     * Sample code: Uninstalls and reinstalls the SQL Iaas Extension.
+     * Sample code: Uninstalls and reinstalls the SQL IaaS Extension.
      *
      * @param manager Entry point to SqlVirtualMachineManager.
      */
-    public static void uninstallsAndReinstallsTheSQLIaasExtension(
+    public static void uninstallsAndReinstallsTheSQLIaaSExtension(
         com.azure.resourcemanager.sqlvirtualmachine.SqlVirtualMachineManager manager) {
-        manager.sqlVirtualMachines().redeploy("testrg", "testvm", Context.NONE);
+        manager.sqlVirtualMachines().redeploy("testrg", "testvm", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -823,21 +847,19 @@ public final class SqlVirtualMachinesRedeploySamples {
 ### SqlVirtualMachines_StartAssessment
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for SqlVirtualMachines StartAssessment. */
 public final class SqlVirtualMachinesStartAssessmentSamples {
     /*
-     * x-ms-original-file: specification/sqlvirtualmachine/resource-manager/Microsoft.SqlVirtualMachine/preview/2022-07-01-preview/examples/StartAssessmentOnSqlVirtualMachine.json
+     * x-ms-original-file: specification/sqlvirtualmachine/resource-manager/Microsoft.SqlVirtualMachine/preview/2022-08-01-preview/examples/StartAssessmentOnSqlVirtualMachine.json
      */
     /**
-     * Sample code: Starts Assessment on SQL virtual machine.
+     * Sample code: Starts SQL best practices Assessment on SQL virtual machine.
      *
      * @param manager Entry point to SqlVirtualMachineManager.
      */
-    public static void startsAssessmentOnSQLVirtualMachine(
+    public static void startsSQLBestPracticesAssessmentOnSQLVirtualMachine(
         com.azure.resourcemanager.sqlvirtualmachine.SqlVirtualMachineManager manager) {
-        manager.sqlVirtualMachines().startAssessment("testrg", "testvm", Context.NONE);
+        manager.sqlVirtualMachines().startAssessment("testrg", "testvm", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -845,7 +867,6 @@ public final class SqlVirtualMachinesStartAssessmentSamples {
 ### SqlVirtualMachines_Update
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.sqlvirtualmachine.models.SqlVirtualMachine;
 import java.util.HashMap;
 import java.util.Map;
@@ -853,7 +874,7 @@ import java.util.Map;
 /** Samples for SqlVirtualMachines Update. */
 public final class SqlVirtualMachinesUpdateSamples {
     /*
-     * x-ms-original-file: specification/sqlvirtualmachine/resource-manager/Microsoft.SqlVirtualMachine/preview/2022-07-01-preview/examples/UpdateSqlVirtualMachine.json
+     * x-ms-original-file: specification/sqlvirtualmachine/resource-manager/Microsoft.SqlVirtualMachine/preview/2022-08-01-preview/examples/UpdateSqlVirtualMachine.json
      */
     /**
      * Sample code: Updates a SQL virtual machine tags.
@@ -865,7 +886,7 @@ public final class SqlVirtualMachinesUpdateSamples {
         SqlVirtualMachine resource =
             manager
                 .sqlVirtualMachines()
-                .getByResourceGroupWithResponse("testrg", "testvm", null, Context.NONE)
+                .getByResourceGroupWithResponse("testrg", "testvm", null, com.azure.core.util.Context.NONE)
                 .getValue();
         resource.update().withTags(mapOf("mytag", "myval")).apply();
     }

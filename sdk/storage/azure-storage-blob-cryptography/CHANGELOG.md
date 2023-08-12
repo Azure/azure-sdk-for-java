@@ -1,6 +1,6 @@
 # Release History
 
-## 12.22.0-beta.2 (Unreleased)
+## 12.23.0-beta.2 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,29 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 12.23.0-beta.1 (2023-08-08)
+
+### Features Added
+- Added support for service versions 2023-05-03 and 2023-08-03.
+
+## 12.22.0 (2023-07-11)
+
+### Features Added
+- Added support for the `2023-01-03` service version.
+
+### Other Changes
+- Migrate test recordings to assets repo.
+
+## 12.21.3 (2023-06-14)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.39.0` to version `1.40.0`.
+- Upgraded `azure-core-http-netty` from `1.13.3` to version `1.13.4`.
+- Upgraded `azure-storage-blob` from `12.22.1` to version `12.22.2`.
 
 ## 12.22.0-beta.1 (2023-05-30)
 

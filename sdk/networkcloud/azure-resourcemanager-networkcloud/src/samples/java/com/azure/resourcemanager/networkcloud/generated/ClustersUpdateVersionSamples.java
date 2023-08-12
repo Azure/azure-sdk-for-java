@@ -9,7 +9,7 @@ import com.azure.resourcemanager.networkcloud.models.ClusterUpdateVersionParamet
 /** Samples for Clusters UpdateVersion. */
 public final class ClustersUpdateVersionSamples {
     /*
-     * x-ms-original-file: specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2022-12-12-preview/examples/Clusters_UpdateVersion.json
+     * x-ms-original-file: specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2023-05-01-preview/examples/Clusters_UpdateVersion.json
      */
     /**
      * Sample code: Update cluster version.

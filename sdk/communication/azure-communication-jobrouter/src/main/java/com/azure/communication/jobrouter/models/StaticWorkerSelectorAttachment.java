@@ -9,37 +9,36 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Describes a label selector that will always be attached. */
+import java.util.Objects;
+
+/** Describes a worker selector that will be attached to the job. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
 @JsonTypeName("static")
 @Fluent
 public final class StaticWorkerSelectorAttachment extends WorkerSelectorAttachment {
+    /**
+     * Creates an instance of StaticWorkerSelectorAttachment class.
+     *
+     * @param workerSelector Describes a condition that must be met against a set of labels for worker selection
+     */
+    public StaticWorkerSelectorAttachment(RouterWorkerSelector workerSelector) {
+        this.workerSelector = Objects.requireNonNull(workerSelector, "'workerSelector' cannot be null.");
+    }
+
     /*
      * Describes a condition that must be met against a set of labels for
      * worker selection
      */
-    @JsonProperty(value = "labelSelector", required = true)
-    private WorkerSelector labelSelector;
+    @JsonProperty(value = "workerSelector", required = true)
+    private final RouterWorkerSelector workerSelector;
 
     /**
-     * Get the labelSelector property: Describes a condition that must be met against a set of labels for worker
+     * Get the workerSelector property: Describes a condition that must be met against a set of labels for worker
      * selection.
      *
-     * @return the labelSelector value.
+     * @return the workerSelector value.
      */
-    public WorkerSelector getLabelSelector() {
-        return this.labelSelector;
-    }
-
-    /**
-     * Set the labelSelector property: Describes a condition that must be met against a set of labels for worker
-     * selection.
-     *
-     * @param labelSelector the labelSelector value to set.
-     * @return the StaticWorkerSelectorAttachment object itself.
-     */
-    public StaticWorkerSelectorAttachment setLabelSelector(WorkerSelector labelSelector) {
-        this.labelSelector = labelSelector;
-        return this;
+    public RouterWorkerSelector getWorkerSelector() {
+        return this.workerSelector;
     }
 }

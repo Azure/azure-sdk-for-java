@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.List;
 
 import static java.util.Arrays.asList;
 
@@ -85,6 +86,18 @@ class MappingsBuilder {
             (telemetryBuilder, value) -> {
                 if (value instanceof Long) {
                     telemetryBuilder.addProperty(propertyName, Long.toString((Long) value));
+                }
+            });
+        return this;
+    }
+
+    @SuppressWarnings("unchecked")
+    MappingsBuilder exactStringArray(AttributeKey<List<String>> attributeKey, String propertyName) {
+        exactMappings.put(
+            attributeKey.getKey(),
+            (telemetryBuilder, value) -> {
+                if (value instanceof List) {
+                    telemetryBuilder.addProperty(propertyName, String.join(",", (List) value));
                 }
             });
         return this;

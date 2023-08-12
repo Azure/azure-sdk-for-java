@@ -4,29 +4,37 @@
 
 package com.azure.analytics.purview.sharing.models;
 
-import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Share status. */
+import com.azure.core.util.ExpandableStringEnum;
+import com.fasterxml.jackson.annotation.JsonCreator;
+
+/**
+ * Share status.
+ */
 public final class ShareStatus extends ExpandableStringEnum<ShareStatus> {
-    /** Static value Detached for ShareStatus. */
+    /**
+     * The share has not been accepted yet.
+     */
     public static final ShareStatus DETACHED = fromString("Detached");
 
-    /** Static value Attached for ShareStatus. */
+    /**
+     * The share has been accepted by the recipient.
+     */
     public static final ShareStatus ATTACHED = fromString("Attached");
 
     /**
      * Creates a new instance of ShareStatus value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
-    public ShareStatus() {}
+    public ShareStatus() {
+    }
 
     /**
      * Creates or finds a ShareStatus from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ShareStatus.
      */
@@ -37,7 +45,7 @@ public final class ShareStatus extends ExpandableStringEnum<ShareStatus> {
 
     /**
      * Gets known ShareStatus values.
-     *
+     * 
      * @return known ShareStatus values.
      */
     public static Collection<ShareStatus> values() {

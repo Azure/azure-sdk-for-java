@@ -17,6 +17,15 @@ public final class SqlVmGroupImageSku extends ExpandableStringEnum<SqlVmGroupIma
     public static final SqlVmGroupImageSku ENTERPRISE = fromString("Enterprise");
 
     /**
+     * Creates a new instance of SqlVmGroupImageSku value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SqlVmGroupImageSku() {
+    }
+
+    /**
      * Creates or finds a SqlVmGroupImageSku from its string representation.
      *
      * @param name a name to look for.

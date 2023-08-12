@@ -23,6 +23,7 @@
         </filter>
       </appender>
 
+      <logger name="com.azure" level="DEBUG" />
       <root level="INFO">
         <appender-ref ref="RollingFile"/>
         <appender-ref ref="STDOUT"/>
@@ -39,6 +40,7 @@
         </layout>
       </appender>
 
+      <logger name="com.azure" level="DEBUG" />
       <root level="INFO">
         <appender-ref ref="STDOUT"/>
       </root>

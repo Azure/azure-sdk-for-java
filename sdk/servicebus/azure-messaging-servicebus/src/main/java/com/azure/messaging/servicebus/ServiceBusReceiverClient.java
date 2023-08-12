@@ -286,7 +286,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * @throws ServiceBusException if the session state could not be acquired.
      */
     public byte[] getSessionState() {
-        return this.getSessionState(asyncClient.getReceiverOptions().getSessionId());
+        return asyncClient.getSessionState().block(operationTimeout);
     }
 
     /**
@@ -460,7 +460,8 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * invocations of receiveMessages API will throw the error to the application. Once the application receives
      * this error, the application should reset the client, i.e., close the current {@link ServiceBusReceiverClient}
      * and create a new client to continue receiving messages.
-     * <br/>
+     * </p>
+     * <p>
      * Note: A few examples of non-retriable errors are - the application attempting to connect to a queue that does not
      * exist, deleting or disabling the queue in the middle of receiving, the user explicitly initiating Geo-DR.
      * These are certain events where the Service Bus communicates to the client that a non-retriable error occurred.
@@ -492,7 +493,8 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * invocations of receiveMessages API will throw the error to the application. Once the application receives
      * this error, the application should reset the client, i.e., close the current {@link ServiceBusReceiverClient}
      * and create a new client to continue receiving messages.
-     * <br/>
+     * </p>
+     * <p>
      * Note: A few examples of non-retriable errors are - the application attempting to connect to a queue that does not
      * exist, deleting or disabling the queue in the middle of receiving, the user explicitly initiating Geo-DR.
      * These are certain events where the Service Bus communicates to the client that a non-retriable error occurred.
@@ -661,7 +663,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * @throws ServiceBusException if the session lock cannot be renewed.
      */
     public OffsetDateTime renewSessionLock() {
-        return asyncClient.renewSessionLock(asyncClient.getReceiverOptions().getSessionId()).block(operationTimeout);
+        return asyncClient.renewSessionLock().block(operationTimeout);
     }
 
     /**
@@ -688,7 +690,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * @throws ServiceBusException if the session state cannot be set.
      */
     public void setSessionState(byte[] sessionState) {
-        this.setSessionState(asyncClient.getReceiverOptions().getSessionId(), sessionState);
+        asyncClient.setSessionState(sessionState).block(operationTimeout);
     }
 
     /**
@@ -837,14 +839,6 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
             v -> LOGGER.atVerbose().addKeyValue(SESSION_ID_KEY, sessionId).log("Completed renewing session"),
             throwableConsumer,
             () -> LOGGER.atVerbose().addKeyValue(SESSION_ID_KEY, sessionId).log("Auto session lock renewal operation completed."));
-    }
-
-    void setSessionState(String sessionId, byte[] sessionState) {
-        asyncClient.setSessionState(sessionId, sessionState).block(operationTimeout);
-    }
-
-    byte[] getSessionState(String sessionId) {
-        return asyncClient.getSessionState(sessionId).block(operationTimeout);
     }
 
     private <T> IterableStream<T> fromFluxAndSubscribe(Flux<T> flux)  {

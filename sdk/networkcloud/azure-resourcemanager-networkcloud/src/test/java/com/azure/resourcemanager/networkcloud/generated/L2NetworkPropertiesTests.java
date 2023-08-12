@@ -15,23 +15,23 @@ public final class L2NetworkPropertiesTests {
         L2NetworkProperties model =
             BinaryData
                 .fromString(
-                    "{\"clusterId\":\"sfgytguslfead\",\"detailedStatus\":\"Available\",\"detailedStatusMessage\":\"ukyhejhzis\",\"hybridAksClustersAssociatedIds\":[\"pelol\"],\"hybridAksPluginType\":\"OSDevice\",\"interfaceName\":\"srp\",\"l2IsolationDomainId\":\"vu\",\"provisioningState\":\"Failed\",\"virtualMachinesAssociatedIds\":[\"htwdwrftswibyrcd\",\"bhshfwpracstwity\",\"hevxcced\"]}")
+                    "{\"associatedResourceIds\":[\"ciqopidoa\"],\"clusterId\":\"iodhkhazxkhnz\",\"detailedStatus\":\"Available\",\"detailedStatusMessage\":\"wntoegokdwbwh\",\"hybridAksClustersAssociatedIds\":[\"zcmrvexztvb\"],\"hybridAksPluginType\":\"DPDK\",\"interfaceName\":\"frao\",\"l2IsolationDomainId\":\"zkoowtlmnguxawqa\",\"provisioningState\":\"Canceled\",\"virtualMachinesAssociatedIds\":[\"uximerqfobw\",\"znkbykutwpfhpagm\"]}")
                 .toObject(L2NetworkProperties.class);
-        Assertions.assertEquals(HybridAksPluginType.OSDEVICE, model.hybridAksPluginType());
-        Assertions.assertEquals("srp", model.interfaceName());
-        Assertions.assertEquals("vu", model.l2IsolationDomainId());
+        Assertions.assertEquals(HybridAksPluginType.DPDK, model.hybridAksPluginType());
+        Assertions.assertEquals("frao", model.interfaceName());
+        Assertions.assertEquals("zkoowtlmnguxawqa", model.l2IsolationDomainId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         L2NetworkProperties model =
             new L2NetworkProperties()
-                .withHybridAksPluginType(HybridAksPluginType.OSDEVICE)
-                .withInterfaceName("srp")
-                .withL2IsolationDomainId("vu");
+                .withHybridAksPluginType(HybridAksPluginType.DPDK)
+                .withInterfaceName("frao")
+                .withL2IsolationDomainId("zkoowtlmnguxawqa");
         model = BinaryData.fromObject(model).toObject(L2NetworkProperties.class);
-        Assertions.assertEquals(HybridAksPluginType.OSDEVICE, model.hybridAksPluginType());
-        Assertions.assertEquals("srp", model.interfaceName());
-        Assertions.assertEquals("vu", model.l2IsolationDomainId());
+        Assertions.assertEquals(HybridAksPluginType.DPDK, model.hybridAksPluginType());
+        Assertions.assertEquals("frao", model.interfaceName());
+        Assertions.assertEquals("zkoowtlmnguxawqa", model.l2IsolationDomainId());
     }
 }

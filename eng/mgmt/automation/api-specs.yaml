@@ -47,6 +47,8 @@ dns:
 eventhub:
   service: eventhubs
   suffix: generated
+fist:
+  service: iotfirmwaredefense
 graphservicesprod:
   service: graphservices
 help:
@@ -77,6 +79,8 @@ paloaltonetworks:
   suffix: ngfw
 postgresql:
   service: postgresqlflexibleserver
+postgresqlhsc:
+  service: cosmosdbforpostgresql
 privatedns:
   suffix: generated
 redis:

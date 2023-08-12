@@ -6,16 +6,15 @@ package com.azure.resourcemanager.batch.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.batch.models.EndpointDetail;
-import org.junit.jupiter.api.Test;
 
 public final class EndpointDetailTests {
-    @Test
-    public void testDeserialize() {
-        EndpointDetail model = BinaryData.fromString("{\"port\":543650546}").toObject(EndpointDetail.class);
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        EndpointDetail model = BinaryData.fromString("{\"port\":2048944312}").toObject(EndpointDetail.class);
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         EndpointDetail model = new EndpointDetail();
         model = BinaryData.fromObject(model).toObject(EndpointDetail.class);
     }

@@ -126,4 +126,18 @@ public abstract class AadCredentialBuilderBase<T extends AadCredentialBuilderBas
         this.identityClientOptions.disableInstanceDiscovery();
         return (T) this;
     }
+
+    /**
+     * Enables additional support logging for public and confidential client applications. This enables
+     * PII logging in MSAL4J as described <a href="https://learn.microsoft.com/azure/active-directory/develop/msal-logging-java#personal-and-organization-information">here.</a>
+     *
+     * <p><b>This operation will log PII including tokens. It should only be used when directed by support.</b>
+     *
+     * @return An updated instance of this builder with additional support logging enabled.
+     */
+    @SuppressWarnings("unchecked")
+    public T enableUnsafeSupportLogging() {
+        this.identityClientOptions.enableUnsafeSupportLogging();
+        return (T) this;
+    }
 }

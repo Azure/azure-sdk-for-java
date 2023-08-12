@@ -14,6 +14,8 @@ import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.webpubsub.WebPubSubManager;
 import com.azure.resourcemanager.webpubsub.models.AclAction;
 import com.azure.resourcemanager.webpubsub.models.ManagedIdentityType;
+import com.azure.resourcemanager.webpubsub.models.ServiceKind;
+import com.azure.resourcemanager.webpubsub.models.WebPubSubRequestType;
 import com.azure.resourcemanager.webpubsub.models.WebPubSubResource;
 import com.azure.resourcemanager.webpubsub.models.WebPubSubSkuTier;
 import java.nio.ByteBuffer;
@@ -34,7 +36,7 @@ public final class WebPubSubsGetByResourceGroupWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"sku\":{\"name\":\"axhexiilivp\",\"tier\":\"Basic\",\"size\":\"r\",\"family\":\"d\",\"capacity\":887642500},\"properties\":{\"provisioningState\":\"Creating\",\"externalIP\":\"zfgs\",\"hostName\":\"yfxrx\",\"publicPort\":1104175771,\"serverPort\":2043686923,\"version\":\"amxjezwlw\",\"privateEndpointConnections\":[],\"sharedPrivateLinkResources\":[],\"tls\":{\"clientCertEnabled\":true},\"hostNamePrefix\":\"dy\",\"liveTraceConfiguration\":{\"enabled\":\"dooaojkniodko\",\"categories\":[]},\"resourceLogConfiguration\":{\"categories\":[]},\"networkACLs\":{\"defaultAction\":\"Allow\",\"privateEndpoints\":[]},\"publicNetworkAccess\":\"msbvdkcrodtjinf\",\"disableLocalAuth\":false,\"disableAadAuth\":false},\"identity\":{\"type\":\"UserAssigned\",\"userAssignedIdentities\":{},\"principalId\":\"efkdlf\",\"tenantId\":\"kggkfpa\"},\"location\":\"owpulpq\",\"tags\":{\"agxsdszuemps\":\"lsyxkqjnsjervt\",\"nqicvinvkjjxdxrb\":\"zkfzbeyv\",\"zpof\":\"ukzclewyhmlwpaz\"},\"id\":\"cckwyfzqwhxxbu\",\"name\":\"qa\",\"type\":\"zfeqztppri\"}";
+            "{\"sku\":{\"name\":\"p\",\"tier\":\"Basic\",\"size\":\"ha\",\"family\":\"ylhjlm\",\"capacity\":250880372},\"properties\":{\"provisioningState\":\"Canceled\",\"externalIP\":\"mrsopte\",\"hostName\":\"jme\",\"publicPort\":512893820,\"serverPort\":1157129881,\"version\":\"asylwx\",\"privateEndpointConnections\":[{\"properties\":{\"provisioningState\":\"Unknown\",\"privateEndpoint\":{},\"groupIds\":[\"hguuf\",\"zboyjathwt\"],\"privateLinkServiceConnectionState\":{}},\"id\":\"b\",\"name\":\"emwmdxmebwjs\",\"type\":\"jpahlxvea\"},{\"properties\":{\"provisioningState\":\"Updating\",\"privateEndpoint\":{},\"groupIds\":[\"mqt\",\"bxyijddtvq\"],\"privateLinkServiceConnectionState\":{}},\"id\":\"adijaeukmrsie\",\"name\":\"kpn\",\"type\":\"zaapmudqmeqwi\"},{\"properties\":{\"provisioningState\":\"Running\",\"privateEndpoint\":{},\"groupIds\":[\"wyxebeybpmzz\",\"rtffyaqitmh\",\"eioqaqhvse\"],\"privateLinkServiceConnectionState\":{}},\"id\":\"qyrxp\",\"name\":\"lcgqlsismj\",\"type\":\"frddgamquhiosrsj\"},{\"properties\":{\"provisioningState\":\"Running\",\"privateEndpoint\":{},\"groupIds\":[\"syirnx\"],\"privateLinkServiceConnectionState\":{}},\"id\":\"zexrxzbujrt\",\"name\":\"hqvwrevkhgnlnzon\",\"type\":\"lrpiqywnc\"}],\"sharedPrivateLinkResources\":[{\"properties\":{\"groupId\":\"z\",\"privateLinkResourceId\":\"ofizehtdhgbj\",\"provisioningState\":\"Updating\",\"requestMessage\":\"ljeamu\",\"status\":\"Timeout\"},\"id\":\"mlovuanashcxl\",\"name\":\"mjerbdk\",\"type\":\"lvidizozs\"},{\"properties\":{\"groupId\":\"ccxjm\",\"privateLinkResourceId\":\"nfdgn\",\"provisioningState\":\"Moving\",\"requestMessage\":\"puuw\",\"status\":\"Rejected\"},\"id\":\"v\",\"name\":\"qjctzenkeif\",\"type\":\"zhmkdasvflyh\"},{\"properties\":{\"groupId\":\"cu\",\"privateLinkResourceId\":\"chxgs\",\"provisioningState\":\"Canceled\",\"requestMessage\":\"d\",\"status\":\"Rejected\"},\"id\":\"obwjlvizb\",\"name\":\"hfovvacqpbtu\",\"type\":\"dxe\"},{\"properties\":{\"groupId\":\"abbelawumuaslzk\",\"privateLinkResourceId\":\"rrwoycqucwyhahn\",\"provisioningState\":\"Deleting\",\"requestMessage\":\"kywuhpsvfuu\",\"status\":\"Approved\"},\"id\":\"lwexxwl\",\"name\":\"lniexz\",\"type\":\"rzpgep\"}],\"tls\":{\"clientCertEnabled\":false},\"hostNamePrefix\":\"wwpgdakchzyvlixq\",\"liveTraceConfiguration\":{\"enabled\":\"cxkjibnxmysuxswq\",\"categories\":[{\"name\":\"lwi\",\"enabled\":\"sttex\"},{\"name\":\"qpwcyyufmh\",\"enabled\":\"nc\"},{\"name\":\"mqspkcdqzhlctdd\",\"enabled\":\"qn\"},{\"name\":\"fpch\",\"enabled\":\"bnjj\"}]},\"resourceLogConfiguration\":{\"categories\":[{\"name\":\"ydcwboxjumv\",\"enabled\":\"olihrra\"}]},\"networkACLs\":{\"defaultAction\":\"Deny\",\"publicNetwork\":{\"allow\":[\"ClientConnection\",\"RESTAPI\"],\"deny\":[\"RESTAPI\"]},\"privateEndpoints\":[{\"name\":\"uojrngiflr\",\"allow\":[\"RESTAPI\",\"Trace\"],\"deny\":[\"ClientConnection\",\"RESTAPI\",\"ServerConnection\",\"Trace\"]},{\"name\":\"zdlyjdfqw\",\"allow\":[\"ClientConnection\",\"Trace\",\"ServerConnection\"],\"deny\":[\"Trace\",\"ServerConnection\",\"Trace\",\"ServerConnection\"]},{\"name\":\"slzojh\",\"allow\":[\"ServerConnection\",\"RESTAPI\"],\"deny\":[\"RESTAPI\",\"ServerConnection\"]}]},\"publicNetworkAccess\":\"ngfdgugeyzihgrky\",\"disableLocalAuth\":false,\"disableAadAuth\":false},\"kind\":\"WebPubSub\",\"identity\":{\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"mfg\":{\"principalId\":\"jee\",\"clientId\":\"hyhsgzfczbg\"},\"eebtijvacvb\":{\"principalId\":\"glqgleoh\",\"clientId\":\"etnluankrrfx\"}},\"principalId\":\"z\",\"tenantId\":\"q\"},\"location\":\"aj\",\"tags\":{\"jkuyxoafgaoq\":\"xaceve\",\"nm\":\"tfaeyl\",\"irpghriypoqeyh\":\"gv\"},\"id\":\"qhykprlpyzn\",\"name\":\"ciqdsme\",\"type\":\"iitdfuxt\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -65,19 +67,35 @@ public final class WebPubSubsGetByResourceGroupWithResponseMockTests {
         WebPubSubResource response =
             manager
                 .webPubSubs()
-                .getByResourceGroupWithResponse("judpfrxt", "thzvaytdwkqbrqu", com.azure.core.util.Context.NONE)
+                .getByResourceGroupWithResponse("llibphbqzmizak", "kan", com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals("owpulpq", response.location());
-        Assertions.assertEquals("lsyxkqjnsjervt", response.tags().get("agxsdszuemps"));
-        Assertions.assertEquals("axhexiilivp", response.sku().name());
+        Assertions.assertEquals("aj", response.location());
+        Assertions.assertEquals("xaceve", response.tags().get("jkuyxoafgaoq"));
+        Assertions.assertEquals("p", response.sku().name());
         Assertions.assertEquals(WebPubSubSkuTier.BASIC, response.sku().tier());
-        Assertions.assertEquals(887642500, response.sku().capacity());
+        Assertions.assertEquals(250880372, response.sku().capacity());
+        Assertions.assertEquals(ServiceKind.WEB_PUB_SUB, response.kind());
         Assertions.assertEquals(ManagedIdentityType.USER_ASSIGNED, response.identity().type());
-        Assertions.assertEquals(true, response.tls().clientCertEnabled());
-        Assertions.assertEquals("dooaojkniodko", response.liveTraceConfiguration().enabled());
-        Assertions.assertEquals(AclAction.ALLOW, response.networkACLs().defaultAction());
-        Assertions.assertEquals("msbvdkcrodtjinf", response.publicNetworkAccess());
+        Assertions.assertEquals(false, response.tls().clientCertEnabled());
+        Assertions.assertEquals("cxkjibnxmysuxswq", response.liveTraceConfiguration().enabled());
+        Assertions.assertEquals("lwi", response.liveTraceConfiguration().categories().get(0).name());
+        Assertions.assertEquals("sttex", response.liveTraceConfiguration().categories().get(0).enabled());
+        Assertions.assertEquals("ydcwboxjumv", response.resourceLogConfiguration().categories().get(0).name());
+        Assertions.assertEquals("olihrra", response.resourceLogConfiguration().categories().get(0).enabled());
+        Assertions.assertEquals(AclAction.DENY, response.networkACLs().defaultAction());
+        Assertions
+            .assertEquals(
+                WebPubSubRequestType.CLIENT_CONNECTION, response.networkACLs().publicNetwork().allow().get(0));
+        Assertions.assertEquals(WebPubSubRequestType.RESTAPI, response.networkACLs().publicNetwork().deny().get(0));
+        Assertions
+            .assertEquals(
+                WebPubSubRequestType.RESTAPI, response.networkACLs().privateEndpoints().get(0).allow().get(0));
+        Assertions
+            .assertEquals(
+                WebPubSubRequestType.CLIENT_CONNECTION, response.networkACLs().privateEndpoints().get(0).deny().get(0));
+        Assertions.assertEquals("uojrngiflr", response.networkACLs().privateEndpoints().get(0).name());
+        Assertions.assertEquals("ngfdgugeyzihgrky", response.publicNetworkAccess());
         Assertions.assertEquals(false, response.disableLocalAuth());
         Assertions.assertEquals(false, response.disableAadAuth());
     }

@@ -10,10 +10,24 @@ import java.util.Collection;
 
 /** Tier of an application gateway. */
 public final class ApplicationGatewayTier extends ExpandableStringEnum<ApplicationGatewayTier> {
-    /** Static value Standard for ApplicationGatewayTier. */
+    /**
+     * Static value Standard for ApplicationGatewayTier.
+     *
+     * @deprecated Application Gateway V1 is officially deprecated on April 28, 2023.
+     *             See <a href="https://learn.microsoft.com/azure/application-gateway/v1-retirement#retirement-timelines">v1-retirement-timeline</a>
+     *             for V1 retirement timeline and start planning your migration to Application Gateway V2 today.
+     */
+    @Deprecated
     public static final ApplicationGatewayTier STANDARD = fromString("Standard");
 
-    /** Static value WAF for ApplicationGatewayTier. */
+    /**
+     * Static value WAF for ApplicationGatewayTier.
+     *
+     * @deprecated Application Gateway V1 is officially deprecated on April 28, 2023.
+     *             See <a href="https://learn.microsoft.com/azure/application-gateway/v1-retirement#retirement-timelines">v1-retirement-timeline</a>
+     *             for V1 retirement timeline and start planning your migration to Application Gateway V2 today.
+     */
+    @Deprecated
     public static final ApplicationGatewayTier WAF = fromString("WAF");
 
     /** Static value Standard_v2 for ApplicationGatewayTier. */
@@ -21,6 +35,9 @@ public final class ApplicationGatewayTier extends ExpandableStringEnum<Applicati
 
     /** Static value WAF_v2 for ApplicationGatewayTier. */
     public static final ApplicationGatewayTier WAF_V2 = fromString("WAF_v2");
+
+    /** Static value Basic for ApplicationGatewayTier. */
+    public static final ApplicationGatewayTier BASIC = fromString("Basic");
 
     /**
      * Creates a new instance of ApplicationGatewayTier value.

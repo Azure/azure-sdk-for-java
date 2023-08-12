@@ -18,32 +18,32 @@ public final class ClusterMetricsConfigurationInnerTests {
         ClusterMetricsConfigurationInner model =
             BinaryData
                 .fromString(
-                    "{\"extendedLocation\":{\"name\":\"rrxxgewpktvq\",\"type\":\"lkm\"},\"properties\":{\"collectionInterval\":1955127853962585170,\"detailedStatus\":\"Processing\",\"detailedStatusMessage\":\"lfbcgwgcl\",\"disabledMetrics\":[\"ebqinjipnw\",\"fujqlafcba\",\"hpzpo\"],\"enabledMetrics\":[\"yjwpfilkmkkh\",\"l\",\"dndviauogp\",\"uartvti\"],\"provisioningState\":\"Succeeded\"},\"location\":\"fchnmnah\",\"tags\":{\"i\":\"hkxjqirwrweooxf\"},\"id\":\"hx\",\"name\":\"rsnewmozqvbubqma\",\"type\":\"hsycxhxzgaz\"}")
+                    "{\"extendedLocation\":{\"name\":\"hflzokxco\",\"type\":\"pelnjetag\"},\"properties\":{\"collectionInterval\":2159915633768308562,\"detailedStatus\":\"Error\",\"detailedStatusMessage\":\"tft\",\"disabledMetrics\":[\"npbs\",\"vefloccsrmozihmi\",\"g\",\"wtxxpkyjcx\"],\"enabledMetrics\":[\"grytfmpcyci\",\"rmcaykgg\"],\"provisioningState\":\"Canceled\"},\"location\":\"ztrksxwpndf\",\"tags\":{\"jaosrxuzv\":\"nznthjtw\",\"xqdlyrtltlapr\":\"amktcqiosmgbzah\"},\"id\":\"tz\",\"name\":\"atbhjmznn\",\"type\":\"s\"}")
                 .toObject(ClusterMetricsConfigurationInner.class);
-        Assertions.assertEquals("fchnmnah", model.location());
-        Assertions.assertEquals("hkxjqirwrweooxf", model.tags().get("i"));
-        Assertions.assertEquals("rrxxgewpktvq", model.extendedLocation().name());
-        Assertions.assertEquals("lkm", model.extendedLocation().type());
-        Assertions.assertEquals(1955127853962585170L, model.collectionInterval());
-        Assertions.assertEquals("yjwpfilkmkkh", model.enabledMetrics().get(0));
+        Assertions.assertEquals("ztrksxwpndf", model.location());
+        Assertions.assertEquals("nznthjtw", model.tags().get("jaosrxuzv"));
+        Assertions.assertEquals("hflzokxco", model.extendedLocation().name());
+        Assertions.assertEquals("pelnjetag", model.extendedLocation().type());
+        Assertions.assertEquals(2159915633768308562L, model.collectionInterval());
+        Assertions.assertEquals("grytfmpcyci", model.enabledMetrics().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ClusterMetricsConfigurationInner model =
             new ClusterMetricsConfigurationInner()
-                .withLocation("fchnmnah")
-                .withTags(mapOf("i", "hkxjqirwrweooxf"))
-                .withExtendedLocation(new ExtendedLocation().withName("rrxxgewpktvq").withType("lkm"))
-                .withCollectionInterval(1955127853962585170L)
-                .withEnabledMetrics(Arrays.asList("yjwpfilkmkkh", "l", "dndviauogp", "uartvti"));
+                .withLocation("ztrksxwpndf")
+                .withTags(mapOf("jaosrxuzv", "nznthjtw", "xqdlyrtltlapr", "amktcqiosmgbzah"))
+                .withExtendedLocation(new ExtendedLocation().withName("hflzokxco").withType("pelnjetag"))
+                .withCollectionInterval(2159915633768308562L)
+                .withEnabledMetrics(Arrays.asList("grytfmpcyci", "rmcaykgg"));
         model = BinaryData.fromObject(model).toObject(ClusterMetricsConfigurationInner.class);
-        Assertions.assertEquals("fchnmnah", model.location());
-        Assertions.assertEquals("hkxjqirwrweooxf", model.tags().get("i"));
-        Assertions.assertEquals("rrxxgewpktvq", model.extendedLocation().name());
-        Assertions.assertEquals("lkm", model.extendedLocation().type());
-        Assertions.assertEquals(1955127853962585170L, model.collectionInterval());
-        Assertions.assertEquals("yjwpfilkmkkh", model.enabledMetrics().get(0));
+        Assertions.assertEquals("ztrksxwpndf", model.location());
+        Assertions.assertEquals("nznthjtw", model.tags().get("jaosrxuzv"));
+        Assertions.assertEquals("hflzokxco", model.extendedLocation().name());
+        Assertions.assertEquals("pelnjetag", model.extendedLocation().type());
+        Assertions.assertEquals(2159915633768308562L, model.collectionInterval());
+        Assertions.assertEquals("grytfmpcyci", model.enabledMetrics().get(0));
     }
 
     @SuppressWarnings("unchecked")

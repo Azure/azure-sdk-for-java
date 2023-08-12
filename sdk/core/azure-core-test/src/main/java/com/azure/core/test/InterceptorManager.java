@@ -27,6 +27,7 @@ import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -76,7 +77,7 @@ public class InterceptorManager implements AutoCloseable {
     private final Queue<String> proxyVariableQueue = new LinkedList<>();
     private HttpClient httpClient;
     private final Path testClassPath;
-
+    private String xRecordingFileLocation;
 
     /**
      * Creates a new InterceptorManager that either replays test-session records or saves them.
@@ -330,7 +331,9 @@ public class InterceptorManager implements AutoCloseable {
             }
             if (testProxyPlaybackClient == null) {
                 testProxyPlaybackClient = new TestProxyPlaybackClient(httpClient, skipRecordingRequestBody);
-                proxyVariableQueue.addAll(testProxyPlaybackClient.startPlayback(getTestProxyRecordFile(), testClassPath));
+                proxyVariableQueue.addAll(testProxyPlaybackClient.startPlayback(getTestProxyRecordFile(),
+                    testClassPath));
+                xRecordingFileLocation = testProxyPlaybackClient.getRecordingFileLocation();
             }
             return testProxyPlaybackClient;
         } else {
@@ -454,6 +457,9 @@ public class InterceptorManager implements AutoCloseable {
      * @throws RuntimeException Neither playback or record has started.
      */
     public void addSanitizers(List<TestProxySanitizer> testProxySanitizers) {
+        if (CoreUtils.isNullOrEmpty(testProxySanitizers)) {
+            return;
+        }
         if (testProxyPlaybackClient != null) {
             testProxyPlaybackClient.addProxySanitization(testProxySanitizers);
         } else if (testProxyRecordPolicy != null) {
@@ -464,12 +470,26 @@ public class InterceptorManager implements AutoCloseable {
     }
 
     /**
+     * Add sanitizer rule for sanitization during record or playback.
+     * @param testProxySanitizers the list of replacement regex and rules.
+     */
+    public void addSanitizers(TestProxySanitizer... testProxySanitizers) {
+        if (testProxySanitizers != null) {
+            addSanitizers(Arrays.asList(testProxySanitizers));
+        }
+    }
+
+    /**
      * Add matcher rules to match recorded data in playback.
      * Matchers are only applied for playback session and so this will be a noop when invoked in RECORD/LIVE mode.
      * @param testProxyMatchers the list of matcher rules when playing back recorded data.
      * @throws RuntimeException Playback has not started.
      */
     public void addMatchers(List<TestProxyRequestMatcher> testProxyMatchers) {
+        if (CoreUtils.isNullOrEmpty(testProxyMatchers)) {
+            return;
+        }
+
         if (testMode != TestMode.PLAYBACK) {
             return;
         }
@@ -481,11 +501,29 @@ public class InterceptorManager implements AutoCloseable {
     }
 
     /**
+     * Add matcher rules to match recorded data in playback.
+     * Matchers are only applied for playback session and so this will be a noop when invoked in RECORD/LIVE mode.
+     * @param testProxyRequestMatchers the list of matcher rules when playing back recorded data.
+     */
+    public void addMatchers(TestProxyRequestMatcher... testProxyRequestMatchers) {
+        if (testProxyRequestMatchers != null) {
+            addMatchers(Arrays.asList(testProxyRequestMatchers));
+        }
+    }
+
+    /**
+     * Get the recording file location in assets repo.
+     * @return the assets repo location of the recording file.
+     */
+    public String getRecordingFileLocation() {
+        return xRecordingFileLocation;
+    }
+
+    /**
      * Sets the httpClient to be used for this test.
      * @param httpClient The {@link HttpClient} implementation to use.
      */
     void setHttpClient(HttpClient httpClient) {
-
         this.httpClient = httpClient;
     }
 }

@@ -12,46 +12,46 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class AzureMonitorResponseInnerTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         AzureMonitorResponseInner model =
             BinaryData
                 .fromString(
-                    "{\"clusterMonitoringEnabled\":true,\"workspaceId\":\"lg\",\"selectedConfigurations\":{\"configurationVersion\":\"vtvsexsowueluq\",\"globalConfigurations\":{\"wws\":\"hhxvrhmzkwpj\",\"qxujxukndxd\":\"ughftqsx\"},\"tableList\":[{\"name\":\"guufzd\"},{\"name\":\"yqtfihwh\"},{\"name\":\"tzingamvpph\"},{\"name\":\"zqzudph\"}]}}")
+                    "{\"clusterMonitoringEnabled\":false,\"workspaceId\":\"mkcdyhbpkkpwdre\",\"selectedConfigurations\":{\"configurationVersion\":\"vvqfovljxyws\",\"globalConfigurations\":{\"dsytgadgvr\":\"yrs\",\"neqn\":\"ea\",\"jfqka\":\"arrwlquu\",\"iipfpubj\":\"e\"},\"tableList\":[{\"name\":\"iftohqkvpu\"},{\"name\":\"sgplsakn\"},{\"name\":\"fsynljphuop\"},{\"name\":\"dlqiyntorzih\"}]}}")
                 .toObject(AzureMonitorResponseInner.class);
-        Assertions.assertEquals(true, model.clusterMonitoringEnabled());
-        Assertions.assertEquals("lg", model.workspaceId());
-        Assertions.assertEquals("vtvsexsowueluq", model.selectedConfigurations().configurationVersion());
-        Assertions.assertEquals("hhxvrhmzkwpj", model.selectedConfigurations().globalConfigurations().get("wws"));
-        Assertions.assertEquals("guufzd", model.selectedConfigurations().tableList().get(0).name());
+        Assertions.assertEquals(false, model.clusterMonitoringEnabled());
+        Assertions.assertEquals("mkcdyhbpkkpwdre", model.workspaceId());
+        Assertions.assertEquals("vvqfovljxyws", model.selectedConfigurations().configurationVersion());
+        Assertions.assertEquals("yrs", model.selectedConfigurations().globalConfigurations().get("dsytgadgvr"));
+        Assertions.assertEquals("iftohqkvpu", model.selectedConfigurations().tableList().get(0).name());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         AzureMonitorResponseInner model =
             new AzureMonitorResponseInner()
-                .withClusterMonitoringEnabled(true)
-                .withWorkspaceId("lg")
+                .withClusterMonitoringEnabled(false)
+                .withWorkspaceId("mkcdyhbpkkpwdre")
                 .withSelectedConfigurations(
                     new AzureMonitorSelectedConfigurations()
-                        .withConfigurationVersion("vtvsexsowueluq")
-                        .withGlobalConfigurations(mapOf("wws", "hhxvrhmzkwpj", "qxujxukndxd", "ughftqsx"))
+                        .withConfigurationVersion("vvqfovljxyws")
+                        .withGlobalConfigurations(
+                            mapOf("dsytgadgvr", "yrs", "neqn", "ea", "jfqka", "arrwlquu", "iipfpubj", "e"))
                         .withTableList(
                             Arrays
                                 .asList(
-                                    new AzureMonitorTableConfiguration().withName("guufzd"),
-                                    new AzureMonitorTableConfiguration().withName("yqtfihwh"),
-                                    new AzureMonitorTableConfiguration().withName("tzingamvpph"),
-                                    new AzureMonitorTableConfiguration().withName("zqzudph"))));
+                                    new AzureMonitorTableConfiguration().withName("iftohqkvpu"),
+                                    new AzureMonitorTableConfiguration().withName("sgplsakn"),
+                                    new AzureMonitorTableConfiguration().withName("fsynljphuop"),
+                                    new AzureMonitorTableConfiguration().withName("dlqiyntorzih"))));
         model = BinaryData.fromObject(model).toObject(AzureMonitorResponseInner.class);
-        Assertions.assertEquals(true, model.clusterMonitoringEnabled());
-        Assertions.assertEquals("lg", model.workspaceId());
-        Assertions.assertEquals("vtvsexsowueluq", model.selectedConfigurations().configurationVersion());
-        Assertions.assertEquals("hhxvrhmzkwpj", model.selectedConfigurations().globalConfigurations().get("wws"));
-        Assertions.assertEquals("guufzd", model.selectedConfigurations().tableList().get(0).name());
+        Assertions.assertEquals(false, model.clusterMonitoringEnabled());
+        Assertions.assertEquals("mkcdyhbpkkpwdre", model.workspaceId());
+        Assertions.assertEquals("vvqfovljxyws", model.selectedConfigurations().configurationVersion());
+        Assertions.assertEquals("yrs", model.selectedConfigurations().globalConfigurations().get("dsytgadgvr"));
+        Assertions.assertEquals("iftohqkvpu", model.selectedConfigurations().tableList().get(0).name());
     }
 
     @SuppressWarnings("unchecked")

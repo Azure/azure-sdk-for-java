@@ -26,6 +26,10 @@ public final class BlobContainerInner extends AzureEntityResource {
     @JsonProperty(value = "properties")
     private ContainerProperties innerContainerProperties;
 
+    /** Creates an instance of BlobContainerInner class. */
+    public BlobContainerInner() {
+    }
+
     /**
      * Get the innerContainerProperties property: Properties of the blob container.
      *

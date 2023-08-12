@@ -7,22 +7,21 @@ package com.azure.resourcemanager.batch.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.batch.models.KeyVaultReference;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class KeyVaultReferenceTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         KeyVaultReference model =
-            BinaryData.fromString("{\"id\":\"izntocipao\",\"url\":\"ajpsquc\"}").toObject(KeyVaultReference.class);
-        Assertions.assertEquals("izntocipao", model.id());
-        Assertions.assertEquals("ajpsquc", model.url());
+            BinaryData.fromString("{\"id\":\"lzl\",\"url\":\"j\"}").toObject(KeyVaultReference.class);
+        Assertions.assertEquals("lzl", model.id());
+        Assertions.assertEquals("j", model.url());
     }
 
-    @Test
-    public void testSerialize() {
-        KeyVaultReference model = new KeyVaultReference().withId("izntocipao").withUrl("ajpsquc");
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        KeyVaultReference model = new KeyVaultReference().withId("lzl").withUrl("j");
         model = BinaryData.fromObject(model).toObject(KeyVaultReference.class);
-        Assertions.assertEquals("izntocipao", model.id());
-        Assertions.assertEquals("ajpsquc", model.url());
+        Assertions.assertEquals("lzl", model.id());
+        Assertions.assertEquals("j", model.url());
     }
 }

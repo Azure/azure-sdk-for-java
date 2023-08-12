@@ -4,31 +4,40 @@
 package com.azure.core.http.vertx;
 
 import com.azure.core.http.HttpClient;
-import com.azure.core.test.HttpClientTestsWireMockServer;
+import com.azure.core.test.HttpClientTestsServer;
 import com.azure.core.test.http.HttpClientTests;
-import com.github.tomakehurst.wiremock.WireMockServer;
+import com.azure.core.test.http.LocalTestServer;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 
+@Execution(ExecutionMode.SAME_THREAD)
 public class VertxAsyncHttpClientAsyncHttpClientTests extends HttpClientTests {
-    private static WireMockServer server;
+    private static LocalTestServer server;
 
     @BeforeAll
     public static void beforeAll() {
-        server = HttpClientTestsWireMockServer.getHttpClientTestsServer();
+        server = HttpClientTestsServer.getHttpClientTestsServer();
         server.start();
     }
 
     @AfterAll
-    public static void afterAll() throws Exception {
+    public static void afterAll() {
         if (server != null) {
-            server.shutdown();
+            server.stop();
         }
     }
 
     @Override
-    protected int getWireMockPort() {
-        return server.port();
+    @Deprecated
+    protected int getPort() {
+        return server.getHttpPort();
+    }
+
+    @Override
+    protected String getServerUri(boolean secure) {
+        return secure ? server.getHttpsUri() : server.getHttpUri();
     }
 
     @Override

@@ -67,6 +67,14 @@ public final class ErrorCode extends ExpandableStringEnum<ErrorCode> {
     public static final ErrorCode WARNING = fromString("Warning");
 
     /**
+     * Creates a new instance of ErrorCode value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ErrorCode() {}
+
+    /**
      * Creates or finds a ErrorCode from its string representation.
      *
      * @param name a name to look for.

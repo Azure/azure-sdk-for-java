@@ -78,6 +78,7 @@
     "sdk/appconfiguration/azure-spring-cloud-appconfiguration-config/**",
     "sdk/boms/azure-sdk-bom/**",
     "sdk/boms/azure-sdk-template-bom/**",
+    "sdk/attestation/test-resources-pre.ps1",
     "sdk/attestation/azure-security-attestation/**",
     "sdk/cognitiveservices/ms-azure-cs-autosuggest/**",
     "sdk/cognitiveservices/ms-azure-cs-customimagesearch/**",
@@ -131,6 +132,7 @@
     "sdk/cosmos/azure-cosmos-spark_3-1_2-12/**",
     "sdk/cosmos/azure-cosmos-spark_3-2_2-12/**",
     "sdk/cosmos/azure-cosmos-spark_3-3_2-12/**",
+    "sdk/cosmos/azure-cosmos-spark_3-4_2-12/**",
     "sdk/core/azure-core-test/**",
     "sdk/cosmos/azure-cosmos-encryption/**",
     "sdk/cosmos/azure-cosmos-spark_3_2-12/**",
@@ -143,6 +145,7 @@
     "sdk/eventhubs/azure-messaging-eventhubs-checkpointstore-jedis/**",
     "sdk/eventhubs/azure-messaging-eventhubs-checkpointstore-blob/**",
     "sdk/eventhubs/azure-messaging-eventhubs/**",
+    "sdk/eventhubs/azure-messaging-eventhubs-stress/Dockerfile",
     "sdk/eventgrid/azure-messaging-eventgrid/**",
     "sdk/cosmos/azure-cosmos/**",
     "sdk/identity/azure-identity/**",
@@ -161,11 +164,13 @@
     "sdk/maps/azure-maps-search/**",
     "sdk/monitor/azure-monitor-query/**",
     "sdk/monitor/azure-monitor-opentelemetry-exporter/**",
+    "sdk/monitor/test-resources.json",
     "sdk/modelsrepository/azure-iot-modelsrepository/**",
     "sdk/parents/azure-client-sdk-parent/**",
     "sdk/parents/azure-sdk-parent/**",
     "sdk/parents/azure-data-sdk-parent/**",
     "sdk/personalizer/azure-ai-personalizer/**",
+    "sdk/personalizer/test-resources.json",
     "sdk/purview/azure-analytics-purview-administration/**",
     "sdk/quantum/azure-quantum-jobs/**",
     "sdk/purview/azure-analytics-purview-scanning/**",
@@ -173,6 +178,8 @@
     "sdk/remoterendering/TestResources/**",
     "sdk/purview/azure-analytics-purview-catalog/**",
     "sdk/servicebus/build/**",
+    "sdk/servicebus/azure-messaging-servicebus-stress/workbooks/**",
+    "sdk/servicebus/azure-messaging-servicebus-stress/Dockerfile",
     "sdk/search/azure-search-documents/**",
     "sdk/storage/azure-storage-internal-avro/**",
     "sdk/storage/azure-storage-queue/**",
@@ -238,6 +245,7 @@
     "creds",
     "credscan",
     "curr",
+    "DALL-E",
     "databind",
     "databricks",
     "DAZURE",
@@ -332,6 +340,7 @@
     "Onco",
     "onenote",
     "openai",
+    "Pnative",
     "premf",
     "pwsh",
     "protonj",
@@ -384,6 +393,13 @@
     "XLint"
   ],
   "overrides": [
+    {
+      "filename": "sdk/identity/cgmanifest.json",
+      "words":[
+        "pwdb",
+        "bcprov"
+      ]
+    },
     {
       "filename": "sdk/maps/azure-maps-traffic/README.md",
       "words": [
@@ -987,6 +1003,9 @@
         "Oidc",
         "oidc",
         "OIDC",
+        "otel",
+        "Otel",
+        "otlp",
         "qpid",
         "reqoest",
         "signin",

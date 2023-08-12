@@ -1,4 +1,5 @@
 # NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+
 trigger:
   branches:
     include:
@@ -11,6 +12,7 @@ trigger:
     exclude:
       - sdk/quantum/pom.xml
       - sdk/quantum/azure-quantum-jobs/pom.xml
+      - sdk/quantum/azure-resourcemanager-quantum/pom.xml
 
 pr:
   branches:
@@ -25,6 +27,7 @@ pr:
     exclude:
       - sdk/quantum/pom.xml
       - sdk/quantum/azure-quantum-jobs/pom.xml
+      - sdk/quantum/azure-resourcemanager-quantum/pom.xml
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
@@ -34,3 +37,6 @@ extends:
       - name: azure-quantum-jobs
         groupId: com.azure
         safeName: azurequantumjobs
+      - name: azure-resourcemanager-quantum
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagerquantum

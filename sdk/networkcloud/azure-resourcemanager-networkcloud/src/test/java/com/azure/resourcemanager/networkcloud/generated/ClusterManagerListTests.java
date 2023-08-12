@@ -18,52 +18,47 @@ public final class ClusterManagerListTests {
         ClusterManagerList model =
             BinaryData
                 .fromString(
-                    "{\"nextLink\":\"dgwdslfhot\",\"value\":[{\"properties\":{\"analyticsWorkspaceId\":\"npwlbjnpg\",\"availabilityZones\":[],\"clusterVersions\":[],\"detailedStatus\":\"UpdateFailed\",\"detailedStatusMessage\":\"ehxnltyfsop\",\"fabricControllerId\":\"usue\",\"provisioningState\":\"Succeeded\",\"vmSize\":\"jbavorxzdm\"},\"location\":\"ctbqvudwx\",\"tags\":{\"wdkcglhsl\":\"nvowgujju\",\"yggdtjixh\":\"zj\"},\"id\":\"kuofqweykhme\",\"name\":\"evfyexfwhybcib\",\"type\":\"yvdcsitynnaa\"},{\"properties\":{\"analyticsWorkspaceId\":\"ectehf\",\"availabilityZones\":[],\"clusterVersions\":[],\"detailedStatus\":\"Provisioning\",\"detailedStatusMessage\":\"ypvhezrkg\",\"fabricControllerId\":\"hcjrefovgmk\",\"provisioningState\":\"Succeeded\",\"vmSize\":\"vxyqjpkcattpngjc\"},\"location\":\"czsqpjhvm\",\"tags\":{\"ysou\":\"v\",\"canoaeupf\":\"q\",\"tuo\":\"yhltrpmopjmcm\"},\"id\":\"thfuiuaodsfcpkvx\",\"name\":\"dpuozmyz\",\"type\":\"dagfuaxbezyiuok\"},{\"properties\":{\"analyticsWorkspaceId\":\"whrdxwzywqsmbsu\",\"availabilityZones\":[],\"clusterVersions\":[],\"detailedStatus\":\"Provisioning\",\"detailedStatusMessage\":\"ryocfsfksymdd\",\"fabricControllerId\":\"stkiiuxhqyud\",\"provisioningState\":\"Failed\",\"vmSize\":\"b\"},\"location\":\"czvyifq\",\"tags\":{\"atkpnp\":\"dvjsllrmvvdf\",\"iqzbq\":\"lexxbczwtru\"},\"id\":\"vsovmyokac\",\"name\":\"pkwlhz\",\"type\":\"obpxjmflbvvn\"}]}")
+                    "{\"nextLink\":\"xim\",\"value\":[{\"properties\":{\"analyticsWorkspaceId\":\"cfsf\",\"availabilityZones\":[],\"clusterVersions\":[],\"detailedStatus\":\"Error\",\"detailedStatusMessage\":\"ys\",\"fabricControllerId\":\"kiiuxhqyudxor\",\"provisioningState\":\"Provisioning\",\"vmSize\":\"czvyifq\"},\"location\":\"kdvjsll\",\"tags\":{\"ulexxbczwtr\":\"vdfwatkpn\",\"acspkwl\":\"wiqzbqjvsovmyo\",\"kcciwwzjuqkhr\":\"zdobpxjmflbvvnch\",\"oskg\":\"ajiwkuo\"},\"id\":\"sauuimj\",\"name\":\"vxieduugidyj\",\"type\":\"rfbyaosvexcso\"}]}")
                 .toObject(ClusterManagerList.class);
-        Assertions.assertEquals("dgwdslfhot", model.nextLink());
-        Assertions.assertEquals("ctbqvudwx", model.value().get(0).location());
-        Assertions.assertEquals("nvowgujju", model.value().get(0).tags().get("wdkcglhsl"));
-        Assertions.assertEquals("npwlbjnpg", model.value().get(0).analyticsWorkspaceId());
-        Assertions.assertEquals("usue", model.value().get(0).fabricControllerId());
-        Assertions.assertEquals("jbavorxzdm", model.value().get(0).vmSize());
+        Assertions.assertEquals("xim", model.nextLink());
+        Assertions.assertEquals("kdvjsll", model.value().get(0).location());
+        Assertions.assertEquals("vdfwatkpn", model.value().get(0).tags().get("ulexxbczwtr"));
+        Assertions.assertEquals("cfsf", model.value().get(0).analyticsWorkspaceId());
+        Assertions.assertEquals("kiiuxhqyudxor", model.value().get(0).fabricControllerId());
+        Assertions.assertEquals("czvyifq", model.value().get(0).vmSize());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ClusterManagerList model =
             new ClusterManagerList()
-                .withNextLink("dgwdslfhot")
+                .withNextLink("xim")
                 .withValue(
                     Arrays
                         .asList(
                             new ClusterManagerInner()
-                                .withLocation("ctbqvudwx")
-                                .withTags(mapOf("wdkcglhsl", "nvowgujju", "yggdtjixh", "zj"))
-                                .withAnalyticsWorkspaceId("npwlbjnpg")
+                                .withLocation("kdvjsll")
+                                .withTags(
+                                    mapOf(
+                                        "ulexxbczwtr",
+                                        "vdfwatkpn",
+                                        "acspkwl",
+                                        "wiqzbqjvsovmyo",
+                                        "kcciwwzjuqkhr",
+                                        "zdobpxjmflbvvnch",
+                                        "oskg",
+                                        "ajiwkuo"))
+                                .withAnalyticsWorkspaceId("cfsf")
                                 .withAvailabilityZones(Arrays.asList())
-                                .withFabricControllerId("usue")
-                                .withVmSize("jbavorxzdm"),
-                            new ClusterManagerInner()
-                                .withLocation("czsqpjhvm")
-                                .withTags(mapOf("ysou", "v", "canoaeupf", "q", "tuo", "yhltrpmopjmcm"))
-                                .withAnalyticsWorkspaceId("ectehf")
-                                .withAvailabilityZones(Arrays.asList())
-                                .withFabricControllerId("hcjrefovgmk")
-                                .withVmSize("vxyqjpkcattpngjc"),
-                            new ClusterManagerInner()
-                                .withLocation("czvyifq")
-                                .withTags(mapOf("atkpnp", "dvjsllrmvvdf", "iqzbq", "lexxbczwtru"))
-                                .withAnalyticsWorkspaceId("whrdxwzywqsmbsu")
-                                .withAvailabilityZones(Arrays.asList())
-                                .withFabricControllerId("stkiiuxhqyud")
-                                .withVmSize("b")));
+                                .withFabricControllerId("kiiuxhqyudxor")
+                                .withVmSize("czvyifq")));
         model = BinaryData.fromObject(model).toObject(ClusterManagerList.class);
-        Assertions.assertEquals("dgwdslfhot", model.nextLink());
-        Assertions.assertEquals("ctbqvudwx", model.value().get(0).location());
-        Assertions.assertEquals("nvowgujju", model.value().get(0).tags().get("wdkcglhsl"));
-        Assertions.assertEquals("npwlbjnpg", model.value().get(0).analyticsWorkspaceId());
-        Assertions.assertEquals("usue", model.value().get(0).fabricControllerId());
-        Assertions.assertEquals("jbavorxzdm", model.value().get(0).vmSize());
+        Assertions.assertEquals("xim", model.nextLink());
+        Assertions.assertEquals("kdvjsll", model.value().get(0).location());
+        Assertions.assertEquals("vdfwatkpn", model.value().get(0).tags().get("ulexxbczwtr"));
+        Assertions.assertEquals("cfsf", model.value().get(0).analyticsWorkspaceId());
+        Assertions.assertEquals("kiiuxhqyudxor", model.value().get(0).fabricControllerId());
+        Assertions.assertEquals("czvyifq", model.value().get(0).vmSize());
     }
 
     @SuppressWarnings("unchecked")

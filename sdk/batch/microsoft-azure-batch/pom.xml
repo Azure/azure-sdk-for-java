@@ -16,7 +16,7 @@
   <groupId>com.microsoft.azure</groupId>
   <artifactId>azure-batch</artifactId>
   <packaging>jar</packaging>
-  <version>10.2.0-beta.1</version> <!-- {x-version-update;com.microsoft.azure:azure-batch;current} -->
+  <version>11.1.0-beta.1</version> <!-- {x-version-update;com.microsoft.azure:azure-batch;current} -->
 
   <name>Microsoft Azure Batch SDK Root</name>
   <description>This package contains the root module of Microsoft Azure Batch SDK.</description>
@@ -85,7 +85,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.40.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+      <version>1.42.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
       <scope>test</scope>
     </dependency>
 
@@ -193,7 +193,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-surefire-plugin</artifactId>
-            <version>3.0.0-M7</version><!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
+            <version>3.1.0</version><!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
             <configuration>
               <reuseForks>false</reuseForks>
               <argLine>

@@ -10,12 +10,29 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 import java.util.List;
+import java.util.Objects;
 
-/** Describes a set of label selectors that will be attached if the given condition resolves to true. */
+/** Describes a set of queue selectors that will be attached if the given condition resolves to true. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
 @JsonTypeName("conditional")
 @Fluent
 public final class ConditionalQueueSelectorAttachment extends QueueSelectorAttachment {
+    /**
+     * Creates an instance of ConditionalQueueSelector class.
+     *
+     * @param condition A rule of one of the following types:
+     * StaticRule:  A rule providing static rules that always return the same
+     * result, regardless of input.
+     * DirectMapRule:  A rule that return the same labels as the input labels.
+     * ExpressionRule: A rule providing inline expression rules.
+     * AzureFunctionRule: A rule providing a binding to an HTTP Triggered Azure Function.
+     * @param queueSelectors the queue selectors to attach
+     */
+    public ConditionalQueueSelectorAttachment(RouterRule condition, List<RouterQueueSelector> queueSelectors) {
+        this.condition = Objects.requireNonNull(condition, "'condition' cannot be null.");
+        this.queueSelectors = Objects.requireNonNull(queueSelectors, "'queueSelectors' cannot be null.");
+    }
+
     /*
      * A rule of one of the following types:
      *
@@ -25,25 +42,22 @@ public final class ConditionalQueueSelectorAttachment extends QueueSelectorAttac
      * ExpressionRule: A rule providing inline expression rules.
      * AzureFunctionRule: A rule providing a binding to an HTTP Triggered Azure
      * Function.
-     * WebhookRule: A rule providing a binding to a webserver following
-     * OAuth2.0 authentication protocol.
      */
     @JsonProperty(value = "condition", required = true)
-    private RouterRule condition;
+    private final RouterRule condition;
 
     /*
-     * The label selectors to attach
+     * The queue selectors to attach
      */
-    @JsonProperty(value = "labelSelectors", required = true)
-    private List<QueueSelector> labelSelectors;
+    @JsonProperty(value = "queueSelectors", required = true)
+    private final List<RouterQueueSelector> queueSelectors;
 
     /**
      * Get the condition property: A rule of one of the following types:
      *
      * <p>StaticRule: A rule providing static rules that always return the same result, regardless of input.
      * DirectMapRule: A rule that return the same labels as the input labels. ExpressionRule: A rule providing inline
-     * expression rules. AzureFunctionRule: A rule providing a binding to an HTTP Triggered Azure Function. WebhookRule:
-     * A rule providing a binding to a webserver following OAuth2.0 authentication protocol.
+     * expression rules. AzureFunctionRule: A rule providing a binding to an HTTP Triggered Azure Function.
      *
      * @return the condition value.
      */
@@ -52,38 +66,11 @@ public final class ConditionalQueueSelectorAttachment extends QueueSelectorAttac
     }
 
     /**
-     * Set the condition property: A rule of one of the following types:
+     * Get the queueSelectors property: The queue selectors to attach.
      *
-     * <p>StaticRule: A rule providing static rules that always return the same result, regardless of input.
-     * DirectMapRule: A rule that return the same labels as the input labels. ExpressionRule: A rule providing inline
-     * expression rules. AzureFunctionRule: A rule providing a binding to an HTTP Triggered Azure Function. WebhookRule:
-     * A rule providing a binding to a webserver following OAuth2.0 authentication protocol.
-     *
-     * @param condition the condition value to set.
-     * @return the ConditionalQueueSelectorAttachment object itself.
+     * @return the queueSelectors value.
      */
-    public ConditionalQueueSelectorAttachment setCondition(RouterRule condition) {
-        this.condition = condition;
-        return this;
-    }
-
-    /**
-     * Get the labelSelectors property: The label selectors to attach.
-     *
-     * @return the labelSelectors value.
-     */
-    public List<QueueSelector> getLabelSelectors() {
-        return this.labelSelectors;
-    }
-
-    /**
-     * Set the labelSelectors property: The label selectors to attach.
-     *
-     * @param labelSelectors the labelSelectors value to set.
-     * @return the ConditionalQueueSelectorAttachment object itself.
-     */
-    public ConditionalQueueSelectorAttachment setLabelSelectors(List<QueueSelector> labelSelectors) {
-        this.labelSelectors = labelSelectors;
-        return this;
+    public List<RouterQueueSelector> getQueueSelectors() {
+        return this.queueSelectors;
     }
 }

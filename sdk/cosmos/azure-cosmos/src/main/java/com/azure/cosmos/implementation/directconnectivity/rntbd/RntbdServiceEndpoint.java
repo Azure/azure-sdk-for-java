@@ -7,12 +7,13 @@ import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.GoneException;
 import com.azure.cosmos.implementation.HttpConstants;
-import com.azure.cosmos.implementation.IOpenConnectionsHandler;
 import com.azure.cosmos.implementation.OpenConnectionResponse;
+import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetryMetrics;
 import com.azure.cosmos.implementation.clienttelemetry.MetricCategory;
 import com.azure.cosmos.implementation.clienttelemetry.TagName;
+import com.azure.cosmos.implementation.directconnectivity.AddressSelector;
 import com.azure.cosmos.implementation.directconnectivity.IAddressResolver;
 import com.azure.cosmos.implementation.directconnectivity.RntbdTransportClient;
 import com.azure.cosmos.implementation.directconnectivity.TransportException;
@@ -28,6 +29,7 @@ import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.AdaptiveRecvByteBufAllocator;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelOption;
+import io.netty.channel.ConnectTimeoutException;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.epoll.EpollChannelOption;
 import io.netty.handler.logging.LogLevel;
@@ -113,7 +115,8 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
         final URI serviceEndpoint,
         final RntbdDurableEndpointMetrics durableMetrics,
         final ProactiveOpenConnectionsProcessor proactiveOpenConnectionsProcessor,
-        final int minChannelsRequired) {
+        final int minChannelsRequired,
+        final AddressSelector addressSelector) {
 
         this.durableMetrics = durableMetrics;
         this.addressUri = addressUri;
@@ -146,7 +149,7 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
         this.maxConcurrentRequests = config.maxConcurrentRequestsPerEndpoint();
 
         this.connectionStateListener = this.provider.addressResolver != null && config.isConnectionEndpointRediscoveryEnabled()
-            ? new RntbdConnectionStateListener(this, proactiveOpenConnectionsProcessor) : null;
+            ? new RntbdConnectionStateListener(this, proactiveOpenConnectionsProcessor, addressSelector) : null;
 
         this.channelPool =
             new RntbdClientChannelPool(
@@ -601,7 +604,16 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
                 HttpConstants.SubStatusCodes.TRANSPORT_GENERATED_410
             );
 
-            BridgeInternal.setRequestHeaders(goneException, requestArgs.serviceRequest().getHeaders());
+            RxDocumentServiceRequest serviceRequest = requestArgs.serviceRequest();
+            BridgeInternal.setRequestHeaders(goneException, serviceRequest.getHeaders());
+
+            if (serviceRequest.requestContext != null) {
+                serviceRequest.requestContext.forceRefreshAddressCache = true;
+            }
+
+            if (connectionStateListener != null) {
+                connectionStateListener.attemptBackgroundAddressRefresh(serviceRequest, goneException);
+            }
             requestRecord.completeExceptionally(goneException);
         }
 
@@ -759,7 +771,8 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
             final URI serviceEndpoint,
             final Uri addressUri,
             ProactiveOpenConnectionsProcessor proactiveOpenConnectionsProcessor,
-            int minRequiredChannelsForEndpoint) {
+            int minRequiredChannelsForEndpoint,
+            AddressSelector addressSelector) {
             return endpoints.computeIfAbsent(
                 addressUri.getURI().getAuthority(),
                 authority -> {
@@ -779,7 +792,8 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
                         serviceEndpoint,
                         durableEndpointMetrics,
                         proactiveOpenConnectionsProcessor,
-                        minRequiredChannelsForEndpoint);
+                        minRequiredChannelsForEndpoint,
+                        addressSelector);
 
                     durableEndpointMetrics.setEndpoint(endpoint);
 

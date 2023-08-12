@@ -28,6 +28,10 @@ public final class WsfcDomainCredentials {
     @JsonProperty(value = "sqlServiceAccountPassword")
     private String sqlServiceAccountPassword;
 
+    /** Creates an instance of WsfcDomainCredentials class. */
+    public WsfcDomainCredentials() {
+    }
+
     /**
      * Get the clusterBootstrapAccountPassword property: Cluster bootstrap account password.
      *

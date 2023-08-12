@@ -51,6 +51,12 @@ public class AzureDataExplorerLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties.tenant")
     private Object tenant;
 
+    /*
+     * The credential reference containing authentication information.
+     */
+    @JsonProperty(value = "typeProperties.credential")
+    private CredentialReference credential;
+
     /** Creates an instance of AzureDataExplorerLinkedService class. */
     public AzureDataExplorerLinkedService() {}
 
@@ -159,6 +165,26 @@ public class AzureDataExplorerLinkedService extends LinkedService {
      */
     public AzureDataExplorerLinkedService setTenant(Object tenant) {
         this.tenant = tenant;
+        return this;
+    }
+
+    /**
+     * Get the credential property: The credential reference containing authentication information.
+     *
+     * @return the credential value.
+     */
+    public CredentialReference getCredential() {
+        return this.credential;
+    }
+
+    /**
+     * Set the credential property: The credential reference containing authentication information.
+     *
+     * @param credential the credential value to set.
+     * @return the AzureDataExplorerLinkedService object itself.
+     */
+    public AzureDataExplorerLinkedService setCredential(CredentialReference credential) {
+        this.credential = credential;
         return this;
     }
 

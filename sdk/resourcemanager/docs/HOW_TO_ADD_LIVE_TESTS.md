@@ -7,6 +7,10 @@ Here is a guide to add live tests for management-plane SDK.
 Read [Developer Guide](https://github.com/Azure/azure-sdk-for-java/blob/main/CONTRIBUTING.md#developer-guide).
 It provides guide on how to build, run tests, and the context of live tests.
 
+## Sample PR
+
+Here is a [sample PR](https://github.com/Azure/azure-sdk-for-java/pull/35315) for adding live tests to databricks SDK.
+
 ## Add Test Dependencies
 
 Add following test dependencies to POM at `sdk/<service>/azure-resourcemanager-<service>/pom.xml`,
@@ -47,6 +51,8 @@ Add following test dependencies to POM at `sdk/<service>/azure-resourcemanager-<
 - `azure-identity` for authorization.
 - `azure-resourcemanager-resources` for SDK to manage resource groups.
 - One might add other required libraries in `test` scope.
+
+Note: one only need to add `azure-resourcemanager-resources` to POM, if the SDK already have mock tests enabled (which is usually the case).
 
 And run
 ```
@@ -101,3 +107,8 @@ After pull request is ready, comment `/azp run prepare-pipelines` to let the aut
 The live tests will be automatically run, before SDK release.
 
 In pull request, comment `/azp run java - <service> - mgmt - tests` to run it manually.
+
+## Troubleshoot
+
+- Sometimes, the CI could be cancelled due to EngSys problem, please re-run it.
+- Resource under test may not have been [registered](https://learn.microsoft.com/azure/azure-resource-manager/troubleshooting/error-register-resource-provider) under "Azure SDK Test Resources" subscription. Developer needs to register the resource provider namespace first, then re-run the CI.

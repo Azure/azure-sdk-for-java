@@ -3,11 +3,9 @@
 
 package com.azure.ai.openai;
 
-import com.azure.ai.openai.models.ChatChoice;
 import com.azure.ai.openai.models.ChatCompletions;
 import com.azure.ai.openai.models.ChatCompletionsOptions;
 import com.azure.ai.openai.models.ChatMessage;
-import com.azure.ai.openai.models.ChatMessageDelta;
 import com.azure.ai.openai.models.ChatRole;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.IterableStream;
@@ -15,6 +13,11 @@ import com.azure.core.util.IterableStream;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Demonstrates how to get chat completions for the provided chat messages.
+ * Completions support a wide variety of tasks and generate text that continues from or "completes" provided
+ * prompt data.
+ */
 public class StreamingChatSample {
 
     /**
@@ -35,23 +38,42 @@ public class StreamingChatSample {
             .buildClient();
 
         List<ChatMessage> chatMessages = new ArrayList<>();
-        chatMessages.add(new ChatMessage(ChatRole.SYSTEM).setContent("You are a helpful assistant. You will talk like a pirate."));
-        chatMessages.add(new ChatMessage(ChatRole.USER).setContent("Can you help me?"));
-        chatMessages.add(new ChatMessage(ChatRole.ASSISTANT).setContent("Of course, me hearty! What can I do for ye?"));
-        chatMessages.add(new ChatMessage(ChatRole.USER).setContent("What's the best way to train a parrot?"));
+        chatMessages.add(new ChatMessage(ChatRole.SYSTEM, "You are a helpful assistant. You will talk like a pirate."));
+        chatMessages.add(new ChatMessage(ChatRole.USER, "Can you help me?"));
+        chatMessages.add(new ChatMessage(ChatRole.ASSISTANT, "Of course, me hearty! What can I do for ye?"));
+        chatMessages.add(new ChatMessage(ChatRole.USER, "What's the best way to train a parrot?"));
 
-        IterableStream<ChatCompletions> chatCompletionsStream = client.getChatCompletionsStream(deploymentOrModelId, new ChatCompletionsOptions(chatMessages));
+        IterableStream<ChatCompletions> chatCompletionsStream = client.getChatCompletionsStream(deploymentOrModelId,
+            new ChatCompletionsOptions(chatMessages));
 
-        chatCompletionsStream.forEach(chatCompletions -> {
-            System.out.printf("Model ID=%s is created at %d.%n", chatCompletions.getId(), chatCompletions.getCreated());
-            for (ChatChoice choice : chatCompletions.getChoices()) {
-                ChatMessageDelta message = choice.getDelta();
-                if (message != null) {
-                    System.out.printf("Index: %d, Chat Role: %s.%n", choice.getIndex(), message.getRole());
-                    System.out.println("Message:");
-                    System.out.println(message.getContent());
+        // The delta is the message content for a streaming response.
+        // Subsequence of streaming delta will be like:
+        // "delta": {
+        //     "role": "assistant"
+        // },
+        // "delta": {
+        //     "content": "Why"
+        //  },
+        //  "delta": {
+        //     "content": " don"
+        //  },
+        //  "delta": {
+        //     "content": "'t"
+        //  }
+        chatCompletionsStream
+            .stream()
+            // Remove .skip(1) when using Non-Azure OpenAI API
+            // Note: the first chat completions can be ignored when using Azure OpenAI service which is a known service bug.
+            // TODO: remove .skip(1) when service fix the issue.
+            .skip(1)
+            .forEach(chatCompletions -> {
+                ChatMessage delta = chatCompletions.getChoices().get(0).getDelta();
+                if (delta.getRole() != null) {
+                    System.out.println("Role = " + delta.getRole());
                 }
-            }
-        });
+                if (delta.getContent() != null) {
+                    System.out.print(delta.getContent());
+                }
+            });
     }
 }

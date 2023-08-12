@@ -14,7 +14,7 @@ stages:
         AZURE_TENANT_ID: $(aad-azure-sdk-test-tenant-id)
         AZURE_CLIENT_SECRET: $(aad-azure-sdk-test-client-secret)
         ATTESTATION_ISOLATED_URL: $(ATTESTATION_ISOLATED_URL)
-        ATTESTATION_AAD_URL: $(ATTESTATION_ISOLATED_URL)
+        ATTESTATION_AAD_URL: $(ATTESTATION_AAD_URL)
         serializedPolicySigningKey0: $(serializedPolicySigningKey0)
         serializedPolicySigningKey1: $(serializedPolicySigningKey1)
         serializedPolicySigningKey2: $(serializedPolicySigningKey2)

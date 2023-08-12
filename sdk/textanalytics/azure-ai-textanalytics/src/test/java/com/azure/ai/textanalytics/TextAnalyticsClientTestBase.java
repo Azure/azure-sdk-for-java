@@ -3,13 +3,12 @@
 
 package com.azure.ai.textanalytics;
 
+import com.azure.ai.textanalytics.models.AbstractiveSummary;
 import com.azure.ai.textanalytics.models.AbstractiveSummaryAction;
 import com.azure.ai.textanalytics.models.AbstractiveSummaryActionResult;
+import com.azure.ai.textanalytics.models.AbstractiveSummaryContext;
 import com.azure.ai.textanalytics.models.AbstractiveSummaryOptions;
 import com.azure.ai.textanalytics.models.AbstractiveSummaryResult;
-import com.azure.ai.textanalytics.models.AbstractiveSummary;
-import com.azure.ai.textanalytics.models.AgeResolution;
-import com.azure.ai.textanalytics.models.AgeUnit;
 import com.azure.ai.textanalytics.models.AnalyzeActionsResult;
 import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesAction;
 import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesActionResult;
@@ -19,7 +18,6 @@ import com.azure.ai.textanalytics.models.AnalyzeSentimentAction;
 import com.azure.ai.textanalytics.models.AnalyzeSentimentActionResult;
 import com.azure.ai.textanalytics.models.AnalyzeSentimentOptions;
 import com.azure.ai.textanalytics.models.AssessmentSentiment;
-import com.azure.ai.textanalytics.models.BaseResolution;
 import com.azure.ai.textanalytics.models.CategorizedEntity;
 import com.azure.ai.textanalytics.models.ClassificationCategory;
 import com.azure.ai.textanalytics.models.ClassifyDocumentResult;
@@ -33,8 +31,8 @@ import com.azure.ai.textanalytics.models.ExtractiveSummaryAction;
 import com.azure.ai.textanalytics.models.ExtractiveSummaryActionResult;
 import com.azure.ai.textanalytics.models.ExtractiveSummaryOptions;
 import com.azure.ai.textanalytics.models.ExtractiveSummaryResult;
-import com.azure.ai.textanalytics.models.FhirVersion;
-import com.azure.ai.textanalytics.models.HealthcareDocumentType;
+import com.azure.ai.textanalytics.models.ExtractiveSummarySentence;
+import com.azure.ai.textanalytics.models.ExtractiveSummarySentencesOrder;
 import com.azure.ai.textanalytics.models.HealthcareEntity;
 import com.azure.ai.textanalytics.models.HealthcareEntityAssertion;
 import com.azure.ai.textanalytics.models.HealthcareEntityRelation;
@@ -57,9 +55,6 @@ import com.azure.ai.textanalytics.models.RecognizePiiEntitiesOptions;
 import com.azure.ai.textanalytics.models.SentenceOpinion;
 import com.azure.ai.textanalytics.models.SentenceSentiment;
 import com.azure.ai.textanalytics.models.SingleLabelClassifyAction;
-import com.azure.ai.textanalytics.models.AbstractiveSummaryContext;
-import com.azure.ai.textanalytics.models.ExtractiveSummarySentence;
-import com.azure.ai.textanalytics.models.ExtractiveSummarySentencesOrder;
 import com.azure.ai.textanalytics.models.TargetSentiment;
 import com.azure.ai.textanalytics.models.TextAnalyticsActions;
 import com.azure.ai.textanalytics.models.TextAnalyticsError;
@@ -68,8 +63,6 @@ import com.azure.ai.textanalytics.models.TextAnalyticsResult;
 import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.ai.textanalytics.models.TextDocumentStatistics;
-import com.azure.ai.textanalytics.models.WeightResolution;
-import com.azure.ai.textanalytics.models.WeightUnit;
 import com.azure.ai.textanalytics.util.AbstractiveSummaryResultCollection;
 import com.azure.ai.textanalytics.util.AnalyzeHealthcareEntitiesResultCollection;
 import com.azure.ai.textanalytics.util.AnalyzeSentimentResultCollection;
@@ -83,11 +76,8 @@ import com.azure.ai.textanalytics.util.RecognizeLinkedEntitiesResultCollection;
 import com.azure.ai.textanalytics.util.RecognizePiiEntitiesResultCollection;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.policy.HttpLogDetailLevel;
-import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.InterceptorManager;
-import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.IterableStream;
@@ -96,7 +86,6 @@ import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -111,7 +100,6 @@ import static com.azure.ai.textanalytics.TestUtils.CUSTOM_ENTITIES_INPUT;
 import static com.azure.ai.textanalytics.TestUtils.CUSTOM_MULTI_CLASSIFICATION;
 import static com.azure.ai.textanalytics.TestUtils.CUSTOM_SINGLE_CLASSIFICATION;
 import static com.azure.ai.textanalytics.TestUtils.DETECT_LANGUAGE_INPUTS;
-import static com.azure.ai.textanalytics.TestUtils.ENTITY_RESOLUTION_INPUT;
 import static com.azure.ai.textanalytics.TestUtils.FAKE_API_KEY;
 import static com.azure.ai.textanalytics.TestUtils.HEALTHCARE_INPUTS;
 import static com.azure.ai.textanalytics.TestUtils.KEY_PHRASE_INPUTS;
@@ -287,9 +275,6 @@ public abstract class TextAnalyticsClientTestBase extends TestProxyTestBase {
 
     @Test
     abstract void recognizeEntitiesZalgoText(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
-
-    @Test
-    abstract void recognizeEntitiesResolutions(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
 
     // Personally Identifiable Information Entities
     @Test
@@ -660,13 +645,6 @@ public abstract class TextAnalyticsClientTestBase extends TestProxyTestBase {
     abstract void analyzeActionsWithActionNames(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
 
     @Test
-    abstract void analyzeActionsAutoDetectedLanguage(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
-
-    @Test
-    abstract void analyzeActionsAutoDetectedLanguageCustomTexts(HttpClient httpClient,
-        TextAnalyticsServiceVersion serviceVersion);
-
-    @Test
     abstract void analyzeActionsPagination(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
 
     @Test
@@ -674,10 +652,6 @@ public abstract class TextAnalyticsClientTestBase extends TestProxyTestBase {
 
     @Test
     abstract void analyzeEntitiesRecognitionAction(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
-
-    @Test
-    abstract void analyzeEntitiesRecognitionActionResolution(HttpClient httpClient,
-                                                             TextAnalyticsServiceVersion serviceVersion);
 
     @Test
     abstract void analyzePiiEntityRecognitionWithCategoriesFilters(HttpClient httpClient,
@@ -839,11 +813,6 @@ public abstract class TextAnalyticsClientTestBase extends TestProxyTestBase {
     void recognizeStringBatchCategorizedEntitiesShowStatsRunner(
         BiConsumer<List<String>, TextAnalyticsRequestOptions> testRunner) {
         testRunner.accept(CATEGORIZED_ENTITY_INPUTS, new TextAnalyticsRequestOptions().setIncludeStatistics(true));
-    }
-
-    void recognizeEntitiesBatchResolutionRunner(BiConsumer<List<String>, TextAnalyticsRequestOptions> testRunner) {
-        testRunner.accept(Arrays.asList(ENTITY_RESOLUTION_INPUT),
-                new TextAnalyticsRequestOptions().setModelVersion("2022-10-01-preview"));
     }
 
     // Personally Identifiable Information Entity runner
@@ -1060,10 +1029,7 @@ public abstract class TextAnalyticsClientTestBase extends TestProxyTestBase {
 
     // Healthcare LRO runner
     void healthcareStringInputRunner(BiConsumer<List<String>, AnalyzeHealthcareEntitiesOptions> testRunner) {
-        testRunner.accept(HEALTHCARE_INPUTS,
-            new AnalyzeHealthcareEntitiesOptions().setIncludeStatistics(true).setFhirVersion(FhirVersion.V4_0_1)
-                .setDocumentType(HealthcareDocumentType.PROGRESS_NOTE)
-        );
+        testRunner.accept(HEALTHCARE_INPUTS, new AnalyzeHealthcareEntitiesOptions().setIncludeStatistics(true));
     }
 
     void healthcareLroRunner(BiConsumer<List<TextDocumentInput>, AnalyzeHealthcareEntitiesOptions> testRunner) {
@@ -1152,44 +1118,6 @@ public abstract class TextAnalyticsClientTestBase extends TestProxyTestBase {
         );
     }
 
-    void analyzeActionsAutoDetectedLanguageRunner(
-        BiConsumer<List<TextDocumentInput>, TextAnalyticsActions> testRunner) {
-        testRunner.accept(
-            asList(
-                new TextDocumentInput("0", "Microsoft was founded by Bill Gates and Paul Allen").setLanguage("auto"),
-                new TextDocumentInput("1", "Microsoft fue fundado por Bill Gates y Paul Allen").setLanguage("auto")),
-            new TextAnalyticsActions()
-                .setRecognizeEntitiesActions(new RecognizeEntitiesAction())
-                .setRecognizePiiEntitiesActions(new RecognizePiiEntitiesAction())
-                .setExtractKeyPhrasesActions(new ExtractKeyPhrasesAction())
-                .setRecognizeLinkedEntitiesActions(new RecognizeLinkedEntitiesAction())
-                .setAnalyzeSentimentActions(new AnalyzeSentimentAction())
-//                .setExtractSummaryActions(new ExtractSummaryAction()) // Deserialization Failed.
-
-//                .setAbstractiveSummaryActions(new AbstractiveSummaryAction()) // not supported in the region West US 2.
-//                .setAnalyzeHealthcareEntitiesActions(new AnalyzeHealthcareEntitiesAction())
-        );
-    }
-
-    void analyzeActionsAutoDetectedLanguageCustomTextRunner(
-        BiConsumer<List<TextDocumentInput>, TextAnalyticsActions> testRunner) {
-        testRunner.accept(
-            asList(
-                new TextDocumentInput("0", "Microsoft was founded by Bill Gates and Paul Allen").setLanguage("auto"),
-                new TextDocumentInput("1", "Microsoft fue fundado por Bill Gates y Paul Allen").setLanguage("auto")),
-            new TextAnalyticsActions()
-                .setRecognizeCustomEntitiesActions(
-                    new RecognizeCustomEntitiesAction(AZURE_TEXT_ANALYTICS_CUSTOM_ENTITIES_PROJECT_NAME,
-                        AZURE_TEXT_ANALYTICS_CUSTOM_ENTITIES_DEPLOYMENT_NAME))
-                .setSingleLabelClassifyActions(
-                    new SingleLabelClassifyAction(AZURE_TEXT_ANALYTICS_CUSTOM_SINGLE_CLASSIFICATION_PROJECT_NAME,
-                        AZURE_TEXT_ANALYTICS_CUSTOM_SINGLE_CLASSIFICATION_DEPLOYMENT_NAME))
-                .setMultiLabelClassifyActions(
-                    new MultiLabelClassifyAction(AZURE_TEXT_ANALYTICS_CUSTOM_MULTI_CLASSIFICATION_PROJECT_NAME,
-                        AZURE_TEXT_ANALYTICS_CUSTOM_MULTI_CLASSIFICATION_DEPLOYMENT_NAME))
-        );
-    }
-
     void analyzeActionsWithActionNamesRunner(
         BiConsumer<List<TextDocumentInput>, TextAnalyticsActions> testRunner) {
         testRunner.accept(
@@ -1240,14 +1168,6 @@ public abstract class TextAnalyticsClientTestBase extends TestProxyTestBase {
             new TextAnalyticsActions()
                 .setDisplayName("Test1")
                 .setRecognizeEntitiesActions(new RecognizeEntitiesAction()));
-    }
-
-    void analyzeEntitiesRecognitionResolutionRunner(BiConsumer<List<String>, TextAnalyticsActions> testRunner) {
-        testRunner.accept(
-                asList(ENTITY_RESOLUTION_INPUT),
-                new TextAnalyticsActions()
-                        .setRecognizeEntitiesActions(new RecognizeEntitiesAction()
-                                .setModelVersion("2022-10-01-preview")));
     }
 
     void analyzePiiEntityRecognitionWithCategoriesFiltersRunner(
@@ -1309,7 +1229,7 @@ public abstract class TextAnalyticsClientTestBase extends TestProxyTestBase {
             HEALTHCARE_INPUTS,
             new TextAnalyticsActions()
                 .setAnalyzeHealthcareEntitiesActions(
-                    new AnalyzeHealthcareEntitiesAction().setFhirVersion(FhirVersion.V4_0_1)));
+                    new AnalyzeHealthcareEntitiesAction()));
     }
 
     void recognizeCustomEntitiesActionRunner(BiConsumer<List<String>, TextAnalyticsActions> testRunner) {
@@ -1406,7 +1326,7 @@ public abstract class TextAnalyticsClientTestBase extends TestProxyTestBase {
     }
 
     String getApiKey(boolean isStaticSource) {
-        return interceptorManager.isPlaybackMode() ? "apiKeyInPlayback"
+        return interceptorManager.isPlaybackMode() ? FAKE_API_KEY
             : isStaticSource ? AZURE_TEXT_ANALYTICS_CUSTOM_TEXT_API_KEY : AZURE_TEXT_ANALYTICS_API_KEY;
     }
 
@@ -1414,16 +1334,11 @@ public abstract class TextAnalyticsClientTestBase extends TestProxyTestBase {
         TextAnalyticsServiceVersion serviceVersion, boolean isStaticResource) {
         TextAnalyticsClientBuilder builder = new TextAnalyticsClientBuilder()
             .endpoint(getEndpoint(isStaticResource))
+            .credential(new AzureKeyCredential(getApiKey(isStaticResource)))
             .httpClient(httpClient)
-            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
             .serviceVersion(serviceVersion);
-        if (getTestMode() == TestMode.RECORD) {
+        if (interceptorManager.isRecordMode()) {
             builder.addPolicy(interceptorManager.getRecordPolicy());
-        }
-        if (getTestMode() == TestMode.PLAYBACK) {
-            builder.credential(new AzureKeyCredential(FAKE_API_KEY));
-        } else {
-            builder.credential(new AzureKeyCredential(getApiKey(isStaticResource)));
         }
         return builder;
     }
@@ -1462,30 +1377,6 @@ public abstract class TextAnalyticsClientTestBase extends TestProxyTestBase {
         assertNotNull(response);
         assertEquals(expectedStatusCode, response.getStatusCode());
         validatePiiEntitiesResultCollection(showStatistics, expected, response.getValue());
-    }
-
-    static void validateEntityResolutions(RecognizeEntitiesResultCollection actualResults) {
-        actualResults.forEach(result -> {
-            result.getEntities().forEach(entity -> {
-                String text = entity.getText();
-                IterableStream<? extends BaseResolution> resolutions = entity.getResolutions();
-                if ("1 year old".equals(text)) {
-                    for (BaseResolution resolution : resolutions) {
-                        assertTrue(resolution instanceof AgeResolution);
-                        AgeResolution ageResolution = (AgeResolution) resolution;
-                        assertEquals(AgeUnit.YEAR, ageResolution.getUnit());
-                        assertEquals(1.0, ageResolution.getValue());
-                    }
-                } else if ("10 pounds".equals(text)) {
-                    for (BaseResolution resolution : resolutions) {
-                        assertTrue(resolution instanceof WeightResolution);
-                        WeightResolution weightResolution = (WeightResolution) resolution;
-                        assertEquals(WeightUnit.POUND, weightResolution.getUnit());
-                        assertEquals(10.0, weightResolution.getValue());
-                    }
-                }
-            });
-        });
     }
 
     static void validatePiiEntitiesResultCollection(boolean showStatistics,
@@ -1858,11 +1749,6 @@ public abstract class TextAnalyticsClientTestBase extends TestProxyTestBase {
 
     static void validateHealthcareEntityDocumentResult(AnalyzeHealthcareEntitiesResult expected,
         AnalyzeHealthcareEntitiesResult actual) {
-        if (expected.getFhirBundle() != null) {
-            assertTrue(actual.getFhirBundle() != null && actual.getFhirBundle().size() != 0);
-        } else {
-            assertNull(actual.getFhirBundle());
-        }
         validateHealthcareEntityRelations(expected.getEntityRelations().stream().collect(Collectors.toList()),
             actual.getEntityRelations().stream().collect(Collectors.toList()));
         validateHealthcareEntities(expected.getEntities().stream().collect(Collectors.toList()),

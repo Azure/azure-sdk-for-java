@@ -58,9 +58,11 @@ public class CallMediaAsyncUnitTests {
         playTextSource.setVoiceGender(GenderType.MALE);
         playTextSource.setSourceLocale("en-US");
         playTextSource.setVoiceName("LULU");
+        playTextSource.setCustomVoiceEndpointId("customVoiceEndpointId");
 
         playSsmlSource = new SsmlSource();
-        playSsmlSource.setSsmlText("<speak></speak>");
+        playSsmlSource.setSsmlText("<speak><voice name=\"LULU\"></voice></speak>");
+        playSsmlSource.setCustomVoiceEndpointId("customVoiceEndpointId");
     }
 
     @Test
@@ -260,6 +262,7 @@ public class CallMediaAsyncUnitTests {
         recognizeOptions.setInterruptPrompt(true);
         recognizeOptions.setInitialSilenceTimeout(Duration.ofSeconds(4));
         recognizeOptions.setSpeechLanguage("en-US");
+        recognizeOptions.setSpeechModelEndpointId("customModelEndpointId");
 
         StepVerifier.create(
                 callMedia.startRecognizingWithResponse(recognizeOptions))
@@ -306,6 +309,7 @@ public class CallMediaAsyncUnitTests {
         recognizeOptions.setOperationContext("operationContext");
         recognizeOptions.setInterruptPrompt(true);
         recognizeOptions.setInitialSilenceTimeout(Duration.ofSeconds(4));
+        recognizeOptions.setSpeechModelEndpointId("customModelEndpointId");
 
         StepVerifier.create(
                 callMedia.startRecognizingWithResponse(recognizeOptions))
@@ -325,6 +329,7 @@ public class CallMediaAsyncUnitTests {
         recognizeOptions.setOperationContext("operationContext");
         recognizeOptions.setInterruptPrompt(true);
         recognizeOptions.setInitialSilenceTimeout(Duration.ofSeconds(4));
+        recognizeOptions.setSpeechModelEndpointId("customModelEndpointId");
 
         StepVerifier.create(
                 callMedia.startRecognizingWithResponse(recognizeOptions))

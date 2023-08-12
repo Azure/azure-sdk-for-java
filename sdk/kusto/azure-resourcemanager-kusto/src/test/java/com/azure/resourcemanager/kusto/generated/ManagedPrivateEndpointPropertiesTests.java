@@ -14,26 +14,26 @@ public final class ManagedPrivateEndpointPropertiesTests {
         ManagedPrivateEndpointProperties model =
             BinaryData
                 .fromString(
-                    "{\"privateLinkResourceId\":\"ytkblmpew\",\"privateLinkResourceRegion\":\"fbkrvrnsvs\",\"groupId\":\"q\",\"requestMessage\":\"hxcr\",\"provisioningState\":\"Creating\"}")
+                    "{\"privateLinkResourceId\":\"gkopkwhojvpajqgx\",\"privateLinkResourceRegion\":\"mocmbqfqvmk\",\"groupId\":\"xozap\",\"requestMessage\":\"elxprglyatddck\",\"provisioningState\":\"Succeeded\"}")
                 .toObject(ManagedPrivateEndpointProperties.class);
-        Assertions.assertEquals("ytkblmpew", model.privateLinkResourceId());
-        Assertions.assertEquals("fbkrvrnsvs", model.privateLinkResourceRegion());
-        Assertions.assertEquals("q", model.groupId());
-        Assertions.assertEquals("hxcr", model.requestMessage());
+        Assertions.assertEquals("gkopkwhojvpajqgx", model.privateLinkResourceId());
+        Assertions.assertEquals("mocmbqfqvmk", model.privateLinkResourceRegion());
+        Assertions.assertEquals("xozap", model.groupId());
+        Assertions.assertEquals("elxprglyatddck", model.requestMessage());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ManagedPrivateEndpointProperties model =
             new ManagedPrivateEndpointProperties()
-                .withPrivateLinkResourceId("ytkblmpew")
-                .withPrivateLinkResourceRegion("fbkrvrnsvs")
-                .withGroupId("q")
-                .withRequestMessage("hxcr");
+                .withPrivateLinkResourceId("gkopkwhojvpajqgx")
+                .withPrivateLinkResourceRegion("mocmbqfqvmk")
+                .withGroupId("xozap")
+                .withRequestMessage("elxprglyatddck");
         model = BinaryData.fromObject(model).toObject(ManagedPrivateEndpointProperties.class);
-        Assertions.assertEquals("ytkblmpew", model.privateLinkResourceId());
-        Assertions.assertEquals("fbkrvrnsvs", model.privateLinkResourceRegion());
-        Assertions.assertEquals("q", model.groupId());
-        Assertions.assertEquals("hxcr", model.requestMessage());
+        Assertions.assertEquals("gkopkwhojvpajqgx", model.privateLinkResourceId());
+        Assertions.assertEquals("mocmbqfqvmk", model.privateLinkResourceRegion());
+        Assertions.assertEquals("xozap", model.groupId());
+        Assertions.assertEquals("elxprglyatddck", model.requestMessage());
     }
 }

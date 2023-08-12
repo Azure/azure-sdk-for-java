@@ -18,7 +18,7 @@ import java.util.Arrays;
 /** Samples for PreRules CreateOrUpdate. */
 public final class PreRulesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/preview/2022-08-29-preview/examples/PreRules_CreateOrUpdate_MaximumSet_Gen.json
+     * x-ms-original-file: specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/stable/2022-08-29/examples/PreRules_CreateOrUpdate_MaximumSet_Gen.json
      */
     /**
      * Sample code: PreRules_CreateOrUpdate_MaximumSet_Gen.
@@ -69,7 +69,7 @@ public final class PreRulesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/preview/2022-08-29-preview/examples/PreRules_CreateOrUpdate_MinimumSet_Gen.json
+     * x-ms-original-file: specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/stable/2022-08-29/examples/PreRules_CreateOrUpdate_MinimumSet_Gen.json
      */
     /**
      * Sample code: PreRules_CreateOrUpdate_MinimumSet_Gen.

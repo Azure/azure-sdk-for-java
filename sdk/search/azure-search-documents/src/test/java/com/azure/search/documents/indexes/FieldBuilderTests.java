@@ -123,7 +123,7 @@ public class FieldBuilderTests {
     public void supportedFields() {
         List<SearchField> fields = SearchIndexClient.buildSearchFields(AllSupportedFields.class, null);
 
-        assertEquals(17, fields.size());
+        assertEquals(19, fields.size());
 
         Map<String, SearchFieldDataType> fieldToDataType = fields.stream()
             .collect(Collectors.toMap(SearchField::getName, SearchField::getType));
@@ -145,6 +145,8 @@ public class FieldBuilderTests {
         assertEquals(SearchFieldDataType.GEOGRAPHY_POINT, fieldToDataType.get("geoPoint"));
         assertEquals(SearchFieldDataType.collection(SearchFieldDataType.INT32), fieldToDataType.get("intArray"));
         assertEquals(SearchFieldDataType.collection(SearchFieldDataType.INT32), fieldToDataType.get("intList"));
+        assertEquals(SearchFieldDataType.collection(SearchFieldDataType.SINGLE), fieldToDataType.get("floatArray"));
+        assertEquals(SearchFieldDataType.collection(SearchFieldDataType.SINGLE), fieldToDataType.get("floatList"));
     }
 
     @SuppressWarnings({"unused", "UseOfObsoleteDateTimeApi"})
@@ -249,6 +251,19 @@ public class FieldBuilderTests {
         private List<Integer> intList;
         public List<Integer> getIntList() {
             return intList;
+        }
+
+        // 18. name = 'floatList', OData type = COMPLEX
+        private List<Float> floatList;
+
+        public List<Float> getFloatList() {
+            return floatList;
+        }
+
+        // 19. name = 'floatArray', OData type = COMPLEX
+        private Float[] floatArray;
+        public Float[] getFloatArray() {
+            return floatArray;
         }
     }
 

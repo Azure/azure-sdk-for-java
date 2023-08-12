@@ -1,6 +1,6 @@
 # Release History
 
-## 7.15.0-beta.1 (Unreleased)
+## 7.15.0-beta.3 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,77 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 7.14.3 (2023-08-11)
+
+### Bugs Fixed
+- Fixed incorrect process span duration reported by `ServiceBusProcessorClient` when max concurrency is bigger than 1.
+  ([#35916](https://github.com/Azure/azure-sdk-for-java/issues/35916))
+
+- Fixed the create-batch and send API to treat RequestResponseChannelClosedException as retriable and enabled retry for potential network call that create-batch makes. ([#34646](https://github.com/Azure/azure-sdk-for-java/issues/34646))
+
+- Fixed mapping of `ServiceBusManagementError` to corresponding `AzureExceptions` in `ServiceBusAdministrationClient`. ([#33609](https://github.com/Azure/azure-sdk-for-java/issues/33609))
+
+- Fixed issue causing updates to TopicProperties with AuthorizationRules to return 400 Bad request. ([#34880](https://github.com/Azure/azure-sdk-for-java/issues/34880))
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` from `1.41.0` to `1.42.0`.
+- Upgraded `azure-core-amqp` from `2.8.7` to `2.8.8`.
+- Upgraded `azure-identity` from `1.9.2` to `1.10.0`.
+
+## 7.15.0-beta.2 (2023-07-18)
+
+### Features Added
+
+- Using ReceiversPumpingScheduler in azure-core-amqp:2.9.0-beta.4 for internal message pumping by the ServiceBusReactorReceiver.
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` from `1.40.0` to `1.41.0`.
+- Upgraded `azure-core-amqp` from `2.9.0-beta.2` to `2.9.0-beta.4`.
+- Upgraded `azure-identity` from `1.9.1` to `1.9.2`.
+
+## 7.14.2 (2023-07-17)
+
+### Bugs Fixed
+
+- Fixed `NullPointerException` that happens when session receiver encounters an error and distributed tracing is enabled.
+  ([#35660](https://github.com/Azure/azure-sdk-for-java/issues/35660))
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` from `1.40.0` to `1.41.0`.
+- Upgraded `azure-core-amqp` from `2.8.6` to `2.8.7`.
+- Upgraded `azure-identity` from `1.9.1` to `1.9.2`.
+
+## 7.15.0-beta.1 (2023-06-13)
+
+### Features Added
+
+- This version takes dependency on the Prefetch reliability redesign in azure-core-amqp 2.9.0-beta.2 and redesigns the non-session Processor to reduce thread switching and address undesired eager disposition.
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core-amqp` from `2.8.6` to `2.9.0-beta.2`.
+
+## 7.14.1 (2023-06-07)
+
+### Bugs Fixed
+
+- Fixed `NullPointerException` when ending span when `AmqpException` is thrown, but its `AmqpErrorCondition` is `null`.
+  ([#35299](https://github.com/Azure/azure-sdk-for-java/issues/35299))
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` from `1.39.0` to `1.40.0`.
+- Upgraded `azure-core-amqp` from `2.8.5` to `2.8.6`.
+- Upgraded `azure-identity` from `1.9.0` to `1.9.1`.
 
 ## 7.14.0 (2023-05-15)
 
@@ -64,6 +135,15 @@
 - Upgraded `azure-core` from `1.35.0` to `1.36.0`.
 - Upgraded `azure-core-amqp` from `2.8.1` to `2.8.2`.
 - Upgraded `azure-identity` from `1.7.3` to `1.8.0`.
+
+## 7.14.0-beta.1 (2023-01-31)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-amqp` to `2.9.0-beta.1`.
+
 ## 7.13.1 (2023-01-20)
 
 ### Bugs Fixed

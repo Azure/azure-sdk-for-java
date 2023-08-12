@@ -15,7 +15,7 @@ public final class HealthcareResult extends PreBuiltResult {
      * The documents property.
      */
     @JsonProperty(value = "documents", required = true)
-    private List<HealthcareEntitiesDocumentResultWithDocumentDetectedLanguage> documents;
+    private List<HealthcareResultDocumentsItem> documents;
 
     /** Creates an instance of HealthcareResult class. */
     public HealthcareResult() {}
@@ -25,7 +25,7 @@ public final class HealthcareResult extends PreBuiltResult {
      *
      * @return the documents value.
      */
-    public List<HealthcareEntitiesDocumentResultWithDocumentDetectedLanguage> getDocuments() {
+    public List<HealthcareResultDocumentsItem> getDocuments() {
         return this.documents;
     }
 
@@ -35,14 +35,14 @@ public final class HealthcareResult extends PreBuiltResult {
      * @param documents the documents value to set.
      * @return the HealthcareResult object itself.
      */
-    public HealthcareResult setDocuments(List<HealthcareEntitiesDocumentResultWithDocumentDetectedLanguage> documents) {
+    public HealthcareResult setDocuments(List<HealthcareResultDocumentsItem> documents) {
         this.documents = documents;
         return this;
     }
 
     /** {@inheritDoc} */
     @Override
-    public HealthcareResult setErrors(List<InputError> errors) {
+    public HealthcareResult setErrors(List<DocumentError> errors) {
         super.setErrors(errors);
         return this;
     }
