@@ -5,6 +5,7 @@
 ### Features Added
 
 - Supported `backends` for `LoadBalancingRule`.
+- Supported `withSslPolicy` for `ApplicationGateway`.
 
 ### Other Changes
 

@@ -68,6 +68,10 @@ public final class StorageAccountInner extends Resource {
     @JsonProperty(value = "properties")
     private StorageAccountPropertiesInner innerProperties;
 
+    /** Creates an instance of StorageAccountInner class. */
+    public StorageAccountInner() {
+    }
+
     /**
      * Get the sku property: Gets the SKU.
      *
@@ -511,7 +515,7 @@ public final class StorageAccountInner extends Resource {
 
     /**
      * Get the allowBlobPublicAccess property: Allow or disallow public access to all blobs or containers in the storage
-     * account. The default interpretation is true for this property.
+     * account. The default interpretation is false for this property.
      *
      * @return the allowBlobPublicAccess value.
      */
@@ -521,7 +525,7 @@ public final class StorageAccountInner extends Resource {
 
     /**
      * Set the allowBlobPublicAccess property: Allow or disallow public access to all blobs or containers in the storage
-     * account. The default interpretation is true for this property.
+     * account. The default interpretation is false for this property.
      *
      * @param allowBlobPublicAccess the allowBlobPublicAccess value to set.
      * @return the StorageAccountInner object itself.
@@ -610,8 +614,10 @@ public final class StorageAccountInner extends Resource {
     }
 
     /**
-     * Get the allowCrossTenantReplication property: Allow or disallow cross AAD tenant object replication. The default
-     * interpretation is true for this property.
+     * Get the allowCrossTenantReplication property: Allow or disallow cross AAD tenant object replication. Set this
+     * property to true for new or existing accounts only if object replication policies will involve storage accounts
+     * in different AAD tenants. The default interpretation is false for new accounts to follow best security practices
+     * by default.
      *
      * @return the allowCrossTenantReplication value.
      */
@@ -620,8 +626,10 @@ public final class StorageAccountInner extends Resource {
     }
 
     /**
-     * Set the allowCrossTenantReplication property: Allow or disallow cross AAD tenant object replication. The default
-     * interpretation is true for this property.
+     * Set the allowCrossTenantReplication property: Allow or disallow cross AAD tenant object replication. Set this
+     * property to true for new or existing accounts only if object replication policies will involve storage accounts
+     * in different AAD tenants. The default interpretation is false for new accounts to follow best security practices
+     * by default.
      *
      * @param allowCrossTenantReplication the allowCrossTenantReplication value to set.
      * @return the StorageAccountInner object itself.
@@ -788,6 +796,26 @@ public final class StorageAccountInner extends Resource {
         }
         this.innerProperties().withDnsEndpointType(dnsEndpointType);
         return this;
+    }
+
+    /**
+     * Get the isSkuConversionBlocked property: This property will be set to true or false on an event of ongoing
+     * migration. Default value is null.
+     *
+     * @return the isSkuConversionBlocked value.
+     */
+    public Boolean isSkuConversionBlocked() {
+        return this.innerProperties() == null ? null : this.innerProperties().isSkuConversionBlocked();
+    }
+
+    /**
+     * Get the accountMigrationInProgress property: If customer initiated account migration is in progress, the value
+     * will be true else it will be null.
+     *
+     * @return the accountMigrationInProgress value.
+     */
+    public Boolean accountMigrationInProgress() {
+        return this.innerProperties() == null ? null : this.innerProperties().accountMigrationInProgress();
     }
 
     /**

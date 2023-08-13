@@ -20,7 +20,6 @@ import com.azure.core.test.models.TestProxySanitizer;
 import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.core.test.utils.HttpURLConnectionHttpClient;
 import com.azure.core.test.utils.TestProxyUtils;
-import com.azure.core.test.utils.TestUtils;
 import com.azure.core.util.Context;
 import com.azure.core.util.UrlBuilder;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -29,14 +28,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
 import org.junit.jupiter.api.condition.DisabledIfSystemProperty;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.net.MalformedURLException;
@@ -236,16 +233,14 @@ public class TestProxyTests extends TestProxyTestBase {
     }
 
     @Test
-    @Tag("Record")
-    @Disabled("Enable once working locating remote json file")
+    @Tag("Playback")
     public void testRecordWithRedaction() {
-        HttpURLConnectionHttpClient client = new HttpURLConnectionHttpClient();
 
         interceptorManager.addSanitizers(CUSTOM_SANITIZER);
+        HttpClient client = interceptorManager.getPlaybackClient();
 
         HttpPipeline pipeline = new HttpPipelineBuilder()
-            .httpClient(client)
-            .policies(interceptorManager.getRecordPolicy()).build();
+            .httpClient(client).build();
         URL url;
         try {
             url = new UrlBuilder()
@@ -314,16 +309,15 @@ public class TestProxyTests extends TestProxyTestBase {
     }
 
     @Test
-    @Tag("Record")
-    @Disabled("Enable once working locating remote json file")
+    @Tag("Playback")
     public void testBodyRegexRedactRecord() {
-        HttpURLConnectionHttpClient client = new HttpURLConnectionHttpClient();
+        HttpClient client = interceptorManager.getPlaybackClient();
 
         interceptorManager.addSanitizers(CUSTOM_SANITIZER);
+        interceptorManager.addMatchers(new CustomMatcher().setHeadersKeyOnlyMatch(Arrays.asList("Accept")));
 
         HttpPipeline pipeline = new HttpPipelineBuilder()
-            .httpClient(client)
-            .policies(interceptorManager.getRecordPolicy()).build();
+            .httpClient(client).build();
         URL url;
         try {
             url = new UrlBuilder()
@@ -414,10 +408,8 @@ public class TestProxyTests extends TestProxyTestBase {
     }
 
     private RecordedTestProxyData readDataFromFile() {
-        String filePath = Paths.get(TestUtils.getRecordFolder().getPath(), this.testContextManager.getTestPlaybackRecordingName()) + ".json";
-
-        File recordFile = new File(filePath);
-        try (BufferedReader reader = Files.newBufferedReader(recordFile.toPath())) {
+        try {
+            BufferedReader reader = Files.newBufferedReader(Paths.get(interceptorManager.getRecordingFileLocation()));
             return RECORD_MAPPER.readValue(reader, RecordedTestProxyData.class);
         } catch (IOException ex) {
             throw new UncheckedIOException(ex);

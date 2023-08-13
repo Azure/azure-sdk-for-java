@@ -36,7 +36,6 @@ public final class BoundingRegion {
      * Set the pageNumber property: 1-based page number of page containing the bounding region.
      *
      * @param pageNumber the pageNumber value to set.
-     * @return the BoundingRegion object itself.
      */
     private void setPageNumber(int pageNumber) {
         this.pageNumber = pageNumber;
@@ -59,7 +58,6 @@ public final class BoundingRegion {
      * relative to the element orientation.
      *
      * @param boundingPolygon the boundingPolygon value to set.
-     * @return the BoundingRegion object itself.
      */
     private void setBoundingPolygon(List<Point> boundingPolygon) {
         this.boundingPolygon = boundingPolygon;

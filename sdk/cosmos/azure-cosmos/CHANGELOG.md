@@ -3,10 +3,17 @@
 ### 4.49.0-beta.1 (Unreleased)
 
 #### Features Added
+* Added a flag for allowing customers to preserve ordering in bulk mode. See [PR 35892](https://github.com/Azure/azure-sdk-for-java/pull/35892)
 
 #### Breaking Changes
-* Gone exceptions that are not idempotent should not be retried because it is not known if they succeeded for sure. The handling of the exception in this case is left to the user. Fixed retrying write operations when a gone exception occurs in bulk mode. - See [PR 35838](https://github.com/Azure/azure-sdk-for-java/pull/35838)
 
+#### Bugs Fixed
+
+#### Other Changes
+
+### 4.48.1 (2023-08-09)
+> [!IMPORTANT]
+> We strongly recommend our customers to use version 4.48.1 and above.
 #### Bugs Fixed
 * Fixed retrying write operations when a gone exception occurs in bulk mode. - See [PR 35838](https://github.com/Azure/azure-sdk-for-java/pull/35838)
 * Fixed request start time in the `CosmosDiagnostics` for individual request responses - See [PR 35705](https://github.com/Azure/azure-sdk-for-java/pull/35705)
@@ -21,7 +28,6 @@ used by a container which is also part of the connection warm-up flow. - See [PR
 * Added coverage for `ChangeFeedProcessor#handleLatestVersionChanges` to read change feed from a custom start time for multi-write accounts. - See[PR 36257](https://github.com/Azure/azure-sdk-for-java/pull/36257)
 
 ### 4.48.0 (2023-07-18)
-
 #### Bugs Fixed
 * Fixed an issue with deserialization of `conflictResolutionTimestamp` for All versions and deletes change feed mode. - See [PR 35909](https://github.com/Azure/azure-sdk-for-java/pull/35909)
 * Added capability to mark a region as unavailable when a request is cancelled due to end-to-end timeout and connection issues
@@ -183,8 +189,6 @@ there are non-existent document IDs also passed through the API - See [PR 35513]
 * Added option to set throughput control group name on per-request level for batch and bulk operations. - See [PR 31362](https://github.com/Azure/azure-sdk-for-java/pull/31362)
 
 ### 4.37.1 (2022-10-07)
-> [!IMPORTANT]
-> We strongly recommend our customers to use version 4.37.1 and above.
 #### Bugs Fixed
 * Fixed incorrect RU metric reporting in micrometer metrics. - See [PR 31307](https://github.com/Azure/azure-sdk-for-java/pull/31307)
 * Enabled failover to preferred locations in the case of single-write/multi-read region enabled account for read in Gateway mode and for metadata requests in Direct mode. - More details about the [Bug: Cosmos DB Client gets stuck in timeout retry loop](https://github.com/Azure/azure-sdk-for-java/issues/31260#issue-1396454421). - See [PR 31314](https://github.com/Azure/azure-sdk-for-java/pull/31314)

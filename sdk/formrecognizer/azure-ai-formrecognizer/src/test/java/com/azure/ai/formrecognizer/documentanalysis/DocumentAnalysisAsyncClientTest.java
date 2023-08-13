@@ -1232,7 +1232,8 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
             SyncPoller<OperationResult, AnalyzeResult>
                 syncPoller
                 = client.beginAnalyzeDocumentFromUrl("prebuilt-read", sourceUrl,
-                    new AnalyzeDocumentOptions().setDocumentAnalysisFeatures(Arrays.asList(DocumentAnalysisFeature.LANGUAGES)))
+                    new AnalyzeDocumentOptions().setDocumentAnalysisFeatures(
+                        Collections.singletonList(DocumentAnalysisFeature.LANGUAGES)))
                 .setPollInterval(durationTestMode)
                 .getSyncPoller();
             syncPoller.waitForCompletion();
@@ -1252,7 +1253,8 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
                 syncPoller
                 = client.beginAnalyzeDocument("prebuilt-read",
                     BinaryData.fromStream(data, dataLength),
-                    new AnalyzeDocumentOptions().setDocumentAnalysisFeatures(Arrays.asList(DocumentAnalysisFeature.LANGUAGES)))
+                    new AnalyzeDocumentOptions().setDocumentAnalysisFeatures(
+                        Collections.singletonList(DocumentAnalysisFeature.LANGUAGES)))
                 .setPollInterval(durationTestMode).getSyncPoller();
             AnalyzeResult analyzeResult = syncPoller.getFinalResult();
             Assertions.assertNotNull(analyzeResult);
@@ -1490,7 +1492,8 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
         testingContainerUrlRunner((sourceUrl) -> {
             SyncPoller<OperationResult, AnalyzeResult> syncPoller
                 = client.beginAnalyzeDocumentFromUrl("prebuilt-layout", sourceUrl,
-                    new AnalyzeDocumentOptions().setDocumentAnalysisFeatures(Arrays.asList(DocumentAnalysisFeature.BARCODES)))
+                    new AnalyzeDocumentOptions().setDocumentAnalysisFeatures(
+                        Collections.singletonList(DocumentAnalysisFeature.BARCODES)))
                 .setPollInterval(durationTestMode)
                 .getSyncPoller();
             syncPoller.waitForCompletion();

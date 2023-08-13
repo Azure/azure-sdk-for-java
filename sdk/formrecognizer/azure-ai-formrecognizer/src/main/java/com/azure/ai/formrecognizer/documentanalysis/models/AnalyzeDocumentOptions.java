@@ -18,19 +18,19 @@ public final class AnalyzeDocumentOptions {
     private List<DocumentAnalysisFeature> documentAnalysisFeatures;
 
     /**
-     * Get the custom page numbers for multi-page documents(PDF/TIFF). Input the number of the
+     * Get the custom page numbers for multipage documents(PDF/TIFF). Input the number of the
      * pages you want to get the recognized result for.
      * <p>For a range of pages, use a hyphen, ex - ["1-3"]. Separate each page or a page
      * range with a comma, ex - ["1-3", 4].</p>
      *
-     * @return the list of custom page numbers for a multi page document.
+     * @return the list of custom page numbers for a multipage document.
      */
     public List<String> getPages() {
         return pages;
     }
 
     /**
-     * Set the custom page numbers for multi-page documents(PDF/TIFF). Input the number of the
+     * Set the custom page numbers for multipage documents(PDF/TIFF). Input the number of the
      * pages you want to get the recognized result for.
      * <p>For a range of pages, use a hyphen, ex - ["1-3"]. Separate each page or a page
      * range with a comma, ex - ["1-3", 4].</p>

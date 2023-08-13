@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.storage.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for EncryptionScopes Get. */
 public final class EncryptionScopesGetSamples {
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2022-09-01/examples/StorageAccountGetEncryptionScope.json
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-01-01/examples/StorageAccountGetEncryptionScope.json
      */
     /**
      * Sample code: StorageAccountGetEncryptionScope.
@@ -22,6 +20,7 @@ public final class EncryptionScopesGetSamples {
             .manager()
             .serviceClient()
             .getEncryptionScopes()
-            .getWithResponse("resource-group-name", "{storage-account-name}", "{encryption-scope-name}", Context.NONE);
+            .getWithResponse(
+                "resource-group-name", "accountname", "{encryption-scope-name}", com.azure.core.util.Context.NONE);
     }
 }

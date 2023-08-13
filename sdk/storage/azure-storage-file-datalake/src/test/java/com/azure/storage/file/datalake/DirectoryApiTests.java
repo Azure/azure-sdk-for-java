@@ -6,6 +6,7 @@ import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
+import com.azure.core.http.ProxyOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
@@ -25,6 +26,7 @@ import com.azure.storage.file.datalake.models.AccessControlChangeCounters;
 import com.azure.storage.file.datalake.models.AccessControlChangeFailure;
 import com.azure.storage.file.datalake.models.AccessControlChangeResult;
 import com.azure.storage.file.datalake.models.AccessControlChanges;
+import com.azure.storage.file.datalake.models.AccessControlType;
 import com.azure.storage.file.datalake.models.AccessTier;
 import com.azure.storage.file.datalake.models.DataLakeAclChangeFailedException;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
@@ -52,6 +54,7 @@ import com.azure.storage.file.datalake.sas.DataLakeServiceSasSignatureValues;
 import com.azure.storage.file.datalake.sas.FileSystemSasPermission;
 import com.azure.storage.file.datalake.sas.PathSasPermission;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledIf;
 import org.junit.jupiter.api.condition.EnabledIf;
@@ -62,6 +65,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import reactor.core.publisher.Mono;
 
+import java.net.InetSocketAddress;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
@@ -571,6 +575,18 @@ public class DirectoryApiTests extends DataLakeTestBase {
     }
 
     @Test
+    public void deleteRecursively() {
+        dc = dataLakeFileSystemClient.getDirectoryClient(generatePathName());
+        dc.create();
+        // upload 5 files to the directory
+        for (int i = 0; i < 5; i++) {
+            dc.createFile(generatePathName());
+        }
+        dc.deleteRecursively();
+        assertFalse(dc.exists());
+    }
+
+    @Test
     public void deleteRecursive() {
         assertEquals(200, dc.deleteWithResponse(true, null, null, null).getStatusCode());
     }
@@ -583,6 +599,46 @@ public class DirectoryApiTests extends DataLakeTestBase {
             () -> dc.getPropertiesWithResponse(null, null, null));
         assertEquals(404, e.getStatusCode());
         assertEquals(BlobErrorCode.BLOB_NOT_FOUND.toString(), e.getErrorCode());
+    }
+
+    @Disabled("Requires manual OAuth setup and creates 5000+ files")
+    @DisabledIf("olderThan20230803ServiceVersion")
+    @Test
+    public void deletePaginatedDirectory() {
+        String entityId = "68bff720-253b-428c-b124-603700654ea9";
+        DataLakeFileSystemClient fsClient = getFileSystemClientBuilder(dataLakeFileSystemClient.getFileSystemUrl())
+            .credential(ENVIRONMENT.getDataLakeAccount().getCredential())
+            .clientOptions(new HttpClientOptions().setProxyOptions(new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888))))
+            .buildClient();
+
+        DataLakeDirectoryClient directoryClient = fsClient.getDirectoryClient(generatePathName());
+        directoryClient.create();
+
+        for (int i = 0; i < 5020; i++) {
+            DataLakeFileClient fileClient = directoryClient.getFileClient(generatePathName());
+            fileClient.createIfNotExists();
+        }
+        DataLakeDirectoryClient rootDirectory = fsClient.getDirectoryClient("/");
+        PathAccessControl acl = rootDirectory.getAccessControl();
+        acl.getAccessControlList().add(new PathAccessControlEntry()
+            .setPermissions(new RolePermissions()
+                .setReadPermission(true)
+                .setWritePermission(true)
+                .setExecutePermission(true))
+            .setAccessControlType(AccessControlType.USER)
+            .setEntityId(entityId));
+
+        rootDirectory.setAccessControlRecursive(acl.getAccessControlList());
+
+        DataLakeServiceClient oAuthServiceClient = getOAuthServiceClient();
+        DataLakeFileSystemClient oAuthFileSystemClient = oAuthServiceClient
+            .getFileSystemClient(fsClient.getFileSystemName());
+        DataLakeDirectoryClient oAuthDirectoryClient = oAuthFileSystemClient
+            .getDirectoryClient(directoryClient.getDirectoryPath());
+
+        Response<Void> response = oAuthDirectoryClient.deleteWithResponse(true, null, null, Context.NONE);
+        assertEquals(response.getStatusCode(), 200);
+
     }
 
     @ParameterizedTest
@@ -3257,5 +3313,9 @@ public class DirectoryApiTests extends DataLakeTestBase {
 
     private static boolean olderThan20210608ServiceVersion() {
         return olderThan(DataLakeServiceVersion.V2021_06_08);
+    }
+
+    private static boolean olderThan20230803ServiceVersion() {
+        return olderThan(DataLakeServiceVersion.V2023_08_03);
     }
 }

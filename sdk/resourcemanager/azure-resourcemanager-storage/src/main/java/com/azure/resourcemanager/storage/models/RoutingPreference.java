@@ -31,6 +31,10 @@ public final class RoutingPreference {
     @JsonProperty(value = "publishInternetEndpoints")
     private Boolean publishInternetEndpoints;
 
+    /** Creates an instance of RoutingPreference class. */
+    public RoutingPreference() {
+    }
+
     /**
      * Get the routingChoice property: Routing Choice defines the kind of network routing opted by the user.
      *

@@ -17,6 +17,15 @@ public final class EnabledProtocols extends ExpandableStringEnum<EnabledProtocol
     public static final EnabledProtocols NFS = fromString("NFS");
 
     /**
+     * Creates a new instance of EnabledProtocols value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public EnabledProtocols() {
+    }
+
+    /**
      * Creates or finds a EnabledProtocols from its string representation.
      *
      * @param name a name to look for.
