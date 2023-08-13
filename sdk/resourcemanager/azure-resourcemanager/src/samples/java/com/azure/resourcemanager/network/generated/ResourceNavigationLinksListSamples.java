@@ -7,7 +7,7 @@ package com.azure.resourcemanager.network.generated;
 /** Samples for ResourceNavigationLinks List. */
 public final class ResourceNavigationLinksListSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-02-01/examples/VirtualNetworkGetResourceNavigationLinks.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-04-01/examples/VirtualNetworkGetResourceNavigationLinks.json
      */
     /**
      * Sample code: Get Resource Navigation Links.

@@ -30,6 +30,10 @@ public final class TableAccessPolicy {
     @JsonProperty(value = "permission", required = true)
     private String permission;
 
+    /** Creates an instance of TableAccessPolicy class. */
+    public TableAccessPolicy() {
+    }
+
     /**
      * Get the startTime property: Start time of the access policy.
      *

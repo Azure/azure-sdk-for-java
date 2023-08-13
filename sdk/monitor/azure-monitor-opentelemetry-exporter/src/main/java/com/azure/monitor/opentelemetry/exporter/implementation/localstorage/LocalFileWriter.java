@@ -3,6 +3,7 @@
 
 package com.azure.monitor.opentelemetry.exporter.implementation.localstorage;
 
+import com.azure.monitor.opentelemetry.exporter.implementation.logging.DiagnosticTelemetryPipelineListener;
 import com.azure.monitor.opentelemetry.exporter.implementation.logging.OperationLogger;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
@@ -53,11 +54,11 @@ final class LocalFileWriter {
         value = "SECPTI", // Potential Path Traversal
         justification =
             "The constructed file path cannot be controlled by an end user of the instrumented application")
-    void writeToDisk(String connectionString, List<ByteBuffer> buffers) {
+    void writeToDisk(String connectionString, List<ByteBuffer> buffers, String originalErrorMessage) {
         long size = getTotalSizeOfPersistedFiles(telemetryFolder);
         if (size >= diskPersistenceMaxSizeBytes) {
-            operationLogger.recordFailure(
-                "Local persistent storage capacity has been reached. It's currently at ("
+            operationLogger.recordFailure(originalErrorMessage
+                    + ". Local persistent storage capacity has been reached. It's currently at ("
                     + (size / 1024)
                     + "KB). Telemetry will be lost.",
                 DISK_PERSISTENCE_WRITER_ERROR);

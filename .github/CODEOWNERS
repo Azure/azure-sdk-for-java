@@ -157,14 +157,11 @@
 # PRLabel:  %Monitor - Exporter
 /sdk/monitor/azure-monitor-opentelemetry-exporter/   @trask @ramthi @heyams @jeanbisutti
 
-# PRLabel:  %Monitor - Spring native
-/sdk/monitor/azure-monitor-spring-native/            @jeanbisutti @trask @ramthi @heyams
+# PRLabel:  %Monitor
+/sdk/monitor/azure-monitor-query*/                   @srnagar @lmolkova @jairmyree @KarishmaGhiya @nisha-bhatia @pvaneck @gracewilcox @sarangan12 @scottaddie
 
 # PRLabel:  %Monitor
-/sdk/monitor/azure-monitor-query*/                   @srnagar @lmolkova @jairmyree
-
-# PRLabel:  %Monitor
-/sdk/monitor/azure-monitor-ingestion*/               @srnagar @lmolkova @jairmyree
+/sdk/monitor/azure-monitor-ingestion*/               @srnagar @lmolkova @jairmyree @KarishmaGhiya @nisha-bhatia @pvaneck @gracewilcox @sarangan12 @scottaddie
 
 # PRLabel: %Mixed Reality Authentication
 /sdk/mixedreality/azure-mixedreality-authentication/ @RamonArguelles
@@ -206,6 +203,10 @@
 /sdk/spring/                                         @backwind1233 @chenrujun @hui1110 @netyyyy @saragluna @stliu @yiliuTo @moarychan @fangjian0423
 # PRLabel: %azure-spring
 /sdk/spring-experimental/                            @backwind1233 @chenrujun @hui1110 @netyyyy @saragluna @stliu @yiliuTo @moarychan @fangjian0423
+
+# PRLabel:  %Monitor - Spring native
+/sdk/spring/spring-cloud-azure-starter-monitor       @jeanbisutti @trask @ramthi @heyams
+/sdk/spring/spring-cloud-azure-starter-monitor-test  @jeanbisutti @trask @ramthi @heyams
 
 # PRLabel: %DevCenter
 /sdk/devcenter/                                      @sebrenna @mharlan

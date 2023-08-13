@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.storage.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for QueueServices List. */
 public final class QueueServicesListSamples {
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2022-09-01/examples/QueueServicesList.json
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-01-01/examples/QueueServicesList.json
      */
     /**
      * Sample code: QueueServicesList.
@@ -22,6 +20,6 @@ public final class QueueServicesListSamples {
             .manager()
             .serviceClient()
             .getQueueServices()
-            .listWithResponse("res9290", "sto1590", Context.NONE);
+            .listWithResponse("res9290", "sto1590", com.azure.core.util.Context.NONE);
     }
 }

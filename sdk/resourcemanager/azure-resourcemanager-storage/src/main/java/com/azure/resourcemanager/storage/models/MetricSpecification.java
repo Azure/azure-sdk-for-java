@@ -65,6 +65,10 @@ public final class MetricSpecification {
     @JsonProperty(value = "resourceIdDimensionNameOverride")
     private String resourceIdDimensionNameOverride;
 
+    /** Creates an instance of MetricSpecification class. */
+    public MetricSpecification() {
+    }
+
     /**
      * Get the name property: Name of metric specification.
      *

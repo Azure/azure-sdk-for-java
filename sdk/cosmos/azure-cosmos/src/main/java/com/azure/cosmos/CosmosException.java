@@ -616,6 +616,14 @@ public class CosmosException extends AzureException {
                     }
 
                     @Override
+                    public CosmosException createCosmosException(int statusCode,
+                                                                        String message,
+                                                                        Map<String, String> responseHeaders,
+                                                                        Exception exception) {
+                        return new CosmosException(statusCode, message, responseHeaders, exception);
+                    }
+
+                    @Override
                     public List<String> getReplicaStatusList(CosmosException cosmosException) {
                         return cosmosException.getReplicaStatusList();
                     }

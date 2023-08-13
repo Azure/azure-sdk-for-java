@@ -9,7 +9,7 @@ import com.azure.resourcemanager.network.models.UnprepareNetworkPoliciesRequest;
 /** Samples for Subnets UnprepareNetworkPolicies. */
 public final class SubnetsUnprepareNetworkPoliciesSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-02-01/examples/SubnetUnprepareNetworkPolicies.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-04-01/examples/SubnetUnprepareNetworkPolicies.json
      */
     /**
      * Sample code: Unprepare Network Policies.

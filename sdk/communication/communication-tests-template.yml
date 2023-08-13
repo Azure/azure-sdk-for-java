@@ -41,6 +41,7 @@ parameters:
       # This only affects the phone-numbers package
       MatrixReplace:
         - SKIP_UPDATE_CAPABILITIES_LIVE_TESTS=false/true
+        - SKIP_SIP_ROUTING_LIVE_TESTS=false/true
 
 stages:
   - template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml

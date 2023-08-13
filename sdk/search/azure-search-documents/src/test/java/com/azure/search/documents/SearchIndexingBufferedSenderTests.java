@@ -9,6 +9,7 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.FixedDelay;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.test.http.MockHttpResponse;
+import com.azure.core.test.models.BodilessMatcher;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.FluxUtil;
@@ -67,7 +68,6 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
         };
         HOTEL_ID_KEY_RETRIEVER = document -> String.valueOf(document.get("HotelId"));
     }
-
 
     private void setupIndex() {
         String indexName = createHotelIndex();
@@ -204,6 +204,8 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
 
     @Test
     public void indexManyDocumentsSmallDocumentSets() {
+        interceptorManager.addMatchers(Collections.singletonList(new BodilessMatcher()));
+
         setupIndex();
 
         AtomicInteger requestCount = new AtomicInteger();
@@ -249,6 +251,8 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
 
     @Test
     public void indexManyDocumentsOneLargeDocumentSet() {
+        interceptorManager.addMatchers(Collections.singletonList(new BodilessMatcher()));
+
         setupIndex();
 
         AtomicInteger requestCount = new AtomicInteger();
