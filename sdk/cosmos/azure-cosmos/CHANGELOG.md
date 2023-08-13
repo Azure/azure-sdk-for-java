@@ -10,6 +10,7 @@
 #### Bugs Fixed
 
 #### Other Changes
+* Added coverage for `ChangeFeedProcessor` in `Latest Version` change feed mode to read change feed from a custom start time for multi-write accounts. - See[PR 36257](https://github.com/Azure/azure-sdk-for-java/pull/36257)
 
 ### 4.48.1 (2023-08-09)
 > [!IMPORTANT]
@@ -25,7 +26,6 @@
 used by a container which is also part of the connection warm-up flow. - See [PR 36225](https://github.com/Azure/azure-sdk-for-java/pull/36225)
 
 #### Other Changes
-* Added coverage for `ChangeFeedProcessor#handleLatestVersionChanges` to read change feed from a custom start time for multi-write accounts. - See[PR 36257](https://github.com/Azure/azure-sdk-for-java/pull/36257)
 
 ### 4.48.0 (2023-07-18)
 #### Bugs Fixed
