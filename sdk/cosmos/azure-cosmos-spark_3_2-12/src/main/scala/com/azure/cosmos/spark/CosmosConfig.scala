@@ -87,6 +87,7 @@ private[spark] object CosmosConfigNames {
   val WritePatchDefaultOperationType = "spark.cosmos.write.patch.defaultOperationType"
   val WritePatchColumnConfigs = "spark.cosmos.write.patch.columnConfigs"
   val WritePatchFilterPredicate = "spark.cosmos.write.patch.filter"
+  val WriteBulkUpdateColumnConfigs = "spark.cosmos.write.bulkUpdate.columnConfigs"
   val WriteStrategy = "spark.cosmos.write.strategy"
   val WriteMaxRetryCount = "spark.cosmos.write.maxRetryCount"
   val ChangeFeedStartFrom = "spark.cosmos.changeFeed.startFrom"
@@ -172,6 +173,7 @@ private[spark] object CosmosConfigNames {
     WritePatchDefaultOperationType,
     WritePatchColumnConfigs,
     WritePatchFilterPredicate,
+    WriteBulkUpdateColumnConfigs,
     WriteStrategy,
     WriteMaxRetryCount,
     ChangeFeedStartFrom,
@@ -790,7 +792,7 @@ private[spark] object DiagnosticsConfig {
 
 private object ItemWriteStrategy extends Enumeration {
   type ItemWriteStrategy = Value
-  val ItemOverwrite, ItemAppend, ItemDelete, ItemDeleteIfNotModified, ItemOverwriteIfNotModified, ItemPatch = Value
+  val ItemOverwrite, ItemAppend, ItemDelete, ItemDeleteIfNotModified, ItemOverwriteIfNotModified, ItemPatch, ItemBulkUpdate = Value
 }
 
 private object CosmosPatchOperationTypes extends Enumeration {
@@ -885,7 +887,9 @@ private object CosmosWriteConfig {
       "ignore pre-existing items i.e., Conflicts), `ItemDelete` (deletes based on id/pk of data frame), " +
       "`ItemDeleteIfNotModified` (deletes based on id/pk of data frame if etag hasn't changed since collecting " +
       "id/pk), `ItemOverwriteIfNotModified` (using create if etag is empty, update/replace with etag pre-condition " +
-      "otherwise, if document was updated the pre-condition failure is ignored)")
+      "otherwise, if document was updated the pre-condition failure is ignored)," +
+      " `ItemBulkUpdate` (read item, then patch the item locally, then using create if etag is empty, update/replace with etag pre-condition." +
+        "In cases of any conflict or precondition failure, SDK will retry the above steps to update the documents properly.)")
 
   private val maxRetryCount = CosmosConfigEntry[Int](key = CosmosConfigNames.WriteMaxRetryCount,
     mandatory = false,
@@ -921,6 +925,14 @@ private object CosmosWriteConfig {
     parseFromStringFunction = filterPredicateString => filterPredicateString,
     helpMessage = "Used for conditional patch. Please see examples here: " +
      "https://docs.microsoft.com/en-us/azure/cosmos-db/partial-document-update-getting-started#java")
+
+  private val patchBulkUpdateColumnConfigs = CosmosConfigEntry[TrieMap[String, CosmosPatchColumnConfig]](key = CosmosConfigNames.WriteBulkUpdateColumnConfigs,
+      mandatory = false,
+      parseFromStringFunction = columnConfigsString => parsePatchBulkUpdateColumnConfigs(columnConfigsString),
+      helpMessage = "Cosmos DB patch update column configs. It can be any of the follow supported patterns:" +
+          "1. col(column).path(patchInCosmosdb) - allows you to configure different mapping path in cosmosdb" +
+          "2. col(column).path(patchInCosmosdb).rawJson - allows you to configure different mapping path in cosmosdb, and indicates the value of the column is in raw json format" +
+          "3. col(column).rawJson - indicates the value of the column is in raw json format")
 
   def parseUserDefinedPatchColumnConfigs(patchColumnConfigsString: String): TrieMap[String, CosmosPatchColumnConfig] = {
     val columnConfigMap = new TrieMap[String, CosmosPatchColumnConfig]
@@ -985,6 +997,67 @@ private object CosmosWriteConfig {
     }
   }
 
+  def parsePatchBulkUpdateColumnConfigs(patchBulkUpdateColumnConfigsString: String): TrieMap[String, CosmosPatchColumnConfig] = {
+      val columnConfigMap = new TrieMap[String, CosmosPatchColumnConfig]
+
+      if (patchBulkUpdateColumnConfigsString.isEmpty) {
+          columnConfigMap
+      } else {
+          var trimmedInput = patchBulkUpdateColumnConfigsString.trim
+          if (trimmedInput.startsWith("[") && trimmedInput.endsWith("]")) {
+              trimmedInput = trimmedInput.substring(1, trimmedInput.length - 1).trim
+          }
+
+          if (trimmedInput == "") {
+              columnConfigMap
+          } else {
+              trimmedInput.split(",")
+                  .foreach(item => {
+                      val columnConfigString = item.trim
+                      if (!columnConfigString.isEmpty) {
+                          // Currently there are three patterns which are valid
+                          // 1. col(column).path(mappedPath)
+                          // 2. col(column).path(mappingPath).rawJson
+                          // 3. col(column).rawJson
+                          //
+                          // (?i) : The whole matching is case-insensitive
+                          // col[(](.*?)[)]: column name match
+                          // ([.]path[(](.*)[)])*: mapping path match, it is optional
+                          // (.rawJson$|$): optional .rawJson suffix to indicate that the col(column) contains raw json
+                          val operationConfigRegx = """(?i)col[(](.*?)[)]([.]path[(](.*)[)])*(.rawJson$|$)""".r
+                          columnConfigString match {
+                              case operationConfigRegx(columnName, _, path, rawJsonSuffix) =>
+                                  assertNotNullOrEmpty(columnName, "columnName")
+
+                                  // if customer defined the mapping path, then use it as it is, else by default use the columnName
+                                  var mappingPath = path
+                                  if (Strings.isNullOrWhiteSpace(mappingPath)) {
+                                      // if there is no path defined, by default use the column name
+                                      mappingPath = s"/$columnName"
+                                  }
+
+                                  val isRawJson = !rawJsonSuffix.isEmpty
+                                  val columnConfig =
+                                      CosmosPatchColumnConfig(
+                                          columnName = columnName,
+                                          CosmosPatchOperationTypes.Set, // for ItemBulkUpdate, we only support set patch operation
+                                          mappingPath = mappingPath,
+                                          isRawJson
+                                      )
+
+                                  columnConfigMap += (columnConfigMap.get(columnName) match {
+                                      case Some(_: CosmosPatchColumnConfig) => throw new IllegalStateException(s"Duplicate config for the same column $columnName")
+                                      case None => columnName -> columnConfig
+                                  })
+                          }
+                      }
+                  })
+
+                columnConfigMap
+            }
+        }
+    }
+
   def parseWriteConfig(cfg: Map[String, String], inputSchema: StructType): CosmosWriteConfig = {
     val itemWriteStrategyOpt = CosmosConfigEntry.parse(cfg, itemWriteStrategy)
     val maxRetryCountOpt = CosmosConfigEntry.parse(cfg, maxRetryCount)
@@ -1006,6 +1079,9 @@ private object CosmosWriteConfig {
         val patchColumnConfigMap = parsePatchColumnConfigs(cfg, inputSchema)
         val patchFilter = CosmosConfigEntry.parse(cfg, patchFilterPredicate)
         patchConfigsOpt = Some(CosmosPatchConfigs(patchColumnConfigMap, patchFilter))
+      case ItemWriteStrategy.ItemBulkUpdate =>
+        val patchColumnConfigMapOpt = CosmosConfigEntry.parse(cfg, patchBulkUpdateColumnConfigs)
+        patchConfigsOpt = Some(CosmosPatchConfigs(patchColumnConfigMapOpt.getOrElse(new TrieMap[String, CosmosPatchColumnConfig])))
       case _ =>
     }
 

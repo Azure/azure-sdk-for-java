@@ -7,7 +7,7 @@ package com.azure.resourcemanager.network.generated;
 /** Samples for LoadBalancerFrontendIpConfigurations Get. */
 public final class LoadBalancerFrontendIpConfigurationsGetSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-02-01/examples/LoadBalancerFrontendIPConfigurationGet.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-04-01/examples/LoadBalancerFrontendIPConfigurationGet.json
      */
     /**
      * Sample code: LoadBalancerFrontendIPConfigurationGet.

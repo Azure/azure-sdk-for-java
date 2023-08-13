@@ -18,6 +18,10 @@ public final class UsageListResult {
     @JsonProperty(value = "value")
     private List<UsageInner> value;
 
+    /** Creates an instance of UsageListResult class. */
+    public UsageListResult() {
+    }
+
     /**
      * Get the value property: Gets or sets the list of Storage Resource Usages.
      *

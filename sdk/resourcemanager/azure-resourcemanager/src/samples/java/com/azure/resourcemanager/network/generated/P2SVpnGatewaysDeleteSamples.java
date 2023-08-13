@@ -7,7 +7,7 @@ package com.azure.resourcemanager.network.generated;
 /** Samples for P2SVpnGateways Delete. */
 public final class P2SVpnGatewaysDeleteSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-02-01/examples/P2SVpnGatewayDelete.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-04-01/examples/P2SVpnGatewayDelete.json
      */
     /**
      * Sample code: P2SVpnGatewayDelete.

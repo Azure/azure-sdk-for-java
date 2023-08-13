@@ -18,7 +18,6 @@ import java.util.Objects;
  * Flux operator that traces receive and process calls
  */
 final class FluxTrace extends FluxOperator<ServiceBusMessageContext, ServiceBusMessageContext> {
-    static final String PROCESS_ERROR_KEY = "process-error";
     private final ServiceBusReceiverInstrumentation instrumentation;
 
     FluxTrace(Flux<? extends ServiceBusMessageContext> upstream, ServiceBusReceiverInstrumentation instrumentation) {
@@ -56,23 +55,17 @@ final class FluxTrace extends FluxOperator<ServiceBusMessageContext, ServiceBusM
 
         @Override
         protected void hookOnNext(ServiceBusMessageContext message) {
-            Throwable exception = null;
             Context span = instrumentation.instrumentProcess("ServiceBus.process", message.getMessage(), Context.NONE);
-
-            AutoCloseable scope  = tracer.makeSpanCurrent(span);
+            message.getMessage().setContext(span);
+            AutoCloseable scope = tracer.makeSpanCurrent(span);
             try {
                 downstream.onNext(message);
-            } catch (Throwable t) {
-                exception = t;
-            } finally {
-                Context context = message.getMessage().getContext();
-                if (context != null) {
-                    Object processorException = context.getData(PROCESS_ERROR_KEY).orElse(null);
-                    if (processorException instanceof Throwable) {
-                        exception = (Throwable) processorException;
-                    }
+                if (!instrumentation.isProcessorInstrumentation()) {
+                    tracer.endSpan(null, span, scope);
                 }
-                tracer.endSpan(exception, context, scope);
+            } catch (Throwable t) {
+                tracer.endSpan(t, span, scope);
+                throw t;
             }
         }
 
