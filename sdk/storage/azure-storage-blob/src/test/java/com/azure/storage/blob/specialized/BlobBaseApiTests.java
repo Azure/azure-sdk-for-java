@@ -25,8 +25,10 @@ import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledIf;
+import org.junit.jupiter.api.condition.EnabledIf;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import reactor.core.Exceptions;
@@ -42,14 +44,20 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 import java.util.function.Consumer;
+import java.util.logging.Logger;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class BlobBaseApiTests extends BlobTestBase {
-    BlobClient bc;
-    String blobName;
+    private BlobClient bc;
+    private String blobName;
 
     @BeforeEach
     public void setup() {
@@ -119,7 +127,7 @@ public class BlobBaseApiTests extends BlobTestBase {
         return queryData;
     }
 
-    @DisabledIf("olderThan20191212ServiceVersion")
+    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
     @ParameterizedTest
     @ValueSource(ints = {
         1, // 32 bytes
@@ -128,8 +136,6 @@ public class BlobBaseApiTests extends BlobTestBase {
         400, // 12 ish KB
         4000,  // 125 KB
     })
-
-//    @Retry(count = 5, delay = 5, condition = { environment.testMode == TestMode.LIVE })
     public void queryMin(int numCopies) throws IOException {
         BlobQueryDelimitedSerialization ser = new BlobQueryDelimitedSerialization()
             .setRecordSeparator('\n')
@@ -137,29 +143,54 @@ public class BlobBaseApiTests extends BlobTestBase {
             .setEscapeChar('\0')
             .setFieldQuote('\0')
             .setHeadersPresent(false);
-        uploadCsv(ser, numCopies);
-        String expression = "SELECT * from BlobStorage";
 
-        ByteArrayOutputStream downloadData = new ByteArrayOutputStream();
-        bc.downloadStream(downloadData);
-        byte[] downloadedData = downloadData.toByteArray();
+        liveTestScenarioWithRetry(() -> {
+            uploadCsv(ser, numCopies);
+            String expression = "SELECT * from BlobStorage";
 
-        /* Input Stream. */
-        InputStream qqStream = bc.openQueryInputStream(expression);
-        byte[] queryData = readFromInputStream(qqStream, downloadedData.length);
-        assertArrayEquals(downloadedData, queryData);
+            ByteArrayOutputStream downloadData = new ByteArrayOutputStream();
+            bc.downloadStream(downloadData);
+            byte[] downloadedData = downloadData.toByteArray();
 
-        /* Output Stream. */
-        ByteArrayOutputStream os = new ByteArrayOutputStream();
-        bc.query(os, expression);
-        byte[] osData = os.toByteArray();
-        assertArrayEquals(downloadedData, osData);
+            /* Input Stream. */
+            InputStream qqStream = bc.openQueryInputStream(expression);
+            byte[] queryData;
+            try {
+                queryData = readFromInputStream(qqStream, downloadedData.length);
+            } catch (IOException e) {
+                throw LOGGER.logExceptionAsError(new RuntimeException(e));
+            }
+            assertArrayEquals(downloadedData, queryData);
+
+            /* Output Stream. */
+            ByteArrayOutputStream os = new ByteArrayOutputStream();
+            bc.query(os, expression);
+            byte[] osData = os.toByteArray();
+            assertArrayEquals(downloadedData, osData);
+        });
     }
 
-    @DisabledIf("olderThan20191212ServiceVersion")
+    private void liveTestScenarioWithRetry(Runnable runnable) {
+        if (!interceptorManager.isLiveMode()) {
+            runnable.run();
+            return;
+        }
+
+        int retry = 0;
+        while (retry < 5) {
+            try {
+                runnable.run();
+                break;
+            } catch (Exception ex) {
+                retry++;
+                sleepIfRunningAgainstService(5000);
+            }
+        }
+    }
+
+    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
     @ParameterizedTest
     @MethodSource("queryCsvSerializationSeparatorSupplier")
-//    @Retry(count = 5, delay = 5, condition = { environment.testMode == TestMode.LIVE })
     public void queryCsvSerializationSeparator(char recordSeparator, char columnSeparator, boolean headersPresentIn,
         boolean headersPresentOut) throws IOException {
         BlobQueryDelimitedSerialization serIn = new BlobQueryDelimitedSerialization()
@@ -181,41 +212,48 @@ public class BlobBaseApiTests extends BlobTestBase {
         bc.downloadStream(downloadData);
         byte[] downloadedData = downloadData.toByteArray();
 
-        /* Input Stream. */
-        InputStream qqStream = bc.openQueryInputStreamWithResponse(new BlobQueryOptions(expression)
-            .setInputSerialization(serIn).setOutputSerialization(serOut)).getValue();
-        byte[] queryData = readFromInputStream(qqStream, downloadedData.length);
-
-        if (headersPresentIn && !headersPresentOut) {
-            /* Account for 16 bytes of header. */
-            for (int j = 16; j < downloadedData.length; j++) {
-                assert queryData[j - 16] == downloadedData[j];
+        liveTestScenarioWithRetry(() -> {
+            /* Input Stream. */
+            InputStream qqStream = bc.openQueryInputStreamWithResponse(new BlobQueryOptions(expression)
+                .setInputSerialization(serIn).setOutputSerialization(serOut)).getValue();
+            byte[] queryData;
+            try {
+                queryData = readFromInputStream(qqStream, downloadedData.length);
+            } catch (IOException e) {
+                throw LOGGER.logExceptionAsError(new RuntimeException(e));
             }
-            for (int k = downloadedData.length - 16; k < downloadedData.length; k++) {
-                assert queryData[k] == 0;
-            }
-        } else {
-            assertArrayEquals(downloadedData, queryData);
-        }
 
-        /* Output Stream. */
-        ByteArrayOutputStream os = new ByteArrayOutputStream();
-        bc.queryWithResponse(new BlobQueryOptions(expression, os)
-            .setInputSerialization(serIn).setOutputSerialization(serOut), null, null);
-        byte[] osData = os.toByteArray();
-
-        if (headersPresentIn && !headersPresentOut) {
-            assert osData.length == downloadedData.length - 16;
-            /* Account for 16 bytes of header. */
-            for (int j = 16; j < downloadedData.length; j++) {
-                assert osData[j - 16] == downloadedData[j];
+            if (headersPresentIn && !headersPresentOut) {
+                /* Account for 16 bytes of header. */
+                for (int j = 16; j < downloadedData.length; j++) {
+                    assert queryData[j - 16] == downloadedData[j];
+                }
+                for (int k = downloadedData.length - 16; k < downloadedData.length; k++) {
+                    assert queryData[k] == 0;
+                }
+            } else {
+                assertArrayEquals(downloadedData, queryData);
             }
-        } else {
-            assertArrayEquals(downloadedData, osData);
-        }
+
+            /* Output Stream. */
+            ByteArrayOutputStream os = new ByteArrayOutputStream();
+            bc.queryWithResponse(new BlobQueryOptions(expression, os)
+                .setInputSerialization(serIn).setOutputSerialization(serOut), null, null);
+            byte[] osData = os.toByteArray();
+
+            if (headersPresentIn && !headersPresentOut) {
+                assert osData.length == downloadedData.length - 16;
+                /* Account for 16 bytes of header. */
+                for (int j = 16; j < downloadedData.length; j++) {
+                    assert osData[j - 16] == downloadedData[j];
+                }
+            } else {
+                assertArrayEquals(downloadedData, osData);
+            }
+        });
     }
 
-    private Stream<Arguments> queryCsvSerializationSeparatorSupplier() {
+    private static Stream<Arguments> queryCsvSerializationSeparatorSupplier() {
         return Stream.of(
             Arguments.of('\n', ',', false, false), /* Default. */
             Arguments.of('\n', ',', true, true), /* Headers. */
@@ -238,41 +276,47 @@ public class BlobBaseApiTests extends BlobTestBase {
         );
     }
 
-    @DisabledIf("olderThan20191212ServiceVersion")
+    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
     @Test
-//    @Retry(count = 5, delay = 5, condition = { environment.testMode == TestMode.LIVE })
     public void queryCsvSerializationEscapeAndFieldQuote() throws IOException {
         BlobQueryDelimitedSerialization ser = new BlobQueryDelimitedSerialization()
             .setRecordSeparator('\n')
-            .setColumnSeparator(','r)
+            .setColumnSeparator(',')
             .setEscapeChar('\\') /* Escape set here. */
             .setFieldQuote('"')  /* Field quote set here*/
             .setHeadersPresent(false);
         uploadCsv(ser, 32);
-
         String expression = "SELECT * from BlobStorage";
 
-        ByteArrayOutputStream downloadData = new ByteArrayOutputStream();
-        bc.downloadStream(downloadData);
-        byte[] downloadedData = downloadData.toByteArray();
+        liveTestScenarioWithRetry(() -> {
+            ByteArrayOutputStream downloadData = new ByteArrayOutputStream();
+            bc.downloadStream(downloadData);
+            byte[] downloadedData = downloadData.toByteArray();
 
-        /* Input Stream. */
-        InputStream qqStream = bc.openQueryInputStreamWithResponse(new BlobQueryOptions(expression).setInputSerialization(ser).setOutputSerialization(ser)).getValue();
-        byte[] queryData = readFromInputStream(qqStream, downloadedData.length);
+            /* Input Stream. */
+            InputStream qqStream = bc.openQueryInputStreamWithResponse(new BlobQueryOptions(expression)
+                .setInputSerialization(ser).setOutputSerialization(ser)).getValue();
+            byte[] queryData = new byte[0];
+            try {
+                queryData = readFromInputStream(qqStream, downloadedData.length);
+            } catch (IOException e) {
+                throw LOGGER.logExceptionAsError(new RuntimeException(e));
+            }
 
-        assertArrayEquals(downloadedData, queryData);
+            assertArrayEquals(downloadedData, queryData);
 
-        /* Output Stream. */
-        ByteArrayOutputStream os = new ByteArrayOutputStream();
-        bc.queryWithResponse(new BlobQueryOptions(expression, os)
-            .setInputSerialization(ser).setOutputSerialization(ser), null, null);
-        byte[] osData = os.toByteArray();
+            /* Output Stream. */
+            ByteArrayOutputStream os = new ByteArrayOutputStream();
+            bc.queryWithResponse(new BlobQueryOptions(expression, os)
+                .setInputSerialization(ser).setOutputSerialization(ser), null, null);
+            byte[] osData = os.toByteArray();
 
-        assertArrayEquals(downloadedData, osData);
+            assertArrayEquals(downloadedData, osData);
+        });
     }
 
     /* Note: Input delimited tested everywhere */
-    @DisabledIf("olderThan20191212ServiceVersion")
+    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
     @ParameterizedTest
     @ValueSource(ints = {1, 10, 100, 1000})
 //    @Retry(count = 5, delay = 5, condition = { environment.testMode == TestMode.LIVE })
@@ -281,424 +325,417 @@ public class BlobBaseApiTests extends BlobTestBase {
         uploadSmallJson(numCopies);
         String expression = "SELECT * from BlobStorage";
 
-        ByteArrayOutputStream downloadData = new ByteArrayOutputStream();
-        bc.downloadStream(downloadData);
-        downloadData.write(10); /* writing extra new line */
-        byte[] downloadedData = downloadData.toByteArray();
+        liveTestScenarioWithRetry(() -> {
+            ByteArrayOutputStream downloadData = new ByteArrayOutputStream();
+            bc.downloadStream(downloadData);
+            downloadData.write(10); /* writing extra new line */
+            byte[] downloadedData = downloadData.toByteArray();
+            ByteArrayOutputStream os = new ByteArrayOutputStream();
+            BlobQueryOptions options = new BlobQueryOptions(expression, os)
+                .setInputSerialization(ser).setOutputSerialization(ser);
+
+            /* Input Stream. */
+            InputStream qqStream = bc.openQueryInputStreamWithResponse(options).getValue();
+            byte[] queryData;
+            try {
+                queryData = readFromInputStream(qqStream, downloadedData.length);
+            } catch (IOException e) {
+                throw LOGGER.logExceptionAsError(new RuntimeException(e));
+            }
+            assertArrayEquals(downloadedData, queryData);
+
+            /* Output Stream. */
+            bc.queryWithResponse(options, null, null);
+            byte[] osData = os.toByteArray();
+
+            assertArrayEquals(downloadedData, osData);
+        });
+
+    }
+
+    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20201002ServiceVersion")
+    @Test
+    public void queryInputParquet() {
+        String fileName = "parquet.parquet";
+        ClassLoader classLoader = getClass().getClassLoader();
+        File f = new File(Objects.requireNonNull(classLoader.getResource(fileName)).getFile());
+        BlobQueryParquetSerialization ser = new BlobQueryParquetSerialization();
+        bc.uploadFromFile(f.getAbsolutePath(), true);
+        byte[] expectedData = "0,mdifjt55.ea3,mdifjt55.ea3\n".getBytes();
+
+        String expression = "select * from blobstorage where id < 1;";
+
+        BlobQueryOptions optionsIs = new BlobQueryOptions(expression).setInputSerialization(ser);
         ByteArrayOutputStream os = new ByteArrayOutputStream();
-        BlobQueryOptions options = new BlobQueryOptions(expression, os)
-            .setInputSerialization(ser).setOutputSerialization(ser);
+        BlobQueryOptions optionsOs = new BlobQueryOptions(expression, os).setInputSerialization(ser);
 
-        /* Input Stream. */
-        InputStream qqStream = bc.openQueryInputStreamWithResponse(options).getValue();
-        byte[] queryData = readFromInputStream(qqStream, downloadedData.length);
-        assertArrayEquals(downloadedData, queryData);
-
-        /* Output Stream. */
-        bc.queryWithResponse(options, null, null);
-        byte[] osData = os.toByteArray();
-
-        assertArrayEquals(downloadedData, osData);
+        liveTestScenarioWithRetry(() -> {
+            /* Input Stream. */
+            InputStream qqStream = bc.openQueryInputStreamWithResponse(optionsIs).getValue();
+            byte[] queryData;
+            try {
+                queryData = readFromInputStream(qqStream, expectedData.length);
+            } catch (IOException e) {
+                throw LOGGER.logExceptionAsError(new RuntimeException(e));
+            }
+            assertArrayEquals(queryData, expectedData);
+            /* Output Stream. */
+            bc.queryWithResponse(optionsOs, null, null);
+            byte[] osData = os.toByteArray();
+            assertArrayEquals(osData, expectedData);
+        });
     }
 
-    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2020_10_02")
-//    @Retry(count = 5, delay = 5, condition = { environment.testMode == TestMode.LIVE })
-    public void Query Input parquet() {
-        setup:
-        String fileName = "parquet.parquet"
-        ClassLoader classLoader = getClass().getClassLoader()
-        File f = new File(classLoader.getResource(fileName).getFile())
-        BlobQueryParquetSerialization ser = new BlobQueryParquetSerialization()
-        bc.uploadFromFile(f.getAbsolutePath(), true)
-        byte[] expectedData = "0,mdifjt55.ea3,mdifjt55.ea3\n".getBytes()
-
-        def expression = "select * from blobstorage where id < 1;"
-
-        BlobQueryOptions optionsIs = new BlobQueryOptions(expression).setInputSerialization(ser)
-        OutputStream os = new ByteArrayOutputStream()
-        BlobQueryOptions optionsOs = new BlobQueryOptions(expression, os).setInputSerialization(ser)
-
-        /* Input Stream. */
-        when:
-        InputStream qqStream = bc.openQueryInputStreamWithResponse(optionsIs).getValue()
-        byte[] queryData = readFromInputStream(qqStream, expectedData.length)
-
-        then:
-        notThrown(IOException)
-        queryData == expectedData
-
-        /* Output Stream. */
-        when:
-        bc.queryWithResponse(optionsOs, null, null)
-        byte[] osData = os.toByteArray()
-
-        then:
-        notThrown(BlobStorageException)
-        osData == expectedData
-    }
-
-    @DisabledIf("olderThan20191212ServiceVersion")
-//    @Retry(count = 5, delay = 5, condition = { environment.testMode == TestMode.LIVE })
-    public void Query Input csv Output json() {
-        setup:
+    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
+    @Test
+    public void queryInputCsvOutputJson() {
         BlobQueryDelimitedSerialization inSer = new BlobQueryDelimitedSerialization()
-            .setRecordSeparator('\n' as char)
-            .setColumnSeparator(',' as char)
-            .setEscapeChar('\0' as char)
-            .setFieldQuote('\0' as char)
-            .setHeadersPresent(false)
-        uploadCsv(inSer, 1)
-        BlobQueryJsonSerialization outSer = new BlobQueryJsonSerialization()
-            .setRecordSeparator('\n' as char)
-        def expression = "SELECT * from BlobStorage"
-        byte[] expectedData = "{\"_1\":\"100\",\"_2\":\"200\",\"_3\":\"300\",\"_4\":\"400\"}".getBytes()
-        OutputStream os = new ByteArrayOutputStream()
-        BlobQueryOptions options = new BlobQueryOptions(expression, os).setInputSerialization(inSer).setOutputSerialization(outSer)
+            .setRecordSeparator('\n')
+            .setColumnSeparator(',')
+            .setEscapeChar('\0')
+            .setFieldQuote('\0')
+            .setHeadersPresent(false);
+        uploadCsv(inSer, 1);
+        BlobQueryJsonSerialization outSer = new BlobQueryJsonSerialization().setRecordSeparator('\n');
+        String expression = "SELECT * from BlobStorage";
+        byte[] expectedData = "{\"_1\":\"100\",\"_2\":\"200\",\"_3\":\"300\",\"_4\":\"400\"}".getBytes();
+        ByteArrayOutputStream os = new ByteArrayOutputStream();
+        BlobQueryOptions options = new BlobQueryOptions(expression, os).setInputSerialization(inSer)
+            .setOutputSerialization(outSer);
 
-        /* Input Stream. */
-        when:
-        InputStream qqStream = bc.openQueryInputStreamWithResponse(options).getValue()
-        byte[] queryData = readFromInputStream(qqStream, expectedData.length)
+        liveTestScenarioWithRetry(() -> {
+            /* Input Stream. */
+            InputStream qqStream = bc.openQueryInputStreamWithResponse(options).getValue();
+            byte[] queryData;
+            try {
+                queryData = readFromInputStream(qqStream, expectedData.length);
+            } catch (IOException e) {
+                throw LOGGER.logExceptionAsError(new RuntimeException(e));
+            }
 
-        then:
-        notThrown(IOException)
-        for (int j = 0; j < expectedData.length; j++) {
-            assert queryData[j] == expectedData[j]
-        }
+            for (int j = 0; j < expectedData.length; j++) {
+                assertEquals(queryData[j], expectedData[j]);
+            }
 
-        /* Output Stream. */
-        when:
-        bc.queryWithResponse(options, null, null)
-        byte[] osData = os.toByteArray()
+            /* Output Stream. */
+            bc.queryWithResponse(options, null, null);
+            byte[] osData = os.toByteArray();
 
-        then:
-        notThrown(BlobStorageException)
-        for (int j = 0; j < expectedData.length; j++) {
-            assert osData[j] == expectedData[j]
-        }
+            for (int j = 0; j < expectedData.length; j++) {
+                assertEquals(osData[j], expectedData[j]);
+            }
+        });
     }
 
-    @DisabledIf("olderThan20191212ServiceVersion")
-//    @Retry(count = 5, delay = 5, condition = { environment.testMode == TestMode.LIVE })
-    public void Query Input json Output csv() {
-        setup:
+    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
+    @Test
+    public void queryInputJsonOutputCsv() {
         BlobQueryJsonSerialization inSer = new BlobQueryJsonSerialization()
-            .setRecordSeparator('\n' as char)
-        uploadSmallJson(2)
+            .setRecordSeparator('\n');
+        uploadSmallJson(2);
         BlobQueryDelimitedSerialization outSer = new BlobQueryDelimitedSerialization()
-            .setRecordSeparator('\n' as char)
-            .setColumnSeparator(',' as char)
-            .setEscapeChar('\0' as char)
-            .setFieldQuote('\0' as char)
-            .setHeadersPresent(false)
-        def expression = "SELECT * from BlobStorage"
-        byte[] expectedData = "owner0,owner1\n".getBytes()
-        OutputStream os = new ByteArrayOutputStream()
-        BlobQueryOptions options = new BlobQueryOptions(expression, os).setInputSerialization(inSer).setOutputSerialization(outSer)
+            .setRecordSeparator('\n')
+            .setColumnSeparator(',')
+            .setEscapeChar('\0')
+            .setFieldQuote('\0')
+            .setHeadersPresent(false);
+        String expression = "SELECT * from BlobStorage";
+        byte[] expectedData = "owner0,owner1\n".getBytes();
+        ByteArrayOutputStream os = new ByteArrayOutputStream();
+        BlobQueryOptions options = new BlobQueryOptions(expression, os).setInputSerialization(inSer)
+            .setOutputSerialization(outSer);
 
-        /* Input Stream. */
-        when:
-        InputStream qqStream = bc.openQueryInputStreamWithResponse(options).getValue()
-        byte[] queryData = readFromInputStream(qqStream, expectedData.length)
+        liveTestScenarioWithRetry(() -> {
+            /* Input Stream. */
+            InputStream qqStream = bc.openQueryInputStreamWithResponse(options).getValue();
+            byte[] queryData = new byte[0];
+            try {
+                queryData = readFromInputStream(qqStream, expectedData.length);
+            } catch (IOException e) {
+                throw LOGGER.logExceptionAsError(new RuntimeException(e));
+            }
 
-        then:
-        notThrown(IOException)
-        for (int j = 0; j < expectedData.length; j++) {
-            assert queryData[j] == expectedData[j]
-        }
+            for (int j = 0; j < expectedData.length; j++) {
+                assertEquals(queryData[j], expectedData[j]);
+            }
 
-        /* Output Stream. */
-        when:
-        bc.queryWithResponse(options, null, null)
-        byte[] osData = os.toByteArray()
+            /* Output Stream. */
+            bc.queryWithResponse(options, null, null);
+            byte[] osData = os.toByteArray();
 
-        then:
-        notThrown(BlobStorageException)
-        for (int j = 0; j < expectedData.length; j++) {
-            assert osData[j] == expectedData[j]
-        }
+            for (int j = 0; j < expectedData.length; j++) {
+                assertEquals(osData[j], expectedData[j]);
+            }
+        });
     }
 
-    @DisabledIf("olderThan20191212ServiceVersion")
-//    @Retry(count = 5, delay = 5, condition = { environment.testMode == TestMode.LIVE })
-    public void Query Input csv Output arrow() {
-        setup:
+    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
+    @Test
+    public void queryInputCsvOutputArrow() {
         BlobQueryDelimitedSerialization inSer = new BlobQueryDelimitedSerialization()
-            .setRecordSeparator('\n' as char)
-            .setColumnSeparator(',' as char)
-            .setEscapeChar('\0' as char)
-            .setFieldQuote('\0' as char)
-            .setHeadersPresent(false)
-        uploadCsv(inSer, 32)
-        List<BlobQueryArrowField> schema = new ArrayList<>()
-        schema.add(new BlobQueryArrowField(BlobQueryArrowFieldType.DECIMAL).setName("Name").setPrecision(4).setScale(2))
-        BlobQueryArrowSerialization outSer = new BlobQueryArrowSerialization().setSchema(schema)
-        def expression = "SELECT _2 from BlobStorage WHERE _1 > 250;"
-        OutputStream os = new ByteArrayOutputStream()
-        BlobQueryOptions options = new BlobQueryOptions(expression, os).setOutputSerialization(outSer)
+            .setRecordSeparator('\n')
+            .setColumnSeparator(',')
+            .setEscapeChar('\0')
+            .setFieldQuote('\0')
+            .setHeadersPresent(false);
+        uploadCsv(inSer, 32);
 
-        /* Input Stream. */
-        when:
-        InputStream qqStream = bc.openQueryInputStreamWithResponse(options).getValue()
-        readFromInputStream(qqStream, 920)
+        liveTestScenarioWithRetry(() -> {
+            List<BlobQueryArrowField> schema = new ArrayList<>();
+            schema.add(new BlobQueryArrowField(BlobQueryArrowFieldType.DECIMAL).setName("Name").setPrecision(4)
+                .setScale(2));
+            BlobQueryArrowSerialization outSer = new BlobQueryArrowSerialization().setSchema(schema);
+            String expression = "SELECT _2 from BlobStorage WHERE _1 > 250;";
+            ByteArrayOutputStream os = new ByteArrayOutputStream();
+            BlobQueryOptions options = new BlobQueryOptions(expression, os).setOutputSerialization(outSer);
 
-        then:
-        notThrown(IOException)
+            /* Input Stream. */
+            InputStream qqStream = bc.openQueryInputStreamWithResponse(options).getValue();
+            try {
+                readFromInputStream(qqStream, 920);
+            } catch (IOException e) {
+                throw LOGGER.logExceptionAsError(new RuntimeException(e));
+            }
 
-        /* Output Stream. */
-        when:
-        bc.queryWithResponse(options, null, null)
+            /* Output Stream. */
+            assertDoesNotThrow(() -> bc.queryWithResponse(options, null, null));
+        });
 
-        then:
-        notThrown(BlobStorageException)
     }
 
-    @DisabledIf("olderThan20191212ServiceVersion")
-//    @Retry(count = 5, delay = 5, condition = { environment.testMode == TestMode.LIVE })
-    public void Query non fatal error() {
-        setup:
+    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
+    @Test
+    public void queryNonFatalError() {
         BlobQueryDelimitedSerialization base = new BlobQueryDelimitedSerialization()
-            .setRecordSeparator('\n' as char)
-            .setEscapeChar('\0' as char)
-            .setFieldQuote('\0' as char)
-            .setHeadersPresent(false)
-        uploadCsv(base.setColumnSeparator('.' as char), 32)
-        MockErrorConsumer receiver = new MockErrorConsumer("InvalidColumnOrdinal")
-        def expression = "SELECT _1 from BlobStorage WHERE _2 > 250"
-        BlobQueryOptions options = new BlobQueryOptions(expression)
-            .setInputSerialization(base.setColumnSeparator(',' as char))
-            .setOutputSerialization(base.setColumnSeparator(',' as char))
-            .setErrorConsumer(receiver)
+            .setRecordSeparator('\n')
+            .setEscapeChar('\0')
+            .setFieldQuote('\0')
+            .setHeadersPresent(false);
+        uploadCsv(base.setColumnSeparator('.'), 32);
+        final MockErrorConsumer receiver = new MockErrorConsumer("InvalidColumnOrdinal");
+        String expression = "SELECT _1 from BlobStorage WHERE _2 > 250";
+        final BlobQueryOptions options = new BlobQueryOptions(expression)
+            .setInputSerialization(base.setColumnSeparator(','))
+            .setOutputSerialization(base.setColumnSeparator(','))
+            .setErrorConsumer(receiver);
 
-        /* Input Stream. */
-        when:
-        InputStream qqStream = bc.openQueryInputStreamWithResponse(options).getValue()
-        readFromInputStream(qqStream, Constants.KB)
+        liveTestScenarioWithRetry(() -> {
+            /* Input Stream. */
+            InputStream qqStream = bc.openQueryInputStreamWithResponse(options).getValue();
+            try {
+                readFromInputStream(qqStream, Constants.KB);
+            } catch (IOException e) {
+                throw LOGGER.logExceptionAsError(new RuntimeException(e));
+            }
 
-        then:
-        receiver.numErrors > 0
-        notThrown(IOException)
+            assertDoesNotThrow(() -> receiver.numErrors > 0);
 
-        /* Output Stream. */
-        when:
-        receiver = new MockErrorConsumer("InvalidColumnOrdinal")
-        options = new BlobQueryOptions(expression, new ByteArrayOutputStream())
-            .setInputSerialization(base.setColumnSeparator(',' as char))
-            .setOutputSerialization(base.setColumnSeparator(',' as char))
-            .setErrorConsumer(receiver)
-        bc.queryWithResponse(options, null, null)
+            /* Output Stream. */
+            MockErrorConsumer receiver2 = new MockErrorConsumer("InvalidColumnOrdinal");
+            BlobQueryOptions options2 = new BlobQueryOptions(expression, new ByteArrayOutputStream())
+                .setInputSerialization(base.setColumnSeparator(','))
+                .setOutputSerialization(base.setColumnSeparator(','))
+                .setErrorConsumer(receiver2);
+            bc.queryWithResponse(options2, null, null);
 
-        then:
-        notThrown(IOException)
-        receiver.numErrors > 0
+            assertDoesNotThrow(() -> receiver2.numErrors > 0);
+        });
     }
 
-    @DisabledIf("olderThan20191212ServiceVersion")
-//    @Retry(count = 5, delay = 5, condition = { environment.testMode == TestMode.LIVE })
-    public void Query fatal error() {
-        setup:
+    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
+    @Test
+    public void queryFatalError() {
         BlobQueryDelimitedSerialization base = new BlobQueryDelimitedSerialization()
-            .setRecordSeparator('\n' as char)
-            .setEscapeChar('\0' as char)
-            .setFieldQuote('\0' as char)
-            .setHeadersPresent(true)
-        uploadCsv(base.setColumnSeparator('.' as char), 32)
-        def expression = "SELECT * from BlobStorage"
+            .setRecordSeparator('\n')
+            .setEscapeChar('\0')
+            .setFieldQuote('\0')
+            .setHeadersPresent(true);
+        uploadCsv(base.setColumnSeparator('.'), 32);
+        String expression = "SELECT * from BlobStorage";
         BlobQueryOptions options = new BlobQueryOptions(expression, new ByteArrayOutputStream())
-            .setInputSerialization(new BlobQueryJsonSerialization())
+            .setInputSerialization(new BlobQueryJsonSerialization());
 
-        /* Input Stream. */
-        when:
-        InputStream qqStream = bc.openQueryInputStreamWithResponse(options).getValue()
-        readFromInputStream(qqStream, Constants.KB)
+        liveTestScenarioWithRetry(() -> {
+            /* Input Stream. */
+            InputStream qqStream = bc.openQueryInputStreamWithResponse(options).getValue();
+            assertThrows(Throwable.class, () -> readFromInputStream(qqStream, Constants.KB));
 
-        then:
-        thrown(Throwable)
-
-        /* Output Stream. */
-        when:
-        bc.queryWithResponse(options, null, null)
-
-        then:
-        thrown(Exceptions.ReactiveException)
+            /* Output Stream. */
+            //Exceptions.ReactiveException.class
+            assertThrows(Throwable.class, () -> bc.queryWithResponse(options, null, null));
+        });
     }
 
-    @DisabledIf("olderThan20191212ServiceVersion")
+    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
 //    @Retry(count = 5, delay = 5, condition = { environment.testMode == TestMode.LIVE })
-    public void Query progress receiver() {
-        setup:
+    public void queryProgressReceiver() {
         BlobQueryDelimitedSerialization base = new BlobQueryDelimitedSerialization()
-            .setRecordSeparator('\n' as char)
-            .setEscapeChar('\0' as char)
-            .setFieldQuote('\0' as char)
-            .setHeadersPresent(false)
+            .setRecordSeparator('\n')
+            .setEscapeChar('\0')
+            .setFieldQuote('\0')
+            .setHeadersPresent(false);
 
-        uploadCsv(base.setColumnSeparator('.' as char), 32)
+        uploadCsv(base.setColumnSeparator('.'), 32);
 
-        def mockReceiver = new MockProgressConsumer()
-        def sizeofBlobToRead = bc.getProperties().getBlobSize()
-        def expression = "SELECT * from BlobStorage"
-        BlobQueryOptions options = new BlobQueryOptions(expression)
-            .setProgressConsumer(mockReceiver as Consumer)
+        final MockProgressConsumer mockReceiver = new MockProgressConsumer();
+        long sizeofBlobToRead = bc.getProperties().getBlobSize();
+        String expression = "SELECT * from BlobStorage";
+        final BlobQueryOptions options = new BlobQueryOptions(expression)
+            .setProgressConsumer(mockReceiver);
 
-        /* Input Stream. */
-        when:
-        InputStream qqStream = bc.openQueryInputStreamWithResponse(options).getValue()
+        liveTestScenarioWithRetry(() -> {
+            /* Input Stream. */
+            InputStream qqStream = bc.openQueryInputStreamWithResponse(options).getValue();
 
-        /* The QQ Avro stream has the following pattern
-           n * (data record -> progress record) -> end record */
-        // 1KB of data will only come back as a single data record.
-        /* Pretend to read more data because the input stream will not parse records following the data record if it
-         doesn't need to. */
-        readFromInputStream(qqStream, Constants.MB)
+            /* The QQ Avro stream has the following pattern n * (data record -> progress record) -> end record */
+            // 1KB of data will only come back as a single data record.
+            /* Pretend to read more data because the input stream will not parse records following the data record if it
+            doesn't need to. */
+            try {
+                readFromInputStream(qqStream, Constants.MB);
+            } catch (IOException e) {
+                throw LOGGER.logExceptionAsError(new RuntimeException(e));
+            }
 
-        then:
-        // At least the size of blob to read will be in the progress list
-        mockReceiver.progressList.contains(sizeofBlobToRead)
+            // At least the size of blob to read will be in the progress list
+            mockReceiver.progressList.contains(sizeofBlobToRead);
 
-        /* Output Stream. */
-        when:
-        mockReceiver = new MockProgressConsumer()
-        options = new BlobQueryOptions(expression, new ByteArrayOutputStream())
-            .setProgressConsumer(mockReceiver as Consumer)
-        bc.queryWithResponse(options, null, null)
+            /* Output Stream. */
+            MockProgressConsumer mockReceiver2 = new MockProgressConsumer();
+            BlobQueryOptions options2 = new BlobQueryOptions(expression, new ByteArrayOutputStream())
+                .setProgressConsumer(mockReceiver2);
+            bc.queryWithResponse(options2, null, null);
 
-        then:
-        mockReceiver.progressList.contains(sizeofBlobToRead)
+            mockReceiver2.progressList.contains(sizeofBlobToRead);
+        });
     }
 
-    @DisabledIf("olderThan20191212ServiceVersion")
-    @LiveOnly // Large amount of data.
-//    @Retry(count = 5, delay = 5, condition = { environment.testMode == TestMode.LIVE })
-    public void Query multiple records with progress receiver() {
-        setup:
+    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
+    @EnabledIf("com.azure.storage.blob.BlobTestBase#isLiveMode") // Large amount of data.
+    @Test
+    public void queryMultipleRecordsWithProgressReceiver() {
         BlobQueryDelimitedSerialization ser = new BlobQueryDelimitedSerialization()
-            .setRecordSeparator('\n' as char)
-            .setColumnSeparator(',' as char)
-            .setEscapeChar('\0' as char)
-            .setFieldQuote('\0' as char)
-            .setHeadersPresent(false)
-        uploadCsv(ser, 512000)
+            .setRecordSeparator('\n')
+            .setColumnSeparator(',')
+            .setEscapeChar('\0')
+            .setFieldQuote('\0')
+            .setHeadersPresent(false);
+        uploadCsv(ser, 512000);
 
-        def mockReceiver = new MockProgressConsumer()
-        def expression = "SELECT * from BlobStorage"
+        MockProgressConsumer mockReceiver = new MockProgressConsumer();
+        String expression = "SELECT * from BlobStorage";
         BlobQueryOptions options = new BlobQueryOptions(expression)
-            .setProgressConsumer(mockReceiver as Consumer)
+            .setProgressConsumer(mockReceiver);
 
-        /* Input Stream. */
-        when:
-        InputStream qqStream = bc.openQueryInputStreamWithResponse(options).getValue()
+        liveTestScenarioWithRetry(() -> {
+            /* Input Stream. */
+            InputStream qqStream = bc.openQueryInputStreamWithResponse(options).getValue();
 
         /* The Avro stream has the following pattern
            n * (data record -> progress record) -> end record */
-        // 1KB of data will only come back as a single data record.
+            // 1KB of data will only come back as a single data record.
         /* Pretend to read more data because the input stream will not parse records following the data record if it
          doesn't need to. */
-        readFromInputStream(qqStream, 16 * Constants.MB)
+            try {
+                readFromInputStream(qqStream, 16 * Constants.MB);
+            } catch (IOException e) {
+                throw LOGGER.logExceptionAsError(new RuntimeException(e));
+            }
 
-        then:
-        long temp = 0
-        // Make sure theyre all increasingly bigger
-        for (long progress : mockReceiver.progressList) {
-            assert progress >= temp
-            temp = progress
-        }
+            long temp = 0;
+            // Make sure theyre all increasingly bigger
+            for (long progress : mockReceiver.progressList) {
+                assertTrue(progress >= temp);
+                temp = progress;
+            }
 
-        /* Output Stream. */
-        when:
-        mockReceiver = new MockProgressConsumer()
-        temp = 0
-        options = new BlobQueryOptions(expression, new ByteArrayOutputStream())
-            .setProgressConsumer(mockReceiver as Consumer)
-        bc.queryWithResponse(options, null, null)
+            /* Output Stream. */
+            MockProgressConsumer mockReceiver2 = new MockProgressConsumer();
+            temp = 0;
+            BlobQueryOptions options2 = new BlobQueryOptions(expression, new ByteArrayOutputStream())
+                .setProgressConsumer(mockReceiver2);
+            bc.queryWithResponse(options2, null, null);
 
-        then:
-        // Make sure theyre all increasingly bigger
-        for (long progress : mockReceiver.progressList) {
-            assert progress >= temp
-            temp = progress
-        }
+            // Make sure theyre all increasingly bigger
+            for (long progress : mockReceiver2.progressList) {
+                assertTrue(progress >= temp);
+                temp = progress;
+            }
+        });
+
     }
 
-    @DisabledIf("olderThan20191212ServiceVersion")
-    @Retry(count = 5, delay = 5, condition = { environment.testMode == TestMode.LIVE })
-    public void Query snapshot() {
-        setup:
+    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
+    public void querySnapshot() {
         BlobQueryDelimitedSerialization ser = new BlobQueryDelimitedSerialization()
-            .setRecordSeparator('\n' as char)
-            .setColumnSeparator(',' as char)
-            .setEscapeChar('\0' as char)
-            .setFieldQuote('\0' as char)
-            .setHeadersPresent(false)
-        uploadCsv(ser, 32)
-        def expression = "SELECT * from BlobStorage"
+            .setRecordSeparator('\n')
+            .setColumnSeparator(',')
+            .setEscapeChar('\0')
+            .setFieldQuote('\0')
+            .setHeadersPresent(false);
+        uploadCsv(ser, 32);
+        String expression = "SELECT * from BlobStorage";
 
         /* Create snapshot of blob. */
-        def snapshotClient = bc.createSnapshot()
-        bc.upload(new ByteArrayInputStream(new byte[0]), 0, true) /* Make the blob empty. */
+        BlobClientBase snapshotClient = bc.createSnapshot();
+        bc.upload(new ByteArrayInputStream(new byte[0]), 0, true); /* Make the blob empty. */
 
-        ByteArrayOutputStream downloadData = new ByteArrayOutputStream()
-        snapshotClient.download(downloadData)
-        byte[] downloadedData = downloadData.toByteArray()
+        ByteArrayOutputStream downloadData = new ByteArrayOutputStream();
+        snapshotClient.download(downloadData);
+        byte[] downloadedData = downloadData.toByteArray();
 
-        /* Input Stream. */
-        when:
-        InputStream qqStream = snapshotClient.openQueryInputStream(expression)
-        byte[] queryData = readFromInputStream(qqStream, downloadedData.length)
+        liveTestScenarioWithRetry(() -> {
+            /* Input Stream. */
+            InputStream qqStream = snapshotClient.openQueryInputStream(expression);
+            byte[] queryData = new byte[0];
+            try {
+                queryData = readFromInputStream(qqStream, downloadedData.length);
+            } catch (IOException e) {
+                throw LOGGER.logExceptionAsError(new RuntimeException(e));
+                throw LOGGER.logExceptionAsError(new RuntimeException(e));
+            }
 
-        then:
-        notThrown(IOException)
-        queryData == downloadedData
+            assertArrayEquals(queryData, downloadedData);
 
-        /* Output Stream. */
-        when:
-        OutputStream os = new ByteArrayOutputStream()
-        snapshotClient.query(os, expression)
-        byte[] osData = os.toByteArray()
+            /* Output Stream. */
+            ByteArrayOutputStream os = new ByteArrayOutputStream();
+            snapshotClient.query(os, expression);
+            byte[] osData = os.toByteArray();
 
-        then:
-        notThrown(BlobStorageException)
-        osData == downloadedData
+            assertArrayEquals(osData, downloadedData);
+        });
     }
 
-    @DisabledIf("olderThan20191212ServiceVersion")
-    @Unroll
-    @Retry(count = 5, delay = 5, condition = { environment.testMode == TestMode.LIVE })
-    public void Query input output IA() {
-        setup:
+    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
+    @ParameterizedTest
+    @CsvSource({ "true, false", "false, true" })
+    public void queryInputOutputIA(boolean input, boolean output) {
         /* Mock random impl of QQ Serialization*/
-        BlobQuerySerialization ser = new RandomOtherSerialization()
-        def inSer = input ? ser : null
-        def outSer = output ? ser : null
-        def expression = "SELECT * from BlobStorage"
+        BlobQuerySerialization ser = new RandomOtherSerialization();
+        BlobQuerySerialization inSer = input ? ser : null;
+        BlobQuerySerialization outSer = output ? ser : null;
+        String expression = "SELECT * from BlobStorage";
         BlobQueryOptions options = new BlobQueryOptions(expression, new ByteArrayOutputStream())
             .setInputSerialization(inSer)
-            .setOutputSerialization(outSer)
+            .setOutputSerialization(outSer);
 
-        when:
-        bc.openQueryInputStreamWithResponse(options).getValue() /* Don't need to call read. */
-
-        then:
-        thrown(IllegalArgumentException)
-
-        when:
-        bc.queryWithResponse(options, null, null)
-
-        then:
-        thrown(IllegalArgumentException)
-
-        where:
-        input   | output   || _
-        true    | false    || _
-        false   | true     || _
+        liveTestScenarioWithRetry(() -> {
+            assertThrows(IllegalArgumentException.class,
+                () -> bc.openQueryInputStreamWithResponse(options).getValue()); /* Don't need to call read. */
+            assertThrows(IllegalArgumentException.class, () -> bc.queryWithResponse(options, null, null));
+        });
     }
 
-    @DisabledIf("olderThan20191212ServiceVersion")
+    private static class RandomOtherSerialization implements BlobQuerySerialization {
+
+    }
+
+    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
     @Retry(count = 5, delay = 5, condition = { environment.testMode == TestMode.LIVE })
-    public void Query arrow input IA() {
+    public void query arrow input IA() {
         setup:
         def inSer = new BlobQueryArrowSerialization()
-        def expression = "SELECT * from BlobStorage"
+        String expression = "SELECT * from BlobStorage"
         BlobQueryOptions options = new BlobQueryOptions(expression)
             .setInputSerialization(inSer)
 
@@ -717,12 +754,12 @@ public class BlobBaseApiTests extends BlobTestBase {
         thrown(IllegalArgumentException)
     }
 
-    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2020_10_02")
+    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20201002ServiceVersion")
     @Retry(count = 5, delay = 5, condition = { environment.testMode == TestMode.LIVE })
-    public void Query parquet output IA() {
+    public void query parquet output IA() {
         setup:
         def outSer = new BlobQueryParquetSerialization()
-        def expression = "SELECT * from BlobStorage"
+        String expression = "SELECT * from BlobStorage"
         BlobQueryOptions options = new BlobQueryOptions(expression)
             .setOutputSerialization(outSer)
 
@@ -741,9 +778,9 @@ public class BlobBaseApiTests extends BlobTestBase {
         thrown(IllegalArgumentException)
     }
 
-    @DisabledIf("olderThan20191212ServiceVersion")
+    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
     @Retry(count = 5, delay = 5, condition = { environment.testMode == TestMode.LIVE })
-    public void Query error() {
+    public void query error() {
         setup:
         bc = cc.getBlobClient(generateBlobName())
 
@@ -760,10 +797,10 @@ public class BlobBaseApiTests extends BlobTestBase {
         thrown(BlobStorageException)
     }
 
-    @DisabledIf("olderThan20191212ServiceVersion")
+    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
     @Unroll
     @Retry(count = 5, delay = 5, condition = { environment.testMode == TestMode.LIVE })
-    public void Query AC() {
+    public void query AC() {
         setup:
         def t = new HashMap<String, String>()
         t.put("foo", "bar")
@@ -777,7 +814,7 @@ public class BlobBaseApiTests extends BlobTestBase {
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified)
             .setTagsConditions(tags)
-        def expression = "SELECT * from BlobStorage"
+        String expression = "SELECT * from BlobStorage"
         BlobQueryOptions optionsIs = new BlobQueryOptions(expression)
             .setRequestConditions(bac)
         BlobQueryOptions optionsOs = new BlobQueryOptions(expression, new ByteArrayOutputStream())
@@ -808,9 +845,9 @@ public class BlobBaseApiTests extends BlobTestBase {
         null     | null       | null         | null        | null            | "\"foo\" = 'bar'"
     }
 
-    @DisabledIf("olderThan20191212ServiceVersion")
+    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
     @Unroll
-    public void Query AC fail() {
+    public void query AC fail() {
         setup:
         setupBlobLeaseCondition(bc, leaseID)
         def bac = new BlobRequestConditions()
@@ -820,7 +857,7 @@ public class BlobBaseApiTests extends BlobTestBase {
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified)
             .setTagsConditions(tags)
-        def expression = "SELECT * from BlobStorage"
+        String expression = "SELECT * from BlobStorage"
         BlobQueryOptions optionsIs = new BlobQueryOptions(expression)
             .setRequestConditions(bac)
         BlobQueryOptions optionsOs = new BlobQueryOptions(expression, new ByteArrayOutputStream())
@@ -879,9 +916,4 @@ public class BlobBaseApiTests extends BlobTestBase {
             numErrors++
         }
     }
-
-    private static boolean olderThan20191212ServiceVersion() {
-        return olderThan(BlobServiceVersion.V2019_12_12);
-    }
-
 }

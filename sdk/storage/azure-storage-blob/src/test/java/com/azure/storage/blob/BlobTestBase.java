@@ -25,6 +25,7 @@ import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.ServiceVersion;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.EnvironmentCredentialBuilder;
 import com.azure.storage.blob.models.BlobContainerItem;
 import com.azure.storage.blob.models.BlobErrorCode;
@@ -88,6 +89,7 @@ public class BlobTestBase extends TestProxyTestBase {
     private static final HttpClient OK_HTTP_CLIENT = new OkHttpAsyncHttpClientBuilder()
         .connectionPool(new ConnectionPool(50, 5, TimeUnit.MINUTES))
         .build();
+    protected static final ClientLogger LOGGER = new ClientLogger(BlobTestBase.class);
 
     Integer entityNo = 0; // Used to generate stable container names for recording tests requiring multiple containers.
 
@@ -859,6 +861,18 @@ public class BlobTestBase extends TestProxyTestBase {
         return response;
     }
 
+    protected static boolean olderThan20191212ServiceVersion() {
+        return olderThan(BlobServiceVersion.V2019_12_12);
+    }
+
+    protected static boolean olderThan20201002ServiceVersion() {
+        return olderThan(BlobServiceVersion.V2020_10_02);
+    }
+
+    protected static boolean olderThan20221102ServiceVersion() {
+        return olderThan(BlobServiceVersion.V2022_11_02);
+    }
+
     protected static boolean olderThan(BlobServiceVersion targetVersion) {
         String targetServiceVersionFromEnvironment = ENVIRONMENT.getServiceVersion();
         BlobServiceVersion version = (targetServiceVersionFromEnvironment != null)
@@ -872,4 +886,7 @@ public class BlobTestBase extends TestProxyTestBase {
         return ENVIRONMENT.getServiceVersion() != null;
     }
 
+    public static boolean isLiveMode() {
+        return ENVIRONMENT.getTestMode() == TestMode.LIVE;
+    }
 }
