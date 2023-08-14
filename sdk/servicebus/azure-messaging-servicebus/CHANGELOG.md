@@ -1,14 +1,17 @@
 # Release History
 
-## 7.15.0-beta.3 (Unreleased)
+## 7.15.0-beta.3 (2023-08-14)
 
 ### Features Added
 
-### Breaking Changes
-
-### Bugs Fixed
+- Redesigned session processor that addresses the out of order message delivery and to use Prefetch reliability redesign in azure-core-amqp 2.9.0-beta.5.
 
 ### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` from `1.41.0` to `1.42.0`.
+- Upgraded `azure-core-amqp` from `2.9.0-beta.4` to `2.9.0-beta.5`.
+- Upgraded `azure-identity` from `1.9.2` to `1.10.0`.
 
 ## 7.14.3 (2023-08-11)
 
