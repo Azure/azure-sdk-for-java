@@ -33,7 +33,7 @@ public class StorageFileInputOutputStreamTests extends FileShareTestBase {
     public void uploadDownload() throws IOException {
         length = 30 * Constants.MB;
         fileClient.create(length);
-        byte[] randomBytes = FileTestHelper.getRandomBuffer(length);
+        byte[] randomBytes = getRandomBuffer(length);
 
         StorageFileOutputStream outStream = fileClient.getFileOutputStream();
         outStream.write(randomBytes);
@@ -59,7 +59,7 @@ public class StorageFileInputOutputStreamTests extends FileShareTestBase {
     public void streamWithOffset() throws IOException {
         length = 7 * Constants.MB;
         fileClient.create(length);
-        byte[] randomBytes = FileTestHelper.getRandomBuffer(9 * Constants.MB);
+        byte[] randomBytes = getRandomBuffer(9 * Constants.MB);
 
         StorageFileOutputStream outStream = fileClient.getFileOutputStream();
         outStream.write(randomBytes, 2 * Constants.MB, length);

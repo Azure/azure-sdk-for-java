@@ -26,6 +26,7 @@ import com.azure.core.test.models.TestProxySanitizer;
 import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.core.util.Context;
 import com.azure.core.util.ServiceVersion;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.EnvironmentCredentialBuilder;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.Constants;
@@ -59,11 +60,18 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.RandomAccessFile;
 import java.lang.reflect.Method;
 import java.net.URL;
+import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.time.temporal.ChronoUnit;
@@ -96,6 +104,8 @@ public class FileShareTestBase extends TestProxyTestBase {
 
     protected static final HttpHeaderName X_MS_VERSION = HttpHeaderName.fromString("x-ms-version");
     protected static final HttpHeaderName X_MS_REQUEST_ID = HttpHeaderName.fromString("x-ms-request-id");
+
+    private static final ClientLogger LOGGER = new ClientLogger(FileShareTestBase.class);
 
     protected String prefix;
 
@@ -670,6 +680,95 @@ public class FileShareTestBase extends TestProxyTestBase {
             clearRanges.add(range);
         }
         return clearRanges;
+    }
+
+    protected static byte[] getRandomBuffer(int length) {
+        final Random randGenerator = new Random();
+        final byte[] buff = new byte[length];
+        randGenerator.nextBytes(buff);
+        return buff;
+    }
+
+    protected static File getRandomFile(int size) throws IOException {
+        File file = File.createTempFile(UUID.randomUUID().toString(), ".txt");
+        file.deleteOnExit();
+        FileOutputStream fos = new FileOutputStream(file);
+
+        if (size > Constants.MB) {
+            for (int i = 0; i < size / Constants.MB; i++) {
+                int dataSize = Math.min(Constants.MB, size - i * Constants.MB);
+                fos.write(getRandomBuffer(dataSize));
+            }
+        } else {
+            fos.write(getRandomBuffer(size));
+        }
+
+        fos.close();
+        return file;
+    }
+
+    protected static boolean compareFiles(File file1, File file2, long offset, long count) throws IOException {
+        long pos = 0L;
+        int defaultBufferSize = 128 * Constants.KB;
+        InputStream stream1 = new FileInputStream(file1);
+        stream1.skip(offset);
+        InputStream stream2 = new FileInputStream(file2);
+
+        try {
+            // If the amount we are going to read is smaller than the default buffer size use that instead.
+            int bufferSize = (int) Math.min(defaultBufferSize, count);
+
+            while (pos < count) {
+                // Number of bytes we expect to read.
+                int expectedReadCount = (int) Math.min(bufferSize, count - pos);
+                byte[] buffer1 = new byte[expectedReadCount];
+                byte[] buffer2 = new byte[expectedReadCount];
+
+                int readCount1 = stream1.read(buffer1);
+                int readCount2 = stream2.read(buffer2);
+
+                // Use Arrays.equals as it is more optimized than Groovy/Spock's '==' for arrays.
+                assert readCount1 == readCount2 && Arrays.equals(buffer1, buffer2);
+
+                pos += expectedReadCount;
+            }
+
+            int verificationRead = stream2.read();
+            return pos == count && verificationRead == -1;
+        } finally {
+            stream1.close();
+            stream2.close();
+        }
+    }
+
+    protected static String createRandomFileWithLength(int size, URL folder, String fileName) throws IOException {
+        String path = folder.getPath();
+        if (path == null) {
+            throw LOGGER.logExceptionAsError(new RuntimeException("The folder path does not exist."));
+        }
+
+        Path folderPaths = new File(path).toPath();
+        if (!Files.exists(folderPaths)) {
+            Files.createDirectory(folderPaths);
+        }
+        File randomFile = new File(folderPaths.toString(), fileName);
+        RandomAccessFile raf = new RandomAccessFile(randomFile, "rw");
+        raf.setLength(size);
+        raf.close();
+        return randomFile.getPath();
+    }
+
+    protected static void deleteFileIfExists(String folder, String fileName) throws IOException {
+        // Clean up all temporary generated files
+        File dir = new File(folder);
+        if (dir.isDirectory()) {
+            Path filePath = dir.toPath().resolve(fileName);
+            Files.deleteIfExists((filePath));
+        }
+    }
+
+    protected static ByteBuffer getRandomByteBuffer(int length) {
+        return ByteBuffer.wrap(getRandomBuffer(length));
     }
 
     protected static boolean assertMetricsAreEqual(ShareMetrics expected, ShareMetrics actual) {

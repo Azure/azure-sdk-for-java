@@ -86,11 +86,6 @@ import java.util.Scanner;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static com.azure.storage.file.share.FileTestHelper.compareFiles;
-import static com.azure.storage.file.share.FileTestHelper.createRandomFileWithLength;
-import static com.azure.storage.file.share.FileTestHelper.deleteFileIfExists;
-import static com.azure.storage.file.share.FileTestHelper.getRandomBuffer;
-import static com.azure.storage.file.share.FileTestHelper.getRandomFile;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -286,7 +281,7 @@ class FileApiTests extends FileShareTestBase {
     private static Stream<List<String>> permissionAndKeySupplier() {
         return Stream.of(
             Arrays.asList("filePermissionKey", filePermission),
-            Arrays.asList(null, new String(FileTestHelper.getRandomBuffer(9 * Constants.KB))));
+            Arrays.asList(null, new String(getRandomBuffer(9 * Constants.KB))));
     }
 
     @DisabledIf("com.azure.storage.file.share.FileShareTestBase#olderThan20221102ServiceVersion")
@@ -944,7 +939,7 @@ class FileApiTests extends FileShareTestBase {
         8 * 1026 * 1024 + 10, // medium file not aligned to block
         50 * Constants.MB // large file requiring multiple requests
     })
-    public void downloadFileBufferCopy(long fileSize) {
+    public void downloadFileBufferCopy(long fileSize) throws IOException {
         ShareServiceClient shareServiceClient = new ShareServiceClientBuilder()
             .connectionString(ENVIRONMENT.getPrimaryAccount().getConnectionString()).buildClient();
 
@@ -1929,7 +1924,7 @@ class FileApiTests extends FileShareTestBase {
     }
 
     @Test
-    public void listRanges() {
+    public void listRanges() throws IOException {
         String fileName = generatePathName();
         primaryFileClient.create(1024);
         String uploadFile = createRandomFileWithLength(1024, testFolder, fileName);
@@ -1946,7 +1941,7 @@ class FileApiTests extends FileShareTestBase {
 
     @DisabledIf("com.azure.storage.file.share.FileShareTestBase#olderThan20221102ServiceVersion")
     @Test
-    public void listRangesTrailingDot() {
+    public void listRangesTrailingDot() throws IOException {
         ShareFileClient primaryFileClient = getFileClient(shareName, generatePathName() + ".", true, null);
         primaryFileClient.create(1024);
 
@@ -1964,7 +1959,7 @@ class FileApiTests extends FileShareTestBase {
     }
 
     @Test
-    public void listRangesWithRange() {
+    public void listRangesWithRange() throws IOException {
         String fileName = generatePathName();
         primaryFileClient.create(1024);
         String uploadFile = createRandomFileWithLength(1024, testFolder, fileName);
@@ -1979,7 +1974,7 @@ class FileApiTests extends FileShareTestBase {
     }
 
     @Test
-    public void listRangesSnapshot() {
+    public void listRangesSnapshot() throws IOException {
         String fileName = generatePathName();
         primaryFileClient.create(1024);
         String uploadFile = createRandomFileWithLength(1024, testFolder, fileName);
@@ -1999,7 +1994,7 @@ class FileApiTests extends FileShareTestBase {
     }
 
     @Test
-    public void listRangesSnapshotFail() {
+    public void listRangesSnapshotFail() throws IOException {
         String fileName = generateShareName();
         primaryFileClient.create(1024);
         String uploadFile = createRandomFileWithLength(1024, testFolder, fileName);
@@ -2020,7 +2015,7 @@ class FileApiTests extends FileShareTestBase {
 
     @DisabledIf("com.azure.storage.file.share.FileShareTestBase#olderThan20210410ServiceVersion")
     @Test
-    public void listRangesOAuth() {
+    public void listRangesOAuth() throws IOException {
         ShareServiceClient oAuthServiceClient = getOAuthServiceClient(new ShareServiceClientBuilder()
             .shareTokenIntent(ShareTokenIntent.BACKUP));
         ShareDirectoryClient dirClient = oAuthServiceClient.getShareClient(shareName)
@@ -2133,7 +2128,7 @@ class FileApiTests extends FileShareTestBase {
 
     @DisabledIf("com.azure.storage.file.share.FileShareTestBase#olderThan20200210ServiceVersion")
     @Test
-    public void listRangesDiffWithRange() {
+    public void listRangesDiffWithRange() throws IOException {
         String fileName = generateShareName();
         primaryFileClient.create(1024 + DATA.getDefaultDataSizeLong());
         String uploadFile = createRandomFileWithLength(1024, testFolder, fileName);
@@ -2155,7 +2150,7 @@ class FileApiTests extends FileShareTestBase {
 
     @DisabledIf("com.azure.storage.file.share.FileShareTestBase#olderThan20200210ServiceVersion")
     @Test
-    public void listRangesDiffLease() {
+    public void listRangesDiffLease() throws IOException {
         String fileName = generateShareName();
         primaryFileClient.create(1024 + DATA.getDefaultDataSizeLong());
         String uploadFile = createRandomFileWithLength(1024, testFolder, fileName);
@@ -2177,7 +2172,7 @@ class FileApiTests extends FileShareTestBase {
 
     @DisabledIf("com.azure.storage.file.share.FileShareTestBase#olderThan20221102ServiceVersion")
     @Test
-    public void listRangesDiffTrailingDot() {
+    public void listRangesDiffTrailingDot() throws IOException {
         ShareFileClient primaryFileClient = getFileClient(shareName, generatePathName() + ".", true, null);
         String fileNameWithDot = generateShareName() + ".";
         primaryFileClient.create(1024 + DATA.getDefaultDataSizeLong());
@@ -2199,7 +2194,7 @@ class FileApiTests extends FileShareTestBase {
     }
 
     @Test
-    public void listRangesDiffLeaseFail() {
+    public void listRangesDiffLeaseFail() throws IOException {
         String fileName = generateShareName();
         primaryFileClient.create(1024 + DATA.getDefaultDataSizeLong());
         String uploadFile = createRandomFileWithLength(1024, testFolder, fileName);
@@ -2218,7 +2213,7 @@ class FileApiTests extends FileShareTestBase {
     }
 
     @Test
-    public void listRangesDiffFail() {
+    public void listRangesDiffFail() throws IOException {
         String fileName = generateShareName();
         primaryFileClient.create(1024);
         String uploadFile = createRandomFileWithLength(1024, testFolder, fileName);

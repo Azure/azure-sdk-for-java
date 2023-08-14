@@ -199,8 +199,8 @@ public class FileServiceApiTest extends FileShareTestBase {
         Iterator<ShareItem> shares = primaryFileServiceClient.listShares(options, null, null).iterator();
 
         for (int i = 0; i < limits; i++) {
-            assert FileTestHelper.assertSharesAreEqual(testShares.pop(), shares.next(), includeMetadata,
-                includeSnapshot, includeDeleted);
+            assertTrue(assertSharesAreEqual(testShares.pop(), shares.next(), includeMetadata,
+                includeSnapshot, includeDeleted));
         }
         assertFalse(shares.hasNext());
     }

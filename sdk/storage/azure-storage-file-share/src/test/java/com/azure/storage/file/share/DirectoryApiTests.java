@@ -245,9 +245,7 @@ public class DirectoryApiTests extends FileShareTestBase {
 
     private static Stream<String[]> permissionAndKeySupplier() {
         return Stream.of(new String[]{"filePermissionKey", FILE_PERMISSION},
-            new String[]{null, new String(FileTestHelper.getRandomBuffer(9 * Constants.KB))});
-            //Arrays.asList("filePermissionKey", FILE_PERMISSION),
-            //Arrays.asList(null, new String(FileTestHelper.getRandomBuffer(9 * Constants.KB))));
+            new String[]{null, new String(getRandomBuffer(9 * Constants.KB))});
     }
 
     @DisabledIf("com.azure.storage.file.share.FileShareTestBase#olderThan20221102ServiceVersion")
@@ -440,7 +438,7 @@ public class DirectoryApiTests extends FileShareTestBase {
     @Test
     public void deleteIfExistsDirectory() {
         primaryDirectoryClient.create();
-        FileTestHelper.assertResponseStatusCode(primaryDirectoryClient.deleteIfExistsWithResponse(null, null), 202);
+        assertResponseStatusCode(primaryDirectoryClient.deleteIfExistsWithResponse(null, null), 202);
     }
 
     @Test
@@ -1356,7 +1354,7 @@ public class DirectoryApiTests extends FileShareTestBase {
             .setFileLastWriteTime(testResourceNamer.now())
             .setFilePermissionKey(filePermissionKey);
 
-        FileTestHelper.assertResponseStatusCode(
+        assertResponseStatusCode(
             primaryDirectoryClient.createSubdirectoryWithResponse("testCreateSubDirectory", smbProperties, null, null,
                 null, null), 201);
     }
@@ -1364,7 +1362,7 @@ public class DirectoryApiTests extends FileShareTestBase {
     @Test
     public void createIfNotExistsSubDirectory() {
         primaryDirectoryClient.create();
-        FileTestHelper.assertResponseStatusCode(primaryDirectoryClient.createSubdirectoryIfNotExistsWithResponse(
+        assertResponseStatusCode(primaryDirectoryClient.createSubdirectoryIfNotExistsWithResponse(
             "testCreateSubDirectory", new ShareDirectoryCreateOptions(), null, null), 201);
     }
 
@@ -1445,7 +1443,7 @@ public class DirectoryApiTests extends FileShareTestBase {
         primaryDirectoryClient.create();
         primaryDirectoryClient.createSubdirectory(subDirectoryName);
 
-        FileTestHelper.assertResponseStatusCode(primaryDirectoryClient.deleteSubdirectoryWithResponse(subDirectoryName,
+        assertResponseStatusCode(primaryDirectoryClient.deleteSubdirectoryWithResponse(subDirectoryName,
             null, null), 202);
     }
 
@@ -1488,7 +1486,7 @@ public class DirectoryApiTests extends FileShareTestBase {
     @Test
     public void createFile() {
         primaryDirectoryClient.create();
-        FileTestHelper.assertResponseStatusCode(
+        assertResponseStatusCode(
             primaryDirectoryClient.createFileWithResponse("testCreateFile", 1024, null, null, null, null, null, null),
             201);
     }
@@ -1532,7 +1530,7 @@ public class DirectoryApiTests extends FileShareTestBase {
         primaryDirectoryClient.create();
         primaryDirectoryClient.createFile(fileName, 1024);
 
-        FileTestHelper.assertResponseStatusCode(
+        assertResponseStatusCode(
             primaryDirectoryClient.deleteFileWithResponse(fileName, null, null), 202);
     }
 

@@ -60,11 +60,6 @@ import java.util.Objects;
 import java.util.Scanner;
 import java.util.stream.Stream;
 
-import static com.azure.storage.file.share.FileTestHelper.compareFiles;
-import static com.azure.storage.file.share.FileTestHelper.createRandomFileWithLength;
-import static com.azure.storage.file.share.FileTestHelper.deleteFileIfExists;
-import static com.azure.storage.file.share.FileTestHelper.getRandomByteBuffer;
-import static com.azure.storage.file.share.FileTestHelper.getRandomFile;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -198,7 +193,7 @@ public class FileAsyncApiTests extends FileShareTestBase {
         8 * 1026 * 1024 + 10, // medium file not aligned to block
         50 * Constants.MB // large file requiring multiple requests
     })
-    public void downloadFileBufferCopy(long fileSize) {
+    public void downloadFileBufferCopy(long fileSize) throws IOException {
         ShareServiceAsyncClient shareServiceAsyncClient = new ShareServiceClientBuilder()
             .connectionString(ENVIRONMENT.getPrimaryAccount().getConnectionString())
             .buildAsyncClient();
@@ -478,7 +473,7 @@ public class FileAsyncApiTests extends FileShareTestBase {
     }
 
     @Test
-    public void uploadFromFileLease() {
+    public void uploadFromFileLease() throws IOException {
         primaryFileAsyncClient.create(1024).block();
         String leaseId = createLeaseClient(primaryFileAsyncClient).acquireLease().block();
         String fileName = generatePathName();
@@ -492,7 +487,7 @@ public class FileAsyncApiTests extends FileShareTestBase {
     }
 
     @Test
-    public void uploadFromFileLeaseFail() {
+    public void uploadFromFileLeaseFail() throws IOException {
         primaryFileAsyncClient.create(DATA.getDefaultDataSizeLong()).block();
         createLeaseClient(primaryFileAsyncClient).acquireLease().block();
         String fileName = generatePathName();
@@ -1187,7 +1182,7 @@ public class FileAsyncApiTests extends FileShareTestBase {
     }
 
     @Test
-    public void listRanges() {
+    public void listRanges() throws IOException {
         primaryFileAsyncClient.createWithResponse(1024, null, null, null, null).block();
         String fileName = generatePathName();
         String uploadFile = createRandomFileWithLength(1024, testFolder, fileName);
@@ -1203,7 +1198,7 @@ public class FileAsyncApiTests extends FileShareTestBase {
     }
 
     @Test
-    public void listRangesWithRange() {
+    public void listRangesWithRange() throws IOException {
         primaryFileAsyncClient.createWithResponse(1024, null, null, null, null).block();
         String fileName = generatePathName();
         String uploadFile = createRandomFileWithLength(1024, testFolder, fileName);
@@ -1220,7 +1215,7 @@ public class FileAsyncApiTests extends FileShareTestBase {
     }
 
     @Test
-    public void listRangesLease() {
+    public void listRangesLease() throws IOException {
         primaryFileAsyncClient.createWithResponse(1024, null, null, null, null).block();
         String fileName = generatePathName();
         String uploadFile = createRandomFileWithLength(1024, testFolder, fileName);
@@ -1235,7 +1230,7 @@ public class FileAsyncApiTests extends FileShareTestBase {
     }
 
     @Test
-    public void listRangesLeaseFail() {
+    public void listRangesLeaseFail() throws IOException {
         primaryFileAsyncClient.createWithResponse(1024, null, null, null, null).block();
         String fileName = generatePathName();
         String uploadFile = createRandomFileWithLength(1024, testFolder, fileName);

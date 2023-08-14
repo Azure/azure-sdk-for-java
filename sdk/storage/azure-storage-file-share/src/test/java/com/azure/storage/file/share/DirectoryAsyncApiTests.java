@@ -342,7 +342,7 @@ public class DirectoryAsyncApiTests extends FileShareTestBase {
             .verifyErrorSatisfies(it -> assertInstanceOf(IllegalArgumentException.class, it));
 
         StepVerifier.create(primaryDirectoryAsyncClient.setProperties(null,
-            new String(FileTestHelper.getRandomBuffer(9 * Constants.KB))))
+            new String(getRandomBuffer(9 * Constants.KB))))
             .verifyErrorSatisfies(it -> assertInstanceOf(IllegalArgumentException.class, it));
     }
 
