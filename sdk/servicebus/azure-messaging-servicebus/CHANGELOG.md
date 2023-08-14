@@ -1,5 +1,15 @@
 # Release History
 
+## 7.15.0-beta.4 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
 ## 7.15.0-beta.3 (2023-08-14)
 
 ### Features Added
