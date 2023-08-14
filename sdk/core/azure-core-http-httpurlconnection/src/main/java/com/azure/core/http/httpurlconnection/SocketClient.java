@@ -9,6 +9,7 @@ import javax.net.ssl.SSLSocketFactory;
 import java.io.*;
 import java.net.ProtocolException;
 import java.net.Socket;
+import java.util.Base64;
 
 // A socket client to be used to handle PATCH requests
 
@@ -16,14 +17,22 @@ public class SocketClient {
 
     private final String host;
     private int port;
+    private final String username;
+    private final String password;
 
-    public SocketClient(String host, int port) {
+    public SocketClient(String host, int port, String username, String password) {
         this.host = host;
         this.port = port;
+        this.username = username;
+        this.password = password;
+    }
+
+    public SocketClient(String host, int port) {
+        this(host, port, null, null);
     }
 
     public SocketClient(String host) {
-        this(host, 443);
+        this(host, 443, null, null);
     }
 
     public HttpResponse sendPatchRequest(HttpRequest httpRequest) throws IOException {
@@ -32,7 +41,7 @@ public class SocketClient {
             try (SSLSocket socket = (SSLSocket) sslSocketFactory.createSocket(host, port)) {
                 return doInputOutput(httpRequest, socket);
             }
-        } else if (httpRequest.getUrl().getProtocol().equals("http")){
+        } else if (httpRequest.getUrl().getProtocol().equals("http")) {
             // Client is using HTTP, change port number 80
             // Use a regular socket
             this.port = 80;
@@ -75,6 +84,14 @@ public class SocketClient {
                 request.append(headerLine.getName())
                     .append(": ")
                     .append(headerLine.getValue())
+                    .append("\r\n");
+            }
+            // Add the authorization header if a username and password is given
+            if (username != null && password != null) {
+                String credentials = username + ":" + password;
+                String authHeader = "Basic " + Base64.getEncoder().encodeToString(credentials.getBytes());
+                request.append("Authorization: ")
+                    .append(authHeader)
                     .append("\r\n");
             }
         }
