@@ -37,7 +37,7 @@ With persistent disk token caching enabled, the library first determines if a va
 - Ensures the app can continue to function during an Azure AD outage or disruption.
 - Avoids having to prompt users to authenticate each time the process is restarted.
 
-#### Implementation Note
+#### Implementation note
 
 The cache is stored in two files to allow for separate caching of Continuous Access Evaluation (CAE) vs non-CAE credentials. The default filename is `msal.cache` but can be specified through `TokenCachePersistenceOptions.setName()`. The filenames end in `.cae` or `.nocae` respectively.
 
