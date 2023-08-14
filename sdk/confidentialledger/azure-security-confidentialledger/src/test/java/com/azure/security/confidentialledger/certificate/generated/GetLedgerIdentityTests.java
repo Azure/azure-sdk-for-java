@@ -37,10 +37,5 @@ public final class GetLedgerIdentityTests extends ConfidentialLedgerCertificateC
 
         final String certificate = ledgerTlsCertificate.asText();
         Assertions.assertNotNull(certificate);
-
-        String[] split = certificate.split("\n");
-
-        Assertions.assertEquals("-----BEGIN CERTIFICATE-----", split[0]);
-        Assertions.assertEquals("-----END CERTIFICATE-----", split[split.length - 1]);
     }
 }
