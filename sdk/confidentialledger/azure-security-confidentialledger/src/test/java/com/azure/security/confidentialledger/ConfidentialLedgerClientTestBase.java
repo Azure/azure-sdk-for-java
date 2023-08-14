@@ -6,34 +6,42 @@ package com.azure.security.confidentialledger;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.BinaryData;
-import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.security.confidentialledger.certificate.ConfidentialLedgerCertificateClient;
 import com.azure.security.confidentialledger.certificate.ConfidentialLedgerCertificateClientBuilder;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 import io.netty.handler.ssl.SslContext;
 import io.netty.handler.ssl.SslContextBuilder;
+import org.junit.jupiter.api.Assertions;
 import reactor.core.publisher.Mono;
 
+import javax.net.ssl.SSLException;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 
-import javax.net.ssl.SSLException;
-
-import org.junit.jupiter.api.Assertions;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 class ConfidentialLedgerClientTestBase extends TestBase {
+    protected static final String TRANSACTION_ID = "transactionId";
+    protected static final String COLLECTION_ID = "collectionId";
+    protected static final BinaryData BINARY_DATA =
+        BinaryData.fromString("{\"contents\":\"New ledger entry contents.\"}");
+
+    protected static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+
     protected ConfidentialLedgerClient confidentialLedgerClient;
     protected ConfidentialLedgerClientBuilder confidentialLedgerClientBuilder;
     protected ConfidentialLedgerCertificateClient confidentialLedgerCertificateClient;
@@ -42,7 +50,7 @@ class ConfidentialLedgerClientTestBase extends TestBase {
     protected void beforeTest() {
         ConfidentialLedgerCertificateClientBuilder confidentialLedgerCertificateClientBuilder = new ConfidentialLedgerCertificateClientBuilder()
             .certificateEndpoint(ConfidentialLedgerEnvironment.getConfidentialLedgerIdentityUrl())
-            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS));
+            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY));
 
         if (getTestMode() == TestMode.PLAYBACK) {
             confidentialLedgerCertificateClientBuilder
@@ -89,7 +97,7 @@ class ConfidentialLedgerClientTestBase extends TestBase {
         HttpClient httpClient = new NettyAsyncHttpClientBuilder(reactorClient).wiretap(true).build();
 
         confidentialLedgerClientBuilder = new ConfidentialLedgerClientBuilder()
-            .ledgerEndpoint(Configuration.getGlobalConfiguration().get("LEDGER_URI", "https://java-sdk-live-tests-ledger.confidential-ledger.azure.com"))
+            .ledgerEndpoint(ConfidentialLedgerEnvironment.getConfidentialLedgerUrl())
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
 
         if (getTestMode() == TestMode.PLAYBACK) {
@@ -109,4 +117,35 @@ class ConfidentialLedgerClientTestBase extends TestBase {
         confidentialLedgerClient = confidentialLedgerClientBuilder.buildClient();
     }
 
+    /**
+     * Posts and asserts that an entry was added.  Useful for tests that require a ledger entry.
+     *
+     * @return The transaction id associated with the ledger entry.
+     */
+    protected String postLedgerEntry() throws IOException {
+        // Arrange
+        final RequestOptions options = new RequestOptions();
+        final String contents = BINARY_DATA.toString();
+
+        // Act
+        final Response<BinaryData> response =
+            confidentialLedgerClient.createLedgerEntryWithResponse(BINARY_DATA, options);
+
+        // Assert
+        assertEquals(200, response.getStatusCode());
+
+        JsonNode jsonNode = OBJECT_MAPPER.readTree(response.getValue().toBytes());
+        JsonNode collectionIdNode = jsonNode.get("collectionId");
+
+        assertNotNull(collectionIdNode);
+        assertEquals("subledger:0", collectionIdNode.asText());
+
+        String transactionId = response.getHeaders()
+            .get(HttpHeaderName.fromString("x-ms-ccf-transaction-id"))
+            .getValue();
+
+        assertNotNull(transactionId, "transaction id should exist on headers.");
+
+        return transactionId;
+    }
 }
