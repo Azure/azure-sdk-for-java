@@ -2527,48 +2527,26 @@ public interface VirtualMachine
             Update withPrimaryNetworkInterfaceDeleteOptions(DeleteOptions deleteOptions);
 
             /**
-             * Specifies delete options for the secondary network interfaces.
-             * It also sets the default delete options for the secondary network interfaces.
-             *
-             * @param deleteOptions delete options for the secondary network interfaces
-             * @return the next stage of the update
-             */
-            Update withSecondaryNetworkInterfacesDeleteOptions(DeleteOptions deleteOptions);
-
-            /**
-             * Specifies delete options for the network interface.
-             *
-             * @param networkInterfaceId resource ID of the network interface attached to the VM
-             * @param deleteOptions delete options for the network interface
-             * @return the next stage of the update
-             */
-            Update withNetworkInterfaceDeleteOptions(String networkInterfaceId, DeleteOptions deleteOptions);
-
-            /**
              * Specifies delete options for the network interfaces attached to the VM.
+             * This operation only affects existing <strong>attached</strong> network interfaces. Any newly-attached
+             * network interfaces that appear before {@link Update#apply()} won't be affected.
              *
              * @param deleteOptions delete options for the network interfaces
+             * @param nicIds resource IDs of the network interfaces
              * @return the next stage of the update
              */
-            Update withNetworkInterfacesDeleteOptions(DeleteOptions deleteOptions);
+            Update withNetworkInterfacesDeleteOptions(DeleteOptions deleteOptions, String... nicIds);
 
             /**
              * Specifies delete options for the existing data disk attached to the VM.
+             * This operation only affects existing <strong>attached</strong> data disks. Any newly-attached data disks
+             * that appear before {@link Update#apply()} won't be affected.
              *
-             * @param lun the disk LUN
              * @param deleteOptions delete options for the data disk
+             * @param luns the disk LUNs to update
              * @return the next stage of the update
              */
-            Update withDataDiskDeleteOptions(int lun, DeleteOptions deleteOptions);
-
-            /**
-             * Specifies delete options for the data disks attached to the VM.
-             * It also sets the default delete options for data disks.
-             *
-             * @param deleteOptions delete options for the data disks
-             * @return the next stage of the update
-             */
-            Update withDataDisksDeleteOptions(DeleteOptions deleteOptions);
+            Update withDataDisksDeleteOptions(DeleteOptions deleteOptions, Integer... luns);
         }
     }
 

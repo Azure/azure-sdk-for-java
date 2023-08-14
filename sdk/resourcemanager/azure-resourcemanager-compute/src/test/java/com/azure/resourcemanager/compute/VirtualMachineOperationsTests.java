@@ -1661,8 +1661,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
         vm.update()
             .withOsDiskDeleteOptions(DeleteOptions.DETACH)
             .withPrimaryNetworkInterfaceDeleteOptions(DeleteOptions.DETACH)
-            .withDataDiskDeleteOptions(1, DeleteOptions.DETACH)
-            .withNewDataDisk(1)
+            .withDataDisksDeleteOptions(DeleteOptions.DETACH, 1)
             .apply();
 
         Assertions.assertEquals(DeleteOptions.DETACH, vm.osDiskDeleteOptions());
@@ -1687,13 +1686,19 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
         vm.powerOff();
         vm.deallocate();
 
-        // update all back to DELETE, including a newly added data disk and a secondary nic
+        // attach a new network interface and a new data disk, with delete options "DETACH"
+        vm.update()
+            .withNewDataDisk(1, 2, new VirtualMachineDiskOptions().withDeleteOptions(DeleteOptions.DETACH))
+            .withExistingSecondaryNetworkInterface(secondaryNic2)
+            .apply();
+
+        // update all back to DELETE, including the newly added data disk and the secondary nic
         vm.update()
             .withPrimaryNetworkInterfaceDeleteOptions(DeleteOptions.DELETE)
-            .withDataDisksDeleteOptions(DeleteOptions.DELETE)
-            .withNewDataDisk(1)
-            .withSecondaryNetworkInterfacesDeleteOptions(DeleteOptions.DELETE)
-            .withExistingSecondaryNetworkInterface(secondaryNic2)
+            .withDataDisksDeleteOptions(DeleteOptions.DELETE, vm.dataDisks().keySet().toArray(Integer[]::new))
+            .withNetworkInterfacesDeleteOptions(
+                DeleteOptions.DELETE,
+                vm.networkInterfaceIds().stream().filter(nic -> !nic.equals(vm.primaryNetworkInterfaceId())).toArray(String[]::new))
             .apply();
 
         Assertions.assertEquals(DeleteOptions.DELETE, vm.primaryNetworkInterfaceDeleteOptions());
