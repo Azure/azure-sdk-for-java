@@ -29,15 +29,10 @@
           "DESIRED_CONSISTENCY": "Strong",
           "ACCOUNT_CONSISTENCY": "Strong",
           "ArmTemplateParameters": "@{ enableMultipleWriteLocations = $false; defaultConsistencyLevel = 'Strong' }"
-        },
-        "BoundedStaleness": {
-          "DESIRED_CONSISTENCY": "BoundedStaleness",
-          "ACCOUNT_CONSISTENCY": "Strong",
-          "ArmTemplateParameters": "@{ enableMultipleWriteLocations = $false; defaultConsistencyLevel = 'Strong' }"
         }
       },
       "AdditionalArgs": [
-          "-DargLine=\"-Dazure.cosmos.directModeProtocol=Tcp\""
+        "-DargLine=\"-Dazure.cosmos.directModeProtocol=Tcp\""
       ],
       "ProfileFlag": "-Pe2e",
       "Agent": {
@@ -48,7 +43,47 @@
       "DESIRED_CONSISTENCIES": "[\"Session\"]",
       "ACCOUNT_CONSISTENCY": "Session",
       "PROTOCOLS": "[\"Tcp\"]",
-      "ProfileFlag": [ "-Pfast", "-Pdirect", "-Psplit", "-Pquery", "-Plong" ],
+      "ProfileFlag": [ "-Pfast", "-Pdirect", "-Psplit", "-Pquery" ],
+      "ArmTemplateParameters": "@{ enableMultipleWriteLocations = $false; defaultConsistencyLevel = 'Session' }",
+      "Agent": {
+        "ubuntu": { "OSVmImage": "MMSUbuntu20.04", "Pool": "azsdk-pool-mms-ubuntu-2004-general" }
+      }
+    },
+    {
+      "DESIRED_CONSISTENCIES": [ "[\"Strong\", \"Session\"]", "[\"BoundedStaleness\"]", "[\"ConsistentPrefix\"]" ],
+      "ACCOUNT_CONSISTENCY": "Strong",
+      "ArmTemplateParameters": "@{ enableMultipleWriteLocations = $false; defaultConsistencyLevel = 'Strong' }",
+      "PROTOCOLS": "[\"Tcp\"]",
+      "ProfileFlag": [ "-Pfast", "-Psplit", "-Pquery" ],
+      "Agent": {
+        "ubuntu": { "OSVmImage": "MMSUbuntu20.04", "Pool": "azsdk-pool-mms-ubuntu-2004-general" }
+      }
+    },
+    {
+      "DESIRED_CONSISTENCY": "BoundedStaleness",
+      "ACCOUNT_CONSISTENCY": "Strong",
+      "AdditionalArgs": "-DargLine=\"-Dazure.cosmos.directModeProtocol=Tcp\"",
+      "ProfileFlag": "-Pe2e",
+      "ArmTemplateParameters": "@{ enableMultipleWriteLocations = $false; defaultConsistencyLevel = 'Strong' }",
+      "Agent": {
+        "ubuntu": { "OSVmImage": "MMSUbuntu20.04", "Pool": "azsdk-pool-mms-ubuntu-2004-general" }
+      }
+    },
+    {
+      "DESIRED_CONSISTENCIES": "[\"Strong\", \"Session\"]",
+      "ACCOUNT_CONSISTENCY": "Strong",
+      "PROTOCOLS": "[\"Tcp\"]",
+      "ProfileFlag": [ "-Pdirect" ],
+      "ArmTemplateParameters": "@{ enableMultipleWriteLocations = $false; defaultConsistencyLevel = 'Strong' }",
+      "Agent": {
+        "ubuntu": { "OSVmImage": "MMSUbuntu20.04", "Pool": "azsdk-pool-mms-ubuntu-2004-general" }
+      }
+    },
+    {
+      "DESIRED_CONSISTENCIES": "[\"Session\"]",
+      "ACCOUNT_CONSISTENCY": "Session",
+      "PROTOCOLS": "[\"Tcp\"]",
+      "ProfileFlag": [ "-Plong" ],
       "ArmTemplateParameters": "@{ enableMultipleWriteLocations = $false; defaultConsistencyLevel = 'Session'; enablePartitionMerge = $true }",
       "Agent": {
         "ubuntu": { "OSVmImage": "MMSUbuntu20.04", "Pool": "azsdk-pool-mms-ubuntu-2004-general" }
@@ -84,26 +119,6 @@
       "ProfileFlag": "-Pmulti-region",
       "PROTOCOLS": "[\"Tcp\"]",
       "PREFERRED_LOCATIONS": null,
-      "Agent": {
-        "ubuntu": { "OSVmImage": "MMSUbuntu20.04", "Pool": "azsdk-pool-mms-ubuntu-2004-general" }
-      }
-    },
-    {
-      "DESIRED_CONSISTENCIES": [ "[\"Strong\", \"Session\"]", "[\"BoundedStaleness\"]", "[\"ConsistentPrefix\"]" ],
-      "ACCOUNT_CONSISTENCY": "Strong",
-      "ArmTemplateParameters": "@{ enableMultipleWriteLocations = $false; defaultConsistencyLevel = 'Strong' }",
-      "PROTOCOLS": "[\"Tcp\"]",
-      "ProfileFlag": [ "-Pfast", "-Pquery" ],
-      "Agent": {
-        "ubuntu": { "OSVmImage": "MMSUbuntu20.04", "Pool": "azsdk-pool-mms-ubuntu-2004-general" }
-      }
-    },
-    {
-      "DESIRED_CONSISTENCIES": "[\"Strong\", \"Session\"]",
-      "ACCOUNT_CONSISTENCY": "Strong",
-      "PROTOCOLS": "[\"Tcp\"]",
-      "ProfileFlag": [ "-Pdirect", "-Psplit" ],
-      "ArmTemplateParameters": "@{ enableMultipleWriteLocations = $false; defaultConsistencyLevel = 'Strong' }",
       "Agent": {
         "ubuntu": { "OSVmImage": "MMSUbuntu20.04", "Pool": "azsdk-pool-mms-ubuntu-2004-general" }
       }
