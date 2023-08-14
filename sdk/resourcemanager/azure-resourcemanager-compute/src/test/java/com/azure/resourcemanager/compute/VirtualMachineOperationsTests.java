@@ -1695,7 +1695,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
         // update all back to DELETE, including the newly added data disk and the secondary nic
         vm.update()
             .withPrimaryNetworkInterfaceDeleteOptions(DeleteOptions.DELETE)
-            .withDataDisksDeleteOptions(DeleteOptions.DELETE, vm.dataDisks().keySet().toArray(Integer[]::new))
+            .withDataDisksDeleteOptions(DeleteOptions.DELETE, new ArrayList<>(vm.dataDisks().keySet()).toArray(new Integer[0]))
             .withNetworkInterfacesDeleteOptions(
                 DeleteOptions.DELETE,
                 vm.networkInterfaceIds().stream().filter(nic -> !nic.equals(vm.primaryNetworkInterfaceId())).toArray(String[]::new))
