@@ -471,7 +471,9 @@ public abstract class ResourceManagerTestProxyTestBase extends TestProxyTestBase
             new TestProxySanitizer("$..keys[*].value", null, REDACTED_VALUE, TestProxySanitizerType.BODY_KEY),
             // Compute password and SAS
             new TestProxySanitizer("$..adminPassword", null, REDACTED_VALUE, TestProxySanitizerType.BODY_KEY),
+            new TestProxySanitizer("$..Password", null, REDACTED_VALUE, TestProxySanitizerType.BODY_KEY),
             new TestProxySanitizer("$..accessSAS", null, REDACTED_VALUE, TestProxySanitizerType.BODY_KEY),
+            new TestProxySanitizer("$.properties.osProfile.customData", null, REDACTED_VALUE, TestProxySanitizerType.BODY_KEY), // likely a false positive
             // SQL password
             new TestProxySanitizer("$..administratorLoginPassword", null, REDACTED_VALUE, TestProxySanitizerType.BODY_KEY),
             new TestProxySanitizer("$..hubDatabasePassword", null, REDACTED_VALUE, TestProxySanitizerType.BODY_KEY),
@@ -480,8 +482,14 @@ public abstract class ResourceManagerTestProxyTestBase extends TestProxyTestBase
             new TestProxySanitizer("$..aliasSecondaryConnectionString", null, REDACTED_VALUE, TestProxySanitizerType.BODY_KEY),
             new TestProxySanitizer("$..primaryKey", null, REDACTED_VALUE, TestProxySanitizerType.BODY_KEY),
             new TestProxySanitizer("$..secondaryKey", null, REDACTED_VALUE, TestProxySanitizerType.BODY_KEY),
+            new TestProxySanitizer("$..primaryMasterKey", null, REDACTED_VALUE, TestProxySanitizerType.BODY_KEY),
+            new TestProxySanitizer("$..secondaryMasterKey", null, REDACTED_VALUE, TestProxySanitizerType.BODY_KEY),
+            new TestProxySanitizer("$..primaryReadonlyMasterKey", null, REDACTED_VALUE, TestProxySanitizerType.BODY_KEY),
+            new TestProxySanitizer("$..secondaryReadonlyMasterKey", null, REDACTED_VALUE, TestProxySanitizerType.BODY_KEY),
             // ContainerRegistry
-            new TestProxySanitizer("$..passwords[*].value", null, REDACTED_VALUE, TestProxySanitizerType.BODY_KEY)
+            new TestProxySanitizer("$..passwords[*].value", null, REDACTED_VALUE, TestProxySanitizerType.BODY_KEY),
+            // ContainerService
+            new TestProxySanitizer("$..secret", null, REDACTED_VALUE, TestProxySanitizerType.BODY_KEY)
         ));
         sanitizers.addAll(this.sanitizers);
         interceptorManager.addSanitizers(sanitizers);

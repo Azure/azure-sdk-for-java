@@ -66,7 +66,7 @@ add the direct dependency to your project as follows.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-monitor-query</artifactId>
-    <version>1.2.1</version>
+    <version>1.2.2</version>
 </dependency>
 ```
 
@@ -122,6 +122,28 @@ MetricsQueryAsyncClient metricsQueryAsyncClient = new MetricsQueryClientBuilder(
     .buildAsyncClient();
 ```
 
+#### Configure clients for non-public Azure clouds
+
+By default, `LogQueryClient` and `MetricQueryClient` are configured to connect to the public Azure Cloud. These can be configured to connect to non-public Azure clouds by setting the correct `endpoint` in the client builders: For example:
+
+Creating a `LogsQueryClient` for Azure China cloud:
+
+```java readme-sample-createLogsQueryClientWithSovereignCloud
+LogsQueryClient logsQueryClient = new LogsQueryClientBuilder()
+    .credential(new DefaultAzureCredentialBuilder().build())
+    .endpoint("https://api.loganalytics.azure.cn/v1")
+    .buildClient();
+```
+
+Creating a `MetricsQueryClient` for Azure China cloud:
+
+```java readme-sample-createMetricsQueryClientWithSovereignCloud
+MetricsQueryClient metricsQueryClient = new MetricsQueryClientBuilder()
+    .credential(new DefaultAzureCredentialBuilder().build())
+    .endpoint("https://management.chinacloudapi.cn")
+    .buildClient();
+```
+
 ### Execute the query
 
 For examples of Logs and Metrics queries, see the [Examples](#examples) section.
@@ -149,6 +171,7 @@ Each set of metric values is a time series with the following characteristics:
   - [Map logs query results to a model](#map-logs-query-results-to-a-model)
   - [Handle logs query response](#handle-logs-query-response)
   - [Query logs by resource id](#query-logs-by-resource-id)
+  - [Create a log client for non-public Azure clouds](#configure-clients-for-non-public-azure-clouds)
 - [Batch logs query](#batch-logs-query)
 - [Advanced logs query scenarios](#advanced-logs-query-scenarios)
   - [Set logs query timeout](#set-logs-query-timeout)
@@ -158,6 +181,7 @@ Each set of metric values is a time series with the following characteristics:
 - [Metrics query](#metrics-query)
   - [Handle metrics query response](#handle-metrics-query-response)
   - [Get average and count metrics](#get-average-and-count-metrics)
+  - [Create a metrics client for non-public Azure clouds](#configure-clients-for-non-public-azure-clouds)
 
 ### Logs query
 

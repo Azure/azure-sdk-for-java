@@ -40,7 +40,7 @@ import java.util.Arrays;
 /** Samples for WebApplicationFirewallPolicies CreateOrUpdate. */
 public final class WebApplicationFirewallPoliciesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-02-01/examples/WafPolicyCreateOrUpdate.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-04-01/examples/WafPolicyCreateOrUpdate.json
      */
     /**
      * Sample code: Creates or updates a WAF policy within a resource group.

@@ -7,7 +7,7 @@ package com.azure.resourcemanager.network.generated;
 /** Samples for VirtualNetworkGatewayNatRules ListByVirtualNetworkGateway. */
 public final class VirtualNetworkGatewayNatRulesListByVirtualNetworkGatewaySamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-02-01/examples/VirtualNetworkGatewayNatRuleList.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-04-01/examples/VirtualNetworkGatewayNatRuleList.json
      */
     /**
      * Sample code: VirtualNetworkGatewayNatRuleList.

@@ -42,6 +42,10 @@ public final class ImmutabilityPolicyProperty {
     @JsonProperty(value = "allowProtectedAppendWritesAll")
     private Boolean allowProtectedAppendWritesAll;
 
+    /** Creates an instance of ImmutabilityPolicyProperty class. */
+    public ImmutabilityPolicyProperty() {
+    }
+
     /**
      * Get the immutabilityPeriodSinceCreationInDays property: The immutability period for the blobs in the container
      * since the policy creation, in days.

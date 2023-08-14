@@ -98,7 +98,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
@@ -1680,6 +1679,11 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             options,
             content);
 
+        if (serverBatchRequest instanceof PartitionKeyRangeServerBatchRequest) {
+            PartitionKeyRangeServerBatchRequest partitionKeyRangeServerBatchRequest = (PartitionKeyRangeServerBatchRequest) serverBatchRequest;
+            request.setPartitionBasedGoneNotifier(partitionKeyRangeServerBatchRequest.getPartitionBasedGoneNotifier());
+        }
+
         if (options != null) {
             request.requestContext.setExcludeRegions(options.getExcludeRegions());
         }
@@ -2588,14 +2592,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
             String idValue = itemIdentity.getId();
             String idParamName = "@param" + i;
-
-            PartitionKey pkValueAsPartitionKey = itemIdentity.getPartitionKey();
-            Object pkValue = ModelBridgeInternal.getPartitionKeyObject(pkValueAsPartitionKey);
-
-            if (!Objects.equals(idValue, pkValue)) {
-                // this is sanity check to ensure id and pk are the same
-                continue;
-            }
 
             parameters.add(new SqlParameter(idParamName, idValue));
             queryStringBuilder.append(idParamName);

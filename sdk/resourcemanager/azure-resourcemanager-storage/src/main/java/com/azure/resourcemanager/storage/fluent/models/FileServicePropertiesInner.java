@@ -27,6 +27,10 @@ public final class FileServicePropertiesInner extends ProxyResource {
     @JsonProperty(value = "sku", access = JsonProperty.Access.WRITE_ONLY)
     private Sku sku;
 
+    /** Creates an instance of FileServicePropertiesInner class. */
+    public FileServicePropertiesInner() {
+    }
+
     /**
      * Get the innerFileServiceProperties property: The properties of File services in storage account.
      *

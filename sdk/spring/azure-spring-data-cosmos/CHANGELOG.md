@@ -1,15 +1,28 @@
 ## Release History
 
-### 3.37.0-beta.1 (Unreleased)
+### 3.38.0-beta.1 (Unreleased)
 
 #### Features Added
-* Added Diagnostic Threshold configuration support. In order to use diagnostics they must be enabled on the supplied `CosmosClientBuilder` as part of configuration. - See [PR 35546](https://github.com/Azure/azure-sdk-for-java/pull/35546)
 
 #### Breaking Changes
 
 #### Bugs Fixed
+* Fixed an issue with IN statement in annotated queries not working for `Long` data type - See [PR 36249](https://github.com/Azure/azure-sdk-for-java/pull/36249).
 
 #### Other Changes
+
+### 5.4.0 (2023-08-02)
+
+#### Features Added
+* Added Diagnostic Threshold configuration support. In order to use diagnostics they must be enabled on the supplied `CosmosClientBuilder` as part of configuration. - See [PR 36134](https://github.com/Azure/azure-sdk-for-java/pull/36134)
+
+#### Bugs Fixed
+* Fix circular references error when using Cosmos Auditing - See [PR 36123](https://github.com/Azure/azure-sdk-for-java/pull/36123).
+
+### 3.37.0 (2023-08-01)
+
+#### Features Added
+* Added Diagnostic Threshold configuration support. In order to use diagnostics they must be enabled on the supplied `CosmosClientBuilder` as part of configuration. - See [PR 35546](https://github.com/Azure/azure-sdk-for-java/pull/35546)
 
 ### 3.36.0 (2023-06-29)
 

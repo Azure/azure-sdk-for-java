@@ -1,6 +1,19 @@
 # Release History
 
-## 2.29.0-beta.1 (Unreleased)
+## 2.30.0-beta.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+- Fixed a bug that `GenericResources.deleteById` might select the wrong default api-version for resources whose child 
+  resource type collides with other resources.
+
+### Other Changes
+
+## 2.29.0 (2023-07-28)
 
 ### Bugs Fixed
 

@@ -3,6 +3,7 @@
 
 package com.azure.monitor.opentelemetry.exporter.implementation.localstorage;
 
+import com.azure.monitor.opentelemetry.exporter.implementation.logging.DiagnosticTelemetryPipelineListener;
 import com.azure.monitor.opentelemetry.exporter.implementation.pipeline.TelemetryPipeline;
 import com.azure.monitor.opentelemetry.exporter.implementation.pipeline.TelemetryPipelineListener;
 import com.azure.monitor.opentelemetry.exporter.implementation.pipeline.TelemetryPipelineRequest;
@@ -46,14 +47,15 @@ public class LocalStorageTelemetryPipelineListener implements TelemetryPipelineL
     @Override
     public void onResponse(TelemetryPipelineRequest request, TelemetryPipelineResponse response) {
         if (StatusCode.isRetryable(response.getStatusCode())) {
-            localFileWriter.writeToDisk(request.getConnectionString(), request.getTelemetry());
+            localFileWriter.writeToDisk(
+                request.getConnectionString(), request.getTelemetry(), getOriginalErrorMessage(response));
         }
     }
 
     @Override
     public void onException(
         TelemetryPipelineRequest request, String errorMessage, Throwable throwable) {
-        localFileWriter.writeToDisk(request.getConnectionString(), request.getTelemetry());
+        localFileWriter.writeToDisk(request.getConnectionString(), request.getTelemetry(), errorMessage);
     }
 
     @Override
@@ -65,5 +67,15 @@ public class LocalStorageTelemetryPipelineListener implements TelemetryPipelineL
             localFilePurger.shutdown();
         }
         return CompletableResultCode.ofSuccess();
+    }
+
+    private static String getOriginalErrorMessage(TelemetryPipelineResponse response) {
+        int statusCode = response.getStatusCode();
+        if (statusCode == 401 || statusCode == 403) {
+            return DiagnosticTelemetryPipelineListener
+                .getErrorMessageFromCredentialRelatedResponse(statusCode, response.getBody());
+        } else {
+            return "Received response code " + statusCode;
+        }
     }
 }

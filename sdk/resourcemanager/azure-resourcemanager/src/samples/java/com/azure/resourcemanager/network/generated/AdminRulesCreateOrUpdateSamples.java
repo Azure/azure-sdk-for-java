@@ -16,7 +16,7 @@ import java.util.Arrays;
 /** Samples for AdminRules CreateOrUpdate. */
 public final class AdminRulesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-02-01/examples/NetworkManagerAdminRulePut.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-04-01/examples/NetworkManagerAdminRulePut.json
      */
     /**
      * Sample code: Create an admin rule.
@@ -59,7 +59,7 @@ public final class AdminRulesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-02-01/examples/NetworkManagerDefaultAdminRulePut.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-04-01/examples/NetworkManagerDefaultAdminRulePut.json
      */
     /**
      * Sample code: Create a default admin rule.

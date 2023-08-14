@@ -7,7 +7,7 @@ package com.azure.resourcemanager.network.generated;
 /** Samples for PrivateLinkServices Delete. */
 public final class PrivateLinkServicesDeleteSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-02-01/examples/PrivateLinkServiceDelete.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-04-01/examples/PrivateLinkServiceDelete.json
      */
     /**
      * Sample code: Delete private link service.

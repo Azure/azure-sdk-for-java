@@ -13,19 +13,17 @@ import com.azure.monitor.opentelemetry.exporter.implementation.MockHttpResponse;
 import com.azure.monitor.opentelemetry.exporter.implementation.localstorage.LocalStorageTelemetryPipelineListener;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.ContextTagKeys;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.TelemetryItem;
-import com.azure.monitor.opentelemetry.exporter.implementation.utils.AksResourceAttributes;
 import com.azure.monitor.opentelemetry.exporter.implementation.utils.TestUtils;
+import io.opentelemetry.sdk.autoconfigure.ResourceConfiguration;
+import io.opentelemetry.sdk.autoconfigure.spi.ConfigProperties;
+import io.opentelemetry.sdk.autoconfigure.spi.internal.DefaultConfigProperties;
 import io.opentelemetry.sdk.common.CompletableResultCode;
+import io.opentelemetry.sdk.resources.Resource;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.io.TempDir;
-import org.junit.jupiter.api.parallel.Execution;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import uk.org.webcompere.systemstubs.environment.EnvironmentVariables;
-import uk.org.webcompere.systemstubs.jupiter.SystemStub;
-import uk.org.webcompere.systemstubs.jupiter.SystemStubsExtension;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -41,15 +39,11 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
 import java.util.zip.GZIPInputStream;
 
+import static io.opentelemetry.api.common.AttributeKey.stringKey;
+import static java.util.Collections.singletonMap;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.parallel.ExecutionMode.SAME_THREAD;
 
-@Execution(SAME_THREAD) // disable parallel test run
-@ExtendWith(SystemStubsExtension.class)
 public class TelemetryItemExporterTest {
-
-    @SystemStub
-    EnvironmentVariables envVars = new EnvironmentVariables();
 
     private static final String CONNECTION_STRING =
         "InstrumentationKey=00000000-0000-0000-0000-0FEEDDADBEEF;IngestionEndpoint=http://foo.bar";
@@ -65,12 +59,17 @@ public class TelemetryItemExporterTest {
     File tempFolder;
 
     private TelemetryItemExporter getExporter() {
+        return getExporter(Resource.empty());
+    }
+
+    private TelemetryItemExporter getExporter(Resource environmentResource) {
         HttpPipelineBuilder pipelineBuilder = new HttpPipelineBuilder().httpClient(recordingHttpClient);
         TelemetryPipeline telemetryPipeline = new TelemetryPipeline(pipelineBuilder.build());
 
         return new TelemetryItemExporter(
             telemetryPipeline,
-            new LocalStorageTelemetryPipelineListener(50, tempFolder, telemetryPipeline, null, false));
+            new LocalStorageTelemetryPipelineListener(50, tempFolder, telemetryPipeline, null, false),
+                environmentResource);
     }
 
     private static String getRequestBodyString(Flux<ByteBuffer> requestBody) {
@@ -244,19 +243,23 @@ public class TelemetryItemExporterTest {
     // https://www.w3.org/TR/baggage/
     @Test
     public void initOtelResourceAttributesTest() {
-        envVars.set("OTEL_RESOURCE_ATTRIBUTES", "key1=value%201,key2=value2,key3=value%203");
-        AksResourceAttributes.reloadOtelResourceAttributes();
-        Map<String, String> attributes = AksResourceAttributes.getOtelResourceAttributes();
-        assertThat(attributes.size()).isEqualTo(3);
-        assertThat(attributes.get("key1")).isEqualTo("value 1");
-        assertThat(attributes.get("key2")).isEqualTo("value2");
-        assertThat(attributes.get("key3")).isEqualTo("value 3");
-        envVars.set("OTEL_RESOURCE_ATTRIBUTES", "");
+        ConfigProperties config = DefaultConfigProperties.createForTest(singletonMap(
+                "otel.resource.attributes",
+                "key1=value%201,key2=value2,key3=value%203"));
+        Resource resource = ResourceConfiguration.createEnvironmentResource(config);
+
+        assertThat(resource.getAttributes().size()).isEqualTo(3);
+        assertThat(resource.getAttributes().get(stringKey("key1"))).isEqualTo("value 1");
+        assertThat(resource.getAttributes().get(stringKey("key2"))).isEqualTo("value2");
+        assertThat(resource.getAttributes().get(stringKey("key3"))).isEqualTo("value 3");
     }
 
     @Test
-    public void otelResouceAttributeTest() {
-        envVars.set("OTEL_RESOURCE_ATTRIBUTES", "key1=value1,key2=value2,key3=value3");
+    public void otelResourceAttributeTest() {
+        ConfigProperties config = DefaultConfigProperties.createForTest(singletonMap(
+                "otel.resource.attributes",
+                "key1=value1,key2=value2,key3=value3"));
+        Resource environmentResource = ResourceConfiguration.createEnvironmentResource(config);
 
         // given
         List<TelemetryItem> telemetryItems = new ArrayList<>();
@@ -276,7 +279,7 @@ public class TelemetryItemExporterTest {
             TestUtils.createMetricTelemetry("metric" + 4, 4, REDIRECT_CONNECTION_STRING);
         telemetryItem4.getTags().put(ContextTagKeys.AI_CLOUD_ROLE.toString(), "rolename4");
         telemetryItems.add(telemetryItem4);
-        TelemetryItemExporter exporter = getExporter();
+        TelemetryItemExporter exporter = getExporter(environmentResource);
 
         // when
         CompletableResultCode completableResultCode = exporter.send(telemetryItems);
@@ -284,8 +287,6 @@ public class TelemetryItemExporterTest {
         // then
         assertThat(completableResultCode.isSuccess()).isEqualTo(true);
         assertThat(recordingHttpClient.getCount()).isEqualTo(5);
-
-        envVars.set("OTEL_RESOURCE_ATTRIBUTES", ""); // clear env var
     }
 
     @Test
