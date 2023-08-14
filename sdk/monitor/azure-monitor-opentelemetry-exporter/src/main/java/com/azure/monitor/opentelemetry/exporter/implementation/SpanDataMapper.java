@@ -808,7 +808,7 @@ public final class SpanDataMapper {
                 SemanticAttributes.ENDUSER_ID.getKey(),
                 (telemetryBuilder, value) -> {
                     if (value instanceof String) {
-                        telemetryBuilder.addTag(ContextTagKeys.AI_USER_ID.toString(), (String) value);
+                        telemetryBuilder.addTag(ContextTagKeys.AI_USER_AUTH_USER_ID.toString(), (String) value);
                     }
                 })
             .exact(
