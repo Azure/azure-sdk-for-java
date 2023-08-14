@@ -164,7 +164,7 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
      */
     @Override
     public Mono<CosmosContainerResponse> createContainerIfNotExists(CosmosEntityInformation<?, ?> information) {
-
+        final CosmosAsyncClient cosmosAsyncClient = this.getCosmosAsyncClient();
         return createDatabaseIfNotExists()
             .publishOn(Schedulers.parallel())
             .onErrorResume(throwable ->
@@ -182,8 +182,8 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
                     cosmosContainerProperties.setUniqueKeyPolicy(uniqueKeyPolicy);
                 }
 
-                CosmosAsyncDatabase database =
-                    this.getCosmosAsyncClient().getDatabase(cosmosDatabaseResponse.getProperties().getId());
+                final CosmosAsyncDatabase database =
+                    cosmosAsyncClient.getDatabase(cosmosDatabaseResponse.getProperties().getId());
                 Mono<CosmosContainerResponse> cosmosContainerResponseMono;
 
                 if (information.getRequestUnit() == null) {

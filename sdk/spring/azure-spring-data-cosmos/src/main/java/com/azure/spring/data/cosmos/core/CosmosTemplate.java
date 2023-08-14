@@ -567,7 +567,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
 
     @Override
     public CosmosContainerProperties createContainerIfNotExists(CosmosEntityInformation<?, ?> information) {
-
+        final CosmosAsyncClient cosmosAsyncClient = this.getCosmosAsyncClient();
         final CosmosContainerResponse response = createDatabaseIfNotExists()
             .publishOn(Schedulers.parallel())
             .onErrorResume(throwable ->
@@ -586,7 +586,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
                     cosmosContainerProperties.setUniqueKeyPolicy(uniqueKeyPolicy);
                 }
 
-                CosmosAsyncDatabase cosmosAsyncDatabase = this.getCosmosAsyncClient()
+                final CosmosAsyncDatabase cosmosAsyncDatabase = cosmosAsyncClient
                     .getDatabase(cosmosDatabaseResponse.getProperties().getId());
                 Mono<CosmosContainerResponse> cosmosContainerResponseMono;
 

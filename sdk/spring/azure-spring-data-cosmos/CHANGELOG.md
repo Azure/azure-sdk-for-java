@@ -4,6 +4,8 @@
 
 #### Features Added
 
+* Introduced support for Multitenancy with multiple clients
+
 #### Breaking Changes
 
 #### Bugs Fixed
