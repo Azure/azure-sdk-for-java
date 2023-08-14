@@ -488,7 +488,7 @@ public class Transforms {
     private static Map<String, DocumentField> toDocumentFields(
         Map<String, com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentField> innerFields) {
         Map<String, DocumentField> documentFieldMap = new HashMap<>();
-        if (CoreUtils.isNullOrEmpty(innerFields)) {
+        if (!CoreUtils.isNullOrEmpty(innerFields)) {
             innerFields.forEach((key, innerDocumentField) ->
                 documentFieldMap.put(key, toDocumentField(innerDocumentField)));
         }
