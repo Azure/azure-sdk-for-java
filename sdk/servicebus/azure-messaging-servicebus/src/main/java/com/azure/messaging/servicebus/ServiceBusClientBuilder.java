@@ -900,13 +900,13 @@ public final class ServiceBusClientBuilder implements
             .build();
         private final AtomicReference<Boolean> sendManageFlag = new AtomicReference<>();
 
-//        private static final String SESSION_PROCESSOR_ASYNC_RECEIVE_KEY = "com.azure.messaging.servicebus.session.processor.asyncReceive.v2";
-//        private static final ConfigurationProperty<Boolean> SESSION_PROCESSOR_ASYNC_RECEIVE_PROPERTY = ConfigurationPropertyBuilder.ofBoolean(SESSION_PROCESSOR_ASYNC_RECEIVE_KEY)
-//            .environmentVariableName(SESSION_PROCESSOR_ASYNC_RECEIVE_KEY)
-//            .defaultValue(false) // Async[Processor]Receiver Client is not on the new v2 stack by default
-//            .shared(true)
-//            .build();
-//        private final AtomicReference<Boolean> sessionProcessorAsyncReceiveFlag = new AtomicReference<>();
+        private static final String SESSION_PROCESSOR_ASYNC_RECEIVE_KEY = "com.azure.messaging.servicebus.session.processor.asyncReceive.v2";
+        private static final ConfigurationProperty<Boolean> SESSION_PROCESSOR_ASYNC_RECEIVE_PROPERTY = ConfigurationPropertyBuilder.ofBoolean(SESSION_PROCESSOR_ASYNC_RECEIVE_KEY)
+            .environmentVariableName(SESSION_PROCESSOR_ASYNC_RECEIVE_KEY)
+            .defaultValue(false) // Async[Processor]Receiver Client is not on the new v2 stack by default
+            .shared(true)
+            .build();
+        private final AtomicReference<Boolean> sessionProcessorAsyncReceiveFlag = new AtomicReference<>();
 
         private final Object connectionLock = new Object();
         private ReactorConnectionCache<ServiceBusReactorAmqpConnection> sharedConnectionCache;
@@ -950,9 +950,7 @@ public final class ServiceBusClientBuilder implements
          * @return true if session processor receive should use the v2 stack.
          */
         boolean isSessionProcessorAsyncReceiveEnabled(Configuration configuration) {
-            // TODO: anu: Enable the OptIn once the V2 Session Processor integration is complete.
-            return false;
-            // return isOptedIn(configuration, SESSION_PROCESSOR_ASYNC_RECEIVE_PROPERTY, sessionProcessorAsyncReceiveFlag);
+            return isOptedIn(configuration, SESSION_PROCESSOR_ASYNC_RECEIVE_PROPERTY, sessionProcessorAsyncReceiveFlag);
         }
 
         // Obtain the shared connection-cache based on the V2-Stack.
