@@ -77,7 +77,7 @@ public class QueryValidationTests extends TestSuiteBase {
         random = new Random();
     }
 
-    @BeforeClass(groups = {"query", "split"}, timeOut = SETUP_TIMEOUT)
+    @BeforeClass(groups = {"query"}, timeOut = SETUP_TIMEOUT)
     public void beforeClass() throws Exception {
         client = this.getClientBuilder().buildAsyncClient();
         createdDatabase = getSharedCosmosDatabase(client);
@@ -370,7 +370,7 @@ public class QueryValidationTests extends TestSuiteBase {
         assertThat(contextClient.getQueryPlanCache().containsKey(sqlQuerySpec.getQueryText())).isFalse();
     }
 
-    @Test(groups = {"split"}, timeOut = TIMEOUT * 40)
+    @Test(groups = {"query"}, timeOut = TIMEOUT * 40)
     public void splitQueryContinuationToken() throws Exception {
         String containerId = "splittestcontainer_" + UUID.randomUUID();
         int itemCount = 20;
