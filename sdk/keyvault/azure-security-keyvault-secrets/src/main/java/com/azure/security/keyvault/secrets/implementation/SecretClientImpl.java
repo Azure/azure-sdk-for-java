@@ -71,8 +71,7 @@ public class SecretClientImpl {
      * @param secretServiceVersion {@link SecretServiceVersion} of the service to be used when making requests.
      */
     public SecretClientImpl(String vaultUrl, HttpPipeline pipeline, SecretServiceVersion secretServiceVersion) {
-        Objects.requireNonNull(vaultUrl,
-            KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.VAULT_END_POINT_REQUIRED));
+        Objects.requireNonNull(vaultUrl, KeyVaultErrorCodeStrings.VAULT_END_POINT_REQUIRED);
 
         this.vaultUrl = vaultUrl;
         this.service = RestProxy.create(SecretService.class, pipeline);

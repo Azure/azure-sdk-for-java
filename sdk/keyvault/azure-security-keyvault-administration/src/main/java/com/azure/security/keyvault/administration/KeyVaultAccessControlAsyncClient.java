@@ -91,8 +91,7 @@ public final class KeyVaultAccessControlAsyncClient {
      */
     KeyVaultAccessControlAsyncClient(URL vaultUrl, HttpPipeline httpPipeline,
                                      KeyVaultAdministrationServiceVersion serviceVersion) {
-        Objects.requireNonNull(vaultUrl,
-            KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.VAULT_END_POINT_REQUIRED));
+        Objects.requireNonNull(vaultUrl, KeyVaultErrorCodeStrings.VAULT_END_POINT_REQUIRED);
 
         this.vaultUrl = vaultUrl.toString();
         this.serviceVersion = serviceVersion.getVersion();
@@ -190,8 +189,7 @@ public final class KeyVaultAccessControlAsyncClient {
                                                                              Context context) {
         try {
             Objects.requireNonNull(roleScope,
-                String.format(KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED),
-                    "'roleScope'"));
+                String.format(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED, "'roleScope'"));
 
             return clientImpl.getRoleDefinitions()
                 .listSinglePageAsync(vaultUrl, roleScope.toString(), null,
@@ -645,8 +643,7 @@ public final class KeyVaultAccessControlAsyncClient {
                                                                              Context context) {
         try {
             Objects.requireNonNull(roleScope,
-                String.format(KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED),
-                    "'roleScope'"));
+                String.format(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED, "'roleScope'"));
 
             return clientImpl.getRoleAssignments()
                 .listForScopeSinglePageAsync(vaultUrl, roleScope.toString(), null,
