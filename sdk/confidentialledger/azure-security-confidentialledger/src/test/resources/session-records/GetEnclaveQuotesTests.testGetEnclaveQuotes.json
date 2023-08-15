@@ -7,23 +7,24 @@
         "Accept": "application/json",
         "Authorization": "Sanitized",
         "Content-Length": "0",
-        "Date": "Tue, 15 Aug 2023 17:44:52 GMT",
+        "Date": "Tue, 15 Aug 2023 21:41:19 GMT",
         "User-Agent": "azsdk-java-azure-security-confidentialledger/1.1.0-beta.1 (11.0.16.1; Windows 11; 10.0)",
-        "x-ms-client-request-id": "2fb79bbf-bf25-40db-bef7-255680dddf5a"
+        "x-ms-client-request-id": "dd759174-c20a-4c8e-ac9d-2c195cb94c7b"
       },
       "RequestBody": null,
       "StatusCode": 200,
       "ResponseHeaders": {
+        "Connection": "keep-alive",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Tue, 15 Aug 2023 17:44:53 GMT",
+        "Date": "Tue, 15 Aug 2023 21:41:21 GMT",
         "Transfer-Encoding": "chunked",
-        "X-Azure-Ref": "0lbnbZAAAAAAhicdnGwoBSrGAuik9Vt\u002B8V1NURURHRTAxMDkAMjQyYjE4MjAtYjI3YS00NTE2LTk4OTktMGVmNGViZTU0YWQ0",
+        "x-azure-ref": "20230815T214121Z-erkfhxy88x1tmdp3quu5vn6pug000000081g0000000015u8",
         "X-Cache": "CONFIG_NOCACHE",
-        "x-ms-client-request-id": "2fb79bbf-bf25-40db-bef7-255680dddf5a",
-        "x-ms-correlation-request-id": "854b6303-375a-4f5e-b217-74852b1f910d",
+        "x-ms-client-request-id": "dd759174-c20a-4c8e-ac9d-2c195cb94c7b",
+        "x-ms-correlation-request-id": "120f9210-2e4e-4852-a4f4-f2b52d4a4be5",
         "x-ms-image-digest": "sha256:43aa9ae9edf65a92516a739e4a72571aa920f22b1eee335169c6abddadb056dd",
         "x-ms-image-tag": "1.0.02406.1320-aae7b315353a85cf9043b54f7f4ab02a79499e54",
-        "x-ms-machineName": "identityservice-d86887dd-rmgn9"
+        "x-ms-machineName": "identityservice-d86887dd-7rrvj"
       },
       "ResponseBody": {
         "ledgerTlsCertificate": "-----BEGIN CERTIFICATE-----\nMIIBgTCCASegAwIBAgIRAP8o8bVU8taW6SIlq68ooFAwCgYIKoZIzj0EAwIwFjEU\nMBIGA1UEAwwLQ0NGIE5ldHdvcmswHhcNMjMwNzE5MTQzNTM4WhcNMjMxMDE3MTQz\nNTM3WjAWMRQwEgYDVQQDDAtDQ0YgTmV0d29yazBZMBMGByqGSM49AgEGCCqGSM49\nAwEHA0IABD4ujJba2GkR0bAD\u002BAS\u002BdbUBenPAC6iqXJbM2q\u002BJJWCN1O/GdUfmVZag\nan5OQxn417cKp4dGiExyVpEdeg0/LyKjVjBUMBIGA1UdEwEB/wQIMAYBAf8CAQAw\nHQYDVR0OBBYEFBHQ0lGEDifiYVaYfZkjOCLf2maTMB8GA1UdIwQYMBaAFBHQ0lGE\nDifiYVaYfZkjOCLf2maTMAoGCCqGSM49BAMCA0gAMEUCIDyeyrpYZLGrklG9Z1jy\naKX0U/P5CBmL2jE\u002B1boYEFeyAiEA/hPrtNfhdYX9JrVz8MDWzlojkCClSGwbjn1H\nZMW/wNY=\n-----END CERTIFICATE-----\n",

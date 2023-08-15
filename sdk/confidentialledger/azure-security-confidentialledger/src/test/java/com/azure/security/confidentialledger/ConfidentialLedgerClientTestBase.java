@@ -89,7 +89,7 @@ class ConfidentialLedgerClientTestBase extends TestProxyTestBase {
         while (matcher.find()) {
             body = matcher.group();
         }
-
+        body = body.replace("\n", "").replace("\r", "");
         interceptorManager.setProxyRecordingOptions(new ProxyOptionsTransport()
             .setTransportOptions(new ProxyOptionsTransport.Transport()
                 .settLSValidationCert(body)));
