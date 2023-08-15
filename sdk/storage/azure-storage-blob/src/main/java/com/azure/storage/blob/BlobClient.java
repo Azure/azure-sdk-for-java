@@ -386,7 +386,7 @@ public class BlobClient extends BlobClientBase {
      * @throws UncheckedIOException If an I/O error occurs
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public String uploadFromFile(String filePath, boolean overwrite) {
+    public void uploadFromFile(String filePath, boolean overwrite) {
         BlobRequestConditions requestConditions = null;
 
         if (!overwrite) {
@@ -400,8 +400,6 @@ public class BlobClient extends BlobClientBase {
             requestConditions = new BlobRequestConditions().setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD);
         }
         uploadFromFile(filePath, null, null, null, null, requestConditions, null);
-
-        return null;
     }
 
     /**

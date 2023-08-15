@@ -231,8 +231,9 @@ public final class BlobServiceClient {
      * @param containerName Name of the container to delete
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteBlobContainer(String containerName) {
+    public String deleteBlobContainer(String containerName) {
         deleteBlobContainerWithResponse(containerName, Context.NONE);
+        return null;
     }
 
     /**
