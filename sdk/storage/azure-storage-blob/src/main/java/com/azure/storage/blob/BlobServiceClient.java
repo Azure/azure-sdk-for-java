@@ -229,6 +229,7 @@ public final class BlobServiceClient {
      * <!-- end com.azure.storage.blob.BlobServiceClient.deleteBlobContainer#String -->
      *
      * @param containerName Name of the container to delete
+     * @return fake
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public String deleteBlobContainer(String containerName) {
