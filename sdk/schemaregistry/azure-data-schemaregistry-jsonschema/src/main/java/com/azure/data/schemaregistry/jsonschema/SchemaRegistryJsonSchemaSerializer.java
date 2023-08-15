@@ -37,13 +37,12 @@ public final class SchemaRegistryJsonSchemaSerializer {
     private final ClientLogger logger = new ClientLogger(SchemaRegistryJsonSchemaSerializer.class);
     private final SchemaRegistrySchemaCache schemaCache;
     private final JsonSchemaGenerator schemaGenerator;
-    private final SchemaRegistryAsyncClient schemaRegistryClient;
     private final SerializerAdapter serializer;
 
     SchemaRegistryJsonSchemaSerializer(SchemaRegistryAsyncClient schemaRegistryClient,
         JsonSchemaGenerator schemaGenerator, SerializerOptions serializerOptions) {
-        this.schemaRegistryClient = Objects.requireNonNull(schemaRegistryClient,
-            "'schemaRegistryClient' cannot be null.");
+        SchemaRegistryAsyncClient schemaRegistryClient1 = Objects.requireNonNull(schemaRegistryClient,
+                "'schemaRegistryClient' cannot be null.");
         this.schemaGenerator = Objects.requireNonNull(schemaGenerator, "'schemaGenerator' cannot be null.");
 
         Objects.requireNonNull(serializerOptions, "'serializerOptions' cannot be null.");
