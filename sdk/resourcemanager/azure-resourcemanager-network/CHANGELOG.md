@@ -6,6 +6,7 @@
 
 - Supported `backends` for `LoadBalancingRule`.
 - Supported `withSslPolicy` for `ApplicationGateway`.
+- Now `ApplicationGateway` can be created with `BASIC` sku and tier if not specified.
 
 ### Other Changes
 

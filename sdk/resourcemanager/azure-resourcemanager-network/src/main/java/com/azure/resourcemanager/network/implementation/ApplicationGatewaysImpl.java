@@ -7,6 +7,7 @@ import com.azure.resourcemanager.network.fluent.ApplicationGatewaysClient;
 import com.azure.resourcemanager.network.fluent.models.ApplicationGatewayInner;
 import com.azure.resourcemanager.network.models.ApplicationGateway;
 import com.azure.resourcemanager.network.models.ApplicationGatewaySkuName;
+import com.azure.resourcemanager.network.models.ApplicationGatewayTier;
 import com.azure.resourcemanager.network.models.ApplicationGateways;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
@@ -31,7 +32,10 @@ public class ApplicationGatewaysImpl
 
     @Override
     public ApplicationGatewayImpl define(String name) {
-        return wrapModel(name).withSize(ApplicationGatewaySkuName.STANDARD_SMALL).withInstanceCount(1);
+        return wrapModel(name)
+            .withSize(ApplicationGatewaySkuName.BASIC)
+            .withTier(ApplicationGatewayTier.BASIC)
+            .withInstanceCount(1);
     }
 
     // Fluent model create helpers
