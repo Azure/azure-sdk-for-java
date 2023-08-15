@@ -25,6 +25,7 @@ public class JsonArray extends JsonElement {
      * @return JsonArray object representing the new state of the JsonArray object
      * after the addition of the new JsonElement object appended.
      */
+    @Override
     public JsonArray addElement(JsonElement element) {
         this.elements.add(element);
         return this;
@@ -44,6 +45,7 @@ public class JsonArray extends JsonElement {
      * TODO: throws error(s) relating to the index in respect to the current state
      * of the elements ArrayList
      */
+    @Override
     public JsonArray addElement(int index, JsonElement element) {
         // TODO: check for out of bounds
         this.elements.add(index, element);
@@ -66,6 +68,7 @@ public class JsonArray extends JsonElement {
      * TODO: throws error(s) relating to the index in respect to the current state
      * of the elements ArrayList
      */
+    @Override
     public JsonArray setElement(int index, JsonElement element) {
         // TODO: check for out of bounds
         this.elements.set(index, element);
@@ -82,6 +85,7 @@ public class JsonArray extends JsonElement {
      * TODO: throws error(s) relating to the index in respect to the current state
      * of the elements ArrayList
      */
+    @Override
     public JsonElement getElement(int index) {
         // TODO: check for index out of bounds
         return this.elements.get(index);
@@ -99,6 +103,7 @@ public class JsonArray extends JsonElement {
      * TODO: throws error(s) relating to the index in respect to the current state
      * of the elements ArrayList
      */
+    @Override
     public JsonElement removeElement(int index) {
         // TODO: check for index out of bounds
         this.elements.remove(index);
