@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.storage.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for StorageAccounts ListByResourceGroup. */
 public final class StorageAccountsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2022-09-01/examples/StorageAccountListByResourceGroup.json
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-01-01/examples/StorageAccountListByResourceGroup.json
      */
     /**
      * Sample code: StorageAccountListByResourceGroup.
@@ -22,6 +20,6 @@ public final class StorageAccountsListByResourceGroupSamples {
             .manager()
             .serviceClient()
             .getStorageAccounts()
-            .listByResourceGroup("res6117", Context.NONE);
+            .listByResourceGroup("res6117", com.azure.core.util.Context.NONE);
     }
 }

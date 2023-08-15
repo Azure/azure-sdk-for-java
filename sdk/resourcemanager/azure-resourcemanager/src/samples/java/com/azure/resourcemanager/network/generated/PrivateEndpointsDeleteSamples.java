@@ -7,7 +7,7 @@ package com.azure.resourcemanager.network.generated;
 /** Samples for PrivateEndpoints Delete. */
 public final class PrivateEndpointsDeleteSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-02-01/examples/PrivateEndpointDelete.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-04-01/examples/PrivateEndpointDelete.json
      */
     /**
      * Sample code: Delete private endpoint.

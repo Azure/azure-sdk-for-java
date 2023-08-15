@@ -17,6 +17,15 @@ public final class EncryptionScopeSource extends ExpandableStringEnum<Encryption
     public static final EncryptionScopeSource MICROSOFT_KEY_VAULT = fromString("Microsoft.KeyVault");
 
     /**
+     * Creates a new instance of EncryptionScopeSource value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public EncryptionScopeSource() {
+    }
+
+    /**
      * Creates or finds a EncryptionScopeSource from its string representation.
      *
      * @param name a name to look for.

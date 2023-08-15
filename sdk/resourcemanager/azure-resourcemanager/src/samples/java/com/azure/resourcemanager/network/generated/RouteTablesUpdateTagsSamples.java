@@ -11,7 +11,7 @@ import java.util.Map;
 /** Samples for RouteTables UpdateTags. */
 public final class RouteTablesUpdateTagsSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-02-01/examples/RouteTableUpdateTags.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-04-01/examples/RouteTableUpdateTags.json
      */
     /**
      * Sample code: Update route table tags.
@@ -31,6 +31,7 @@ public final class RouteTablesUpdateTagsSamples {
                 com.azure.core.util.Context.NONE);
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

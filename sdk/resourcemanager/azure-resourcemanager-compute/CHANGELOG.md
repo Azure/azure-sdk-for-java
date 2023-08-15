@@ -4,6 +4,8 @@
 
 ### Features Added
 
+- Supported updating delete options for OS disk, data disks and network interfaces attached to `VirtualMachine`.
+
 ### Breaking Changes
 
 ### Bugs Fixed

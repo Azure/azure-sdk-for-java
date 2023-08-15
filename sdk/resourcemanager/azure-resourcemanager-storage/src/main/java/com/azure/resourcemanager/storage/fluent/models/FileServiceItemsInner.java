@@ -17,6 +17,10 @@ public final class FileServiceItemsInner {
     @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<FileServicePropertiesInner> value;
 
+    /** Creates an instance of FileServiceItemsInner class. */
+    public FileServiceItemsInner() {
+    }
+
     /**
      * Get the value property: List of file services returned.
      *

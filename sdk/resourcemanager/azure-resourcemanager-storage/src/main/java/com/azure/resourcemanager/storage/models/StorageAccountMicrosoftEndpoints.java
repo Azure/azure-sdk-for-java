@@ -49,6 +49,10 @@ public final class StorageAccountMicrosoftEndpoints {
     @JsonProperty(value = "dfs", access = JsonProperty.Access.WRITE_ONLY)
     private String dfs;
 
+    /** Creates an instance of StorageAccountMicrosoftEndpoints class. */
+    public StorageAccountMicrosoftEndpoints() {
+    }
+
     /**
      * Get the blob property: Gets the blob endpoint.
      *

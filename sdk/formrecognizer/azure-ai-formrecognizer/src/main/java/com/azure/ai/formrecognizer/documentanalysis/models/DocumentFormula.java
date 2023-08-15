@@ -67,7 +67,6 @@ public final class DocumentFormula {
      * Set the polygon property: Bounding polygon of the formula.
      *
      * @param polygon the polygon value to set.
-     * @return the DocumentFormula object itself.
      */
     void setPolygon(List<Point> polygon) {
         this.polygon = polygon;
