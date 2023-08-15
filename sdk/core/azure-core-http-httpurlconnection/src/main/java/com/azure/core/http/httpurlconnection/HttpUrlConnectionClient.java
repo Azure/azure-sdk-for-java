@@ -1,18 +1,23 @@
 package com.azure.core.http.httpurlconnection;
 
+import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
+import com.azure.core.util.Context;
+import reactor.core.publisher.Mono;
 
 import java.io.*;
 import java.net.*;
 import java.nio.charset.StandardCharsets;
 
-public class HttpUrlConnectionClient {
+public class HttpUrlConnectionClient implements HttpClient {
     private HttpRequest request;
     private HttpURLConnection connection;
 
     public HttpUrlConnectionClient(HttpRequest request) {
         this.setRequest(request);
     }
+    public HttpUrlConnectionClient(){}
 
     public void setRequest(HttpRequest request) {
         this.request = request;
@@ -68,7 +73,7 @@ public class HttpUrlConnectionClient {
 
         // For POST queries, we need to send the body of the request via an output stream
         if(httpMethod == HttpMethod.POST)
-            writeStream();
+            writeStream(httpRequest);
 
         // Check the HTTP Response Code
         // This also sends the query
@@ -78,10 +83,15 @@ public class HttpUrlConnectionClient {
         byte[] responseBody = readStream().toByteArray();
 
         // Testing debug output TODO: remove
-        System.out.println(new String(responseBody, StandardCharsets.UTF_8));
+//        System.out.println(new String(responseBody, StandardCharsets.UTF_8));
 
         // Return a HTTP Response with all the information we've received back.
-        return new HttpResponse(this.request, this.request.getHeaders(), responseCode, responseBody);
+        return new HttpResponse(
+            httpRequest,
+            httpRequest.getHeaders(),
+            responseCode,
+            responseBody
+        );
     }
 
     private ByteArrayOutputStream readStream() {
@@ -117,16 +127,25 @@ public class HttpUrlConnectionClient {
         return outputStream;
     }
 
-    private void writeStream() {
+    private void writeStream(HttpRequest httpRequest) {
         try {
-            // Debug output TODO: remove
-            System.out.println(this.request.getBody());
             // Get the output stream of the connection
             OutputStream os = this.connection.getOutputStream();
             // Create writer we can use to send info across the stream
             OutputStreamWriter out = new OutputStreamWriter(os);
-            // Write the whole  body to the writer
-            out.write(this.request.getBody().toString());
+            // Write the whole body to the writer
+            // Body comes as a Flux<ByteBuffer>, so process it down to the out.write command
+            httpRequest
+                .getBody()
+                .map(s -> StandardCharsets.UTF_8.decode(s).toString())
+                .subscribe(i -> {
+                    try {
+                        out.write(i);
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                });
+
             // And close it
             out.close();
         } catch (IOException e) {
@@ -140,5 +159,40 @@ public class HttpUrlConnectionClient {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    /**
+     * Send the provided request asynchronously.
+     *
+     * @param request The HTTP request to send.
+     * @return A {@link Mono} that emits the response asynchronously.
+     */
+    @Override
+    public Mono<com.azure.core.http.HttpResponse> send(com.azure.core.http.HttpRequest request) {
+        return null;
+    }
+
+    /**
+     * Sends the provided request asynchronously with contextual information.
+     *
+     * @param request The HTTP request to send.
+     * @param context Contextual information about the request.
+     * @return A {@link Mono} that emits the response asynchronously.
+     */
+    @Override
+    public Mono<com.azure.core.http.HttpResponse> send(com.azure.core.http.HttpRequest request, Context context) {
+        return HttpClient.super.send(request, context);
+    }
+
+    /**
+     * Sends the provided request synchronously with contextual information.
+     *
+     * @param request The HTTP request to send.
+     * @param context Contextual information about the request.
+     * @return The response.
+     */
+    @Override
+    public com.azure.core.http.HttpResponse sendSync(com.azure.core.http.HttpRequest request, Context context) {
+        return HttpClient.super.sendSync(request, context);
     }
 }
