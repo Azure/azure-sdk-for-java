@@ -28,7 +28,6 @@ extends:
   parameters:
     ServiceDirectory: spring
     EnableBatchRelease: true
-    SDKType: client
     Artifacts:
       - name: spring-cloud-azure-starter-monitor
         groupId: com.azure.spring
