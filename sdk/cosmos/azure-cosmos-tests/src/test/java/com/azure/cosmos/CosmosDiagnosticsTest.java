@@ -273,7 +273,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
             assertThat(diagnostics).contains("\"statusCode\":404");
             assertThat(diagnostics).contains("\"operationType\":\"Read\"");
             assertThat(diagnostics).contains("\"userAgent\":\"" + this.gatewayClientUserAgent + "\"");
-            assertThat(diagnostics).contains("\"exceptionMessage\":\"Message: {\\\"Errors\\\":[\\\"Resource Not Found. Learn more: https:\\\\/\\\\/aka.ms\\\\/cosmosdb-tsg-not-found\\\"");
+            assertThat(diagnostics).contains("\"exceptionMessage\":\"Entity with the specified id does not exist in the system.");
             assertThat(diagnostics).contains("\"exceptionResponseHeaders\"");
             assertThat(diagnostics).doesNotContain("\"exceptionResponseHeaders\": \"{}\"");
             assertThat(diagnostics).containsAnyOf(
