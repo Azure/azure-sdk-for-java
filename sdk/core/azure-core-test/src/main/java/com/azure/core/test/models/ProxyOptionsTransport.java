@@ -3,6 +3,8 @@
 
 package com.azure.core.test.models;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.List;
 
 /**
@@ -10,35 +12,74 @@ import java.util.List;
  */
 public class ProxyOptionsTransport {
 
-    boolean allowsAutoRedirect;
-    String TLSValidationCertPath;
-    List<ProxyOptionsTransportCertificatesItem> certificates;
+    @JsonProperty("HandleRedirects")
+    private Boolean autoRedirect;
+    @JsonProperty("Transport")
+    private Transport transportOptions;
 
-    public boolean isAutoRedirectAllowed() {
-        return allowsAutoRedirect;
+    public static class Transport{
+        @JsonProperty("Certificates")
+        private List<Certificate> certificates;
+        @JsonProperty("TLSValidationCert")
+        private String tLSValidationCert;
+
+        public List<Certificate> getCertificates() {
+            return certificates;
+        }
+
+        public Transport setCertificates(List<Certificate> certificates) {
+            this.certificates = certificates;
+            return this;
+        }
+
+        public String gettLSValidationCert() {
+            return tLSValidationCert;
+        }
+
+        public Transport settLSValidationCert(String tLSValidationCert) {
+            this.tLSValidationCert = tLSValidationCert;
+            return this;
+        }
     }
 
-    public ProxyOptionsTransport setAllowsAutoRedirect(boolean allowsAutoRedirect) {
-        this.allowsAutoRedirect = allowsAutoRedirect;
+    public static class Certificate{
+        @JsonProperty("PemValue")
+        private String pemValue;
+        @JsonProperty("PemKey")
+        private String pemKey;
+
+        public String getPemValue() {
+            return pemValue;
+        }
+
+        public void setPemValue(String pemValue) {
+            this.pemValue = pemValue;
+        }
+
+        public String getPemKey() {
+            return pemKey;
+        }
+
+        public void setPemKey(String pemKey) {
+            this.pemKey = pemKey;
+        }
+    }
+
+    public Boolean isAutoRedirect() {
+        return autoRedirect;
+    }
+
+    public ProxyOptionsTransport setAutoRedirect(Boolean autoRedirect) {
+        this.autoRedirect = autoRedirect;
         return this;
     }
 
-    public String getTLSValidationCertPath() {
-        return TLSValidationCertPath;
+    public Transport getTransportOptions() {
+        return transportOptions;
     }
 
-    public ProxyOptionsTransport setTLSValidationCertPath(String TLSValidationCertPath) {
-        this.TLSValidationCertPath = TLSValidationCertPath;
-        return this;
-    }
-
-    public List<ProxyOptionsTransportCertificatesItem> getCertificates() {
-        return certificates;
-    }
-
-    public ProxyOptionsTransport setCertificates(
-        List<ProxyOptionsTransportCertificatesItem> certificates) {
-        this.certificates = certificates;
+    public ProxyOptionsTransport setTransportOptions(Transport transportOptions) {
+        this.transportOptions = transportOptions;
         return this;
     }
 }

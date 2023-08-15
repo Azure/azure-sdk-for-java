@@ -21,6 +21,8 @@ import com.azure.core.util.Context;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import reactor.core.publisher.Mono;
 
 import java.io.File;
@@ -32,7 +34,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Queue;
-import java.util.StringTokenizer;
 
 import static com.azure.core.test.utils.TestProxyUtils.getAssetJsonFile;
 import static com.azure.core.test.utils.TestProxyUtils.getSanitizerRequests;
@@ -193,10 +194,13 @@ public class TestProxyRecordPolicy implements HttpPipelinePolicy {
 
     public void setRecordingOptions(ProxyOptionsTransport proxyOptionsTransport) {
         HttpRequest request = new HttpRequest(HttpMethod.POST, String.format("%s/Admin/SetRecordingOptions", proxyUrl.toString()));
-        boolean allowsRedirect = proxyOptionsTransport.isAutoRedirectAllowed();
-        String tlsCert = proxyOptionsTransport.getTLSValidationCertPath();
-        String body = String.format("{{\"Transport\":{\"HandleRedirects\":\"%s\",\"TLSValidationCert\":\"%s\"}}",
-            allowsRedirect, tlsCert);
+        String body;
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            body = mapper.writeValueAsString(proxyOptionsTransport);
+        } catch (JsonProcessingException ex) {
+            throw new IllegalArgumentException("Failed to process JSON input", ex);
+        }
         request.setBody(body);
         request.getHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/json");
         client.sendSync(request, Context.NONE);

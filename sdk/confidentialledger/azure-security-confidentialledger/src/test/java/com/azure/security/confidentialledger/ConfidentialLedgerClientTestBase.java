@@ -28,15 +28,11 @@ import reactor.core.publisher.Mono;
 
 import javax.net.ssl.SSLException;
 import java.io.ByteArrayInputStream;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.security.PublicKey;
-import java.security.cert.CertificateException;
-import java.security.cert.CertificateFactory;
-import java.security.cert.X509Certificate;
 import java.time.OffsetDateTime;
-import java.util.Arrays;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -87,18 +83,16 @@ class ConfidentialLedgerClientTestBase extends TestProxyTestBase {
         }
 
         String ledgerTlsCertificate = jsonNode.get("ledgerTlsCertificate").asText();
-        CertificateFactory fact = null;
-        try {
-            fact = CertificateFactory.getInstance("X.509");
-            // FileInputStream is = new FileInputStream(Arrays.toString(ledgerTlsCertificate.toCharArray()));
-            X509Certificate cer = (X509Certificate) fact.generateCertificate(identityResponse.toStream());
-            PublicKey key = cer.getPublicKey();
-            // is.close();
-            interceptorManager.setProxyRecordingOptions(new ProxyOptionsTransport().setTLSValidationCertPath(key.toString()));
-        } catch (CertificateException e) {
-            throw new RuntimeException(e);
+        Pattern pattern = Pattern.compile("(?s)-----BEGIN CERTIFICATE-----.*?-----END CERTIFICATE-----");
+        Matcher matcher = pattern.matcher(ledgerTlsCertificate);
+        String body = null;
+        while (matcher.find()) {
+            body = matcher.group();
         }
 
+        interceptorManager.setProxyRecordingOptions(new ProxyOptionsTransport()
+            .setTransportOptions(new ProxyOptionsTransport.Transport()
+                .settLSValidationCert(body)));
         reactor.netty.http.client.HttpClient reactorClient = null;
 
         try {
