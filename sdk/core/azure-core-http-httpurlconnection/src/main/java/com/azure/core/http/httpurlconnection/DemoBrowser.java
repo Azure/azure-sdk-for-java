@@ -57,10 +57,15 @@ public class DemoBrowser implements ActionListener {
     static void loadPage(HttpResponse response) {
         jep.setContentType("text/html");
 
-        response.getBodyAsByteArray().subscribe(
+        response.getBodyAsByteArray()
+            .map(i -> new String(i, StandardCharsets.UTF_8))
+            .map(i -> i.replaceAll("\n", "<br />"))
+            .map(i -> i.replaceAll("125.237.75.107", "&lt;IP ADDRESS&gt;"))
+            .subscribe(
             value -> {
                 System.out.println("setText");
-                jep.setText(new String(value, StandardCharsets.UTF_8));
+                System.out.println(value);
+                jep.setText(value);
             },
             error -> System.out.println("wtf?"),
             () -> System.out.println("completed without a value???")
@@ -73,7 +78,7 @@ public class DemoBrowser implements ActionListener {
             try {
                 request = new HttpRequest(
                     HttpMethod.GET,
-                    new URL("https://http-url-connect-client-web.vjr4ig.easypanel.host")
+                    new URL("https://http-url-connect-client-web.vjr4ig.easypanel.host/home")
                 );
             } catch (MalformedURLException ex) {
                 throw new RuntimeException(ex);
@@ -88,13 +93,13 @@ public class DemoBrowser implements ActionListener {
             try {
                 request = new HttpRequest(
                     HttpMethod.POST,
-                    new URL("https://http-url-connect-client-web.vjr4ig.easypanel.host")
+                    new URL("https://http-url-connect-client-web.vjr4ig.easypanel.host/login")
                 );
             } catch (MalformedURLException ex) {
                 throw new RuntimeException(ex);
             }
             request.setHeaders(new HttpHeaders());
-            request.setBody("{\"username\": \"CraigM\"}");
+            request.setBody("{\"username\": \"CraigM\", \"password\": \"asdf1234\"}");
 
             HttpResponse response = httpClient.send(request);
 
