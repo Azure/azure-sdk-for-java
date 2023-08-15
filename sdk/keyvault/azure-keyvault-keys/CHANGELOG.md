@@ -1,5 +1,8 @@
 # Release History
 
+## 4.0.0-preview.5 (2023-08-15)
+This library has been replaced by a new one that can be found here: https://search.maven.org/artifact/com.azure/azure-security-keyvault-keys. It is recommended that you move to the new package.
+
 ## 4.0.0-preview.4 (2019-10-08)
 For details on the Azure SDK for Java (September 2019 Preview) release refer to the [release announcement](https://aka.ms/azure-sdk-preview4-java).
 

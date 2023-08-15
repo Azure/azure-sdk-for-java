@@ -12,10 +12,10 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-keyvault-certificates</artifactId>
-  <version>4.0.0-preview.4</version>
+  <version>4.0.0-preview.5</version>
 
   <name>Microsoft Azure client library for KeyVault Certificates</name>
-  <description>This module contains client library for Microsoft Azure KeyVault Certificates.</description>
+  <description>This library has been replaced by a new one that can be found here: https://search.maven.org/artifact/com.azure/azure-security-keyvault-certificates. It is recommended that you move to the new package.</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
   <distributionManagement>
