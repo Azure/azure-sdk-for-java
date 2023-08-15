@@ -116,6 +116,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
@@ -2018,7 +2019,7 @@ class VirtualMachineImpl
         return this.innerModel().networkProfile()
             .networkInterfaces()
             .stream()
-            .filter(nic -> networkInterfaceId.equals(nic.id()))
+            .filter(nic -> networkInterfaceId.equalsIgnoreCase(nic.id()))
             .findAny()
             .map(NetworkInterfaceReference::deleteOption)
             .orElse(null);
@@ -2257,10 +2258,10 @@ class VirtualMachineImpl
         }
         if (this.innerModel().networkProfile() != null
             && this.innerModel().networkProfile().networkInterfaces() != null) {
-            Set<String> nicIdSet = new HashSet<>(Arrays.asList(nicIds));
+            Set<String> nicIdSet = Arrays.stream(nicIds).map(nicId -> nicId.toLowerCase(Locale.ROOT)).collect(Collectors.toSet());
             this.innerModel().networkProfile().networkInterfaces().forEach(
                 nic -> {
-                    if (nicIdSet.contains(nic.id())) {
+                    if (nicIdSet.contains(nic.id().toLowerCase(Locale.ROOT))) {
                         nic.withDeleteOption(deleteOptions);
                     }
                 }
@@ -2934,46 +2935,6 @@ class VirtualMachineImpl
 
         void setDefaultEncryptionSet(String diskEncryptionSetId) {
             this.defaultDiskEncryptionSet = new DiskEncryptionSetParameters().withId(diskEncryptionSetId);
-        }
-
-        void setDeleteOptions(DeleteOptions deleteOptions) {
-            DiskDeleteOptionTypes diskDeleteOptionTypes = diskDeleteOptionsFromDeleteOptions(deleteOptions);
-            for (DataDisk dataDisk : this.newDisksToAttach.values()) {
-                dataDisk.withDeleteOption(diskDeleteOptionTypes);
-            }
-            for (DataDisk dataDisk : this.existingDisksToAttach) {
-                dataDisk.withDeleteOption(diskDeleteOptionTypes);
-            }
-            for (DataDisk dataDisk : this.implicitDisksToAssociate) {
-                dataDisk.withDeleteOption(diskDeleteOptionTypes);
-            }
-            for (DataDisk dataDisk : this.newDisksFromImage) {
-                dataDisk.withDeleteOption(diskDeleteOptionTypes);
-            }
-        }
-
-        public void setDeleteOptions(int lun, DeleteOptions deleteOptions) {
-            DiskDeleteOptionTypes diskDeleteOptionTypes = diskDeleteOptionsFromDeleteOptions(deleteOptions);
-            for (DataDisk dataDisk : this.newDisksToAttach.values()) {
-                if (dataDisk.lun() == lun) {
-                    dataDisk.withDeleteOption(diskDeleteOptionTypes);
-                }
-            }
-            for (DataDisk dataDisk : this.existingDisksToAttach) {
-                if (dataDisk.lun() == lun) {
-                    dataDisk.withDeleteOption(diskDeleteOptionTypes);
-                }
-            }
-            for (DataDisk dataDisk : this.implicitDisksToAssociate) {
-                if (dataDisk.lun() == lun) {
-                    dataDisk.withDeleteOption(diskDeleteOptionTypes);
-                }
-            }
-            for (DataDisk dataDisk : this.newDisksFromImage) {
-                if (dataDisk.lun() == lun) {
-                    dataDisk.withDeleteOption(diskDeleteOptionTypes);
-                }
-            }
         }
 
         void setDataDisksDefaults() {

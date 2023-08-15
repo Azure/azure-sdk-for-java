@@ -2528,8 +2528,8 @@ public interface VirtualMachine
 
             /**
              * Specifies delete options for the network interfaces attached to the VM.
-             * This operation only affects existing <strong>attached</strong> network interfaces. Any newly-attached
-             * network interfaces that appear before {@link Update#apply()} won't be affected.
+             * <p>This operation only affects existing <strong>attached</strong> network interfaces. Any newly-attached
+             * network interfaces that appear before {@link Update#apply()} won't be affected.</p>
              *
              * @param deleteOptions delete options for the network interfaces
              * @param nicIds resource IDs of the network interfaces
@@ -2539,8 +2539,8 @@ public interface VirtualMachine
 
             /**
              * Specifies delete options for the existing data disk attached to the VM.
-             * This operation only affects existing <strong>attached</strong> data disks. Any newly-attached data disks
-             * that appear before {@link Update#apply()} won't be affected.
+             * <p>This operation only affects existing <strong>attached</strong> data disks. Any newly-attached data disks
+             * that appear before {@link Update#apply()} won't be affected.</p>
              *
              * @param deleteOptions delete options for the data disk
              * @param luns the disk LUNs to update
