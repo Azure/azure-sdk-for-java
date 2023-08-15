@@ -400,6 +400,8 @@ public class BlobClient extends BlobClientBase {
             requestConditions = new BlobRequestConditions().setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD);
         }
         uploadFromFile(filePath, null, null, null, null, requestConditions, null);
+
+        return null;
     }
 
     /**
