@@ -23,6 +23,7 @@ public class JsonObject extends JsonElement {
      * @return JsonObject representing the new state of the JsonObject object
      * after the addition of the new property.
      */
+    @Override
     public JsonObject addProperty(
         String key,
         Object element
@@ -154,6 +155,18 @@ public class JsonObject extends JsonElement {
 
         // Returning the new state of the JsonObject after the successful
         // addition of the new property
+        return this;
+    }
+
+    /**
+     *
+     * @param key
+     * @return
+     * @throws InvalidJsonDataTypeException
+     */
+    @Override
+    public JsonElement removeProperty(String key) {
+        this.properties.remove(key);
         return this;
     }
 
