@@ -293,6 +293,7 @@ $PackageExclusions = @{
   "azure-applicationinsights-query" = "Cannot find namespaces in javadoc package.";
   "azure-resourcemanager-voiceservices" = "Doc build attempts to download a package that does not have published sources.";
   "azure-resourcemanager-storagemover" = "Attempts to azure-sdk-build-tool and fails";
+  "azure-security-keyvault-jca" = "Consistently hangs docs build, might be a spring package https://github.com/Azure/azure-sdk-for-java/issues/35389";
 }
 
 # Validates if the package will succeed in the CI build by validating the

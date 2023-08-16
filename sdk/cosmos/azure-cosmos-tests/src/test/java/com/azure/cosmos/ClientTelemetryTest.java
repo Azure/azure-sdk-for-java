@@ -267,6 +267,7 @@ public class ClientTelemetryTest extends TestSuiteBase {
         IllegalAccessException {
         CosmosClient cosmosClient = null;
         String databaseId = UUID.randomUUID().toString();
+
         try {
             String whiteListedAccountForTelemetry = System.getProperty("COSMOS.CLIENT_TELEMETRY_COSMOS_ACCOUNT");
             assertThat(whiteListedAccountForTelemetry).isNotNull();

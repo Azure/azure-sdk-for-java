@@ -32,6 +32,7 @@ import com.azure.resourcemanager.compute.models.RunCommandResult;
 import com.azure.resourcemanager.compute.models.SecurityTypes;
 import com.azure.resourcemanager.compute.models.UpgradeMode;
 import com.azure.resourcemanager.compute.models.VirtualMachine;
+import com.azure.resourcemanager.compute.models.VirtualMachineDiskOptions;
 import com.azure.resourcemanager.compute.models.VirtualMachineEvictionPolicyTypes;
 import com.azure.resourcemanager.compute.models.VirtualMachineInstanceView;
 import com.azure.resourcemanager.compute.models.VirtualMachinePriorityTypes;
@@ -1606,6 +1607,103 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
         Assertions.assertFalse(vm.isVTpmEnabled());
 
         computeManager.virtualMachines().deleteById(vm.id());
+    }
+
+    @Test
+    public void canUpdateDeleteOptions() {
+        String networkName = generateRandomResourceName("network", 15);
+        String nicName = generateRandomResourceName("nic", 15);
+        String nicName2 = generateRandomResourceName("nic", 15);
+
+        Network network = this
+            .networkManager
+            .networks()
+            .define(networkName)
+            .withRegion(region)
+            .withNewResourceGroup(rgName)
+            .withAddressSpace("10.0.1.0/24")
+            .withSubnet("subnet1", "10.0.1.0/28")
+            .withSubnet("subnet2", "10.0.1.16/28")
+            .create();
+
+        // OS disk, primary and secondary nics, data disk delete options all set to DELETE
+        VirtualMachine vm = computeManager.virtualMachines()
+            .define(vmName)
+            .withRegion(region)
+            .withNewResourceGroup(rgName)
+            .withExistingPrimaryNetwork(network)
+            .withSubnet("subnet1")
+            .withPrimaryPrivateIPAddressDynamic()
+            .withoutPrimaryPublicIPAddress()
+            .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_20_04_LTS_GEN2)
+            .withRootUsername("Foo12")
+            .withSsh(sshPublicKey())
+            .withNewDataDisk(10, 1, new VirtualMachineDiskOptions().withDeleteOptions(DeleteOptions.DELETE))
+            .withSize(VirtualMachineSizeTypes.STANDARD_DS3_V2)
+            .withNewSecondaryNetworkInterface(this
+                .networkManager
+                .networkInterfaces()
+                .define(nicName)
+                .withRegion(region)
+                .withExistingResourceGroup(rgName)
+                .withExistingPrimaryNetwork(network)
+                .withSubnet("subnet1")
+                .withPrimaryPrivateIPAddressDynamic(), DeleteOptions.DELETE)
+            .withPrimaryNetworkInterfaceDeleteOptions(DeleteOptions.DELETE)
+            .withOSDiskDeleteOptions(DeleteOptions.DELETE)
+            .create();
+
+        Assertions.assertEquals(DeleteOptions.DELETE, vm.osDiskDeleteOptions());
+        Assertions.assertEquals(DeleteOptions.DELETE, vm.primaryNetworkInterfaceDeleteOptions());
+        Assertions.assertTrue(vm.dataDisks().values().stream().allMatch(disk -> DeleteOptions.DELETE.equals(disk.deleteOptions())));
+
+        // update delete options all to DETACH, except for secondary nic
+        vm.update()
+            .withOsDiskDeleteOptions(DeleteOptions.DETACH)
+            .withPrimaryNetworkInterfaceDeleteOptions(DeleteOptions.DETACH)
+            .withDataDisksDeleteOptions(DeleteOptions.DETACH, 1)
+            .apply();
+
+        Assertions.assertEquals(DeleteOptions.DETACH, vm.osDiskDeleteOptions());
+        Assertions.assertEquals(DeleteOptions.DETACH, vm.primaryNetworkInterfaceDeleteOptions());
+        // secondary nic delete options remains unchanged
+        Assertions.assertTrue(vm.networkInterfaceIds().stream()
+            .filter(nicId -> !nicId.equals(vm.primaryNetworkInterfaceId())).allMatch(nicId -> DeleteOptions.DELETE.equals(vm.networkInterfaceDeleteOptions(nicId))));
+        Assertions.assertTrue(vm.dataDisks().values().stream().allMatch(disk -> DeleteOptions.DETACH.equals(disk.deleteOptions())));
+
+        NetworkInterface secondaryNic2 =
+            this
+                .networkManager
+                .networkInterfaces()
+                .define(nicName2)
+                .withRegion(region)
+                .withExistingResourceGroup(rgName)
+                .withExistingPrimaryNetwork(network)
+                .withSubnet("subnet2")
+                .withPrimaryPrivateIPAddressDynamic()
+                .create();
+
+        vm.powerOff();
+        vm.deallocate();
+
+        // attach a new network interface and a new data disk, with delete options "DETACH"
+        vm.update()
+            .withNewDataDisk(1, 2, new VirtualMachineDiskOptions().withDeleteOptions(DeleteOptions.DETACH))
+            .withExistingSecondaryNetworkInterface(secondaryNic2)
+            .apply();
+
+        // update all back to DELETE, including the newly added data disk and the secondary nic
+        vm.update()
+            .withPrimaryNetworkInterfaceDeleteOptions(DeleteOptions.DELETE)
+            .withDataDisksDeleteOptions(DeleteOptions.DELETE, new ArrayList<>(vm.dataDisks().keySet()).toArray(new Integer[0]))
+            .withNetworkInterfacesDeleteOptions(
+                DeleteOptions.DELETE,
+                vm.networkInterfaceIds().stream().filter(nic -> !nic.equals(vm.primaryNetworkInterfaceId())).toArray(String[]::new))
+            .apply();
+
+        Assertions.assertEquals(DeleteOptions.DELETE, vm.primaryNetworkInterfaceDeleteOptions());
+        Assertions.assertTrue(vm.networkInterfaceIds().stream().allMatch(nicId -> DeleteOptions.DELETE.equals(vm.networkInterfaceDeleteOptions(nicId))));
+        Assertions.assertTrue(vm.dataDisks().values().stream().allMatch(disk -> DeleteOptions.DELETE.equals(disk.deleteOptions())));
     }
 
     // *********************************** helper methods ***********************************

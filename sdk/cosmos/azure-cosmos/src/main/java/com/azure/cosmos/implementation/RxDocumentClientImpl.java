@@ -223,7 +223,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                 CosmosClientTelemetryConfig clientTelemetryConfig,
                                 String clientCorrelationId,
                                 CosmosEndToEndOperationLatencyPolicyConfig cosmosEndToEndOperationLatencyPolicyConfig,
-                                SessionRetryOptions sessionRetryOptions) {
+                                SessionRetryOptions sessionRetryOptions,
+                                CosmosContainerProactiveInitConfig containerProactiveInitConfig) {
         this(
                 serviceEndpoint,
                 masterKeyOrResourceToken,
@@ -241,7 +242,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 clientTelemetryConfig,
                 clientCorrelationId,
                 cosmosEndToEndOperationLatencyPolicyConfig,
-                sessionRetryOptions);
+                sessionRetryOptions,
+                containerProactiveInitConfig);
         this.cosmosAuthorizationTokenResolver = cosmosAuthorizationTokenResolver;
     }
 
@@ -262,7 +264,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                 CosmosClientTelemetryConfig clientTelemetryConfig,
                                 String clientCorrelationId,
                                 CosmosEndToEndOperationLatencyPolicyConfig cosmosEndToEndOperationLatencyPolicyConfig,
-                                SessionRetryOptions sessionRetryOptions) {
+                                SessionRetryOptions sessionRetryOptions,
+                                CosmosContainerProactiveInitConfig containerProactiveInitConfig) {
         this(
                 serviceEndpoint,
                 masterKeyOrResourceToken,
@@ -280,7 +283,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 clientTelemetryConfig,
                 clientCorrelationId,
                 cosmosEndToEndOperationLatencyPolicyConfig,
-                sessionRetryOptions);
+                sessionRetryOptions,
+                containerProactiveInitConfig);
         this.cosmosAuthorizationTokenResolver = cosmosAuthorizationTokenResolver;
     }
 
@@ -300,7 +304,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                 CosmosClientTelemetryConfig clientTelemetryConfig,
                                 String clientCorrelationId,
                                 CosmosEndToEndOperationLatencyPolicyConfig cosmosEndToEndOperationLatencyPolicyConfig,
-                                SessionRetryOptions sessionRetryOptions) {
+                                SessionRetryOptions sessionRetryOptions,
+                                CosmosContainerProactiveInitConfig containerProactiveInitConfig) {
         this(
                 serviceEndpoint,
                 masterKeyOrResourceToken,
@@ -317,7 +322,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 clientTelemetryConfig,
                 clientCorrelationId,
                 cosmosEndToEndOperationLatencyPolicyConfig,
-                sessionRetryOptions);
+                sessionRetryOptions,
+                containerProactiveInitConfig);
 
         if (permissionFeed != null && permissionFeed.size() > 0) {
             this.resourceTokensMap = new HashMap<>();
@@ -376,7 +382,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                          CosmosClientTelemetryConfig clientTelemetryConfig,
                          String clientCorrelationId,
                          CosmosEndToEndOperationLatencyPolicyConfig cosmosEndToEndOperationLatencyPolicyConfig,
-                         SessionRetryOptions sessionRetryOptions) {
+                         SessionRetryOptions sessionRetryOptions,
+                         CosmosContainerProactiveInitConfig containerProactiveInitConfig) {
 
         assert(clientTelemetryConfig != null);
         Boolean clientTelemetryEnabled = ImplementationBridgeHelpers
@@ -453,6 +460,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             this.diagnosticsClientConfig.withEndpointDiscoveryEnabled(this.connectionPolicy.isEndpointDiscoveryEnabled());
             this.diagnosticsClientConfig.withPreferredRegions(this.connectionPolicy.getPreferredRegions());
             this.diagnosticsClientConfig.withMachineId(tempMachineId);
+            this.diagnosticsClientConfig.withProactiveContainerInitConfig(containerProactiveInitConfig);
 
             boolean disableSessionCapturing = (ConsistencyLevel.SESSION != consistencyLevel && !sessionCapturingOverrideEnabled);
 

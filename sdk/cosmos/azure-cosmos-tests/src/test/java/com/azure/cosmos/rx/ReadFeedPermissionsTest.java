@@ -37,7 +37,7 @@ public class ReadFeedPermissionsTest extends TestSuiteBase {
         super(clientBuilder);
     }
 
-    @Test(groups = { "simple" }, timeOut = FEED_TIMEOUT)
+    @Test(groups = { "query" }, timeOut = FEED_TIMEOUT)
     public void readPermissions() throws Exception {
         int maxItemCount = 2;
 
@@ -56,7 +56,7 @@ public class ReadFeedPermissionsTest extends TestSuiteBase {
         validateQuerySuccess(feedObservable.byPage(maxItemCount), validator, FEED_TIMEOUT);
     }
 
-    @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
+    @BeforeClass(groups = { "query" }, timeOut = SETUP_TIMEOUT)
     public void before_ReadFeedPermissionsTest() {
         client = this.getClientBuilder().buildAsyncClient();
         createdDatabase = createDatabase(client, databaseId);
@@ -69,7 +69,7 @@ public class ReadFeedPermissionsTest extends TestSuiteBase {
         waitIfNeededForReplicasToCatchUp(this.getClientBuilder());
     }
 
-    @AfterClass(groups = { "simple" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
+    @AfterClass(groups = { "query" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
         safeDeleteDatabase(createdDatabase);
         safeClose(client);

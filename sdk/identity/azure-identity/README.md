@@ -96,6 +96,12 @@ The `DefaultAzureCredential` will attempt to authenticate via the following mech
 6. **Azure CLI** - If the developer has authenticated an account via the Azure CLI `az login` command, the `DefaultAzureCredential` will authenticate with that account.
 7. **Azure PowerShell** - If the developer has authenticated an account via the Azure PowerShell `Connect-AzAccount` command, the `DefaultAzureCredential` will authenticate with that account.
 
+#### Continuation policy
+
+As of v1.10.0, `DefaultAzureCredential` will attempt to authenticate with all developer credentials until one succeeds, regardless of any errors previous developer credentials experienced. For example, a developer credential may attempt to get a token and fail, so `DefaultAzureCredential` will continue to the next credential in the flow. Deployed service credentials will stop the flow with a thrown exception if they're able to attempt token retrieval, but don't receive one.
+
+This allows for trying all of the developer credentials on your machine while having predictable deployed behavior.
+
 #### Note about `VisualStudioCodeCredential`
 
 Due to a [known issue](https://github.com/Azure/azure-sdk-for-java/issues/27364), `VisualStudioCodeCredential` has been removed from the `DefaultAzureCredential` token chain. When the issue is resolved in a future release, this change will be reverted.
@@ -531,6 +537,10 @@ Credentials can be chained together to be tried in turn until one succeeds using
 </table>
 
 Configuration is attempted in the above order. For example, if values for a client secret and certificate are both present, the client secret will be used.
+
+## Continuous Access Evaluation
+
+As of v1.10.0, accessing resources protected by [Continuous Access Evaluation](https://learn.microsoft.com/azure/active-directory/conditional-access/concept-continuous-access-evaluation) (CAE) is possible on a per-request basis. This can be enabled using the [`TokenRequestContext.setCaeEnabled(boolean)` API](https://learn.microsoft.com/java/api/com.azure.core.credential.tokenrequestcontext?view=azure-java-stable#com-azure-core-credential-tokenrequestcontext-setcaeenabled(boolean)). CAE isn't supported for developer credentials.
 
 ## Token caching
 Token caching is a feature provided by the Azure Identity library that allows apps to:
