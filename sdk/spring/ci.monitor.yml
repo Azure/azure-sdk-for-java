@@ -37,3 +37,11 @@ extends:
         skipUpdatePackageJson: true
         skipVerifyChangelog: true
         releaseInBatch: true
+      - name: spring-cloud-azure-starter-monitor-test
+        groupId: com.azure.spring
+        safeName: springcloudazurestartermonitortest
+        skipPublishDocGithubIo: true
+        skipPublishDocMs: true
+        skipUpdatePackageJson: true
+        skipVerifyChangelog: true
+        releaseInBatch: false
