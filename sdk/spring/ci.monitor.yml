@@ -36,5 +36,4 @@ extends:
         skipPublishDocMs: true
         skipUpdatePackageJson: true
         skipVerifyChangelog: true
-        releaseInBatch: ${{ parameters.release_springcloudazurestartermonitor }}
-
+        releaseInBatch: true
