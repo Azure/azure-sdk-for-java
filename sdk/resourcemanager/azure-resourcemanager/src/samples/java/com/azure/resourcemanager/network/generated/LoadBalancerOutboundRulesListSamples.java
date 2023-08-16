@@ -7,7 +7,7 @@ package com.azure.resourcemanager.network.generated;
 /** Samples for LoadBalancerOutboundRules List. */
 public final class LoadBalancerOutboundRulesListSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-02-01/examples/LoadBalancerOutboundRuleList.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-04-01/examples/LoadBalancerOutboundRuleList.json
      */
     /**
      * Sample code: LoadBalancerOutboundRuleList.

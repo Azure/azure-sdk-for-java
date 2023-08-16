@@ -123,6 +123,10 @@ public final class ServiceSasParameters {
     @JsonProperty(value = "rsct")
     private String contentType;
 
+    /** Creates an instance of ServiceSasParameters class. */
+    public ServiceSasParameters() {
+    }
+
     /**
      * Get the canonicalizedResource property: The canonical path to the signed resource.
      *

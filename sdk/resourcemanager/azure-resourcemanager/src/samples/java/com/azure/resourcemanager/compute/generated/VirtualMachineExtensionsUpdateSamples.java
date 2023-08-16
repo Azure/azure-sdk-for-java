@@ -14,7 +14,7 @@ import java.io.IOException;
 /** Samples for VirtualMachineExtensions Update. */
 public final class VirtualMachineExtensionsUpdateSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/virtualMachineExamples/VirtualMachineExtension_Update.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-07-01/examples/virtualMachineExamples/VirtualMachineExtension_Update.json
      */
     /**
      * Sample code: Update VM extension.

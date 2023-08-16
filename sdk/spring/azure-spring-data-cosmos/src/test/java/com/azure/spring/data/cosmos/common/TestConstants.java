@@ -5,6 +5,7 @@ package com.azure.spring.data.cosmos.common;
 import com.azure.cosmos.models.IndexingMode;
 import com.azure.spring.data.cosmos.domain.Address;
 
+import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -133,6 +134,18 @@ public final class TestConstants {
     //  Some constants from Cosmos HttpConstants
     public static final int PRECONDITION_FAILED_STATUS_CODE = 412;
     public static final int CONFLICT_STATUS_CODE = 409;
+
+    public static final Long LONG_ID_1 = Long.valueOf(10000001);
+    public static final Long LONG_ID_2 = Long.valueOf(20000002);
+    public static final Long LONG_ID_3 = Long.valueOf(54600003);
+
+    public static final Integer HOME_NUMBER_1 = 1;
+    public static final Integer HOME_NUMBER_2 = 99;
+    public static final Integer HOME_NUMBER_3 = 4445;
+
+    public static final LocalDate REGISTRATION_TIME_1D_AGO = LocalDate.now().minusDays(1);
+    public static final LocalDate REGISTRATION_TIME_1W_AGO = LocalDate.now().minusDays(7);
+    public static final LocalDate REGISTRATION_TIME_1M_AGO = LocalDate.now().minusMonths(1);
 
     public static final Map<String, String> PASSPORT_IDS_BY_COUNTRY = new HashMap<String, String>() {{
         put("United States of America", "123456789");

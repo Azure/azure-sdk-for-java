@@ -11,7 +11,7 @@ import java.util.Arrays;
 /** Samples for RoutingIntent CreateOrUpdate. */
 public final class RoutingIntentCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-02-01/examples/RoutingIntentPut.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-04-01/examples/RoutingIntentPut.json
      */
     /**
      * Sample code: RouteTablePut.

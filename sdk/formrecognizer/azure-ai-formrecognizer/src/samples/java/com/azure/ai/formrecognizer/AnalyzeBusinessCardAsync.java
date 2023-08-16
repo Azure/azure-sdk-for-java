@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -53,7 +54,7 @@ public class AnalyzeBusinessCardAsync {
         PollerFlux<OperationResult, AnalyzeResult> analyzeBusinessCardPoller =
             client.beginAnalyzeDocument("prebuilt-businessCard",
                 BinaryData.fromStream(targetStream),
-                new AnalyzeDocumentOptions().setPages(Arrays.asList("1")).setLocale("en-US"));
+                new AnalyzeDocumentOptions().setPages(Collections.singletonList("1")).setLocale("en-US"));
 
         Mono<AnalyzeResult> businessCardPageResultsMono
             = analyzeBusinessCardPoller

@@ -1,6 +1,32 @@
 # Release History
 
-## 2.29.0-beta.1 (Unreleased)
+## 2.30.0-beta.1 (Unreleased)
+
+### Features Added
+
+- Supported `backends` for `LoadBalancingRule`.
+- Supported `withSslPolicy` for `ApplicationGateway`.
+
+### Breaking Changes
+
+- Now `ApplicationGateway` will be created with `BASIC` sku and tier if not specified.
+- No new subscriptions for V1 deployments: July 1,2023 onwards - Application Gateway V1 is no longer available for 
+  deployment on subscriptions with out V1 gateways(Refer to 
+  [FAQ](https://learn.microsoft.com/azure/application-gateway/retirement-faq#what-is-the-definition-of-a-new-customer-on-application-gateway-v1-sku) 
+  for details) from July 1 2023 onwards.
+- No new V1 deployments: August 28, 2024 - V1 creation will be stopped completely for all customers 28 August 2024 onwards.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2023-04-01`.
+
+## 2.29.0 (2023-07-28)
+
+### Bugs Fixed
+
+- Fixed a bug that `priority` wasn't set for path-based request routing rules when creating V2 Application Gateways.
 
 ### Other Changes
 

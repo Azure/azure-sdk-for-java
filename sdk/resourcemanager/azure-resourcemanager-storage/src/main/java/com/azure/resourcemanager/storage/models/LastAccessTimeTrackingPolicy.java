@@ -37,6 +37,10 @@ public final class LastAccessTimeTrackingPolicy {
     @JsonProperty(value = "blobType")
     private List<String> blobType;
 
+    /** Creates an instance of LastAccessTimeTrackingPolicy class. */
+    public LastAccessTimeTrackingPolicy() {
+    }
+
     /**
      * Get the enable property: When set to true last access time based tracking is enabled.
      *
