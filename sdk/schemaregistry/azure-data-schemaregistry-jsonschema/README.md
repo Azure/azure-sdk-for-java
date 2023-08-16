@@ -23,15 +23,15 @@ and deserialization.
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-data-schemaregistry-jsonschema</artifactId>
-  <version>1.1.4</version>
+  <version>1.0.0-beta.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
 
-### Create `SchemaRegistryApacheAvroSerializer` instance
+### Create `SchemaRegistryJsonSchemaSerializer` instance
 
-The `SchemaRegistryApacheAvroSerializer` instance is the main class that provides APIs for serializing and
-deserializing avro data format. The avro schema is stored and retrieved from the Schema Registry service
+The `SchemaRegistryJsonSchemaSerializer` instance is the main class that provides APIs for serializing and
+deserializing JSON schema format. The JSON schema is stored and retrieved from the Schema Registry service
 through the `SchemaRegistryAsyncClient`. So, before we create the serializer, we should create the client.
 
 #### Create `SchemaRegistryAsyncClient` with Azure Active Directory Credential
@@ -51,23 +51,39 @@ with the Azure SDK, please include the `azure-identity` package:
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.8.2</version>
+    <version>1.9.1</version>
 </dependency>
 ```
 
 You will also need to [register a new AAD application][register_aad_app] and [grant access][aad_grant_access] to
  Schema Registry service.
 
-#### Create `SchemaRegistryAvroSerializer` through the builder
+```java readme-sample-createSchemaRegistryAsyncClient
+TokenCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
+
+// {schema-registry-endpoint} is the fully qualified namespace of the Event Hubs instance. It is usually
+// of the form "{your-namespace}.servicebus.windows.net"
+SchemaRegistryAsyncClient schemaRegistryAsyncClient = new SchemaRegistryClientBuilder()
+    .fullyQualifiedNamespace("{your-event-hubs-namespace}.servicebus.windows.net")
+    .credential(tokenCredential)
+    .buildAsyncClient();
+```
+
+#### Create `SchemaRegistryJsonSchemaSerializer` through the builder
+
+```java readme-sample-createSchemaRegistryJsonSchemaSerializer
+SchemaRegistryJsonSchemaSerializer serializer = new SchemaRegistryJsonSchemaSerializerBuilder()
+    .schemaRegistryClient(schemaRegistryAsyncClient)
+    .schemaGroup("{schema-group}")
+    .buildSerializer();
+```
 
 ## Key concepts
 
-This library provides a serializer, `SchemaRegistryApacheAvroSerializer`. The
-`SchemaRegistryAvroSerializer` utilizes a `SchemaRegistryAsyncClient` to construct messages using a wire format
-containing schema information such as a schema ID.
-
-This serializer requires the Apache Avro library. The payload types accepted by this serializer include
-[GenericRecord][generic_record] and [SpecificRecord][specific_record].
+This library provides a serializer, `SchemaRegistryApacheJsonSchemaSerializer`. The
+`SchemaRegistryJsonSchemaSerializer` utilizes a `SchemaRegistryAsyncClient` to construct messages using a wire format
+containing schema information such as a schema ID.  This library allows users to serialize, deserialize, register, and
+validate JSON objects by plugging in a JSON schema implementation.
 
 ## Examples
 
@@ -75,13 +91,32 @@ This serializer requires the Apache Avro library. The payload types accepted by 
 * [Deserialize](#deserialize)
 
 ### Serialize
-Serialize a strongly-typed object into Schema Registry-compatible avro payload.
 
-The avro type `PlayingCard` is available in samples package
-[`com.azure.data.schemaregistry.avro.generatedtestsources`][generated_types].
+Serialize a POJO object, Address, and register the matching JSON schema if `autoRegisterSchema(boolean)` is set to 
+`true` in when creating the serializer.
+
+```java readme-sample-serializeSample
+Address address = new Address();
+address.setNumber(105);
+address.setStreetName("1st");
+address.setStreetType("Street");
+
+EventData eventData = serializer.serialize(address, TypeReference.createInstance(EventData.class));
+```
+
+The type `Address` is available in the test package
+[`com.azure.data.schemaregistry.jsonschema.Address`][address_type].
 
 ### Deserialize
-Deserialize a Schema Registry-compatible avro payload into a strongly-type object.
+
+Deserialize a Schema Registry-compatible JSON payload into a strongly-type object and validate it against its JSON
+schema.
+
+```java readme-sample-deserializeSample
+SchemaRegistryJsonSchemaSerializer serializer = createSerializer();
+MessageContent message = getSchemaRegistryJSONMessage();
+Address address = serializer.deserialize(message, TypeReference.createInstance(Address.class));
+```
 
 ## Troubleshooting
 
@@ -92,6 +127,7 @@ their resolution. The logs produced will capture the flow of an application befo
 locate the root issue. View the [logging][logging] wiki for guidance about enabling logging.
 
 ## Next steps
+
 More samples can be found [here][samples].
 
 ## Contributing
@@ -103,10 +139,10 @@ When you submit a pull request, a CLA-bot will automatically determine whether y
 This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For more information see the [Code of Conduct FAQ][coc_faq] or contact [opencode@microsoft.com][coc_contact] with any additional questions or comments.
 
 <!-- LINKS -->
-[package_maven]: https://search.maven.org/artifact/com.azure/azure-data-schemaregistry-avro
-[sample_readme]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/schemaregistry/azure-data-schemaregistry-apacheavro/src/samples
-[samples]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/schemaregistry/azure-data-schemaregistry-apacheavro/src/samples/java/com/azure/data/schemaregistry/apacheavro
-[generated_types]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/schemaregistry/azure-data-schemaregistry-apacheavro/src/samples/java/com/azure/data/schemaregistry/apacheavro/generatedtestsources
+[package_maven]: https://search.maven.org/artifact/com.azure/azure-data-schemaregistry-jsonschema
+[sample_readme]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/schemaregistry/azure-data-schemaregistry-jsonschema/src/samples
+[samples]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/schemaregistry/azure-data-schemaregistry-jsonschema/src/samples/java/com/azure/data/schemaregistry/jsonschema
+[address_type]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/schemaregistry/azure-data-schemaregistry-jsonschema/src/test/java/com/azure/data/schemaregistry/jsonschema/Address.java
 [source_code]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/schemaregistry/azure-data-schemaregistry-apacheavro/src
 [samples_code]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/schemaregistry/azure-data-schemaregistry-apacheavro/src/samples/
 [azure_subscription]: https://azure.microsoft.com/free/
