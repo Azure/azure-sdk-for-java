@@ -41,11 +41,10 @@ public final class SchemaRegistryJsonSchemaSerializer {
 
     SchemaRegistryJsonSchemaSerializer(SchemaRegistryAsyncClient schemaRegistryClient,
         JsonSchemaGenerator schemaGenerator, SerializerOptions serializerOptions) {
-        SchemaRegistryAsyncClient schemaRegistryClient1 = Objects.requireNonNull(schemaRegistryClient,
-                "'schemaRegistryClient' cannot be null.");
-        this.schemaGenerator = Objects.requireNonNull(schemaGenerator, "'schemaGenerator' cannot be null.");
-
+        Objects.requireNonNull(schemaRegistryClient, "'schemaRegistryClient' cannot be null.");
         Objects.requireNonNull(serializerOptions, "'serializerOptions' cannot be null.");
+
+        this.schemaGenerator = Objects.requireNonNull(schemaGenerator, "'schemaGenerator' cannot be null.");
 
         this.serializer = serializerOptions.getSerializerAdapter();
         this.schemaCache = new SchemaRegistrySchemaCache(schemaRegistryClient, serializerOptions.getSchemaGroup(),
@@ -136,7 +135,7 @@ public final class SchemaRegistryJsonSchemaSerializer {
             return monoError(logger, new NullPointerException("'typeReference' cannot be null."));
         }
 
-        final String schemaFullName = typeReference.getJavaClass().getName();
+        final String schemaFullName = object.getClass().getName();
         final Optional<Constructor<?>> constructor =
             Arrays.stream(typeReference.getJavaClass().getDeclaredConstructors())
                 .filter(c -> c.getParameterCount() == 0)
@@ -157,12 +156,18 @@ public final class SchemaRegistryJsonSchemaSerializer {
 
         String schemaDefinition;
         try {
-            schemaDefinition = schemaGenerator.getSchema(typeReference);
+            schemaDefinition = schemaGenerator.getSchema(TypeReference.createInstance(object.getClass()));
         } catch (Exception exception) {
             logger.atError()
                 .addKeyValue("type", schemaFullName)
                 .log(() -> "Unable to get schema.", exception);
             return Mono.error(exception);
+        }
+
+        if (schemaDefinition == null) {
+            logger.atWarning().addKeyValue("type", schemaFullName)
+                    .log("Schema returned from generator was null.");
+            return Mono.error(new IllegalArgumentException("JSON Schema cannot be null. Type: " + schemaFullName));
         }
 
         return this.schemaCache.getSchemaId(schemaFullName, schemaDefinition)

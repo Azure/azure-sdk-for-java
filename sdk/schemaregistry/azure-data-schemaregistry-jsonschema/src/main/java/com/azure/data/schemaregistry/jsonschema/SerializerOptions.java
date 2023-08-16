@@ -6,6 +6,8 @@ package com.azure.data.schemaregistry.jsonschema;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.serializer.SerializerAdapter;
 
+import java.util.Objects;
+
 /**
  * Package-private class that holds additional options when creating serializer.
  */
@@ -28,7 +30,8 @@ class SerializerOptions {
         this.schemaGroup = schemaGroup;
         this.autoRegisterSchemas = autoRegisterSchemas;
         this.maxCacheSize = maxCacheSize;
-        this.serializerAdapter = serializerAdapter;
+
+        this.serializerAdapter = Objects.requireNonNull(serializerAdapter, "'serializerAdapter' is required.");
     }
 
     /**

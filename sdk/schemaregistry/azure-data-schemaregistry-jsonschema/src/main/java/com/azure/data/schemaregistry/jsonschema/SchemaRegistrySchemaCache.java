@@ -56,7 +56,7 @@ class SchemaRegistrySchemaCache {
         // autoRegisterSchemas is false. (ie. You are only using it to deserialize messages.)
         if (CoreUtils.isNullOrEmpty(schemaGroup)) {
             return monoError(logger, new IllegalStateException("Cannot serialize when 'schemaGroup' is not set. Please"
-                + "set in SchemaRegistryApacheAvroSerializer.schemaGroup when creating serializer."));
+                + " set in SchemaRegistryJsonSchemaSerializer.schemaGroup when creating serializer."));
         }
 
         final Mono<SchemaProperties> serviceCall;
@@ -196,13 +196,13 @@ class SchemaRegistrySchemaCache {
         @Override
         public String put(String schemaId, String value) {
             final String existing = super.put(schemaId, value);
-            final int currentLength = value.toString().length();
+            final int currentLength = value.length();
 
             // The replaced node may be of a different size.
             if (existing == null) {
                 totalLength = totalLength + currentLength;
             } else {
-                final int difference = currentLength - existing.toString().length();
+                final int difference = currentLength - existing.length();
                 totalLength = totalLength - difference;
             }
 
