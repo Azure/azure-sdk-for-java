@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation.http;
 
-import io.netty.handler.codec.http.HttpMethod;
 
 import java.time.Duration;
 import java.util.Arrays;

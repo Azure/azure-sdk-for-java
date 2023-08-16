@@ -15,7 +15,6 @@ import reactor.core.publisher.Mono;
 
 import java.net.URI;
 import java.time.Duration;
-import java.util.concurrent.TimeUnit;
 
 public class WebExceptionRetryPolicy implements IRetryPolicy {
     private final static Logger logger = LoggerFactory.getLogger(WebExceptionRetryPolicy.class);
@@ -93,7 +92,7 @@ public class WebExceptionRetryPolicy implements IRetryPolicy {
         this.locationEndpoint = request.requestContext.locationEndpointToRoute;
     }
 
-    private Boolean isOutOfRetries() {
+    private boolean isOutOfRetries() {
         return this.retryCount >= this.timeoutPolicy.totalRetryCount();
     }
 
