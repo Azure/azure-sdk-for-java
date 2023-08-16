@@ -8,6 +8,8 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.models.DeleteOptions;
+import com.azure.resourcemanager.compute.models.NetworkInterfaceAuxiliaryMode;
+import com.azure.resourcemanager.compute.models.NetworkInterfaceAuxiliarySku;
 import com.azure.resourcemanager.compute.models.VirtualMachineNetworkInterfaceDnsSettingsConfiguration;
 import com.azure.resourcemanager.compute.models.VirtualMachineNetworkInterfaceIpConfiguration;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -75,6 +77,18 @@ public final class VirtualMachineNetworkInterfaceConfigurationProperties {
      */
     @JsonProperty(value = "dscpConfiguration")
     private SubResource dscpConfiguration;
+
+    /*
+     * Specifies whether the Auxiliary mode is enabled for the Network Interface resource.
+     */
+    @JsonProperty(value = "auxiliaryMode")
+    private NetworkInterfaceAuxiliaryMode auxiliaryMode;
+
+    /*
+     * Specifies whether the Auxiliary sku is enabled for the Network Interface resource.
+     */
+    @JsonProperty(value = "auxiliarySku")
+    private NetworkInterfaceAuxiliarySku auxiliarySku;
 
     /** Creates an instance of VirtualMachineNetworkInterfaceConfigurationProperties class. */
     public VirtualMachineNetworkInterfaceConfigurationProperties() {
@@ -288,6 +302,50 @@ public final class VirtualMachineNetworkInterfaceConfigurationProperties {
      */
     public VirtualMachineNetworkInterfaceConfigurationProperties withDscpConfiguration(SubResource dscpConfiguration) {
         this.dscpConfiguration = dscpConfiguration;
+        return this;
+    }
+
+    /**
+     * Get the auxiliaryMode property: Specifies whether the Auxiliary mode is enabled for the Network Interface
+     * resource.
+     *
+     * @return the auxiliaryMode value.
+     */
+    public NetworkInterfaceAuxiliaryMode auxiliaryMode() {
+        return this.auxiliaryMode;
+    }
+
+    /**
+     * Set the auxiliaryMode property: Specifies whether the Auxiliary mode is enabled for the Network Interface
+     * resource.
+     *
+     * @param auxiliaryMode the auxiliaryMode value to set.
+     * @return the VirtualMachineNetworkInterfaceConfigurationProperties object itself.
+     */
+    public VirtualMachineNetworkInterfaceConfigurationProperties withAuxiliaryMode(
+        NetworkInterfaceAuxiliaryMode auxiliaryMode) {
+        this.auxiliaryMode = auxiliaryMode;
+        return this;
+    }
+
+    /**
+     * Get the auxiliarySku property: Specifies whether the Auxiliary sku is enabled for the Network Interface resource.
+     *
+     * @return the auxiliarySku value.
+     */
+    public NetworkInterfaceAuxiliarySku auxiliarySku() {
+        return this.auxiliarySku;
+    }
+
+    /**
+     * Set the auxiliarySku property: Specifies whether the Auxiliary sku is enabled for the Network Interface resource.
+     *
+     * @param auxiliarySku the auxiliarySku value to set.
+     * @return the VirtualMachineNetworkInterfaceConfigurationProperties object itself.
+     */
+    public VirtualMachineNetworkInterfaceConfigurationProperties withAuxiliarySku(
+        NetworkInterfaceAuxiliarySku auxiliarySku) {
+        this.auxiliarySku = auxiliarySku;
         return this;
     }
 
