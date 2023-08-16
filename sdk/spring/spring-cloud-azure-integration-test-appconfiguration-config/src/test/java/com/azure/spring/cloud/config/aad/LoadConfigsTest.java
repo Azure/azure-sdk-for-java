@@ -1,8 +1,10 @@
-package com.azure.spring.cloud.config;
+package com.azure.spring.cloud.config.aad;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import com.azure.spring.cloud.config.Constants;
+import com.azure.spring.cloud.config.MessageProperties;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -17,6 +19,9 @@ import com.azure.spring.cloud.feature.management.web.FeatureManagerSnapshot;
 
 @SpringBootTest(classes = LoadConfigsTest.class)
 @TestPropertySource(properties = {
+    // When the endpoint of an App Configuration store is specified, need to set "authMethod" as "AzureActiveDirectory".
+    // So that ConfigurationClientBuilder and SecretClientBuilder are both customized.
+    "authMethod=" + Constants.AZURE_ACTIVE_DIRECTORY,
     "spring.cloud.azure.appconfiguration.stores[0].endpoint= ${STORE_NAME}",
     "spring.cloud.azure.appconfiguration.stores[0].feature-flags.enabled= true" })
 @Configuration

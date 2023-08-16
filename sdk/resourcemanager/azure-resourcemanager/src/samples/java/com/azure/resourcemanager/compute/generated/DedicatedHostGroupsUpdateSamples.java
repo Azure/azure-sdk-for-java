@@ -12,7 +12,7 @@ import java.util.Map;
 /** Samples for DedicatedHostGroups Update. */
 public final class DedicatedHostGroupsUpdateSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/dedicatedHostExamples/DedicatedHostGroup_Update_MaximumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-07-01/examples/dedicatedHostExamples/DedicatedHostGroup_Update_MaximumSet_Gen.json
      */
     /**
      * Sample code: DedicatedHostGroup_Update_MaximumSet_Gen.
@@ -37,7 +37,7 @@ public final class DedicatedHostGroupsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/dedicatedHostExamples/DedicatedHostGroup_Update_MinimumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-07-01/examples/dedicatedHostExamples/DedicatedHostGroup_Update_MinimumSet_Gen.json
      */
     /**
      * Sample code: DedicatedHostGroup_Update_MinimumSet_Gen.
