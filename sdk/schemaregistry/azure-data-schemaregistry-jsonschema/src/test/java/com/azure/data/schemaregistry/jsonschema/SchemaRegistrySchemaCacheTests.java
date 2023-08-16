@@ -57,8 +57,8 @@ public class SchemaRegistrySchemaCacheTests {
         final SchemaRegistrySchemaCache cache = new SchemaRegistrySchemaCache(client, SCHEMA_GROUP,
             autoRegisterSchemas, capacity);
 
-        when(client.getSchemaProperties(SCHEMA_GROUP, schemaName, schemaString, SchemaFormat.AVRO))
-            .thenReturn(Mono.just(new SchemaProperties(SCHEMA_ID, SchemaFormat.AVRO)));
+        when(client.getSchemaProperties(SCHEMA_GROUP, schemaName, schemaString, SchemaFormat.JSON))
+            .thenReturn(Mono.just(new SchemaProperties(SCHEMA_ID, SchemaFormat.JSON)));
 
         // Act
         StepVerifier.create(cache.getSchemaId(schemaName, schemaString))
@@ -78,8 +78,8 @@ public class SchemaRegistrySchemaCacheTests {
         final SchemaRegistrySchemaCache cache = new SchemaRegistrySchemaCache(client, SCHEMA_GROUP,
             autoRegisterSchemas, capacity);
 
-        when(client.getSchemaProperties(SCHEMA_GROUP, schemaName, schemaString, SchemaFormat.AVRO))
-            .thenReturn(Mono.just(new SchemaProperties(SCHEMA_ID, SchemaFormat.AVRO)));
+        when(client.getSchemaProperties(SCHEMA_GROUP, schemaName, schemaString, SchemaFormat.JSON))
+            .thenReturn(Mono.just(new SchemaProperties(SCHEMA_ID, SchemaFormat.JSON)));
 
         // Act & Assert
         StepVerifier.create(cache.getSchemaId(schemaName, schemaString))
@@ -100,7 +100,7 @@ public class SchemaRegistrySchemaCacheTests {
             .verify(TIMEOUT);
 
         // We only want one invocation.
-        verify(client).getSchemaProperties(anyString(), anyString(), anyString(), eq(SchemaFormat.AVRO));
+        verify(client).getSchemaProperties(anyString(), anyString(), anyString(), eq(SchemaFormat.JSON));
 
         assertEquals(1, cache.getSize());
         assertEquals(schemaString.length(), cache.getTotalLength());
@@ -117,8 +117,8 @@ public class SchemaRegistrySchemaCacheTests {
         final SchemaRegistrySchemaCache cache = new SchemaRegistrySchemaCache(client, null,
             autoRegisterSchemas, capacity);
 
-        when(client.getSchemaProperties(SCHEMA_GROUP, schemaName, schemaString, SchemaFormat.AVRO))
-            .thenReturn(Mono.just(new SchemaProperties(SCHEMA_ID, SchemaFormat.AVRO)));
+        when(client.getSchemaProperties(SCHEMA_GROUP, schemaName, schemaString, SchemaFormat.JSON))
+            .thenReturn(Mono.just(new SchemaProperties(SCHEMA_ID, SchemaFormat.JSON)));
 
         // Act
         StepVerifier.create(cache.getSchemaId(schemaName, schemaString))
@@ -137,8 +137,8 @@ public class SchemaRegistrySchemaCacheTests {
         final SchemaRegistrySchemaCache cache = new SchemaRegistrySchemaCache(client, SCHEMA_GROUP,
             autoRegisterSchemas, capacity);
 
-        when(client.registerSchema(SCHEMA_GROUP, schemaName, schemaString, SchemaFormat.AVRO))
-            .thenReturn(Mono.just(new SchemaProperties(SCHEMA_ID, SchemaFormat.AVRO)));
+        when(client.registerSchema(SCHEMA_GROUP, schemaName, schemaString, SchemaFormat.JSON))
+            .thenReturn(Mono.just(new SchemaProperties(SCHEMA_ID, SchemaFormat.JSON)));
 
         // Act
         StepVerifier.create(cache.getSchemaId(schemaName, schemaString))
@@ -159,8 +159,8 @@ public class SchemaRegistrySchemaCacheTests {
         final SchemaRegistrySchemaCache cache = new SchemaRegistrySchemaCache(client, SCHEMA_GROUP,
             autoRegisterSchemas, capacity);
 
-        when(client.registerSchema(SCHEMA_GROUP, schemaName, schemaString, SchemaFormat.AVRO))
-            .thenReturn(Mono.just(new SchemaProperties(SCHEMA_ID, SchemaFormat.AVRO)));
+        when(client.registerSchema(SCHEMA_GROUP, schemaName, schemaString, SchemaFormat.JSON))
+            .thenReturn(Mono.just(new SchemaProperties(SCHEMA_ID, SchemaFormat.JSON)));
 
         // Act
         StepVerifier.create(cache.getSchemaId(schemaName, schemaString))
@@ -181,9 +181,9 @@ public class SchemaRegistrySchemaCacheTests {
             .verify(TIMEOUT);
 
         // We only want one invocation.
-        verify(client).registerSchema(anyString(), anyString(), anyString(), eq(SchemaFormat.AVRO));
+        verify(client).registerSchema(anyString(), anyString(), anyString(), eq(SchemaFormat.JSON));
 
-        verify(client, never()).getSchemaProperties(anyString(), anyString(), anyString(), eq(SchemaFormat.AVRO));
+        verify(client, never()).getSchemaProperties(anyString(), anyString(), anyString(), eq(SchemaFormat.JSON));
 
         assertEquals(1, cache.getSize());
         assertEquals(schemaString.length(), cache.getTotalLength());
@@ -200,9 +200,9 @@ public class SchemaRegistrySchemaCacheTests {
         final int capacity = 3;
         final SchemaRegistrySchemaCache cache = new SchemaRegistrySchemaCache(client, SCHEMA_GROUP,
             autoRegisterSchemas, capacity);
-        final SchemaProperties registryProperties = new SchemaProperties(SCHEMA_ID, SchemaFormat.AVRO);
+        final SchemaProperties registryProperties = new SchemaProperties(SCHEMA_ID, SchemaFormat.JSON);
 
-        when(client.getSchemaProperties(SCHEMA_GROUP, schemaName, schemaString, SchemaFormat.AVRO))
+        when(client.getSchemaProperties(SCHEMA_GROUP, schemaName, schemaString, SchemaFormat.JSON))
             .thenReturn(Mono.just(registryProperties));
 
         // Act
@@ -218,9 +218,9 @@ public class SchemaRegistrySchemaCacheTests {
             .verify(TIMEOUT);
 
         // We only want one invocation.
-        verify(client).getSchemaProperties(anyString(), anyString(), anyString(), eq(SchemaFormat.AVRO));
+        verify(client).getSchemaProperties(anyString(), anyString(), anyString(), eq(SchemaFormat.JSON));
 
-        verify(client, never()).registerSchema(anyString(), anyString(), anyString(), eq(SchemaFormat.AVRO));
+        verify(client, never()).registerSchema(anyString(), anyString(), anyString(), eq(SchemaFormat.JSON));
     }
 
     /**
@@ -252,21 +252,20 @@ public class SchemaRegistrySchemaCacheTests {
 
         final HashSet<String> emittedSchemas = new HashSet<>();
 
-        when(client.getSchemaProperties(eq(SCHEMA_GROUP), anyString(), anyString(), eq(SchemaFormat.AVRO)))
+        when(client.getSchemaProperties(eq(SCHEMA_GROUP), anyString(), anyString(), eq(SchemaFormat.JSON)))
             .thenAnswer(invocation -> {
                 final String schemaName = invocation.getArgument(1);
                 final SchemaFormat format = invocation.getArgument(3);
 
                 final String schemaIdToReturn;
 
-
-                if (schema1.equals(schemaName)) {
+                if (schemaName1.equals(schemaName)) {
                     schemaIdToReturn = schemaId1;
-                } else if (schema2.equals(schemaName)) {
+                } else if (schemaName2.equals(schemaName)) {
                     schemaIdToReturn = schemaId2;
-                } else if (schema3.equals(schemaName)) {
+                } else if (schemaName3.equals(schemaName)) {
                     schemaIdToReturn = schemaId3;
-                } else if (schema4.equals(schemaName)) {
+                } else if (schemaName4.equals(schemaName)) {
                     schemaIdToReturn = schemaId4;
                 } else {
                     return Mono.error(new IllegalArgumentException("Did not match any known names. Name:" + schemaName));
