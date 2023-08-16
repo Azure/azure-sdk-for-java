@@ -13,71 +13,133 @@ import java.util.List;
 public class ProxyOptionsTransport {
 
     @JsonProperty("HandleRedirects")
-    private Boolean autoRedirect;
+    private boolean autoRedirect = false;
     @JsonProperty("Transport")
     private Transport transportOptions;
 
+    /**
+     * Model for proxy transport options
+     */
     public static class Transport{
         @JsonProperty("Certificates")
         private List<Certificate> certificates;
         @JsonProperty("TLSValidationCert")
         private String tLSValidationCert;
 
+        /**
+         * Get allowed certificates for the recording.
+         * @return the list of allowed certificates for the recording.
+         */
         public List<Certificate> getCertificates() {
             return certificates;
         }
 
+        /**
+         * Set allowed certificates for the recording.
+         * @param certificates the list of allowed certificates for the recording.
+         * @return the updated {@link Transport} object.
+         */
         public Transport setCertificates(List<Certificate> certificates) {
             this.certificates = certificates;
             return this;
         }
 
+        /**
+         * Get the TLS/SSL Certificate
+         * @return the TLS/SSL Certificate
+         */
         public String gettLSValidationCert() {
             return tLSValidationCert;
         }
 
+        /**
+         * Set the TLS/SSL Certificate
+         * @param tLSValidationCert the TLS/SSL Certificate to set
+         * @return the updated {@link Transport} object.
+         */
         public Transport settLSValidationCert(String tLSValidationCert) {
             this.tLSValidationCert = tLSValidationCert;
             return this;
         }
     }
 
+    /**
+     * Model representing the certificate item object
+     */
     public static class Certificate{
         @JsonProperty("PemValue")
         private String pemValue;
         @JsonProperty("PemKey")
         private String pemKey;
 
+        /**
+         * Get the cert pem value
+         * @return the cert pem value
+         */
         public String getPemValue() {
             return pemValue;
         }
 
-        public void setPemValue(String pemValue) {
+        /**
+         * Set the cert pem value
+         * @param pemValue the cert pem value
+         * @return the {@link Certificate} object
+         */
+        public Certificate setPemValue(String pemValue) {
             this.pemValue = pemValue;
+            return this;
         }
 
+        /**
+         * Get the cert pem key
+         * @return the cert pem key
+         */
         public String getPemKey() {
             return pemKey;
         }
 
-        public void setPemKey(String pemKey) {
+        /**
+         * Get the cert pem key
+         * @param pemKey the cert pem key
+         * @return the {@link Certificate} object
+         */
+        public Certificate setPemKey(String pemKey) {
             this.pemKey = pemKey;
+            return this;
         }
     }
 
-    public Boolean isAutoRedirect() {
+    /**
+     * Get if auto redirecting is allowed. Default value is set to true.
+     * @return the boolean value indicating if auto redirect is allowed.
+     */
+    public boolean isAutoRedirect() {
         return autoRedirect;
     }
 
-    public ProxyOptionsTransport setAutoRedirect(Boolean autoRedirect) {
+    /**
+     * Set the boolean value indicating if auto redirect is allowed.
+     * @param autoRedirect the boolean value indicating if auto redirect is allowed.
+     * @return the {@link ProxyOptionsTransport} object.
+     */
+    public ProxyOptionsTransport setAutoRedirect(boolean autoRedirect) {
         this.autoRedirect = autoRedirect;
         return this;
     }
 
+    /**
+     * Get test proxy transport options for recording.
+     * @return the {@link Transport} options.
+     */
     public Transport getTransportOptions() {
         return transportOptions;
     }
 
+    /**
+     * Set test proxy transport options for recording.
+     * @param transportOptions the test proxy transport options for recording
+     * @return the {@link Transport} options.
+     */
     public ProxyOptionsTransport setTransportOptions(Transport transportOptions) {
         this.transportOptions = transportOptions;
         return this;

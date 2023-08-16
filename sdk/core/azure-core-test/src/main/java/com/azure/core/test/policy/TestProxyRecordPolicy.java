@@ -193,7 +193,7 @@ public class TestProxyRecordPolicy implements HttpPipelinePolicy {
     }
 
     public void setRecordingOptions(ProxyOptionsTransport proxyOptionsTransport) {
-        HttpRequest request = new HttpRequest(HttpMethod.POST, String.format("%s/Admin/SetRecordingOptions", proxyUrl.toString()));
+        HttpRequest request = new HttpRequest(HttpMethod.POST, String.format("%s/admin/setrecordingoptions", proxyUrl.toString()));
         String body;
         try {
             ObjectMapper mapper = new ObjectMapper();
