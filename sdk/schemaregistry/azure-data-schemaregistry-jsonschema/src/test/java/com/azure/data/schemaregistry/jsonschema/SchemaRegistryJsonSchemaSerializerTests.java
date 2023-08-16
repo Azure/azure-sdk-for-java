@@ -17,17 +17,23 @@ import com.azure.data.schemaregistry.models.SchemaRegistrySchema;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import reactor.core.publisher.Mono;
+import reactor.test.StepVerifier;
 
 import java.io.IOException;
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 /**
@@ -166,6 +172,93 @@ public class SchemaRegistryJsonSchemaSerializerTests {
     }
 
     /**
+     * Test simple error cases.
+     */
+    @Test
+    public void deserializeInvalidArgs() {
+        // Arrange
+        SerializerOptions serializerOptions = new SerializerOptions(SCHEMA_GROUP, false,
+            100, SERIALIZER_ADAPTER);
+
+        SchemaRegistryJsonSchemaSerializer serializer = new SchemaRegistryJsonSchemaSerializer(registryAsyncClient,
+            jsonSchemaGenerator, serializerOptions);
+
+        MessageContent messageContent = new MessageContent()
+            .setContentType(ContentType.APPLICATION_JSON +  "+" + ADDRESS_SCHEMA_ID)
+            .setBodyAsBinaryData(BinaryData.fromString("some-test-address-contents"));
+        TypeReference<Address> typeReference = TypeReference.createInstance(Address.class);
+
+        // Act & Assert
+        assertThrows(NullPointerException.class, () -> serializer.deserialize(null, typeReference));
+        assertThrows(NullPointerException.class, () -> serializer.deserialize(messageContent, null));
+    }
+
+    /**
+     * Empty body contents.
+     */
+    @Test
+    public void deserializeEmptyOrNullBody() {
+        // Arrange
+        SerializerOptions serializerOptions = new SerializerOptions(SCHEMA_GROUP, false,
+            100, SERIALIZER_ADAPTER);
+
+        SchemaRegistryJsonSchemaSerializer serializer = new SchemaRegistryJsonSchemaSerializer(registryAsyncClient,
+            jsonSchemaGenerator, serializerOptions);
+
+        MessageContent emptyBodyMessage = new MessageContent()
+            .setContentType(ContentType.APPLICATION_JSON +  "+" + ADDRESS_SCHEMA_ID)
+            .setBodyAsBinaryData(BinaryData.fromBytes(new byte[0]));
+        MessageContent nullBodyMessage = new MessageContent()
+            .setContentType(ContentType.APPLICATION_JSON +  "+" + ADDRESS_SCHEMA_ID)
+            .setBodyAsBinaryData(null);
+
+        TypeReference<Address> typeReference = TypeReference.createInstance(Address.class);
+
+        // Act & Assert
+        // Test the empty body cases.
+        assertNull(serializer.deserialize(emptyBodyMessage, typeReference));
+        StepVerifier.create(serializer.deserializeAsync(emptyBodyMessage, typeReference))
+            .verifyComplete();
+
+        // Test the null body cases.
+        assertNull(serializer.deserialize(nullBodyMessage, typeReference));
+
+        StepVerifier.create(serializer.deserializeAsync(nullBodyMessage, typeReference))
+            .verifyComplete();
+    }
+
+    static Stream<String> deserializeInvalidContentType() {
+        return Stream.of("random-content-type",
+            ContentType.APPLICATION_OCTET_STREAM +  "+" + ADDRESS_SCHEMA_ID,
+            null,
+            "");
+    }
+
+    /**
+     * Invalid content types.
+     */
+    @MethodSource
+    @ParameterizedTest
+    public void deserializeInvalidContentType(String contentType) {
+        // Arrange
+        SerializerOptions serializerOptions = new SerializerOptions(SCHEMA_GROUP, false,
+            100, SERIALIZER_ADAPTER);
+
+        SchemaRegistryJsonSchemaSerializer serializer = new SchemaRegistryJsonSchemaSerializer(registryAsyncClient,
+            jsonSchemaGenerator, serializerOptions);
+
+        MessageContent incorrectFormat = new MessageContent()
+            .setContentType(contentType)
+            .setBodyAsBinaryData(BinaryData.fromString("test"));
+
+        TypeReference<Address> typeReference = TypeReference.createInstance(Address.class);
+
+        StepVerifier.create(serializer.deserializeAsync(incorrectFormat, typeReference))
+            .expectError(IllegalArgumentException.class)
+            .verify();
+    }
+
+    /**
      * Deserializes a message into its object and validates it.
      */
     @Test
@@ -228,6 +321,47 @@ public class SchemaRegistryJsonSchemaSerializerTests {
 
         // Act
         assertThrows(IllegalArgumentException.class, () -> serializer.deserialize(message, type));
+
+        // Verify the IllegalArgumentException is actually due to the false return.
+        verify(jsonSchemaGenerator).isValid(any(Address.class), eq(type), eq(schemaDefinition));
+    }
+
+
+    /**
+     * Deserializes a message and user method throws an error. We expect user code to return normally.
+     */
+    @Test
+    public void deserializeErrorIsValidThrowsException() throws IOException {
+        // Arrange
+        SerializerOptions serializerOptions = new SerializerOptions(SCHEMA_GROUP, false,
+            100, SERIALIZER_ADAPTER);
+
+        SchemaRegistryJsonSchemaSerializer serializer = new SchemaRegistryJsonSchemaSerializer(registryAsyncClient,
+            jsonSchemaGenerator, serializerOptions);
+
+        String schemaDefinition = Address.JSON_SCHEMA;
+        SchemaRegistrySchema theSchema = new SchemaRegistrySchema(schemaProperties, schemaDefinition);
+        when(registryAsyncClient.getSchema(ADDRESS_SCHEMA_ID)).thenReturn(Mono.just(theSchema));
+
+        TypeReference<Address> type = TypeReference.createInstance(Address.class);
+        when(jsonSchemaGenerator.generateSchema(eq(type))).thenReturn(schemaDefinition);
+        when(jsonSchemaGenerator.isValid(any(Address.class), eq(type), eq(schemaDefinition))).thenThrow(new SomeException());
+
+        String serialized = SERIALIZER_ADAPTER.serialize(address, SerializerEncoding.JSON);
+
+        MessageContent message = new MessageContent()
+            .setContentType(CONTENT_TYPE_WITH_ID)
+            .setBodyAsBinaryData(BinaryData.fromString(serialized));
+
+        // Act
+        assertThrows(SomeException.class, () -> serializer.deserialize(message, type));
+
+        // Verify the IllegalArgumentException is actually due to the false return.
+        verify(jsonSchemaGenerator).isValid(any(Address.class), eq(type), eq(schemaDefinition));
+    }
+
+    static final class SomeException extends RuntimeException {
+
     }
 
     static final class NoArgMessage extends MessageContent {
