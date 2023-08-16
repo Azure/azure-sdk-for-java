@@ -16,6 +16,8 @@ import com.azure.core.util.serializer.TypeReference;
 import com.azure.data.schemaregistry.SchemaRegistryAsyncClient;
 import reactor.core.publisher.Mono;
 
+import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
@@ -154,28 +156,34 @@ public final class SchemaRegistryJsonSchemaSerializer {
             return instance;
         };
 
+        final byte[] encoded;
+        try {
+            encoded = serializer.serializeToBytes(object, ENCODING);
+        } catch (IOException e) {
+            return Mono.error(new UncheckedIOException("An error occurred while attempting to serialize the data.", e));
+        }
+
+        final T serializedMessage = messageFactoryToUse.apply(BinaryData.fromBytes(encoded));
+
         String schemaDefinition;
         try {
-            schemaDefinition = schemaGenerator.getSchema(TypeReference.createInstance(object.getClass()));
+            schemaDefinition = schemaGenerator.generateSchema(TypeReference.createInstance(object.getClass()));
         } catch (Exception exception) {
             logger.atError()
-                .addKeyValue("type", schemaFullName)
-                .log(() -> "Unable to get schema.", exception);
+                    .addKeyValue("type", schemaFullName)
+                    .log(() -> "An error occurred while attempting to generate the schema.", exception);
             return Mono.error(exception);
         }
 
         if (schemaDefinition == null) {
             logger.atWarning().addKeyValue("type", schemaFullName)
                     .log("Schema returned from generator was null.");
-            return Mono.error(new IllegalArgumentException("JSON Schema cannot be null. Type: " + schemaFullName));
+            return Mono.error(new IllegalArgumentException("JSON schema cannot be null. Type: " + schemaFullName));
         }
 
         return this.schemaCache.getSchemaId(schemaFullName, schemaDefinition)
             .handle((schemaId, sink) -> {
                 try {
-                    final byte[] encoded = serializer.serializeToBytes(object, ENCODING);
-                    final T serializedMessage = messageFactoryToUse.apply(BinaryData.fromBytes(encoded));
-
                     serializedMessage.setContentType(CONTENT_TYPE + "+" + schemaId);
 
                     sink.next(serializedMessage);
@@ -260,19 +268,18 @@ public final class SchemaRegistryJsonSchemaSerializer {
                     + message.getContentType()));
         }
 
+        final T decoded;
+        try {
+            decoded = serializer.deserialize(contents, typeReference.getJavaType(), ENCODING);
+        } catch (Exception e) {
+            return Mono.error(new IllegalArgumentException("Error occurred while deserializing message contents.", e));
+        }
+
         final String schemaId = parts[1];
 
         return this.schemaCache.getSchema(schemaId)
             .handle((schemaDefinition, sink) -> {
                 final String schemaFullName = typeReference.getJavaClass().getName();
-
-                final T decoded;
-                try {
-                    decoded = serializer.deserialize(contents, typeReference.getJavaType(), ENCODING);
-                } catch (Exception e) {
-                    sink.error(e);
-                    return;
-                }
 
                 final boolean isValid;
                 try {

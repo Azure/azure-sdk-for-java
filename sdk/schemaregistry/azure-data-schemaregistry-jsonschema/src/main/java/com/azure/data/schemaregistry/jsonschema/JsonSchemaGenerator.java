@@ -28,5 +28,5 @@ public abstract class JsonSchemaGenerator {
      * @return A string representing its JSON schema.
      * @param <T> Type of data.
      */
-    public abstract <T> String getSchema(TypeReference<T> type);
+    public abstract <T> String generateSchema(TypeReference<T> type);
 }
