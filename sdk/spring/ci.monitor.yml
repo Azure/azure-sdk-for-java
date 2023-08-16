@@ -22,6 +22,7 @@ pr:
   paths:
     include:
       - sdk/spring/ci.monitor.yml
+      - sdk/spring/spring-cloud-azure-starter-monitor/
       - sdk/spring/spring-cloud-azure-starter-monitor-test/
 
 extends:
