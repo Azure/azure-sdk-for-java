@@ -1,10 +1,9 @@
 # Azure Schema Registry Json Schema Serializer client library for Java
 
-Azure Schema Registry Apache Avro is a serializer and deserializer library for Avro data format that is integrated with
+Azure Schema Registry Json Schema is a serializer and deserializer library for JSON data format that is integrated with
 Azure Schema Registry hosted in Azure Event Hubs, providing schema storage, versioning, and management. This package
-provides an Avro serializer capable of serializing and deserializing payloads containing Schema Registry schema
-identifiers and Avro-encoded data. This library uses [Apache Avro][apache_avro] implementation for Avro serialization
-and deserialization.
+provides a serializer capable of serializing and deserializing payloads containing Schema Registry schema
+identifiers and JSON encoded data.
 
 [Source code][source_code] | [Package (Maven)][package_maven] | [API reference documentation][api_reference_doc] | [Product Documentation][product_documentation] | [Samples][sample_readme]
 
@@ -143,20 +142,15 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [sample_readme]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/schemaregistry/azure-data-schemaregistry-jsonschema/src/samples
 [samples]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/schemaregistry/azure-data-schemaregistry-jsonschema/src/samples/java/com/azure/data/schemaregistry/jsonschema
 [address_type]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/schemaregistry/azure-data-schemaregistry-jsonschema/src/test/java/com/azure/data/schemaregistry/jsonschema/Address.java
-[source_code]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/schemaregistry/azure-data-schemaregistry-apacheavro/src
-[samples_code]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/schemaregistry/azure-data-schemaregistry-apacheavro/src/samples/
+[source_code]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/schemaregistry/azure-data-schemaregistry-jsonschema/src
+[samples_code]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/schemaregistry/azure-data-schemaregistry-jsonschema/src/samples/
 [azure_subscription]: https://azure.microsoft.com/free/
-[apache_avro]: https://avro.apache.org/
 [api_reference_doc]: https://aka.ms/schemaregistry
-[azure_cli]: https://docs.microsoft.com/cli/azure
-[azure_portal]: https://portal.azure.com
 [azure_identity]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/identity/azure-identity
 [DefaultAzureCredential]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/identity/azure-identity/README.md#defaultazurecredential
 [event_hubs_namespace]: https://docs.microsoft.com/azure/event-hubs/event-hubs-about
 [jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
 [product_documentation]: https://aka.ms/schemaregistry
-[specific_record]: https://avro.apache.org/docs/current/api/java/org/apache/avro/specific/SpecificRecord.html
-[generic_record]: https://avro.apache.org/docs/current/api/java/org/apache/avro/generic/GenericRecord.html
 [custom_subdomain]: https://docs.microsoft.com/azure/cognitive-services/authentication#create-a-resource-with-a-custom-subdomain
 [register_aad_app]: https://docs.microsoft.com/azure/cognitive-services/authentication#assign-a-role-to-a-service-principal
 [aad_grant_access]: https://docs.microsoft.com/azure/cognitive-services/authentication#assign-a-role-to-a-service-principal
@@ -166,4 +160,4 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/
 [coc_contact]: mailto:opencode@microsoft.com
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fschemaregistry%2Fazure-data-schemaregistry-apacheavro%2FREADME.png)
+![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fschemaregistry%2Fazure-data-schemaregistry-jsonschema%2FREADME.png)
