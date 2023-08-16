@@ -36,7 +36,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class FileAsyncApiTest extends DataLakeTestBase{
+public class FileAsyncApiTests extends DataLakeTestBase {
     private DataLakeFileAsyncClient fc;
     private final List<File> createdFiles = new ArrayList<>();
 
