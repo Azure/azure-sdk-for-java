@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.storage.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.storage.models.BlobRestoreParameters;
 import com.azure.resourcemanager.storage.models.BlobRestoreRange;
 import java.time.OffsetDateTime;
@@ -13,7 +12,7 @@ import java.util.Arrays;
 /** Samples for StorageAccounts RestoreBlobRanges. */
 public final class StorageAccountsRestoreBlobRangesSamples {
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2022-09-01/examples/BlobRangesRestore.json
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-01-01/examples/BlobRangesRestore.json
      */
     /**
      * Sample code: BlobRangesRestore.
@@ -38,6 +37,6 @@ public final class StorageAccountsRestoreBlobRangesSamples {
                                     .withStartRange("container/blobpath1")
                                     .withEndRange("container/blobpath2"),
                                 new BlobRestoreRange().withStartRange("container2/blobpath3").withEndRange(""))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

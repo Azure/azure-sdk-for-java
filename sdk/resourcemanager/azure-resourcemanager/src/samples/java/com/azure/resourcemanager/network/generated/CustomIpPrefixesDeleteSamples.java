@@ -7,7 +7,7 @@ package com.azure.resourcemanager.network.generated;
 /** Samples for CustomIpPrefixes Delete. */
 public final class CustomIpPrefixesDeleteSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-02-01/examples/CustomIpPrefixDelete.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-04-01/examples/CustomIpPrefixDelete.json
      */
     /**
      * Sample code: Delete custom IP prefix.

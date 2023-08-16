@@ -53,11 +53,10 @@ public final class TableServicesClientImpl implements TableServicesClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "StorageManagementCli")
-    private interface TableServicesService {
+    public interface TableServicesService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage"
-                + "/storageAccounts/{accountName}/tableServices")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/tableServices")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ListTableServicesInner>> list(
@@ -71,8 +70,7 @@ public final class TableServicesClientImpl implements TableServicesClient {
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage"
-                + "/storageAccounts/{accountName}/tableServices/{tableServiceName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/tableServices/{tableServiceName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<TableServicePropertiesInner>> setServiceProperties(
@@ -88,8 +86,7 @@ public final class TableServicesClientImpl implements TableServicesClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage"
-                + "/storageAccounts/{accountName}/tableServices/{tableServiceName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/tableServices/{tableServiceName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<TableServicePropertiesInner>> getServiceProperties(
@@ -224,23 +221,6 @@ public final class TableServicesClientImpl implements TableServicesClient {
      *     insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
      *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ListTableServicesInner list(String resourceGroupName, String accountName) {
-        return listAsync(resourceGroupName, accountName).block();
-    }
-
-    /**
-     * List all table services for the storage account.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
-     * @param accountName The name of the storage account within the specified resource group. Storage account names
-     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -251,6 +231,23 @@ public final class TableServicesClientImpl implements TableServicesClient {
     public Response<ListTableServicesInner> listWithResponse(
         String resourceGroupName, String accountName, Context context) {
         return listWithResponseAsync(resourceGroupName, accountName, context).block();
+    }
+
+    /**
+     * List all table services for the storage account.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names
+     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ListTableServicesInner list(String resourceGroupName, String accountName) {
+        return listWithResponse(resourceGroupName, accountName, Context.NONE).getValue();
     }
 
     /**
@@ -407,15 +404,16 @@ public final class TableServicesClientImpl implements TableServicesClient {
      *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param parameters The properties of a storage account’s Table service, only properties for Storage Analytics and
      *     CORS (Cross-Origin Resource Sharing) rules can be specified.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of a storage account’s Table service.
+     * @return the properties of a storage account’s Table service along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public TableServicePropertiesInner setServiceProperties(
-        String resourceGroupName, String accountName, TableServicePropertiesInner parameters) {
-        return setServicePropertiesAsync(resourceGroupName, accountName, parameters).block();
+    public Response<TableServicePropertiesInner> setServicePropertiesWithResponse(
+        String resourceGroupName, String accountName, TableServicePropertiesInner parameters, Context context) {
+        return setServicePropertiesWithResponseAsync(resourceGroupName, accountName, parameters, context).block();
     }
 
     /**
@@ -428,16 +426,15 @@ public final class TableServicesClientImpl implements TableServicesClient {
      *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param parameters The properties of a storage account’s Table service, only properties for Storage Analytics and
      *     CORS (Cross-Origin Resource Sharing) rules can be specified.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of a storage account’s Table service along with {@link Response}.
+     * @return the properties of a storage account’s Table service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<TableServicePropertiesInner> setServicePropertiesWithResponse(
-        String resourceGroupName, String accountName, TableServicePropertiesInner parameters, Context context) {
-        return setServicePropertiesWithResponseAsync(resourceGroupName, accountName, parameters, context).block();
+    public TableServicePropertiesInner setServiceProperties(
+        String resourceGroupName, String accountName, TableServicePropertiesInner parameters) {
+        return setServicePropertiesWithResponse(resourceGroupName, accountName, parameters, Context.NONE).getValue();
     }
 
     /**
@@ -574,25 +571,6 @@ public final class TableServicesClientImpl implements TableServicesClient {
      *     insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
      *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of a storage account’s Table service, including properties for Storage Analytics and CORS
-     *     (Cross-Origin Resource Sharing) rules.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public TableServicePropertiesInner getServiceProperties(String resourceGroupName, String accountName) {
-        return getServicePropertiesAsync(resourceGroupName, accountName).block();
-    }
-
-    /**
-     * Gets the properties of a storage account’s Table service, including properties for Storage Analytics and CORS
-     * (Cross-Origin Resource Sharing) rules.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
-     * @param accountName The name of the storage account within the specified resource group. Storage account names
-     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -604,5 +582,24 @@ public final class TableServicesClientImpl implements TableServicesClient {
     public Response<TableServicePropertiesInner> getServicePropertiesWithResponse(
         String resourceGroupName, String accountName, Context context) {
         return getServicePropertiesWithResponseAsync(resourceGroupName, accountName, context).block();
+    }
+
+    /**
+     * Gets the properties of a storage account’s Table service, including properties for Storage Analytics and CORS
+     * (Cross-Origin Resource Sharing) rules.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names
+     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the properties of a storage account’s Table service, including properties for Storage Analytics and CORS
+     *     (Cross-Origin Resource Sharing) rules.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public TableServicePropertiesInner getServiceProperties(String resourceGroupName, String accountName) {
+        return getServicePropertiesWithResponse(resourceGroupName, accountName, Context.NONE).getValue();
     }
 }

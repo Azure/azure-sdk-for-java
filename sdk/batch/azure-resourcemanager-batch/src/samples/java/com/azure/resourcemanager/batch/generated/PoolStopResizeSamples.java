@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.batch.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Pool StopResize. */
 public final class PoolStopResizeSamples {
     /*
-     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2022-10-01/examples/PoolStopResize.json
+     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2023-05-01/examples/PoolStopResize.json
      */
     /**
      * Sample code: StopPoolResize.
@@ -17,6 +15,9 @@ public final class PoolStopResizeSamples {
      * @param manager Entry point to BatchManager.
      */
     public static void stopPoolResize(com.azure.resourcemanager.batch.BatchManager manager) {
-        manager.pools().stopResizeWithResponse("default-azurebatch-japaneast", "sampleacct", "testpool", Context.NONE);
+        manager
+            .pools()
+            .stopResizeWithResponse(
+                "default-azurebatch-japaneast", "sampleacct", "testpool", com.azure.core.util.Context.NONE);
     }
 }

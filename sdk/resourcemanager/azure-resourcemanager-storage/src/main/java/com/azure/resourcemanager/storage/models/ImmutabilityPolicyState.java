@@ -17,6 +17,15 @@ public final class ImmutabilityPolicyState extends ExpandableStringEnum<Immutabi
     public static final ImmutabilityPolicyState UNLOCKED = fromString("Unlocked");
 
     /**
+     * Creates a new instance of ImmutabilityPolicyState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ImmutabilityPolicyState() {
+    }
+
+    /**
      * Creates or finds a ImmutabilityPolicyState from its string representation.
      *
      * @param name a name to look for.

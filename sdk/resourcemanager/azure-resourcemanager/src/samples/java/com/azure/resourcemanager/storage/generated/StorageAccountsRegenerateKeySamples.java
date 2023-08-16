@@ -4,13 +4,12 @@
 
 package com.azure.resourcemanager.storage.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.storage.models.StorageAccountRegenerateKeyParameters;
 
 /** Samples for StorageAccounts RegenerateKey. */
 public final class StorageAccountsRegenerateKeySamples {
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2022-09-01/examples/StorageAccountRegenerateKey.json
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-01-01/examples/StorageAccountRegenerateKey.json
      */
     /**
      * Sample code: StorageAccountRegenerateKey.
@@ -24,11 +23,14 @@ public final class StorageAccountsRegenerateKeySamples {
             .serviceClient()
             .getStorageAccounts()
             .regenerateKeyWithResponse(
-                "res4167", "sto3539", new StorageAccountRegenerateKeyParameters().withKeyName("key2"), Context.NONE);
+                "res4167",
+                "sto3539",
+                new StorageAccountRegenerateKeyParameters().withKeyName("fakeTokenPlaceholder"),
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2022-09-01/examples/StorageAccountRegenerateKerbKey.json
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-01-01/examples/StorageAccountRegenerateKerbKey.json
      */
     /**
      * Sample code: StorageAccountRegenerateKerbKey.
@@ -42,6 +44,9 @@ public final class StorageAccountsRegenerateKeySamples {
             .serviceClient()
             .getStorageAccounts()
             .regenerateKeyWithResponse(
-                "res4167", "sto3539", new StorageAccountRegenerateKeyParameters().withKeyName("kerb1"), Context.NONE);
+                "res4167",
+                "sto3539",
+                new StorageAccountRegenerateKeyParameters().withKeyName("fakeTokenPlaceholder"),
+                com.azure.core.util.Context.NONE);
     }
 }

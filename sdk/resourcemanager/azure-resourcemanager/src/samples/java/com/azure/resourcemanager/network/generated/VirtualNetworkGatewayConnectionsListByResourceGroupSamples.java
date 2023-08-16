@@ -7,7 +7,7 @@ package com.azure.resourcemanager.network.generated;
 /** Samples for VirtualNetworkGatewayConnections ListByResourceGroup. */
 public final class VirtualNetworkGatewayConnectionsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-02-01/examples/VirtualNetworkGatewayConnectionsList.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-04-01/examples/VirtualNetworkGatewayConnectionsList.json
      */
     /**
      * Sample code: ListVirtualNetworkGatewayConnectionsinResourceGroup.

@@ -10,7 +10,7 @@ import java.util.Arrays;
 /** Samples for NetworkWatchers ListAvailableProviders. */
 public final class NetworkWatchersListAvailableProvidersSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-02-01/examples/NetworkWatcherAvailableProvidersListGet.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-04-01/examples/NetworkWatcherAvailableProvidersListGet.json
      */
     /**
      * Sample code: Get Available Providers List.

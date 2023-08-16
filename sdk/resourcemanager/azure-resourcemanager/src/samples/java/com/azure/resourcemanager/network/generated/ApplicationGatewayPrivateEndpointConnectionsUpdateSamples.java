@@ -10,7 +10,7 @@ import com.azure.resourcemanager.network.models.PrivateLinkServiceConnectionStat
 /** Samples for ApplicationGatewayPrivateEndpointConnections Update. */
 public final class ApplicationGatewayPrivateEndpointConnectionsUpdateSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-02-01/examples/ApplicationGatewayPrivateEndpointConnectionUpdate.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-04-01/examples/ApplicationGatewayPrivateEndpointConnectionUpdate.json
      */
     /**
      * Sample code: Update Application Gateway Private Endpoint Connection.

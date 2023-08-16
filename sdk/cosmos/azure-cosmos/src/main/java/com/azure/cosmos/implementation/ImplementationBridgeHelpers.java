@@ -50,6 +50,7 @@ import com.azure.cosmos.models.CosmosClientEncryptionKeyResponse;
 import com.azure.cosmos.models.CosmosClientTelemetryConfig;
 import com.azure.cosmos.models.CosmosContainerIdentity;
 import com.azure.cosmos.models.CosmosContainerProperties;
+import com.azure.cosmos.models.CosmosItemIdentity;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosMetricName;
@@ -410,6 +411,11 @@ public class ImplementationBridgeHelpers {
 
             OperationContextAndListenerTuple getOperationContext(CosmosBulkExecutionOptions options);
 
+            void setOrderingPreserved(CosmosBulkExecutionOptions options,
+                                            boolean preserveOrdering);
+
+            boolean isOrderingPreserved(CosmosBulkExecutionOptions options);
+
             <T> T getLegacyBatchScopedContext(CosmosBulkExecutionOptions options);
 
             double getMinTargetedMicroBatchRetryRate(CosmosBulkExecutionOptions options);
@@ -421,9 +427,9 @@ public class ImplementationBridgeHelpers {
                 double minRetryRate,
                 double maxRetryRate);
 
-            int getMaxMicroBatchSize(CosmosBulkExecutionOptions options);
+            int getInitialMicroBatchSize(CosmosBulkExecutionOptions options);
 
-            CosmosBulkExecutionOptions setMaxMicroBatchSize(CosmosBulkExecutionOptions options, int maxMicroBatchSize);
+            CosmosBulkExecutionOptions setInitialMicroBatchSize(CosmosBulkExecutionOptions options, int initialMicroBatchSize);
 
             int getMaxMicroBatchPayloadSizeInBytes(CosmosBulkExecutionOptions options);
 
@@ -891,6 +897,12 @@ public class ImplementationBridgeHelpers {
             IFaultInjectorProvider getOrConfigureFaultInjectorProvider(
                 CosmosAsyncContainer cosmosAsyncContainer,
                 Callable<IFaultInjectorProvider> injectorProviderCallable);
+
+            <T> Mono<FeedResponse<T>> readMany(
+                CosmosAsyncContainer cosmosAsyncContainer,
+                List<CosmosItemIdentity> itemIdentityList,
+                CosmosQueryRequestOptions requestOptions,
+                Class<T> classType);
         }
     }
 
@@ -1326,6 +1338,8 @@ public class ImplementationBridgeHelpers {
 
         public interface CosmosExceptionAccessor {
             CosmosException createCosmosException(int statusCode, Exception innerException);
+            CosmosException createCosmosException(int statusCode, String message, Map<String, String> responseHeaders,
+                                                  Exception exception);
             List<String> getReplicaStatusList(CosmosException cosmosException);
             CosmosException setRntbdChannelStatistics(CosmosException cosmosException, RntbdChannelStatistics rntbdChannelStatistics);
             RntbdChannelStatistics getRntbdChannelStatistics(CosmosException cosmosException);

@@ -11,6 +11,7 @@ import com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthenticationProp
 import com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthorizationServerEndpoints;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.security.ConditionalOnDefaultWebSecurity;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Conditional;
@@ -18,7 +19,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.oauth2.core.DelegatingOAuth2TokenValidator;
 import org.springframework.security.oauth2.core.OAuth2TokenValidator;
 import org.springframework.security.oauth2.jwt.Jwt;
@@ -103,7 +103,7 @@ public class AadResourceServerConfiguration {
      */
     @EnableWebSecurity
     @EnableGlobalMethodSecurity(prePostEnabled = true)
-    @ConditionalOnMissingBean(WebSecurityConfigurerAdapter.class)
+    @ConditionalOnDefaultWebSecurity
     @ConditionalOnExpression("!'${spring.cloud.azure.active-directory.application-type}'.equalsIgnoreCase('web_application_and_resource_server')")
     public static class DefaultAadResourceServerWebSecurityConfigurerAdapter extends
         AadResourceServerWebSecurityConfigurerAdapter {
