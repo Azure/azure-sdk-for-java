@@ -58,7 +58,7 @@ extends:
         groupId: com.azure
         safeName: azuredataschemaregistryapacheavro
         releaseInBatch: ${{ parameters.release_azuredataschemaregistryapacheavro }}
-      - name: azure-data-schemaregistry-jsonschemavalidator
+      - name: azure-data-schemaregistry-jsonschema
         groupId: com.azure
         safeName: azuredataschemaregistryjsonschema
         releaseInBatch: ${{ parameters.release_azuredataschemaregistryjsonschema }}
