@@ -7,7 +7,7 @@ package com.azure.resourcemanager.network.generated;
 /** Samples for ServiceTags List. */
 public final class ServiceTagsListSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-02-01/examples/ServiceTagsList.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-04-01/examples/ServiceTagsList.json
      */
     /**
      * Sample code: Get list of service tags.

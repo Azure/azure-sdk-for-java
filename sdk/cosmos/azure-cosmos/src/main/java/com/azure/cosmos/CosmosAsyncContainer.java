@@ -26,6 +26,7 @@ import com.azure.cosmos.implementation.WriteRetryPolicy;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.batch.BatchExecutor;
 import com.azure.cosmos.implementation.batch.BulkExecutor;
+import com.azure.cosmos.implementation.batch.BulkExecutorWithOrderingPreserved;
 import com.azure.cosmos.implementation.faultinjection.IFaultInjectorProvider;
 import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
 import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
@@ -1305,9 +1306,16 @@ public class CosmosAsyncContainer {
         final CosmosBulkExecutionOptions cosmosBulkExecutionOptions = bulkOptions;
 
         return Flux.deferContextual(context -> {
-            final BulkExecutor<TContext> executor = new BulkExecutor<>(this, operations, cosmosBulkExecutionOptions);
-
-            return executor.execute().publishOn(CosmosSchedulers.BULK_EXECUTOR_BOUNDED_ELASTIC);
+             // revert easily back to original bulk executor
+             if (ImplementationBridgeHelpers.CosmosBulkExecutionOptionsHelper
+                .getCosmosBulkExecutionOptionsAccessor()
+                .isOrderingPreserved(cosmosBulkExecutionOptions)) {
+                 final BulkExecutorWithOrderingPreserved<TContext> executor = new BulkExecutorWithOrderingPreserved<>(this, operations, cosmosBulkExecutionOptions);
+                 return executor.execute().publishOn(CosmosSchedulers.BULK_EXECUTOR_BOUNDED_ELASTIC);
+             } else {
+                 final BulkExecutor<TContext> executor = new BulkExecutor<>(this, operations, cosmosBulkExecutionOptions);
+                 return executor.execute().publishOn(CosmosSchedulers.BULK_EXECUTOR_BOUNDED_ELASTIC);
+             }
         });
     }
 

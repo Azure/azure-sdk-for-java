@@ -13,6 +13,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Repository
@@ -56,6 +57,18 @@ public interface AddressRepository extends CosmosRepository<Address, String> {
 
     @Query(value = "select * from a where a.city IN (@cities)")
     List<Address> annotatedFindByCityIn(@Param("cities") List<String> cities, Sort sort);
+
+    @Query(value = "select * from a where a.longId IN (@longList)")
+    List<Address> annotatedFindByInLongParameters(@Param("longList") List<Long> longsList, Sort sort);
+
+    @Query(value = "select * from a where a.homeNumber IN (@homeNumbers)")
+    List<Address> annotatedFindByInHomeNumberParameters(@Param("homeNumbers") List<Integer> longsList, Sort sort);
+
+    @Query(value = "select * from a where a.registrationDate IN (@registrationDates)")
+    List<Address> annotatedFindByInRegistrationDateParameters(@Param("registrationDates") List<LocalDate> registrationDates, Sort sort);
+
+    @Query(value = "select * from a where a.isOffice IN (@isOffices)")
+    List<Address> annotatedFindByInIsOfficeParameters(@Param("isOffices") List<Boolean> isOffices, Sort sort);
 
     @Query(value = "SELECT * FROM a WHERE ARRAY_CONTAINS(@cities, a.city) ")
     List<Address> annotatedFindByCities(@Param("cities") List<String> cities);

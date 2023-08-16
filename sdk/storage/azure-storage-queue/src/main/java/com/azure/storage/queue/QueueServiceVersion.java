@@ -92,7 +92,17 @@ public enum QueueServiceVersion implements ServiceVersion {
     /**
      * Service version {@code 2023-01-03}.
      */
-    V2023_01_03("2023-01-03");
+    V2023_01_03("2023-01-03"),
+
+    /**
+     * Service version {@code 2023-05-03}.
+     */
+    V2023_05_03("2023-05-03"),
+
+    /**
+     * Service version {@code 2023-08-03}.
+     */
+    V2023_08_03("2023-08-03");
 
     private final String version;
 
@@ -114,6 +124,6 @@ public enum QueueServiceVersion implements ServiceVersion {
      * @return the latest {@link QueueServiceVersion}
      */
     public static QueueServiceVersion getLatest() {
-        return V2023_01_03;
+        return V2023_08_03;
     }
 }

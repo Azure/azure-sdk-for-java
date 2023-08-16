@@ -7,7 +7,7 @@ package com.azure.resourcemanager.network.generated;
 /** Samples for AzureFirewalls Delete. */
 public final class AzureFirewallsDeleteSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-02-01/examples/AzureFirewallDelete.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-04-01/examples/AzureFirewallDelete.json
      */
     /**
      * Sample code: Delete Azure Firewall.

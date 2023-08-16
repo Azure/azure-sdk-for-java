@@ -30,6 +30,10 @@ public final class TagFilter {
     @JsonProperty(value = "value", required = true)
     private String value;
 
+    /** Creates an instance of TagFilter class. */
+    public TagFilter() {
+    }
+
     /**
      * Get the name property: This is the filter tag name, it can have 1 - 128 characters.
      *

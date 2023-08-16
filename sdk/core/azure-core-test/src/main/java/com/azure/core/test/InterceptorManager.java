@@ -77,7 +77,7 @@ public class InterceptorManager implements AutoCloseable {
     private final Queue<String> proxyVariableQueue = new LinkedList<>();
     private HttpClient httpClient;
     private final Path testClassPath;
-
+    private String xRecordingFileLocation;
 
     /**
      * Creates a new InterceptorManager that either replays test-session records or saves them.
@@ -331,7 +331,9 @@ public class InterceptorManager implements AutoCloseable {
             }
             if (testProxyPlaybackClient == null) {
                 testProxyPlaybackClient = new TestProxyPlaybackClient(httpClient, skipRecordingRequestBody);
-                proxyVariableQueue.addAll(testProxyPlaybackClient.startPlayback(getTestProxyRecordFile(), testClassPath));
+                proxyVariableQueue.addAll(testProxyPlaybackClient.startPlayback(getTestProxyRecordFile(),
+                    testClassPath));
+                xRecordingFileLocation = testProxyPlaybackClient.getRecordingFileLocation();
             }
             return testProxyPlaybackClient;
         } else {
@@ -510,11 +512,18 @@ public class InterceptorManager implements AutoCloseable {
     }
 
     /**
+     * Get the recording file location in assets repo.
+     * @return the assets repo location of the recording file.
+     */
+    public String getRecordingFileLocation() {
+        return xRecordingFileLocation;
+    }
+
+    /**
      * Sets the httpClient to be used for this test.
      * @param httpClient The {@link HttpClient} implementation to use.
      */
     void setHttpClient(HttpClient httpClient) {
-
         this.httpClient = httpClient;
     }
 }

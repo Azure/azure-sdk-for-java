@@ -7,7 +7,7 @@ package com.azure.resourcemanager.network.generated;
 /** Samples for ConfigurationPolicyGroups Delete. */
 public final class ConfigurationPolicyGroupsDeleteSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-02-01/examples/ConfigurationPolicyGroupDelete.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-04-01/examples/ConfigurationPolicyGroupDelete.json
      */
     /**
      * Sample code: ConfigurationPolicyGroupDelete.
