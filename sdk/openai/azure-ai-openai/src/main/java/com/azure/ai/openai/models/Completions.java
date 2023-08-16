@@ -118,6 +118,16 @@ public final class Completions {
         this.usage = usage;
     }
 
+    @Generated
+    @JsonCreator
+    private Completions(
+            @JsonProperty(value = "id") String id,
+            @JsonProperty(value = "created") long createdAt,
+            @JsonProperty(value = "choices") List<Choice> choices,
+            @JsonProperty(value = "usage") CompletionsUsage usage) {
+        this(id, OffsetDateTime.ofInstant(Instant.ofEpochSecond(createdAt), ZoneOffset.UTC), choices, usage);
+    }
+
     /**
      * Get the createdAt property: The first timestamp associated with generation activity for this completions
      * response, represented as seconds since the beginning of the Unix epoch of 00:00 on 1 Jan 1970.
@@ -127,16 +137,5 @@ public final class Completions {
     @Generated
     public OffsetDateTime getCreatedAt() {
         return OffsetDateTime.ofInstant(Instant.ofEpochSecond(this.createdAt), ZoneOffset.UTC);
-    }
-
-    @Generated
-    @JsonCreator
-    private static Completions fromJson(
-            @JsonProperty(value = "id") String id,
-            @JsonProperty(value = "created") long createdAt,
-            @JsonProperty(value = "choices") List<Choice> choices,
-            @JsonProperty(value = "usage") CompletionsUsage usage) {
-        return new Completions(
-                id, OffsetDateTime.ofInstant(Instant.ofEpochSecond(createdAt), ZoneOffset.UTC), choices, usage);
     }
 }
