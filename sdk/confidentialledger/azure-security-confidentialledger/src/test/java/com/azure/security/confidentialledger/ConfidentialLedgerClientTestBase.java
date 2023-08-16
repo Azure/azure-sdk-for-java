@@ -14,7 +14,7 @@ import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
-import com.azure.core.test.models.ProxyOptionsTransport;
+import com.azure.core.test.models.TestProxyRecordingOptions;
 import com.azure.core.util.BinaryData;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.security.confidentialledger.certificate.ConfidentialLedgerCertificateClient;
@@ -31,8 +31,6 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -83,16 +81,11 @@ class ConfidentialLedgerClientTestBase extends TestProxyTestBase {
         }
 
         String ledgerTlsCertificate = jsonNode.get("ledgerTlsCertificate").asText();
-        Pattern pattern = Pattern.compile("(?s)-----BEGIN CERTIFICATE-----.*?-----END CERTIFICATE-----");
-        Matcher matcher = pattern.matcher(ledgerTlsCertificate);
-        String body = null;
-        while (matcher.find()) {
-            body = matcher.group();
-        }
-        body = body.replace("\n", "").replace("\r", "");
-        interceptorManager.setProxyRecordingOptions(new ProxyOptionsTransport()
-            .setTransportOptions(new ProxyOptionsTransport.Transport()
+        String body = ledgerTlsCertificate.replace("\n", "").replace("\r", "");
+        interceptorManager.setProxyRecordingOptions(new TestProxyRecordingOptions()
+            .setTransportOptions(new TestProxyRecordingOptions.ProxyTransport()
                 .settLSValidationCert(body)));
+
         reactor.netty.http.client.HttpClient reactorClient = null;
 
         try {

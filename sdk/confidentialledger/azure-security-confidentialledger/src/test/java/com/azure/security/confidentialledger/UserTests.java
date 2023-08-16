@@ -16,7 +16,7 @@ import java.io.IOException;
 
 public final class UserTests extends ConfidentialLedgerClientTestBase {
     @Test
-    public void testGetUserTests() throws Exception {
+    public void testGetUserTests() {
         String userAad = ConfidentialLedgerEnvironment.getConfidentialLedgerAdminOid();
         RequestOptions requestOptions = new RequestOptions();
 

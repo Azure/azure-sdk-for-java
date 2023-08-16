@@ -1,28 +1,35 @@
 {
-  "networkCallRecords" : [ {
-    "Method" : "GET",
-    "Uri" : "https://REDACTED.confidential-ledger.core.azure.com/ledgerIdentity/java-sdk-live-tests-ledger?api-version=2022-05-13",
-    "Headers" : {
-      "x-ms-client-request-id" : "5ad1b694-ec37-4b94-824f-2fcc544d0e21",
-      "user-agent" : "azsdk-java-azure-security-confidentialledger/1.1.0-beta.1 (17.0.7; Windows 11; 10.0)"
-    },
-    "Response" : {
-      "Transfer-Encoding" : "chunked",
-      "x-azure-ref" : "20230814T222323Z-xuke02d9md2qdduqcksx81bm0c000000068000000000048z",
-      "X-Cache" : "CONFIG_NOCACHE",
-      "Connection" : "keep-alive",
-      "x-ms-image-tag" : "1.0.02406.1320-aae7b315353a85cf9043b54f7f4ab02a79499e54",
-      "retry-after" : "0",
-      "StatusCode" : "200",
-      "Date" : "Mon, 14 Aug 2023 22:23:23 GMT",
-      "x-ms-correlation-request-id" : "fb1c0d3a-46a2-472e-8ec8-6e4cd4c8a8d9",
-      "x-ms-machineName" : "identityservice-d86887dd-rmgn9",
-      "x-ms-image-digest" : "sha256:43aa9ae9edf65a92516a739e4a72571aa920f22b1eee335169c6abddadb056dd",
-      "Body" : "{\"ledgerTlsCertificate\":\"-----BEGIN CERTIFICATE-----\\nMIIBfzCCASagAwIBAgIQE42ZPlx4OBwUHUH3MeUkhzAKBggqhkjOPQQDAjAWMRQw\\nEgYDVQQDDAtDQ0YgTmV0d29yazAeFw0yMzA4MTEwMTA2MzZaFw0yMzExMDkwMTA2\\nMzVaMBYxFDASBgNVBAMMC0NDRiBOZXR3b3JrMFkwEwYHKoZIzj0CAQYIKoZIzj0D\\nAQcDQgAEr1de3dejkboSpN3MMBpkMA1/xouz10vuB+vWyNpGRqexHrthFPHRe1ZS\\nezjrqv+FyqHu06fPD8+HtONR+fvbIKNWMFQwEgYDVR0TAQH/BAgwBgEB/wIBADAd\\nBgNVHQ4EFgQUo5Br9DW0WrNaIxZgfK/T1+n043cwHwYDVR0jBBgwFoAUo5Br9DW0\\nWrNaIxZgfK/T1+n043cwCgYIKoZIzj0EAwIDRwAwRAIgVqGDPqmWRZsD9XQ4XyY3\\nv/qKzsTApHHqreKpcY3z0PACICzEukDi1PDDAl5q/nXPIAzRJHBOLzRO4yDQsEHA\\nXdaY\\n-----END CERTIFICATE-----\\n\",\"ledgerId\":\"java-sdk-live-tests-ledger\"}",
-      "x-ms-client-request-id" : "5ad1b694-ec37-4b94-824f-2fcc544d0e21",
-      "Content-Type" : "application/json; charset=utf-8"
-    },
-    "Exception" : null
-  } ],
-  "variables" : [ ]
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/ledgerIdentity/t87a703689386c153?api-version=2022-05-13",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "Date": "Wed, 16 Aug 2023 22:26:12 GMT",
+        "User-Agent": "azsdk-java-azure-security-confidentialledger/1.1.0-beta.1 (11.0.16.1; Windows 11; 10.0)",
+        "x-ms-client-request-id": "3048ab72-e122-49f5-9811-a271248a0d95"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Wed, 16 Aug 2023 22:26:14 GMT",
+        "Transfer-Encoding": "chunked",
+        "X-Azure-Ref": "0BU3dZAAAAAAktcTx0pJxRYEo/0JqKBJGV1NURURHRTA4MTMAMjQyYjE4MjAtYjI3YS00NTE2LTk4OTktMGVmNGViZTU0YWQ0",
+        "X-Cache": "CONFIG_NOCACHE",
+        "x-ms-client-request-id": "3048ab72-e122-49f5-9811-a271248a0d95",
+        "x-ms-correlation-request-id": "5209bd79-744c-4c69-b0b0-667608c619d5",
+        "x-ms-image-digest": "sha256:43aa9ae9edf65a92516a739e4a72571aa920f22b1eee335169c6abddadb056dd",
+        "x-ms-image-tag": "1.0.02406.1320-aae7b315353a85cf9043b54f7f4ab02a79499e54",
+        "x-ms-machineName": "identityservice-d86887dd-rmgn9"
+      },
+      "ResponseBody": {
+        "ledgerTlsCertificate": "-----BEGIN CERTIFICATE-----\nMIIBgTCCASegAwIBAgIRAIJEND6uDW7Ch6JmSNFdcFYwCgYIKoZIzj0EAwIwFjEU\nMBIGA1UEAwwLQ0NGIE5ldHdvcmswHhcNMjMwODE2MjIxMDIzWhcNMjMxMTE0MjIx\nMDIyWjAWMRQwEgYDVQQDDAtDQ0YgTmV0d29yazBZMBMGByqGSM49AgEGCCqGSM49\nAwEHA0IABNoTYtyhliFizzJPo0/3uBHAobHDErf1WF/zEt7KJfrs6QYSCR88jPh\u002B\n6MxIKWPT7M5nnHne543ElU8B72u2se2jVjBUMBIGA1UdEwEB/wQIMAYBAf8CAQAw\nHQYDVR0OBBYEFPv3Y8PvEO3XOxICPIRcrd0MipUfMB8GA1UdIwQYMBaAFPv3Y8Pv\nEO3XOxICPIRcrd0MipUfMAoGCCqGSM49BAMCA0gAMEUCIGlNjB4z48lgk8EBeo/0\nS2Fr3YKPSi5oYVT/ih71sb8XAiEAh3wUShqkDs06hodYRpHhil80KJWgh2zSiZeG\nVFMc8j4=\n-----END CERTIFICATE-----\n",
+        "ledgerId": "t87a703689386c153"
+      }
+    }
+  ],
+  "Variables": {}
 }

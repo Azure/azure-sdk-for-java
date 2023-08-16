@@ -10,17 +10,17 @@ import java.util.List;
 /**
  * Keeps track of transport layer recording options to send to proxy.
  */
-public class ProxyOptionsTransport {
+public class TestProxyRecordingOptions {
 
     @JsonProperty("HandleRedirects")
     private boolean autoRedirect = false;
     @JsonProperty("Transport")
-    private Transport transportOptions;
+    private ProxyTransport proxyTransportOptions;
 
     /**
      * Model for proxy transport options
      */
-    public static class Transport{
+    public static class ProxyTransport {
         @JsonProperty("Certificates")
         private List<Certificate> certificates;
         @JsonProperty("TLSValidationCert")
@@ -37,9 +37,9 @@ public class ProxyOptionsTransport {
         /**
          * Set allowed certificates for the recording.
          * @param certificates the list of allowed certificates for the recording.
-         * @return the updated {@link Transport} object.
+         * @return the updated {@link ProxyTransport} object.
          */
-        public Transport setCertificates(List<Certificate> certificates) {
+        public ProxyTransport setCertificates (List<Certificate> certificates) {
             this.certificates = certificates;
             return this;
         }
@@ -55,9 +55,9 @@ public class ProxyOptionsTransport {
         /**
          * Set the TLS/SSL Certificate
          * @param tLSValidationCert the TLS/SSL Certificate to set
-         * @return the updated {@link Transport} object.
+         * @return the updated {@link ProxyTransport} object.
          */
-        public Transport settLSValidationCert(String tLSValidationCert) {
+        public ProxyTransport settLSValidationCert (String tLSValidationCert) {
             this.tLSValidationCert = tLSValidationCert;
             return this;
         }
@@ -85,7 +85,7 @@ public class ProxyOptionsTransport {
          * @param pemValue the cert pem value
          * @return the {@link Certificate} object
          */
-        public Certificate setPemValue(String pemValue) {
+        public Certificate setPemValue (String pemValue) {
             this.pemValue = pemValue;
             return this;
         }
@@ -103,7 +103,7 @@ public class ProxyOptionsTransport {
          * @param pemKey the cert pem key
          * @return the {@link Certificate} object
          */
-        public Certificate setPemKey(String pemKey) {
+        public Certificate setPemKey (String pemKey) {
             this.pemKey = pemKey;
             return this;
         }
@@ -120,28 +120,28 @@ public class ProxyOptionsTransport {
     /**
      * Set the boolean value indicating if auto redirect is allowed.
      * @param autoRedirect the boolean value indicating if auto redirect is allowed.
-     * @return the {@link ProxyOptionsTransport} object.
+     * @return the {@link TestProxyRecordingOptions} object.
      */
-    public ProxyOptionsTransport setAutoRedirect(boolean autoRedirect) {
+    public TestProxyRecordingOptions setAutoRedirect (boolean autoRedirect) {
         this.autoRedirect = autoRedirect;
         return this;
     }
 
     /**
      * Get test proxy transport options for recording.
-     * @return the {@link Transport} options.
+     * @return the {@link ProxyTransport} options.
      */
-    public Transport getTransportOptions() {
-        return transportOptions;
+    public ProxyTransport getTransportOptions() {
+        return proxyTransportOptions;
     }
 
     /**
      * Set test proxy transport options for recording.
-     * @param transportOptions the test proxy transport options for recording
-     * @return the {@link Transport} options.
+     * @param proxyTransportOptions the test proxy transport options for recording
+     * @return the {@link ProxyTransport} options.
      */
-    public ProxyOptionsTransport setTransportOptions(Transport transportOptions) {
-        this.transportOptions = transportOptions;
+    public TestProxyRecordingOptions setTransportOptions(ProxyTransport proxyTransportOptions) {
+        this.proxyTransportOptions = proxyTransportOptions;
         return this;
     }
 }

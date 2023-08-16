@@ -12,7 +12,7 @@ import com.azure.core.http.HttpPipelineNextSyncPolicy;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
-import com.azure.core.test.models.ProxyOptionsTransport;
+import com.azure.core.test.models.TestProxyRecordingOptions;
 import com.azure.core.test.models.RecordFilePayload;
 import com.azure.core.test.models.TestProxySanitizer;
 import com.azure.core.test.utils.HttpURLConnectionHttpClient;
@@ -192,12 +192,12 @@ public class TestProxyRecordPolicy implements HttpPipelinePolicy {
         return xRecordingId != null;
     }
 
-    public void setRecordingOptions(ProxyOptionsTransport proxyOptionsTransport) {
+    public void setRecordingOptions(TestProxyRecordingOptions testProxyRecordingOptions) {
         HttpRequest request = new HttpRequest(HttpMethod.POST, String.format("%s/admin/setrecordingoptions", proxyUrl.toString()));
         String body;
         try {
             ObjectMapper mapper = new ObjectMapper();
-            body = mapper.writeValueAsString(proxyOptionsTransport);
+            body = mapper.writeValueAsString(testProxyRecordingOptions);
         } catch (JsonProcessingException ex) {
             throw new IllegalArgumentException("Failed to process JSON input", ex);
         }

@@ -7,7 +7,7 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.test.http.PlaybackClient;
 import com.azure.core.test.http.TestProxyPlaybackClient;
 import com.azure.core.test.models.NetworkCallRecord;
-import com.azure.core.test.models.ProxyOptionsTransport;
+import com.azure.core.test.models.TestProxyRecordingOptions;
 import com.azure.core.test.models.RecordedData;
 import com.azure.core.test.models.RecordingRedactor;
 import com.azure.core.test.models.TestProxyRequestMatcher;
@@ -530,12 +530,12 @@ public class InterceptorManager implements AutoCloseable {
 
     /**
      * Sets the recording options for the proxy.
-     * @param proxyOptionsTransport The {@link ProxyOptionsTransport} to use.
+     * @param testProxyRecordingOptions The {@link TestProxyRecordingOptions} to use.
      *
      */
-    public void setProxyRecordingOptions (ProxyOptionsTransport proxyOptionsTransport) {
+    public void setProxyRecordingOptions (TestProxyRecordingOptions testProxyRecordingOptions) {
         if (testProxyRecordPolicy != null) {
-            testProxyRecordPolicy.setRecordingOptions(proxyOptionsTransport);
+            testProxyRecordPolicy.setRecordingOptions(testProxyRecordingOptions);
         } else {
             throw new RuntimeException("Recording must have been started before setting recording options.");
         }
