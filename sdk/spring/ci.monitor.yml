@@ -11,6 +11,7 @@ trigger:
     include:
       - sdk/spring/ci.monitor.yml
       - sdk/spring/spring-cloud-azure-starter-monitor/
+      - sdk/spring/spring-cloud-azure-starter-monitor-test/
 pr:
   branches:
     include:
@@ -22,6 +23,7 @@ pr:
     include:
       - sdk/spring/ci.monitor.yml
       - sdk/spring/spring-cloud-azure-starter-monitor/
+      - sdk/spring/spring-cloud-azure-starter-monitor-test/
 
 extends:
   template:  ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
@@ -37,3 +39,6 @@ extends:
         skipUpdatePackageJson: true
         skipVerifyChangelog: true
         releaseInBatch: true
+    AdditionalModules:
+      - name: spring-cloud-azure-starter-monitor-test
+        groupId: com.azure.spring
