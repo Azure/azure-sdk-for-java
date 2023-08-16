@@ -79,7 +79,7 @@ SchemaRegistryJsonSchemaSerializer serializer = new SchemaRegistryJsonSchemaSeri
 
 ## Key concepts
 
-This library provides a serializer, `SchemaRegistryApacheJsonSchemaSerializer`. The
+This library provides a serializer, `SchemaRegistryJsonSchemaSerializer`. The
 `SchemaRegistryJsonSchemaSerializer` utilizes a `SchemaRegistryAsyncClient` to construct messages using a wire format
 containing schema information such as a schema ID.  This library allows users to serialize, deserialize, register, and
 validate JSON objects by plugging in a JSON schema implementation.
