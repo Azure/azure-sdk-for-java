@@ -1,10 +1,16 @@
 package com.azure.storage.file.datalake;
 
-import com.azure.core.http.ProxyOptions;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.HttpClientOptions;
-import com.azure.storage.file.datalake.models.*;
+import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
+import com.azure.storage.file.datalake.models.DataLakeStorageException;
+import com.azure.storage.file.datalake.models.LeaseDurationType;
+import com.azure.storage.file.datalake.models.LeaseStateType;
+import com.azure.storage.file.datalake.models.LeaseStatusType;
+import com.azure.storage.file.datalake.models.ListPathsOptions;
+import com.azure.storage.file.datalake.models.PathAccessControlEntry;
+import com.azure.storage.file.datalake.models.PathHttpHeaders;
+import com.azure.storage.file.datalake.models.PathPermissions;
 import com.azure.storage.file.datalake.options.DataLakePathCreateOptions;
 import com.azure.storage.file.datalake.options.DataLakePathScheduleDeletionOptions;
 import org.junit.jupiter.api.AfterEach;
@@ -18,13 +24,17 @@ import org.junit.jupiter.params.provider.MethodSource;
 import reactor.test.StepVerifier;
 
 import java.io.File;
-import java.net.InetSocketAddress;
 import java.time.Duration;
 import java.time.OffsetDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Stream;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class FileAsyncApiTest extends DataLakeTestBase{
     private DataLakeFileAsyncClient fc;
