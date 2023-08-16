@@ -1,6 +1,6 @@
 # Release History
 
-## 1.1.0-beta.1 (Unreleased)
+## 1.1.0-beta.1 (2023-08-17)
 
 ### Features Added
 - Play and recognize supports TTS and SSML source prompts.
