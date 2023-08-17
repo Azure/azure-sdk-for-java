@@ -15,7 +15,6 @@ import com.azure.monitor.query.models.LogsQueryResult;
 import com.azure.monitor.query.models.LogsTable;
 import com.azure.monitor.query.models.LogsTableRow;
 import com.azure.monitor.query.models.QueryTimeInterval;
-;
 
 /**
  * A sample to demonstrate using a batch query to overcome the service limits for a large query.
