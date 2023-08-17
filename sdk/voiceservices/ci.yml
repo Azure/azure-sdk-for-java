@@ -45,3 +45,4 @@ extends:
         groupId: com.azure.resourcemanager
         safeName: azureresourcemanagervoiceservices
         releaseInBatch: ${{ parameters.release_azureresourcemanagervoiceservices }}
+        skipPublishDocMs: true

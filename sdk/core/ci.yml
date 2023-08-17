@@ -244,6 +244,7 @@ extends:
             - name: azure-core-experimental
               groupId: com.azure
               safeName: azurecoreexperimental
+              skipPublishDocMs: true
             - name: azure-core-http-jdk-httpclient
               groupId: com.azure
               safeName: azurecorehttpjdkhttpclient
@@ -271,6 +272,7 @@ extends:
             - name: azure-core-test
               groupId: com.azure
               safeName: azurecoretest
+              skipPublishDocMs: true
             - name: azure-core-tracing-opentelemetry
               groupId: com.azure
               safeName: azurecoretracingopentelemetry

@@ -45,3 +45,4 @@ extends:
         groupId: com.azure.resourcemanager
         safeName: azureresourcemanagerstoragemover
         releaseInBatch: ${{ parameters.release_azureresourcemanagerstoragemover }}
+        skipPublishDocMs: true
