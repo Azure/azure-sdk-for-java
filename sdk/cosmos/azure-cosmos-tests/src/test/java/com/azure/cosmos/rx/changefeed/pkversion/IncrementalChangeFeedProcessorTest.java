@@ -217,7 +217,7 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
         }
     }
 
-    @Test(groups = {"multi-region"}, timeOut = 50 * CHANGE_FEED_PROCESSOR_TIMEOUT)
+    @Test(groups = {"multi-master"}, timeOut = 50 * CHANGE_FEED_PROCESSOR_TIMEOUT)
     public void readFeedDocumentsStartFromCustomDateForMultiWrite_test() throws InterruptedException {
         CosmosClientBuilder clientBuilder = getClientBuilder();
 
@@ -331,7 +331,7 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
         }
     }
 
-    @Test(groups = {"multi-region"}, timeOut = 50 * CHANGE_FEED_PROCESSOR_TIMEOUT)
+    @Test(groups = {"multi-master"}, timeOut = 50 * CHANGE_FEED_PROCESSOR_TIMEOUT)
     public void readFeedDocumentsStartFromCustomDateForMultiWrite_WithCFPReadFromSatelliteRegion_test() throws InterruptedException {
         CosmosClientBuilder clientBuilder = getClientBuilder();
 
@@ -460,7 +460,7 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
         }
     }
 
-    @Test(groups = {"multi-region"}, timeOut = 50 * CHANGE_FEED_PROCESSOR_TIMEOUT)
+    @Test(groups = {"multi-master"}, timeOut = 50 * CHANGE_FEED_PROCESSOR_TIMEOUT)
     public void readFeedDocumentsStartFromCustomDateForMultiWrite_WithCFPReadSwitchToSatelliteRegion_test() throws InterruptedException {
         CosmosClientBuilder clientBuilder = getClientBuilder();
 

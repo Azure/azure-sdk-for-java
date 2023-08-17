@@ -59,7 +59,7 @@ public class FaultInjectionMetadataRequestRuleTests extends TestSuiteBase {
         this.subscriberValidationTimeout = TIMEOUT;
     }
 
-    @BeforeClass(groups = { "multi-region" }, timeOut = TIMEOUT)
+    @BeforeClass(groups = { "multi-master" }, timeOut = TIMEOUT)
     public void beforeClass() {
         this.client = getClientBuilder().buildAsyncClient();
         AsyncDocumentClient asyncDocumentClient = BridgeInternal.getContextClient(this.client);
@@ -72,7 +72,7 @@ public class FaultInjectionMetadataRequestRuleTests extends TestSuiteBase {
         this.preferredLocations = readRegionMap.keySet().stream().collect(Collectors.toList());
     }
 
-    @Test(groups = { "multi-region" }, timeOut = 4 * TIMEOUT)
+    @Test(groups = { "multi-master" }, timeOut = 4 * TIMEOUT)
     public void faultInjectionServerErrorRuleTests_AddressRefresh_ConnectionDelay() throws JsonProcessingException {
 
         // Test to validate if there is http connection exception for address refresh,
@@ -166,7 +166,7 @@ public class FaultInjectionMetadataRequestRuleTests extends TestSuiteBase {
         }
     }
 
-    @Test(groups = { "multi-region" }, timeOut = 4 * TIMEOUT)
+    @Test(groups = { "multi-master" }, timeOut = 4 * TIMEOUT)
     public void faultInjectionServerErrorRuleTests_AddressRefresh_ResponseDelay() throws JsonProcessingException {
 
         // Test to validate if there is http request timeout for address refresh,
@@ -248,7 +248,7 @@ public class FaultInjectionMetadataRequestRuleTests extends TestSuiteBase {
         }
     }
 
-    @Test(groups = { "multi-region" }, timeOut = 4 * TIMEOUT)
+    @Test(groups = { "multi-master" }, timeOut = 4 * TIMEOUT)
     public void faultInjectionServerErrorRuleTests_AddressRefresh_byPartition() {
 
         // We need to create a new client because client may have marked region unavailable in other tests
@@ -358,7 +358,7 @@ public class FaultInjectionMetadataRequestRuleTests extends TestSuiteBase {
         }
     }
 
-    @Test(groups = { "multi-region" }, timeOut = 4 * TIMEOUT)
+    @Test(groups = { "multi-master" }, timeOut = 4 * TIMEOUT)
     public void faultInjectionServerErrorRuleTests_AddressRefresh_TooManyRequest() throws JsonProcessingException {
 
         // We need to create a new client because client may have marked region unavailable in other tests
@@ -429,7 +429,7 @@ public class FaultInjectionMetadataRequestRuleTests extends TestSuiteBase {
         }
     }
 
-    @Test(groups = { "multi-region" }, timeOut = 40 * TIMEOUT)
+    @Test(groups = { "multi-master" }, timeOut = 40 * TIMEOUT)
     public void faultInjectionServerErrorRuleTests_PartitionKeyRanges_ConnectionDelay() throws JsonProcessingException {
 
         // We need to create a new client because client may have marked region unavailable in other tests
@@ -520,7 +520,7 @@ public class FaultInjectionMetadataRequestRuleTests extends TestSuiteBase {
         }
     }
 
-    @AfterClass(groups = {"multi-region"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
+    @AfterClass(groups = {"multi-master"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
         safeClose(this.client);
     }

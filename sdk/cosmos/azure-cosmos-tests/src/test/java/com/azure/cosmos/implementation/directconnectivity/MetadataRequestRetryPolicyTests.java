@@ -82,7 +82,7 @@ public class MetadataRequestRetryPolicyTests extends TestSuiteBase {
         super(clientBuilder);
     }
 
-    @BeforeClass(groups = {"multi-region"})
+    @BeforeClass(groups = {"multi-master"})
     public void beforeClass() {
 
         CosmosAsyncClient client = null;
@@ -189,7 +189,7 @@ public class MetadataRequestRetryPolicyTests extends TestSuiteBase {
     // 3. This will help us to verify two things:
     //      3.2 Using a cancellation status on the request associated with the operation
     //          we can trigger force address refresh calls in the background when server-side generated 410s are thrown.
-    @Test(groups = {"multi-region"}, dataProvider = "operationContext", timeOut = TIMEOUT)
+    @Test(groups = {"multi-master"}, dataProvider = "operationContext", timeOut = TIMEOUT)
     public void forceBackgroundAddressRefresh_onConnectionTimeoutAndRequestCancellation_test(
         FaultInjectionOperationType faultInjectionOperationType,
         OperationType operationType,
