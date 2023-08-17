@@ -12,9 +12,9 @@ public final class WorkspacesGetByResourceGroupSamples {
     /**
      * Sample code: Workspaces.
      *
-     * @param manager Entry point to DefendereasmManager.
+     * @param manager Entry point to EasmManager.
      */
-    public static void workspaces(com.azure.resourcemanager.defendereasm.DefendereasmManager manager) {
+    public static void workspaces(com.azure.resourcemanager.defendereasm.EasmManager manager) {
         manager
             .workspaces()
             .getByResourceGroupWithResponse("dummyrg", "ThisisaWorkspace", com.azure.core.util.Context.NONE);

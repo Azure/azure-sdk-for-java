@@ -31,6 +31,7 @@ public final class WorkspacePatchResourceTests {
         Assertions.assertEquals("xxjtfe", model.tags().get("luwfzitonpeqfpjk"));
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

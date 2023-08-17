@@ -17,10 +17,10 @@ public final class OperationsImpl implements Operations {
 
     private final OperationsClient innerClient;
 
-    private final com.azure.resourcemanager.defendereasm.DefendereasmManager serviceManager;
+    private final com.azure.resourcemanager.defendereasm.EasmManager serviceManager;
 
     public OperationsImpl(
-        OperationsClient innerClient, com.azure.resourcemanager.defendereasm.DefendereasmManager serviceManager) {
+        OperationsClient innerClient, com.azure.resourcemanager.defendereasm.EasmManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
@@ -39,7 +39,7 @@ public final class OperationsImpl implements Operations {
         return this.innerClient;
     }
 
-    private com.azure.resourcemanager.defendereasm.DefendereasmManager manager() {
+    private com.azure.resourcemanager.defendereasm.EasmManager manager() {
         return this.serviceManager;
     }
 }

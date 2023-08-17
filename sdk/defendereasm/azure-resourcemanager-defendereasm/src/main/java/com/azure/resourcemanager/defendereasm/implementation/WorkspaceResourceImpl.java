@@ -18,7 +18,7 @@ public final class WorkspaceResourceImpl
     implements WorkspaceResource, WorkspaceResource.Definition, WorkspaceResource.Update {
     private WorkspaceResourceInner innerObject;
 
-    private final com.azure.resourcemanager.defendereasm.DefendereasmManager serviceManager;
+    private final com.azure.resourcemanager.defendereasm.EasmManager serviceManager;
 
     public String id() {
         return this.innerModel().id();
@@ -73,7 +73,7 @@ public final class WorkspaceResourceImpl
         return this.innerObject;
     }
 
-    private com.azure.resourcemanager.defendereasm.DefendereasmManager manager() {
+    private com.azure.resourcemanager.defendereasm.EasmManager manager() {
         return this.serviceManager;
     }
 
@@ -106,7 +106,7 @@ public final class WorkspaceResourceImpl
         return this;
     }
 
-    WorkspaceResourceImpl(String name, com.azure.resourcemanager.defendereasm.DefendereasmManager serviceManager) {
+    WorkspaceResourceImpl(String name, com.azure.resourcemanager.defendereasm.EasmManager serviceManager) {
         this.innerObject = new WorkspaceResourceInner();
         this.serviceManager = serviceManager;
         this.workspaceName = name;
@@ -138,7 +138,7 @@ public final class WorkspaceResourceImpl
     }
 
     WorkspaceResourceImpl(
-        WorkspaceResourceInner innerObject, com.azure.resourcemanager.defendereasm.DefendereasmManager serviceManager) {
+        WorkspaceResourceInner innerObject, com.azure.resourcemanager.defendereasm.EasmManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
         this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");

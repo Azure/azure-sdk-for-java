@@ -12,9 +12,9 @@ public final class OperationsListSamples {
     /**
      * Sample code: Operations.
      *
-     * @param manager Entry point to DefendereasmManager.
+     * @param manager Entry point to EasmManager.
      */
-    public static void operations(com.azure.resourcemanager.defendereasm.DefendereasmManager manager) {
+    public static void operations(com.azure.resourcemanager.defendereasm.EasmManager manager) {
         manager.operations().list(com.azure.core.util.Context.NONE);
     }
 }

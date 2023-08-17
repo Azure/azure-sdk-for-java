@@ -11,10 +11,9 @@ import com.azure.resourcemanager.defendereasm.models.TaskResource;
 public final class TaskResourceImpl implements TaskResource {
     private TaskResourceInner innerObject;
 
-    private final com.azure.resourcemanager.defendereasm.DefendereasmManager serviceManager;
+    private final com.azure.resourcemanager.defendereasm.EasmManager serviceManager;
 
-    TaskResourceImpl(
-        TaskResourceInner innerObject, com.azure.resourcemanager.defendereasm.DefendereasmManager serviceManager) {
+    TaskResourceImpl(TaskResourceInner innerObject, com.azure.resourcemanager.defendereasm.EasmManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -67,7 +66,7 @@ public final class TaskResourceImpl implements TaskResource {
         return this.innerObject;
     }
 
-    private com.azure.resourcemanager.defendereasm.DefendereasmManager manager() {
+    private com.azure.resourcemanager.defendereasm.EasmManager manager() {
         return this.serviceManager;
     }
 }

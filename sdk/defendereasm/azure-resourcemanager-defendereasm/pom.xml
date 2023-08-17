@@ -17,8 +17,8 @@
   <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-defendereasm;current} -->
   <packaging>jar</packaging>
 
-  <name>Microsoft Azure SDK for defendereasm Management</name>
-  <description>This package contains Microsoft Azure SDK for defendereasm Management SDK. For documentation on how to use this package, please see https://aka.ms/azsdk/java/mgmt. REST APIs for Easm. Package tag package-preview-2023-04.</description>
+  <name>Microsoft Azure SDK for Easm Management</name>
+  <description>This package contains Microsoft Azure SDK for Easm Management SDK. For documentation on how to use this package, please see https://aka.ms/azsdk/java/mgmt. REST APIs for Easm. Package tag package-preview-2023-04.</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
   <licenses>
@@ -45,6 +45,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <jacoco.min.linecoverage>0</jacoco.min.linecoverage>
     <jacoco.min.branchcoverage>0</jacoco.min.branchcoverage>
+    <revapi.skip>true</revapi.skip>
   </properties>
   <dependencies>
     <dependency>

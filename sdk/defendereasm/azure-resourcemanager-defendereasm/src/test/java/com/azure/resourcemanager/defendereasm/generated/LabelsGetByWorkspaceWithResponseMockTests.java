@@ -11,7 +11,7 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.resourcemanager.defendereasm.DefendereasmManager;
+import com.azure.resourcemanager.defendereasm.EasmManager;
 import com.azure.resourcemanager.defendereasm.models.LabelResource;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
@@ -51,8 +51,8 @@ public final class LabelsGetByWorkspaceWithResponseMockTests {
                             return Mono.just(httpResponse);
                         }));
 
-        DefendereasmManager manager =
-            DefendereasmManager
+        EasmManager manager =
+            EasmManager
                 .configure()
                 .withHttpClient(httpClient)
                 .authenticate(

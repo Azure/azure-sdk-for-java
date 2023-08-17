@@ -12,10 +12,10 @@ import com.azure.resourcemanager.defendereasm.models.ResourceState;
 public final class LabelResourceImpl implements LabelResource {
     private LabelResourceInner innerObject;
 
-    private final com.azure.resourcemanager.defendereasm.DefendereasmManager serviceManager;
+    private final com.azure.resourcemanager.defendereasm.EasmManager serviceManager;
 
     LabelResourceImpl(
-        LabelResourceInner innerObject, com.azure.resourcemanager.defendereasm.DefendereasmManager serviceManager) {
+        LabelResourceInner innerObject, com.azure.resourcemanager.defendereasm.EasmManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -52,7 +52,7 @@ public final class LabelResourceImpl implements LabelResource {
         return this.innerObject;
     }
 
-    private com.azure.resourcemanager.defendereasm.DefendereasmManager manager() {
+    private com.azure.resourcemanager.defendereasm.EasmManager manager() {
         return this.serviceManager;
     }
 }

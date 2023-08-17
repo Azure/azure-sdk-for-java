@@ -36,9 +36,9 @@ public final class LabelsCreateAndUpdateSamples {
     /**
      * Sample code: Labels.
      *
-     * @param manager Entry point to DefendereasmManager.
+     * @param manager Entry point to EasmManager.
      */
-    public static void labels(com.azure.resourcemanager.defendereasm.DefendereasmManager manager) {
+    public static void labels(com.azure.resourcemanager.defendereasm.EasmManager manager) {
         manager
             .labels()
             .createAndUpdate("dummyrg", "ThisisaWorkspace", "ThisisaLabel", null, com.azure.core.util.Context.NONE);
@@ -57,9 +57,9 @@ public final class LabelsDeleteSamples {
     /**
      * Sample code: Labels.
      *
-     * @param manager Entry point to DefendereasmManager.
+     * @param manager Entry point to EasmManager.
      */
-    public static void labels(com.azure.resourcemanager.defendereasm.DefendereasmManager manager) {
+    public static void labels(com.azure.resourcemanager.defendereasm.EasmManager manager) {
         manager.labels().delete("dummyrg", "ThisisaWorkspace", "ThisisaLabel", com.azure.core.util.Context.NONE);
     }
 }
@@ -76,9 +76,9 @@ public final class LabelsGetByWorkspaceSamples {
     /**
      * Sample code: Labels.
      *
-     * @param manager Entry point to DefendereasmManager.
+     * @param manager Entry point to EasmManager.
      */
-    public static void labels(com.azure.resourcemanager.defendereasm.DefendereasmManager manager) {
+    public static void labels(com.azure.resourcemanager.defendereasm.EasmManager manager) {
         manager
             .labels()
             .getByWorkspaceWithResponse(
@@ -98,9 +98,9 @@ public final class LabelsListByWorkspaceSamples {
     /**
      * Sample code: Labels.
      *
-     * @param manager Entry point to DefendereasmManager.
+     * @param manager Entry point to EasmManager.
      */
-    public static void labels(com.azure.resourcemanager.defendereasm.DefendereasmManager manager) {
+    public static void labels(com.azure.resourcemanager.defendereasm.EasmManager manager) {
         manager.labels().listByWorkspace("dummyrg", "ThisisaWorkspace", com.azure.core.util.Context.NONE);
     }
 }
@@ -117,9 +117,9 @@ public final class LabelsUpdateSamples {
     /**
      * Sample code: Labels.
      *
-     * @param manager Entry point to DefendereasmManager.
+     * @param manager Entry point to EasmManager.
      */
-    public static void labels(com.azure.resourcemanager.defendereasm.DefendereasmManager manager) {
+    public static void labels(com.azure.resourcemanager.defendereasm.EasmManager manager) {
         manager
             .labels()
             .updateWithResponse("dummyrg", "ThisisaWorkspace", "ThisisaLabel", null, com.azure.core.util.Context.NONE);
@@ -138,9 +138,9 @@ public final class OperationsListSamples {
     /**
      * Sample code: Operations.
      *
-     * @param manager Entry point to DefendereasmManager.
+     * @param manager Entry point to EasmManager.
      */
-    public static void operations(com.azure.resourcemanager.defendereasm.DefendereasmManager manager) {
+    public static void operations(com.azure.resourcemanager.defendereasm.EasmManager manager) {
         manager.operations().list(com.azure.core.util.Context.NONE);
     }
 }
@@ -157,9 +157,9 @@ public final class TasksGetByWorkspaceSamples {
     /**
      * Sample code: Tasks.
      *
-     * @param manager Entry point to DefendereasmManager.
+     * @param manager Entry point to EasmManager.
      */
-    public static void tasks(com.azure.resourcemanager.defendereasm.DefendereasmManager manager) {
+    public static void tasks(com.azure.resourcemanager.defendereasm.EasmManager manager) {
         manager
             .tasks()
             .getByWorkspaceWithResponse(
@@ -179,9 +179,9 @@ public final class WorkspacesCreateAndUpdateSamples {
     /**
      * Sample code: Workspaces.
      *
-     * @param manager Entry point to DefendereasmManager.
+     * @param manager Entry point to EasmManager.
      */
-    public static void workspaces(com.azure.resourcemanager.defendereasm.DefendereasmManager manager) {
+    public static void workspaces(com.azure.resourcemanager.defendereasm.EasmManager manager) {
         manager
             .workspaces()
             .define("ThisisaWorkspace")
@@ -203,9 +203,9 @@ public final class WorkspacesDeleteSamples {
     /**
      * Sample code: Workspaces.
      *
-     * @param manager Entry point to DefendereasmManager.
+     * @param manager Entry point to EasmManager.
      */
-    public static void workspaces(com.azure.resourcemanager.defendereasm.DefendereasmManager manager) {
+    public static void workspaces(com.azure.resourcemanager.defendereasm.EasmManager manager) {
         manager.workspaces().delete("dummyrg", "ThisisaWorkspace", com.azure.core.util.Context.NONE);
     }
 }
@@ -222,9 +222,9 @@ public final class WorkspacesGetByResourceGroupSamples {
     /**
      * Sample code: Workspaces.
      *
-     * @param manager Entry point to DefendereasmManager.
+     * @param manager Entry point to EasmManager.
      */
-    public static void workspaces(com.azure.resourcemanager.defendereasm.DefendereasmManager manager) {
+    public static void workspaces(com.azure.resourcemanager.defendereasm.EasmManager manager) {
         manager
             .workspaces()
             .getByResourceGroupWithResponse("dummyrg", "ThisisaWorkspace", com.azure.core.util.Context.NONE);
@@ -243,9 +243,9 @@ public final class WorkspacesListSamples {
     /**
      * Sample code: Workspaces.
      *
-     * @param manager Entry point to DefendereasmManager.
+     * @param manager Entry point to EasmManager.
      */
-    public static void workspaces(com.azure.resourcemanager.defendereasm.DefendereasmManager manager) {
+    public static void workspaces(com.azure.resourcemanager.defendereasm.EasmManager manager) {
         manager.workspaces().list(com.azure.core.util.Context.NONE);
     }
 }
@@ -262,9 +262,9 @@ public final class WorkspacesListByResourceGroupSamples {
     /**
      * Sample code: Workspaces.
      *
-     * @param manager Entry point to DefendereasmManager.
+     * @param manager Entry point to EasmManager.
      */
-    public static void workspaces(com.azure.resourcemanager.defendereasm.DefendereasmManager manager) {
+    public static void workspaces(com.azure.resourcemanager.defendereasm.EasmManager manager) {
         manager.workspaces().listByResourceGroup("dummyrg", com.azure.core.util.Context.NONE);
     }
 }
@@ -283,9 +283,9 @@ public final class WorkspacesUpdateSamples {
     /**
      * Sample code: Workspaces.
      *
-     * @param manager Entry point to DefendereasmManager.
+     * @param manager Entry point to EasmManager.
      */
-    public static void workspaces(com.azure.resourcemanager.defendereasm.DefendereasmManager manager) {
+    public static void workspaces(com.azure.resourcemanager.defendereasm.EasmManager manager) {
         WorkspaceResource resource =
             manager
                 .workspaces()

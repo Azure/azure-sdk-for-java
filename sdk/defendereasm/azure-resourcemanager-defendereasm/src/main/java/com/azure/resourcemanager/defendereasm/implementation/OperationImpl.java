@@ -13,10 +13,9 @@ import com.azure.resourcemanager.defendereasm.models.Origin;
 public final class OperationImpl implements Operation {
     private OperationInner innerObject;
 
-    private final com.azure.resourcemanager.defendereasm.DefendereasmManager serviceManager;
+    private final com.azure.resourcemanager.defendereasm.EasmManager serviceManager;
 
-    OperationImpl(
-        OperationInner innerObject, com.azure.resourcemanager.defendereasm.DefendereasmManager serviceManager) {
+    OperationImpl(OperationInner innerObject, com.azure.resourcemanager.defendereasm.EasmManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -45,7 +44,7 @@ public final class OperationImpl implements Operation {
         return this.innerObject;
     }
 
-    private com.azure.resourcemanager.defendereasm.DefendereasmManager manager() {
+    private com.azure.resourcemanager.defendereasm.EasmManager manager() {
         return this.serviceManager;
     }
 }

@@ -11,7 +11,7 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.resourcemanager.defendereasm.DefendereasmManager;
+import com.azure.resourcemanager.defendereasm.EasmManager;
 import com.azure.resourcemanager.defendereasm.models.WorkspaceResource;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
@@ -53,8 +53,8 @@ public final class WorkspacesCreateAndUpdateMockTests {
                             return Mono.just(httpResponse);
                         }));
 
-        DefendereasmManager manager =
-            DefendereasmManager
+        EasmManager manager =
+            EasmManager
                 .configure()
                 .withHttpClient(httpClient)
                 .authenticate(
@@ -74,6 +74,7 @@ public final class WorkspacesCreateAndUpdateMockTests {
         Assertions.assertEquals("dndnvow", response.tags().get("ujjugwdkcglh"));
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

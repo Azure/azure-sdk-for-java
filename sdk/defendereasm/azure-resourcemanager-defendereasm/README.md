@@ -1,8 +1,8 @@
-# Azure Resource Manager defendereasm client library for Java
+# Azure Resource Manager Easm client library for Java
 
-Azure Resource Manager defendereasm client library for Java.
+Azure Resource Manager Easm client library for Java.
 
-This package contains Microsoft Azure SDK for defendereasm Management SDK. REST APIs for Easm. Package tag package-preview-2023-04. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+This package contains Microsoft Azure SDK for Easm Management SDK. REST APIs for Easm. Package tag package-preview-2023-04. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ## We'd love to hear your feedback
 
@@ -60,7 +60,7 @@ AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
 TokenCredential credential = new DefaultAzureCredentialBuilder()
     .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
     .build();
-DefendereasmManager manager = DefendereasmManager
+EasmManager manager = EasmManager
     .authenticate(credential, profile);
 ```
 

@@ -12,9 +12,9 @@ public final class LabelsListByWorkspaceSamples {
     /**
      * Sample code: Labels.
      *
-     * @param manager Entry point to DefendereasmManager.
+     * @param manager Entry point to EasmManager.
      */
-    public static void labels(com.azure.resourcemanager.defendereasm.DefendereasmManager manager) {
+    public static void labels(com.azure.resourcemanager.defendereasm.EasmManager manager) {
         manager.labels().listByWorkspace("dummyrg", "ThisisaWorkspace", com.azure.core.util.Context.NONE);
     }
 }

@@ -12,9 +12,9 @@ public final class TasksGetByWorkspaceSamples {
     /**
      * Sample code: Tasks.
      *
-     * @param manager Entry point to DefendereasmManager.
+     * @param manager Entry point to EasmManager.
      */
-    public static void tasks(com.azure.resourcemanager.defendereasm.DefendereasmManager manager) {
+    public static void tasks(com.azure.resourcemanager.defendereasm.EasmManager manager) {
         manager
             .tasks()
             .getByWorkspaceWithResponse(

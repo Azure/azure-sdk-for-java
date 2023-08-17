@@ -12,7 +12,7 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.resourcemanager.defendereasm.DefendereasmManager;
+import com.azure.resourcemanager.defendereasm.EasmManager;
 import com.azure.resourcemanager.defendereasm.models.WorkspaceResource;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
@@ -52,8 +52,8 @@ public final class WorkspacesListMockTests {
                             return Mono.just(httpResponse);
                         }));
 
-        DefendereasmManager manager =
-            DefendereasmManager
+        EasmManager manager =
+            EasmManager
                 .configure()
                 .withHttpClient(httpClient)
                 .authenticate(

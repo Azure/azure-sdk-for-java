@@ -19,10 +19,10 @@ public final class WorkspacesImpl implements Workspaces {
 
     private final WorkspacesClient innerClient;
 
-    private final com.azure.resourcemanager.defendereasm.DefendereasmManager serviceManager;
+    private final com.azure.resourcemanager.defendereasm.EasmManager serviceManager;
 
     public WorkspacesImpl(
-        WorkspacesClient innerClient, com.azure.resourcemanager.defendereasm.DefendereasmManager serviceManager) {
+        WorkspacesClient innerClient, com.azure.resourcemanager.defendereasm.EasmManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
@@ -160,7 +160,7 @@ public final class WorkspacesImpl implements Workspaces {
         return this.innerClient;
     }
 
-    private com.azure.resourcemanager.defendereasm.DefendereasmManager manager() {
+    private com.azure.resourcemanager.defendereasm.EasmManager manager() {
         return this.serviceManager;
     }
 

@@ -18,10 +18,9 @@ public final class TasksImpl implements Tasks {
 
     private final TasksClient innerClient;
 
-    private final com.azure.resourcemanager.defendereasm.DefendereasmManager serviceManager;
+    private final com.azure.resourcemanager.defendereasm.EasmManager serviceManager;
 
-    public TasksImpl(
-        TasksClient innerClient, com.azure.resourcemanager.defendereasm.DefendereasmManager serviceManager) {
+    public TasksImpl(TasksClient innerClient, com.azure.resourcemanager.defendereasm.EasmManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
@@ -54,7 +53,7 @@ public final class TasksImpl implements Tasks {
         return this.innerClient;
     }
 
-    private com.azure.resourcemanager.defendereasm.DefendereasmManager manager() {
+    private com.azure.resourcemanager.defendereasm.EasmManager manager() {
         return this.serviceManager;
     }
 }

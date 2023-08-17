@@ -12,9 +12,9 @@ public final class LabelsDeleteSamples {
     /**
      * Sample code: Labels.
      *
-     * @param manager Entry point to DefendereasmManager.
+     * @param manager Entry point to EasmManager.
      */
-    public static void labels(com.azure.resourcemanager.defendereasm.DefendereasmManager manager) {
+    public static void labels(com.azure.resourcemanager.defendereasm.EasmManager manager) {
         manager.labels().delete("dummyrg", "ThisisaWorkspace", "ThisisaLabel", com.azure.core.util.Context.NONE);
     }
 }

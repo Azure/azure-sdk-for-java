@@ -12,9 +12,9 @@ public final class WorkspacesDeleteSamples {
     /**
      * Sample code: Workspaces.
      *
-     * @param manager Entry point to DefendereasmManager.
+     * @param manager Entry point to EasmManager.
      */
-    public static void workspaces(com.azure.resourcemanager.defendereasm.DefendereasmManager manager) {
+    public static void workspaces(com.azure.resourcemanager.defendereasm.EasmManager manager) {
         manager.workspaces().delete("dummyrg", "ThisisaWorkspace", com.azure.core.util.Context.NONE);
     }
 }

@@ -40,8 +40,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-/** Entry point to DefendereasmManager. REST APIs for Easm. */
-public final class DefendereasmManager {
+/** Entry point to EasmManager. REST APIs for Easm. */
+public final class EasmManager {
     private Workspaces workspaces;
 
     private Labels labels;
@@ -52,7 +52,7 @@ public final class DefendereasmManager {
 
     private final MicrosoftEasm clientObject;
 
-    private DefendereasmManager(HttpPipeline httpPipeline, AzureProfile profile, Duration defaultPollInterval) {
+    private EasmManager(HttpPipeline httpPipeline, AzureProfile profile, Duration defaultPollInterval) {
         Objects.requireNonNull(httpPipeline, "'httpPipeline' cannot be null.");
         Objects.requireNonNull(profile, "'profile' cannot be null.");
         this.clientObject =
@@ -65,38 +65,38 @@ public final class DefendereasmManager {
     }
 
     /**
-     * Creates an instance of defendereasm service API entry point.
+     * Creates an instance of Easm service API entry point.
      *
      * @param credential the credential to use.
      * @param profile the Azure profile for client.
-     * @return the defendereasm service API instance.
+     * @return the Easm service API instance.
      */
-    public static DefendereasmManager authenticate(TokenCredential credential, AzureProfile profile) {
+    public static EasmManager authenticate(TokenCredential credential, AzureProfile profile) {
         Objects.requireNonNull(credential, "'credential' cannot be null.");
         Objects.requireNonNull(profile, "'profile' cannot be null.");
         return configure().authenticate(credential, profile);
     }
 
     /**
-     * Creates an instance of defendereasm service API entry point.
+     * Creates an instance of Easm service API entry point.
      *
      * @param httpPipeline the {@link HttpPipeline} configured with Azure authentication credential.
      * @param profile the Azure profile for client.
-     * @return the defendereasm service API instance.
+     * @return the Easm service API instance.
      */
-    public static DefendereasmManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
+    public static EasmManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
         Objects.requireNonNull(httpPipeline, "'httpPipeline' cannot be null.");
         Objects.requireNonNull(profile, "'profile' cannot be null.");
-        return new DefendereasmManager(httpPipeline, profile, null);
+        return new EasmManager(httpPipeline, profile, null);
     }
 
     /**
-     * Gets a Configurable instance that can be used to create DefendereasmManager with optional configuration.
+     * Gets a Configurable instance that can be used to create EasmManager with optional configuration.
      *
      * @return the Configurable instance allowing configurations.
      */
     public static Configurable configure() {
-        return new DefendereasmManager.Configurable();
+        return new EasmManager.Configurable();
     }
 
     /** The Configurable allowing configurations to be set. */
@@ -199,13 +199,13 @@ public final class DefendereasmManager {
         }
 
         /**
-         * Creates an instance of defendereasm service API entry point.
+         * Creates an instance of Easm service API entry point.
          *
          * @param credential the credential to use.
          * @param profile the Azure profile for client.
-         * @return the defendereasm service API instance.
+         * @return the Easm service API instance.
          */
-        public DefendereasmManager authenticate(TokenCredential credential, AzureProfile profile) {
+        public EasmManager authenticate(TokenCredential credential, AzureProfile profile) {
             Objects.requireNonNull(credential, "'credential' cannot be null.");
             Objects.requireNonNull(profile, "'profile' cannot be null.");
 
@@ -268,7 +268,7 @@ public final class DefendereasmManager {
                     .httpClient(httpClient)
                     .policies(policies.toArray(new HttpPipelinePolicy[0]))
                     .build();
-            return new DefendereasmManager(httpPipeline, profile, defaultPollInterval);
+            return new EasmManager(httpPipeline, profile, defaultPollInterval);
         }
     }
 
@@ -321,8 +321,10 @@ public final class DefendereasmManager {
     }
 
     /**
-     * @return Wrapped service client MicrosoftEasm providing direct access to the underlying auto-generated API
-     *     implementation, based on Azure REST API.
+     * Gets wrapped service client MicrosoftEasm providing direct access to the underlying auto-generated API
+     * implementation, based on Azure REST API.
+     *
+     * @return Wrapped service client MicrosoftEasm.
      */
     public MicrosoftEasm serviceClient() {
         return this.clientObject;
