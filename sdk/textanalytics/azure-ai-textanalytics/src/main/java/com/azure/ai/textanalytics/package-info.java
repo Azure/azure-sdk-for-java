@@ -3,21 +3,21 @@
 
 /**
  * <p><a href="https://learn.microsoft.com/azure/ai-services/language-service">Azure AI Language Service</a>
- * is a managed service provided by Microsoft Azure that allows developers to analyze unstructured text for tasks.
- * This client library support most features of AI Language Services.</p>
+ * is a cloud-based service that provides Natural Language Processing (NLP) features for understanding and analyzing
+ * text.</p>
  *
  * <p>The Azure Text Analytics library is a client library that provides Java developers with a simple and
  * easy-to-use interface for accessing and using the Azure AI Language Service. This library allows developers to
- * can be used to analyze unstructured text for tasks such as sentiment analysis, entities recognition(PII, Health,
- * Linked, Customized), key phrases extraction, language detection, abstractive and extractive summarizations,
- * single-label and multi-label classifications, and execute multiple actions/operations in one request.
+ * can be used to analyze unstructured text for tasks, such as sentiment analysis, entities recognition(PII, Health,
+ * Linked, Custom), key phrases extraction, language detection, abstractive and extractive summarizations,
+ * single-label and multi-label classifications, and execute multiple actions/operations in a single request.
  * </p>
  *
  * <h2>Getting Started</h2>
  *
- * <p>In order to interact with the Text Analytics service you'll need to create an instance of the Text Analytics
- * Client class. To make this possible you'll need the key credential of the service. Alternatively,
- * you can use AAD authentication via
+ * <p>In order to interact with the Text Analytics features in Azure AI Language Service, you'll need to create an
+ * instance of the Text Analytics Client class. To make this possible you'll need the key credential of the service.
+ * Alternatively, you can use AAD authentication via
  * <a href="https://learn.microsoft.com/java/api/overview/azure/identity-readme?view=azure-java-stable">Azure Identity</a>
  * to connect to the service.</p>
  * <ol>
@@ -26,20 +26,6 @@
  *   <li>Azure Active Directory, see {@link com.azure.ai.textanalytics.TextAnalyticsClientBuilder#credential(
  *   com.azure.core.credential.TokenCredential) TokenCredential}.</li>
  * </ol>
- *
- * <p><strong>Sample: Construct Asynchronous Text Analytics Client with Azure Key Credential</strong></p>
- *
- * <p>The following code sample demonstrates the creation of a {@link com.azure.ai.textanalytics.TextAnalyticsAsyncClient},
- * using the {@link com.azure.ai.textanalytics.TextAnalyticsClientBuilder} to configure it with a key credential.</p>
- *
- * <!-- src_embed com.azure.ai.textanalytics.TextAnalyticsAsyncClient.instantiation  -->
- * <pre>
- * TextAnalyticsAsyncClient textAnalyticsAsyncClient = new TextAnalyticsClientBuilder&#40;&#41;
- *     .credential&#40;new AzureKeyCredential&#40;&quot;&#123;key&#125;&quot;&#41;&#41;
- *     .endpoint&#40;&quot;&#123;endpoint&#125;&quot;&#41;
- *     .buildAsyncClient&#40;&#41;;
- * </pre>
- * <!-- end com.azure.ai.textanalytics.TextAnalyticsAsyncClient.instantiation  -->
  *
  * <p><strong>Sample: Construct Synchronous Text Analytics Client with Azure Key Credential</strong></p>
  *
@@ -55,7 +41,21 @@
  * </pre>
  * <!-- end com.azure.ai.textanalytics.TextAnalyticsClient.instantiation -->
  *
- * <p>See methods in client level class below to explore all capabilities that library provides.</p>
+ * <p><strong>Sample: Construct Asynchronous Text Analytics Client with Azure Key Credential</strong></p>
+ *
+ * <p>The following code sample demonstrates the creation of a {@link com.azure.ai.textanalytics.TextAnalyticsAsyncClient},
+ * using the {@link com.azure.ai.textanalytics.TextAnalyticsClientBuilder} to configure it with a key credential.</p>
+ *
+ * <!-- src_embed com.azure.ai.textanalytics.TextAnalyticsAsyncClient.instantiation  -->
+ * <pre>
+ * TextAnalyticsAsyncClient textAnalyticsAsyncClient = new TextAnalyticsClientBuilder&#40;&#41;
+ *     .credential&#40;new AzureKeyCredential&#40;&quot;&#123;key&#125;&quot;&#41;&#41;
+ *     .endpoint&#40;&quot;&#123;endpoint&#125;&quot;&#41;
+ *     .buildAsyncClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.ai.textanalytics.TextAnalyticsAsyncClient.instantiation  -->
+ *
+ * <p>See methods in client level class below to explore all features that library provides.</p>
  *
  * <br/>
  *
@@ -66,19 +66,20 @@
  * <h3>Key Phrases Extraction</h3>
  *
  * <p>The {@link com.azure.ai.textanalytics.TextAnalyticsClient#extractKeyPhrases(java.lang.String) extractKeyPhrases}
- * method can be used to recognize entities, which returns a list of strings denoting the key phrases in the document.
+ * method can be used to extract key phrases, which returns a list of strings denoting the key phrases in the document.
  * </p>
  *
  * <!-- src_embed com.azure.ai.textanalytics.TextAnalyticsClient.extractKeyPhrases#String -->
  * <pre>
- * System.out.println&#40;&quot;Extracted phrases:&quot;&#41;;
- * for &#40;String keyPhrase : textAnalyticsClient.extractKeyPhrases&#40;&quot;My cat might need to see a veterinarian.&quot;&#41;&#41; &#123;
+ * KeyPhrasesCollection extractedKeyPhrases =
+ *     textAnalyticsClient.extractKeyPhrases&#40;&quot;My cat might need to see a veterinarian.&quot;&#41;;
+ * for &#40;String keyPhrase : extractedKeyPhrases&#41; &#123;
  *     System.out.printf&#40;&quot;%s.%n&quot;, keyPhrase&#41;;
  * &#125;
  * </pre>
  * <!-- end com.azure.ai.textanalytics.TextAnalyticsClient.extractKeyPhrases#String -->
  *
- * See <a href="https://aka.ms/talangs">this</a> for supported languages in Text Analytics API.
+ * <p>See <a href="https://aka.ms/talangs">this</a> for supported languages in Text Analytics API.</p>
  * <p><strong>Note:</strong> For asynchronous sample, refer to
  * {@link com.azure.ai.textanalytics.TextAnalyticsAsyncClient}.</p>
  *
@@ -90,7 +91,7 @@
  *
  * <!-- src_embed com.azure.ai.textanalytics.TextAnalyticsClient.recognizeCategorizedEntities#String -->
  * <pre>
- * final CategorizedEntityCollection recognizeEntitiesResult =
+ * CategorizedEntityCollection recognizeEntitiesResult =
  *     textAnalyticsClient.recognizeEntities&#40;&quot;Satya Nadella is the CEO of Microsoft&quot;&#41;;
  * for &#40;CategorizedEntity entity : recognizeEntitiesResult&#41; &#123;
  *     System.out.printf&#40;&quot;Recognized entity: %s, entity category: %s, confidence score: %f.%n&quot;,
@@ -99,7 +100,7 @@
  * </pre>
  * <!-- end com.azure.ai.textanalytics.TextAnalyticsClient.recognizeCategorizedEntities#String -->
  *
- * See <a href="https://aka.ms/talangs">this</a> for supported languages in Text Analytics API.
+ * <p>See <a href="https://aka.ms/talangs">this</a> for supported languages in Text Analytics API.</p>
  * <p><strong>Note:</strong> For asynchronous sample, refer to
  * {@link com.azure.ai.textanalytics.TextAnalyticsAsyncClient}.</p>
  *
@@ -136,7 +137,7 @@
  * </pre>
  * <!-- end Client.beginRecognizeCustomEntities#Iterable-String-String -->
  *
- * See <a href="https://aka.ms/talangs">this</a> for supported languages in Text Analytics API.
+ * <p>See <a href="https://aka.ms/talangs">this</a> for supported languages in Text Analytics API.</p>
  * <p><strong>Note:</strong> For asynchronous sample,
  * refer to {@link com.azure.ai.textanalytics.TextAnalyticsAsyncClient}.</p>
  *
@@ -148,7 +149,7 @@
  *
  * <!-- src_embed com.azure.ai.textanalytics.TextAnalyticsClient.recognizeLinkedEntities#String -->
  * <pre>
- * final String document = &quot;Old Faithful is a geyser at Yellowstone Park.&quot;;
+ * String document = &quot;Old Faithful is a geyser at Yellowstone Park.&quot;;
  * System.out.println&#40;&quot;Linked Entities:&quot;&#41;;
  * textAnalyticsClient.recognizeLinkedEntities&#40;document&#41;.forEach&#40;linkedEntity -&gt; &#123;
  *     System.out.printf&#40;&quot;Name: %s, entity ID in data source: %s, URL: %s, data source: %s.%n&quot;,
@@ -161,7 +162,7 @@
  * </pre>
  * <!-- end com.azure.ai.textanalytics.TextAnalyticsClient.recognizeLinkedEntities#String -->
  *
- * See <a href="https://aka.ms/talangs">this</a> for supported languages in Text Analytics API.
+ * <p>See <a href="https://aka.ms/talangs">this</a> for supported languages in Text Analytics API.</p>
  * <p><strong>Note:</strong> For asynchronous sample, refer to
  * {@link com.azure.ai.textanalytics.TextAnalyticsAsyncClient}.</p>
  *
@@ -186,7 +187,7 @@
  * </pre>
  * <!-- end com.azure.ai.textanalytics.TextAnalyticsClient.recognizePiiEntities#String -->
  *
- * See <a href="https://aka.ms/talangs">this</a> for supported languages in Text Analytics API.
+ * <p>See <a href="https://aka.ms/talangs">this</a> for supported languages in Text Analytics API.</p>
  * <p><strong>Note:</strong> For asynchronous sample, refer to
  * {@link com.azure.ai.textanalytics.TextAnalyticsAsyncClient}.</p>
  *
@@ -244,7 +245,7 @@
  * </pre>
  * <!-- end com.azure.ai.textanalytics.TextAnalyticsClient.beginAnalyzeHealthcareEntities#Iterable -->
  *
- * See <a href="https://aka.ms/talangs">this</a> for supported languages in Text Analytics API.
+ * <p>See <a href="https://aka.ms/talangs">this</a> for supported languages in Text Analytics API.</p>
  * <p><strong>Note:</strong> For asynchronous sample, refer to
  * {@link com.azure.ai.textanalytics.TextAnalyticsAsyncClient}.</p>
  *
@@ -302,7 +303,7 @@
  * </pre>
  * <!-- end Client.beginExtractSummary#Iterable -->
  *
- * See <a href="https://aka.ms/talangs">this</a> for supported languages in Text Analytics API.
+ * <p>See <a href="https://aka.ms/talangs">this</a> for supported languages in Text Analytics API.</p>
  * <p><strong>Note:</strong> For asynchronous sample,
  * refer to {@link com.azure.ai.textanalytics.TextAnalyticsAsyncClient}.</p>
  *
@@ -355,7 +356,7 @@
  * </pre>
  * <!-- end Client.beginAbstractSummary#Iterable -->
  *
- * See <a href="https://aka.ms/talangs">this</a> for supported languages in Text Analytics API.
+ * <p>See <a href="https://aka.ms/talangs">this</a> for supported languages in Text Analytics API.</p>
  * <p><strong>Note:</strong> For asynchronous sample, refer to
  * {@link com.azure.ai.textanalytics.TextAnalyticsAsyncClient}.</p>
  *
@@ -378,7 +379,7 @@
  *
  * <!-- src_embed com.azure.ai.textanalytics.TextAnalyticsClient.analyzeSentiment#String-String-AnalyzeSentimentOptions -->
  * <pre>
- * final DocumentSentiment documentSentiment = textAnalyticsClient.analyzeSentiment&#40;
+ * DocumentSentiment documentSentiment = textAnalyticsClient.analyzeSentiment&#40;
  *     &quot;The hotel was dark and unclean.&quot;, &quot;en&quot;,
  *     new AnalyzeSentimentOptions&#40;&#41;.setIncludeOpinionMining&#40;true&#41;&#41;;
  * for &#40;SentenceSentiment sentenceSentiment : documentSentiment.getSentences&#40;&#41;&#41; &#123;
@@ -396,7 +397,7 @@
  * </pre>
  * <!-- end com.azure.ai.textanalytics.TextAnalyticsClient.analyzeSentiment#String-String-AnalyzeSentimentOptions -->
  *
- * See <a href="https://aka.ms/talangs">this</a> for supported languages in Text Analytics API.
+ * <p>See <a href="https://aka.ms/talangs">this</a> for supported languages in Text Analytics API.</p>
  * <p><strong>Note:</strong> For asynchronous sample, refer to
  * {@link com.azure.ai.textanalytics.TextAnalyticsAsyncClient}.</p>
  *
@@ -418,15 +419,9 @@
  * </pre>
  * <!-- end com.azure.ai.textanalytics.TextAnalyticsClient.detectLanguage#String -->
  *
- * See <a href="https://aka.ms/talangs">this</a> for supported languages in Text Analytics API.
+ * <p>See <a href="https://aka.ms/talangs">this</a> for supported languages in Text Analytics API.</p>
  * <p><strong>Note:</strong> For asynchronous sample, refer to
  * {@link com.azure.ai.textanalytics.TextAnalyticsAsyncClient}.</p>
- *
- * <br/>
- *
- * <hr/>
- *
- * <h2>Text Classification</h2>
  *
  * <h3>Single-Label Classification</h3>
  * <p>The {@link com.azure.ai.textanalytics.TextAnalyticsClient#beginSingleLabelClassify(java.lang.Iterable,
@@ -434,7 +429,8 @@
  * beginSingleLabelClassify} method returns a list of single-label classification for the provided list of
  * {@link java.lang.String document}.</p>
  *
- * <p>Note: this method is supported since service API version {@code V2022_05_01}.</p>
+ * <p>Note: this method is supported since service API version
+ * {@link com.azure.ai.textanalytics.TextAnalyticsServiceVersion#V2022_05_01}.</p>
  *
  * <!-- src_embed Client.beginSingleLabelClassify#Iterable-String-String -->
  * <pre>
@@ -466,17 +462,17 @@
  * </pre>
  * <!-- end Client.beginSingleLabelClassify#Iterable-String-String -->
  *
- * See <a href="https://aka.ms/talangs">this</a> for supported languages in Text Analytics API.
+ * <p>See <a href="https://aka.ms/talangs">this</a> for supported languages in Text Analytics API.</p>
  * <p><strong>Note:</strong> For asynchronous sample, refer to
  * {@link com.azure.ai.textanalytics.TextAnalyticsAsyncClient}.</p>
  *
  * <h3>Multi-Label Classification</h3>
  * <p>The {@link com.azure.ai.textanalytics.TextAnalyticsClient#beginMultiLabelClassify(java.lang.Iterable,
- * java.lang.String, java.lang.String) beginMultiLabelClassify}
- * beginSingleLabelClassify} method returns a list of multi-label classification for the provided list of
- * {@link java.lang.String document}.</p>
+ * java.lang.String, java.lang.String) beginMultiLabelClassify}  method returns a list of multi-label classification
+ * for the provided list of {@link java.lang.String document}.</p>
  *
- * <p>Note: this method is supported since service API version {@code V2022_05_01}.</p>
+ * <p>Note: this method is supported since service API version
+ * {@link com.azure.ai.textanalytics.TextAnalyticsServiceVersion#V2022_05_01}.</p>
  *
  * <!-- src_embed Client.beginMultiLabelClassify#Iterable-String-String -->
  * <pre>
@@ -503,7 +499,7 @@
  * </pre>
  * <!-- end Client.beginMultiLabelClassify#Iterable-String-String -->
  *
- * See <a href="https://aka.ms/talangs">this</a> for supported languages in Text Analytics API.
+ * <p>See <a href="https://aka.ms/talangs">this</a> for supported languages in Text Analytics API.</p>
  * <p><strong>Note:</strong> For asynchronous sample, refer to
  * {@link com.azure.ai.textanalytics.TextAnalyticsAsyncClient}.</p>
  *
@@ -561,7 +557,7 @@
  * </pre>
  * <!-- end com.azure.ai.textanalytics.TextAnalyticsClient.beginAnalyzeActions#Iterable-TextAnalyticsActions -->
  *
- * See <a href="https://aka.ms/talangs">this</a> for supported languages in Text Analytics API.
+ * <p>See <a href="https://aka.ms/talangs">this</a> for supported languages in Text Analytics API.</p>
  * <p><strong>Note:</strong> For asynchronous sample, refer to
  * {@link com.azure.ai.textanalytics.TextAnalyticsAsyncClient}.</p>
  */
