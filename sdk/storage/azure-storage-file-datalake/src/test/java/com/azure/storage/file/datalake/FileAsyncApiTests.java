@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.storage.file.datalake;
 
 import com.azure.core.util.Context;
@@ -256,8 +258,8 @@ public class FileAsyncApiTests extends DataLakeTestBase {
 
         StepVerifier.create(fc.getAccessControl())
             .assertNext(r -> {
-                    assertEquals(pathAccessControlEntries.get(0), r.getAccessControlList().get(0)); // testing if owner is set the same
-                    assertEquals(pathAccessControlEntries.get(1), r.getAccessControlList().get(1)); // testing if owner is set the same
+                assertEquals(pathAccessControlEntries.get(0), r.getAccessControlList().get(0)); // testing if owner is set the same
+                assertEquals(pathAccessControlEntries.get(1), r.getAccessControlList().get(1)); // testing if owner is set the same
             })
             .verifyComplete();
     }
