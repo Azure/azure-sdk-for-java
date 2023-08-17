@@ -149,7 +149,6 @@ extends:
         groupId: com.azure
         safeName: azurecosmostest
         releaseInBatch: ${{ parameters.release_azurecosmostest }}
-        skipPublishDocMs: true
     AdditionalModules:
       - name: azure-cosmos-tests
         groupId: com.azure
