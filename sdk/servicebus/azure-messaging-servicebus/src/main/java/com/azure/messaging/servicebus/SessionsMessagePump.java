@@ -13,6 +13,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.implementation.DispositionStatus;
 import com.azure.messaging.servicebus.implementation.MessageUtils;
 import com.azure.messaging.servicebus.implementation.ServiceBusManagementNode;
+import com.azure.messaging.servicebus.implementation.instrumentation.ReceiverKind;
 import com.azure.messaging.servicebus.implementation.instrumentation.ServiceBusReceiverInstrumentation;
 import com.azure.messaging.servicebus.implementation.instrumentation.ServiceBusTracer;
 import com.azure.messaging.servicebus.models.AbandonOptions;
@@ -470,40 +471,35 @@ final class SessionsMessagePump {
 
         private void handleMessage(Message qpidMessage) {
             final ServiceBusReceivedMessage message = serializer.deserialize(qpidMessage, ServiceBusReceivedMessage.class);
-            logger.atVerbose()
-                .addKeyValue(SESSION_ID_KEY, message.getSessionId())
-                .addKeyValue(MESSAGE_ID_LOGGING_KEY, message.getMessageId())
-                .log("Received message.");
-            final boolean success = notifyMessage(message);
-            if (enableAutoDisposition) {
-                if (success) {
-                    complete(message);
-                } else {
-                    abandon(message);
+
+            instrumentation.instrumentProcess(message, ReceiverKind.PROCESSOR, msg -> {
+                logger.atVerbose()
+                    .addKeyValue(SESSION_ID_KEY, message.getSessionId())
+                    .addKeyValue(MESSAGE_ID_LOGGING_KEY, message.getMessageId())
+                    .log("Received message.");
+
+                final Throwable error = notifyMessage(msg);
+                if (enableAutoDisposition) {
+                    if (error == null) {
+                        complete(msg);
+                    } else {
+                        abandon(msg);
+                    }
                 }
-            }
+                return error;
+            });
         }
 
-        private boolean notifyMessage(ServiceBusReceivedMessage message) {
-            final Context span = instrumentation.instrumentProcess("ServiceBus.process", message, Context.NONE);
-            final AutoCloseable scope  = tracer.makeSpanCurrent(span);
-
-            Throwable error = null;
+        private Throwable notifyMessage(ServiceBusReceivedMessage message) {
             try {
                 processMessage.accept(
                     new ServiceBusReceivedMessageContext(receiversTracker, new ServiceBusMessageContext(message)));
             } catch (Exception e) {
-                error = e;
+                notifyError(new ServiceBusException(e, ServiceBusErrorSource.USER_CALLBACK));
+                return e;
             }
 
-            if (error != null) {
-                notifyError(new ServiceBusException(error, ServiceBusErrorSource.USER_CALLBACK));
-                tracer.endSpan(error, message.getContext(), scope);
-                return false;
-            } else {
-                tracer.endSpan(null, message.getContext(), scope);
-                return true;
-            }
+            return null;
         }
 
         private void notifyError(Throwable throwable) {

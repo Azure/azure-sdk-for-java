@@ -5,6 +5,7 @@ package com.azure.messaging.servicebus;
 
 import com.azure.messaging.servicebus.ServiceBusProcessor.RollingMessagePump;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder.ServiceBusReceiverClientBuilder;
+import com.azure.messaging.servicebus.implementation.instrumentation.ReceiverKind;
 import com.azure.messaging.servicebus.implementation.instrumentation.ServiceBusReceiverInstrumentation;
 import com.azure.messaging.servicebus.implementation.instrumentation.ServiceBusTracer;
 import org.junit.jupiter.api.AfterEach;
@@ -43,6 +44,8 @@ import static org.mockito.Mockito.when;
 @Execution(ExecutionMode.SAME_THREAD)
 @Isolated
 public class ServiceBusProcessorRollingMessagePumpIsolatedTest {
+    private static final ServiceBusReceiverInstrumentation INSTRUMENTATION = new ServiceBusReceiverInstrumentation(null, null, "FQDN", "entityPath",
+        null, ReceiverKind.PROCESSOR);
     @Captor
     private ArgumentCaptor<ServiceBusReceivedMessage> messageCaptor;
     private AutoCloseable mocksCloseable;
@@ -67,8 +70,7 @@ public class ServiceBusProcessorRollingMessagePumpIsolatedTest {
         final Duration connectionStatePollInterval = Duration.ofSeconds(20);
         final ServiceBusReceiverClientBuilder builder = mock(ServiceBusReceiverClientBuilder.class);
         final ServiceBusReceiverAsyncClient firstClient = mock(ServiceBusReceiverAsyncClient.class);
-        final ServiceBusReceiverInstrumentation instrumentation = mock(ServiceBusReceiverInstrumentation.class);
-        final ServiceBusTracer tracer = mock(ServiceBusTracer.class);
+
 
         final AtomicInteger buildClientCalls = new AtomicInteger();
         when(builder.buildAsyncClientForProcessor()).thenAnswer(new Answer<ServiceBusReceiverAsyncClient>() {
@@ -81,8 +83,7 @@ public class ServiceBusProcessorRollingMessagePumpIsolatedTest {
                 }
             }
         });
-        when(instrumentation.getTracer()).thenReturn(tracer);
-        when(firstClient.getInstrumentation()).thenReturn(instrumentation);
+        when(firstClient.getInstrumentation()).thenReturn(INSTRUMENTATION);
         when(firstClient.nonSessionProcessorReceiveV2()).thenReturn(Flux.never());
         when(firstClient.isConnectionClosed()).thenReturn(false, true); // connection transition to terminated on second poll.
         doNothing().when(firstClient).close();
@@ -116,8 +117,6 @@ public class ServiceBusProcessorRollingMessagePumpIsolatedTest {
         final ServiceBusReceivedMessage message = mock(ServiceBusReceivedMessage.class);
         final ServiceBusReceiverClientBuilder builder = mock(ServiceBusReceiverClientBuilder.class);
         final ServiceBusReceiverAsyncClient firstClient = mock(ServiceBusReceiverAsyncClient.class);
-        final ServiceBusReceiverInstrumentation instrumentation = mock(ServiceBusReceiverInstrumentation.class);
-        final ServiceBusTracer tracer = mock(ServiceBusTracer.class);
 
         final AtomicInteger buildClientCalls = new AtomicInteger();
         when(builder.buildAsyncClientForProcessor()).thenAnswer(new Answer<ServiceBusReceiverAsyncClient>() {
@@ -130,8 +129,7 @@ public class ServiceBusProcessorRollingMessagePumpIsolatedTest {
                 }
             }
         });
-        when(instrumentation.getTracer()).thenReturn(tracer);
-        when(firstClient.getInstrumentation()).thenReturn(instrumentation);
+        when(firstClient.getInstrumentation()).thenReturn(INSTRUMENTATION);
         final Flux<ServiceBusReceivedMessage> messagesToStream = Flux.concat(Flux.just(message), Flux.error(new RuntimeException("receiver-error")));
         when(firstClient.nonSessionProcessorReceiveV2()).thenReturn(messagesToStream);
         when(firstClient.isConnectionClosed()).thenReturn(false);
@@ -171,8 +169,6 @@ public class ServiceBusProcessorRollingMessagePumpIsolatedTest {
         final ServiceBusReceivedMessage message = mock(ServiceBusReceivedMessage.class);
         final ServiceBusReceiverClientBuilder builder = mock(ServiceBusReceiverClientBuilder.class);
         final ServiceBusReceiverAsyncClient firstClient = mock(ServiceBusReceiverAsyncClient.class);
-        final ServiceBusReceiverInstrumentation instrumentation = mock(ServiceBusReceiverInstrumentation.class);
-        final ServiceBusTracer tracer = mock(ServiceBusTracer.class);
 
         final AtomicInteger buildClientCalls = new AtomicInteger();
         when(builder.buildAsyncClientForProcessor()).thenAnswer(new Answer<ServiceBusReceiverAsyncClient>() {
@@ -185,8 +181,7 @@ public class ServiceBusProcessorRollingMessagePumpIsolatedTest {
                 }
             }
         });
-        when(instrumentation.getTracer()).thenReturn(tracer);
-        when(firstClient.getInstrumentation()).thenReturn(instrumentation);
+        when(firstClient.getInstrumentation()).thenReturn(INSTRUMENTATION);
         when(firstClient.nonSessionProcessorReceiveV2()).thenReturn(Flux.just(message)); // <- emit a message and terminate receiver with the completion.
         when(firstClient.isConnectionClosed()).thenReturn(false);
         doNothing().when(firstClient).close();
@@ -225,12 +220,9 @@ public class ServiceBusProcessorRollingMessagePumpIsolatedTest {
         final ServiceBusReceivedMessage message = mock(ServiceBusReceivedMessage.class);
         final ServiceBusReceiverClientBuilder builder = mock(ServiceBusReceiverClientBuilder.class);
         final ServiceBusReceiverAsyncClient client = mock(ServiceBusReceiverAsyncClient.class);
-        final ServiceBusReceiverInstrumentation instrumentation = mock(ServiceBusReceiverInstrumentation.class);
-        final ServiceBusTracer tracer = mock(ServiceBusTracer.class);
 
         when(builder.buildAsyncClientForProcessor()).thenReturn(client);
-        when(instrumentation.getTracer()).thenReturn(tracer);
-        when(client.getInstrumentation()).thenReturn(instrumentation);
+        when(client.getInstrumentation()).thenReturn(INSTRUMENTATION);
         when(client.nonSessionProcessorReceiveV2()).thenReturn(Flux.concat(Flux.just(message), Flux.never()));
         when(client.complete(any())).thenReturn(Mono.empty());
         doNothing().when(client).close();
@@ -263,12 +255,9 @@ public class ServiceBusProcessorRollingMessagePumpIsolatedTest {
         final ServiceBusReceivedMessage message = mock(ServiceBusReceivedMessage.class);
         final ServiceBusReceiverClientBuilder builder = mock(ServiceBusReceiverClientBuilder.class);
         final ServiceBusReceiverAsyncClient client = mock(ServiceBusReceiverAsyncClient.class);
-        final ServiceBusReceiverInstrumentation instrumentation = mock(ServiceBusReceiverInstrumentation.class);
-        final ServiceBusTracer tracer = mock(ServiceBusTracer.class);
 
         when(builder.buildAsyncClientForProcessor()).thenReturn(client);
-        when(instrumentation.getTracer()).thenReturn(tracer);
-        when(client.getInstrumentation()).thenReturn(instrumentation);
+        when(client.getInstrumentation()).thenReturn(INSTRUMENTATION);
         when(client.nonSessionProcessorReceiveV2()).thenReturn(Flux.concat(Flux.just(message), Flux.never()));
         when(client.abandon(any())).thenReturn(Mono.empty());
         doNothing().when(client).close();
