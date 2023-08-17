@@ -1,4 +1,3 @@
-
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
@@ -217,7 +216,7 @@ class SchemaRegistrySchemaCache {
 
             if (removingEntry) {
                 final String value = eldest.getValue();
-                totalLength = totalLength - value.toString().length();
+                totalLength = totalLength - value.length();
 
                 schemaToIdCache.remove(value);
             }

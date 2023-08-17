@@ -7,7 +7,7 @@ package com.azure.data.schemaregistry.jsonschema;
  * Test person.
  */
 public class Address {
-    public static String JSON_SCHEMA =
+    public static final String JSON_SCHEMA =
         "{\n"
         + "  \"type\": \"object\",\n"
         + "  \"properties\": {\n"
