@@ -6,10 +6,12 @@ package com.azure.ai.openai;
 import com.azure.ai.openai.functions.MyFunctionCallArguments;
 import com.azure.ai.openai.models.AzureChatExtensionConfiguration;
 import com.azure.ai.openai.models.AzureChatExtensionType;
+import com.azure.ai.openai.models.AzureChatExtensionsMessageContext;
 import com.azure.ai.openai.models.AzureCognitiveSearchChatExtensionConfiguration;
 import com.azure.ai.openai.models.ChatChoice;
 import com.azure.ai.openai.models.ChatCompletions;
 import com.azure.ai.openai.models.ChatCompletionsOptions;
+import com.azure.ai.openai.models.ChatMessage;
 import com.azure.ai.openai.models.ChatRole;
 import com.azure.ai.openai.models.Choice;
 import com.azure.ai.openai.models.Completions;
@@ -31,9 +33,11 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.Arrays;
 import java.util.Iterator;
+import java.util.List;
 
 import static com.azure.ai.openai.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -377,7 +381,20 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
 
             chatCompletionsOptions.setDataSources(Arrays.asList(extensionConfiguration));
             ChatCompletions chatCompletions = client.getChatCompletions(deploymentName, chatCompletionsOptions);
-            System.out.println(chatCompletions.getChoices().get(0).getMessage().getContent());
+
+            List<ChatChoice> choices = chatCompletions.getChoices();
+            assertNotNull(choices);
+            assertTrue(choices.size() > 0);
+            assertChatChoices(1, CompletionsFinishReason.STOPPED.toString(), ChatRole.ASSISTANT, choices);
+
+            AzureChatExtensionsMessageContext messageContext = choices.get(0).getMessage().getContext();
+            assertNotNull(messageContext);
+            assertNotNull(messageContext.getMessages());
+            ChatMessage firstMessage = messageContext.getMessages().get(0);
+            assertNotNull(firstMessage);
+            assertEquals(firstMessage.getRole(), ChatRole.TOOL);
+            assertFalse(firstMessage.getContent().isEmpty());
+            assertTrue(firstMessage.getContent().contains("citations"));
         });
     }
 }
