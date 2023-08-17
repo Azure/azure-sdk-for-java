@@ -258,6 +258,90 @@ public class SessionRetryOptionsTests extends TestSuiteBase {
         }
     }
 
+    @Test(groups = {"multi-region"}, dataProvider = "nonWriteOperationContextProvider", timeOut = TIMEOUT)
+    public void nonWriteOperation_WithReadSessionUnavailableInAllRegions_test(
+        OperationType operationType,
+        FaultInjectionOperationType faultInjectionOperationType,
+        CosmosRegionSwitchHint regionSwitchHint,
+        int sessionTokenMismatchRetryAttempts) {
+        System.setProperty("COSMOS.MAX_RETRIES_IN_LOCAL_REGION_WHEN_REMOTE_REGION_PREFERRED", String.valueOf(sessionTokenMismatchRetryAttempts));
+
+        List<String> preferredLocations = this.writeRegionMap.keySet().stream().collect(Collectors.toList());
+        Duration sessionTokenMismatchDefaultWaitTime = Duration.ofMillis(Configs.getSessionTokenMismatchDefaultWaitTimeInMs());
+
+        assertThat(preferredLocations).isNotNull();
+        assertThat(preferredLocations.size()).isEqualTo(2);
+
+        CosmosAsyncClient clientWithPreferredRegions = null;
+
+        try {
+            clientWithPreferredRegions = new CosmosClientBuilder()
+                .endpoint(TestConfigurations.HOST)
+                .key(TestConfigurations.MASTER_KEY)
+                .consistencyLevel(BridgeInternal.getContextClient(this.cosmosAsyncClient).getConsistencyLevel())
+                .preferredRegions(preferredLocations)
+                .sessionRetryOptions(new SessionRetryOptionsBuilder().regionSwitchHint(regionSwitchHint).build())
+                .directMode()
+                .buildAsyncClient();
+
+            CosmosAsyncContainer containerForClientWithPreferredRegions = clientWithPreferredRegions
+                .getDatabase(this.cosmosAsyncContainer.getDatabase().getId())
+                .getContainer(this.cosmosAsyncContainer.getId());
+
+            TestItem createdItem = TestItem.createNewItem();
+            containerForClientWithPreferredRegions.createItem(createdItem).block();
+
+            FaultInjectionRuleBuilder badSessionTokenRuleBuilder = new FaultInjectionRuleBuilder("serverErrorRule-bad-session-token-" + UUID.randomUUID());
+
+            FaultInjectionCondition faultInjectionConditionForReadsInPrimaryRegion = new FaultInjectionConditionBuilder()
+                .operationType(faultInjectionOperationType)
+                .connectionType(FaultInjectionConnectionType.DIRECT)
+                .region(preferredLocations.get(0))
+                .build();
+
+            FaultInjectionCondition faultInjectionConditionForReadsInSecondaryRegion = new FaultInjectionConditionBuilder()
+                .operationType(faultInjectionOperationType)
+                .connectionType(FaultInjectionConnectionType.DIRECT)
+                .region(preferredLocations.get(1))
+                .build();
+
+            FaultInjectionServerErrorResult badSessionTokenServerErrorResult = FaultInjectionResultBuilders
+                .getResultBuilder(FaultInjectionServerErrorType.READ_SESSION_NOT_AVAILABLE)
+                .build();
+
+            FaultInjectionRule readSessionUnavailablePrimaryRegion = badSessionTokenRuleBuilder
+                .condition(faultInjectionConditionForReadsInPrimaryRegion)
+                .result(badSessionTokenServerErrorResult)
+                .duration(Duration.ofSeconds(30))
+                .build();
+
+            FaultInjectionRule readSessionUnavailableSecondaryRegion = badSessionTokenRuleBuilder
+                .condition(faultInjectionConditionForReadsInSecondaryRegion)
+                .result(badSessionTokenServerErrorResult)
+                .duration(Duration.ofSeconds(30))
+                .build();
+
+            CosmosFaultInjectionHelper
+                .configureFaultInjectionRules(containerForClientWithPreferredRegions, Arrays.asList(readSessionUnavailablePrimaryRegion, readSessionUnavailableSecondaryRegion))
+                .block();
+
+            validateOperationExecutionResult(
+                performDocumentOperation(
+                    containerForClientWithPreferredRegions,
+                    createdItem,
+                    operationType
+                ),
+                sessionTokenMismatchDefaultWaitTime,
+                regionSwitchHint);
+
+
+
+        } finally {
+            System.clearProperty("COSMOS.MAX_RETRIES_IN_LOCAL_REGION_WHEN_REMOTE_REGION_PREFERRED");
+            safeCloseAsync(clientWithPreferredRegions);
+        }
+    }
+
     @AfterClass(groups = {"multi-region"}, timeOut = SHUTDOWN_TIMEOUT)
     public void afterClass() {
         safeCloseAsync(cosmosAsyncClient);
