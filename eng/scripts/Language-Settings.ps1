@@ -320,7 +320,7 @@ function SourcePackageHasComFolder($artifactNamePrefix, $packageDirectory) {
     # Ensure that the sources folder is empty before extracting the jar
     # otherwise there could be file collisions from a previous extraction run on
     # the same system.
-    Remove-Item $sourcesExtractPath/* -Force -Recurse
+    Remove-Item $sourcesExtractPath/* -Force -Recurse -ErrorAction Ignore
 
     Add-Type -AssemblyName System.IO.Compression.FileSystem
     [System.IO.Compression.ZipFile]::ExtractToDirectory($sourcesJarPath, $sourcesExtractPath)
