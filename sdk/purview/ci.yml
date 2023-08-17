@@ -14,8 +14,9 @@ trigger:
       - sdk/purview/azure-analytics-purview-administration/pom.xml
       - sdk/purview/azure-analytics-purview-catalog/pom.xml
       - sdk/purview/azure-analytics-purview-scanning/pom.xml
-      - sdk/purview/azure-resourcemanager-purview/pom.xml
+      - sdk/purview/azure-analytics-purview-sharing/pom.xml
       - sdk/purview/azure-analytics-purview-workflow/pom.xml
+      - sdk/purview/azure-resourcemanager-purview/pom.xml
 
 pr:
   branches:
@@ -32,8 +33,9 @@ pr:
       - sdk/purview/azure-analytics-purview-administration/pom.xml
       - sdk/purview/azure-analytics-purview-catalog/pom.xml
       - sdk/purview/azure-analytics-purview-scanning/pom.xml
-      - sdk/purview/azure-resourcemanager-purview/pom.xml
+      - sdk/purview/azure-analytics-purview-sharing/pom.xml
       - sdk/purview/azure-analytics-purview-workflow/pom.xml
+      - sdk/purview/azure-resourcemanager-purview/pom.xml
 
 
 parameters:

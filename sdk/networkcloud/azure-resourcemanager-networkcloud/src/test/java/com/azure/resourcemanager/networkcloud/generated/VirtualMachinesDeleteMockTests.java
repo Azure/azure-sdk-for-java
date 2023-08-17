@@ -56,6 +56,6 @@ public final class VirtualMachinesDeleteMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.virtualMachines().delete("zx", "mtvtvegwqiukvzwy", com.azure.core.util.Context.NONE);
+        manager.virtualMachines().delete("sx", "fo", com.azure.core.util.Context.NONE);
     }
 }

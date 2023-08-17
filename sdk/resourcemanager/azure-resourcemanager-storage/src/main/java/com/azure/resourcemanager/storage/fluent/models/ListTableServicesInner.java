@@ -17,6 +17,10 @@ public final class ListTableServicesInner {
     @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<TableServicePropertiesInner> value;
 
+    /** Creates an instance of ListTableServicesInner class. */
+    public ListTableServicesInner() {
+    }
+
     /**
      * Get the value property: List of table services returned.
      *

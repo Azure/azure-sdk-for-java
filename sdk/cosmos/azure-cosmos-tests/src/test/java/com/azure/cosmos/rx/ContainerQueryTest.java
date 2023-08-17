@@ -40,7 +40,7 @@ public class ContainerQueryTest extends TestSuiteBase {
         this.subscriberValidationTimeout = TIMEOUT;
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    @Test(groups = { "query" }, timeOut = TIMEOUT)
     public void queryContainersWithFilter() throws Exception {
 
         String filterContainerId = createdContainers.get(0).getId();
@@ -68,7 +68,7 @@ public class ContainerQueryTest extends TestSuiteBase {
         validateQuerySuccess(queryObservable.byPage(maxItemCount), validator, 10000);
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    @Test(groups = { "query" }, timeOut = TIMEOUT)
     public void queryAllContainers() throws Exception {
 
         String query = "SELECT * from c";
@@ -94,7 +94,7 @@ public class ContainerQueryTest extends TestSuiteBase {
         validateQuerySuccess(queryObservable.byPage(maxItemCount), validator, 10000);
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    @Test(groups = { "query" }, timeOut = TIMEOUT)
     public void queryContainers_NoResults() throws Exception {
 
         String query = "SELECT * from root r where r.id = '2'";
@@ -110,7 +110,7 @@ public class ContainerQueryTest extends TestSuiteBase {
         validateQuerySuccess(queryObservable.byPage(), validator);
     }
 
-    @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
+    @BeforeClass(groups = { "query" }, timeOut = SETUP_TIMEOUT)
     public void before_ContainerQueryTest() throws Exception {
         client = getClientBuilder().buildAsyncClient();
         createdDatabase = createDatabase(client, databaseId);
@@ -124,7 +124,7 @@ public class ContainerQueryTest extends TestSuiteBase {
         createdContainers.add(createCollection(client, databaseId, container));
     }
 
-    @AfterClass(groups = { "simple" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
+    @AfterClass(groups = { "query" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
         safeDeleteDatabase(createdDatabase);
         safeClose(client);

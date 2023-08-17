@@ -11,7 +11,7 @@ import java.util.Map;
 /** Samples for StorageAppliances Update. */
 public final class StorageAppliancesUpdateSamples {
     /*
-     * x-ms-original-file: specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2023-05-01-preview/examples/StorageAppliances_Patch.json
+     * x-ms-original-file: specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2023-07-01/examples/StorageAppliances_Patch.json
      */
     /**
      * Sample code: Patch storage appliance.
@@ -25,7 +25,11 @@ public final class StorageAppliancesUpdateSamples {
                 .getByResourceGroupWithResponse(
                     "resourceGroupName", "storageApplianceName", com.azure.core.util.Context.NONE)
                 .getValue();
-        resource.update().withTags(mapOf("key1", "myvalue1", "key2", "myvalue2")).withSerialNumber("BM1219XXX").apply();
+        resource
+            .update()
+            .withTags(mapOf("key1", "fakeTokenPlaceholder", "key2", "fakeTokenPlaceholder"))
+            .withSerialNumber("BM1219XXX")
+            .apply();
     }
 
     @SuppressWarnings("unchecked")

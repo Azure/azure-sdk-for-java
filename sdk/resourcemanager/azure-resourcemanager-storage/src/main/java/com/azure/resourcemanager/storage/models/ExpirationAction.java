@@ -14,6 +14,15 @@ public final class ExpirationAction extends ExpandableStringEnum<ExpirationActio
     public static final ExpirationAction LOG = fromString("Log");
 
     /**
+     * Creates a new instance of ExpirationAction value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ExpirationAction() {
+    }
+
+    /**
      * Creates or finds a ExpirationAction from its string representation.
      *
      * @param name a name to look for.

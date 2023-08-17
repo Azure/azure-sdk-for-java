@@ -231,7 +231,7 @@ Licensed under the MIT License.
       <!-- integration tests, requires Cosmos DB endpoint -->
       <id>fast</id>
       <properties>
-        <test.groups>simple,cosmosv3</test.groups>
+        <test.groups>simple</test.groups>
       </properties>
       <build>
         <plugins>

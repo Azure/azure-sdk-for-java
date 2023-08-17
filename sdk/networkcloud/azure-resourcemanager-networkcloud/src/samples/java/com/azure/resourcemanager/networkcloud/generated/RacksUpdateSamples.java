@@ -11,7 +11,7 @@ import java.util.Map;
 /** Samples for Racks Update. */
 public final class RacksUpdateSamples {
     /*
-     * x-ms-original-file: specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2023-05-01-preview/examples/Racks_Patch.json
+     * x-ms-original-file: specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2023-07-01/examples/Racks_Patch.json
      */
     /**
      * Sample code: Patch rack.
@@ -26,7 +26,7 @@ public final class RacksUpdateSamples {
                 .getValue();
         resource
             .update()
-            .withTags(mapOf("key1", "myvalue1", "key2", "myvalue2"))
+            .withTags(mapOf("key1", "fakeTokenPlaceholder", "key2", "fakeTokenPlaceholder"))
             .withRackLocation("Rack 2B")
             .withRackSerialNumber("RACK_SERIAL_NUMBER")
             .apply();

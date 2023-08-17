@@ -16,6 +16,9 @@ public final class SourcePath {
     @JsonProperty(value = "source")
     private String source;
 
+    /** Creates an instance of SourcePath class. */
+    public SourcePath() {}
+
     /**
      * Get the source property: File source path.
      *

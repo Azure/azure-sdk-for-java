@@ -7,7 +7,7 @@ package com.azure.resourcemanager.network.generated;
 /** Samples for SecurityAdminConfigurations Delete. */
 public final class SecurityAdminConfigurationsDeleteSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-02-01/examples/NetworkManagerSecurityAdminConfigurationDelete.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-04-01/examples/NetworkManagerSecurityAdminConfigurationDelete.json
      */
     /**
      * Sample code: Delete network manager security admin configuration.

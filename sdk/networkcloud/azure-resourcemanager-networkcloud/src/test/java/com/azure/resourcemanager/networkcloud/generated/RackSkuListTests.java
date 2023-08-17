@@ -16,15 +16,18 @@ public final class RackSkuListTests {
         RackSkuList model =
             BinaryData
                 .fromString(
-                    "{\"nextLink\":\"zpfrla\",\"value\":[{\"properties\":{\"computeMachines\":[],\"controllerMachines\":[],\"description\":\"oiindfpwpjy\",\"maxClusterSlots\":1464641146056052310,\"provisioningState\":\"Succeeded\",\"rackType\":\"Compute\",\"storageAppliances\":[],\"supportedRackSkuIds\":[]},\"id\":\"dhszfjv\",\"name\":\"bgofeljag\",\"type\":\"qmqhldvriii\"}]}")
+                    "{\"nextLink\":\"mpipaslthaqfxs\",\"value\":[{\"properties\":{\"computeMachines\":[{\"properties\":{},\"rackSlot\":7650102264601836563},{\"properties\":{},\"rackSlot\":8587897237189545303},{\"properties\":{},\"rackSlot\":2068926764971195558},{\"properties\":{},\"rackSlot\":7630946703539097573}],\"controllerMachines\":[{\"properties\":{},\"rackSlot\":2743938617535852589}],\"description\":\"i\",\"maxClusterSlots\":1854957752746612483,\"provisioningState\":\"Succeeded\",\"rackType\":\"Single\",\"storageAppliances\":[{\"properties\":{},\"rackSlot\":8959651156770054860}],\"supportedRackSkuIds\":[\"zanl\"]},\"id\":\"xi\",\"name\":\"vrmbzono\",\"type\":\"i\"},{\"properties\":{\"computeMachines\":[{\"properties\":{},\"rackSlot\":4820100600000743353}],\"controllerMachines\":[{\"properties\":{},\"rackSlot\":1112557223227183071},{\"properties\":{},\"rackSlot\":6176406145161217361}],\"description\":\"nwoiind\",\"maxClusterSlots\":1586932653363724705,\"provisioningState\":\"Succeeded\",\"rackType\":\"Single\",\"storageAppliances\":[{\"properties\":{},\"rackSlot\":5073664426821636107},{\"properties\":{},\"rackSlot\":6454176992309402284},{\"properties\":{},\"rackSlot\":1730475892398036375},{\"properties\":{},\"rackSlot\":8025682187628267026}],\"supportedRackSkuIds\":[\"feljagrqm\"]},\"id\":\"ldvriiiojnalghfk\",\"name\":\"tvsexsowuel\",\"type\":\"qhhahhxvrhmzkwpj\"},{\"properties\":{\"computeMachines\":[{\"properties\":{},\"rackSlot\":8756648845252646804},{\"properties\":{},\"rackSlot\":2856222414032375851},{\"properties\":{},\"rackSlot\":5270793119915460778},{\"properties\":{},\"rackSlot\":794219754205284071}],\"controllerMachines\":[{\"properties\":{},\"rackSlot\":6939489719348300791},{\"properties\":{},\"rackSlot\":6401790851275828403},{\"properties\":{},\"rackSlot\":8851843932133625317}],\"description\":\"dmsyqtfihwhbo\",\"maxClusterSlots\":7308757901991635100,\"provisioningState\":\"Succeeded\",\"rackType\":\"Aggregator\",\"storageAppliances\":[{\"properties\":{},\"rackSlot\":3853655697248732253},{\"properties\":{},\"rackSlot\":6589777094256543656}],\"supportedRackSkuIds\":[\"qamvdkfwynwcvtbv\",\"ayhmtnvyqiatkz\"]},\"id\":\"cnpwzcjaesgvvscc\",\"name\":\"ajguqf\",\"type\":\"wygzlvdnkfxusem\"}]}")
                 .toObject(RackSkuList.class);
-        Assertions.assertEquals("zpfrla", model.nextLink());
+        Assertions.assertEquals("mpipaslthaqfxs", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RackSkuList model = new RackSkuList().withNextLink("zpfrla").withValue(Arrays.asList(new RackSkuInner()));
+        RackSkuList model =
+            new RackSkuList()
+                .withNextLink("mpipaslthaqfxs")
+                .withValue(Arrays.asList(new RackSkuInner(), new RackSkuInner(), new RackSkuInner()));
         model = BinaryData.fromObject(model).toObject(RackSkuList.class);
-        Assertions.assertEquals("zpfrla", model.nextLink());
+        Assertions.assertEquals("mpipaslthaqfxs", model.nextLink());
     }
 }

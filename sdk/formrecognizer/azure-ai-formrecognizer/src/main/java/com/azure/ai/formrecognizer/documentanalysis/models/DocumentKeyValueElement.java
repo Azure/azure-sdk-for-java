@@ -42,7 +42,6 @@ public final class DocumentKeyValueElement {
      * Set the content property: Concatenated content of the key-value element in reading order.
      *
      * @param content the content value to set.
-     * @return the DocumentKeyValueElement object itself.
      */
     private void setContent(String content) {
         this.content = content;
@@ -61,7 +60,6 @@ public final class DocumentKeyValueElement {
      * Set the boundingRegions property: Bounding regions covering the key-value element.
      *
      * @param boundingRegions the boundingRegions value to set.
-     * @return the DocumentKeyValueElement object itself.
      */
     private void setBoundingRegions(List<BoundingRegion> boundingRegions) {
         this.boundingRegions = boundingRegions;
@@ -80,7 +78,6 @@ public final class DocumentKeyValueElement {
      * Set the spans property: Location of the key-value element in the reading order concatenated content.
      *
      * @param spans the spans value to set.
-     * @return the DocumentKeyValueElement object itself.
      */
     private void setSpans(List<DocumentSpan> spans) {
         this.spans = spans;
