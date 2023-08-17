@@ -165,11 +165,13 @@ public interface Console {
             DefinitionStages.WithSshPublicKey,
             DefinitionStages.WithCreate {
     }
+
     /** The Console definition stages. */
     interface DefinitionStages {
         /** The first stage of the Console definition. */
         interface Blank extends WithLocation {
         }
+
         /** The stage of the Console definition allowing to specify location. */
         interface WithLocation {
             /**
@@ -188,6 +190,7 @@ public interface Console {
              */
             WithParentResource withRegion(String location);
         }
+
         /** The stage of the Console definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
@@ -199,6 +202,7 @@ public interface Console {
              */
             WithExtendedLocation withExistingVirtualMachine(String resourceGroupName, String virtualMachineName);
         }
+
         /** The stage of the Console definition allowing to specify extendedLocation. */
         interface WithExtendedLocation {
             /**
@@ -216,6 +220,7 @@ public interface Console {
              */
             WithEnabled withExtendedLocation(ExtendedLocation extendedLocation);
         }
+
         /** The stage of the Console definition allowing to specify enabled. */
         interface WithEnabled {
             /**
@@ -226,6 +231,7 @@ public interface Console {
              */
             WithSshPublicKey withEnabled(ConsoleEnabled enabled);
         }
+
         /** The stage of the Console definition allowing to specify sshPublicKey. */
         interface WithSshPublicKey {
             /**
@@ -243,6 +249,7 @@ public interface Console {
              */
             WithCreate withSshPublicKey(SshPublicKey sshPublicKey);
         }
+
         /**
          * The stage of the Console definition which contains all the minimum required properties for the resource to be
          * created, but also allows for any other optional properties to be specified.
@@ -263,6 +270,7 @@ public interface Console {
              */
             Console create(Context context);
         }
+
         /** The stage of the Console definition allowing to specify tags. */
         interface WithTags {
             /**
@@ -273,6 +281,7 @@ public interface Console {
              */
             WithCreate withTags(Map<String, String> tags);
         }
+
         /** The stage of the Console definition allowing to specify expiration. */
         interface WithExpiration {
             /**
@@ -284,6 +293,7 @@ public interface Console {
             WithCreate withExpiration(OffsetDateTime expiration);
         }
     }
+
     /**
      * Begins update for the Console resource.
      *
@@ -312,6 +322,7 @@ public interface Console {
          */
         Console apply(Context context);
     }
+
     /** The Console update stages. */
     interface UpdateStages {
         /** The stage of the Console update allowing to specify tags. */
@@ -324,6 +335,7 @@ public interface Console {
              */
             Update withTags(Map<String, String> tags);
         }
+
         /** The stage of the Console update allowing to specify enabled. */
         interface WithEnabled {
             /**
@@ -336,6 +348,7 @@ public interface Console {
              */
             Update withEnabled(ConsoleEnabled enabled);
         }
+
         /** The stage of the Console update allowing to specify expiration. */
         interface WithExpiration {
             /**
@@ -346,6 +359,7 @@ public interface Console {
              */
             Update withExpiration(OffsetDateTime expiration);
         }
+
         /** The stage of the Console update allowing to specify sshPublicKey. */
         interface WithSshPublicKey {
             /**
@@ -364,6 +378,7 @@ public interface Console {
             Update withSshPublicKey(SshPublicKey sshPublicKey);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *
