@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.cognitiveservices.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.resourcemanager.cognitiveservices.models.Usage;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -21,7 +22,7 @@ public final class UsageListResultInner {
      * The list of usages for Cognitive Service account.
      */
     @JsonProperty(value = "value")
-    private List<UsageInner> value;
+    private List<Usage> value;
 
     /** Creates an instance of UsageListResultInner class. */
     public UsageListResultInner() {
@@ -52,7 +53,7 @@ public final class UsageListResultInner {
      *
      * @return the value value.
      */
-    public List<UsageInner> value() {
+    public List<Usage> value() {
         return this.value;
     }
 
@@ -62,7 +63,7 @@ public final class UsageListResultInner {
      * @param value the value value to set.
      * @return the UsageListResultInner object itself.
      */
-    public UsageListResultInner withValue(List<UsageInner> value) {
+    public UsageListResultInner withValue(List<Usage> value) {
         this.value = value;
         return this;
     }

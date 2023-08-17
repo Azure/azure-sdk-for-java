@@ -109,6 +109,7 @@ public final class CommitmentPlansCreateOrUpdatePlanMockTests {
         Assertions.assertEquals(1013116019, response.properties().next().count());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

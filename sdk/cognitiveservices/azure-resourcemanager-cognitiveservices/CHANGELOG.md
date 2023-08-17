@@ -1,14 +1,34 @@
 # Release History
 
-## 1.1.0-beta.2 (Unreleased)
+## 1.1.0-beta.2 (2023-08-17)
 
-### Features Added
+- Azure Resource Manager CognitiveServices client library for Java. This package contains Microsoft Azure SDK for CognitiveServices Management SDK. Cognitive Services Management Client. Package tag package-2023-05. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Breaking Changes
 
-### Bugs Fixed
+#### `models.Usage` was modified
 
-### Other Changes
+* `java.lang.String quotaPeriod()` -> `java.lang.String quotaPeriod()`
+* `java.lang.Double limit()` -> `java.lang.Double limit()`
+* `java.lang.Double currentValue()` -> `java.lang.Double currentValue()`
+* `java.lang.String nextResetTime()` -> `java.lang.String nextResetTime()`
+* `models.MetricName name()` -> `models.MetricName name()`
+* `models.UnitType unit()` -> `models.UnitType unit()`
+* `innerModel()` was removed
+* `models.QuotaUsageStatus status()` -> `models.QuotaUsageStatus status()`
+
+### Features Added
+
+#### `models.Usage` was modified
+
+* `withStatus(models.QuotaUsageStatus)` was added
+* `withCurrentValue(java.lang.Double)` was added
+* `validate()` was added
+* `withLimit(java.lang.Double)` was added
+* `withUnit(models.UnitType)` was added
+* `withName(models.MetricName)` was added
+* `withNextResetTime(java.lang.String)` was added
+* `withQuotaPeriod(java.lang.String)` was added
 
 ## 1.1.0-beta.1 (2023-07-19)
 

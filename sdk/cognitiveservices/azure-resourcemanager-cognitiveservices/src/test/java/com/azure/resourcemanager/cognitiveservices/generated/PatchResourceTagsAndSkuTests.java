@@ -49,6 +49,7 @@ public final class PatchResourceTagsAndSkuTests {
         Assertions.assertEquals(1530472980, model.sku().capacity());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

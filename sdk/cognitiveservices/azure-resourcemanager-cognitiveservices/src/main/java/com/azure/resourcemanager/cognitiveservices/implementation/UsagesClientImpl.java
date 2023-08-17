@@ -26,8 +26,8 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.resourcemanager.cognitiveservices.fluent.UsagesClient;
-import com.azure.resourcemanager.cognitiveservices.fluent.models.UsageInner;
 import com.azure.resourcemanager.cognitiveservices.fluent.models.UsageListResultInner;
+import com.azure.resourcemanager.cognitiveservices.models.Usage;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in UsagesClient. */
@@ -92,7 +92,7 @@ public final class UsagesClientImpl implements UsagesClient {
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<UsageInner>> listSinglePageAsync(String location, String filter) {
+    private Mono<PagedResponse<Usage>> listSinglePageAsync(String location, String filter) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -121,7 +121,7 @@ public final class UsagesClientImpl implements UsagesClient {
                             filter,
                             accept,
                             context))
-            .<PagedResponse<UsageInner>>map(
+            .<PagedResponse<Usage>>map(
                 res ->
                     new PagedResponseBase<>(
                         res.getRequest(),
@@ -147,7 +147,7 @@ public final class UsagesClientImpl implements UsagesClient {
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<UsageInner>> listSinglePageAsync(String location, String filter, Context context) {
+    private Mono<PagedResponse<Usage>> listSinglePageAsync(String location, String filter, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -197,7 +197,7 @@ public final class UsagesClientImpl implements UsagesClient {
      * @return usages for the requested subscription as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<UsageInner> listAsync(String location, String filter) {
+    private PagedFlux<Usage> listAsync(String location, String filter) {
         return new PagedFlux<>(
             () -> listSinglePageAsync(location, filter), nextLink -> listNextSinglePageAsync(nextLink));
     }
@@ -212,7 +212,7 @@ public final class UsagesClientImpl implements UsagesClient {
      * @return usages for the requested subscription as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<UsageInner> listAsync(String location) {
+    private PagedFlux<Usage> listAsync(String location) {
         final String filter = null;
         return new PagedFlux<>(
             () -> listSinglePageAsync(location, filter), nextLink -> listNextSinglePageAsync(nextLink));
@@ -231,7 +231,7 @@ public final class UsagesClientImpl implements UsagesClient {
      * @return usages for the requested subscription as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<UsageInner> listAsync(String location, String filter, Context context) {
+    private PagedFlux<Usage> listAsync(String location, String filter, Context context) {
         return new PagedFlux<>(
             () -> listSinglePageAsync(location, filter, context),
             nextLink -> listNextSinglePageAsync(nextLink, context));
@@ -247,7 +247,7 @@ public final class UsagesClientImpl implements UsagesClient {
      * @return usages for the requested subscription as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<UsageInner> list(String location) {
+    public PagedIterable<Usage> list(String location) {
         final String filter = null;
         return new PagedIterable<>(listAsync(location, filter));
     }
@@ -265,7 +265,7 @@ public final class UsagesClientImpl implements UsagesClient {
      * @return usages for the requested subscription as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<UsageInner> list(String location, String filter, Context context) {
+    public PagedIterable<Usage> list(String location, String filter, Context context) {
         return new PagedIterable<>(listAsync(location, filter, context));
     }
 
@@ -281,7 +281,7 @@ public final class UsagesClientImpl implements UsagesClient {
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<UsageInner>> listNextSinglePageAsync(String nextLink) {
+    private Mono<PagedResponse<Usage>> listNextSinglePageAsync(String nextLink) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
@@ -294,7 +294,7 @@ public final class UsagesClientImpl implements UsagesClient {
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<UsageInner>>map(
+            .<PagedResponse<Usage>>map(
                 res ->
                     new PagedResponseBase<>(
                         res.getRequest(),
@@ -319,7 +319,7 @@ public final class UsagesClientImpl implements UsagesClient {
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<UsageInner>> listNextSinglePageAsync(String nextLink, Context context) {
+    private Mono<PagedResponse<Usage>> listNextSinglePageAsync(String nextLink, Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }

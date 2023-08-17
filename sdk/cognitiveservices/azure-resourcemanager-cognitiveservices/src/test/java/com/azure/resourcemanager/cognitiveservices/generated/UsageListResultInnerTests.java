@@ -5,11 +5,11 @@
 package com.azure.resourcemanager.cognitiveservices.generated;
 
 import com.azure.core.util.BinaryData;
-import com.azure.resourcemanager.cognitiveservices.fluent.models.UsageInner;
 import com.azure.resourcemanager.cognitiveservices.fluent.models.UsageListResultInner;
 import com.azure.resourcemanager.cognitiveservices.models.MetricName;
 import com.azure.resourcemanager.cognitiveservices.models.QuotaUsageStatus;
 import com.azure.resourcemanager.cognitiveservices.models.UnitType;
+import com.azure.resourcemanager.cognitiveservices.models.Usage;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 
@@ -40,7 +40,7 @@ public final class UsageListResultInnerTests {
                 .withValue(
                     Arrays
                         .asList(
-                            new UsageInner()
+                            new Usage()
                                 .withUnit(UnitType.BYTES_PER_SECOND)
                                 .withName(new MetricName().withValue("ndnvo").withLocalizedValue("ujjugwdkcglh"))
                                 .withQuotaPeriod("azjdyggd")
@@ -48,7 +48,7 @@ public final class UsageListResultInnerTests {
                                 .withCurrentValue(3.8497339257224095D)
                                 .withNextResetTime("ofqweykhmenevfye")
                                 .withStatus(QuotaUsageStatus.BLOCKED),
-                            new UsageInner()
+                            new Usage()
                                 .withUnit(UnitType.BYTES)
                                 .withName(new MetricName().withValue("i").withLocalizedValue("yvdcsitynnaa"))
                                 .withQuotaPeriod("ectehf")
@@ -56,7 +56,7 @@ public final class UsageListResultInnerTests {
                                 .withCurrentValue(61.13135450146281D)
                                 .withNextResetTime("vhezrkgqhcj")
                                 .withStatus(QuotaUsageStatus.UNKNOWN),
-                            new UsageInner()
+                            new Usage()
                                 .withUnit(UnitType.MILLISECONDS)
                                 .withName(new MetricName().withValue("kqsleyyvxy").withLocalizedValue("pkc"))
                                 .withQuotaPeriod("tpngjcrcczsqpjh")
@@ -64,7 +64,7 @@ public final class UsageListResultInnerTests {
                                 .withCurrentValue(5.670664395942426D)
                                 .withNextResetTime("sounqecanoaeu")
                                 .withStatus(QuotaUsageStatus.INCLUDED),
-                            new UsageInner()
+                            new Usage()
                                 .withUnit(UnitType.BYTES_PER_SECOND)
                                 .withName(new MetricName().withValue("rpmopjmc").withLocalizedValue("tuo"))
                                 .withQuotaPeriod("hfuiuaodsfc")
