@@ -524,7 +524,7 @@ public class InterceptorManager implements AutoCloseable {
      * Sets the httpClient to be used for this test.
      * @param httpClient The {@link HttpClient} implementation to use.
      */
-    void setHttpClient(HttpClient httpClient){
+    void setHttpClient(HttpClient httpClient) {
         this.httpClient = httpClient;
     }
 
@@ -533,7 +533,7 @@ public class InterceptorManager implements AutoCloseable {
      * @param testProxyRecordingOptions The {@link TestProxyRecordingOptions} to use.
      * @throws RuntimeException if test mode is not record.
      */
-    public void setProxyRecordingOptions (TestProxyRecordingOptions testProxyRecordingOptions) {
+    public void setProxyRecordingOptions(TestProxyRecordingOptions testProxyRecordingOptions) {
         if (testMode != TestMode.RECORD) {
             return;
         }

@@ -39,7 +39,7 @@ public class TestProxyRecordingOptions {
          * @param certificates the list of allowed certificates for the recording.
          * @return the updated {@link ProxyTransport} object.
          */
-        public ProxyTransport setCertificates (List<Certificate> certificates) {
+        public ProxyTransport setCertificates(List<Certificate> certificates) {
             this.certificates = certificates;
             return this;
         }
@@ -57,7 +57,7 @@ public class TestProxyRecordingOptions {
          * @param tLSValidationCert the TLS/SSL Certificate to set
          * @return the updated {@link ProxyTransport} object.
          */
-        public ProxyTransport settLSValidationCert (String tLSValidationCert) {
+        public ProxyTransport settLSValidationCert(String tLSValidationCert) {
             this.tLSValidationCert = tLSValidationCert;
             return this;
         }
@@ -66,7 +66,7 @@ public class TestProxyRecordingOptions {
     /**
      * Model representing the certificate item object
      */
-    public static class Certificate{
+    public static class Certificate {
         @JsonProperty("PemValue")
         private String pemValue;
         @JsonProperty("PemKey")
@@ -85,7 +85,7 @@ public class TestProxyRecordingOptions {
          * @param pemValue the cert pem value
          * @return the {@link Certificate} object
          */
-        public Certificate setPemValue (String pemValue) {
+        public Certificate setPemValue(String pemValue) {
             this.pemValue = pemValue;
             return this;
         }
@@ -103,7 +103,7 @@ public class TestProxyRecordingOptions {
          * @param pemKey the cert pem key
          * @return the {@link Certificate} object
          */
-        public Certificate setPemKey (String pemKey) {
+        public Certificate setPemKey(String pemKey) {
             this.pemKey = pemKey;
             return this;
         }
@@ -122,7 +122,7 @@ public class TestProxyRecordingOptions {
      * @param autoRedirect the boolean value indicating if auto redirect is allowed.
      * @return the {@link TestProxyRecordingOptions} object.
      */
-    public TestProxyRecordingOptions setAutoRedirect (boolean autoRedirect) {
+    public TestProxyRecordingOptions setAutoRedirect(boolean autoRedirect) {
         this.autoRedirect = autoRedirect;
         return this;
     }

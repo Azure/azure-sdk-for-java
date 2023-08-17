@@ -192,6 +192,11 @@ public class TestProxyRecordPolicy implements HttpPipelinePolicy {
         return xRecordingId != null;
     }
 
+    /**
+     * Set transport layer test proxy recording options
+     * @param testProxyRecordingOptions the transport layer test proxy recording options to set
+     * @throws IllegalArgumentException if testProxyRecordingOptions cannot be serialized
+     */
     public void setRecordingOptions(TestProxyRecordingOptions testProxyRecordingOptions) {
         HttpRequest request = new HttpRequest(HttpMethod.POST, String.format("%s/admin/setrecordingoptions", proxyUrl.toString()));
         String body;
