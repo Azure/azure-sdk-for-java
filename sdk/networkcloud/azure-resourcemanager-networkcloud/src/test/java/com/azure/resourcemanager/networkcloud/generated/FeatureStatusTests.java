@@ -13,7 +13,7 @@ public final class FeatureStatusTests {
         FeatureStatus model =
             BinaryData
                 .fromString(
-                    "{\"detailedStatus\":\"Failed\",\"detailedStatusMessage\":\"qolbgyc\",\"name\":\"iertgccymvaolp\",\"version\":\"lqlfm\"}")
+                    "{\"detailedStatus\":\"Unknown\",\"detailedStatusMessage\":\"ibycno\",\"name\":\"knme\",\"version\":\"sgzvahapjyzhpv\"}")
                 .toObject(FeatureStatus.class);
     }
 

@@ -12,7 +12,7 @@ import java.util.Map;
 /** Samples for KubernetesClusters Update. */
 public final class KubernetesClustersUpdateSamples {
     /*
-     * x-ms-original-file: specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2023-05-01-preview/examples/KubernetesClusters_Patch.json
+     * x-ms-original-file: specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2023-07-01/examples/KubernetesClusters_Patch.json
      */
     /**
      * Sample code: Patch Kubernetes cluster.
@@ -28,7 +28,7 @@ public final class KubernetesClustersUpdateSamples {
                 .getValue();
         resource
             .update()
-            .withTags(mapOf("key1", "myvalue1", "key2", "myvalue2"))
+            .withTags(mapOf("key1", "fakeTokenPlaceholder", "key2", "fakeTokenPlaceholder"))
             .withControlPlaneNodeConfiguration(new ControlPlaneNodePatchConfiguration().withCount(3L))
             .withKubernetesVersion("1.24.12")
             .apply();
