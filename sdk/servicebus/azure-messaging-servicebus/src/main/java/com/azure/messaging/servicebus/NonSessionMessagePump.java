@@ -3,10 +3,9 @@
 
 package com.azure.messaging.servicebus;
 
-import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.messaging.servicebus.implementation.instrumentation.ReceiverKind;
 import com.azure.messaging.servicebus.implementation.instrumentation.ServiceBusReceiverInstrumentation;
-import com.azure.messaging.servicebus.implementation.instrumentation.ServiceBusTracer;
 import org.reactivestreams.Publisher;
 import reactor.core.Disposable;
 import reactor.core.Disposables;
@@ -54,7 +53,6 @@ final class NonSessionMessagePump {
     private final boolean enableAutoLockRenew;
     private final Scheduler workerScheduler;
     private final ServiceBusReceiverInstrumentation instrumentation;
-    private final ServiceBusTracer tracer;
 
     /**
      * Instantiate {@link NonSessionMessagePump} that pumps messages emitted by the given {@code client}. The messages
@@ -94,7 +92,6 @@ final class NonSessionMessagePump {
             this.workerScheduler = Schedulers.immediate();
         }
         this.instrumentation = this.client.getInstrumentation();
-        this.tracer = this.instrumentation.getTracer();
     }
 
     /**
@@ -135,42 +132,35 @@ final class NonSessionMessagePump {
     }
 
     private void handleMessage(ServiceBusReceivedMessage message) {
-        final Disposable lockRenewDisposable;
-        if (enableAutoLockRenew) {
-            lockRenewDisposable = client.beginLockRenewal(message);
-        } else {
-            lockRenewDisposable = Disposables.disposed();
-        }
-        final boolean success = notifyMessage(message);
-        if (enableAutoDisposition) {
-            if (success) {
-                complete(message);
+        instrumentation.instrumentProcess(message, ReceiverKind.PROCESSOR, msg -> {
+            final Disposable lockRenewDisposable;
+            if (enableAutoLockRenew) {
+                lockRenewDisposable = client.beginLockRenewal(message);
             } else {
-                abandon(message);
+                lockRenewDisposable = Disposables.disposed();
             }
-        }
-        lockRenewDisposable.dispose();
+            final Throwable error = notifyMessage(message);
+            if (enableAutoDisposition) {
+                if (error == null) {
+                    complete(message);
+                } else {
+                    abandon(message);
+                }
+            }
+            lockRenewDisposable.dispose();
+            return error;
+        });
     }
 
-    private boolean notifyMessage(ServiceBusReceivedMessage message) {
-        final Context span = instrumentation.instrumentProcess("ServiceBus.process", message, Context.NONE);
-        final AutoCloseable scope  = tracer.makeSpanCurrent(span);
-
-        Throwable error = null;
+    private Throwable notifyMessage(ServiceBusReceivedMessage message) {
         try {
             processMessage.accept(new ServiceBusReceivedMessageContext(client, new ServiceBusMessageContext(message)));
         } catch (Exception e) {
-            error = e;
+            notifyError(new ServiceBusException(e, ServiceBusErrorSource.USER_CALLBACK));
+            return e;
         }
 
-        if (error != null) {
-            notifyError(new ServiceBusException(error, ServiceBusErrorSource.USER_CALLBACK));
-            tracer.endSpan(error, message.getContext(), scope);
-            return false;
-        } else {
-            tracer.endSpan(null, message.getContext(), scope);
-            return true;
-        }
+        return null;
     }
 
     private void notifyError(Throwable throwable) {

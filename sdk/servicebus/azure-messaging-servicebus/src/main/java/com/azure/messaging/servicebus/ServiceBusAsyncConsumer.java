@@ -9,6 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.implementation.DispositionStatus;
 import com.azure.messaging.servicebus.implementation.MessageUtils;
 import com.azure.messaging.servicebus.implementation.ServiceBusReceiveLinkProcessor;
+import com.azure.messaging.servicebus.implementation.instrumentation.ServiceBusReceiverInstrumentation;
 import org.apache.qpid.proton.amqp.transport.DeliveryState;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -43,14 +44,17 @@ class ServiceBusAsyncConsumer implements AutoCloseable {
     }
 
     ServiceBusAsyncConsumer(String linkName, MessageFlux messageFlux,
-        MessageSerializer messageSerializer, ReceiverOptions receiverOptions) {
+        MessageSerializer messageSerializer, ReceiverOptions receiverOptions, ServiceBusReceiverInstrumentation instrumentation) {
         this.isV2 = true;
         this.linkName = linkName;
         this.messageFlux = messageFlux;
         this.linkProcessor = null;
         this.messageSerializer = messageSerializer;
-        this.processor = messageFlux
+
+        Flux<ServiceBusReceivedMessage> deserialize = messageFlux
             .map(message -> this.messageSerializer.deserialize(message, ServiceBusReceivedMessage.class));
+
+        this.processor = instrumentation.isEnabled() ? new FluxTraceV2(deserialize, instrumentation) : deserialize;
     }
 
     /**

@@ -7,6 +7,7 @@ import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpRetryPolicy;
 import com.azure.core.amqp.FixedAmqpRetryPolicy;
 import com.azure.core.amqp.implementation.MessageSerializer;
+import com.azure.messaging.servicebus.implementation.instrumentation.ReceiverKind;
 import org.apache.qpid.proton.amqp.messaging.Accepted;
 import org.apache.qpid.proton.amqp.messaging.Modified;
 import org.apache.qpid.proton.amqp.transport.DeliveryState;
@@ -579,8 +580,7 @@ public class SessionsMessagePumpIsolatedTest {
     private SessionsMessagePump createSessionsMessagePump(ServiceBusSessionAcquirer sessionAcquirer, Duration sessionIdleTimeout,
         int maxConcurrentSessions, int concurrencyPerSession, boolean autoDispositionDisabled, MessageSerializer serializer,
         Consumer<ServiceBusReceivedMessageContext> processMessage, Consumer<ServiceBusErrorContext> processError, Runnable onTerminate) {
-        final ServiceBusReceiverInstrumentation instrumentation = mock(ServiceBusReceiverInstrumentation.class);
-        when(instrumentation.getTracer()).thenReturn(mock(ServiceBusTracer.class));
+        final ServiceBusReceiverInstrumentation instrumentation = new ServiceBusReceiverInstrumentation(null, null, "FQDN", "Orders", null, ReceiverKind.PROCESSOR);
         doNothing().when(onTerminate).run();
         final boolean enableAutoDisposition = !autoDispositionDisabled;
         return new SessionsMessagePump("identifier-1", "FQDN", "Orders", ServiceBusReceiveMode.PEEK_LOCK,

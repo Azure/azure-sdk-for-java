@@ -4,6 +4,7 @@
 package com.azure.messaging.servicebus;
 
 import com.azure.core.util.Context;
+import com.azure.messaging.servicebus.implementation.instrumentation.ReceiverKind;
 import com.azure.messaging.servicebus.implementation.instrumentation.ServiceBusReceiverInstrumentation;
 import com.azure.messaging.servicebus.implementation.instrumentation.ServiceBusTracer;
 import org.reactivestreams.Subscription;
@@ -17,30 +18,28 @@ import java.util.Objects;
 /**
  * Flux operator that traces receive and process calls
  */
-final class FluxTrace extends FluxOperator<ServiceBusMessageContext, ServiceBusMessageContext> {
+final class FluxTraceV2 extends FluxOperator<ServiceBusReceivedMessage, ServiceBusReceivedMessage> {
     private final ServiceBusReceiverInstrumentation instrumentation;
 
-    FluxTrace(Flux<? extends ServiceBusMessageContext> upstream, ServiceBusReceiverInstrumentation instrumentation) {
+    FluxTraceV2(Flux<? extends ServiceBusReceivedMessage> upstream, ServiceBusReceiverInstrumentation instrumentation) {
         super(upstream);
         this.instrumentation = instrumentation;
     }
 
     @Override
-    public void subscribe(CoreSubscriber<? super ServiceBusMessageContext> coreSubscriber) {
+    public void subscribe(CoreSubscriber<? super ServiceBusReceivedMessage> coreSubscriber) {
         Objects.requireNonNull(coreSubscriber, "'coreSubscriber' cannot be null.");
 
         source.subscribe(new TracingSubscriber(coreSubscriber, instrumentation));
     }
 
-    private static class TracingSubscriber extends BaseSubscriber<ServiceBusMessageContext> {
+    private static class TracingSubscriber extends BaseSubscriber<ServiceBusReceivedMessage> {
 
-        private final CoreSubscriber<? super ServiceBusMessageContext> downstream;
+        private final CoreSubscriber<? super ServiceBusReceivedMessage> downstream;
         private final ServiceBusReceiverInstrumentation instrumentation;
-        private final ServiceBusTracer tracer;
-        TracingSubscriber(CoreSubscriber<? super ServiceBusMessageContext> downstream, ServiceBusReceiverInstrumentation instrumentation) {
+        TracingSubscriber(CoreSubscriber<? super ServiceBusReceivedMessage> downstream, ServiceBusReceiverInstrumentation instrumentation) {
             this.downstream = downstream;
             this.instrumentation = instrumentation;
-            this.tracer = instrumentation.getTracer();
         }
 
         @Override
@@ -54,26 +53,11 @@ final class FluxTrace extends FluxOperator<ServiceBusMessageContext, ServiceBusM
         }
 
         @Override
-        protected void hookOnNext(ServiceBusMessageContext message) {
-            if (message == null || message.getMessage() == null)  {
-                downstream.onNext(message);
-                return;
-            }
-
-            Context span = instrumentation.startProcessInstrumentation("ServiceBus.process", message.getMessage(), Context.NONE);
-            message.getMessage().setContext(span);
-            AutoCloseable scope = tracer.makeSpanCurrent(span);
-            try {
-                downstream.onNext(message);
-                if (!instrumentation.isProcessorInstrumentation()) {
-                    tracer.endSpan(null, span, scope);
-                }
-            } catch (Throwable t) {
-                tracer.endSpan(t, span, scope);
-                throw t;
-            } finally {
-                tracer.closeScope(scope);
-            }
+        protected void hookOnNext(ServiceBusReceivedMessage message) {
+            instrumentation.instrumentProcess(message, ReceiverKind.ASYNC_RECEIVER, msg -> {
+                downstream.onNext(msg);
+                return null;
+            });
         }
 
         @Override
