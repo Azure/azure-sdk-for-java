@@ -3,17 +3,37 @@ package com.azure.ai.openai.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+/**
+ * A specific representation of configurable options for Azure Cognitive Search when using it as an Azure OpenAI chat
+ * extension.
+ */
 public class AzureCognitiveSearchChatExtensionConfiguration {
 
+    /*
+     * The absolute endpoint path for the Azure Cognitive Search resource to use.
+     */
     @JsonProperty(value = "endpoint")
     private String endpoint;
 
+    /*
+     * The API key to use with the specified Azure Cognitive Search endpoint.
+     */
     @JsonProperty(value = "key")
     private String key;
 
+    /*
+     * The name of the index to use as available in the referenced Azure Cognitive Search resource.
+     */
     @JsonProperty(value = "indexName")
     private String indexName;
 
+    /**
+     * Creates and instance of AzureCognitiveSearchChatExtensionConfiguration
+     *
+     * @param endpoint absolute path for the Azure Cognitive Search resource
+     * @param key the API key for the Azure Cognitive search endpoint
+     * @param indexName the name of the index to use in the referenced Azure Cognitive Search resource
+     */
     @JsonCreator
     public AzureCognitiveSearchChatExtensionConfiguration(
         @JsonProperty(value = "endpoint") String endpoint,
