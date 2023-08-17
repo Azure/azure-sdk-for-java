@@ -126,7 +126,7 @@ public class ReplicatedResourceClient {
                     Long.toString(forceRefreshAndTimeout.getValue2().toMillis()));
 
             if (shouldSpeculate(request)){
-                logger.debug("Speculating request {}", request.getOperationType());
+                logger.info("Speculating request {}", request.getOperationType());
                 return getStoreResponseMonoWithSpeculation(request, forceRefreshAndTimeout);
             }
 
@@ -187,6 +187,14 @@ public class ReplicatedResourceClient {
         if (monoList.isEmpty()) {
             monoList.add(getStoreResponseMono(request, forceRefreshAndTimeout));
         }
+
+//        Mono<StoreResponse> responseMono1 = monoList.get(0);
+//        Mono<StoreResponse> responseMono2 = monoList.get(1);
+//
+//        return responseMono2
+//            .doOnError(throwable -> {
+//                logger.error("Error from mono 1 : ", throwable);
+//        });
 
         return Mono.firstWithValue(monoList);
     }
