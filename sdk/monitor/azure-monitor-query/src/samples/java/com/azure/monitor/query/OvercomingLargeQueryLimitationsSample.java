@@ -22,7 +22,7 @@ import com.azure.monitor.query.models.QueryTimeInterval;
 public class OvercomingLargeQueryLimitationsSample {
 
 
-    static String workspaceId;;
+    static String workspaceId;
     static LogsQueryClient client;
 
     /**
