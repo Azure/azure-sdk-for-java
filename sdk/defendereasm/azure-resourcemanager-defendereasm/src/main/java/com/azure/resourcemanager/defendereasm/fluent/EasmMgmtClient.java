@@ -7,8 +7,8 @@ package com.azure.resourcemanager.defendereasm.fluent;
 import com.azure.core.http.HttpPipeline;
 import java.time.Duration;
 
-/** The interface for MicrosoftEasm class. */
-public interface MicrosoftEasm {
+/** The interface for EasmMgmtClient class. */
+public interface EasmMgmtClient {
     /**
      * Gets The ID of the target subscription.
      *

@@ -46,24 +46,24 @@ public final class LabelsClientImpl implements LabelsClient {
     private final LabelsService service;
 
     /** The service client containing this operation class. */
-    private final MicrosoftEasmImpl client;
+    private final EasmMgmtClientImpl client;
 
     /**
      * Initializes an instance of LabelsClientImpl.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    LabelsClientImpl(MicrosoftEasmImpl client) {
+    LabelsClientImpl(EasmMgmtClientImpl client) {
         this.service = RestProxy.create(LabelsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for MicrosoftEasmLabels to be used by the proxy service to perform REST
+     * The interface defining all the services for EasmMgmtClientLabels to be used by the proxy service to perform REST
      * calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "MicrosoftEasmLabels")
+    @ServiceInterface(name = "EasmMgmtClientLabels")
     public interface LabelsService {
         @Headers({"Content-Type: application/json"})
         @Get(

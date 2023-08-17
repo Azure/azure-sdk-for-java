@@ -14,9 +14,9 @@ import com.azure.core.management.serializer.SerializerFactory;
 import com.azure.core.util.serializer.SerializerAdapter;
 import java.time.Duration;
 
-/** A builder for creating a new instance of the MicrosoftEasmImpl type. */
-@ServiceClientBuilder(serviceClients = {MicrosoftEasmImpl.class})
-public final class MicrosoftEasmBuilder {
+/** A builder for creating a new instance of the EasmMgmtClientImpl type. */
+@ServiceClientBuilder(serviceClients = {EasmMgmtClientImpl.class})
+public final class EasmMgmtClientBuilder {
     /*
      * The ID of the target subscription.
      */
@@ -26,9 +26,9 @@ public final class MicrosoftEasmBuilder {
      * Sets The ID of the target subscription.
      *
      * @param subscriptionId the subscriptionId value.
-     * @return the MicrosoftEasmBuilder.
+     * @return the EasmMgmtClientBuilder.
      */
-    public MicrosoftEasmBuilder subscriptionId(String subscriptionId) {
+    public EasmMgmtClientBuilder subscriptionId(String subscriptionId) {
         this.subscriptionId = subscriptionId;
         return this;
     }
@@ -42,9 +42,9 @@ public final class MicrosoftEasmBuilder {
      * Sets server parameter.
      *
      * @param endpoint the endpoint value.
-     * @return the MicrosoftEasmBuilder.
+     * @return the EasmMgmtClientBuilder.
      */
-    public MicrosoftEasmBuilder endpoint(String endpoint) {
+    public EasmMgmtClientBuilder endpoint(String endpoint) {
         this.endpoint = endpoint;
         return this;
     }
@@ -58,9 +58,9 @@ public final class MicrosoftEasmBuilder {
      * Sets The environment to connect to.
      *
      * @param environment the environment value.
-     * @return the MicrosoftEasmBuilder.
+     * @return the EasmMgmtClientBuilder.
      */
-    public MicrosoftEasmBuilder environment(AzureEnvironment environment) {
+    public EasmMgmtClientBuilder environment(AzureEnvironment environment) {
         this.environment = environment;
         return this;
     }
@@ -74,9 +74,9 @@ public final class MicrosoftEasmBuilder {
      * Sets The HTTP pipeline to send requests through.
      *
      * @param pipeline the pipeline value.
-     * @return the MicrosoftEasmBuilder.
+     * @return the EasmMgmtClientBuilder.
      */
-    public MicrosoftEasmBuilder pipeline(HttpPipeline pipeline) {
+    public EasmMgmtClientBuilder pipeline(HttpPipeline pipeline) {
         this.pipeline = pipeline;
         return this;
     }
@@ -90,9 +90,9 @@ public final class MicrosoftEasmBuilder {
      * Sets The default poll interval for long-running operation.
      *
      * @param defaultPollInterval the defaultPollInterval value.
-     * @return the MicrosoftEasmBuilder.
+     * @return the EasmMgmtClientBuilder.
      */
-    public MicrosoftEasmBuilder defaultPollInterval(Duration defaultPollInterval) {
+    public EasmMgmtClientBuilder defaultPollInterval(Duration defaultPollInterval) {
         this.defaultPollInterval = defaultPollInterval;
         return this;
     }
@@ -106,19 +106,19 @@ public final class MicrosoftEasmBuilder {
      * Sets The serializer to serialize an object into a string.
      *
      * @param serializerAdapter the serializerAdapter value.
-     * @return the MicrosoftEasmBuilder.
+     * @return the EasmMgmtClientBuilder.
      */
-    public MicrosoftEasmBuilder serializerAdapter(SerializerAdapter serializerAdapter) {
+    public EasmMgmtClientBuilder serializerAdapter(SerializerAdapter serializerAdapter) {
         this.serializerAdapter = serializerAdapter;
         return this;
     }
 
     /**
-     * Builds an instance of MicrosoftEasmImpl with the provided parameters.
+     * Builds an instance of EasmMgmtClientImpl with the provided parameters.
      *
-     * @return an instance of MicrosoftEasmImpl.
+     * @return an instance of EasmMgmtClientImpl.
      */
-    public MicrosoftEasmImpl buildClient() {
+    public EasmMgmtClientImpl buildClient() {
         String localEndpoint = (endpoint != null) ? endpoint : "https://management.azure.com";
         AzureEnvironment localEnvironment = (environment != null) ? environment : AzureEnvironment.AZURE;
         HttpPipeline localPipeline =
@@ -131,8 +131,8 @@ public final class MicrosoftEasmBuilder {
             (serializerAdapter != null)
                 ? serializerAdapter
                 : SerializerFactory.createDefaultManagementSerializerAdapter();
-        MicrosoftEasmImpl client =
-            new MicrosoftEasmImpl(
+        EasmMgmtClientImpl client =
+            new EasmMgmtClientImpl(
                 localPipeline,
                 localSerializerAdapter,
                 localDefaultPollInterval,

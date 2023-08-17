@@ -31,24 +31,24 @@ public final class TasksClientImpl implements TasksClient {
     private final TasksService service;
 
     /** The service client containing this operation class. */
-    private final MicrosoftEasmImpl client;
+    private final EasmMgmtClientImpl client;
 
     /**
      * Initializes an instance of TasksClientImpl.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    TasksClientImpl(MicrosoftEasmImpl client) {
+    TasksClientImpl(EasmMgmtClientImpl client) {
         this.service = RestProxy.create(TasksService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for MicrosoftEasmTasks to be used by the proxy service to perform REST
+     * The interface defining all the services for EasmMgmtClientTasks to be used by the proxy service to perform REST
      * calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "MicrosoftEasmTasks")
+    @ServiceInterface(name = "EasmMgmtClientTasks")
     public interface TasksService {
         @Headers({"Content-Type: application/json"})
         @Get(

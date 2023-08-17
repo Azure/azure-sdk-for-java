@@ -23,9 +23,9 @@ import com.azure.core.management.http.policy.ArmChallengeAuthenticationPolicy;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.defendereasm.fluent.MicrosoftEasm;
+import com.azure.resourcemanager.defendereasm.fluent.EasmMgmtClient;
+import com.azure.resourcemanager.defendereasm.implementation.EasmMgmtClientBuilder;
 import com.azure.resourcemanager.defendereasm.implementation.LabelsImpl;
-import com.azure.resourcemanager.defendereasm.implementation.MicrosoftEasmBuilder;
 import com.azure.resourcemanager.defendereasm.implementation.OperationsImpl;
 import com.azure.resourcemanager.defendereasm.implementation.TasksImpl;
 import com.azure.resourcemanager.defendereasm.implementation.WorkspacesImpl;
@@ -50,13 +50,13 @@ public final class EasmManager {
 
     private Operations operations;
 
-    private final MicrosoftEasm clientObject;
+    private final EasmMgmtClient clientObject;
 
     private EasmManager(HttpPipeline httpPipeline, AzureProfile profile, Duration defaultPollInterval) {
         Objects.requireNonNull(httpPipeline, "'httpPipeline' cannot be null.");
         Objects.requireNonNull(profile, "'profile' cannot be null.");
         this.clientObject =
-            new MicrosoftEasmBuilder()
+            new EasmMgmtClientBuilder()
                 .pipeline(httpPipeline)
                 .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
                 .subscriptionId(profile.getSubscriptionId())
@@ -321,12 +321,12 @@ public final class EasmManager {
     }
 
     /**
-     * Gets wrapped service client MicrosoftEasm providing direct access to the underlying auto-generated API
+     * Gets wrapped service client EasmMgmtClient providing direct access to the underlying auto-generated API
      * implementation, based on Azure REST API.
      *
-     * @return Wrapped service client MicrosoftEasm.
+     * @return Wrapped service client EasmMgmtClient.
      */
-    public MicrosoftEasm serviceClient() {
+    public EasmMgmtClient serviceClient() {
         return this.clientObject;
     }
 }

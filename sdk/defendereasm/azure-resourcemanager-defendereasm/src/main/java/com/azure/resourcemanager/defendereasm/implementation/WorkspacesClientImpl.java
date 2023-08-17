@@ -46,25 +46,25 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
     private final WorkspacesService service;
 
     /** The service client containing this operation class. */
-    private final MicrosoftEasmImpl client;
+    private final EasmMgmtClientImpl client;
 
     /**
      * Initializes an instance of WorkspacesClientImpl.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    WorkspacesClientImpl(MicrosoftEasmImpl client) {
+    WorkspacesClientImpl(EasmMgmtClientImpl client) {
         this.service =
             RestProxy.create(WorkspacesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for MicrosoftEasmWorkspaces to be used by the proxy service to perform
+     * The interface defining all the services for EasmMgmtClientWorkspaces to be used by the proxy service to perform
      * REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "MicrosoftEasmWorkspa")
+    @ServiceInterface(name = "EasmMgmtClientWorksp")
     public interface WorkspacesService {
         @Headers({"Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Easm/workspaces")

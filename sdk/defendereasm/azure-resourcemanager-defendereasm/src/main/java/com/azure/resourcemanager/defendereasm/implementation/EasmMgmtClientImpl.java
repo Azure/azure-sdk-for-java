@@ -22,8 +22,8 @@ import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
+import com.azure.resourcemanager.defendereasm.fluent.EasmMgmtClient;
 import com.azure.resourcemanager.defendereasm.fluent.LabelsClient;
-import com.azure.resourcemanager.defendereasm.fluent.MicrosoftEasm;
 import com.azure.resourcemanager.defendereasm.fluent.OperationsClient;
 import com.azure.resourcemanager.defendereasm.fluent.TasksClient;
 import com.azure.resourcemanager.defendereasm.fluent.WorkspacesClient;
@@ -36,9 +36,9 @@ import java.time.Duration;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** Initializes a new instance of the MicrosoftEasmImpl type. */
-@ServiceClient(builder = MicrosoftEasmBuilder.class)
-public final class MicrosoftEasmImpl implements MicrosoftEasm {
+/** Initializes a new instance of the EasmMgmtClientImpl type. */
+@ServiceClient(builder = EasmMgmtClientBuilder.class)
+public final class EasmMgmtClientImpl implements EasmMgmtClient {
     /** The ID of the target subscription. */
     private final String subscriptionId;
 
@@ -160,7 +160,7 @@ public final class MicrosoftEasmImpl implements MicrosoftEasm {
     }
 
     /**
-     * Initializes an instance of MicrosoftEasm client.
+     * Initializes an instance of EasmMgmtClient client.
      *
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
@@ -169,7 +169,7 @@ public final class MicrosoftEasmImpl implements MicrosoftEasm {
      * @param subscriptionId The ID of the target subscription.
      * @param endpoint server parameter.
      */
-    MicrosoftEasmImpl(
+    EasmMgmtClientImpl(
         HttpPipeline httpPipeline,
         SerializerAdapter serializerAdapter,
         Duration defaultPollInterval,
@@ -328,5 +328,5 @@ public final class MicrosoftEasmImpl implements MicrosoftEasm {
         }
     }
 
-    private static final ClientLogger LOGGER = new ClientLogger(MicrosoftEasmImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(EasmMgmtClientImpl.class);
 }
