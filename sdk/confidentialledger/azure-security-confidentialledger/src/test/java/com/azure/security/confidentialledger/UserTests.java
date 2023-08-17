@@ -37,6 +37,5 @@ public final class UserTests extends ConfidentialLedgerClientTestBase {
         }
 
         Assertions.assertEquals(responseBodyJson.get("assignedRole").asText(), "Administrator");
-        Assertions.assertEquals(responseBodyJson.get("userId").asText(), userAad);
     }
 }

@@ -15,6 +15,8 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.models.TestProxyRecordingOptions;
+import com.azure.core.test.models.TestProxySanitizer;
+import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.core.util.BinaryData;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.security.confidentialledger.certificate.ConfidentialLedgerCertificateClient;
@@ -31,6 +33,7 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
+import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -58,12 +61,15 @@ class ConfidentialLedgerClientTestBase extends TestProxyTestBase {
             confidentialLedgerCertificateClientBuilder
                 .httpClient(interceptorManager.getPlaybackClient())
                 .credential(request -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)));
+            addSanitizers();
         } else if (getTestMode() == TestMode.RECORD) {
             confidentialLedgerCertificateClientBuilder
                 .addPolicy(interceptorManager.getRecordPolicy())
                 .credential(new DefaultAzureCredentialBuilder().build());
+            addSanitizers();
         } else if (getTestMode() == TestMode.LIVE) {
             confidentialLedgerCertificateClientBuilder.credential(new DefaultAzureCredentialBuilder().build());
+
         }
 
         confidentialLedgerCertificateClient = confidentialLedgerCertificateClientBuilder.buildClient();
@@ -82,9 +88,11 @@ class ConfidentialLedgerClientTestBase extends TestProxyTestBase {
 
         String ledgerTlsCertificate = jsonNode.get("ledgerTlsCertificate").asText();
         String body = ledgerTlsCertificate.replace("\n", "").replace("\r", "");
-        interceptorManager.setProxyRecordingOptions(new TestProxyRecordingOptions()
-            .setTransportOptions(new TestProxyRecordingOptions.ProxyTransport()
-                .settLSValidationCert(body)));
+        if (getTestMode() == TestMode.RECORD) {
+            interceptorManager.setProxyRecordingOptions(new TestProxyRecordingOptions()
+                .setTransportOptions(new TestProxyRecordingOptions.ProxyTransport()
+                    .settLSValidationCert(body)));
+        }
 
         reactor.netty.http.client.HttpClient reactorClient = null;
 
@@ -110,17 +118,26 @@ class ConfidentialLedgerClientTestBase extends TestProxyTestBase {
             confidentialLedgerClientBuilder
                 .httpClient(interceptorManager.getPlaybackClient())
                 .credential(request -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)));
+            addSanitizers();
         } else if (getTestMode() == TestMode.RECORD) {
             confidentialLedgerClientBuilder
                 .addPolicy(interceptorManager.getRecordPolicy())
                 .httpClient(httpClient)
                 .credential(new DefaultAzureCredentialBuilder().build());
+            addSanitizers();
         } else if (getTestMode() == TestMode.LIVE) {
             confidentialLedgerClientBuilder
                 .credential(new DefaultAzureCredentialBuilder().build())
                 .httpClient(httpClient);
         }
         confidentialLedgerClient = confidentialLedgerClientBuilder.buildClient();
+    }
+
+    private void addSanitizers() {
+        interceptorManager.addSanitizers(Arrays.asList(new TestProxySanitizer("(?<=/ledgerIdentity/)([^/?]+)",
+            "java-sdk-live-tests-ledger", TestProxySanitizerType.URL),
+            new TestProxySanitizer("(?<=/app/users/)([^/?]+)",
+            "d958292f-5b70-4b66-9502-562217cc7eaa", TestProxySanitizerType.URL)));
     }
 
     /**

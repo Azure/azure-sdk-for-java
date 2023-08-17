@@ -531,9 +531,12 @@ public class InterceptorManager implements AutoCloseable {
     /**
      * Sets the recording options for the proxy.
      * @param testProxyRecordingOptions The {@link TestProxyRecordingOptions} to use.
-     *
+     * @throws RuntimeException if test mode is not record.
      */
     public void setProxyRecordingOptions (TestProxyRecordingOptions testProxyRecordingOptions) {
+        if (testMode != TestMode.RECORD) {
+            return;
+        }
         if (testProxyRecordPolicy != null) {
             testProxyRecordPolicy.setRecordingOptions(testProxyRecordingOptions);
         } else {
