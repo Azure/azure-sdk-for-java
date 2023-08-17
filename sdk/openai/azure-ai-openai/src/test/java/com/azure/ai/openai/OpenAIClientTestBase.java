@@ -5,6 +5,8 @@
 package com.azure.ai.openai;
 
 import com.azure.ai.openai.functions.Parameters;
+import com.azure.ai.openai.models.AzureChatExtensionConfiguration;
+import com.azure.ai.openai.models.AzureChatExtensionType;
 import com.azure.ai.openai.models.FunctionDefinition;
 import com.azure.ai.openai.models.ChatChoice;
 import com.azure.ai.openai.models.ChatCompletions;
@@ -87,6 +89,19 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
         return builder;
     }
 
+    protected String getAzureCognitiveSearchKey() {
+       String azureCognitiveSearchKey = Configuration.getGlobalConfiguration().get("ACS_BYOD_API_KEY");
+       if (getTestMode() == TestMode.PLAYBACK) {
+           return FAKE_API_KEY;
+       } else if (azureCognitiveSearchKey != null) {
+           return azureCognitiveSearchKey;
+       } else {
+           throw new IllegalStateException(
+               "No Azure Cognitive Search API key found. " +
+                   "Please set the appropriate environment variable to use this value.");
+       }
+    }
+
 
     @Test
     public abstract void testGetCompletions(HttpClient httpClient, OpenAIServiceVersion serviceVersion);
@@ -125,6 +140,12 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
 
     void getChatCompletionsForNonAzureRunner(BiConsumer<String, List<ChatMessage>> testRunner) {
         testRunner.accept("gpt-3.5-turbo", getChatMessages());
+    }
+
+    void getChatCompletionsAzureChatSearchRunner(BiConsumer<String, ChatCompletionsOptions> testRunner) {
+        ChatCompletionsOptions chatCompletionsOptions = new ChatCompletionsOptions(
+            Arrays.asList(new ChatMessage(ChatRole.USER, "What does PR complete mean?")));
+        testRunner.accept("gpt-4-0613", chatCompletionsOptions);
     }
 
     void getEmbeddingRunner(BiConsumer<String, EmbeddingsOptions> testRunner) {

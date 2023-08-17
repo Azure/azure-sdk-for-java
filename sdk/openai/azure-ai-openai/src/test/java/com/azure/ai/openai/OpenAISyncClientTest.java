@@ -4,6 +4,9 @@
 package com.azure.ai.openai;
 
 import com.azure.ai.openai.functions.MyFunctionCallArguments;
+import com.azure.ai.openai.models.AzureChatExtensionConfiguration;
+import com.azure.ai.openai.models.AzureChatExtensionType;
+import com.azure.ai.openai.models.AzureCognitiveSearchChatExtensionConfiguration;
 import com.azure.ai.openai.models.ChatChoice;
 import com.azure.ai.openai.models.ChatCompletions;
 import com.azure.ai.openai.models.ChatCompletionsOptions;
@@ -352,6 +355,29 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
                 }
                 i++;
             }
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    public void testChatCompletionBasicSearchExtension(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        client = getOpenAIClient(httpClient, serviceVersion);
+
+        getChatCompletionsAzureChatSearchRunner((deploymentName, chatCompletionsOptions) -> {
+            AzureCognitiveSearchChatExtensionConfiguration cognitiveSearchConfiguration =
+                new AzureCognitiveSearchChatExtensionConfiguration(
+                    "https://openaisdktestsearch.search.windows.net",
+                    getAzureCognitiveSearchKey(),
+                    "openai-test-index-carbon-wiki"
+                );
+            AzureChatExtensionConfiguration extensionConfiguration =
+                new AzureChatExtensionConfiguration(
+                    AzureChatExtensionType.AZURE_COGNITIVE_SEARCH,
+                    BinaryData.fromObject(cognitiveSearchConfiguration));
+
+            chatCompletionsOptions.setDataSources(Arrays.asList(extensionConfiguration));
+            ChatCompletions chatCompletions = client.getChatCompletions(deploymentName, chatCompletionsOptions);
+            System.out.println(chatCompletions.getChoices().get(0).getMessage().getContent());
         });
     }
 }
