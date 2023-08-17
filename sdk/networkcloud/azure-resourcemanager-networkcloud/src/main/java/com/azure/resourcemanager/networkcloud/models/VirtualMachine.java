@@ -288,11 +288,13 @@ public interface VirtualMachine {
             DefinitionStages.WithVmImage,
             DefinitionStages.WithCreate {
     }
+
     /** The VirtualMachine definition stages. */
     interface DefinitionStages {
         /** The first stage of the VirtualMachine definition. */
         interface Blank extends WithLocation {
         }
+
         /** The stage of the VirtualMachine definition allowing to specify location. */
         interface WithLocation {
             /**
@@ -311,6 +313,7 @@ public interface VirtualMachine {
              */
             WithResourceGroup withRegion(String location);
         }
+
         /** The stage of the VirtualMachine definition allowing to specify parent resource. */
         interface WithResourceGroup {
             /**
@@ -321,6 +324,7 @@ public interface VirtualMachine {
              */
             WithExtendedLocation withExistingResourceGroup(String resourceGroupName);
         }
+
         /** The stage of the VirtualMachine definition allowing to specify extendedLocation. */
         interface WithExtendedLocation {
             /**
@@ -336,6 +340,7 @@ public interface VirtualMachine {
              */
             WithAdminUsername withExtendedLocation(ExtendedLocation extendedLocation);
         }
+
         /** The stage of the VirtualMachine definition allowing to specify adminUsername. */
         interface WithAdminUsername {
             /**
@@ -348,6 +353,7 @@ public interface VirtualMachine {
              */
             WithCloudServicesNetworkAttachment withAdminUsername(String adminUsername);
         }
+
         /** The stage of the VirtualMachine definition allowing to specify cloudServicesNetworkAttachment. */
         interface WithCloudServicesNetworkAttachment {
             /**
@@ -362,6 +368,7 @@ public interface VirtualMachine {
              */
             WithCpuCores withCloudServicesNetworkAttachment(NetworkAttachment cloudServicesNetworkAttachment);
         }
+
         /** The stage of the VirtualMachine definition allowing to specify cpuCores. */
         interface WithCpuCores {
             /**
@@ -372,6 +379,7 @@ public interface VirtualMachine {
              */
             WithMemorySizeGB withCpuCores(long cpuCores);
         }
+
         /** The stage of the VirtualMachine definition allowing to specify memorySizeGB. */
         interface WithMemorySizeGB {
             /**
@@ -382,6 +390,7 @@ public interface VirtualMachine {
              */
             WithStorageProfile withMemorySizeGB(long memorySizeGB);
         }
+
         /** The stage of the VirtualMachine definition allowing to specify storageProfile. */
         interface WithStorageProfile {
             /**
@@ -397,6 +406,7 @@ public interface VirtualMachine {
              */
             WithVmImage withStorageProfile(StorageProfile storageProfile);
         }
+
         /** The stage of the VirtualMachine definition allowing to specify vmImage. */
         interface WithVmImage {
             /**
@@ -409,6 +419,7 @@ public interface VirtualMachine {
              */
             WithCreate withVmImage(String vmImage);
         }
+
         /**
          * The stage of the VirtualMachine definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
@@ -440,6 +451,7 @@ public interface VirtualMachine {
              */
             VirtualMachine create(Context context);
         }
+
         /** The stage of the VirtualMachine definition allowing to specify tags. */
         interface WithTags {
             /**
@@ -450,6 +462,7 @@ public interface VirtualMachine {
              */
             WithCreate withTags(Map<String, String> tags);
         }
+
         /** The stage of the VirtualMachine definition allowing to specify bootMethod. */
         interface WithBootMethod {
             /**
@@ -460,6 +473,7 @@ public interface VirtualMachine {
              */
             WithCreate withBootMethod(VirtualMachineBootMethod bootMethod);
         }
+
         /** The stage of the VirtualMachine definition allowing to specify isolateEmulatorThread. */
         interface WithIsolateEmulatorThread {
             /**
@@ -474,6 +488,7 @@ public interface VirtualMachine {
              */
             WithCreate withIsolateEmulatorThread(VirtualMachineIsolateEmulatorThread isolateEmulatorThread);
         }
+
         /** The stage of the VirtualMachine definition allowing to specify networkAttachments. */
         interface WithNetworkAttachments {
             /**
@@ -484,6 +499,7 @@ public interface VirtualMachine {
              */
             WithCreate withNetworkAttachments(List<NetworkAttachment> networkAttachments);
         }
+
         /** The stage of the VirtualMachine definition allowing to specify networkData. */
         interface WithNetworkData {
             /**
@@ -494,6 +510,7 @@ public interface VirtualMachine {
              */
             WithCreate withNetworkData(String networkData);
         }
+
         /** The stage of the VirtualMachine definition allowing to specify placementHints. */
         interface WithPlacementHints {
             /**
@@ -504,6 +521,7 @@ public interface VirtualMachine {
              */
             WithCreate withPlacementHints(List<VirtualMachinePlacementHint> placementHints);
         }
+
         /** The stage of the VirtualMachine definition allowing to specify sshPublicKeys. */
         interface WithSshPublicKeys {
             /**
@@ -516,6 +534,7 @@ public interface VirtualMachine {
              */
             WithCreate withSshPublicKeys(List<SshPublicKey> sshPublicKeys);
         }
+
         /** The stage of the VirtualMachine definition allowing to specify userData. */
         interface WithUserData {
             /**
@@ -526,6 +545,7 @@ public interface VirtualMachine {
              */
             WithCreate withUserData(String userData);
         }
+
         /** The stage of the VirtualMachine definition allowing to specify virtioInterface. */
         interface WithVirtioInterface {
             /**
@@ -538,6 +558,7 @@ public interface VirtualMachine {
              */
             WithCreate withVirtioInterface(VirtualMachineVirtioInterfaceType virtioInterface);
         }
+
         /** The stage of the VirtualMachine definition allowing to specify vmDeviceModel. */
         interface WithVmDeviceModel {
             /**
@@ -548,6 +569,7 @@ public interface VirtualMachine {
              */
             WithCreate withVmDeviceModel(VirtualMachineDeviceModelType vmDeviceModel);
         }
+
         /** The stage of the VirtualMachine definition allowing to specify vmImageRepositoryCredentials. */
         interface WithVmImageRepositoryCredentials {
             /**
@@ -564,6 +586,7 @@ public interface VirtualMachine {
             WithCreate withVmImageRepositoryCredentials(ImageRepositoryCredentials vmImageRepositoryCredentials);
         }
     }
+
     /**
      * Begins update for the VirtualMachine resource.
      *
@@ -588,6 +611,7 @@ public interface VirtualMachine {
          */
         VirtualMachine apply(Context context);
     }
+
     /** The VirtualMachine update stages. */
     interface UpdateStages {
         /** The stage of the VirtualMachine update allowing to specify tags. */
@@ -600,6 +624,7 @@ public interface VirtualMachine {
              */
             Update withTags(Map<String, String> tags);
         }
+
         /** The stage of the VirtualMachine update allowing to specify vmImageRepositoryCredentials. */
         interface WithVmImageRepositoryCredentials {
             /**
@@ -616,6 +641,7 @@ public interface VirtualMachine {
             Update withVmImageRepositoryCredentials(ImageRepositoryCredentials vmImageRepositoryCredentials);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *
@@ -632,64 +658,15 @@ public interface VirtualMachine {
     VirtualMachine refresh(Context context);
 
     /**
-     * Attach volume to the virtual machine.
-     *
-     * <p>Attach volume to the provided virtual machine.
-     *
-     * @param virtualMachineAttachVolumeParameters The request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void attachVolume(VirtualMachineVolumeParameters virtualMachineAttachVolumeParameters);
-
-    /**
-     * Attach volume to the virtual machine.
-     *
-     * <p>Attach volume to the provided virtual machine.
-     *
-     * @param virtualMachineAttachVolumeParameters The request body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void attachVolume(VirtualMachineVolumeParameters virtualMachineAttachVolumeParameters, Context context);
-
-    /**
-     * Detach volume from the virtual machine.
-     *
-     * <p>Detach volume from the provided virtual machine.
-     *
-     * @param virtualMachineDetachVolumeParameters The request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void detachVolume(VirtualMachineVolumeParameters virtualMachineDetachVolumeParameters);
-
-    /**
-     * Detach volume from the virtual machine.
-     *
-     * <p>Detach volume from the provided virtual machine.
-     *
-     * @param virtualMachineDetachVolumeParameters The request body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void detachVolume(VirtualMachineVolumeParameters virtualMachineDetachVolumeParameters, Context context);
-
-    /**
      * Power off the virtual machine.
      *
      * <p>Power off the provided virtual machine.
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
-    void powerOff();
+    OperationStatusResult powerOff();
 
     /**
      * Power off the virtual machine.
@@ -701,8 +678,9 @@ public interface VirtualMachine {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
-    void powerOff(VirtualMachinePowerOffParameters virtualMachinePowerOffParameters, Context context);
+    OperationStatusResult powerOff(VirtualMachinePowerOffParameters virtualMachinePowerOffParameters, Context context);
 
     /**
      * Reimage the virtual machine.
@@ -711,8 +689,9 @@ public interface VirtualMachine {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
-    void reimage();
+    OperationStatusResult reimage();
 
     /**
      * Reimage the virtual machine.
@@ -723,8 +702,9 @@ public interface VirtualMachine {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
-    void reimage(Context context);
+    OperationStatusResult reimage(Context context);
 
     /**
      * Restart the virtual machine.
@@ -733,8 +713,9 @@ public interface VirtualMachine {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
-    void restart();
+    OperationStatusResult restart();
 
     /**
      * Restart the virtual machine.
@@ -745,8 +726,9 @@ public interface VirtualMachine {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
-    void restart(Context context);
+    OperationStatusResult restart(Context context);
 
     /**
      * Start the virtual machine.
@@ -755,8 +737,9 @@ public interface VirtualMachine {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
-    void start();
+    OperationStatusResult start();
 
     /**
      * Start the virtual machine.
@@ -767,6 +750,7 @@ public interface VirtualMachine {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
-    void start(Context context);
+    OperationStatusResult start(Context context);
 }

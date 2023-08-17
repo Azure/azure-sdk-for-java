@@ -16,18 +16,27 @@ public final class L2NetworkPatchParametersTests {
         L2NetworkPatchParameters model =
             BinaryData
                 .fromString(
-                    "{\"tags\":{\"obkauxofsh\":\"uahokq\",\"whslwkoj\":\"phwpnulaiywzej\",\"rpqaf\":\"llndnpd\"}}")
+                    "{\"tags\":{\"ucsofldpuviyf\":\"srrm\",\"bsxtkcudfbsfarfs\":\"aabeolhbhlvbmxuq\",\"gf\":\"owlkjxnqpv\",\"d\":\"tmhqykiz\"}}")
                 .toObject(L2NetworkPatchParameters.class);
-        Assertions.assertEquals("uahokq", model.tags().get("obkauxofsh"));
+        Assertions.assertEquals("srrm", model.tags().get("ucsofldpuviyf"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         L2NetworkPatchParameters model =
             new L2NetworkPatchParameters()
-                .withTags(mapOf("obkauxofsh", "uahokq", "whslwkoj", "phwpnulaiywzej", "rpqaf", "llndnpd"));
+                .withTags(
+                    mapOf(
+                        "ucsofldpuviyf",
+                        "srrm",
+                        "bsxtkcudfbsfarfs",
+                        "aabeolhbhlvbmxuq",
+                        "gf",
+                        "owlkjxnqpv",
+                        "d",
+                        "tmhqykiz"));
         model = BinaryData.fromObject(model).toObject(L2NetworkPatchParameters.class);
-        Assertions.assertEquals("uahokq", model.tags().get("obkauxofsh"));
+        Assertions.assertEquals("srrm", model.tags().get("ucsofldpuviyf"));
     }
 
     @SuppressWarnings("unchecked")

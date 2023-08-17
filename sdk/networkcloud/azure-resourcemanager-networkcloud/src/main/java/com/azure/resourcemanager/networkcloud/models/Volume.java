@@ -145,11 +145,13 @@ public interface Volume {
             DefinitionStages.WithSizeMiB,
             DefinitionStages.WithCreate {
     }
+
     /** The Volume definition stages. */
     interface DefinitionStages {
         /** The first stage of the Volume definition. */
         interface Blank extends WithLocation {
         }
+
         /** The stage of the Volume definition allowing to specify location. */
         interface WithLocation {
             /**
@@ -168,6 +170,7 @@ public interface Volume {
              */
             WithResourceGroup withRegion(String location);
         }
+
         /** The stage of the Volume definition allowing to specify parent resource. */
         interface WithResourceGroup {
             /**
@@ -178,6 +181,7 @@ public interface Volume {
              */
             WithExtendedLocation withExistingResourceGroup(String resourceGroupName);
         }
+
         /** The stage of the Volume definition allowing to specify extendedLocation. */
         interface WithExtendedLocation {
             /**
@@ -193,6 +197,7 @@ public interface Volume {
              */
             WithSizeMiB withExtendedLocation(ExtendedLocation extendedLocation);
         }
+
         /** The stage of the Volume definition allowing to specify sizeMiB. */
         interface WithSizeMiB {
             /**
@@ -203,6 +208,7 @@ public interface Volume {
              */
             WithCreate withSizeMiB(long sizeMiB);
         }
+
         /**
          * The stage of the Volume definition which contains all the minimum required properties for the resource to be
          * created, but also allows for any other optional properties to be specified.
@@ -223,6 +229,7 @@ public interface Volume {
              */
             Volume create(Context context);
         }
+
         /** The stage of the Volume definition allowing to specify tags. */
         interface WithTags {
             /**
@@ -234,6 +241,7 @@ public interface Volume {
             WithCreate withTags(Map<String, String> tags);
         }
     }
+
     /**
      * Begins update for the Volume resource.
      *
@@ -258,6 +266,7 @@ public interface Volume {
          */
         Volume apply(Context context);
     }
+
     /** The Volume update stages. */
     interface UpdateStages {
         /** The stage of the Volume update allowing to specify tags. */
@@ -271,6 +280,7 @@ public interface Volume {
             Update withTags(Map<String, String> tags);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *
