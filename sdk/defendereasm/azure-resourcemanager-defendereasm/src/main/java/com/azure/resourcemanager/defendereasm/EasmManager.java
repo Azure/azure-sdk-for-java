@@ -321,10 +321,8 @@ public final class EasmManager {
     }
 
     /**
-     * Gets wrapped service client EasmMgmtClient providing direct access to the underlying auto-generated API
-     * implementation, based on Azure REST API.
-     *
-     * @return Wrapped service client EasmMgmtClient.
+     * @return Wrapped service client EasmMgmtClient providing direct access to the underlying auto-generated API
+     *     implementation, based on Azure REST API.
      */
     public EasmMgmtClient serviceClient() {
         return this.clientObject;
