@@ -43,8 +43,8 @@ import com.azure.core.util.logging.ClientLogger;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -333,8 +333,7 @@ public final class CallAutomationClientBuilder implements
         boolean isTokenCredentialSet = tokenCredential != null;
         boolean isCustomEndpointUsed;
 
-        String customEndpointEnabled = Configuration.getGlobalConfiguration().get("COMMUNICATION_CUSTOM_ENDPOINT_ENABLED",
-            "false");
+        String customEndpointEnabled = "false";
         isCustomEndpointUsed = Objects.equals(customEndpointEnabled, "true");
 
         if (!(isConnectionStringSet && isEndpointSet && isCustomEndpointUsed)) {
@@ -388,7 +387,7 @@ public final class CallAutomationClientBuilder implements
 
         AzureCommunicationCallAutomationServiceImplBuilder clientBuilder = new AzureCommunicationCallAutomationServiceImplBuilder();
         clientBuilder.endpoint(endpoint).pipeline(builderPipeline);
-            
+
         return clientBuilder.buildClient();
     }
 
