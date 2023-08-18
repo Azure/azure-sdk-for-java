@@ -53,6 +53,7 @@ public final class TrunkedNetworkInnerTests {
         Assertions.assertEquals(921543828288140521L, model.vlans().get(0));
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

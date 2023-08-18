@@ -89,6 +89,7 @@ public final class TrunkedNetworksCreateOrUpdateMockTests {
         Assertions.assertEquals(3759154775204122401L, response.vlans().get(0));
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

@@ -28,6 +28,7 @@ public final class L3NetworkPatchParametersTests {
         Assertions.assertEquals("oafcluqvox", model.tags().get("ycjimryvwgcwwpbm"));
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

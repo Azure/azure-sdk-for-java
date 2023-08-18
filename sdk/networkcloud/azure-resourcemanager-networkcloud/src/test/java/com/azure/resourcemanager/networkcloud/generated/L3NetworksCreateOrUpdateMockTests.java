@@ -97,6 +97,7 @@ public final class L3NetworksCreateOrUpdateMockTests {
         Assertions.assertEquals(4317600423711221201L, response.vlan());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();
