@@ -53,6 +53,7 @@ public final class ClusterManagerInnerTests {
         Assertions.assertEquals("t", model.vmSize());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

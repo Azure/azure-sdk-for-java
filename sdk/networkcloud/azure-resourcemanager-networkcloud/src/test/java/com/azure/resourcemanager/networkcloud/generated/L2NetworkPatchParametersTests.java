@@ -39,6 +39,7 @@ public final class L2NetworkPatchParametersTests {
         Assertions.assertEquals("srrm", model.tags().get("ucsofldpuviyf"));
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

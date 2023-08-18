@@ -52,6 +52,7 @@ public final class VolumeListTests {
         Assertions.assertEquals(1221267442521821688L, model.value().get(0).sizeMiB());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

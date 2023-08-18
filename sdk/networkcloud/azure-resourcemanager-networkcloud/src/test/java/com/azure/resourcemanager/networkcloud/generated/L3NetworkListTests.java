@@ -95,6 +95,7 @@ public final class L3NetworkListTests {
         Assertions.assertEquals(378347416305968829L, model.value().get(0).vlan());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

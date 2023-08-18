@@ -83,6 +83,7 @@ public final class L2NetworkListTests {
         Assertions.assertEquals("d", model.value().get(0).l2IsolationDomainId());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

@@ -80,6 +80,7 @@ public final class VolumesCreateOrUpdateMockTests {
         Assertions.assertEquals(4810474092378413108L, response.sizeMiB());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();
