@@ -6,141 +6,144 @@
 
 package com.azure.search.documents.indexes.models;
 
-/** Lists the languages supported by the Microsoft language stemming tokenizer. */
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
+
+/** Defines values for MicrosoftStemmingTokenizerLanguage. */
 public enum MicrosoftStemmingTokenizerLanguage {
-    /** Selects the Microsoft stemming tokenizer for Arabic. */
+    /** Enum value arabic. */
     ARABIC("arabic"),
 
-    /** Selects the Microsoft stemming tokenizer for Bangla. */
+    /** Enum value bangla. */
     BANGLA("bangla"),
 
-    /** Selects the Microsoft stemming tokenizer for Bulgarian. */
+    /** Enum value bulgarian. */
     BULGARIAN("bulgarian"),
 
-    /** Selects the Microsoft stemming tokenizer for Catalan. */
+    /** Enum value catalan. */
     CATALAN("catalan"),
 
-    /** Selects the Microsoft stemming tokenizer for Croatian. */
+    /** Enum value croatian. */
     CROATIAN("croatian"),
 
-    /** Selects the Microsoft stemming tokenizer for Czech. */
+    /** Enum value czech. */
     CZECH("czech"),
 
-    /** Selects the Microsoft stemming tokenizer for Danish. */
+    /** Enum value danish. */
     DANISH("danish"),
 
-    /** Selects the Microsoft stemming tokenizer for Dutch. */
+    /** Enum value dutch. */
     DUTCH("dutch"),
 
-    /** Selects the Microsoft stemming tokenizer for English. */
+    /** Enum value english. */
     ENGLISH("english"),
 
-    /** Selects the Microsoft stemming tokenizer for Estonian. */
+    /** Enum value estonian. */
     ESTONIAN("estonian"),
 
-    /** Selects the Microsoft stemming tokenizer for Finnish. */
+    /** Enum value finnish. */
     FINNISH("finnish"),
 
-    /** Selects the Microsoft stemming tokenizer for French. */
+    /** Enum value french. */
     FRENCH("french"),
 
-    /** Selects the Microsoft stemming tokenizer for German. */
+    /** Enum value german. */
     GERMAN("german"),
 
-    /** Selects the Microsoft stemming tokenizer for Greek. */
+    /** Enum value greek. */
     GREEK("greek"),
 
-    /** Selects the Microsoft stemming tokenizer for Gujarati. */
+    /** Enum value gujarati. */
     GUJARATI("gujarati"),
 
-    /** Selects the Microsoft stemming tokenizer for Hebrew. */
+    /** Enum value hebrew. */
     HEBREW("hebrew"),
 
-    /** Selects the Microsoft stemming tokenizer for Hindi. */
+    /** Enum value hindi. */
     HINDI("hindi"),
 
-    /** Selects the Microsoft stemming tokenizer for Hungarian. */
+    /** Enum value hungarian. */
     HUNGARIAN("hungarian"),
 
-    /** Selects the Microsoft stemming tokenizer for Icelandic. */
+    /** Enum value icelandic. */
     ICELANDIC("icelandic"),
 
-    /** Selects the Microsoft stemming tokenizer for Indonesian. */
+    /** Enum value indonesian. */
     INDONESIAN("indonesian"),
 
-    /** Selects the Microsoft stemming tokenizer for Italian. */
+    /** Enum value italian. */
     ITALIAN("italian"),
 
-    /** Selects the Microsoft stemming tokenizer for Kannada. */
+    /** Enum value kannada. */
     KANNADA("kannada"),
 
-    /** Selects the Microsoft stemming tokenizer for Latvian. */
+    /** Enum value latvian. */
     LATVIAN("latvian"),
 
-    /** Selects the Microsoft stemming tokenizer for Lithuanian. */
+    /** Enum value lithuanian. */
     LITHUANIAN("lithuanian"),
 
-    /** Selects the Microsoft stemming tokenizer for Malay. */
+    /** Enum value malay. */
     MALAY("malay"),
 
-    /** Selects the Microsoft stemming tokenizer for Malayalam. */
+    /** Enum value malayalam. */
     MALAYALAM("malayalam"),
 
-    /** Selects the Microsoft stemming tokenizer for Marathi. */
+    /** Enum value marathi. */
     MARATHI("marathi"),
 
-    /** Selects the Microsoft stemming tokenizer for Norwegian (Bokmål). */
+    /** Enum value norwegianBokmaal. */
     NORWEGIAN_BOKMAAL("norwegianBokmaal"),
 
-    /** Selects the Microsoft stemming tokenizer for Polish. */
+    /** Enum value polish. */
     POLISH("polish"),
 
-    /** Selects the Microsoft stemming tokenizer for Portuguese. */
+    /** Enum value portuguese. */
     PORTUGUESE("portuguese"),
 
-    /** Selects the Microsoft stemming tokenizer for Portuguese (Brazil). */
+    /** Enum value portugueseBrazilian. */
     PORTUGUESE_BRAZILIAN("portugueseBrazilian"),
 
-    /** Selects the Microsoft stemming tokenizer for Punjabi. */
+    /** Enum value punjabi. */
     PUNJABI("punjabi"),
 
-    /** Selects the Microsoft stemming tokenizer for Romanian. */
+    /** Enum value romanian. */
     ROMANIAN("romanian"),
 
-    /** Selects the Microsoft stemming tokenizer for Russian. */
+    /** Enum value russian. */
     RUSSIAN("russian"),
 
-    /** Selects the Microsoft stemming tokenizer for Serbian (Cyrillic). */
+    /** Enum value serbianCyrillic. */
     SERBIAN_CYRILLIC("serbianCyrillic"),
 
-    /** Selects the Microsoft stemming tokenizer for Serbian (Latin). */
+    /** Enum value serbianLatin. */
     SERBIAN_LATIN("serbianLatin"),
 
-    /** Selects the Microsoft stemming tokenizer for Slovak. */
+    /** Enum value slovak. */
     SLOVAK("slovak"),
 
-    /** Selects the Microsoft stemming tokenizer for Slovenian. */
+    /** Enum value slovenian. */
     SLOVENIAN("slovenian"),
 
-    /** Selects the Microsoft stemming tokenizer for Spanish. */
+    /** Enum value spanish. */
     SPANISH("spanish"),
 
-    /** Selects the Microsoft stemming tokenizer for Swedish. */
+    /** Enum value swedish. */
     SWEDISH("swedish"),
 
-    /** Selects the Microsoft stemming tokenizer for Tamil. */
+    /** Enum value tamil. */
     TAMIL("tamil"),
 
-    /** Selects the Microsoft stemming tokenizer for Telugu. */
+    /** Enum value telugu. */
     TELUGU("telugu"),
 
-    /** Selects the Microsoft stemming tokenizer for Turkish. */
+    /** Enum value turkish. */
     TURKISH("turkish"),
 
-    /** Selects the Microsoft stemming tokenizer for Ukrainian. */
+    /** Enum value ukrainian. */
     UKRAINIAN("ukrainian"),
 
-    /** Selects the Microsoft stemming tokenizer for Urdu. */
+    /** Enum value urdu. */
     URDU("urdu");
 
     /** The actual serialized value for a MicrosoftStemmingTokenizerLanguage instance. */
@@ -156,6 +159,7 @@ public enum MicrosoftStemmingTokenizerLanguage {
      * @param value the serialized value to parse.
      * @return the parsed MicrosoftStemmingTokenizerLanguage object, or null if unable to parse.
      */
+    @JsonCreator
     public static MicrosoftStemmingTokenizerLanguage fromString(String value) {
         if (value == null) {
             return null;
@@ -169,7 +173,7 @@ public enum MicrosoftStemmingTokenizerLanguage {
         return null;
     }
 
-    /** {@inheritDoc} */
+    @JsonValue
     @Override
     public String toString() {
         return this.value;

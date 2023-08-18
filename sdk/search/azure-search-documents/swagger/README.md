@@ -16,6 +16,7 @@ To see additional help and options, run:
 > `autorest --help`
 
 ### Setup
+
 ```ps
 npm install -g autorest
 ```
@@ -23,7 +24,7 @@ npm install -g autorest
 ### Generation
 
 There are two swaggers for Azure Search, `searchindex` and `searchservice`. They always under same package version, e.g. 
-`--tag=searchindex` and `--tag=searchservice`.
+`--tag=package-2020-06-searchindex` and `--tag=package-2020-06-searchservice`.
 
 ```ps
 cd <swagger-folder>
@@ -33,42 +34,9 @@ autorest
 e.g.
 ```ps
 cd <swagger-folder>
-autorest --tag=searchindex
-autorest --tag=searchservice
+autorest --tag=package-2020-06-searchindex
+autorest --tag=package-2020-06-searchservice
 ```
-
-## Manual Changes
-
-This section outlines all the checks that should be done to a newly generated Swagger as Azure Search Documents for Java
-contains manual translations of generated code to public API.
-
-### SearchPagedFlux, SearchPagedIterable, and SearchPagedResponse
-
-New properties added to `SearchPagedResponse` need to be exposed as getter properties on `SearchPagedFlux` and
-`SearchPagedIterable`. Only the first `SearchPagedResponse` properties are exposed on `SearchPagedFlux` and 
-`SearchPagedIterable`.
-
-### Converters
-
-There are a set of `*Converter` classes in the package `com.azure.search.documents.implementation.converters` that will
-need to be updated if any of the models that get converted have new properties added. The converted model types are
-`AnalyzeRequest`, `IndexAction`, `SearchResult`, and `SuggestResult`.
-
-### SearchOptions
-
-There is `SearchOptions` in both implementation and public API, any time new properties are added to the implementation
-`SearchOptions` they need to be included in the public API model. Additionally, `List`-based properties use varargs
-setters instead of `List` setters in the public API and `QueryAnswerType` and `QueryCaptionType` properties need special
-handling. `QueryAnswerType` and `QueryCaptionType` are defined as `ExpandableStringEnum`s but they have special 
-configurations based on the String value that Autorest cannot generate, `QueryAnswerType` has special configurations
-`answerCount` and `answerThreshold` and `QueryCaptionType` has special configuration `highlight` that need to be added 
-as additional properties on the public `SearchOptions`.
-
-### AutocompleteOptions and SuggestOptions
-
-`AutocompleteOptions` and `SuggestOptions` have converters that need to be updated with new properties are added so they
-match `AutocompleteRequest` or `SuggestRequest`. The options-based and request-based models are code generated but only
-the options-based models are generated into the public API.
 
 ## Configuration
 
@@ -80,31 +48,31 @@ opt-in-extensible-enums: true
 openapi-type: data-plane
 ```
 
-### Tag: searchindex
+### Tag: package-2020-06-searchindex
 
-These settings apply only when `--tag=searchindex` is specified on the command line.
+These settings apply only when `--tag=package-2020-06-searchindex` is specified on the command line.
 
-``` yaml $(tag) == 'searchindex'
+``` yaml $(tag) == 'package-2020-06-searchindex'
 namespace: com.azure.search.documents
 input-file:
-- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/9383e81389c2b1c64da07cc70c66f8c54b9ad4f5/specification/search/data-plane/Azure.Search/preview/2023-07-01-Preview/searchindex.json
-models-subpackage: models
-custom-types-subpackage: implementation.models
-custom-types: AutocompleteRequest,IndexAction,IndexBatch,RequestOptions,SearchDocumentsResult,SearchError,SearchErrorException,SearchOptions,SearchRequest,SearchResult,SuggestDocumentsResult,SuggestRequest,SuggestResult
+- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/dbf859c7e443e2c341bafcf11c687de6916cf4ff/specification/search/data-plane/Azure.Search/preview/2020-06-30/searchindex.json
+models-subpackage: implementation.models
+custom-types-subpackage: models
+custom-types: AutocompleteItem,AutocompleteMode,AutocompleteOptions,AutocompleteResult,FacetResult,IndexActionType,QueryType,ScoringStatistics,SearchMode,SuggestOptions
 customization-class: src/main/java/SearchIndexCustomizations.java
 ```
 
-### Tag: searchservice
+### Tag: package-2020-06-searchservice
 
-These settings apply only when `--tag=searchservice` is specified on the commandSearchServiceCounters line.
+These settings apply only when `--tag=package-2020-06-searchservice` is specified on the command line.
 
-``` yaml $(tag) == 'searchservice'
+``` yaml $(tag) == 'package-2020-06-searchservice'
 namespace: com.azure.search.documents.indexes
 input-file:
-- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/9383e81389c2b1c64da07cc70c66f8c54b9ad4f5/specification/search/data-plane/Azure.Search/preview/2023-07-01-Preview/searchservice.json
-models-subpackage: models
-custom-types-subpackage: implementation.models
-custom-types: AnalyzeRequest,AnalyzeResult,AzureActiveDirectoryApplicationCredentials,DataSourceCredentials,DocumentKeysOrIds,EdgeNGramTokenFilterV1,EdgeNGramTokenFilterV2,EntityRecognitionSkillV1,EntityRecognitionSkillV3,KeywordTokenizerV1,KeywordTokenizerV2,ListAliasesResult,ListDataSourcesResult,ListIndexersResult,ListIndexesResult,ListSkillsetsResult,ListSynonymMapsResult,LuceneStandardTokenizerV1,LuceneStandardTokenizerV2,NGramTokenFilterV1,NGramTokenFilterV2,RequestOptions,SearchError,SearchErrorException,SentimentSkillV1,SentimentSkillV3,SkillNames
+- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/301de051cd0e618222e7c1bb58c2a430828b9374/specification/search/data-plane/Azure.Search/preview/2020-06-30/searchservice.json
+models-subpackage: implementation.models
+custom-types-subpackage: models
+custom-types: AnalyzedTokenInfo,BlobIndexerDataToExtract,BlobIndexerImageAction,BlobIndexerPdfTextRotationAlgorithm,BlobIndexerParsingMode,BM25SimilarityAlgorithm,CharFilter,CharFilterName,CjkBigramTokenFilterScripts,ClassicSimilarityAlgorithm,CognitiveServicesAccount,CognitiveServicesAccountKey,ConditionalSkill,CorsOptions,CustomAnalyzer,CustomEntity,CustomEntityAlias,CustomEntityLookupSkill,CustomEntityLookupSkillLanguage,DataChangeDetectionPolicy,DataDeletionDetectionPolicy,DefaultCognitiveServicesAccount,DistanceScoringFunction,DistanceScoringParameters,DocumentExtractionSkill,EdgeNGramTokenFilterSide,EntityCategory,EntityRecognitionSkill,EntityRecognitionSkillLanguage,FieldMapping,FieldMappingFunction,FreshnessScoringFunction,FreshnessScoringParameters,HighWaterMarkChangeDetectionPolicy,ImageAnalysisSkill,ImageAnalysisSkillLanguage,ImageDetail,IndexerExecutionEnvironment,IndexerExecutionResult,IndexerExecutionStatus,IndexerStatus,IndexingParametersConfiguration,IndexingSchedule,InputFieldMappingEntry,KeyPhraseExtractionSkill,KeyPhraseExtractionSkillLanguage,LanguageDetectionSkill,LexicalAnalyzer,LexicalAnalyzerName,LexicalTokenizerName,LuceneStandardAnalyzer,MagnitudeScoringFunction,MagnitudeScoringParameters,MappingCharFilter,MergeSkill,MicrosoftStemmingTokenizerLanguage,MicrosoftTokenizerLanguage,OcrSkill,OcrSkillLanguage,OutputFieldMappingEntry,PatternAnalyzer,PatternReplaceCharFilter,PhoneticEncoder,RegexFlags,ResourceCounter,ScoringFunction,ScoringFunctionAggregation,ScoringFunctionInterpolation,ScoringProfile,SearchField,SearchFieldDataType,SearchIndexerDataContainer,SearchIndexerDataSourceType,SearchIndexerError,SearchIndexerKnowledgeStore,SearchIndexerKnowledgeStoreBlobProjectionSelector,SearchIndexerKnowledgeStoreFileProjectionSelector,SearchIndexerKnowledgeStoreObjectProjectionSelector,SearchIndexerKnowledgeStoreProjection,SearchIndexerKnowledgeStoreProjectionSelector,SearchIndexerKnowledgeStoreTableProjectionSelector,SearchIndexerLimits,SearchIndexerSkill,SearchIndexerSkillset,SearchIndexerStatus,SearchIndexerWarning,SearchIndexStatistics,SearchResourceEncryptionKey,SearchServiceCounters,SearchServiceLimits,SearchServiceStatistics,SearchSuggester,SentimentSkill,SentimentSkillLanguage,ShaperSkill,SimilarityAlgorithm,SnowballTokenFilterLanguage,SoftDeleteColumnDeletionDetectionPolicy,SplitSkill,SplitSkillLanguage,SqlIntegratedChangeTrackingPolicy,StemmerTokenFilterLanguage,StopAnalyzer,StopwordsList,SynonymMap,TagScoringFunction,TagScoringParameters,TextSplitMode,TextTranslationSkill,TextTranslationSkillLanguage,TextWeights,TokenCharacterKind,TokenFilterName,VisualFeature,WebApiSkill
 customization-class: src/main/java/SearchServiceCustomizations.java
 directive:
     - rename-model:
@@ -125,30 +93,6 @@ directive:
     - rename-model:
         from: PIIDetectionSkill
         to: PiiDetectionSkill
-    - rename-model:
-        from: EntityRecognitionSkill
-        to: EntityRecognitionSkillV1
-    - rename-model:
-        from: SentimentSkill
-        to: SentimentSkillV1
-    - rename-model:
-        from: EdgeNGramTokenFilter
-        to: EdgeNGramTokenFilterV1
-    - rename-model:
-        from: NGramTokenFilter
-        to: NGramTokenFilterV1
-    - rename-model:
-        from: PathHierarchyTokenizerV2
-        to: PathHierarchyTokenizer
-    - rename-model:
-        from: LuceneStandardTokenizer
-        to: LuceneStandardTokenizerV1
-    - rename-model:
-        from: KeywordTokenizer
-        to: KeywordTokenizerV1
-    - rename-model:
-        from: SearchIndexerDataSource
-        to: SearchIndexerDataSourceConnection
 ```
 
 ---
@@ -163,8 +107,8 @@ This swagger is ready for C# and Java.
 ``` yaml
 output-folder: ../
 java: true
-use: '@autorest/java@4.1.17'
-enable-sync-stack: true
+use: '@autorest/java@4.1.2'
+sync-methods: none
 generate-client-interfaces: false
 context-client-method-parameter: true
 generate-client-as-impl: true
@@ -174,8 +118,6 @@ license-header: MICROSOFT_MIT_SMALL_NO_VERSION
 disable-client-builder: true
 require-x-ms-flattened-to-flatten: true
 pass-discriminator-to-child-deserialization: true
-stream-style-serialization: true
-include-read-only-in-constructor-args: true
 ```
 
 ### Set odata.metadata Accept header in operations
@@ -214,21 +156,19 @@ directive:
 
 ### Remove required from properties that are optional
 
-``` yaml $(tag) == 'searchservice'
+``` yaml $(java)
 directive:
   - from: swagger-document
     where: $.definitions
     transform: >
-      $.SearchIndex.required = $.SearchIndex.required.filter(required => required === 'name');
-      $.SearchIndexer.required = $.SearchIndexer.required.filter(required => required === 'name');
-      $.SearchIndexerDataSourceConnection.required = $.SearchIndexerDataSourceConnection.required.filter(required => required === 'name');
-      $.SearchIndexerSkillset.required = $.SearchIndexerSkillset.required.filter(required => required === 'name');
+      delete $.SearchIndex.required;
+      delete $.SearchIndexer.required;
+      delete $.SearchIndexerDataSource.required;
       delete $.SynonymMap.required;
-      $.ServiceCounters.required = $.ServiceCounters.required.filter(required => required !== 'aliasesCount' && required !== 'skillsetCount' && required !== 'vectorIndexSize');
 ```
 
-### Renames 
-``` yaml $(tag) == 'searchservice'
+### Renames
+``` yaml $(java)
 directive:
   - from: swagger-document
     where: $.definitions
@@ -246,15 +186,6 @@ directive:
       $["x-ms-enum"].name = "BlobIndexerPdfTextRotationAlgorithm";
 ```
 
-### Add serialization discriminator to LexicalNormalizer
-``` yaml $(java)
-directive:
-  - from: swagger-document
-    where: $.definitions.LexicalNormalizer
-    transform: >
-      $.discriminator = "@odata.type";
-```
-
 ### Change SearchField retrievable to hidden
 ``` yaml $(java)
 directive:
@@ -266,7 +197,6 @@ directive:
       $.analyzer["x-ms-client-name"] = "analyzerName";
       $.searchAnalyzer["x-ms-client-name"] = "searchAnalyzerName";
       $.indexAnalyzer["x-ms-client-name"] = "indexAnalyzerName";
-      $.normalizer["x-ms-client-name"] = "normalizerName";
       $.synonymMaps["x-ms-client-name"] = "synonymMapNames";
 ```
 
@@ -278,59 +208,6 @@ directive:
     transform: >
       let param = $.find(p => p.name === "$count");
       param["x-ms-client-name"] = "includeTotalCount";
-```
-
-### Rename Speller to QuerySpellerType
-``` yaml $(java)
-directive:
-  - from: swagger-document
-    where: $.paths["/docs"].get.parameters
-    transform: >
-      $.find(p => p.name === "speller")["x-ms-enum"].name = "QuerySpellerType";
-```
-
-### Rename Answers to QueryAnswerType, Captions to QueryCaptionType, and Speller to QuerySpellerType
-``` yaml $(tag) == 'searchindex'
-directive:
-  - from: swagger-document
-    where: $.definitions
-    transform: >
-      $.Answers["x-ms-enum"].name = "QueryAnswerType";
-      $.Captions["x-ms-enum"].name = "QueryCaptionType";
-      $.Speller["x-ms-enum"].name = "QuerySpellerType";
-```
-
-### Change Answers and Captions to a string in SearchOptions and SearchRequest
-``` yaml $(java)
-directive:
-  - from: swagger-document
-    where: $.paths["/docs"].get.parameters
-    transform: >
-      let param = $.find(p => p.name === "answers");
-      param.type = "string";
-      delete param.enum;
-      delete param["x-ms-enum"];
-     
-      param = $.find(p => p.name == "captions");
-      param.type = "string";
-      delete param.enum;
-      delete param["x-ms-enum"];
-```
-
-``` yaml $(tag) == 'searchindex'
-directive:
-  - from: swagger-document
-    where: $.definitions
-    transform: >
-      let param = $.SearchRequest.properties.answers;
-      param.type = "string";
-      param.description = $.Answers.description;
-      delete param["$ref"];
-      
-      param = $.SearchRequest.properties.captions;
-      param.type = "string";
-      param.description = $.Captions.description;
-      delete param["$ref"];
 ```
 
 ### Remove applicationId from being required in AzureActiveDirectoryApplicationCredentials
@@ -367,90 +244,4 @@ directive:
     where: $.definitions.PIIDetectionSkillMaskingMode
     transform: >
       $["x-ms-enum"].name = "PiiDetectionSkillMaskingMode";
-```
-
-### Rename client parameter names
-``` yaml $(tag) == 'searchservice'
-directive:
-  - from: swagger-document
-    where: $.definitions
-    transform: >
-      $.CommonGramTokenFilter.properties.ignoreCase["x-ms-client-name"] = "caseIgnored";
-      $.CommonGramTokenFilter.properties.queryMode["x-ms-client-name"] = "queryModeUsed";
-      $.DictionaryDecompounderTokenFilter.properties.onlyLongestMatch["x-ms-client-name"] = "onlyLongestMatched";
-      $.KeywordMarkerTokenFilter.properties.ignoreCase["x-ms-client-name"] = "caseIgnored";
-      $.LimitTokenFilter.properties.consumeAllTokens["x-ms-client-name"] = "allTokensConsumed";
-      $.MicrosoftLanguageStemmingTokenizer.properties.isSearchTokenizer["x-ms-client-name"] = "isSearchTokenizerUsed";
-      $.PathHierarchyTokenizer.properties.reverse["x-ms-client-name"] = "tokenOrderReversed";
-      $.PhoneticTokenFilter.properties.replace["x-ms-client-name"] = "originalTokensReplaced";
-      $.StopwordsTokenFilter.properties.ignoreCase["x-ms-client-name"] = "caseIgnored";
-      $.StopwordsTokenFilter.properties.removeTrailing["x-ms-client-name"] = "trailingStopWordsRemoved";
-      $.SynonymTokenFilter.properties.ignoreCase["x-ms-client-name"] = "caseIgnored";
-      $.WordDelimiterTokenFilter.properties.catenateWords["x-ms-client-name"] = "wordsCatenated";
-      $.WordDelimiterTokenFilter.properties.catenateNumbers["x-ms-client-name"] = "numbersCatenated";
-```
-
-### Rename Dimensions
-
-To ensure alignment with `VectorSearchConfiguration`, rename the `Dimensions` to `VectorSearchDimensions`.
-
-```yaml $(tag) == 'searchservice'
-directive:
-- from: swagger-document
-  where: $.definitions.SearchField.properties.dimensions
-  transform: $["x-ms-client-name"] = "vectorSearchDimensions";
-```
-
-### Add `arm-id` format for `AuthResourceId`
-
-Add `"format": "arm-id"` for `AuthResourceId` to generate as [Azure.Core.ResourceIdentifier](https://learn.microsoft.com/dotnet/api/azure.core.resourceidentifier?view=azure-dotnet).
-
-```yaml $(tag) == 'searchservice'
-directive:
-- from: swagger-document
-  where: $.definitions.WebApiSkill.properties.authResourceId
-  transform: $["x-ms-format"] = "arm-id";
-```
-
-### Rename Vector property `K`
-
-Rename Vector property `K` to `KNearestNeighborsCount`
-
-```yaml $(tag) == 'searchindex'
-directive:
-- from: swagger-document
-  where: $.definitions.Vector.properties.k
-  transform: $["x-ms-client-name"] = "KNearestNeighborsCount";
-```
-
-### Rename Vector property `Vector`
-
-Rename Vector property `Vector` to `SearchQueryVector`
-
-```yaml $(tag) == 'searchindex'
-directive:
-- from: swagger-document
-  where: $.definitions.Vector
-  transform: $["x-ms-client-name"] = "SearchQueryVector";
-```
-
-### Rename QueryResultDocumentSemanticFieldState
-
-Simplify `QueryResultDocumentSemanticFieldState` name by renaming it to `SemanticFieldState`
-
-```yaml $(tag) == 'searchindex'
-directive:
-- from: swagger-document
-  where: $.definitions.QueryResultDocumentSemanticFieldState
-  transform: $["x-ms-enum"].name = "SemanticFieldState";
-```
-### Remove `Vector` Property
-
-Remove the `Vector` Property from `SearchRequest` in favor of the `Vectors` Array
-
-```yaml
-directive:
-- from: searchindex.json
-  where: $.definitions.SearchRequest
-  transform: delete $.properties.vector;
 ```

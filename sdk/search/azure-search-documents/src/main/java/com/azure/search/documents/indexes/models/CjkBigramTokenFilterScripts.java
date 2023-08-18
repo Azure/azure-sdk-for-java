@@ -6,18 +6,21 @@
 
 package com.azure.search.documents.indexes.models;
 
-/** Scripts that can be ignored by CjkBigramTokenFilter. */
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
+
+/** Defines values for CjkBigramTokenFilterScripts. */
 public enum CjkBigramTokenFilterScripts {
-    /** Ignore Han script when forming bigrams of CJK terms. */
+    /** Enum value han. */
     HAN("han"),
 
-    /** Ignore Hiragana script when forming bigrams of CJK terms. */
+    /** Enum value hiragana. */
     HIRAGANA("hiragana"),
 
-    /** Ignore Katakana script when forming bigrams of CJK terms. */
+    /** Enum value katakana. */
     KATAKANA("katakana"),
 
-    /** Ignore Hangul script when forming bigrams of CJK terms. */
+    /** Enum value hangul. */
     HANGUL("hangul");
 
     /** The actual serialized value for a CjkBigramTokenFilterScripts instance. */
@@ -33,6 +36,7 @@ public enum CjkBigramTokenFilterScripts {
      * @param value the serialized value to parse.
      * @return the parsed CjkBigramTokenFilterScripts object, or null if unable to parse.
      */
+    @JsonCreator
     public static CjkBigramTokenFilterScripts fromString(String value) {
         if (value == null) {
             return null;
@@ -46,7 +50,7 @@ public enum CjkBigramTokenFilterScripts {
         return null;
     }
 
-    /** {@inheritDoc} */
+    @JsonValue
     @Override
     public String toString() {
         return this.value;

@@ -7,61 +7,53 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Represents service-level resource counters and quotas. */
 @Fluent
-public final class SearchServiceCounters implements JsonSerializable<SearchServiceCounters> {
-    /*
-     * Total number of aliases.
-     */
-    private ResourceCounter aliasCounter;
-
+public final class SearchServiceCounters {
     /*
      * Total number of documents across all indexes in the service.
      */
-    private final ResourceCounter documentCounter;
+    @JsonProperty(value = "documentCount", required = true)
+    private ResourceCounter documentCounter;
 
     /*
      * Total number of indexes.
      */
-    private final ResourceCounter indexCounter;
+    @JsonProperty(value = "indexesCount", required = true)
+    private ResourceCounter indexCounter;
 
     /*
      * Total number of indexers.
      */
-    private final ResourceCounter indexerCounter;
+    @JsonProperty(value = "indexersCount", required = true)
+    private ResourceCounter indexerCounter;
 
     /*
      * Total number of data sources.
      */
-    private final ResourceCounter dataSourceCounter;
+    @JsonProperty(value = "dataSourcesCount", required = true)
+    private ResourceCounter dataSourceCounter;
 
     /*
      * Total size of used storage in bytes.
      */
-    private final ResourceCounter storageSizeCounter;
+    @JsonProperty(value = "storageSize", required = true)
+    private ResourceCounter storageSizeCounter;
 
     /*
      * Total number of synonym maps.
      */
-    private final ResourceCounter synonymMapCounter;
+    @JsonProperty(value = "synonymMaps", required = true)
+    private ResourceCounter synonymMapCounter;
 
     /*
      * Total number of skillsets.
      */
+    @JsonProperty(value = "skillsetCount")
     private ResourceCounter skillsetCounter;
-
-    /*
-     * Total memory consumption of all vector indexes within the service, in bytes.
-     */
-    private ResourceCounter vectorIndexSizeCounter;
 
     /**
      * Creates an instance of SearchServiceCounters class.
@@ -73,39 +65,20 @@ public final class SearchServiceCounters implements JsonSerializable<SearchServi
      * @param storageSizeCounter the storageSizeCounter value to set.
      * @param synonymMapCounter the synonymMapCounter value to set.
      */
+    @JsonCreator
     public SearchServiceCounters(
-            ResourceCounter documentCounter,
-            ResourceCounter indexCounter,
-            ResourceCounter indexerCounter,
-            ResourceCounter dataSourceCounter,
-            ResourceCounter storageSizeCounter,
-            ResourceCounter synonymMapCounter) {
+            @JsonProperty(value = "documentCount", required = true) ResourceCounter documentCounter,
+            @JsonProperty(value = "indexesCount", required = true) ResourceCounter indexCounter,
+            @JsonProperty(value = "indexersCount", required = true) ResourceCounter indexerCounter,
+            @JsonProperty(value = "dataSourcesCount", required = true) ResourceCounter dataSourceCounter,
+            @JsonProperty(value = "storageSize", required = true) ResourceCounter storageSizeCounter,
+            @JsonProperty(value = "synonymMaps", required = true) ResourceCounter synonymMapCounter) {
         this.documentCounter = documentCounter;
         this.indexCounter = indexCounter;
         this.indexerCounter = indexerCounter;
         this.dataSourceCounter = dataSourceCounter;
         this.storageSizeCounter = storageSizeCounter;
         this.synonymMapCounter = synonymMapCounter;
-    }
-
-    /**
-     * Get the aliasCounter property: Total number of aliases.
-     *
-     * @return the aliasCounter value.
-     */
-    public ResourceCounter getAliasCounter() {
-        return this.aliasCounter;
-    }
-
-    /**
-     * Set the aliasCounter property: Total number of aliases.
-     *
-     * @param aliasCounter the aliasCounter value to set.
-     * @return the SearchServiceCounters object itself.
-     */
-    public SearchServiceCounters setAliasCounter(ResourceCounter aliasCounter) {
-        this.aliasCounter = aliasCounter;
-        return this;
     }
 
     /**
@@ -180,146 +153,5 @@ public final class SearchServiceCounters implements JsonSerializable<SearchServi
     public SearchServiceCounters setSkillsetCounter(ResourceCounter skillsetCounter) {
         this.skillsetCounter = skillsetCounter;
         return this;
-    }
-
-    /**
-     * Get the vectorIndexSizeCounter property: Total memory consumption of all vector indexes within the service, in
-     * bytes.
-     *
-     * @return the vectorIndexSizeCounter value.
-     */
-    public ResourceCounter getVectorIndexSizeCounter() {
-        return this.vectorIndexSizeCounter;
-    }
-
-    /**
-     * Set the vectorIndexSizeCounter property: Total memory consumption of all vector indexes within the service, in
-     * bytes.
-     *
-     * @param vectorIndexSizeCounter the vectorIndexSizeCounter value to set.
-     * @return the SearchServiceCounters object itself.
-     */
-    public SearchServiceCounters setVectorIndexSizeCounter(ResourceCounter vectorIndexSizeCounter) {
-        this.vectorIndexSizeCounter = vectorIndexSizeCounter;
-        return this;
-    }
-
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeJsonField("documentCount", this.documentCounter);
-        jsonWriter.writeJsonField("indexesCount", this.indexCounter);
-        jsonWriter.writeJsonField("indexersCount", this.indexerCounter);
-        jsonWriter.writeJsonField("dataSourcesCount", this.dataSourceCounter);
-        jsonWriter.writeJsonField("storageSize", this.storageSizeCounter);
-        jsonWriter.writeJsonField("synonymMaps", this.synonymMapCounter);
-        jsonWriter.writeJsonField("aliasesCount", this.aliasCounter);
-        jsonWriter.writeJsonField("skillsetCount", this.skillsetCounter);
-        jsonWriter.writeJsonField("vectorIndexSize", this.vectorIndexSizeCounter);
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of SearchServiceCounters from the JsonReader.
-     *
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of SearchServiceCounters if the JsonReader was pointing to an instance of it, or null if it
-     *     was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the SearchServiceCounters.
-     */
-    public static SearchServiceCounters fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    boolean documentCounterFound = false;
-                    ResourceCounter documentCounter = null;
-                    boolean indexCounterFound = false;
-                    ResourceCounter indexCounter = null;
-                    boolean indexerCounterFound = false;
-                    ResourceCounter indexerCounter = null;
-                    boolean dataSourceCounterFound = false;
-                    ResourceCounter dataSourceCounter = null;
-                    boolean storageSizeCounterFound = false;
-                    ResourceCounter storageSizeCounter = null;
-                    boolean synonymMapCounterFound = false;
-                    ResourceCounter synonymMapCounter = null;
-                    ResourceCounter aliasCounter = null;
-                    ResourceCounter skillsetCounter = null;
-                    ResourceCounter vectorIndexSizeCounter = null;
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
-
-                        if ("documentCount".equals(fieldName)) {
-                            documentCounter = ResourceCounter.fromJson(reader);
-                            documentCounterFound = true;
-                        } else if ("indexesCount".equals(fieldName)) {
-                            indexCounter = ResourceCounter.fromJson(reader);
-                            indexCounterFound = true;
-                        } else if ("indexersCount".equals(fieldName)) {
-                            indexerCounter = ResourceCounter.fromJson(reader);
-                            indexerCounterFound = true;
-                        } else if ("dataSourcesCount".equals(fieldName)) {
-                            dataSourceCounter = ResourceCounter.fromJson(reader);
-                            dataSourceCounterFound = true;
-                        } else if ("storageSize".equals(fieldName)) {
-                            storageSizeCounter = ResourceCounter.fromJson(reader);
-                            storageSizeCounterFound = true;
-                        } else if ("synonymMaps".equals(fieldName)) {
-                            synonymMapCounter = ResourceCounter.fromJson(reader);
-                            synonymMapCounterFound = true;
-                        } else if ("aliasesCount".equals(fieldName)) {
-                            aliasCounter = ResourceCounter.fromJson(reader);
-                        } else if ("skillsetCount".equals(fieldName)) {
-                            skillsetCounter = ResourceCounter.fromJson(reader);
-                        } else if ("vectorIndexSize".equals(fieldName)) {
-                            vectorIndexSizeCounter = ResourceCounter.fromJson(reader);
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
-                    if (documentCounterFound
-                            && indexCounterFound
-                            && indexerCounterFound
-                            && dataSourceCounterFound
-                            && storageSizeCounterFound
-                            && synonymMapCounterFound) {
-                        SearchServiceCounters deserializedSearchServiceCounters =
-                                new SearchServiceCounters(
-                                        documentCounter,
-                                        indexCounter,
-                                        indexerCounter,
-                                        dataSourceCounter,
-                                        storageSizeCounter,
-                                        synonymMapCounter);
-                        deserializedSearchServiceCounters.aliasCounter = aliasCounter;
-                        deserializedSearchServiceCounters.skillsetCounter = skillsetCounter;
-                        deserializedSearchServiceCounters.vectorIndexSizeCounter = vectorIndexSizeCounter;
-
-                        return deserializedSearchServiceCounters;
-                    }
-                    List<String> missingProperties = new ArrayList<>();
-                    if (!documentCounterFound) {
-                        missingProperties.add("documentCount");
-                    }
-                    if (!indexCounterFound) {
-                        missingProperties.add("indexesCount");
-                    }
-                    if (!indexerCounterFound) {
-                        missingProperties.add("indexersCount");
-                    }
-                    if (!dataSourceCounterFound) {
-                        missingProperties.add("dataSourcesCount");
-                    }
-                    if (!storageSizeCounterFound) {
-                        missingProperties.add("storageSize");
-                    }
-                    if (!synonymMapCounterFound) {
-                        missingProperties.add("synonymMaps");
-                    }
-
-                    throw new IllegalStateException(
-                            "Missing required property/properties: " + String.join(", ", missingProperties));
-                });
     }
 }

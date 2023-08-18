@@ -7,62 +7,55 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.util.ExpandableStringEnum;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Deprecated. The language codes supported for input text by SentimentSkill. */
+/** Defines values for SentimentSkillLanguage. */
 public final class SentimentSkillLanguage extends ExpandableStringEnum<SentimentSkillLanguage> {
-    /** Danish. */
+    /** Static value da for SentimentSkillLanguage. */
     public static final SentimentSkillLanguage DA = fromString("da");
 
-    /** Dutch. */
+    /** Static value nl for SentimentSkillLanguage. */
     public static final SentimentSkillLanguage NL = fromString("nl");
 
-    /** English. */
+    /** Static value en for SentimentSkillLanguage. */
     public static final SentimentSkillLanguage EN = fromString("en");
 
-    /** Finnish. */
+    /** Static value fi for SentimentSkillLanguage. */
     public static final SentimentSkillLanguage FI = fromString("fi");
 
-    /** French. */
+    /** Static value fr for SentimentSkillLanguage. */
     public static final SentimentSkillLanguage FR = fromString("fr");
 
-    /** German. */
+    /** Static value de for SentimentSkillLanguage. */
     public static final SentimentSkillLanguage DE = fromString("de");
 
-    /** Greek. */
+    /** Static value el for SentimentSkillLanguage. */
     public static final SentimentSkillLanguage EL = fromString("el");
 
-    /** Italian. */
+    /** Static value it for SentimentSkillLanguage. */
     public static final SentimentSkillLanguage IT = fromString("it");
 
-    /** Norwegian (Bokmaal). */
+    /** Static value no for SentimentSkillLanguage. */
     public static final SentimentSkillLanguage NO = fromString("no");
 
-    /** Polish. */
+    /** Static value pl for SentimentSkillLanguage. */
     public static final SentimentSkillLanguage PL = fromString("pl");
 
-    /** Portuguese (Portugal). */
+    /** Static value pt-PT for SentimentSkillLanguage. */
     public static final SentimentSkillLanguage PT_PT = fromString("pt-PT");
 
-    /** Russian. */
+    /** Static value ru for SentimentSkillLanguage. */
     public static final SentimentSkillLanguage RU = fromString("ru");
 
-    /** Spanish. */
+    /** Static value es for SentimentSkillLanguage. */
     public static final SentimentSkillLanguage ES = fromString("es");
 
-    /** Swedish. */
+    /** Static value sv for SentimentSkillLanguage. */
     public static final SentimentSkillLanguage SV = fromString("sv");
 
-    /** Turkish. */
+    /** Static value tr for SentimentSkillLanguage. */
     public static final SentimentSkillLanguage TR = fromString("tr");
-
-    /**
-     * Creates a new instance of SentimentSkillLanguage value.
-     *
-     * @deprecated Use the {@link #fromString(String)} factory method.
-     */
-    @Deprecated
-    public SentimentSkillLanguage() {}
 
     /**
      * Creates or finds a SentimentSkillLanguage from its string representation.
@@ -70,6 +63,7 @@ public final class SentimentSkillLanguage extends ExpandableStringEnum<Sentiment
      * @param name a name to look for.
      * @return the corresponding SentimentSkillLanguage.
      */
+    @JsonCreator
     public static SentimentSkillLanguage fromString(String name) {
         return fromString(name, SentimentSkillLanguage.class);
     }
