@@ -25,6 +25,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Stream;
 
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
@@ -62,7 +63,7 @@ public class StorageFileSeekableByteChannelTests extends FileShareTestBase {
         assertEquals(channel.position(), 0);
 
         //when: "write to channel"
-        int copied = TestUtility.copy(new ByteArrayInputStream(data), channel, copyBufferSize);
+        int copied = FileShareTestHelper.copy(new ByteArrayInputStream(data), channel, copyBufferSize);
 
         //then: "channel position updated accordingly"
         assertEquals(copied, data.length);
@@ -76,7 +77,7 @@ public class StorageFileSeekableByteChannelTests extends FileShareTestBase {
         primaryFileClient.download(downloadedData);
 
         //then: "expected data downloaded"
-        assertEquals(downloadedData.toByteArray(), data);
+        assertArrayEquals(downloadedData.toByteArray(), data);
     }
 
     @ParameterizedTest
@@ -95,20 +96,20 @@ public class StorageFileSeekableByteChannelTests extends FileShareTestBase {
 
         //when: "read from channel"
         ByteArrayOutputStream downloadedData = new ByteArrayOutputStream();
-        int copied = TestUtility.copy(channel, downloadedData, copyBufferSize);
+        int copied = FileShareTestHelper.copy(channel, downloadedData, copyBufferSize);
 
         //then: "channel position updated accordingly"
         assertEquals(copied, data.length);
         assertEquals(channel.position(), data.length);
 
         //and: "expected data downloaded"
-        assertEquals(downloadedData.toByteArray(), data);
+        assertArrayEquals(downloadedData.toByteArray(), data);
     }
 
-    private static Stream<int[]> e2EChannelReadSupplier() {
+    private static Stream<Arguments> e2EChannelReadSupplier() {
         return Stream.of(
-            new int[]{50, 40, Constants.KB},
-            new int[]{2 * Constants.KB, 40, Constants.KB} // initial fetch larger than resource size
+            Arguments.of(50, 40, Constants.KB),
+            Arguments.of(2 * Constants.KB, 40, Constants.KB) // initial fetch larger than resource size
         );
     }
 

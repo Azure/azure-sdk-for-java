@@ -19,7 +19,7 @@ import java.io.ByteArrayOutputStream;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class OAuthCopySourceTest extends FileShareTestBase {
+public class OAuthCopySourceTests extends FileShareTestBase {
     private ShareFileClient primaryFileClient;
     private String shareName;
 

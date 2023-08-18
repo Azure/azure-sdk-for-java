@@ -16,8 +16,9 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
 import com.azure.core.http.okhttp.OkHttpAsyncHttpClientBuilder;
+import com.azure.core.http.policy.HttpLogDetailLevel;
+import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
-import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
@@ -29,25 +30,14 @@ import com.azure.core.util.ServiceVersion;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.EnvironmentCredentialBuilder;
 import com.azure.storage.common.StorageSharedKeyCredential;
-import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.test.shared.ServiceVersionValidationPolicy;
 import com.azure.storage.common.test.shared.TestAccount;
 import com.azure.storage.common.test.shared.TestDataFactory;
 import com.azure.storage.common.test.shared.TestEnvironment;
-import com.azure.storage.file.share.models.ClearRange;
-import com.azure.storage.file.share.models.FileRange;
+import com.azure.storage.file.share.models.LeaseStateType;
 import com.azure.storage.file.share.models.ListSharesOptions;
-import com.azure.storage.file.share.models.PermissionCopyModeType;
-import com.azure.storage.file.share.models.ShareCorsRule;
-import com.azure.storage.file.share.models.ShareErrorCode;
-import com.azure.storage.file.share.models.ShareFileHttpHeaders;
 import com.azure.storage.file.share.models.ShareItem;
-import com.azure.storage.file.share.models.ShareMetrics;
-import com.azure.storage.file.share.models.ShareRetentionPolicy;
-import com.azure.storage.file.share.models.ShareRootSquash;
-import com.azure.storage.file.share.models.ShareServiceProperties;
 import com.azure.storage.file.share.models.ShareSnapshotsDeleteOptionType;
-import com.azure.storage.file.share.models.ShareStorageException;
 import com.azure.storage.file.share.options.ShareAcquireLeaseOptions;
 import com.azure.storage.file.share.options.ShareBreakLeaseOptions;
 import com.azure.storage.file.share.options.ShareDeleteOptions;
@@ -55,26 +45,14 @@ import com.azure.storage.file.share.specialized.ShareLeaseAsyncClient;
 import com.azure.storage.file.share.specialized.ShareLeaseClient;
 import com.azure.storage.file.share.specialized.ShareLeaseClientBuilder;
 import okhttp3.ConnectionPool;
-import org.junit.jupiter.params.provider.Arguments;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.RandomAccessFile;
 import java.lang.reflect.Method;
 import java.net.URL;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.time.Duration;
-import java.time.OffsetDateTime;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -87,11 +65,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
-import java.util.stream.Stream;
 import java.util.zip.CRC32;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 
 
 public class FileShareTestBase extends TestProxyTestBase {
@@ -173,32 +147,17 @@ public class FileShareTestBase extends TestProxyTestBase {
         ShareServiceClient cleanupFileServiceClient = new ShareServiceClientBuilder()
             .httpClient(getHttpClient())
             .connectionString(getPrimaryConnectionString())
-            //.credential(ENVIRONMENT.getPrimaryAccount().getCredential())
-            //.endpoint(ENVIRONMENT.getPrimaryAccount().getFileEndpoint())
-            //.connectionString(getPrimaryConnectionString())
+            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
             .buildClient();
-
         for (ShareItem share : cleanupFileServiceClient.listShares(new ListSharesOptions().setPrefix(prefix), null,
             Context.NONE)) {
             ShareClient shareClient = cleanupFileServiceClient.getShareClient(share.getName());
-            shareClient.getSnapshotId();
-            System.err.println("Cleaning share: " + share.getName());
-            System.err.println("state of share: " + share.getProperties().getLeaseState());
-//            if (share.getProperties().getLeaseState() == LeaseStateType.LEASED) {
-            try {
-                System.err.println("share name that is leased: " + shareClient.getShareName());
-                createLeaseClient(shareClient).breakLeaseWithResponse(
-                    new ShareBreakLeaseOptions().setBreakPeriod(Duration.ofSeconds(0)), null, null);
-                System.err.println("released share: " + shareClient.getShareName());
-            } catch (ShareStorageException e) {
-                System.err.println("exception thrown: " + e.getMessage());
+            if (share.getProperties().getLeaseState() == LeaseStateType.LEASED) {
+                createLeaseClient(shareClient).breakLeaseWithResponse(new ShareBreakLeaseOptions()
+                    .setBreakPeriod(Duration.ofSeconds(0)), null, null);
             }
-
-//            }
-            System.err.println("right before delete call: " + shareClient.getShareName());
             shareClient.deleteWithResponse(new ShareDeleteOptions()
                 .setDeleteSnapshotsOptions(ShareSnapshotsDeleteOptionType.INCLUDE), null, null);
-
         }
     }
 
@@ -289,7 +248,8 @@ public class FileShareTestBase extends TestProxyTestBase {
         ShareClientBuilder builder = instrument(new ShareClientBuilder());
         return builder.connectionString(ENVIRONMENT.getPrimaryAccount().getConnectionString())
             .shareName(shareName)
-            .snapshot(snapshot);
+            .snapshot(snapshot)
+            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS));
     }
 
     protected ShareFileClientBuilder directoryBuilderHelper(final String shareName, final String directoryPath) {
@@ -642,306 +602,6 @@ public class FileShareTestBase extends TestProxyTestBase {
                 });
             }
         }
-    }
-
-    protected InputStream getInputStream(byte[] data) {
-        return new ByteArrayInputStream(data);
-    }
-
-    /**
-     * Compares the two timestamps to the minute
-     * @param expectedTime expected time
-     * @param actualTime actual time
-     * @return whether timestamps match (excluding seconds)
-     */
-    protected static boolean compareDatesWithPrecision(OffsetDateTime expectedTime, OffsetDateTime actualTime) {
-        return expectedTime.truncatedTo(ChronoUnit.MINUTES) == actualTime.truncatedTo(ChronoUnit.MINUTES);
-    }
-
-    public static List<FileRange> createFileRanges(long... offsets) {
-        List<FileRange> fileRanges = new ArrayList<>();
-        if (offsets == null || offsets.length == 0) {
-            return fileRanges;
-        }
-        for (int i = 0; i < offsets.length / 2; i++) {
-            FileRange range = new FileRange().setStart(offsets[i * 2]).setEnd(offsets[i * 2 + 1]);
-            fileRanges.add(range);
-        }
-        return fileRanges;
-    }
-
-    public static List<ClearRange> createClearRanges(long... offsets) {
-        List<ClearRange> clearRanges = new ArrayList<>();
-        if (offsets == null || offsets.length == 0) {
-            return clearRanges;
-        }
-        for (int i = 0; i < offsets.length / 2; i++) {
-            ClearRange range = new ClearRange().setStart(offsets[i * 2]).setEnd(offsets[i * 2 + 1]);
-            clearRanges.add(range);
-        }
-        return clearRanges;
-    }
-
-    protected static byte[] getRandomBuffer(int length) {
-        final Random randGenerator = new Random();
-        final byte[] buff = new byte[length];
-        randGenerator.nextBytes(buff);
-        return buff;
-    }
-
-    protected static File getRandomFile(int size) throws IOException {
-        File file = File.createTempFile(UUID.randomUUID().toString(), ".txt");
-        file.deleteOnExit();
-        FileOutputStream fos = new FileOutputStream(file);
-
-        if (size > Constants.MB) {
-            for (int i = 0; i < size / Constants.MB; i++) {
-                int dataSize = Math.min(Constants.MB, size - i * Constants.MB);
-                fos.write(getRandomBuffer(dataSize));
-            }
-        } else {
-            fos.write(getRandomBuffer(size));
-        }
-
-        fos.close();
-        return file;
-    }
-
-    protected static boolean compareFiles(File file1, File file2, long offset, long count) throws IOException {
-        long pos = 0L;
-        int defaultBufferSize = 128 * Constants.KB;
-        InputStream stream1 = new FileInputStream(file1);
-        stream1.skip(offset);
-        InputStream stream2 = new FileInputStream(file2);
-
-        try {
-            // If the amount we are going to read is smaller than the default buffer size use that instead.
-            int bufferSize = (int) Math.min(defaultBufferSize, count);
-
-            while (pos < count) {
-                // Number of bytes we expect to read.
-                int expectedReadCount = (int) Math.min(bufferSize, count - pos);
-                byte[] buffer1 = new byte[expectedReadCount];
-                byte[] buffer2 = new byte[expectedReadCount];
-
-                int readCount1 = stream1.read(buffer1);
-                int readCount2 = stream2.read(buffer2);
-
-                // Use Arrays.equals as it is more optimized than Groovy/Spock's '==' for arrays.
-                assert readCount1 == readCount2 && Arrays.equals(buffer1, buffer2);
-
-                pos += expectedReadCount;
-            }
-
-            int verificationRead = stream2.read();
-            return pos == count && verificationRead == -1;
-        } finally {
-            stream1.close();
-            stream2.close();
-        }
-    }
-
-    protected static String createRandomFileWithLength(int size, URL folder, String fileName) throws IOException {
-        String path = folder.getPath();
-        if (path == null) {
-            throw LOGGER.logExceptionAsError(new RuntimeException("The folder path does not exist."));
-        }
-
-        Path folderPaths = new File(path).toPath();
-        if (!Files.exists(folderPaths)) {
-            Files.createDirectory(folderPaths);
-        }
-        File randomFile = new File(folderPaths.toString(), fileName);
-        RandomAccessFile raf = new RandomAccessFile(randomFile, "rw");
-        raf.setLength(size);
-        raf.close();
-        return randomFile.getPath();
-    }
-
-    protected static void deleteFileIfExists(String folder, String fileName) throws IOException {
-        // Clean up all temporary generated files
-        File dir = new File(folder);
-        if (dir.isDirectory()) {
-            Path filePath = dir.toPath().resolve(fileName);
-            Files.deleteIfExists((filePath));
-        }
-    }
-
-    protected static ByteBuffer getRandomByteBuffer(int length) {
-        return ByteBuffer.wrap(getRandomBuffer(length));
-    }
-
-    protected static boolean assertMetricsAreEqual(ShareMetrics expected, ShareMetrics actual) {
-        if (expected == null) {
-            return actual == null;
-        } else {
-            return Objects.equals(expected.isEnabled(), actual.isEnabled())
-                && Objects.equals(expected.isIncludeApis(), actual.isIncludeApis())
-                && Objects.equals(expected.getVersion(), actual.getVersion())
-                && assertRetentionPoliciesAreEqual(expected.getRetentionPolicy(), actual.getRetentionPolicy());
-        }
-    }
-
-    protected static boolean assertRetentionPoliciesAreEqual(ShareRetentionPolicy expected, ShareRetentionPolicy actual) {
-        if (expected == null) {
-            return actual == null;
-        } else {
-            return Objects.equals(expected.getDays(), actual.getDays())
-                && Objects.equals(expected.isEnabled(), actual.isEnabled());
-        }
-    }
-
-    static boolean assertCorsAreEqual(List<ShareCorsRule> expected, List<ShareCorsRule> actual) {
-        if (expected == null) {
-            return actual == null;
-        } else {
-            if (expected.size() != actual.size()) {
-                return false;
-            }
-            for (int i = 0; i < expected.size(); i++) {
-                if (!assertCorRulesAreEqual(expected.get(i), actual.get(i))) {
-                    return false;
-                }
-            }
-            return true;
-        }
-    }
-
-    static boolean assertCorRulesAreEqual(ShareCorsRule expected, ShareCorsRule actual) {
-        if (expected == null) {
-            return actual == null;
-        } else {
-            return Objects.equals(expected.getAllowedHeaders(), actual.getAllowedHeaders())
-                && Objects.equals(expected.getAllowedMethods(), actual.getAllowedMethods())
-                && Objects.equals(expected.getAllowedOrigins(), actual.getAllowedOrigins())
-                && Objects.equals(expected.getMaxAgeInSeconds(), actual.getMaxAgeInSeconds());
-        }
-    }
-
-    // add this to FileTestHelper class
-    protected static void assertExceptionStatusCodeAndMessage(Throwable throwable, int expectedStatusCode,
-        ShareErrorCode errMessage) {
-        ShareStorageException exception = assertInstanceOf(ShareStorageException.class, throwable);
-        assertEquals(expectedStatusCode, exception.getStatusCode());
-        assertEquals(errMessage, exception.getErrorCode());
-    }
-
-    // add to FileTestHelper class
-    protected static <T> Response<T> assertResponseStatusCode(Response<T> response, int expectedStatusCode) {
-        assertEquals(expectedStatusCode, response.getStatusCode());
-        return response;
-    }
-
-    protected static boolean assertFileServicePropertiesAreEqual(ShareServiceProperties expected,
-        ShareServiceProperties actual) {
-        if (expected == null) {
-            return actual == null;
-        } else {
-            return assertMetricsAreEqual(expected.getHourMetrics(), actual.getHourMetrics())
-                && assertMetricsAreEqual(expected.getMinuteMetrics(), actual.getMinuteMetrics())
-                && assertCorsAreEqual(expected.getCors(), actual.getCors());
-        }
-    }
-
-    protected static boolean assertSharesAreEqual(ShareItem expected, ShareItem actual, boolean includeMetadata,
-        boolean includeSnapshot) {
-        return assertSharesAreEqual(expected, actual, includeMetadata, includeSnapshot, false);
-    }
-
-    protected static boolean assertSharesAreEqual(ShareItem expected, ShareItem actual, boolean includeMetadata,
-        boolean includeSnapshot, boolean includeDeleted) {
-        if (expected == null) {
-            return actual == null;
-        } else {
-            if (!Objects.equals(expected.getName(), actual.getName())) {
-                return false;
-            }
-
-            if (includeMetadata && !Objects.equals(expected.getMetadata(), actual.getMetadata())) {
-                return false;
-            }
-            if (includeSnapshot && !Objects.equals(expected.getSnapshot(), actual.getSnapshot())) {
-                return false;
-            }
-
-            if (expected.getProperties() == null) {
-                return actual.getProperties() == null;
-            } else {
-                if (includeDeleted && (expected.getProperties().getDeletedTime() == null
-                    ^ actual.getProperties().getDeletedTime() == null)) {
-                    return false;
-                }
-                return Objects.equals(expected.getProperties().getQuota(), actual.getProperties().getQuota());
-            }
-        }
-    }
-
-    protected static boolean isAllWhitespace(String input) {
-        return input.matches("\\s*");
-    }
-
-    protected static Stream<Arguments> startCopyWithCopySourceFileErrorSupplier() {
-        return Stream.of(
-            Arguments.of(true, false, false, false),
-            Arguments.of(false, true, false, false),
-            Arguments.of(false, false, true, false),
-            Arguments.of(false, false, false, true)
-        );
-    }
-
-    protected static Stream<Arguments> listRangesDiffSupplier() {
-        return Stream.of(
-            Arguments.of(createFileRanges(), createFileRanges(), createFileRanges(), createClearRanges()),
-            Arguments.of(createFileRanges(0, 511), createFileRanges(), createFileRanges(0, 511), createClearRanges()),
-            Arguments.of(createFileRanges(), createFileRanges(0, 511), createFileRanges(), createClearRanges(0, 511)),
-            Arguments.of(createFileRanges(0, 511), createFileRanges(512, 1023), createFileRanges(0, 511),
-                createClearRanges(512, 1023)),
-            Arguments.of(createFileRanges(0, 511, 1024, 1535), createFileRanges(512, 1023, 1536, 2047),
-                createFileRanges(0, 511, 1024, 1535), createClearRanges(512, 1023, 1536, 2047))
-        );
-    }
-
-    protected static Stream<Arguments> startCopyArgumentsSupplier() {
-        return Stream.of(
-            Arguments.of(true, false, false, false, PermissionCopyModeType.OVERRIDE),
-            Arguments.of(false, true, false, false, PermissionCopyModeType.OVERRIDE),
-            Arguments.of(false, false, true, false, PermissionCopyModeType.SOURCE),
-            Arguments.of(false, false, false, true, PermissionCopyModeType.SOURCE));
-    }
-
-    protected static Stream<Arguments> getPropertiesPremiumSupplier() {
-        return Stream.of(
-            Arguments.of(Constants.HeaderConstants.SMB_PROTOCOL, null),
-            Arguments.of(Constants.HeaderConstants.NFS_PROTOCOL, ShareRootSquash.ALL_SQUASH),
-            Arguments.of(Constants.HeaderConstants.NFS_PROTOCOL, ShareRootSquash.NO_ROOT_SQUASH),
-            Arguments.of(Constants.HeaderConstants.NFS_PROTOCOL, ShareRootSquash.ROOT_SQUASH)
-        );
-    }
-
-    protected static Stream<Arguments> getStatisticsSupplier() {
-        return Stream.of(
-            Arguments.of(0, 0),
-            Arguments.of(Constants.KB, 1),
-            Arguments.of(Constants.GB, 1),
-            Arguments.of((long) 3 * Constants.GB, 3));
-    }
-
-    protected static Stream<Arguments> createFileInvalidArgsSupplier() {
-        return Stream.of(Arguments.of("testfile:", 1024, 400, ShareErrorCode.INVALID_RESOURCE_NAME),
-            Arguments.of("fileName", -1, 400, ShareErrorCode.OUT_OF_RANGE_INPUT));
-    }
-
-    protected static Stream<Arguments> createFileMaxOverloadInvalidArgsSupplier() {
-        return Stream.of(Arguments.of("testfile:", 1024, null, Collections.singletonMap("testmetadata", "value"), ShareErrorCode.INVALID_RESOURCE_NAME),
-            Arguments.of("fileName", -1, null, Collections.singletonMap("testmetadata", "value"), ShareErrorCode.OUT_OF_RANGE_INPUT),
-            Arguments.of("fileName", 1024, new ShareFileHttpHeaders().setContentMd5(new byte[0]), Collections.singletonMap("testmetadata", "value"), ShareErrorCode.INVALID_HEADER_VALUE),
-            Arguments.of("fileName", 1024, null, Collections.singletonMap("", "value"), ShareErrorCode.EMPTY_METADATA_KEY));
-    }
-
-    protected static Stream<Arguments> createFileServiceShareWithInvalidArgsSupplier() {
-        return Stream.of(
-            Arguments.of(Collections.singletonMap("testmetadata", "value"), 1, 400, ShareErrorCode.INVALID_METADATA),
-            Arguments.of(Collections.singletonMap("testmetadata", "value"), -1, 400, ShareErrorCode.INVALID_HEADER_VALUE));
     }
 
     protected static boolean olderThan20190707ServiceVersion() {

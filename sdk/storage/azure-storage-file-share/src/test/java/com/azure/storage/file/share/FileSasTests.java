@@ -158,7 +158,7 @@ public class FileSasTests extends FileShareTestBase {
         String data = "test";
         primaryShareClient.create();
         primaryFileClient.create(Constants.KB);
-        primaryFileClient.uploadRange(getInputStream(data.getBytes()), (long) data.length());
+        primaryFileClient.uploadRange(FileShareTestHelper.getInputStream(data.getBytes()), (long) data.length());
 
         ShareFileSasPermission permissions = new ShareFileSasPermission()
             .setReadPermission(true)
@@ -202,7 +202,7 @@ public class FileSasTests extends FileShareTestBase {
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         client.download(stream);
 
-        client.uploadRange(getInputStream(data.getBytes(StandardCharsets.UTF_8)), data.length());
+        client.uploadRange(FileShareTestHelper.getInputStream(data.getBytes(StandardCharsets.UTF_8)), data.length());
         assertArrayEquals(Arrays.copyOfRange(stream.toByteArray(), 0, data.length()),
             data.getBytes(StandardCharsets.UTF_8));
     }
@@ -249,8 +249,8 @@ public class FileSasTests extends FileShareTestBase {
             .sasToken(sas)
             .buildFileClient();
 
-        assertThrows(ShareStorageException.class, () -> client.uploadRange(getInputStream(data.getBytes()),
-            data.length()));
+        assertThrows(ShareStorageException.class, () -> client.uploadRange(
+            FileShareTestHelper.getInputStream(data.getBytes()), data.length()));
         assertDoesNotThrow(client::delete);
     }
 

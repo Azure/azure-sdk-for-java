@@ -67,7 +67,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class ShareApiTest extends FileShareTestBase {
+public class ShareApiTests extends FileShareTestBase {
     private ShareClient primaryShareClient;
     private String shareName;
     private static Map<String, String> testMetadata;
@@ -144,19 +144,20 @@ public class ShareApiTest extends FileShareTestBase {
         primaryShareClient = shareBuilderHelper(shareName).sasToken("sig=dummyToken").buildClient();
 
         ShareStorageException e = assertThrows(ShareStorageException.class, () -> primaryShareClient.exists());
-        assertExceptionStatusCodeAndMessage(e, 403, ShareErrorCode.AUTHENTICATION_FAILED);
+        FileShareTestHelper.assertExceptionStatusCodeAndMessage(e, 403, ShareErrorCode.AUTHENTICATION_FAILED);
     }
 
     @Test
     public void createShare() {
-        assertResponseStatusCode(primaryShareClient.createWithResponse(null, null, null, null), 201);
+        FileShareTestHelper.assertResponseStatusCode(primaryShareClient.createWithResponse(null, null, null, null),
+            201);
     }
 
     @DisabledIf("com.azure.storage.file.share.FileShareTestBase#olderThan20191212ServiceVersion")
     @ParameterizedTest
     @MethodSource("createShareWithArgsSupplier")
     public void createShareWithArgs(Map<String, String> metadata, Integer quota, ShareAccessTier accessTier) {
-        assertResponseStatusCode(primaryShareClient.createWithResponse(new ShareCreateOptions()
+        FileShareTestHelper.assertResponseStatusCode(primaryShareClient.createWithResponse(new ShareCreateOptions()
             .setMetadata(metadata).setQuotaInGb(quota).setAccessTier(accessTier), null, null), 201);
     }
 
@@ -171,7 +172,7 @@ public class ShareApiTest extends FileShareTestBase {
     public void createShareWithInvalidArgs(Map<String, String> metadata, Integer quota, ShareErrorCode errMessage) {
         ShareStorageException e = assertThrows(ShareStorageException.class, () ->
             primaryShareClient.createWithResponse(metadata, quota, null, null));
-        assertExceptionStatusCodeAndMessage(e, 400, errMessage);
+        FileShareTestHelper.assertExceptionStatusCodeAndMessage(e, 400, errMessage);
     }
 
     private static Stream<Arguments> createShareWithInvalidArgsSupplier() {
@@ -248,7 +249,8 @@ public class ShareApiTest extends FileShareTestBase {
 
     @Test
     public void createIfNotExistsShare() {
-        assertResponseStatusCode(primaryShareClient.createIfNotExistsWithResponse(null, null, null), 201);
+        FileShareTestHelper.assertResponseStatusCode(primaryShareClient.createIfNotExistsWithResponse(null, null, null),
+            201);
     }
 
     @Test
@@ -266,8 +268,9 @@ public class ShareApiTest extends FileShareTestBase {
     @MethodSource("createIfNotExistsShareWithArgsSupplier")
     public void createIfNotExistsShareWithArgs(Map<String, String> metadata, Integer quota,
         ShareAccessTier accessTier) {
-        assertResponseStatusCode(primaryShareClient.createIfNotExistsWithResponse(new ShareCreateOptions()
-            .setMetadata(metadata).setQuotaInGb(quota).setAccessTier(accessTier), null, null), 201);
+        FileShareTestHelper.assertResponseStatusCode(primaryShareClient.createIfNotExistsWithResponse(
+            new ShareCreateOptions().setMetadata(metadata).setQuotaInGb(quota).setAccessTier(accessTier), null, null),
+            201);
     }
 
     private static Stream<Arguments> createIfNotExistsShareWithArgsSupplier() {
@@ -286,7 +289,7 @@ public class ShareApiTest extends FileShareTestBase {
             primaryShareClient.createIfNotExistsWithResponse(new ShareCreateOptions().setMetadata(metadata)
                 .setQuotaInGb(quota), null, null));
 
-        assertExceptionStatusCodeAndMessage(e, 400, errMessage);
+        FileShareTestHelper.assertExceptionStatusCodeAndMessage(e, 400, errMessage);
     }
 
     @Test
@@ -307,7 +310,7 @@ public class ShareApiTest extends FileShareTestBase {
     @Test
     public void createSnapshotError() {
         ShareStorageException e = assertThrows(ShareStorageException.class, () -> primaryShareClient.createSnapshot());
-        assertExceptionStatusCodeAndMessage(e, 404, ShareErrorCode.SHARE_NOT_FOUND);
+        FileShareTestHelper.assertExceptionStatusCodeAndMessage(e, 404, ShareErrorCode.SHARE_NOT_FOUND);
     }
 
     @Test
@@ -329,13 +332,13 @@ public class ShareApiTest extends FileShareTestBase {
         primaryShareClient.create();
         ShareStorageException e = assertThrows(ShareStorageException.class, () ->
             primaryShareClient.createSnapshotWithResponse(Collections.singletonMap("", "value"), null, null));
-        assertExceptionStatusCodeAndMessage(e, 400, ShareErrorCode.EMPTY_METADATA_KEY);
+        FileShareTestHelper.assertExceptionStatusCodeAndMessage(e, 400, ShareErrorCode.EMPTY_METADATA_KEY);
     }
 
     @Test
     public void deleteShare() {
         primaryShareClient.create();
-        assertResponseStatusCode(primaryShareClient.deleteWithResponse(null, null), 202);
+        FileShareTestHelper.assertResponseStatusCode(primaryShareClient.deleteWithResponse(null, null), 202);
     }
 
     @Test
@@ -366,7 +369,7 @@ public class ShareApiTest extends FileShareTestBase {
         primaryShareClient.create();
         String leaseID = setupShareLeaseCondition(primaryShareClient, RECEIVED_LEASE_ID);
 
-        assertResponseStatusCode(primaryShareClient.deleteWithResponse(new ShareDeleteOptions()
+        FileShareTestHelper.assertResponseStatusCode(primaryShareClient.deleteWithResponse(new ShareDeleteOptions()
             .setRequestConditions(new ShareRequestConditions().setLeaseId(leaseID)), null, null), 202);
     }
 
@@ -382,13 +385,14 @@ public class ShareApiTest extends FileShareTestBase {
 
     public void deleteShareError() {
         ShareStorageException e = assertThrows(ShareStorageException.class, () -> primaryShareClient.delete());
-        assertExceptionStatusCodeAndMessage(e, 404, ShareErrorCode.SHARE_NOT_FOUND);
+        FileShareTestHelper.assertExceptionStatusCodeAndMessage(e, 404, ShareErrorCode.SHARE_NOT_FOUND);
     }
 
     @Test
     public void deleteIfExistsShare() {
         primaryShareClient.create();
-        assertResponseStatusCode(primaryShareClient.deleteIfExistsWithResponse(null, null, null), 202);
+        FileShareTestHelper.assertResponseStatusCode(primaryShareClient.deleteIfExistsWithResponse(null, null, null),
+            202);
     }
 
     @Test
@@ -425,8 +429,9 @@ public class ShareApiTest extends FileShareTestBase {
         primaryShareClient.create();
         String leaseID = setupShareLeaseCondition(primaryShareClient, RECEIVED_LEASE_ID);
 
-        assertResponseStatusCode(primaryShareClient.deleteIfExistsWithResponse(new ShareDeleteOptions()
-            .setRequestConditions(new ShareRequestConditions().setLeaseId(leaseID)), null, null), 202);
+        FileShareTestHelper.assertResponseStatusCode(primaryShareClient.deleteIfExistsWithResponse(
+            new ShareDeleteOptions().setRequestConditions(new ShareRequestConditions().setLeaseId(leaseID)), null,
+            null), 202);
     }
 
     @Test
@@ -443,7 +448,7 @@ public class ShareApiTest extends FileShareTestBase {
         ShareClient client = premiumFileServiceClient.getShareClient(generateShareName());
         Response<Boolean> response = client.deleteIfExistsWithResponse(null, null, null);
         assertFalse(response.getValue());
-        assertResponseStatusCode(response, 404);
+        FileShareTestHelper.assertResponseStatusCode(response, 404);
         assertFalse(client.exists());
     }
 
@@ -456,8 +461,8 @@ public class ShareApiTest extends FileShareTestBase {
         sleepIfRecord(45000);
         Response<Boolean> secondResponse = client.deleteIfExistsWithResponse(null, null, null);
 
-        assertResponseStatusCode(initialResponse, 202);
-        assertResponseStatusCode(secondResponse, 404);
+        FileShareTestHelper.assertResponseStatusCode(initialResponse, 202);
+        FileShareTestHelper.assertResponseStatusCode(secondResponse, 404);
         assertTrue(initialResponse.getValue());
         assertFalse(secondResponse.getValue());
     }
@@ -468,7 +473,7 @@ public class ShareApiTest extends FileShareTestBase {
         primaryShareClient.createWithResponse(testMetadata, 1, null, null);
         Response<ShareProperties> getPropertiesResponse = primaryShareClient.getPropertiesWithResponse(null, null);
 
-        assertResponseStatusCode(getPropertiesResponse, 200);
+        FileShareTestHelper.assertResponseStatusCode(getPropertiesResponse, 200);
         assertEquals(testMetadata, getPropertiesResponse.getValue().getMetadata());
         assertEquals(getPropertiesResponse.getValue().getQuota(), 1);
     }
@@ -478,8 +483,9 @@ public class ShareApiTest extends FileShareTestBase {
     public void getPropertiesLease() {
         primaryShareClient.create();
         String leaseID = setupShareLeaseCondition(primaryShareClient, RECEIVED_LEASE_ID);
-        assertResponseStatusCode(primaryShareClient.getPropertiesWithResponse(new ShareGetPropertiesOptions()
-            .setRequestConditions(new ShareRequestConditions().setLeaseId(leaseID)), null, null), 200);
+        FileShareTestHelper.assertResponseStatusCode(primaryShareClient.getPropertiesWithResponse(
+            new ShareGetPropertiesOptions().setRequestConditions(new ShareRequestConditions().setLeaseId(leaseID)),
+            null, null), 200);
     }
 
     @DisabledIf("com.azure.storage.file.share.FileShareTestBase#olderThan20200210ServiceVersion")
@@ -495,7 +501,7 @@ public class ShareApiTest extends FileShareTestBase {
     @Test
     public void getPropertiesError() {
         ShareStorageException e = assertThrows(ShareStorageException.class, () -> primaryShareClient.getProperties());
-        assertExceptionStatusCodeAndMessage(e, 404, ShareErrorCode.SHARE_NOT_FOUND);
+        FileShareTestHelper.assertExceptionStatusCodeAndMessage(e, 404, ShareErrorCode.SHARE_NOT_FOUND);
     }
 
     @DisabledIf("com.azure.storage.file.share.FileShareTestBase#olderThan20210410ServiceVersion")
@@ -511,7 +517,7 @@ public class ShareApiTest extends FileShareTestBase {
 
     @EnabledIf("com.azure.storage.file.share.FileShareTestBase#isPlaybackMode")
     @ParameterizedTest
-    @MethodSource("com.azure.storage.file.share.FileShareTestBase#getPropertiesPremiumSupplier")
+    @MethodSource("com.azure.storage.file.share.FileShareTestHelper#getPropertiesPremiumSupplier")
     public void getPropertiesPremium(String protocol, ShareRootSquash rootSquash) {
         ShareProtocols enabledProtocol = ModelHelper.parseShareProtocols(protocol);
 
@@ -522,7 +528,7 @@ public class ShareApiTest extends FileShareTestBase {
         Response<ShareProperties> getPropertiesResponse = premiumShareClient.getPropertiesWithResponse(null, null);
         ShareProperties shareProperties = getPropertiesResponse.getValue();
 
-        assertResponseStatusCode(getPropertiesResponse, 200);
+        FileShareTestHelper.assertResponseStatusCode(getPropertiesResponse, 200);
         assertEquals(testMetadata, shareProperties.getMetadata());
         assertNotNull(shareProperties.getNextAllowedQuotaDowngradeTime());
         assertNotNull(shareProperties.getProvisionedEgressMBps());
@@ -586,7 +592,7 @@ public class ShareApiTest extends FileShareTestBase {
         Response<ShareInfo> response = primaryShareClient.setAccessPolicyWithResponse(ids, null, null);
         Iterator<ShareSignedIdentifier> receivedIdentifiers = primaryShareClient.getAccessPolicy().iterator();
 
-        assertResponseStatusCode(response, 200);
+        FileShareTestHelper.assertResponseStatusCode(response, 200);
         validateBasicHeaders(response.getHeaders());
         ShareSignedIdentifier id0 = receivedIdentifiers.next();
         assertEquals(id0.getAccessPolicy().getExpiresOn(), identifier.getAccessPolicy().getExpiresOn());
@@ -604,7 +610,7 @@ public class ShareApiTest extends FileShareTestBase {
         primaryShareClient.create();
         String leaseID = setupShareLeaseCondition(primaryShareClient, RECEIVED_LEASE_ID);
 
-        assertResponseStatusCode(primaryShareClient.setAccessPolicyWithResponse(
+        FileShareTestHelper.assertResponseStatusCode(primaryShareClient.setAccessPolicyWithResponse(
             new ShareSetAccessPolicyOptions().setRequestConditions(new ShareRequestConditions().setLeaseId(leaseID)),
             null, null), 200);
     }
@@ -669,7 +675,7 @@ public class ShareApiTest extends FileShareTestBase {
     public void getAccessPolicyError() {
         ShareStorageException e = assertThrows(ShareStorageException.class, () ->
             primaryShareClient.getAccessPolicy().iterator().hasNext());
-        assertExceptionStatusCodeAndMessage(e, 404, ShareErrorCode.SHARE_NOT_FOUND);
+        FileShareTestHelper.assertExceptionStatusCodeAndMessage(e, 404, ShareErrorCode.SHARE_NOT_FOUND);
     }
 
     @Test
@@ -681,7 +687,7 @@ public class ShareApiTest extends FileShareTestBase {
         ShareProperties getQuotaAfterResponse = primaryShareClient.getProperties();
 
         assertEquals(getQuotaBeforeResponse.getQuota(), 1);
-        assertResponseStatusCode(setQuotaResponse, 200);
+        FileShareTestHelper.assertResponseStatusCode(setQuotaResponse, 200);
         assertEquals(getQuotaAfterResponse.getQuota(), 2);
     }
 
@@ -697,7 +703,7 @@ public class ShareApiTest extends FileShareTestBase {
         ShareProperties getAccessTierAfterResponse = primaryShareClient.getProperties();
 
         assertEquals(getAccessTierBeforeResponse.getAccessTier(), ShareAccessTier.HOT.toString());
-        assertResponseStatusCode(setAccessTierResponse, 200);
+        FileShareTestHelper.assertResponseStatusCode(setAccessTierResponse, 200);
         assertEquals(getAccessTierAfterResponse.getAccessTier(), ShareAccessTier.TRANSACTION_OPTIMIZED.toString());
         assertNotNull(getAccessTierAfterResponse.getAccessTierChangeTime());
         assertTrue(getAccessTierAfterResponse.getAccessTierChangeTime().isEqual(time)
@@ -716,7 +722,7 @@ public class ShareApiTest extends FileShareTestBase {
             new ShareSetPropertiesOptions().setAccessTier(ShareAccessTier.COOL)
                 .setRequestConditions(new ShareRequestConditions().setLeaseId(leaseID)), null, null);
 
-        assertResponseStatusCode(setAccessTierResponse, 200);
+        FileShareTestHelper.assertResponseStatusCode(setAccessTierResponse, 200);
     }
 
     @DisabledIf("com.azure.storage.file.share.FileShareTestBase#olderThan20200210ServiceVersion")
@@ -735,7 +741,7 @@ public class ShareApiTest extends FileShareTestBase {
     public void setPropertiesError() {
         ShareStorageException e = assertThrows(ShareStorageException.class, () ->
             primaryShareClient.setProperties(new ShareSetPropertiesOptions()));
-        assertExceptionStatusCodeAndMessage(e, 404, ShareErrorCode.SHARE_NOT_FOUND);
+        FileShareTestHelper.assertExceptionStatusCodeAndMessage(e, 404, ShareErrorCode.SHARE_NOT_FOUND);
     }
 
     @Test
@@ -749,7 +755,7 @@ public class ShareApiTest extends FileShareTestBase {
         ShareProperties getMetadataAfterResponse = primaryShareClient.getProperties();
 
         assertEquals(testMetadata, getMetadataBeforeResponse.getMetadata());
-        assertResponseStatusCode(setMetadataResponse, 200);
+        FileShareTestHelper.assertResponseStatusCode(setMetadataResponse, 200);
         assertEquals(metadataAfterSet, getMetadataAfterResponse.getMetadata());
     }
 
@@ -762,7 +768,7 @@ public class ShareApiTest extends FileShareTestBase {
         Response<ShareInfo> resp = primaryShareClient.setMetadataWithResponse(new ShareSetMetadataOptions()
             .setRequestConditions(new ShareRequestConditions().setLeaseId(leaseID)), null, null);
 
-        assertResponseStatusCode(resp, 200);
+        FileShareTestHelper.assertResponseStatusCode(resp, 200);
     }
 
     @Test
@@ -779,16 +785,16 @@ public class ShareApiTest extends FileShareTestBase {
     public void setMetadataError() {
         ShareStorageException e = assertThrows(ShareStorageException.class, () ->
             primaryShareClient.setMetadata(testMetadata));
-        assertExceptionStatusCodeAndMessage(e, 404, ShareErrorCode.SHARE_NOT_FOUND);
+        FileShareTestHelper.assertExceptionStatusCodeAndMessage(e, 404, ShareErrorCode.SHARE_NOT_FOUND);
     }
 
     @ParameterizedTest
-    @MethodSource("com.azure.storage.file.share.FileShareTestBase#getStatisticsSupplier")
+    @MethodSource("com.azure.storage.file.share.FileShareTestHelper#getStatisticsSupplier")
     public void getStatistics(long size, int gigabytes) {
         primaryShareClient.create();
         primaryShareClient.createFile("tempFile", size);
         Response<ShareStatistics> resp = primaryShareClient.getStatisticsWithResponse(null, null);
-        assertResponseStatusCode(resp, 200);
+        FileShareTestHelper.assertResponseStatusCode(resp, 200);
         assertEquals(resp.getValue().getShareUsageInBytes(), size);
         assertEquals(resp.getValue().getShareUsageInGB(), gigabytes);
     }
@@ -800,7 +806,7 @@ public class ShareApiTest extends FileShareTestBase {
         String leaseID = setupShareLeaseCondition(primaryShareClient, RECEIVED_LEASE_ID);
         Response<ShareStatistics> resp = primaryShareClient.getStatisticsWithResponse(new ShareGetStatisticsOptions()
             .setRequestConditions(new ShareRequestConditions().setLeaseId(leaseID)), null, null);
-        assertResponseStatusCode(resp, 200);
+        FileShareTestHelper.assertResponseStatusCode(resp, 200);
     }
 
     @DisabledIf("com.azure.storage.file.share.FileShareTestBase#olderThan20200210ServiceVersion")
@@ -816,21 +822,21 @@ public class ShareApiTest extends FileShareTestBase {
     @Test
     public void getStatisticsError() {
         ShareStorageException e = assertThrows(ShareStorageException.class, () -> primaryShareClient.getStatistics());
-        assertExceptionStatusCodeAndMessage(e, 404, ShareErrorCode.SHARE_NOT_FOUND);
+        FileShareTestHelper.assertExceptionStatusCodeAndMessage(e, 404, ShareErrorCode.SHARE_NOT_FOUND);
     }
 
     @Test
     public void createDirectory() {
         primaryShareClient.create();
-        assertResponseStatusCode(
+        FileShareTestHelper.assertResponseStatusCode(
             primaryShareClient.createDirectoryWithResponse("testCreateDirectory", null, null, null, null, null), 201);
     }
 
     @Test
     public void createDirectoryFilePermission() {
         primaryShareClient.create();
-        assertResponseStatusCode(primaryShareClient.createDirectoryWithResponse("testCreateDirectory", null,
-            FILE_PERMISSION, null, null, null), 201);
+        FileShareTestHelper.assertResponseStatusCode(primaryShareClient.createDirectoryWithResponse(
+            "testCreateDirectory", null, FILE_PERMISSION, null, null, null), 201);
     }
 
     @Test
@@ -840,7 +846,7 @@ public class ShareApiTest extends FileShareTestBase {
         smbProperties.setFileCreationTime(testResourceNamer.now())
             .setFileLastWriteTime(testResourceNamer.now())
             .setFilePermissionKey(filePermissionKey);
-        assertResponseStatusCode(
+        FileShareTestHelper.assertResponseStatusCode(
             primaryShareClient.createDirectoryWithResponse("testCreateDirectory", smbProperties, null, null, null,
                 null), 201);
     }
@@ -850,14 +856,14 @@ public class ShareApiTest extends FileShareTestBase {
         primaryShareClient.create();
         ShareStorageException e = assertThrows(ShareStorageException.class, () ->
             primaryShareClient.createDirectory("test/directory"));
-        assertExceptionStatusCodeAndMessage(e, 404, ShareErrorCode.PARENT_NOT_FOUND);
+        FileShareTestHelper.assertExceptionStatusCodeAndMessage(e, 404, ShareErrorCode.PARENT_NOT_FOUND);
     }
 
     @Test
     public void createDirectoryMetadata() {
         primaryShareClient.create();
-        assertResponseStatusCode(primaryShareClient.createDirectoryWithResponse("testCreateDirectory", null, null,
-            testMetadata, null, null), 201);
+        FileShareTestHelper.assertResponseStatusCode(primaryShareClient.createDirectoryWithResponse(
+            "testCreateDirectory", null, null, testMetadata, null, null), 201);
     }
 
     @Test
@@ -866,21 +872,22 @@ public class ShareApiTest extends FileShareTestBase {
         ShareStorageException e = assertThrows(ShareStorageException.class, () ->
             primaryShareClient.createDirectoryWithResponse("testdirectory", null, null,
                 Collections.singletonMap("", "value"), null, null));
-        assertExceptionStatusCodeAndMessage(e, 400, ShareErrorCode.EMPTY_METADATA_KEY);
+        FileShareTestHelper.assertExceptionStatusCodeAndMessage(e, 400, ShareErrorCode.EMPTY_METADATA_KEY);
     }
 
     @Test
     public void createIfNotExistsDirectory() {
         primaryShareClient.create();
-        assertResponseStatusCode(primaryShareClient.createDirectoryIfNotExistsWithResponse("testCreateDirectory",
-            new ShareDirectoryCreateOptions(), null, null), 201);
+        FileShareTestHelper.assertResponseStatusCode(primaryShareClient.createDirectoryIfNotExistsWithResponse(
+            "testCreateDirectory", new ShareDirectoryCreateOptions(), null, null), 201);
     }
 
     @Test
     public void createIfNotExistsDirectoryFilePermission() {
         primaryShareClient.create();
-        assertResponseStatusCode(primaryShareClient.createDirectoryIfNotExistsWithResponse("testCreateDirectory",
-            new ShareDirectoryCreateOptions().setFilePermission(FILE_PERMISSION), null, null), 201);
+        FileShareTestHelper.assertResponseStatusCode(primaryShareClient.createDirectoryIfNotExistsWithResponse(
+            "testCreateDirectory", new ShareDirectoryCreateOptions().setFilePermission(FILE_PERMISSION), null, null),
+            201);
     }
 
     @Test
@@ -890,8 +897,8 @@ public class ShareApiTest extends FileShareTestBase {
         smbProperties.setFileCreationTime(testResourceNamer.now())
             .setFileLastWriteTime(testResourceNamer.now())
             .setFilePermissionKey(filePermissionKey);
-        assertResponseStatusCode(primaryShareClient.createDirectoryIfNotExistsWithResponse("testCreateDirectory",
-            new ShareDirectoryCreateOptions().setSmbProperties(smbProperties), null, null), 201);
+        FileShareTestHelper.assertResponseStatusCode(primaryShareClient.createDirectoryIfNotExistsWithResponse(
+            "testCreateDirectory", new ShareDirectoryCreateOptions().setSmbProperties(smbProperties), null, null), 201);
     }
 
     @Test
@@ -899,14 +906,14 @@ public class ShareApiTest extends FileShareTestBase {
         primaryShareClient.create();
         ShareStorageException e = assertThrows(ShareStorageException.class, () ->
             primaryShareClient.createDirectoryIfNotExists("test/directory"));
-        assertExceptionStatusCodeAndMessage(e, 404, ShareErrorCode.PARENT_NOT_FOUND);
+        FileShareTestHelper.assertExceptionStatusCodeAndMessage(e, 404, ShareErrorCode.PARENT_NOT_FOUND);
     }
 
     @Test
     public void createIfNotExistsDirectoryMetadata() {
         primaryShareClient.create();
-        assertResponseStatusCode(primaryShareClient.createDirectoryIfNotExistsWithResponse("testCreateDirectory",
-            new ShareDirectoryCreateOptions().setMetadata(testMetadata), null, null), 201);
+        FileShareTestHelper.assertResponseStatusCode(primaryShareClient.createDirectoryIfNotExistsWithResponse(
+            "testCreateDirectory", new ShareDirectoryCreateOptions().setMetadata(testMetadata), null, null), 201);
     }
 
     @Test
@@ -915,7 +922,7 @@ public class ShareApiTest extends FileShareTestBase {
         ShareStorageException e = assertThrows(ShareStorageException.class, () ->
             primaryShareClient.createDirectoryIfNotExistsWithResponse("testdirectory",
                 new ShareDirectoryCreateOptions().setMetadata(Collections.singletonMap("", "value")), null, null));
-        assertExceptionStatusCodeAndMessage(e, 400, ShareErrorCode.EMPTY_METADATA_KEY);
+        FileShareTestHelper.assertExceptionStatusCodeAndMessage(e, 400, ShareErrorCode.EMPTY_METADATA_KEY);
     }
 
     @Test
@@ -927,22 +934,22 @@ public class ShareApiTest extends FileShareTestBase {
         Response<ShareDirectoryClient> secondResponse = client.createDirectoryIfNotExistsWithResponse(
             "testCreateDirectory", new ShareDirectoryCreateOptions(), null, null);
 
-        assertResponseStatusCode(initialResponse, 201);
-        assertResponseStatusCode(secondResponse, 409);
+        FileShareTestHelper.assertResponseStatusCode(initialResponse, 201);
+        FileShareTestHelper.assertResponseStatusCode(secondResponse, 409);
     }
 
     @Test
     public void createFile() {
         primaryShareClient.create();
-        assertResponseStatusCode(
+        FileShareTestHelper.assertResponseStatusCode(
             primaryShareClient.createFileWithResponse("testCreateFile", 1024, null, null, null, null, null, null), 201);
     }
 
     @Test
     public void createFileFilePermission() {
         primaryShareClient.create();
-        assertResponseStatusCode(primaryShareClient.createFileWithResponse("testCreateFile", 1024, null, null,
-            FILE_PERMISSION, null, null, null), 201);
+        FileShareTestHelper.assertResponseStatusCode(primaryShareClient.createFileWithResponse("testCreateFile", 1024,
+            null, null, FILE_PERMISSION, null, null, null), 201);
     }
 
     @Test
@@ -953,17 +960,17 @@ public class ShareApiTest extends FileShareTestBase {
             .setFileLastWriteTime(testResourceNamer.now())
             .setFilePermissionKey(filePermissionKey);
 
-        assertResponseStatusCode(primaryShareClient.createFileWithResponse("testCreateFile", 1024, null, smbProperties,
-            null, null, null, null), 201);
+        FileShareTestHelper.assertResponseStatusCode(primaryShareClient.createFileWithResponse("testCreateFile", 1024,
+            null, smbProperties, null, null, null, null), 201);
     }
 
     @ParameterizedTest
-    @MethodSource("com.azure.storage.file.share.FileShareTestBase#createFileInvalidArgsSupplier")
+    @MethodSource("com.azure.storage.file.share.FileShareTestHelper#createFileInvalidArgsSupplier")
     public void createFileInvalidArgs(String fileName, long maxSize, int statusCode, ShareErrorCode errMsg) {
         primaryShareClient.create();
         ShareStorageException e = assertThrows(ShareStorageException.class,
             () -> primaryShareClient.createFileWithResponse(fileName, maxSize, null, null, null, null, null, null));
-        assertExceptionStatusCodeAndMessage(e, statusCode, errMsg);
+        FileShareTestHelper.assertExceptionStatusCodeAndMessage(e, statusCode, errMsg);
     }
 
     @Test
@@ -971,26 +978,26 @@ public class ShareApiTest extends FileShareTestBase {
         primaryShareClient.create();
         smbProperties.setFileCreationTime(testResourceNamer.now())
             .setFileLastWriteTime(testResourceNamer.now());
-        assertResponseStatusCode(primaryShareClient.createFileWithResponse("testCreateFile", 1024, null, smbProperties,
-            FILE_PERMISSION, testMetadata, null, null), 201);
+        FileShareTestHelper.assertResponseStatusCode(primaryShareClient.createFileWithResponse("testCreateFile", 1024,
+            null, smbProperties, FILE_PERMISSION, testMetadata, null, null), 201);
     }
 
     @ParameterizedTest
-    @MethodSource("com.azure.storage.file.share.FileShareTestBase#createFileMaxOverloadInvalidArgsSupplier")
+    @MethodSource("com.azure.storage.file.share.FileShareTestHelper#createFileMaxOverloadInvalidArgsSupplier")
     public void createFileMaxOverloadInvalidArgs(String fileName, long maxSize, ShareFileHttpHeaders httpHeaders,
         Map<String, String> metadata, ShareErrorCode errMsg) {
         primaryShareClient.create();
         ShareStorageException e = assertThrows(ShareStorageException.class, () ->
             primaryShareClient.createFileWithResponse(fileName, maxSize, httpHeaders, null, null, metadata, null,
                 null));
-        assertExceptionStatusCodeAndMessage(e, 400, errMsg);
+        FileShareTestHelper.assertExceptionStatusCodeAndMessage(e, 400, errMsg);
     }
 
     @Test
     public void createFileInRootDirectory() {
         primaryShareClient.create();
         ShareDirectoryClient directoryClient = primaryShareClient.getRootDirectoryClient();
-        assertResponseStatusCode(
+        FileShareTestHelper.assertResponseStatusCode(
             directoryClient.createFileWithResponse("testCreateFile", 1024, null, null, null, null, null, null), 201);
     }
 
@@ -1000,7 +1007,8 @@ public class ShareApiTest extends FileShareTestBase {
         primaryShareClient.create();
         primaryShareClient.createDirectory(directoryName);
 
-        assertResponseStatusCode(primaryShareClient.deleteDirectoryWithResponse(directoryName, null, null), 202);
+        FileShareTestHelper.assertResponseStatusCode(primaryShareClient.deleteDirectoryWithResponse(directoryName, null,
+            null), 202);
     }
 
     @Test
@@ -1008,7 +1016,7 @@ public class ShareApiTest extends FileShareTestBase {
         primaryShareClient.create();
         ShareStorageException e = assertThrows(ShareStorageException.class, () ->
             primaryShareClient.deleteDirectory("testdirectory"));
-        assertExceptionStatusCodeAndMessage(e, 404, ShareErrorCode.RESOURCE_NOT_FOUND);
+        FileShareTestHelper.assertExceptionStatusCodeAndMessage(e, 404, ShareErrorCode.RESOURCE_NOT_FOUND);
     }
 
     @Test
@@ -1016,8 +1024,8 @@ public class ShareApiTest extends FileShareTestBase {
         String directoryName = "testCreateDirectory";
         primaryShareClient.create();
         primaryShareClient.createDirectory(directoryName);
-        assertResponseStatusCode(primaryShareClient.deleteDirectoryIfExistsWithResponse(directoryName, null, null),
-            202);
+        FileShareTestHelper.assertResponseStatusCode(primaryShareClient.deleteDirectoryIfExistsWithResponse(
+            directoryName, null, null), 202);
     }
 
     @Test
@@ -1034,7 +1042,7 @@ public class ShareApiTest extends FileShareTestBase {
         primaryShareClient.create();
         Response<Boolean> response = primaryShareClient.deleteDirectoryIfExistsWithResponse(directoryName, null, null);
         assertFalse(response.getValue());
-        assertResponseStatusCode(response, 404);
+        FileShareTestHelper.assertResponseStatusCode(response, 404);
     }
 
     @Test
@@ -1043,7 +1051,7 @@ public class ShareApiTest extends FileShareTestBase {
         primaryShareClient.create();
         primaryShareClient.createFile(fileName, 1024);
 
-        assertResponseStatusCode(
+        FileShareTestHelper.assertResponseStatusCode(
             primaryShareClient.deleteFileWithResponse(fileName, null, null), 202);
     }
 
@@ -1052,7 +1060,7 @@ public class ShareApiTest extends FileShareTestBase {
         primaryShareClient.create();
         ShareStorageException e = assertThrows(ShareStorageException.class, () ->
             primaryShareClient.deleteFile("testdirectory"));
-        assertExceptionStatusCodeAndMessage(e, 404, ShareErrorCode.RESOURCE_NOT_FOUND);
+        FileShareTestHelper.assertExceptionStatusCodeAndMessage(e, 404, ShareErrorCode.RESOURCE_NOT_FOUND);
     }
 
     @Test
@@ -1061,7 +1069,7 @@ public class ShareApiTest extends FileShareTestBase {
         primaryShareClient.create();
         primaryShareClient.createFile(fileName, 1024);
 
-        assertResponseStatusCode(
+        FileShareTestHelper.assertResponseStatusCode(
             primaryShareClient.deleteFileIfExistsWithResponse(fileName, null, null, null), 202);
     }
 
@@ -1080,13 +1088,14 @@ public class ShareApiTest extends FileShareTestBase {
             null);
 
         assertFalse(response.getValue());
-        assertResponseStatusCode(response, 404);
+        FileShareTestHelper.assertResponseStatusCode(response, 404);
     }
 
     @Test
     public void createPermission() {
         primaryShareClient.create();
-        assertResponseStatusCode(primaryShareClient.createPermissionWithResponse(FILE_PERMISSION, null), 201);
+        FileShareTestHelper.assertResponseStatusCode(primaryShareClient.createPermissionWithResponse(FILE_PERMISSION,
+            null), 201);
     }
 
     @Test
@@ -1114,7 +1123,8 @@ public class ShareApiTest extends FileShareTestBase {
         primaryShareClient.create();
         ShareStorageException e = assertThrows(ShareStorageException.class, () ->
             primaryShareClient.createPermissionWithResponse("abcde", null));
-        assertExceptionStatusCodeAndMessage(e, 400, ShareErrorCode.fromString("FileInvalidPermission"));
+        FileShareTestHelper.assertExceptionStatusCodeAndMessage(e, 400, ShareErrorCode.fromString(
+            "FileInvalidPermission"));
     }
 
     @Test
@@ -1122,7 +1132,7 @@ public class ShareApiTest extends FileShareTestBase {
         primaryShareClient.create();
         ShareStorageException e = assertThrows(ShareStorageException.class, () ->
             primaryShareClient.getPermissionWithResponse("abcde", null));
-        assertExceptionStatusCodeAndMessage(e, 400, ShareErrorCode.INVALID_HEADER_VALUE);
+        FileShareTestHelper.assertExceptionStatusCodeAndMessage(e, 400, ShareErrorCode.INVALID_HEADER_VALUE);
     }
 
     @Test

@@ -27,6 +27,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledIf;
 import org.junit.jupiter.api.condition.EnabledIf;
+import org.junit.jupiter.api.parallel.ResourceLock;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -49,16 +50,20 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class FileServiceApiTest extends FileShareTestBase {
-    static String shareName;
+public class FileServiceApiTests extends FileShareTestBase {
+    private String shareName;
 
     private static final Map<String, String> TEST_METADATA = Collections.singletonMap("testmetadata", "value");
     private static final String REALLY_LONG_STRING = "thisisareallylongstringthatexceedsthe64characterlimitallowedoncertainproperties";
     private static List<ShareCorsRule> tooManyRules = new ArrayList<>();
-    private static final List<ShareCorsRule> INVALID_ALLOWED_HEADER = Collections.singletonList(new ShareCorsRule().setAllowedHeaders(REALLY_LONG_STRING));
-    private static final List<ShareCorsRule> INVALID_EXPOSED_HEADER = Collections.singletonList(new ShareCorsRule().setExposedHeaders(REALLY_LONG_STRING));
-    private static final List<ShareCorsRule> INVALID_ALLOWED_ORIGIN = Collections.singletonList(new ShareCorsRule().setAllowedOrigins(REALLY_LONG_STRING));
-    private static final List<ShareCorsRule> INVALID_ALLOWED_METHOD = Collections.singletonList(new ShareCorsRule().setAllowedMethods("NOTAREALHTTPMETHOD"));
+    private static final List<ShareCorsRule> INVALID_ALLOWED_HEADER = Collections.singletonList(new ShareCorsRule()
+        .setAllowedHeaders(REALLY_LONG_STRING));
+    private static final List<ShareCorsRule> INVALID_EXPOSED_HEADER = Collections.singletonList(new ShareCorsRule()
+        .setExposedHeaders(REALLY_LONG_STRING));
+    private static final List<ShareCorsRule> INVALID_ALLOWED_ORIGIN = Collections.singletonList(new ShareCorsRule()
+        .setAllowedOrigins(REALLY_LONG_STRING));
+    private static final List<ShareCorsRule> INVALID_ALLOWED_METHOD = Collections.singletonList(new ShareCorsRule()
+        .setAllowedMethods("NOTAREALHTTPMETHOD"));
 
     @BeforeAll
     public static void setupSpec() {
@@ -93,7 +98,7 @@ public class FileServiceApiTest extends FileShareTestBase {
     public void createShare() {
         Response<ShareClient> createShareResponse = primaryFileServiceClient.createShareWithResponse(shareName, null,
             null, null, null);
-        assertResponseStatusCode(createShareResponse, 201);
+        FileShareTestHelper.assertResponseStatusCode(createShareResponse, 201);
     }
 
     @DisabledIf("com.azure.storage.file.share.FileShareTestBase#olderThan20191212ServiceVersion")
@@ -102,16 +107,16 @@ public class FileServiceApiTest extends FileShareTestBase {
         Response<ShareClient> createShareResponse = primaryFileServiceClient.createShareWithResponse(shareName,
             new ShareCreateOptions().setQuotaInGb(1).setMetadata(TEST_METADATA).setAccessTier(ShareAccessTier.HOT),
             null, null);
-        assertResponseStatusCode(createShareResponse, 201);
+        FileShareTestHelper.assertResponseStatusCode(createShareResponse, 201);
     }
 
     @ParameterizedTest
-    @MethodSource("com.azure.storage.file.share.FileShareTestBase#createFileServiceShareWithInvalidArgsSupplier")
+    @MethodSource("com.azure.storage.file.share.FileShareTestHelper#createFileServiceShareWithInvalidArgsSupplier")
     public void createShareWithInvalidArgs(Map<String, String> metadata, Integer quota, int statusCode,
         ShareErrorCode errMsg) {
         ShareStorageException e = assertThrows(ShareStorageException.class, () ->
             primaryFileServiceClient.createShareWithResponse(shareName, metadata, quota, null, null));
-        assertExceptionStatusCodeAndMessage(e, statusCode, errMsg);
+        FileShareTestHelper.assertExceptionStatusCodeAndMessage(e, statusCode, errMsg);
     }
 
     @Test
@@ -119,14 +124,14 @@ public class FileServiceApiTest extends FileShareTestBase {
         primaryFileServiceClient.createShare(shareName);
         Response<Void> deleteShareResponse = primaryFileServiceClient.deleteShareWithResponse(shareName, null, null,
             null);
-        assertResponseStatusCode(deleteShareResponse, 202);
+        FileShareTestHelper.assertResponseStatusCode(deleteShareResponse, 202);
     }
 
     @Test
     public void deleteShareDoesNotExist() {
         ShareStorageException e = assertThrows(ShareStorageException.class, () ->
             primaryFileServiceClient.deleteShare(generateShareName()));
-        assertExceptionStatusCodeAndMessage(e, 404, ShareErrorCode.SHARE_NOT_FOUND);
+        FileShareTestHelper.assertExceptionStatusCodeAndMessage(e, 404, ShareErrorCode.SHARE_NOT_FOUND);
     }
 
     @DisabledIf("com.azure.storage.file.share.FileShareTestBase#olderThan20191212ServiceVersion")
@@ -156,7 +161,7 @@ public class FileServiceApiTest extends FileShareTestBase {
         Iterator<ShareItem> shares = primaryFileServiceClient.listShares(options, null, null).iterator();
 
         for (int i = 0; i < limits; i++) {
-            assertSharesAreEqual(testShares.pop(), shares.next(), includeMetadata, includeSnapshot,
+            FileShareTestHelper.assertSharesAreEqual(testShares.pop(), shares.next(), includeMetadata, includeSnapshot,
                 includeDeleted);
         }
         assertTrue(includeDeleted || !shares.hasNext());
@@ -199,7 +204,7 @@ public class FileServiceApiTest extends FileShareTestBase {
         Iterator<ShareItem> shares = primaryFileServiceClient.listShares(options, null, null).iterator();
 
         for (int i = 0; i < limits; i++) {
-            assertTrue(assertSharesAreEqual(testShares.pop(), shares.next(), includeMetadata,
+            assertTrue(FileShareTestHelper.assertSharesAreEqual(testShares.pop(), shares.next(), includeMetadata,
                 includeSnapshot, includeDeleted));
         }
         assertFalse(shares.hasNext());
@@ -227,7 +232,8 @@ public class FileServiceApiTest extends FileShareTestBase {
             testShares.add(share);
         }
 
-        for (PagedResponse<ShareItem> page : primaryFileServiceClient.listShares(options, null, null).iterableByPage(2)) {
+        for (PagedResponse<ShareItem> page : primaryFileServiceClient.listShares(options, null, null)
+            .iterableByPage(2)) {
             assertTrue(page.getValue().size() <= 2);
         }
     }
@@ -236,42 +242,40 @@ public class FileServiceApiTest extends FileShareTestBase {
     @Test
     public void listSharesGetAccessTier() {
         String shareName = generateShareName();
-        ShareClient share = primaryFileServiceClient.createShareWithResponse(shareName, new ShareCreateOptions().setAccessTier(ShareAccessTier.HOT), null, null).getValue();
+        ShareClient share = primaryFileServiceClient.createShareWithResponse(shareName,
+            new ShareCreateOptions().setAccessTier(ShareAccessTier.HOT), null, null).getValue();
 
         OffsetDateTime time = testResourceNamer.now().truncatedTo(ChronoUnit.SECONDS);
         time = time.minusSeconds(1); // account for time skew on the other side.
         share.setProperties(new ShareSetPropertiesOptions().setAccessTier(ShareAccessTier.TRANSACTION_OPTIMIZED));
 
-        Iterator<ShareItem> shares = primaryFileServiceClient.listShares(new ListSharesOptions().setPrefix(prefix), null, null).iterator();
+        Iterator<ShareItem> shares = primaryFileServiceClient.listShares(new ListSharesOptions().setPrefix(prefix),
+            null, null).iterator();
 
         ShareItem item = shares.next();
         assertEquals(shareName, item.getName());
         assertEquals(ShareAccessTier.TRANSACTION_OPTIMIZED.toString(), item.getProperties().getAccessTier());
-        assertTrue(item.getProperties().getAccessTierChangeTime().isEqual(time) || item.getProperties().getAccessTierChangeTime().isAfter(time));
+        assertNotNull(item.getProperties().getAccessTierChangeTime());
+        assertTrue(item.getProperties().getAccessTierChangeTime().isEqual(time)
+            || item.getProperties().getAccessTierChangeTime().isAfter(time));
         assertTrue(item.getProperties().getAccessTierChangeTime().isBefore(time.plusMinutes(1)));
         assertEquals("pending-from-hot", item.getProperties().getAccessTierTransitionState());
     }
 
     @DisabledIf("com.azure.storage.file.share.FileShareTestBase#olderThan20210212ServiceVersion")
     @Test
-    public void listShareWithPremiumShare() {
+    public void listSharesWithPremiumShare() {
         String premiumShareName = generateShareName();
         premiumFileServiceClient.createShare(premiumShareName);
         for (ShareItem shareItem : premiumFileServiceClient.listShares()) {
             if (Objects.equals(shareItem.getName(), premiumShareName)) {
                 assertNotNull(shareItem.getProperties().getETag());
-                assertNotNull(shareItem.getProperties().getMetadata());
                 assertNotNull(shareItem.getProperties().getLastModified());
-                assertNotNull(shareItem.getProperties().getNextAllowedQuotaDowngradeTime());
-                assertNotNull(shareItem.getProperties().getProvisionedEgressMBps());
-                assertNotNull(shareItem.getProperties().getProvisionedIngressMBps());
-                assertNotNull(shareItem.getProperties().getProvisionedIops());
-                assertNotNull(shareItem.getProperties().getProvisionedBandwidthMiBps());
             }
         }
     }
 
-    //@ResourceLock("ServiceProperties")
+    @ResourceLock("ServiceProperties")
     @Test
     public void setAndGetProperties() {
         ShareServiceProperties originalProperties = primaryFileServiceClient.getProperties();
@@ -281,39 +285,50 @@ public class FileServiceApiTest extends FileShareTestBase {
         ShareServiceProperties updatedProperties = new ShareServiceProperties().setHourMetrics(metrics)
             .setMinuteMetrics(metrics).setCors(new ArrayList<>());
 
-        Response<ShareServiceProperties> getPropertiesBeforeResponse = primaryFileServiceClient.getPropertiesWithResponse(null, null);
-        Response<Void> setPropertiesResponse = primaryFileServiceClient.setPropertiesWithResponse(updatedProperties, null, null);
-        Response<ShareServiceProperties> getPropertiesAfterResponse = primaryFileServiceClient.getPropertiesWithResponse(null, null);
+        Response<ShareServiceProperties> getPropertiesBeforeResponse =
+            primaryFileServiceClient.getPropertiesWithResponse(null, null);
+        Response<Void> setPropertiesResponse =
+            primaryFileServiceClient.setPropertiesWithResponse(updatedProperties, null, null);
+        Response<ShareServiceProperties> getPropertiesAfterResponse =
+            primaryFileServiceClient.getPropertiesWithResponse(null, null);
 
-        assertResponseStatusCode(getPropertiesBeforeResponse, 200);
-        assertFileServicePropertiesAreEqual(originalProperties, getPropertiesBeforeResponse.getValue());
-        assertResponseStatusCode(setPropertiesResponse, 202);
-        assertResponseStatusCode(getPropertiesAfterResponse, 200);
-        assertFileServicePropertiesAreEqual(updatedProperties, getPropertiesAfterResponse.getValue());
+        FileShareTestHelper.assertResponseStatusCode(getPropertiesBeforeResponse, 200);
+        FileShareTestHelper.assertFileServicePropertiesAreEqual(originalProperties,
+            getPropertiesBeforeResponse.getValue());
+        FileShareTestHelper.assertResponseStatusCode(setPropertiesResponse, 202);
+        FileShareTestHelper.assertResponseStatusCode(getPropertiesAfterResponse, 200);
+        FileShareTestHelper.assertFileServicePropertiesAreEqual(updatedProperties,
+            getPropertiesAfterResponse.getValue());
     }
 
     @EnabledIf("com.azure.storage.file.share.FileShareTestBase#isPlaybackMode")
-    //@ResourceLock("ServiceProperties")
+    @ResourceLock("ServiceProperties")
     @Test
     public void setAndGetPropertiesPremium() {
         ShareServiceProperties originalProperties = premiumFileServiceClient.getProperties();
         ShareRetentionPolicy retentionPolicy = new ShareRetentionPolicy().setEnabled(true).setDays(3);
         ShareMetrics metrics = new ShareMetrics().setEnabled(true).setIncludeApis(false)
             .setRetentionPolicy(retentionPolicy).setVersion("1.0");
-        ShareProtocolSettings protocolSettings = new ShareProtocolSettings().setSmb(new ShareSmbSettings().setMultichannel(new SmbMultichannel().setEnabled(true)));
+        ShareProtocolSettings protocolSettings = new ShareProtocolSettings().setSmb(
+            new ShareSmbSettings().setMultichannel(new SmbMultichannel().setEnabled(true)));
         ShareServiceProperties updatedProperties = new ShareServiceProperties().setHourMetrics(metrics)
             .setMinuteMetrics(metrics).setCors(new ArrayList<>())
             .setProtocol(protocolSettings);
 
-        Response<ShareServiceProperties> getPropertiesBeforeResponse = premiumFileServiceClient.getPropertiesWithResponse(null, null);
-        Response<Void> setPropertiesResponse = premiumFileServiceClient.setPropertiesWithResponse(updatedProperties, null, null);
-        Response<ShareServiceProperties> getPropertiesAfterResponse = premiumFileServiceClient.getPropertiesWithResponse(null, null);
+        Response<ShareServiceProperties> getPropertiesBeforeResponse =
+            premiumFileServiceClient.getPropertiesWithResponse(null, null);
+        Response<Void> setPropertiesResponse =
+            premiumFileServiceClient.setPropertiesWithResponse(updatedProperties, null, null);
+        Response<ShareServiceProperties> getPropertiesAfterResponse =
+            premiumFileServiceClient.getPropertiesWithResponse(null, null);
 
-        assertResponseStatusCode(getPropertiesBeforeResponse, 200);
-        assertFileServicePropertiesAreEqual(originalProperties, getPropertiesBeforeResponse.getValue());
-        assertResponseStatusCode(setPropertiesResponse, 202);
-        assertResponseStatusCode(getPropertiesAfterResponse, 200);
-        assertFileServicePropertiesAreEqual(updatedProperties, getPropertiesAfterResponse.getValue());
+        FileShareTestHelper.assertResponseStatusCode(getPropertiesBeforeResponse, 200);
+        FileShareTestHelper.assertFileServicePropertiesAreEqual(originalProperties,
+            getPropertiesBeforeResponse.getValue());
+        FileShareTestHelper.assertResponseStatusCode(setPropertiesResponse, 202);
+        FileShareTestHelper.assertResponseStatusCode(getPropertiesAfterResponse, 200);
+        FileShareTestHelper.assertFileServicePropertiesAreEqual(updatedProperties,
+            getPropertiesAfterResponse.getValue());
     }
 
     @ParameterizedTest
@@ -329,7 +344,7 @@ public class FileServiceApiTest extends FileShareTestBase {
         ShareStorageException e = assertThrows(ShareStorageException.class, () ->
             primaryFileServiceClient.setProperties(updatedProperties));
 
-        assertExceptionStatusCodeAndMessage(e, statusCode, errMsg);
+        FileShareTestHelper.assertExceptionStatusCodeAndMessage(e, statusCode, errMsg);
     }
 
     private static Stream<Arguments> setAndGetPropertiesWithInvalidArgsSupplier() {

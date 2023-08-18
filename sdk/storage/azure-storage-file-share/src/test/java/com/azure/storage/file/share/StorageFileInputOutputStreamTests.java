@@ -28,12 +28,12 @@ public class StorageFileInputOutputStreamTests extends FileShareTestBase {
         fileClient = shareClient.getFileClient(filePath);
     }
 
-    @EnabledIf("com.azure.storage.file.datalake.DataLakeTestBase#isLiveMode")
+    @EnabledIf("com.azure.storage.file.share.FileShareTestBase#isLiveMode")
     @Test
     public void uploadDownload() throws IOException {
         length = 30 * Constants.MB;
         fileClient.create(length);
-        byte[] randomBytes = getRandomBuffer(length);
+        byte[] randomBytes = FileShareTestHelper.getRandomBuffer(length);
 
         StorageFileOutputStream outStream = fileClient.getFileOutputStream();
         outStream.write(randomBytes);
@@ -54,12 +54,12 @@ public class StorageFileInputOutputStreamTests extends FileShareTestBase {
     }
 
 
-    @EnabledIf("com.azure.storage.file.datalake.DataLakeTestBase#isLiveMode")
+    @EnabledIf("com.azure.storage.file.share.FileShareTestBase#isLiveMode")
     @Test
     public void streamWithOffset() throws IOException {
         length = 7 * Constants.MB;
         fileClient.create(length);
-        byte[] randomBytes = getRandomBuffer(9 * Constants.MB);
+        byte[] randomBytes = FileShareTestHelper.getRandomBuffer(9 * Constants.MB);
 
         StorageFileOutputStream outStream = fileClient.getFileOutputStream();
         outStream.write(randomBytes, 2 * Constants.MB, length);

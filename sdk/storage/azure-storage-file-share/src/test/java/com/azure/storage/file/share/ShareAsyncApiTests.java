@@ -17,6 +17,7 @@ import com.azure.storage.file.share.models.ShareStorageException;
 import com.azure.storage.file.share.options.ShareCreateOptions;
 import com.azure.storage.file.share.options.ShareDirectoryCreateOptions;
 import com.azure.storage.file.share.options.ShareSetPropertiesOptions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.EnabledIf;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -42,13 +43,14 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class ShareAsyncApiTest extends FileShareTestBase {
+public class ShareAsyncApiTests extends FileShareTestBase {
     private ShareAsyncClient primaryShareAsyncClient;
     private String shareName;
     private static Map<String, String> testMetadata;
     private FileSmbProperties smbProperties;
     private static final String FILE_PERMISSION = "O:S-1-5-21-2127521184-1604012920-1887927527-21560751G:S-1-5-21-2127521184-1604012920-1887927527-513D:AI(A;;FA;;;SY)(A;;FA;;;BA)(A;;0x1200a9;;;S-1-5-21-397955417-626881126-188441444-3053964)S:NO_ACCESS_CONTROL";
 
+    @BeforeEach
     public void setup() {
         shareName = generateShareName();
         primaryFileServiceAsyncClient = fileServiceBuilderHelper().buildAsyncClient();
@@ -81,14 +83,14 @@ public class ShareAsyncApiTest extends FileShareTestBase {
     @Test
     public void createShare() {
         StepVerifier.create(primaryShareAsyncClient.createWithResponse(null, (Integer) null))
-            .assertNext(it -> assertResponseStatusCode(it, 201)).verifyComplete();
+            .assertNext(it -> FileShareTestHelper.assertResponseStatusCode(it, 201)).verifyComplete();
     }
 
     @ParameterizedTest
     @MethodSource("createShareWithArgsSupplier")
     public void createShareWithArgs(Map<String, String> metadata, Integer quota) {
         StepVerifier.create(primaryShareAsyncClient.createWithResponse(metadata, quota))
-            .assertNext(it -> assertResponseStatusCode(it, 201)).verifyComplete();
+            .assertNext(it -> FileShareTestHelper.assertResponseStatusCode(it, 201)).verifyComplete();
     }
 
     private static Stream<Arguments> createShareWithArgsSupplier() {
@@ -103,7 +105,7 @@ public class ShareAsyncApiTest extends FileShareTestBase {
     public void createShareWithInvalidArgs(Map<String, String> metadata, Integer quota, int statusCode,
         ShareErrorCode errMessage) {
         StepVerifier.create(primaryShareAsyncClient.createWithResponse(metadata, quota)).verifyErrorSatisfies(it ->
-            assertExceptionStatusCodeAndMessage(it, statusCode, errMessage));
+            FileShareTestHelper.assertExceptionStatusCodeAndMessage(it, statusCode, errMessage));
     }
 
     private static Stream<Arguments> createShareWithInvalidArgsSupplier() {
@@ -118,7 +120,7 @@ public class ShareAsyncApiTest extends FileShareTestBase {
         primaryShareAsyncClient.create().block();
         String shareSnapshotName = generatePathName();
         StepVerifier.create(primaryShareAsyncClient.createSnapshotWithResponse(null)).assertNext(it -> {
-            assertResponseStatusCode(it, 201);
+            FileShareTestHelper.assertResponseStatusCode(it, 201);
             ShareClient shareSnapshotClient = new ShareClientBuilder()
                 .shareName(shareSnapshotName)
                 .connectionString(ENVIRONMENT.getPrimaryAccount().getConnectionString())
@@ -132,7 +134,7 @@ public class ShareAsyncApiTest extends FileShareTestBase {
     @Test
     public void createSnapshotError() {
         StepVerifier.create(primaryShareAsyncClient.createSnapshot()).verifyErrorSatisfies(it ->
-            assertExceptionStatusCodeAndMessage(it, 404, ShareErrorCode.SHARE_NOT_FOUND));
+            FileShareTestHelper.assertExceptionStatusCodeAndMessage(it, 404, ShareErrorCode.SHARE_NOT_FOUND));
     }
 
     @Test
@@ -141,7 +143,7 @@ public class ShareAsyncApiTest extends FileShareTestBase {
         String shareSnapshotName = generatePathName();
         StepVerifier.create(primaryShareAsyncClient.createSnapshotWithResponse(testMetadata))
             .assertNext(it -> {
-                assertResponseStatusCode(it, 201);
+                FileShareTestHelper.assertResponseStatusCode(it, 201);
                 ShareClient shareSnapshotClient = new ShareClientBuilder().shareName(shareSnapshotName)
                     .connectionString(ENVIRONMENT.getPrimaryAccount().getConnectionString())
                     .snapshot(it.getValue().getSnapshot()).buildClient();
@@ -153,13 +155,14 @@ public class ShareAsyncApiTest extends FileShareTestBase {
     public void createSnapshotMetadataError() {
         primaryShareAsyncClient.create().block();
         StepVerifier.create(primaryShareAsyncClient.createSnapshotWithResponse(Collections.singletonMap("", "value")))
-            .verifyErrorSatisfies(it -> assertExceptionStatusCodeAndMessage(it, 400, ShareErrorCode.EMPTY_METADATA_KEY));
+            .verifyErrorSatisfies(it -> FileShareTestHelper.assertExceptionStatusCodeAndMessage(it, 400,
+                ShareErrorCode.EMPTY_METADATA_KEY));
     }
 
     @Test
     public void createIfNotExistsShare() {
         StepVerifier.create(primaryShareAsyncClient.createIfNotExistsWithResponse(null, null))
-            .assertNext(it -> assertResponseStatusCode(it, 201)).verifyComplete();
+            .assertNext(it -> FileShareTestHelper.assertResponseStatusCode(it, 201)).verifyComplete();
     }
 
     @Test
@@ -169,8 +172,8 @@ public class ShareAsyncApiTest extends FileShareTestBase {
         Response<ShareInfo> secondResponse = client.createIfNotExistsWithResponse(new ShareCreateOptions()).block();
         assertNotNull(initialResponse);
         assertNotNull(secondResponse);
-        assertResponseStatusCode(initialResponse, 201);
-        assertResponseStatusCode(secondResponse, 409);
+        FileShareTestHelper.assertResponseStatusCode(initialResponse, 201);
+        FileShareTestHelper.assertResponseStatusCode(secondResponse, 409);
     }
 
     @ParameterizedTest
@@ -178,7 +181,7 @@ public class ShareAsyncApiTest extends FileShareTestBase {
     public void createIfNotExistsShareWithArgs(Map<String, String> metadata, Integer quota) {
         StepVerifier.create(primaryShareAsyncClient.createIfNotExistsWithResponse(
             new ShareCreateOptions().setMetadata(metadata).setQuotaInGb(quota)))
-            .assertNext(it -> assertResponseStatusCode(it, 201)).verifyComplete();
+            .assertNext(it -> FileShareTestHelper.assertResponseStatusCode(it, 201)).verifyComplete();
     }
 
     private static Stream<Arguments> createIfNotExistsShareWithArgsSupplier() {
@@ -195,7 +198,8 @@ public class ShareAsyncApiTest extends FileShareTestBase {
         ShareErrorCode errMessage) {
         StepVerifier.create(primaryShareAsyncClient.createIfNotExistsWithResponse(
             new ShareCreateOptions().setMetadata(metadata).setQuotaInGb(quota)))
-            .verifyErrorSatisfies(it -> assertExceptionStatusCodeAndMessage(it, statusCode, errMessage));
+            .verifyErrorSatisfies(it -> FileShareTestHelper.assertExceptionStatusCodeAndMessage(it, statusCode,
+                errMessage));
 
     }
 
@@ -203,20 +207,21 @@ public class ShareAsyncApiTest extends FileShareTestBase {
     public void deleteShare() {
         primaryShareAsyncClient.create().block();
         StepVerifier.create(primaryShareAsyncClient.deleteWithResponse())
-            .assertNext(it -> assertResponseStatusCode(it, 201)).verifyComplete();
+            .assertNext(it -> FileShareTestHelper.assertResponseStatusCode(it, 201));
     }
 
     @Test
     public void deleteShareError() {
         StepVerifier.create(primaryShareAsyncClient.delete())
-            .verifyErrorSatisfies(it -> assertExceptionStatusCodeAndMessage(it, 404, ShareErrorCode.SHARE_NOT_FOUND));
+            .verifyErrorSatisfies(it -> FileShareTestHelper.assertExceptionStatusCodeAndMessage(it, 404,
+                ShareErrorCode.SHARE_NOT_FOUND));
     }
 
     @Test
     public void deleteIfExistsShare() {
         primaryShareAsyncClient.create().block();
         StepVerifier.create(primaryShareAsyncClient.deleteIfExistsWithResponse(null))
-            .assertNext(it -> assertResponseStatusCode(it, 201));
+            .assertNext(it -> FileShareTestHelper.assertResponseStatusCode(it, 201));
     }
 
     @Test
@@ -226,7 +231,7 @@ public class ShareAsyncApiTest extends FileShareTestBase {
 
         assertNotNull(response);
         assertFalse(response.getValue());
-        assertResponseStatusCode(response, 404);
+        FileShareTestHelper.assertResponseStatusCode(response, 404);
         assertNotEquals(Boolean.TRUE, client.exists().block());
     }
 
@@ -241,8 +246,8 @@ public class ShareAsyncApiTest extends FileShareTestBase {
 
         assertNotNull(initialResponse);
         assertNotNull(secondResponse);
-        assertResponseStatusCode(initialResponse, 202);
-        assertResponseStatusCode(secondResponse, 404);
+        FileShareTestHelper.assertResponseStatusCode(initialResponse, 202);
+        FileShareTestHelper.assertResponseStatusCode(secondResponse, 404);
         assertTrue(initialResponse.getValue());
         assertFalse(secondResponse.getValue());
     }
@@ -251,7 +256,7 @@ public class ShareAsyncApiTest extends FileShareTestBase {
     public void getProperties() {
         primaryShareAsyncClient.createWithResponse(testMetadata, 1).block();
         StepVerifier.create(primaryShareAsyncClient.getPropertiesWithResponse()).assertNext(it -> {
-            assertResponseStatusCode(it, 200);
+            FileShareTestHelper.assertResponseStatusCode(it, 200);
             assertEquals(testMetadata, it.getValue().getMetadata());
             assertEquals(it.getValue().getQuota(), 1);
         }).verifyComplete();
@@ -260,7 +265,7 @@ public class ShareAsyncApiTest extends FileShareTestBase {
     @Test
     public void getPropertiesError() {
         StepVerifier.create(primaryShareAsyncClient.getProperties()).verifyErrorSatisfies(it ->
-            assertExceptionStatusCodeAndMessage(it, 404, ShareErrorCode.SHARE_NOT_FOUND));
+            FileShareTestHelper.assertExceptionStatusCodeAndMessage(it, 404, ShareErrorCode.SHARE_NOT_FOUND));
     }
 
     @EnabledIf("com.azure.storage.file.share.FileShareTestBase#isPlaybackMode")
@@ -274,7 +279,7 @@ public class ShareAsyncApiTest extends FileShareTestBase {
                 .setMetadata(testMetadata).setProtocols(enabledProtocol).setRootSquash(rootSquash), null)
                 .block()).getValue();
         StepVerifier.create(premiumShare.getPropertiesWithResponse()).assertNext(it -> {
-            assertResponseStatusCode(it, 200);
+            FileShareTestHelper.assertResponseStatusCode(it, 200);
             assertEquals(testMetadata, it.getValue().getMetadata());
             assertEquals(it.getValue().getQuota(), 1);
             assertNotNull(it.getValue().getProvisionedIops());
@@ -311,7 +316,7 @@ public class ShareAsyncApiTest extends FileShareTestBase {
         StepVerifier.create(primaryShareAsyncClient.getProperties()).assertNext(it ->
             assertEquals(it.getQuota(), 1)).verifyComplete();
         StepVerifier.create(primaryShareAsyncClient.setQuotaWithResponse(2)).assertNext(it ->
-            assertResponseStatusCode(it, 200)).verifyComplete();
+            FileShareTestHelper.assertResponseStatusCode(it, 200)).verifyComplete();
         StepVerifier.create(primaryShareAsyncClient.getProperties()).assertNext(it ->
             assertEquals(it.getQuota(), 2)).verifyComplete();
     }
@@ -319,7 +324,7 @@ public class ShareAsyncApiTest extends FileShareTestBase {
     @Test
     public void setQuotaError() {
         StepVerifier.create(primaryShareAsyncClient.setQuota(2)).verifyErrorSatisfies(it ->
-            assertExceptionStatusCodeAndMessage(it, 404, ShareErrorCode.SHARE_NOT_FOUND));
+            FileShareTestHelper.assertExceptionStatusCodeAndMessage(it, 404, ShareErrorCode.SHARE_NOT_FOUND));
     }
 
     @Test
@@ -329,7 +334,7 @@ public class ShareAsyncApiTest extends FileShareTestBase {
         StepVerifier.create(primaryShareAsyncClient.getProperties()).assertNext(it ->
             assertEquals(testMetadata, it.getMetadata())).verifyComplete();
         StepVerifier.create(primaryShareAsyncClient.setMetadataWithResponse(metadataAfterSet))
-            .assertNext(it -> assertResponseStatusCode(it, 200)).verifyComplete();
+            .assertNext(it -> FileShareTestHelper.assertResponseStatusCode(it, 200)).verifyComplete();
         StepVerifier.create(primaryShareAsyncClient.getProperties()).assertNext(it ->
             assertEquals(metadataAfterSet, it.getMetadata())).verifyComplete();
     }
@@ -337,17 +342,17 @@ public class ShareAsyncApiTest extends FileShareTestBase {
     @Test
     public void setMetadataError() {
         StepVerifier.create(primaryShareAsyncClient.setMetadata(testMetadata)).verifyErrorSatisfies(it ->
-            assertExceptionStatusCodeAndMessage(it, 404, ShareErrorCode.SHARE_NOT_FOUND));
+            FileShareTestHelper.assertExceptionStatusCodeAndMessage(it, 404, ShareErrorCode.SHARE_NOT_FOUND));
     }
 
     @ParameterizedTest
-    @MethodSource("com.azure.storage.file.share.FileShareTestBase#getStatisticsSupplier")
+    @MethodSource("com.azure.storage.file.share.FileShareTestHelper#getStatisticsSupplier")
     public void getStatistics(long size, int gigabytes) {
         primaryShareAsyncClient.create().block();
         primaryShareAsyncClient.createFile("tempFile", size).block();
 
         StepVerifier.create(primaryShareAsyncClient.getStatisticsWithResponse()).assertNext(it -> {
-            assertResponseStatusCode(it, 200);
+            FileShareTestHelper.assertResponseStatusCode(it, 200);
             assertEquals(it.getValue().getShareUsageInBytes(), size);
             assertEquals(it.getValue().getShareUsageInGB(), gigabytes);
         }).verifyComplete();
@@ -356,35 +361,37 @@ public class ShareAsyncApiTest extends FileShareTestBase {
     @Test
     public void getStatisticsError() {
         StepVerifier.create(primaryShareAsyncClient.getStatistics()).verifyErrorSatisfies(it ->
-            assertExceptionStatusCodeAndMessage(it, 404, ShareErrorCode.SHARE_NOT_FOUND));
+            FileShareTestHelper.assertExceptionStatusCodeAndMessage(it, 404, ShareErrorCode.SHARE_NOT_FOUND));
     }
 
     @Test
     public void createDirectory() {
         primaryShareAsyncClient.create().block();
         StepVerifier.create(primaryShareAsyncClient.createDirectoryWithResponse("testCreateDirectory", null, null,
-            null)).assertNext(it -> assertResponseStatusCode(it, 201)).verifyComplete();
+            null)).assertNext(it -> FileShareTestHelper.assertResponseStatusCode(it, 201)).verifyComplete();
     }
 
     @Test
     public void createDirectoryInvalidName() {
         primaryShareAsyncClient.create().block();
         StepVerifier.create(primaryShareAsyncClient.createDirectory("test/directory")).verifyErrorSatisfies(it ->
-            assertExceptionStatusCodeAndMessage(it, 404, ShareErrorCode.PARENT_NOT_FOUND));
+            FileShareTestHelper.assertExceptionStatusCodeAndMessage(it, 404, ShareErrorCode.PARENT_NOT_FOUND));
     }
 
     @Test
     public void createDirectoryMetadata() {
         primaryShareAsyncClient.create().block();
         StepVerifier.create(primaryShareAsyncClient.createDirectoryWithResponse("testCreateDirectory", null, null,
-                testMetadata)).assertNext(it -> assertResponseStatusCode(it, 201)).verifyComplete();
+                testMetadata)).assertNext(it -> FileShareTestHelper.assertResponseStatusCode(it, 201))
+            .verifyComplete();
     }
 
     @Test
     public void createDirectoryFilePermission() {
         primaryShareAsyncClient.create().block();
         StepVerifier.create(primaryShareAsyncClient.createDirectoryWithResponse("testCreateDirectory", null,
-            FILE_PERMISSION, null)).assertNext(it -> assertResponseStatusCode(it, 201)).verifyComplete();
+            FILE_PERMISSION, null)).assertNext(it -> FileShareTestHelper.assertResponseStatusCode(it, 201))
+            .verifyComplete();
     }
 
     @Test
@@ -395,15 +402,15 @@ public class ShareAsyncApiTest extends FileShareTestBase {
             .setFileLastWriteTime(testResourceNamer.now())
             .setFilePermissionKey(permissionKey);
         StepVerifier.create(primaryShareAsyncClient.createDirectoryWithResponse("testCreateDirectory", smbProperties,
-            null, null)).assertNext(it -> assertResponseStatusCode(it, 201)).verifyComplete();
+            null, null)).assertNext(it -> FileShareTestHelper.assertResponseStatusCode(it, 201)).verifyComplete();
     }
 
     @Test
     public void createDirectoryMetadataError() {
         primaryShareAsyncClient.create().block();
         StepVerifier.create(primaryShareAsyncClient.createDirectoryWithResponse("testdirectory", null, null,
-            Collections.singletonMap("", "value"))).verifyErrorSatisfies(it -> assertExceptionStatusCodeAndMessage(it,
-            400, ShareErrorCode.EMPTY_METADATA_KEY));
+            Collections.singletonMap("", "value"))).verifyErrorSatisfies(it ->
+            FileShareTestHelper.assertExceptionStatusCodeAndMessage(it, 400, ShareErrorCode.EMPTY_METADATA_KEY));
 
     }
 
@@ -411,7 +418,8 @@ public class ShareAsyncApiTest extends FileShareTestBase {
     public void createIfNotExistsDirectory() {
         primaryShareAsyncClient.create().block();
         StepVerifier.create(primaryShareAsyncClient.createDirectoryIfNotExistsWithResponse("testCreateDirectory",
-            new ShareDirectoryCreateOptions())).assertNext(it -> assertResponseStatusCode(it, 201)).verifyComplete();
+            new ShareDirectoryCreateOptions())).assertNext(it -> FileShareTestHelper.assertResponseStatusCode(it, 201))
+            .verifyComplete();
     }
 
     @Test
@@ -424,16 +432,17 @@ public class ShareAsyncApiTest extends FileShareTestBase {
             "testCreateDirectory", new ShareDirectoryCreateOptions()).block();
 
         assertNotNull(initialResponse);
-        assertResponseStatusCode(initialResponse, 201);
+        FileShareTestHelper.assertResponseStatusCode(initialResponse, 201);
         assertNotNull(secondResponse);
-        assertResponseStatusCode(secondResponse, 409);
+        FileShareTestHelper.assertResponseStatusCode(secondResponse, 409);
     }
 
     @Test
     public void createIfNotExistsDirectoryInvalidName() {
         primaryShareAsyncClient.create().block();
         StepVerifier.create(primaryShareAsyncClient.createDirectoryIfNotExists("test/directory"))
-            .verifyErrorSatisfies(it -> assertExceptionStatusCodeAndMessage(it, 404, ShareErrorCode.PARENT_NOT_FOUND));
+            .verifyErrorSatisfies(it -> FileShareTestHelper.assertExceptionStatusCodeAndMessage(it, 404,
+                ShareErrorCode.PARENT_NOT_FOUND));
     }
 
     @Test
@@ -441,7 +450,7 @@ public class ShareAsyncApiTest extends FileShareTestBase {
         primaryShareAsyncClient.create().block();
         StepVerifier.create(primaryShareAsyncClient.createDirectoryIfNotExistsWithResponse("testCreateDirectory",
             new ShareDirectoryCreateOptions().setMetadata(testMetadata)))
-            .assertNext(it -> assertResponseStatusCode(it, 201)).verifyComplete();
+            .assertNext(it -> FileShareTestHelper.assertResponseStatusCode(it, 201)).verifyComplete();
     }
 
     @Test
@@ -449,7 +458,7 @@ public class ShareAsyncApiTest extends FileShareTestBase {
         primaryShareAsyncClient.create().block();
         StepVerifier.create(primaryShareAsyncClient.createDirectoryIfNotExistsWithResponse("testCreateDirectory",
             new ShareDirectoryCreateOptions().setFilePermission(FILE_PERMISSION)))
-            .assertNext(it -> assertResponseStatusCode(it, 201)).verifyComplete();
+            .assertNext(it -> FileShareTestHelper.assertResponseStatusCode(it, 201)).verifyComplete();
     }
 
     @Test
@@ -461,7 +470,7 @@ public class ShareAsyncApiTest extends FileShareTestBase {
             .setFilePermissionKey(permissionKey);
         StepVerifier.create(primaryShareAsyncClient.createDirectoryIfNotExistsWithResponse("testCreateDirectory",
             new ShareDirectoryCreateOptions().setSmbProperties(smbProperties)))
-            .assertNext(it -> assertResponseStatusCode(it, 201)).verifyComplete();
+            .assertNext(it -> FileShareTestHelper.assertResponseStatusCode(it, 201)).verifyComplete();
     }
 
     @Test
@@ -469,21 +478,23 @@ public class ShareAsyncApiTest extends FileShareTestBase {
         primaryShareAsyncClient.create().block();
         StepVerifier.create(primaryShareAsyncClient.createDirectoryIfNotExistsWithResponse("testdirectory",
             new ShareDirectoryCreateOptions().setMetadata(Collections.singletonMap("", "value"))))
-            .verifyErrorSatisfies(it -> assertExceptionStatusCodeAndMessage(it, 400, ShareErrorCode.EMPTY_METADATA_KEY));
+            .verifyErrorSatisfies(it -> FileShareTestHelper.assertExceptionStatusCodeAndMessage(it, 400,
+                ShareErrorCode.EMPTY_METADATA_KEY));
     }
 
     @Test
     public void createFile() {
         primaryShareAsyncClient.create().block();
         StepVerifier.create(primaryShareAsyncClient.createFileWithResponse("testCreateFile", 1024, null, null, null,
-            null)).assertNext(it -> assertResponseStatusCode(it, 201)).verifyComplete();
+            null)).assertNext(it -> FileShareTestHelper.assertResponseStatusCode(it, 201)).verifyComplete();
     }
 
     @Test
     public void createFileFilePermission() {
         primaryShareAsyncClient.create().block();
         StepVerifier.create(primaryShareAsyncClient.createFileWithResponse("testCreateFile", 1024, null, null,
-            FILE_PERMISSION, null)).assertNext(it -> assertResponseStatusCode(it, 201)).verifyComplete();
+            FILE_PERMISSION, null)).assertNext(it -> FileShareTestHelper.assertResponseStatusCode(it, 201))
+            .verifyComplete();
     }
 
     @Test
@@ -494,15 +505,16 @@ public class ShareAsyncApiTest extends FileShareTestBase {
             .setFileLastWriteTime(testResourceNamer.now())
             .setFilePermissionKey(permissionKey);
         StepVerifier.create(primaryShareAsyncClient.createFileWithResponse("testCreateFile", 1024, null, smbProperties,
-            null, null)).assertNext(it -> assertResponseStatusCode(it, 201)).verifyComplete();
+            null, null)).assertNext(it -> FileShareTestHelper.assertResponseStatusCode(it, 201)).verifyComplete();
     }
 
     @ParameterizedTest
-    @MethodSource("com.azure.storage.file.share.FileShareTestBase#createFileInvalidArgsSupplier")
+    @MethodSource("com.azure.storage.file.share.FileShareTestHelper#createFileInvalidArgsSupplier")
     public void createFileInvalidArgs(String fileName, long maxSize, int statusCode, ShareErrorCode errMsg) {
         primaryShareAsyncClient.create().block();
         StepVerifier.create(primaryShareAsyncClient.createFileWithResponse(fileName, maxSize, null, null, null, null))
-            .verifyErrorSatisfies(it -> assertExceptionStatusCodeAndMessage(it, statusCode, errMsg));
+            .verifyErrorSatisfies(it -> FileShareTestHelper.assertExceptionStatusCodeAndMessage(it, statusCode,
+                errMsg));
 
     }
 
@@ -533,17 +545,18 @@ public class ShareAsyncApiTest extends FileShareTestBase {
         smbProperties.setFileCreationTime(testResourceNamer.now())
             .setFileLastWriteTime(testResourceNamer.now());
         StepVerifier.create(primaryShareAsyncClient.createFileWithResponse("testCreateFile", 1024, httpHeaders,
-            smbProperties, FILE_PERMISSION, testMetadata)).assertNext(it -> assertResponseStatusCode(it, 201))
-            .verifyComplete();
+            smbProperties, FILE_PERMISSION, testMetadata)).assertNext(it ->
+            FileShareTestHelper.assertResponseStatusCode(it, 201)).verifyComplete();
     }
 
     @ParameterizedTest
-    @MethodSource("com.azure.storage.file.share.FileShareTestBase#createFileMaxOverloadInvalidArgsSupplier")
+    @MethodSource("com.azure.storage.file.share.FileShareTestHelper#createFileMaxOverloadInvalidArgsSupplier")
     public void createFileMaxOverloadInvalidArgs(String fileName, long maxSize, ShareFileHttpHeaders httpHeaders,
         Map<String, String> metadata, ShareErrorCode errMsg) {
         primaryShareAsyncClient.create().block();
         StepVerifier.create(primaryShareAsyncClient.createFileWithResponse(fileName, maxSize, httpHeaders, null, null,
-            metadata)).verifyErrorSatisfies(it -> assertExceptionStatusCodeAndMessage(it, 400, errMsg));
+            metadata)).verifyErrorSatisfies(it -> FileShareTestHelper.assertExceptionStatusCodeAndMessage(it, 400,
+            errMsg));
     }
 
     @Test
@@ -552,14 +565,14 @@ public class ShareAsyncApiTest extends FileShareTestBase {
         primaryShareAsyncClient.create().block();
         primaryShareAsyncClient.createDirectory(directoryName).block();
         StepVerifier.create(primaryShareAsyncClient.deleteDirectoryWithResponse(directoryName))
-            .assertNext(it -> assertResponseStatusCode(it, 202)).verifyComplete();
+            .assertNext(it -> FileShareTestHelper.assertResponseStatusCode(it, 202)).verifyComplete();
     }
 
     @Test
     public void deleteDirectoryError() {
         primaryShareAsyncClient.create().block();
         StepVerifier.create(primaryShareAsyncClient.deleteDirectory("testdirectory"))
-            .verifyErrorSatisfies(it -> assertExceptionStatusCodeAndMessage(it, 404,
+            .verifyErrorSatisfies(it -> FileShareTestHelper.assertExceptionStatusCodeAndMessage(it, 404,
                 ShareErrorCode.RESOURCE_NOT_FOUND));
     }
 
@@ -569,7 +582,7 @@ public class ShareAsyncApiTest extends FileShareTestBase {
         primaryShareAsyncClient.create().block();
         primaryShareAsyncClient.createDirectory(directoryName).block();
         StepVerifier.create(primaryShareAsyncClient.deleteDirectoryIfExistsWithResponse(directoryName))
-            .assertNext(it -> assertResponseStatusCode(it, 202)).verifyComplete();
+            .assertNext(it -> FileShareTestHelper.assertResponseStatusCode(it, 202)).verifyComplete();
     }
 
     @Test
@@ -579,7 +592,7 @@ public class ShareAsyncApiTest extends FileShareTestBase {
         Response<Boolean> response = primaryShareAsyncClient.deleteDirectoryIfExistsWithResponse(directoryName).block();
         assertNotNull(response);
         assertFalse(response.getValue());
-        assertResponseStatusCode(response, 404);
+        FileShareTestHelper.assertResponseStatusCode(response, 404);
     }
 
     @Test
@@ -588,7 +601,7 @@ public class ShareAsyncApiTest extends FileShareTestBase {
         primaryShareAsyncClient.create().block();
         primaryShareAsyncClient.createFile(fileName, 1024).block();
         StepVerifier.create(primaryShareAsyncClient.deleteFileWithResponse(fileName))
-            .assertNext(it -> assertResponseStatusCode(it, 202)).verifyComplete();
+            .assertNext(it -> FileShareTestHelper.assertResponseStatusCode(it, 202)).verifyComplete();
 
     }
 
@@ -617,7 +630,7 @@ public class ShareAsyncApiTest extends FileShareTestBase {
     public void deleteFileError() {
         primaryShareAsyncClient.create().block();
         StepVerifier.create(primaryShareAsyncClient.deleteFile("testdirectory")).verifyErrorSatisfies(it ->
-            assertExceptionStatusCodeAndMessage(it, 404, ShareErrorCode.RESOURCE_NOT_FOUND));
+            FileShareTestHelper.assertExceptionStatusCodeAndMessage(it, 404, ShareErrorCode.RESOURCE_NOT_FOUND));
     }
 
     @Test
@@ -626,7 +639,7 @@ public class ShareAsyncApiTest extends FileShareTestBase {
         primaryShareAsyncClient.create().block();
         primaryShareAsyncClient.createFile(fileName, 1024).block();
         StepVerifier.create(primaryShareAsyncClient.deleteFileIfExistsWithResponse(fileName, null))
-            .assertNext(it -> assertResponseStatusCode(it, 202)).verifyComplete();
+            .assertNext(it -> FileShareTestHelper.assertResponseStatusCode(it, 202)).verifyComplete();
 
     }
 
@@ -647,7 +660,7 @@ public class ShareAsyncApiTest extends FileShareTestBase {
         Response<Boolean> response = primaryShareAsyncClient.deleteFileIfExistsWithResponse(fileName, null).block();
         assertNotNull(response);
         assertFalse(response.getValue());
-        assertResponseStatusCode(response, 404);
+        FileShareTestHelper.assertResponseStatusCode(response, 404);
     }
 
     @Test
@@ -666,7 +679,7 @@ public class ShareAsyncApiTest extends FileShareTestBase {
     public void createPermission() {
         primaryShareAsyncClient.create().block();
         StepVerifier.create(primaryShareAsyncClient.createPermissionWithResponse(FILE_PERMISSION))
-            .assertNext(it -> assertResponseStatusCode(it, 201)).verifyComplete();
+            .assertNext(it -> FileShareTestHelper.assertResponseStatusCode(it, 201)).verifyComplete();
     }
 
     @Test
@@ -674,7 +687,7 @@ public class ShareAsyncApiTest extends FileShareTestBase {
         primaryShareAsyncClient.create().block();
         String filePermissionKey = primaryShareAsyncClient.createPermission(FILE_PERMISSION).block();
         StepVerifier.create(primaryShareAsyncClient.getPermissionWithResponse(filePermissionKey))
-            .assertNext(it -> assertResponseStatusCode(it, 200)).verifyComplete();
+            .assertNext(it -> FileShareTestHelper.assertResponseStatusCode(it, 200)).verifyComplete();
     }
 
     @Test
@@ -682,7 +695,8 @@ public class ShareAsyncApiTest extends FileShareTestBase {
         primaryShareAsyncClient.create().block();
         // Invalid permission
         StepVerifier.create(primaryShareAsyncClient.createPermissionWithResponse("abcde")).verifyErrorSatisfies(it ->
-            assertExceptionStatusCodeAndMessage(it, 400, ShareErrorCode.fromString("FileInvalidPermission")));
+            FileShareTestHelper.assertExceptionStatusCodeAndMessage(it, 400,
+                ShareErrorCode.fromString("FileInvalidPermission")));
     }
 
     @Test
@@ -690,7 +704,7 @@ public class ShareAsyncApiTest extends FileShareTestBase {
         primaryShareAsyncClient.create().block();
         // Invalid permission key
         StepVerifier.create(primaryShareAsyncClient.getPermissionWithResponse("abcde"))
-            .verifyErrorSatisfies(it -> assertExceptionStatusCodeAndMessage(it, 404,
+            .verifyErrorSatisfies(it -> FileShareTestHelper.assertExceptionStatusCodeAndMessage(it, 400,
                 ShareErrorCode.INVALID_HEADER_VALUE));
     }
 

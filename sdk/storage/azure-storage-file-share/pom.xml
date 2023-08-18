@@ -47,6 +47,8 @@
       --add-opens com.azure.storage.file.share/com.azure.storage.file.share.specialized=ALL-UNNAMED
       --add-reads com.azure.core=ALL-UNNAMED
       --add-reads com.azure.storage.common=ALL-UNNAMED
+      --add-reads com.azure.storage.file.share=com.azure.http.netty
+      --add-reads com.azure.storage.file.share=com.azure.core.http.okhttp
     </javaModulesSurefireArgLine>
   </properties>
 
