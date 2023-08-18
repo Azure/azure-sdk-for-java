@@ -1572,6 +1572,7 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
         assertTrue(firstFlushCompletionTime.get() > secondFlushCompletionTime.get());
     }
 
+    //@RepeatedTest(1000)
     @Test
     public void closeWillWaitForAnyCurrentFlushesToCompleteBeforeRunning() throws InterruptedException {
         AtomicInteger callCount = new AtomicInteger();
@@ -1606,6 +1607,8 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
                 countDownLatch.countDown();
             }
         });
+
+        Thread.sleep(10); // Give the first operation a chance to start.
 
         AtomicLong secondFlushCompletionTime = new AtomicLong();
         ForkJoinPool.commonPool().execute(() -> {

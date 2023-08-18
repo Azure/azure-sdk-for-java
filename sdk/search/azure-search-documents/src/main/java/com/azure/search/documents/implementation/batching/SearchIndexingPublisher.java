@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.search.documents.implementation.batching;
 
 import com.azure.core.exception.HttpResponseException;
@@ -24,8 +27,13 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Semaphore;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -109,8 +117,8 @@ public final class SearchIndexingPublisher<T> {
         return currentRetryDelay;
     }
 
-    public void addActions(Collection<IndexAction<T>> actions, Context context,
-                                        Runnable rescheduleFlush) {
+    public void addActions(Collection<IndexAction<T>> actions, Duration timeout, Context context,
+        Runnable rescheduleFlush) {
         int actionCount = documentManager.add(actions, documentKeyRetriever, onActionAddedConsumer);
 
         LOGGER.verbose("Actions added, new pending queue size: {}.", actionCount);
@@ -118,21 +126,21 @@ public final class SearchIndexingPublisher<T> {
         if (autoFlush && documentManager.batchAvailableForProcessing(batchActionCount)) {
             rescheduleFlush.run();
             LOGGER.verbose("Adding documents triggered batch size limit, sending documents for indexing.");
-            flush(false, false, context);
+            flush(false, false, timeout, context);
         }
     }
 
-    public void flush(boolean awaitLock, boolean isClose, Context context) {
+    public void flush(boolean awaitLock, boolean isClose, Duration timeout, Context context) {
         if (awaitLock) {
             processingSemaphore.acquireUninterruptibly();
             try {
-                flushLoop(isClose, context);
+                flushLoop(isClose, timeout, context);
             } finally {
                 processingSemaphore.release();
             }
         } else if (processingSemaphore.tryAcquire()) {
             try {
-                flushLoop(isClose, context);
+                flushLoop(isClose, timeout, context);
             } finally {
                 processingSemaphore.release();
             }
@@ -141,19 +149,50 @@ public final class SearchIndexingPublisher<T> {
         }
     }
 
-    private void flushLoop(boolean isClosed, Context context) {
-        // Process the current batch.
-        IndexBatchResponse response = createAndProcessBatch(context);
+    private void flushLoop(boolean isClosed, Duration timeout, Context context) {
+        final AtomicReference<List<TryTrackingIndexAction<T>>> batchActions = new AtomicReference<>();
+        CompletableFuture<Void> future = CompletableFuture.runAsync(() -> {
+            List<TryTrackingIndexAction<T>> batch = documentManager.createBatch(batchActionCount);
+            batchActions.set(batch);
 
-        // Then while a batch has been processed and there are still documents to index, keep processing batches.
-        while (response != null && (documentManager.batchAvailableForProcessing(batchActionCount) || isClosed)) {
-            response = createAndProcessBatch(context);
+            // Process the current batch.
+            IndexBatchResponse response = processBatch(batch, context);
+
+            // Then while a batch has been processed and there are still documents to index, keep processing batches.
+            while (response != null && (documentManager.batchAvailableForProcessing(batchActionCount) || isClosed)) {
+                batch = documentManager.createBatch(batchActionCount);
+                batchActions.set(batch);
+
+                response = processBatch(batch, context);
+            }
+        });
+
+        try {
+            if (timeout != null && !timeout.isNegative() && !timeout.isZero()) {
+                future.get(timeout.toMillis(), TimeUnit.MILLISECONDS);
+            } else {
+                future.get();
+            }
+        } catch (ExecutionException e) {
+            Throwable realCause = e.getCause();
+            if (realCause instanceof Error) {
+                throw (Error) realCause;
+            } else if (realCause instanceof RuntimeException) {
+                throw LOGGER.logExceptionAsError((RuntimeException) realCause);
+            } else {
+                throw LOGGER.logExceptionAsError(new RuntimeException(realCause));
+            }
+        } catch (InterruptedException | TimeoutException e) {
+            if (e instanceof TimeoutException) {
+                future.cancel(true);
+                documentManager.reinsertCancelledActions(batchActions.get());
+            }
+
+            throw LOGGER.logExceptionAsError(new RuntimeException(e));
         }
     }
 
-    private IndexBatchResponse createAndProcessBatch(Context context) {
-        List<TryTrackingIndexAction<T>> batchActions = documentManager.createBatch(batchActionCount);
-
+    private IndexBatchResponse processBatch(List<TryTrackingIndexAction<T>> batchActions, Context context) {
         // If there are no documents to in the batch to index just return.
         if (CoreUtils.isNullOrEmpty(batchActions)) {
             return null;

@@ -9,7 +9,6 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JsonSerializer;
 import com.azure.search.documents.implementation.SearchIndexClientImpl;
 import com.azure.search.documents.implementation.batching.SearchIndexingPublisher;
-import com.azure.search.documents.implementation.util.Utility;
 import com.azure.search.documents.models.IndexAction;
 import com.azure.search.documents.models.IndexActionType;
 import com.azure.search.documents.options.OnActionAddedOptions;
@@ -22,10 +21,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
 import java.util.function.Consumer;
@@ -40,8 +35,6 @@ import java.util.function.Function;
 @ServiceClient(builder = SearchClientBuilder.class)
 public final class SearchIndexingBufferedSender<T> {
     private static final ClientLogger LOGGER = new ClientLogger(SearchIndexingBufferedSender.class);
-
-    private static final ExecutorService THREAD_POOL = Utility.getThreadPoolWithShutdownHook();
 
     private final boolean autoFlush;
     private final long flushWindowMillis;
@@ -116,7 +109,7 @@ public final class SearchIndexingBufferedSender<T> {
      * @param context Additional context that is passed through the HTTP pipeline.
      */
     public void addUploadActions(Collection<T> documents, Duration timeout, Context context) {
-        blockWithOptionalTimeout(() -> createAndAddActions(documents, IndexActionType.UPLOAD, context), timeout);
+        createAndAddActions(documents, IndexActionType.UPLOAD, timeout, context);
     }
 
     /**
@@ -142,7 +135,7 @@ public final class SearchIndexingBufferedSender<T> {
      * @param context Additional context that is passed through the HTTP pipeline.
      */
     public void addDeleteActions(Collection<T> documents, Duration timeout, Context context) {
-        blockWithOptionalTimeout(() -> createAndAddActions(documents, IndexActionType.DELETE, context), timeout);
+        createAndAddActions(documents, IndexActionType.DELETE, timeout, context);
     }
 
     /**
@@ -168,7 +161,7 @@ public final class SearchIndexingBufferedSender<T> {
      * @param context Additional context that is passed through the HTTP pipeline.
      */
     public void addMergeActions(Collection<T> documents, Duration timeout, Context context) {
-        blockWithOptionalTimeout(() -> createAndAddActions(documents, IndexActionType.MERGE, context), timeout);
+        createAndAddActions(documents, IndexActionType.MERGE, timeout, context);
     }
 
     /**
@@ -194,8 +187,7 @@ public final class SearchIndexingBufferedSender<T> {
      * @param context Additional context that is passed through the HTTP pipeline.
      */
     public void addMergeOrUploadActions(Collection<T> documents, Duration timeout, Context context) {
-        blockWithOptionalTimeout(() -> createAndAddActions(documents, IndexActionType.MERGE_OR_UPLOAD, context),
-            timeout);
+        createAndAddActions(documents, IndexActionType.MERGE_OR_UPLOAD, timeout, context);
     }
 
     /**
@@ -221,17 +213,17 @@ public final class SearchIndexingBufferedSender<T> {
      * @param context Additional context that is passed through the HTTP pipeline.
      */
     public void addActions(Collection<IndexAction<T>> actions, Duration timeout, Context context) {
-        blockWithOptionalTimeout(() -> addActions(actions, context), timeout);
+        addActionsInternal(actions, timeout, context);
     }
 
-    void createAndAddActions(Collection<T> documents, IndexActionType actionType, Context context) {
-        addActions(createDocumentActions(documents, actionType), context);
+    void createAndAddActions(Collection<T> documents, IndexActionType actionType, Duration timeout, Context context) {
+        addActionsInternal(createDocumentActions(documents, actionType), timeout, context);
     }
 
-    void addActions(Collection<IndexAction<T>> actions, Context context) {
+    void addActionsInternal(Collection<IndexAction<T>> actions, Duration timeout, Context context) {
         ensureOpen();
 
-        publisher.addActions(actions, context, this::rescheduleFlushTask);
+        publisher.addActions(actions, timeout, context, this::rescheduleFlushTask);
     }
 
     /**
@@ -248,14 +240,14 @@ public final class SearchIndexingBufferedSender<T> {
      * @param context Additional context that is passed through the HTTP pipeline.
      */
     public void flush(Duration timeout, Context context) {
-        blockWithOptionalTimeout(() -> flush(context), timeout);
+        flushInternal(timeout, context);
     }
 
-    void flush(Context context) {
+    void flushInternal(Duration timeout, Context context) {
         ensureOpen();
 
         rescheduleFlushTask();
-        publisher.flush(false, false, context);
+        publisher.flush(false, false, timeout, context);
     }
 
     private void rescheduleFlushTask() {
@@ -263,20 +255,22 @@ public final class SearchIndexingBufferedSender<T> {
             return;
         }
 
-        TimerTask newTask = new TimerTask() {
-            @Override
-            public void run() {
-                publisher.flush(false, false, Context.NONE);
+        synchronized (this) {
+            TimerTask newTask = new TimerTask() {
+                @Override
+                public void run() {
+                    publisher.flush(false, false, null, Context.NONE);
+                }
+            };
+
+            // If the previous flush task exists cancel it. If it has already executed cancel does nothing.
+            TimerTask previousTask = FLUSH_TASK.getAndSet(this, newTask);
+            if (previousTask != null) {
+                previousTask.cancel();
             }
-        };
 
-        // If the previous flush task exists cancel it. If it has already executed cancel does nothing.
-        TimerTask previousTask = FLUSH_TASK.getAndSet(this, newTask);
-        if (previousTask != null) {
-            previousTask.cancel();
+            this.autoFlushTimer.schedule(newTask, flushWindowMillis);
         }
-
-        this.autoFlushTimer.schedule(newTask, flushWindowMillis);
     }
 
     /**
@@ -299,10 +293,10 @@ public final class SearchIndexingBufferedSender<T> {
      * @param context Additional context that is passed through the HTTP pipeline.
      */
     public void close(Duration timeout, Context context) {
-        blockWithOptionalTimeout(() -> close(context), timeout);
+        closeInternal(timeout, context);
     }
 
-    void close(Context context) {
+    void closeInternal(Duration timeout, Context context) {
         if (!closed.get()) {
             synchronized (this) {
                 if (closed.compareAndSet(false, true)) {
@@ -317,7 +311,7 @@ public final class SearchIndexingBufferedSender<T> {
                         autoFlushTimer = null;
                     }
 
-                    publisher.flush(true, true, context);
+                    publisher.flush(true, true, timeout, context);
                 }
             }
         }
@@ -338,26 +332,5 @@ public final class SearchIndexingBufferedSender<T> {
         }
 
         return actions;
-    }
-
-    private static void blockWithOptionalTimeout(Runnable call, Duration timeout) {
-        if (timeout != null && !timeout.isNegative() && !timeout.isZero()) {
-            try {
-                THREAD_POOL.submit(call).get(timeout.toMillis(), TimeUnit.MILLISECONDS);
-            } catch (ExecutionException e) {
-                Throwable realCause = e.getCause();
-                if (realCause instanceof Error) {
-                    throw (Error) realCause;
-                } else if (realCause instanceof RuntimeException) {
-                    throw LOGGER.logExceptionAsError((RuntimeException) realCause);
-                } else {
-                    throw LOGGER.logExceptionAsError(new RuntimeException(realCause));
-                }
-            } catch (InterruptedException | TimeoutException e) {
-                throw LOGGER.logExceptionAsError(new RuntimeException(e));
-            }
-        } else {
-            call.run();
-        }
     }
 }

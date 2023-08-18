@@ -224,18 +224,12 @@ public class DataSourceTests extends SearchTestBase {
     }
 
     @Test
-    public void createDataSourceFailsWithUsefulMessageOnUserErrorSync() {
+    public void createDataSourceFailsWithUsefulMessageOnUserErrorSyncAndAsync() {
         SearchIndexerDataSourceConnection dataSource = createTestSqlDataSourceObject();
         dataSource.setType(SearchIndexerDataSourceType.fromString("thistypedoesnotexist"));
 
         assertHttpResponseException(() -> client.createOrUpdateDataSourceConnection(dataSource),
             HttpURLConnection.HTTP_BAD_REQUEST, "Data source type 'thistypedoesnotexist' is not supported");
-    }
-
-    @Test
-    public void createDataSourceFailsWithUsefulMessageOnUserErrorAsync() {
-        SearchIndexerDataSourceConnection dataSource = createTestSqlDataSourceObject();
-        dataSource.setType(SearchIndexerDataSourceType.fromString("thistypedoesnotexist"));
 
         StepVerifier.create(asyncClient.createOrUpdateDataSourceConnection(dataSource))
             .verifyErrorSatisfies(throwable -> verifyHttpResponseError(throwable, HttpURLConnection.HTTP_BAD_REQUEST,
@@ -307,7 +301,7 @@ public class DataSourceTests extends SearchTestBase {
     }
 
     @Test
-    public void deleteDataSourceIfExistsWorksOnlyWhenResourceExistsSync() {
+    public void deleteDataSourceIfExistsWorksOnlyWhenResourceExistsSyncAndAsync() {
         SearchIndexerDataSourceConnection dataSource = createTestBlobDataSource(null);
         dataSourcesToDelete.add(dataSource.getName());
 
@@ -322,19 +316,8 @@ public class DataSourceTests extends SearchTestBase {
         } catch (HttpResponseException ex) {
             assertEquals(HttpURLConnection.HTTP_PRECON_FAILED, ex.getResponse().getStatusCode());
         }
-    }
 
-    @Test
-    public void deleteDataSourceIfExistsWorksOnlyWhenResourceExistsAsync() {
-        SearchIndexerDataSourceConnection dataSource = createTestBlobDataSource(null);
-        dataSourcesToDelete.add(dataSource.getName());
-
-        Mono<Response<Void>> createAndDoubleDelete = asyncClient.createOrUpdateDataSourceConnectionWithResponse(
-                dataSource, false)
-            .flatMap(response -> asyncClient.deleteDataSourceConnectionWithResponse(response.getValue(), true)
-                .then(asyncClient.deleteDataSourceConnectionWithResponse(response.getValue(), true)));
-
-        StepVerifier.create(createAndDoubleDelete)
+        StepVerifier.create(asyncClient.deleteDataSourceConnectionWithResponse(response, true))
             .verifyErrorSatisfies(throwable -> {
                 HttpResponseException ex = assertInstanceOf(HttpResponseException.class, throwable);
                 assertEquals(HttpURLConnection.HTTP_PRECON_FAILED, ex.getResponse().getStatusCode());
@@ -342,7 +325,7 @@ public class DataSourceTests extends SearchTestBase {
     }
 
     @Test
-    public void deleteDataSourceIfNotChangedWorksOnlyOnCurrentResourceSync() {
+    public void deleteDataSourceIfNotChangedWorksOnlyOnCurrentResourceSyncAndAsync() {
         SearchIndexerDataSourceConnection dataSource = createTestBlobDataSource(null);
 
         SearchIndexerDataSourceConnection stale = client.createOrUpdateDataSourceConnectionWithResponse(dataSource,
@@ -358,26 +341,13 @@ public class DataSourceTests extends SearchTestBase {
             assertEquals(HttpURLConnection.HTTP_PRECON_FAILED, ex.getResponse().getStatusCode());
         }
 
-        client.deleteDataSourceConnectionWithResponse(current, true, Context.NONE);
-    }
-
-    @Test
-    public void deleteDataSourceIfNotChangedWorksOnlyOnCurrentResourceAsync() {
-        SearchIndexerDataSourceConnection dataSource = createTestBlobDataSource(null);
-
-        SearchIndexerDataSourceConnection stale = asyncClient.createOrUpdateDataSourceConnectionWithResponse(dataSource,
-            false).map(Response::getValue).block();
-
-        SearchIndexerDataSourceConnection current = asyncClient.createOrUpdateDataSourceConnectionWithResponse(stale,
-            false).map(Response::getValue).block();
-
         StepVerifier.create(asyncClient.deleteDataSourceConnectionWithResponse(stale, true))
             .verifyErrorSatisfies(throwable -> {
                 HttpResponseException ex = assertInstanceOf(HttpResponseException.class, throwable);
                 assertEquals(HttpURLConnection.HTTP_PRECON_FAILED, ex.getResponse().getStatusCode());
             });
 
-        asyncClient.deleteDataSourceConnectionWithResponse(current, true).block();
+        client.deleteDataSourceConnectionWithResponse(current, true, Context.NONE);
     }
 
     @Test
@@ -424,7 +394,7 @@ public class DataSourceTests extends SearchTestBase {
     }
 
     @Test
-    public void updateDataSourceIfNotChangedFailsWhenResourceChangedSync() {
+    public void updateDataSourceIfNotChangedFailsWhenResourceChangedSyncAndAsync() {
         SearchIndexerDataSourceConnection dataSource = createTestBlobDataSource(null);
         dataSourcesToDelete.add(dataSource.getName());
 
@@ -443,38 +413,15 @@ public class DataSourceTests extends SearchTestBase {
             assertEquals(HttpURLConnection.HTTP_PRECON_FAILED, ex.getResponse().getStatusCode());
         }
 
-        assertNotNull(originalETag);
-        assertNotNull(updatedETag);
-        assertNotEquals(originalETag, updatedETag);
-    }
-
-    @Test
-    public void updateDataSourceIfNotChangedFailsWhenResourceChangedAsync() {
-        SearchIndexerDataSourceConnection dataSource = createTestBlobDataSource(null);
-        dataSourcesToDelete.add(dataSource.getName());
-
-        Mono<Response<SearchIndexerDataSourceConnection>> etagUpdatesOnChangeThenErrorMono =
-            asyncClient.createOrUpdateDataSourceConnectionWithResponse(dataSource, false)
-                .flatMap(response -> {
-                    SearchIndexerDataSourceConnection original = response.getValue();
-                    String originalETag = original.getETag();
-
-                    return asyncClient.createOrUpdateDataSourceConnectionWithResponse(
-                            original.setDescription("an update"), false)
-                        .map(updated -> Tuples.of(originalETag, updated.getValue().getETag(), original));
-                })
-                .doOnNext(etags -> {
-                    assertNotNull(etags.getT1());
-                    assertNotNull(etags.getT2());
-                    assertNotEquals(etags.getT1(), etags.getT2());
-                })
-                .flatMap(tuple -> asyncClient.createOrUpdateDataSourceConnectionWithResponse(tuple.getT3(), true));
-
-        StepVerifier.create(etagUpdatesOnChangeThenErrorMono)
+        StepVerifier.create(asyncClient.createOrUpdateDataSourceConnectionWithResponse(original, true))
             .verifyErrorSatisfies(throwable -> {
                 HttpResponseException ex = assertInstanceOf(HttpResponseException.class, throwable);
                 assertEquals(HttpURLConnection.HTTP_PRECON_FAILED, ex.getResponse().getStatusCode());
             });
+
+        assertNotNull(originalETag);
+        assertNotNull(updatedETag);
+        assertNotEquals(originalETag, updatedETag);
     }
 
     @Test
@@ -620,14 +567,11 @@ public class DataSourceTests extends SearchTestBase {
     }
 
     @Test
-    public void getDataSourceThrowsOnNotFoundSync() {
+    public void getDataSourceThrowsOnNotFoundSyncAndAsync() {
         assertHttpResponseException(() -> client.getDataSourceConnection("thisdatasourcedoesnotexist"),
             HttpURLConnection.HTTP_NOT_FOUND,
             "No data source with the name 'thisdatasourcedoesnotexist' was found in service");
-    }
 
-    @Test
-    public void getDataSourceThrowsOnNotFoundAsync() {
         StepVerifier.create(asyncClient.getDataSourceConnection("thisdatasourcedoesnotexist"))
             .verifyErrorSatisfies(exception -> verifyHttpResponseError(exception, HttpURLConnection.HTTP_NOT_FOUND,
                 "No data source with the name 'thisdatasourcedoesnotexist' was found in service"));

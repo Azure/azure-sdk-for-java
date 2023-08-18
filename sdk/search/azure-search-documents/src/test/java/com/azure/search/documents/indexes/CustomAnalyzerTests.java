@@ -4,6 +4,7 @@ package com.azure.search.documents.indexes;
 
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.ExpandableStringEnum;
 import com.azure.search.documents.SearchAsyncClient;
 import com.azure.search.documents.SearchClient;
@@ -73,8 +74,9 @@ import com.azure.search.documents.indexes.models.UniqueTokenFilter;
 import com.azure.search.documents.indexes.models.WordDelimiterTokenFilter;
 import com.azure.search.documents.models.SearchOptions;
 import com.azure.search.documents.models.SearchResult;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 import reactor.core.publisher.Flux;
 import reactor.core.scheduler.Schedulers;
 import reactor.test.StepVerifier;
@@ -83,13 +85,10 @@ import java.lang.reflect.Field;
 import java.net.HttpURLConnection;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -100,6 +99,7 @@ import static com.azure.search.documents.TestHelpers.waitForIndexing;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
+@Execution(ExecutionMode.CONCURRENT)
 public class CustomAnalyzerTests extends SearchTestBase {
     private static final String NAME_PREFIX = "azsmnet";
 
@@ -131,22 +131,16 @@ public class CustomAnalyzerTests extends SearchTestBase {
     }
 
     @Test
-    public void canSearchWithCustomAnalyzerSync() {
+    public void canSearchWithCustomAnalyzerSyncAndAsync() {
         SearchClient searchClient = setupSearchIndexForCustomAnalyzerSearch(searchIndexClient::getSearchClient);
+        SearchAsyncClient searchAsyncClient = searchIndexAsyncClient.getSearchAsyncClient(searchClient.getIndexName());
 
         Iterator<SearchResult> iterator = searchClient
             .search("someone@somewhere.something", new SearchOptions(), Context.NONE)
             .iterator();
-        SearchResult searchResult = iterator.next();
 
-        Assertions.assertEquals("1", searchResult.getDocument(SearchDocument.class).get("id"));
+        assertEquals("1", iterator.next().getDocument(SearchDocument.class).get("id"));
         assertFalse(iterator.hasNext());
-    }
-
-    @Test
-    public void canSearchWithCustomAnalyzerAsync() {
-        SearchAsyncClient searchAsyncClient = setupSearchIndexForCustomAnalyzerSearch(
-            searchIndexAsyncClient::getSearchAsyncClient);
 
         StepVerifier.create(searchAsyncClient.search("someone@somewhere.something", new SearchOptions()))
             .assertNext(searchResult -> assertEquals("1", searchResult.getDocument(SearchDocument.class).get("id")))
@@ -207,58 +201,46 @@ public class CustomAnalyzerTests extends SearchTestBase {
     }
 
     @Test
-    public void canAnalyzeSync() {
+    public void canAnalyzeSyncAndAsync() {
         SearchIndex index = createTestIndex(null);
         searchIndexClient.createIndex(index);
         indexesToCleanup.add(index.getName());
 
         AnalyzeTextOptions request = new AnalyzeTextOptions("One two", LexicalAnalyzerName.WHITESPACE);
+
+        // sync
         PagedIterable<AnalyzedTokenInfo> results = searchIndexClient.analyzeText(index.getName(), request);
         Iterator<AnalyzedTokenInfo> iterator = results.iterator();
         assertTokenInfoEqual("One", 0, 3, 0, iterator.next());
         assertTokenInfoEqual("two", 4, 7, 1, iterator.next());
         assertFalse(iterator.hasNext());
 
+        // async
+        StepVerifier.create(searchIndexAsyncClient.analyzeText(index.getName(), request))
+            .assertNext(analyzedTokenInfo -> assertTokenInfoEqual("One", 0, 3, 0, analyzedTokenInfo))
+            .assertNext(analyzedTokenInfo -> assertTokenInfoEqual("two", 4, 7, 1, analyzedTokenInfo))
+            .verifyComplete();
+
+
         request = new AnalyzeTextOptions("One's <two/>", LexicalTokenizerName.WHITESPACE)
             .setTokenFilters(TokenFilterName.APOSTROPHE)
             .setCharFilters(CharFilterName.HTML_STRIP);
+
+        // sync
         results = searchIndexClient.analyzeText(index.getName(), request);
         // End offset is based on the original token, not the one emitted by the filters.
         iterator = results.iterator();
         assertTokenInfoEqual("One", 0, 5, 0, iterator.next());
         assertFalse(iterator.hasNext());
 
-        results = searchIndexClient.analyzeText(index.getName(), request, Context.NONE);
-        // End offset is based on the original token, not the one emitted by the filters.
-        iterator = results.iterator();
-        assertTokenInfoEqual("One", 0, 5, 0, iterator.next());
-        assertFalse(iterator.hasNext());
-    }
-
-    @Test
-    public void canAnalyzeAsync() {
-        SearchIndex index = createTestIndex(null);
-        searchIndexClient.createIndex(index);
-        indexesToCleanup.add(index.getName());
-
-        AnalyzeTextOptions request = new AnalyzeTextOptions("One two", LexicalAnalyzerName.WHITESPACE);
-        StepVerifier.create(searchIndexAsyncClient.analyzeText(index.getName(), request))
-            .assertNext(analyzedTokenInfo -> assertTokenInfoEqual("One", 0, 3, 0, analyzedTokenInfo))
-            .assertNext(analyzedTokenInfo -> assertTokenInfoEqual("two", 4, 7, 1, analyzedTokenInfo))
-            .verifyComplete();
-
-        request = new AnalyzeTextOptions("One's <two/>", LexicalTokenizerName.WHITESPACE)
-            .setTokenFilters(TokenFilterName.APOSTROPHE)
-            .setCharFilters(CharFilterName.HTML_STRIP);
-
-        // End offset is based on the original token, not the one emitted by the filters.
+        // async
         StepVerifier.create(searchIndexAsyncClient.analyzeText(index.getName(), request))
             .assertNext(analyzedTokenInfo -> assertTokenInfoEqual("One", 0, 5, 0, analyzedTokenInfo))
             .verifyComplete();
     }
 
     @Test
-    public void canAnalyzeWithAllPossibleNamesSync() {
+    public void canAnalyzeWithAllPossibleNamesSyncAndAsync() {
         SearchIndex index = createTestIndex(null);
         searchIndexClient.createIndex(index);
         indexesToCleanup.add(index.getName());
@@ -268,24 +250,17 @@ public class CustomAnalyzerTests extends SearchTestBase {
             .forEach(r -> searchIndexClient.analyzeText(index.getName(), r).forEach(ignored -> {
             }));
 
-        LEXICAL_TOKENIZER_NAMES.parallelStream()
-            .map(tn -> new AnalyzeTextOptions("One two", tn))
-            .forEach(r -> searchIndexClient.analyzeText(index.getName(), r).forEach(ignored -> {
-            }));
-    }
-
-    @Test
-    public void canAnalyzeWithAllPossibleNamesAsync() {
-        SearchIndex index = createTestIndex(null);
-        searchIndexClient.createIndex(index);
-        indexesToCleanup.add(index.getName());
-
         Flux.fromIterable(LEXICAL_ANALYZER_NAMES)
             .parallel()
             .runOn(Schedulers.boundedElastic())
             .flatMap(an -> searchIndexAsyncClient.analyzeText(index.getName(), new AnalyzeTextOptions("One two", an)))
             .then()
             .block();
+
+        LEXICAL_TOKENIZER_NAMES.parallelStream()
+            .map(tn -> new AnalyzeTextOptions("One two", tn))
+            .forEach(r -> searchIndexClient.analyzeText(index.getName(), r).forEach(ignored -> {
+            }));
 
         Flux.fromIterable(LEXICAL_TOKENIZER_NAMES)
             .parallel()
@@ -296,7 +271,7 @@ public class CustomAnalyzerTests extends SearchTestBase {
     }
 
     @Test
-    public void addingCustomAnalyzerThrowsHttpExceptionByDefaultSync() {
+    public void addingCustomAnalyzerThrowsHttpExceptionByDefaultSyncAndAsync() {
         SearchIndex index = createTestIndex(null).setAnalyzers(new StopAnalyzer("a1"));
         searchIndexClient.createIndex(index);
         indexesToCleanup.add(index.getName());
@@ -305,15 +280,6 @@ public class CustomAnalyzerTests extends SearchTestBase {
 
         assertHttpResponseException(() -> searchIndexClient.createOrUpdateIndex(index),
             HttpURLConnection.HTTP_BAD_REQUEST, "Index update not allowed because it would cause downtime.");
-    }
-
-    @Test
-    public void addingCustomAnalyzerThrowsHttpExceptionByDefaultAsync() {
-        SearchIndex index = createTestIndex(null).setAnalyzers(new StopAnalyzer("a1"));
-        searchIndexClient.createIndex(index);
-        indexesToCleanup.add(index.getName());
-
-        addAnalyzerToIndex(index, new StopAnalyzer("a2"));
 
         StepVerifier.create(searchIndexAsyncClient.createOrUpdateIndex(index))
             .verifyErrorSatisfies(exception -> verifyHttpResponseError(exception, HttpURLConnection.HTTP_BAD_REQUEST,
@@ -430,16 +396,11 @@ public class CustomAnalyzerTests extends SearchTestBase {
     }
 
     @Test
-    public void canUseAllRegexFlagsEmptyFlagsAnalyzerSync() {
+    public void canUseAllRegexFlagsEmptyFlagsAnalyzerSyncAndAsync() {
         SearchIndex index = createTestIndex(null).setAnalyzers(new PatternAnalyzer(generateName()).setFlags());
 
         assertHttpResponseException(() -> searchIndexClient.createIndex(index), HttpURLConnection.HTTP_BAD_REQUEST,
             "Values of property \\\"flags\\\" must belong to the set of allowed values");
-    }
-
-    @Test
-    public void canUseAllRegexFlagsEmptyFlagsAnalyzerAsync() {
-        SearchIndex index = createTestIndex(null).setAnalyzers(new PatternAnalyzer(generateName()).setFlags());
 
         StepVerifier.create(searchIndexAsyncClient.createIndex(index))
             .verifyErrorSatisfies(exception -> verifyHttpResponseError(exception, HttpURLConnection.HTTP_BAD_REQUEST,
@@ -473,16 +434,11 @@ public class CustomAnalyzerTests extends SearchTestBase {
     }
 
     @Test
-    public void canUseAllRegexFlagsEmptyFlagsTokenizerSync() {
+    public void canUseAllRegexFlagsEmptyFlagsTokenizerSyncAndAsync() {
         SearchIndex index = createTestIndex(null).setTokenizers(new PatternTokenizer(generateName()).setFlags());
 
         assertHttpResponseException(() -> searchIndexClient.createIndex(index), HttpURLConnection.HTTP_BAD_REQUEST,
             "Values of property \\\"flags\\\" must belong to the set of allowed values");
-    }
-
-    @Test
-    public void canUseAllRegexFlagsEmptyFlagsTokenizerAsync() {
-        SearchIndex index = createTestIndex(null).setTokenizers(new PatternTokenizer(generateName()).setFlags());
 
         StepVerifier.create(searchIndexAsyncClient.createIndex(index))
             .verifyErrorSatisfies(exception -> verifyHttpResponseError(exception, HttpURLConnection.HTTP_BAD_REQUEST,
@@ -670,7 +626,8 @@ public class CustomAnalyzerTests extends SearchTestBase {
                 .setAnalyzerName(allLexicalAnalyzerNames.get(i)));
         }
 
-        List<LexicalAnalyzerName> searchAnalyzersAndIndexAnalyzers = getAnalyzersAllowedForSearchAnalyzerAndIndexAnalyzer();
+        List<LexicalAnalyzerName> searchAnalyzersAndIndexAnalyzers =
+            getAnalyzersAllowedForSearchAnalyzerAndIndexAnalyzer();
 
         for (int i = 0; i < searchAnalyzersAndIndexAnalyzers.size(); i++) {
             SearchFieldDataType fieldType = (i % 2 == 0) ? SearchFieldDataType.STRING
@@ -723,43 +680,52 @@ public class CustomAnalyzerTests extends SearchTestBase {
      * Split an Index into indexes, each of which has a total analysis components count within the limit.
      */
     List<SearchIndex> splitIndex(SearchIndex index) {
-        Collection<List<LexicalAnalyzer>> analyzersLists = splitAnalysisComponents(index.getAnalyzers());
-        List<SearchIndex> indexes = analyzersLists
-            .stream()
-            .map(a -> createTestIndex(null).setAnalyzers(a)).collect(Collectors.toList());
+        List<SearchIndex> indices = new ArrayList<>();
 
-        splitAnalysisComponents(index.getTokenizers()).stream()
-            .map(t -> createTestIndex(null).setTokenizers(t))
-            .forEach(indexes::add);
+        for (List<LexicalAnalyzer> analyzerList : splitAnalysisComponents(index.getAnalyzers())) {
+            indices.add(createTestIndex(null).setAnalyzers(analyzerList));
+        }
 
-        splitAnalysisComponents(index.getTokenFilters()).stream()
-            .map(tf -> createTestIndex(null).setTokenFilters(tf))
-            .forEach(indexes::add);
+        for (List<LexicalTokenizer> tokenizerList : splitAnalysisComponents(index.getTokenizers())) {
+            indices.add(createTestIndex(null).setTokenizers(tokenizerList));
+        }
 
-        splitAnalysisComponents(index.getCharFilters()).stream()
-            .map(cf -> createTestIndex(null).setCharFilters(cf))
-            .forEach(indexes::add);
+        for (List<TokenFilter> tokenFilterList : splitAnalysisComponents(index.getTokenFilters())) {
+            indices.add(createTestIndex(null).setTokenFilters(tokenFilterList));
+        }
 
-        return indexes;
+        for (List<CharFilter> charFilterList : splitAnalysisComponents(index.getCharFilters())) {
+            indices.add(createTestIndex(null).setCharFilters(charFilterList));
+        }
+
+        return indices;
     }
 
     /**
      * Custom analysis components (analyzer/tokenzier/tokenFilter/charFilter) count in index must be between 0 and 50.
      * Split a list of analysis components into lists within the limit.
      */
-    private <T> Collection<List<T>> splitAnalysisComponents(List<T> list) {
+    private <T> List<List<T>> splitAnalysisComponents(List<T> list) {
         final int analysisComponentLimit = 50;
-        Collection<List<T>> lists = new HashSet<>();
+        List<List<T>> lists = new ArrayList<>();
 
-        if (list != null && !list.isEmpty()) {
-            if (list.size() > analysisComponentLimit) {
-                AtomicInteger counter = new AtomicInteger();
-                lists = list.stream()
-                    .collect(Collectors.groupingBy(it -> counter.getAndIncrement() / analysisComponentLimit))
-                    .values();
-            } else {
-                lists.add(list);
+        if (CoreUtils.isNullOrEmpty(list)) {
+            return lists;
+        }
+
+        if (list.size() > analysisComponentLimit) {
+            int subLists = list.size() / analysisComponentLimit;
+            int remainder = list.size() % analysisComponentLimit;
+
+            for (int i = 0; i < subLists; i++) {
+                lists.add(new ArrayList<>(list.subList(i * analysisComponentLimit, (i + 1) * analysisComponentLimit)));
             }
+
+            if (remainder > 0) {
+                lists.add(new ArrayList<>(list.subList(subLists * analysisComponentLimit, list.size())));
+            }
+        } else {
+            lists.add(list);
         }
 
         return lists;
@@ -1033,7 +999,7 @@ public class CustomAnalyzerTests extends SearchTestBase {
             ));
     }
 
-    void assertTokenInfoEqual(String expectedToken, Integer expectedStartOffset, Integer expectedEndOffset,
+    static void assertTokenInfoEqual(String expectedToken, Integer expectedStartOffset, Integer expectedEndOffset,
         Integer expectedPosition, AnalyzedTokenInfo actual) {
         assertEquals(expectedToken, actual.getToken());
         assertEquals(expectedStartOffset, actual.getStartOffset());
@@ -1041,11 +1007,11 @@ public class CustomAnalyzerTests extends SearchTestBase {
         assertEquals(expectedPosition, actual.getPosition());
     }
 
-    private String generateSimpleName(int n) {
-        return String.format("a%d", n);
+    private static String generateSimpleName(int n) {
+        return "a" + n;
     }
 
-    private List<LexicalAnalyzerName> getAnalyzersAllowedForSearchAnalyzerAndIndexAnalyzer() {
+    private static List<LexicalAnalyzerName> getAnalyzersAllowedForSearchAnalyzerAndIndexAnalyzer() {
         // Only non-language analyzer names can be set on the searchAnalyzer and indexAnalyzer properties.
         // ASSUMPTION: Only language analyzers end in .lucene or .microsoft.
         return LEXICAL_ANALYZER_NAMES.stream()
