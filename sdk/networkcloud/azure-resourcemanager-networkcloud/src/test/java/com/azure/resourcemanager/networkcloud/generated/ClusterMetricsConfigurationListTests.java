@@ -19,53 +19,49 @@ public final class ClusterMetricsConfigurationListTests {
         ClusterMetricsConfigurationList model =
             BinaryData
                 .fromString(
-                    "{\"nextLink\":\"bkiw\",\"value\":[{\"extendedLocation\":{\"name\":\"n\",\"type\":\"ophzfylsgcrp\"},\"properties\":{\"collectionInterval\":2804347969541145358,\"detailedStatus\":\"Error\",\"detailedStatusMessage\":\"zzcezelfwyfwlw\",\"disabledMetrics\":[],\"enabledMetrics\":[],\"provisioningState\":\"Failed\"},\"location\":\"psihcla\",\"tags\":{\"rsqqwztcm\":\"aylp\"},\"id\":\"qkc\",\"name\":\"cxwaxfewz\",\"type\":\"kjexfdeqvhp\"},{\"extendedLocation\":{\"name\":\"ylkkshkbffmbm\",\"type\":\"zjrgyww\"},\"properties\":{\"collectionInterval\":646490035612760857,\"detailedStatus\":\"Applied\",\"detailedStatusMessage\":\"ptfujgicgaaoept\",\"disabledMetrics\":[],\"enabledMetrics\":[],\"provisioningState\":\"Succeeded\"},\"location\":\"ewemxs\",\"tags\":{\"zjgehkfkim\":\"uun\",\"ffqyinlj\":\"tixo\",\"ixmonstshiyxg\":\"epqw\"},\"id\":\"elfclducc\",\"name\":\"irdsvuwcob\",\"type\":\"egstmninwjizci\"},{\"extendedLocation\":{\"name\":\"nghgshej\",\"type\":\"tbxqmuluxlxq\"},\"properties\":{\"collectionInterval\":4603582249541593699,\"detailedStatus\":\"Processing\",\"detailedStatusMessage\":\"bycucrwnamikz\",\"disabledMetrics\":[],\"enabledMetrics\":[],\"provisioningState\":\"Failed\"},\"location\":\"mswziq\",\"tags\":{\"vhczznvfby\":\"hokzrusw\"},\"id\":\"jsxjwwix\",\"name\":\"vumwmxqh\",\"type\":\"dvnoamldsehaohdj\"}]}")
+                    "{\"nextLink\":\"ucoig\",\"value\":[{\"extendedLocation\":{\"name\":\"ncnwfepbnwgf\",\"type\":\"xjg\"},\"properties\":{\"collectionInterval\":418211033576127424,\"detailedStatus\":\"Error\",\"detailedStatusMessage\":\"dlfgtdysnaq\",\"disabledMetrics\":[\"qbctqha\",\"zjrwdkqze\",\"yjleziunjx\",\"fza\"],\"enabledMetrics\":[\"wcegyamlbn\",\"eqacjjvpilguooq\",\"agmdit\"],\"provisioningState\":\"Failed\"},\"location\":\"ookjbsahrtdtpde\",\"tags\":{\"vcjkgd\":\"cslmotoebnfxo\"},\"id\":\"razftxejwabmdujt\",\"name\":\"vcopex\",\"type\":\"m\"},{\"extendedLocation\":{\"name\":\"urbuhhlkyqltq\",\"type\":\"rogtuwkf\"},\"properties\":{\"collectionInterval\":3058507501034191823,\"detailedStatus\":\"Processing\",\"detailedStatusMessage\":\"ysidfvclgl\",\"disabledMetrics\":[\"uijtkbu\",\"qogsfikayian\",\"haru\"],\"enabledMetrics\":[\"iqxf\"],\"provisioningState\":\"Canceled\"},\"location\":\"ttvwkpqh\",\"tags\":{\"cdlguauc\":\"nuygbqeqqekewvnq\",\"jwnlax\":\"f\"},\"id\":\"un\",\"name\":\"qikczvvita\",\"type\":\"gx\"}]}")
                 .toObject(ClusterMetricsConfigurationList.class);
-        Assertions.assertEquals("bkiw", model.nextLink());
-        Assertions.assertEquals("psihcla", model.value().get(0).location());
-        Assertions.assertEquals("aylp", model.value().get(0).tags().get("rsqqwztcm"));
-        Assertions.assertEquals("n", model.value().get(0).extendedLocation().name());
-        Assertions.assertEquals("ophzfylsgcrp", model.value().get(0).extendedLocation().type());
-        Assertions.assertEquals(2804347969541145358L, model.value().get(0).collectionInterval());
+        Assertions.assertEquals("ucoig", model.nextLink());
+        Assertions.assertEquals("ookjbsahrtdtpde", model.value().get(0).location());
+        Assertions.assertEquals("cslmotoebnfxo", model.value().get(0).tags().get("vcjkgd"));
+        Assertions.assertEquals("ncnwfepbnwgf", model.value().get(0).extendedLocation().name());
+        Assertions.assertEquals("xjg", model.value().get(0).extendedLocation().type());
+        Assertions.assertEquals(418211033576127424L, model.value().get(0).collectionInterval());
+        Assertions.assertEquals("wcegyamlbn", model.value().get(0).enabledMetrics().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ClusterMetricsConfigurationList model =
             new ClusterMetricsConfigurationList()
-                .withNextLink("bkiw")
+                .withNextLink("ucoig")
                 .withValue(
                     Arrays
                         .asList(
                             new ClusterMetricsConfigurationInner()
-                                .withLocation("psihcla")
-                                .withTags(mapOf("rsqqwztcm", "aylp"))
-                                .withExtendedLocation(new ExtendedLocation().withName("n").withType("ophzfylsgcrp"))
-                                .withCollectionInterval(2804347969541145358L)
-                                .withEnabledMetrics(Arrays.asList()),
+                                .withLocation("ookjbsahrtdtpde")
+                                .withTags(mapOf("vcjkgd", "cslmotoebnfxo"))
+                                .withExtendedLocation(new ExtendedLocation().withName("ncnwfepbnwgf").withType("xjg"))
+                                .withCollectionInterval(418211033576127424L)
+                                .withEnabledMetrics(Arrays.asList("wcegyamlbn", "eqacjjvpilguooq", "agmdit")),
                             new ClusterMetricsConfigurationInner()
-                                .withLocation("ewemxs")
-                                .withTags(mapOf("zjgehkfkim", "uun", "ffqyinlj", "tixo", "ixmonstshiyxg", "epqw"))
+                                .withLocation("ttvwkpqh")
+                                .withTags(mapOf("cdlguauc", "nuygbqeqqekewvnq", "jwnlax", "f"))
                                 .withExtendedLocation(
-                                    new ExtendedLocation().withName("ylkkshkbffmbm").withType("zjrgyww"))
-                                .withCollectionInterval(646490035612760857L)
-                                .withEnabledMetrics(Arrays.asList()),
-                            new ClusterMetricsConfigurationInner()
-                                .withLocation("mswziq")
-                                .withTags(mapOf("vhczznvfby", "hokzrusw"))
-                                .withExtendedLocation(
-                                    new ExtendedLocation().withName("nghgshej").withType("tbxqmuluxlxq"))
-                                .withCollectionInterval(4603582249541593699L)
-                                .withEnabledMetrics(Arrays.asList())));
+                                    new ExtendedLocation().withName("urbuhhlkyqltq").withType("rogtuwkf"))
+                                .withCollectionInterval(3058507501034191823L)
+                                .withEnabledMetrics(Arrays.asList("iqxf"))));
         model = BinaryData.fromObject(model).toObject(ClusterMetricsConfigurationList.class);
-        Assertions.assertEquals("bkiw", model.nextLink());
-        Assertions.assertEquals("psihcla", model.value().get(0).location());
-        Assertions.assertEquals("aylp", model.value().get(0).tags().get("rsqqwztcm"));
-        Assertions.assertEquals("n", model.value().get(0).extendedLocation().name());
-        Assertions.assertEquals("ophzfylsgcrp", model.value().get(0).extendedLocation().type());
-        Assertions.assertEquals(2804347969541145358L, model.value().get(0).collectionInterval());
+        Assertions.assertEquals("ucoig", model.nextLink());
+        Assertions.assertEquals("ookjbsahrtdtpde", model.value().get(0).location());
+        Assertions.assertEquals("cslmotoebnfxo", model.value().get(0).tags().get("vcjkgd"));
+        Assertions.assertEquals("ncnwfepbnwgf", model.value().get(0).extendedLocation().name());
+        Assertions.assertEquals("xjg", model.value().get(0).extendedLocation().type());
+        Assertions.assertEquals(418211033576127424L, model.value().get(0).collectionInterval());
+        Assertions.assertEquals("wcegyamlbn", model.value().get(0).enabledMetrics().get(0));
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

@@ -278,7 +278,7 @@ public final class NetworkCloudManager {
                 .append("-")
                 .append("com.azure.resourcemanager.networkcloud")
                 .append("/")
-                .append("1.0.0-beta.2");
+                .append("1.0.0");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder
                     .append(" (")
@@ -565,8 +565,10 @@ public final class NetworkCloudManager {
     }
 
     /**
-     * @return Wrapped service client NetworkCloud providing direct access to the underlying auto-generated API
-     *     implementation, based on Azure REST API.
+     * Gets wrapped service client NetworkCloud providing direct access to the underlying auto-generated API
+     * implementation, based on Azure REST API.
+     *
+     * @return Wrapped service client NetworkCloud.
      */
     public NetworkCloud serviceClient() {
         return this.clientObject;

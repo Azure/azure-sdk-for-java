@@ -31,7 +31,7 @@ public final class ClusterManagersGetByResourceGroupWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"analyticsWorkspaceId\":\"xtwbta\",\"availabilityZones\":[\"nyghshxcylhkgmn\",\"ghpxycphdr\"],\"clusterVersions\":[],\"detailedStatus\":\"Error\",\"detailedStatusMessage\":\"yomacluzvxnqm\",\"fabricControllerId\":\"rpqpd\",\"managedResourceGroupConfiguration\":{\"location\":\"kois\",\"name\":\"ssffxuifmc\"},\"managerExtendedLocation\":{\"name\":\"p\",\"type\":\"bkdq\"},\"provisioningState\":\"Provisioning\",\"vmSize\":\"sylollgtr\"},\"location\":\"zydmxzjijpvuaurk\",\"tags\":{\"c\":\"irldefxr\"},\"id\":\"xnbkkj\",\"name\":\"nurnnq\",\"type\":\"nqbpi\"}";
+            "{\"properties\":{\"analyticsWorkspaceId\":\"abhjx\",\"availabilityZones\":[\"weuipmpvksmi\",\"nsqxtltc\"],\"clusterVersions\":[{\"supportExpiryDate\":\"pqgfhyrfr\",\"targetClusterVersion\":\"kldgrcwfcmfc\"},{\"supportExpiryDate\":\"jajqmatxjt\",\"targetClusterVersion\":\"ln\"}],\"detailedStatus\":\"Error\",\"detailedStatusMessage\":\"xgfb\",\"fabricControllerId\":\"mtlpqagyno\",\"managedResourceGroupConfiguration\":{\"location\":\"n\",\"name\":\"ali\"},\"managerExtendedLocation\":{\"name\":\"ryqxzxa\",\"type\":\"zi\"},\"provisioningState\":\"Canceled\",\"vmSize\":\"miymqruqguhfupet\"},\"location\":\"vvoqsbpkf\",\"tags\":{\"syaowuzowp\":\"fkg\",\"ztiochluti\":\"ohdkcprgukx\",\"izcbfzmcrunfhiuc\":\"mqrud\",\"u\":\"mfbcpaqktkrum\"},\"id\":\"dkyzbfvxov\",\"name\":\"kxiuxqggvqr\",\"type\":\"hyhlwcjsqg\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,16 +62,16 @@ public final class ClusterManagersGetByResourceGroupWithResponseMockTests {
         ClusterManager response =
             manager
                 .clusterManagers()
-                .getByResourceGroupWithResponse("gmsplzgaufcshhv", "ewgnxkympqanxrj", com.azure.core.util.Context.NONE)
+                .getByResourceGroupWithResponse("vym", "nudn", com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals("zydmxzjijpvuaurk", response.location());
-        Assertions.assertEquals("irldefxr", response.tags().get("c"));
-        Assertions.assertEquals("xtwbta", response.analyticsWorkspaceId());
-        Assertions.assertEquals("nyghshxcylhkgmn", response.availabilityZones().get(0));
-        Assertions.assertEquals("rpqpd", response.fabricControllerId());
-        Assertions.assertEquals("kois", response.managedResourceGroupConfiguration().location());
-        Assertions.assertEquals("ssffxuifmc", response.managedResourceGroupConfiguration().name());
-        Assertions.assertEquals("sylollgtr", response.vmSize());
+        Assertions.assertEquals("vvoqsbpkf", response.location());
+        Assertions.assertEquals("fkg", response.tags().get("syaowuzowp"));
+        Assertions.assertEquals("abhjx", response.analyticsWorkspaceId());
+        Assertions.assertEquals("weuipmpvksmi", response.availabilityZones().get(0));
+        Assertions.assertEquals("mtlpqagyno", response.fabricControllerId());
+        Assertions.assertEquals("n", response.managedResourceGroupConfiguration().location());
+        Assertions.assertEquals("ali", response.managedResourceGroupConfiguration().name());
+        Assertions.assertEquals("miymqruqguhfupet", response.vmSize());
     }
 }

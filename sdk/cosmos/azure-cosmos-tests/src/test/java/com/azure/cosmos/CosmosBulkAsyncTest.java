@@ -63,7 +63,7 @@ public class CosmosBulkAsyncTest extends BatchTestBase {
         super(clientBuilder);
     }
 
-    @BeforeClass(groups = {"simple"}, timeOut = SETUP_TIMEOUT)
+    @BeforeClass(groups = {"simple", "split"}, timeOut = SETUP_TIMEOUT)
     public void before_CosmosBulkAsyncTest() {
         assertThat(this.bulkClient).isNull();
         ThrottlingRetryOptions throttlingOptions = new ThrottlingRetryOptions()
@@ -73,7 +73,7 @@ public class CosmosBulkAsyncTest extends BatchTestBase {
         bulkAsyncContainer = getSharedMultiPartitionCosmosContainer(this.bulkClient);
     }
 
-    @AfterClass(groups = {"simple"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
+    @AfterClass(groups = {"simple", "split"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
         safeClose(this.bulkClient);
     }
@@ -869,7 +869,7 @@ public class CosmosBulkAsyncTest extends BatchTestBase {
     }
 
     // tests preserving order in the regular retry flow and when a partition split happens
-    @Test(groups = { "simple" }, timeOut = TIMEOUT * 30, dataProvider = "faultInjectionProvider")
+    @Test(groups = { "split" }, timeOut = TIMEOUT * 30, dataProvider = "faultInjectionProvider")
     public void executeBulk_preserveOrdering_OnFaults(FaultInjectionRule rule) {
         int totalRequest = 100;
 

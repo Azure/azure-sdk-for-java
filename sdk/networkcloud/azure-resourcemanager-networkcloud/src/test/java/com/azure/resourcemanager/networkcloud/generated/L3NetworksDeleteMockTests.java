@@ -56,6 +56,6 @@ public final class L3NetworksDeleteMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.l3Networks().delete("zjd", "r", com.azure.core.util.Context.NONE);
+        manager.l3Networks().delete("yjmqrf", "iocuselqkr", com.azure.core.util.Context.NONE);
     }
 }

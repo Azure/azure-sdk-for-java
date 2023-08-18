@@ -45,7 +45,7 @@ public class ReadFeedOffersTest extends TestSuiteBase {
         super(clientBuilder);
     }
 
-    @Test(groups = { "emulator" }, timeOut = FEED_TIMEOUT)
+    @Test(groups = { "query" }, timeOut = FEED_TIMEOUT)
     public void readOffers() throws Exception {
 
         CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
@@ -66,7 +66,7 @@ public class ReadFeedOffersTest extends TestSuiteBase {
         validateQuerySuccess(feedObservable, validator, FEED_TIMEOUT);
     }
 
-    @BeforeClass(groups = { "emulator" }, timeOut = SETUP_TIMEOUT)
+    @BeforeClass(groups = { "query" }, timeOut = SETUP_TIMEOUT)
     public void before_ReadFeedOffersTest() {
         client = clientBuilder().build();
         createdDatabase = createDatabase(client, databaseId);
@@ -83,7 +83,7 @@ public class ReadFeedOffersTest extends TestSuiteBase {
                           .block();
     }
 
-    @AfterClass(groups = { "emulator" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
+    @AfterClass(groups = { "query" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
         safeDeleteDatabase(client, createdDatabase);
         safeClose(client);

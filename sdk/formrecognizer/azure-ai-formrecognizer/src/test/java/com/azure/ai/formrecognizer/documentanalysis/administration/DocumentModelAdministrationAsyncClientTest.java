@@ -26,6 +26,7 @@ import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.Response;
 import com.azure.core.models.ResponseError;
+import com.azure.core.test.annotation.RecordWithoutRequestBody;
 import com.azure.core.test.http.AssertingHttpClientBuilder;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.CoreUtils;
@@ -458,16 +459,6 @@ public class DocumentModelAdministrationAsyncClientTest extends DocumentModelAdm
     }
 
     /**
-     * Verifies that an exception is thrown for null model ID parameter.
-     */
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.formrecognizer.documentanalysis.TestUtils#getTestParameters")
-    public void getModelNullModelId(HttpClient httpClient, DocumentAnalysisServiceVersion serviceVersion) {
-        client = getDocumentModelAdminAsyncClient(httpClient, serviceVersion);
-        StepVerifier.create(client.getDocumentModel(null)).verifyError();
-    }
-
-    /**
      * Verifies document model info returned with response for a valid model ID.
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -531,6 +522,7 @@ public class DocumentModelAdministrationAsyncClientTest extends DocumentModelAdm
         }
     }
 
+    @RecordWithoutRequestBody
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.documentanalysis.TestUtils#getTestParameters")
     public void beginBuildClassifier(HttpClient httpClient,
@@ -561,15 +553,16 @@ public class DocumentModelAdministrationAsyncClientTest extends DocumentModelAdm
             DocumentClassifierDetails documentClassifierDetails = buildModelPoller.getFinalResult();
             validateClassifierModelData(buildModelPoller.getFinalResult());
             assertNotNull(documentClassifierDetails.getDocumentTypes());
-            // TODO (savaity) https://github.com/Azure/azure-sdk-for-java/issues/34472 Test proxy redaction issue
-            // documentClassifierDetails.getDocumentTypeDetails().forEach((s, classifierDocumentTypeDetails)
-            //     -> assertTrue(classifierDocumentTypeDetails.getAzureBlobSource().getContainerUrl().contains("training-data-classifier")));
+            documentClassifierDetails.getDocumentTypes().forEach((s, classifierDocumentTypeDetails)
+                -> assertTrue(((BlobContentSource) classifierDocumentTypeDetails.getContentSource())
+                .getContainerUrl().contains("training-data-classifier")));
         });
     }
 
     /**
      * Verifies the result of the training operation for a classifier with a valid training data set with jsonL files.
      */
+    @RecordWithoutRequestBody
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.documentanalysis.TestUtils#getTestParameters")
     public void beginBuildClassifierWithJsonL(HttpClient httpClient,
@@ -599,9 +592,9 @@ public class DocumentModelAdministrationAsyncClientTest extends DocumentModelAdm
                     .setPollInterval(durationTestMode).getSyncPoller();
             DocumentClassifierDetails documentClassifierDetails = buildModelPoller.getFinalResult();
             assertNotNull(documentClassifierDetails.getDocumentTypes());
-            // TODO (savaity) https://github.com/Azure/azure-sdk-for-java/issues/34472 Test proxy redaction issue
-            // documentClassifierDetails.getDocumentTypeDetails().forEach((s, classifierDocumentTypeDetails)
-            //     -> assertTrue(classifierDocumentTypeDetails.getAzureBlobFileListContentSource().getContainerUrl().contains("training-data-classifier")));
+            documentClassifierDetails.getDocumentTypes().forEach((s, classifierDocumentTypeDetails)
+                -> assertTrue(((BlobFileListContentSource) classifierDocumentTypeDetails.getContentSource())
+                .getContainerUrl().contains("training-data-classifier")));
 
             validateClassifierModelData(buildModelPoller.getFinalResult());
         });
