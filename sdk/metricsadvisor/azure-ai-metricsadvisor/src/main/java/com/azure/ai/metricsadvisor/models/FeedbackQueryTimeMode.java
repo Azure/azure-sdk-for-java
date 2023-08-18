@@ -8,21 +8,13 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** time mode to filter feedback. */
+/** Defines values for FeedbackQueryTimeMode. */
 public final class FeedbackQueryTimeMode extends ExpandableStringEnum<FeedbackQueryTimeMode> {
     /** Static value MetricTimestamp for FeedbackQueryTimeMode. */
     public static final FeedbackQueryTimeMode METRIC_TIMESTAMP = fromString("MetricTimestamp");
 
     /** Static value FeedbackCreatedTime for FeedbackQueryTimeMode. */
     public static final FeedbackQueryTimeMode FEEDBACK_CREATED_TIME = fromString("FeedbackCreatedTime");
-
-    /**
-     * Creates a new instance of FeedbackQueryTimeMode value.
-     *
-     * @deprecated Use the {@link #fromString(String)} factory method.
-     */
-    @Deprecated
-    public FeedbackQueryTimeMode() {}
 
     /**
      * Creates or finds a FeedbackQueryTimeMode from its string representation.
@@ -35,11 +27,7 @@ public final class FeedbackQueryTimeMode extends ExpandableStringEnum<FeedbackQu
         return fromString(name, FeedbackQueryTimeMode.class);
     }
 
-    /**
-     * Gets known FeedbackQueryTimeMode values.
-     *
-     * @return known FeedbackQueryTimeMode values.
-     */
+    /** @return known FeedbackQueryTimeMode values. */
     public static Collection<FeedbackQueryTimeMode> values() {
         return values(FeedbackQueryTimeMode.class);
     }

@@ -1,0 +1,26 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/metricsadvisor/v1.0/enrichment/anomalyDetection/configurations/78f3a4e7-fe53-4a05-9f4d-d724ab6c23a7/incidents/query?$maxpagesize=1000",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.2.0-beta.1 (11.0.9; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "44b95f23-efba-4029-b3c1-0ae7f1aa8cfb",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "x-request-id" : "26450c32-3cdd-45e9-a6fd-d628cad1dab5",
+      "content-length" : "947",
+      "x-envoy-upstream-service-time" : "556",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "26450c32-3cdd-45e9-a6fd-d628cad1dab5",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Body" : "{\"value\":[{\"incidentId\":\"88ecf25a0e6bd330ef9e7b49b7c5b92b-17f9f794800\",\"startTime\":\"2022-03-19T00:00:00Z\",\"lastTime\":\"2022-03-19T00:00:00Z\",\"rootNode\":{\"dimension\":{\"Dim1\":\"__SUM__\",\"Dim2\":\"__SUM__\"}},\"property\":{\"maxSeverity\":\"High\",\"incidentStatus\":\"Active\",\"valueOfRootNode\":97249.0,\"expectedValueOfRootNode\":80000.0}},{\"incidentId\":\"88ecf25a0e6bd330ef9e7b49b7c5b92b-17f8adfd800\",\"startTime\":\"2022-03-14T00:00:00Z\",\"lastTime\":\"2022-03-15T00:00:00Z\",\"rootNode\":{\"dimension\":{\"Dim1\":\"__SUM__\",\"Dim2\":\"__SUM__\"}},\"property\":{\"maxSeverity\":\"High\",\"incidentStatus\":\"Active\",\"valueOfRootNode\":83298.0,\"expectedValueOfRootNode\":80000.0}},{\"incidentId\":\"88ecf25a0e6bd330ef9e7b49b7c5b92b-17f71200c00\",\"startTime\":\"2022-03-10T00:00:00Z\",\"lastTime\":\"2022-03-10T00:00:00Z\",\"rootNode\":{\"dimension\":{\"Dim1\":\"__SUM__\",\"Dim2\":\"__SUM__\"}},\"property\":{\"maxSeverity\":\"High\",\"incidentStatus\":\"Active\",\"valueOfRootNode\":80214.0,\"expectedValueOfRootNode\":80000.0}}]}",
+      "Date" : "Fri, 08 Apr 2022 23:50:05 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}
