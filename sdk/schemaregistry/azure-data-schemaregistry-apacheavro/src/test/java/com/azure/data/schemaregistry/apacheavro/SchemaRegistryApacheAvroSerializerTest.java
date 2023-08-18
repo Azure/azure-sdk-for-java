@@ -6,20 +6,14 @@ package com.azure.data.schemaregistry.apacheavro;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
-import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpPipelineBuilder;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
+import com.azure.core.http.policy.HttpLogDetailLevel;
+import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.models.MessageContent;
-import com.azure.core.test.http.MockHttpResponse;
-import com.azure.core.test.models.NetworkCallRecord;
-import com.azure.core.test.models.RecordedData;
+import com.azure.core.test.InterceptorManager;
+import com.azure.core.test.TestContextManager;
+import com.azure.core.test.TestMode;
 import com.azure.core.util.BinaryData;
-import com.azure.core.util.Context;
-import com.azure.core.util.serializer.JacksonAdapter;
-import com.azure.core.util.serializer.SerializerAdapter;
-import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.core.util.serializer.TypeReference;
 import com.azure.data.schemaregistry.SchemaRegistryAsyncClient;
 import com.azure.data.schemaregistry.SchemaRegistryClientBuilder;
@@ -30,6 +24,7 @@ import com.azure.data.schemaregistry.apacheavro.generatedtestsources.PlayingCard
 import com.azure.data.schemaregistry.models.SchemaFormat;
 import com.azure.data.schemaregistry.models.SchemaProperties;
 import com.azure.data.schemaregistry.models.SchemaRegistrySchema;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import org.apache.avro.Schema;
 import org.apache.avro.SchemaBuilder;
 import org.apache.avro.generic.GenericData;
@@ -37,7 +32,10 @@ import org.apache.avro.generic.GenericRecordBuilder;
 import org.apache.avro.io.DecoderFactory;
 import org.apache.avro.io.EncoderFactory;
 import org.apache.avro.message.RawMessageEncoder;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInfo;
@@ -51,11 +49,9 @@ import reactor.test.StepVerifier;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.UncheckedIOException;
 import java.time.Duration;
 import java.time.OffsetDateTime;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Stream;
 
@@ -75,7 +71,6 @@ import static org.mockito.Mockito.when;
  * Unit tests for {@link SchemaRegistryApacheAvroSerializer}.
  */
 public class SchemaRegistryApacheAvroSerializerTest {
-    private static final SerializerAdapter SERIALIZER = JacksonAdapter.createDefaultSerializerAdapter();
     private static final int SCHEMA_ID_SIZE = 32;
 
     private static final String MOCK_GUID = new String(new char[SCHEMA_ID_SIZE]).replace("\0", "a");
@@ -84,11 +79,22 @@ public class SchemaRegistryApacheAvroSerializerTest {
     private static final DecoderFactory DECODER_FACTORY = DecoderFactory.get();
     private static final EncoderFactory ENCODER_FACTORY = EncoderFactory.get();
 
+    private InterceptorManager interceptorManager;
     private AutoCloseable mocksCloseable;
     private TestInfo testInfo;
 
     @Mock
     private SchemaRegistryAsyncClient client;
+
+    @BeforeAll
+    public static void beforeAll() {
+        StepVerifier.setDefaultTimeout(Duration.ofSeconds(30));
+    }
+
+    @AfterAll
+    public static void afterAll() {
+        StepVerifier.resetDefaultTimeout();
+    }
 
     @BeforeEach
     public void beforeEach(TestInfo testInfo) {
@@ -103,6 +109,10 @@ public class SchemaRegistryApacheAvroSerializerTest {
 
     @AfterEach
     public void afterEach() throws Exception {
+        if (interceptorManager != null) {
+            interceptorManager.close();
+        }
+
         if (mocksCloseable != null) {
             mocksCloseable.close();
         }
@@ -323,7 +333,7 @@ public class SchemaRegistryApacheAvroSerializerTest {
             .set("favourite_colour", expectedColour)
             .build();
 
-        final SchemaRegistryAsyncClient client = getSchemaRegistryClient();
+        final SchemaRegistryAsyncClient client = getSchemaRegistryClient(testInfo, TestMode.PLAYBACK);
         final SchemaRegistryApacheAvroSerializer serializer = new SchemaRegistryApacheAvroSerializerBuilder()
             .schemaGroup(PLAYBACK_TEST_GROUP)
             .schemaRegistryClient(client)
@@ -349,7 +359,7 @@ public class SchemaRegistryApacheAvroSerializerTest {
     @Test
     public void serializeForwardCompatibility() {
         // Arrange
-        final SchemaRegistryAsyncClient client = getSchemaRegistryClient();
+        final SchemaRegistryAsyncClient client = getSchemaRegistryClient(testInfo, TestMode.PLAYBACK);
         final SchemaRegistryApacheAvroSerializer serializer = new SchemaRegistryApacheAvroSerializerBuilder()
             .schemaGroup(PLAYBACK_TEST_GROUP)
             .schemaRegistryClient(client)
@@ -436,66 +446,6 @@ public class SchemaRegistryApacheAvroSerializerTest {
             .verify();
     }
 
-    /**
-     * Creates the schema registry client that returns mocked records.
-     *
-     * @return Corresponding SchemaRegistryAsyncClient.
-     */
-    private SchemaRegistryAsyncClient getSchemaRegistryClient() {
-        final String resourceName = "/compat/" + testInfo.getTestMethod().get().getName() + ".json";
-
-        final RecordedData recordedData;
-        try (InputStream stream = SchemaRegistryApacheAvroSerializerTest.class.getResourceAsStream(resourceName)) {
-            recordedData = SERIALIZER.deserialize(stream, RecordedData.class, SerializerEncoding.JSON);
-        } catch (IOException e) {
-            throw new UncheckedIOException("Unable to get resource input stream for: " + resourceName, e);
-        }
-
-        final TokenCredential tokenCredential = mock(TokenCredential.class);
-
-        // Sometimes it throws an "NotAMockException", so we had to change from thenReturn to thenAnswer.
-        when(tokenCredential.getToken(any(TokenRequestContext.class)))
-            .thenAnswer(invocationOnMock -> Mono.fromCallable(() ->
-                new AccessToken("foo", OffsetDateTime.now().plusMinutes(20))));
-
-        final HttpClient mockedHttpClient = setupHttpClient(recordedData);
-
-        final SchemaRegistryClientBuilder builder = new SchemaRegistryClientBuilder()
-            .credential(tokenCredential)
-            .pipeline(new HttpPipelineBuilder().httpClient(mockedHttpClient).build())
-            .fullyQualifiedNamespace(PLAYBACK_ENDPOINT);
-
-        return builder.buildAsyncClient();
-    }
-
-    private static HttpClient setupHttpClient(RecordedData recordedData) {
-        final AtomicInteger counted = new AtomicInteger();
-        final HttpClient httpClientMock = mock(HttpClient.class);
-
-        when(httpClientMock.send(any(), any(Context.class))).thenAnswer(invocationOnMock -> {
-            final HttpRequest request = invocationOnMock.getArgument(0);
-            final NetworkCallRecord networkRecord = recordedData.findFirstAndRemoveNetworkCall(e -> {
-                return true;
-            });
-
-            final String body = networkRecord.getResponse().remove("Body");
-            final String statusCodeMessage = networkRecord.getResponse().remove("StatusCode");
-            final int statusCode = Integer.parseInt(statusCodeMessage);
-
-            final HttpHeaders headers = new HttpHeaders(networkRecord.getResponse());
-
-            if (body == null) {
-                System.out.println("Body is empty.");
-                return Mono.just(new MockHttpResponse(request, statusCode, headers, new byte[0]));
-            } else {
-                final HttpResponse response = new MockHttpResponse(request, statusCode, headers, body);
-                return Mono.just(response);
-            }
-        });
-
-        return httpClientMock;
-    }
-
     private static MockMessage getPayload(PlayingCard card) throws IOException {
         final MockMessage message = new MockMessage();
         message.setContentType(AVRO_MIME_TYPE + "+" + MOCK_GUID);
@@ -511,6 +461,56 @@ public class SchemaRegistryApacheAvroSerializerTest {
         }
 
         return message;
+    }
+
+    /**
+     * Creates the schema registry client based on the test mode.
+     *
+     * @param testInfo Information about current test.
+     * @param testMode Test mode
+     *
+     * @return Corresponding SchemaRegistryAsyncClient.
+     */
+    private SchemaRegistryAsyncClient getSchemaRegistryClient(TestInfo testInfo, TestMode testMode) {
+        final TestContextManager testContextManager = new TestContextManager(testInfo.getTestMethod().get(), testMode);
+        try {
+            interceptorManager = new InterceptorManager(testContextManager);
+        } catch (UncheckedIOException e) {
+            Assertions.fail(e);
+            throw e;
+        }
+
+        TokenCredential tokenCredential;
+        String endpoint;
+        if (testMode == TestMode.PLAYBACK) {
+            tokenCredential = mock(TokenCredential.class);
+
+            // Sometimes it throws an "NotAMockException", so we had to change from thenReturn to thenAnswer.
+            when(tokenCredential.getToken(any(TokenRequestContext.class)))
+                .thenAnswer(invocationOnMock -> Mono.fromCallable(() ->
+                    new AccessToken("foo", OffsetDateTime.now().plusMinutes(20))));
+
+            endpoint = PLAYBACK_ENDPOINT;
+        } else {
+            tokenCredential = new DefaultAzureCredentialBuilder().build();
+            endpoint = System.getenv(SchemaRegistryApacheAvroSerializerIntegrationTest.SCHEMA_REGISTRY_ENDPOINT);
+
+            assertNotNull(endpoint, "'endpoint' cannot be null in LIVE/RECORD mode.");
+        }
+
+        final SchemaRegistryClientBuilder builder = new SchemaRegistryClientBuilder()
+            .credential(tokenCredential)
+            .fullyQualifiedNamespace(endpoint);
+
+        if (testMode == TestMode.PLAYBACK) {
+            builder.httpClient(interceptorManager.getPlaybackClient());
+        } else {
+            builder.addPolicy(new RetryPolicy())
+                .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
+                .addPolicy(interceptorManager.getRecordPolicy());
+        }
+
+        return builder.buildAsyncClient();
     }
 
     /**
