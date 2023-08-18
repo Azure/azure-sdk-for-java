@@ -32,7 +32,7 @@ jobs:
         displayName: 'Run tests'
         inputs:
           options: '$(DefaultOptions) -ntp -T ${{parameters.BuildParallelization}} ${{parameters.SkipOptions}}'
-          mavenPomFile: sdk/spring/pom.xml
+          mavenPomFile: sdk/spring/spring-cloud-azure-starter-monitor-test/pom.xml
           mavenOptions: '$(MemoryOptions)'
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: $(JavaTestVersion)
