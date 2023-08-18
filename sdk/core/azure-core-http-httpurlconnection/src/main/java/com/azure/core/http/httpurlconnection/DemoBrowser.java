@@ -2,6 +2,7 @@ package com.azure.core.http.httpurlconnection;
 
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
+import com.azure.core.http.HttpRequest;
 
 import javax.swing.*;
 import java.awt.*;
@@ -54,7 +55,7 @@ public class DemoBrowser implements ActionListener {
         f.setVisible(true);
     }
 
-    static void loadPage(HttpResponse response) {
+    static void loadPage(HttpUrlConnectionResponse response) {
         jep.setContentType("text/html");
 
         response.getBodyAsByteArray()
@@ -84,7 +85,7 @@ public class DemoBrowser implements ActionListener {
                 throw new RuntimeException(ex);
             }
             request.setHeaders(new HttpHeaders());
-            HttpResponse response = httpClient.send(request);
+            HttpUrlConnectionResponse response = (HttpUrlConnectionResponse) httpClient.send(request).block();
 
             loadPage(response);
         }
@@ -101,7 +102,7 @@ public class DemoBrowser implements ActionListener {
             request.setHeaders(new HttpHeaders());
             request.setBody("{\"username\": \"CraigM\", \"password\": \"asdf1234\"}");
 
-            HttpResponse response = httpClient.send(request);
+            HttpUrlConnectionResponse response = (HttpUrlConnectionResponse) httpClient.send(request).block();
 
             loadPage(response);
         }

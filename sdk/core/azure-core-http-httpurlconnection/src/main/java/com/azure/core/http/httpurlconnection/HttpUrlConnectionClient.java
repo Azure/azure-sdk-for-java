@@ -1,8 +1,6 @@
 package com.azure.core.http.httpurlconnection;
 
-import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpMethod;
+import com.azure.core.http.*;
 import com.azure.core.util.Context;
 import reactor.core.publisher.Mono;
 
@@ -17,30 +15,38 @@ public class HttpUrlConnectionClient implements HttpClient {
     public HttpUrlConnectionClient(HttpRequest request) {
         this.setRequest(request);
     }
+
     public HttpUrlConnectionClient(){}
 
     public void setRequest(HttpRequest request) {
         this.request = request;
     }
 
-    public HttpResponse send() {
-        return this.send(this.request);
+    public Mono<HttpResponse> send() {
+        return send(this.request);
     }
 
-    public HttpResponse send(HttpRequest httpRequest) {
-        // Pull out the HTTP Method, as we check it in multiple places
+    @Override
+    public Mono<HttpResponse> send(HttpRequest httpRequest) {
+        return Mono.fromCallable(() -> sendSynchronous(httpRequest));
+    }
+
+    @Override
+    public HttpResponse sendSync(HttpRequest httpRequest, Context context) {
+        return sendSynchronous(httpRequest);
+    }
+
+    public HttpResponse sendSynchronous(HttpRequest httpRequest) {
         HttpMethod httpMethod = httpRequest.getHttpMethod();
 
-        // For PATCH requests, use the Socket client
-        if(httpMethod == HttpMethod.PATCH) {
+        if (httpMethod == HttpMethod.PATCH) {
             try {
-                /*return*/ new SocketClient(httpRequest.getUrl().toString()).sendPatchRequest(httpRequest);
+                new SocketClient(httpRequest.getUrl().toString()).sendPatchRequest(httpRequest);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
         }
 
-        // Create a URL object for use with HttpUrlConnection
         URL url;
         try {
             url = new URL(httpRequest.getUrl().toString());
@@ -48,49 +54,34 @@ public class HttpUrlConnectionClient implements HttpClient {
             throw new RuntimeException(e);
         }
 
-        // Setup an HTTP Connection based on the current URL protocol
         try {
             this.connection = (HttpURLConnection) url.openConnection();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
 
-        // Set the request method (this will be anything except for PATCH)
         try {
             this.connection.setRequestMethod(httpMethod.toString());
         } catch (ProtocolException e) {
             throw new RuntimeException(e);
         }
 
-        // TODO: Handle headers
+        for (HttpHeader header : httpRequest.getHeaders()) {
+            this.connection.setRequestProperty(header.getName(), header.getValue());
+        }
 
-        // If it's not a GET request, set Output mode to True
-        if(httpMethod != HttpMethod.GET)
+        if (httpMethod != HttpMethod.GET)
             this.connection.setDoOutput(true);
 
-        // TODO: Should the above and below be the same if statement?
-        // Need to double check if the only data-carrying request is POST.
-
-        // For POST queries, we need to send the body of the request via an output stream
-        if(httpMethod == HttpMethod.POST)
+        if (httpMethod == HttpMethod.POST || httpMethod == HttpMethod.PUT || httpMethod == HttpMethod.PATCH)
             writeStream(httpRequest);
 
-        // Check the HTTP Response Code
-        // This also sends the query
-        int responseCode = getResponseCode();
-
-        // Fetch any sent response.
-        byte[] responseBody = readStream().toByteArray();
-
-        // Testing debug output TODO: remove
-//        System.out.println(new String(responseBody, StandardCharsets.UTF_8));
-
-        // Return a HTTP Response with all the information we've received back.
-        return new HttpResponse(
+        // Return a HttpResponse
+        return new HttpUrlConnectionResponse(
             httpRequest,
             httpRequest.getHeaders(),
-            responseCode,
-            responseBody
+            getResponseCode(),
+            readStream().toByteArray()
         );
     }
 
@@ -161,38 +152,10 @@ public class HttpUrlConnectionClient implements HttpClient {
         }
     }
 
-    /**
-     * Send the provided request asynchronously.
-     *
-     * @param request The HTTP request to send.
-     * @return A {@link Mono} that emits the response asynchronously.
-     */
-    @Override
-    public Mono<com.azure.core.http.HttpResponse> send(com.azure.core.http.HttpRequest request) {
-        return null;
-    }
 
-    /**
-     * Sends the provided request asynchronously with contextual information.
-     *
-     * @param request The HTTP request to send.
-     * @param context Contextual information about the request.
-     * @return A {@link Mono} that emits the response asynchronously.
-     */
     @Override
-    public Mono<com.azure.core.http.HttpResponse> send(com.azure.core.http.HttpRequest request, Context context) {
+    public Mono<HttpResponse> send(HttpRequest request, Context context) {
         return HttpClient.super.send(request, context);
     }
 
-    /**
-     * Sends the provided request synchronously with contextual information.
-     *
-     * @param request The HTTP request to send.
-     * @param context Contextual information about the request.
-     * @return The response.
-     */
-    @Override
-    public com.azure.core.http.HttpResponse sendSync(com.azure.core.http.HttpRequest request, Context context) {
-        return HttpClient.super.sendSync(request, context);
-    }
 }

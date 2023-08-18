@@ -3,6 +3,7 @@ package com.azure.core.http.httpurlconnection;
 import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
+import com.azure.core.http.HttpRequest;
 
 import javax.net.ssl.SSLSocket;
 import javax.net.ssl.SSLSocketFactory;
@@ -35,7 +36,7 @@ public class SocketClient {
         this(host, 443, null, null);
     }
 
-    public HttpResponse sendPatchRequest(HttpRequest httpRequest) throws IOException {
+    public HttpUrlConnectionResponse sendPatchRequest(HttpRequest httpRequest) throws IOException {
         if (httpRequest.getUrl().getProtocol().equals("https")) {
             SSLSocketFactory sslSocketFactory = (SSLSocketFactory) SSLSocketFactory.getDefault();
             try (SSLSocket socket = (SSLSocket) sslSocketFactory.createSocket(host, port)) {
@@ -53,7 +54,7 @@ public class SocketClient {
         throw new ProtocolException("Only HTTP and HTTPS are supported by this client.");
     }
 
-    private HttpResponse doInputOutput(HttpRequest httpRequest, Socket socket) throws IOException {
+    private HttpUrlConnectionResponse doInputOutput(HttpRequest httpRequest, Socket socket) throws IOException {
         String request = buildPatchRequest(httpRequest);
 
         BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
@@ -62,7 +63,7 @@ public class SocketClient {
         outputStreamWriter.write(request);
         outputStreamWriter.flush();
 
-        HttpResponse response = buildResponse(httpRequest, in);
+        HttpUrlConnectionResponse response = buildResponse(httpRequest, in);
 
         out.close();
         in.close();
@@ -107,7 +108,7 @@ public class SocketClient {
     }
 
     // This method reads the response line by line and constructs an HttpResponse object
-    private HttpResponse buildResponse(HttpRequest request, BufferedReader reader) throws IOException {
+    private HttpUrlConnectionResponse buildResponse(HttpRequest request, BufferedReader reader) throws IOException {
         // Read the first line as the status line
         String statusLine = reader.readLine();
         // Extract the status code from the status line
@@ -133,6 +134,6 @@ public class SocketClient {
         // Convert the body String to a byte array needed for the HttpResponse
         byte[] body = bodyString.toString().getBytes();
 
-        return new HttpResponse(request, headers, statusCode, body);
+        return new HttpUrlConnectionResponse(request, headers, statusCode, body);
     }
 }
