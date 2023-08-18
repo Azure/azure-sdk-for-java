@@ -1,0 +1,48 @@
+{
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED//subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/resourceGroups/srnagar-azuresdkgroup/providers/Microsoft.CognitiveServices/accounts/srnagara-textanalytics/providers/microsoft.insights/metricNamespaces?api-version=2017-12-01-preview",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "Date": "Tue, 18 Apr 2023 18:01:14 GMT",
+        "User-Agent": "azsdk-java-azure-monitor-query/1.2.0-beta.1 (17.0.2; Windows 11; 10.0)",
+        "x-ms-client-request-id": "2dfcd4f4-e98b-4295-928d-95f759aa46a9"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Access-Control-Allow-Origin": "*",
+        "Cache-Control": "no-cache",
+        "Content-Length": "457",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Tue, 18 Apr 2023 18:01:15 GMT",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Request-Context": "appId=cid-v1:b021da79-5252-4375-9df5-2e17c1dcd822",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "27b776e7-3fcb-4721-9dc4-7c1b158e4c61",
+        "x-ms-ratelimit-remaining-subscription-reads": "11993",
+        "x-ms-request-id": "{27b776e7-3fcb-4721-9dc4-7c1b158e4c61}",
+        "x-ms-routing-request-id": "WESTUS2:20230418T180115Z:27b776e7-3fcb-4721-9dc4-7c1b158e4c61"
+      },
+      "ResponseBody": {
+        "value": [
+          {
+            "id": "/subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/resourceGroups/srnagar-azuresdkgroup/providers/Microsoft.CognitiveServices/accounts/srnagara-textanalytics/providers/microsoft.insights/metricNamespaces/microsoft.cognitiveservices-accounts",
+            "name": "microsoft.cognitiveservices-accounts",
+            "type": "Microsoft.Insights/metricNamespaces",
+            "classification": "Platform",
+            "properties": {
+              "metricNamespaceName": "microsoft.cognitiveservices/accounts"
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "Variables": {}
+}
