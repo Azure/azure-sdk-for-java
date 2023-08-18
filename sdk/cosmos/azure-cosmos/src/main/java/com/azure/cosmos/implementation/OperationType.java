@@ -3,6 +3,9 @@
 
 package com.azure.cosmos.implementation;
 
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * Operation types in the Azure Cosmos DB database service.
  */
@@ -43,23 +46,31 @@ public enum OperationType {
     Patch,
     Upsert;
 
+    private static final Set<OperationType> writeOperationTypes = new HashSet<>() {{
+        add(Create);
+        add(Delete);
+        add(Recreate);
+        add(ExecuteJavaScript);
+        add(Replace);
+        add(Upsert);
+        add(Patch);
+        add(Batch);
+    }};
+
+    private static final Set<OperationType> pointOperationTypes = new HashSet<>() {{
+        add(Create);
+        add(Delete);
+        add(Replace);
+        add(Upsert);
+        add(Patch);
+        add(Read);
+    }};
+
     public boolean isWriteOperation() {
-        return this == Create ||
-                this == Delete ||
-                this == Recreate ||
-                this == ExecuteJavaScript ||
-                this == Replace ||
-                this == Upsert ||
-                this == Patch ||
-                this == Batch;
+        return writeOperationTypes.contains(this);
     }
 
     public boolean isPointOperation() {
-        return this == Create ||
-            this == Delete ||
-            this == Replace ||
-            this == Upsert ||
-            this == Patch ||
-            this == Read;
+        return pointOperationTypes.contains(this);
     }
 }

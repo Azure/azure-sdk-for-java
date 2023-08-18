@@ -287,7 +287,9 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
         if (!this.closingExceptionally) {
             this.completeAllPendingRequestsExceptionally(context, ON_CHANNEL_UNREGISTERED);
         } else {
-            logger.debug("{} channelUnregistered exceptionally", context);
+            if (logger.isDebugEnabled()) {
+                logger.debug("{} channelUnregistered exceptionally", context);
+            }
         }
 
         context.fireChannelUnregistered();
@@ -494,7 +496,9 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
         if (!this.closingExceptionally) {
             this.completeAllPendingRequestsExceptionally(context, ON_CLOSE);
         } else {
-            logger.debug("{} closed exceptionally", context);
+            if (logger.isDebugEnabled()) {
+                logger.debug("{} closed exceptionally", context);
+            }
         }
 
         final SslHandler sslHandler = context.pipeline().get(SslHandler.class);
@@ -513,9 +517,11 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
                 // Reducing the noise level here because multiple concurrent closes can happen due to race conditions
                 // and there is no harm in this case
                 if (exception instanceof SSLException) {
-                    logger.debug(
-                        "SslException when attempting to close the outbound SSL connection: ",
-                        exception);
+                    if (logger.isDebugEnabled()) {
+                        logger.debug(
+                            "SslException when attempting to close the outbound SSL connection: ",
+                            exception);
+                    }
                 } else {
                     logger.warn(
                         "Exception when attempting to close the outbound SSL connection: ",
@@ -560,7 +566,9 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
         if (!this.closingExceptionally) {
             this.completeAllPendingRequestsExceptionally(context, ON_DEREGISTER);
         } else {
-            logger.debug("{} deregistered exceptionally", context);
+            if (logger.isDebugEnabled()) {
+                logger.debug("{} deregistered exceptionally", context);
+            }
         }
 
         context.deregister(promise);
@@ -965,7 +973,9 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
         final RntbdRequestRecord requestRecord = this.pendingRequests.get(transportRequestId);
 
         if (requestRecord == null) {
-            logger.debug("response {} ignored because its requestRecord is missing: {}", transportRequestId, response);
+            if (logger.isDebugEnabled()) {
+                logger.debug("response {} ignored because its requestRecord is missing: {}", transportRequestId, response);
+            }
             return;
         }
 
@@ -1195,7 +1205,9 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
     }
 
     private void traceOperation(final ChannelHandlerContext context, final String operationName, final Object... args) {
-        logger.trace("{}\n{}\n{}", operationName, context, args);
+        if (logger.isTraceEnabled()) {
+            logger.trace("{}\n{}\n{}", operationName, context, args);
+        }
     }
 
     // endregion

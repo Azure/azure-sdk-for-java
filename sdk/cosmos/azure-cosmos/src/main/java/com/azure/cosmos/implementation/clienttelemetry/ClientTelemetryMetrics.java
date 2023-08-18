@@ -283,20 +283,16 @@ public final class ClientTelemetryMetrics {
         }
 
         if (metricTagNames.contains(TagName.Container)) {
-            String containerTagValue = String.format(
-                "%s/%s/%s",
-                escape(accountTagValue),
-                databaseId != null ? escape(databaseId) : "NONE",
-                containerId != null ? escape(containerId) : "NONE"
-            );
-
+            databaseId = databaseId != null ? escape(databaseId) : "NONE";
+            containerId = containerId != null ? escape(containerId) : "NONE";
+            String containerTagValue = escape(accountTagValue) + "/" + databaseId + "/" + containerId;
             effectiveTags.add(Tag.of(TagName.Container.toString(), containerTagValue));
         }
 
         if (metricTagNames.contains(TagName.Operation)) {
             String operationTagValue = !isPointOperation && !Strings.isNullOrWhiteSpace(operationId)
-                ? String.format("%s/%s/%s", resourceType, operationType, escape(operationId))
-                : String.format("%s/%s", resourceType, operationType);
+                ? resourceType + "/" + operationType + "/" + escape(operationId)
+                : resourceType + "/" + operationType;
 
             effectiveTags.add(Tag.of(TagName.Operation.toString(), operationTagValue));
         }
@@ -636,13 +632,13 @@ public final class ClientTelemetryMetrics {
             if (metricTagNames.contains(TagName.RequestStatusCode)) {
                 effectiveTags.add(Tag.of(
                     TagName.RequestStatusCode.toString(),
-                    String.format("%d/%d", statusCode, subStatusCode)));
+                    statusCode + "/" + subStatusCode));
             }
 
             if (metricTagNames.contains(TagName.RequestOperationType)) {
                 effectiveTags.add(Tag.of(
                     TagName.RequestOperationType.toString(),
-                    String.format("%s/%s", resourceType, operationType)));
+                    resourceType + "/" + operationType));
             }
 
             if (metricTagNames.contains(TagName.RegionName)) {
@@ -702,10 +698,7 @@ public final class ClientTelemetryMetrics {
             if (metricTagNames.contains(TagName.RequestOperationType)) {
                 effectiveTags.add(Tag.of(
                     TagName.RequestOperationType.toString(),
-                    String.format(
-                        "%s/%s",
-                        ResourceType.DocumentCollection,
-                        OperationType.QueryPlan)));
+                    ResourceType.DocumentCollection + "/" + OperationType.QueryPlan));
             }
 
             return Tags.of(effectiveTags);
@@ -823,7 +816,7 @@ public final class ClientTelemetryMetrics {
 
                 Timer eventMeter = Timer
                     .builder(timelineOptions.getMeterName().toString() + "." + escape(event.getName()))
-                    .description(String.format("Request timeline (%s)", event.getName()))
+                    .description("Request timeline (" + event.getName() + ")")
                     .maximumExpectedValue(Duration.ofSeconds(300))
                     .publishPercentiles(timelineOptions.getPercentiles())
                     .publishPercentileHistogram(timelineOptions.isHistogramPublishingEnabled())
