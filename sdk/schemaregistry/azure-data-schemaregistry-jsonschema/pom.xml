@@ -19,7 +19,7 @@
   <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-data-schemaregistry-jsonschema;current} -->
 
   <name>Microsoft Azure client library for Schema Registry JSON Schema Serializer</name>
-  <description>NetworkNT JSON Schema serializer for Azure Schema Registry client library</description>
+  <description>JSON Schema serializer for Azure Schema Registry client library</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
   <distributionManagement>
@@ -55,19 +55,6 @@
       <groupId>com.azure</groupId>
       <artifactId>azure-data-schemaregistry</artifactId>
       <version>1.4.0-beta.3</version> <!-- {x-version-update;com.azure:azure-data-schemaregistry;current} -->
-    </dependency>
-
-    <!-- Explicitly stating these because org.apache.avro uses an older version of jackson which is resolved since it
-      is close to the root for dependencies. -->
-    <dependency>
-      <groupId>com.fasterxml.jackson.core</groupId>
-      <artifactId>jackson-core</artifactId>
-      <version>2.13.5</version> <!-- {x-version-update;com.fasterxml.jackson.core:jackson-core;external_dependency} -->
-    </dependency>
-    <dependency>
-      <groupId>com.fasterxml.jackson.core</groupId>
-      <artifactId>jackson-databind</artifactId>
-      <version>2.13.5</version> <!-- {x-version-update;com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
     </dependency>
 
     <!-- Test dependencies -->
