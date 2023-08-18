@@ -56,6 +56,6 @@ public final class VolumesDeleteMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.volumes().delete("wvbhlimbyq", "crood", com.azure.core.util.Context.NONE);
+        manager.volumes().delete("rehkunsbfjhh", "w", com.azure.core.util.Context.NONE);
     }
 }

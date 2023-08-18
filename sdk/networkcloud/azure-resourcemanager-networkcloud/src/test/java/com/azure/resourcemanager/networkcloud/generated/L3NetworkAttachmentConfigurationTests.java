@@ -15,11 +15,11 @@ public final class L3NetworkAttachmentConfigurationTests {
     public void testDeserialize() throws Exception {
         L3NetworkAttachmentConfiguration model =
             BinaryData
-                .fromString("{\"ipamEnabled\":\"True\",\"networkId\":\"dagxtibqd\",\"pluginType\":\"DPDK\"}")
+                .fromString("{\"ipamEnabled\":\"True\",\"networkId\":\"xhnrztfolhb\",\"pluginType\":\"SRIOV\"}")
                 .toObject(L3NetworkAttachmentConfiguration.class);
         Assertions.assertEquals(L3NetworkConfigurationIpamEnabled.TRUE, model.ipamEnabled());
-        Assertions.assertEquals("dagxtibqd", model.networkId());
-        Assertions.assertEquals(KubernetesPluginType.DPDK, model.pluginType());
+        Assertions.assertEquals("xhnrztfolhb", model.networkId());
+        Assertions.assertEquals(KubernetesPluginType.SRIOV, model.pluginType());
     }
 
     @org.junit.jupiter.api.Test
@@ -27,11 +27,11 @@ public final class L3NetworkAttachmentConfigurationTests {
         L3NetworkAttachmentConfiguration model =
             new L3NetworkAttachmentConfiguration()
                 .withIpamEnabled(L3NetworkConfigurationIpamEnabled.TRUE)
-                .withNetworkId("dagxtibqd")
-                .withPluginType(KubernetesPluginType.DPDK);
+                .withNetworkId("xhnrztfolhb")
+                .withPluginType(KubernetesPluginType.SRIOV);
         model = BinaryData.fromObject(model).toObject(L3NetworkAttachmentConfiguration.class);
         Assertions.assertEquals(L3NetworkConfigurationIpamEnabled.TRUE, model.ipamEnabled());
-        Assertions.assertEquals("dagxtibqd", model.networkId());
-        Assertions.assertEquals(KubernetesPluginType.DPDK, model.pluginType());
+        Assertions.assertEquals("xhnrztfolhb", model.networkId());
+        Assertions.assertEquals(KubernetesPluginType.SRIOV, model.pluginType());
     }
 }

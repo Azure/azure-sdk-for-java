@@ -29,8 +29,6 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
-import com.azure.core.test.models.TestProxySanitizer;
-import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
 import org.junit.jupiter.api.Test;
@@ -56,10 +54,6 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
             .httpClient(httpClient)
             .serviceVersion(serviceVersion);
 
-        if (getTestMode() != TestMode.LIVE) {
-            addTestRecordCustomSanitizers();
-        }
-
         if (getTestMode() == TestMode.PLAYBACK) {
             builder
                 .endpoint("https://localhost:8080")
@@ -81,10 +75,6 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
         OpenAIClientBuilder builder = new OpenAIClientBuilder()
             .httpClient(httpClient);
 
-        if (getTestMode() != TestMode.LIVE) {
-            addTestRecordCustomSanitizers();
-        }
-
         if (getTestMode() == TestMode.PLAYBACK) {
             builder
                 .credential(new NonAzureOpenAIKeyCredential(FAKE_API_KEY));
@@ -97,13 +87,6 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
                 .credential(new NonAzureOpenAIKeyCredential(Configuration.getGlobalConfiguration().get("NON_AZURE_OPENAI_KEY")));
         }
         return builder;
-    }
-
-    private void addTestRecordCustomSanitizers() {
-        interceptorManager.addSanitizers(Arrays.asList(
-            new TestProxySanitizer("$..key", null, "REDACTED", TestProxySanitizerType.BODY_KEY),
-            new TestProxySanitizer("$..endpoint", null, "https://REDACTED", TestProxySanitizerType.BODY_KEY)
-        ));
     }
 
     protected String getAzureCognitiveSearchKey() {
