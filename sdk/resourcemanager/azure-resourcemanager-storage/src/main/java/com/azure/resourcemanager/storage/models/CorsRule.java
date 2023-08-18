@@ -44,6 +44,10 @@ public final class CorsRule {
     @JsonProperty(value = "allowedHeaders", required = true)
     private List<String> allowedHeaders;
 
+    /** Creates an instance of CorsRule class. */
+    public CorsRule() {
+    }
+
     /**
      * Get the allowedOrigins property: Required if CorsRule element is present. A list of origin domains that will be
      * allowed via CORS, or "*" to allow all domains.

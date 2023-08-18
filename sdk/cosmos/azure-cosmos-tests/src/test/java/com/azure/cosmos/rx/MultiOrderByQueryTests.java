@@ -114,12 +114,12 @@ public class MultiOrderByQueryTests extends TestSuiteBase {
         super(clientBuilder);
     }
 
-    @AfterClass(groups = { "simple" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
+    @AfterClass(groups = { "query" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
         safeClose(client);
     }
 
-    @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
+    @BeforeClass(groups = { "query" }, timeOut = SETUP_TIMEOUT)
     public void before_MultiOrderByQueryTests() throws Exception {
         client = getClientBuilder().buildAsyncClient();
         documentCollection = getSharedMultiPartitionCosmosContainerWithCompositeAndSpatialIndexes(client);
@@ -187,7 +187,7 @@ public class MultiOrderByQueryTests extends TestSuiteBase {
         return document;
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT * 10)
+    @Test(groups = { "query" }, timeOut = TIMEOUT * 10)
     public void queryDocumentsWithMultiOrder() throws InterruptedException {
         CosmosQueryRequestOptions cosmosQueryRequestOptions = new CosmosQueryRequestOptions();
 
@@ -261,7 +261,7 @@ public class MultiOrderByQueryTests extends TestSuiteBase {
         }
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT * 10)
+    @Test(groups = { "query" }, timeOut = TIMEOUT * 10)
     public void queryDocumentsWithUndefinedValueAndMultiOrderby() {
         // CREATE document with numberField not set.
         // This query should be valid too as we now support mixed null values

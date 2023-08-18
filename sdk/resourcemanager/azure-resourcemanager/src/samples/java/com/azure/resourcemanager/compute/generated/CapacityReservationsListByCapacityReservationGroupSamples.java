@@ -7,7 +7,7 @@ package com.azure.resourcemanager.compute.generated;
 /** Samples for CapacityReservations ListByCapacityReservationGroup. */
 public final class CapacityReservationsListByCapacityReservationGroupSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/capacityReservationExamples/CapacityReservation_ListByReservationGroup.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-07-01/examples/capacityReservationExamples/CapacityReservation_ListByReservationGroup.json
      */
     /**
      * Sample code: List capacity reservations in reservation group.

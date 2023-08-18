@@ -19,38 +19,40 @@ public final class VolumeListTests {
         VolumeList model =
             BinaryData
                 .fromString(
-                    "{\"nextLink\":\"mpimaqxzhemjyh\",\"value\":[{\"extendedLocation\":{\"name\":\"jswtwkozzwc\",\"type\":\"lkb\"},\"properties\":{\"attachedTo\":[],\"detailedStatus\":\"Active\",\"detailedStatusMessage\":\"jnjwltlwt\",\"provisioningState\":\"Accepted\",\"serialNumber\":\"ktalhsnvkcdmxz\",\"sizeMiB\":7215202878981332083},\"location\":\"imlnwiaaomylw\",\"tags\":{\"l\":\"ulcsethwwnpj\"},\"id\":\"zswpchwa\",\"name\":\"fb\",\"type\":\"usnfepgfewet\"}]}")
+                    "{\"nextLink\":\"hcmavmqfo\",\"value\":[{\"extendedLocation\":{\"name\":\"rhc\",\"type\":\"yyprotwyp\"},\"properties\":{\"attachedTo\":[\"mbxhugcmjkav\"],\"detailedStatus\":\"Error\",\"detailedStatusMessage\":\"bmftpmdt\",\"provisioningState\":\"Succeeded\",\"serialNumber\":\"tfvnz\",\"sizeMiB\":1221267442521821688},\"location\":\"otp\",\"tags\":{\"ihed\":\"vpbdbzqgq\",\"mkyi\":\"vqwt\",\"qcwdhoh\":\"cysihs\",\"sufco\":\"dtmcd\"},\"id\":\"dxbzlmcmuap\",\"name\":\"vhdbevwqqxey\",\"type\":\"ko\"}]}")
                 .toObject(VolumeList.class);
-        Assertions.assertEquals("mpimaqxzhemjyh", model.nextLink());
-        Assertions.assertEquals("imlnwiaaomylw", model.value().get(0).location());
-        Assertions.assertEquals("ulcsethwwnpj", model.value().get(0).tags().get("l"));
-        Assertions.assertEquals("jswtwkozzwc", model.value().get(0).extendedLocation().name());
-        Assertions.assertEquals("lkb", model.value().get(0).extendedLocation().type());
-        Assertions.assertEquals(7215202878981332083L, model.value().get(0).sizeMiB());
+        Assertions.assertEquals("hcmavmqfo", model.nextLink());
+        Assertions.assertEquals("otp", model.value().get(0).location());
+        Assertions.assertEquals("vpbdbzqgq", model.value().get(0).tags().get("ihed"));
+        Assertions.assertEquals("rhc", model.value().get(0).extendedLocation().name());
+        Assertions.assertEquals("yyprotwyp", model.value().get(0).extendedLocation().type());
+        Assertions.assertEquals(1221267442521821688L, model.value().get(0).sizeMiB());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         VolumeList model =
             new VolumeList()
-                .withNextLink("mpimaqxzhemjyh")
+                .withNextLink("hcmavmqfo")
                 .withValue(
                     Arrays
                         .asList(
                             new VolumeInner()
-                                .withLocation("imlnwiaaomylw")
-                                .withTags(mapOf("l", "ulcsethwwnpj"))
-                                .withExtendedLocation(new ExtendedLocation().withName("jswtwkozzwc").withType("lkb"))
-                                .withSizeMiB(7215202878981332083L)));
+                                .withLocation("otp")
+                                .withTags(
+                                    mapOf("ihed", "vpbdbzqgq", "mkyi", "vqwt", "qcwdhoh", "cysihs", "sufco", "dtmcd"))
+                                .withExtendedLocation(new ExtendedLocation().withName("rhc").withType("yyprotwyp"))
+                                .withSizeMiB(1221267442521821688L)));
         model = BinaryData.fromObject(model).toObject(VolumeList.class);
-        Assertions.assertEquals("mpimaqxzhemjyh", model.nextLink());
-        Assertions.assertEquals("imlnwiaaomylw", model.value().get(0).location());
-        Assertions.assertEquals("ulcsethwwnpj", model.value().get(0).tags().get("l"));
-        Assertions.assertEquals("jswtwkozzwc", model.value().get(0).extendedLocation().name());
-        Assertions.assertEquals("lkb", model.value().get(0).extendedLocation().type());
-        Assertions.assertEquals(7215202878981332083L, model.value().get(0).sizeMiB());
+        Assertions.assertEquals("hcmavmqfo", model.nextLink());
+        Assertions.assertEquals("otp", model.value().get(0).location());
+        Assertions.assertEquals("vpbdbzqgq", model.value().get(0).tags().get("ihed"));
+        Assertions.assertEquals("rhc", model.value().get(0).extendedLocation().name());
+        Assertions.assertEquals("yyprotwyp", model.value().get(0).extendedLocation().type());
+        Assertions.assertEquals(1221267442521821688L, model.value().get(0).sizeMiB());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

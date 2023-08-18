@@ -98,7 +98,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
@@ -224,7 +223,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                 CosmosClientTelemetryConfig clientTelemetryConfig,
                                 String clientCorrelationId,
                                 CosmosEndToEndOperationLatencyPolicyConfig cosmosEndToEndOperationLatencyPolicyConfig,
-                                SessionRetryOptions sessionRetryOptions) {
+                                SessionRetryOptions sessionRetryOptions,
+                                CosmosContainerProactiveInitConfig containerProactiveInitConfig) {
         this(
                 serviceEndpoint,
                 masterKeyOrResourceToken,
@@ -242,7 +242,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 clientTelemetryConfig,
                 clientCorrelationId,
                 cosmosEndToEndOperationLatencyPolicyConfig,
-                sessionRetryOptions);
+                sessionRetryOptions,
+                containerProactiveInitConfig);
         this.cosmosAuthorizationTokenResolver = cosmosAuthorizationTokenResolver;
     }
 
@@ -263,7 +264,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                 CosmosClientTelemetryConfig clientTelemetryConfig,
                                 String clientCorrelationId,
                                 CosmosEndToEndOperationLatencyPolicyConfig cosmosEndToEndOperationLatencyPolicyConfig,
-                                SessionRetryOptions sessionRetryOptions) {
+                                SessionRetryOptions sessionRetryOptions,
+                                CosmosContainerProactiveInitConfig containerProactiveInitConfig) {
         this(
                 serviceEndpoint,
                 masterKeyOrResourceToken,
@@ -281,7 +283,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 clientTelemetryConfig,
                 clientCorrelationId,
                 cosmosEndToEndOperationLatencyPolicyConfig,
-                sessionRetryOptions);
+                sessionRetryOptions,
+                containerProactiveInitConfig);
         this.cosmosAuthorizationTokenResolver = cosmosAuthorizationTokenResolver;
     }
 
@@ -301,7 +304,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                 CosmosClientTelemetryConfig clientTelemetryConfig,
                                 String clientCorrelationId,
                                 CosmosEndToEndOperationLatencyPolicyConfig cosmosEndToEndOperationLatencyPolicyConfig,
-                                SessionRetryOptions sessionRetryOptions) {
+                                SessionRetryOptions sessionRetryOptions,
+                                CosmosContainerProactiveInitConfig containerProactiveInitConfig) {
         this(
                 serviceEndpoint,
                 masterKeyOrResourceToken,
@@ -318,7 +322,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 clientTelemetryConfig,
                 clientCorrelationId,
                 cosmosEndToEndOperationLatencyPolicyConfig,
-                sessionRetryOptions);
+                sessionRetryOptions,
+                containerProactiveInitConfig);
 
         if (permissionFeed != null && permissionFeed.size() > 0) {
             this.resourceTokensMap = new HashMap<>();
@@ -377,7 +382,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                          CosmosClientTelemetryConfig clientTelemetryConfig,
                          String clientCorrelationId,
                          CosmosEndToEndOperationLatencyPolicyConfig cosmosEndToEndOperationLatencyPolicyConfig,
-                         SessionRetryOptions sessionRetryOptions) {
+                         SessionRetryOptions sessionRetryOptions,
+                         CosmosContainerProactiveInitConfig containerProactiveInitConfig) {
 
         assert(clientTelemetryConfig != null);
         Boolean clientTelemetryEnabled = ImplementationBridgeHelpers
@@ -454,6 +460,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             this.diagnosticsClientConfig.withEndpointDiscoveryEnabled(this.connectionPolicy.isEndpointDiscoveryEnabled());
             this.diagnosticsClientConfig.withPreferredRegions(this.connectionPolicy.getPreferredRegions());
             this.diagnosticsClientConfig.withMachineId(tempMachineId);
+            this.diagnosticsClientConfig.withProactiveContainerInitConfig(containerProactiveInitConfig);
 
             boolean disableSessionCapturing = (ConsistencyLevel.SESSION != consistencyLevel && !sessionCapturingOverrideEnabled);
 
@@ -1680,6 +1687,11 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             options,
             content);
 
+        if (serverBatchRequest instanceof PartitionKeyRangeServerBatchRequest) {
+            PartitionKeyRangeServerBatchRequest partitionKeyRangeServerBatchRequest = (PartitionKeyRangeServerBatchRequest) serverBatchRequest;
+            request.setPartitionBasedGoneNotifier(partitionKeyRangeServerBatchRequest.getPartitionBasedGoneNotifier());
+        }
+
         if (options != null) {
             request.requestContext.setExcludeRegions(options.getExcludeRegions());
         }
@@ -2588,14 +2600,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
             String idValue = itemIdentity.getId();
             String idParamName = "@param" + i;
-
-            PartitionKey pkValueAsPartitionKey = itemIdentity.getPartitionKey();
-            Object pkValue = ModelBridgeInternal.getPartitionKeyObject(pkValueAsPartitionKey);
-
-            if (!Objects.equals(idValue, pkValue)) {
-                // this is sanity check to ensure id and pk are the same
-                continue;
-            }
 
             parameters.add(new SqlParameter(idParamName, idValue));
             queryStringBuilder.append(idParamName);

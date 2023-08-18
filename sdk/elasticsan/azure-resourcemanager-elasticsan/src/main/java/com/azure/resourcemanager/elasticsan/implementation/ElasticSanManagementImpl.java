@@ -25,6 +25,8 @@ import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.elasticsan.fluent.ElasticSanManagement;
 import com.azure.resourcemanager.elasticsan.fluent.ElasticSansClient;
 import com.azure.resourcemanager.elasticsan.fluent.OperationsClient;
+import com.azure.resourcemanager.elasticsan.fluent.PrivateEndpointConnectionsClient;
+import com.azure.resourcemanager.elasticsan.fluent.PrivateLinkResourcesClient;
 import com.azure.resourcemanager.elasticsan.fluent.SkusClient;
 import com.azure.resourcemanager.elasticsan.fluent.VolumeGroupsClient;
 import com.azure.resourcemanager.elasticsan.fluent.VolumesClient;
@@ -172,6 +174,30 @@ public final class ElasticSanManagementImpl implements ElasticSanManagement {
         return this.volumes;
     }
 
+    /** The PrivateEndpointConnectionsClient object to access its operations. */
+    private final PrivateEndpointConnectionsClient privateEndpointConnections;
+
+    /**
+     * Gets the PrivateEndpointConnectionsClient object to access its operations.
+     *
+     * @return the PrivateEndpointConnectionsClient object.
+     */
+    public PrivateEndpointConnectionsClient getPrivateEndpointConnections() {
+        return this.privateEndpointConnections;
+    }
+
+    /** The PrivateLinkResourcesClient object to access its operations. */
+    private final PrivateLinkResourcesClient privateLinkResources;
+
+    /**
+     * Gets the PrivateLinkResourcesClient object to access its operations.
+     *
+     * @return the PrivateLinkResourcesClient object.
+     */
+    public PrivateLinkResourcesClient getPrivateLinkResources() {
+        return this.privateLinkResources;
+    }
+
     /**
      * Initializes an instance of ElasticSanManagement client.
      *
@@ -194,12 +220,14 @@ public final class ElasticSanManagementImpl implements ElasticSanManagement {
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2021-11-20-preview";
+        this.apiVersion = "2022-12-01-preview";
         this.operations = new OperationsClientImpl(this);
         this.skus = new SkusClientImpl(this);
         this.elasticSans = new ElasticSansClientImpl(this);
         this.volumeGroups = new VolumeGroupsClientImpl(this);
         this.volumes = new VolumesClientImpl(this);
+        this.privateEndpointConnections = new PrivateEndpointConnectionsClientImpl(this);
+        this.privateLinkResources = new PrivateLinkResourcesClientImpl(this);
     }
 
     /**

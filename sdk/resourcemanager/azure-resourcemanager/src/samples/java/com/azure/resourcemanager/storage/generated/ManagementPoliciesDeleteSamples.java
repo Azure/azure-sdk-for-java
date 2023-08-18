@@ -4,13 +4,12 @@
 
 package com.azure.resourcemanager.storage.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.storage.models.ManagementPolicyName;
 
 /** Samples for ManagementPolicies Delete. */
 public final class ManagementPoliciesDeleteSamples {
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2022-09-01/examples/StorageAccountDeleteManagementPolicy.json
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-01-01/examples/StorageAccountDeleteManagementPolicy.json
      */
     /**
      * Sample code: StorageAccountDeleteManagementPolicies.
@@ -23,6 +22,6 @@ public final class ManagementPoliciesDeleteSamples {
             .manager()
             .serviceClient()
             .getManagementPolicies()
-            .deleteWithResponse("res6977", "sto2527", ManagementPolicyName.DEFAULT, Context.NONE);
+            .deleteWithResponse("res6977", "sto2527", ManagementPolicyName.DEFAULT, com.azure.core.util.Context.NONE);
     }
 }

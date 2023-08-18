@@ -26,7 +26,7 @@ public class ServiceBusReceiverInstrumentationTests {
         when(tracer.isEnabled()).thenReturn(true);
 
         ServiceBusReceiverInstrumentation instrumentation = new ServiceBusReceiverInstrumentation(tracer, null,
-            "fqdn", "entityPath", null, false);
+            "fqdn", "entityPath", null, ReceiverKind.ASYNC_RECEIVER);
 
         instrumentation.instrumentProcess("span name", null, Context.NONE);
         instrumentation.instrumentSettlement(Mono.just(1), null, Context.NONE, DispositionStatus.ABANDONED);
@@ -38,7 +38,7 @@ public class ServiceBusReceiverInstrumentationTests {
         Meter meter = new TestMeter();
 
         ServiceBusReceiverInstrumentation instrumentation = new ServiceBusReceiverInstrumentation(null, meter,
-            "fqdn", "entityPath", null, false);
+            "fqdn", "entityPath", null, ReceiverKind.ASYNC_RECEIVER);
 
         // does not throw
         instrumentation.instrumentProcess("span name", null, Context.NONE);
@@ -48,7 +48,7 @@ public class ServiceBusReceiverInstrumentationTests {
     @Test
     public void testInstrumentNullMessageDisabled() {
         ServiceBusReceiverInstrumentation instrumentation = new ServiceBusReceiverInstrumentation(null, null,
-            "fqdn", "entityPath", null, false);
+            "fqdn", "entityPath", null, ReceiverKind.ASYNC_RECEIVER);
 
         // does not throw
         instrumentation.instrumentProcess("span name", null, Context.NONE);

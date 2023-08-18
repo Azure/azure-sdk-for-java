@@ -138,11 +138,13 @@ public interface SnapshotPolicy {
             DefinitionStages.WithParentResource,
             DefinitionStages.WithCreate {
     }
+
     /** The SnapshotPolicy definition stages. */
     interface DefinitionStages {
         /** The first stage of the SnapshotPolicy definition. */
         interface Blank extends WithLocation {
         }
+
         /** The stage of the SnapshotPolicy definition allowing to specify location. */
         interface WithLocation {
             /**
@@ -161,6 +163,7 @@ public interface SnapshotPolicy {
              */
             WithParentResource withRegion(String location);
         }
+
         /** The stage of the SnapshotPolicy definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
@@ -172,6 +175,7 @@ public interface SnapshotPolicy {
              */
             WithCreate withExistingNetAppAccount(String resourceGroupName, String accountName);
         }
+
         /**
          * The stage of the SnapshotPolicy definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
@@ -198,6 +202,7 @@ public interface SnapshotPolicy {
              */
             SnapshotPolicy create(Context context);
         }
+
         /** The stage of the SnapshotPolicy definition allowing to specify tags. */
         interface WithTags {
             /**
@@ -208,6 +213,7 @@ public interface SnapshotPolicy {
              */
             WithCreate withTags(Map<String, String> tags);
         }
+
         /** The stage of the SnapshotPolicy definition allowing to specify hourlySchedule. */
         interface WithHourlySchedule {
             /**
@@ -218,6 +224,7 @@ public interface SnapshotPolicy {
              */
             WithCreate withHourlySchedule(HourlySchedule hourlySchedule);
         }
+
         /** The stage of the SnapshotPolicy definition allowing to specify dailySchedule. */
         interface WithDailySchedule {
             /**
@@ -228,6 +235,7 @@ public interface SnapshotPolicy {
              */
             WithCreate withDailySchedule(DailySchedule dailySchedule);
         }
+
         /** The stage of the SnapshotPolicy definition allowing to specify weeklySchedule. */
         interface WithWeeklySchedule {
             /**
@@ -238,6 +246,7 @@ public interface SnapshotPolicy {
              */
             WithCreate withWeeklySchedule(WeeklySchedule weeklySchedule);
         }
+
         /** The stage of the SnapshotPolicy definition allowing to specify monthlySchedule. */
         interface WithMonthlySchedule {
             /**
@@ -248,6 +257,7 @@ public interface SnapshotPolicy {
              */
             WithCreate withMonthlySchedule(MonthlySchedule monthlySchedule);
         }
+
         /** The stage of the SnapshotPolicy definition allowing to specify enabled. */
         interface WithEnabled {
             /**
@@ -259,6 +269,7 @@ public interface SnapshotPolicy {
             WithCreate withEnabled(Boolean enabled);
         }
     }
+
     /**
      * Begins update for the SnapshotPolicy resource.
      *
@@ -289,6 +300,7 @@ public interface SnapshotPolicy {
          */
         SnapshotPolicy apply(Context context);
     }
+
     /** The SnapshotPolicy update stages. */
     interface UpdateStages {
         /** The stage of the SnapshotPolicy update allowing to specify tags. */
@@ -301,6 +313,7 @@ public interface SnapshotPolicy {
              */
             Update withTags(Map<String, String> tags);
         }
+
         /** The stage of the SnapshotPolicy update allowing to specify hourlySchedule. */
         interface WithHourlySchedule {
             /**
@@ -311,6 +324,7 @@ public interface SnapshotPolicy {
              */
             Update withHourlySchedule(HourlySchedule hourlySchedule);
         }
+
         /** The stage of the SnapshotPolicy update allowing to specify dailySchedule. */
         interface WithDailySchedule {
             /**
@@ -321,6 +335,7 @@ public interface SnapshotPolicy {
              */
             Update withDailySchedule(DailySchedule dailySchedule);
         }
+
         /** The stage of the SnapshotPolicy update allowing to specify weeklySchedule. */
         interface WithWeeklySchedule {
             /**
@@ -331,6 +346,7 @@ public interface SnapshotPolicy {
              */
             Update withWeeklySchedule(WeeklySchedule weeklySchedule);
         }
+
         /** The stage of the SnapshotPolicy update allowing to specify monthlySchedule. */
         interface WithMonthlySchedule {
             /**
@@ -341,6 +357,7 @@ public interface SnapshotPolicy {
              */
             Update withMonthlySchedule(MonthlySchedule monthlySchedule);
         }
+
         /** The stage of the SnapshotPolicy update allowing to specify enabled. */
         interface WithEnabled {
             /**
@@ -352,6 +369,7 @@ public interface SnapshotPolicy {
             Update withEnabled(Boolean enabled);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

@@ -57,6 +57,7 @@ public class RxDocumentClientUnderTest extends RxDocumentClientImpl {
                 clientTelemetryConfig,
                 null,
                 null,
+                null,
                 null);
         init(null, null);
     }

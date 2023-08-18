@@ -13,7 +13,7 @@ import java.util.Arrays;
 /** Samples for VirtualMachineRunCommands CreateOrUpdate. */
 public final class VirtualMachineRunCommandsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/runCommandExamples/VirtualMachineRunCommand_CreateOrUpdate.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-07-01/examples/runCommandExamples/VirtualMachineRunCommand_CreateOrUpdate.json
      */
     /**
      * Sample code: Create or update a run command.
@@ -34,8 +34,7 @@ public final class VirtualMachineRunCommandsCreateOrUpdateSamples {
                     .withLocation("West US")
                     .withSource(
                         new VirtualMachineRunCommandScriptSource()
-                            .withScriptUri(
-                                "https://mystorageaccount.blob.core.windows.net/scriptcontainer/MyScript.ps1?sp=r&st=2022-10-07T19:52:54Z&se=2022-10-08T03:52:54Z&spr=https&sv=2021-06-08&sr=b&sig=zfYFYCgea1PqVERZuwJiewrte5gjTnKGtVJngcw5oc828%3D"))
+                            .withScriptUri("https://mystorageaccount.blob.core.windows.net/scriptcontainer/scriptURI"))
                     .withParameters(
                         Arrays
                             .asList(
@@ -47,8 +46,7 @@ public final class VirtualMachineRunCommandsCreateOrUpdateSamples {
                     .withTimeoutInSeconds(3600)
                     .withOutputBlobUri(
                         "https://mystorageaccount.blob.core.windows.net/myscriptoutputcontainer/MyScriptoutput.txt")
-                    .withErrorBlobUri(
-                        "https://mystorageaccount.blob.core.windows.net/mycontainer/MyScriptError.txt?sp=racw&st=2022-10-07T19:40:21Z&se=2022-10-08T03:40:21Z&spr=https&sv=2021-06-08&sr=b&sig=Yh7B%2Fy83olbYBdfsfbUREvd7ol8Dq5EVP3lAO4Kj4xDcN8%3D")
+                    .withErrorBlobUri("https://mystorageaccount.blob.core.windows.net/scriptcontainer/scriptURI")
                     .withOutputBlobManagedIdentity(
                         new RunCommandManagedIdentity().withClientId("22d35efb-0c99-4041-8c5b-6d24db33a69a"))
                     .withTreatFailureAsDeploymentFailure(false),

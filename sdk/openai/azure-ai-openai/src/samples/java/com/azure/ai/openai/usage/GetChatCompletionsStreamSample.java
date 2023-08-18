@@ -5,12 +5,10 @@ package com.azure.ai.openai.usage;
 
 import com.azure.ai.openai.OpenAIClient;
 import com.azure.ai.openai.OpenAIClientBuilder;
-import com.azure.ai.openai.models.ChatChoice;
 import com.azure.ai.openai.models.ChatCompletions;
 import com.azure.ai.openai.models.ChatCompletionsOptions;
 import com.azure.ai.openai.models.ChatMessage;
 import com.azure.ai.openai.models.ChatRole;
-import com.azure.ai.openai.models.CompletionsUsage;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.IterableStream;
 
@@ -47,25 +45,37 @@ public class GetChatCompletionsStreamSample {
         chatMessages.add(new ChatMessage(ChatRole.ASSISTANT, "Of course, me hearty! What can I do for ye?"));
         chatMessages.add(new ChatMessage(ChatRole.USER, "What's the best way to train a parrot?"));
 
-        IterableStream<ChatCompletions> chatCompletionsStream = client.getChatCompletionsStream(deploymentOrModelId, new ChatCompletionsOptions(chatMessages));
+        IterableStream<ChatCompletions> chatCompletionsStream = client.getChatCompletionsStream(deploymentOrModelId,
+            new ChatCompletionsOptions(chatMessages));
 
-        chatCompletionsStream.forEach(chatCompletions -> {
-            System.out.printf("Model ID=%s is created at %s.%n", chatCompletions.getId(), chatCompletions.getCreatedAt());
-            for (ChatChoice choice : chatCompletions.getChoices()) {
-                ChatMessage message = choice.getDelta();
-                if (message != null) {
-                    System.out.printf("Index: %d, Chat Role: %s.%n", choice.getIndex(), message.getRole());
-                    System.out.println("Message:");
-                    System.out.println(message.getContent());
+        // The delta is the message content for a streaming response.
+        // Subsequence of streaming delta will be like:
+        // "delta": {
+        //     "role": "assistant"
+        // },
+        // "delta": {
+        //     "content": "Why"
+        //  },
+        //  "delta": {
+        //     "content": " don"
+        //  },
+        //  "delta": {
+        //     "content": "'t"
+        //  }
+        chatCompletionsStream
+            .stream()
+            // Remove .skip(1) when using Non-Azure OpenAI API
+            // Note: the first chat completions can be ignored when using Azure OpenAI service which is a known service bug.
+            // TODO: remove .skip(1) when service fix the issue.
+            .skip(1)
+            .forEach(chatCompletions -> {
+                ChatMessage delta = chatCompletions.getChoices().get(0).getDelta();
+                if (delta.getRole() != null) {
+                    System.out.println("Role = " + delta.getRole());
                 }
-            }
-
-            CompletionsUsage usage = chatCompletions.getUsage();
-            if (usage != null) {
-                System.out.printf("Usage: number of prompt token is %d, "
-                        + "number of completion token is %d, and number of total tokens in request and response is %d.%n",
-                    usage.getPromptTokens(), usage.getCompletionTokens(), usage.getTotalTokens());
-            }
-        });
+                if (delta.getContent() != null) {
+                    System.out.print(delta.getContent());
+                }
+            });
     }
 }
