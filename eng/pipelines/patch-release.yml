@@ -44,10 +44,6 @@ extends:
       groupId: com.azure
       safeName: azurecommunicationidentity
       ServiceDirectory: communication
-    - name: azure-security-keyvault-secrets
-      groupId: com.azure
-      safeName: azuresecuritykeyvaultsecrets
-      ServiceDirectory: keyvault
     - name: azure-security-attestation
       groupId: com.azure
       safeName: azuresecurityattestation
@@ -72,18 +68,10 @@ extends:
       groupId: com.azure
       safeName: azuresecurityconfidentialledger
       ServiceDirectory: confidentialledger
-    - name: azure-security-keyvault-certificates
-      groupId: com.azure
-      safeName: azuresecuritykeyvaultcertificates
-      ServiceDirectory: keyvault
     - name: azure-storage-queue
       groupId: com.azure
       safeName: azurestoragequeue
       ServiceDirectory: storage
-    - name: azure-security-keyvault-keys
-      groupId: com.azure
-      safeName: azuresecuritykeyvaultkeys
-      ServiceDirectory: keyvault
     - name: azure-ai-textanalytics
       groupId: com.azure
       safeName: azureaitextanalytics
@@ -128,10 +116,6 @@ extends:
       groupId: com.azure
       safeName: azureaimetricsadvisor
       ServiceDirectory: metricsadvisor
-    - name: azure-security-keyvault-administration
-      groupId: com.azure
-      safeName: azuresecuritykeyvaultadministration
-      ServiceDirectory: keyvault
     - name: azure-search-documents
       groupId: com.azure
       safeName: azuresearch
@@ -162,4 +146,15 @@ extends:
       groupId: com.azure
       safeName: azurecommunicationchatclient
       ServiceDirectory: communication
-
+    - name: azure-communication-callautomation
+      groupId: com.azure
+      safeName: azurecommunicationcallautomation
+      ServiceDirectory: communication
+    - name: azure-identity-extensions
+      groupId: com.azure
+      safeName: azureidentityextensions
+      ServiceDirectory: identity
+    - name: azure-developer-loadtesting
+      groupId: com.azure
+      safeName: azuredeveloperloadtesting
+      ServiceDirectory: loadtesting
