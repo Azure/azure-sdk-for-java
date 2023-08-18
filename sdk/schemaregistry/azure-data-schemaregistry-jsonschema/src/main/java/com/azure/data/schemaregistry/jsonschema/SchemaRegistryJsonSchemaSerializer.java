@@ -131,8 +131,7 @@ public final class SchemaRegistryJsonSchemaSerializer {
         TypeReference<T> typeReference, Function<BinaryData, T> messageFactory) {
 
         if (object == null) {
-            return monoError(logger, new NullPointerException(
-                "Null object, behavior should be defined in concrete serializer implementation."));
+            return monoError(logger, new NullPointerException("'object' cannot be  null."));
         } else if (typeReference == null) {
             return monoError(logger, new NullPointerException("'typeReference' cannot be null."));
         }
@@ -187,7 +186,6 @@ public final class SchemaRegistryJsonSchemaSerializer {
                     serializedMessage.setContentType(CONTENT_TYPE + "+" + schemaId);
 
                     sink.next(serializedMessage);
-                    sink.complete();
                 } catch (Exception e) {
                     logger.atError()
                         .addKeyValue("schemaId", schemaId)
