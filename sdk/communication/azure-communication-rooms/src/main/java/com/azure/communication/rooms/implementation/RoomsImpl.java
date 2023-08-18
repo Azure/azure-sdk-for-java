@@ -74,18 +74,6 @@ public final class RoomsImpl {
                 @HeaderParam("repeatability-first-sent") String repeatabilityFirstSent,
                 Context context);
 
-        @Post("/rooms")
-        @ExpectedResponses({201})
-        @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Response<RoomModel> createSync(
-                @HostParam("endpoint") String endpoint,
-                @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/json") CreateRoomRequest createRoomRequest,
-                @HeaderParam("Accept") String accept,
-                @HeaderParam("repeatability-request-id") String repeatabilityRequestId,
-                @HeaderParam("repeatability-first-sent") String repeatabilityFirstSent,
-                Context context);
-
         @Get("/rooms")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
@@ -95,29 +83,10 @@ public final class RoomsImpl {
                 @HeaderParam("Accept") String accept,
                 Context context);
 
-        @Get("/rooms")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Response<RoomsCollection> listSync(
-                @HostParam("endpoint") String endpoint,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                Context context);
-
         @Get("/rooms/{roomId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
         Mono<Response<RoomModel>> get(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("roomId") String roomId,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                Context context);
-
-        @Get("/rooms/{roomId}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Response<RoomModel> getSync(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("roomId") String roomId,
                 @QueryParam("api-version") String apiVersion,
@@ -135,17 +104,6 @@ public final class RoomsImpl {
                 @HeaderParam("Accept") String accept,
                 Context context);
 
-        @Patch("/rooms/{roomId}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Response<RoomModel> updateSync(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("roomId") String roomId,
-                @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/merge-patch+json") UpdateRoomRequest updateRoomRequest,
-                @HeaderParam("Accept") String accept,
-                Context context);
-
         @Delete("/rooms/{roomId}")
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
@@ -156,29 +114,10 @@ public final class RoomsImpl {
                 @HeaderParam("Accept") String accept,
                 Context context);
 
-        @Delete("/rooms/{roomId}")
-        @ExpectedResponses({204})
-        @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Response<Void> deleteSync(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("roomId") String roomId,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                Context context);
-
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
         Mono<Response<RoomsCollection>> listNext(
-                @PathParam(value = "nextLink", encoded = true) String nextLink,
-                @HostParam("endpoint") String endpoint,
-                @HeaderParam("Accept") String accept,
-                Context context);
-
-        @Get("{nextLink}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Response<RoomsCollection> listNextSync(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
                 @HostParam("endpoint") String endpoint,
                 @HeaderParam("Accept") String accept,
@@ -277,17 +216,7 @@ public final class RoomsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RoomModel> createWithResponse(CreateRoomRequest createRoomRequest, Context context) {
-        final String accept = "application/json";
-        String repeatabilityRequestId = UUID.randomUUID().toString();
-        String repeatabilityFirstSent = DateTimeRfc1123.toRfc1123String(OffsetDateTime.now());
-        return service.createSync(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                createRoomRequest,
-                accept,
-                repeatabilityRequestId,
-                repeatabilityFirstSent,
-                context);
+        return createWithResponseAsync(createRoomRequest, context).block();
     }
 
     /**
@@ -388,16 +317,7 @@ public final class RoomsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<RoomModel> listSinglePage() {
-        final String accept = "application/json";
-        Response<RoomsCollection> res =
-                service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), accept, Context.NONE);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().getValue(),
-                res.getValue().getNextLink(),
-                null);
+        return listSinglePageAsync().block();
     }
 
     /**
@@ -411,16 +331,7 @@ public final class RoomsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<RoomModel> listSinglePage(Context context) {
-        final String accept = "application/json";
-        Response<RoomsCollection> res =
-                service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), accept, context);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().getValue(),
-                res.getValue().getNextLink(),
-                null);
+        return listSinglePageAsync(context).block();
     }
 
     /**
@@ -432,7 +343,7 @@ public final class RoomsImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RoomModel> list() {
-        return new PagedIterable<>(() -> listSinglePage(Context.NONE), nextLink -> listNextSinglePage(nextLink));
+        return new PagedIterable<>(listAsync());
     }
 
     /**
@@ -446,7 +357,7 @@ public final class RoomsImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RoomModel> list(Context context) {
-        return new PagedIterable<>(() -> listSinglePage(context), nextLink -> listNextSinglePage(nextLink, context));
+        return new PagedIterable<>(listAsync(context));
     }
 
     /**
@@ -523,8 +434,7 @@ public final class RoomsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RoomModel> getWithResponse(String roomId, Context context) {
-        final String accept = "application/json";
-        return service.getSync(this.client.getEndpoint(), roomId, this.client.getApiVersion(), accept, context);
+        return getWithResponseAsync(roomId, context).block();
     }
 
     /**
@@ -629,9 +539,7 @@ public final class RoomsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RoomModel> updateWithResponse(String roomId, UpdateRoomRequest updateRoomRequest, Context context) {
-        final String accept = "application/json";
-        return service.updateSync(
-                this.client.getEndpoint(), roomId, this.client.getApiVersion(), updateRoomRequest, accept, context);
+        return updateWithResponseAsync(roomId, updateRoomRequest, context).block();
     }
 
     /**
@@ -724,8 +632,7 @@ public final class RoomsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String roomId, Context context) {
-        final String accept = "application/json";
-        return service.deleteSync(this.client.getEndpoint(), roomId, this.client.getApiVersion(), accept, context);
+        return deleteWithResponseAsync(roomId, context).block();
     }
 
     /**
@@ -804,15 +711,7 @@ public final class RoomsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<RoomModel> listNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<RoomsCollection> res = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().getValue(),
-                res.getValue().getNextLink(),
-                null);
+        return listNextSinglePageAsync(nextLink).block();
     }
 
     /**
@@ -828,14 +727,6 @@ public final class RoomsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<RoomModel> listNextSinglePage(String nextLink, Context context) {
-        final String accept = "application/json";
-        Response<RoomsCollection> res = service.listNextSync(nextLink, this.client.getEndpoint(), accept, context);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().getValue(),
-                res.getValue().getNextLink(),
-                null);
+        return listNextSinglePageAsync(nextLink, context).block();
     }
 }
