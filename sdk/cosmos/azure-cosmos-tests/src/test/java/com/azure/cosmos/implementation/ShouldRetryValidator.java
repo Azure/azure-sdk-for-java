@@ -104,12 +104,12 @@ public interface ShouldRetryValidator {
         }
 
 
-        public Builder backOfTime(Duration backOfTime) {
+        public Builder backOffTime(Duration backOffTime) {
             validators.add(new ShouldRetryValidator() {
 
                 @Override
                 public void validate(ShouldRetryResult shouldRetryResult) {
-                    assertThat(shouldRetryResult.backOffTime).isEqualTo(backOfTime);
+                    assertThat(shouldRetryResult.backOffTime).isEqualTo(backOffTime);
                 }
             });
             return this;
