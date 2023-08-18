@@ -5,39 +5,37 @@
 package com.azure.security.keyvault.administration.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import com.azure.security.keyvault.administration.models.KeyVaultDataAction;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
-import java.util.Objects;
 
 /** Role definition permissions. */
 @Fluent
-public final class Permission implements JsonSerializable<Permission> {
+public final class Permission {
     /*
      * Action permissions that are granted.
      */
+    @JsonProperty(value = "actions")
     private List<String> actions;
 
     /*
      * Action permissions that are excluded but not denied. They may be granted by other role definitions assigned to a
      * principal.
      */
+    @JsonProperty(value = "notActions")
     private List<String> notActions;
 
     /*
      * Data action permissions that are granted.
      */
-    private List<KeyVaultDataAction> dataActions;
+    @JsonProperty(value = "dataActions")
+    private List<DataAction> dataActions;
 
     /*
      * Data action permissions that are excluded but not denied. They may be granted by other role definitions assigned
      * to a principal.
      */
-    private List<KeyVaultDataAction> notDataActions;
+    @JsonProperty(value = "notDataActions")
+    private List<DataAction> notDataActions;
 
     /** Creates an instance of Permission class. */
     public Permission() {}
@@ -89,7 +87,7 @@ public final class Permission implements JsonSerializable<Permission> {
      *
      * @return the dataActions value.
      */
-    public List<KeyVaultDataAction> getDataActions() {
+    public List<DataAction> getDataActions() {
         return this.dataActions;
     }
 
@@ -99,7 +97,7 @@ public final class Permission implements JsonSerializable<Permission> {
      * @param dataActions the dataActions value to set.
      * @return the Permission object itself.
      */
-    public Permission setDataActions(List<KeyVaultDataAction> dataActions) {
+    public Permission setDataActions(List<DataAction> dataActions) {
         this.dataActions = dataActions;
         return this;
     }
@@ -110,7 +108,7 @@ public final class Permission implements JsonSerializable<Permission> {
      *
      * @return the notDataActions value.
      */
-    public List<KeyVaultDataAction> getNotDataActions() {
+    public List<DataAction> getNotDataActions() {
         return this.notDataActions;
     }
 
@@ -121,63 +119,8 @@ public final class Permission implements JsonSerializable<Permission> {
      * @param notDataActions the notDataActions value to set.
      * @return the Permission object itself.
      */
-    public Permission setNotDataActions(List<KeyVaultDataAction> notDataActions) {
+    public Permission setNotDataActions(List<DataAction> notDataActions) {
         this.notDataActions = notDataActions;
         return this;
-    }
-
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeArrayField("actions", this.actions, (writer, element) -> writer.writeString(element));
-        jsonWriter.writeArrayField("notActions", this.notActions, (writer, element) -> writer.writeString(element));
-        jsonWriter.writeArrayField(
-                "dataActions",
-                this.dataActions,
-                (writer, element) -> writer.writeString(Objects.toString(element, null)));
-        jsonWriter.writeArrayField(
-                "notDataActions",
-                this.notDataActions,
-                (writer, element) -> writer.writeString(Objects.toString(element, null)));
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of Permission from the JsonReader.
-     *
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of Permission if the JsonReader was pointing to an instance of it, or null if it was pointing
-     *     to JSON null.
-     * @throws IOException If an error occurs while reading the Permission.
-     */
-    public static Permission fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    Permission deserializedPermission = new Permission();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
-
-                        if ("actions".equals(fieldName)) {
-                            List<String> actions = reader.readArray(reader1 -> reader1.getString());
-                            deserializedPermission.actions = actions;
-                        } else if ("notActions".equals(fieldName)) {
-                            List<String> notActions = reader.readArray(reader1 -> reader1.getString());
-                            deserializedPermission.notActions = notActions;
-                        } else if ("dataActions".equals(fieldName)) {
-                            List<KeyVaultDataAction> dataActions =
-                                    reader.readArray(reader1 -> KeyVaultDataAction.fromString(reader1.getString()));
-                            deserializedPermission.dataActions = dataActions;
-                        } else if ("notDataActions".equals(fieldName)) {
-                            List<KeyVaultDataAction> notDataActions =
-                                    reader.readArray(reader1 -> KeyVaultDataAction.fromString(reader1.getString()));
-                            deserializedPermission.notDataActions = notDataActions;
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
-
-                    return deserializedPermission;
-                });
     }
 }

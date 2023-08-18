@@ -1,120 +1,79 @@
 # Azure Key Vault Administration for Java
-
 > see https://aka.ms/autorest
 
-This is the Autorest configuration file for KeyVault Administration.
+### Setup
+Increase max memory if you're using Autorest older than 3. Set the environment variable `NODE_OPTIONS` to `--max-old-space-size=8192`.
 
+This is the AutoRest configuration file for the KeyVaultAccessControlClient and KeyVaultBackupClient.
 ---
 ## Getting Started
-To build the SDK for KeyVault Administration, simply [Install Autorest](https://aka.ms/autorest) and 
-in this folder, run:
+To build the SDK for either client, simply [Install AutoRest](https://github.com/Azure/autorest/blob/master/docs/install/readme.md) and in this folder, run:
 
-> `autorest --tag={swagger specification}`
+> `autorest`
 
 To see additional help and options, run:
 
 > `autorest --help`
 
-### Setup
-```ps
-npm install -g autorest
-```
-
 ### Generation
-
-There are three swagger specifications for KeyVault Administration: `rbac`, `backuprestore` and `settings`. 
-They use the following tags respectively: `--tag=rbac`, `--tag=backuprestore`, `--tag=settings`.
+There are three swagger specifications for KeyVault Administration: `rbac`, `backuprestore` and `settings`. They use the following tags respectively: `--tag=rbac`, `--tag=backuprestore`, `--tag=settings`.
 
 ```ps
 cd <swagger-folder>
-autorest --tag={swagger specification}
+autorest --use=@autorest/java@4.1.15 --tag=${package}
 ```
 
 e.g.
 ```ps
 cd <swagger-folder>
-autorest --tag=rbac
-autorest --tag=backuprestore
-autorest --tag=settings
+autorest --use=@autorest/java@4.1.15 --tag=rbac
 ```
 
-## Configuration
-```yaml
-use: '@autorest/java@4.1.17'
-output-folder: ../
+```ps
+cd <swagger-folder>
+autorest --use=@autorest/java@4.1.15 --tag=backuprestore
+```
+
+```ps
+cd <swagger-folder>
+autorest --use=@autorest/java@4.1.15 --tag=settings
+```
+
+## Code generation settings
+``` yaml
 java: true
+output-folder: ../
 namespace: com.azure.security.keyvault.administration
+license-header: MICROSOFT_MIT_SMALL
 models-subpackage: implementation.models
 custom-types-subpackage: models
-enable-sync-stack: true
-generate-client-interfaces: false
 generate-client-as-impl: true
 service-interface-as-public: true
-license-header: MICROSOFT_MIT_SMALL
-disable-client-builder: true
+enable-sync-stack: true
 add-context-parameter: true
 context-client-method-parameter: true
-generic-response-type: true
-stream-style-serialization: true
-required-fields-as-ctor-args: true
-include-read-only-in-constructor-args: true
 ```
 
 ### Tag: rbac
 These settings apply only when `--tag=rbac` is specified on the command line.
 
 ``` yaml $(tag) == 'rbac'
-input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/551275acb80e1f8b39036b79dfc35a8f63b601a7/specification/keyvault/data-plane/Microsoft.KeyVault/stable/7.4/rbac.json
+input-file: https://github.com/Azure/azure-rest-api-specs/blob/551275acb80e1f8b39036b79dfc35a8f63b601a7/specification/keyvault/data-plane/Microsoft.KeyVault/stable/7.4/rbac.json
 title: KeyVaultAccessControlClient
-custom-types: KeyVaultDataAction,KeyVaultRoleDefinitionType,KeyVaultRoleScope,KeyVaultRoleType
-customization-class: src/main/java/RbacCustomizations.java
-```
-
-#### Enum Renames
-``` yaml $(tag) == 'rbac'
-directive:
-  - from: swagger-document
-    where: $.definitions
-    transform: >
-      $.DataAction["x-ms-enum"].name = "KeyVaultDataAction";
-      $.RoleDefinitionProperties.properties.type["x-ms-enum"].name = "KeyVaultRoleType";
-      $.RoleScope["x-ms-enum"].name = "KeyVaultRoleScope";
-      $.RoleDefinition.properties.type["x-ms-enum"].name = "KeyVaultRoleDefinitionType";
 ```
 
 ### Tag: backuprestore
 These settings apply only when `--tag=backuprestore` is specified on the command line.
 
 ``` yaml $(tag) == 'backuprestore'
-input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/551275acb80e1f8b39036b79dfc35a8f63b601a7/specification/keyvault/data-plane/Microsoft.KeyVault/stable/7.4/backuprestore.json
+input-file: https://github.com/Azure/azure-rest-api-specs/blob/551275acb80e1f8b39036b79dfc35a8f63b601a7/specification/keyvault/data-plane/Microsoft.KeyVault/stable/7.4/backuprestore.json
 title: KeyVaultBackupClient
-customization-class: src/main/java/BackupRestoreCustomizations.java
 ```
 
 ### Tag: settings
 These settings apply only when `--tag=settings` is specified on the command line.
 
 ``` yaml $(tag) == 'settings'
-input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/551275acb80e1f8b39036b79dfc35a8f63b601a7/specification/keyvault/data-plane/Microsoft.KeyVault/stable/7.4/settings.json
+input-file: https://github.com/Azure/azure-rest-api-specs/tree/551275acb80e1f8b39036b79dfc35a8f63b601a7/specification/keyvault/data-plane/Microsoft.KeyVault/stable/7.4/settings.json
 title: KeyVaultSettingsClient
-custom-types: KeyVaultSettingType
-customization-class: src/main/java/SettingsCustomizations.java
-```
-
-#### Rename SettingTypeEnum to KeyVaultSettingType
-``` yaml $(tag) == 'settings'
-directive:
-  - from: swagger-document
-    where: $.definitions.Setting
-    transform: >
-      $.properties.type["x-ms-enum"].name = "KeyVaultSettingType";
-```
-
-#### Bug in Autorest Java for required properties that are flattened in operation definition
-``` yaml $(tag) == 'settings'
-directive:
-  - from: swagger-document
-    where: $.definitions
-    transform: >
-      delete $.UpdateSettingRequest.required;
 ```

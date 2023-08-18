@@ -1,16 +1,5 @@
 # Release History
 
-## 4.4.0-beta.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
-- Migrate test recordings to assets repo.
-
 ## 4.3.4 (2023-07-25)
 
 ### Other Changes
@@ -30,12 +19,16 @@
 - Upgraded `azure-core` from `1.39.0` to version `1.40.0`.
 - Upgraded `azure-core-http-netty` from `1.13.3` to version `1.13.4`.
 
+
 ## 4.3.2 (2023-05-23)
+
+### Other Changes
 
 #### Dependency Updates
 
 - Upgraded `azure-core-http-netty` from `1.13.2` to version `1.13.3`.
 - Upgraded `azure-core` from `1.38.0` to version `1.39.0`.
+
 
 ## 4.3.1 (2023-04-20)
 

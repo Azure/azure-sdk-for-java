@@ -44,6 +44,7 @@ public class KeyVaultBackupClientTest extends KeyVaultBackupClientTestBase {
 
     private HttpClient buildSyncAssertingClient(HttpClient httpClient) {
         return new AssertingHttpClientBuilder(httpClient)
+            .skipRequest((ignored1, ignored2) -> true)
             .assertSync()
             .build();
     }
@@ -56,8 +57,7 @@ public class KeyVaultBackupClientTest extends KeyVaultBackupClientTestBase {
     public void beginBackup(HttpClient httpClient) {
         getClient(httpClient, false);
 
-        SyncPoller<KeyVaultBackupOperation, String> backupPoller =
-            setPlaybackSyncPollerPollInterval(client.beginBackup(blobStorageUrl, sasToken));
+        SyncPoller<KeyVaultBackupOperation, String> backupPoller = client.beginBackup(blobStorageUrl, sasToken);
 
         backupPoller.waitForCompletion();
 
@@ -76,15 +76,14 @@ public class KeyVaultBackupClientTest extends KeyVaultBackupClientTestBase {
         getClient(httpClient, false);
 
         // Create a backup
-        SyncPoller<KeyVaultBackupOperation, String> backupPoller =
-            setPlaybackSyncPollerPollInterval(client.beginBackup(blobStorageUrl, sasToken));
+        SyncPoller<KeyVaultBackupOperation, String> backupPoller = client.beginBackup(blobStorageUrl, sasToken);
 
         backupPoller.waitForCompletion();
 
         // Restore the backup
         String backupFolderUrl = backupPoller.getFinalResult();
         SyncPoller<KeyVaultRestoreOperation, KeyVaultRestoreResult> restorePoller =
-            setPlaybackSyncPollerPollInterval(client.beginRestore(backupFolderUrl, sasToken));
+            client.beginRestore(backupFolderUrl, sasToken);
 
         restorePoller.waitForCompletion();
 
@@ -119,16 +118,14 @@ public class KeyVaultBackupClientTest extends KeyVaultBackupClientTestBase {
         getClient(httpClient, false);
 
         // Create a backup
-        SyncPoller<KeyVaultBackupOperation, String> backupPoller =
-            setPlaybackSyncPollerPollInterval(client.beginBackup(blobStorageUrl, sasToken));
+        SyncPoller<KeyVaultBackupOperation, String> backupPoller = client.beginBackup(blobStorageUrl, sasToken);
 
         backupPoller.waitForCompletion();
 
         // Restore one key from said backup
         String backupFolderUrl = backupPoller.getFinalResult();
         SyncPoller<KeyVaultSelectiveKeyRestoreOperation, KeyVaultSelectiveKeyRestoreResult> selectiveKeyRestorePoller =
-            setPlaybackSyncPollerPollInterval(client.beginSelectiveKeyRestore(createdKey.getName(), backupFolderUrl,
-                sasToken));
+            client.beginSelectiveKeyRestore(createdKey.getName(), backupFolderUrl, sasToken);
 
         selectiveKeyRestorePoller.waitForCompletion();
 
