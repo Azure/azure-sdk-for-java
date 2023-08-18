@@ -1,6 +1,10 @@
 # Release History
 
-## 4.3.5 (2023-08-18)
+## 4.4.0 (2023-08-18)
+
+### Features Added
+
+- Added the method `values()` to all models that extend from the `ExpandableStringEnums` class: `KeyVaultDataAction`, `KeyVaultRoleDefinitionType`, `KeyVaultRoleScope`, `KeyVaultRoleType`, `KeyVaultSettingType`.
 
 ### Other Changes
 
