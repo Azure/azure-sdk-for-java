@@ -56,8 +56,6 @@ public final class MetricsConfigurationsDeleteMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager
-            .metricsConfigurations()
-            .delete("wntfmtbgwjdxwna", "kurrdreyzjwh", "etw", com.azure.core.util.Context.NONE);
+        manager.metricsConfigurations().delete("rdw", "ejpec", "zvcmbpwd", com.azure.core.util.Context.NONE);
     }
 }

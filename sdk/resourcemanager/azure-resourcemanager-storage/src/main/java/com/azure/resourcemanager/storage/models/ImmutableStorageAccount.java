@@ -26,6 +26,10 @@ public final class ImmutableStorageAccount {
     @JsonProperty(value = "immutabilityPolicy")
     private AccountImmutabilityPolicyProperties immutabilityPolicy;
 
+    /** Creates an instance of ImmutableStorageAccount class. */
+    public ImmutableStorageAccount() {
+    }
+
     /**
      * Get the enabled property: A boolean flag which enables account-level immutability. All the containers under such
      * an account have object-level immutability enabled by default.

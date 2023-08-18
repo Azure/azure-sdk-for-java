@@ -74,11 +74,10 @@ public final class FieldBuilder {
         SUPPORTED_NONE_PARAMETERIZED_TYPE.put(Date.class, SearchFieldDataType.DATE_TIME_OFFSET);
         SUPPORTED_NONE_PARAMETERIZED_TYPE.put(OffsetDateTime.class, SearchFieldDataType.DATE_TIME_OFFSET);
         SUPPORTED_NONE_PARAMETERIZED_TYPE.put(GeoPoint.class, SearchFieldDataType.GEOGRAPHY_POINT);
-
+        SUPPORTED_NONE_PARAMETERIZED_TYPE.put(Float.class, SearchFieldDataType.SINGLE);
+        SUPPORTED_NONE_PARAMETERIZED_TYPE.put(float.class, SearchFieldDataType.SINGLE);
         UNSUPPORTED_TYPES.add(byte.class);
         UNSUPPORTED_TYPES.add(Byte.class);
-        UNSUPPORTED_TYPES.add(float.class);
-        UNSUPPORTED_TYPES.add(Float.class);
         UNSUPPORTED_TYPES.add(short.class);
         UNSUPPORTED_TYPES.add(Short.class);
     }
@@ -247,7 +246,7 @@ public final class FieldBuilder {
         }
 
         throw LOGGER.logExceptionAsError(
-            new RuntimeException("Collection type '" + arrayOrListType.getTypeName() + "' is not supported."));
+            new RuntimeException("Collection type '" + arrayOrListType + "' is not supported."));
     }
 
     private static SearchField convertToBasicSearchField(String fieldName, Type type) {
@@ -372,9 +371,9 @@ public final class FieldBuilder {
         if (!(type instanceof ParameterizedType)) {
             if (UNSUPPORTED_TYPES.contains(type)) {
                 throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                    "Type '" + type.getTypeName() + "' is not supported. Please use @FieldIgnore to exclude the field "
-                        + "and manually build SearchField to the list if the field is needed. For more information, "
-                        + "refer to link: aka.ms/azsdk/java/search/fieldbuilder"));
+                    "Type '" + type + "' is not supported. Please use @FieldIgnore to exclude the field and manually "
+                        + "build SearchField to the list if the field is needed. For more information, refer to link: "
+                        + "aka.ms/azsdk/java/search/fieldbuilder"));
             }
             return;
         }
@@ -391,7 +390,7 @@ public final class FieldBuilder {
 
         if (!List.class.isAssignableFrom((Class<?>) parameterizedType.getRawType())) {
             throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Collection type '" + type.getTypeName() + "' is not supported"));
+                new IllegalArgumentException("Collection type '" + type + "' is not supported"));
         }
     }
 

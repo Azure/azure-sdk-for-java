@@ -16,11 +16,11 @@ public final class IpAddressPoolTests {
         IpAddressPool model =
             BinaryData
                 .fromString(
-                    "{\"addresses\":[\"lsa\",\"nynfsynljphuo\",\"xodlqiyntorzih\",\"eosjswsr\"],\"autoAssign\":\"False\",\"name\":\"yzrpzbchckqqzq\",\"onlyUseHostIps\":\"True\"}")
+                    "{\"addresses\":[\"odkwobd\",\"gxtibqdxbxw\",\"kbogqxndlkzgx\"],\"autoAssign\":\"True\",\"name\":\"iplbpodxunkbebxm\",\"onlyUseHostIps\":\"True\"}")
                 .toObject(IpAddressPool.class);
-        Assertions.assertEquals("lsa", model.addresses().get(0));
-        Assertions.assertEquals(BfdEnabled.FALSE, model.autoAssign());
-        Assertions.assertEquals("yzrpzbchckqqzq", model.name());
+        Assertions.assertEquals("odkwobd", model.addresses().get(0));
+        Assertions.assertEquals(BfdEnabled.TRUE, model.autoAssign());
+        Assertions.assertEquals("iplbpodxunkbebxm", model.name());
         Assertions.assertEquals(BfdEnabled.TRUE, model.onlyUseHostIps());
     }
 
@@ -28,14 +28,14 @@ public final class IpAddressPoolTests {
     public void testSerialize() throws Exception {
         IpAddressPool model =
             new IpAddressPool()
-                .withAddresses(Arrays.asList("lsa", "nynfsynljphuo", "xodlqiyntorzih", "eosjswsr"))
-                .withAutoAssign(BfdEnabled.FALSE)
-                .withName("yzrpzbchckqqzq")
+                .withAddresses(Arrays.asList("odkwobd", "gxtibqdxbxw", "kbogqxndlkzgx"))
+                .withAutoAssign(BfdEnabled.TRUE)
+                .withName("iplbpodxunkbebxm")
                 .withOnlyUseHostIps(BfdEnabled.TRUE);
         model = BinaryData.fromObject(model).toObject(IpAddressPool.class);
-        Assertions.assertEquals("lsa", model.addresses().get(0));
-        Assertions.assertEquals(BfdEnabled.FALSE, model.autoAssign());
-        Assertions.assertEquals("yzrpzbchckqqzq", model.name());
+        Assertions.assertEquals("odkwobd", model.addresses().get(0));
+        Assertions.assertEquals(BfdEnabled.TRUE, model.autoAssign());
+        Assertions.assertEquals("iplbpodxunkbebxm", model.name());
         Assertions.assertEquals(BfdEnabled.TRUE, model.onlyUseHostIps());
     }
 }

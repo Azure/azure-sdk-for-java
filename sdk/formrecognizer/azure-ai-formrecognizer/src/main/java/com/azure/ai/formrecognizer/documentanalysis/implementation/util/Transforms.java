@@ -3,8 +3,8 @@
 
 package com.azure.ai.formrecognizer.documentanalysis.implementation.util;
 
-import com.azure.ai.formrecognizer.documentanalysis.administration.models.AzureBlobContentSource;
-import com.azure.ai.formrecognizer.documentanalysis.administration.models.AzureBlobFileListContentSource;
+import com.azure.ai.formrecognizer.documentanalysis.administration.models.BlobContentSource;
+import com.azure.ai.formrecognizer.documentanalysis.administration.models.BlobFileListContentSource;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.BuildDocumentModelOptions;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.ClassifierDocumentTypeDetails;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.ComposeDocumentModelOptions;
@@ -62,7 +62,9 @@ import com.azure.ai.formrecognizer.documentanalysis.models.DocumentWord;
 import com.azure.ai.formrecognizer.documentanalysis.models.OperationResult;
 import com.azure.ai.formrecognizer.documentanalysis.models.ParagraphRole;
 import com.azure.ai.formrecognizer.documentanalysis.models.Point;
-import com.azure.ai.formrecognizer.documentanalysis.models.TrainingDataContentSource;
+import com.azure.ai.formrecognizer.documentanalysis.models.FontStyle;
+import com.azure.ai.formrecognizer.documentanalysis.models.FontWeight;
+import com.azure.ai.formrecognizer.documentanalysis.administration.models.ContentSource;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.models.ResponseError;
 import com.azure.core.util.CoreUtils;
@@ -82,6 +84,7 @@ public class Transforms {
     public static AnalyzeResult toAnalyzeResultOperation(
         com.azure.ai.formrecognizer.documentanalysis.implementation.models.AnalyzeResult innerAnalyzeResult) {
         AnalyzeResult analyzeResult = new AnalyzeResult();
+        AnalyzeResultHelper.setServiceVersion(analyzeResult, innerAnalyzeResult.getApiVersion());
 
         // add documents
         if (!CoreUtils.isNullOrEmpty(innerAnalyzeResult.getDocuments())) {
@@ -188,6 +191,17 @@ public class Transforms {
                     DocumentStyleHelper.setConfidence(documentStyle, innerDocumentStyle.getConfidence());
                     DocumentStyleHelper.setIsHandwritten(documentStyle, innerDocumentStyle.isHandwritten());
                     DocumentStyleHelper.setSpans(documentStyle, toDocumentSpans(innerDocumentStyle.getSpans()));
+                    DocumentStyleHelper.setColor(documentStyle, innerDocumentStyle.getColor());
+                    DocumentStyleHelper.setBackgroundColor(documentStyle, innerDocumentStyle.getBackgroundColor());
+                    if (innerDocumentStyle.getFontWeight() != null) {
+                        DocumentStyleHelper.setFontWeight(documentStyle,
+                                FontWeight.fromString(innerDocumentStyle.getFontWeight().toString()));
+                    }
+                    DocumentStyleHelper.setSimilarFontFamily(documentStyle, innerDocumentStyle.getSimilarFontFamily());
+                    if (innerDocumentStyle.getFontStyle() != null) {
+                        DocumentStyleHelper.setFontStyle(documentStyle,
+                                FontStyle.fromString(innerDocumentStyle.getFontStyle().toString()));
+                    }
                     return documentStyle;
                 })
                 .collect(Collectors.toList()));
@@ -262,6 +276,7 @@ public class Transforms {
                 DocumentBarcodeHelper.setValue(documentBarcode, innerBarcode.getValue());
                 DocumentBarcodeHelper.setConfidence(documentBarcode, innerBarcode.getConfidence());
                 DocumentBarcodeHelper.setSpan(documentBarcode, getDocumentSpan(innerBarcode.getSpan()));
+                DocumentBarcodeHelper.setBoundingPolygon(documentBarcode, toPolygonPoints(innerBarcode.getPolygon()));
                 return documentBarcode;
             })
                 .collect(Collectors.toList());
@@ -280,6 +295,7 @@ public class Transforms {
                 DocumentFormulaHelper.setValue(documentFormula, innerFormula.getValue());
                 DocumentFormulaHelper.setConfidence(documentFormula, innerFormula.getConfidence());
                 DocumentFormulaHelper.setSpan(documentFormula, getDocumentSpan(innerFormula.getSpan()));
+                DocumentFormulaHelper.setBoundingPolygon(documentFormula, toPolygonPoints(innerFormula.getPolygon()));
                 return documentFormula;
             }).collect(Collectors.toList());
         }
@@ -287,19 +303,19 @@ public class Transforms {
     }
 
     public static BuildDocumentModelRequest getBuildDocumentModelRequest(
-        TrainingDataContentSource trainingDataContentSource, DocumentModelBuildMode buildMode,
+        ContentSource contentSource, DocumentModelBuildMode buildMode,
         String modelId, BuildDocumentModelOptions buildDocumentModelOptions) {
         BuildDocumentModelRequest buildDocumentModelRequest = new BuildDocumentModelRequest(modelId,
             com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentBuildMode
                 .fromString(buildMode.toString()))
             .setDescription(buildDocumentModelOptions.getDescription())
             .setTags(buildDocumentModelOptions.getTags());
-        if (trainingDataContentSource instanceof AzureBlobContentSource) {
-            AzureBlobContentSource azureBlobSource = (AzureBlobContentSource) trainingDataContentSource;
+        if (contentSource instanceof BlobContentSource) {
+            BlobContentSource azureBlobSource = (BlobContentSource) contentSource;
             buildDocumentModelRequest.setAzureBlobSource(new com.azure.ai.formrecognizer.documentanalysis.implementation.models.AzureBlobContentSource(azureBlobSource.getContainerUrl())
                 .setPrefix(azureBlobSource.getPrefix()));
-        } else if (trainingDataContentSource instanceof AzureBlobFileListContentSource) {
-            AzureBlobFileListContentSource azureBlobFileListSource = (AzureBlobFileListContentSource) trainingDataContentSource;
+        } else if (contentSource instanceof BlobFileListContentSource) {
+            BlobFileListContentSource azureBlobFileListSource = (BlobFileListContentSource) contentSource;
             buildDocumentModelRequest.setAzureBlobFileListSource(new com.azure.ai.formrecognizer.documentanalysis.implementation.models.AzureBlobFileListContentSource(azureBlobFileListSource.getContainerUrl(), azureBlobFileListSource.getFileList()));
         }
         return buildDocumentModelRequest;
@@ -402,6 +418,7 @@ public class Transforms {
             DocumentModelDetailsHelper.setCreatedOn(documentModelDetails, modelDetails.getCreatedDateTime());
             DocumentModelDetailsHelper.setTags(documentModelDetails, modelDetails.getTags());
             DocumentModelDetailsHelper.setExpiresOn(documentModelDetails, modelDetails.getExpirationDateTime());
+            DocumentModelDetailsHelper.setServiceVersion(documentModelDetails, modelDetails.getApiVersion());
         }
         return documentModelDetails;
     }
@@ -475,8 +492,10 @@ public class Transforms {
     private static Map<String, DocumentField> toDocumentFields(
         Map<String, com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentField> innerFields) {
         Map<String, DocumentField> documentFieldMap = new HashMap<>();
-        innerFields.forEach((key, innerDocumentField) ->
-            documentFieldMap.put(key, toDocumentField(innerDocumentField)));
+        if (!CoreUtils.isNullOrEmpty(innerFields)) {
+            innerFields.forEach((key, innerDocumentField) ->
+                documentFieldMap.put(key, toDocumentField(innerDocumentField)));
+        }
         return documentFieldMap;
     }
 
@@ -571,20 +590,28 @@ public class Transforms {
             }
         } else if (com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentFieldType.ADDRESS.equals(
             innerDocumentField.getType())) {
-            if (innerDocumentField.getValueAddress() == null) {
+            com.azure.ai.formrecognizer.documentanalysis.implementation.models.AddressValue innerValueAddress =
+                innerDocumentField.getValueAddress();
+            if (innerValueAddress == null) {
                 DocumentFieldHelper.setValue(documentField, null);
             } else {
                 AddressValue addressValue = new AddressValue();
-                AddressValueHelper.setCity(addressValue, innerDocumentField.getValueAddress().getCity());
+                AddressValueHelper.setCity(addressValue, innerValueAddress.getCity());
                 AddressValueHelper.setStreetAddress(addressValue,
-                    innerDocumentField.getValueAddress().getStreetAddress());
+                    innerValueAddress.getStreetAddress());
                 AddressValueHelper.setCountryRegion(addressValue,
-                    innerDocumentField.getValueAddress().getCountryRegion());
-                AddressValueHelper.setHouseNumber(addressValue, innerDocumentField.getValueAddress().getHouseNumber());
-                AddressValueHelper.setRoad(addressValue, innerDocumentField.getValueAddress().getRoad());
-                AddressValueHelper.setPoBox(addressValue, innerDocumentField.getValueAddress().getPoBox());
-                AddressValueHelper.setPostalCode(addressValue, innerDocumentField.getValueAddress().getPostalCode());
-                AddressValueHelper.setState(addressValue, innerDocumentField.getValueAddress().getState());
+                    innerValueAddress.getCountryRegion());
+                AddressValueHelper.setHouseNumber(addressValue, innerValueAddress.getHouseNumber());
+                AddressValueHelper.setRoad(addressValue, innerValueAddress.getRoad());
+                AddressValueHelper.setPoBox(addressValue, innerValueAddress.getPoBox());
+                AddressValueHelper.setPostalCode(addressValue, innerValueAddress.getPostalCode());
+                AddressValueHelper.setState(addressValue, innerValueAddress.getState());
+                AddressValueHelper.setUnit(addressValue, innerValueAddress.getUnit());
+                AddressValueHelper.setCityDistrict(addressValue, innerValueAddress.getCityDistrict());
+                AddressValueHelper.setStateDistrict(addressValue, innerValueAddress.getStateDistrict());
+                AddressValueHelper.setSuburb(addressValue, innerValueAddress.getSuburb());
+                AddressValueHelper.setHouse(addressValue, innerValueAddress.getHouse());
+                AddressValueHelper.setLevel(addressValue, innerValueAddress.getLevel());
                 DocumentFieldHelper.setValue(documentField, addressValue);
             }
         }
@@ -652,6 +679,8 @@ public class Transforms {
                 DocumentModelSummaryHelper.setCreatedOn(documentModelSummary, modelSummary.getCreatedDateTime());
                 DocumentModelSummaryHelper.setTags(documentModelSummary, modelSummary.getTags());
                 DocumentModelSummaryHelper.setExpiresOn(documentModelSummary, modelSummary.getExpirationDateTime());
+                DocumentModelSummaryHelper.setServiceVersion(documentModelSummary,
+                    modelSummary.getApiVersion());
                 return documentModelSummary;
             }).collect(Collectors.toList());
     }
@@ -686,6 +715,7 @@ public class Transforms {
             OperationDetailsHelper.setResourceLocation(operationDetails, innerOperationDetails.getResourceLocation());
             OperationDetailsHelper.setError(operationDetails, toResponseError(innerOperationDetails.getError()));
             OperationDetailsHelper.setTags(operationDetails, innerOperationDetails.getTags());
+            OperationDetailsHelper.setServiceVersion(operationDetails, innerOperationDetails.getApiVersion());
         }
         return operationDetails;
     }
@@ -785,16 +815,16 @@ public class Transforms {
         tags.forEach((key, classifierDocumentTypeDetails) -> {
             com.azure.ai.formrecognizer.documentanalysis.implementation.models.ClassifierDocumentTypeDetails innerClassifyDocTypeDetails
                 = new com.azure.ai.formrecognizer.documentanalysis.implementation.models.ClassifierDocumentTypeDetails();
-            if (classifierDocumentTypeDetails.getTrainingDataContentSource() instanceof AzureBlobFileListContentSource) {
+            if (classifierDocumentTypeDetails.getContentSource() instanceof BlobFileListContentSource) {
                 innerClassifyDocTypeDetails.setAzureBlobFileListSource(
                     new com.azure.ai.formrecognizer.documentanalysis.implementation.models.AzureBlobFileListContentSource(
-                        ((AzureBlobFileListContentSource) classifierDocumentTypeDetails.getTrainingDataContentSource()).getContainerUrl(),
-                        ((AzureBlobFileListContentSource) classifierDocumentTypeDetails.getTrainingDataContentSource()).getFileList()));
+                        ((BlobFileListContentSource) classifierDocumentTypeDetails.getContentSource()).getContainerUrl(),
+                        ((BlobFileListContentSource) classifierDocumentTypeDetails.getContentSource()).getFileList()));
             } else {
                 innerClassifyDocTypeDetails.setAzureBlobSource(
                     new com.azure.ai.formrecognizer.documentanalysis.implementation.models.AzureBlobContentSource(
-                        ((AzureBlobContentSource) classifierDocumentTypeDetails.getTrainingDataContentSource()).getContainerUrl())
-                        .setPrefix(((AzureBlobContentSource) classifierDocumentTypeDetails.getTrainingDataContentSource()).getPrefix()));
+                        ((BlobContentSource) classifierDocumentTypeDetails.getContentSource()).getContainerUrl())
+                        .setPrefix(((BlobContentSource) classifierDocumentTypeDetails.getContentSource()).getPrefix()));
             }
             innerTags.put(key, innerClassifyDocTypeDetails);
         });
@@ -806,7 +836,7 @@ public class Transforms {
         DocumentClassifierDetailsHelper.setClassifierId(classifierDetails, inner.getClassifierId());
         DocumentClassifierDetailsHelper.setDescription(classifierDetails, inner.getDescription());
         DocumentClassifierDetailsHelper.setDocTypes(classifierDetails, fromInnerDocTypes(inner.getDocTypes()));
-        DocumentClassifierDetailsHelper.setApiVersion(classifierDetails, inner.getApiVersion());
+        DocumentClassifierDetailsHelper.setServiceVersion(classifierDetails, inner.getApiVersion());
         DocumentClassifierDetailsHelper.setCreatedOn(classifierDetails, inner.getCreatedDateTime());
         DocumentClassifierDetailsHelper.setExpiresOn(classifierDetails, inner.getExpirationDateTime());
 
@@ -828,13 +858,13 @@ public class Transforms {
             com.azure.ai.formrecognizer.documentanalysis.implementation.models.AzureBlobContentSource blobContentSource
                 = innerClassifier.getAzureBlobSource();
             classifierDocumentTypeDetails =
-                new ClassifierDocumentTypeDetails(new AzureBlobContentSource(blobContentSource.getContainerUrl())
+                new ClassifierDocumentTypeDetails(new BlobContentSource(blobContentSource.getContainerUrl())
                 .setPrefix(blobContentSource.getPrefix()));
         } else if (innerClassifier.getAzureBlobFileListSource() != null) {
             com.azure.ai.formrecognizer.documentanalysis.implementation.models.AzureBlobFileListContentSource listSource
                 = innerClassifier.getAzureBlobFileListSource();
             classifierDocumentTypeDetails = new ClassifierDocumentTypeDetails(
-                new AzureBlobFileListContentSource(listSource.getContainerUrl(), listSource.getFileList()));
+                new BlobFileListContentSource(listSource.getContainerUrl(), listSource.getFileList()));
         }
         return classifierDocumentTypeDetails;
     }

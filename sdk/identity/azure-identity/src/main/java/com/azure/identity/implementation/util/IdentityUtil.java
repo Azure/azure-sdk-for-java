@@ -8,6 +8,7 @@ import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.identity.BrowserCustomizationOptions;
 import com.azure.identity.implementation.IdentityClientOptions;
 
 import java.util.Arrays;
@@ -82,5 +83,10 @@ public final class IdentityUtil {
         } else {
             return Collections.emptyList();
         }
+    }
+
+    public static boolean browserCustomizationOptionsPresent(BrowserCustomizationOptions browserCustomizationOptions) {
+        return !CoreUtils.isNullOrEmpty(browserCustomizationOptions.getErrorMessage())
+            || !CoreUtils.isNullOrEmpty(browserCustomizationOptions.getSuccessMessage());
     }
 }

@@ -43,6 +43,10 @@ public final class LeaseContainerRequest {
     @JsonProperty(value = "proposedLeaseId")
     private String proposedLeaseId;
 
+    /** Creates an instance of LeaseContainerRequest class. */
+    public LeaseContainerRequest() {
+    }
+
     /**
      * Get the action property: Specifies the lease action. Can be one of the available actions.
      *

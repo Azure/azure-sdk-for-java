@@ -261,7 +261,10 @@ public final class OpenAIClientBuilder
                 (serviceVersion != null) ? serviceVersion : OpenAIServiceVersion.getLatest();
         OpenAIClientImpl client =
                 new OpenAIClientImpl(
-                        localPipeline, JacksonAdapter.createDefaultSerializerAdapter(), endpoint, localServiceVersion);
+                        localPipeline,
+                        JacksonAdapter.createDefaultSerializerAdapter(),
+                        this.endpoint,
+                        localServiceVersion);
         return client;
     }
 

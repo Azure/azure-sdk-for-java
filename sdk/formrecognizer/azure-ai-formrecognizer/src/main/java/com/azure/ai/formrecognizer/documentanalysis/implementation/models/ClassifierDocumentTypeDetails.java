@@ -11,6 +11,12 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class ClassifierDocumentTypeDetails {
     /*
+     * Type of training data source.
+     */
+    @JsonProperty(value = "sourceKind")
+    private ContentSourceKind sourceKind;
+
+    /*
      * Azure Blob Storage location containing the training data for a classifier document type.  Either azureBlobSource
      * or azureBlobFileListSource must be specified.
      */
@@ -26,6 +32,26 @@ public final class ClassifierDocumentTypeDetails {
 
     /** Creates an instance of ClassifierDocumentTypeDetails class. */
     public ClassifierDocumentTypeDetails() {}
+
+    /**
+     * Get the sourceKind property: Type of training data source.
+     *
+     * @return the sourceKind value.
+     */
+    public ContentSourceKind getSourceKind() {
+        return this.sourceKind;
+    }
+
+    /**
+     * Set the sourceKind property: Type of training data source.
+     *
+     * @param sourceKind the sourceKind value to set.
+     * @return the ClassifierDocumentTypeDetails object itself.
+     */
+    public ClassifierDocumentTypeDetails setSourceKind(ContentSourceKind sourceKind) {
+        this.sourceKind = sourceKind;
+        return this;
+    }
 
     /**
      * Get the azureBlobSource property: Azure Blob Storage location containing the training data for a classifier

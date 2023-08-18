@@ -33,6 +33,11 @@ public final class PlayOptions {
     private String operationContext;
 
     /**
+     * The call back URI override.
+     */
+    private String callbackUrl;
+
+    /**
      * Constructor
      * @param playSources A List of {@link PlaySource} representing the sources to play.
      * @param playTo The targets to play to.
@@ -97,6 +102,15 @@ public final class PlayOptions {
     }
 
     /**
+     * Get the call back URI override.
+     *
+     * @return the callbackUriOverride
+     */
+    public String getCallbackUrl() {
+        return callbackUrl;
+    }
+
+    /**
      * Set the loop property: The option to play the provided audio source in loop when set to true.
      *
      * @param loop the loop value to set.
@@ -115,6 +129,17 @@ public final class PlayOptions {
      */
     public PlayOptions setOperationContext(String operationContext) {
         this.operationContext = operationContext;
+        return this;
+    }
+
+    /**
+     * Set the call back URI override.
+     *
+     * @param callbackUrl The call back URI override to set
+     * @return the PlayOptions object itself.
+     */
+    public PlayOptions setCallbackUrl(String callbackUrl) {
+        this.callbackUrl = callbackUrl;
         return this;
     }
 }

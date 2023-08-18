@@ -163,7 +163,7 @@ public class ClientCertificateCredentialTest {
         String pemPath = "C:\\fakepath\\cert1.pem";
         String token1 = "token1";
 
-        TokenRequestContext request1 = new TokenRequestContext().addScopes("https://management.azure.com").setEnableCae(true);
+        TokenRequestContext request1 = new TokenRequestContext().addScopes("https://management.azure.com").setCaeEnabled(true);
         OffsetDateTime expiresAt = OffsetDateTime.now(ZoneOffset.UTC).plusHours(1);
 
         // mock

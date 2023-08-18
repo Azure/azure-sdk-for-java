@@ -143,7 +143,7 @@
 /sdk/anomalydetector/                                @conhua @mengaims @juaduan @moreOver0
 
 # PRLabel: %Azure.Identity
-/sdk/identity/                                       @g2vinay @billwert @joshfree @Azure/azsdk-identity
+/sdk/identity/                                       @g2vinay @billwert @joshfree @Azure/azure-sdk-write-identity
 # PRLabel: %azure-spring
 /sdk/identity/azure-identity-extensions/             @backwind1233 @chenrujun @hui1110 @netyyyy @saragluna @stliu @yiliuTo @moarychan @fangjian0423
 
@@ -158,10 +158,10 @@
 /sdk/monitor/azure-monitor-opentelemetry-exporter/   @trask @ramthi @heyams @jeanbisutti
 
 # PRLabel:  %Monitor
-/sdk/monitor/azure-monitor-query*/                   @srnagar @lmolkova @jairmyree
+/sdk/monitor/azure-monitor-query*/                   @srnagar @lmolkova @Azure/azure-sdk-write-monitor-data-plane
 
 # PRLabel:  %Monitor
-/sdk/monitor/azure-monitor-ingestion*/               @srnagar @lmolkova @jairmyree
+/sdk/monitor/azure-monitor-ingestion*/               @srnagar @lmolkova @Azure/azure-sdk-write-monitor-data-plane
 
 # PRLabel: %Mixed Reality Authentication
 /sdk/mixedreality/azure-mixedreality-authentication/ @RamonArguelles
@@ -185,7 +185,7 @@
 /sdk/servicebus/microsoft-azure-servicebus/          @shankarsama @yvgopal
 
 # PRLabel: %Storage
-/sdk/storage/                                        @ibrahimrabab @alzimmermsft @seanmcc-msft
+/sdk/storage/                                        @ibrahimrabab @alzimmermsft @seanmcc-msft @ibrandes
 
 # PRLabel: %Tables
 /sdk/tables/                                         @jairmyree @vcolin7
