@@ -25,6 +25,7 @@ import com.azure.cosmos.implementation.throughputControl.ThroughputControlStore;
 import com.azure.cosmos.models.CosmosContainerIdentity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -32,6 +33,7 @@ import java.net.URI;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
@@ -196,7 +198,14 @@ public class ReplicatedResourceClient {
 //                logger.error("Error from mono 1 : ", throwable);
 //        });
 
-        return Mono.firstWithValue(monoList);
+        return Mono.firstWithValue(monoList).onErrorResume(throwable -> {
+            if (throwable instanceof NoSuchElementException) {
+                Throwable[] suppressedThrowables = throwable.getCause().getSuppressed();
+                return Mono.error(suppressedThrowables[0]);
+            }
+
+            return Mono.error(throwable);
+        });
     }
 
     private List<URI> getApplicableEndPoints(RxDocumentServiceRequest request) {

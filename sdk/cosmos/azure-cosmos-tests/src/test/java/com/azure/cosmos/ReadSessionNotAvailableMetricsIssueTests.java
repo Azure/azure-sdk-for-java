@@ -107,7 +107,7 @@ public class ReadSessionNotAvailableMetricsIssueTests {
             FaultInjectionRule readSessionUnavailableRuleSecondaryRegion = badSessionTokenRuleBuilder
                 .condition(faultInjectionConditionForReadsInSecondaryRegion)
                 .result(badSessionTokenServerErrorResult)
-                .duration(Duration.ofSeconds(1))
+                .duration(Duration.ofSeconds(120))
                 .build();
 
             CosmosFaultInjectionHelper
