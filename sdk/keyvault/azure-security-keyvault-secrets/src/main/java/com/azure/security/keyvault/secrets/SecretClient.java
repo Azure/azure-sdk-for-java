@@ -469,7 +469,7 @@ public final class SecretClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<KeyVaultSecret, Void> beginRecoverDeletedSecret(String name) {
-        return implClient.beginRecoverDeletedSecret(name, Context.NONE);
+        return implClient.beginRecoverDeletedSecretAsync(name).getSyncPoller();
     }
 
     /**
@@ -625,7 +625,7 @@ public final class SecretClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SecretProperties> listPropertiesOfSecrets() {
-        return implClient.listPropertiesOfSecrets();
+        return listPropertiesOfSecrets(Context.NONE);
     }
 
     /**
@@ -653,7 +653,7 @@ public final class SecretClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SecretProperties> listPropertiesOfSecrets(Context context) {
-        return implClient.listPropertiesOfSecrets(context);
+        return new PagedIterable<>(implClient.listPropertiesOfSecrets(context));
     }
 
     /**
@@ -689,7 +689,7 @@ public final class SecretClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DeletedSecret> listDeletedSecrets() {
-        return implClient.listDeletedSecrets();
+        return listDeletedSecrets(Context.NONE);
     }
 
     /**
@@ -711,7 +711,7 @@ public final class SecretClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DeletedSecret> listDeletedSecrets(Context context) {
-        return implClient.listDeletedSecrets(context);
+        return new PagedIterable<>(implClient.listDeletedSecrets(context));
     }
 
     /**
@@ -793,6 +793,6 @@ public final class SecretClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SecretProperties> listPropertiesOfSecretVersions(String name, Context context) {
-        return implClient.listPropertiesOfSecretVersions(name, context);
+        return new PagedIterable<>(implClient.listPropertiesOfSecretVersions(name, context));
     }
 }
