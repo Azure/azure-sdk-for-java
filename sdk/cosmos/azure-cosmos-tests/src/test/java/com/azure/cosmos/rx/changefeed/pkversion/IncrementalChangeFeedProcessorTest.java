@@ -77,6 +77,7 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
     private final String hostName = RandomStringUtils.randomAlphabetic(6);
     private final int FEED_COUNT = 10;
     private final int CHANGE_FEED_PROCESSOR_TIMEOUT = 5000;
+    private final int REPLICA_IN_SATELLITE_REGION_CATCH_UP_TIME = 10000;
     private final int FEED_COLLECTION_THROUGHPUT = 400;
     private final int FEED_COLLECTION_THROUGHPUT_FOR_SPLIT = 10100;
     private final int LEASE_COLLECTION_THROUGHPUT = 400;
@@ -432,6 +433,8 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
                 List<InternalObjectNode> createdDocumentsAfterCFPStart = new ArrayList<>();
                 setupReadFeedDocuments(createdDocumentsAfterCFPStart, receivedDocuments, createdFeedCollectionLocalRegion, FEED_COUNT);
 
+                Thread.sleep(REPLICA_IN_SATELLITE_REGION_CATCH_UP_TIME);
+
                 // Wait for the feed processor to receive and process the documents.
                 waitToReceiveDocuments(receivedDocuments, 40 * CHANGE_FEED_PROCESSOR_TIMEOUT, FEED_COUNT);
 
@@ -592,12 +595,14 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
                 // abruptly initiate stopping the CFP instance for the local region
                 changeFeedProcessorLocalRegion.stop().subscribeOn(Schedulers.boundedElastic()).timeout(Duration.ofMillis(2 * CHANGE_FEED_PROCESSOR_TIMEOUT)).subscribe();
 
+                Thread.sleep(REPLICA_IN_SATELLITE_REGION_CATCH_UP_TIME);
+
                 // Wait for the feed processor to receive and process the documents.
                 waitToReceiveDocuments(receivedDocuments, 40 * CHANGE_FEED_PROCESSOR_TIMEOUT, FEED_COUNT);
 
                 setupReadFeedDocuments(createdDocumentsAfterCFPStart, receivedDocuments, createdFeedCollectionLocalRegion, FEED_COUNT);
 
-                Thread.sleep(2 * 4000);
+                Thread.sleep(REPLICA_IN_SATELLITE_REGION_CATCH_UP_TIME);
                 // Wait for the feed processor to receive and process the documents.
                 waitToReceiveDocuments(receivedDocuments, 40 * CHANGE_FEED_PROCESSOR_TIMEOUT, 2 * FEED_COUNT);
 
