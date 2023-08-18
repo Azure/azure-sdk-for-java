@@ -11,13 +11,13 @@ import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 
-public class HttpResponseBase extends HttpResponse {
+public class HttpUrlConnectionResponse extends HttpResponse {
 
     private final HttpHeaders headers;
     private final int responseCode;
     private final byte[] body;
 
-    protected HttpResponseBase(HttpRequest request, HttpHeaders headers, int responseCode, byte[] body) {
+    protected HttpUrlConnectionResponse(HttpRequest request, HttpHeaders headers, int responseCode, byte[] body) {
         super(request);
         this.headers = headers;
         this.responseCode = responseCode;
