@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.implementation;
 
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -46,25 +47,27 @@ public enum OperationType {
     Patch,
     Upsert;
 
-    private static final Set<OperationType> writeOperationTypes = new HashSet<>() {{
-        add(Create);
-        add(Delete);
-        add(Recreate);
-        add(ExecuteJavaScript);
-        add(Replace);
-        add(Upsert);
-        add(Patch);
-        add(Batch);
-    }};
+    private static final Set<OperationType> writeOperationTypes = new HashSet<>(
+        Arrays.asList(
+            Create,
+            Delete,
+            Recreate,
+            ExecuteJavaScript,
+            Replace,
+            Upsert,
+            Patch,
+            Batch
+        ));
 
-    private static final Set<OperationType> pointOperationTypes = new HashSet<>() {{
-        add(Create);
-        add(Delete);
-        add(Replace);
-        add(Upsert);
-        add(Patch);
-        add(Read);
-    }};
+    private static final Set<OperationType> pointOperationTypes = new HashSet<>(
+        Arrays.asList(
+            Create,
+            Delete,
+            Replace,
+            Upsert,
+            Patch,
+            Read
+        ));
 
     public boolean isWriteOperation() {
         return writeOperationTypes.contains(this);

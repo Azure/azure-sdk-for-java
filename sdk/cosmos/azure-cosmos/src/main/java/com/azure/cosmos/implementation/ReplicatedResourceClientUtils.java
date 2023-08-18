@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation;
 
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -11,22 +12,20 @@ import java.util.Set;
  */
 public class ReplicatedResourceClientUtils {
 
-    private static final Set<ResourceType> masterResourceSet = new HashSet<>(){
-        {
-            add(ResourceType.Offer);
-            add(ResourceType.Database);
-            add(ResourceType.User);
-            add(ResourceType.UserDefinedType);
-            add(ResourceType.Permission);
-            add(ResourceType.Topology);
-            add(ResourceType.DatabaseAccount);
-            add(ResourceType.PartitionKeyRange);
-            add(ResourceType.DocumentCollection);
-            add(ResourceType.Trigger);
-            add(ResourceType.UserDefinedFunction);
-            add(ResourceType.ClientEncryptionKey);
-        }
-    };
+    private static final Set<ResourceType> masterResourceSet = new HashSet<>(Arrays.asList(
+        ResourceType.Offer,
+        ResourceType.Database,
+        ResourceType.User,
+        ResourceType.UserDefinedType,
+        ResourceType.Permission,
+        ResourceType.Topology,
+        ResourceType.DatabaseAccount,
+        ResourceType.PartitionKeyRange,
+        ResourceType.DocumentCollection,
+        ResourceType.Trigger,
+        ResourceType.UserDefinedFunction,
+        ResourceType.ClientEncryptionKey
+    ));
 
     public static boolean isReadingFromMaster(ResourceType resourceType, OperationType operationType) {
         if (resourceType == ResourceType.Offer ||
