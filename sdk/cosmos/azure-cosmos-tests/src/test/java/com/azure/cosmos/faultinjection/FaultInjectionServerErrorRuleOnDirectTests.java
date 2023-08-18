@@ -79,7 +79,7 @@ public class FaultInjectionServerErrorRuleOnDirectTests extends TestSuiteBase {
         this.subscriberValidationTimeout = TIMEOUT;
     }
 
-    @BeforeClass(groups = {"multi-master", "long"}, timeOut = TIMEOUT)
+    @BeforeClass(groups = {"multi-region", "long"}, timeOut = TIMEOUT)
     public void beforeClass() {
         client = getClientBuilder().buildAsyncClient();
         AsyncDocumentClient asyncDocumentClient = BridgeInternal.getContextClient(client);
@@ -132,7 +132,7 @@ public class FaultInjectionServerErrorRuleOnDirectTests extends TestSuiteBase {
         };
     }
 
-    @Test(groups = {"multi-master", "long"}, dataProvider = "operationTypeProvider", timeOut = TIMEOUT)
+    @Test(groups = {"multi-region", "long"}, dataProvider = "operationTypeProvider", timeOut = TIMEOUT)
     public void faultInjectionServerErrorRuleTests_OperationType(OperationType operationType) throws JsonProcessingException {
         // Test for SERVER_GONE, the operation type will be ignored after getting the addresses
         String serverGoneRuleId = "serverErrorRule-serverGone-" + UUID.randomUUID();
@@ -215,7 +215,7 @@ public class FaultInjectionServerErrorRuleOnDirectTests extends TestSuiteBase {
         }
     }
 
-    @Test(groups = {"multi-master"}, dataProvider = "operationTypeProvider", timeOut = TIMEOUT)
+    @Test(groups = {"multi-region"}, dataProvider = "operationTypeProvider", timeOut = TIMEOUT)
     public void faultInjectionServerErrorRuleTests_OperationTypeImpactAddresses(OperationType operationType) throws JsonProcessingException {
         // Test the operation type can impact which region or replica the rule will be applicable
         TestItem createdItem = TestItem.createNewItem();
@@ -321,7 +321,7 @@ public class FaultInjectionServerErrorRuleOnDirectTests extends TestSuiteBase {
         }
     }
 
-    @Test(groups = {"multi-master"}, timeOut = TIMEOUT)
+    @Test(groups = {"multi-region"}, timeOut = TIMEOUT)
     public void faultInjectionServerErrorRuleTests_Region() throws JsonProcessingException {
         List<String> preferredLocations = this.readRegionMap.keySet().stream().collect(Collectors.toList());
 
@@ -418,7 +418,7 @@ public class FaultInjectionServerErrorRuleOnDirectTests extends TestSuiteBase {
         }
     }
 
-    @Test(groups = {"multi-master", "long"}, timeOut = TIMEOUT)
+    @Test(groups = {"multi-region", "long"}, timeOut = TIMEOUT)
     public void faultInjectionServerErrorRuleTests_Partition() throws JsonProcessingException {
         for (int i = 0; i < 10; i++) {
             cosmosAsyncContainer.createItem(TestItem.createNewItem()).block();
@@ -493,7 +493,7 @@ public class FaultInjectionServerErrorRuleOnDirectTests extends TestSuiteBase {
         }
     }
 
-    @Test(groups = {"multi-master", "long"}, timeOut = TIMEOUT)
+    @Test(groups = {"multi-region", "long"}, timeOut = TIMEOUT)
     public void faultInjectionServerErrorRuleTests_ServerResponseDelay() throws JsonProcessingException {
         CosmosAsyncClient newClient = null; // creating new client to force creating new connections
         // define another rule which can simulate timeout
@@ -557,7 +557,7 @@ public class FaultInjectionServerErrorRuleOnDirectTests extends TestSuiteBase {
         }
     }
 
-    @Test(groups = {"multi-master", "long"}, timeOut = TIMEOUT)
+    @Test(groups = {"multi-region", "long"}, timeOut = TIMEOUT)
     public void faultInjectionServerErrorRuleTests_ServerConnectionDelay() throws JsonProcessingException {
         CosmosAsyncClient newClient = null; // creating new client to force creating new connections
         // simulate high channel acquisition/connectionTimeout
@@ -616,7 +616,7 @@ public class FaultInjectionServerErrorRuleOnDirectTests extends TestSuiteBase {
         }
     }
 
-    @Test(groups = {"multi-master", "long"}, dataProvider = "faultInjectionOperationTypeProvider", timeOut = TIMEOUT)
+    @Test(groups = {"multi-region", "long"}, dataProvider = "faultInjectionOperationTypeProvider", timeOut = TIMEOUT)
     public void faultInjectionServerErrorRuleTests_ServerConnectionDelay_warmup(
         FaultInjectionOperationType operationType,
         boolean primaryAddressesOnly) {
@@ -731,7 +731,7 @@ public class FaultInjectionServerErrorRuleOnDirectTests extends TestSuiteBase {
         }
     }
 
-    @Test(groups = {"multi-master", "long"}, dataProvider = "faultInjectionServerErrorResponseProvider", timeOut = TIMEOUT)
+    @Test(groups = {"multi-region", "long"}, dataProvider = "faultInjectionServerErrorResponseProvider", timeOut = TIMEOUT)
     public void faultInjectionServerErrorRuleTests_ServerErrorResponse(
         FaultInjectionServerErrorType serverErrorType,
         boolean canRetry,
@@ -802,7 +802,7 @@ public class FaultInjectionServerErrorRuleOnDirectTests extends TestSuiteBase {
         }
     }
 
-    @Test(groups = {"multi-master", "long"}, timeOut = TIMEOUT)
+    @Test(groups = {"multi-region", "long"}, timeOut = TIMEOUT)
     public void faultInjectionServerErrorRuleTests_HitLimit() throws JsonProcessingException {
         TestItem createdItem = TestItem.createNewItem();
         cosmosAsyncContainer.createItem(createdItem).block();
@@ -856,7 +856,7 @@ public class FaultInjectionServerErrorRuleOnDirectTests extends TestSuiteBase {
         }
     }
 
-    @AfterClass(groups = {"multi-master", "long"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
+    @AfterClass(groups = {"multi-region", "long"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
         safeClose(client);
     }
