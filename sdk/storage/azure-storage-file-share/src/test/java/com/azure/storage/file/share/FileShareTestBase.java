@@ -107,8 +107,10 @@ public class FileShareTestBase extends TestProxyTestBase {
         prefix = getCrc32(testContextManager.getTestPlaybackRecordingName());
 
         if (getTestMode() != TestMode.LIVE) {
-            interceptorManager.addSanitizers(
-                Collections.singletonList(new TestProxySanitizer("sig=(.*)", "REDACTED", TestProxySanitizerType.URL)));
+            interceptorManager.addSanitizers(Arrays.asList(
+                new TestProxySanitizer("sig=(.*)", "REDACTED", TestProxySanitizerType.URL),
+                new TestProxySanitizer("x-ms-file-rename-source", ".*", "REDACTED", TestProxySanitizerType.HEADER),
+                new TestProxySanitizer("x-ms-copy-source", ".*", "REDACTED", TestProxySanitizerType.HEADER)));
         }
 
         // Ignore changes to the order of query parameters and wholly ignore the 'sv' (service version) query parameter
