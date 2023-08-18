@@ -1,15 +1,13 @@
 # Release History
 
-## 4.7.0-beta.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+## 4.6.5 (2023-08-18)
 
 ### Other Changes
-- Migrate test recordings to assets repo.
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.41.0` to version `1.42.0`.
+- Upgraded `azure-core-http-netty` from `1.13.5` to version `1.13.6`.
 
 ## 4.6.4 (2023-07-25)
 
