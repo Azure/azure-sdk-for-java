@@ -6,19 +6,12 @@ package com.azure.data.schemaregistry;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
-import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
-import com.azure.core.test.http.MockHttpResponse;
-import com.azure.core.test.models.NetworkCallRecord;
-import com.azure.core.test.models.RecordedData;
-import com.azure.core.util.Context;
-import com.azure.core.util.serializer.JacksonAdapter;
-import com.azure.core.util.serializer.SerializerAdapter;
-import com.azure.core.util.serializer.SerializerEncoding;
+import com.azure.core.test.InterceptorManager;
+import com.azure.core.test.TestContextManager;
+import com.azure.core.test.TestMode;
 import com.azure.data.schemaregistry.models.SchemaFormat;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInfo;
@@ -26,12 +19,10 @@ import org.mockito.Mockito;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.io.UncheckedIOException;
 import java.time.OffsetDateTime;
 
-import static com.azure.data.schemaregistry.Constants.PLAYBACK_ENDPOINT;
+import static com.azure.data.schemaregistry.SchemaRegistryAsyncClientTests.PLAYBACK_ENDPOINT;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
@@ -39,14 +30,14 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 /**
- * Tests that can only be played-back because they use a recording from the Portal or a back-compat issue that cannot be
- * reproduced with the latest client.
+ * Tests that can only be played-back because they use a recording from the Portal or a back-compat issue that cannot
+ * be reproduced with the latest client.
  */
 public class SchemaRegistryAsyncClientPlaybackTests {
-    private static final SerializerAdapter SERIALIZER = JacksonAdapter.createDefaultSerializerAdapter();
     private TokenCredential tokenCredential;
     private String endpoint;
-    private RecordedData recordedData;
+    private TestContextManager testContextManager;
+    private InterceptorManager interceptorManager;
 
     @BeforeEach
     public void setupTest(TestInfo testInfo) {
@@ -55,18 +46,16 @@ public class SchemaRegistryAsyncClientPlaybackTests {
                 "Expected testInfo.getTestMethod() not be empty since we need a method for TestContextManager.");
         }
 
-        this.tokenCredential = mock(TokenCredential.class);
-        this.endpoint = PLAYBACK_ENDPOINT;
+        this.testContextManager = new TestContextManager(testInfo.getTestMethod().get(), TestMode.PLAYBACK);
 
-        final String resourceName = "/compat/" + testInfo.getTestMethod().get().getName() + ".json";
-
-        try (InputStream stream = SchemaRegistryAsyncClientPlaybackTests.class.getResourceAsStream(resourceName)) {
-            this.recordedData = SERIALIZER.deserialize(stream, RecordedData.class, SerializerEncoding.JSON);
-        } catch (IOException e) {
-            throw new UncheckedIOException("Unable to get resource input stream for: " + resourceName, e);
+        try {
+            interceptorManager = new InterceptorManager(testContextManager);
+        } catch (UncheckedIOException e) {
+            Assertions.fail(e);
         }
 
-        assertNotNull(recordedData, "RecordedData should not be null. Resource: " + resourceName);
+        this.tokenCredential = mock(TokenCredential.class);
+        this.endpoint = PLAYBACK_ENDPOINT;
 
         // Sometimes it throws an "NotAMockException", so we had to change from thenReturn to thenAnswer.
         when(tokenCredential.getToken(any(TokenRequestContext.class))).thenAnswer(invocationOnMock -> {
@@ -78,6 +67,10 @@ public class SchemaRegistryAsyncClientPlaybackTests {
 
     @AfterEach
     public void teardownTest() {
+        if (testContextManager != null && testContextManager.didTestRun()) {
+            interceptorManager.close();
+        }
+
         Mockito.framework().clearInlineMock(this);
     }
 
@@ -87,14 +80,11 @@ public class SchemaRegistryAsyncClientPlaybackTests {
      */
     @Test
     public void getSchemaByIdFromPortal() {
-
         // Arrange
-        final HttpClient httpClientMock = setupHttpClient(recordedData);
         final SchemaRegistryAsyncClient client = new SchemaRegistryClientBuilder()
             .fullyQualifiedNamespace(endpoint)
             .credential(tokenCredential)
-            .httpClient(httpClientMock)
-            .serviceVersion(SchemaRegistryVersion.V2021_10)
+            .httpClient(interceptorManager.getPlaybackClient())
             .buildAsyncClient();
         final String schemaId = "f45b841fcb88401e961ca45477906be9";
 
@@ -115,13 +105,10 @@ public class SchemaRegistryAsyncClientPlaybackTests {
     @Test
     public void getSchemaBackCompatibility() {
         // Arrange
-        final HttpClient httpClientMock = setupHttpClient(recordedData);
-
         final SchemaRegistryAsyncClient client = new SchemaRegistryClientBuilder()
             .fullyQualifiedNamespace(endpoint)
             .credential(tokenCredential)
-            .httpClient(httpClientMock)
-            .serviceVersion(SchemaRegistryVersion.V2021_10)
+            .httpClient(interceptorManager.getPlaybackClient())
             .buildAsyncClient();
         final String schemaId = "e5691f79e3964309ac712ec52abcccca";
 
@@ -133,28 +120,5 @@ public class SchemaRegistryAsyncClientPlaybackTests {
                 assertEquals(SchemaFormat.AVRO, schema.getProperties().getFormat());
             })
             .verifyComplete();
-    }
-
-
-    private static HttpClient setupHttpClient(RecordedData recordedData) {
-        final HttpClient httpClientMock = mock(HttpClient.class);
-        final NetworkCallRecord networkRecord = recordedData.findFirstAndRemoveNetworkCall(e -> true);
-
-        when(httpClientMock.send(any(), any(Context.class))).thenAnswer(invocationOnMock -> {
-            final HttpRequest request = invocationOnMock.getArgument(0);
-
-            final String body = networkRecord.getResponse().remove("Body");
-            final String statusCodeMessage = networkRecord.getResponse().remove("StatusCode");
-            final int statusCode = Integer.parseInt(statusCodeMessage);
-
-            assertNotNull(body, "Body cannot be null");
-
-            final HttpHeaders headers = new HttpHeaders(networkRecord.getResponse());
-
-            final HttpResponse response = new MockHttpResponse(request, statusCode, headers, body);
-            return Mono.just(response);
-        });
-
-        return httpClientMock;
     }
 }
