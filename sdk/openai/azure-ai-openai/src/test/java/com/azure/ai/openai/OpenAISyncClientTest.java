@@ -364,7 +364,7 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
-    public void testChatCompletionBasicSearchExtension(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+    public void testChatCompletionsBasicSearchExtension(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getOpenAIClient(httpClient, serviceVersion);
 
         getChatCompletionsAzureChatSearchRunner((deploymentName, chatCompletionsOptions) -> {
@@ -383,6 +383,32 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
             ChatCompletions chatCompletions = client.getChatCompletions(deploymentName, chatCompletionsOptions);
 
             assertChatCompletionWednesday(chatCompletions);
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    public void testChatCompletionsStreamingBasicSearchExtension(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        client = getOpenAIClient(httpClient, serviceVersion);
+
+        getChatCompletionsAzureChatSearchRunner((deploymentName, chatCompletionsOptions) -> {
+            AzureCognitiveSearchChatExtensionConfiguration cognitiveSearchConfiguration =
+                new AzureCognitiveSearchChatExtensionConfiguration(
+                    "https://openaisdktestsearch.search.windows.net",
+                    getAzureCognitiveSearchKey(),
+                    "openai-test-index-carbon-wiki"
+                );
+            AzureChatExtensionConfiguration extensionConfiguration =
+                new AzureChatExtensionConfiguration(
+                    AzureChatExtensionType.AZURE_COGNITIVE_SEARCH,
+                    BinaryData.fromObject(cognitiveSearchConfiguration));
+
+            chatCompletionsOptions.setDataSources(Arrays.asList(extensionConfiguration));
+            IterableStream<ChatCompletions> resultChatCompletions = client.getChatCompletionsStream(deploymentName, chatCompletionsOptions);
+
+            assertTrue(resultChatCompletions.stream().toArray().length > 1);
+//            resultChatCompletions.forEach(OpenAIClientTestBase::assertChatCompletionWednesday);
+//            assertChatCompletionWednesday(chatCompletions);
         });
     }
 }
