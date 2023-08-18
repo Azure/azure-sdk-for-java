@@ -55,7 +55,7 @@ and then include the direct dependency in the dependencies section without the v
 
 Add the following Maven dependency:
 
-[//]: # ({x-version-update-start;com.azure:azure-mixedreality-remoterendering;dependency})
+[//]: # ({x-version-update-start;com.azure:azure-mixedreality-remoterendering;current})
 ```xml
 <dependency>
     <groupId>com.azure</groupId>
