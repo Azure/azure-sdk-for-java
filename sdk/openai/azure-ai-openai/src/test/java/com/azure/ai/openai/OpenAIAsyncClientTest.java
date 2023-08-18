@@ -4,18 +4,7 @@
 package com.azure.ai.openai;
 
 import com.azure.ai.openai.functions.MyFunctionCallArguments;
-import com.azure.ai.openai.models.ChatChoice;
-import com.azure.ai.openai.models.ChatCompletions;
-import com.azure.ai.openai.models.ChatCompletionsOptions;
-import com.azure.ai.openai.models.ChatRole;
-import com.azure.ai.openai.models.Choice;
-import com.azure.ai.openai.models.Completions;
-import com.azure.ai.openai.models.CompletionsFinishReason;
-import com.azure.ai.openai.models.CompletionsOptions;
-import com.azure.ai.openai.models.CompletionsUsage;
-import com.azure.ai.openai.models.ContentFilterResults;
-import com.azure.ai.openai.models.Embeddings;
-import com.azure.ai.openai.models.FunctionCallConfig;
+import com.azure.ai.openai.models.*;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpClient;
@@ -419,6 +408,31 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
                         i++;
                     }
                 })
+                .verifyComplete();
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    public void testChatCompletionBasicSearchExtension(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        client = getOpenAIAsyncClient(httpClient, serviceVersion);
+
+        getChatCompletionsAzureChatSearchRunner((deploymentName, chatCompletionsOptions) -> {
+            AzureCognitiveSearchChatExtensionConfiguration cognitiveSearchConfiguration =
+                new AzureCognitiveSearchChatExtensionConfiguration(
+                    "https://openaisdktestsearch.search.windows.net",
+                    getAzureCognitiveSearchKey(),
+                    "openai-test-index-carbon-wiki"
+                );
+            AzureChatExtensionConfiguration extensionConfiguration =
+                new AzureChatExtensionConfiguration(
+                    AzureChatExtensionType.AZURE_COGNITIVE_SEARCH,
+                    BinaryData.fromObject(cognitiveSearchConfiguration));
+
+            chatCompletionsOptions.setDataSources(Arrays.asList(extensionConfiguration));
+
+            StepVerifier.create(client.getChatCompletions(deploymentName, chatCompletionsOptions))
+                .assertNext(OpenAIClientTestBase::assertChatCompletionWednesday)
                 .verifyComplete();
         });
     }

@@ -341,7 +341,8 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
         assertNull(contentFilterResults.getSelfHarm());
     }
 
-    static void assertChatCompletionWednesday(List<ChatChoice> choices) {
+    static void assertChatCompletionWednesday(ChatCompletions chatCompletions) {
+        List<ChatChoice> choices = chatCompletions.getChoices();
         assertNotNull(choices);
         assertTrue(choices.size() > 0);
         assertChatChoices(1, CompletionsFinishReason.STOPPED.toString(), ChatRole.ASSISTANT, choices);

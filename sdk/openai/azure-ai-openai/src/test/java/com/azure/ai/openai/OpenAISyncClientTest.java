@@ -382,7 +382,7 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
             chatCompletionsOptions.setDataSources(Arrays.asList(extensionConfiguration));
             ChatCompletions chatCompletions = client.getChatCompletions(deploymentName, chatCompletionsOptions);
 
-            assertChatCompletionWednesday(chatCompletions.getChoices());
+            assertChatCompletionWednesday(chatCompletions);
         });
     }
 }

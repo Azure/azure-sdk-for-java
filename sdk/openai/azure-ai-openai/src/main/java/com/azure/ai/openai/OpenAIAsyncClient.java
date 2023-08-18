@@ -426,12 +426,20 @@ public final class OpenAIAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ChatCompletions> getChatCompletions(
             String deploymentOrModelName, ChatCompletionsOptions chatCompletionsOptions) {
-        // Generated convenience method for getChatCompletionsWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getChatCompletionsWithResponse(
-                        deploymentOrModelName, BinaryData.fromObject(chatCompletionsOptions), requestOptions)
+
+        if (chatCompletionsOptions.getDataSources() == null
+            || chatCompletionsOptions.getDataSources().isEmpty()) {
+            return getChatCompletionsWithResponse(
+                deploymentOrModelName, BinaryData.fromObject(chatCompletionsOptions), requestOptions)
                 .flatMap(FluxUtil::toMono)
                 .map(protocolMethodData -> protocolMethodData.toObject(ChatCompletions.class));
+        } else {
+            return getChatCompletionsWithAzureExtensionsWithResponse(
+                deploymentOrModelName, BinaryData.fromObject(chatCompletionsOptions), requestOptions)
+                .flatMap(FluxUtil::toMono)
+                .map(protocolMethodData -> protocolMethodData.toObject(ChatCompletions.class));
+        }
     }
 
     /**
