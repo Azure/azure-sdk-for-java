@@ -382,19 +382,7 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
             chatCompletionsOptions.setDataSources(Arrays.asList(extensionConfiguration));
             ChatCompletions chatCompletions = client.getChatCompletions(deploymentName, chatCompletionsOptions);
 
-            List<ChatChoice> choices = chatCompletions.getChoices();
-            assertNotNull(choices);
-            assertTrue(choices.size() > 0);
-            assertChatChoices(1, CompletionsFinishReason.STOPPED.toString(), ChatRole.ASSISTANT, choices);
-
-            AzureChatExtensionsMessageContext messageContext = choices.get(0).getMessage().getContext();
-            assertNotNull(messageContext);
-            assertNotNull(messageContext.getMessages());
-            ChatMessage firstMessage = messageContext.getMessages().get(0);
-            assertNotNull(firstMessage);
-            assertEquals(firstMessage.getRole(), ChatRole.TOOL);
-            assertFalse(firstMessage.getContent().isEmpty());
-            assertTrue(firstMessage.getContent().contains("citations"));
+            assertChatCompletionWednesday(chatCompletions.getChoices());
         });
     }
 }
