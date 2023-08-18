@@ -1,20 +1,23 @@
 package com.azure.core.http.httpurlconnection;
 
+import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
+import com.azure.core.http.HttpResponse;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 
-public class HttpResponse extends com.azure.core.http.HttpResponse {
+public class HttpResponseBase extends HttpResponse {
 
     private final HttpHeaders headers;
     private final int responseCode;
     private final byte[] body;
 
-    protected HttpResponse(HttpRequest request, HttpHeaders headers, int responseCode, byte[] body) {
+    protected HttpResponseBase(HttpRequest request, HttpHeaders headers, int responseCode, byte[] body) {
         super(request);
         this.headers = headers;
         this.responseCode = responseCode;
@@ -32,7 +35,8 @@ public class HttpResponse extends com.azure.core.http.HttpResponse {
      */
     @Override
     public String getHeaderValue(String s) {
-        return this.headers.get(s).toString();
+        HttpHeader header = this.headers.get(s);
+        return header != null ? header.getValue() : null;
     }
 
     @Override
@@ -42,7 +46,7 @@ public class HttpResponse extends com.azure.core.http.HttpResponse {
 
     @Override
     public Flux<ByteBuffer> getBody() {
-        return null;
+        return Flux.just(ByteBuffer.wrap(this.body));
     }
 
     @Override
@@ -52,7 +56,7 @@ public class HttpResponse extends com.azure.core.http.HttpResponse {
 
     @Override
     public Mono<String> getBodyAsString() {
-        return Mono.just(this.body.toString());
+        return getBodyAsString(StandardCharsets.UTF_8);
     }
 
     @Override
