@@ -1,0 +1,46 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.blob.core.windows.net/ba6546390ba65463990f36706afdf9e94c6bb48b9b2e?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2021-04-10",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.16.0-beta.1 azsdk-java-azure-storage-file-datalake/12.9.0-beta.1 (11.0.14; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "5d0c0b3f-8e46-4be6-9ef9-5fee62a9f14c"
+    },
+    "Response" : {
+      "content-length" : "0",
+      "x-ms-version" : "2021-04-10",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "eTag" : "0x8DA1C48A24D66B3",
+      "Last-Modified" : "Tue, 12 Apr 2022 05:52:31 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "6067a606-e01e-006e-5131-4eb119000000",
+      "x-ms-client-request-id" : "5d0c0b3f-8e46-4be6-9ef9-5fee62a9f14c",
+      "Date" : "Tue, 12 Apr 2022 05:52:30 GMT"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.blob.core.windows.net/ba6546391ba65463990f12549fbaf00baa9f44cdbb8c?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2021-04-10",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.16.0-beta.1 azsdk-java-azure-storage-file-datalake/12.9.0-beta.1 (11.0.14; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "ea0b471e-ab26-469c-bdb6-81b1133a74f0"
+    },
+    "Response" : {
+      "content-length" : "0",
+      "x-ms-version" : "2021-04-10",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "eTag" : "0x8DA1C48A26E806A",
+      "Last-Modified" : "Tue, 12 Apr 2022 05:52:31 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "b63d9931-601e-005d-5b31-4ee834000000",
+      "x-ms-client-request-id" : "ea0b471e-ab26-469c-bdb6-81b1133a74f0",
+      "Date" : "Tue, 12 Apr 2022 05:52:31 GMT"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "ba6546390ba65463990f36706afdf9e94c6bb48b9b2e", "ba6546391ba65463990f12549fbaf00baa9f44cdbb8c" ]
+}

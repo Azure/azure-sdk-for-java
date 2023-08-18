@@ -1,0 +1,48 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.blob.core.windows.net/70c64fbd070c64fbd3ce311717d0a9c81e57b477f95d?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2021-04-10",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.16.0-beta.1 azsdk-java-azure-storage-file-datalake/12.9.0-beta.1 (11.0.13; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "b9080d43-0433-4efa-b9a0-0af92314fd1b"
+    },
+    "Response" : {
+      "content-length" : "0",
+      "x-ms-version" : "2021-04-10",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "eTag" : "0x8DA18D92121F730",
+      "Last-Modified" : "Thu, 07 Apr 2022 20:56:46 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "c43e052c-601e-0010-0fc1-4a3349000000",
+      "x-ms-client-request-id" : "b9080d43-0433-4efa-b9a0-0af92314fd1b",
+      "Date" : "Thu, 07 Apr 2022 20:56:46 GMT"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.dfs.core.windows.net/70c64fbd070c64fbd3ce311717d0a9c81e57b477f95d/70c64fbd170c64fbd3ce470844f71d897ebd94c0185f?resource=directory",
+    "Headers" : {
+      "x-ms-version" : "2021-04-10",
+      "User-Agent" : "azsdk-java-azure-storage-file-datalake/12.9.0-beta.1 (11.0.13; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "d66ed723-1add-4f39-9af1-fd5b270ef45a"
+    },
+    "Response" : {
+      "content-length" : "0",
+      "x-ms-version" : "2021-04-10",
+      "Server" : "Windows-Azure-HDFS/1.0 Microsoft-HTTPAPI/2.0",
+      "eTag" : "0x8DA18D921DC6D94",
+      "Last-Modified" : "Thu, 07 Apr 2022 20:56:48 GMT",
+      "retry-after" : "0",
+      "x-ms-encryption-key-sha256" : "REDACTED",
+      "StatusCode" : "201",
+      "x-ms-request-server-encrypted" : "true",
+      "x-ms-request-id" : "31fbcb0e-501f-00ef-4dc1-4a03d4000000",
+      "x-ms-client-request-id" : "d66ed723-1add-4f39-9af1-fd5b270ef45a",
+      "Date" : "Thu, 07 Apr 2022 20:56:47 GMT"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "70c64fbd070c64fbd3ce311717d0a9c81e57b477f95d", "70c64fbd170c64fbd3ce470844f71d897ebd94c0185f", "70c64fbd270c64fbd3ce2280872d6e42ed9b4470fb9c" ]
+}

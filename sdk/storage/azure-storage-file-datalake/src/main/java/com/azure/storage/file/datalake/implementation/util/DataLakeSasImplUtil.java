@@ -253,7 +253,7 @@ public class DataLakeSasImplUtil {
      * https://github.com/Azure/azure-storage-blob-go/blob/master/azblob/sas_service.go#L33
      * https://github.com/Azure/azure-sdk-for-net/blob/main/sdk/storage/Azure.Storage.Blobs/src/Sas/BlobSasBuilder.cs
      */
-    public void ensureState() {
+    private void ensureState() {
         if (identifier == null) {
             if (expiryTime == null || permissions == null) {
                 throw LOGGER.logExceptionAsError(new IllegalStateException("If identifier is not set, expiry time "
@@ -297,7 +297,7 @@ public class DataLakeSasImplUtil {
     /**
      * Computes the canonical name for a container or blob resource for SAS signing.
      */
-    public String getCanonicalName(String account) {
+    private String getCanonicalName(String account) {
         // Container: "/blob/account/containername"
         // Blob:      "/blob/account/containername/blobname"
         return CoreUtils.isNullOrEmpty(pathName)
@@ -305,7 +305,7 @@ public class DataLakeSasImplUtil {
             : String.format("/blob/%s/%s/%s", account, fileSystemName, pathName.replace("\\", "/"));
     }
 
-    public String stringToSign(String canonicalName) {
+    private String stringToSign(String canonicalName) {
         if (VERSION.compareTo(DataLakeServiceVersion.V2020_10_02.getVersion()) <= 0) {
             return String.join("\n",
                 this.permissions == null ? "" : permissions,
@@ -346,7 +346,7 @@ public class DataLakeSasImplUtil {
         }
     }
 
-    public String stringToSign(final UserDelegationKey key, String canonicalName) {
+    private String stringToSign(final UserDelegationKey key, String canonicalName) {
         if (VERSION.compareTo(DataLakeServiceVersion.V2019_12_12.getVersion()) <= 0) {
             return String.join("\n",
                 this.permissions == null ? "" : this.permissions,
@@ -425,17 +425,5 @@ public class DataLakeSasImplUtil {
                 this.contentType == null ? "" : this.contentType
             );
         }
-    }
-
-    public String getResource() {
-        return resource;
-    }
-
-    public String getPermissions() {
-        return permissions;
-    }
-
-    public Integer getDirectoryDepth() {
-        return directoryDepth;
     }
 }
