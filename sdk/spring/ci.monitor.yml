@@ -39,6 +39,6 @@ extends:
         skipUpdatePackageJson: true
         skipVerifyChangelog: true
         releaseInBatch: true
-    AdditionalModules:
-      - name: spring-cloud-azure-starter-monitor-test
-        groupId: com.azure.spring
+#    AdditionalModules:
+#      - name: spring-cloud-azure-starter-monitor-test
+#        groupId: com.azure.spring
