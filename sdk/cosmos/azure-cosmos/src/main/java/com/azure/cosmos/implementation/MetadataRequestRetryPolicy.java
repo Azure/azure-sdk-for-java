@@ -44,7 +44,7 @@ public class MetadataRequestRetryPolicy implements IRetryPolicy {
 
     @Override
     public Mono<ShouldRetryResult> shouldRetry(Exception e) {
-
+        webExceptionRetryPolicy.onBeforeSendRequest(request);
         return webExceptionRetryPolicy.shouldRetry(e).flatMap(shouldRetryResult -> {
 
             if (!shouldRetryResult.shouldRetry) {

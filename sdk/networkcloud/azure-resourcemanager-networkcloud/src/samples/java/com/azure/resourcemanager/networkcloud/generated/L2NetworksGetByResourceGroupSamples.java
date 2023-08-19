@@ -7,7 +7,7 @@ package com.azure.resourcemanager.networkcloud.generated;
 /** Samples for L2Networks GetByResourceGroup. */
 public final class L2NetworksGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2023-05-01-preview/examples/L2Networks_Get.json
+     * x-ms-original-file: specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2023-07-01/examples/L2Networks_Get.json
      */
     /**
      * Sample code: Get L2 network.
