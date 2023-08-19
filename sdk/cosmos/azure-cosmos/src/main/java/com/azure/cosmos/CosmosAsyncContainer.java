@@ -73,12 +73,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.UUID;
 import java.util.concurrent.Callable;
 import java.util.concurrent.CompletionException;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Function;
 
+import static com.azure.core.util.CoreUtils.randomUuid;
 import static com.azure.core.util.FluxUtil.withContext;
 import static com.azure.cosmos.implementation.Utils.getEffectiveCosmosChangeFeedRequestOptions;
 import static com.azure.cosmos.implementation.Utils.setContinuationTokenAndMaxItemCount;
@@ -527,7 +527,7 @@ public class CosmosAsyncContainer {
         CosmosItemRequestOptions effectiveOptions = getEffectiveOptions(nonIdempotentWriteRetryPolicy, options);
 
         if (nonIdempotentWriteRetryPolicy.isEnabled() && nonIdempotentWriteRetryPolicy.useTrackingIdProperty()) {
-            trackingId = UUID.randomUUID().toString();
+            trackingId = randomUuid().toString();
             responseMono = createItemWithTrackingId(item, effectiveOptions, trackingId);
         } else {
             responseMono = createItemInternalCore(item, effectiveOptions, null);
@@ -2189,7 +2189,7 @@ public class CosmosAsyncContainer {
         Mono<CosmosItemResponse<T>> responseMono;
         String trackingId = null;
         if (nonIdempotentWriteRetryPolicy.isEnabled() && nonIdempotentWriteRetryPolicy.useTrackingIdProperty()) {
-            trackingId = UUID.randomUUID().toString();
+            trackingId = randomUuid().toString();
             responseMono = this.replaceItemWithTrackingId(itemType, itemId, doc, effectiveOptions, trackingId);
         } else {
             responseMono = this.replaceItemInternalCore(itemType, itemId, doc, effectiveOptions, null);

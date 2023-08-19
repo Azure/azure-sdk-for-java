@@ -13,7 +13,8 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.UUID;
+
+import static com.azure.core.util.CoreUtils.randomUuid;
 
 public class QueryMetricsTextWriter extends QueryMetricsWriter {
 
@@ -98,7 +99,7 @@ public class QueryMetricsTextWriter extends QueryMetricsWriter {
     private static final int PARTITION_KEY_RANGE_ID_HEADER_LENGTH = PARTITION_KEY_RANGE_HEADER.length();
     private static final int NUMBER_OF_DOCUMENTS_HEADER_LENGTH = NUMBER_OF_DOCUMENTS_HEADER.length();
     private static final int RETRY_COUNT_HEADER_LENGTH = RETRY_COUNT_HEADER.length();
-    private static final int ACTIVITY_ID_HEADER_LENGTH = UUID.randomUUID().toString().length();
+    private static final int ACTIVITY_ID_HEADER_LENGTH = randomUuid().toString().length();
 
     private static final TextTable.Column[] PARTITION_EXECUTION_TIMELINE_COLUMNS = new TextTable.Column[]
             {

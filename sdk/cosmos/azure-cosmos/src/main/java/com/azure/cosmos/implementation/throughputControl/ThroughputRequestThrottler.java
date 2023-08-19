@@ -19,10 +19,11 @@ import org.slf4j.LoggerFactory;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
 
-import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
+
+import static com.azure.core.util.CoreUtils.randomUuid;
 
 /**
  * This is the place where we tracking the RU usage, and make decision whether we should block the request.
@@ -46,7 +47,7 @@ public class ThroughputRequestThrottler {
         this.throughputReadLock = throughputReadWriteLock.readLock();
 
         this.trackingDictionary = new ConcurrentHashMap<>();
-        this.cycleId = UUID.randomUUID().toString();
+        this.cycleId = randomUuid().toString();
         this.pkRangeId = pkRangeId;
     }
 
@@ -63,7 +64,7 @@ public class ThroughputRequestThrottler {
                     this.cycleId, this.pkRangeId, throughputUsagePercentage);
             }
 
-            String newCycleId = UUID.randomUUID().toString();
+            String newCycleId = randomUuid().toString();
             for (ThroughputControlTrackingUnit trackingUnit : this.trackingDictionary.values()) {
                 trackingUnit.reset(newCycleId);
             }

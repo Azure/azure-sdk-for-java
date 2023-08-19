@@ -9,11 +9,11 @@ import com.azure.cosmos.models.CosmosBulkExecutionOptions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
 
+import static com.azure.core.util.CoreUtils.randomUuid;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 public class PartitionScopeThresholds {
@@ -24,7 +24,7 @@ public class PartitionScopeThresholds {
     private final AtomicInteger targetMicroBatchSize;
     private final AtomicLong totalOperationCount;
     private final AtomicReference<CurrentIntervalThresholds> currentThresholds;
-    private final String identifier = UUID.randomUUID().toString();
+    private final String identifier = randomUuid().toString();
     private final double minRetryRate;
     private final double maxRetryRate;
     private final double avgRetryRate;

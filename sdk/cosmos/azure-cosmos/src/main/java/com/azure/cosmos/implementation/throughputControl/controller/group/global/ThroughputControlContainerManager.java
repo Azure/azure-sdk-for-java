@@ -22,8 +22,8 @@ import reactor.util.retry.RetrySpec;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
+import static com.azure.core.util.CoreUtils.randomUuid;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 /**
@@ -56,7 +56,7 @@ public class ThroughputControlContainerManager {
 
         String encodedGroupId = Utils.encodeUrlBase64String(this.group.getId().getBytes(StandardCharsets.UTF_8));
 
-        this.clientItemId = encodedGroupId + UUID.randomUUID();
+        this.clientItemId = encodedGroupId + randomUuid();
         this.clientItemPartitionKeyValue = this.group.getIdPrefix() + CLIENT_ITEM_PARTITION_KEY_VALUE_SUFFIX;
         this.configItemId = encodedGroupId + CONFIG_ITEM_ID_SUFFIX;
         this.configItemPartitionKeyValue = this.group.getIdPrefix() + CONFIG_ITEM_PARTITION_KEY_VALUE_SUFFIX;

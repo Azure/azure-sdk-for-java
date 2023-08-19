@@ -15,8 +15,8 @@ import com.azure.cosmos.implementation.routing.Range;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.ModelBridgeInternal;
-import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.models.PriorityLevel;
+import com.azure.cosmos.models.SqlQuerySpec;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import reactor.core.publisher.Flux;
@@ -28,6 +28,8 @@ import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+
+import static com.azure.core.util.CoreUtils.randomUuid;
 
 /**
  * This is core Transport/Connection agnostic request to the Azure Cosmos DB database service.
@@ -173,7 +175,7 @@ public class RxDocumentServiceRequest implements Cloneable {
         this.resourceType = resourceType;
         this.contentAsByteArray = toByteArray(byteBuffer);
         this.headers = headers != null ? headers : new HashMap<>();
-        this.activityId = UUID.randomUUID();
+        this.activityId = randomUuid();
         this.isFeed = false;
         this.isNameBased = isNameBased;
         if (!isNameBased) {
@@ -207,7 +209,7 @@ public class RxDocumentServiceRequest implements Cloneable {
         this.resourceType = resourceType;
         this.requestContext.sessionToken = null;
         this.headers = headers != null ? headers : new HashMap<>();
-        this.activityId = UUID.randomUUID();
+        this.activityId = randomUuid();
         this.isFeed = false;
 
         if (StringUtils.isNotEmpty(path)) {

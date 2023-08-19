@@ -14,9 +14,9 @@ import io.netty.channel.CombinedChannelDuplexHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
+import static com.azure.core.util.CoreUtils.randomUuid;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
@@ -74,7 +74,7 @@ public final class RntbdContextNegotiator extends CombinedChannelDuplexHandler<R
         logger.debug("{} START CONTEXT REQUEST", context.channel());
 
         final Channel channel = context.channel();
-        final RntbdContextRequest request = new RntbdContextRequest(UUID.randomUUID(), this.userAgent);
+        final RntbdContextRequest request = new RntbdContextRequest(randomUuid(), this.userAgent);
         final CompletableFuture<RntbdContextRequest> contextRequestFuture = this.manager.rntbdContextRequestFuture();
 
         this.manager.getTimestamps().channelWriteAttempted();
