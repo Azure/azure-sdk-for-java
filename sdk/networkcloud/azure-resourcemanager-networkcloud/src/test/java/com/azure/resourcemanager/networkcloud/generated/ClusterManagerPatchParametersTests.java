@@ -29,6 +29,7 @@ public final class ClusterManagerPatchParametersTests {
         Assertions.assertEquals("tczytqjtwh", model.tags().get("uunfprnjletlxsm"));
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

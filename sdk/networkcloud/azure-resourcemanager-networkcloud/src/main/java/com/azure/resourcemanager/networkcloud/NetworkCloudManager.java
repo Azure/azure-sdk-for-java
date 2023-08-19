@@ -565,8 +565,10 @@ public final class NetworkCloudManager {
     }
 
     /**
-     * @return Wrapped service client NetworkCloud providing direct access to the underlying auto-generated API
-     *     implementation, based on Azure REST API.
+     * Gets wrapped service client NetworkCloud providing direct access to the underlying auto-generated API
+     * implementation, based on Azure REST API.
+     *
+     * @return Wrapped service client NetworkCloud.
      */
     public NetworkCloud serviceClient() {
         return this.clientObject;

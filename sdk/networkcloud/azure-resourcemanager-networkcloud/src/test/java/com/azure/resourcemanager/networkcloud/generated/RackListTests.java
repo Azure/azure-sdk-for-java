@@ -95,6 +95,7 @@ public final class RackListTests {
         Assertions.assertEquals("negvmnvuqe", model.value().get(0).rackSkuId());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();
