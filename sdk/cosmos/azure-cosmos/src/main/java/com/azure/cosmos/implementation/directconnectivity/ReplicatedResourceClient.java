@@ -7,6 +7,7 @@ import com.azure.cosmos.AvailabilityStrategy;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosContainerProactiveInitConfig;
 import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfig;
+import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.SessionRetryOptions;
 import com.azure.cosmos.ThresholdBasedAvailabilityStrategy;
 import com.azure.cosmos.implementation.BackoffRetryUtility;
@@ -20,6 +21,7 @@ import com.azure.cosmos.implementation.Quadruple;
 import com.azure.cosmos.implementation.ReplicatedResourceClientUtils;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
+import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.faultinjection.IFaultInjectorProvider;
 import com.azure.cosmos.implementation.throughputControl.ThroughputControlStore;
 import com.azure.cosmos.models.CosmosContainerIdentity;
@@ -33,6 +35,7 @@ import java.net.URI;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.function.BiFunction;
 import java.util.function.Function;
@@ -128,7 +131,7 @@ public class ReplicatedResourceClient {
                     Long.toString(forceRefreshAndTimeout.getValue2().toMillis()));
 
             if (shouldSpeculate(request)){
-                logger.info("Speculating request {}", request.getOperationType());
+                logger.debug("Speculating request {}", request.getOperationType());
                 return getStoreResponseMonoWithSpeculation(request, forceRefreshAndTimeout);
             }
 
@@ -162,23 +165,54 @@ public class ReplicatedResourceClient {
         AvailabilityStrategy strategy = config.getAvailabilityStrategy();
         List<Mono<StoreResponse>> monoList = new ArrayList<>();
         List<RxDocumentServiceRequest> requestList = new ArrayList<>();
+        final List<URI> effectiveEndpoints = getApplicableEndPoints(request);
 
         if (strategy instanceof ThresholdBasedAvailabilityStrategy) {
-            List<URI> effectiveEndpoints = getApplicableEndPoints(request);
+
             if (effectiveEndpoints != null) {
                 effectiveEndpoints
                     .forEach(locationURI -> {
                         if (locationURI != null) {
+
+                            Mono<StoreResponse> storeResponseFromApplicableRegion;
+
                             RxDocumentServiceRequest newRequest = request.clone();
                             newRequest.requestContext.routeToLocation(locationURI);
                             requestList.add(newRequest);
                             if (monoList.isEmpty()) {
-                                monoList.add(getStoreResponseMono(newRequest, forceRefreshAndTimeout));
+                                storeResponseFromApplicableRegion = getStoreResponseMono(newRequest,
+                                    forceRefreshAndTimeout)
+                                    .doOnError(throwable -> {
+
+                                        Throwable exception = Exceptions.unwrap(throwable);
+
+                                        if (exception instanceof CosmosException) {
+                                            CosmosException cosmosException = Utils.as(exception, CosmosException.class);
+                                            request.requestContext.regionBasedExceptionMap.put(locationURI, cosmosException);
+                                        }
+                                    });
+
+                                monoList.add(storeResponseFromApplicableRegion);
                             } else {
-                                monoList.add(getStoreResponseMono(newRequest, forceRefreshAndTimeout)
-                                    .delaySubscription(((ThresholdBasedAvailabilityStrategy) strategy).getThreshold()
+                                storeResponseFromApplicableRegion = getStoreResponseMono(newRequest,
+                                    forceRefreshAndTimeout)
+                                    .delaySubscription(((ThresholdBasedAvailabilityStrategy) strategy)
+                                        .getThreshold()
                                         .plus(((ThresholdBasedAvailabilityStrategy) strategy)
-                                            .getThresholdStep().multipliedBy(monoList.size() - 1))));
+                                            .getThresholdStep()
+                                            .multipliedBy(monoList.size() - 1))
+                                    )
+                                    .doOnError(throwable -> {
+
+                                        Throwable exception = Exceptions.unwrap(throwable);
+
+                                        if (exception instanceof CosmosException) {
+                                            CosmosException cosmosException = Utils.as(exception, CosmosException.class);
+                                            request.requestContext.regionBasedExceptionMap.put(locationURI, cosmosException);
+                                        }
+                                    });
+
+                                monoList.add(storeResponseFromApplicableRegion);
                             }
                         }
                     });
@@ -190,22 +224,24 @@ public class ReplicatedResourceClient {
             monoList.add(getStoreResponseMono(request, forceRefreshAndTimeout));
         }
 
-//        Mono<StoreResponse> responseMono1 = monoList.get(0);
-//        Mono<StoreResponse> responseMono2 = monoList.get(1);
-//
-//        return responseMono2
-//            .doOnError(throwable -> {
-//                logger.error("Error from mono 1 : ", throwable);
-//        });
+        return Mono
+            .firstWithValue(monoList)
+            .onErrorMap(throwable -> {
+                Throwable exception = Exceptions.unwrap(throwable);
 
-        return Mono.firstWithValue(monoList).onErrorResume(throwable -> {
-            if (throwable instanceof NoSuchElementException) {
-                Throwable[] suppressedThrowables = throwable.getCause().getSuppressed();
-                return Mono.error(suppressedThrowables[0]);
-            }
+                if (exception instanceof NoSuchElementException) {
 
-            return Mono.error(throwable);
-        });
+                    Map<URI, CosmosException> regionBasedExceptionMap = request.requestContext.regionBasedExceptionMap;
+
+                    if (effectiveEndpoints != null) {
+                        if (!effectiveEndpoints.isEmpty() && !regionBasedExceptionMap.isEmpty()) {
+                            return regionBasedExceptionMap.get(effectiveEndpoints.get(0));
+                        }
+                    }
+                }
+
+                return exception;
+            });
     }
 
     private List<URI> getApplicableEndPoints(RxDocumentServiceRequest request) {
