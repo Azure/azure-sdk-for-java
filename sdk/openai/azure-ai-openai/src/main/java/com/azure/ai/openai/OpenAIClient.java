@@ -29,6 +29,7 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.SyncPoller;
 import java.io.IOException;
 import java.io.UncheckedIOException;
@@ -486,27 +487,12 @@ public final class OpenAIClient {
                     .getValue()
                     .toObject(ImageResponse.class);
         } else {
-            // TODO: Currently, we use async client block() to avoid a unknown LRO status "notRunning" which Azure Core
-            // will
-            //       fix the issue in August release and we will reuse the method
-            //       "SyncPoller<BinaryData, BinaryData> beginBeginAzureBatchImageGeneration()" after.
-            try {
-                return this.serviceClient
-                        .beginBeginAzureBatchImageGenerationAsync(imageGenerationOptionsBinaryData, requestOptions)
-                        .last()
-                        .flatMap(it -> it.getFinalResult())
-                        .map(it -> it.toObject(ImageOperationResponse.class).getResult())
-                        .block();
-            } catch (Exception e) {
-                Throwable unwrapped = Exceptions.unwrap(e);
-                if (unwrapped instanceof RuntimeException) {
-                    throw LOGGER.logExceptionAsError((RuntimeException) unwrapped);
-                } else if (unwrapped instanceof IOException) {
-                    throw LOGGER.logExceptionAsError(new UncheckedIOException((IOException) unwrapped));
-                } else {
-                    throw LOGGER.logExceptionAsError(new RuntimeException(unwrapped));
-                }
-            }
+            SyncPoller<BinaryData, BinaryData> binaryDataBinaryDataSyncPoller =
+                this.serviceClient.beginBeginAzureBatchImageGeneration(imageGenerationOptionsBinaryData, requestOptions);
+            binaryDataBinaryDataSyncPoller.waitForCompletion();
+            BinaryData binaryDataPollResponse = binaryDataBinaryDataSyncPoller.getFinalResult();
+            ImageOperationResponse object = binaryDataPollResponse.toObject(ImageOperationResponse.class);
+            return object.getResult();
         }
     }
 
