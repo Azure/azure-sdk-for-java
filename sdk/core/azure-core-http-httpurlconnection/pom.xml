@@ -13,8 +13,16 @@
     <maven.compiler.target>8</maven.compiler.target>
   </properties>
 
-  <!-- Junit 5 dependencies -->
   <dependencies>
+    <!-- Azure Java Core Test Library -->
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-core-test</artifactId>
+      <version>1.19.0</version>
+      <scope>test</scope>
+    </dependency>
+
+  <!-- Junit 5 dependencies -->
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-engine</artifactId>
