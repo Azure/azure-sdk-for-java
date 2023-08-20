@@ -27,6 +27,7 @@ import org.mockito.Mockito;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
@@ -263,6 +264,7 @@ public class ClientTelemetryTest extends TestSuiteBase {
 
     @SuppressWarnings("unchecked")
     @Test(groups = {"long"}, dataProvider = "useProxy", timeOut = TIMEOUT)
+    @Ignore("Stage Juno endpoint is only available for staging accounts")
     public void clientTelemetryWithStageJunoEndpoint(boolean useProxy) throws InterruptedException, NoSuchFieldException,
         IllegalAccessException {
         CosmosClient cosmosClient = null;

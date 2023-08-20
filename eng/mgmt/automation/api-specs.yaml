@@ -87,6 +87,8 @@ redis:
   suffix: generated
 resources:
   suffix: generated
+riskiq:
+  service: defendereasm
 service-map:
   service: servicemap
 servicebus:
