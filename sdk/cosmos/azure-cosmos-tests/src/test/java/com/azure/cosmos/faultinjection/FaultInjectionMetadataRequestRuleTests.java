@@ -141,7 +141,7 @@ public class FaultInjectionMetadataRequestRuleTests extends TestSuiteBase {
                         .block()
                         .getDiagnostics();
                 assertThat(cosmosDiagnostics.getContactedRegionNames().size()).isEqualTo(2);
-                validateFaultInjectionRuleAppliedForAddressResolution(cosmosDiagnostics, addressRefreshConnectionDelay, 4);
+                validateFaultInjectionRuleAppliedForAddressResolution(cosmosDiagnostics, addressRefreshConnectionDelay, 8);
             } catch (CosmosException e) {
                 fail("Request should be able to succeed by retrying in another region. " + e.getDiagnostics());
             }
@@ -557,6 +557,6 @@ public class FaultInjectionMetadataRequestRuleTests extends TestSuiteBase {
             }
         }
 
-        assertThat(failureInjectedCount).isGreaterThanOrEqualTo(failureInjectedExpectedCount);
+        assertThat(failureInjectedCount).isEqualTo(failureInjectedExpectedCount);
     }
 }
