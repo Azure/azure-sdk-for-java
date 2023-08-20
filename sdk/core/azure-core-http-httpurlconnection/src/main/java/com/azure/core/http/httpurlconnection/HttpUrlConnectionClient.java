@@ -9,36 +9,45 @@ import java.net.*;
 import java.nio.charset.StandardCharsets;
 
 public class HttpUrlConnectionClient implements HttpClient {
+
     private HttpRequest request;
     private HttpURLConnection connection;
 
+    // Default constructor
+    public HttpUrlConnectionClient(){}
+
+    // Constructor initializing with a specific request
     public HttpUrlConnectionClient(HttpRequest request) {
         this.setRequest(request);
     }
 
-    public HttpUrlConnectionClient(){}
-
+    // Setter for HttpRequest
     public void setRequest(HttpRequest request) {
         this.request = request;
     }
 
+    // Method to send using the stored request
     public Mono<HttpResponse> send() {
         return send(this.request);
     }
 
+    // Asynchronous send method returning a Mono of HttpResponse
     @Override
     public Mono<HttpResponse> send(HttpRequest httpRequest) {
         return Mono.fromCallable(() -> sendSynchronous(httpRequest));
     }
 
+    // Synchronous send method with additional context, primarily for interface compliance
     @Override
     public HttpResponse sendSync(HttpRequest httpRequest, Context context) {
         return sendSynchronous(httpRequest);
     }
 
+    // Main synchronous send method
     public HttpResponse sendSynchronous(HttpRequest httpRequest) {
         HttpMethod httpMethod = httpRequest.getHttpMethod();
 
+        // Check if the HTTP method is PATCH, if so, use the SocketClient to handle it
         if (httpMethod == HttpMethod.PATCH) {
             try {
                 new SocketClient(httpRequest.getUrl().toString()).sendPatchRequest(httpRequest);
@@ -47,6 +56,7 @@ public class HttpUrlConnectionClient implements HttpClient {
             }
         }
 
+        // Convert the given URL string into a URL object
         URL url;
         try {
             url = new URL(httpRequest.getUrl().toString());
@@ -54,29 +64,34 @@ public class HttpUrlConnectionClient implements HttpClient {
             throw new RuntimeException(e);
         }
 
+        // Initialize the HttpURLConnection object
         try {
             this.connection = (HttpURLConnection) url.openConnection();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
 
+        // Set the request method for the HttpURLConnection
         try {
             this.connection.setRequestMethod(httpMethod.toString());
         } catch (ProtocolException e) {
             throw new RuntimeException(e);
         }
 
+        // Set request properties (headers) from the provided HttpRequest
         for (HttpHeader header : httpRequest.getHeaders()) {
             this.connection.setRequestProperty(header.getName(), header.getValue());
         }
 
+        // If the method is other than GET, enable output for the connection
         if (httpMethod != HttpMethod.GET)
             this.connection.setDoOutput(true);
 
+        // For POST, PUT, and PATCH methods, write the request body
         if (httpMethod == HttpMethod.POST || httpMethod == HttpMethod.PUT || httpMethod == HttpMethod.PATCH)
             writeStream(httpRequest);
 
-        // Return a HttpResponse
+        // Construct and return the HttpResponse
         return new HttpUrlConnectionResponse(
             httpRequest,
             httpRequest.getHeaders(),
@@ -85,6 +100,7 @@ public class HttpUrlConnectionClient implements HttpClient {
         );
     }
 
+    // Utility method to read the response stream
     private ByteArrayOutputStream readStream() {
         // Stream to hold our received bytes
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
@@ -118,6 +134,7 @@ public class HttpUrlConnectionClient implements HttpClient {
         return outputStream;
     }
 
+    // Utility method to write the request body
     private void writeStream(HttpRequest httpRequest) {
         try {
             // Get the output stream of the connection
@@ -144,6 +161,7 @@ public class HttpUrlConnectionClient implements HttpClient {
         }
     }
 
+    // Utility method to get the response code
     private int getResponseCode() {
         try {
             return this.connection.getResponseCode();
@@ -152,10 +170,9 @@ public class HttpUrlConnectionClient implements HttpClient {
         }
     }
 
-
+    // Override the send method with additional context for interface compliance
     @Override
     public Mono<HttpResponse> send(HttpRequest request, Context context) {
         return HttpClient.super.send(request, context);
     }
-
 }
