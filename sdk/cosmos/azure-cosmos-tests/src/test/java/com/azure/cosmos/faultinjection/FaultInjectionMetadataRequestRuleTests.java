@@ -72,7 +72,7 @@ public class FaultInjectionMetadataRequestRuleTests extends TestSuiteBase {
         this.preferredLocations = readRegionMap.keySet().stream().collect(Collectors.toList());
     }
 
-    @Test(groups = { "multi-region" }, timeOut = 4 * TIMEOUT)
+    @Test(groups = { "multi-region" }, timeOut = 20 * TIMEOUT)
     public void faultInjectionServerErrorRuleTests_AddressRefresh_ConnectionDelay() throws JsonProcessingException {
 
         // Test to validate if there is http connection exception for address refresh,
@@ -103,10 +103,12 @@ public class FaultInjectionMetadataRequestRuleTests extends TestSuiteBase {
                     FaultInjectionResultBuilders
                         .getResultBuilder(FaultInjectionServerErrorType.CONNECTION_DELAY)
                         .delay(Duration.ofSeconds(50)) // to simulate http connection timeout
-                        .times(2)
+                        // changed from 2 to 8
+                        // 6 more address refresh request retries have been introduced by WebExceptionRetryPolicy
+                        .times(8)
                         .build()
                 )
-                .duration(Duration.ofMinutes(5))
+                .duration(Duration.ofMinutes(10))
                 .build();
 
         FaultInjectionRule dataOperationGoneRule =
@@ -139,7 +141,7 @@ public class FaultInjectionMetadataRequestRuleTests extends TestSuiteBase {
                         .block()
                         .getDiagnostics();
                 assertThat(cosmosDiagnostics.getContactedRegionNames().size()).isEqualTo(2);
-                validateFaultInjectionRuleAppliedForAddressResolution(cosmosDiagnostics, addressRefreshConnectionDelay, 2);
+                validateFaultInjectionRuleAppliedForAddressResolution(cosmosDiagnostics, addressRefreshConnectionDelay, 4);
             } catch (CosmosException e) {
                 fail("Request should be able to succeed by retrying in another region. " + e.getDiagnostics());
             }
@@ -555,6 +557,6 @@ public class FaultInjectionMetadataRequestRuleTests extends TestSuiteBase {
             }
         }
 
-        assertThat(failureInjectedCount).isEqualTo(failureInjectedExpectedCount);
+        assertThat(failureInjectedCount).isGreaterThanOrEqualTo(failureInjectedExpectedCount);
     }
 }

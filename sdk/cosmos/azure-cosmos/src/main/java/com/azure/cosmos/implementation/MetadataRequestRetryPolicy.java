@@ -44,11 +44,18 @@ public class MetadataRequestRetryPolicy implements IRetryPolicy {
 
     @Override
     public Mono<ShouldRetryResult> shouldRetry(Exception e) {
+
+        if (webExceptionRetryPolicy == null || request == null) {
+            logger.error("onBeforeSendRequest has not been invoked with the MetadataRequestRetryPolicy...");
+            return Mono.just(ShouldRetryResult.error(e));
+        }
+
         webExceptionRetryPolicy.onBeforeSendRequest(request);
+
         return webExceptionRetryPolicy.shouldRetry(e).flatMap(shouldRetryResult -> {
 
             if (!shouldRetryResult.shouldRetry) {
-                if (this.request == null || this.webExceptionRetryPolicy == null) {
+                if (this.request == null) {
                     logger.error("onBeforeSendRequest has not been invoked with the MetadataRequestRetryPolicy...");
                     return Mono.just(ShouldRetryResult.error(e));
                 }
