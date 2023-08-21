@@ -107,7 +107,7 @@
 /sdk/cosmos/                                         @kushagraThapar @FabianMeiswinkel @kirankumarkolli @xinlian12 @milismsft @aayush3011 @simorenoh @jeet1995 @Pilchie
 
 # PRLabel: %Load Testing
-/sdk/loadtesting/                                    @Harshan01 @abranj1219
+/sdk/loadtesting/                                    @Harshan01 @prativen
 
 # ServiceLabel: %Device Update for IoT Hub %Service Attention
 /sdk/deviceupdate/                                   @dpokluda
