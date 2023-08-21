@@ -107,7 +107,7 @@ interface IJsonReader {
      *
      * @return The next JSON token from the JsonReader as a binary list.
      */
-    ByteBuffer getBinaryValue(); // todo - Is bytebuffer a suitable alternative for C# ReadOnlyMemory<Byte>?
+    ByteBuffer getBinaryValue();
 
     /**
      * Writes the current token on the reader to the writer.
