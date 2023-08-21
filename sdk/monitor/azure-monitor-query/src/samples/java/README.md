@@ -35,7 +35,7 @@ library.
 
 Troubleshooting steps can be found [here][SDK_README_TROUBLESHOOTING].
 
-## Running Large Log Queries using Log Analytics
+## Run large log queries using Log Analytics
 
 Due to Log Analytics [service limits][monitor_service_limits], sometimes it may
 not be possible to retrieve all the expected data in a single query. For example, the number of rows returned or the maximum size of the
