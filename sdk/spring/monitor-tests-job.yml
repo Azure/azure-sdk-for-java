@@ -22,7 +22,7 @@ jobs:
           python -m pip install termcolor
         displayName: 'Python module install'
       - script: |
-            python ./sdk/spring/scripts/replace_v4_monitor.py -b $(TEST_SPRING_BOOT_VERSION)
+            python ./sdk/spring/scripts/spring_monitor_version_substitution.py -b $(TEST_SPRING_BOOT_VERSION)
         displayName: 'Replace Spring version'
       - task: Maven@3
         displayName: 'Run tests'
