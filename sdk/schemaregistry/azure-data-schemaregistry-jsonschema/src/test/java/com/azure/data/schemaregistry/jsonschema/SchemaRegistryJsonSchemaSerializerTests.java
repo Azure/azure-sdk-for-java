@@ -27,6 +27,7 @@ import reactor.test.StepVerifier;
 import java.io.IOException;
 import java.util.stream.Stream;
 
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -119,7 +120,7 @@ public class SchemaRegistryJsonSchemaSerializerTests {
         NoArgMessage actual = serializer.serialize(address, TypeReference.createInstance(NoArgMessage.class));
 
         // Assert
-        assertEquals(expectedContents, actual.getBodyAsBinaryData().toBytes());
+        assertArrayEquals(expectedContents, actual.getBodyAsBinaryData().toBytes());
 
         String contentType = actual.getContentType();
         String[] parts = contentType.split("\\+");
