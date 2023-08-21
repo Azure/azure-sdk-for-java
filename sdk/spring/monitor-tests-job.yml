@@ -18,14 +18,9 @@ jobs:
         parameters:
           Paths:
             - 'sdk/spring'
-#            - 'sdk/parents/azure-client-sdk-parent'
       - script: |
           python -m pip install termcolor
         displayName: 'Python module install'
-      - bash: |
-          echo "$(TEST_SPRING_BOOT_VERSION):"
-          echo "https://repo1.maven.org/maven2/org/springframework/boot/spring-boot-dependencies/$(TEST_SPRING_BOOT_VERSION)/spring-boot-dependencies-$(TEST_SPRING_BOOT_VERSION).pom"
-        displayName: 'Print version maven pom'
       - script: |
             python ./sdk/spring/scripts/replace_v4_monitor.py -b $(TEST_SPRING_BOOT_VERSION)
         displayName: 'Replace Spring version'
