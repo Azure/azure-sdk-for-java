@@ -11,7 +11,7 @@ public final class DedicatedGatewayRequestOptions {
 
     private Duration maxIntegratedCacheStaleness;
 
-    private boolean bypassIntegratedCache;
+    private boolean integratedCacheBypassed;
 
     /**
      * Constructor
@@ -59,8 +59,8 @@ public final class DedicatedGatewayRequestOptions {
      *
      * @return bypassIntegratedCache boolean value
      */
-    public boolean getBypassIntegratedCache() {
-        return bypassIntegratedCache;
+    public boolean isIntegratedCacheBypassed() {
+        return integratedCacheBypassed;
     }
 
     /**
@@ -71,8 +71,8 @@ public final class DedicatedGatewayRequestOptions {
      * @param bypassIntegratedCache boolean value
      * @return this DedicatedGatewayRequestOptions
      */
-    public DedicatedGatewayRequestOptions setBypassIntegratedCache(boolean bypassIntegratedCache) {
-        this.bypassIntegratedCache = bypassIntegratedCache;
+    public DedicatedGatewayRequestOptions setIntegratedCacheBypassed(boolean bypassIntegratedCache) {
+        this.integratedCacheBypassed = bypassIntegratedCache;
         return this;
     }
 }

@@ -60,13 +60,13 @@ public class RequestHeadersSpyWireTest extends TestSuiteBase {
 
         DedicatedGatewayRequestOptions dedicatedOptions1 = new DedicatedGatewayRequestOptions();
         dedicatedOptions1.setMaxIntegratedCacheStaleness(Duration.ofMinutes(2));
-        dedicatedOptions1.setBypassIntegratedCache(true);
+        dedicatedOptions1.setIntegratedCacheBypassed(true);
         CosmosQueryRequestOptions options1 = new CosmosQueryRequestOptions();
         options1.setDedicatedGatewayRequestOptions(dedicatedOptions1);
 
         DedicatedGatewayRequestOptions dedicatedOptions2 = new DedicatedGatewayRequestOptions();
         dedicatedOptions2.setMaxIntegratedCacheStaleness(Duration.ofHours(5));
-        dedicatedOptions2.setBypassIntegratedCache(false);
+        dedicatedOptions2.setIntegratedCacheBypassed(false);
         CosmosQueryRequestOptions options2 = new CosmosQueryRequestOptions();
         options2.setDedicatedGatewayRequestOptions(dedicatedOptions2);
 
@@ -77,7 +77,7 @@ public class RequestHeadersSpyWireTest extends TestSuiteBase {
 
         DedicatedGatewayRequestOptions dedicatedOptions4 = new DedicatedGatewayRequestOptions();
         dedicatedOptions4.setMaxIntegratedCacheStaleness(Duration.ofMillis(500));
-        dedicatedOptions4.setBypassIntegratedCache(true);
+        dedicatedOptions4.setIntegratedCacheBypassed(true);
         CosmosQueryRequestOptions options4 = new CosmosQueryRequestOptions();
         options4.setDedicatedGatewayRequestOptions(dedicatedOptions4);
 
@@ -94,13 +94,13 @@ public class RequestHeadersSpyWireTest extends TestSuiteBase {
 
         DedicatedGatewayRequestOptions dedicatedOptions1 = new DedicatedGatewayRequestOptions();
         dedicatedOptions1.setMaxIntegratedCacheStaleness(Duration.ofMinutes(2));
-        dedicatedOptions1.setBypassIntegratedCache(true);
+        dedicatedOptions1.setIntegratedCacheBypassed(true);
         CosmosItemRequestOptions options1 = new CosmosItemRequestOptions();
         options1.setDedicatedGatewayRequestOptions(dedicatedOptions1);
 
         DedicatedGatewayRequestOptions dedicatedOptions2 = new DedicatedGatewayRequestOptions();
         dedicatedOptions2.setMaxIntegratedCacheStaleness(Duration.ofHours(5));
-        dedicatedOptions2.setBypassIntegratedCache(false);
+        dedicatedOptions2.setIntegratedCacheBypassed(false);
         CosmosItemRequestOptions options2 = new CosmosItemRequestOptions();
         options2.setDedicatedGatewayRequestOptions(dedicatedOptions2);
 
@@ -111,7 +111,7 @@ public class RequestHeadersSpyWireTest extends TestSuiteBase {
 
         DedicatedGatewayRequestOptions dedicatedOptions4 = new DedicatedGatewayRequestOptions();
         dedicatedOptions4.setMaxIntegratedCacheStaleness(Duration.ofMillis(500));
-        dedicatedOptions4.setBypassIntegratedCache(true);
+        dedicatedOptions4.setIntegratedCacheBypassed(true);
         CosmosItemRequestOptions options4 = new CosmosItemRequestOptions();
         options4.setDedicatedGatewayRequestOptions(dedicatedOptions4);
 
@@ -235,7 +235,7 @@ public class RequestHeadersSpyWireTest extends TestSuiteBase {
     public void readItemWithCacheBypass(boolean cacheBypass) {
         DedicatedGatewayRequestOptions dedicatedGatewayRequestOptions = new DedicatedGatewayRequestOptions();
         dedicatedGatewayRequestOptions.setMaxIntegratedCacheStaleness((Duration.ofMillis(500)));
-        dedicatedGatewayRequestOptions.setBypassIntegratedCache(cacheBypass);
+        dedicatedGatewayRequestOptions.setIntegratedCacheBypassed(cacheBypass);
         CosmosItemRequestOptions cosmosItemRequestOptions = new CosmosItemRequestOptions();
         cosmosItemRequestOptions.setDedicatedGatewayRequestOptions(dedicatedGatewayRequestOptions);
 
@@ -266,11 +266,11 @@ public class RequestHeadersSpyWireTest extends TestSuiteBase {
             assertThat(durationInMillis).isEqualTo(String.valueOf(options
                 .getMaxIntegratedCacheStaleness()
                 .toMillis()));
-            if (options.getBypassIntegratedCache()) {
+            if (options.isIntegratedCacheBypassed()) {
                 assertThat(headers.containsKey(HttpConstants.HttpHeaders.DEDICATED_GATEWAY_PER_REQUEST_BYPASS_CACHE)).isTrue();
                 String bypassIntegratedCache =
                     headers.get(HttpConstants.HttpHeaders.DEDICATED_GATEWAY_PER_REQUEST_BYPASS_CACHE);
-                assertThat(bypassIntegratedCache).isEqualTo(String.valueOf(options.getBypassIntegratedCache()));
+                assertThat(bypassIntegratedCache).isEqualTo(String.valueOf(options.isIntegratedCacheBypassed()));
             } else {
                 assertThat(headers.containsKey(HttpConstants.HttpHeaders.DEDICATED_GATEWAY_PER_REQUEST_BYPASS_CACHE)).isFalse();
             }
