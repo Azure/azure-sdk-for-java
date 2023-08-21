@@ -23,6 +23,7 @@ public class ReadmeSamples {
     public SchemaRegistryJsonSchemaSerializer createSerializer() {
         // BEGIN: readme-sample-createSchemaRegistryAsyncClient
         TokenCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
+        JsonSchemaGenerator jsonSchemaGenerator = null;
 
         // {schema-registry-endpoint} is the fully qualified namespace of the Event Hubs instance. It is usually
         // of the form "{your-namespace}.servicebus.windows.net"
@@ -36,6 +37,7 @@ public class ReadmeSamples {
         SchemaRegistryJsonSchemaSerializer serializer = new SchemaRegistryJsonSchemaSerializerBuilder()
             .schemaRegistryClient(schemaRegistryAsyncClient)
             .schemaGroup("{schema-group}")
+            .jsonSchemaGenerator(jsonSchemaGenerator)
             .buildSerializer();
         // END: readme-sample-createSchemaRegistryJsonSchemaSerializer
 
