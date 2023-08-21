@@ -462,23 +462,22 @@ public final class OpenAIClient {
         chatCompletionsOptions.setStream(true);
         RequestOptions requestOptions = new RequestOptions();
         Flux<ByteBuffer> responseStream;
+
         if (chatCompletionsOptions.getDataSources() == null
             || chatCompletionsOptions.getDataSources().isEmpty()) {
-            responseStream =
-                getChatCompletionsWithResponse(
+            responseStream = getChatCompletionsWithResponse(
                     deploymentOrModelName, BinaryData.fromObject(chatCompletionsOptions), requestOptions)
                     .getValue()
                     .toFluxByteBuffer();
         } else {
-            responseStream =
-                getChatCompletionsWithAzureExtensionsWithResponse(
+            responseStream = getChatCompletionsWithAzureExtensionsWithResponse(
                     deploymentOrModelName, BinaryData.fromObject(chatCompletionsOptions), requestOptions)
                     .getValue()
                     .toFluxByteBuffer();
         }
         OpenAIServerSentEvents<ChatCompletions> chatCompletionsStream =
                 new OpenAIServerSentEvents<>(responseStream, ChatCompletions.class);
-        return new IterableStream<ChatCompletions>(chatCompletionsStream.getEvents());
+        return new IterableStream<>(chatCompletionsStream.getEvents());
     }
 
     /**

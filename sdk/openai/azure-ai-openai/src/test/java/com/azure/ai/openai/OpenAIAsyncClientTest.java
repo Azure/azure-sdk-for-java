@@ -17,6 +17,7 @@ import reactor.test.StepVerifier;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
+import java.util.stream.Collectors;
 
 import static com.azure.ai.openai.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -433,6 +434,33 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
 
             StepVerifier.create(client.getChatCompletions(deploymentName, chatCompletionsOptions))
                 .assertNext(OpenAIClientTestBase::assertChatCompletionWednesday)
+                .verifyComplete();
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    public void testChatCompletionsStreamingBasicSearchExtension(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        client = getOpenAIAsyncClient(httpClient, serviceVersion);
+
+        getChatCompletionsAzureChatSearchRunner((deploymentName, chatCompletionsOptions) -> {
+            AzureCognitiveSearchChatExtensionConfiguration cognitiveSearchConfiguration =
+                new AzureCognitiveSearchChatExtensionConfiguration(
+                    "https://openaisdktestsearch.search.windows.net",
+                    getAzureCognitiveSearchKey(),
+                    "openai-test-index-carbon-wiki"
+                );
+            AzureChatExtensionConfiguration extensionConfiguration =
+                new AzureChatExtensionConfiguration(
+                    AzureChatExtensionType.AZURE_COGNITIVE_SEARCH,
+                    BinaryData.fromObject(cognitiveSearchConfiguration));
+
+            chatCompletionsOptions.setDataSources(Arrays.asList(extensionConfiguration));
+
+            StepVerifier.create(client.getChatCompletionsStream(deploymentName, chatCompletionsOptions))
+                .recordWith(ArrayList::new)
+                .thenConsumeWhile(_chatCompletion -> true)
+                .consumeRecordedWith(chatCompletions -> assertChatCompletionsStreamingWednesday(chatCompletions.stream()))
                 .verifyComplete();
         });
     }

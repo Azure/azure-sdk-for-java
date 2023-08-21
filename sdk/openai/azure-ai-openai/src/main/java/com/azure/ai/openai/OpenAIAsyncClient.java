@@ -464,10 +464,18 @@ public final class OpenAIAsyncClient {
             String deploymentOrModelName, ChatCompletionsOptions chatCompletionsOptions) {
         chatCompletionsOptions.setStream(true);
         RequestOptions requestOptions = new RequestOptions();
-        Flux<ByteBuffer> responseStream =
-                getChatCompletionsWithResponse(
-                                deploymentOrModelName, BinaryData.fromObject(chatCompletionsOptions), requestOptions)
-                        .flatMapMany(response -> response.getValue().toFluxByteBuffer());
+        Flux<ByteBuffer> responseStream;
+
+        if (chatCompletionsOptions.getDataSources() == null) {
+            responseStream = getChatCompletionsWithResponse(
+                    deploymentOrModelName, BinaryData.fromObject(chatCompletionsOptions), requestOptions)
+                    .flatMapMany(response -> response.getValue().toFluxByteBuffer());
+        } else {
+            responseStream = getChatCompletionsWithAzureExtensionsWithResponse(
+                deploymentOrModelName, BinaryData.fromObject(chatCompletionsOptions), requestOptions)
+                .flatMapMany(response -> response.getValue().toFluxByteBuffer());
+        }
+
         OpenAIServerSentEvents<ChatCompletions> chatCompletionsStream =
                 new OpenAIServerSentEvents<>(responseStream, ChatCompletions.class);
         return chatCompletionsStream.getEvents();
