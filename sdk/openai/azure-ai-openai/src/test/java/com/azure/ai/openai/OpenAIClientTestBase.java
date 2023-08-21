@@ -24,6 +24,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static com.azure.ai.openai.TestUtils.FAKE_API_KEY;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -358,5 +360,41 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
         assertEquals(firstMessage.getRole(), ChatRole.TOOL);
         assertFalse(firstMessage.getContent().isEmpty());
         assertTrue(firstMessage.getContent().contains("citations"));
+    }
+
+    // Some of the quirks of stream ChatCompletions:
+    // - Role comes in the 2nd message
+    // - Citations come in the first message
+    // - All remaining messages contain deltas
+    // - Last message has the FinishReason set
+    static void assertChatCompletionsStreamingWednesday(Stream<ChatCompletions> chatCompletionsStream) {
+        List<ChatCompletions> chatCompletions = chatCompletionsStream.collect(Collectors.toList());
+        assertTrue(chatCompletions.toArray().length > 1);
+
+        for(int i = 0; i < chatCompletions.size(); i++) {
+            ChatCompletions chatCompletion = chatCompletions.get(i);
+            List<ChatChoice> choices = chatCompletion.getChoices();
+
+            assertNotNull(choices);
+            assertTrue(choices.size() > 0);
+
+            if (i == 0) {
+                AzureChatExtensionsMessageContext messageContext = choices.get(0).getDelta().getContext();
+                assertNotNull(messageContext);
+                assertNotNull(messageContext.getMessages());
+                ChatMessage firstMessage = messageContext.getMessages().get(0);
+                assertNotNull(firstMessage);
+                assertEquals(firstMessage.getRole(), ChatRole.TOOL);
+                assertFalse(firstMessage.getContent().isEmpty());
+                assertTrue(firstMessage.getContent().contains("citations"));
+            } else if (i == 1) {
+                assertNull(choices.get(0).getDelta().getContext());
+                assertEquals(choices.get(0).getDelta().getRole(), ChatRole.ASSISTANT);
+            } else if(i == chatCompletions.size() - 1) {
+                assertEquals(choices.get(0).getFinishReason(), CompletionsFinishReason.STOPPED);
+            } else {
+                assertNotNull(choices.get(0).getDelta().getContent());
+            }
+        }
     }
 }
