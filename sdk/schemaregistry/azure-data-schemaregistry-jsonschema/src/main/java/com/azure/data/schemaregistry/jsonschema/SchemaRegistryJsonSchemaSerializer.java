@@ -39,15 +39,15 @@ public final class SchemaRegistryJsonSchemaSerializer {
     private final JsonSchemaGenerator schemaGenerator;
     private final JsonSerializer jsonSerializer;
 
-    SchemaRegistryJsonSchemaSerializer(SchemaRegistryAsyncClient schemaRegistryClient,
+    SchemaRegistryJsonSchemaSerializer(SchemaRegistryAsyncClient schemaRegistryAsyncClient,
         JsonSchemaGenerator schemaGenerator, SerializerOptions serializerOptions) {
-        Objects.requireNonNull(schemaRegistryClient, "'schemaRegistryClient' cannot be null.");
+        Objects.requireNonNull(schemaRegistryAsyncClient, "'schemaRegistryAsyncClient' cannot be null.");
         Objects.requireNonNull(serializerOptions, "'serializerOptions' cannot be null.");
 
         this.schemaGenerator = Objects.requireNonNull(schemaGenerator, "'schemaGenerator' cannot be null.");
 
         this.jsonSerializer = serializerOptions.getJsonSerializer();
-        this.schemaCache = new SchemaRegistrySchemaCache(schemaRegistryClient, serializerOptions.getSchemaGroup(),
+        this.schemaCache = new SchemaRegistrySchemaCache(schemaRegistryAsyncClient, serializerOptions.getSchemaGroup(),
             serializerOptions.autoRegisterSchemas(), serializerOptions.getMaxCacheSize());
     }
 
