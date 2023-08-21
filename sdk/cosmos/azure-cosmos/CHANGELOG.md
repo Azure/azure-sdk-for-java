@@ -12,6 +12,7 @@
 * Wired `proactiveInit` into the diagnostics to track warmed up containers, proactive connection regions and aggressive warm up duration - See [PR 36111](https://github.com/Azure/azure-sdk-for-java/pull/36111)
 
 #### Other Changes
+* Added coverage for `ChangeFeedProcessor` in `Latest Version` change feed mode to read change feed from a custom start time for multi-write accounts. - See[PR 36257](https://github.com/Azure/azure-sdk-for-java/pull/36257)
 
 ### 4.48.1 (2023-08-09)
 > [!IMPORTANT]

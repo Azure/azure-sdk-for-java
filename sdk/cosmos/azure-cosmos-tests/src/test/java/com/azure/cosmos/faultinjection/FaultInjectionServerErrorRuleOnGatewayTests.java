@@ -78,7 +78,7 @@ public class FaultInjectionServerErrorRuleOnGatewayTests extends TestSuiteBase {
         this.subscriberValidationTimeout = TIMEOUT;
     }
 
-    @BeforeClass(groups = {"multi-region", "long"}, timeOut = TIMEOUT)
+    @BeforeClass(groups = {"multi-master", "long"}, timeOut = TIMEOUT)
     public void beforeClass() {
         client = getClientBuilder().buildAsyncClient();
         AsyncDocumentClient asyncDocumentClient = BridgeInternal.getContextClient(client);
@@ -128,7 +128,7 @@ public class FaultInjectionServerErrorRuleOnGatewayTests extends TestSuiteBase {
         };
     }
 
-    @Test(groups = {"multi-region"}, timeOut = TIMEOUT)
+    @Test(groups = {"multi-master"}, timeOut = TIMEOUT)
     public void faultInjectionServerErrorRuleTests_Region() throws JsonProcessingException {
         List<String> preferredLocations = this.readRegionMap.keySet().stream().collect(Collectors.toList());
 
@@ -227,7 +227,7 @@ public class FaultInjectionServerErrorRuleOnGatewayTests extends TestSuiteBase {
         }
     }
 
-    @Test(groups = {"multi-region", "long"}, timeOut = 4 * TIMEOUT)
+    @Test(groups = {"multi-master", "long"}, timeOut = 4 * TIMEOUT)
     public void faultInjectionServerErrorRuleTests_Partition() throws JsonProcessingException {
         for (int i = 0; i < 10; i++) {
             cosmosAsyncContainer.createItem(TestItem.createNewItem()).block();
@@ -299,7 +299,7 @@ public class FaultInjectionServerErrorRuleOnGatewayTests extends TestSuiteBase {
         }
     }
 
-    @Test(groups = {"multi-region", "long"}, timeOut = 4 * TIMEOUT)
+    @Test(groups = {"multi-master", "long"}, timeOut = 4 * TIMEOUT)
     public void faultInjectionServerErrorRuleTests_ServerResponseDelay() throws JsonProcessingException {
         // define another rule which can simulate timeout
         String timeoutRuleId = "serverErrorRule-responseDelay-" + UUID.randomUUID();
@@ -349,7 +349,7 @@ public class FaultInjectionServerErrorRuleOnGatewayTests extends TestSuiteBase {
         }
     }
 
-    @Test(groups = {"multi-region", "long"}, timeOut = 4 * TIMEOUT)
+    @Test(groups = {"multi-master", "long"}, timeOut = 4 * TIMEOUT)
     public void faultInjectionServerErrorRuleTests_ServerConnectionDelay() throws JsonProcessingException {
         // simulate high channel acquisition/connectionTimeout
         String ruleId = "serverErrorRule-serverConnectionDelay-" + UUID.randomUUID();
@@ -390,7 +390,7 @@ public class FaultInjectionServerErrorRuleOnGatewayTests extends TestSuiteBase {
         }
     }
 
-    @Test(groups = {"multi-region", "long"}, dataProvider = "faultInjectionServerErrorResponseProvider", timeOut = TIMEOUT)
+    @Test(groups = {"multi-master", "long"}, dataProvider = "faultInjectionServerErrorResponseProvider", timeOut = TIMEOUT)
     public void faultInjectionServerErrorRuleTests_ServerErrorResponse(
         FaultInjectionServerErrorType serverErrorType,
         boolean canRetry,
@@ -462,7 +462,7 @@ public class FaultInjectionServerErrorRuleOnGatewayTests extends TestSuiteBase {
         }
     }
 
-    @Test(groups = {"multi-region", "long"}, dataProvider = "operationTypeProvider", timeOut = TIMEOUT)
+    @Test(groups = {"multi-master", "long"}, dataProvider = "operationTypeProvider", timeOut = TIMEOUT)
     public void faultInjectionServerErrorRuleTests_HitLimit(
         OperationType operationType,
         FaultInjectionOperationType faultInjectionOperationType) throws JsonProcessingException {
@@ -520,7 +520,7 @@ public class FaultInjectionServerErrorRuleOnGatewayTests extends TestSuiteBase {
         }
     }
 
-    @AfterClass(groups = {"multi-region", "long"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
+    @AfterClass(groups = {"multi-master", "long"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
         safeClose(client);
     }

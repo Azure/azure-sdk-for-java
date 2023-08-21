@@ -96,10 +96,6 @@
         "MultiMaster_MultiRegion": {
           "ArmTemplateParameters": "@{ enableMultipleWriteLocations = $true; defaultConsistencyLevel = 'Session'; enableMultipleRegions = $true }",
           "PREFERRED_LOCATIONS": "[\"East US 2\"]"
-        },
-        "MultiMaster_SingleRegion": {
-          "ArmTemplateParameters": "@{ enableMultipleWriteLocations = $true; defaultConsistencyLevel = 'Session' }",
-          "PREFERRED_LOCATIONS": null
         }
       },
       "PROTOCOLS": "[\"Tcp\"]",
