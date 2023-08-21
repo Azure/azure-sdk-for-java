@@ -7,6 +7,7 @@
 #### Breaking Changes
 
 #### Bugs Fixed
+* Fixed an issue where connection is being closed when inject `connection_delay` rule with configured delay smaller than configured `connectionTimeout` - See [PR 35852](https://github.com/Azure/azure-sdk-for-java/pull/35852)
 
 #### Other Changes
 
