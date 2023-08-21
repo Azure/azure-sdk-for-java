@@ -24,7 +24,7 @@ class SchemaRegistrySchemaCache {
     private static final String SIZE_KEY = "size";
     private static final String TOTAL_LENGTH_KEY = "totalLength";
 
-    private final ClientLogger logger = new ClientLogger(SchemaRegistrySchemaCache.class);
+    private static final ClientLogger LOGGER = new ClientLogger(SchemaRegistrySchemaCache.class);
 
     private final SchemaCache cache;
     private final SchemaRegistryAsyncClient schemaRegistryClient;
@@ -54,7 +54,7 @@ class SchemaRegistrySchemaCache {
         // It is possible to create the serializer without setting the schema group. This is the case when
         // autoRegisterSchemas is false. (ie. You are only using it to deserialize messages.)
         if (CoreUtils.isNullOrEmpty(schemaGroup)) {
-            return monoError(logger, new IllegalStateException("Cannot serialize when 'schemaGroup' is not set. Please"
+            return monoError(LOGGER, new IllegalStateException("Cannot serialize when 'schemaGroup' is not set. Please"
                 + " set in SchemaRegistryJsonSchemaSerializer.schemaGroup when creating serializer."));
         }
 
@@ -127,14 +127,14 @@ class SchemaRegistrySchemaCache {
      * Logs the cache status if log level verbose is enabled. Otherwise, no-op.
      */
     private void logCacheStatus() {
-        if (!logger.canLogAtLevel(LogLevel.VERBOSE)) {
+        if (!LOGGER.canLogAtLevel(LogLevel.VERBOSE)) {
             return;
         }
 
         final int size = cache.size();
         final int length = cache.getTotalLength();
 
-        logger.atVerbose()
+        LOGGER.atVerbose()
             .addKeyValue(SIZE_KEY, size)
             .addKeyValue(TOTAL_LENGTH_KEY, length)
             .log("Cache entry added or updated. Total number of entries: {}; Total schema length: {}",
