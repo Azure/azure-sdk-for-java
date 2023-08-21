@@ -4,7 +4,7 @@
 
 #### Bugs Fixed
 * Fixed an issue where connection is being closed when inject `connection_delay` rule with configured delay smaller than configured `connectionTimeout` - See [PR 35852](https://github.com/Azure/azure-sdk-for-java/pull/35852)
-* Fixed an issue where `java.lang.NoClassDefFoundError: com/azure/cosmos/implementation/faultinjection/IRntbdServerErrorInjector` is thrown when using `FaultInjection verison 1.0.0-beta.4` - See [Issue 36381](https://github.com/Azure/azure-sdk-for-java/issues/36381)
+* Fixed an issue where `java.lang.NoClassDefFoundError: com/azure/cosmos/implementation/faultinjection/IRntbdServerErrorInjector` is thrown when using `FaultInjection version 1.0.0-beta.4` - See [Issue 36381](https://github.com/Azure/azure-sdk-for-java/issues/36381)
 
 #### Other Changes
 * Updated azure-cosmos version to 4.49.0.
