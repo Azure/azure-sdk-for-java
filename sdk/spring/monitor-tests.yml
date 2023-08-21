@@ -1,31 +1,5 @@
-#trigger: none
-#pr: none
-trigger:
-  branches:
-    include:
-      - main
-      - feature/*
-      - hotfix/*
-      - release/*
-  paths:
-    include:
-      - sdk/spring/ci.monitor.yml
-      - sdk/spring/monitor-tests.yml
-      - sdk/spring/spring-cloud-azure-starter-monitor/
-      - sdk/spring/spring-cloud-azure-starter-monitor-test/
-pr:
-  branches:
-    include:
-      - main
-      - feature/*
-      - hotfix/*
-      - release/*
-  paths:
-    include:
-      - sdk/spring/ci.monitor.yml
-      - sdk/spring/monitor-tests.yml
-      - sdk/spring/spring-cloud-azure-starter-monitor/
-      - sdk/spring/spring-cloud-azure-starter-monitor-test/
+trigger: none
+pr: none
 
 variables:
   - template: ../../eng/pipelines/templates/variables/globals.yml
