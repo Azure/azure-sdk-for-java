@@ -34,13 +34,13 @@ jobs:
       - task: Maven@3
         displayName: 'Install dependencies'
         inputs:
-          options: "-Dcheckstyle.skip -Dspotbugs.skip"
+#          options: "-Dcheckstyle.skip -Dspotbugs.skip"
           mavenPomFile: sdk/spring/spring-cloud-azure-starter-monitor/pom.xml
 #          mavenOptions: '$(MemoryOptions)'
 #          javaHomeOption: 'JDKVersion'
 #          jdkVersionOption: $(JavaTestVersion)
 #          jdkArchitectureOption: 'x64'
-          goals: 'clean install'
+          goals: 'clean install "-Dcheckstyle.skip"'
       - task: Maven@3
         displayName: 'Run tests'
         inputs:
