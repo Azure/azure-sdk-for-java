@@ -17,6 +17,7 @@ jobs:
       - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
         parameters:
           Paths:
+            - 'sdk/spring/scripts'
             - 'sdk/spring/spring-cloud-azure-starter-monitor-test'
 #      - script: |
 #          python -m pip install termcolor

@@ -22,5 +22,8 @@ stages:
               GenerateVMJobs: true
           PreGenerationSteps:
             - script: |
+                python -m pip install termcolor
+              displayName: 'python module install'
+            - script: |
                 python ./sdk/spring/scripts/monitor_update_monitor_matrix_json.py
               displayName: 'update test version'
