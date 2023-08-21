@@ -7,6 +7,7 @@
 #### Breaking Changes
 
 #### Bugs Fixed
+* Fixed possible `NullPointerException` candidates - See [PR 36426](https://github.com/Azure/azure-sdk-for-java/pull/36426)
 
 #### Other Changes
 
