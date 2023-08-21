@@ -14,9 +14,7 @@ import com.azure.core.test.annotation.DoNotRecord;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.resourcemanager.apimanagement.models.ApiManagementServiceResource;
-import com.azure.resourcemanager.apimanagement.models.ApiManagementServiceSkuProperties;
-import com.azure.resourcemanager.apimanagement.models.SkuType;
+import com.azure.resourcemanager.apimanagement.models.*;
 import com.azure.resourcemanager.resources.ResourceManager;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -79,9 +77,10 @@ public class ApiManagementManagerTest extends TestBase {
                 .define(serviceName)
                 .withRegion(REGION)
                 .withExistingResourceGroup(resourceGroupName)
-                .withSku(new ApiManagementServiceSkuProperties().withName(SkuType.BASIC).withCapacity(1))
+                .withSku(new ApiManagementServiceSkuProperties().withName(SkuType.CONSUMPTION).withCapacity(0))
                 .withPublisherEmail("apim@autorestsdk.com")
                 .withPublisherName("autorestsdk")
+                .withIdentity(new ApiManagementServiceIdentity().withType(ApimIdentityType.SYSTEM_ASSIGNED))
                 .create();
             // @embedmeEnd
             resource.refresh();
