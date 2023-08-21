@@ -18,6 +18,7 @@ import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.UserAgentPolicy;
+import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.UserAgentUtil;
@@ -112,6 +113,7 @@ public abstract class IdentityClientBase {
     private static final String AZURE_IDENTITY_PROPERTIES = "azure-identity.properties";
     private static final String SDK_NAME = "name";
     private static final String SDK_VERSION = "version";
+    private static final ClientOptions DEFAULT_CLIENT_OPTIONS = new ClientOptions();
     private final Map<String, String> properties;
 
 
@@ -758,15 +760,16 @@ public abstract class IdentityClientBase {
 
         HttpLogOptions httpLogOptions = (options.getHttpLogOptions() == null) ? new HttpLogOptions() : options.getHttpLogOptions();
 
-        userAgent = UserAgentUtil.toUserAgentString(CoreUtils.getApplicationId(options.getClientOptions(), httpLogOptions), clientName, clientVersion, buildConfiguration);
+        ClientOptions localClientOptions = options.getClientOptions() != null
+            ? options.getClientOptions() : DEFAULT_CLIENT_OPTIONS;
+
+        userAgent = UserAgentUtil.toUserAgentString(CoreUtils.getApplicationId(localClientOptions, httpLogOptions), clientName, clientVersion, buildConfiguration);
         policies.add(new UserAgentPolicy(userAgent));
 
-        if (options.getClientOptions() != null) {
-            List<HttpHeader> httpHeaderList = new ArrayList<>();
-            options.getClientOptions().getHeaders().forEach(header ->
-                httpHeaderList.add(new HttpHeader(header.getName(), header.getValue())));
-            policies.add(new AddHeadersPolicy(new HttpHeaders(httpHeaderList)));
-        }
+        List<HttpHeader> httpHeaderList = new ArrayList<>();
+        localClientOptions.getHeaders().forEach(header ->
+            httpHeaderList.add(new HttpHeader(header.getName(), header.getValue())));
+        policies.add(new AddHeadersPolicy(new HttpHeaders(httpHeaderList)));
 
         policies.addAll(options.getPerCallPolicies());
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
@@ -776,6 +779,7 @@ public abstract class IdentityClientBase {
         HttpPolicyProviders.addAfterRetryPolicies(policies);
         policies.add(new HttpLoggingPolicy(httpLogOptions));
         return new HttpPipelineBuilder().httpClient(httpClient)
+            .clientOptions(localClientOptions)
             .policies(policies.toArray(new HttpPipelinePolicy[0])).build();
     }
 

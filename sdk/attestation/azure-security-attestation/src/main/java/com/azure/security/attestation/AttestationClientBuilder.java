@@ -96,6 +96,7 @@ public final class AttestationClientBuilder implements
 
     private static final String SDK_VERSION = "version";
     private static final RetryPolicy DEFAULT_RETRY_POLICY = new RetryPolicy("retry-after-ms", ChronoUnit.MILLIS);
+    private static final ClientOptions DEFAULT_CLIENT_OPTIONS = new ClientOptions();
 
     private final String[] dataplaneScope = new String[] {"https://attest.azure.net/.default"};
 
@@ -438,10 +439,12 @@ public final class AttestationClientBuilder implements
         // which were provided.
         HttpPipeline pipeline = this.pipeline;
         if (pipeline == null) {
+            ClientOptions localClientOptions = clientOptions != null ? clientOptions : DEFAULT_CLIENT_OPTIONS;
+            
             // Closest to API goes first, closest to wire goes last.
             final List<HttpPipelinePolicy> policies = new ArrayList<>();
             policies.add(new UserAgentPolicy(
-                getApplicationId(clientOptions, httpLogOptions), CLIENT_NAME, CLIENT_VERSION, buildConfiguration));
+                getApplicationId(localClientOptions, httpLogOptions), CLIENT_NAME, CLIENT_VERSION, buildConfiguration));
             policies.add(new RequestIdPolicy());
             policies.add(new AddHeadersFromContextPolicy());
 
@@ -459,9 +462,9 @@ public final class AttestationClientBuilder implements
             }
             policies.addAll(perRetryPolicies);
 
-            if (clientOptions != null) {
+            if (localClientOptions != null) {
                 List<HttpHeader> httpHeaderList = new ArrayList<>();
-                clientOptions.getHeaders().forEach(
+                localClientOptions.getHeaders().forEach(
                     header -> httpHeaderList.add(new HttpHeader(header.getName(), header.getValue())));
                 policies.add(new AddHeadersPolicy(new HttpHeaders(httpHeaderList)));
             }
