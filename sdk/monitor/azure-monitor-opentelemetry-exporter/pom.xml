@@ -170,6 +170,7 @@
       <groupId>org.awaitility</groupId>
       <artifactId>awaitility</artifactId>
       <version>4.2.0</version> <!-- {x-version-update;org.awaitility:awaitility;external_dependency} -->
+      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>io.github.hakky54</groupId>
