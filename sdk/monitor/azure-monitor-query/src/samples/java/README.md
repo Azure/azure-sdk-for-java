@@ -42,7 +42,7 @@ not be possible to retrieve all the expected data in a single query. For example
 data returned may exceed the stated limits. One approach for overcoming these limits is to split the queries into multiple smaller queries
 using different time ranges.
 
-This work-around allows you to avoid the cost of exporting data to a storage account (and potentially the cost of the storage account as well). 
+This workaround allows you to avoid the cost of exporting data to a storage account (and potentially the cost of the storage account as well). 
 
 **Disclaimer:** This approach of splitting data retrieval into smaller queries is good when dealing with a few GBs of data or a few millions
 of records per hour. For larger data sets,
