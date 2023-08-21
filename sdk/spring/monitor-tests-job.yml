@@ -32,6 +32,9 @@ jobs:
       - script: |
             python ./sdk/spring/scripts/replace_v4_monitor.py -b $(TEST_SPRING_BOOT_VERSION)
         displayName: 'Replace Spring version'
+      - template: /eng/common/testproxy/test-proxy-tool.yml
+        parameters:
+          runProxy: true
       - task: Maven@3
         displayName: 'Install dependencies'
         inputs:
