@@ -28,12 +28,4 @@ public class ConfidentialLedgerEnvironment {
     public static String getConfidentialLedgerAdminOid() {
         return GLOBAL_CONFIGURATION.get("CONFIDENTIALLEDGER_CLIENT_OBJECTID", "d958292f-5b70-4b66-9502-562217cc7eaa");
     }
-
-    public static String getClientPEM() {
-        return GLOBAL_CONFIGURATION.get("CONFIDENTIALLEDGER_CLIENT_PEM", "test-pem");
-    }
-
-    public static String getClientPEMPk() {
-        return GLOBAL_CONFIGURATION.get("CONFIDENTIALLEDGER_CLIENT_PEM_PK", "test-pek");
-    }
 }
