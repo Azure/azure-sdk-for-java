@@ -17,9 +17,10 @@ jobs:
       - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
         parameters:
           Paths:
-            - 'sdk/spring/scripts'
-            - 'sdk/spring/spring-cloud-azure-starter-monitor'
-            - 'sdk/spring/spring-cloud-azure-starter-monitor-test'
+            - 'sdk/spring'
+#            - 'sdk/spring/scripts'
+#            - 'sdk/spring/spring-cloud-azure-starter-monitor'
+#            - 'sdk/spring/spring-cloud-azure-starter-monitor-test'
       - script: |
           python -m pip install termcolor
         displayName: 'Python module install'
