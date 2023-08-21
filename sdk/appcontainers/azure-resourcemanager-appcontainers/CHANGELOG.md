@@ -1,14 +1,182 @@
 # Release History
 
-## 1.0.0-beta.6 (Unreleased)
+## 1.0.0 (2023-08-21)
 
-### Features Added
+- Azure Resource Manager ContainerAppsApi client library for Java. This package contains Microsoft Azure SDK for ContainerAppsApi Management SDK.  Package tag package-2023-05. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Breaking Changes
 
-### Bugs Fixed
+* `models.JobExecutionNamesCollection` was removed
 
-### Other Changes
+#### `models.Replica` was modified
+
+* `systemData()` was removed
+
+#### `models.Job` was modified
+
+* `start(models.JobExecutionTemplate)` was removed
+* `stopMultipleExecutions(models.JobExecutionNamesCollection)` was removed
+* `stopMultipleExecutions(models.JobExecutionNamesCollection,com.azure.core.util.Context)` was removed
+
+#### `models.Revision` was modified
+
+* `systemData()` was removed
+
+#### `models.Jobs` was modified
+
+* `stopMultipleExecutions(java.lang.String,java.lang.String,models.JobExecutionNamesCollection,com.azure.core.util.Context)` was removed
+* `start(java.lang.String,java.lang.String,models.JobExecutionTemplate)` was removed
+* `stopMultipleExecutions(java.lang.String,java.lang.String,models.JobExecutionNamesCollection)` was removed
+
+#### `models.BillingMeter` was modified
+
+* `systemData()` was removed
+
+#### `models.DaprComponent` was modified
+
+* `systemData()` was removed
+
+#### `models.ManagedEnvironmentStorage` was modified
+
+* `systemData()` was removed
+
+#### `models.WorkloadProfileStates` was modified
+
+* `systemData()` was removed
+
+#### `models.SourceControl` was modified
+
+* `systemData()` was removed
+
+#### `models.Diagnostics` was modified
+
+* `systemData()` was removed
+
+#### `models.AvailableWorkloadProfile` was modified
+
+* `systemData()` was removed
+
+#### `models.ConnectedEnvironmentStorage` was modified
+
+* `systemData()` was removed
+
+### Features Added
+
+* `models.ServiceBind` was added
+
+* `models.RevisionRunningState` was added
+
+* `models.JobScale` was added
+
+* `models.Service` was added
+
+* `models.ContainerAppContainerRunningState` was added
+
+* `models.JobConfigurationEventTriggerConfig` was added
+
+* `models.Mtls` was added
+
+* `models.ResourceProviders` was added
+
+* `models.JobScaleRule` was added
+
+* `models.ContainerAppReplicaRunningState` was added
+
+* `models.ManagedEnvironmentPropertiesPeerAuthentication` was added
+
+#### `models.Replica` was modified
+
+* `runningState()` was added
+* `initContainers()` was added
+* `runningStateDetails()` was added
+
+#### `models.Job` was modified
+
+* `stopMultipleExecutions()` was added
+* `start()` was added
+* `stopMultipleExecutions(com.azure.core.util.Context)` was added
+
+#### `models.ManagedEnvironment$Update` was modified
+
+* `withPeerAuthentication(models.ManagedEnvironmentPropertiesPeerAuthentication)` was added
+
+#### `models.Revision` was modified
+
+* `runningState()` was added
+
+#### `models.Jobs` was modified
+
+* `stopMultipleExecutions(java.lang.String,java.lang.String)` was added
+* `start(java.lang.String,java.lang.String)` was added
+* `stopMultipleExecutions(java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+
+#### `models.ManagedEnvironment$Definition` was modified
+
+* `withPeerAuthentication(models.ManagedEnvironmentPropertiesPeerAuthentication)` was added
+
+#### `models.GithubActionConfiguration` was modified
+
+* `withGithubPersonalAccessToken(java.lang.String)` was added
+* `githubPersonalAccessToken()` was added
+
+#### `models.JobConfiguration` was modified
+
+* `withEventTriggerConfig(models.JobConfigurationEventTriggerConfig)` was added
+* `eventTriggerConfig()` was added
+
+#### `models.ManagedEnvironment` was modified
+
+* `peerAuthentication()` was added
+
+#### `models.AzureCredentials` was modified
+
+* `withKind(java.lang.String)` was added
+* `kind()` was added
+
+#### `models.ContainerApp` was modified
+
+* `start()` was added
+* `stop(com.azure.core.util.Context)` was added
+* `start(com.azure.core.util.Context)` was added
+* `stop()` was added
+
+#### `models.Volume` was modified
+
+* `mountOptions()` was added
+* `withMountOptions(java.lang.String)` was added
+
+#### `ContainerAppsApiManager` was modified
+
+* `resourceProviders()` was added
+
+#### `models.ReplicaContainer` was modified
+
+* `runningState()` was added
+* `runningStateDetails()` was added
+
+#### `models.VolumeMount` was modified
+
+* `subPath()` was added
+* `withSubPath(java.lang.String)` was added
+
+#### `models.ContainerApps` was modified
+
+* `start(java.lang.String,java.lang.String)` was added
+* `stop(java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `stop(java.lang.String,java.lang.String)` was added
+* `start(java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+
+#### `models.Configuration` was modified
+
+* `withService(models.Service)` was added
+* `service()` was added
+
+#### `models.Template` was modified
+
+* `withServiceBinds(java.util.List)` was added
+* `withTerminationGracePeriodSeconds(java.lang.Long)` was added
+* `serviceBinds()` was added
+* `terminationGracePeriodSeconds()` was added
 
 ## 1.0.0-beta.5 (2023-05-16)
 
