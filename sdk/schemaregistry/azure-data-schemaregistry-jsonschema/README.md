@@ -59,6 +59,7 @@ You will also need to [register a new AAD application][register_aad_app] and [gr
 
 ```java readme-sample-createSchemaRegistryAsyncClient
 TokenCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
+JsonSchemaGenerator jsonSchemaGenerator = null;
 
 // {schema-registry-endpoint} is the fully qualified namespace of the Event Hubs instance. It is usually
 // of the form "{your-namespace}.servicebus.windows.net"
@@ -74,6 +75,7 @@ SchemaRegistryAsyncClient schemaRegistryAsyncClient = new SchemaRegistryClientBu
 SchemaRegistryJsonSchemaSerializer serializer = new SchemaRegistryJsonSchemaSerializerBuilder()
     .schemaRegistryClient(schemaRegistryAsyncClient)
     .schemaGroup("{schema-group}")
+    .jsonSchemaGenerator(jsonSchemaGenerator)
     .buildSerializer();
 ```
 
