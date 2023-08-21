@@ -91,8 +91,9 @@ validate JSON objects by plugging in a JSON schema implementation.
 
 ### Serialize
 
-Serialize a POJO object, Address, and register the matching JSON schema if `autoRegisterSchema(boolean)` is set to 
-`true` in when creating the serializer.
+Serialize a POJO object, Address, and register the matching JSON schema if 
+`SchemaRegistryJsonSchemaSerializerBuilder.autoRegisterSchema(boolean)` is set to `true` in when creating the 
+serializer.
 
 ```java readme-sample-serializeSample
 Address address = new Address();
