@@ -1,7 +1,7 @@
 parameters:
   Matrix: ''
   MaxParallel: 10
-  SkipOptions: "-Dcheckstyle.skip -Dcodesnippet.skip -Denforcer.skip -Djacoco.skip -Dmaven.javadoc.skip -Drevapi.skip -DskipTests -Dspotbugs.skip"
+  SkipOptions: "-Dcheckstyle.skip -Dcodesnippet.skip -Denforcer.skip -Djacoco.skip -Dmaven.javadoc.skip -Drevapi.skip -Dspotbugs.skip"
   BuildParallelization: '2C'
 
 jobs:
@@ -18,10 +18,7 @@ jobs:
         parameters:
           Paths:
             - 'sdk/spring'
-            - 'sdk/parents/azure-client-sdk-parent'
-#            - 'sdk/spring/scripts'
-#            - 'sdk/spring/spring-cloud-azure-starter-monitor'
-#            - 'sdk/spring/spring-cloud-azure-starter-monitor-test'
+#            - 'sdk/parents/azure-client-sdk-parent'
       - script: |
           python -m pip install termcolor
         displayName: 'Python module install'
@@ -32,17 +29,6 @@ jobs:
       - script: |
             python ./sdk/spring/scripts/replace_v4_monitor.py -b $(TEST_SPRING_BOOT_VERSION)
         displayName: 'Replace Spring version'
-#      - task: Maven@3
-#        displayName: 'Install dependencies'
-#        inputs:
-#          options: '$(DefaultOptions) -ntp -T ${{parameters.BuildParallelization}} ${{parameters.SkipOptions}}'
-#          mavenPomFile: sdk/spring/spring-cloud-azure-starter-monitor/pom.xml
-#          mavenOptions: '$(MemoryOptions)'
-#          javaHomeOption: 'JDKVersion'
-#          jdkVersionOption: $(JavaTestVersion)
-#          jdkArchitectureOption: 'x64'
-#          goals: 'clean install'
-#          goals: 'clean install -Dcheckstyle.skip=true'
       - task: Maven@3
         displayName: 'Run tests'
         inputs:
