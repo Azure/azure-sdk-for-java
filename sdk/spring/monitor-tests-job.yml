@@ -18,6 +18,7 @@ jobs:
         parameters:
           Paths:
             - 'sdk/spring'
+            - 'sdk/parents/azure-client-sdk-parent'
 #            - 'sdk/spring/scripts'
 #            - 'sdk/spring/spring-cloud-azure-starter-monitor'
 #            - 'sdk/spring/spring-cloud-azure-starter-monitor-test'
