@@ -58,6 +58,6 @@ public final class ContainerAppsRevisionsDeactivateRevisionWithResponseMockTests
 
         manager
             .containerAppsRevisions()
-            .deactivateRevisionWithResponse("y", "izrzb", "psfxsf", com.azure.core.util.Context.NONE);
+            .deactivateRevisionWithResponse("kfrexcrseqwjks", "hud", "zhxogjggsvo", com.azure.core.util.Context.NONE);
     }
 }

@@ -16,11 +16,11 @@ public final class DefaultAuthorizationPolicyTests {
         DefaultAuthorizationPolicy model =
             BinaryData
                 .fromString(
-                    "{\"allowedPrincipals\":{\"groups\":[\"cdgea\"],\"identities\":[\"phut\",\"cndvkaozwyiftyhx\",\"urokft\"]},\"allowedApplications\":[\"lniwpwcukjfkgiaw\",\"klryplwck\",\"asy\"]}")
+                    "{\"allowedPrincipals\":{\"groups\":[\"mxdcufufsrp\",\"mzidnsezcxtb\"],\"identities\":[\"fycc\",\"newmdwzjeiachbo\"]},\"allowedApplications\":[\"lnrosfqp\",\"eeh\",\"zvypyqrimzinp\",\"swjdkirso\"]}")
                 .toObject(DefaultAuthorizationPolicy.class);
-        Assertions.assertEquals("cdgea", model.allowedPrincipals().groups().get(0));
-        Assertions.assertEquals("phut", model.allowedPrincipals().identities().get(0));
-        Assertions.assertEquals("lniwpwcukjfkgiaw", model.allowedApplications().get(0));
+        Assertions.assertEquals("mxdcufufsrp", model.allowedPrincipals().groups().get(0));
+        Assertions.assertEquals("fycc", model.allowedPrincipals().identities().get(0));
+        Assertions.assertEquals("lnrosfqp", model.allowedApplications().get(0));
     }
 
     @org.junit.jupiter.api.Test
@@ -29,12 +29,12 @@ public final class DefaultAuthorizationPolicyTests {
             new DefaultAuthorizationPolicy()
                 .withAllowedPrincipals(
                     new AllowedPrincipals()
-                        .withGroups(Arrays.asList("cdgea"))
-                        .withIdentities(Arrays.asList("phut", "cndvkaozwyiftyhx", "urokft")))
-                .withAllowedApplications(Arrays.asList("lniwpwcukjfkgiaw", "klryplwck", "asy"));
+                        .withGroups(Arrays.asList("mxdcufufsrp", "mzidnsezcxtb"))
+                        .withIdentities(Arrays.asList("fycc", "newmdwzjeiachbo")))
+                .withAllowedApplications(Arrays.asList("lnrosfqp", "eeh", "zvypyqrimzinp", "swjdkirso"));
         model = BinaryData.fromObject(model).toObject(DefaultAuthorizationPolicy.class);
-        Assertions.assertEquals("cdgea", model.allowedPrincipals().groups().get(0));
-        Assertions.assertEquals("phut", model.allowedPrincipals().identities().get(0));
-        Assertions.assertEquals("lniwpwcukjfkgiaw", model.allowedApplications().get(0));
+        Assertions.assertEquals("mxdcufufsrp", model.allowedPrincipals().groups().get(0));
+        Assertions.assertEquals("fycc", model.allowedPrincipals().identities().get(0));
+        Assertions.assertEquals("lnrosfqp", model.allowedApplications().get(0));
     }
 }
