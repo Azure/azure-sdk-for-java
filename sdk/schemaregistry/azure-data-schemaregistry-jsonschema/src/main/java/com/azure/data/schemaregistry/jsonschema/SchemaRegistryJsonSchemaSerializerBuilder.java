@@ -127,6 +127,12 @@ public final class SchemaRegistryJsonSchemaSerializerBuilder {
             ? jsonSerializer
             : JsonSerializerProviders.createInstance(true);
 
+        if (Objects.isNull(serializerAdapterToUse)) {
+            throw LOGGER.logExceptionAsError(new NullPointerException("Unable to find JsonSerializer to use. Pass one "
+                + "into SchemaRegistryJsonSchemaSerializerBuilder.serializer() before "
+                + "building the serializer."));
+        }
+
         final SerializerOptions options = new SerializerOptions(schemaGroup, isAutoRegister, 100,
             serializerAdapterToUse);
 
