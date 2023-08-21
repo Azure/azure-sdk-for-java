@@ -35,13 +35,14 @@ jobs:
       - task: Maven@3
         displayName: 'Install dependencies'
         inputs:
-#          options: "-Dcheckstyle.skip -Dspotbugs.skip"
+          options: '$(DefaultOptions) -ntp -T ${{parameters.BuildParallelization}} ${{parameters.SkipOptions}}'
           mavenPomFile: sdk/spring/spring-cloud-azure-starter-monitor/pom.xml
-#          mavenOptions: '$(MemoryOptions)'
-#          javaHomeOption: 'JDKVersion'
-#          jdkVersionOption: $(JavaTestVersion)
-#          jdkArchitectureOption: 'x64'
-          goals: 'clean install -Dcheckstyle.skip=true'
+          mavenOptions: '$(MemoryOptions)'
+          javaHomeOption: 'JDKVersion'
+          jdkVersionOption: $(JavaTestVersion)
+          jdkArchitectureOption: 'x64'
+          goals: 'clean install'
+#          goals: 'clean install -Dcheckstyle.skip=true'
       - task: Maven@3
         displayName: 'Run tests'
         inputs:
