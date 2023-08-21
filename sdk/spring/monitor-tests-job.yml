@@ -18,6 +18,7 @@ jobs:
         parameters:
           Paths:
             - 'sdk/spring/scripts'
+            - 'sdk/spring/spring-cloud-azure-starter-monitor'
             - 'sdk/spring/spring-cloud-azure-starter-monitor-test'
       - script: |
           python -m pip install termcolor
