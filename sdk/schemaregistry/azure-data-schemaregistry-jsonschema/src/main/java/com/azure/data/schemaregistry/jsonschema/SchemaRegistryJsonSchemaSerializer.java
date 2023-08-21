@@ -34,7 +34,7 @@ public final class SchemaRegistryJsonSchemaSerializer {
     private static final String CONTENT_TYPE = ContentType.APPLICATION_JSON;
     private static final SerializerEncoding ENCODING = SerializerEncoding.JSON;
 
-    private final ClientLogger logger = new ClientLogger(SchemaRegistryJsonSchemaSerializer.class);
+    private static final ClientLogger LOGGER = new ClientLogger(SchemaRegistryJsonSchemaSerializer.class);
     private final SchemaRegistrySchemaCache schemaCache;
     private final JsonSchemaGenerator schemaGenerator;
     private final JsonSerializer jsonSerializer;
@@ -127,9 +127,9 @@ public final class SchemaRegistryJsonSchemaSerializer {
         TypeReference<T> typeReference, Function<BinaryData, T> messageFactory) {
 
         if (object == null) {
-            return monoError(logger, new NullPointerException("'object' cannot be  null."));
+            return monoError(LOGGER, new NullPointerException("'object' cannot be  null."));
         } else if (typeReference == null) {
-            return monoError(logger, new NullPointerException("'typeReference' cannot be null."));
+            return monoError(LOGGER, new NullPointerException("'typeReference' cannot be null."));
         }
 
         final String schemaFullName = object.getClass().getName();
@@ -158,14 +158,14 @@ public final class SchemaRegistryJsonSchemaSerializer {
         try {
             schemaDefinition = schemaGenerator.generateSchema(TypeReference.createInstance(object.getClass()));
         } catch (Exception exception) {
-            logger.atError()
+            LOGGER.atError()
                 .addKeyValue("type", schemaFullName)
                 .log(() -> "An error occurred while attempting to generate the schema.", exception);
             return Mono.error(exception);
         }
 
         if (schemaDefinition == null) {
-            logger.atWarning().addKeyValue("type", schemaFullName)
+            LOGGER.atWarning().addKeyValue("type", schemaFullName)
                 .log("Schema returned from generator was null.");
             return Mono.error(new IllegalArgumentException("JSON schema cannot be null. Type: " + schemaFullName));
         }
@@ -177,7 +177,7 @@ public final class SchemaRegistryJsonSchemaSerializer {
 
                     sink.next(serializedMessage);
                 } catch (Exception e) {
-                    logger.atError()
+                    LOGGER.atError()
                         .addKeyValue("schemaId", schemaId)
                         .addKeyValue("type", schemaFullName)
                         .log(() -> "Error encountered serializing object", e);
@@ -218,39 +218,39 @@ public final class SchemaRegistryJsonSchemaSerializer {
      */
     public <T> Mono<T> deserializeAsync(MessageContent message, TypeReference<T> typeReference) {
         if (message == null) {
-            return monoError(logger, new NullPointerException("'message' cannot be null."));
+            return monoError(LOGGER, new NullPointerException("'message' cannot be null."));
         } else if (typeReference == null) {
-            return monoError(logger, new NullPointerException("'typeReference' cannot be null."));
+            return monoError(LOGGER, new NullPointerException("'typeReference' cannot be null."));
         }
 
         final BinaryData body = message.getBodyAsBinaryData();
 
         if (Objects.isNull(body)) {
-            logger.warning("Message provided does not have a BinaryBody, returning empty response.");
+            LOGGER.warning("Message provided does not have a BinaryBody, returning empty response.");
             return Mono.empty();
         }
 
         final byte[] contents = body.toBytes();
 
         if (contents.length == 0) {
-            logger.warning("Message provided has an empty byte[], returning empty response.");
+            LOGGER.warning("Message provided has an empty byte[], returning empty response.");
             return Mono.empty();
         }
 
         if (CoreUtils.isNullOrEmpty(message.getContentType())) {
-            return monoError(logger, new IllegalArgumentException("Cannot deserialize message with no content-type."));
+            return monoError(LOGGER, new IllegalArgumentException("Cannot deserialize message with no content-type."));
         }
 
         // It is the new format, so we parse the mime-type.
         final String[] parts = message.getContentType().split("\\+");
         if (parts.length != 2) {
-            return monoError(logger, new IllegalArgumentException(
+            return monoError(LOGGER, new IllegalArgumentException(
                 "Content type was not in the expected format of MIME type + schema ID. Actual: "
                     + message.getContentType()));
         }
 
         if (!CONTENT_TYPE.equalsIgnoreCase(parts[0])) {
-            return monoError(logger, new IllegalArgumentException(
+            return monoError(LOGGER, new IllegalArgumentException(
                 "Json deserialization may only be used on content that is of '" + CONTENT_TYPE + "' type. Actual: "
                     + message.getContentType()));
         }
@@ -266,7 +266,7 @@ public final class SchemaRegistryJsonSchemaSerializer {
                         try {
                             isValid = schemaGenerator.isValid(decoded, typeReference, schemaDefinition);
                         } catch (Exception e) {
-                            logger.atError()
+                            LOGGER.atError()
                                 .addKeyValue("type", schemaFullName)
                                 .addKeyValue("schemaDefinition", schemaDefinition)
                                 .log(() -> "Validating schema threw an error.", e);
