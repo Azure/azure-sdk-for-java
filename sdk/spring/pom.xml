@@ -132,5 +132,14 @@
         <module>azure-spring-data-cosmos</module>
       </modules>
     </profile>
+
+    <profile>
+      <id>monitor</id>
+      <modules>
+        <module>../../eng/code-quality-reports</module>
+        <module>spring-cloud-azure-starter-monitor</module>
+        <module>spring-cloud-azure-starter-monitor-test</module>
+      </modules>
+    </profile>
   </profiles>
 </project>
