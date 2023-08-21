@@ -405,8 +405,9 @@ raw JSON response. For example:
 }
 ```
 
-#### Overcoming Log Analytics query size limitations
-If your query exceeds the service limits, you can refer to the large log query documentation to learn how to overcome them.
+#### Overcome Log Analytics query size limitations
+
+If your query exceeds the service limits, see the large log query documentation to learn how to overcome them.
 
 ### Metrics query
 
