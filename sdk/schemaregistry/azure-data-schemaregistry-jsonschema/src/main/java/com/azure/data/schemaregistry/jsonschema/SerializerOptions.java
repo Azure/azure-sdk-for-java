@@ -4,7 +4,7 @@
 package com.azure.data.schemaregistry.jsonschema;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.serializer.SerializerAdapter;
+import com.azure.core.util.serializer.JsonSerializer;
 
 import java.util.Objects;
 
@@ -16,7 +16,7 @@ class SerializerOptions {
     private final boolean autoRegisterSchemas;
     private final int maxCacheSize;
     private final String schemaGroup;
-    private final SerializerAdapter serializerAdapter;
+    private final JsonSerializer jsonSerializer;
 
     /**
      * Creates a new instance.
@@ -26,12 +26,12 @@ class SerializerOptions {
      * @param maxCacheSize The maximum cache size for the serializer.
      */
     SerializerOptions(String schemaGroup, boolean autoRegisterSchemas, int maxCacheSize,
-        SerializerAdapter serializerAdapter) {
+            JsonSerializer jsonSerializer) {
         this.schemaGroup = schemaGroup;
         this.autoRegisterSchemas = autoRegisterSchemas;
         this.maxCacheSize = maxCacheSize;
 
-        this.serializerAdapter = Objects.requireNonNull(serializerAdapter, "'serializerAdapter' is required.");
+        this.jsonSerializer = Objects.requireNonNull(jsonSerializer, "'jsonSerializer' is required.");
     }
 
     /**
@@ -66,7 +66,7 @@ class SerializerOptions {
      *
      * @return The serializer.
      */
-    public SerializerAdapter getSerializerAdapter() {
-        return serializerAdapter;
+    public JsonSerializer getJsonSerializer() {
+        return jsonSerializer;
     }
 }

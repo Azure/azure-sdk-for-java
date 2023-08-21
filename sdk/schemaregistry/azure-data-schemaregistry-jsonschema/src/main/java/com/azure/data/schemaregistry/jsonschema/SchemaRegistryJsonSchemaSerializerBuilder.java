@@ -5,8 +5,8 @@ package com.azure.data.schemaregistry.jsonschema;
 
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.serializer.JacksonAdapter;
-import com.azure.core.util.serializer.SerializerAdapter;
+import com.azure.core.util.serializer.JsonSerializer;
+import com.azure.core.util.serializer.JsonSerializerProviders;
 import com.azure.data.schemaregistry.SchemaRegistryAsyncClient;
 
 import java.util.Objects;
@@ -23,7 +23,7 @@ public final class SchemaRegistryJsonSchemaSerializerBuilder {
     private JsonSchemaGenerator jsonSchemaGenerator;
     private String schemaGroup;
     private SchemaRegistryAsyncClient schemaRegistryAsyncClient;
-    private SerializerAdapter serializerAdapter;
+    private JsonSerializer jsonSerializer;
 
     /**
      * <p>If true, the serializer will register schemas against Azure Schema Registry service under the specified
@@ -63,12 +63,12 @@ public final class SchemaRegistryJsonSchemaSerializerBuilder {
     /**
      * JSON serializer adapter to use. If none is supplied, the default is used.
      *
-     * @param serializerAdapter Serializer to use.
+     * @param jsonSerializer Serializer to use.
      *
      * @return updated {@link SchemaRegistryJsonSchemaSerializerBuilder} instance.
      */
-    public SchemaRegistryJsonSchemaSerializerBuilder serializer(SerializerAdapter serializerAdapter) {
-        this.serializerAdapter = serializerAdapter;
+    public SchemaRegistryJsonSchemaSerializerBuilder serializer(JsonSerializer jsonSerializer) {
+        this.jsonSerializer = jsonSerializer;
         return this;
     }
 
@@ -123,9 +123,9 @@ public final class SchemaRegistryJsonSchemaSerializerBuilder {
                 "'schemaGroup' cannot be null or empty when 'autoRegisterSchema' is true."));
         }
 
-        final SerializerAdapter serializerAdapterToUse = serializerAdapter != null
-            ? serializerAdapter
-            : JacksonAdapter.createDefaultSerializerAdapter();
+        final JsonSerializer serializerAdapterToUse = jsonSerializer != null
+            ? jsonSerializer
+            : JsonSerializerProviders.createInstance(true);
 
         final SerializerOptions options = new SerializerOptions(schemaGroup, isAutoRegister, 100,
             serializerAdapterToUse);
