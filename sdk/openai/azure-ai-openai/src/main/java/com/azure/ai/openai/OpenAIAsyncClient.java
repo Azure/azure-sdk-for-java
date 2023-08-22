@@ -466,7 +466,8 @@ public final class OpenAIAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         Flux<ByteBuffer> responseStream;
 
-        if (chatCompletionsOptions.getDataSources() == null) {
+        if (chatCompletionsOptions.getDataSources() == null
+            || chatCompletionsOptions.getDataSources().isEmpty()) {
             responseStream = getChatCompletionsWithResponse(
                     deploymentOrModelName, BinaryData.fromObject(chatCompletionsOptions), requestOptions)
                     .flatMapMany(response -> response.getValue().toFluxByteBuffer());

@@ -349,8 +349,7 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
     public void testCompletionContentFiltering(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
-        //TODO: revert this service version lock. This is only so that we can test Completions' content filtering
-        client = getOpenAIAsyncClient(httpClient, OpenAIServiceVersion.V2023_06_01_PREVIEW);
+        client = getOpenAIAsyncClient(httpClient, serviceVersion);
         getCompletionsContentFilterRunner((modelId, prompt) -> {
             CompletionsOptions completionsOptions = new CompletionsOptions(Arrays.asList(prompt));
             // work around for this model, there seem to be some issues with Completions in gpt-turbo models
@@ -368,8 +367,7 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
     public void testCompletionStreamContentFiltering(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
-        //TODO: revert this service version lock. This is only so that we can test Completions' content filtering
-        client = getOpenAIAsyncClient(httpClient, OpenAIServiceVersion.V2023_06_01_PREVIEW);
+        client = getOpenAIAsyncClient(httpClient, serviceVersion);
         getCompletionsContentFilterRunner((modelId, prompt) -> {
             CompletionsOptions completionsOptions = new CompletionsOptions(Arrays.asList(prompt));
             // work around for this model, there seem to be some issues with Completions in gpt-turbo models
@@ -415,7 +413,7 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
-    public void testChatCompletionBasicSearchExtension(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+    public void testChatCompletionsBasicSearchExtension(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getOpenAIAsyncClient(httpClient, serviceVersion);
 
         getChatCompletionsAzureChatSearchRunner((deploymentName, chatCompletionsOptions) -> {
