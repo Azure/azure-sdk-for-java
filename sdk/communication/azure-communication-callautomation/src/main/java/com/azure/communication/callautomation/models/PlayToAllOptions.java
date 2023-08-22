@@ -3,18 +3,18 @@
 
 package com.azure.communication.callautomation.models;
 
-import com.azure.core.annotation.Fluent;
-
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.List;
+
+import com.azure.core.annotation.Fluent;
 
 /** The PlayToAllOptions model. */
 @Fluent
 public final class PlayToAllOptions {
     /*
-     * A {@link PlaySource} representing the source to play.
+     * A List of {@link PlaySource} representing the sources to play.
      */
-    private final PlaySource playSource;
+    private final List<PlaySource> playSources;
 
     /*
      * The option to play the provided audio source in loop when set to true
@@ -31,7 +31,7 @@ public final class PlayToAllOptions {
      * @param playSources A List of {@link PlaySource} representing the sources to play.
      */
     public PlayToAllOptions(List<PlaySource> playSources) {
-        this(playSources.get(0));
+        this.playSources = playSources;
     }
 
     /**
@@ -39,7 +39,8 @@ public final class PlayToAllOptions {
      * @param playSource A {@link PlaySource} representing the source to play.
      */
     public PlayToAllOptions(PlaySource playSource) {
-        this.playSource = playSource;
+        this.playSources = new ArrayList<>();
+        this.playSources.add(playSource);
     }
 
     /**
@@ -48,16 +49,7 @@ public final class PlayToAllOptions {
      * @return the playSource value.
      */
     public List<PlaySource> getPlaySources() {
-        return Collections.singletonList(playSource);
-    }
-
-    /**
-     * Get the play source.
-     *
-     * @return the playSource value.
-     */
-    public PlaySource getPlaySource() {
-        return this.playSource;
+        return this.playSources;
     }
 
     /**

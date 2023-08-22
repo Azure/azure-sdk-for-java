@@ -1,7 +1,7 @@
 # Azure Schema Registry client library for Java
 
 Azure Schema Registry is a schema repository service hosted by Azure Event Hubs, providing schema storage, versioning,
-and management. The registry is leveraged by applications to reduce payload size while describing payload structure with
+and management. The registry is leveraged by serializers to reduce payload size while describing payload structure with
 schema identifiers rather than full schemas.
 
 [Source code][source_code] | [Package (Maven)][package_maven] | [API reference documentation][api_reference_doc] | [Product Documentation][product_documentation] | [Samples][sample_readme]
@@ -54,7 +54,7 @@ add the direct dependency to your project as follows.
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-data-schemaregistry</artifactId>
-  <version>1.3.8</version>
+  <version>1.3.9</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -75,7 +75,7 @@ To use the [DefaultAzureCredential][DefaultAzureCredential] provider shown below
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.9.2</version>
+    <version>1.7.3</version>
 </dependency>
 ```
 
@@ -86,23 +86,23 @@ Set the values of the client ID, tenant ID, and client secret of the AAD applica
 
 ##### Async client
 
-```java com.azure.data.schemaregistry.schemaregistryasyncclient.construct
-DefaultAzureCredential azureCredential = new DefaultAzureCredentialBuilder()
-    .build();
-SchemaRegistryAsyncClient client = new SchemaRegistryClientBuilder()
-    .fullyQualifiedNamespace("https://<your-schema-registry-endpoint>.servicebus.windows.net")
-    .credential(azureCredential)
+```java readme-sample-createAsyncClient
+TokenCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
+
+SchemaRegistryAsyncClient schemaRegistryAsyncClient = new SchemaRegistryClientBuilder()
+    .fullyQualifiedNamespace("{schema-registry-endpoint")
+    .credential(tokenCredential)
     .buildAsyncClient();
 ```
 
 ##### Sync client
 
-```java com.azure.data.schemaregistry.schemaregistryclient.construct
-DefaultAzureCredential azureCredential = new DefaultAzureCredentialBuilder()
-    .build();
-SchemaRegistryClient client = new SchemaRegistryClientBuilder()
-    .fullyQualifiedNamespace("https://<your-schema-registry-endpoint>.servicebus.windows.net")
-    .credential(azureCredential)
+```java readme-sample-createSyncClient
+TokenCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
+
+SchemaRegistryClient schemaRegistryClient = new SchemaRegistryClientBuilder()
+    .fullyQualifiedNamespace("{schema-registry-endpoint")
+    .credential(tokenCredential)
     .buildClient();
 ```
 
@@ -130,29 +130,7 @@ SchemaRegistry operations. Those exposed properties are `Content` and `Id`.
 ### Register a schema
 Register a schema to be stored in the Azure Schema Registry.
 
-```java com.azure.data.schemaregistry.schemaregistryclient.registerschema-avro
-String schema = "{\"type\":\"enum\",\"name\":\"TEST\",\"symbols\":[\"UNIT\",\"INTEGRATION\"]}";
-SchemaProperties properties = client.registerSchema("{schema-group}", "{schema-name}", schema,
-    SchemaFormat.AVRO);
-
-System.out.printf("Schema id: %s, schema format: %s%n", properties.getId(), properties.getFormat());
-```
-
-### Retrieve a schema's properties
-Retrieve a previously registered schema's properties from the Azure Schema Registry.
-
-```java com.azure.data.schemaregistry.schemaregistryclient.getschema
-SchemaRegistrySchema schema = client.getSchema("{schema-id}");
-
-System.out.printf("Schema id: %s, schema format: %s%n", schema.getProperties().getId(),
-    schema.getProperties().getFormat());
-System.out.println("Schema contents: " + schema.getDefinition());
-```
-
-### Retrieve a schema
-Retrieve a previously registered schema's content and properties from the Azure Schema Registry.
-
-```java com.azure.data.schemaregistry.schemaregistryclient.getschemaproperties
+```java readme-sample-registerSchema
 String schemaContent = "{\n"
     + "    \"type\" : \"record\",  \n"
     + "    \"namespace\" : \"SampleSchemaNameSpace\", \n"
@@ -166,12 +144,43 @@ String schemaContent = "{\n"
     + "        }\n"
     + "    ]\n"
     + "}";
-SchemaProperties properties = client.getSchemaProperties("{schema-group}", "{schema-name}",
+SchemaProperties schemaProperties = schemaRegistryClient.registerSchema("{schema-group}", "{schema-name}",
     schemaContent, SchemaFormat.AVRO);
 
-System.out.println("Schema id: " + properties.getId());
-System.out.println("Format: " + properties.getFormat());
-System.out.println("Version: " + properties.getVersion());
+System.out.println("Registered schema: " + schemaProperties.getId());
+```
+
+### Retrieve a schema's properties
+Retrieve a previously registered schema's properties from the Azure Schema Registry.
+
+```java readme-sample-getSchema
+SchemaRegistrySchema schema = schemaRegistryClient.getSchema("{schema-id}");
+
+System.out.printf("Retrieved schema: '%s'. Contents: %s%n", schema.getProperties().getId(),
+    schema.getDefinition());
+```
+
+### Retrieve a schema
+Retrieve a previously registered schema's content and properties from the Azure Schema Registry.
+
+```java readme-sample-getSchemaId
+String schemaContent = "{\n"
+    + "    \"type\" : \"record\",  \n"
+    + "    \"namespace\" : \"SampleSchemaNameSpace\", \n"
+    + "    \"name\" : \"Person\", \n"
+    + "    \"fields\" : [\n"
+    + "        { \n"
+    + "            \"name\" : \"FirstName\" , \"type\" : \"string\" \n"
+    + "        }, \n"
+    + "        { \n"
+    + "            \"name\" : \"LastName\", \"type\" : \"string\" \n"
+    + "        }\n"
+    + "    ]\n"
+    + "}";
+SchemaProperties properties = schemaRegistryClient.getSchemaProperties("{schema-group}", "{schema-name}",
+    schemaContent, SchemaFormat.AVRO);
+
+System.out.println("Retrieved schema id: " + properties.getId());
 ```
 
 ## Troubleshooting

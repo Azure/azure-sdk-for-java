@@ -8,7 +8,6 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import java.util.UUID;
 
 /** The PeriodFeedback model. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "feedbackType")
@@ -20,9 +19,6 @@ public final class PeriodFeedback extends MetricFeedback {
      */
     @JsonProperty(value = "value", required = true)
     private PeriodFeedbackValue value;
-
-    /** Creates an instance of PeriodFeedback class. */
-    public PeriodFeedback() {}
 
     /**
      * Get the value property: The value property.
@@ -41,20 +37,6 @@ public final class PeriodFeedback extends MetricFeedback {
      */
     public PeriodFeedback setValue(PeriodFeedbackValue value) {
         this.value = value;
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public PeriodFeedback setMetricId(UUID metricId) {
-        super.setMetricId(metricId);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public PeriodFeedback setDimensionFilter(FeedbackDimensionFilter dimensionFilter) {
-        super.setDimensionFilter(dimensionFilter);
         return this;
     }
 }

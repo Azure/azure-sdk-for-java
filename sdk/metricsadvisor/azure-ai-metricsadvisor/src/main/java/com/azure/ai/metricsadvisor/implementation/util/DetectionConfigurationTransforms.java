@@ -3,13 +3,7 @@
 
 package com.azure.ai.metricsadvisor.implementation.util;
 
-import com.azure.ai.metricsadvisor.administration.models.AnomalyDetectionConfiguration;
-import com.azure.ai.metricsadvisor.administration.models.ChangeThresholdCondition;
-import com.azure.ai.metricsadvisor.administration.models.DetectionConditionOperator;
 import com.azure.ai.metricsadvisor.administration.models.HardThresholdCondition;
-import com.azure.ai.metricsadvisor.administration.models.MetricSeriesGroupDetectionCondition;
-import com.azure.ai.metricsadvisor.administration.models.MetricSingleSeriesDetectionCondition;
-import com.azure.ai.metricsadvisor.administration.models.MetricWholeSeriesDetectionCondition;
 import com.azure.ai.metricsadvisor.administration.models.SmartDetectionCondition;
 import com.azure.ai.metricsadvisor.administration.models.SuppressCondition;
 import com.azure.ai.metricsadvisor.implementation.models.AnomalyDetectionConfigurationLogicType;
@@ -23,8 +17,13 @@ import com.azure.ai.metricsadvisor.implementation.models.SeriesIdentity;
 import com.azure.ai.metricsadvisor.implementation.models.SmartDetectionConditionPatch;
 import com.azure.ai.metricsadvisor.implementation.models.WholeMetricConfiguration;
 import com.azure.ai.metricsadvisor.implementation.models.WholeMetricConfigurationPatch;
-import com.azure.ai.metricsadvisor.implementation.models.AnomalyDetectorDirection;
+import com.azure.ai.metricsadvisor.administration.models.ChangeThresholdCondition;
+import com.azure.ai.metricsadvisor.administration.models.DetectionConditionOperator;
 import com.azure.ai.metricsadvisor.models.DimensionKey;
+import com.azure.ai.metricsadvisor.administration.models.MetricWholeSeriesDetectionCondition;
+import com.azure.ai.metricsadvisor.administration.models.AnomalyDetectionConfiguration;
+import com.azure.ai.metricsadvisor.administration.models.MetricSeriesGroupDetectionCondition;
+import com.azure.ai.metricsadvisor.administration.models.MetricSingleSeriesDetectionCondition;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.util.CoreUtils;
@@ -36,8 +35,6 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
-import static com.azure.ai.metricsadvisor.implementation.util.Utility.toStringOrNull;
 
 /**
  * Expose transformation methods to transform {@link AnomalyDetectionConfiguration}
@@ -56,7 +53,7 @@ public final class DetectionConfigurationTransforms {
         if (innerConfigurationList != null) {
             configurationList = innerConfigurationList
                 .stream()
-                .map(DetectionConfigurationTransforms::fromInner)
+                .map(innerConfiguration -> DetectionConfigurationTransforms.fromInner(innerConfiguration))
                 .collect(Collectors.toList());
         } else {
             configurationList = new ArrayList<>();
@@ -420,7 +417,7 @@ public final class DetectionConfigurationTransforms {
             inner.getChangePercentage(),
             inner.getShiftPoint(),
             inner.isWithinRange(),
-            com.azure.ai.metricsadvisor.administration.models.AnomalyDetectorDirection.fromString(toStringOrNull(inner.getAnomalyDetectorDirection())),
+            inner.getAnomalyDetectorDirection(),
             fromInner(inner.getSuppressCondition()));
     }
 
@@ -430,7 +427,7 @@ public final class DetectionConfigurationTransforms {
             return null;
         }
         return new com.azure.ai.metricsadvisor.implementation.models.ChangeThresholdCondition()
-            .setAnomalyDetectorDirection(AnomalyDetectorDirection.fromString(toStringOrNull(condition.getAnomalyDetectorDirection())))
+            .setAnomalyDetectorDirection(condition.getAnomalyDetectorDirection())
             .setChangePercentage(condition.getChangePercentage())
             .setShiftPoint(condition.getShiftPoint())
             .setWithinRange(condition.isWithinRange())
@@ -442,7 +439,7 @@ public final class DetectionConfigurationTransforms {
             return null;
         }
         ChangeThresholdConditionPatch inner = new ChangeThresholdConditionPatch();
-        inner.setAnomalyDetectorDirection(AnomalyDetectorDirection.fromString(toStringOrNull(condition.getAnomalyDetectorDirection())))
+        inner.setAnomalyDetectorDirection(condition.getAnomalyDetectorDirection())
             .setChangePercentage(condition.getChangePercentage())
             .setShiftPoint(condition.getShiftPoint())
             .setWithinRange(condition.isWithinRange());
@@ -458,7 +455,7 @@ public final class DetectionConfigurationTransforms {
         if (inner == null) {
             return null;
         }
-        return new HardThresholdCondition(com.azure.ai.metricsadvisor.administration.models.AnomalyDetectorDirection.fromString(toStringOrNull(inner.getAnomalyDetectorDirection())), fromInner(inner.getSuppressCondition()))
+        return new HardThresholdCondition(inner.getAnomalyDetectorDirection(), fromInner(inner.getSuppressCondition()))
             .setLowerBound(inner.getLowerBound())
             .setUpperBound(inner.getUpperBound());
     }
@@ -469,7 +466,7 @@ public final class DetectionConfigurationTransforms {
             return null;
         }
         return new com.azure.ai.metricsadvisor.implementation.models.HardThresholdCondition()
-            .setAnomalyDetectorDirection(AnomalyDetectorDirection.fromString(toStringOrNull(condition.getAnomalyDetectorDirection())))
+            .setAnomalyDetectorDirection(condition.getAnomalyDetectorDirection())
             .setSuppressCondition(toInnerForCreate(condition.getSuppressCondition()))
             .setLowerBound(condition.getLowerBound())
             .setUpperBound(condition.getUpperBound());
@@ -480,7 +477,7 @@ public final class DetectionConfigurationTransforms {
             return null;
         }
         HardThresholdConditionPatch inner = new HardThresholdConditionPatch();
-        inner.setAnomalyDetectorDirection(AnomalyDetectorDirection.fromString(toStringOrNull(condition.getAnomalyDetectorDirection())))
+        inner.setAnomalyDetectorDirection(condition.getAnomalyDetectorDirection())
             .setLowerBound(condition.getLowerBound())
             .setUpperBound(condition.getUpperBound());
 
@@ -496,7 +493,7 @@ public final class DetectionConfigurationTransforms {
             return null;
         }
         return new SmartDetectionCondition(inner.getSensitivity(),
-            com.azure.ai.metricsadvisor.administration.models.AnomalyDetectorDirection.fromString(toStringOrNull(inner.getAnomalyDetectorDirection())),
+            inner.getAnomalyDetectorDirection(),
             fromInner(inner.getSuppressCondition()));
     }
 
@@ -507,7 +504,7 @@ public final class DetectionConfigurationTransforms {
         }
         return new com.azure.ai.metricsadvisor.implementation.models.SmartDetectionCondition()
             .setSensitivity(condition.getSensitivity())
-            .setAnomalyDetectorDirection(AnomalyDetectorDirection.fromString(toStringOrNull(condition.getAnomalyDetectorDirection())))
+            .setAnomalyDetectorDirection(condition.getAnomalyDetectorDirection())
             .setSuppressCondition(toInnerForCreate(condition.getSuppressCondition()));
     }
 
@@ -518,7 +515,7 @@ public final class DetectionConfigurationTransforms {
         SmartDetectionConditionPatch inner = new SmartDetectionConditionPatch();
         inner
             .setSensitivity(condition.getSensitivity())
-            .setAnomalyDetectorDirection(AnomalyDetectorDirection.fromString(toStringOrNull(condition.getAnomalyDetectorDirection())));
+            .setAnomalyDetectorDirection(condition.getAnomalyDetectorDirection());
 
         if (condition.getSuppressCondition() != null) {
             inner.setSuppressCondition(toInnerForUpdate(condition.getSuppressCondition()));

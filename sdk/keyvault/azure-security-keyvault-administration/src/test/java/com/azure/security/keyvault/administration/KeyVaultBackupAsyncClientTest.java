@@ -42,6 +42,7 @@ public class KeyVaultBackupAsyncClientTest extends KeyVaultBackupClientTestBase 
 
     private HttpClient buildAsyncAssertingClient(HttpClient httpClient) {
         return new AssertingHttpClientBuilder(httpClient)
+            .skipRequest((ignored1, ignored2) -> false)
             .assertAsync()
             .build();
     }
@@ -75,7 +76,7 @@ public class KeyVaultBackupAsyncClientTest extends KeyVaultBackupClientTestBase 
 
         // Create a backup
         AsyncPollResponse<KeyVaultBackupOperation, String> backupPollResponse =
-            setPlaybackPollerFluxPollInterval(asyncClient.beginBackup(blobStorageUrl, sasToken))
+            asyncClient.beginBackup(blobStorageUrl, sasToken)
                 .takeUntil(asyncPollResponse ->
                     asyncPollResponse.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED)
                 .blockLast();
@@ -86,7 +87,7 @@ public class KeyVaultBackupAsyncClientTest extends KeyVaultBackupClientTestBase 
         // Restore the backup
         String backupFolderUrl = backupOperation.getAzureStorageBlobContainerUrl();
         AsyncPollResponse<KeyVaultRestoreOperation, KeyVaultRestoreResult> restorePollResponse =
-            setPlaybackPollerFluxPollInterval(asyncClient.beginRestore(backupFolderUrl, sasToken))
+            asyncClient.beginRestore(backupFolderUrl, sasToken)
                 .takeUntil(asyncPollResponse ->
                     asyncPollResponse.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED)
                 .blockLast();
@@ -123,7 +124,7 @@ public class KeyVaultBackupAsyncClientTest extends KeyVaultBackupClientTestBase 
 
         // Create a backup
         AsyncPollResponse<KeyVaultBackupOperation, String> backupPollResponse =
-            setPlaybackPollerFluxPollInterval(asyncClient.beginBackup(blobStorageUrl, sasToken))
+            asyncClient.beginBackup(blobStorageUrl, sasToken)
                 .takeUntil(asyncPollResponse ->
                     asyncPollResponse.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED)
                 .blockLast();
@@ -134,8 +135,7 @@ public class KeyVaultBackupAsyncClientTest extends KeyVaultBackupClientTestBase 
         // Restore the backup
         String backupFolderUrl = backupOperation.getAzureStorageBlobContainerUrl();
         AsyncPollResponse<KeyVaultSelectiveKeyRestoreOperation, KeyVaultSelectiveKeyRestoreResult> restorePollResponse =
-            setPlaybackPollerFluxPollInterval(asyncClient.beginSelectiveKeyRestore(createdKey.getName(),
-                backupFolderUrl, sasToken))
+            asyncClient.beginSelectiveKeyRestore(createdKey.getName(), backupFolderUrl, sasToken)
                 .takeUntil(asyncPollResponse ->
                     asyncPollResponse.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED)
                 .blockLast();

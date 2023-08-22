@@ -1,0 +1,156 @@
+{
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/v1/subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/resourceGroups/srnagar-azuresdkgroup/providers/Microsoft.Storage/storageAccounts/srnagarstorage/query",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "158",
+        "Content-Type": "application/json",
+        "Date": "Tue, 18 Apr 2023 18:00:51 GMT",
+        "Prefer": "include-render=true,include-statistics=true",
+        "User-Agent": "azsdk-java-azure-monitor-query/1.2.0-beta.1 (17.0.2; Windows 11; 10.0)",
+        "x-ms-client-request-id": "e6ecdf8d-8908-4930-adb7-b3acfb660652"
+      },
+      "RequestBody": {
+        "query": "datatable (s: string, i: long) [ \u0022a\u0022, 1, \u0022b\u0022, 2, \u0022c\u0022, 3 ] | render columnchart with (title=\u0022the chart title\u0022, xtitle=\u0022the x axis title\u0022)"
+      },
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Expose-Headers": "Retry-After,Age,WWW-Authenticate,x-resource-identities,x-ms-status-location",
+        "Age": "89",
+        "Connection": "keep-alive",
+        "Content-Length": "1289",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Tue, 18 Apr 2023 18:00:51 GMT",
+        "Strict-Transport-Security": "max-age=15724800; includeSubDomains",
+        "Via": "1.1 draft-oms-666995cb46-qn97s",
+        "X-Content-Type-Options": "nosniff"
+      },
+      "ResponseBody": {
+        "tables": [
+          {
+            "name": "PrimaryResult",
+            "columns": [
+              {
+                "name": "s",
+                "type": "string"
+              },
+              {
+                "name": "i",
+                "type": "long"
+              }
+            ],
+            "rows": [
+              [
+                "a",
+                1
+              ],
+              [
+                "b",
+                2
+              ],
+              [
+                "c",
+                3
+              ]
+            ]
+          }
+        ],
+        "render": {
+          "visualization": "columnchart",
+          "title": "the chart title",
+          "accumulate": false,
+          "isQuerySorted": false,
+          "kind": null,
+          "legend": null,
+          "series": null,
+          "yMin": "NaN",
+          "yMax": "NaN",
+          "xAxis": null,
+          "xColumn": null,
+          "xTitle": "the x axis title",
+          "yAxis": null,
+          "yColumns": null,
+          "ySplit": null,
+          "yTitle": null,
+          "anomalyColumns": null
+        },
+        "statistics": {
+          "query": {
+            "executionTime": 0,
+            "resourceUsage": {
+              "cache": {
+                "memory": {
+                  "hits": 0,
+                  "misses": 0,
+                  "total": 0
+                },
+                "disk": {
+                  "hits": 0,
+                  "misses": 0,
+                  "total": 0
+                },
+                "shards": {
+                  "hot": {
+                    "hitbytes": 0,
+                    "missbytes": 0,
+                    "retrievebytes": 0
+                  },
+                  "cold": {
+                    "hitbytes": 0,
+                    "missbytes": 0,
+                    "retrievebytes": 0
+                  },
+                  "bypassbytes": 0
+                }
+              },
+              "cpu": {
+                "user": "00:00:00",
+                "kernel": "00:00:00",
+                "totalCpu": "00:00:00"
+              },
+              "memory": {
+                "peakPerNode": 524384
+              },
+              "network": {
+                "interClusterTotalBytes": 615,
+                "crossClusterTotalBytes": 0
+              }
+            },
+            "inputDatasetStatistics": {
+              "extents": {
+                "total": 0,
+                "scanned": 0,
+                "scannedMinDatetime": "0001-01-01T00:00:00.0000000Z",
+                "scannedMaxDatetime": "0001-01-01T00:00:00.0000000Z"
+              },
+              "rows": {
+                "total": 0,
+                "scanned": 0
+              },
+              "rowstores": {
+                "scannedRows": 0,
+                "scannedValuesSize": 0
+              },
+              "shards": {
+                "queriesGeneric": 0,
+                "queriesSpecialized": 0
+              }
+            },
+            "datasetStatistics": [
+              {
+                "tableRowCount": 3,
+                "tableSize": 55
+              }
+            ],
+            "crossClusterResourceUsage": {}
+          }
+        }
+      }
+    }
+  ],
+  "Variables": {}
+}

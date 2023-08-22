@@ -54,9 +54,6 @@ public final class AnomalyDetectionConfiguration {
     @JsonProperty(value = "seriesOverrideConfigurations")
     private List<SeriesConfiguration> seriesOverrideConfigurations;
 
-    /** Creates an instance of AnomalyDetectionConfiguration class. */
-    public AnomalyDetectionConfiguration() {}
-
     /**
      * Get the anomalyDetectionConfigurationId property: anomaly detection configuration unique id.
      *

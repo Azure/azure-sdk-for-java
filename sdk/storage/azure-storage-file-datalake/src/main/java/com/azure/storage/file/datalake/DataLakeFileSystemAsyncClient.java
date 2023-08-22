@@ -117,7 +117,6 @@ public class DataLakeFileSystemAsyncClient {
     private final String fileSystemName;
     private final DataLakeServiceVersion serviceVersion;
     private final AzureSasCredential sasToken;
-    private final boolean isTokenCredentialAuthenticated;
 
     /**
      * Package-private constructor for use by {@link DataLakeFileSystemClientBuilder}.
@@ -131,7 +130,7 @@ public class DataLakeFileSystemAsyncClient {
      */
     DataLakeFileSystemAsyncClient(HttpPipeline pipeline, String url, DataLakeServiceVersion serviceVersion,
         String accountName, String fileSystemName, BlobContainerAsyncClient blobContainerAsyncClient,
-        AzureSasCredential sasToken, boolean isTokenCredentialAuthenticated) {
+        AzureSasCredential sasToken) {
         this.azureDataLakeStorage = new AzureDataLakeStorageRestAPIImplBuilder()
             .pipeline(pipeline)
             .url(url)
@@ -152,7 +151,6 @@ public class DataLakeFileSystemAsyncClient {
         this.fileSystemName = fileSystemName;
         this.blobContainerAsyncClient = blobContainerAsyncClient;
         this.sasToken = sasToken;
-        this.isTokenCredentialAuthenticated = isTokenCredentialAuthenticated;
     }
 
     /**
@@ -181,7 +179,7 @@ public class DataLakeFileSystemAsyncClient {
 
         return new DataLakeFileAsyncClient(getHttpPipeline(), getAccountUrl(), getServiceVersion(), getAccountName(),
             getFileSystemName(), fileName, blockBlobAsyncClient, sasToken,
-            Transforms.fromBlobCpkInfo(blobContainerAsyncClient.getCustomerProvidedKey()), isTokenCredentialAuthenticated);
+            Transforms.fromBlobCpkInfo(blobContainerAsyncClient.getCustomerProvidedKey()));
     }
 
     /**
@@ -209,8 +207,7 @@ public class DataLakeFileSystemAsyncClient {
             null).getBlockBlobAsyncClient();
         return new DataLakeDirectoryAsyncClient(getHttpPipeline(), getAccountUrl(), getServiceVersion(),
             getAccountName(), getFileSystemName(), directoryName, blockBlobAsyncClient, sasToken,
-            Transforms.fromBlobCpkInfo(blobContainerAsyncClient.getCustomerProvidedKey()),
-            isTokenCredentialAuthenticated);
+            Transforms.fromBlobCpkInfo(blobContainerAsyncClient.getCustomerProvidedKey()));
     }
 
     /**
@@ -1675,8 +1672,7 @@ public class DataLakeFileSystemAsyncClient {
                         PathResourceType.fromString(response.getDeserializedHeaders().getXMsResourceType()),
                         blobContainerAsyncClient.getBlobAsyncClient(deletedPath, null)
                             .getBlockBlobAsyncClient(), sasToken,
-                            Transforms.fromBlobCpkInfo(blobContainerAsyncClient.getCustomerProvidedKey()),
-                        isTokenCredentialAuthenticated);
+                            Transforms.fromBlobCpkInfo(blobContainerAsyncClient.getCustomerProvidedKey()));
                     if (PathResourceType.DIRECTORY.equals(client.pathResourceType)) {
                         return new SimpleResponse<>(response, new DataLakeDirectoryAsyncClient(client));
                     } else if (PathResourceType.FILE.equals(client.pathResourceType)) {

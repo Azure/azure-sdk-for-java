@@ -128,7 +128,7 @@ public final class CertificateAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<CertificateOperation, KeyVaultCertificateWithPolicy> beginCreateCertificate(String certificateName, CertificatePolicy policy, Boolean isEnabled, Map<String, String> tags) {
-        return implClient.beginCreateCertificateAsync(certificateName, policy, isEnabled, tags);
+        return implClient.beginCreateCertificate(certificateName, policy, isEnabled, tags);
     }
 
     /**
@@ -188,7 +188,7 @@ public final class CertificateAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<CertificateOperation, KeyVaultCertificateWithPolicy> getCertificateOperation(String certificateName) {
-        return implClient.getCertificateOperationAsync(certificateName);
+        return implClient.getCertificateOperation(certificateName);
     }
 
     /**
@@ -429,7 +429,7 @@ public final class CertificateAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<DeletedCertificate, Void> beginDeleteCertificate(String certificateName) {
-        return implClient.beginDeleteCertificateAsync(certificateName);
+        return implClient.beginDeleteCertificate(certificateName);
     }
 
     /**
@@ -587,7 +587,7 @@ public final class CertificateAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<KeyVaultCertificateWithPolicy, Void> beginRecoverDeletedCertificate(String certificateName) {
-        return implClient.beginRecoverDeletedCertificateAsync(certificateName);
+        return implClient.beginRecoverDeletedCertificate(certificateName);
     }
 
     /**
@@ -740,7 +740,7 @@ public final class CertificateAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<CertificateProperties> listPropertiesOfCertificates(boolean includePending) {
-        return implClient.listPropertiesOfCertificatesAsync(includePending);
+        return implClient.listPropertiesOfCertificates(includePending);
     }
 
     /**
@@ -767,11 +767,11 @@ public final class CertificateAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<CertificateProperties> listPropertiesOfCertificates() {
-        return implClient.listPropertiesOfCertificatesAsync();
+        return implClient.listPropertiesOfCertificates();
     }
 
     PagedFlux<CertificateProperties> listPropertiesOfCertificates(boolean includePending, Context context) {
-        return implClient.listPropertiesOfCertificatesAsync(includePending, context);
+        return implClient.listPropertiesOfCertificates(includePending, context);
     }
 
 
@@ -797,7 +797,7 @@ public final class CertificateAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<DeletedCertificate> listDeletedCertificates() {
-        return implClient.listDeletedCertificatesAsync();
+        return implClient.listDeletedCertificates();
     }
 
     /**
@@ -823,11 +823,11 @@ public final class CertificateAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<DeletedCertificate> listDeletedCertificates(boolean includePending) {
-        return implClient.listDeletedCertificatesAsync(includePending);
+        return implClient.listDeletedCertificates(includePending);
     }
 
     PagedFlux<DeletedCertificate> listDeletedCertificates(Boolean includePending, Context context) {
-        return implClient.listDeletedCertificatesAsync(includePending, context);
+        return implClient.listDeletedCertificates(includePending, context);
     }
 
     /**
@@ -857,11 +857,11 @@ public final class CertificateAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<CertificateProperties> listPropertiesOfCertificateVersions(String certificateName) {
-        return implClient.listPropertiesOfCertificateVersionsAsync(certificateName);
+        return implClient.listPropertiesOfCertificateVersions(certificateName);
     }
 
     PagedFlux<CertificateProperties> listPropertiesOfCertificateVersions(String certificateName, Context context) {
-        return implClient.listPropertiesOfCertificateVersionsAsync(certificateName, context);
+        return implClient.listPropertiesOfCertificateVersions(certificateName, context);
     }
 
     /**
@@ -1299,7 +1299,7 @@ public final class CertificateAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<IssuerProperties> listPropertiesOfIssuers() {
-        return implClient.listPropertiesOfIssuersAsync();
+        return implClient.listPropertiesOfIssuers();
     }
 
     /**
@@ -1406,7 +1406,7 @@ public final class CertificateAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<CertificateContact> setContacts(List<CertificateContact> contacts) {
-        return implClient.setContactsAsync(contacts);
+        return implClient.setContacts(contacts);
     }
 
 
@@ -1429,7 +1429,7 @@ public final class CertificateAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<CertificateContact> listContacts() {
-        return implClient.listContactsAsync();
+        return implClient.listContacts();
     }
 
     /**
@@ -1451,7 +1451,7 @@ public final class CertificateAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<CertificateContact> deleteContacts() {
-        return implClient.deleteContactsAsync();
+        return implClient.deleteContacts();
     }
 
     /**

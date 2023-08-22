@@ -1,0 +1,47 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.blob.core.windows.net/c774a9740c774a97447b93542fc701303290f4575a95?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2021-04-10",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.16.0-beta.1 azsdk-java-azure-storage-file-datalake/12.9.0-beta.1 (11.0.14; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "7b17b796-5c95-4d42-8bf0-419fdb005818"
+    },
+    "Response" : {
+      "content-length" : "0",
+      "x-ms-version" : "2021-04-10",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "eTag" : "0x8DA1C48E6D467D8",
+      "Last-Modified" : "Tue, 12 Apr 2022 05:54:26 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "78eac1f3-901e-0025-1331-4e8083000000",
+      "x-ms-client-request-id" : "7b17b796-5c95-4d42-8bf0-419fdb005818",
+      "Date" : "Tue, 12 Apr 2022 05:54:26 GMT"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.dfs.core.windows.net/c774a9740c774a97447b93542fc701303290f4575a95/c774a9741c774a97447b6725266d50d2a45b34d71a11?resource=file",
+    "Headers" : {
+      "x-ms-version" : "2021-04-10",
+      "User-Agent" : "azsdk-java-azure-storage-file-datalake/12.9.0-beta.1 (11.0.14; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "9f228537-618f-41d6-b00c-dc927a053457"
+    },
+    "Response" : {
+      "content-length" : "0",
+      "x-ms-version" : "2021-04-10",
+      "Server" : "Windows-Azure-HDFS/1.0 Microsoft-HTTPAPI/2.0",
+      "eTag" : "0x8DA1C48E7496E21",
+      "Last-Modified" : "Tue, 12 Apr 2022 05:54:26 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-server-encrypted" : "true",
+      "x-ms-request-id" : "4fc5edad-601f-0012-0b31-4e2c2c000000",
+      "x-ms-client-request-id" : "9f228537-618f-41d6-b00c-dc927a053457",
+      "Date" : "Tue, 12 Apr 2022 05:54:26 GMT"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "c774a9740c774a97447b93542fc701303290f4575a95", "c774a9741c774a97447b6725266d50d2a45b34d71a11" ]
+}

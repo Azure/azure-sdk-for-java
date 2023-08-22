@@ -7,65 +7,58 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.util.ExpandableStringEnum;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The language codes supported for input text by KeyPhraseExtractionSkill. */
+/** Defines values for KeyPhraseExtractionSkillLanguage. */
 public final class KeyPhraseExtractionSkillLanguage extends ExpandableStringEnum<KeyPhraseExtractionSkillLanguage> {
-    /** Danish. */
+    /** Static value da for KeyPhraseExtractionSkillLanguage. */
     public static final KeyPhraseExtractionSkillLanguage DA = fromString("da");
 
-    /** Dutch. */
+    /** Static value nl for KeyPhraseExtractionSkillLanguage. */
     public static final KeyPhraseExtractionSkillLanguage NL = fromString("nl");
 
-    /** English. */
+    /** Static value en for KeyPhraseExtractionSkillLanguage. */
     public static final KeyPhraseExtractionSkillLanguage EN = fromString("en");
 
-    /** Finnish. */
+    /** Static value fi for KeyPhraseExtractionSkillLanguage. */
     public static final KeyPhraseExtractionSkillLanguage FI = fromString("fi");
 
-    /** French. */
+    /** Static value fr for KeyPhraseExtractionSkillLanguage. */
     public static final KeyPhraseExtractionSkillLanguage FR = fromString("fr");
 
-    /** German. */
+    /** Static value de for KeyPhraseExtractionSkillLanguage. */
     public static final KeyPhraseExtractionSkillLanguage DE = fromString("de");
 
-    /** Italian. */
+    /** Static value it for KeyPhraseExtractionSkillLanguage. */
     public static final KeyPhraseExtractionSkillLanguage IT = fromString("it");
 
-    /** Japanese. */
+    /** Static value ja for KeyPhraseExtractionSkillLanguage. */
     public static final KeyPhraseExtractionSkillLanguage JA = fromString("ja");
 
-    /** Korean. */
+    /** Static value ko for KeyPhraseExtractionSkillLanguage. */
     public static final KeyPhraseExtractionSkillLanguage KO = fromString("ko");
 
-    /** Norwegian (Bokmaal). */
+    /** Static value no for KeyPhraseExtractionSkillLanguage. */
     public static final KeyPhraseExtractionSkillLanguage NO = fromString("no");
 
-    /** Polish. */
+    /** Static value pl for KeyPhraseExtractionSkillLanguage. */
     public static final KeyPhraseExtractionSkillLanguage PL = fromString("pl");
 
-    /** Portuguese (Portugal). */
+    /** Static value pt-PT for KeyPhraseExtractionSkillLanguage. */
     public static final KeyPhraseExtractionSkillLanguage PT_PT = fromString("pt-PT");
 
-    /** Portuguese (Brazil). */
+    /** Static value pt-BR for KeyPhraseExtractionSkillLanguage. */
     public static final KeyPhraseExtractionSkillLanguage PT_BR = fromString("pt-BR");
 
-    /** Russian. */
+    /** Static value ru for KeyPhraseExtractionSkillLanguage. */
     public static final KeyPhraseExtractionSkillLanguage RU = fromString("ru");
 
-    /** Spanish. */
+    /** Static value es for KeyPhraseExtractionSkillLanguage. */
     public static final KeyPhraseExtractionSkillLanguage ES = fromString("es");
 
-    /** Swedish. */
+    /** Static value sv for KeyPhraseExtractionSkillLanguage. */
     public static final KeyPhraseExtractionSkillLanguage SV = fromString("sv");
-
-    /**
-     * Creates a new instance of KeyPhraseExtractionSkillLanguage value.
-     *
-     * @deprecated Use the {@link #fromString(String)} factory method.
-     */
-    @Deprecated
-    public KeyPhraseExtractionSkillLanguage() {}
 
     /**
      * Creates or finds a KeyPhraseExtractionSkillLanguage from its string representation.
@@ -73,6 +66,7 @@ public final class KeyPhraseExtractionSkillLanguage extends ExpandableStringEnum
      * @param name a name to look for.
      * @return the corresponding KeyPhraseExtractionSkillLanguage.
      */
+    @JsonCreator
     public static KeyPhraseExtractionSkillLanguage fromString(String name) {
         return fromString(name, KeyPhraseExtractionSkillLanguage.class);
     }

@@ -1,0 +1,53 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.servicebus.windows.net/$schemaGroups/mygroup/schemas/com.azure.data.schemaregistry.apacheavro.generatedtestsources.Person:get-id?api-version=2021-10",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-data-schemaregistry/1.1.0-beta.1 (11.0.5; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "5aa89436-35af-4588-806a-c37aff07c6da",
+      "Content-Type" : "application/json; serialization=avro"
+    },
+    "Response" : {
+      "content-length" : "0",
+      "Schema-Version" : "2",
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "Schema-Name" : "com.azure.data.schemaregistry.apacheavro.generatedtestsources.Person",
+      "retry-after" : "0",
+      "Schema-Id-Location" : "https://conniey.servicebus.windows.net:443/$schemagroups/$schemas/f047cfa64b374167b3a1d101370c1483?api-version=2021-10",
+      "StatusCode" : "204",
+      "Date" : "Wed, 12 Jan 2022 22:58:41 GMT",
+      "Strict-Transport-Security" : "max-age=31536000",
+      "Schema-Id" : "f047cfa64b374167b3a1d101370c1483",
+      "Schema-Group-Name" : "mygroup",
+      "Location" : "https://conniey.servicebus.windows.net:443/$schemagroups/mygroup/schemas/com.azure.data.schemaregistry.apacheavro.generatedtestsources.Person/versions/2?api-version=2021-10",
+      "Schema-Versions-Location" : "https://conniey.servicebus.windows.net:443/$schemagroups/mygroup/schemas/com.azure.data.schemaregistry.apacheavro.generatedtestsources.Person/versions?api-version=2021-10"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.servicebus.windows.net/$schemaGroups/$schemas/f047cfa64b374167b3a1d101370c1483?api-version=2021-10",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-data-schemaregistry/1.1.0-beta.1 (11.0.5; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "887f4d77-e19c-472d-841b-5ac27aa4d838"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "Schema-Version" : "2",
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "Schema-Name" : "com.azure.data.schemaregistry.apacheavro.generatedtestsources.Person",
+      "retry-after" : "0",
+      "Schema-Id-Location" : "https://conniey.servicebus.windows.net:443/$schemagroups/$schemas/f047cfa64b374167b3a1d101370c1483?api-version=2021-10",
+      "StatusCode" : "200",
+      "Date" : "Wed, 12 Jan 2022 22:58:57 GMT",
+      "Strict-Transport-Security" : "max-age=31536000",
+      "Schema-Id" : "f047cfa64b374167b3a1d101370c1483",
+      "Schema-Group-Name" : "mygroup",
+      "Body" : "{\"namespace\":\"com.azure.data.schemaregistry.apacheavro.generatedtestsources\",\"type\":\"record\",\"name\":\"Person\",\"fields\":[{\"name\":\"name\",\"type\":\"string\"},{\"name\":\"favourite_number\",\"type\":[\"int\",\"null\"]},{\"name\":\"favourite_colour\",\"type\":[\"string\",\"null\"]},{\"name\":\"favourite_pet\",\"type\":[\"string\",\"null\"]}]}",
+      "Content-Type" : "application/json;serialization=Avro",
+      "Location" : "https://conniey.servicebus.windows.net:443/$schemagroups/mygroup/schemas/com.azure.data.schemaregistry.apacheavro.generatedtestsources.Person/versions/2?api-version=2021-10",
+      "Schema-Versions-Location" : "https://conniey.servicebus.windows.net:443/$schemagroups/mygroup/schemas/com.azure.data.schemaregistry.apacheavro.generatedtestsources.Person/versions?api-version=2021-10"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

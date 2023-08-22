@@ -66,9 +66,6 @@ public final class IncidentResult {
     @JsonProperty(value = "property", required = true)
     private IncidentProperty property;
 
-    /** Creates an instance of IncidentResult class. */
-    public IncidentResult() {}
-
     /**
      * Get the dataFeedId property: data feed unique id
      *

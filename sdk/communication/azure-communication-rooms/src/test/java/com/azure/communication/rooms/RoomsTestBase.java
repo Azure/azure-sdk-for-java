@@ -6,27 +6,32 @@ package com.azure.communication.rooms;
 import com.azure.communication.common.implementation.CommunicationConnectionString;
 import com.azure.communication.identity.CommunicationIdentityClientBuilder;
 import com.azure.communication.rooms.models.*;
+import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
+import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.http.HttpClient;
+import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
-import com.azure.core.test.TestProxyTestBase;
-import com.azure.core.test.models.BodilessMatcher;
-import com.azure.core.test.models.CustomMatcher;
-import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 
 import java.time.OffsetDateTime;
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
+import java.util.StringJoiner;
+import java.util.function.Function;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import reactor.core.publisher.Mono;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.Response;
 import static org.junit.jupiter.api.Assertions.*;
 
-public class RoomsTestBase extends TestProxyTestBase {
+public class RoomsTestBase extends TestBase {
     protected static final TestMode TEST_MODE = initializeTestMode();
 
     protected static final String CONNECTION_STRING = Configuration.getGlobalConfiguration().get(
@@ -36,6 +41,12 @@ public class RoomsTestBase extends TestProxyTestBase {
     protected static final OffsetDateTime VALID_FROM = OffsetDateTime.now();
     protected static final OffsetDateTime VALID_UNTIL = VALID_FROM.plusDays(30);
 
+    private static final StringJoiner JSON_PROPERTIES_TO_REDACT = new StringJoiner("\":\"|\"", "\"", "\":\"")
+            .add("roomId");
+
+    private static final Pattern JSON_PROPERTY_VALUE_REDACTION_PATTERN = Pattern.compile(
+            String.format("(?:%s)(.*?)(?:\",|\"})", JSON_PROPERTIES_TO_REDACT.toString()), Pattern.CASE_INSENSITIVE);
+
     protected RoomsClientBuilder getRoomsClient(HttpClient httpClient) {
         CommunicationConnectionString communicationConnectionString = new CommunicationConnectionString(
                 CONNECTION_STRING);
@@ -44,23 +55,28 @@ public class RoomsTestBase extends TestProxyTestBase {
 
         RoomsClientBuilder builder = new RoomsClientBuilder();
         builder.endpoint(communicationEndpoint).credential(new AzureKeyCredential(communicationAccessKey))
-                .httpClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient);
-
-        configureTestMode(builder);
-
+                .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient);
+        if (getTestMode() == TestMode.RECORD) {
+            List<Function<String, String>> redactors = new ArrayList<>();
+            redactors.add(data -> redact(data, JSON_PROPERTY_VALUE_REDACTION_PATTERN.matcher(data), "REDACTED"));
+            builder.addPolicy(interceptorManager.getRecordPolicy(redactors));
+        }
         return builder;
     }
 
     protected RoomsClientBuilder getRoomsClientWithToken(HttpClient httpClient, TokenCredential tokenCredential) {
         if (getTestMode() == TestMode.PLAYBACK) {
-            tokenCredential = new MockTokenCredential();
+            tokenCredential = new FakeCredentials();
         }
         RoomsClientBuilder builder = new RoomsClientBuilder();
         builder.endpoint(new CommunicationConnectionString(CONNECTION_STRING).getEndpoint()).credential(tokenCredential)
-                .httpClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient);
+                .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient);
 
-        configureTestMode(builder);
-
+        if (getTestMode() == TestMode.RECORD) {
+            List<Function<String, String>> redactors = new ArrayList<>();
+            redactors.add(data -> redact(data, JSON_PROPERTY_VALUE_REDACTION_PATTERN.matcher(data), "REDACTED"));
+            builder.addPolicy(interceptorManager.getRecordPolicy(redactors));
+        }
         return builder;
     }
 
@@ -69,11 +85,13 @@ public class RoomsTestBase extends TestProxyTestBase {
         RoomsClientBuilder builder = new RoomsClientBuilder();
         builder.connectionString(CONNECTION_STRING)
                 .serviceVersion(version)
-                .httpClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient);
+                .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient);
 
-        configureTestMode(builder);
-
-
+        if (getTestMode() == TestMode.RECORD) {
+            List<Function<String, String>> redactors = new ArrayList<>();
+            redactors.add(data -> redact(data, JSON_PROPERTY_VALUE_REDACTION_PATTERN.matcher(data), "REDACTED"));
+            builder.addPolicy(interceptorManager.getRecordPolicy(redactors));
+        }
         return builder;
     }
 
@@ -85,31 +103,14 @@ public class RoomsTestBase extends TestProxyTestBase {
         String accessKey = connectionStringObject.getAccessKey();
         builder.endpoint(endpoint)
                 .credential(new AzureKeyCredential(accessKey))
-                .httpClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient);
+                .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient);
 
         if (getTestMode() == TestMode.RECORD) {
-            builder.addPolicy(interceptorManager.getRecordPolicy());
+            List<Function<String, String>> redactors = new ArrayList<>();
+            redactors.add(data -> redact(data, JSON_PROPERTY_VALUE_REDACTION_PATTERN.matcher(data), "REDACTED"));
+            builder.addPolicy(interceptorManager.getRecordPolicy(redactors));
         }
-
-        if (interceptorManager.isPlaybackMode()) {
-            interceptorManager.addMatchers(Arrays.asList(new BodilessMatcher(),
-                    new CustomMatcher().setHeadersKeyOnlyMatch(Arrays.asList("repeatability-first-sent",
-                            "repeatability-request-id", "x-ms-content-sha256", "x-ms-hmac-string-to-sign-base64"))));
-        }
-
         return builder;
-    }
-
-    protected void configureTestMode(RoomsClientBuilder builder) {
-        if (getTestMode() == TestMode.RECORD) {
-            builder.addPolicy(interceptorManager.getRecordPolicy());
-        }
-
-        if (interceptorManager.isPlaybackMode()) {
-            interceptorManager.addMatchers(Arrays.asList(new BodilessMatcher(),
-                    new CustomMatcher().setHeadersKeyOnlyMatch(Arrays.asList("repeatability-first-sent",
-                            "repeatability-request-id", "x-ms-content-sha256", "x-ms-hmac-string-to-sign-base64"))));
-        }
     }
 
     private static TestMode initializeTestMode() {
@@ -157,6 +158,23 @@ public class RoomsTestBase extends TestProxyTestBase {
                     + ": " + bufferedResponse.getHeaderValue("MS-CV"));
             return Mono.just(bufferedResponse);
         });
+    }
+
+    static class FakeCredentials implements TokenCredential {
+        @Override
+        public Mono<AccessToken> getToken(TokenRequestContext tokenRequestContext) {
+            return Mono.just(new AccessToken("someFakeToken", OffsetDateTime.MAX));
+        }
+    }
+
+    private String redact(String content, Matcher matcher, String replacement) {
+        while (matcher.find()) {
+            String captureGroup = matcher.group(1);
+            if (!CoreUtils.isNullOrEmpty(captureGroup)) {
+                content = content.replace(matcher.group(1), replacement);
+            }
+        }
+        return content;
     }
 
     protected boolean areParticipantsEqual(RoomParticipant participant1, RoomParticipant participant2) {

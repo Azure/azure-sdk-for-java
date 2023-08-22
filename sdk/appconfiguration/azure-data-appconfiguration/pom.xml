@@ -13,7 +13,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-data-appconfiguration</artifactId>
-  <version>1.5.0-beta.2</version> <!-- {x-version-update;com.azure:azure-data-appconfiguration;current} -->
+  <version>1.4.8</version> <!-- {x-version-update;com.azure:azure-data-appconfiguration;current} -->
 
   <name>Microsoft Azure client library for App Configuration</name>
   <description>This package contains the Microsoft Azure App Configuration client library.</description>
@@ -33,9 +33,6 @@
   </scm>
 
   <properties>
-    <jacoco.min.linecoverage>0.35</jacoco.min.linecoverage>
-    <jacoco.min.branchcoverage>0.40</jacoco.min.branchcoverage>
-
     <!-- Configures the Java 9+ run to perform the required module exports, opens, and reads that are necessary for testing but shouldn't be part of the module-info. -->
     <javaModulesSurefireArgLine>
       --add-exports com.azure.core/com.azure.core.implementation.jackson=ALL-UNNAMED
@@ -52,11 +49,6 @@
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
       <version>1.42.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
-    </dependency>
-    <dependency>
-      <groupId>com.azure</groupId>
-      <artifactId>azure-json</artifactId>
-      <version>1.1.0</version> <!-- {x-version-update;com.azure:azure-json;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>

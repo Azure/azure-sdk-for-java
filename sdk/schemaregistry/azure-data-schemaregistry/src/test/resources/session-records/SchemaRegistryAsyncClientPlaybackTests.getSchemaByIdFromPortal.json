@@ -1,0 +1,29 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.servicebus.windows.net/$schemaGroups/$schemas/f45b841fcb88401e961ca45477906be9?api-version=2021-10",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-data-schemaregistry/1.1.0-beta.1 (11.0.5; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "b35c0b68-941c-4ab2-8d83-e8a7597a8290"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "Schema-Version" : "1",
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "Schema-Name" : "test",
+      "retry-after" : "0",
+      "Schema-Id-Location" : "https://conniey.servicebus.windows.net:443/$schemagroups/$schemas/f45b841fcb88401e961ca45477906be9?api-version=2021-10",
+      "StatusCode" : "200",
+      "Date" : "Tue, 04 Jan 2022 20:48:23 GMT",
+      "Strict-Transport-Security" : "max-age=31536000",
+      "Schema-Id" : "f45b841fcb88401e961ca45477906be9",
+      "Schema-Group-Name" : "mygroup",
+      "Body" : "{\"namespace\":\"SampleSchemaNameSpace\",\"type\":\"record\",\"name\":\"Person\",\"fields\":[{\"name\":\"name\",\"type\":\"string\"},{\"name\":\"favourite_number\",\"type\":[\"int\",\"null\"]},{\"name\":\"favourite_colour\",\"type\":[\"string\",\"null\"]}]}",
+      "Content-Type" : "application/json;serialization=Avro",
+      "Location" : "https://conniey.servicebus.windows.net:443/$schemagroups/mygroup/schemas/test/versions/1?api-version=2021-10",
+      "Schema-Versions-Location" : "https://conniey.servicebus.windows.net:443/$schemagroups/mygroup/schemas/test/versions?api-version=2021-10"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

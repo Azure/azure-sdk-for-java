@@ -65,7 +65,7 @@ public class DataLakeFileSystemClient {
     private static final ClientLogger LOGGER = new ClientLogger(DataLakeFileSystemClient.class);
 
     private final DataLakeFileSystemAsyncClient dataLakeFileSystemAsyncClient;
-    final BlobContainerClient blobContainerClient;
+    private final BlobContainerClient blobContainerClient;
 
     /**
      * Special file system name for the root file system in the Storage account.

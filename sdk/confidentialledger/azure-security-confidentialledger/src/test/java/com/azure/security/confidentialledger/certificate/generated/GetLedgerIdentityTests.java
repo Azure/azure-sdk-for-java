@@ -7,33 +7,23 @@ package com.azure.security.confidentialledger.certificate.generated;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
-import com.azure.security.confidentialledger.ConfidentialLedgerEnvironment;
-import com.fasterxml.jackson.databind.JsonNode;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-
-import java.io.IOException;
 
 public final class GetLedgerIdentityTests extends ConfidentialLedgerCertificateClientTestBase {
     @Test
-    public void testGetLedgerIdentityTests() throws IOException {
-        // Arrange
-        final String ledgerName = ConfidentialLedgerEnvironment.getConfidentialLedgerName();
-        final RequestOptions requestOptions = new RequestOptions();
-
-        // Act
-        final Response<BinaryData> response =
-                confidentialLedgerCertificateClient.getLedgerIdentityWithResponse(ledgerName, requestOptions);
-
-        // Assert
+    @Disabled
+    public void testGetLedgerIdentityTests() {
+        RequestOptions requestOptions = new RequestOptions();
+        Response<BinaryData> response =
+                confidentialLedgerCertificateClient.getLedgerIdentityWithResponse(
+                        "contoso-ledger-12345", requestOptions);
         Assertions.assertEquals(200, response.getStatusCode());
-
-        final JsonNode jsonNode = OBJECT_MAPPER.readTree(response.getValue().toBytes());
-        final JsonNode ledgerTlsCertificate = jsonNode.get("ledgerTlsCertificate");
-
-        Assertions.assertNotNull(ledgerTlsCertificate);
-
-        final String certificate = ledgerTlsCertificate.asText();
-        Assertions.assertNotNull(certificate);
+        Assertions.assertEquals(
+                BinaryData.fromString(
+                                "{\"ledgerTlsCertificate\":\"LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUJ2akNDQVVLZ0F3SUJBZ0lRVkwrMFZxWnAzVnpNeUZLcUQ0Q3M4ekFNQmdncWhrak9QUVFEQXdVQU1CWXgKRkRBU0JnTlZCQU1NQzBORFJpQk9aWFIzYjNKck1CNFhEVEU1TVRFd01UQXdNREF3TUZvWERUSXhNVEl6TVRJegpOVGsxT1Zvd0ZqRVVNQklHQTFVRUF3d0xRME5HSUU1bGRIZHZjbXN3ZGpBUUJnY3Foa2pPUFFJQkJnVXJnUVFBCklnTmlBQVRCbTRqTlY0S3lqNmJjL2lNS0RFWFRDeVU2UDZVMUtXQWlEb2RsK0pkOGFESnNCd0xpbXRnNFFDdWcKMW1wSG5WUG1jYlBBYk5NMTEreHJMSHVGRWZ1WmxTM0RJK0NDWDhGVUIyVnZEVlQzU2ZXTERWbXIxeExTdFRESAp1TjRZakJPalV6QlJNQThHQTFVZEV3UUlNQVlCQWY4Q0FRQXdIUVlEVlIwT0JCWUVGR1Nkc1Rod3hyVE9FUXhiCloyTnNzbE52SlJZa01COEdBMVVkSXdRWU1CYUFGR1Nkc1Rod3hyVE9FUXhiWjJOc3NsTnZKUllrTUF3R0NDcUcKU000OUJBTURCUUFEYUFBd1pRSXdKTExXbGxOWjgzeW0vSFF1dnRHR1NkRi9SQ1p3VW9oK3loYWQvdlVmVm5oRQoyZFlMRERFSk9PUnB4cEVJVmZYZ0FqRUEvQ0xjUndTWnh6RW1MRFllMXk0cHVYS3VTRENVaXUrYktZZ2R2UkxqClJRSmdUeWd1dGNUZEk2NHNTd2VxUHZlSwotLS0tLUVORCBDRVJUSUZJQ0FURS0tLS0tCgA=\"}")
+                        .toObject(Object.class),
+                response.getValue().toObject(Object.class));
     }
 }

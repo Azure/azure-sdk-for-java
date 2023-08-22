@@ -7,8 +7,10 @@ package com.azure.storage.file.datalake.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
+import com.azure.core.util.DateTimeRfc1123;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import java.time.OffsetDateTime;
 
 /** The PathsDeleteHeaders model. */
 @JacksonXmlRootElement(localName = "null")
@@ -42,7 +44,7 @@ public final class PathsDeleteHeaders {
      * The Date property.
      */
     @JsonProperty(value = "Date")
-    private String date;
+    private DateTimeRfc1123 date;
 
     private static final HttpHeaderName X_MS_DELETION_ID = HttpHeaderName.fromString("x-ms-deletion-id");
 
@@ -63,7 +65,10 @@ public final class PathsDeleteHeaders {
         this.xMsVersion = rawHeaders.getValue(X_MS_VERSION);
         this.xMsRequestId = rawHeaders.getValue(X_MS_REQUEST_ID);
         this.xMsContinuation = rawHeaders.getValue(X_MS_CONTINUATION);
-        this.date = rawHeaders.getValue(HttpHeaderName.DATE);
+        String date = rawHeaders.getValue(HttpHeaderName.DATE);
+        if (date != null) {
+            this.date = new DateTimeRfc1123(date);
+        }
     }
 
     /**
@@ -151,8 +156,11 @@ public final class PathsDeleteHeaders {
      *
      * @return the date value.
      */
-    public String getDate() {
-        return this.date;
+    public OffsetDateTime getDate() {
+        if (this.date == null) {
+            return null;
+        }
+        return this.date.getDateTime();
     }
 
     /**
@@ -161,8 +169,12 @@ public final class PathsDeleteHeaders {
      * @param date the date value to set.
      * @return the PathsDeleteHeaders object itself.
      */
-    public PathsDeleteHeaders setDate(String date) {
-        this.date = date;
+    public PathsDeleteHeaders setDate(OffsetDateTime date) {
+        if (date == null) {
+            this.date = null;
+        } else {
+            this.date = new DateTimeRfc1123(date);
+        }
         return this;
     }
 }

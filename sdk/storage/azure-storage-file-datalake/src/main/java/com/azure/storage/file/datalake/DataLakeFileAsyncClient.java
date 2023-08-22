@@ -119,9 +119,9 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
      */
     DataLakeFileAsyncClient(HttpPipeline pipeline, String url, DataLakeServiceVersion serviceVersion,
         String accountName, String fileSystemName, String fileName, BlockBlobAsyncClient blockBlobAsyncClient,
-        AzureSasCredential sasToken, CpkInfo customerProvidedKey, boolean isTokenCredentialAuthenticated) {
+        AzureSasCredential sasToken, CpkInfo customerProvidedKey) {
         super(pipeline, url, serviceVersion, accountName, fileSystemName, fileName, PathResourceType.FILE,
-            blockBlobAsyncClient, sasToken, customerProvidedKey, isTokenCredentialAuthenticated);
+            blockBlobAsyncClient, sasToken, customerProvidedKey);
     }
 
     DataLakeFileAsyncClient(DataLakePathAsyncClient pathAsyncClient) {
@@ -129,7 +129,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
             pathAsyncClient.getAccountName(), pathAsyncClient.getFileSystemName(),
             Utility.urlEncode(pathAsyncClient.pathName), PathResourceType.FILE,
             pathAsyncClient.getBlockBlobAsyncClient(), pathAsyncClient.getSasToken(),
-            pathAsyncClient.getCpkInfo(), pathAsyncClient.isTokenCredentialAuthenticated());
+            pathAsyncClient.getCpkInfo());
     }
 
     /**
@@ -175,8 +175,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
                 .setEncryptionAlgorithm(customerProvidedKey.getEncryptionAlgorithm());
         }
         return new DataLakeFileAsyncClient(getHttpPipeline(), getAccountUrl(), getServiceVersion(), getAccountName(),
-            getFileSystemName(), getObjectPath(), this.blockBlobAsyncClient, getSasToken(), finalCustomerProvidedKey,
-            isTokenCredentialAuthenticated());
+            getFileSystemName(), getObjectPath(), this.blockBlobAsyncClient, getSasToken(), finalCustomerProvidedKey);
     }
 
     /**
