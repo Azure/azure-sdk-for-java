@@ -35,18 +35,16 @@ libraries.
 
 Troubleshooting steps can be found [here][SDK_README_TROUBLESHOOTING].
 
-## Running Large Log Queries using Log Analytics
+## Run large log queries using Log Analytics
 
 Due to Log Analytics [service limits][monitor_service_limits], sometimes it may
 not be possible to retrieve all the expected data in a single query. For example, the number of rows returned or the maximum size of the
 data returned may exceed the stated limits. One approach for overcoming these limits is to split the queries into multiple smaller queries
 using different time ranges.
 
-This work-around allows you to avoid the cost of exporting data to a storage account (and potentially the cost of the storage account as well). 
+This workaround allows you to avoid the cost of exporting data to a storage account (and potentially the cost of the storage account as well). 
 
-**Disclaimer:** This approach of splitting data retrieval into smaller queries is good when dealing with a few GBs of data or a few millions
-of records per hour. For larger data sets,
-[exporting][logs_data_export] is recommended.
+**Disclaimer:** This approach of splitting data retrieval into smaller queries is useful when dealing with a few GBs of data or a few millions records per hour. For larger data sets, [exporting][logs_data_export] is recommended.
 
 This sample shows how to parition a large query into smaller queries using the `LogsBatchQuery` class. The sample provides examples for 
 row-based partitioning and byte-size partitioning. The partitioning is based on the timestamp "TimeGenerated". 
