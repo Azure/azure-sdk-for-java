@@ -29,13 +29,10 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.SyncPoller;
-import java.io.IOException;
-import java.io.UncheckedIOException;
-import java.nio.ByteBuffer;
-import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
+
+import java.nio.ByteBuffer;
 
 /** Initializes a new instance of the synchronous OpenAIClient type. */
 @ServiceClient(builder = OpenAIClientBuilder.class)
@@ -487,12 +484,10 @@ public final class OpenAIClient {
                     .getValue()
                     .toObject(ImageResponse.class);
         } else {
-            SyncPoller<BinaryData, BinaryData> binaryDataBinaryDataSyncPoller =
-                this.serviceClient.beginBeginAzureBatchImageGeneration(imageGenerationOptionsBinaryData, requestOptions);
-            binaryDataBinaryDataSyncPoller.waitForCompletion();
-            BinaryData binaryDataPollResponse = binaryDataBinaryDataSyncPoller.getFinalResult();
-            ImageOperationResponse object = binaryDataPollResponse.toObject(ImageOperationResponse.class);
-            return object.getResult();
+            return beginBeginAzureBatchImageGeneration(imageGenerationOptionsBinaryData, requestOptions)
+                .getFinalResult()
+                .toObject(ImageOperationResponse.class)
+                .getResult();
         }
     }
 
