@@ -15,7 +15,7 @@ stages:
             ServiceDirectory: spring
           MatrixConfigs:
             - Name: monitor_compatibility_tests
-              Path: sdk/spring/monitor-matrix.json
+              Path: sdk/spring/monitor-supported-version-matrix.json
               Selection: sparse
               NonSparseParameters:
                 - TEST_SPRING_BOOT_VERSION
