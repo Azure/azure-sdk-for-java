@@ -153,6 +153,7 @@
             <bannedDependencies>
               <includes>
                 <include>com.squareup.okhttp3:okhttp:[4.10.0]</include> <!-- {x-include-update;com.squareup.okhttp3:okhttp;external_dependency} -->
+                <include>com.squareup.okio:okio-jvm:[3.5.0]</include> <!-- {x-version-update;com.squareup.okio:okio-jvm;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>
