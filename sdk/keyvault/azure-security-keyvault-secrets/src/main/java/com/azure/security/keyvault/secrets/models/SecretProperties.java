@@ -7,6 +7,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.security.keyvault.secrets.SecretAsyncClient;
 import com.azure.security.keyvault.secrets.SecretClient;
+import com.azure.security.keyvault.secrets.implementation.SecretPropertiesHelper;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.net.MalformedURLException;
@@ -27,6 +28,55 @@ import java.util.Objects;
 @Fluent
 public class SecretProperties {
     private static final ClientLogger LOGGER = new ClientLogger(SecretProperties.class);
+
+    static {
+        SecretPropertiesHelper.setAccessor(new SecretPropertiesHelper.SecretPropertiesAccessor() {
+            @Override
+            public void setId(SecretProperties properties, String id) {
+                properties.id = id;
+            }
+
+            @Override
+            public void setVersion(SecretProperties properties, String version) {
+                properties.version = version;
+            }
+
+            @Override
+            public void setCreatedOn(SecretProperties properties, OffsetDateTime createdOn) {
+                properties.createdOn = createdOn;
+            }
+
+            @Override
+            public void setUpdatedOn(SecretProperties properties, OffsetDateTime updatedOn) {
+                properties.updatedOn = updatedOn;
+            }
+
+            @Override
+            public void setName(SecretProperties properties, String name) {
+                properties.name = name;
+            }
+
+            @Override
+            public void setRecoveryLevel(SecretProperties properties, String recoveryLevel) {
+                properties.recoveryLevel = recoveryLevel;
+            }
+
+            @Override
+            public void setKeyId(SecretProperties properties, String keyId) {
+                properties.keyId = keyId;
+            }
+
+            @Override
+            public void setManaged(SecretProperties properties, Boolean managed) {
+                properties.managed = managed;
+            }
+
+            @Override
+            public void setRecoverableDays(SecretProperties properties, Integer recoverableDays) {
+                properties.recoverableDays = recoverableDays;
+            }
+        });
+    }
 
     /**
      * The secret id.
@@ -319,10 +369,10 @@ public class SecretProperties {
         this.createdOn = epochToOffsetDateTime(attributes.get("created"));
         this.updatedOn = epochToOffsetDateTime(attributes.get("updated"));
         this.recoveryLevel = (String) attributes.get("recoveryLevel");
-        this.contentType = (String) lazyValueSelection(attributes.get("contentType"), this.contentType);
-        this.keyId = (String) lazyValueSelection(attributes.get("keyId"), this.keyId);
-        this.tags = (Map<String, String>) lazyValueSelection(attributes.get("tags"), this.tags);
-        this.managed = (Boolean) lazyValueSelection(attributes.get("managed"), this.managed);
+        this.contentType = (String) attributes.getOrDefault("contentType", this.contentType);
+        this.keyId = (String) attributes.getOrDefault("keyId", this.keyId);
+        this.tags = (Map<String, String>) attributes.getOrDefault("tags", this.tags);
+        this.managed = (Boolean) attributes.getOrDefault("managed", this.managed);
         this.recoverableDays = (Integer) attributes.get("recoverableDays");
         unpackId((String) attributes.get("id"));
     }
@@ -350,12 +400,4 @@ public class SecretProperties {
         }
         return null;
     }
-
-    private Object lazyValueSelection(Object input1, Object input2) {
-        if (input1 == null) {
-            return input2;
-        }
-        return input1;
-    }
-
 }

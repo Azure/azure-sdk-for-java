@@ -3,6 +3,7 @@
 
 module com.azure.security.keyvault.secrets {
     requires transitive com.azure.core;
+    requires com.azure.json;
 
     exports com.azure.security.keyvault.secrets;
     exports com.azure.security.keyvault.secrets.models;

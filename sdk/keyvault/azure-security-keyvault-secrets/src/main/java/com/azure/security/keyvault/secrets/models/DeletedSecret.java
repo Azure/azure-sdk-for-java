@@ -5,6 +5,7 @@ package com.azure.security.keyvault.secrets.models;
 
 import com.azure.security.keyvault.secrets.SecretAsyncClient;
 import com.azure.security.keyvault.secrets.SecretClient;
+import com.azure.security.keyvault.secrets.implementation.DeletedSecretHelper;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.Instant;
 import java.time.OffsetDateTime;
@@ -19,6 +20,25 @@ import java.time.ZoneOffset;
  * @see SecretAsyncClient
  */
 public final class DeletedSecret extends KeyVaultSecret {
+
+    static {
+        DeletedSecretHelper.setAccessor(new DeletedSecretHelper.DeletedSecretAccessor() {
+            @Override
+            public void setRecoveryId(DeletedSecret deletedSecret, String recoveryId) {
+                deletedSecret.recoveryId = recoveryId;
+            }
+
+            @Override
+            public void setScheduledPurgeDate(DeletedSecret deletedSecret, OffsetDateTime scheduledPurgeDate) {
+                deletedSecret.scheduledPurgeDate = scheduledPurgeDate;
+            }
+
+            @Override
+            public void setDeletedOn(DeletedSecret deletedSecret, OffsetDateTime deletedOn) {
+                deletedSecret.deletedOn = deletedOn;
+            }
+        });
+    }
 
     /**
      * The url of the recovery object, used to identify and recover the deleted secret.
