@@ -23,8 +23,7 @@ Getting started explained in detail [here][SDK_README_GETTING_STARTED].
 
 ## Examples
 
-The following sections provide code samples covering common operations with Azure Monitor Logs and Metrics query client
-libraries.
+The following sections provide code samples covering common operations with the Azure Monitor Query client library.
 
 * [Get logs for a query][get_logs]
 * [Get logs for a batch for queries][get_batch_logs]
