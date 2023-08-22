@@ -33,11 +33,9 @@ import com.azure.resourcemanager.managednetworkfabric.models.SourceDestinationTy
 import com.azure.resourcemanager.managednetworkfabric.models.VlanGroupProperties;
 import com.azure.resourcemanager.managednetworkfabric.models.VlanMatchCondition;
 import com.azure.resourcemanager.resources.ResourceManager;
-import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import java.time.Duration;
 import java.util.Collections;
 import java.util.Random;
 
@@ -64,20 +62,6 @@ public class ManagedNetworkFabricManagerTest extends TestBase {
             .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
             .authenticate(credential, profile)
             .withDefaultSubscription();
-
-        String registrationState = resourceManager.providers()
-            .getByName("Microsoft.ManagedNetworkFabric").registrationState();
-        if ("NotRegistered".equalsIgnoreCase(registrationState)
-            || "Unregistered".equalsIgnoreCase(registrationState)) {
-            resourceManager.providers().register("Microsoft.ManagedNetworkFabric");
-            registrationState = resourceManager.providers()
-                .getByName("Microsoft.ManagedNetworkFabric").registrationState();
-            while (!"Registered".equalsIgnoreCase(registrationState)) {
-                ResourceManagerUtils.sleep(Duration.ofSeconds(10L));
-                registrationState = resourceManager.providers()
-                    .getByName("Microsoft.ManagedNetworkFabric").registrationState();
-            }
-        }
 
         // use AZURE_RESOURCE_GROUP_NAME if run in LIVE CI
         String testResourceGroup = Configuration.getGlobalConfiguration().get("AZURE_RESOURCE_GROUP_NAME");
