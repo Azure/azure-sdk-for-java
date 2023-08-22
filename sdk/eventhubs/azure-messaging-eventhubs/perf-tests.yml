@@ -19,7 +19,8 @@ PackageVersions:
   'io.projectreactor:reactor-core': source
 
 Tests:
-- Test: receive-eventprocessor
+
+- Test: process-events
   Class: eventprocessorstorage
   Arguments:
-  - --messagesize 1024 --events 1000000
+  - --messagesize 1024 --events 1000000 -d 60
