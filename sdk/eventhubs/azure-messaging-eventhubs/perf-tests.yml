@@ -19,11 +19,6 @@ PackageVersions:
   'io.projectreactor:reactor-core': source
 
 Tests:
-- Test: send-event
-  Class: sendeventbatch
-  Arguments:
-  - --messagesize 1024 --events 100 --parallel 64
-
 - Test: receive-eventprocessor
   Class: eventprocessorstorage
   Arguments:
