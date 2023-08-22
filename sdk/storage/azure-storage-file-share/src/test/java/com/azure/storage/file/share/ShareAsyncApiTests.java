@@ -270,7 +270,7 @@ public class ShareAsyncApiTests extends FileShareTestBase {
 
     @EnabledIf("com.azure.storage.file.share.FileShareTestBase#isPlaybackMode")
     @ParameterizedTest
-    @MethodSource("com.azure.storage.file.share.FileShareTestBase#getPropertiesPremiumSupplier")
+    @MethodSource("com.azure.storage.file.share.FileShareTestHelper#getPropertiesPremiumSupplier")
     public void getPropertiesPremium(String protocol, ShareRootSquash rootSquash) {
         ShareProtocols enabledProtocol = ModelHelper.parseShareProtocols(protocol);
 
@@ -291,7 +291,7 @@ public class ShareAsyncApiTests extends FileShareTestBase {
         }).verifyComplete();
     }
 
-    @ParameterizedTest
+    @Test
     @EnabledIf("com.azure.storage.file.share.FileShareTestBase#isPlaybackMode")
     public void setPremiumProperties() {
         List<ShareRootSquash> rootSquashes = Arrays.asList(

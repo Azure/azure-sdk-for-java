@@ -27,6 +27,7 @@ import com.azure.storage.common.policy.RetryPolicyType;
 import com.azure.storage.file.share.implementation.util.BuilderHelper;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -69,11 +70,12 @@ public class BuilderHelperTests {
         HttpLogOptions httpLogOptions = BuilderHelper.getDefaultHttpLogOptions();
         ClientOptions clientOptions = new ClientOptions();
 
-        BuilderHelper.buildPipeline(CREDENTIALS, null, null, null, null, REQUEST_RETRY_OPTIONS, null, httpLogOptions,
-                clientOptions, httpClient, new ArrayList<>(), new ArrayList<>(), Configuration.NONE,
-                new ClientLogger("foo"))
-            .send(request(ENDPOINT))
-            .subscribe(response -> assertEquals(200, response.getStatusCode()));
+        StepVerifier.create(BuilderHelper.buildPipeline(CREDENTIALS, null, null, null, null, REQUEST_RETRY_OPTIONS,
+                    null, httpLogOptions, clientOptions, httpClient, new ArrayList<>(), new ArrayList<>(),
+                    Configuration.NONE, new ClientLogger("foo"))
+            .send(request(ENDPOINT)))
+            .assertNext(response -> assertEquals(200, response.getStatusCode()))
+            .verifyComplete();
     }
 
     /**
@@ -144,14 +146,11 @@ public class BuilderHelperTests {
         HttpLogOptions httpLogOptions = new HttpLogOptions().setApplicationId(logOptionsUA);
         ClientOptions clientOptions = new ClientOptions().setApplicationId(clientOptionsUA);
 
-        BuilderHelper.buildPipeline(CREDENTIALS, null, null, null, null, new RequestRetryOptions(), null,
-                httpLogOptions, clientOptions, httpClient, new ArrayList<>(), new ArrayList<>(),
-                Configuration.NONE, new ClientLogger("foo"))
-            .send(request(ENDPOINT))
-            .as(StepVerifier::create)
-            .assertNext(response -> {
-                assertEquals(200, response.getStatusCode());
-            })
+        StepVerifier.create(BuilderHelper.buildPipeline(CREDENTIALS, null, null, null, null, new RequestRetryOptions(),
+                    null, httpLogOptions, clientOptions, httpClient, new ArrayList<>(), new ArrayList<>(),
+                    Configuration.NONE, new ClientLogger("foo"))
+            .send(request(ENDPOINT)))
+            .assertNext(response -> assertEquals(200, response.getStatusCode()))
             .verifyComplete();
     }
 
@@ -173,11 +172,8 @@ public class BuilderHelperTests {
             .httpClient(new ApplicationIdUAStringTestClient(expectedUA))
             .buildClient();
 
-        serviceClient.getHttpPipeline().send(request(serviceClient.getFileServiceUrl()))
-            .as(StepVerifier::create)
-            .assertNext(response -> {
-                assertEquals(200, response.getStatusCode());
-            })
+        StepVerifier.create(serviceClient.getHttpPipeline().send(request(serviceClient.getFileServiceUrl())))
+            .assertNext(response -> assertEquals(200, response.getStatusCode()))
             .verifyComplete();
     }
 
@@ -200,11 +196,8 @@ public class BuilderHelperTests {
             .httpClient(new ApplicationIdUAStringTestClient(expectedUA))
             .buildClient();
 
-        shareClient.getHttpPipeline().send(request(shareClient.getShareUrl()))
-            .as(StepVerifier::create)
-            .assertNext(response -> {
-                assertEquals(200, response.getStatusCode());
-            })
+        StepVerifier.create(shareClient.getHttpPipeline().send(request(shareClient.getShareUrl())))
+            .assertNext(response -> assertEquals(200, response.getStatusCode()))
             .verifyComplete();
     }
 
@@ -229,42 +222,20 @@ public class BuilderHelperTests {
 
         ShareDirectoryClient directoryClient = fileClientBuilder.buildDirectoryClient();
         StepVerifier.create(directoryClient.getHttpPipeline().send(request(directoryClient.getDirectoryUrl())))
-            .assertNext(response -> {
-                assertEquals(200, response.getStatusCode());
-            })
+            .assertNext(response -> assertEquals(200, response.getStatusCode()))
             .verifyComplete();
 
         ShareFileClient fileClient = fileClientBuilder.buildFileClient();
         StepVerifier.create(fileClient.getHttpPipeline().send(request(fileClient.getFileUrl())))
-            .assertNext(response -> {
-                assertEquals(200, response.getStatusCode());
-            })
+            .assertNext(response -> assertEquals(200, response.getStatusCode()))
             .verifyComplete();
     }
 
-    private static Stream<List<String>> customApplicationIdInUAStringSupplier() {
+    private static Stream<Arguments> customApplicationIdInUAStringSupplier() {
         return Stream.of(
-            new ArrayList<String>() {
-                {
-                    add("log-options-id");
-                    add(null);
-                    add("log-options-id");
-                }
-            },
-            new ArrayList<String>() {
-                {
-                    add(null);
-                    add("client-options-id");
-                    add("client-options-id");
-                }
-            },
-            new ArrayList<String>() {
-                {
-                    add("log-options-id");
-                    add("client-options-id");
-                    add("client-options-id");
-                }
-            });
+            Arguments.of("log-options-id", null, "log-options-id"),
+            Arguments.of(null, "client-options-id", "client-options-id"),
+            Arguments.of("log-options-id", "client-options-id", "log-options-id client-options-id"));
     }
 
     /**
@@ -283,9 +254,7 @@ public class BuilderHelperTests {
             new ArrayList<>(), Configuration.NONE, new ClientLogger("foo"));
 
         StepVerifier.create(pipeline.send(request(ENDPOINT)))
-            .assertNext(response -> {
-                assertEquals(200, response.getStatusCode());
-            })
+            .assertNext(response -> assertEquals(200, response.getStatusCode()))
             .verifyComplete();
     }
 
@@ -307,9 +276,7 @@ public class BuilderHelperTests {
             .buildClient();
 
         StepVerifier.create(serviceClient.getHttpPipeline().send(request(serviceClient.getFileServiceUrl())))
-            .assertNext(response -> {
-                assertEquals(200, response.getStatusCode());
-            })
+            .assertNext(response -> assertEquals(200, response.getStatusCode()))
             .verifyComplete();
     }
 
@@ -332,9 +299,7 @@ public class BuilderHelperTests {
             .buildClient();
 
         StepVerifier.create(shareClient.getHttpPipeline().send(request(shareClient.getShareUrl())))
-            .assertNext(response -> {
-                assertEquals(200, response.getStatusCode());
-            })
+            .assertNext(response -> assertEquals(200, response.getStatusCode()))
             .verifyComplete();
     }
 
@@ -359,17 +324,13 @@ public class BuilderHelperTests {
         ShareDirectoryClient directoryClient = fileClientBuilder.buildDirectoryClient();
 
         StepVerifier.create(directoryClient.getHttpPipeline().send(request(directoryClient.getDirectoryUrl())))
-            .assertNext(response -> {
-                assertEquals(200, response.getStatusCode());
-            })
+            .assertNext(response -> assertEquals(200, response.getStatusCode()))
             .verifyComplete();
 
         ShareFileClient fileClient = fileClientBuilder.buildFileClient();
 
         StepVerifier.create(fileClient.getHttpPipeline().send(request(fileClient.getFileUrl())))
-            .assertNext(response -> {
-                assertEquals(200, response.getStatusCode());
-            })
+            .assertNext(response -> assertEquals(200, response.getStatusCode()))
             .verifyComplete();
     }
 

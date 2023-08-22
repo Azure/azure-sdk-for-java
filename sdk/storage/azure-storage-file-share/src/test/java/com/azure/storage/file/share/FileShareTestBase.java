@@ -109,8 +109,8 @@ public class FileShareTestBase extends TestProxyTestBase {
         if (getTestMode() != TestMode.LIVE) {
             interceptorManager.addSanitizers(Arrays.asList(
                 new TestProxySanitizer("sig=(.*)", "REDACTED", TestProxySanitizerType.URL),
-                new TestProxySanitizer("x-ms-file-rename-source", ".*", "REDACTED", TestProxySanitizerType.HEADER),
-                new TestProxySanitizer("x-ms-copy-source", ".*", "REDACTED", TestProxySanitizerType.HEADER)));
+                new TestProxySanitizer("x-ms-file-rename-source", "sig=(.*)", "REDACTED", TestProxySanitizerType.HEADER),
+                new TestProxySanitizer("x-ms-copy-source", "sig=(.*)", "REDACTED", TestProxySanitizerType.HEADER)));
         }
 
         // Ignore changes to the order of query parameters and wholly ignore the 'sv' (service version) query parameter

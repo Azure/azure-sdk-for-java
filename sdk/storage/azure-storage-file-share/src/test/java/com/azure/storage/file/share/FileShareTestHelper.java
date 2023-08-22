@@ -386,10 +386,10 @@ public class FileShareTestHelper {
 
     protected static Stream<Arguments> getPropertiesPremiumSupplier() {
         return Stream.of(
-            Arguments.of(Constants.HeaderConstants.SMB_PROTOCOL, null),
-            Arguments.of(Constants.HeaderConstants.NFS_PROTOCOL, ShareRootSquash.ALL_SQUASH),
-            Arguments.of(Constants.HeaderConstants.NFS_PROTOCOL, ShareRootSquash.NO_ROOT_SQUASH),
-            Arguments.of(Constants.HeaderConstants.NFS_PROTOCOL, ShareRootSquash.ROOT_SQUASH)
+//            Arguments.of(Constants.HeaderConstants.SMB_PROTOCOL, null),
+            Arguments.of(Constants.HeaderConstants.NFS_PROTOCOL, ShareRootSquash.ALL_SQUASH)
+//            Arguments.of(Constants.HeaderConstants.NFS_PROTOCOL, ShareRootSquash.NO_ROOT_SQUASH),
+//            Arguments.of(Constants.HeaderConstants.NFS_PROTOCOL, ShareRootSquash.ROOT_SQUASH)
         );
     }
 

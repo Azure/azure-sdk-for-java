@@ -24,7 +24,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
-import spock.lang.ResourceLock;
+import org.junit.jupiter.api.parallel.ResourceLock;
 
 import java.util.ArrayList;
 import java.util.Collections;
