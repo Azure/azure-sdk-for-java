@@ -269,7 +269,7 @@ public final class SchemaRegistryJsonSchemaSerializer {
                             LOGGER.atError()
                                 .addKeyValue("type", schemaFullName)
                                 .addKeyValue("schemaDefinition", schemaDefinition)
-                                .log(() -> "Validating schema threw an error.", e);
+                                .log("Validating schema threw an error.", e);
 
                             sink.error(e);
                             return;
