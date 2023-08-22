@@ -109,8 +109,10 @@ public class FileShareTestBase extends TestProxyTestBase {
         if (getTestMode() != TestMode.LIVE) {
             interceptorManager.addSanitizers(Arrays.asList(
                 new TestProxySanitizer("sig=(.*)", "REDACTED", TestProxySanitizerType.URL),
-                new TestProxySanitizer("x-ms-file-rename-source", "sig=(.*)", "REDACTED", TestProxySanitizerType.HEADER),
-                new TestProxySanitizer("x-ms-copy-source", "sig=(.*)", "REDACTED", TestProxySanitizerType.HEADER)));
+                new TestProxySanitizer("x-ms-file-rename-source", ".*", "REDACTED", TestProxySanitizerType.HEADER),
+                new TestProxySanitizer("x-ms-copy-source", "sig=(.*)", "REDACTED", TestProxySanitizerType.HEADER),
+                new TestProxySanitizer("x-ms-copy-source-authorization", ".*", "REDACTED", TestProxySanitizerType.HEADER),
+                new TestProxySanitizer("x-ms-file-rename-source-authorization", ".*", "REDACTED", TestProxySanitizerType.HEADER)));
         }
 
         // Ignore changes to the order of query parameters and wholly ignore the 'sv' (service version) query parameter
@@ -118,8 +120,9 @@ public class FileShareTestBase extends TestProxyTestBase {
         interceptorManager.addMatchers(Collections.singletonList(new CustomMatcher()
             .setComparingBodies(false)
             .setHeadersKeyOnlyMatch(Arrays.asList("x-ms-lease-id", "x-ms-proposed-lease-id", "If-Modified-Since",
-                "If-Unmodified-Since", "x-ms-expiry-time", "x-ms-source-if-modified-since",
-                "x-ms-source-if-unmodified-since", "x-ms-source-lease-id", "x-ms-encryption-key-sha256"))
+                "If-Unmodified-Since", "x-ms-expiry-time", "x-ms-source-if-modified-since", "x-ms-copy-source",
+                "x-ms-file-rename-source", "x-ms-source-if-unmodified-since", "x-ms-source-lease-id",
+                "x-ms-encryption-key-sha256"))
             .setQueryOrderingIgnored(true)
             .setIgnoredQueryParameters(Arrays.asList("sv"))));
 
