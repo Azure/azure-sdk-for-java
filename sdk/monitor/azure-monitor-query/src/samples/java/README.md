@@ -44,7 +44,7 @@ using different time ranges.
 
 This workaround allows you to avoid the cost of exporting data to a storage account (and potentially the cost of the storage account as well). 
 
-**Disclaimer:** This approach of splitting data retrieval into smaller queries is useful when dealing with a few GBs of data or a few millions records per hour. For larger data sets, [exporting][logs_data_export] is recommended.
+**Disclaimer:** This approach of splitting data retrieval into smaller queries is useful when dealing with a few GBs of data or a few million records per hour. For larger data sets, [exporting][logs_data_export] is recommended.
 
 This sample shows how to parition a large query into smaller queries using the `LogsBatchQuery` class. The sample provides examples for 
 row-based partitioning and byte-size partitioning. The partitioning is based on the timestamp "TimeGenerated". 
