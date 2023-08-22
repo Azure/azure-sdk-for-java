@@ -17,6 +17,15 @@ public final class SendActivityLogsStatus extends ExpandableStringEnum<SendActiv
     public static final SendActivityLogsStatus DISABLED = fromString("Disabled");
 
     /**
+     * Creates a new instance of SendActivityLogsStatus value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SendActivityLogsStatus() {
+    }
+
+    /**
      * Creates or finds a SendActivityLogsStatus from its string representation.
      *
      * @param name a name to look for.

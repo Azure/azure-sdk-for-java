@@ -17,6 +17,15 @@ public final class SendingMetricsStatus extends ExpandableStringEnum<SendingMetr
     public static final SendingMetricsStatus DISABLED = fromString("Disabled");
 
     /**
+     * Creates a new instance of SendingMetricsStatus value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SendingMetricsStatus() {
+    }
+
+    /**
      * Creates or finds a SendingMetricsStatus from its string representation.
      *
      * @param name a name to look for.

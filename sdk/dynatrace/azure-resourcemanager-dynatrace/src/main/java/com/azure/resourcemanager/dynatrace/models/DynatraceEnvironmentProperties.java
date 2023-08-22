@@ -35,6 +35,10 @@ public final class DynatraceEnvironmentProperties {
     @JsonProperty(value = "singleSignOnProperties")
     private DynatraceSingleSignOnProperties singleSignOnProperties;
 
+    /** Creates an instance of DynatraceEnvironmentProperties class. */
+    public DynatraceEnvironmentProperties() {
+    }
+
     /**
      * Get the userId property: User id.
      *
