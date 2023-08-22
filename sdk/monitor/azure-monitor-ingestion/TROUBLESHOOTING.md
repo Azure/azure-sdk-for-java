@@ -34,6 +34,7 @@ Reviewing the HTTP request sent or response received over the wire to/from the A
 
 ```java readme-sample-enablehttplogging
 LogsIngestionClient logsIngestionClient = new LogsIngestionClientBuilder()
+    .endpoint("<data-collection-endpoint")
     .credential(credential)
     .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
     .buildClient();
