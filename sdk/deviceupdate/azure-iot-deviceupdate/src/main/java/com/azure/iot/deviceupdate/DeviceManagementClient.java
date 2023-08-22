@@ -17,20 +17,21 @@ import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.polling.SyncPoller;
+import com.azure.iot.deviceupdate.implementation.DeviceManagementsImpl;
 
 /** Initializes a new instance of the synchronous DeviceUpdateClient type. */
 @ServiceClient(builder = DeviceManagementClientBuilder.class)
 public final class DeviceManagementClient {
-    @Generated private final DeviceManagementAsyncClient client;
+    @Generated private final DeviceManagementsImpl serviceClient;
 
     /**
      * Initializes an instance of DeviceManagementClient class.
      *
-     * @param client the async client.
+     * @param serviceClient the service client implementation.
      */
     @Generated
-    DeviceManagementClient(DeviceManagementAsyncClient client) {
-        this.client = client;
+    DeviceManagementClient(DeviceManagementsImpl serviceClient) {
+        this.serviceClient = serviceClient;
     }
 
     /**
@@ -52,31 +53,26 @@ public final class DeviceManagementClient {
      *
      * <pre>{@code
      * {
-     *     value (Required): [
-     *          (Required){
-     *             deviceClassId: String (Required)
-     *             friendlyName: String (Optional)
-     *             deviceClassProperties (Required): {
-     *                 contractModel (Optional): {
-     *                     id: String (Required)
-     *                     name: String (Required)
-     *                 }
-     *                 compatProperties (Required): {
-     *                     String: String (Required)
-     *                 }
-     *             }
-     *             bestCompatibleUpdate (Optional): {
-     *                 updateId (Required): {
-     *                     provider: String (Required)
-     *                     name: String (Required)
-     *                     version: String (Required)
-     *                 }
-     *                 description: String (Optional)
-     *                 friendlyName: String (Optional)
-     *             }
+     *     deviceClassId: String (Required)
+     *     friendlyName: String (Optional)
+     *     deviceClassProperties (Required): {
+     *         contractModel (Optional): {
+     *             id: String (Required)
+     *             name: String (Required)
      *         }
-     *     ]
-     *     nextLink: String (Optional)
+     *         compatProperties (Required): {
+     *             String: String (Required)
+     *         }
+     *     }
+     *     bestCompatibleUpdate (Optional): {
+     *         updateId (Required): {
+     *             provider: String (Required)
+     *             name: String (Required)
+     *             version: String (Required)
+     *         }
+     *         description: String (Optional)
+     *         friendlyName: String (Optional)
+     *     }
      * }
      * }</pre>
      *
@@ -92,7 +88,7 @@ public final class DeviceManagementClient {
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listDeviceClasses(RequestOptions requestOptions) {
-        return new PagedIterable<>(this.client.listDeviceClasses(requestOptions));
+        return this.serviceClient.listDeviceClasses(requestOptions);
     }
 
     /**
@@ -136,7 +132,7 @@ public final class DeviceManagementClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getDeviceClassWithResponse(String deviceClassId, RequestOptions requestOptions) {
-        return this.client.getDeviceClassWithResponse(deviceClassId, requestOptions).block();
+        return this.serviceClient.getDeviceClassWithResponse(deviceClassId, requestOptions);
     }
 
     /**
@@ -190,7 +186,7 @@ public final class DeviceManagementClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> updateDeviceClassWithResponse(
             String deviceClassId, BinaryData deviceClassPatch, RequestOptions requestOptions) {
-        return this.client.updateDeviceClassWithResponse(deviceClassId, deviceClassPatch, requestOptions).block();
+        return this.serviceClient.updateDeviceClassWithResponse(deviceClassId, deviceClassPatch, requestOptions);
     }
 
     /**
@@ -211,7 +207,7 @@ public final class DeviceManagementClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteDeviceClassWithResponse(String deviceClassId, RequestOptions requestOptions) {
-        return this.client.deleteDeviceClassWithResponse(deviceClassId, requestOptions).block();
+        return this.serviceClient.deleteDeviceClassWithResponse(deviceClassId, requestOptions);
     }
 
     /**
@@ -221,18 +217,13 @@ public final class DeviceManagementClient {
      *
      * <pre>{@code
      * {
-     *     value (Required): [
-     *          (Required){
-     *             updateId (Required): {
-     *                 provider: String (Required)
-     *                 name: String (Required)
-     *                 version: String (Required)
-     *             }
-     *             description: String (Optional)
-     *             friendlyName: String (Optional)
-     *         }
-     *     ]
-     *     nextLink: String (Optional)
+     *     updateId (Required): {
+     *         provider: String (Required)
+     *         name: String (Required)
+     *         version: String (Required)
+     *     }
+     *     description: String (Optional)
+     *     friendlyName: String (Optional)
      * }
      * }</pre>
      *
@@ -248,7 +239,7 @@ public final class DeviceManagementClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listInstallableUpdatesForDeviceClass(
             String deviceClassId, RequestOptions requestOptions) {
-        return new PagedIterable<>(this.client.listInstallableUpdatesForDeviceClass(deviceClassId, requestOptions));
+        return this.serviceClient.listInstallableUpdatesForDeviceClass(deviceClassId, requestOptions);
     }
 
     /**
@@ -268,42 +259,37 @@ public final class DeviceManagementClient {
      *
      * <pre>{@code
      * {
-     *     value (Required): [
-     *          (Required){
-     *             deviceId: String (Required)
-     *             moduleId: String (Optional)
-     *             deviceClassId: String (Required)
-     *             groupId: String (Optional)
-     *             lastAttemptedUpdate (Optional): {
-     *                 updateId (Required): {
-     *                     provider: String (Required)
-     *                     name: String (Required)
-     *                     version: String (Required)
-     *                 }
+     *     deviceId: String (Required)
+     *     moduleId: String (Optional)
+     *     deviceClassId: String (Required)
+     *     groupId: String (Optional)
+     *     lastAttemptedUpdate (Optional): {
+     *         updateId (Required): {
+     *             provider: String (Required)
+     *             name: String (Required)
+     *             version: String (Required)
+     *         }
+     *         description: String (Optional)
+     *         friendlyName: String (Optional)
+     *     }
+     *     deploymentStatus: String(Succeeded/InProgress/Canceled/Failed) (Optional)
+     *     installedUpdate (Optional): (recursive schema, see installedUpdate above)
+     *     onLatestUpdate: boolean (Required)
+     *     lastDeploymentId: String (Optional)
+     *     lastInstallResult (Optional): {
+     *         resultCode: int (Required)
+     *         extendedResultCode: int (Required)
+     *         resultDetails: String (Optional)
+     *         stepResults (Optional): [
+     *              (Optional){
+     *                 update (Optional): (recursive schema, see update above)
      *                 description: String (Optional)
-     *                 friendlyName: String (Optional)
-     *             }
-     *             deploymentStatus: String(Succeeded/InProgress/Canceled/Failed) (Optional)
-     *             installedUpdate (Optional): (recursive schema, see installedUpdate above)
-     *             onLatestUpdate: boolean (Required)
-     *             lastDeploymentId: String (Optional)
-     *             lastInstallResult (Optional): {
      *                 resultCode: int (Required)
      *                 extendedResultCode: int (Required)
      *                 resultDetails: String (Optional)
-     *                 stepResults (Optional): [
-     *                      (Optional){
-     *                         update (Optional): (recursive schema, see update above)
-     *                         description: String (Optional)
-     *                         resultCode: int (Required)
-     *                         extendedResultCode: int (Required)
-     *                         resultDetails: String (Optional)
-     *                     }
-     *                 ]
      *             }
-     *         }
-     *     ]
-     *     nextLink: String (Optional)
+     *         ]
+     *     }
      * }
      * }</pre>
      *
@@ -318,7 +304,7 @@ public final class DeviceManagementClient {
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listDevices(RequestOptions requestOptions) {
-        return new PagedIterable<>(this.client.listDevices(requestOptions));
+        return this.serviceClient.listDevices(requestOptions);
     }
 
     /**
@@ -342,7 +328,7 @@ public final class DeviceManagementClient {
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<BinaryData, BinaryData> beginImportDevices(BinaryData importType, RequestOptions requestOptions) {
-        return this.client.beginImportDevices(importType, requestOptions).getSyncPoller();
+        return this.serviceClient.beginImportDevices(importType, requestOptions);
     }
 
     /**
@@ -398,7 +384,7 @@ public final class DeviceManagementClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getDeviceWithResponse(String deviceId, RequestOptions requestOptions) {
-        return this.client.getDeviceWithResponse(deviceId, requestOptions).block();
+        return this.serviceClient.getDeviceWithResponse(deviceId, requestOptions);
     }
 
     /**
@@ -457,7 +443,7 @@ public final class DeviceManagementClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getDeviceModuleWithResponse(
             String deviceId, String moduleId, RequestOptions requestOptions) {
-        return this.client.getDeviceModuleWithResponse(deviceId, moduleId, requestOptions).block();
+        return this.serviceClient.getDeviceModuleWithResponse(deviceId, moduleId, requestOptions);
     }
 
     /**
@@ -486,7 +472,7 @@ public final class DeviceManagementClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getUpdateComplianceWithResponse(RequestOptions requestOptions) {
-        return this.client.getUpdateComplianceWithResponse(requestOptions).block();
+        return this.serviceClient.getUpdateComplianceWithResponse(requestOptions);
     }
 
     /**
@@ -506,21 +492,16 @@ public final class DeviceManagementClient {
      *
      * <pre>{@code
      * {
-     *     value (Required): [
-     *          (Required){
-     *             groupId: String (Required)
-     *             groupType: String(IoTHubTag/DefaultNoTag) (Required)
-     *             createdDateTime: String (Required)
-     *             deviceCount: Integer (Optional)
-     *             subgroupsWithNewUpdatesAvailableCount: Integer (Optional)
-     *             subgroupsWithUpdatesInProgressCount: Integer (Optional)
-     *             subgroupsWithOnLatestUpdateCount: Integer (Optional)
-     *             deployments (Optional): [
-     *                 String (Optional)
-     *             ]
-     *         }
+     *     groupId: String (Required)
+     *     groupType: String(IoTHubTag/DefaultNoTag) (Required)
+     *     createdDateTime: String (Required)
+     *     deviceCount: Integer (Optional)
+     *     subgroupsWithNewUpdatesAvailableCount: Integer (Optional)
+     *     subgroupsWithUpdatesInProgressCount: Integer (Optional)
+     *     subgroupsWithOnLatestUpdateCount: Integer (Optional)
+     *     deployments (Optional): [
+     *         String (Optional)
      *     ]
-     *     nextLink: String (Optional)
      * }
      * }</pre>
      *
@@ -534,7 +515,7 @@ public final class DeviceManagementClient {
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listGroups(RequestOptions requestOptions) {
-        return new PagedIterable<>(this.client.listGroups(requestOptions));
+        return this.serviceClient.listGroups(requestOptions);
     }
 
     /**
@@ -568,7 +549,7 @@ public final class DeviceManagementClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getGroupWithResponse(String groupId, RequestOptions requestOptions) {
-        return this.client.getGroupWithResponse(groupId, requestOptions).block();
+        return this.serviceClient.getGroupWithResponse(groupId, requestOptions);
     }
 
     /**
@@ -589,7 +570,7 @@ public final class DeviceManagementClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteGroupWithResponse(String groupId, RequestOptions requestOptions) {
-        return this.client.deleteGroupWithResponse(groupId, requestOptions).block();
+        return this.serviceClient.deleteGroupWithResponse(groupId, requestOptions);
     }
 
     /**
@@ -619,7 +600,7 @@ public final class DeviceManagementClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getUpdateComplianceForGroupWithResponse(String groupId, RequestOptions requestOptions) {
-        return this.client.getUpdateComplianceForGroupWithResponse(groupId, requestOptions).block();
+        return this.serviceClient.getUpdateComplianceForGroupWithResponse(groupId, requestOptions);
     }
 
     /**
@@ -629,23 +610,18 @@ public final class DeviceManagementClient {
      *
      * <pre>{@code
      * {
-     *     value (Required): [
-     *          (Required){
-     *             groupId: String (Required)
-     *             deviceClassId: String (Required)
-     *             update (Required): {
-     *                 updateId (Required): {
-     *                     provider: String (Required)
-     *                     name: String (Required)
-     *                     version: String (Required)
-     *                 }
-     *                 description: String (Optional)
-     *                 friendlyName: String (Optional)
-     *             }
-     *             deviceCount: int (Required)
+     *     groupId: String (Required)
+     *     deviceClassId: String (Required)
+     *     update (Required): {
+     *         updateId (Required): {
+     *             provider: String (Required)
+     *             name: String (Required)
+     *             version: String (Required)
      *         }
-     *     ]
-     *     nextLink: String (Optional)
+     *         description: String (Optional)
+     *         friendlyName: String (Optional)
+     *     }
+     *     deviceCount: int (Required)
      * }
      * }</pre>
      *
@@ -661,7 +637,7 @@ public final class DeviceManagementClient {
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listBestUpdatesForGroup(String groupId, RequestOptions requestOptions) {
-        return new PagedIterable<>(this.client.listBestUpdatesForGroup(groupId, requestOptions));
+        return this.serviceClient.listBestUpdatesForGroup(groupId, requestOptions);
     }
 
     /**
@@ -681,36 +657,31 @@ public final class DeviceManagementClient {
      *
      * <pre>{@code
      * {
-     *     value (Required): [
-     *          (Required){
-     *             deploymentId: String (Required)
-     *             startDateTime: OffsetDateTime (Required)
-     *             update (Required): {
-     *                 updateId (Required): {
-     *                     provider: String (Required)
-     *                     name: String (Required)
-     *                     version: String (Required)
-     *                 }
-     *                 description: String (Optional)
-     *                 friendlyName: String (Optional)
-     *             }
-     *             groupId: String (Required)
-     *             deviceClassSubgroups (Optional): [
-     *                 String (Optional)
-     *             ]
-     *             isCanceled: Boolean (Optional)
-     *             isRetried: Boolean (Optional)
-     *             rollbackPolicy (Optional): {
-     *                 update (Required): (recursive schema, see update above)
-     *                 failure (Required): {
-     *                     devicesFailedPercentage: int (Required)
-     *                     devicesFailedCount: int (Required)
-     *                 }
-     *             }
-     *             isCloudInitiatedRollback: Boolean (Optional)
+     *     deploymentId: String (Required)
+     *     startDateTime: OffsetDateTime (Required)
+     *     update (Required): {
+     *         updateId (Required): {
+     *             provider: String (Required)
+     *             name: String (Required)
+     *             version: String (Required)
      *         }
+     *         description: String (Optional)
+     *         friendlyName: String (Optional)
+     *     }
+     *     groupId: String (Required)
+     *     deviceClassSubgroups (Optional): [
+     *         String (Optional)
      *     ]
-     *     nextLink: String (Optional)
+     *     isCanceled: Boolean (Optional)
+     *     isRetried: Boolean (Optional)
+     *     rollbackPolicy (Optional): {
+     *         update (Required): (recursive schema, see update above)
+     *         failure (Required): {
+     *             devicesFailedPercentage: int (Required)
+     *             devicesFailedCount: int (Required)
+     *         }
+     *     }
+     *     isCloudInitiatedRollback: Boolean (Optional)
      * }
      * }</pre>
      *
@@ -725,7 +696,7 @@ public final class DeviceManagementClient {
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listDeploymentsForGroup(String groupId, RequestOptions requestOptions) {
-        return new PagedIterable<>(this.client.listDeploymentsForGroup(groupId, requestOptions));
+        return this.serviceClient.listDeploymentsForGroup(groupId, requestOptions);
     }
 
     /**
@@ -776,7 +747,7 @@ public final class DeviceManagementClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getDeploymentWithResponse(
             String groupId, String deploymentId, RequestOptions requestOptions) {
-        return this.client.getDeploymentWithResponse(groupId, deploymentId, requestOptions).block();
+        return this.serviceClient.getDeploymentWithResponse(groupId, deploymentId, requestOptions);
     }
 
     /**
@@ -860,9 +831,8 @@ public final class DeviceManagementClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> createOrUpdateDeploymentWithResponse(
             String groupId, String deploymentId, BinaryData deployment, RequestOptions requestOptions) {
-        return this.client
-                .createOrUpdateDeploymentWithResponse(groupId, deploymentId, deployment, requestOptions)
-                .block();
+        return this.serviceClient.createOrUpdateDeploymentWithResponse(
+                groupId, deploymentId, deployment, requestOptions);
     }
 
     /**
@@ -881,7 +851,7 @@ public final class DeviceManagementClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteDeploymentWithResponse(
             String groupId, String deploymentId, RequestOptions requestOptions) {
-        return this.client.deleteDeploymentWithResponse(groupId, deploymentId, requestOptions).block();
+        return this.serviceClient.deleteDeploymentWithResponse(groupId, deploymentId, requestOptions);
     }
 
     /**
@@ -939,7 +909,7 @@ public final class DeviceManagementClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getDeploymentStatusWithResponse(
             String groupId, String deploymentId, RequestOptions requestOptions) {
-        return this.client.getDeploymentStatusWithResponse(groupId, deploymentId, requestOptions).block();
+        return this.serviceClient.getDeploymentStatusWithResponse(groupId, deploymentId, requestOptions);
     }
 
     /**
@@ -960,16 +930,11 @@ public final class DeviceManagementClient {
      *
      * <pre>{@code
      * {
-     *     value (Required): [
-     *          (Required){
-     *             deviceClassId: String (Required)
-     *             groupId: String (Required)
-     *             createdDateTime: String (Required)
-     *             deviceCount: Integer (Optional)
-     *             deploymentId: String (Optional)
-     *         }
-     *     ]
-     *     nextLink: String (Optional)
+     *     deviceClassId: String (Required)
+     *     groupId: String (Required)
+     *     createdDateTime: String (Required)
+     *     deviceCount: Integer (Optional)
+     *     deploymentId: String (Optional)
      * }
      * }</pre>
      *
@@ -984,7 +949,7 @@ public final class DeviceManagementClient {
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listDeviceClassSubgroupsForGroup(String groupId, RequestOptions requestOptions) {
-        return new PagedIterable<>(this.client.listDeviceClassSubgroupsForGroup(groupId, requestOptions));
+        return this.serviceClient.listDeviceClassSubgroupsForGroup(groupId, requestOptions);
     }
 
     /**
@@ -1016,7 +981,7 @@ public final class DeviceManagementClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getDeviceClassSubgroupWithResponse(
             String groupId, String deviceClassId, RequestOptions requestOptions) {
-        return this.client.getDeviceClassSubgroupWithResponse(groupId, deviceClassId, requestOptions).block();
+        return this.serviceClient.getDeviceClassSubgroupWithResponse(groupId, deviceClassId, requestOptions);
     }
 
     /**
@@ -1039,7 +1004,7 @@ public final class DeviceManagementClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteDeviceClassSubgroupWithResponse(
             String groupId, String deviceClassId, RequestOptions requestOptions) {
-        return this.client.deleteDeviceClassSubgroupWithResponse(groupId, deviceClassId, requestOptions).block();
+        return this.serviceClient.deleteDeviceClassSubgroupWithResponse(groupId, deviceClassId, requestOptions);
     }
 
     /**
@@ -1072,9 +1037,8 @@ public final class DeviceManagementClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getDeviceClassSubgroupUpdateComplianceWithResponse(
             String groupId, String deviceClassId, RequestOptions requestOptions) {
-        return this.client
-                .getDeviceClassSubgroupUpdateComplianceWithResponse(groupId, deviceClassId, requestOptions)
-                .block();
+        return this.serviceClient.getDeviceClassSubgroupUpdateComplianceWithResponse(
+                groupId, deviceClassId, requestOptions);
     }
 
     /**
@@ -1113,9 +1077,8 @@ public final class DeviceManagementClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getBestUpdatesForDeviceClassSubgroupWithResponse(
             String groupId, String deviceClassId, RequestOptions requestOptions) {
-        return this.client
-                .getBestUpdatesForDeviceClassSubgroupWithResponse(groupId, deviceClassId, requestOptions)
-                .block();
+        return this.serviceClient.getBestUpdatesForDeviceClassSubgroupWithResponse(
+                groupId, deviceClassId, requestOptions);
     }
 
     /**
@@ -1135,36 +1098,31 @@ public final class DeviceManagementClient {
      *
      * <pre>{@code
      * {
-     *     value (Required): [
-     *          (Required){
-     *             deploymentId: String (Required)
-     *             startDateTime: OffsetDateTime (Required)
-     *             update (Required): {
-     *                 updateId (Required): {
-     *                     provider: String (Required)
-     *                     name: String (Required)
-     *                     version: String (Required)
-     *                 }
-     *                 description: String (Optional)
-     *                 friendlyName: String (Optional)
-     *             }
-     *             groupId: String (Required)
-     *             deviceClassSubgroups (Optional): [
-     *                 String (Optional)
-     *             ]
-     *             isCanceled: Boolean (Optional)
-     *             isRetried: Boolean (Optional)
-     *             rollbackPolicy (Optional): {
-     *                 update (Required): (recursive schema, see update above)
-     *                 failure (Required): {
-     *                     devicesFailedPercentage: int (Required)
-     *                     devicesFailedCount: int (Required)
-     *                 }
-     *             }
-     *             isCloudInitiatedRollback: Boolean (Optional)
+     *     deploymentId: String (Required)
+     *     startDateTime: OffsetDateTime (Required)
+     *     update (Required): {
+     *         updateId (Required): {
+     *             provider: String (Required)
+     *             name: String (Required)
+     *             version: String (Required)
      *         }
+     *         description: String (Optional)
+     *         friendlyName: String (Optional)
+     *     }
+     *     groupId: String (Required)
+     *     deviceClassSubgroups (Optional): [
+     *         String (Optional)
      *     ]
-     *     nextLink: String (Optional)
+     *     isCanceled: Boolean (Optional)
+     *     isRetried: Boolean (Optional)
+     *     rollbackPolicy (Optional): {
+     *         update (Required): (recursive schema, see update above)
+     *         failure (Required): {
+     *             devicesFailedPercentage: int (Required)
+     *             devicesFailedCount: int (Required)
+     *         }
+     *     }
+     *     isCloudInitiatedRollback: Boolean (Optional)
      * }
      * }</pre>
      *
@@ -1181,8 +1139,7 @@ public final class DeviceManagementClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listDeploymentsForDeviceClassSubgroup(
             String groupId, String deviceClassId, RequestOptions requestOptions) {
-        return new PagedIterable<>(
-                this.client.listDeploymentsForDeviceClassSubgroup(groupId, deviceClassId, requestOptions));
+        return this.serviceClient.listDeploymentsForDeviceClassSubgroup(groupId, deviceClassId, requestOptions);
     }
 
     /**
@@ -1234,9 +1191,8 @@ public final class DeviceManagementClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getDeploymentForDeviceClassSubgroupWithResponse(
             String groupId, String deviceClassId, String deploymentId, RequestOptions requestOptions) {
-        return this.client
-                .getDeploymentForDeviceClassSubgroupWithResponse(groupId, deviceClassId, deploymentId, requestOptions)
-                .block();
+        return this.serviceClient.getDeploymentForDeviceClassSubgroupWithResponse(
+                groupId, deviceClassId, deploymentId, requestOptions);
     }
 
     /**
@@ -1256,10 +1212,8 @@ public final class DeviceManagementClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteDeploymentForDeviceClassSubgroupWithResponse(
             String groupId, String deviceClassId, String deploymentId, RequestOptions requestOptions) {
-        return this.client
-                .deleteDeploymentForDeviceClassSubgroupWithResponse(
-                        groupId, deviceClassId, deploymentId, requestOptions)
-                .block();
+        return this.serviceClient.deleteDeploymentForDeviceClassSubgroupWithResponse(
+                groupId, deviceClassId, deploymentId, requestOptions);
     }
 
     /**
@@ -1311,7 +1265,7 @@ public final class DeviceManagementClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> stopDeploymentWithResponse(
             String groupId, String deviceClassId, String deploymentId, RequestOptions requestOptions) {
-        return this.client.stopDeploymentWithResponse(groupId, deviceClassId, deploymentId, requestOptions).block();
+        return this.serviceClient.stopDeploymentWithResponse(groupId, deviceClassId, deploymentId, requestOptions);
     }
 
     /**
@@ -1363,7 +1317,7 @@ public final class DeviceManagementClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> retryDeploymentWithResponse(
             String groupId, String deviceClassId, String deploymentId, RequestOptions requestOptions) {
-        return this.client.retryDeploymentWithResponse(groupId, deviceClassId, deploymentId, requestOptions).block();
+        return this.serviceClient.retryDeploymentWithResponse(groupId, deviceClassId, deploymentId, requestOptions);
     }
 
     /**
@@ -1415,10 +1369,8 @@ public final class DeviceManagementClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getDeviceClassSubgroupDeploymentStatusWithResponse(
             String groupId, String deviceClassId, String deploymentId, RequestOptions requestOptions) {
-        return this.client
-                .getDeviceClassSubgroupDeploymentStatusWithResponse(
-                        groupId, deviceClassId, deploymentId, requestOptions)
-                .block();
+        return this.serviceClient.getDeviceClassSubgroupDeploymentStatusWithResponse(
+                groupId, deviceClassId, deploymentId, requestOptions);
     }
 
     /**
@@ -1438,16 +1390,11 @@ public final class DeviceManagementClient {
      *
      * <pre>{@code
      * {
-     *     value (Required): [
-     *          (Required){
-     *             deviceId: String (Required)
-     *             moduleId: String (Optional)
-     *             retryCount: int (Required)
-     *             movedOnToNewDeployment: boolean (Required)
-     *             deviceState: String(Succeeded/InProgress/Canceled/Failed) (Required)
-     *         }
-     *     ]
-     *     nextLink: String (Optional)
+     *     deviceId: String (Required)
+     *     moduleId: String (Optional)
+     *     retryCount: int (Required)
+     *     movedOnToNewDeployment: boolean (Required)
+     *     deviceState: String(Succeeded/InProgress/Canceled/Failed) (Required)
      * }
      * }</pre>
      *
@@ -1466,9 +1413,8 @@ public final class DeviceManagementClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listDeviceStatesForDeviceClassSubgroupDeployment(
             String groupId, String deviceClassId, String deploymentId, RequestOptions requestOptions) {
-        return new PagedIterable<>(
-                this.client.listDeviceStatesForDeviceClassSubgroupDeployment(
-                        groupId, deviceClassId, deploymentId, requestOptions));
+        return this.serviceClient.listDeviceStatesForDeviceClassSubgroupDeployment(
+                groupId, deviceClassId, deploymentId, requestOptions);
     }
 
     /**
@@ -1523,7 +1469,7 @@ public final class DeviceManagementClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getOperationStatusWithResponse(String operationId, RequestOptions requestOptions) {
-        return this.client.getOperationStatusWithResponse(operationId, requestOptions).block();
+        return this.serviceClient.getOperationStatusWithResponse(operationId, requestOptions);
     }
 
     /**
@@ -1544,32 +1490,27 @@ public final class DeviceManagementClient {
      *
      * <pre>{@code
      * {
-     *     value (Required): [
-     *          (Required){
-     *             operationId: String (Required)
-     *             status: String(NotStarted/Running/Succeeded/Failed) (Required)
-     *             error (Optional): {
-     *                 code: String (Required)
-     *                 message: String (Required)
-     *                 target: String (Optional)
-     *                 details (Optional): [
-     *                     (recursive schema, see above)
-     *                 ]
-     *                 innererror (Optional): {
-     *                     code: String (Required)
-     *                     message: String (Optional)
-     *                     errorDetail: String (Optional)
-     *                     innerError (Optional): (recursive schema, see innerError above)
-     *                 }
-     *                 occurredDateTime: OffsetDateTime (Optional)
-     *             }
-     *             traceId: String (Optional)
-     *             lastActionDateTime: OffsetDateTime (Required)
-     *             createdDateTime: OffsetDateTime (Required)
-     *             etag: String (Optional)
+     *     operationId: String (Required)
+     *     status: String(NotStarted/Running/Succeeded/Failed) (Required)
+     *     error (Optional): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *         target: String (Optional)
+     *         details (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         innererror (Optional): {
+     *             code: String (Required)
+     *             message: String (Optional)
+     *             errorDetail: String (Optional)
+     *             innerError (Optional): (recursive schema, see innerError above)
      *         }
-     *     ]
-     *     nextLink: String (Optional)
+     *         occurredDateTime: OffsetDateTime (Optional)
+     *     }
+     *     traceId: String (Optional)
+     *     lastActionDateTime: OffsetDateTime (Required)
+     *     createdDateTime: OffsetDateTime (Required)
+     *     etag: String (Optional)
      * }
      * }</pre>
      *
@@ -1583,7 +1524,7 @@ public final class DeviceManagementClient {
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listOperationStatuses(RequestOptions requestOptions) {
-        return new PagedIterable<>(this.client.listOperationStatuses(requestOptions));
+        return this.serviceClient.listOperationStatuses(requestOptions);
     }
 
     /**
@@ -1638,7 +1579,7 @@ public final class DeviceManagementClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> startLogCollectionWithResponse(
             String logCollectionId, BinaryData logCollection, RequestOptions requestOptions) {
-        return this.client.startLogCollectionWithResponse(logCollectionId, logCollection, requestOptions).block();
+        return this.serviceClient.startLogCollectionWithResponse(logCollectionId, logCollection, requestOptions);
     }
 
     /**
@@ -1673,7 +1614,7 @@ public final class DeviceManagementClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getLogCollectionWithResponse(String logCollectionId, RequestOptions requestOptions) {
-        return this.client.getLogCollectionWithResponse(logCollectionId, requestOptions).block();
+        return this.serviceClient.getLogCollectionWithResponse(logCollectionId, requestOptions);
     }
 
     /**
@@ -1683,22 +1624,17 @@ public final class DeviceManagementClient {
      *
      * <pre>{@code
      * {
-     *     value (Required): [
+     *     operationId: String (Optional)
+     *     deviceList (Required): [
      *          (Required){
-     *             operationId: String (Optional)
-     *             deviceList (Required): [
-     *                  (Required){
-     *                     deviceId: String (Required)
-     *                     moduleId: String (Optional)
-     *                 }
-     *             ]
-     *             description: String (Optional)
-     *             createdDateTime: String (Optional)
-     *             lastActionDateTime: String (Optional)
-     *             status: String(NotStarted/Running/Succeeded/Failed) (Optional)
+     *             deviceId: String (Required)
+     *             moduleId: String (Optional)
      *         }
      *     ]
-     *     nextLink: String (Optional)
+     *     description: String (Optional)
+     *     createdDateTime: String (Optional)
+     *     lastActionDateTime: String (Optional)
+     *     status: String(NotStarted/Running/Succeeded/Failed) (Optional)
      * }
      * }</pre>
      *
@@ -1712,7 +1648,7 @@ public final class DeviceManagementClient {
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listLogCollections(RequestOptions requestOptions) {
-        return new PagedIterable<>(this.client.listLogCollections(requestOptions));
+        return this.serviceClient.listLogCollections(requestOptions);
     }
 
     /**
@@ -1752,7 +1688,7 @@ public final class DeviceManagementClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getLogCollectionDetailedStatusWithResponse(
             String logCollectionId, RequestOptions requestOptions) {
-        return this.client.getLogCollectionDetailedStatusWithResponse(logCollectionId, requestOptions).block();
+        return this.serviceClient.getLogCollectionDetailedStatusWithResponse(logCollectionId, requestOptions);
     }
 
     /**
@@ -1762,21 +1698,16 @@ public final class DeviceManagementClient {
      *
      * <pre>{@code
      * {
-     *     value (Required): [
+     *     deviceId: String (Required)
+     *     moduleId: String (Optional)
+     *     state: String(healthy/unhealthy) (Required)
+     *     digitalTwinModelId: String (Optional)
+     *     healthChecks (Required): [
      *          (Required){
-     *             deviceId: String (Required)
-     *             moduleId: String (Optional)
-     *             state: String(healthy/unhealthy) (Required)
-     *             digitalTwinModelId: String (Optional)
-     *             healthChecks (Required): [
-     *                  (Required){
-     *                     name: String (Optional)
-     *                     result: String(success/userError) (Optional)
-     *                 }
-     *             ]
+     *             name: String (Optional)
+     *             result: String(success/userError) (Optional)
      *         }
      *     ]
-     *     nextLink: String (Optional)
      * }
      * }</pre>
      *
@@ -1792,6 +1723,6 @@ public final class DeviceManagementClient {
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listHealthOfDevices(String filter, RequestOptions requestOptions) {
-        return new PagedIterable<>(this.client.listHealthOfDevices(filter, requestOptions));
+        return this.serviceClient.listHealthOfDevices(filter, requestOptions);
     }
 }

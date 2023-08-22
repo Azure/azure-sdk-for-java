@@ -21,7 +21,7 @@ public class DeviceUpdateDeleteUpdate {
                         .buildClient();
         // BEGIN:com.azure.iot.deviceupdate.generated.deviceupdatedeleteupdate.deviceupdatedeleteupdate
         RequestOptions requestOptions = new RequestOptions();
-        SyncPoller<BinaryData, BinaryData> response =
+        SyncPoller<BinaryData, Void> response =
                 deviceUpdateClient.beginDeleteUpdate("microsoft", "adu", "1.0.0.0", requestOptions);
         // END:com.azure.iot.deviceupdate.generated.deviceupdatedeleteupdate.deviceupdatedeleteupdate
     }
