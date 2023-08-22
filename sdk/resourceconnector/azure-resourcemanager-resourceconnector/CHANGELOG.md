@@ -1,14 +1,28 @@
 # Release History
 
-## 1.0.0-beta.3 (Unreleased)
+## 1.0.0 (2023-08-22)
 
-### Features Added
+- Azure Resource Manager Appliances client library for Java. This package contains Microsoft Azure SDK for Appliances Management SDK. The appliances Rest API spec. Package tag package-2022-10-27. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Breaking Changes
 
-### Bugs Fixed
+#### `models.Appliances` was modified
 
-### Other Changes
+* `listKeysWithResponse(java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
+
+#### `models.Appliance` was modified
+
+* `listKeysWithResponse(com.azure.core.util.Context)` was removed
+
+### Features Added
+
+#### `models.Appliances` was modified
+
+* `listKeysWithResponse(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+
+#### `models.Appliance` was modified
+
+* `listKeysWithResponse(java.lang.String,com.azure.core.util.Context)` was added
 
 ## 1.0.0-beta.2 (2023-04-26)
 

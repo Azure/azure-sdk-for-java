@@ -14,22 +14,18 @@ public final class PatchableApplianceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PatchableAppliance model =
-            BinaryData
-                .fromString(
-                    "{\"tags\":{\"gaudcc\":\"fwvuk\",\"kryhtnapczwlokj\":\"nhsjcnyej\",\"jnchgej\":\"emkkvnipjox\"}}")
-                .toObject(PatchableAppliance.class);
-        Assertions.assertEquals("fwvuk", model.tags().get("gaudcc"));
+            BinaryData.fromString("{\"tags\":{\"vd\":\"ybrk\"}}").toObject(PatchableAppliance.class);
+        Assertions.assertEquals("ybrk", model.tags().get("vd"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PatchableAppliance model =
-            new PatchableAppliance()
-                .withTags(mapOf("gaudcc", "fwvuk", "kryhtnapczwlokj", "nhsjcnyej", "jnchgej", "emkkvnipjox"));
+        PatchableAppliance model = new PatchableAppliance().withTags(mapOf("vd", "ybrk"));
         model = BinaryData.fromObject(model).toObject(PatchableAppliance.class);
-        Assertions.assertEquals("fwvuk", model.tags().get("gaudcc"));
+        Assertions.assertEquals("ybrk", model.tags().get("vd"));
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

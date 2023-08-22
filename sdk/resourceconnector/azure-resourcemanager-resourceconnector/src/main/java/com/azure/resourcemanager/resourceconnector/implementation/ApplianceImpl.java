@@ -200,8 +200,8 @@ public final class ApplianceImpl implements Appliance, Appliance.Definition, App
         return serviceManager.appliances().listClusterUserCredential(resourceGroupName, resourceName);
     }
 
-    public Response<ApplianceListKeysResults> listKeysWithResponse(Context context) {
-        return serviceManager.appliances().listKeysWithResponse(resourceGroupName, resourceName, context);
+    public Response<ApplianceListKeysResults> listKeysWithResponse(String artifactType, Context context) {
+        return serviceManager.appliances().listKeysWithResponse(resourceGroupName, resourceName, artifactType, context);
     }
 
     public ApplianceListKeysResults listKeys() {

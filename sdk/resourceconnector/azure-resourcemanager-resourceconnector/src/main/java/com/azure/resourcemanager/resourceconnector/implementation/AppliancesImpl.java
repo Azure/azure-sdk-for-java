@@ -148,9 +148,9 @@ public final class AppliancesImpl implements Appliances {
     }
 
     public Response<ApplianceListKeysResults> listKeysWithResponse(
-        String resourceGroupName, String resourceName, Context context) {
+        String resourceGroupName, String resourceName, String artifactType, Context context) {
         Response<ApplianceListKeysResultsInner> inner =
-            this.serviceClient().listKeysWithResponse(resourceGroupName, resourceName, context);
+            this.serviceClient().listKeysWithResponse(resourceGroupName, resourceName, artifactType, context);
         if (inner != null) {
             return new SimpleResponse<>(
                 inner.getRequest(),

@@ -30,7 +30,7 @@ public final class AppliancesGetUpgradeGraphWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"id\":\"pbtoqcjmkl\",\"name\":\"vbqid\",\"properties\":{\"applianceVersion\":\"jzyulpk\",\"supportedVersions\":[]}}";
+            "{\"id\":\"ngxlefgugnxkrxdq\",\"name\":\"dt\",\"properties\":{\"applianceVersion\":\"rvqdra\",\"supportedVersions\":[{\"metadata\":{\"catalogVersion\":{}},\"version\":\"gehoqfbowskany\"},{\"metadata\":{\"catalogVersion\":{}},\"version\":\"cuiywgqyw\"}]}}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -61,7 +61,7 @@ public final class AppliancesGetUpgradeGraphWithResponseMockTests {
         UpgradeGraph response =
             manager
                 .appliances()
-                .getUpgradeGraphWithResponse("jxvsnbyxqabn", "ocpcy", "hurzafblj", com.azure.core.util.Context.NONE)
+                .getUpgradeGraphWithResponse("m", "uhrzayvvt", "gvdfgiotkftutq", com.azure.core.util.Context.NONE)
                 .getValue();
     }
 }
