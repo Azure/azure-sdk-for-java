@@ -94,11 +94,13 @@ public interface GlobalReachConnection {
     interface Definition
         extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
+
     /** The GlobalReachConnection definition stages. */
     interface DefinitionStages {
         /** The first stage of the GlobalReachConnection definition. */
         interface Blank extends WithParentResource {
         }
+
         /** The stage of the GlobalReachConnection definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
@@ -110,6 +112,7 @@ public interface GlobalReachConnection {
              */
             WithCreate withExistingPrivateCloud(String resourceGroupName, String privateCloudName);
         }
+
         /**
          * The stage of the GlobalReachConnection definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
@@ -133,6 +136,7 @@ public interface GlobalReachConnection {
              */
             GlobalReachConnection create(Context context);
         }
+
         /** The stage of the GlobalReachConnection definition allowing to specify authorizationKey. */
         interface WithAuthorizationKey {
             /**
@@ -145,6 +149,7 @@ public interface GlobalReachConnection {
              */
             WithCreate withAuthorizationKey(String authorizationKey);
         }
+
         /** The stage of the GlobalReachConnection definition allowing to specify peerExpressRouteCircuit. */
         interface WithPeerExpressRouteCircuit {
             /**
@@ -157,6 +162,7 @@ public interface GlobalReachConnection {
              */
             WithCreate withPeerExpressRouteCircuit(String peerExpressRouteCircuit);
         }
+
         /** The stage of the GlobalReachConnection definition allowing to specify expressRouteId. */
         interface WithExpressRouteId {
             /**
@@ -170,6 +176,7 @@ public interface GlobalReachConnection {
             WithCreate withExpressRouteId(String expressRouteId);
         }
     }
+
     /**
      * Begins update for the GlobalReachConnection resource.
      *
@@ -197,6 +204,7 @@ public interface GlobalReachConnection {
          */
         GlobalReachConnection apply(Context context);
     }
+
     /** The GlobalReachConnection update stages. */
     interface UpdateStages {
         /** The stage of the GlobalReachConnection update allowing to specify authorizationKey. */
@@ -211,6 +219,7 @@ public interface GlobalReachConnection {
              */
             Update withAuthorizationKey(String authorizationKey);
         }
+
         /** The stage of the GlobalReachConnection update allowing to specify peerExpressRouteCircuit. */
         interface WithPeerExpressRouteCircuit {
             /**
@@ -223,6 +232,7 @@ public interface GlobalReachConnection {
              */
             Update withPeerExpressRouteCircuit(String peerExpressRouteCircuit);
         }
+
         /** The stage of the GlobalReachConnection update allowing to specify expressRouteId. */
         interface WithExpressRouteId {
             /**
@@ -236,6 +246,7 @@ public interface GlobalReachConnection {
             Update withExpressRouteId(String expressRouteId);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

@@ -14,11 +14,11 @@
 
   <groupId>com.azure.resourcemanager</groupId>
   <artifactId>azure-resourcemanager-avs</artifactId>
-  <version>1.1.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-avs;current} -->
+  <version>1.1.0</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-avs;current} -->
   <packaging>jar</packaging>
 
   <name>Microsoft Azure SDK for Avs Management</name>
-  <description>This package contains Microsoft Azure SDK for Avs Management SDK. For documentation on how to use this package, please see https://aka.ms/azsdk/java/mgmt. Azure VMware Solution API. Package tag package-2022-05-01.</description>
+  <description>This package contains Microsoft Azure SDK for Avs Management SDK. For documentation on how to use this package, please see https://aka.ms/azsdk/java/mgmt. Azure VMware Solution API. Package tag package-2023-03-01.</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
   <licenses>
@@ -70,12 +70,6 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>com.azure.resourcemanager</groupId>
-      <artifactId>azure-resourcemanager-resources</artifactId>
-      <version>2.29.0</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-resources;dependency} -->
-      <scope>test</scope>
-    </dependency>
-    <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-api</artifactId>
       <version>5.9.3</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-api;external_dependency} -->
@@ -97,6 +91,12 @@
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-simple</artifactId>
       <version>1.7.36</version> <!-- {x-version-update;org.slf4j:slf4j-simple;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.azure.resourcemanager</groupId>
+      <artifactId>azure-resourcemanager-resources</artifactId>
+      <version>2.29.0</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-resources;dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>

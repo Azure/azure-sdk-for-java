@@ -31,7 +31,7 @@ public final class WorkloadNetworksGetDhcpWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"dhcpType\":\"WorkloadNetworkDhcpEntity\",\"displayName\":\"snfepgfewetwlyx\",\"segments\":[\"xykxhdj\"],\"provisioningState\":\"Deleting\",\"revision\":457347033640249193},\"id\":\"cxfhbcporxv\",\"name\":\"cjzhqi\",\"type\":\"xfpxtgqscja\"}";
+            "{\"properties\":{\"dhcpType\":\"WorkloadNetworkDhcpEntity\",\"displayName\":\"mwabzxrvxc\",\"segments\":[\"sphaivmxyasflvg\",\"gzwywak\",\"ihknsmjbl\"],\"provisioningState\":\"Deleting\",\"revision\":608023064762005271},\"id\":\"ymzotqyryuzcbmq\",\"name\":\"vxmvw\",\"type\":\"gtayxonsupeujlz\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,10 +62,10 @@ public final class WorkloadNetworksGetDhcpWithResponseMockTests {
         WorkloadNetworkDhcp response =
             manager
                 .workloadNetworks()
-                .getDhcpWithResponse("eazulcs", "thwwn", "jhlfzswpchwahf", com.azure.core.util.Context.NONE)
+                .getDhcpWithResponse("xm", "f", "kqscazuawxtzx", com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals("snfepgfewetwlyx", response.properties().displayName());
-        Assertions.assertEquals(457347033640249193L, response.properties().revision());
+        Assertions.assertEquals("mwabzxrvxc", response.properties().displayName());
+        Assertions.assertEquals(608023064762005271L, response.properties().revision());
     }
 }
