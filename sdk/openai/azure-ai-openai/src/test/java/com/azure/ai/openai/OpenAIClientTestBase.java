@@ -5,11 +5,27 @@
 package com.azure.ai.openai;
 
 import com.azure.ai.openai.functions.Parameters;
-import com.azure.ai.openai.models.*;
+import com.azure.ai.openai.models.AzureChatExtensionsMessageContext;
+import com.azure.ai.openai.models.ChatChoice;
+import com.azure.ai.openai.models.ChatCompletions;
+import com.azure.ai.openai.models.ChatCompletionsOptions;
+import com.azure.ai.openai.models.ChatMessage;
+import com.azure.ai.openai.models.ChatRole;
+import com.azure.ai.openai.models.Choice;
+import com.azure.ai.openai.models.Completions;
+import com.azure.ai.openai.models.CompletionsFinishReason;
+import com.azure.ai.openai.models.ContentFilterResults;
+import com.azure.ai.openai.models.ContentFilterSeverity;
+import com.azure.ai.openai.models.EmbeddingItem;
+import com.azure.ai.openai.models.Embeddings;
+import com.azure.ai.openai.models.EmbeddingsOptions;
+import com.azure.ai.openai.models.FunctionCall;
+import com.azure.ai.openai.models.FunctionDefinition;
+import com.azure.ai.openai.models.ImageGenerationOptions;
+import com.azure.ai.openai.models.ImageResponse;
+import com.azure.ai.openai.models.NonAzureOpenAIKeyCredential;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.policy.HttpLogDetailLevel;
-import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
@@ -96,13 +112,13 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
     protected String getAzureCognitiveSearchKey() {
         String azureCognitiveSearchKey = Configuration.getGlobalConfiguration().get("ACS_BYOD_API_KEY");
         if (getTestMode() == TestMode.PLAYBACK) {
-           return FAKE_API_KEY;
+            return FAKE_API_KEY;
         } else if (azureCognitiveSearchKey != null) {
-           return azureCognitiveSearchKey;
+            return azureCognitiveSearchKey;
         } else {
-           throw new IllegalStateException(
-               "No Azure Cognitive Search API key found. " +
-                   "Please set the appropriate environment variable to use this value.");
+            throw new IllegalStateException(
+                "No Azure Cognitive Search API key found. "
+                    + "Please set the appropriate environment variable to use this value.");
         }
     }
 
