@@ -2773,23 +2773,23 @@
   <!-- The RollingNonSessionMessagePump and RollingSessionsMessagePump doesn't need to be serializable -->
   <Match>
     <Class
-      name="~com\.azure\.messaging\.servicebus\.NonSessionProcessor\$RollingNonSessionMessagePump"/>
+      name="com.azure.messaging.servicebus.NonSessionProcessor$RollingNonSessionMessagePump"/>
     <Bug pattern="SE_NO_SERIALVERSIONID"/>
   </Match>
   <Match>
     <Class
-      name="~com\.azure\.messaging\.servicebus\.SessionProcessor\$RollingSessionsMessagePump"/>
+      name="com.azure.messaging.servicebus.SessionProcessor$RollingSessionsMessagePump"/>
     <Bug pattern="SE_NO_SERIALVERSIONID"/>
   </Match>
   <Match>
     <Class
-      name="~com\.azure\.messaging\.servicebus\.ServiceBusProcessor\$RollingMessagePump"/>
+      name="com.azure.messaging.servicebus.ServiceBusProcessor$RollingMessagePump"/>
     <Bug pattern="SE_NO_SERIALVERSIONID"/>
   </Match>
   <!-- False positives -->
   <Match>
     <Class
-        name="~com\.azure\.messaging\.servicebus\.SessionsMessagePump\$RollingSessionReceiver"/>
+        name="com.azure.messaging.servicebus.SessionsMessagePump$RollingSessionReceiver"/>
     <Or>
       <Field name="instrumentation"/>
       <Field name="logger"/>
@@ -2804,7 +2804,7 @@
   </Match>
   <Match>
     <Class
-        name="~com\.azure\.messaging\.servicebus\.SessionsMessagePump\$RollingSessionReceiver\$NextSessionStream"/>
+        name="com.azure.messaging.servicebus.SessionsMessagePump$RollingSessionReceiver$NextSessionStream"/>
     <Or>
       <Field name="newSession"/>
     </Or>
@@ -2812,7 +2812,7 @@
   </Match>
   <Match>
     <Class
-        name="~com\.azure\.messaging\.servicebus\.ServiceBusSingleSessionManager\$SessionReceiverStream"/>
+        name="com.azure.messaging.servicebus.ServiceBusSingleSessionManager$SessionReceiverStream"/>
     <Or>
       <Field name="sessionReceiver"/>
     </Or>
@@ -2821,17 +2821,17 @@
   <!-- The RollingSessionReceiver, NextSessionStream, $SessionReceiverStream doesn't need to be serializable -->
   <Match>
     <Class
-        name="~com\.azure\.messaging\.servicebus\.SessionsMessagePump\$RollingSessionReceiver"/>
+        name="com.azure.messaging.servicebus.SessionsMessagePump$RollingSessionReceiver"/>
     <Bug pattern="SE_NO_SERIALVERSIONID"/>
   </Match>
   <Match>
     <Class
-        name="~com\.azure\.messaging\.servicebus\.SessionsMessagePump\$RollingSessionReceiver\$NextSessionStream"/>
+        name="com.azure.messaging.servicebus.SessionsMessagePump$RollingSessionReceiver$NextSessionStream"/>
     <Bug pattern="SE_NO_SERIALVERSIONID"/>
   </Match>
   <Match>
     <Class
-        name="~com\.azure\.messaging\.servicebus\.ServiceBusSingleSessionManager\$SessionReceiverStream"/>
+        name="com.azure.messaging.servicebus.ServiceBusSingleSessionManager$SessionReceiverStream"/>
     <Bug pattern="SE_NO_SERIALVERSIONID"/>
   </Match>
 
