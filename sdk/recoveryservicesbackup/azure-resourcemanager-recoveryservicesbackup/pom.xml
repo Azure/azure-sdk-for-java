@@ -60,7 +60,7 @@
     <dependency>
       <groupId>com.azure.resourcemanager</groupId>
       <artifactId>azure-resourcemanager-recoveryservices</artifactId>
-      <version>1.1.0</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-recoveryservices;dependency} -->
+      <version>1.2.0</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-recoveryservices;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
