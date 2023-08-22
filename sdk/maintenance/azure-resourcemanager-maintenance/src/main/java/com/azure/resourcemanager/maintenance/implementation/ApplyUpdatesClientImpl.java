@@ -59,18 +59,16 @@ public final class ApplyUpdatesClientImpl implements ApplyUpdatesClient {
     public interface ApplyUpdatesService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{providerName}"
-                + "/{resourceParentType}/{resourceParentName}/{resourceType}/{resourceName}/providers"
-                + "/Microsoft.Maintenance/applyUpdates/{applyUpdateName}")
+            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{providerName}/{resourceParentType}/{resourceParentName}/{resourceType}/{resourceName}/providers/Microsoft.Maintenance/applyUpdates/{applyUpdateName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ApplyUpdateInner>> getParent(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("providerName") String providerName,
             @PathParam("resourceParentType") String resourceParentType,
             @PathParam("resourceParentName") String resourceParentName,
-            @PathParam("providerName") String providerName,
             @PathParam("resourceType") String resourceType,
             @PathParam("resourceName") String resourceName,
             @PathParam("applyUpdateName") String applyUpdateName,
@@ -80,8 +78,7 @@ public final class ApplyUpdatesClientImpl implements ApplyUpdatesClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{providerName}/{resourceType}"
-                + "/{resourceName}/providers/Microsoft.Maintenance/applyUpdates/{applyUpdateName}")
+            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{providerName}/{resourceType}/{resourceName}/providers/Microsoft.Maintenance/applyUpdates/{applyUpdateName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ApplyUpdateInner>> get(
@@ -98,10 +95,8 @@ public final class ApplyUpdatesClientImpl implements ApplyUpdatesClient {
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{providerName}"
-                + "/{resourceParentType}/{resourceParentName}/{resourceType}/{resourceName}/providers"
-                + "/Microsoft.Maintenance/applyUpdates/default")
-        @ExpectedResponses({200})
+            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{providerName}/{resourceParentType}/{resourceParentName}/{resourceType}/{resourceName}/providers/Microsoft.Maintenance/applyUpdates/default")
+        @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ApplyUpdateInner>> createOrUpdateParent(
             @HostParam("$host") String endpoint,
@@ -118,9 +113,8 @@ public final class ApplyUpdatesClientImpl implements ApplyUpdatesClient {
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{providerName}/{resourceType}"
-                + "/{resourceName}/providers/Microsoft.Maintenance/applyUpdates/default")
-        @ExpectedResponses({200})
+            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{providerName}/{resourceType}/{resourceName}/providers/Microsoft.Maintenance/applyUpdates/default")
+        @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ApplyUpdateInner>> createOrUpdate(
             @HostParam("$host") String endpoint,
@@ -151,9 +145,9 @@ public final class ApplyUpdatesClientImpl implements ApplyUpdatesClient {
      * <p>Track maintenance updates to resource with parent.
      *
      * @param resourceGroupName Resource group name.
+     * @param providerName Resource provider name.
      * @param resourceParentType Resource parent type.
      * @param resourceParentName Resource parent identifier.
-     * @param providerName Resource provider name.
      * @param resourceType Resource type.
      * @param resourceName Resource identifier.
      * @param applyUpdateName applyUpdate Id.
@@ -165,9 +159,9 @@ public final class ApplyUpdatesClientImpl implements ApplyUpdatesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ApplyUpdateInner>> getParentWithResponseAsync(
         String resourceGroupName,
+        String providerName,
         String resourceParentType,
         String resourceParentName,
-        String providerName,
         String resourceType,
         String resourceName,
         String applyUpdateName) {
@@ -187,6 +181,9 @@ public final class ApplyUpdatesClientImpl implements ApplyUpdatesClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
+        if (providerName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter providerName is required and cannot be null."));
+        }
         if (resourceParentType == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceParentType is required and cannot be null."));
@@ -194,9 +191,6 @@ public final class ApplyUpdatesClientImpl implements ApplyUpdatesClient {
         if (resourceParentName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceParentName is required and cannot be null."));
-        }
-        if (providerName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter providerName is required and cannot be null."));
         }
         if (resourceType == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceType is required and cannot be null."));
@@ -217,9 +211,9 @@ public final class ApplyUpdatesClientImpl implements ApplyUpdatesClient {
                             this.client.getEndpoint(),
                             this.client.getSubscriptionId(),
                             resourceGroupName,
+                            providerName,
                             resourceParentType,
                             resourceParentName,
-                            providerName,
                             resourceType,
                             resourceName,
                             applyUpdateName,
@@ -235,9 +229,9 @@ public final class ApplyUpdatesClientImpl implements ApplyUpdatesClient {
      * <p>Track maintenance updates to resource with parent.
      *
      * @param resourceGroupName Resource group name.
+     * @param providerName Resource provider name.
      * @param resourceParentType Resource parent type.
      * @param resourceParentName Resource parent identifier.
-     * @param providerName Resource provider name.
      * @param resourceType Resource type.
      * @param resourceName Resource identifier.
      * @param applyUpdateName applyUpdate Id.
@@ -250,9 +244,9 @@ public final class ApplyUpdatesClientImpl implements ApplyUpdatesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ApplyUpdateInner>> getParentWithResponseAsync(
         String resourceGroupName,
+        String providerName,
         String resourceParentType,
         String resourceParentName,
-        String providerName,
         String resourceType,
         String resourceName,
         String applyUpdateName,
@@ -273,6 +267,9 @@ public final class ApplyUpdatesClientImpl implements ApplyUpdatesClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
+        if (providerName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter providerName is required and cannot be null."));
+        }
         if (resourceParentType == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceParentType is required and cannot be null."));
@@ -280,9 +277,6 @@ public final class ApplyUpdatesClientImpl implements ApplyUpdatesClient {
         if (resourceParentName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceParentName is required and cannot be null."));
-        }
-        if (providerName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter providerName is required and cannot be null."));
         }
         if (resourceType == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceType is required and cannot be null."));
@@ -301,9 +295,9 @@ public final class ApplyUpdatesClientImpl implements ApplyUpdatesClient {
                 this.client.getEndpoint(),
                 this.client.getSubscriptionId(),
                 resourceGroupName,
+                providerName,
                 resourceParentType,
                 resourceParentName,
-                providerName,
                 resourceType,
                 resourceName,
                 applyUpdateName,
@@ -318,9 +312,9 @@ public final class ApplyUpdatesClientImpl implements ApplyUpdatesClient {
      * <p>Track maintenance updates to resource with parent.
      *
      * @param resourceGroupName Resource group name.
+     * @param providerName Resource provider name.
      * @param resourceParentType Resource parent type.
      * @param resourceParentName Resource parent identifier.
-     * @param providerName Resource provider name.
      * @param resourceType Resource type.
      * @param resourceName Resource identifier.
      * @param applyUpdateName applyUpdate Id.
@@ -332,17 +326,17 @@ public final class ApplyUpdatesClientImpl implements ApplyUpdatesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ApplyUpdateInner> getParentAsync(
         String resourceGroupName,
+        String providerName,
         String resourceParentType,
         String resourceParentName,
-        String providerName,
         String resourceType,
         String resourceName,
         String applyUpdateName) {
         return getParentWithResponseAsync(
                 resourceGroupName,
+                providerName,
                 resourceParentType,
                 resourceParentName,
-                providerName,
                 resourceType,
                 resourceName,
                 applyUpdateName)
@@ -355,9 +349,9 @@ public final class ApplyUpdatesClientImpl implements ApplyUpdatesClient {
      * <p>Track maintenance updates to resource with parent.
      *
      * @param resourceGroupName Resource group name.
+     * @param providerName Resource provider name.
      * @param resourceParentType Resource parent type.
      * @param resourceParentName Resource parent identifier.
-     * @param providerName Resource provider name.
      * @param resourceType Resource type.
      * @param resourceName Resource identifier.
      * @param applyUpdateName applyUpdate Id.
@@ -370,18 +364,18 @@ public final class ApplyUpdatesClientImpl implements ApplyUpdatesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ApplyUpdateInner> getParentWithResponse(
         String resourceGroupName,
+        String providerName,
         String resourceParentType,
         String resourceParentName,
-        String providerName,
         String resourceType,
         String resourceName,
         String applyUpdateName,
         Context context) {
         return getParentWithResponseAsync(
                 resourceGroupName,
+                providerName,
                 resourceParentType,
                 resourceParentName,
-                providerName,
                 resourceType,
                 resourceName,
                 applyUpdateName,
@@ -395,9 +389,9 @@ public final class ApplyUpdatesClientImpl implements ApplyUpdatesClient {
      * <p>Track maintenance updates to resource with parent.
      *
      * @param resourceGroupName Resource group name.
+     * @param providerName Resource provider name.
      * @param resourceParentType Resource parent type.
      * @param resourceParentName Resource parent identifier.
-     * @param providerName Resource provider name.
      * @param resourceType Resource type.
      * @param resourceName Resource identifier.
      * @param applyUpdateName applyUpdate Id.
@@ -409,17 +403,17 @@ public final class ApplyUpdatesClientImpl implements ApplyUpdatesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ApplyUpdateInner getParent(
         String resourceGroupName,
+        String providerName,
         String resourceParentType,
         String resourceParentName,
-        String providerName,
         String resourceType,
         String resourceName,
         String applyUpdateName) {
         return getParentWithResponse(
                 resourceGroupName,
+                providerName,
                 resourceParentType,
                 resourceParentName,
-                providerName,
                 resourceType,
                 resourceName,
                 applyUpdateName,
