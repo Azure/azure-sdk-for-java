@@ -31,7 +31,7 @@ public final class AddonsCreateOrUpdateMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"addonType\":\"AddonProperties\",\"provisioningState\":\"Succeeded\"},\"id\":\"pbswvefloccsrm\",\"name\":\"zihmipgawtxxpky\",\"type\":\"cxcjxgry\"}";
+            "{\"properties\":{\"addonType\":\"AddonProperties\",\"provisioningState\":\"Succeeded\"},\"id\":\"iblkujr\",\"name\":\"lfojuidjp\",\"type\":\"uyjucejikzo\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,8 +62,8 @@ public final class AddonsCreateOrUpdateMockTests {
         Addon response =
             manager
                 .addons()
-                .define("haohdjhhflzokxc")
-                .withExistingPrivateCloud("wwixzvumw", "xqhndvnoamlds")
+                .define("gbwidqlvh")
+                .withExistingPrivateCloud("vkyylizrzbjpsf", "sfuztlvtmv")
                 .withProperties(new AddonProperties())
                 .create();
     }

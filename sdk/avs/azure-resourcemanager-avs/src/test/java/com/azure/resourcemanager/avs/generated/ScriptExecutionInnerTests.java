@@ -18,44 +18,44 @@ public final class ScriptExecutionInnerTests {
         ScriptExecutionInner model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"scriptCmdletId\":\"fxusemdwzr\",\"parameters\":[{\"type\":\"ScriptExecutionParameter\",\"name\":\"apfcqdpsq\"},{\"type\":\"ScriptExecutionParameter\",\"name\":\"qvpsvuoymg\"},{\"type\":\"ScriptExecutionParameter\",\"name\":\"celve\"}],\"hiddenParameters\":[{\"type\":\"ScriptExecutionParameter\",\"name\":\"pqlmfe\"}],\"failureReason\":\"erqwkyhkobopg\",\"timeout\":\"edkowepbqpcrfk\",\"retention\":\"ccsnjvcdwxlpq\",\"submittedAt\":\"2021-11-01T06:00:04Z\",\"startedAt\":\"2021-04-24T05:25:21Z\",\"finishedAt\":\"2021-09-05T20:48:04Z\",\"provisioningState\":\"Cancelled\",\"output\":[\"i\"],\"namedOutputs\":{\"tmtdhtmdvypgik\":\"datafq\",\"irryuzhlh\":\"datagszywk\"},\"information\":[\"qrvqq\",\"atjinrvgoupmfiib\",\"ggjioolvr\"],\"warnings\":[\"v\",\"kkgll\"],\"errors\":[\"ygvjayvblmh\",\"k\",\"uhbxvvy\"]},\"id\":\"gsopbyrqufegxu\",\"name\":\"wz\",\"type\":\"bnhlmc\"}")
+                    "{\"properties\":{\"scriptCmdletId\":\"abwidfcxsspuun\",\"parameters\":[{\"type\":\"ScriptExecutionParameter\",\"name\":\"yhkx\"}],\"hiddenParameters\":[{\"type\":\"ScriptExecutionParameter\",\"name\":\"drihpfhoqcaaewda\"},{\"type\":\"ScriptExecutionParameter\",\"name\":\"mdjvlpj\"}],\"failureReason\":\"kzbrmsgeivsiy\",\"timeout\":\"zkdnc\",\"retention\":\"xonbzoggculapz\",\"submittedAt\":\"2021-07-25T18:35:20Z\",\"startedAt\":\"2021-08-05T01:58:35Z\",\"finishedAt\":\"2021-06-21T04:03:02Z\",\"provisioningState\":\"Cancelled\",\"output\":[\"pnylb\",\"uajlyj\"],\"namedOutputs\":{\"zhvfcibyfmowuxr\":\"dataof\",\"xfzwi\":\"datajpvd\",\"xjrk\":\"datavwzjbhyz\"},\"information\":[\"trnegvmnvuqeqvld\",\"pa\"],\"warnings\":[\"bkkd\",\"flvestmjlxrrilo\",\"apeewchpxlkt\",\"kuziycsle\"],\"errors\":[\"uztcktyhjtqed\"]},\"id\":\"gzulwmmrqzzr\",\"name\":\"jvpglydzgk\",\"type\":\"vqeevtoep\"}")
                 .toObject(ScriptExecutionInner.class);
-        Assertions.assertEquals("fxusemdwzr", model.scriptCmdletId());
-        Assertions.assertEquals("apfcqdpsq", model.parameters().get(0).name());
-        Assertions.assertEquals("pqlmfe", model.hiddenParameters().get(0).name());
-        Assertions.assertEquals("erqwkyhkobopg", model.failureReason());
-        Assertions.assertEquals("edkowepbqpcrfk", model.timeout());
-        Assertions.assertEquals("ccsnjvcdwxlpq", model.retention());
-        Assertions.assertEquals("i", model.output().get(0));
+        Assertions.assertEquals("abwidfcxsspuun", model.scriptCmdletId());
+        Assertions.assertEquals("yhkx", model.parameters().get(0).name());
+        Assertions.assertEquals("drihpfhoqcaaewda", model.hiddenParameters().get(0).name());
+        Assertions.assertEquals("kzbrmsgeivsiy", model.failureReason());
+        Assertions.assertEquals("zkdnc", model.timeout());
+        Assertions.assertEquals("xonbzoggculapz", model.retention());
+        Assertions.assertEquals("pnylb", model.output().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ScriptExecutionInner model =
             new ScriptExecutionInner()
-                .withScriptCmdletId("fxusemdwzr")
-                .withParameters(
+                .withScriptCmdletId("abwidfcxsspuun")
+                .withParameters(Arrays.asList(new ScriptExecutionParameter().withName("yhkx")))
+                .withHiddenParameters(
                     Arrays
                         .asList(
-                            new ScriptExecutionParameter().withName("apfcqdpsq"),
-                            new ScriptExecutionParameter().withName("qvpsvuoymg"),
-                            new ScriptExecutionParameter().withName("celve")))
-                .withHiddenParameters(Arrays.asList(new ScriptExecutionParameter().withName("pqlmfe")))
-                .withFailureReason("erqwkyhkobopg")
-                .withTimeout("edkowepbqpcrfk")
-                .withRetention("ccsnjvcdwxlpq")
-                .withOutput(Arrays.asList("i"))
-                .withNamedOutputs(mapOf("tmtdhtmdvypgik", "datafq", "irryuzhlh", "datagszywk"));
+                            new ScriptExecutionParameter().withName("drihpfhoqcaaewda"),
+                            new ScriptExecutionParameter().withName("mdjvlpj")))
+                .withFailureReason("kzbrmsgeivsiy")
+                .withTimeout("zkdnc")
+                .withRetention("xonbzoggculapz")
+                .withOutput(Arrays.asList("pnylb", "uajlyj"))
+                .withNamedOutputs(mapOf("zhvfcibyfmowuxr", "dataof", "xfzwi", "datajpvd", "xjrk", "datavwzjbhyz"));
         model = BinaryData.fromObject(model).toObject(ScriptExecutionInner.class);
-        Assertions.assertEquals("fxusemdwzr", model.scriptCmdletId());
-        Assertions.assertEquals("apfcqdpsq", model.parameters().get(0).name());
-        Assertions.assertEquals("pqlmfe", model.hiddenParameters().get(0).name());
-        Assertions.assertEquals("erqwkyhkobopg", model.failureReason());
-        Assertions.assertEquals("edkowepbqpcrfk", model.timeout());
-        Assertions.assertEquals("ccsnjvcdwxlpq", model.retention());
-        Assertions.assertEquals("i", model.output().get(0));
+        Assertions.assertEquals("abwidfcxsspuun", model.scriptCmdletId());
+        Assertions.assertEquals("yhkx", model.parameters().get(0).name());
+        Assertions.assertEquals("drihpfhoqcaaewda", model.hiddenParameters().get(0).name());
+        Assertions.assertEquals("kzbrmsgeivsiy", model.failureReason());
+        Assertions.assertEquals("zkdnc", model.timeout());
+        Assertions.assertEquals("xonbzoggculapz", model.retention());
+        Assertions.assertEquals("pnylb", model.output().get(0));
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();
