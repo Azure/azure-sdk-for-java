@@ -181,7 +181,7 @@
     <dependency>
       <groupId>com.squareup.okio</groupId>
       <artifactId>okio</artifactId>
-      <version>3.3.0</version> <!-- {x-version-update;com.squareup.okio:okio;external_dependency} -->
+      <version>3.4.0</version> <!-- {x-version-update;com.squareup.okio:okio;external_dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -205,7 +205,7 @@
                 <include>com.github.spotbugs:spotbugs-annotations:[4.2.2]</include> <!-- {x-include-update;com.github.spotbugs:spotbugs-annotations;external_dependency} -->
                 <include>org.awaitility:awaitility:[4.2.0]</include> <!-- {x-include-update;org.awaitility:awaitility;external_dependency} -->
                 <include>io.github.hakky54:logcaptor:[2.9.0]</include> <!-- {x-include-update;io.github.hakky54:logcaptor;external_dependency} -->
-                <include>com.squareup.okio:okio:[3.3.0]</include> <!-- {x-include-update;com.squareup.okio:okio;external_dependency} -->
+                <include>com.squareup.okio:okio:[3.4.0]</include> <!-- {x-include-update;com.squareup.okio:okio;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>
