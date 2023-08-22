@@ -74,6 +74,13 @@
       <version>1.43.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
     </dependency>
 
+    <!-- transient dependency -->
+    <dependency>
+      <groupId>com.squareup.okio</groupId>
+      <artifactId>okio-jvm</artifactId>
+      <version>3.5.0</version> <!-- {x-version-update;com.squareup.okio:okio-jvm;external_dependency} -->
+    </dependency>
+
     <dependency>
       <groupId>com.squareup.okhttp3</groupId>
       <artifactId>okhttp</artifactId>
