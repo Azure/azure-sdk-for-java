@@ -23,8 +23,8 @@ Getting started explained in detail [here][SDK_README_GETTING_STARTED].
 
 ## Examples
 
-The following sections provide code samples covering common operations with OpenTelemetry Azure Monitor Exporter client
-library.
+The following sections provide code samples covering common operations with Azure Monitor Logs and Metrics query client
+libraries.
 
 * [Get logs for a query][get_logs]
 * [Get logs for a batch for queries][get_batch_logs]
