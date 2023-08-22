@@ -373,7 +373,7 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
         assertNotNull(messageContext.getMessages());
         ChatMessage firstMessage = messageContext.getMessages().get(0);
         assertNotNull(firstMessage);
-        assertEquals(firstMessage.getRole(), ChatRole.TOOL);
+        assertEquals(ChatRole.TOOL, firstMessage.getRole());
         assertFalse(firstMessage.getContent().isEmpty());
         assertTrue(firstMessage.getContent().contains("citations"));
     }
