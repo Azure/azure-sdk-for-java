@@ -94,16 +94,16 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
     }
 
     protected String getAzureCognitiveSearchKey() {
-       String azureCognitiveSearchKey = Configuration.getGlobalConfiguration().get("ACS_BYOD_API_KEY");
-       if (getTestMode() == TestMode.PLAYBACK) {
+        String azureCognitiveSearchKey = Configuration.getGlobalConfiguration().get("ACS_BYOD_API_KEY");
+        if (getTestMode() == TestMode.PLAYBACK) {
            return FAKE_API_KEY;
-       } else if (azureCognitiveSearchKey != null) {
+        } else if (azureCognitiveSearchKey != null) {
            return azureCognitiveSearchKey;
-       } else {
+        } else {
            throw new IllegalStateException(
                "No Azure Cognitive Search API key found. " +
                    "Please set the appropriate environment variable to use this value.");
-       }
+        }
     }
 
 
@@ -371,7 +371,7 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
         List<ChatCompletions> chatCompletions = chatCompletionsStream.collect(Collectors.toList());
         assertTrue(chatCompletions.toArray().length > 1);
 
-        for(int i = 0; i < chatCompletions.size(); i++) {
+        for (int i = 0; i < chatCompletions.size(); i++) {
             ChatCompletions chatCompletion = chatCompletions.get(i);
             List<ChatChoice> choices = chatCompletion.getChoices();
 
@@ -390,7 +390,7 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
             } else if (i == 1) {
                 assertNull(choices.get(0).getDelta().getContext());
                 assertEquals(choices.get(0).getDelta().getRole(), ChatRole.ASSISTANT);
-            } else if(i == chatCompletions.size() - 1) {
+            } else if (i == chatCompletions.size() - 1) {
                 assertEquals(choices.get(0).getFinishReason(), CompletionsFinishReason.STOPPED);
             } else {
                 assertNotNull(choices.get(0).getDelta().getContent());
