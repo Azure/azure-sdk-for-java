@@ -49,19 +49,8 @@ This workaround allows you to avoid the cost of exporting data to a storage acco
 This sample shows how to parition a large query into smaller queries using the `LogsBatchQuery` class. The sample provides examples for 
 row-based partitioning and byte-size partitioning. The partitioning is based on the timestamp "TimeGenerated". 
 
-This sample is suitable for simple data retrieval queries that utilize a subset of KQL known as "Reduced KQL". It contains the following
-operators:
-- where
-- extend
-- project
-- project-away
-- project-keep
-- project-rename
-- project-reorder
-- parse
-- parse-where
-
-You can use all functions and binary operators within these operators.
+This sample is suitable for simple data retrieval queries that utilize a subset of KQL operators. The subset of KQL operators supported are can
+be found [here][kql_language_subset].
 
 ## Next steps
 
@@ -85,4 +74,4 @@ Guidelines][SDK_README_CONTRIBUTING] for more information.
 [get_metrics]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/monitor/azure-monitor-query/src/samples/java/com/azure/monitor/query/MetricsQuerySample.java
 [monitor_service_limits]: https://learn.microsoft.com/azure/azure-monitor/service-limits#la-query-api
 [logs_data_export]: https://learn.microsoft.com/azure/azure-monitor/logs/logs-data-export?tabs=portal
-
+[kql_language_subset]: https://learn.microsoft.com/azure/azure-monitor/logs/basic-logs-query?tabs=portal-1#kql-language-limits
