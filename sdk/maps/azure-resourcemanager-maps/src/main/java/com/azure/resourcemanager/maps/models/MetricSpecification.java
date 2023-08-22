@@ -65,6 +65,36 @@ public final class MetricSpecification {
     @JsonProperty(value = "resourceIdDimensionNameOverride")
     private String resourceIdDimensionNameOverride;
 
+    /*
+     * Source metrics account.
+     */
+    @JsonProperty(value = "sourceMdmAccount")
+    private String sourceMdmAccount;
+
+    /*
+     * Internal metric name.
+     */
+    @JsonProperty(value = "internalMetricName")
+    private String internalMetricName;
+
+    /*
+     * Lock aggregation type for metrics.
+     */
+    @JsonProperty(value = "lockAggregationType")
+    private String lockAggregationType;
+
+    /*
+     * Metrics namespace.
+     */
+    @JsonProperty(value = "sourceMdmNamespace")
+    private String sourceMdmNamespace;
+
+    /*
+     * Allowed aggregation types for metrics.
+     */
+    @JsonProperty(value = "supportedAggregationTypes")
+    private String supportedAggregationTypes;
+
     /** Creates an instance of MetricSpecification class. */
     public MetricSpecification() {
     }
@@ -246,6 +276,106 @@ public final class MetricSpecification {
      */
     public MetricSpecification withResourceIdDimensionNameOverride(String resourceIdDimensionNameOverride) {
         this.resourceIdDimensionNameOverride = resourceIdDimensionNameOverride;
+        return this;
+    }
+
+    /**
+     * Get the sourceMdmAccount property: Source metrics account.
+     *
+     * @return the sourceMdmAccount value.
+     */
+    public String sourceMdmAccount() {
+        return this.sourceMdmAccount;
+    }
+
+    /**
+     * Set the sourceMdmAccount property: Source metrics account.
+     *
+     * @param sourceMdmAccount the sourceMdmAccount value to set.
+     * @return the MetricSpecification object itself.
+     */
+    public MetricSpecification withSourceMdmAccount(String sourceMdmAccount) {
+        this.sourceMdmAccount = sourceMdmAccount;
+        return this;
+    }
+
+    /**
+     * Get the internalMetricName property: Internal metric name.
+     *
+     * @return the internalMetricName value.
+     */
+    public String internalMetricName() {
+        return this.internalMetricName;
+    }
+
+    /**
+     * Set the internalMetricName property: Internal metric name.
+     *
+     * @param internalMetricName the internalMetricName value to set.
+     * @return the MetricSpecification object itself.
+     */
+    public MetricSpecification withInternalMetricName(String internalMetricName) {
+        this.internalMetricName = internalMetricName;
+        return this;
+    }
+
+    /**
+     * Get the lockAggregationType property: Lock aggregation type for metrics.
+     *
+     * @return the lockAggregationType value.
+     */
+    public String lockAggregationType() {
+        return this.lockAggregationType;
+    }
+
+    /**
+     * Set the lockAggregationType property: Lock aggregation type for metrics.
+     *
+     * @param lockAggregationType the lockAggregationType value to set.
+     * @return the MetricSpecification object itself.
+     */
+    public MetricSpecification withLockAggregationType(String lockAggregationType) {
+        this.lockAggregationType = lockAggregationType;
+        return this;
+    }
+
+    /**
+     * Get the sourceMdmNamespace property: Metrics namespace.
+     *
+     * @return the sourceMdmNamespace value.
+     */
+    public String sourceMdmNamespace() {
+        return this.sourceMdmNamespace;
+    }
+
+    /**
+     * Set the sourceMdmNamespace property: Metrics namespace.
+     *
+     * @param sourceMdmNamespace the sourceMdmNamespace value to set.
+     * @return the MetricSpecification object itself.
+     */
+    public MetricSpecification withSourceMdmNamespace(String sourceMdmNamespace) {
+        this.sourceMdmNamespace = sourceMdmNamespace;
+        return this;
+    }
+
+    /**
+     * Get the supportedAggregationTypes property: Allowed aggregation types for metrics.
+     *
+     * @return the supportedAggregationTypes value.
+     */
+    public String supportedAggregationTypes() {
+        return this.supportedAggregationTypes;
+    }
+
+    /**
+     * Set the supportedAggregationTypes property: Allowed aggregation types for metrics.
+     *
+     * @param supportedAggregationTypes the supportedAggregationTypes value to set.
+     * @return the MetricSpecification object itself.
+     */
+    public MetricSpecification withSupportedAggregationTypes(String supportedAggregationTypes) {
+        this.supportedAggregationTypes = supportedAggregationTypes;
         return this;
     }
 
