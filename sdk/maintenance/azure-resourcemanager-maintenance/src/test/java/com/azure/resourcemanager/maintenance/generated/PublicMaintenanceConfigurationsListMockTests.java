@@ -15,6 +15,7 @@ import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.maintenance.MaintenanceManager;
 import com.azure.resourcemanager.maintenance.models.MaintenanceConfiguration;
 import com.azure.resourcemanager.maintenance.models.MaintenanceScope;
+import com.azure.resourcemanager.maintenance.models.RebootOptions;
 import com.azure.resourcemanager.maintenance.models.Visibility;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
@@ -34,7 +35,7 @@ public final class PublicMaintenanceConfigurationsListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"location\":\"soifiyipjxsqw\",\"tags\":{\"xv\":\"jbznorc\"},\"properties\":{\"namespace\":\"yxqabnmocpcyshur\",\"extensionProperties\":{\"j\":\"bl\"},\"maintenanceScope\":\"SQLManagedInstance\",\"maintenanceWindow\":{\"startDateTime\":\"qcjm\",\"expirationDateTime\":\"javbqidtqajz\",\"duration\":\"l\",\"timeZone\":\"u\",\"recurEvery\":\"krlkhbzhfepg\"},\"visibility\":\"Custom\"},\"id\":\"xzlocxscp\",\"name\":\"ierhhbcsglummaj\",\"type\":\"j\"}]}";
+            "{\"value\":[{\"location\":\"upjm\",\"tags\":{\"riplrbpbewtg\":\"xobbcswsrt\",\"c\":\"fgb\",\"gibtnm\":\"wxzvlvqhjkb\"},\"properties\":{\"namespace\":\"bwwaloa\",\"extensionProperties\":{\"gwyzm\":\"gwrtzju\",\"mtsavjcbpwxqp\":\"txon\",\"yvxqtayriwwroy\":\"rknftguvriuhprwm\"},\"maintenanceScope\":\"Host\",\"maintenanceWindow\":{\"startDateTime\":\"mcqibycnojv\",\"expirationDateTime\":\"mefqsgzvahapjyzh\",\"duration\":\"gqzcjr\",\"timeZone\":\"djzlmwlx\",\"recurEvery\":\"ug\"},\"visibility\":\"Custom\",\"installPatches\":{\"rebootSetting\":\"IfRequired\",\"windowsParameters\":{\"kbNumbersToExclude\":[\"zunlu\",\"hnnpr\",\"xipeilpjzuaejx\",\"ultskzbbtdz\"],\"kbNumbersToInclude\":[\"e\",\"kgpwoz\",\"hkfpbs\",\"yofd\"],\"classificationsToInclude\":[\"us\",\"ttouwaboekqvkel\",\"smv\"],\"excludeKbsRequiringReboot\":true},\"linuxParameters\":{\"packageNameMasksToExclude\":[\"flhhcaal\",\"jixisxyawjoyaqcs\"],\"packageNameMasksToInclude\":[\"pkii\",\"zyexzn\",\"lixhnrztfol\",\"bnxknalaulppg\"],\"classificationsToInclude\":[\"pnapnyiropuh\",\"igvpgylg\",\"git\",\"medjvcslynqwwncw\"]}}},\"id\":\"hxg\",\"name\":\"trmgucnapkte\",\"type\":\"ellwptfdy\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -65,16 +66,42 @@ public final class PublicMaintenanceConfigurationsListMockTests {
         PagedIterable<MaintenanceConfiguration> response =
             manager.publicMaintenanceConfigurations().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("soifiyipjxsqw", response.iterator().next().location());
-        Assertions.assertEquals("jbznorc", response.iterator().next().tags().get("xv"));
-        Assertions.assertEquals("yxqabnmocpcyshur", response.iterator().next().namespace());
-        Assertions.assertEquals("bl", response.iterator().next().extensionProperties().get("j"));
-        Assertions.assertEquals(MaintenanceScope.SQLMANAGED_INSTANCE, response.iterator().next().maintenanceScope());
+        Assertions.assertEquals("upjm", response.iterator().next().location());
+        Assertions.assertEquals("xobbcswsrt", response.iterator().next().tags().get("riplrbpbewtg"));
+        Assertions.assertEquals("bwwaloa", response.iterator().next().namespace());
+        Assertions.assertEquals("gwrtzju", response.iterator().next().extensionProperties().get("gwyzm"));
+        Assertions.assertEquals(MaintenanceScope.HOST, response.iterator().next().maintenanceScope());
         Assertions.assertEquals(Visibility.CUSTOM, response.iterator().next().visibility());
-        Assertions.assertEquals("qcjm", response.iterator().next().startDateTime());
-        Assertions.assertEquals("javbqidtqajz", response.iterator().next().expirationDateTime());
-        Assertions.assertEquals("l", response.iterator().next().duration());
-        Assertions.assertEquals("u", response.iterator().next().timeZone());
-        Assertions.assertEquals("krlkhbzhfepg", response.iterator().next().recurEvery());
+        Assertions.assertEquals(RebootOptions.IF_REQUIRED, response.iterator().next().installPatches().rebootSetting());
+        Assertions
+            .assertEquals(
+                "zunlu", response.iterator().next().installPatches().windowsParameters().kbNumbersToExclude().get(0));
+        Assertions
+            .assertEquals(
+                "e", response.iterator().next().installPatches().windowsParameters().kbNumbersToInclude().get(0));
+        Assertions
+            .assertEquals(
+                "us",
+                response.iterator().next().installPatches().windowsParameters().classificationsToInclude().get(0));
+        Assertions
+            .assertEquals(
+                true, response.iterator().next().installPatches().windowsParameters().excludeKbsRequiringReboot());
+        Assertions
+            .assertEquals(
+                "flhhcaal",
+                response.iterator().next().installPatches().linuxParameters().packageNameMasksToExclude().get(0));
+        Assertions
+            .assertEquals(
+                "pkii",
+                response.iterator().next().installPatches().linuxParameters().packageNameMasksToInclude().get(0));
+        Assertions
+            .assertEquals(
+                "pnapnyiropuh",
+                response.iterator().next().installPatches().linuxParameters().classificationsToInclude().get(0));
+        Assertions.assertEquals("mcqibycnojv", response.iterator().next().startDateTime());
+        Assertions.assertEquals("mefqsgzvahapjyzh", response.iterator().next().expirationDateTime());
+        Assertions.assertEquals("gqzcjr", response.iterator().next().duration());
+        Assertions.assertEquals("djzlmwlx", response.iterator().next().timeZone());
+        Assertions.assertEquals("ug", response.iterator().next().recurEvery());
     }
 }
