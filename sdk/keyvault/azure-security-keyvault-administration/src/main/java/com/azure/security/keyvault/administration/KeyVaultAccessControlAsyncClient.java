@@ -15,6 +15,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.security.keyvault.administration.implementation.KeyVaultAccessControlClientImpl;
+import com.azure.security.keyvault.administration.implementation.KeyVaultAccessControlClientImplBuilder;
 import com.azure.security.keyvault.administration.implementation.KeyVaultAdministrationUtils;
 import com.azure.security.keyvault.administration.implementation.KeyVaultErrorCodeStrings;
 import com.azure.security.keyvault.administration.implementation.models.RoleAssignmentCreateParameters;
@@ -32,11 +33,11 @@ import java.util.UUID;
 
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
-import static com.azure.security.keyvault.administration.KeyVaultAdministrationUtil.swallowExceptionForStatusCodeAsync;
-import static com.azure.security.keyvault.administration.KeyVaultAdministrationUtil.validateAndGetRoleAssignmentCreateParameters;
-import static com.azure.security.keyvault.administration.KeyVaultAdministrationUtil.validateAndGetRoleDefinitionCreateParameters;
-import static com.azure.security.keyvault.administration.KeyVaultAdministrationUtil.validateRoleAssignmentParameters;
 import static com.azure.security.keyvault.administration.KeyVaultAdministrationUtil.validateRoleDefinitionParameters;
+import static com.azure.security.keyvault.administration.KeyVaultAdministrationUtil.validateRoleAssignmentParameters;
+import static com.azure.security.keyvault.administration.KeyVaultAdministrationUtil.validateAndGetRoleDefinitionCreateParameters;
+import static com.azure.security.keyvault.administration.KeyVaultAdministrationUtil.validateAndGetRoleAssignmentCreateParameters;
+import static com.azure.security.keyvault.administration.KeyVaultAdministrationUtil.swallowExceptionForStatusCodeAsync;
 
 /**
  * The {@link KeyVaultAccessControlAsyncClient} provides asynchronous methods to view and manage Role Based Access
@@ -90,13 +91,17 @@ public final class KeyVaultAccessControlAsyncClient {
      */
     KeyVaultAccessControlAsyncClient(URL vaultUrl, HttpPipeline httpPipeline,
                                      KeyVaultAdministrationServiceVersion serviceVersion) {
-        Objects.requireNonNull(vaultUrl, KeyVaultErrorCodeStrings.VAULT_END_POINT_REQUIRED);
+        Objects.requireNonNull(vaultUrl,
+            KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.VAULT_END_POINT_REQUIRED));
 
         this.vaultUrl = vaultUrl.toString();
         this.serviceVersion = serviceVersion.getVersion();
         this.pipeline = httpPipeline;
 
-        clientImpl = new KeyVaultAccessControlClientImpl(httpPipeline, this.serviceVersion);
+        clientImpl = new KeyVaultAccessControlClientImplBuilder()
+            .pipeline(httpPipeline)
+            .apiVersion(this.serviceVersion)
+            .buildClient();
     }
 
     /**
@@ -185,7 +190,8 @@ public final class KeyVaultAccessControlAsyncClient {
                                                                              Context context) {
         try {
             Objects.requireNonNull(roleScope,
-                String.format(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED, "'roleScope'"));
+                String.format(KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED),
+                    "'roleScope'"));
 
             return clientImpl.getRoleDefinitions()
                 .listSinglePageAsync(vaultUrl, roleScope.toString(), null,
@@ -639,7 +645,8 @@ public final class KeyVaultAccessControlAsyncClient {
                                                                              Context context) {
         try {
             Objects.requireNonNull(roleScope,
-                String.format(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED, "'roleScope'"));
+                String.format(KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED),
+                    "'roleScope'"));
 
             return clientImpl.getRoleAssignments()
                 .listForScopeSinglePageAsync(vaultUrl, roleScope.toString(), null,

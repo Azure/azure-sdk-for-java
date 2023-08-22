@@ -5,18 +5,15 @@
 package com.azure.security.keyvault.administration.implementation.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The key vault error exception. */
 @Immutable
-public final class KeyVaultError implements JsonSerializable<KeyVaultError> {
+public final class KeyVaultError {
     /*
      * The key vault server error.
      */
+    @JsonProperty(value = "error", access = JsonProperty.Access.WRITE_ONLY)
     private Error error;
 
     /** Creates an instance of KeyVaultError class. */
@@ -29,39 +26,5 @@ public final class KeyVaultError implements JsonSerializable<KeyVaultError> {
      */
     public Error getError() {
         return this.error;
-    }
-
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeJsonField("error", this.error);
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of KeyVaultError from the JsonReader.
-     *
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of KeyVaultError if the JsonReader was pointing to an instance of it, or null if it was
-     *     pointing to JSON null.
-     * @throws IOException If an error occurs while reading the KeyVaultError.
-     */
-    public static KeyVaultError fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    KeyVaultError deserializedKeyVaultError = new KeyVaultError();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
-
-                        if ("error".equals(fieldName)) {
-                            deserializedKeyVaultError.error = Error.fromJson(reader);
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
-
-                    return deserializedKeyVaultError;
-                });
     }
 }

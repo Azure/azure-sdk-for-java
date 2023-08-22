@@ -5,30 +5,27 @@
 package com.azure.security.keyvault.administration.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import com.azure.security.keyvault.administration.models.KeyVaultRoleScope;
-import java.io.IOException;
-import java.util.Objects;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Role assignment properties with scope. */
 @Fluent
-public final class RoleAssignmentPropertiesWithScope implements JsonSerializable<RoleAssignmentPropertiesWithScope> {
+public final class RoleAssignmentPropertiesWithScope {
     /*
      * The role scope.
      */
-    private KeyVaultRoleScope scope;
+    @JsonProperty(value = "scope")
+    private RoleScope scope;
 
     /*
      * The role definition ID.
      */
+    @JsonProperty(value = "roleDefinitionId")
     private String roleDefinitionId;
 
     /*
      * The principal ID.
      */
+    @JsonProperty(value = "principalId")
     private String principalId;
 
     /** Creates an instance of RoleAssignmentPropertiesWithScope class. */
@@ -39,7 +36,7 @@ public final class RoleAssignmentPropertiesWithScope implements JsonSerializable
      *
      * @return the scope value.
      */
-    public KeyVaultRoleScope getScope() {
+    public RoleScope getScope() {
         return this.scope;
     }
 
@@ -49,7 +46,7 @@ public final class RoleAssignmentPropertiesWithScope implements JsonSerializable
      * @param scope the scope value to set.
      * @return the RoleAssignmentPropertiesWithScope object itself.
      */
-    public RoleAssignmentPropertiesWithScope setScope(KeyVaultRoleScope scope) {
+    public RoleAssignmentPropertiesWithScope setScope(RoleScope scope) {
         this.scope = scope;
         return this;
     }
@@ -92,47 +89,5 @@ public final class RoleAssignmentPropertiesWithScope implements JsonSerializable
     public RoleAssignmentPropertiesWithScope setPrincipalId(String principalId) {
         this.principalId = principalId;
         return this;
-    }
-
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("scope", Objects.toString(this.scope, null));
-        jsonWriter.writeStringField("roleDefinitionId", this.roleDefinitionId);
-        jsonWriter.writeStringField("principalId", this.principalId);
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of RoleAssignmentPropertiesWithScope from the JsonReader.
-     *
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of RoleAssignmentPropertiesWithScope if the JsonReader was pointing to an instance of it, or
-     *     null if it was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the RoleAssignmentPropertiesWithScope.
-     */
-    public static RoleAssignmentPropertiesWithScope fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    RoleAssignmentPropertiesWithScope deserializedRoleAssignmentPropertiesWithScope =
-                            new RoleAssignmentPropertiesWithScope();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
-
-                        if ("scope".equals(fieldName)) {
-                            deserializedRoleAssignmentPropertiesWithScope.scope =
-                                    KeyVaultRoleScope.fromString(reader.getString());
-                        } else if ("roleDefinitionId".equals(fieldName)) {
-                            deserializedRoleAssignmentPropertiesWithScope.roleDefinitionId = reader.getString();
-                        } else if ("principalId".equals(fieldName)) {
-                            deserializedRoleAssignmentPropertiesWithScope.principalId = reader.getString();
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
-
-                    return deserializedRoleAssignmentPropertiesWithScope;
-                });
     }
 }
