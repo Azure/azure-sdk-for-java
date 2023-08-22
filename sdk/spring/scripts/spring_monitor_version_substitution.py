@@ -2,7 +2,7 @@
 #
 # This script is used to update sdk\spring\spring-cloud-azure-starter-monitor-test\pom.xml before compatibility check.
 # Sample:
-# 1. python .\sdk\spring\scripts\replace_v_4_monitor.py -b 3.1.2
+# 1. python .\sdk\spring\scripts\spring_monitor_version_substitution.py -b 3.1.2
 #
 # The script must be run at the root of azure-sdk-for-java.
 
