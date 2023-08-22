@@ -93,7 +93,7 @@ com.azure:azure-core-test;1.19.0;1.20.0-beta.1
 com.azure:azure-core-tracing-opentelemetry;1.0.0-beta.38;1.0.0-beta.39
 com.azure:azure-core-tracing-opentelemetry-samples;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-core-version-tests;1.0.0-beta.1;1.0.0-beta.1
-com.azure:azure-cosmos;4.48.0;4.49.0
+com.azure:azure-cosmos;4.49.0;4.50.0-beta.1
 com.azure:azure-cosmos-benchmark;4.0.1-beta.1;4.0.1-beta.1
 com.azure:azure-cosmos-dotnet-benchmark;4.0.1-beta.1;4.0.1-beta.1
 com.azure.cosmos.spark:azure-cosmos-spark_3_2-12;1.0.0-beta.1;1.0.0-beta.1
@@ -101,8 +101,8 @@ com.azure.cosmos.spark:azure-cosmos-spark_3-1_2-12;4.21.0;4.22.0-beta.1
 com.azure.cosmos.spark:azure-cosmos-spark_3-2_2-12;4.21.0;4.22.0-beta.1
 com.azure.cosmos.spark:azure-cosmos-spark_3-3_2-12;4.21.0;4.22.0-beta.1
 com.azure.cosmos.spark:azure-cosmos-spark_3-4_2-12;4.21.0;4.22.0-beta.1
-com.azure:azure-cosmos-encryption;2.3.0;2.4.0
-com.azure:azure-cosmos-test;1.0.0-beta.4;1.0.0-beta.5
+com.azure:azure-cosmos-encryption;2.4.0;2.5.0-beta.1
+com.azure:azure-cosmos-test;1.0.0-beta.5;1.0.0-beta.6
 com.azure:azure-cosmos-tests;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-data-appconfiguration;1.4.7;1.5.0-beta.2
 com.azure:azure-data-appconfiguration-perf;1.0.0-beta.1;1.0.0-beta.1
