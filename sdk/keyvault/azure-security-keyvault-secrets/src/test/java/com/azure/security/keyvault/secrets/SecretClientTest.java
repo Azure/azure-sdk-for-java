@@ -20,15 +20,12 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.net.HttpURLConnection;
-import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.spy;
-import static org.mockito.Mockito.when;
 
 public class SecretClientTest extends SecretClientTestBase {
     private SecretClient secretClient;
@@ -45,13 +42,8 @@ public class SecretClientTest extends SecretClientTestBase {
     private void createClient(HttpClient httpClient, SecretServiceVersion serviceVersion, String testTenantId) {
         HttpPipeline httpPipeline = getHttpPipeline(buildSyncAssertingClient(
             interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient), testTenantId);
-        SecretClientImpl implClient = spy(new SecretClientImpl(getEndpoint(), httpPipeline, serviceVersion));
 
-        if (interceptorManager.isPlaybackMode()) {
-            when(implClient.getDefaultPollingInterval()).thenReturn(Duration.ofMillis(10));
-        }
-
-        secretClient = new SecretClient(implClient);
+        secretClient = new SecretClient(new SecretClientImpl(httpPipeline, serviceVersion.getVersion()), getEndpoint());
     }
 
     private HttpClient buildSyncAssertingClient(HttpClient httpClient) {
@@ -215,7 +207,8 @@ public class SecretClientTest extends SecretClientTestBase {
         deleteSecretRunner((secretToDelete) -> {
             assertSecretEquals(secretToDelete, secretClient.setSecret(secretToDelete));
 
-            SyncPoller<DeletedSecret, Void> poller = secretClient.beginDeleteSecret(secretToDelete.getName());
+            SyncPoller<DeletedSecret, Void> poller = setPlaybackSyncPollerPollInterval(
+                secretClient.beginDeleteSecret(secretToDelete.getName()));
 
             PollResponse<DeletedSecret> pollResponse = poller.poll();
 
@@ -254,7 +247,8 @@ public class SecretClientTest extends SecretClientTestBase {
         getDeletedSecretRunner((secretToDeleteAndGet) -> {
             assertSecretEquals(secretToDeleteAndGet, secretClient.setSecret(secretToDeleteAndGet));
 
-            SyncPoller<DeletedSecret, Void> poller = secretClient.beginDeleteSecret(secretToDeleteAndGet.getName());
+            SyncPoller<DeletedSecret, Void> poller = setPlaybackSyncPollerPollInterval(
+                secretClient.beginDeleteSecret(secretToDeleteAndGet.getName()));
             PollResponse<DeletedSecret> pollResponse = poller.poll();
 
             while (!pollResponse.getStatus().isComplete()) {
@@ -296,8 +290,8 @@ public class SecretClientTest extends SecretClientTestBase {
         recoverDeletedSecretRunner((secretToDeleteAndRecover) -> {
             assertSecretEquals(secretToDeleteAndRecover, secretClient.setSecret(secretToDeleteAndRecover));
 
-            SyncPoller<DeletedSecret, Void> delPoller =
-                secretClient.beginDeleteSecret(secretToDeleteAndRecover.getName());
+            SyncPoller<DeletedSecret, Void> delPoller = setPlaybackSyncPollerPollInterval(
+                secretClient.beginDeleteSecret(secretToDeleteAndRecover.getName()));
             PollResponse<DeletedSecret> pollResponse = delPoller.poll();
 
             while (!pollResponse.getStatus().isComplete()) {
@@ -306,8 +300,8 @@ public class SecretClientTest extends SecretClientTestBase {
                 pollResponse = delPoller.poll();
             }
 
-            SyncPoller<KeyVaultSecret, Void> poller =
-                secretClient.beginRecoverDeletedSecret(secretToDeleteAndRecover.getName());
+            SyncPoller<KeyVaultSecret, Void> poller = setPlaybackSyncPollerPollInterval(
+                secretClient.beginRecoverDeletedSecret(secretToDeleteAndRecover.getName()));
             PollResponse<KeyVaultSecret> response = poller.poll();
 
             while (!response.getStatus().isComplete()) {
@@ -384,7 +378,8 @@ public class SecretClientTest extends SecretClientTestBase {
             assertNotNull(backupBytes);
             assertTrue(backupBytes.length > 0);
 
-            SyncPoller<DeletedSecret, Void> poller = secretClient.beginDeleteSecret(secretToBackupAndRestore.getName());
+            SyncPoller<DeletedSecret, Void> poller = setPlaybackSyncPollerPollInterval(
+                secretClient.beginDeleteSecret(secretToBackupAndRestore.getName()));
             PollResponse<DeletedSecret> pollResponse = poller.poll();
 
             while (!pollResponse.getStatus().isComplete()) {
@@ -466,7 +461,8 @@ public class SecretClientTest extends SecretClientTestBase {
             }
 
             for (KeyVaultSecret secret : secretsToSetAndDelete.values()) {
-                SyncPoller<DeletedSecret, Void> poller = secretClient.beginDeleteSecret(secret.getName());
+                SyncPoller<DeletedSecret, Void> poller = setPlaybackSyncPollerPollInterval(
+                    secretClient.beginDeleteSecret(secret.getName()));
                 PollResponse<DeletedSecret> pollResponse = poller.poll();
 
                 while (!pollResponse.getStatus().isComplete()) {

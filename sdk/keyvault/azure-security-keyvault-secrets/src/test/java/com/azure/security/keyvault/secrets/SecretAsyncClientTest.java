@@ -23,7 +23,6 @@ import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.net.HttpURLConnection;
-import java.time.Duration;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -31,8 +30,6 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.spy;
-import static org.mockito.Mockito.when;
 
 public class SecretAsyncClientTest extends SecretClientTestBase {
     private SecretAsyncClient secretAsyncClient;
@@ -50,13 +47,9 @@ public class SecretAsyncClientTest extends SecretClientTestBase {
                                          String testTenantId) {
         HttpPipeline httpPipeline = getHttpPipeline(buildAsyncAssertingClient(
             interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient), testTenantId);
-        SecretClientImpl implClient = spy(new SecretClientImpl(getEndpoint(), httpPipeline, serviceVersion));
 
-        if (interceptorManager.isPlaybackMode()) {
-            when(implClient.getDefaultPollingInterval()).thenReturn(Duration.ofMillis(10));
-        }
-
-        secretAsyncClient = new SecretAsyncClient(implClient);
+        secretAsyncClient = new SecretAsyncClient(new SecretClientImpl(httpPipeline, serviceVersion.getVersion()),
+            getEndpoint());
     }
 
     private HttpClient buildAsyncAssertingClient(HttpClient httpClient) {
@@ -261,7 +254,8 @@ public class SecretAsyncClientTest extends SecretClientTestBase {
                 .assertNext(response -> assertSecretEquals(secretToDelete, response))
                 .verifyComplete();
 
-            PollerFlux<DeletedSecret, Void> poller = secretAsyncClient.beginDeleteSecret(secretToDelete.getName());
+            PollerFlux<DeletedSecret, Void> poller = setPlaybackPollerFluxPollInterval(
+                secretAsyncClient.beginDeleteSecret(secretToDelete.getName()));
             AsyncPollResponse<DeletedSecret, Void> lastResponse =
                 poller.takeUntil(apr -> apr.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED)
                     .blockLast();
@@ -300,8 +294,8 @@ public class SecretAsyncClientTest extends SecretClientTestBase {
                 .assertNext(secretResponse -> assertSecretEquals(secretToDeleteAndGet, secretResponse))
                 .verifyComplete();
 
-            PollerFlux<DeletedSecret, Void> poller =
-                secretAsyncClient.beginDeleteSecret(secretToDeleteAndGet.getName());
+            PollerFlux<DeletedSecret, Void> poller = setPlaybackPollerFluxPollInterval(
+                secretAsyncClient.beginDeleteSecret(secretToDeleteAndGet.getName()));
 
             poller.takeUntil(apr -> apr.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED)
                 .blockLast();
@@ -342,13 +336,13 @@ public class SecretAsyncClientTest extends SecretClientTestBase {
                 .assertNext(secretResponse -> assertSecretEquals(secretToDeleteAndRecover, secretResponse))
                 .verifyComplete();
 
-            PollerFlux<DeletedSecret, Void> poller =
-                secretAsyncClient.beginDeleteSecret(secretToDeleteAndRecover.getName());
+            PollerFlux<DeletedSecret, Void> poller = setPlaybackPollerFluxPollInterval(
+                secretAsyncClient.beginDeleteSecret(secretToDeleteAndRecover.getName()));
 
             poller.takeUntil(apr -> apr.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED).blockLast();
 
-            PollerFlux<KeyVaultSecret, Void> recoverPoller =
-                secretAsyncClient.beginRecoverDeletedSecret(secretToDeleteAndRecover.getName());
+            PollerFlux<KeyVaultSecret, Void> recoverPoller = setPlaybackPollerFluxPollInterval(
+                secretAsyncClient.beginRecoverDeletedSecret(secretToDeleteAndRecover.getName()));
             AsyncPollResponse<KeyVaultSecret, Void> lastResponse =
                 recoverPoller.takeUntil(apr -> apr.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED)
                     .blockLast();
@@ -425,8 +419,8 @@ public class SecretAsyncClientTest extends SecretClientTestBase {
 
             byte[] backup = secretAsyncClient.backupSecret(secretToBackupAndRestore.getName()).block();
 
-            PollerFlux<DeletedSecret, Void> poller =
-                secretAsyncClient.beginDeleteSecret(secretToBackupAndRestore.getName());
+            PollerFlux<DeletedSecret, Void> poller = setPlaybackPollerFluxPollInterval(
+                secretAsyncClient.beginDeleteSecret(secretToBackupAndRestore.getName()));
 
             poller.takeUntil(apr -> apr.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED).blockLast();
 
@@ -489,7 +483,8 @@ public class SecretAsyncClientTest extends SecretClientTestBase {
             sleepInRecordMode(10000);
 
             for (KeyVaultSecret secret : secretsToSetAndDelete.values()) {
-                PollerFlux<DeletedSecret, Void> poller = secretAsyncClient.beginDeleteSecret(secret.getName());
+                PollerFlux<DeletedSecret, Void> poller = setPlaybackPollerFluxPollInterval(
+                    secretAsyncClient.beginDeleteSecret(secret.getName()));
 
                 poller.takeUntil(apr -> apr.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED)
                     .blockLast();
