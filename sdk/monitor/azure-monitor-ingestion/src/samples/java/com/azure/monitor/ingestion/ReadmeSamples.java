@@ -120,6 +120,7 @@ public final class ReadmeSamples {
 
         // BEGIN: readme-sample-enablehttplogging
         LogsIngestionClient logsIngestionClient = new LogsIngestionClientBuilder()
+            .endpoint("<data-collection-endpoint")
             .credential(credential)
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
             .buildClient();
