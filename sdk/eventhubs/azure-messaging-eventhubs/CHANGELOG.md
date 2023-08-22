@@ -1,5 +1,15 @@
 # Release History
 
+## 5.16.0-beta.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
 ## 5.15.8 (2023-08-18)
 
 ### Other Changes

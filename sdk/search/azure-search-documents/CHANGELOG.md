@@ -1,5 +1,15 @@
 # Release History
 
+## 11.6.0-beta.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
 ## 11.5.10 (2023-08-18)
 
 ### Other Changes
