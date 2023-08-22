@@ -18,7 +18,7 @@ Include the dependency in the dependencies' section. Ignoring the version tag wi
   <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-ai-personalizer</artifactId>
-      <version>1.0.0-beta.1</version> <!-- {{x-version-update-start;com.azure:azure-ai-personalizer;current} -->
+      <version>1.0.0-beta.2</version> <!-- {{x-version-update-start;com.azure:azure-ai-personalizer;current} -->
   </dependency>
 </dependencies>
 ```
@@ -27,7 +27,7 @@ This table shows the relationship between SDK versions and supported API version
 
 |SDK version|Supported API version of service
 |-|-
-|1.0.0-beta.1 | 1.1-preview.3
+|1.0.0-beta.2 | 1.1-preview.3
 
 ## Key concepts
 The [PersonalizerAdministrationClient][personalizer_admin_sync_client] and
