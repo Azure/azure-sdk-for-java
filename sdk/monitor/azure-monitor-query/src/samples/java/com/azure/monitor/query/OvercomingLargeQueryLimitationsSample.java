@@ -125,7 +125,7 @@ public class LargeQuerySample {
      * @return A list of {@link QueryTimeInterval} objects.
      */
     static List<QueryTimeInterval> createQueryTimeIntervalsForBatchQueryByRowCount(String originalQuery,
-                                                                   int maxRowPerBatch) {
+                                                                   int maxRowsPerBatch) {
 
         String findBatchEndpointsQuery = String.format(
             "%1$s | sort by TimeGenerated desc | extend batch_num = row_cumsum(1) / %2$s | summarize batchStart=min(TimeGenerated) by batch_num | sort by batch_num desc | project batchStart",
