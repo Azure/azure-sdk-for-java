@@ -7,7 +7,6 @@ import com.azure.messaging.servicebus.ServiceBusProcessor.RollingMessagePump;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder.ServiceBusReceiverClientBuilder;
 import com.azure.messaging.servicebus.implementation.instrumentation.ReceiverKind;
 import com.azure.messaging.servicebus.implementation.instrumentation.ServiceBusReceiverInstrumentation;
-import com.azure.messaging.servicebus.implementation.instrumentation.ServiceBusTracer;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;

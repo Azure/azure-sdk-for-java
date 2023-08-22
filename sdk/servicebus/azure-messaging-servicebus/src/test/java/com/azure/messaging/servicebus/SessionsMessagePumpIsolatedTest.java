@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
+
 package com.azure.messaging.servicebus;
 
 import com.azure.core.amqp.AmqpEndpointState;
@@ -13,7 +14,6 @@ import org.apache.qpid.proton.amqp.messaging.Modified;
 import org.apache.qpid.proton.amqp.transport.DeliveryState;
 import com.azure.messaging.servicebus.implementation.ServiceBusReceiveLink;
 import com.azure.messaging.servicebus.implementation.instrumentation.ServiceBusReceiverInstrumentation;
-import com.azure.messaging.servicebus.implementation.instrumentation.ServiceBusTracer;
 import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
 import com.azure.messaging.servicebus.ServiceBusSessionAcquirer.Session;
 import org.apache.qpid.proton.message.Message;
