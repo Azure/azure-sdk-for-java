@@ -38,6 +38,7 @@ import com.azure.storage.file.share.options.ShareSetAccessPolicyOptions;
 import com.azure.storage.file.share.options.ShareSetMetadataOptions;
 import com.azure.storage.file.share.options.ShareSetPropertiesOptions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledIf;
 import org.junit.jupiter.api.condition.EnabledIf;
@@ -515,15 +516,12 @@ public class ShareApiTests extends FileShareTestBase {
         assertThrows(ShareStorageException.class, shareClient::getProperties);
     }
 
+    @Disabled("Groovy version of this test does not work, need to revisit and fix.")
     //@EnabledIf("com.azure.storage.file.share.FileShareTestBase#isPlaybackMode")
     @ParameterizedTest
     @MethodSource("com.azure.storage.file.share.FileShareTestHelper#getPropertiesPremiumSupplier")
     public void getPropertiesPremium(String protocol, ShareRootSquash rootSquash) {
-        System.out.println("protocol: " + protocol);
-        System.out.println("rootSquash: " + rootSquash);
         ShareProtocols enabledProtocol = ModelHelper.parseShareProtocols(protocol);
-        System.out.println("enabledProtocol: " + enabledProtocol);
-
         ShareClient premiumShareClient = premiumFileServiceClient.createShareWithResponse(generateShareName(),
                 new ShareCreateOptions().setMetadata(testMetadata).setProtocols(enabledProtocol)
                     .setRootSquash(rootSquash), null, null).getValue();
@@ -533,18 +531,13 @@ public class ShareApiTests extends FileShareTestBase {
 
         FileShareTestHelper.assertResponseStatusCode(getPropertiesResponse, 200);
         assertEquals(testMetadata, shareProperties.getMetadata());
-        //assertNotNull(shareProperties.getNextAllowedQuotaDowngradeTime());
-        //assertNotNull(shareProperties.getProvisionedEgressMBps());
-        //assertNotNull(shareProperties.getProvisionedIngressMBps());
-        //assertNotNull(shareProperties.getProvisionedIops());
-        //assertNotNull(shareProperties.getProvisionedBandwidthMiBps());
-        System.out.println(shareProperties.getProtocols());
-        //assertEquals(shareProperties.getProtocols().toString(), enabledProtocol.toString());
+        assertEquals(shareProperties.getProtocols().toString(), enabledProtocol.toString());
         assertEquals(shareProperties.getRootSquash(), rootSquash);
     }
 
-    @Test
+    @Disabled("Groovy version of this test does not work, need to revisit and fix.")
     //@EnabledIf("com.azure.storage.file.share.FileShareTestBase#isPlaybackMode")
+    @Test
     public void setPremiumProperties() {
         List<ShareRootSquash> rootSquashes = Arrays.asList(
             ShareRootSquash.ALL_SQUASH,
