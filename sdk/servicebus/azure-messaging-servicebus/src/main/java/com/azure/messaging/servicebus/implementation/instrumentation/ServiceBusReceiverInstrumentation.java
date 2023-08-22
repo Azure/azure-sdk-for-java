@@ -8,14 +8,10 @@ import com.azure.core.util.metrics.Meter;
 import com.azure.core.util.tracing.Tracer;
 import com.azure.messaging.servicebus.ServiceBusReceivedMessage;
 import com.azure.messaging.servicebus.implementation.DispositionStatus;
-import reactor.core.Disposable;
-import reactor.core.Disposables;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.time.Instant;
-import java.util.Objects;
-import java.util.function.Consumer;
 import java.util.function.Function;
 
 /**
@@ -49,10 +45,20 @@ public final class ServiceBusReceiverInstrumentation {
 
     /**
      * Checks if the instrumentation is created for processor client.
-     * @return
+     *
+     * @return true if the instrumentation is created to instrument message receive using processor client, false otherwise.
      */
     public boolean isProcessorInstrumentation() {
         return receiverKind == ReceiverKind.PROCESSOR;
+    }
+
+    /**
+     * Checks if the instrumentation is created for Reactor async receiver client.
+     *
+     * @return true if the instrumentation is created to instrument message receive using Reactor receiver client, false otherwise.
+     */
+    public boolean isAsyncReceiverInstrumentation() {
+        return receiverKind == ReceiverKind.ASYNC_RECEIVER;
     }
 
     /**
