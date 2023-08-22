@@ -46,4 +46,64 @@ public class AzureCognitiveSearchChatExtensionConfiguration {
         this.key = key;
         this.indexName = indexName;
     }
+
+    /**
+     * Gets the endpoint of this Azure Cognitive Search resource configuration
+     *
+     * @return The endpoint value as a String
+     */
+    public String getEndpoint() {
+        return endpoint;
+    }
+
+    /**
+     * Sets the endpoint of this Azure Cognitive Search resource configuration
+     *
+     * @param endpoint String URL representing the endpoint
+     * @return the AzureCognitiveSearchChatExtensionConfiguration object itself
+     */
+    public AzureCognitiveSearchChatExtensionConfiguration setEndpoint(String endpoint) {
+        this.endpoint = endpoint;
+        return this;
+    }
+
+    /**
+     * Gets the Azure Cognitive Search API key value as a String
+     *
+     * @return the value of the API key as a String
+     */
+    public String getKey() {
+        return key;
+    }
+
+    /**
+     * Sets the Azure Cognitive Search API key value as a String
+     *
+     * @param key the value of the key for the resource
+     * @return the AzureCognitiveSearchChatExtensionConfiguration object itself
+     */
+    public AzureCognitiveSearchChatExtensionConfiguration setKey(String key) {
+        this.key = key;
+        return this;
+    }
+
+    /**
+     * Gets the Index Name of the document of the Azure Cognitive Search resource
+     *
+     * @return the Index Name of the document as a String
+     */
+    public String getIndexName() {
+        return indexName;
+    }
+
+    /**
+     * Sets the Index Name of the document of the Azure Cognitive Search resource
+     *
+     * @param indexName the Index Name of the document as a String
+     * @return the AzureCognitiveSearchChatExtensionConfiguration object itself
+     */
+    public AzureCognitiveSearchChatExtensionConfiguration setIndexName(String indexName) {
+        this.indexName = indexName;
+        return this;
+    }
 }
