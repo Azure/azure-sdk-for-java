@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.azurestackhci.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ArcSettings Get. */
 public final class ArcSettingsGetSamples {
     /*
-     * x-ms-original-file: specification/azurestackhci/resource-manager/Microsoft.AzureStackHCI/stable/2022-05-01/examples/GetArcSetting.json
+     * x-ms-original-file: specification/azurestackhci/resource-manager/Microsoft.AzureStackHCI/preview/2022-12-15-preview/examples/GetArcSetting.json
      */
     /**
      * Sample code: Get ArcSetting.
@@ -17,6 +15,6 @@ public final class ArcSettingsGetSamples {
      * @param manager Entry point to AzureStackHciManager.
      */
     public static void getArcSetting(com.azure.resourcemanager.azurestackhci.AzureStackHciManager manager) {
-        manager.arcSettings().getWithResponse("test-rg", "myCluster", "default", Context.NONE);
+        manager.arcSettings().getWithResponse("test-rg", "myCluster", "default", com.azure.core.util.Context.NONE);
     }
 }

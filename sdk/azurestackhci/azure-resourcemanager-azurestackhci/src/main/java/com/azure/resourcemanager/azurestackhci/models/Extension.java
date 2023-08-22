@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.azurestackhci.models;
 
-import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.azurestackhci.fluent.models.ExtensionInner;
 import java.util.List;
@@ -33,13 +32,6 @@ public interface Extension {
     String type();
 
     /**
-     * Gets the systemData property: System data of Extension resource.
-     *
-     * @return the systemData value.
-     */
-    SystemData systemData();
-
-    /**
      * Gets the provisioningState property: Provisioning state of the Extension proxy resource.
      *
      * @return the provisioningState value.
@@ -59,6 +51,13 @@ public interface Extension {
      * @return the perNodeExtensionDetails value.
      */
     List<PerNodeExtensionState> perNodeExtensionDetails();
+
+    /**
+     * Gets the managedBy property: Indicates if the extension is managed by azure or the user.
+     *
+     * @return the managedBy value.
+     */
+    ExtensionManagedBy managedBy();
 
     /**
      * Gets the forceUpdateTag property: How the extension handler should be forced to update even if the extension
@@ -83,7 +82,8 @@ public interface Extension {
     String typePropertiesType();
 
     /**
-     * Gets the typeHandlerVersion property: Specifies the version of the script handler.
+     * Gets the typeHandlerVersion property: Specifies the version of the script handler. Latest version would be used
+     * if not specified.
      *
      * @return the typeHandlerVersion value.
      */
@@ -113,6 +113,14 @@ public interface Extension {
     Object protectedSettings();
 
     /**
+     * Gets the enableAutomaticUpgrade property: Indicates whether the extension should be automatically upgraded by the
+     * platform if there is a newer version available.
+     *
+     * @return the enableAutomaticUpgrade value.
+     */
+    Boolean enableAutomaticUpgrade();
+
+    /**
      * Gets the name of the resource group.
      *
      * @return the name of the resource group.
@@ -130,11 +138,13 @@ public interface Extension {
     interface Definition
         extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
+
     /** The Extension definition stages. */
     interface DefinitionStages {
         /** The first stage of the Extension definition. */
         interface Blank extends WithParentResource {
         }
+
         /** The stage of the Extension definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
@@ -147,6 +157,7 @@ public interface Extension {
              */
             WithCreate withExistingArcSetting(String resourceGroupName, String clusterName, String arcSettingName);
         }
+
         /**
          * The stage of the Extension definition which contains all the minimum required properties for the resource to
          * be created, but also allows for any other optional properties to be specified.
@@ -158,7 +169,8 @@ public interface Extension {
                 DefinitionStages.WithTypeHandlerVersion,
                 DefinitionStages.WithAutoUpgradeMinorVersion,
                 DefinitionStages.WithSettings,
-                DefinitionStages.WithProtectedSettings {
+                DefinitionStages.WithProtectedSettings,
+                DefinitionStages.WithEnableAutomaticUpgrade {
             /**
              * Executes the create request.
              *
@@ -174,6 +186,7 @@ public interface Extension {
              */
             Extension create(Context context);
         }
+
         /** The stage of the Extension definition allowing to specify forceUpdateTag. */
         interface WithForceUpdateTag {
             /**
@@ -186,6 +199,7 @@ public interface Extension {
              */
             WithCreate withForceUpdateTag(String forceUpdateTag);
         }
+
         /** The stage of the Extension definition allowing to specify publisher. */
         interface WithPublisher {
             /**
@@ -196,6 +210,7 @@ public interface Extension {
              */
             WithCreate withPublisher(String publisher);
         }
+
         /** The stage of the Extension definition allowing to specify typePropertiesType. */
         interface WithTypePropertiesType {
             /**
@@ -207,16 +222,20 @@ public interface Extension {
              */
             WithCreate withTypePropertiesType(String typePropertiesType);
         }
+
         /** The stage of the Extension definition allowing to specify typeHandlerVersion. */
         interface WithTypeHandlerVersion {
             /**
-             * Specifies the typeHandlerVersion property: Specifies the version of the script handler..
+             * Specifies the typeHandlerVersion property: Specifies the version of the script handler. Latest version
+             * would be used if not specified..
              *
-             * @param typeHandlerVersion Specifies the version of the script handler.
+             * @param typeHandlerVersion Specifies the version of the script handler. Latest version would be used if
+             *     not specified.
              * @return the next definition stage.
              */
             WithCreate withTypeHandlerVersion(String typeHandlerVersion);
         }
+
         /** The stage of the Extension definition allowing to specify autoUpgradeMinorVersion. */
         interface WithAutoUpgradeMinorVersion {
             /**
@@ -231,6 +250,7 @@ public interface Extension {
              */
             WithCreate withAutoUpgradeMinorVersion(Boolean autoUpgradeMinorVersion);
         }
+
         /** The stage of the Extension definition allowing to specify settings. */
         interface WithSettings {
             /**
@@ -241,6 +261,7 @@ public interface Extension {
              */
             WithCreate withSettings(Object settings);
         }
+
         /** The stage of the Extension definition allowing to specify protectedSettings. */
         interface WithProtectedSettings {
             /**
@@ -251,7 +272,21 @@ public interface Extension {
              */
             WithCreate withProtectedSettings(Object protectedSettings);
         }
+
+        /** The stage of the Extension definition allowing to specify enableAutomaticUpgrade. */
+        interface WithEnableAutomaticUpgrade {
+            /**
+             * Specifies the enableAutomaticUpgrade property: Indicates whether the extension should be automatically
+             * upgraded by the platform if there is a newer version available..
+             *
+             * @param enableAutomaticUpgrade Indicates whether the extension should be automatically upgraded by the
+             *     platform if there is a newer version available.
+             * @return the next definition stage.
+             */
+            WithCreate withEnableAutomaticUpgrade(Boolean enableAutomaticUpgrade);
+        }
     }
+
     /**
      * Begins update for the Extension resource.
      *
@@ -267,7 +302,8 @@ public interface Extension {
             UpdateStages.WithTypeHandlerVersion,
             UpdateStages.WithAutoUpgradeMinorVersion,
             UpdateStages.WithSettings,
-            UpdateStages.WithProtectedSettings {
+            UpdateStages.WithProtectedSettings,
+            UpdateStages.WithEnableAutomaticUpgrade {
         /**
          * Executes the update request.
          *
@@ -283,6 +319,7 @@ public interface Extension {
          */
         Extension apply(Context context);
     }
+
     /** The Extension update stages. */
     interface UpdateStages {
         /** The stage of the Extension update allowing to specify forceUpdateTag. */
@@ -297,6 +334,7 @@ public interface Extension {
              */
             Update withForceUpdateTag(String forceUpdateTag);
         }
+
         /** The stage of the Extension update allowing to specify publisher. */
         interface WithPublisher {
             /**
@@ -307,6 +345,7 @@ public interface Extension {
              */
             Update withPublisher(String publisher);
         }
+
         /** The stage of the Extension update allowing to specify typePropertiesType. */
         interface WithTypePropertiesType {
             /**
@@ -318,16 +357,20 @@ public interface Extension {
              */
             Update withTypePropertiesType(String typePropertiesType);
         }
+
         /** The stage of the Extension update allowing to specify typeHandlerVersion. */
         interface WithTypeHandlerVersion {
             /**
-             * Specifies the typeHandlerVersion property: Specifies the version of the script handler..
+             * Specifies the typeHandlerVersion property: Specifies the version of the script handler. Latest version
+             * would be used if not specified..
              *
-             * @param typeHandlerVersion Specifies the version of the script handler.
+             * @param typeHandlerVersion Specifies the version of the script handler. Latest version would be used if
+             *     not specified.
              * @return the next definition stage.
              */
             Update withTypeHandlerVersion(String typeHandlerVersion);
         }
+
         /** The stage of the Extension update allowing to specify autoUpgradeMinorVersion. */
         interface WithAutoUpgradeMinorVersion {
             /**
@@ -342,6 +385,7 @@ public interface Extension {
              */
             Update withAutoUpgradeMinorVersion(Boolean autoUpgradeMinorVersion);
         }
+
         /** The stage of the Extension update allowing to specify settings. */
         interface WithSettings {
             /**
@@ -352,6 +396,7 @@ public interface Extension {
              */
             Update withSettings(Object settings);
         }
+
         /** The stage of the Extension update allowing to specify protectedSettings. */
         interface WithProtectedSettings {
             /**
@@ -362,7 +407,21 @@ public interface Extension {
              */
             Update withProtectedSettings(Object protectedSettings);
         }
+
+        /** The stage of the Extension update allowing to specify enableAutomaticUpgrade. */
+        interface WithEnableAutomaticUpgrade {
+            /**
+             * Specifies the enableAutomaticUpgrade property: Indicates whether the extension should be automatically
+             * upgraded by the platform if there is a newer version available..
+             *
+             * @param enableAutomaticUpgrade Indicates whether the extension should be automatically upgraded by the
+             *     platform if there is a newer version available.
+             * @return the next definition stage.
+             */
+            Update withEnableAutomaticUpgrade(Boolean enableAutomaticUpgrade);
+        }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *
@@ -377,4 +436,25 @@ public interface Extension {
      * @return the refreshed resource.
      */
     Extension refresh(Context context);
+
+    /**
+     * Upgrade a particular Arc Extension of HCI Cluster.
+     *
+     * @param extensionUpgradeParameters Parameters supplied to the Upgrade Extensions operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void upgrade(ExtensionUpgradeParameters extensionUpgradeParameters);
+
+    /**
+     * Upgrade a particular Arc Extension of HCI Cluster.
+     *
+     * @param extensionUpgradeParameters Parameters supplied to the Upgrade Extensions operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void upgrade(ExtensionUpgradeParameters extensionUpgradeParameters, Context context);
 }

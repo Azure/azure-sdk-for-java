@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.azurestackhci.generated;
 
 import com.azure.core.management.serializer.SerializerFactory;
-import com.azure.core.util.Context;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.azurestackhci.models.ArcSetting;
 import java.io.IOException;
@@ -13,7 +12,7 @@ import java.io.IOException;
 /** Samples for ArcSettings Update. */
 public final class ArcSettingsUpdateSamples {
     /*
-     * x-ms-original-file: specification/azurestackhci/resource-manager/Microsoft.AzureStackHCI/stable/2022-05-01/examples/PatchArcSetting.json
+     * x-ms-original-file: specification/azurestackhci/resource-manager/Microsoft.AzureStackHCI/preview/2022-12-15-preview/examples/PatchArcSetting.json
      */
     /**
      * Sample code: Patch ArcSetting.
@@ -23,7 +22,10 @@ public final class ArcSettingsUpdateSamples {
     public static void patchArcSetting(com.azure.resourcemanager.azurestackhci.AzureStackHciManager manager)
         throws IOException {
         ArcSetting resource =
-            manager.arcSettings().getWithResponse("test-rg", "myCluster", "default", Context.NONE).getValue();
+            manager
+                .arcSettings()
+                .getWithResponse("test-rg", "myCluster", "default", com.azure.core.util.Context.NONE)
+                .getValue();
         resource
             .update()
             .withConnectivityProperties(

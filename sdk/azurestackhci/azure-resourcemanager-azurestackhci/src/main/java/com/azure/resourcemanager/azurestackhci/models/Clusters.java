@@ -58,18 +58,6 @@ public interface Clusters {
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return hCI cluster.
-     */
-    Cluster getByResourceGroup(String resourceGroupName, String clusterName);
-
-    /**
-     * Get HCI cluster.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -77,6 +65,18 @@ public interface Clusters {
      * @return hCI cluster along with {@link Response}.
      */
     Response<Cluster> getByResourceGroupWithResponse(String resourceGroupName, String clusterName, Context context);
+
+    /**
+     * Get HCI cluster.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the cluster.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return hCI cluster.
+     */
+    Cluster getByResourceGroup(String resourceGroupName, String clusterName);
 
     /**
      * Delete an HCI cluster.
@@ -155,6 +155,38 @@ public interface Clusters {
      * @return cluster Identity details.
      */
     ClusterIdentityResponse createIdentity(String resourceGroupName, String clusterName, Context context);
+
+    /**
+     * Extends Software Assurance Benefit to a cluster.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the cluster.
+     * @param softwareAssuranceChangeRequest Software Assurance Change Request Payload.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return cluster details.
+     */
+    Cluster extendSoftwareAssuranceBenefit(
+        String resourceGroupName, String clusterName, SoftwareAssuranceChangeRequest softwareAssuranceChangeRequest);
+
+    /**
+     * Extends Software Assurance Benefit to a cluster.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the cluster.
+     * @param softwareAssuranceChangeRequest Software Assurance Change Request Payload.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return cluster details.
+     */
+    Cluster extendSoftwareAssuranceBenefit(
+        String resourceGroupName,
+        String clusterName,
+        SoftwareAssuranceChangeRequest softwareAssuranceChangeRequest,
+        Context context);
 
     /**
      * Get HCI cluster.

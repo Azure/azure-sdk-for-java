@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ArcSettingAggregateState. */
+/** Aggregate state of Arc agent across the nodes in this HCI cluster. */
 public final class ArcSettingAggregateState extends ExpandableStringEnum<ArcSettingAggregateState> {
     /** Static value NotSpecified for ArcSettingAggregateState. */
     public static final ArcSettingAggregateState NOT_SPECIFIED = fromString("NotSpecified");
@@ -54,6 +54,24 @@ public final class ArcSettingAggregateState extends ExpandableStringEnum<ArcSett
 
     /** Static value InProgress for ArcSettingAggregateState. */
     public static final ArcSettingAggregateState IN_PROGRESS = fromString("InProgress");
+
+    /** Static value Accepted for ArcSettingAggregateState. */
+    public static final ArcSettingAggregateState ACCEPTED = fromString("Accepted");
+
+    /** Static value Provisioning for ArcSettingAggregateState. */
+    public static final ArcSettingAggregateState PROVISIONING = fromString("Provisioning");
+
+    /** Static value DisableInProgress for ArcSettingAggregateState. */
+    public static final ArcSettingAggregateState DISABLE_IN_PROGRESS = fromString("DisableInProgress");
+
+    /**
+     * Creates a new instance of ArcSettingAggregateState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ArcSettingAggregateState() {
+    }
 
     /**
      * Creates or finds a ArcSettingAggregateState from its string representation.

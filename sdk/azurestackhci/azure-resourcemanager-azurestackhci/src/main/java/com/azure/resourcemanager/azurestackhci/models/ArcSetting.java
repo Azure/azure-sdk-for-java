@@ -35,7 +35,7 @@ public interface ArcSetting {
     String type();
 
     /**
-     * Gets the systemData property: System data of ArcSetting resource.
+     * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
      *
      * @return the systemData value.
      */
@@ -106,6 +106,13 @@ public interface ArcSetting {
     Object connectivityProperties();
 
     /**
+     * Gets the defaultExtensions property: Consent time for each of the default extensions category.
+     *
+     * @return the defaultExtensions value.
+     */
+    List<DefaultExtensionDetails> defaultExtensions();
+
+    /**
      * Gets the name of the resource group.
      *
      * @return the name of the resource group.
@@ -123,11 +130,13 @@ public interface ArcSetting {
     interface Definition
         extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
+
     /** The ArcSetting definition stages. */
     interface DefinitionStages {
         /** The first stage of the ArcSetting definition. */
         interface Blank extends WithParentResource {
         }
+
         /** The stage of the ArcSetting definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
@@ -139,6 +148,7 @@ public interface ArcSetting {
              */
             WithCreate withExistingCluster(String resourceGroupName, String clusterName);
         }
+
         /**
          * The stage of the ArcSetting definition which contains all the minimum required properties for the resource to
          * be created, but also allows for any other optional properties to be specified.
@@ -165,6 +175,7 @@ public interface ArcSetting {
              */
             ArcSetting create(Context context);
         }
+
         /** The stage of the ArcSetting definition allowing to specify arcInstanceResourceGroup. */
         interface WithArcInstanceResourceGroup {
             /**
@@ -177,6 +188,7 @@ public interface ArcSetting {
              */
             WithCreate withArcInstanceResourceGroup(String arcInstanceResourceGroup);
         }
+
         /** The stage of the ArcSetting definition allowing to specify arcApplicationClientId. */
         interface WithArcApplicationClientId {
             /**
@@ -187,6 +199,7 @@ public interface ArcSetting {
              */
             WithCreate withArcApplicationClientId(String arcApplicationClientId);
         }
+
         /** The stage of the ArcSetting definition allowing to specify arcApplicationTenantId. */
         interface WithArcApplicationTenantId {
             /**
@@ -197,6 +210,7 @@ public interface ArcSetting {
              */
             WithCreate withArcApplicationTenantId(String arcApplicationTenantId);
         }
+
         /** The stage of the ArcSetting definition allowing to specify arcServicePrincipalObjectId. */
         interface WithArcServicePrincipalObjectId {
             /**
@@ -207,6 +221,7 @@ public interface ArcSetting {
              */
             WithCreate withArcServicePrincipalObjectId(String arcServicePrincipalObjectId);
         }
+
         /** The stage of the ArcSetting definition allowing to specify arcApplicationObjectId. */
         interface WithArcApplicationObjectId {
             /**
@@ -217,6 +232,7 @@ public interface ArcSetting {
              */
             WithCreate withArcApplicationObjectId(String arcApplicationObjectId);
         }
+
         /** The stage of the ArcSetting definition allowing to specify connectivityProperties. */
         interface WithConnectivityProperties {
             /**
@@ -229,6 +245,7 @@ public interface ArcSetting {
             WithCreate withConnectivityProperties(Object connectivityProperties);
         }
     }
+
     /**
      * Begins update for the ArcSetting resource.
      *
@@ -253,6 +270,7 @@ public interface ArcSetting {
          */
         ArcSetting apply(Context context);
     }
+
     /** The ArcSetting update stages. */
     interface UpdateStages {
         /** The stage of the ArcSetting update allowing to specify tags. */
@@ -265,6 +283,7 @@ public interface ArcSetting {
              */
             Update withTags(Map<String, String> tags);
         }
+
         /** The stage of the ArcSetting update allowing to specify connectivityProperties. */
         interface WithConnectivityProperties {
             /**
@@ -277,6 +296,7 @@ public interface ArcSetting {
             Update withConnectivityProperties(Object connectivityProperties);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *
@@ -295,15 +315,6 @@ public interface ArcSetting {
     /**
      * Generate password for arc settings.
      *
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    PasswordCredential generatePassword();
-
-    /**
-     * Generate password for arc settings.
-     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -311,6 +322,15 @@ public interface ArcSetting {
      * @return the response body along with {@link Response}.
      */
     Response<PasswordCredential> generatePasswordWithResponse(Context context);
+
+    /**
+     * Generate password for arc settings.
+     *
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    PasswordCredential generatePassword();
 
     /**
      * Create Aad identity for arc settings.
@@ -331,4 +351,42 @@ public interface ArcSetting {
      * @return arcIdentity details.
      */
     ArcIdentityResponse createIdentity(Context context);
+
+    /**
+     * Add consent time for default extensions and initiate extensions installation.
+     *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return arcSetting details along with {@link Response}.
+     */
+    Response<ArcSetting> consentAndInstallDefaultExtensionsWithResponse(Context context);
+
+    /**
+     * Add consent time for default extensions and initiate extensions installation.
+     *
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return arcSetting details.
+     */
+    ArcSetting consentAndInstallDefaultExtensions();
+
+    /**
+     * Initializes ARC Disable process on the cluster.
+     *
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void initializeDisableProcess();
+
+    /**
+     * Initializes ARC Disable process on the cluster.
+     *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void initializeDisableProcess(Context context);
 }

@@ -16,6 +16,10 @@ public final class ArcSettingsPatchProperties {
     @JsonProperty(value = "connectivityProperties")
     private Object connectivityProperties;
 
+    /** Creates an instance of ArcSettingsPatchProperties class. */
+    public ArcSettingsPatchProperties() {
+    }
+
     /**
      * Get the connectivityProperties property: contains connectivity related configuration for ARC resources.
      *

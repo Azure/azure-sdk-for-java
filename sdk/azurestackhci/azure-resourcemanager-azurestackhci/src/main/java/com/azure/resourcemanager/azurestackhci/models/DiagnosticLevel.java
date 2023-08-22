@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for DiagnosticLevel. */
+/** Desired level of diagnostic data emitted by the cluster. */
 public final class DiagnosticLevel extends ExpandableStringEnum<DiagnosticLevel> {
     /** Static value Off for DiagnosticLevel. */
     public static final DiagnosticLevel OFF = fromString("Off");
@@ -18,6 +18,15 @@ public final class DiagnosticLevel extends ExpandableStringEnum<DiagnosticLevel>
 
     /** Static value Enhanced for DiagnosticLevel. */
     public static final DiagnosticLevel ENHANCED = fromString("Enhanced");
+
+    /**
+     * Creates a new instance of DiagnosticLevel value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public DiagnosticLevel() {
+    }
 
     /**
      * Creates or finds a DiagnosticLevel from its string representation.

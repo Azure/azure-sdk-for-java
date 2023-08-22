@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.azurestackhci.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.azurestackhci.models.RawCertificateData;
 import com.azure.resourcemanager.azurestackhci.models.UploadCertificateRequest;
 import java.util.Arrays;
@@ -12,7 +11,7 @@ import java.util.Arrays;
 /** Samples for Clusters UploadCertificate. */
 public final class ClustersUploadCertificateSamples {
     /*
-     * x-ms-original-file: specification/azurestackhci/resource-manager/Microsoft.AzureStackHCI/stable/2022-05-01/examples/UploadCertificate.json
+     * x-ms-original-file: specification/azurestackhci/resource-manager/Microsoft.AzureStackHCI/preview/2022-12-15-preview/examples/UploadCertificate.json
      */
     /**
      * Sample code: Upload certificate.
@@ -28,6 +27,6 @@ public final class ClustersUploadCertificateSamples {
                 new UploadCertificateRequest()
                     .withProperties(
                         new RawCertificateData().withCertificates(Arrays.asList("base64cert", "base64cert"))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.azurestackhci.generated;
 
 import com.azure.core.management.serializer.SerializerFactory;
-import com.azure.core.util.Context;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.azurestackhci.models.Extension;
 import java.io.IOException;
@@ -13,7 +12,7 @@ import java.io.IOException;
 /** Samples for Extensions Update. */
 public final class ExtensionsUpdateSamples {
     /*
-     * x-ms-original-file: specification/azurestackhci/resource-manager/Microsoft.AzureStackHCI/stable/2022-05-01/examples/PatchExtension.json
+     * x-ms-original-file: specification/azurestackhci/resource-manager/Microsoft.AzureStackHCI/preview/2022-12-15-preview/examples/PatchExtension.json
      */
     /**
      * Sample code: Update Arc Extension.
@@ -25,7 +24,8 @@ public final class ExtensionsUpdateSamples {
         Extension resource =
             manager
                 .extensions()
-                .getWithResponse("test-rg", "myCluster", "default", "MicrosoftMonitoringAgent", Context.NONE)
+                .getWithResponse(
+                    "test-rg", "myCluster", "default", "MicrosoftMonitoringAgent", com.azure.core.util.Context.NONE)
                 .getValue();
         resource
             .update()

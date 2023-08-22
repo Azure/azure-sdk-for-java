@@ -34,6 +34,10 @@ public final class ArcIdentityResponseProperties {
     @JsonProperty(value = "arcApplicationObjectId")
     private String arcApplicationObjectId;
 
+    /** Creates an instance of ArcIdentityResponseProperties class. */
+    public ArcIdentityResponseProperties() {
+    }
+
     /**
      * Get the arcApplicationClientId property: The arcApplicationClientId property.
      *

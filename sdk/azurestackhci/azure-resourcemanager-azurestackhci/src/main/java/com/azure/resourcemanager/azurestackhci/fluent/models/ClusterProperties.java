@@ -8,6 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.azurestackhci.models.ClusterDesiredProperties;
 import com.azure.resourcemanager.azurestackhci.models.ClusterReportedProperties;
 import com.azure.resourcemanager.azurestackhci.models.ProvisioningState;
+import com.azure.resourcemanager.azurestackhci.models.SoftwareAssuranceProperties;
 import com.azure.resourcemanager.azurestackhci.models.Status;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
@@ -64,6 +65,12 @@ public final class ClusterProperties {
     private String aadServicePrincipalObjectId;
 
     /*
+     * Software Assurance properties of the cluster.
+     */
+    @JsonProperty(value = "softwareAssuranceProperties")
+    private SoftwareAssuranceProperties softwareAssuranceProperties;
+
+    /*
      * Desired properties of the cluster.
      */
     @JsonProperty(value = "desiredProperties")
@@ -110,6 +117,16 @@ public final class ClusterProperties {
      */
     @JsonProperty(value = "serviceEndpoint", access = JsonProperty.Access.WRITE_ONLY)
     private String serviceEndpoint;
+
+    /*
+     * Object id of RP Service Principal
+     */
+    @JsonProperty(value = "resourceProviderObjectId", access = JsonProperty.Access.WRITE_ONLY)
+    private String resourceProviderObjectId;
+
+    /** Creates an instance of ClusterProperties class. */
+    public ClusterProperties() {
+    }
 
     /**
      * Get the provisioningState property: Provisioning state.
@@ -239,6 +256,26 @@ public final class ClusterProperties {
     }
 
     /**
+     * Get the softwareAssuranceProperties property: Software Assurance properties of the cluster.
+     *
+     * @return the softwareAssuranceProperties value.
+     */
+    public SoftwareAssuranceProperties softwareAssuranceProperties() {
+        return this.softwareAssuranceProperties;
+    }
+
+    /**
+     * Set the softwareAssuranceProperties property: Software Assurance properties of the cluster.
+     *
+     * @param softwareAssuranceProperties the softwareAssuranceProperties value to set.
+     * @return the ClusterProperties object itself.
+     */
+    public ClusterProperties withSoftwareAssuranceProperties(SoftwareAssuranceProperties softwareAssuranceProperties) {
+        this.softwareAssuranceProperties = softwareAssuranceProperties;
+        return this;
+    }
+
+    /**
      * Get the desiredProperties property: Desired properties of the cluster.
      *
      * @return the desiredProperties value.
@@ -322,11 +359,23 @@ public final class ClusterProperties {
     }
 
     /**
+     * Get the resourceProviderObjectId property: Object id of RP Service Principal.
+     *
+     * @return the resourceProviderObjectId value.
+     */
+    public String resourceProviderObjectId() {
+        return this.resourceProviderObjectId;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (softwareAssuranceProperties() != null) {
+            softwareAssuranceProperties().validate();
+        }
         if (desiredProperties() != null) {
             desiredProperties().validate();
         }

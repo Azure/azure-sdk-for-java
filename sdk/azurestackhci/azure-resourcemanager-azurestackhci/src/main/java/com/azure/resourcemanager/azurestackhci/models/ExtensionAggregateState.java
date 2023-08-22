@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ExtensionAggregateState. */
+/** Aggregate state of Arc Extensions across the nodes in this HCI cluster. */
 public final class ExtensionAggregateState extends ExpandableStringEnum<ExtensionAggregateState> {
     /** Static value NotSpecified for ExtensionAggregateState. */
     public static final ExtensionAggregateState NOT_SPECIFIED = fromString("NotSpecified");
@@ -54,6 +54,25 @@ public final class ExtensionAggregateState extends ExpandableStringEnum<Extensio
 
     /** Static value InProgress for ExtensionAggregateState. */
     public static final ExtensionAggregateState IN_PROGRESS = fromString("InProgress");
+
+    /** Static value Accepted for ExtensionAggregateState. */
+    public static final ExtensionAggregateState ACCEPTED = fromString("Accepted");
+
+    /** Static value Provisioning for ExtensionAggregateState. */
+    public static final ExtensionAggregateState PROVISIONING = fromString("Provisioning");
+
+    /** Static value UpgradeFailedRollbackSucceeded for ExtensionAggregateState. */
+    public static final ExtensionAggregateState UPGRADE_FAILED_ROLLBACK_SUCCEEDED =
+        fromString("UpgradeFailedRollbackSucceeded");
+
+    /**
+     * Creates a new instance of ExtensionAggregateState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ExtensionAggregateState() {
+    }
 
     /**
      * Creates or finds a ExtensionAggregateState from its string representation.

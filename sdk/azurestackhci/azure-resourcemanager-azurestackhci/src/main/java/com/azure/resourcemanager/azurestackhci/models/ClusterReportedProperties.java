@@ -54,6 +54,16 @@ public final class ClusterReportedProperties {
     @JsonProperty(value = "diagnosticLevel")
     private DiagnosticLevel diagnosticLevel;
 
+    /*
+     * Capabilities supported by the cluster.
+     */
+    @JsonProperty(value = "supportedCapabilities", access = JsonProperty.Access.WRITE_ONLY)
+    private List<String> supportedCapabilities;
+
+    /** Creates an instance of ClusterReportedProperties class. */
+    public ClusterReportedProperties() {
+    }
+
     /**
      * Get the clusterName property: Name of the on-prem cluster connected to this resource.
      *
@@ -126,6 +136,15 @@ public final class ClusterReportedProperties {
     public ClusterReportedProperties withDiagnosticLevel(DiagnosticLevel diagnosticLevel) {
         this.diagnosticLevel = diagnosticLevel;
         return this;
+    }
+
+    /**
+     * Get the supportedCapabilities property: Capabilities supported by the cluster.
+     *
+     * @return the supportedCapabilities value.
+     */
+    public List<String> supportedCapabilities() {
+        return this.supportedCapabilities;
     }
 
     /**

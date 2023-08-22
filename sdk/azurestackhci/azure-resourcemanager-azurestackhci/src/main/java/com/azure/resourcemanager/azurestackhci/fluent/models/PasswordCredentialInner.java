@@ -35,6 +35,10 @@ public final class PasswordCredentialInner {
     @JsonProperty(value = "endDateTime")
     private OffsetDateTime endDateTime;
 
+    /** Creates an instance of PasswordCredentialInner class. */
+    public PasswordCredentialInner() {
+    }
+
     /**
      * Get the secretText property: The secretText property.
      *

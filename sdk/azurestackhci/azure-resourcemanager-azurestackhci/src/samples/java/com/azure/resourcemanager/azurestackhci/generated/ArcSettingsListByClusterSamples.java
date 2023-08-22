@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.azurestackhci.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ArcSettings ListByCluster. */
 public final class ArcSettingsListByClusterSamples {
     /*
-     * x-ms-original-file: specification/azurestackhci/resource-manager/Microsoft.AzureStackHCI/stable/2022-05-01/examples/ListArcSettingsByCluster.json
+     * x-ms-original-file: specification/azurestackhci/resource-manager/Microsoft.AzureStackHCI/preview/2022-12-15-preview/examples/ListArcSettingsByCluster.json
      */
     /**
      * Sample code: List ArcSetting resources by HCI Cluster.
@@ -18,6 +16,6 @@ public final class ArcSettingsListByClusterSamples {
      */
     public static void listArcSettingResourcesByHCICluster(
         com.azure.resourcemanager.azurestackhci.AzureStackHciManager manager) {
-        manager.arcSettings().listByCluster("test-rg", "myCluster", Context.NONE);
+        manager.arcSettings().listByCluster("test-rg", "myCluster", com.azure.core.util.Context.NONE);
     }
 }

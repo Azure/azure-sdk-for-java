@@ -26,6 +26,10 @@ public final class ArcSettingsPatch {
     @JsonProperty(value = "properties")
     private ArcSettingsPatchProperties innerProperties;
 
+    /** Creates an instance of ArcSettingsPatch class. */
+    public ArcSettingsPatch() {
+    }
+
     /**
      * Get the tags property: Resource tags.
      *

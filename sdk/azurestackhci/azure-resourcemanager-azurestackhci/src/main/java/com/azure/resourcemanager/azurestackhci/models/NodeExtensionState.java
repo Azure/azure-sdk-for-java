@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for NodeExtensionState. */
+/** State of Arc Extension in this node. */
 public final class NodeExtensionState extends ExpandableStringEnum<NodeExtensionState> {
     /** Static value NotSpecified for NodeExtensionState. */
     public static final NodeExtensionState NOT_SPECIFIED = fromString("NotSpecified");
@@ -45,6 +45,30 @@ public final class NodeExtensionState extends ExpandableStringEnum<NodeExtension
 
     /** Static value Moving for NodeExtensionState. */
     public static final NodeExtensionState MOVING = fromString("Moving");
+
+    /** Static value PartiallySucceeded for NodeExtensionState. */
+    public static final NodeExtensionState PARTIALLY_SUCCEEDED = fromString("PartiallySucceeded");
+
+    /** Static value PartiallyConnected for NodeExtensionState. */
+    public static final NodeExtensionState PARTIALLY_CONNECTED = fromString("PartiallyConnected");
+
+    /** Static value InProgress for NodeExtensionState. */
+    public static final NodeExtensionState IN_PROGRESS = fromString("InProgress");
+
+    /** Static value Accepted for NodeExtensionState. */
+    public static final NodeExtensionState ACCEPTED = fromString("Accepted");
+
+    /** Static value Provisioning for NodeExtensionState. */
+    public static final NodeExtensionState PROVISIONING = fromString("Provisioning");
+
+    /**
+     * Creates a new instance of NodeExtensionState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public NodeExtensionState() {
+    }
 
     /**
      * Creates or finds a NodeExtensionState from its string representation.

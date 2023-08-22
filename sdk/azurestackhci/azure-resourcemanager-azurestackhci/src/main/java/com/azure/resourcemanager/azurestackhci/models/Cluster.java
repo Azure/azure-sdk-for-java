@@ -10,6 +10,7 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.azurestackhci.fluent.models.ClusterInner;
 import java.time.OffsetDateTime;
 import java.util.Map;
+import java.util.UUID;
 
 /** An immutable client-side representation of Cluster. */
 public interface Cluster {
@@ -49,11 +50,45 @@ public interface Cluster {
     Map<String, String> tags();
 
     /**
-     * Gets the systemData property: System data of Cluster resource.
+     * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
      *
      * @return the systemData value.
      */
     SystemData systemData();
+
+    /**
+     * Gets the principalId property: The service principal ID of the system assigned identity. This property will only
+     * be provided for a system assigned identity.
+     *
+     * @return the principalId value.
+     */
+    UUID principalId();
+
+    /**
+     * Gets the tenantId property: The tenant ID of the system assigned identity. This property will only be provided
+     * for a system assigned identity.
+     *
+     * @return the tenantId value.
+     */
+    UUID tenantId();
+
+    /**
+     * Gets the typeIdentityType property: Type of managed service identity (where both SystemAssigned and UserAssigned
+     * types are allowed).
+     *
+     * @return the typeIdentityType value.
+     */
+    ManagedServiceIdentityType typeIdentityType();
+
+    /**
+     * Gets the userAssignedIdentities property: The set of user assigned identities associated with the resource. The
+     * userAssignedIdentities dictionary keys will be ARM resource ids in the form:
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}.
+     * The dictionary values can be empty objects ({}) in requests.
+     *
+     * @return the userAssignedIdentities value.
+     */
+    Map<String, UserAssignedIdentity> userAssignedIdentities();
 
     /**
      * Gets the provisioningState property: Provisioning state.
@@ -112,6 +147,13 @@ public interface Cluster {
     String aadServicePrincipalObjectId();
 
     /**
+     * Gets the softwareAssuranceProperties property: Software Assurance properties of the cluster.
+     *
+     * @return the softwareAssuranceProperties value.
+     */
+    SoftwareAssuranceProperties softwareAssuranceProperties();
+
+    /**
      * Gets the desiredProperties property: Desired properties of the cluster.
      *
      * @return the desiredProperties value.
@@ -168,6 +210,13 @@ public interface Cluster {
     String serviceEndpoint();
 
     /**
+     * Gets the resourceProviderObjectId property: Object id of RP Service Principal.
+     *
+     * @return the resourceProviderObjectId value.
+     */
+    String resourceProviderObjectId();
+
+    /**
      * Gets the region of the resource.
      *
      * @return the region of the resource.
@@ -202,11 +251,13 @@ public interface Cluster {
             DefinitionStages.WithResourceGroup,
             DefinitionStages.WithCreate {
     }
+
     /** The Cluster definition stages. */
     interface DefinitionStages {
         /** The first stage of the Cluster definition. */
         interface Blank extends WithLocation {
         }
+
         /** The stage of the Cluster definition allowing to specify location. */
         interface WithLocation {
             /**
@@ -225,6 +276,7 @@ public interface Cluster {
              */
             WithResourceGroup withRegion(String location);
         }
+
         /** The stage of the Cluster definition allowing to specify parent resource. */
         interface WithResourceGroup {
             /**
@@ -235,17 +287,21 @@ public interface Cluster {
              */
             WithCreate withExistingResourceGroup(String resourceGroupName);
         }
+
         /**
          * The stage of the Cluster definition which contains all the minimum required properties for the resource to be
          * created, but also allows for any other optional properties to be specified.
          */
         interface WithCreate
             extends DefinitionStages.WithTags,
+                DefinitionStages.WithTypeIdentityType,
+                DefinitionStages.WithUserAssignedIdentities,
                 DefinitionStages.WithCloudManagementEndpoint,
                 DefinitionStages.WithAadClientId,
                 DefinitionStages.WithAadTenantId,
                 DefinitionStages.WithAadApplicationObjectId,
                 DefinitionStages.WithAadServicePrincipalObjectId,
+                DefinitionStages.WithSoftwareAssuranceProperties,
                 DefinitionStages.WithDesiredProperties {
             /**
              * Executes the create request.
@@ -262,6 +318,7 @@ public interface Cluster {
              */
             Cluster create(Context context);
         }
+
         /** The stage of the Cluster definition allowing to specify tags. */
         interface WithTags {
             /**
@@ -272,6 +329,37 @@ public interface Cluster {
              */
             WithCreate withTags(Map<String, String> tags);
         }
+
+        /** The stage of the Cluster definition allowing to specify typeIdentityType. */
+        interface WithTypeIdentityType {
+            /**
+             * Specifies the typeIdentityType property: Type of managed service identity (where both SystemAssigned and
+             * UserAssigned types are allowed)..
+             *
+             * @param typeIdentityType Type of managed service identity (where both SystemAssigned and UserAssigned
+             *     types are allowed).
+             * @return the next definition stage.
+             */
+            WithCreate withTypeIdentityType(ManagedServiceIdentityType typeIdentityType);
+        }
+
+        /** The stage of the Cluster definition allowing to specify userAssignedIdentities. */
+        interface WithUserAssignedIdentities {
+            /**
+             * Specifies the userAssignedIdentities property: The set of user assigned identities associated with the
+             * resource. The userAssignedIdentities dictionary keys will be ARM resource ids in the form:
+             * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}.
+             * The dictionary values can be empty objects ({}) in requests..
+             *
+             * @param userAssignedIdentities The set of user assigned identities associated with the resource. The
+             *     userAssignedIdentities dictionary keys will be ARM resource ids in the form:
+             *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}.
+             *     The dictionary values can be empty objects ({}) in requests.
+             * @return the next definition stage.
+             */
+            WithCreate withUserAssignedIdentities(Map<String, UserAssignedIdentity> userAssignedIdentities);
+        }
+
         /** The stage of the Cluster definition allowing to specify cloudManagementEndpoint. */
         interface WithCloudManagementEndpoint {
             /**
@@ -283,6 +371,7 @@ public interface Cluster {
              */
             WithCreate withCloudManagementEndpoint(String cloudManagementEndpoint);
         }
+
         /** The stage of the Cluster definition allowing to specify aadClientId. */
         interface WithAadClientId {
             /**
@@ -293,6 +382,7 @@ public interface Cluster {
              */
             WithCreate withAadClientId(String aadClientId);
         }
+
         /** The stage of the Cluster definition allowing to specify aadTenantId. */
         interface WithAadTenantId {
             /**
@@ -303,6 +393,7 @@ public interface Cluster {
              */
             WithCreate withAadTenantId(String aadTenantId);
         }
+
         /** The stage of the Cluster definition allowing to specify aadApplicationObjectId. */
         interface WithAadApplicationObjectId {
             /**
@@ -313,6 +404,7 @@ public interface Cluster {
              */
             WithCreate withAadApplicationObjectId(String aadApplicationObjectId);
         }
+
         /** The stage of the Cluster definition allowing to specify aadServicePrincipalObjectId. */
         interface WithAadServicePrincipalObjectId {
             /**
@@ -323,6 +415,18 @@ public interface Cluster {
              */
             WithCreate withAadServicePrincipalObjectId(String aadServicePrincipalObjectId);
         }
+
+        /** The stage of the Cluster definition allowing to specify softwareAssuranceProperties. */
+        interface WithSoftwareAssuranceProperties {
+            /**
+             * Specifies the softwareAssuranceProperties property: Software Assurance properties of the cluster..
+             *
+             * @param softwareAssuranceProperties Software Assurance properties of the cluster.
+             * @return the next definition stage.
+             */
+            WithCreate withSoftwareAssuranceProperties(SoftwareAssuranceProperties softwareAssuranceProperties);
+        }
+
         /** The stage of the Cluster definition allowing to specify desiredProperties. */
         interface WithDesiredProperties {
             /**
@@ -334,6 +438,7 @@ public interface Cluster {
             WithCreate withDesiredProperties(ClusterDesiredProperties desiredProperties);
         }
     }
+
     /**
      * Begins update for the Cluster resource.
      *
@@ -344,6 +449,8 @@ public interface Cluster {
     /** The template for Cluster update. */
     interface Update
         extends UpdateStages.WithTags,
+            UpdateStages.WithType,
+            UpdateStages.WithUserAssignedIdentities,
             UpdateStages.WithCloudManagementEndpoint,
             UpdateStages.WithAadClientId,
             UpdateStages.WithAadTenantId,
@@ -363,6 +470,7 @@ public interface Cluster {
          */
         Cluster apply(Context context);
     }
+
     /** The Cluster update stages. */
     interface UpdateStages {
         /** The stage of the Cluster update allowing to specify tags. */
@@ -375,6 +483,37 @@ public interface Cluster {
              */
             Update withTags(Map<String, String> tags);
         }
+
+        /** The stage of the Cluster update allowing to specify type. */
+        interface WithType {
+            /**
+             * Specifies the type property: Type of managed service identity (where both SystemAssigned and UserAssigned
+             * types are allowed)..
+             *
+             * @param type Type of managed service identity (where both SystemAssigned and UserAssigned types are
+             *     allowed).
+             * @return the next definition stage.
+             */
+            Update withType(ManagedServiceIdentityType type);
+        }
+
+        /** The stage of the Cluster update allowing to specify userAssignedIdentities. */
+        interface WithUserAssignedIdentities {
+            /**
+             * Specifies the userAssignedIdentities property: The set of user assigned identities associated with the
+             * resource. The userAssignedIdentities dictionary keys will be ARM resource ids in the form:
+             * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}.
+             * The dictionary values can be empty objects ({}) in requests..
+             *
+             * @param userAssignedIdentities The set of user assigned identities associated with the resource. The
+             *     userAssignedIdentities dictionary keys will be ARM resource ids in the form:
+             *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}.
+             *     The dictionary values can be empty objects ({}) in requests.
+             * @return the next definition stage.
+             */
+            Update withUserAssignedIdentities(Map<String, UserAssignedIdentity> userAssignedIdentities);
+        }
+
         /** The stage of the Cluster update allowing to specify cloudManagementEndpoint. */
         interface WithCloudManagementEndpoint {
             /**
@@ -385,6 +524,7 @@ public interface Cluster {
              */
             Update withCloudManagementEndpoint(String cloudManagementEndpoint);
         }
+
         /** The stage of the Cluster update allowing to specify aadClientId. */
         interface WithAadClientId {
             /**
@@ -395,6 +535,7 @@ public interface Cluster {
              */
             Update withAadClientId(String aadClientId);
         }
+
         /** The stage of the Cluster update allowing to specify aadTenantId. */
         interface WithAadTenantId {
             /**
@@ -405,6 +546,7 @@ public interface Cluster {
              */
             Update withAadTenantId(String aadTenantId);
         }
+
         /** The stage of the Cluster update allowing to specify desiredProperties. */
         interface WithDesiredProperties {
             /**
@@ -416,6 +558,7 @@ public interface Cluster {
             Update withDesiredProperties(ClusterDesiredProperties desiredProperties);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *
@@ -471,4 +614,28 @@ public interface Cluster {
      * @return cluster Identity details.
      */
     ClusterIdentityResponse createIdentity(Context context);
+
+    /**
+     * Extends Software Assurance Benefit to a cluster.
+     *
+     * @param softwareAssuranceChangeRequest Software Assurance Change Request Payload.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return cluster details.
+     */
+    Cluster extendSoftwareAssuranceBenefit(SoftwareAssuranceChangeRequest softwareAssuranceChangeRequest);
+
+    /**
+     * Extends Software Assurance Benefit to a cluster.
+     *
+     * @param softwareAssuranceChangeRequest Software Assurance Change Request Payload.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return cluster details.
+     */
+    Cluster extendSoftwareAssuranceBenefit(
+        SoftwareAssuranceChangeRequest softwareAssuranceChangeRequest, Context context);
 }

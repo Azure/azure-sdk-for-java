@@ -16,6 +16,10 @@ public final class ClusterIdentityResponseInner {
     @JsonProperty(value = "properties", access = JsonProperty.Access.WRITE_ONLY)
     private ClusterIdentityResponseProperties innerProperties;
 
+    /** Creates an instance of ClusterIdentityResponseInner class. */
+    public ClusterIdentityResponseInner() {
+    }
+
     /**
      * Get the innerProperties property: Cluster identity properties.
      *

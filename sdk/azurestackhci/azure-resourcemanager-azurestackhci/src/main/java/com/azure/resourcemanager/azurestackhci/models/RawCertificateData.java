@@ -17,6 +17,10 @@ public final class RawCertificateData {
     @JsonProperty(value = "certificates")
     private List<String> certificates;
 
+    /** Creates an instance of RawCertificateData class. */
+    public RawCertificateData() {
+    }
+
     /**
      * Get the certificates property: The certificates property.
      *

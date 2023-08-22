@@ -8,13 +8,22 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for WindowsServerSubscription. */
+/** Desired state of Windows Server Subscription. */
 public final class WindowsServerSubscription extends ExpandableStringEnum<WindowsServerSubscription> {
     /** Static value Disabled for WindowsServerSubscription. */
     public static final WindowsServerSubscription DISABLED = fromString("Disabled");
 
     /** Static value Enabled for WindowsServerSubscription. */
     public static final WindowsServerSubscription ENABLED = fromString("Enabled");
+
+    /**
+     * Creates a new instance of WindowsServerSubscription value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public WindowsServerSubscription() {
+    }
 
     /**
      * Creates or finds a WindowsServerSubscription from its string representation.

@@ -16,6 +16,10 @@ public final class UploadCertificateRequest {
     @JsonProperty(value = "properties")
     private RawCertificateData properties;
 
+    /** Creates an instance of UploadCertificateRequest class. */
+    public UploadCertificateRequest() {
+    }
+
     /**
      * Get the properties property: The properties property.
      *

@@ -28,6 +28,10 @@ public final class PerNodeState {
     @JsonProperty(value = "state", access = JsonProperty.Access.WRITE_ONLY)
     private NodeArcState state;
 
+    /** Creates an instance of PerNodeState class. */
+    public PerNodeState() {
+    }
+
     /**
      * Get the name property: Name of the Node in HCI Cluster.
      *

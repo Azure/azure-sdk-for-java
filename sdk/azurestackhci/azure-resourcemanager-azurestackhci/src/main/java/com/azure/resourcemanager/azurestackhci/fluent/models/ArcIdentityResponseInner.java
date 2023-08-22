@@ -16,6 +16,10 @@ public final class ArcIdentityResponseInner {
     @JsonProperty(value = "properties", access = JsonProperty.Access.WRITE_ONLY)
     private ArcIdentityResponseProperties innerProperties;
 
+    /** Creates an instance of ArcIdentityResponseInner class. */
+    public ArcIdentityResponseInner() {
+    }
+
     /**
      * Get the innerProperties property: ArcIdentity properties.
      *

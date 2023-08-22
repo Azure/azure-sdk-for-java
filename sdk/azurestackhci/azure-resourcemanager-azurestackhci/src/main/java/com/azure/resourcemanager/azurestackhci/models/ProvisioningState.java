@@ -8,8 +8,14 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ProvisioningState. */
+/** Provisioning state of the ArcSetting proxy resource. */
 public final class ProvisioningState extends ExpandableStringEnum<ProvisioningState> {
+    /** Static value NotSpecified for ProvisioningState. */
+    public static final ProvisioningState NOT_SPECIFIED = fromString("NotSpecified");
+
+    /** Static value Error for ProvisioningState. */
+    public static final ProvisioningState ERROR = fromString("Error");
+
     /** Static value Succeeded for ProvisioningState. */
     public static final ProvisioningState SUCCEEDED = fromString("Succeeded");
 
@@ -19,11 +25,53 @@ public final class ProvisioningState extends ExpandableStringEnum<ProvisioningSt
     /** Static value Canceled for ProvisioningState. */
     public static final ProvisioningState CANCELED = fromString("Canceled");
 
+    /** Static value Connected for ProvisioningState. */
+    public static final ProvisioningState CONNECTED = fromString("Connected");
+
+    /** Static value Disconnected for ProvisioningState. */
+    public static final ProvisioningState DISCONNECTED = fromString("Disconnected");
+
+    /** Static value Deleted for ProvisioningState. */
+    public static final ProvisioningState DELETED = fromString("Deleted");
+
+    /** Static value Creating for ProvisioningState. */
+    public static final ProvisioningState CREATING = fromString("Creating");
+
+    /** Static value Updating for ProvisioningState. */
+    public static final ProvisioningState UPDATING = fromString("Updating");
+
+    /** Static value Deleting for ProvisioningState. */
+    public static final ProvisioningState DELETING = fromString("Deleting");
+
+    /** Static value Moving for ProvisioningState. */
+    public static final ProvisioningState MOVING = fromString("Moving");
+
+    /** Static value PartiallySucceeded for ProvisioningState. */
+    public static final ProvisioningState PARTIALLY_SUCCEEDED = fromString("PartiallySucceeded");
+
+    /** Static value PartiallyConnected for ProvisioningState. */
+    public static final ProvisioningState PARTIALLY_CONNECTED = fromString("PartiallyConnected");
+
+    /** Static value InProgress for ProvisioningState. */
+    public static final ProvisioningState IN_PROGRESS = fromString("InProgress");
+
     /** Static value Accepted for ProvisioningState. */
     public static final ProvisioningState ACCEPTED = fromString("Accepted");
 
     /** Static value Provisioning for ProvisioningState. */
     public static final ProvisioningState PROVISIONING = fromString("Provisioning");
+
+    /** Static value DisableInProgress for ProvisioningState. */
+    public static final ProvisioningState DISABLE_IN_PROGRESS = fromString("DisableInProgress");
+
+    /**
+     * Creates a new instance of ProvisioningState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ProvisioningState() {
+    }
 
     /**
      * Creates or finds a ProvisioningState from its string representation.

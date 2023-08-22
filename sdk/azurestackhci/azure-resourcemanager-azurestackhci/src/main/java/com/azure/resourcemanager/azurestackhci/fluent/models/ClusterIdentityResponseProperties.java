@@ -34,6 +34,10 @@ public final class ClusterIdentityResponseProperties {
     @JsonProperty(value = "aadApplicationObjectId")
     private String aadApplicationObjectId;
 
+    /** Creates an instance of ClusterIdentityResponseProperties class. */
+    public ClusterIdentityResponseProperties() {
+    }
+
     /**
      * Get the aadClientId property: The aadClientId property.
      *

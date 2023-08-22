@@ -6,6 +6,7 @@ package com.azure.resourcemanager.azurestackhci.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.azurestackhci.models.ArcSettingAggregateState;
+import com.azure.resourcemanager.azurestackhci.models.DefaultExtensionDetails;
 import com.azure.resourcemanager.azurestackhci.models.PerNodeState;
 import com.azure.resourcemanager.azurestackhci.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -21,8 +22,7 @@ public final class ArcSettingProperties {
     private ProvisioningState provisioningState;
 
     /*
-     * The resource group that hosts the Arc agents, ie. Hybrid Compute Machine
-     * resources.
+     * The resource group that hosts the Arc agents, ie. Hybrid Compute Machine resources.
      */
     @JsonProperty(value = "arcInstanceResourceGroup")
     private String arcInstanceResourceGroup;
@@ -68,6 +68,16 @@ public final class ArcSettingProperties {
      */
     @JsonProperty(value = "connectivityProperties")
     private Object connectivityProperties;
+
+    /*
+     * Consent time for each of the default extensions category
+     */
+    @JsonProperty(value = "defaultExtensions", access = JsonProperty.Access.WRITE_ONLY)
+    private List<DefaultExtensionDetails> defaultExtensions;
+
+    /** Creates an instance of ArcSettingProperties class. */
+    public ArcSettingProperties() {
+    }
 
     /**
      * Get the provisioningState property: Provisioning state of the ArcSetting proxy resource.
@@ -219,6 +229,15 @@ public final class ArcSettingProperties {
     }
 
     /**
+     * Get the defaultExtensions property: Consent time for each of the default extensions category.
+     *
+     * @return the defaultExtensions value.
+     */
+    public List<DefaultExtensionDetails> defaultExtensions() {
+        return this.defaultExtensions;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -226,6 +245,9 @@ public final class ArcSettingProperties {
     public void validate() {
         if (perNodeDetails() != null) {
             perNodeDetails().forEach(e -> e.validate());
+        }
+        if (defaultExtensions() != null) {
+            defaultExtensions().forEach(e -> e.validate());
         }
     }
 }

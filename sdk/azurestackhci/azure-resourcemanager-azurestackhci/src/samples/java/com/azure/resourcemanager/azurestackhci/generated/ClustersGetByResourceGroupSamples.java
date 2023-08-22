@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.azurestackhci.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Clusters GetByResourceGroup. */
 public final class ClustersGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/azurestackhci/resource-manager/Microsoft.AzureStackHCI/stable/2022-05-01/examples/GetCluster.json
+     * x-ms-original-file: specification/azurestackhci/resource-manager/Microsoft.AzureStackHCI/preview/2022-12-15-preview/examples/GetCluster.json
      */
     /**
      * Sample code: Get cluster.
@@ -17,6 +15,6 @@ public final class ClustersGetByResourceGroupSamples {
      * @param manager Entry point to AzureStackHciManager.
      */
     public static void getCluster(com.azure.resourcemanager.azurestackhci.AzureStackHciManager manager) {
-        manager.clusters().getByResourceGroupWithResponse("test-rg", "myCluster", Context.NONE);
+        manager.clusters().getByResourceGroupWithResponse("test-rg", "myCluster", com.azure.core.util.Context.NONE);
     }
 }

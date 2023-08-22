@@ -4,11 +4,12 @@
 
 package com.azure.resourcemanager.azurestackhci.implementation;
 
-import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.azurestackhci.fluent.models.ExtensionInner;
 import com.azure.resourcemanager.azurestackhci.models.Extension;
 import com.azure.resourcemanager.azurestackhci.models.ExtensionAggregateState;
+import com.azure.resourcemanager.azurestackhci.models.ExtensionManagedBy;
+import com.azure.resourcemanager.azurestackhci.models.ExtensionUpgradeParameters;
 import com.azure.resourcemanager.azurestackhci.models.PerNodeExtensionState;
 import com.azure.resourcemanager.azurestackhci.models.ProvisioningState;
 import java.util.Collections;
@@ -31,10 +32,6 @@ public final class ExtensionImpl implements Extension, Extension.Definition, Ext
         return this.innerModel().type();
     }
 
-    public SystemData systemData() {
-        return this.innerModel().systemData();
-    }
-
     public ProvisioningState provisioningState() {
         return this.innerModel().provisioningState();
     }
@@ -50,6 +47,10 @@ public final class ExtensionImpl implements Extension, Extension.Definition, Ext
         } else {
             return Collections.emptyList();
         }
+    }
+
+    public ExtensionManagedBy managedBy() {
+        return this.innerModel().managedBy();
     }
 
     public String forceUpdateTag() {
@@ -78,6 +79,10 @@ public final class ExtensionImpl implements Extension, Extension.Definition, Ext
 
     public Object protectedSettings() {
         return this.innerModel().protectedSettings();
+    }
+
+    public Boolean enableAutomaticUpgrade() {
+        return this.innerModel().enableAutomaticUpgrade();
     }
 
     public String resourceGroupName() {
@@ -183,6 +188,19 @@ public final class ExtensionImpl implements Extension, Extension.Definition, Ext
         return this;
     }
 
+    public void upgrade(ExtensionUpgradeParameters extensionUpgradeParameters) {
+        serviceManager
+            .extensions()
+            .upgrade(resourceGroupName, clusterName, arcSettingName, extensionName, extensionUpgradeParameters);
+    }
+
+    public void upgrade(ExtensionUpgradeParameters extensionUpgradeParameters, Context context) {
+        serviceManager
+            .extensions()
+            .upgrade(
+                resourceGroupName, clusterName, arcSettingName, extensionName, extensionUpgradeParameters, context);
+    }
+
     public ExtensionImpl withForceUpdateTag(String forceUpdateTag) {
         this.innerModel().withForceUpdateTag(forceUpdateTag);
         return this;
@@ -215,6 +233,11 @@ public final class ExtensionImpl implements Extension, Extension.Definition, Ext
 
     public ExtensionImpl withProtectedSettings(Object protectedSettings) {
         this.innerModel().withProtectedSettings(protectedSettings);
+        return this;
+    }
+
+    public ExtensionImpl withEnableAutomaticUpgrade(Boolean enableAutomaticUpgrade) {
+        this.innerModel().withEnableAutomaticUpgrade(enableAutomaticUpgrade);
         return this;
     }
 }

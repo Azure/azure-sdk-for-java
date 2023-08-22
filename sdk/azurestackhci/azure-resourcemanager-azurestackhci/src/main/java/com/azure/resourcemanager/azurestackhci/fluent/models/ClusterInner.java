@@ -9,20 +9,24 @@ import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.azurestackhci.models.ClusterDesiredProperties;
 import com.azure.resourcemanager.azurestackhci.models.ClusterReportedProperties;
+import com.azure.resourcemanager.azurestackhci.models.ManagedServiceIdentityType;
 import com.azure.resourcemanager.azurestackhci.models.ProvisioningState;
+import com.azure.resourcemanager.azurestackhci.models.SoftwareAssuranceProperties;
 import com.azure.resourcemanager.azurestackhci.models.Status;
+import com.azure.resourcemanager.azurestackhci.models.UserAssignedIdentity;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.Map;
+import java.util.UUID;
 
 /** Cluster details. */
 @Fluent
 public final class ClusterInner extends Resource {
     /*
-     * System data of Cluster resource
+     * Identity of Cluster resource
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
-    private SystemData systemData;
+    @JsonProperty(value = "identity")
+    private ManagedServiceIdentity innerIdentity;
 
     /*
      * Cluster properties.
@@ -30,13 +34,23 @@ public final class ClusterInner extends Resource {
     @JsonProperty(value = "properties")
     private ClusterProperties innerProperties;
 
-    /**
-     * Get the systemData property: System data of Cluster resource.
-     *
-     * @return the systemData value.
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
-    public SystemData systemData() {
-        return this.systemData;
+    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
+    private SystemData systemData;
+
+    /** Creates an instance of ClusterInner class. */
+    public ClusterInner() {
+    }
+
+    /**
+     * Get the innerIdentity property: Identity of Cluster resource.
+     *
+     * @return the innerIdentity value.
+     */
+    private ManagedServiceIdentity innerIdentity() {
+        return this.innerIdentity;
     }
 
     /**
@@ -46,6 +60,15 @@ public final class ClusterInner extends Resource {
      */
     private ClusterProperties innerProperties() {
         return this.innerProperties;
+    }
+
+    /**
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     *
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
     }
 
     /** {@inheritDoc} */
@@ -59,6 +82,80 @@ public final class ClusterInner extends Resource {
     @Override
     public ClusterInner withTags(Map<String, String> tags) {
         super.withTags(tags);
+        return this;
+    }
+
+    /**
+     * Get the principalId property: The service principal ID of the system assigned identity. This property will only
+     * be provided for a system assigned identity.
+     *
+     * @return the principalId value.
+     */
+    public UUID principalId() {
+        return this.innerIdentity() == null ? null : this.innerIdentity().principalId();
+    }
+
+    /**
+     * Get the tenantId property: The tenant ID of the system assigned identity. This property will only be provided for
+     * a system assigned identity.
+     *
+     * @return the tenantId value.
+     */
+    public UUID tenantId() {
+        return this.innerIdentity() == null ? null : this.innerIdentity().tenantId();
+    }
+
+    /**
+     * Get the type property: Type of managed service identity (where both SystemAssigned and UserAssigned types are
+     * allowed).
+     *
+     * @return the type value.
+     */
+    public ManagedServiceIdentityType typeIdentityType() {
+        return this.innerIdentity() == null ? null : this.innerIdentity().type();
+    }
+
+    /**
+     * Set the type property: Type of managed service identity (where both SystemAssigned and UserAssigned types are
+     * allowed).
+     *
+     * @param type the type value to set.
+     * @return the ClusterInner object itself.
+     */
+    public ClusterInner withTypeIdentityType(ManagedServiceIdentityType type) {
+        if (this.innerIdentity() == null) {
+            this.innerIdentity = new ManagedServiceIdentity();
+        }
+        this.innerIdentity().withType(type);
+        return this;
+    }
+
+    /**
+     * Get the userAssignedIdentities property: The set of user assigned identities associated with the resource. The
+     * userAssignedIdentities dictionary keys will be ARM resource ids in the form:
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}.
+     * The dictionary values can be empty objects ({}) in requests.
+     *
+     * @return the userAssignedIdentities value.
+     */
+    public Map<String, UserAssignedIdentity> userAssignedIdentities() {
+        return this.innerIdentity() == null ? null : this.innerIdentity().userAssignedIdentities();
+    }
+
+    /**
+     * Set the userAssignedIdentities property: The set of user assigned identities associated with the resource. The
+     * userAssignedIdentities dictionary keys will be ARM resource ids in the form:
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}.
+     * The dictionary values can be empty objects ({}) in requests.
+     *
+     * @param userAssignedIdentities the userAssignedIdentities value to set.
+     * @return the ClusterInner object itself.
+     */
+    public ClusterInner withUserAssignedIdentities(Map<String, UserAssignedIdentity> userAssignedIdentities) {
+        if (this.innerIdentity() == null) {
+            this.innerIdentity = new ManagedServiceIdentity();
+        }
+        this.innerIdentity().withUserAssignedIdentities(userAssignedIdentities);
         return this;
     }
 
@@ -205,6 +302,29 @@ public final class ClusterInner extends Resource {
     }
 
     /**
+     * Get the softwareAssuranceProperties property: Software Assurance properties of the cluster.
+     *
+     * @return the softwareAssuranceProperties value.
+     */
+    public SoftwareAssuranceProperties softwareAssuranceProperties() {
+        return this.innerProperties() == null ? null : this.innerProperties().softwareAssuranceProperties();
+    }
+
+    /**
+     * Set the softwareAssuranceProperties property: Software Assurance properties of the cluster.
+     *
+     * @param softwareAssuranceProperties the softwareAssuranceProperties value to set.
+     * @return the ClusterInner object itself.
+     */
+    public ClusterInner withSoftwareAssuranceProperties(SoftwareAssuranceProperties softwareAssuranceProperties) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ClusterProperties();
+        }
+        this.innerProperties().withSoftwareAssuranceProperties(softwareAssuranceProperties);
+        return this;
+    }
+
+    /**
      * Get the desiredProperties property: Desired properties of the cluster.
      *
      * @return the desiredProperties value.
@@ -291,11 +411,23 @@ public final class ClusterInner extends Resource {
     }
 
     /**
+     * Get the resourceProviderObjectId property: Object id of RP Service Principal.
+     *
+     * @return the resourceProviderObjectId value.
+     */
+    public String resourceProviderObjectId() {
+        return this.innerProperties() == null ? null : this.innerProperties().resourceProviderObjectId();
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerIdentity() != null) {
+            innerIdentity().validate();
+        }
         if (innerProperties() != null) {
             innerProperties().validate();
         }

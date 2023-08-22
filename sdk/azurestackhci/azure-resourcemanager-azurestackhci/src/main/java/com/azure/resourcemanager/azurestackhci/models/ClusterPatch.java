@@ -6,9 +6,11 @@ package com.azure.resourcemanager.azurestackhci.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.azurestackhci.fluent.models.ClusterPatchProperties;
+import com.azure.resourcemanager.azurestackhci.fluent.models.ManagedServiceIdentity;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
+import java.util.UUID;
 
 /** Cluster details to update. */
 @Fluent
@@ -21,10 +23,20 @@ public final class ClusterPatch {
     private Map<String, String> tags;
 
     /*
+     * Identity of Cluster resource
+     */
+    @JsonProperty(value = "identity")
+    private ManagedServiceIdentity innerIdentity;
+
+    /*
      * Cluster properties.
      */
     @JsonProperty(value = "properties")
     private ClusterPatchProperties innerProperties;
+
+    /** Creates an instance of ClusterPatch class. */
+    public ClusterPatch() {
+    }
 
     /**
      * Get the tags property: Resource tags.
@@ -47,12 +59,95 @@ public final class ClusterPatch {
     }
 
     /**
+     * Get the innerIdentity property: Identity of Cluster resource.
+     *
+     * @return the innerIdentity value.
+     */
+    private ManagedServiceIdentity innerIdentity() {
+        return this.innerIdentity;
+    }
+
+    /**
      * Get the innerProperties property: Cluster properties.
      *
      * @return the innerProperties value.
      */
     private ClusterPatchProperties innerProperties() {
         return this.innerProperties;
+    }
+
+    /**
+     * Get the principalId property: The service principal ID of the system assigned identity. This property will only
+     * be provided for a system assigned identity.
+     *
+     * @return the principalId value.
+     */
+    public UUID principalId() {
+        return this.innerIdentity() == null ? null : this.innerIdentity().principalId();
+    }
+
+    /**
+     * Get the tenantId property: The tenant ID of the system assigned identity. This property will only be provided for
+     * a system assigned identity.
+     *
+     * @return the tenantId value.
+     */
+    public UUID tenantId() {
+        return this.innerIdentity() == null ? null : this.innerIdentity().tenantId();
+    }
+
+    /**
+     * Get the type property: Type of managed service identity (where both SystemAssigned and UserAssigned types are
+     * allowed).
+     *
+     * @return the type value.
+     */
+    public ManagedServiceIdentityType type() {
+        return this.innerIdentity() == null ? null : this.innerIdentity().type();
+    }
+
+    /**
+     * Set the type property: Type of managed service identity (where both SystemAssigned and UserAssigned types are
+     * allowed).
+     *
+     * @param type the type value to set.
+     * @return the ClusterPatch object itself.
+     */
+    public ClusterPatch withType(ManagedServiceIdentityType type) {
+        if (this.innerIdentity() == null) {
+            this.innerIdentity = new ManagedServiceIdentity();
+        }
+        this.innerIdentity().withType(type);
+        return this;
+    }
+
+    /**
+     * Get the userAssignedIdentities property: The set of user assigned identities associated with the resource. The
+     * userAssignedIdentities dictionary keys will be ARM resource ids in the form:
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}.
+     * The dictionary values can be empty objects ({}) in requests.
+     *
+     * @return the userAssignedIdentities value.
+     */
+    public Map<String, UserAssignedIdentity> userAssignedIdentities() {
+        return this.innerIdentity() == null ? null : this.innerIdentity().userAssignedIdentities();
+    }
+
+    /**
+     * Set the userAssignedIdentities property: The set of user assigned identities associated with the resource. The
+     * userAssignedIdentities dictionary keys will be ARM resource ids in the form:
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}.
+     * The dictionary values can be empty objects ({}) in requests.
+     *
+     * @param userAssignedIdentities the userAssignedIdentities value to set.
+     * @return the ClusterPatch object itself.
+     */
+    public ClusterPatch withUserAssignedIdentities(Map<String, UserAssignedIdentity> userAssignedIdentities) {
+        if (this.innerIdentity() == null) {
+            this.innerIdentity = new ManagedServiceIdentity();
+        }
+        this.innerIdentity().withUserAssignedIdentities(userAssignedIdentities);
+        return this;
     }
 
     /**
@@ -153,6 +248,9 @@ public final class ClusterPatch {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerIdentity() != null) {
+            innerIdentity().validate();
+        }
         if (innerProperties() != null) {
             innerProperties().validate();
         }

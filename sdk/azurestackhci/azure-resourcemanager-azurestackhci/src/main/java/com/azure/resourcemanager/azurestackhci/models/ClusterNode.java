@@ -29,6 +29,18 @@ public final class ClusterNode {
     private WindowsServerSubscription windowsServerSubscription;
 
     /*
+     * Type of the cluster node hardware.
+     */
+    @JsonProperty(value = "nodeType", access = JsonProperty.Access.WRITE_ONLY)
+    private ClusterNodeType nodeType;
+
+    /*
+     * Edge Hardware Center Resource Id
+     */
+    @JsonProperty(value = "ehcResourceId", access = JsonProperty.Access.WRITE_ONLY)
+    private String ehcResourceId;
+
+    /*
      * Manufacturer of the cluster node hardware.
      */
     @JsonProperty(value = "manufacturer", access = JsonProperty.Access.WRITE_ONLY)
@@ -53,6 +65,12 @@ public final class ClusterNode {
     private String osVersion;
 
     /*
+     * Display version of the operating system running on the cluster node.
+     */
+    @JsonProperty(value = "osDisplayVersion", access = JsonProperty.Access.WRITE_ONLY)
+    private String osDisplayVersion;
+
+    /*
      * Immutable id of the cluster node.
      */
     @JsonProperty(value = "serialNumber", access = JsonProperty.Access.WRITE_ONLY)
@@ -69,6 +87,10 @@ public final class ClusterNode {
      */
     @JsonProperty(value = "memoryInGiB", access = JsonProperty.Access.WRITE_ONLY)
     private Float memoryInGiB;
+
+    /** Creates an instance of ClusterNode class. */
+    public ClusterNode() {
+    }
 
     /**
      * Get the name property: Name of the cluster node.
@@ -95,6 +117,24 @@ public final class ClusterNode {
      */
     public WindowsServerSubscription windowsServerSubscription() {
         return this.windowsServerSubscription;
+    }
+
+    /**
+     * Get the nodeType property: Type of the cluster node hardware.
+     *
+     * @return the nodeType value.
+     */
+    public ClusterNodeType nodeType() {
+        return this.nodeType;
+    }
+
+    /**
+     * Get the ehcResourceId property: Edge Hardware Center Resource Id.
+     *
+     * @return the ehcResourceId value.
+     */
+    public String ehcResourceId() {
+        return this.ehcResourceId;
     }
 
     /**
@@ -131,6 +171,15 @@ public final class ClusterNode {
      */
     public String osVersion() {
         return this.osVersion;
+    }
+
+    /**
+     * Get the osDisplayVersion property: Display version of the operating system running on the cluster node.
+     *
+     * @return the osDisplayVersion value.
+     */
+    public String osDisplayVersion() {
+        return this.osDisplayVersion;
     }
 
     /**

@@ -28,11 +28,45 @@ import com.azure.resourcemanager.azurestackhci.implementation.ArcSettingsImpl;
 import com.azure.resourcemanager.azurestackhci.implementation.AzureStackHciClientBuilder;
 import com.azure.resourcemanager.azurestackhci.implementation.ClustersImpl;
 import com.azure.resourcemanager.azurestackhci.implementation.ExtensionsImpl;
+import com.azure.resourcemanager.azurestackhci.implementation.GalleryImagesOperationsImpl;
+import com.azure.resourcemanager.azurestackhci.implementation.GuestAgentsImpl;
+import com.azure.resourcemanager.azurestackhci.implementation.GuestAgentsOperationsImpl;
+import com.azure.resourcemanager.azurestackhci.implementation.HybridIdentityMetadatasImpl;
+import com.azure.resourcemanager.azurestackhci.implementation.MachineExtensionsImpl;
+import com.azure.resourcemanager.azurestackhci.implementation.MarketplaceGalleryImagesOperationsImpl;
+import com.azure.resourcemanager.azurestackhci.implementation.NetworkInterfacesOperationsImpl;
+import com.azure.resourcemanager.azurestackhci.implementation.OffersImpl;
 import com.azure.resourcemanager.azurestackhci.implementation.OperationsImpl;
+import com.azure.resourcemanager.azurestackhci.implementation.PublishersImpl;
+import com.azure.resourcemanager.azurestackhci.implementation.SkusImpl;
+import com.azure.resourcemanager.azurestackhci.implementation.StorageContainersOperationsImpl;
+import com.azure.resourcemanager.azurestackhci.implementation.UpdateRunsImpl;
+import com.azure.resourcemanager.azurestackhci.implementation.UpdateSummariesOperationsImpl;
+import com.azure.resourcemanager.azurestackhci.implementation.UpdatesImpl;
+import com.azure.resourcemanager.azurestackhci.implementation.VirtualHardDisksOperationsImpl;
+import com.azure.resourcemanager.azurestackhci.implementation.VirtualMachinesOperationsImpl;
+import com.azure.resourcemanager.azurestackhci.implementation.VirtualNetworksOperationsImpl;
 import com.azure.resourcemanager.azurestackhci.models.ArcSettings;
 import com.azure.resourcemanager.azurestackhci.models.Clusters;
 import com.azure.resourcemanager.azurestackhci.models.Extensions;
+import com.azure.resourcemanager.azurestackhci.models.GalleryImagesOperations;
+import com.azure.resourcemanager.azurestackhci.models.GuestAgents;
+import com.azure.resourcemanager.azurestackhci.models.GuestAgentsOperations;
+import com.azure.resourcemanager.azurestackhci.models.HybridIdentityMetadatas;
+import com.azure.resourcemanager.azurestackhci.models.MachineExtensions;
+import com.azure.resourcemanager.azurestackhci.models.MarketplaceGalleryImagesOperations;
+import com.azure.resourcemanager.azurestackhci.models.NetworkInterfacesOperations;
+import com.azure.resourcemanager.azurestackhci.models.Offers;
 import com.azure.resourcemanager.azurestackhci.models.Operations;
+import com.azure.resourcemanager.azurestackhci.models.Publishers;
+import com.azure.resourcemanager.azurestackhci.models.Skus;
+import com.azure.resourcemanager.azurestackhci.models.StorageContainersOperations;
+import com.azure.resourcemanager.azurestackhci.models.UpdateRuns;
+import com.azure.resourcemanager.azurestackhci.models.UpdateSummariesOperations;
+import com.azure.resourcemanager.azurestackhci.models.Updates;
+import com.azure.resourcemanager.azurestackhci.models.VirtualHardDisksOperations;
+import com.azure.resourcemanager.azurestackhci.models.VirtualMachinesOperations;
+import com.azure.resourcemanager.azurestackhci.models.VirtualNetworksOperations;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -48,7 +82,41 @@ public final class AzureStackHciManager {
 
     private Extensions extensions;
 
+    private GalleryImagesOperations galleryImagesOperations;
+
+    private MarketplaceGalleryImagesOperations marketplaceGalleryImagesOperations;
+
+    private NetworkInterfacesOperations networkInterfacesOperations;
+
+    private Offers offers;
+
     private Operations operations;
+
+    private Publishers publishers;
+
+    private Skus skus;
+
+    private StorageContainersOperations storageContainersOperations;
+
+    private UpdateRuns updateRuns;
+
+    private UpdateSummariesOperations updateSummariesOperations;
+
+    private Updates updates;
+
+    private VirtualHardDisksOperations virtualHardDisksOperations;
+
+    private VirtualMachinesOperations virtualMachinesOperations;
+
+    private HybridIdentityMetadatas hybridIdentityMetadatas;
+
+    private MachineExtensions machineExtensions;
+
+    private GuestAgents guestAgents;
+
+    private GuestAgentsOperations guestAgentsOperations;
+
+    private VirtualNetworksOperations virtualNetworksOperations;
 
     private final AzureStackHciClient clientObject;
 
@@ -215,7 +283,7 @@ public final class AzureStackHciManager {
                 .append("-")
                 .append("com.azure.resourcemanager.azurestackhci")
                 .append("/")
-                .append("1.0.0-beta.3");
+                .append("1.0.0-beta.4");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder
                     .append(" (")
@@ -309,6 +377,57 @@ public final class AzureStackHciManager {
     }
 
     /**
+     * Gets the resource collection API of GalleryImagesOperations. It manages GalleryImages.
+     *
+     * @return Resource collection API of GalleryImagesOperations.
+     */
+    public GalleryImagesOperations galleryImagesOperations() {
+        if (this.galleryImagesOperations == null) {
+            this.galleryImagesOperations =
+                new GalleryImagesOperationsImpl(clientObject.getGalleryImagesOperations(), this);
+        }
+        return galleryImagesOperations;
+    }
+
+    /**
+     * Gets the resource collection API of MarketplaceGalleryImagesOperations. It manages MarketplaceGalleryImages.
+     *
+     * @return Resource collection API of MarketplaceGalleryImagesOperations.
+     */
+    public MarketplaceGalleryImagesOperations marketplaceGalleryImagesOperations() {
+        if (this.marketplaceGalleryImagesOperations == null) {
+            this.marketplaceGalleryImagesOperations =
+                new MarketplaceGalleryImagesOperationsImpl(clientObject.getMarketplaceGalleryImagesOperations(), this);
+        }
+        return marketplaceGalleryImagesOperations;
+    }
+
+    /**
+     * Gets the resource collection API of NetworkInterfacesOperations. It manages NetworkInterfaces.
+     *
+     * @return Resource collection API of NetworkInterfacesOperations.
+     */
+    public NetworkInterfacesOperations networkInterfacesOperations() {
+        if (this.networkInterfacesOperations == null) {
+            this.networkInterfacesOperations =
+                new NetworkInterfacesOperationsImpl(clientObject.getNetworkInterfacesOperations(), this);
+        }
+        return networkInterfacesOperations;
+    }
+
+    /**
+     * Gets the resource collection API of Offers.
+     *
+     * @return Resource collection API of Offers.
+     */
+    public Offers offers() {
+        if (this.offers == null) {
+            this.offers = new OffersImpl(clientObject.getOffers(), this);
+        }
+        return offers;
+    }
+
+    /**
      * Gets the resource collection API of Operations.
      *
      * @return Resource collection API of Operations.
@@ -321,8 +440,172 @@ public final class AzureStackHciManager {
     }
 
     /**
-     * @return Wrapped service client AzureStackHciClient providing direct access to the underlying auto-generated API
-     *     implementation, based on Azure REST API.
+     * Gets the resource collection API of Publishers.
+     *
+     * @return Resource collection API of Publishers.
+     */
+    public Publishers publishers() {
+        if (this.publishers == null) {
+            this.publishers = new PublishersImpl(clientObject.getPublishers(), this);
+        }
+        return publishers;
+    }
+
+    /**
+     * Gets the resource collection API of Skus.
+     *
+     * @return Resource collection API of Skus.
+     */
+    public Skus skus() {
+        if (this.skus == null) {
+            this.skus = new SkusImpl(clientObject.getSkus(), this);
+        }
+        return skus;
+    }
+
+    /**
+     * Gets the resource collection API of StorageContainersOperations. It manages StorageContainers.
+     *
+     * @return Resource collection API of StorageContainersOperations.
+     */
+    public StorageContainersOperations storageContainersOperations() {
+        if (this.storageContainersOperations == null) {
+            this.storageContainersOperations =
+                new StorageContainersOperationsImpl(clientObject.getStorageContainersOperations(), this);
+        }
+        return storageContainersOperations;
+    }
+
+    /**
+     * Gets the resource collection API of UpdateRuns. It manages UpdateRun.
+     *
+     * @return Resource collection API of UpdateRuns.
+     */
+    public UpdateRuns updateRuns() {
+        if (this.updateRuns == null) {
+            this.updateRuns = new UpdateRunsImpl(clientObject.getUpdateRuns(), this);
+        }
+        return updateRuns;
+    }
+
+    /**
+     * Gets the resource collection API of UpdateSummariesOperations.
+     *
+     * @return Resource collection API of UpdateSummariesOperations.
+     */
+    public UpdateSummariesOperations updateSummariesOperations() {
+        if (this.updateSummariesOperations == null) {
+            this.updateSummariesOperations =
+                new UpdateSummariesOperationsImpl(clientObject.getUpdateSummariesOperations(), this);
+        }
+        return updateSummariesOperations;
+    }
+
+    /**
+     * Gets the resource collection API of Updates. It manages HciUpdate.
+     *
+     * @return Resource collection API of Updates.
+     */
+    public Updates updates() {
+        if (this.updates == null) {
+            this.updates = new UpdatesImpl(clientObject.getUpdates(), this);
+        }
+        return updates;
+    }
+
+    /**
+     * Gets the resource collection API of VirtualHardDisksOperations. It manages VirtualHardDisks.
+     *
+     * @return Resource collection API of VirtualHardDisksOperations.
+     */
+    public VirtualHardDisksOperations virtualHardDisksOperations() {
+        if (this.virtualHardDisksOperations == null) {
+            this.virtualHardDisksOperations =
+                new VirtualHardDisksOperationsImpl(clientObject.getVirtualHardDisksOperations(), this);
+        }
+        return virtualHardDisksOperations;
+    }
+
+    /**
+     * Gets the resource collection API of VirtualMachinesOperations. It manages VirtualMachines.
+     *
+     * @return Resource collection API of VirtualMachinesOperations.
+     */
+    public VirtualMachinesOperations virtualMachinesOperations() {
+        if (this.virtualMachinesOperations == null) {
+            this.virtualMachinesOperations =
+                new VirtualMachinesOperationsImpl(clientObject.getVirtualMachinesOperations(), this);
+        }
+        return virtualMachinesOperations;
+    }
+
+    /**
+     * Gets the resource collection API of HybridIdentityMetadatas. It manages HybridIdentityMetadata.
+     *
+     * @return Resource collection API of HybridIdentityMetadatas.
+     */
+    public HybridIdentityMetadatas hybridIdentityMetadatas() {
+        if (this.hybridIdentityMetadatas == null) {
+            this.hybridIdentityMetadatas =
+                new HybridIdentityMetadatasImpl(clientObject.getHybridIdentityMetadatas(), this);
+        }
+        return hybridIdentityMetadatas;
+    }
+
+    /**
+     * Gets the resource collection API of MachineExtensions. It manages MachineExtension.
+     *
+     * @return Resource collection API of MachineExtensions.
+     */
+    public MachineExtensions machineExtensions() {
+        if (this.machineExtensions == null) {
+            this.machineExtensions = new MachineExtensionsImpl(clientObject.getMachineExtensions(), this);
+        }
+        return machineExtensions;
+    }
+
+    /**
+     * Gets the resource collection API of GuestAgents. It manages GuestAgent.
+     *
+     * @return Resource collection API of GuestAgents.
+     */
+    public GuestAgents guestAgents() {
+        if (this.guestAgents == null) {
+            this.guestAgents = new GuestAgentsImpl(clientObject.getGuestAgents(), this);
+        }
+        return guestAgents;
+    }
+
+    /**
+     * Gets the resource collection API of GuestAgentsOperations.
+     *
+     * @return Resource collection API of GuestAgentsOperations.
+     */
+    public GuestAgentsOperations guestAgentsOperations() {
+        if (this.guestAgentsOperations == null) {
+            this.guestAgentsOperations = new GuestAgentsOperationsImpl(clientObject.getGuestAgentsOperations(), this);
+        }
+        return guestAgentsOperations;
+    }
+
+    /**
+     * Gets the resource collection API of VirtualNetworksOperations. It manages VirtualNetworks.
+     *
+     * @return Resource collection API of VirtualNetworksOperations.
+     */
+    public VirtualNetworksOperations virtualNetworksOperations() {
+        if (this.virtualNetworksOperations == null) {
+            this.virtualNetworksOperations =
+                new VirtualNetworksOperationsImpl(clientObject.getVirtualNetworksOperations(), this);
+        }
+        return virtualNetworksOperations;
+    }
+
+    /**
+     * Gets wrapped service client AzureStackHciClient providing direct access to the underlying auto-generated API
+     * implementation, based on Azure REST API.
+     *
+     * @return Wrapped service client AzureStackHciClient.
      */
     public AzureStackHciClient serviceClient() {
         return this.clientObject;

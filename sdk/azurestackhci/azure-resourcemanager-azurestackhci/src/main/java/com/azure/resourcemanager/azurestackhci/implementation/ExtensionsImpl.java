@@ -12,6 +12,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.azurestackhci.fluent.ExtensionsClient;
 import com.azure.resourcemanager.azurestackhci.fluent.models.ExtensionInner;
 import com.azure.resourcemanager.azurestackhci.models.Extension;
+import com.azure.resourcemanager.azurestackhci.models.ExtensionUpgradeParameters;
 import com.azure.resourcemanager.azurestackhci.models.Extensions;
 
 public final class ExtensionsImpl implements Extensions {
@@ -41,15 +42,6 @@ public final class ExtensionsImpl implements Extensions {
         return Utils.mapPage(inner, inner1 -> new ExtensionImpl(inner1, this.manager()));
     }
 
-    public Extension get(String resourceGroupName, String clusterName, String arcSettingName, String extensionName) {
-        ExtensionInner inner = this.serviceClient().get(resourceGroupName, clusterName, arcSettingName, extensionName);
-        if (inner != null) {
-            return new ExtensionImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<Extension> getWithResponse(
         String resourceGroupName, String clusterName, String arcSettingName, String extensionName, Context context) {
         Response<ExtensionInner> inner =
@@ -67,6 +59,15 @@ public final class ExtensionsImpl implements Extensions {
         }
     }
 
+    public Extension get(String resourceGroupName, String clusterName, String arcSettingName, String extensionName) {
+        ExtensionInner inner = this.serviceClient().get(resourceGroupName, clusterName, arcSettingName, extensionName);
+        if (inner != null) {
+            return new ExtensionImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
     public void delete(String resourceGroupName, String clusterName, String arcSettingName, String extensionName) {
         this.serviceClient().delete(resourceGroupName, clusterName, arcSettingName, extensionName);
     }
@@ -74,6 +75,30 @@ public final class ExtensionsImpl implements Extensions {
     public void delete(
         String resourceGroupName, String clusterName, String arcSettingName, String extensionName, Context context) {
         this.serviceClient().delete(resourceGroupName, clusterName, arcSettingName, extensionName, context);
+    }
+
+    public void upgrade(
+        String resourceGroupName,
+        String clusterName,
+        String arcSettingName,
+        String extensionName,
+        ExtensionUpgradeParameters extensionUpgradeParameters) {
+        this
+            .serviceClient()
+            .upgrade(resourceGroupName, clusterName, arcSettingName, extensionName, extensionUpgradeParameters);
+    }
+
+    public void upgrade(
+        String resourceGroupName,
+        String clusterName,
+        String arcSettingName,
+        String extensionName,
+        ExtensionUpgradeParameters extensionUpgradeParameters,
+        Context context) {
+        this
+            .serviceClient()
+            .upgrade(
+                resourceGroupName, clusterName, arcSettingName, extensionName, extensionUpgradeParameters, context);
     }
 
     public Extension getById(String id) {

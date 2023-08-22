@@ -11,7 +11,7 @@ import java.io.IOException;
 /** Samples for Extensions Create. */
 public final class ExtensionsCreateSamples {
     /*
-     * x-ms-original-file: specification/azurestackhci/resource-manager/Microsoft.AzureStackHCI/stable/2022-05-01/examples/PutExtension.json
+     * x-ms-original-file: specification/azurestackhci/resource-manager/Microsoft.AzureStackHCI/preview/2022-12-15-preview/examples/PutExtension.json
      */
     /**
      * Sample code: Create Arc Extension.
@@ -35,6 +35,7 @@ public final class ExtensionsCreateSamples {
                 SerializerFactory
                     .createDefaultManagementSerializerAdapter()
                     .deserialize("{\"workspaceKey\":\"xx\"}", Object.class, SerializerEncoding.JSON))
+            .withEnableAutomaticUpgrade(false)
             .create();
     }
 }

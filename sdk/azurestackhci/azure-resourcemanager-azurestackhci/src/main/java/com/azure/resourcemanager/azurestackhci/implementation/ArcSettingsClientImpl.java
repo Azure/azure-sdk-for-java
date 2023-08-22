@@ -68,11 +68,10 @@ public final class ArcSettingsClientImpl implements ArcSettingsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "AzureStackHciClientA")
-    private interface ArcSettingsService {
+    public interface ArcSettingsService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI"
-                + "/clusters/{clusterName}/arcSettings")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/clusters/{clusterName}/arcSettings")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ArcSettingList>> listByCluster(
@@ -86,8 +85,7 @@ public final class ArcSettingsClientImpl implements ArcSettingsClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI"
-                + "/clusters/{clusterName}/arcSettings/{arcSettingName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/clusters/{clusterName}/arcSettings/{arcSettingName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ArcSettingInner>> get(
@@ -102,8 +100,7 @@ public final class ArcSettingsClientImpl implements ArcSettingsClient {
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI"
-                + "/clusters/{clusterName}/arcSettings/{arcSettingName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/clusters/{clusterName}/arcSettings/{arcSettingName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ArcSettingInner>> create(
@@ -119,8 +116,7 @@ public final class ArcSettingsClientImpl implements ArcSettingsClient {
 
         @Headers({"Content-Type: application/json"})
         @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI"
-                + "/clusters/{clusterName}/arcSettings/{arcSettingName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/clusters/{clusterName}/arcSettings/{arcSettingName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ArcSettingInner>> update(
@@ -136,8 +132,7 @@ public final class ArcSettingsClientImpl implements ArcSettingsClient {
 
         @Headers({"Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI"
-                + "/clusters/{clusterName}/arcSettings/{arcSettingName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/clusters/{clusterName}/arcSettings/{arcSettingName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
@@ -152,8 +147,7 @@ public final class ArcSettingsClientImpl implements ArcSettingsClient {
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI"
-                + "/clusters/{clusterName}/arcSettings/{arcSettingName}/generatePassword")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/clusters/{clusterName}/arcSettings/{arcSettingName}/generatePassword")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<PasswordCredentialInner>> generatePassword(
@@ -168,11 +162,40 @@ public final class ArcSettingsClientImpl implements ArcSettingsClient {
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI"
-                + "/clusters/{clusterName}/arcSettings/{arcSettingName}/createArcIdentity")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/clusters/{clusterName}/arcSettings/{arcSettingName}/createArcIdentity")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createIdentity(
+            @HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("clusterName") String clusterName,
+            @PathParam("arcSettingName") String arcSettingName,
+            @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({"Content-Type: application/json"})
+        @Post(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/clusters/{clusterName}/arcSettings/{arcSettingName}/consentAndInstallDefaultExtensions")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<ArcSettingInner>> consentAndInstallDefaultExtensions(
+            @HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("clusterName") String clusterName,
+            @PathParam("arcSettingName") String arcSettingName,
+            @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({"Content-Type: application/json"})
+        @Post(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/clusters/{clusterName}/arcSettings/{arcSettingName}/InitializeDisableProcess")
+        @ExpectedResponses({202})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> initializeDisableProcess(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -503,22 +526,6 @@ public final class ArcSettingsClientImpl implements ArcSettingsClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param arcSettingName The name of the proxy resource holding details of HCI ArcSetting information.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return arcSetting resource details of HCI Cluster.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ArcSettingInner get(String resourceGroupName, String clusterName, String arcSettingName) {
-        return getAsync(resourceGroupName, clusterName, arcSettingName).block();
-    }
-
-    /**
-     * Get ArcSetting resource details of HCI Cluster.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param arcSettingName The name of the proxy resource holding details of HCI ArcSetting information.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -529,6 +536,22 @@ public final class ArcSettingsClientImpl implements ArcSettingsClient {
     public Response<ArcSettingInner> getWithResponse(
         String resourceGroupName, String clusterName, String arcSettingName, Context context) {
         return getWithResponseAsync(resourceGroupName, clusterName, arcSettingName, context).block();
+    }
+
+    /**
+     * Get ArcSetting resource details of HCI Cluster.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the cluster.
+     * @param arcSettingName The name of the proxy resource holding details of HCI ArcSetting information.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return arcSetting resource details of HCI Cluster.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ArcSettingInner get(String resourceGroupName, String clusterName, String arcSettingName) {
+        return getWithResponse(resourceGroupName, clusterName, arcSettingName, Context.NONE).getValue();
     }
 
     /**
@@ -679,24 +702,6 @@ public final class ArcSettingsClientImpl implements ArcSettingsClient {
      * @param clusterName The name of the cluster.
      * @param arcSettingName The name of the proxy resource holding details of HCI ArcSetting information.
      * @param arcSetting Parameters supplied to the Create ArcSetting resource for this HCI cluster.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return arcSetting details.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ArcSettingInner create(
-        String resourceGroupName, String clusterName, String arcSettingName, ArcSettingInner arcSetting) {
-        return createAsync(resourceGroupName, clusterName, arcSettingName, arcSetting).block();
-    }
-
-    /**
-     * Create ArcSetting for HCI cluster.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param arcSettingName The name of the proxy resource holding details of HCI ArcSetting information.
-     * @param arcSetting Parameters supplied to the Create ArcSetting resource for this HCI cluster.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -711,6 +716,24 @@ public final class ArcSettingsClientImpl implements ArcSettingsClient {
         ArcSettingInner arcSetting,
         Context context) {
         return createWithResponseAsync(resourceGroupName, clusterName, arcSettingName, arcSetting, context).block();
+    }
+
+    /**
+     * Create ArcSetting for HCI cluster.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the cluster.
+     * @param arcSettingName The name of the proxy resource holding details of HCI ArcSetting information.
+     * @param arcSetting Parameters supplied to the Create ArcSetting resource for this HCI cluster.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return arcSetting details.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ArcSettingInner create(
+        String resourceGroupName, String clusterName, String arcSettingName, ArcSettingInner arcSetting) {
+        return createWithResponse(resourceGroupName, clusterName, arcSettingName, arcSetting, Context.NONE).getValue();
     }
 
     /**
@@ -861,24 +884,6 @@ public final class ArcSettingsClientImpl implements ArcSettingsClient {
      * @param clusterName The name of the cluster.
      * @param arcSettingName The name of the proxy resource holding details of HCI ArcSetting information.
      * @param arcSetting ArcSettings parameters that needs to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return arcSetting details.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ArcSettingInner update(
-        String resourceGroupName, String clusterName, String arcSettingName, ArcSettingsPatch arcSetting) {
-        return updateAsync(resourceGroupName, clusterName, arcSettingName, arcSetting).block();
-    }
-
-    /**
-     * Update ArcSettings for HCI cluster.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param arcSettingName The name of the proxy resource holding details of HCI ArcSetting information.
-     * @param arcSetting ArcSettings parameters that needs to be updated.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -893,6 +898,24 @@ public final class ArcSettingsClientImpl implements ArcSettingsClient {
         ArcSettingsPatch arcSetting,
         Context context) {
         return updateWithResponseAsync(resourceGroupName, clusterName, arcSettingName, arcSetting, context).block();
+    }
+
+    /**
+     * Update ArcSettings for HCI cluster.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the cluster.
+     * @param arcSettingName The name of the proxy resource holding details of HCI ArcSetting information.
+     * @param arcSetting ArcSettings parameters that needs to be updated.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return arcSetting details.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ArcSettingInner update(
+        String resourceGroupName, String clusterName, String arcSettingName, ArcSettingsPatch arcSetting) {
+        return updateWithResponse(resourceGroupName, clusterName, arcSettingName, arcSetting, Context.NONE).getValue();
     }
 
     /**
@@ -1057,7 +1080,7 @@ public final class ArcSettingsClientImpl implements ArcSettingsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String clusterName, String arcSettingName) {
-        return beginDeleteAsync(resourceGroupName, clusterName, arcSettingName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, clusterName, arcSettingName).getSyncPoller();
     }
 
     /**
@@ -1075,7 +1098,7 @@ public final class ArcSettingsClientImpl implements ArcSettingsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String clusterName, String arcSettingName, Context context) {
-        return beginDeleteAsync(resourceGroupName, clusterName, arcSettingName, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, clusterName, arcSettingName, context).getSyncPoller();
     }
 
     /**
@@ -1275,23 +1298,6 @@ public final class ArcSettingsClientImpl implements ArcSettingsClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param arcSettingName The name of the proxy resource holding details of HCI ArcSetting information.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PasswordCredentialInner generatePassword(
-        String resourceGroupName, String clusterName, String arcSettingName) {
-        return generatePasswordAsync(resourceGroupName, clusterName, arcSettingName).block();
-    }
-
-    /**
-     * Generate password for arc settings.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param arcSettingName The name of the proxy resource holding details of HCI ArcSetting information.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1302,6 +1308,23 @@ public final class ArcSettingsClientImpl implements ArcSettingsClient {
     public Response<PasswordCredentialInner> generatePasswordWithResponse(
         String resourceGroupName, String clusterName, String arcSettingName, Context context) {
         return generatePasswordWithResponseAsync(resourceGroupName, clusterName, arcSettingName, context).block();
+    }
+
+    /**
+     * Generate password for arc settings.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the cluster.
+     * @param arcSettingName The name of the proxy resource holding details of HCI ArcSetting information.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PasswordCredentialInner generatePassword(
+        String resourceGroupName, String clusterName, String arcSettingName) {
+        return generatePasswordWithResponse(resourceGroupName, clusterName, arcSettingName, Context.NONE).getValue();
     }
 
     /**
@@ -1476,7 +1499,7 @@ public final class ArcSettingsClientImpl implements ArcSettingsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ArcIdentityResponseInner>, ArcIdentityResponseInner> beginCreateIdentity(
         String resourceGroupName, String clusterName, String arcSettingName) {
-        return beginCreateIdentityAsync(resourceGroupName, clusterName, arcSettingName).getSyncPoller();
+        return this.beginCreateIdentityAsync(resourceGroupName, clusterName, arcSettingName).getSyncPoller();
     }
 
     /**
@@ -1494,7 +1517,7 @@ public final class ArcSettingsClientImpl implements ArcSettingsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ArcIdentityResponseInner>, ArcIdentityResponseInner> beginCreateIdentity(
         String resourceGroupName, String clusterName, String arcSettingName, Context context) {
-        return beginCreateIdentityAsync(resourceGroupName, clusterName, arcSettingName, context).getSyncPoller();
+        return this.beginCreateIdentityAsync(resourceGroupName, clusterName, arcSettingName, context).getSyncPoller();
     }
 
     /**
@@ -1572,9 +1595,428 @@ public final class ArcSettingsClientImpl implements ArcSettingsClient {
     }
 
     /**
+     * Add consent time for default extensions and initiate extensions installation.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the cluster.
+     * @param arcSettingName The name of the proxy resource holding details of HCI ArcSetting information.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return arcSetting details along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<ArcSettingInner>> consentAndInstallDefaultExtensionsWithResponseAsync(
+        String resourceGroupName, String clusterName, String arcSettingName) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (clusterName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
+        }
+        if (arcSettingName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter arcSettingName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .consentAndInstallDefaultExtensions(
+                            this.client.getEndpoint(),
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            clusterName,
+                            arcSettingName,
+                            this.client.getApiVersion(),
+                            accept,
+                            context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Add consent time for default extensions and initiate extensions installation.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the cluster.
+     * @param arcSettingName The name of the proxy resource holding details of HCI ArcSetting information.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return arcSetting details along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<ArcSettingInner>> consentAndInstallDefaultExtensionsWithResponseAsync(
+        String resourceGroupName, String clusterName, String arcSettingName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (clusterName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
+        }
+        if (arcSettingName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter arcSettingName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .consentAndInstallDefaultExtensions(
+                this.client.getEndpoint(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                clusterName,
+                arcSettingName,
+                this.client.getApiVersion(),
+                accept,
+                context);
+    }
+
+    /**
+     * Add consent time for default extensions and initiate extensions installation.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the cluster.
+     * @param arcSettingName The name of the proxy resource holding details of HCI ArcSetting information.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return arcSetting details on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<ArcSettingInner> consentAndInstallDefaultExtensionsAsync(
+        String resourceGroupName, String clusterName, String arcSettingName) {
+        return consentAndInstallDefaultExtensionsWithResponseAsync(resourceGroupName, clusterName, arcSettingName)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Add consent time for default extensions and initiate extensions installation.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the cluster.
+     * @param arcSettingName The name of the proxy resource holding details of HCI ArcSetting information.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return arcSetting details along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<ArcSettingInner> consentAndInstallDefaultExtensionsWithResponse(
+        String resourceGroupName, String clusterName, String arcSettingName, Context context) {
+        return consentAndInstallDefaultExtensionsWithResponseAsync(
+                resourceGroupName, clusterName, arcSettingName, context)
+            .block();
+    }
+
+    /**
+     * Add consent time for default extensions and initiate extensions installation.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the cluster.
+     * @param arcSettingName The name of the proxy resource holding details of HCI ArcSetting information.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return arcSetting details.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ArcSettingInner consentAndInstallDefaultExtensions(
+        String resourceGroupName, String clusterName, String arcSettingName) {
+        return consentAndInstallDefaultExtensionsWithResponse(
+                resourceGroupName, clusterName, arcSettingName, Context.NONE)
+            .getValue();
+    }
+
+    /**
+     * Initializes ARC Disable process on the cluster.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the cluster.
+     * @param arcSettingName The name of the proxy resource holding details of HCI ArcSetting information.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> initializeDisableProcessWithResponseAsync(
+        String resourceGroupName, String clusterName, String arcSettingName) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (clusterName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
+        }
+        if (arcSettingName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter arcSettingName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .initializeDisableProcess(
+                            this.client.getEndpoint(),
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            clusterName,
+                            arcSettingName,
+                            this.client.getApiVersion(),
+                            accept,
+                            context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Initializes ARC Disable process on the cluster.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the cluster.
+     * @param arcSettingName The name of the proxy resource holding details of HCI ArcSetting information.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> initializeDisableProcessWithResponseAsync(
+        String resourceGroupName, String clusterName, String arcSettingName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (clusterName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
+        }
+        if (arcSettingName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter arcSettingName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .initializeDisableProcess(
+                this.client.getEndpoint(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                clusterName,
+                arcSettingName,
+                this.client.getApiVersion(),
+                accept,
+                context);
+    }
+
+    /**
+     * Initializes ARC Disable process on the cluster.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the cluster.
+     * @param arcSettingName The name of the proxy resource holding details of HCI ArcSetting information.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<Void>, Void> beginInitializeDisableProcessAsync(
+        String resourceGroupName, String clusterName, String arcSettingName) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            initializeDisableProcessWithResponseAsync(resourceGroupName, clusterName, arcSettingName);
+        return this
+            .client
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    }
+
+    /**
+     * Initializes ARC Disable process on the cluster.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the cluster.
+     * @param arcSettingName The name of the proxy resource holding details of HCI ArcSetting information.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<Void>, Void> beginInitializeDisableProcessAsync(
+        String resourceGroupName, String clusterName, String arcSettingName, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            initializeDisableProcessWithResponseAsync(resourceGroupName, clusterName, arcSettingName, context);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+    }
+
+    /**
+     * Initializes ARC Disable process on the cluster.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the cluster.
+     * @param arcSettingName The name of the proxy resource holding details of HCI ArcSetting information.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginInitializeDisableProcess(
+        String resourceGroupName, String clusterName, String arcSettingName) {
+        return this.beginInitializeDisableProcessAsync(resourceGroupName, clusterName, arcSettingName).getSyncPoller();
+    }
+
+    /**
+     * Initializes ARC Disable process on the cluster.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the cluster.
+     * @param arcSettingName The name of the proxy resource holding details of HCI ArcSetting information.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginInitializeDisableProcess(
+        String resourceGroupName, String clusterName, String arcSettingName, Context context) {
+        return this
+            .beginInitializeDisableProcessAsync(resourceGroupName, clusterName, arcSettingName, context)
+            .getSyncPoller();
+    }
+
+    /**
+     * Initializes ARC Disable process on the cluster.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the cluster.
+     * @param arcSettingName The name of the proxy resource holding details of HCI ArcSetting information.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Void> initializeDisableProcessAsync(
+        String resourceGroupName, String clusterName, String arcSettingName) {
+        return beginInitializeDisableProcessAsync(resourceGroupName, clusterName, arcSettingName)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Initializes ARC Disable process on the cluster.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the cluster.
+     * @param arcSettingName The name of the proxy resource holding details of HCI ArcSetting information.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Void> initializeDisableProcessAsync(
+        String resourceGroupName, String clusterName, String arcSettingName, Context context) {
+        return beginInitializeDisableProcessAsync(resourceGroupName, clusterName, arcSettingName, context)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Initializes ARC Disable process on the cluster.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the cluster.
+     * @param arcSettingName The name of the proxy resource holding details of HCI ArcSetting information.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void initializeDisableProcess(String resourceGroupName, String clusterName, String arcSettingName) {
+        initializeDisableProcessAsync(resourceGroupName, clusterName, arcSettingName).block();
+    }
+
+    /**
+     * Initializes ARC Disable process on the cluster.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the cluster.
+     * @param arcSettingName The name of the proxy resource holding details of HCI ArcSetting information.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void initializeDisableProcess(
+        String resourceGroupName, String clusterName, String arcSettingName, Context context) {
+        initializeDisableProcessAsync(resourceGroupName, clusterName, arcSettingName, context).block();
+    }
+
+    /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1610,7 +2052,8 @@ public final class ArcSettingsClientImpl implements ArcSettingsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

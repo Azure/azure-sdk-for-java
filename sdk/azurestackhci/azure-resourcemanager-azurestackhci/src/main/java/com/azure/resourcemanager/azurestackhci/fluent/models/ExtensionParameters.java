@@ -11,8 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class ExtensionParameters {
     /*
-     * How the extension handler should be forced to update even if the
-     * extension configuration has not changed.
+     * How the extension handler should be forced to update even if the extension configuration has not changed.
      */
     @JsonProperty(value = "forceUpdateTag")
     private String forceUpdateTag;
@@ -24,23 +23,21 @@ public final class ExtensionParameters {
     private String publisher;
 
     /*
-     * Specifies the type of the extension; an example is
-     * "CustomScriptExtension".
+     * Specifies the type of the extension; an example is "CustomScriptExtension".
      */
     @JsonProperty(value = "type")
     private String type;
 
     /*
-     * Specifies the version of the script handler.
+     * Specifies the version of the script handler. Latest version would be used if not specified.
      */
     @JsonProperty(value = "typeHandlerVersion")
     private String typeHandlerVersion;
 
     /*
-     * Indicates whether the extension should use a newer minor version if one
-     * is available at deployment time. Once deployed, however, the extension
-     * will not upgrade minor versions unless redeployed, even with this
-     * property set to true.
+     * Indicates whether the extension should use a newer minor version if one is available at deployment time. Once
+     * deployed, however, the extension will not upgrade minor versions unless redeployed, even with this property set
+     * to true.
      */
     @JsonProperty(value = "autoUpgradeMinorVersion")
     private Boolean autoUpgradeMinorVersion;
@@ -56,6 +53,17 @@ public final class ExtensionParameters {
      */
     @JsonProperty(value = "protectedSettings")
     private Object protectedSettings;
+
+    /*
+     * Indicates whether the extension should be automatically upgraded by the platform if there is a newer version
+     * available.
+     */
+    @JsonProperty(value = "enableAutomaticUpgrade")
+    private Boolean enableAutomaticUpgrade;
+
+    /** Creates an instance of ExtensionParameters class. */
+    public ExtensionParameters() {
+    }
 
     /**
      * Get the forceUpdateTag property: How the extension handler should be forced to update even if the extension
@@ -120,7 +128,8 @@ public final class ExtensionParameters {
     }
 
     /**
-     * Get the typeHandlerVersion property: Specifies the version of the script handler.
+     * Get the typeHandlerVersion property: Specifies the version of the script handler. Latest version would be used if
+     * not specified.
      *
      * @return the typeHandlerVersion value.
      */
@@ -129,7 +138,8 @@ public final class ExtensionParameters {
     }
 
     /**
-     * Set the typeHandlerVersion property: Specifies the version of the script handler.
+     * Set the typeHandlerVersion property: Specifies the version of the script handler. Latest version would be used if
+     * not specified.
      *
      * @param typeHandlerVersion the typeHandlerVersion value to set.
      * @return the ExtensionParameters object itself.
@@ -200,6 +210,28 @@ public final class ExtensionParameters {
      */
     public ExtensionParameters withProtectedSettings(Object protectedSettings) {
         this.protectedSettings = protectedSettings;
+        return this;
+    }
+
+    /**
+     * Get the enableAutomaticUpgrade property: Indicates whether the extension should be automatically upgraded by the
+     * platform if there is a newer version available.
+     *
+     * @return the enableAutomaticUpgrade value.
+     */
+    public Boolean enableAutomaticUpgrade() {
+        return this.enableAutomaticUpgrade;
+    }
+
+    /**
+     * Set the enableAutomaticUpgrade property: Indicates whether the extension should be automatically upgraded by the
+     * platform if there is a newer version available.
+     *
+     * @param enableAutomaticUpgrade the enableAutomaticUpgrade value to set.
+     * @return the ExtensionParameters object itself.
+     */
+    public ExtensionParameters withEnableAutomaticUpgrade(Boolean enableAutomaticUpgrade) {
+        this.enableAutomaticUpgrade = enableAutomaticUpgrade;
         return this;
     }
 

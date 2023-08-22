@@ -17,17 +17,32 @@ public final class PerNodeExtensionState {
     private String name;
 
     /*
-     * Fully qualified resource ID for the particular Arc Extension on this
-     * node.
+     * Fully qualified resource ID for the particular Arc Extension on this node.
      */
     @JsonProperty(value = "extension", access = JsonProperty.Access.WRITE_ONLY)
     private String extension;
+
+    /*
+     * Specifies the version of the script handler.
+     */
+    @JsonProperty(value = "typeHandlerVersion", access = JsonProperty.Access.WRITE_ONLY)
+    private String typeHandlerVersion;
 
     /*
      * State of Arc Extension in this node.
      */
     @JsonProperty(value = "state", access = JsonProperty.Access.WRITE_ONLY)
     private NodeExtensionState state;
+
+    /*
+     * The extension instance view.
+     */
+    @JsonProperty(value = "instanceView", access = JsonProperty.Access.WRITE_ONLY)
+    private ExtensionInstanceView instanceView;
+
+    /** Creates an instance of PerNodeExtensionState class. */
+    public PerNodeExtensionState() {
+    }
 
     /**
      * Get the name property: Name of the node in HCI Cluster.
@@ -48,6 +63,15 @@ public final class PerNodeExtensionState {
     }
 
     /**
+     * Get the typeHandlerVersion property: Specifies the version of the script handler.
+     *
+     * @return the typeHandlerVersion value.
+     */
+    public String typeHandlerVersion() {
+        return this.typeHandlerVersion;
+    }
+
+    /**
      * Get the state property: State of Arc Extension in this node.
      *
      * @return the state value.
@@ -57,10 +81,22 @@ public final class PerNodeExtensionState {
     }
 
     /**
+     * Get the instanceView property: The extension instance view.
+     *
+     * @return the instanceView value.
+     */
+    public ExtensionInstanceView instanceView() {
+        return this.instanceView;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (instanceView() != null) {
+            instanceView().validate();
+        }
     }
 }

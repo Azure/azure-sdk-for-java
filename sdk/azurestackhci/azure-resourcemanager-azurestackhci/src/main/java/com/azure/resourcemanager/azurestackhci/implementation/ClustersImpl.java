@@ -15,6 +15,7 @@ import com.azure.resourcemanager.azurestackhci.fluent.models.ClusterInner;
 import com.azure.resourcemanager.azurestackhci.models.Cluster;
 import com.azure.resourcemanager.azurestackhci.models.ClusterIdentityResponse;
 import com.azure.resourcemanager.azurestackhci.models.Clusters;
+import com.azure.resourcemanager.azurestackhci.models.SoftwareAssuranceChangeRequest;
 import com.azure.resourcemanager.azurestackhci.models.UploadCertificateRequest;
 
 public final class ClustersImpl implements Clusters {
@@ -50,15 +51,6 @@ public final class ClustersImpl implements Clusters {
         return Utils.mapPage(inner, inner1 -> new ClusterImpl(inner1, this.manager()));
     }
 
-    public Cluster getByResourceGroup(String resourceGroupName, String clusterName) {
-        ClusterInner inner = this.serviceClient().getByResourceGroup(resourceGroupName, clusterName);
-        if (inner != null) {
-            return new ClusterImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<Cluster> getByResourceGroupWithResponse(
         String resourceGroupName, String clusterName, Context context) {
         Response<ClusterInner> inner =
@@ -69,6 +61,15 @@ public final class ClustersImpl implements Clusters {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new ClusterImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public Cluster getByResourceGroup(String resourceGroupName, String clusterName) {
+        ClusterInner inner = this.serviceClient().getByResourceGroup(resourceGroupName, clusterName);
+        if (inner != null) {
+            return new ClusterImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -109,6 +110,36 @@ public final class ClustersImpl implements Clusters {
             this.serviceClient().createIdentity(resourceGroupName, clusterName, context);
         if (inner != null) {
             return new ClusterIdentityResponseImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public Cluster extendSoftwareAssuranceBenefit(
+        String resourceGroupName, String clusterName, SoftwareAssuranceChangeRequest softwareAssuranceChangeRequest) {
+        ClusterInner inner =
+            this
+                .serviceClient()
+                .extendSoftwareAssuranceBenefit(resourceGroupName, clusterName, softwareAssuranceChangeRequest);
+        if (inner != null) {
+            return new ClusterImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public Cluster extendSoftwareAssuranceBenefit(
+        String resourceGroupName,
+        String clusterName,
+        SoftwareAssuranceChangeRequest softwareAssuranceChangeRequest,
+        Context context) {
+        ClusterInner inner =
+            this
+                .serviceClient()
+                .extendSoftwareAssuranceBenefit(
+                    resourceGroupName, clusterName, softwareAssuranceChangeRequest, context);
+        if (inner != null) {
+            return new ClusterImpl(inner, this.manager());
         } else {
             return null;
         }

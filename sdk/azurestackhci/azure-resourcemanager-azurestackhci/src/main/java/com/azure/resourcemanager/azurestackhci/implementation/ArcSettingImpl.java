@@ -12,6 +12,7 @@ import com.azure.resourcemanager.azurestackhci.models.ArcIdentityResponse;
 import com.azure.resourcemanager.azurestackhci.models.ArcSetting;
 import com.azure.resourcemanager.azurestackhci.models.ArcSettingAggregateState;
 import com.azure.resourcemanager.azurestackhci.models.ArcSettingsPatch;
+import com.azure.resourcemanager.azurestackhci.models.DefaultExtensionDetails;
 import com.azure.resourcemanager.azurestackhci.models.PasswordCredential;
 import com.azure.resourcemanager.azurestackhci.models.PerNodeState;
 import com.azure.resourcemanager.azurestackhci.models.ProvisioningState;
@@ -79,6 +80,15 @@ public final class ArcSettingImpl implements ArcSetting, ArcSetting.Definition, 
 
     public Object connectivityProperties() {
         return this.innerModel().connectivityProperties();
+    }
+
+    public List<DefaultExtensionDetails> defaultExtensions() {
+        List<DefaultExtensionDetails> inner = this.innerModel().defaultExtensions();
+        if (inner != null) {
+            return Collections.unmodifiableList(inner);
+        } else {
+            return Collections.emptyList();
+        }
     }
 
     public String resourceGroupName() {
@@ -187,14 +197,14 @@ public final class ArcSettingImpl implements ArcSetting, ArcSetting.Definition, 
         return this;
     }
 
-    public PasswordCredential generatePassword() {
-        return serviceManager.arcSettings().generatePassword(resourceGroupName, clusterName, arcSettingName);
-    }
-
     public Response<PasswordCredential> generatePasswordWithResponse(Context context) {
         return serviceManager
             .arcSettings()
             .generatePasswordWithResponse(resourceGroupName, clusterName, arcSettingName, context);
+    }
+
+    public PasswordCredential generatePassword() {
+        return serviceManager.arcSettings().generatePassword(resourceGroupName, clusterName, arcSettingName);
     }
 
     public ArcIdentityResponse createIdentity() {
@@ -203,6 +213,26 @@ public final class ArcSettingImpl implements ArcSetting, ArcSetting.Definition, 
 
     public ArcIdentityResponse createIdentity(Context context) {
         return serviceManager.arcSettings().createIdentity(resourceGroupName, clusterName, arcSettingName, context);
+    }
+
+    public Response<ArcSetting> consentAndInstallDefaultExtensionsWithResponse(Context context) {
+        return serviceManager
+            .arcSettings()
+            .consentAndInstallDefaultExtensionsWithResponse(resourceGroupName, clusterName, arcSettingName, context);
+    }
+
+    public ArcSetting consentAndInstallDefaultExtensions() {
+        return serviceManager
+            .arcSettings()
+            .consentAndInstallDefaultExtensions(resourceGroupName, clusterName, arcSettingName);
+    }
+
+    public void initializeDisableProcess() {
+        serviceManager.arcSettings().initializeDisableProcess(resourceGroupName, clusterName, arcSettingName);
+    }
+
+    public void initializeDisableProcess(Context context) {
+        serviceManager.arcSettings().initializeDisableProcess(resourceGroupName, clusterName, arcSettingName, context);
     }
 
     public ArcSettingImpl withArcInstanceResourceGroup(String arcInstanceResourceGroup) {

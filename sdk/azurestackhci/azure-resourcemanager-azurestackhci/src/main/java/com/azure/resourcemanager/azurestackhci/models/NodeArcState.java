@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for NodeArcState. */
+/** State of Arc agent in this node. */
 public final class NodeArcState extends ExpandableStringEnum<NodeArcState> {
     /** Static value NotSpecified for NodeArcState. */
     public static final NodeArcState NOT_SPECIFIED = fromString("NotSpecified");
@@ -45,6 +45,33 @@ public final class NodeArcState extends ExpandableStringEnum<NodeArcState> {
 
     /** Static value Moving for NodeArcState. */
     public static final NodeArcState MOVING = fromString("Moving");
+
+    /** Static value PartiallySucceeded for NodeArcState. */
+    public static final NodeArcState PARTIALLY_SUCCEEDED = fromString("PartiallySucceeded");
+
+    /** Static value PartiallyConnected for NodeArcState. */
+    public static final NodeArcState PARTIALLY_CONNECTED = fromString("PartiallyConnected");
+
+    /** Static value InProgress for NodeArcState. */
+    public static final NodeArcState IN_PROGRESS = fromString("InProgress");
+
+    /** Static value Accepted for NodeArcState. */
+    public static final NodeArcState ACCEPTED = fromString("Accepted");
+
+    /** Static value Provisioning for NodeArcState. */
+    public static final NodeArcState PROVISIONING = fromString("Provisioning");
+
+    /** Static value DisableInProgress for NodeArcState. */
+    public static final NodeArcState DISABLE_IN_PROGRESS = fromString("DisableInProgress");
+
+    /**
+     * Creates a new instance of NodeArcState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public NodeArcState() {
+    }
 
     /**
      * Creates or finds a NodeArcState from its string representation.

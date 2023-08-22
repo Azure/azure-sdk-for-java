@@ -22,6 +22,10 @@ public final class ClusterDesiredProperties {
     @JsonProperty(value = "diagnosticLevel")
     private DiagnosticLevel diagnosticLevel;
 
+    /** Creates an instance of ClusterDesiredProperties class. */
+    public ClusterDesiredProperties() {
+    }
+
     /**
      * Get the windowsServerSubscription property: Desired state of Windows Server Subscription.
      *

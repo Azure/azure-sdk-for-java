@@ -14,6 +14,7 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.azurestackhci.fluent.models.ClusterIdentityResponseInner;
 import com.azure.resourcemanager.azurestackhci.fluent.models.ClusterInner;
 import com.azure.resourcemanager.azurestackhci.models.ClusterPatch;
+import com.azure.resourcemanager.azurestackhci.models.SoftwareAssuranceChangeRequest;
 import com.azure.resourcemanager.azurestackhci.models.UploadCertificateRequest;
 
 /** An instance of this class provides access to all the operations defined in ClustersClient. */
@@ -70,19 +71,6 @@ public interface ClustersClient {
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return hCI cluster.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    ClusterInner getByResourceGroup(String resourceGroupName, String clusterName);
-
-    /**
-     * Get HCI cluster.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -94,18 +82,17 @@ public interface ClustersClient {
         String resourceGroupName, String clusterName, Context context);
 
     /**
-     * Create an HCI cluster.
+     * Get HCI cluster.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
-     * @param cluster Details of the HCI cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cluster details.
+     * @return hCI cluster.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ClusterInner create(String resourceGroupName, String clusterName, ClusterInner cluster);
+    ClusterInner getByResourceGroup(String resourceGroupName, String clusterName);
 
     /**
      * Create an HCI cluster.
@@ -124,7 +111,7 @@ public interface ClustersClient {
         String resourceGroupName, String clusterName, ClusterInner cluster, Context context);
 
     /**
-     * Update an HCI cluster.
+     * Create an HCI cluster.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
@@ -135,7 +122,7 @@ public interface ClustersClient {
      * @return cluster details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ClusterInner update(String resourceGroupName, String clusterName, ClusterPatch cluster);
+    ClusterInner create(String resourceGroupName, String clusterName, ClusterInner cluster);
 
     /**
      * Update an HCI cluster.
@@ -152,6 +139,20 @@ public interface ClustersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<ClusterInner> updateWithResponse(
         String resourceGroupName, String clusterName, ClusterPatch cluster, Context context);
+
+    /**
+     * Update an HCI cluster.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the cluster.
+     * @param cluster Details of the HCI cluster.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return cluster details.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ClusterInner update(String resourceGroupName, String clusterName, ClusterPatch cluster);
 
     /**
      * Delete an HCI cluster.
@@ -326,4 +327,72 @@ public interface ClustersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     ClusterIdentityResponseInner createIdentity(String resourceGroupName, String clusterName, Context context);
+
+    /**
+     * Extends Software Assurance Benefit to a cluster.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the cluster.
+     * @param softwareAssuranceChangeRequest Software Assurance Change Request Payload.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of cluster details.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<ClusterInner>, ClusterInner> beginExtendSoftwareAssuranceBenefit(
+        String resourceGroupName, String clusterName, SoftwareAssuranceChangeRequest softwareAssuranceChangeRequest);
+
+    /**
+     * Extends Software Assurance Benefit to a cluster.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the cluster.
+     * @param softwareAssuranceChangeRequest Software Assurance Change Request Payload.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of cluster details.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<ClusterInner>, ClusterInner> beginExtendSoftwareAssuranceBenefit(
+        String resourceGroupName,
+        String clusterName,
+        SoftwareAssuranceChangeRequest softwareAssuranceChangeRequest,
+        Context context);
+
+    /**
+     * Extends Software Assurance Benefit to a cluster.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the cluster.
+     * @param softwareAssuranceChangeRequest Software Assurance Change Request Payload.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return cluster details.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ClusterInner extendSoftwareAssuranceBenefit(
+        String resourceGroupName, String clusterName, SoftwareAssuranceChangeRequest softwareAssuranceChangeRequest);
+
+    /**
+     * Extends Software Assurance Benefit to a cluster.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the cluster.
+     * @param softwareAssuranceChangeRequest Software Assurance Change Request Payload.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return cluster details.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ClusterInner extendSoftwareAssuranceBenefit(
+        String resourceGroupName,
+        String clusterName,
+        SoftwareAssuranceChangeRequest softwareAssuranceChangeRequest,
+        Context context);
 }

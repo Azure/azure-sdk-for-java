@@ -8,7 +8,10 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for Origin. */
+/**
+ * The intended executor of the operation; as in Resource Based Access Control (RBAC) and audit logs UX. Default value
+ * is "user,system".
+ */
 public final class Origin extends ExpandableStringEnum<Origin> {
     /** Static value user for Origin. */
     public static final Origin USER = fromString("user");
@@ -18,6 +21,15 @@ public final class Origin extends ExpandableStringEnum<Origin> {
 
     /** Static value user,system for Origin. */
     public static final Origin USER_SYSTEM = fromString("user,system");
+
+    /**
+     * Creates a new instance of Origin value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public Origin() {
+    }
 
     /**
      * Creates or finds a Origin from its string representation.

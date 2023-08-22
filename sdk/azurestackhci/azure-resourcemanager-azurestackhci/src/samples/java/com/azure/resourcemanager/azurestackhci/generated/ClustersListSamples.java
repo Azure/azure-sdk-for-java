@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.azurestackhci.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Clusters List. */
 public final class ClustersListSamples {
     /*
-     * x-ms-original-file: specification/azurestackhci/resource-manager/Microsoft.AzureStackHCI/stable/2022-05-01/examples/ListClustersBySubscription.json
+     * x-ms-original-file: specification/azurestackhci/resource-manager/Microsoft.AzureStackHCI/preview/2022-12-15-preview/examples/ListClustersBySubscription.json
      */
     /**
      * Sample code: List clusters in a given subscription.
@@ -18,6 +16,6 @@ public final class ClustersListSamples {
      */
     public static void listClustersInAGivenSubscription(
         com.azure.resourcemanager.azurestackhci.AzureStackHciManager manager) {
-        manager.clusters().list(Context.NONE);
+        manager.clusters().list(com.azure.core.util.Context.NONE);
     }
 }

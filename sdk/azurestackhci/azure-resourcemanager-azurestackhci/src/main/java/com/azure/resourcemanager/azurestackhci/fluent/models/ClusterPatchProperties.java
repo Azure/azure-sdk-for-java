@@ -35,6 +35,10 @@ public final class ClusterPatchProperties {
     @JsonProperty(value = "desiredProperties")
     private ClusterDesiredProperties desiredProperties;
 
+    /** Creates an instance of ClusterPatchProperties class. */
+    public ClusterPatchProperties() {
+    }
+
     /**
      * Get the cloudManagementEndpoint property: Endpoint configured for management from the Azure portal.
      *

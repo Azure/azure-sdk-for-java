@@ -6,6 +6,7 @@ package com.azure.resourcemanager.azurestackhci.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.azurestackhci.models.ExtensionAggregateState;
+import com.azure.resourcemanager.azurestackhci.models.ExtensionManagedBy;
 import com.azure.resourcemanager.azurestackhci.models.PerNodeExtensionState;
 import com.azure.resourcemanager.azurestackhci.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -37,6 +38,16 @@ public final class ExtensionProperties {
      */
     @JsonProperty(value = "perNodeExtensionDetails", access = JsonProperty.Access.WRITE_ONLY)
     private List<PerNodeExtensionState> perNodeExtensionDetails;
+
+    /*
+     * Indicates if the extension is managed by azure or the user.
+     */
+    @JsonProperty(value = "managedBy", access = JsonProperty.Access.WRITE_ONLY)
+    private ExtensionManagedBy managedBy;
+
+    /** Creates an instance of ExtensionProperties class. */
+    public ExtensionProperties() {
+    }
 
     /**
      * Get the provisioningState property: Provisioning state of the Extension proxy resource.
@@ -72,6 +83,15 @@ public final class ExtensionProperties {
      */
     public List<PerNodeExtensionState> perNodeExtensionDetails() {
         return this.perNodeExtensionDetails;
+    }
+
+    /**
+     * Get the managedBy property: Indicates if the extension is managed by azure or the user.
+     *
+     * @return the managedBy value.
+     */
+    public ExtensionManagedBy managedBy() {
+        return this.managedBy;
     }
 
     /**
@@ -146,7 +166,8 @@ public final class ExtensionProperties {
     }
 
     /**
-     * Get the typeHandlerVersion property: Specifies the version of the script handler.
+     * Get the typeHandlerVersion property: Specifies the version of the script handler. Latest version would be used if
+     * not specified.
      *
      * @return the typeHandlerVersion value.
      */
@@ -155,7 +176,8 @@ public final class ExtensionProperties {
     }
 
     /**
-     * Set the typeHandlerVersion property: Specifies the version of the script handler.
+     * Set the typeHandlerVersion property: Specifies the version of the script handler. Latest version would be used if
+     * not specified.
      *
      * @param typeHandlerVersion the typeHandlerVersion value to set.
      * @return the ExtensionProperties object itself.
@@ -240,6 +262,33 @@ public final class ExtensionProperties {
             this.innerExtensionParameters = new ExtensionParameters();
         }
         this.innerExtensionParameters().withProtectedSettings(protectedSettings);
+        return this;
+    }
+
+    /**
+     * Get the enableAutomaticUpgrade property: Indicates whether the extension should be automatically upgraded by the
+     * platform if there is a newer version available.
+     *
+     * @return the enableAutomaticUpgrade value.
+     */
+    public Boolean enableAutomaticUpgrade() {
+        return this.innerExtensionParameters() == null
+            ? null
+            : this.innerExtensionParameters().enableAutomaticUpgrade();
+    }
+
+    /**
+     * Set the enableAutomaticUpgrade property: Indicates whether the extension should be automatically upgraded by the
+     * platform if there is a newer version available.
+     *
+     * @param enableAutomaticUpgrade the enableAutomaticUpgrade value to set.
+     * @return the ExtensionProperties object itself.
+     */
+    public ExtensionProperties withEnableAutomaticUpgrade(Boolean enableAutomaticUpgrade) {
+        if (this.innerExtensionParameters() == null) {
+            this.innerExtensionParameters = new ExtensionParameters();
+        }
+        this.innerExtensionParameters().withEnableAutomaticUpgrade(enableAutomaticUpgrade);
         return this;
     }
 

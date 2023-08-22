@@ -24,6 +24,10 @@ public final class ExtensionList {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
+    /** Creates an instance of ExtensionList class. */
+    public ExtensionList() {
+    }
+
     /**
      * Get the value property: List of Extensions in HCI cluster.
      *
