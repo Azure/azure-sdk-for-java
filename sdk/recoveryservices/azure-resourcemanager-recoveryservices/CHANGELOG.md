@@ -1,14 +1,28 @@
 # Release History
 
-## 1.2.0-beta.1 (Unreleased)
+## 1.2.0 (2023-08-22)
+
+- Azure Resource Manager RecoveryServices client library for Java. This package contains Microsoft Azure SDK for RecoveryServices Management SDK. Recovery Services Client. Package tag package-2023-04. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Features Added
 
-### Breaking Changes
+* `models.MultiUserAuthorization` was added
 
-### Bugs Fixed
+* `models.SoftDeleteSettings` was added
 
-### Other Changes
+* `models.SecureScoreLevel` was added
+
+* `models.SoftDeleteState` was added
+
+#### `models.SecuritySettings` was modified
+
+* `multiUserAuthorization()` was added
+* `softDeleteSettings()` was added
+* `withSoftDeleteSettings(models.SoftDeleteSettings)` was added
+
+#### `models.VaultProperties` was modified
+
+* `secureScore()` was added
 
 ## 1.1.0 (2023-05-17)
 
