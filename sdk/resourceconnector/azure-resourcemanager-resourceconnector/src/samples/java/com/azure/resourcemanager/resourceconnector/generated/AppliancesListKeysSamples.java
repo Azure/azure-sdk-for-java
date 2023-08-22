@@ -15,6 +15,8 @@ public final class AppliancesListKeysSamples {
      * @param manager Entry point to AppliancesManager.
      */
     public static void listKeysAppliance(com.azure.resourcemanager.resourceconnector.AppliancesManager manager) {
-        manager.appliances().listKeysWithResponse("testresourcegroup", "appliance01", com.azure.core.util.Context.NONE);
+        manager
+            .appliances()
+            .listKeysWithResponse("testresourcegroup", "appliance01", null, com.azure.core.util.Context.NONE);
     }
 }

@@ -203,7 +203,9 @@ public final class AppliancesListKeysSamples {
      * @param manager Entry point to AppliancesManager.
      */
     public static void listKeysAppliance(com.azure.resourcemanager.resourceconnector.AppliancesManager manager) {
-        manager.appliances().listKeysWithResponse("testresourcegroup", "appliance01", com.azure.core.util.Context.NONE);
+        manager
+            .appliances()
+            .listKeysWithResponse("testresourcegroup", "appliance01", null, com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -250,9 +252,10 @@ public final class AppliancesUpdateSamples {
                 .appliances()
                 .getByResourceGroupWithResponse("testresourcegroup", "appliance01", com.azure.core.util.Context.NONE)
                 .getValue();
-        resource.update().withTags(mapOf("key", "value")).apply();
+        resource.update().withTags(mapOf("key", "fakeTokenPlaceholder")).apply();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();
