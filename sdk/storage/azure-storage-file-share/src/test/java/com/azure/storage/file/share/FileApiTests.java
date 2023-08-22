@@ -103,7 +103,7 @@ class FileApiTests extends FileShareTestBase {
     private static Map<String, String> testMetadata;
     private static ShareFileHttpHeaders httpHeaders;
     private FileSmbProperties smbProperties;
-    private static final String filePermission = "O:S-1-5-21-2127521184-1604012920-1887927527-21560751G:S-1-5-21-2127521184-1604012920-1887927527-513D:AI(A;;FA;;;SY)(A;;FA;;;BA)(A;;0x1200a9;;;S-1-5-21-397955417-626881126-188441444-3053964)S:NO_ACCESS_CONTROL";
+    private static final String FILE_PERMISSION = "O:S-1-5-21-2127521184-1604012920-1887927527-21560751G:S-1-5-21-2127521184-1604012920-1887927527-513D:AI(A;;FA;;;SY)(A;;FA;;;BA)(A;;0x1200a9;;;S-1-5-21-397955417-626881126-188441444-3053964)S:NO_ACCESS_CONTROL";
 
     @BeforeEach
     public void setup() {
@@ -193,7 +193,7 @@ class FileApiTests extends FileShareTestBase {
 
     @Test
     public void createFileWithArgsFpk() {
-        String filePermissionKey = shareClient.createPermission(filePermission);
+        String filePermissionKey = shareClient.createPermission(FILE_PERMISSION);
         // We recreate file properties for each test since we need to store the times for the test with
         // testResourceNamer.now()
         smbProperties.setFileCreationTime(testResourceNamer.now())
@@ -220,7 +220,7 @@ class FileApiTests extends FileShareTestBase {
         smbProperties.setFileCreationTime(testResourceNamer.now())
             .setFileLastWriteTime(testResourceNamer.now());
         Response<ShareFileInfo> resp = primaryFileClient.createWithResponse(1024, httpHeaders, smbProperties,
-            filePermission, testMetadata, null, null);
+            FILE_PERMISSION, testMetadata, null, null);
 
         FileShareTestHelper.assertResponseStatusCode(resp, 201);
         assertNotNull(resp.getValue().getETag());
@@ -282,7 +282,7 @@ class FileApiTests extends FileShareTestBase {
     }
 
     private static Stream<String[]> permissionAndKeySupplier() {
-        return Stream.of(new String[]{"filePermissionKey", filePermission},
+        return Stream.of(new String[]{"filePermissionKey", FILE_PERMISSION},
             new String[]{null, new String(FileShareTestHelper.getRandomBuffer(9 * Constants.KB))});
     }
 
@@ -1198,7 +1198,7 @@ class FileApiTests extends FileShareTestBase {
         boolean setArchiveAttribute, PermissionCopyModeType permissionType) {
         primaryFileClient.create(1024);
         String sourceURL = primaryFileClient.getFileUrl();
-        String filePermissionKey = shareClient.createPermission(filePermission);
+        String filePermissionKey = shareClient.createPermission(FILE_PERMISSION);
         // We recreate file properties for each test since we need to store the times for the test with
         // testResourceNamer.now()
         smbProperties.setFileCreationTime(testResourceNamer.now())
@@ -1208,7 +1208,7 @@ class FileApiTests extends FileShareTestBase {
         }
 
         SyncPoller<ShareFileCopyInfo, Void> poller = primaryFileClient.beginCopy(sourceURL, smbProperties,
-            setFilePermission ? filePermission : null, permissionType, ignoreReadOnly,
+            setFilePermission ? FILE_PERMISSION : null, permissionType, ignoreReadOnly,
             setArchiveAttribute, null, null, null);
         PollResponse<ShareFileCopyInfo> pollResponse = poller.poll();
         assertNotNull(pollResponse.getValue().getCopyId());
@@ -1266,7 +1266,7 @@ class FileApiTests extends FileShareTestBase {
         boolean setArchiveAttribute, PermissionCopyModeType permissionType) {
         primaryFileClient.create(1024);
         String sourceURL = primaryFileClient.getFileUrl();
-        String filePermissionKey = shareClient.createPermission(filePermission);
+        String filePermissionKey = shareClient.createPermission(FILE_PERMISSION);
         // We recreate file properties for each test since we need to store the times for the test with
         // testResourceNamer.now()
         smbProperties.setFileCreationTime(testResourceNamer.now())
@@ -1276,7 +1276,7 @@ class FileApiTests extends FileShareTestBase {
         }
         ShareFileCopyOptions options = new ShareFileCopyOptions()
             .setSmbProperties(smbProperties)
-            .setFilePermission(setFilePermission ? filePermission : null)
+            .setFilePermission(setFilePermission ? FILE_PERMISSION : null)
             .setIgnoreReadOnly(ignoreReadOnly)
             .setArchiveAttribute(setArchiveAttribute)
             .setPermissionCopyModeType(permissionType);
@@ -1317,7 +1317,7 @@ class FileApiTests extends FileShareTestBase {
 
         ShareFileCopyOptions options = new ShareFileCopyOptions()
             .setSmbProperties(smbProperties)
-            .setFilePermission(filePermission)
+            .setFilePermission(FILE_PERMISSION)
             .setPermissionCopyModeType(PermissionCopyModeType.OVERRIDE);
 
         SyncPoller<ShareFileCopyInfo, Void> poller = primaryFileClient.beginCopy(sourceURL, options, null);
@@ -1343,7 +1343,7 @@ class FileApiTests extends FileShareTestBase {
         smbProperties.setFileChangeTime(testResourceNamer.now());
         ShareFileCopyOptions options = new ShareFileCopyOptions()
             .setSmbProperties(smbProperties)
-            .setFilePermission(filePermission)
+            .setFilePermission(FILE_PERMISSION)
             .setPermissionCopyModeType(PermissionCopyModeType.OVERRIDE);
 
         SyncPoller<ShareFileCopyInfo, Void> poller = primaryFileClient.beginCopy(sourceURL, options, null);
@@ -1360,7 +1360,7 @@ class FileApiTests extends FileShareTestBase {
     public void startCopyWithOptionsCopySmbFilePropertiesPermissionKey() {
         primaryFileClient.create(1024);
         String sourceURL = primaryFileClient.getFileUrl();
-        String filePermissionKey = shareClient.createPermission(filePermission);
+        String filePermissionKey = shareClient.createPermission(FILE_PERMISSION);
         EnumSet<NtfsFileAttributes> ntfs = EnumSet.of(NtfsFileAttributes.READ_ONLY, NtfsFileAttributes.ARCHIVE);
         // We recreate file properties for each test since we need to store the times for the test with
         // testResourceNamer.now()
@@ -1487,7 +1487,7 @@ class FileApiTests extends FileShareTestBase {
 
         ShareFileCopyOptions options = new ShareFileCopyOptions()
             .setSmbProperties(smbProperties)
-            .setFilePermission(filePermission)
+            .setFilePermission(FILE_PERMISSION)
             .setPermissionCopyModeType(PermissionCopyModeType.OVERRIDE)
             .setSmbPropertiesToCopy(list);
 
@@ -1789,7 +1789,7 @@ class FileApiTests extends FileShareTestBase {
     @Test
     public void setHttpHeadersFpk() {
         primaryFileClient.createWithResponse(1024, null, null, null, null, null, null);
-        String filePermissionKey = shareClient.createPermission(filePermission);
+        String filePermissionKey = shareClient.createPermission(FILE_PERMISSION);
         smbProperties.setFileCreationTime(testResourceNamer.now())
             .setFileLastWriteTime(testResourceNamer.now())
             .setFilePermissionKey(filePermissionKey);
@@ -1817,7 +1817,7 @@ class FileApiTests extends FileShareTestBase {
             .setFileLastWriteTime(testResourceNamer.now());
 
         Response<ShareFileInfo> resp = primaryFileClient.setPropertiesWithResponse(512, httpHeaders, smbProperties,
-            filePermission, null, null);
+            FILE_PERMISSION, null, null);
 
         FileShareTestHelper.assertResponseStatusCode(resp, 200);
         assertNotNull(resp.getValue().getETag());

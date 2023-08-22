@@ -21,7 +21,6 @@ import com.azure.storage.file.share.models.ShareStorageException;
 import org.junit.jupiter.params.provider.Arguments;
 
 import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;

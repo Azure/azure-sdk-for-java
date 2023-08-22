@@ -301,7 +301,7 @@ public class FileServiceApiTests extends FileShareTestBase {
             getPropertiesAfterResponse.getValue());
     }
 
-    @EnabledIf("com.azure.storage.file.share.FileShareTestBase#isPlaybackMode")
+    //@EnabledIf("com.azure.storage.file.share.FileShareTestBase#isPlaybackMode")
     @ResourceLock("ServiceProperties")
     @Test
     public void setAndGetPropertiesPremium() {

@@ -5,7 +5,6 @@ package com.azure.storage.file.share;
 
 import com.azure.storage.common.implementation.StorageSeekableByteChannel;
 import com.azure.storage.common.implementation.Constants;
-import com.azure.storage.common.test.shared.TestUtility;
 import com.azure.storage.file.share.models.FileLastWrittenMode;
 import com.azure.storage.file.share.models.ShareRequestConditions;
 import com.azure.storage.file.share.options.ShareFileSeekableByteChannelReadOptions;

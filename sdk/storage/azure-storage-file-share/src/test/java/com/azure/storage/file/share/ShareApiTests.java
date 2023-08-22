@@ -38,7 +38,6 @@ import com.azure.storage.file.share.options.ShareSetAccessPolicyOptions;
 import com.azure.storage.file.share.options.ShareSetMetadataOptions;
 import com.azure.storage.file.share.options.ShareSetPropertiesOptions;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledIf;
 import org.junit.jupiter.api.condition.EnabledIf;
@@ -516,8 +515,7 @@ public class ShareApiTests extends FileShareTestBase {
         assertThrows(ShareStorageException.class, shareClient::getProperties);
     }
 
-    @Disabled("Groovy version of this test does not work, need to revisit and fix.")
-    //@EnabledIf("com.azure.storage.file.share.FileShareTestBase#isPlaybackMode")
+    @EnabledIf("com.azure.storage.file.share.FileShareTestBase#isPlaybackMode")
     @ParameterizedTest
     @MethodSource("com.azure.storage.file.share.FileShareTestHelper#getPropertiesPremiumSupplier")
     public void getPropertiesPremium(String protocol, ShareRootSquash rootSquash) {
@@ -531,12 +529,14 @@ public class ShareApiTests extends FileShareTestBase {
 
         FileShareTestHelper.assertResponseStatusCode(getPropertiesResponse, 200);
         assertEquals(testMetadata, shareProperties.getMetadata());
+        assertNotNull(shareProperties.getProvisionedIops());
+        assertNotNull(shareProperties.getProvisionedBandwidthMiBps());
+        assertNotNull(shareProperties.getNextAllowedQuotaDowngradeTime());
         assertEquals(shareProperties.getProtocols().toString(), enabledProtocol.toString());
         assertEquals(shareProperties.getRootSquash(), rootSquash);
     }
 
-    @Disabled("Groovy version of this test does not work, need to revisit and fix.")
-    //@EnabledIf("com.azure.storage.file.share.FileShareTestBase#isPlaybackMode")
+    @EnabledIf("com.azure.storage.file.share.FileShareTestBase#isPlaybackMode")
     @Test
     public void setPremiumProperties() {
         List<ShareRootSquash> rootSquashes = Arrays.asList(

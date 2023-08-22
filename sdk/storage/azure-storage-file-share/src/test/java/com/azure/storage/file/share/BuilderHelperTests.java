@@ -138,10 +138,8 @@ public class BuilderHelperTests {
      */
     @ParameterizedTest
     @MethodSource("customApplicationIdInUAStringSupplier")
-    public void customApplicationIdInUAString(List<String> applicationIds) throws MalformedURLException {
-        String logOptionsUA = applicationIds.get(0);
-        String clientOptionsUA = applicationIds.get(1);
-        String expectedUA = applicationIds.get(2);
+    public void customApplicationIdInUAString(String logOptionsUA, String clientOptionsUA, String expectedUA)
+        throws MalformedURLException {
         HttpClient httpClient = new ApplicationIdUAStringTestClient(expectedUA);
         HttpLogOptions httpLogOptions = new HttpLogOptions().setApplicationId(logOptionsUA);
         ClientOptions clientOptions = new ClientOptions().setApplicationId(clientOptionsUA);
@@ -160,10 +158,8 @@ public class BuilderHelperTests {
      */
     @ParameterizedTest
     @MethodSource("customApplicationIdInUAStringSupplier")
-    void serviceClientCustomApplicationIdInUAString(List<String> applicationIds) throws MalformedURLException {
-        String logOptionsUA = applicationIds.get(0);
-        String clientOptionsUA = applicationIds.get(1);
-        String expectedUA = applicationIds.get(2);
+    void serviceClientCustomApplicationIdInUAString(String logOptionsUA, String clientOptionsUA, String expectedUA)
+        throws MalformedURLException {
         ShareServiceClient serviceClient = new ShareServiceClientBuilder()
             .endpoint(ENDPOINT)
             .credential(CREDENTIALS)
@@ -183,10 +179,8 @@ public class BuilderHelperTests {
      */
     @ParameterizedTest
     @MethodSource("customApplicationIdInUAStringSupplier")
-    void shareClientCustomApplicationIdInUAString(List<String> applicationIds) throws MalformedURLException {
-        String logOptionsUA = applicationIds.get(0);
-        String clientOptionsUA = applicationIds.get(1);
-        String expectedUA = applicationIds.get(2);
+    void shareClientCustomApplicationIdInUAString(String logOptionsUA, String clientOptionsUA, String expectedUA)
+        throws MalformedURLException {
         ShareClient shareClient = new ShareClientBuilder()
             .endpoint(ENDPOINT)
             .shareName("share")
@@ -207,10 +201,8 @@ public class BuilderHelperTests {
      */
     @ParameterizedTest
     @MethodSource("customApplicationIdInUAStringSupplier")
-    void fileClientCustomApplicationIdInUAString(List<String> applicationIds) throws MalformedURLException {
-        String logOptionsUA = applicationIds.get(0);
-        String clientOptionsUA = applicationIds.get(1);
-        String expectedUA = applicationIds.get(2);
+    void fileClientCustomApplicationIdInUAString(String logOptionsUA, String clientOptionsUA, String expectedUA)
+        throws MalformedURLException {
         ShareFileClientBuilder fileClientBuilder = new ShareFileClientBuilder()
             .endpoint(ENDPOINT)
             .shareName("fileSystem")
@@ -235,7 +227,7 @@ public class BuilderHelperTests {
         return Stream.of(
             Arguments.of("log-options-id", null, "log-options-id"),
             Arguments.of(null, "client-options-id", "client-options-id"),
-            Arguments.of("log-options-id", "client-options-id", "log-options-id client-options-id"));
+            Arguments.of("log-options-id", "client-options-id", "client-options-id"));
     }
 
     /**

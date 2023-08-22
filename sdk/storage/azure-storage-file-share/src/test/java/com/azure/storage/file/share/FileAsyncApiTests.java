@@ -697,8 +697,8 @@ public class FileAsyncApiTests extends FileShareTestBase {
             .verify(Duration.ofMinutes(1));
     }
 
-    @Disabled("There is a race condition in Poller where it misses the first observed event if there is a gap " +
-        "between the time subscribed and the time we start observing events.")
+    @Disabled("There is a race condition in Poller where it misses the first observed event if there is a gap "
+        + "between the time subscribed and the time we start observing events.")
     @Test
     public void startCopyError() {
         primaryFileAsyncClient.create(1024).block();
@@ -712,8 +712,8 @@ public class FileAsyncApiTests extends FileShareTestBase {
             .verify(Duration.ofMinutes(1));
     }
 
-    @Disabled("There is a race condition in Poller where it misses the first observed event if there is a gap " +
-        "between the time subscribed and the time we start observing events.")
+    @Disabled("There is a race condition in Poller where it misses the first observed event if there is a gap "
+        + "between the time subscribed and the time we start observing events.")
     @Test
     public void startCopyLease() {
         primaryFileAsyncClient.create(1024).block();
@@ -729,8 +729,8 @@ public class FileAsyncApiTests extends FileShareTestBase {
         }).expectComplete().verify(Duration.ofMinutes(1));
     }
 
-    @Disabled("There is a race condition in Poller where it misses the first observed event if there is a gap " +
-        "between the time subscribed and the time we start observing events.")
+    @Disabled("There is a race condition in Poller where it misses the first observed event if there is a gap "
+        + "between the time subscribed and the time we start observing events.")
     @Test
     public void startCopyLeaseFail() {
         primaryFileAsyncClient.create(1024).block();
@@ -1319,26 +1319,24 @@ public class FileAsyncApiTests extends FileShareTestBase {
                 it.getStart()))
             .blockLast();
 
-        StepVerifier.create(primaryFileAsyncClient.listRangesDiff(snapshotId))
-            .assertNext(it -> {
+        StepVerifier.create(primaryFileAsyncClient.listRangesDiff(snapshotId)).assertNext(it -> {
             assertEquals(it.getRanges().size(), expectedRanges.size());
             assertEquals(it.getClearRanges().size(), expectedClearRanges.size());
 
-        for (int i = 0; i < expectedRanges.size(); i++) {
-            FileRange actualRange = it.getRanges().get(i);
-            FileRange expectedRange = expectedRanges.get(i);
-            assertEquals(expectedRange.getStart(), actualRange.getStart());
-            assertEquals(expectedRange.getEnd(), actualRange.getEnd());
-        }
+            for (int i = 0; i < expectedRanges.size(); i++) {
+                FileRange actualRange = it.getRanges().get(i);
+                FileRange expectedRange = expectedRanges.get(i);
+                assertEquals(expectedRange.getStart(), actualRange.getStart());
+                assertEquals(expectedRange.getEnd(), actualRange.getEnd());
+            }
 
-        for (int i = 0; i < expectedClearRanges.size(); i++) {
-            ClearRange actualRange = it.getClearRanges().get(i);
-            ClearRange expectedRange = expectedClearRanges.get(i);
-            assertEquals(expectedRange.getStart(), actualRange.getStart());
-            assertEquals(expectedRange.getEnd(), actualRange.getEnd());
-        }
-            })
-            .verifyComplete();
+            for (int i = 0; i < expectedClearRanges.size(); i++) {
+                ClearRange actualRange = it.getClearRanges().get(i);
+                ClearRange expectedRange = expectedClearRanges.get(i);
+                assertEquals(expectedRange.getStart(), actualRange.getStart());
+                assertEquals(expectedRange.getEnd(), actualRange.getEnd());
+            }
+        }).verifyComplete();
     }
 
     @Test
