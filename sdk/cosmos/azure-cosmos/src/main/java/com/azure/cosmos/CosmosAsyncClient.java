@@ -296,6 +296,15 @@ public final class CosmosAsyncClient implements Closeable {
     /**
      * CREATE a Database if it does not already exist on the service.
      * <br/>
+     * <!-- src_embed readme-sample-createDatabaseIfNotExists-props -->
+     * <pre>
+     * CosmosDatabaseProperties databaseProperties = new CosmosDatabaseProperties&#40;&quot;&lt;YOUR DATABASE NAME&gt;&quot;&#41;;
+     * cosmosAsyncClient.createDatabaseIfNotExists&#40;databaseProperties&#41;
+     *     .map&#40;databaseResponse -&gt; cosmosAsyncClient.getDatabase&#40;databaseResponse.getProperties&#40;&#41;.getId&#40;&#41;&#41;&#41;
+     *     .subscribe&#40;database -&gt; System.out.printf&#40;&quot;Created database '%s'.%n&quot;, database.getId&#40;&#41;&#41;,
+     *         throwable -&gt; throwable.printStackTrace&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end readme-sample-createDatabaseIfNotExists-props -->
      * The {@link Mono} upon successful completion will contain a single cosmos database response with the
      * created or existing database.
      *
@@ -311,6 +320,16 @@ public final class CosmosAsyncClient implements Closeable {
     /**
      * Create a Database if it does not already exist on the service.
      * <br/>
+     * <!-- src_embed readme-sample-createDatabase -->
+     * <pre>
+     * &#47;&#47; Get a reference to the container
+     * &#47;&#47; This will create &#40;or read&#41; a database and its container.
+     * cosmosAsyncClient.createDatabaseIfNotExists&#40;&quot;&lt;YOUR DATABASE NAME&gt;&quot;&#41;
+     *     &#47;&#47; TIP: Our APIs are Reactor Core based, so try to chain your calls
+     *     .map&#40;databaseResponse -&gt; cosmosAsyncClient.getDatabase&#40;databaseResponse.getProperties&#40;&#41;.getId&#40;&#41;&#41;&#41;
+     *     .subscribe&#40;database -&gt; System.out.printf&#40;&quot;Created database '%s'.%n&quot;, database.getId&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end readme-sample-createDatabase -->
      * The {@link Mono} upon successful completion will contain a single cosmos database response with the
      * created or existing database.
      *
@@ -325,6 +344,15 @@ public final class CosmosAsyncClient implements Closeable {
     /**
      * Create a Database if it does not already exist on the service.
      * <br/>
+     * <!-- src_embed readme-sample-createDatabaseIfNotExists-props-thr -->
+     * <pre>
+     * ThroughputProperties throughputProperties = ThroughputProperties.createManualThroughput&#40;400&#41;;
+     * cosmosAsyncClient.createDatabaseIfNotExists&#40;&quot;&lt;YOUR DATABASE NAME&gt;&quot;, throughputProperties&#41;
+     *     .map&#40;databaseResponse -&gt; cosmosAsyncClient.getDatabase&#40;databaseResponse.getProperties&#40;&#41;.getId&#40;&#41;&#41;&#41;
+     *     .subscribe&#40;database -&gt; System.out.printf&#40;&quot;Created database '%s'.%n&quot;, database.getId&#40;&#41;&#41;,
+     *         throwable -&gt; throwable.printStackTrace&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end readme-sample-createDatabaseIfNotExists-props-thr -->
      * The throughputProperties will only be used if the specified database
      * does not exist and therefor a new database will be created with throughputProperties.
      * <br/>
@@ -363,6 +391,15 @@ public final class CosmosAsyncClient implements Closeable {
     /**
      * Creates a database.
      * <br/>
+     * <!-- src_embed readme-sample-createDatabase-props -->
+     * <pre>
+     * CosmosDatabaseProperties databaseProperties = new CosmosDatabaseProperties&#40;&quot;&lt;YOUR DATABASE NAME&gt;&quot;&#41;;
+     * cosmosAsyncClient.createDatabase&#40;databaseProperties&#41;
+     *     .map&#40;databaseResponse -&gt; cosmosAsyncClient.getDatabase&#40;databaseResponse.getProperties&#40;&#41;.getId&#40;&#41;&#41;&#41;
+     *     .subscribe&#40;database -&gt; System.out.printf&#40;&quot;Created database '%s'.%n&quot;, database.getId&#40;&#41;&#41;,
+     *         throwable -&gt; throwable.printStackTrace&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end readme-sample-createDatabase-props -->
      * After subscription the operation will be performed.
      * The {@link Mono} upon successful completion will contain a single resource response with the
      * created database.
@@ -378,6 +415,14 @@ public final class CosmosAsyncClient implements Closeable {
     /**
      * Creates a database.
      * <br/>
+     * <!-- src_embed readme-sample-createDatabase2 -->
+     * <pre>
+     * cosmosAsyncClient.createDatabase&#40;&quot;&lt;YOUR DATABASE NAME&gt;&quot;&#41;
+     *     .map&#40;databaseResponse -&gt; cosmosAsyncClient.getDatabase&#40;databaseResponse.getProperties&#40;&#41;.getId&#40;&#41;&#41;&#41;
+     *     .subscribe&#40;database -&gt; System.out.printf&#40;&quot;Created database '%s'.%n&quot;, database.getId&#40;&#41;&#41;,
+     *         throwable -&gt; throwable.printStackTrace&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end readme-sample-createDatabase2 -->
      * After subscription the operation will be performed.
      * The {@link Mono} upon successful completion will contain a single resource response with the
      * created database.
@@ -393,6 +438,15 @@ public final class CosmosAsyncClient implements Closeable {
     /**
      * Creates a database.
      * <br/>
+     * <!-- src_embed readme-sample-createDatabase-props-thr -->
+     * <pre>
+     * ThroughputProperties throughputProperties = ThroughputProperties.createManualThroughput&#40;400&#41;;
+     * cosmosAsyncClient.createDatabase&#40;&quot;&lt;YOUR DATABASE NAME&gt;&quot;, throughputProperties&#41;
+     *     .map&#40;databaseResponse -&gt; cosmosAsyncClient.getDatabase&#40;databaseResponse.getProperties&#40;&#41;.getId&#40;&#41;&#41;&#41;
+     *     .subscribe&#40;database -&gt; System.out.printf&#40;&quot;Created database '%s'.%n&quot;, database.getId&#40;&#41;&#41;,
+     *         throwable -&gt; throwable.printStackTrace&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end readme-sample-createDatabase-props-thr -->
      * After subscription the operation will be performed.
      * The {@link Mono} upon successful completion will contain a single resource response with the
      * created database.
@@ -420,6 +474,15 @@ public final class CosmosAsyncClient implements Closeable {
     /**
      * Creates a database.
      * <br/>
+     * <!-- src_embed readme-sample-createDatabase-props-thr -->
+     * <pre>
+     * ThroughputProperties throughputProperties = ThroughputProperties.createManualThroughput&#40;400&#41;;
+     * cosmosAsyncClient.createDatabase&#40;&quot;&lt;YOUR DATABASE NAME&gt;&quot;, throughputProperties&#41;
+     *     .map&#40;databaseResponse -&gt; cosmosAsyncClient.getDatabase&#40;databaseResponse.getProperties&#40;&#41;.getId&#40;&#41;&#41;&#41;
+     *     .subscribe&#40;database -&gt; System.out.printf&#40;&quot;Created database '%s'.%n&quot;, database.getId&#40;&#41;&#41;,
+     *         throwable -&gt; throwable.printStackTrace&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end readme-sample-createDatabase-props-thr -->
      * After subscription the operation will be performed.
      * The {@link Mono} upon successful completion will contain a single resource response with the
      * created database.
@@ -437,7 +500,16 @@ public final class CosmosAsyncClient implements Closeable {
 
     /**
      * Creates a database.
-     *
+     * <!-- src_embed readme-sample-createDatabase-props-thr -->
+     * <pre>
+     * ThroughputProperties throughputProperties = ThroughputProperties.createManualThroughput&#40;400&#41;;
+     * cosmosAsyncClient.createDatabase&#40;&quot;&lt;YOUR DATABASE NAME&gt;&quot;, throughputProperties&#41;
+     *     .map&#40;databaseResponse -&gt; cosmosAsyncClient.getDatabase&#40;databaseResponse.getProperties&#40;&#41;.getId&#40;&#41;&#41;&#41;
+     *     .subscribe&#40;database -&gt; System.out.printf&#40;&quot;Created database '%s'.%n&quot;, database.getId&#40;&#41;&#41;,
+     *         throwable -&gt; throwable.printStackTrace&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end readme-sample-createDatabase-props-thr -->
+     * After subscription the operation will be performed.
      * @param id the id.
      * @param throughputProperties the throughputProperties.
      * @return the mono.
@@ -489,6 +561,19 @@ public final class CosmosAsyncClient implements Closeable {
     /**
      * Reads all databases.
      * <br/>
+     * <!-- src_embed readme-sample-readAllDatabases -->
+     * <pre>
+     * cosmosAsyncClient.readAllDatabases&#40;&#41;
+     *     .byPage&#40;&#41;
+     *     .flatMap&#40;response -&gt; &#123;
+     *         for &#40;CosmosDatabaseProperties properties : response.getResults&#40;&#41;&#41; &#123;
+     *             System.out.println&#40;properties&#41;;
+     *         &#125;
+     *         return Flux.empty&#40;&#41;;
+     *     &#125;&#41;
+     *     .subscribe&#40;&#41;;
+     * </pre>
+     * <!-- end readme-sample-readAllDatabases -->
      * After subscription the operation will be performed.
      * The {@link CosmosPagedFlux} will contain one or several feed response of the read databases.
      * In case of failure the {@link CosmosPagedFlux} will error.
@@ -503,6 +588,19 @@ public final class CosmosAsyncClient implements Closeable {
     /**
      * Query for databases.
      * <br/>
+     * <!-- src_embed readme-sample-queryDatabases -->
+     * <pre>
+     * cosmosAsyncClient.queryDatabases&#40;&quot;SELECT * FROM c&quot;, new CosmosQueryRequestOptions&#40;&#41;&#41;
+     *     .byPage&#40;&#41;
+     *     .flatMap&#40;response -&gt; &#123;
+     *         for &#40;CosmosDatabaseProperties properties : response.getResults&#40;&#41;&#41; &#123;
+     *             System.out.println&#40;properties&#41;;
+     *         &#125;
+     *         return Flux.empty&#40;&#41;;
+     *     &#125;&#41;
+     *     .subscribe&#40;&#41;;
+     * </pre>
+     * <!-- end readme-sample-queryDatabases -->
      * After subscription the operation will be performed.
      * The {@link CosmosPagedFlux} will contain one or several feed response of the read databases.
      * In case of failure the {@link CosmosPagedFlux} will error.
@@ -522,6 +620,19 @@ public final class CosmosAsyncClient implements Closeable {
     /**
      * Query for databases.
      * <br/>
+     * <!-- src_embed readme-sample-queryDatabases -->
+     * <pre>
+     * cosmosAsyncClient.queryDatabases&#40;&quot;SELECT * FROM c&quot;, new CosmosQueryRequestOptions&#40;&#41;&#41;
+     *     .byPage&#40;&#41;
+     *     .flatMap&#40;response -&gt; &#123;
+     *         for &#40;CosmosDatabaseProperties properties : response.getResults&#40;&#41;&#41; &#123;
+     *             System.out.println&#40;properties&#41;;
+     *         &#125;
+     *         return Flux.empty&#40;&#41;;
+     *     &#125;&#41;
+     *     .subscribe&#40;&#41;;
+     * </pre>
+     * <!-- end readme-sample-queryDatabases -->
      * After subscription the operation will be performed.
      * The {@link CosmosPagedFlux} will contain one or several feed response of the read databases.
      * In case of failure the {@link CosmosPagedFlux} will error.
@@ -586,7 +697,23 @@ public final class CosmosAsyncClient implements Closeable {
 
     /**
      * Create global throughput control config builder which will be used to build {@link GlobalThroughputControlConfig}.
+     * <!-- src_embed readme-sample-createGlobalThroughputControlConfigBuilder -->
+     * <pre>
+     * ThroughputControlGroupConfig groupConfig =
+     *     new ThroughputControlGroupConfigBuilder&#40;&#41;
+     *         .setGroupName&#40;&quot;group-&quot; + UUID.randomUUID&#40;&#41;&#41;
+     *         .setTargetThroughput&#40;200&#41;
+     *         .build&#40;&#41;;
      *
+     * String controlContainerId = &quot;throughputControlContainer&quot;;
+     * GlobalThroughputControlConfig globalControlConfig =
+     *     cosmosAsyncClient.createGlobalThroughputControlConfigBuilder&#40;&quot;&lt;YOUR DATABASE NAME&gt;&quot;, controlContainerId&#41;
+     *     .setControlItemRenewInterval&#40;Duration.ofSeconds&#40;5&#41;&#41;
+     *     .setControlItemExpireInterval&#40;Duration.ofSeconds&#40;20&#41;&#41;
+     *     .build&#40;&#41;;
+     * cosmosAsyncContainer.enableGlobalThroughputControlGroup&#40;groupConfig, globalControlConfig&#41;;
+     * </pre>
+     * <!-- end readme-sample-createGlobalThroughputControlConfigBuilder -->
      * @param databaseId The database id of the control container.
      * @param containerId The container id of the control container.
      * @return A {@link GlobalThroughputControlConfigBuilder}.

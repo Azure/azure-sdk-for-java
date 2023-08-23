@@ -8,9 +8,11 @@ import com.azure.cosmos.util.CosmosPagedIterable;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
 
 import static com.azure.cosmos.ReadmeSamples.*;
 
@@ -33,6 +35,101 @@ public class AsyncContainerCodeSnippets {
     private final CosmosContainer cosmosContainer = cosmosClient
         .getDatabase("<YOUR DATABASE NAME>")
         .getContainer("<YOUR CONTAINER NAME>");
+
+    public void createDatabase() {
+        // BEGIN: readme-sample-createDatabase2
+        cosmosAsyncClient.createDatabase("<YOUR DATABASE NAME>")
+            .map(databaseResponse -> cosmosAsyncClient.getDatabase(databaseResponse.getProperties().getId()))
+            .subscribe(database -> System.out.printf("Created database '%s'.%n", database.getId()),
+                throwable -> throwable.printStackTrace());
+        // END: readme-sample-createDatabase2
+    }
+
+    public void createDatabasePropertiesIfNotExists() {
+        // BEGIN: readme-sample-createDatabaseIfNotExists-props
+        CosmosDatabaseProperties databaseProperties = new CosmosDatabaseProperties("<YOUR DATABASE NAME>");
+        cosmosAsyncClient.createDatabaseIfNotExists(databaseProperties)
+            .map(databaseResponse -> cosmosAsyncClient.getDatabase(databaseResponse.getProperties().getId()))
+            .subscribe(database -> System.out.printf("Created database '%s'.%n", database.getId()),
+                throwable -> throwable.printStackTrace());
+        // END: readme-sample-createDatabaseIfNotExists-props
+    }
+
+    public void createDatabaseProperties() {
+        // BEGIN: readme-sample-createDatabase-props
+        CosmosDatabaseProperties databaseProperties = new CosmosDatabaseProperties("<YOUR DATABASE NAME>");
+        cosmosAsyncClient.createDatabase(databaseProperties)
+            .map(databaseResponse -> cosmosAsyncClient.getDatabase(databaseResponse.getProperties().getId()))
+            .subscribe(database -> System.out.printf("Created database '%s'.%n", database.getId()),
+                throwable -> throwable.printStackTrace());
+        // END: readme-sample-createDatabase-props
+    }
+
+    public void createDatabaseIfNotExistsPropertiesAndThroughput() {
+        // BEGIN: readme-sample-createDatabaseIfNotExists-props-thr
+        ThroughputProperties throughputProperties = ThroughputProperties.createManualThroughput(400);
+        cosmosAsyncClient.createDatabaseIfNotExists("<YOUR DATABASE NAME>", throughputProperties)
+            .map(databaseResponse -> cosmosAsyncClient.getDatabase(databaseResponse.getProperties().getId()))
+            .subscribe(database -> System.out.printf("Created database '%s'.%n", database.getId()),
+                throwable -> throwable.printStackTrace());
+        // END: readme-sample-createDatabaseIfNotExists-props-thr
+    }
+
+    public void createDatabasePropertiesAndThroughput() {
+        // BEGIN: readme-sample-createDatabase-props-thr
+        ThroughputProperties throughputProperties = ThroughputProperties.createManualThroughput(400);
+        cosmosAsyncClient.createDatabase("<YOUR DATABASE NAME>", throughputProperties)
+            .map(databaseResponse -> cosmosAsyncClient.getDatabase(databaseResponse.getProperties().getId()))
+            .subscribe(database -> System.out.printf("Created database '%s'.%n", database.getId()),
+                throwable -> throwable.printStackTrace());
+        // END: readme-sample-createDatabase-props-thr
+    }
+
+    public void readAllDatabases() {
+        // BEGIN: readme-sample-readAllDatabases
+        cosmosAsyncClient.readAllDatabases()
+            .byPage()
+            .flatMap(response -> {
+                for (CosmosDatabaseProperties properties : response.getResults()) {
+                    System.out.println(properties);
+                }
+                return Flux.empty();
+            })
+            .subscribe();
+        // END: readme-sample-readAllDatabases
+    }
+
+    public void queryDatabasesSample() {
+        // BEGIN: readme-sample-queryDatabases
+        cosmosAsyncClient.queryDatabases("SELECT * FROM c", new CosmosQueryRequestOptions())
+            .byPage()
+            .flatMap(response -> {
+                for (CosmosDatabaseProperties properties : response.getResults()) {
+                    System.out.println(properties);
+                }
+                return Flux.empty();
+            })
+            .subscribe();
+        // END: readme-sample-queryDatabases
+    }
+
+    public void createGlobalThroughputControlConfigBuilderSample() {
+        // BEGIN: readme-sample-createGlobalThroughputControlConfigBuilder
+        ThroughputControlGroupConfig groupConfig =
+            new ThroughputControlGroupConfigBuilder()
+                .setGroupName("group-" + UUID.randomUUID())
+                .setTargetThroughput(200)
+                .build();
+
+        String controlContainerId = "throughputControlContainer";
+        GlobalThroughputControlConfig globalControlConfig =
+            cosmosAsyncClient.createGlobalThroughputControlConfigBuilder("<YOUR DATABASE NAME>", controlContainerId)
+            .setControlItemRenewInterval(Duration.ofSeconds(5))
+            .setControlItemExpireInterval(Duration.ofSeconds(20))
+            .build();
+        cosmosAsyncContainer.enableGlobalThroughputControlGroup(groupConfig, globalControlConfig);
+        // END: readme-sample-createGlobalThroughputControlConfigBuilder
+    }
 
     public void getFeedRangesAsyncSample() {
         // BEGIN: com.azure.cosmos.CosmosAsyncContainer.getFeedRanges
@@ -496,6 +593,7 @@ public class AsyncContainerCodeSnippets {
                 });
         // END: com.azure.cosmos.CosmosAsyncDatabase.replaceThroughput
     }
+
     public void databaseReadThroughputAsyncSample() {
         // BEGIN: com.azure.cosmos.CosmosAsyncDatabase.readThroughput
         cosmosAsyncDatabase.readThroughput()
