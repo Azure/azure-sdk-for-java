@@ -457,7 +457,7 @@ public class RequestResponseChannelCacheTest {
                 when(receiveLinkHandler.getEndpointStates()).thenReturn(receiveLinkStates.asFlux());
                 when(sendLinkHandler.getEndpointStates()).thenReturn(sendLinkStates.asFlux());
                 final ReactorHandlerProvider handlerProvider = mock(ReactorHandlerProvider.class);
-                when(handlerProvider.createReceiveLinkHandler2(eq(connectionId), eq(fqdn), eq(chLinkName), eq(chEntityPath),
+                when(handlerProvider.createReceiveLinkHandler(eq(connectionId), eq(fqdn), eq(chLinkName), eq(chEntityPath),
                     eq(DeliverySettleMode.ACCEPT_AND_SETTLE_ON_DELIVERY),
                     eq(false), eq(reactorDispatcher), eq(retryOptions))).thenReturn(receiveLinkHandler);
                 when(receiveLinkHandler.getMessages()).thenReturn(Flux.never());
