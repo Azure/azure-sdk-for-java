@@ -392,7 +392,7 @@ com.azure.resourcemanager:azure-resourcemanager-machinelearning;1.0.0;1.1.0-beta
 com.azure.resourcemanager:azure-resourcemanager-education;1.0.0-beta.3;1.0.0-beta.4
 com.azure.resourcemanager:azure-resourcemanager-orbital;1.0.0-beta.2;1.0.0-beta.3
 com.azure.resourcemanager:azure-resourcemanager-networkfunction;1.0.0-beta.2;1.0.0-beta.3
-com.azure.resourcemanager:azure-resourcemanager-resourceconnector;1.0.0-beta.2;1.0.0
+com.azure.resourcemanager:azure-resourcemanager-resourceconnector;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-fluidrelay;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-devcenter;1.0.0-beta.5;1.0.0-beta.6
 com.azure.resourcemanager:azure-resourcemanager-connectedvmware;1.0.0-beta.1;1.0.0-beta.2
