@@ -4,33 +4,26 @@
 
 package com.azure.security.keyvault.secrets.implementation.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
 import com.azure.core.util.Base64Url;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 /** The secret restore parameters. */
-@Immutable
+@Fluent
 public final class SecretRestoreParameters implements JsonSerializable<SecretRestoreParameters> {
     /*
      * The backup blob associated with a secret bundle.
      */
-    private final Base64Url secretBundleBackup;
+    private Base64Url secretBundleBackup;
 
-    /**
-     * Creates an instance of SecretRestoreParameters class.
-     *
-     * @param secretBundleBackup the secretBundleBackup value to set.
-     */
-    public SecretRestoreParameters(byte[] secretBundleBackup) {
-        this.secretBundleBackup = Base64Url.encode(secretBundleBackup);
-    }
+    /** Creates an instance of SecretRestoreParameters class. */
+    public SecretRestoreParameters() {}
 
     /**
      * Get the secretBundleBackup property: The backup blob associated with a secret bundle.
@@ -42,6 +35,21 @@ public final class SecretRestoreParameters implements JsonSerializable<SecretRes
             return new byte[0];
         }
         return this.secretBundleBackup.decodedBytes();
+    }
+
+    /**
+     * Set the secretBundleBackup property: The backup blob associated with a secret bundle.
+     *
+     * @param secretBundleBackup the secretBundleBackup value to set.
+     * @return the SecretRestoreParameters object itself.
+     */
+    public SecretRestoreParameters setSecretBundleBackup(byte[] secretBundleBackup) {
+        if (secretBundleBackup == null) {
+            this.secretBundleBackup = null;
+        } else {
+            this.secretBundleBackup = Base64Url.encode(CoreUtils.clone(secretBundleBackup));
+        }
+        return this;
     }
 
     @Override
@@ -63,34 +71,20 @@ public final class SecretRestoreParameters implements JsonSerializable<SecretRes
     public static SecretRestoreParameters fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(
                 reader -> {
-                    boolean secretBundleBackupFound = false;
-                    byte[] secretBundleBackup = new byte[0];
+                    SecretRestoreParameters deserializedSecretRestoreParameters = new SecretRestoreParameters();
                     while (reader.nextToken() != JsonToken.END_OBJECT) {
                         String fieldName = reader.getFieldName();
                         reader.nextToken();
 
                         if ("value".equals(fieldName)) {
-                            secretBundleBackup =
-                                    reader.getNullable(nonNullReader -> new Base64Url(nonNullReader.getString()))
-                                            .decodedBytes();
-                            secretBundleBackupFound = true;
+                            deserializedSecretRestoreParameters.secretBundleBackup =
+                                    reader.getNullable(nonNullReader -> new Base64Url(nonNullReader.getString()));
                         } else {
                             reader.skipChildren();
                         }
                     }
-                    if (secretBundleBackupFound) {
-                        SecretRestoreParameters deserializedSecretRestoreParameters =
-                                new SecretRestoreParameters(secretBundleBackup);
 
-                        return deserializedSecretRestoreParameters;
-                    }
-                    List<String> missingProperties = new ArrayList<>();
-                    if (!secretBundleBackupFound) {
-                        missingProperties.add("value");
-                    }
-
-                    throw new IllegalStateException(
-                            "Missing required property/properties: " + String.join(", ", missingProperties));
+                    return deserializedSecretRestoreParameters;
                 });
     }
 }

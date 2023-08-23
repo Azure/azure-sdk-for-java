@@ -9,6 +9,7 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
+import com.azure.core.http.ContentType;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
@@ -23,6 +24,7 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.PollingContext;
 import com.azure.security.keyvault.secrets.implementation.SecretClientImpl;
 import com.azure.security.keyvault.secrets.implementation.models.DeletedSecretItem;
+import com.azure.security.keyvault.secrets.implementation.models.KeyVaultErrorException;
 import com.azure.security.keyvault.secrets.implementation.models.SecretItem;
 import com.azure.security.keyvault.secrets.implementation.models.SecretsModelsUtils;
 import com.azure.security.keyvault.secrets.models.DeletedSecret;
@@ -162,12 +164,7 @@ public final class SecretAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<KeyVaultSecret> setSecret(String name, String value) {
-        try {
-            return implClient.setSecretWithResponseAsync(vaultUrl, name, value, null, null, null)
-                .map(response -> createKeyVaultSecret(response.getValue()));
-        } catch (RuntimeException ex) {
-            return monoError(LOGGER, ex);
-        }
+        return setSecretWithResponse(new KeyVaultSecret(name, value)).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -208,17 +205,30 @@ public final class SecretAsyncClient {
             SecretProperties secretProperties = secret.getProperties();
             if (secretProperties == null) {
                 return implClient.setSecretWithResponseAsync(vaultUrl, secret.getName(), secret.getValue(),
-                        null, null, null)
+                        null, ContentType.APPLICATION_JSON, null)
+                    .onErrorMap(KeyVaultErrorException.class, SecretAsyncClient::mapSetSecretException)
                     .map(response -> new SimpleResponse<>(response, createKeyVaultSecret(response.getValue())));
             } else {
                 return implClient.setSecretWithResponseAsync(vaultUrl, secret.getName(), secret.getValue(),
-                        secret.getProperties().getTags(), secret.getProperties().getContentType(),
+                        secret.getProperties().getTags(), ContentType.APPLICATION_JSON,
                         createSecretAttributes(secret.getProperties()))
+                    .onErrorMap(KeyVaultErrorException.class, SecretAsyncClient::mapSetSecretException)
                     .map(response -> new SimpleResponse<>(response, createKeyVaultSecret(response.getValue())));
             }
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
+    }
+
+    // For backwards compatibility with the exception type mapping of the handwritten KeyVault Secrets REST proxy.
+    // Only specific error codes are mapped to certain HttpResponseException subclasses, the default before was
+    // HttpResponseException and the new default is KeyVaultErrorException which is a subclass of HttpResponseException
+    // and is a non-breaking change. Specific error codes used different subclasses of HttpResponseException and that
+    // is a breaking change, so this mapping preserves the old behavior.
+    static HttpResponseException mapSetSecretException(KeyVaultErrorException ex) {
+        return (ex.getResponse().getStatusCode() == 400)
+            ? new ResourceModifiedException(ex.getMessage(), ex.getResponse(), ex.getValue())
+            : ex;
     }
 
     /**
@@ -315,9 +325,21 @@ public final class SecretAsyncClient {
     public Mono<Response<KeyVaultSecret>> getSecretWithResponse(String name, String version) {
         try {
             return implClient.getSecretWithResponseAsync(vaultUrl, name, version)
+                .onErrorMap(KeyVaultErrorException.class, SecretAsyncClient::mapGetSecretException)
                 .map(response -> new SimpleResponse<>(response, createKeyVaultSecret(response.getValue())));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
+        }
+    }
+
+    // See other map*Exception methods for explanation of why this is done.
+    static HttpResponseException mapGetSecretException(HttpResponseException ex) {
+        if (ex.getResponse().getStatusCode() == 404) {
+            return new ResourceNotFoundException(ex.getMessage(), ex.getResponse(), ex.getValue());
+        } else if (ex.getResponse().getStatusCode() == 403) {
+            return new ResourceModifiedException(ex.getMessage(), ex.getResponse(), ex.getValue());
+        } else {
+            return ex;
         }
     }
 
@@ -403,7 +425,7 @@ public final class SecretAsyncClient {
     public Mono<Response<SecretProperties>> updateSecretPropertiesWithResponse(SecretProperties secretProperties) {
         try {
             return implClient.updateSecretWithResponseAsync(vaultUrl, secretProperties.getName(),
-                secretProperties.getVersion(), secretProperties.getContentType(),
+                secretProperties.getVersion(), ContentType.APPLICATION_JSON,
                     createSecretAttributes(secretProperties), secretProperties.getTags())
                 .map(response -> new SimpleResponse<>(response, createSecretProperties(response.getValue())));
         } catch (RuntimeException ex) {
@@ -444,7 +466,14 @@ public final class SecretAsyncClient {
 
     private Function<PollingContext<DeletedSecret>, Mono<DeletedSecret>> deleteActivationOperation(String name) {
         return pollingContext -> implClient.deleteSecretAsync(vaultUrl, name)
+            .onErrorMap(KeyVaultErrorException.class, SecretAsyncClient::mapDeleteSecretException)
             .map(SecretsModelsUtils::createDeletedSecret);
+    }
+
+    static HttpResponseException mapDeleteSecretException(HttpResponseException ex) {
+        return (ex.getResponse().getStatusCode() == 404)
+            ? new ResourceNotFoundException(ex.getMessage(), ex.getResponse(), ex.getValue())
+            : ex;
     }
 
     private Function<PollingContext<DeletedSecret>, Mono<PollResponse<DeletedSecret>>> deletePollOperation(
@@ -524,10 +553,18 @@ public final class SecretAsyncClient {
     public Mono<Response<DeletedSecret>> getDeletedSecretWithResponse(String name) {
         try {
             return implClient.getDeletedSecretWithResponseAsync(vaultUrl, name)
+                .onErrorMap(KeyVaultErrorException.class, SecretAsyncClient::mapGetDeletedSecretException)
                 .map(response -> new SimpleResponse<>(response, createDeletedSecret(response.getValue())));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
+    }
+
+    // See other map*Exception methods for explanation of why this is done.
+    static HttpResponseException mapGetDeletedSecretException(HttpResponseException ex) {
+        return (ex.getResponse().getStatusCode() == 404)
+            ? new ResourceNotFoundException(ex.getMessage(), ex.getResponse(), ex.getValue())
+            : ex;
     }
 
     /**
@@ -581,10 +618,18 @@ public final class SecretAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> purgeDeletedSecretWithResponse(String name) {
         try {
-            return implClient.purgeDeletedSecretWithResponseAsync(vaultUrl, name);
+            return implClient.purgeDeletedSecretWithResponseAsync(vaultUrl, name)
+                .onErrorMap(KeyVaultErrorException.class, SecretAsyncClient::mapPurgeDeletedSecretException);
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
+    }
+
+    // See other map*Exception methods for explanation of why this is done.
+    static HttpResponseException mapPurgeDeletedSecretException(HttpResponseException ex) {
+        return (ex.getResponse().getStatusCode() == 404)
+            ? new ResourceNotFoundException(ex.getMessage(), ex.getResponse(), ex.getValue())
+            : ex;
     }
 
     /**
@@ -619,7 +664,14 @@ public final class SecretAsyncClient {
 
     private Function<PollingContext<KeyVaultSecret>, Mono<KeyVaultSecret>> recoverActivationOperation(String name) {
         return pollingContext -> implClient.recoverDeletedSecretAsync(vaultUrl, name)
+            .onErrorMap(KeyVaultErrorException.class, SecretAsyncClient::mapRecoverDeletedSecretException)
             .map(SecretsModelsUtils::createKeyVaultSecret);
+    }
+
+    static HttpResponseException mapRecoverDeletedSecretException(HttpResponseException ex) {
+        return (ex.getResponse().getStatusCode() == 404)
+            ? new ResourceNotFoundException(ex.getMessage(), ex.getResponse(), ex.getValue())
+            : ex;
     }
 
     private Function<PollingContext<KeyVaultSecret>, Mono<PollResponse<KeyVaultSecret>>> recoverPollOperation(
@@ -696,10 +748,18 @@ public final class SecretAsyncClient {
     public Mono<Response<byte[]>> backupSecretWithResponse(String name) {
         try {
             return implClient.backupSecretWithResponseAsync(vaultUrl, name)
+                .onErrorMap(KeyVaultErrorException.class, SecretAsyncClient::mapBackupSecretException)
                 .map(response -> new SimpleResponse<>(response, response.getValue().getValue()));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
+    }
+
+    // See other map*Exception methods for explanation of why this is done.
+    static HttpResponseException mapBackupSecretException(HttpResponseException ex) {
+        return (ex.getResponse().getStatusCode() == 404)
+            ? new ResourceNotFoundException(ex.getMessage(), ex.getResponse(), ex.getValue())
+            : ex;
     }
 
     /**
@@ -756,10 +816,18 @@ public final class SecretAsyncClient {
     public Mono<Response<KeyVaultSecret>> restoreSecretBackupWithResponse(byte[] backup) {
         try {
             return implClient.restoreSecretWithResponseAsync(vaultUrl, backup)
+                .onErrorMap(KeyVaultErrorException.class, SecretAsyncClient::mapRestoreSecretException)
                 .map(response -> new SimpleResponse<>(response, createKeyVaultSecret(response.getValue())));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
+    }
+
+    // See other map*Exception methods for explanation of why this is done.
+    static HttpResponseException mapRestoreSecretException(HttpResponseException ex) {
+        return (ex.getResponse().getStatusCode() == 400)
+            ? new ResourceModifiedException(ex.getMessage(), ex.getResponse(), ex.getValue())
+            : ex;
     }
 
     /**

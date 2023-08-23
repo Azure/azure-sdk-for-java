@@ -4,17 +4,11 @@
 package com.azure.security.keyvault.secrets.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.security.keyvault.secrets.SecretAsyncClient;
 import com.azure.security.keyvault.secrets.SecretClient;
 import com.azure.security.keyvault.secrets.implementation.SecretPropertiesHelper;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.time.Instant;
 import java.time.OffsetDateTime;
-import java.time.ZoneOffset;
 import java.util.Map;
 import java.util.Objects;
 
@@ -27,8 +21,6 @@ import java.util.Objects;
  */
 @Fluent
 public class SecretProperties {
-    private static final ClientLogger LOGGER = new ClientLogger(SecretProperties.class);
-
     static {
         SecretPropertiesHelper.setAccessor(new SecretPropertiesHelper.SecretPropertiesAccessor() {
             @Override
@@ -131,33 +123,28 @@ public class SecretProperties {
     /**
      * The content type of the secret.
      */
-    @JsonProperty(value = "contentType")
     String contentType;
 
     /**
      * Application specific metadata in the form of key-value pairs.
      */
-    @JsonProperty(value = "tags")
     Map<String, String> tags;
 
     /**
      * If this is a secret backing a KV certificate, then this field specifies
      * the corresponding key backing the KV certificate.
      */
-    @JsonProperty(value = "kid", access = JsonProperty.Access.WRITE_ONLY)
     String keyId;
 
     /**
      * True if the secret's lifetime is managed by key vault. If this is a
      * secret backing a certificate, then managed will be true.
      */
-    @JsonProperty(value = "managed", access = JsonProperty.Access.WRITE_ONLY)
     Boolean managed;
 
     /**
      * The number of days a secret is retained before being deleted for a soft delete-enabled Key Vault.
      */
-    @JsonProperty(value = "recoverableDays", access = JsonProperty.Access.WRITE_ONLY)
     private Integer recoverableDays;
 
     SecretProperties(String secretName) {
@@ -352,52 +339,5 @@ public class SecretProperties {
      */
     public Integer getRecoverableDays() {
         return recoverableDays;
-    }
-
-    /**
-     * Unpacks the attributes json response and updates the variables in the Secret Attributes object.
-     * Uses Lazy Update to set values for variables id, tags, contentType, managed and keyId as these variables are
-     * part of main json body and not attributes json body when the secret response comes from list Secrets operations.
-     * @param attributes The key value mapping of the Secret attributes
-     */
-    @JsonProperty("attributes")
-    @SuppressWarnings("unchecked")
-    void unpackAttributes(Map<String, Object> attributes) {
-        this.enabled = (Boolean) attributes.get("enabled");
-        this.notBefore = epochToOffsetDateTime(attributes.get("nbf"));
-        this.expiresOn = epochToOffsetDateTime(attributes.get("exp"));
-        this.createdOn = epochToOffsetDateTime(attributes.get("created"));
-        this.updatedOn = epochToOffsetDateTime(attributes.get("updated"));
-        this.recoveryLevel = (String) attributes.get("recoveryLevel");
-        this.contentType = (String) attributes.getOrDefault("contentType", this.contentType);
-        this.keyId = (String) attributes.getOrDefault("keyId", this.keyId);
-        this.tags = (Map<String, String>) attributes.getOrDefault("tags", this.tags);
-        this.managed = (Boolean) attributes.getOrDefault("managed", this.managed);
-        this.recoverableDays = (Integer) attributes.get("recoverableDays");
-        unpackId((String) attributes.get("id"));
-    }
-
-    @JsonProperty(value = "id")
-    void unpackId(String id) {
-        if (id != null && id.length() > 0) {
-            this.id = id;
-            try {
-                URL url = new URL(id);
-                String[] tokens = url.getPath().split("/");
-                this.name = (tokens.length >= 3 ? tokens[2] : null);
-                this.version = (tokens.length >= 4 ? tokens[3] : null);
-            } catch (MalformedURLException e) {
-                // Should never come here.
-                LOGGER.error("Received Malformed Secret Id URL from KV Service");
-            }
-        }
-    }
-
-    private OffsetDateTime epochToOffsetDateTime(Object epochValue) {
-        if (epochValue != null) {
-            Instant instant = Instant.ofEpochMilli(((Number) epochValue).longValue() * 1000L);
-            return OffsetDateTime.ofInstant(instant, ZoneOffset.UTC);
-        }
-        return null;
     }
 }

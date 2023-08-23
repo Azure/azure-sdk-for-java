@@ -6,10 +6,8 @@ package com.azure.security.keyvault.secrets.models;
 import com.azure.security.keyvault.secrets.SecretAsyncClient;
 import com.azure.security.keyvault.secrets.SecretClient;
 import com.azure.security.keyvault.secrets.implementation.DeletedSecretHelper;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.time.Instant;
+
 import java.time.OffsetDateTime;
-import java.time.ZoneOffset;
 
 /**
  * Deleted Secret is the resource consisting of name, recovery id, deleted date, scheduled purge date and its attributes
@@ -43,7 +41,6 @@ public final class DeletedSecret extends KeyVaultSecret {
     /**
      * The url of the recovery object, used to identify and recover the deleted secret.
      */
-    @JsonProperty(value = "recoveryId")
     private String recoveryId;
 
     /**
@@ -82,24 +79,4 @@ public final class DeletedSecret extends KeyVaultSecret {
     public OffsetDateTime getDeletedOn() {
         return this.deletedOn;
     }
-
-    /**
-     * Unpacks the scheduledPurageDate json response. Converts the {@link Long scheduledPurgeDate} epoch second value to
-     * OffsetDateTime and updates the value of class variable scheduledPurgeDate.
-     */
-    @JsonProperty("scheduledPurgeDate")
-    private void unpackScheduledPurgeDate(Long scheduledPurgeDate) {
-        this.scheduledPurgeDate =
-            OffsetDateTime.ofInstant(Instant.ofEpochMilli(scheduledPurgeDate * 1000L), ZoneOffset.UTC);
-    }
-
-    /**
-     * Unpacks the deletedDate json response. Converts the {@link Long deletedDate} epoch second value to OffsetDateTime
-     * and updates the value of class variable deletedDate.
-     */
-    @JsonProperty("deletedDate")
-    private void setDeletedOn(Long deletedOn) {
-        this.deletedOn = OffsetDateTime.ofInstant(Instant.ofEpochMilli(deletedOn * 1000L), ZoneOffset.UTC);
-    }
-
 }

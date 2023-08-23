@@ -77,8 +77,12 @@ public final class SecretAttributes extends Attributes {
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeBooleanField("enabled", isEnabled());
-        jsonWriter.writeNumberField("nbf", getNotBefore().toEpochSecond());
-        jsonWriter.writeNumberField("exp", getExpires().toEpochSecond());
+        if (getNotBefore() != null) {
+            jsonWriter.writeNumberField("nbf", getNotBefore().toEpochSecond());
+        }
+        if (getExpires() != null) {
+            jsonWriter.writeNumberField("exp", getExpires().toEpochSecond());
+        }
         return jsonWriter.writeEndObject();
     }
 

@@ -6,9 +6,7 @@ package com.azure.security.keyvault.secrets.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.security.keyvault.secrets.SecretAsyncClient;
 import com.azure.security.keyvault.secrets.SecretClient;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
-import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -24,7 +22,6 @@ public class KeyVaultSecret {
     /**
      * The value of the secret.
      */
-    @JsonProperty(value = "value")
     private String value;
 
     /**
@@ -96,43 +93,6 @@ public class KeyVaultSecret {
         properties.name = this.properties.name;
         this.properties = properties;
         return this;
-    }
-
-    @JsonProperty(value = "id")
-    private void unpackId(String id) {
-        properties.unpackId(id);
-    }
-
-    /**
-     * Unpacks the attributes json response and updates the variables in the Secret Attributes object.
-     * Uses Lazy Update to set values for variables id, tags, contentType, managed and keyId as these variables are
-     * part of main json body and not attributes json body when the secret response comes from list Secrets operations.
-     * @param attributes The key value mapping of the Secret attributes
-     */
-    @JsonProperty("attributes")
-    @SuppressWarnings("unchecked")
-    private void unpackAttributes(Map<String, Object> attributes) {
-        properties.unpackAttributes(attributes);
-    }
-
-    @JsonProperty("managed")
-    private void unpackManaged(Boolean managed) {
-        properties.managed = managed;
-    }
-
-    @JsonProperty("kid")
-    private void unpackKid(String kid) {
-        properties.keyId = kid;
-    }
-
-    @JsonProperty("contentType")
-    private void unpackContentType(String contentType) {
-        properties.contentType = contentType;
-    }
-
-    @JsonProperty("tags")
-    private void unpackTags(Map<String, String> tags) {
-        properties.tags = tags;
     }
 }
 

@@ -10,8 +10,6 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 /** The secret set parameters. */
@@ -20,7 +18,7 @@ public final class SecretSetParameters implements JsonSerializable<SecretSetPara
     /*
      * The value of the secret.
      */
-    private final String value;
+    private String value;
 
     /*
      * Application specific metadata in the form of key-value pairs.
@@ -37,14 +35,8 @@ public final class SecretSetParameters implements JsonSerializable<SecretSetPara
      */
     private SecretAttributes secretAttributes;
 
-    /**
-     * Creates an instance of SecretSetParameters class.
-     *
-     * @param value the value value to set.
-     */
-    public SecretSetParameters(String value) {
-        this.value = value;
-    }
+    /** Creates an instance of SecretSetParameters class. */
+    public SecretSetParameters() {}
 
     /**
      * Get the value property: The value of the secret.
@@ -53,6 +45,17 @@ public final class SecretSetParameters implements JsonSerializable<SecretSetPara
      */
     public String getValue() {
         return this.value;
+    }
+
+    /**
+     * Set the value property: The value of the secret.
+     *
+     * @param value the value value to set.
+     * @return the SecretSetParameters object itself.
+     */
+    public SecretSetParameters setValue(String value) {
+        this.value = value;
+        return this;
     }
 
     /**
@@ -137,43 +140,26 @@ public final class SecretSetParameters implements JsonSerializable<SecretSetPara
     public static SecretSetParameters fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(
                 reader -> {
-                    boolean valueFound = false;
-                    String value = null;
-                    Map<String, String> tags = null;
-                    String contentType = null;
-                    SecretAttributes secretAttributes = null;
+                    SecretSetParameters deserializedSecretSetParameters = new SecretSetParameters();
                     while (reader.nextToken() != JsonToken.END_OBJECT) {
                         String fieldName = reader.getFieldName();
                         reader.nextToken();
 
                         if ("value".equals(fieldName)) {
-                            value = reader.getString();
-                            valueFound = true;
+                            deserializedSecretSetParameters.value = reader.getString();
                         } else if ("tags".equals(fieldName)) {
-                            tags = reader.readMap(reader1 -> reader1.getString());
+                            Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                            deserializedSecretSetParameters.tags = tags;
                         } else if ("contentType".equals(fieldName)) {
-                            contentType = reader.getString();
+                            deserializedSecretSetParameters.contentType = reader.getString();
                         } else if ("attributes".equals(fieldName)) {
-                            secretAttributes = SecretAttributes.fromJson(reader);
+                            deserializedSecretSetParameters.secretAttributes = SecretAttributes.fromJson(reader);
                         } else {
                             reader.skipChildren();
                         }
                     }
-                    if (valueFound) {
-                        SecretSetParameters deserializedSecretSetParameters = new SecretSetParameters(value);
-                        deserializedSecretSetParameters.tags = tags;
-                        deserializedSecretSetParameters.contentType = contentType;
-                        deserializedSecretSetParameters.secretAttributes = secretAttributes;
 
-                        return deserializedSecretSetParameters;
-                    }
-                    List<String> missingProperties = new ArrayList<>();
-                    if (!valueFound) {
-                        missingProperties.add("value");
-                    }
-
-                    throw new IllegalStateException(
-                            "Missing required property/properties: " + String.join(", ", missingProperties));
+                    return deserializedSecretSetParameters;
                 });
     }
 }

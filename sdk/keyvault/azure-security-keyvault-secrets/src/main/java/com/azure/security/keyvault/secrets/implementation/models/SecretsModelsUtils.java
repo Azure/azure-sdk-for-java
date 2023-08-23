@@ -37,7 +37,7 @@ public final class SecretsModelsUtils {
         }
 
         KeyVaultSecret keyVaultSecret = new KeyVaultSecret(null, secretBundle.getValue());
-        keyVaultSecret.setProperties(createSecretProperties(secretBundle));
+        setSecretPropertiesValues(secretBundle, keyVaultSecret.getProperties());
 
         return keyVaultSecret;
     }
@@ -47,8 +47,14 @@ public final class SecretsModelsUtils {
             return null;
         }
 
-        SecretProperties secretProperties = new SecretProperties()
-            .setContentType(secretBundle.getContentType())
+        SecretProperties secretProperties = new SecretProperties();
+        setSecretPropertiesValues(secretBundle, secretProperties);
+
+        return secretProperties;
+    }
+
+    private static void setSecretPropertiesValues(SecretBundle secretBundle, SecretProperties secretProperties) {
+        secretProperties.setContentType(secretBundle.getContentType())
             .setTags(secretBundle.getTags());
 
         SecretPropertiesHelper.setId(secretProperties, secretBundle.getId());
@@ -69,8 +75,6 @@ public final class SecretsModelsUtils {
 
         unpackId(secretBundle.getId(), name -> SecretPropertiesHelper.setName(secretProperties, name),
             version -> SecretPropertiesHelper.setVersion(secretProperties, version));
-
-        return secretProperties;
     }
 
     public static SecretProperties createSecretProperties(SecretItem secretItem) {
@@ -78,8 +82,14 @@ public final class SecretsModelsUtils {
             return null;
         }
 
-        SecretProperties secretProperties = new SecretProperties()
-            .setContentType(secretItem.getContentType())
+        SecretProperties secretProperties = new SecretProperties();
+        setSecretPropertiesValues(secretItem, secretProperties);
+
+        return secretProperties;
+    }
+
+    private static void setSecretPropertiesValues(SecretItem secretItem, SecretProperties secretProperties) {
+        secretProperties.setContentType(secretItem.getContentType())
             .setTags(secretItem.getTags());
 
         SecretPropertiesHelper.setId(secretProperties, secretItem.getId());
@@ -99,8 +109,6 @@ public final class SecretsModelsUtils {
 
         unpackId(secretItem.getId(), name -> SecretPropertiesHelper.setName(secretProperties, name),
             version -> SecretPropertiesHelper.setVersion(secretProperties, version));
-
-        return secretProperties;
     }
 
     public static DeletedSecret createDeletedSecret(DeletedSecretBundle deletedSecretBundle) {
@@ -109,7 +117,7 @@ public final class SecretsModelsUtils {
         }
 
         DeletedSecret deletedSecret = new DeletedSecret();
-        deletedSecret.setProperties(createSecretProperties(deletedSecretBundle));
+        setSecretPropertiesValues(deletedSecretBundle, deletedSecret.getProperties());
 
         DeletedSecretHelper.setRecoveryId(deletedSecret, deletedSecretBundle.getRecoveryId());
         DeletedSecretHelper.setScheduledPurgeDate(deletedSecret, deletedSecretBundle.getScheduledPurgeDate());
@@ -124,7 +132,7 @@ public final class SecretsModelsUtils {
         }
 
         DeletedSecret deletedSecret = new DeletedSecret();
-        deletedSecret.setProperties(createSecretProperties(deletedSecretItem));
+        setSecretPropertiesValues(deletedSecretItem, deletedSecret.getProperties());
 
         DeletedSecretHelper.setRecoveryId(deletedSecret, deletedSecretItem.getRecoveryId());
         DeletedSecretHelper.setScheduledPurgeDate(deletedSecret, deletedSecretItem.getScheduledPurgeDate());
