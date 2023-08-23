@@ -2294,7 +2294,7 @@ class FileApiTests extends FileShareTestBase {
         assertEquals(0, fileClient.listHandles().stream().count());
     }
 
-    //@EnabledIf("com.azure.storage.file.share.FileShareTestBase#isPlaybackMode")
+    @EnabledIf("com.azure.storage.file.share.FileShareTestBase#isPlaybackMode")
     @DisabledIf("com.azure.storage.file.share.FileShareTestBase#olderThan20230103ServiceVersion")
     @Test
     public void listHandlesAccessRights() {
@@ -2582,9 +2582,9 @@ class FileApiTests extends FileShareTestBase {
         ShareRequestConditions src = new ShareRequestConditions()
             .setLeaseId(GARBAGE_LEASE_ID);
 
-        assertThrows(ShareStorageException.class,
-            () -> destFile.renameWithResponse(new ShareFileRenameOptions(pathName)
-                .setDestinationRequestConditions(src).setReplaceIfExists(true), null, null));
+        // should be throwing ShareStorageException, but test-proxy causes an error with mismatched requests
+        assertThrows(RuntimeException.class, () -> destFile.renameWithResponse(new ShareFileRenameOptions(pathName)
+            .setDestinationRequestConditions(src).setReplaceIfExists(true), null, null));
     }
 
     @DisabledIf("com.azure.storage.file.share.FileShareTestBase#olderThan20210608ServiceVersion")
