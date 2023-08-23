@@ -162,9 +162,9 @@ class EventProcessorClientOptions {
     }
 
     /**
-     * Sets
+     * Sets the interval between load balancing cycles.
      *
-     * @param loadBalancerUpdateInterval
+     * @param loadBalancerUpdateInterval The interval between load balancing cycles.
      *
      * @return The updated {@link EventProcessorClientOptions} object.
      */

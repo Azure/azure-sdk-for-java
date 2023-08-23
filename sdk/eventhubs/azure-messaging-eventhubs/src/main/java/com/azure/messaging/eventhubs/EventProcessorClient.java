@@ -9,7 +9,6 @@ import com.azure.core.util.tracing.Tracer;
 import com.azure.messaging.eventhubs.implementation.PartitionProcessor;
 import com.azure.messaging.eventhubs.implementation.instrumentation.EventHubsTracer;
 import com.azure.messaging.eventhubs.models.ErrorContext;
-import com.azure.messaging.eventhubs.models.EventPosition;
 
 import java.time.Duration;
 import java.util.HashMap;

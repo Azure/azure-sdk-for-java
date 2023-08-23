@@ -27,7 +27,6 @@ import reactor.core.publisher.Flux;
 import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
 
-import java.time.Duration;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -345,10 +344,10 @@ class PartitionPumpManager {
             return EventPosition.fromSequenceNumber(checkpoint.getSequenceNumber());
         }
 
-        final EventPosition initialMapPosition = options.getInitialPartitionEventPosition().get(partitionId);
+        if (options.getInitialPartitionEventPosition() != null
+            && options.getInitialPartitionEventPosition().containsKey(partitionId)) {
 
-        if (initialMapPosition != null) {
-            return initialMapPosition;
+                return options.getInitialPartitionEventPosition().get(partitionId);
         }
 
         if (options.getDefaultEventPosition() != null) {

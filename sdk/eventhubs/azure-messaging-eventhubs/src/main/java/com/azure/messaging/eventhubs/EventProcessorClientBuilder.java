@@ -767,7 +767,6 @@ public class EventProcessorClientBuilder implements
      *     <li>If an entry does not exist, check if {@link #initialPartitionEventPosition(EventPosition)} is set.</li>
      *     <li>Else, use {@link EventPosition#latest()}.</li>
      * </ol>
-     * </p>
      *
      * @param initialEventPosition Event position to start reading events.  Applies to every partition in the Event Hub
      * without a checkpoint nor an entry in the {@link #initialPartitionEventPosition(Map) initial position map}.
