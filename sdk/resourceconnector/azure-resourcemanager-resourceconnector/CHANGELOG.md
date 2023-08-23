@@ -3,7 +3,6 @@
 ## 1.0.0 (2023-08-23)
 
 - Azure Resource Manager Resource Connector client library for Java. This package contains Microsoft Azure SDK for Resource Connector Management SDK. The appliances Rest API spec. Package tag package-2022-10-27. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
-- Azure Resource Manager Appliances client library for Java. This package contains Microsoft Azure SDK for Appliances Management SDK. The appliances Rest API spec. Package tag package-2022-10-27. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Breaking Changes
 
