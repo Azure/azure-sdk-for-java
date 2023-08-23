@@ -1246,8 +1246,8 @@ public class DirectoryApiTests extends FileShareTestBase {
         String pathName = generatePathName();
         ShareFileClient destFile = shareClient.getFileClient(pathName);
         destFile.create(512);
-        String leaseID = setupFileLeaseCondition(destFile, GARBAGE_LEASE_ID);
-        ShareRequestConditions src = new ShareRequestConditions().setLeaseId(leaseID);
+        setupFileLeaseCondition(destFile, GARBAGE_LEASE_ID);
+        ShareRequestConditions src = new ShareRequestConditions().setLeaseId(GARBAGE_LEASE_ID);
 
         assertThrows(ShareStorageException.class,
             () -> primaryDirectoryClient.renameWithResponse(new ShareFileRenameOptions(pathName)

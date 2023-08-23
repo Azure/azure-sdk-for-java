@@ -2294,7 +2294,7 @@ class FileApiTests extends FileShareTestBase {
         assertEquals(0, fileClient.listHandles().stream().count());
     }
 
-    @EnabledIf("com.azure.storage.file.share.FileShareTestBase#isPlaybackMode")
+    //@EnabledIf("com.azure.storage.file.share.FileShareTestBase#isPlaybackMode")
     @DisabledIf("com.azure.storage.file.share.FileShareTestBase#olderThan20230103ServiceVersion")
     @Test
     public void listHandlesAccessRights() {
@@ -2583,7 +2583,7 @@ class FileApiTests extends FileShareTestBase {
             .setLeaseId(GARBAGE_LEASE_ID);
 
         assertThrows(ShareStorageException.class,
-            () -> primaryFileClient.renameWithResponse(new ShareFileRenameOptions(pathName)
+            () -> destFile.renameWithResponse(new ShareFileRenameOptions(pathName)
                 .setDestinationRequestConditions(src).setReplaceIfExists(true), null, null));
     }
 
