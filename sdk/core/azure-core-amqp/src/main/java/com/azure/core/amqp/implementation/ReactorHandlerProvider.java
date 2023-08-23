@@ -176,8 +176,8 @@ public class ReactorHandlerProvider {
      * @param retryOptions The retry option user set while building the client.
      * @return A new {@link ReceiveLinkHandler2}.
      */
-    public ReceiveLinkHandler2 createReceiveLinkHandler2(String connectionId, String hostname, String receiverName, String entityPath,
-        DeliverySettleMode deliverySettleMode, boolean includeDeliveryTagInMessage, ReactorDispatcher dispatcher, AmqpRetryOptions retryOptions) {
+    public ReceiveLinkHandler2 createReceiveLinkHandler(String connectionId, String hostname, String receiverName, String entityPath,
+                                                        DeliverySettleMode deliverySettleMode, boolean includeDeliveryTagInMessage, ReactorDispatcher dispatcher, AmqpRetryOptions retryOptions) {
         return new ReceiveLinkHandler2(connectionId, hostname, receiverName, entityPath,
             deliverySettleMode, dispatcher, retryOptions, includeDeliveryTagInMessage,
             getMetricProvider(hostname, entityPath));
