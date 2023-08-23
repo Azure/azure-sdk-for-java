@@ -8,6 +8,7 @@ import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
+import com.azure.core.annotation.Head;
 import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
@@ -348,6 +349,7 @@ public final class BatchNodesImpl {
         Mono<Response<Void>> disableScheduling(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
+                @HeaderParam("content-type") String contentType,
                 @PathParam("poolId") String poolId,
                 @PathParam("nodeId") String nodeId,
                 @HeaderParam("accept") String accept,
@@ -369,6 +371,7 @@ public final class BatchNodesImpl {
         Response<Void> disableSchedulingSync(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
+                @HeaderParam("content-type") String contentType,
                 @PathParam("poolId") String poolId,
                 @PathParam("nodeId") String nodeId,
                 @HeaderParam("accept") String accept,
@@ -673,6 +676,180 @@ public final class BatchNodesImpl {
                 RequestOptions requestOptions,
                 Context context);
 
+        @Delete("/pools/{poolId}/nodes/{nodeId}/files/{filePath}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<Void>> deleteFileFromBatchNode(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @PathParam("poolId") String poolId,
+                @PathParam("nodeId") String nodeId,
+                @PathParam("filePath") String filePath,
+                @HeaderParam("accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Delete("/pools/{poolId}/nodes/{nodeId}/files/{filePath}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<Void> deleteFileFromBatchNodeSync(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @PathParam("poolId") String poolId,
+                @PathParam("nodeId") String nodeId,
+                @PathParam("filePath") String filePath,
+                @HeaderParam("accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Get("/pools/{poolId}/nodes/{nodeId}/files/{filePath}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> getFileFromBatchNode(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @PathParam("poolId") String poolId,
+                @PathParam("nodeId") String nodeId,
+                @PathParam("filePath") String filePath,
+                @HeaderParam("accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Get("/pools/{poolId}/nodes/{nodeId}/files/{filePath}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> getFileFromBatchNodeSync(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @PathParam("poolId") String poolId,
+                @PathParam("nodeId") String nodeId,
+                @PathParam("filePath") String filePath,
+                @HeaderParam("accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Head("/pools/{poolId}/nodes/{nodeId}/files/{filePath}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<Void>> getFilePropertiesFromBatchNode(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @PathParam("poolId") String poolId,
+                @PathParam("nodeId") String nodeId,
+                @PathParam("filePath") String filePath,
+                @HeaderParam("accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Head("/pools/{poolId}/nodes/{nodeId}/files/{filePath}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<Void> getFilePropertiesFromBatchNodeSync(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @PathParam("poolId") String poolId,
+                @PathParam("nodeId") String nodeId,
+                @PathParam("filePath") String filePath,
+                @HeaderParam("accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Get("/pools/{poolId}/nodes/{nodeId}/files")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> listFilesFromBatchNode(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @PathParam("poolId") String poolId,
+                @PathParam("nodeId") String nodeId,
+                @HeaderParam("accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Get("/pools/{poolId}/nodes/{nodeId}/files")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> listFilesFromBatchNodeSync(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @PathParam("poolId") String poolId,
+                @PathParam("nodeId") String nodeId,
+                @HeaderParam("accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
@@ -743,6 +920,44 @@ public final class BatchNodesImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> listExtensionsNextSync(
+                @PathParam(value = "nextLink", encoded = true) String nextLink,
+                @HostParam("endpoint") String endpoint,
+                @HeaderParam("accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Get("{nextLink}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> listFilesFromBatchNodeNext(
+                @PathParam(value = "nextLink", encoded = true) String nextLink,
+                @HostParam("endpoint") String endpoint,
+                @HeaderParam("accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Get("{nextLink}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> listFilesFromBatchNodeNextSync(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
                 @HostParam("endpoint") String endpoint,
                 @HeaderParam("accept") String accept,
@@ -1882,13 +2097,16 @@ public final class BatchNodesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> disableSchedulingWithResponseAsync(
             String poolId, String nodeId, RequestOptions requestOptions) {
+        final String contentType = "application/json; odata=minimalmetadata";
         final String accept = "application/json";
         RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
         requestOptionsLocal.addRequestCallback(
                 requestLocal -> {
                     if (requestLocal.getBody() != null
                             && requestLocal.getHeaders().get(HttpHeaderName.CONTENT_TYPE) == null) {
-                        requestLocal.getHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/json");
+                        requestLocal
+                                .getHeaders()
+                                .set(HttpHeaderName.CONTENT_TYPE, "application/json; odata=minimalmetadata");
                     }
                 });
         return FluxUtil.withContext(
@@ -1896,6 +2114,7 @@ public final class BatchNodesImpl {
                         service.disableScheduling(
                                 this.client.getEndpoint(),
                                 this.client.getServiceVersion().getVersion(),
+                                contentType,
                                 poolId,
                                 nodeId,
                                 accept,
@@ -1950,18 +2169,22 @@ public final class BatchNodesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> disableSchedulingWithResponse(String poolId, String nodeId, RequestOptions requestOptions) {
+        final String contentType = "application/json; odata=minimalmetadata";
         final String accept = "application/json";
         RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
         requestOptionsLocal.addRequestCallback(
                 requestLocal -> {
                     if (requestLocal.getBody() != null
                             && requestLocal.getHeaders().get(HttpHeaderName.CONTENT_TYPE) == null) {
-                        requestLocal.getHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/json");
+                        requestLocal
+                                .getHeaders()
+                                .set(HttpHeaderName.CONTENT_TYPE, "application/json; odata=minimalmetadata");
                     }
                 });
         return service.disableSchedulingSync(
                 this.client.getEndpoint(),
                 this.client.getServiceVersion().getVersion(),
+                contentType,
                 poolId,
                 nodeId,
                 accept,
@@ -3366,6 +3589,7 @@ public final class BatchNodesImpl {
      *         type: String (Required)
      *         typeHandlerVersion: String (Optional)
      *         autoUpgradeMinorVersion: Boolean (Optional)
+     *         enableAutomaticUpgrade: Boolean (Optional)
      *         settings (Optional): {
      *             String: String (Optional)
      *         }
@@ -3460,6 +3684,7 @@ public final class BatchNodesImpl {
      *         type: String (Required)
      *         typeHandlerVersion: String (Optional)
      *         autoUpgradeMinorVersion: Boolean (Optional)
+     *         enableAutomaticUpgrade: Boolean (Optional)
      *         settings (Optional): {
      *             String: String (Optional)
      *         }
@@ -3553,6 +3778,7 @@ public final class BatchNodesImpl {
      *         type: String (Required)
      *         typeHandlerVersion: String (Optional)
      *         autoUpgradeMinorVersion: Boolean (Optional)
+     *         enableAutomaticUpgrade: Boolean (Optional)
      *         settings (Optional): {
      *             String: String (Optional)
      *         }
@@ -3656,6 +3882,7 @@ public final class BatchNodesImpl {
      *         type: String (Required)
      *         typeHandlerVersion: String (Optional)
      *         autoUpgradeMinorVersion: Boolean (Optional)
+     *         enableAutomaticUpgrade: Boolean (Optional)
      *         settings (Optional): {
      *             String: String (Optional)
      *         }
@@ -3745,6 +3972,7 @@ public final class BatchNodesImpl {
      *         type: String (Required)
      *         typeHandlerVersion: String (Optional)
      *         autoUpgradeMinorVersion: Boolean (Optional)
+     *         enableAutomaticUpgrade: Boolean (Optional)
      *         settings (Optional): {
      *             String: String (Optional)
      *         }
@@ -3844,6 +4072,7 @@ public final class BatchNodesImpl {
      *         type: String (Required)
      *         typeHandlerVersion: String (Optional)
      *         autoUpgradeMinorVersion: Boolean (Optional)
+     *         enableAutomaticUpgrade: Boolean (Optional)
      *         settings (Optional): {
      *             String: String (Optional)
      *         }
@@ -3892,6 +4121,672 @@ public final class BatchNodesImpl {
         return new PagedIterable<>(
                 () -> listExtensionsSinglePage(poolId, nodeId, requestOptions),
                 nextLink -> listExtensionsNextSinglePage(nextLink, requestOptionsForNextPage));
+    }
+
+    /**
+     * Deletes the specified file from the Compute Node.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A maximum of 1000
+     * applications can be returned.</td></tr>
+     *     <tr><td>recursive</td><td>Boolean</td><td>No</td><td>Whether to delete children of a directory. If the filePath parameter represents
+     * a directory instead of a file, you can set recursive to true to delete the
+     * directory and all of the files and subdirectories in it. If recursive is false
+     * then the directory must be empty or deletion will fail.</td></tr>
+     * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     *
+     * <p><strong>Header Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Header Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     * current system clock time; set it explicitly if you are calling the REST API
+     * directly.</td></tr>
+     * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     *
+     * @param poolId The ID of the Pool that contains the Compute Node.
+     * @param nodeId The ID of the Compute Node from which you want to delete the file.
+     * @param filePath The path to the file or directory that you want to delete.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> deleteFileFromBatchNodeWithResponseAsync(
+            String poolId, String nodeId, String filePath, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(
+                context ->
+                        service.deleteFileFromBatchNode(
+                                this.client.getEndpoint(),
+                                this.client.getServiceVersion().getVersion(),
+                                poolId,
+                                nodeId,
+                                filePath,
+                                accept,
+                                requestOptions,
+                                context));
+    }
+
+    /**
+     * Deletes the specified file from the Compute Node.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A maximum of 1000
+     * applications can be returned.</td></tr>
+     *     <tr><td>recursive</td><td>Boolean</td><td>No</td><td>Whether to delete children of a directory. If the filePath parameter represents
+     * a directory instead of a file, you can set recursive to true to delete the
+     * directory and all of the files and subdirectories in it. If recursive is false
+     * then the directory must be empty or deletion will fail.</td></tr>
+     * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     *
+     * <p><strong>Header Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Header Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     * current system clock time; set it explicitly if you are calling the REST API
+     * directly.</td></tr>
+     * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     *
+     * @param poolId The ID of the Pool that contains the Compute Node.
+     * @param nodeId The ID of the Compute Node from which you want to delete the file.
+     * @param filePath The path to the file or directory that you want to delete.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> deleteFileFromBatchNodeWithResponse(
+            String poolId, String nodeId, String filePath, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return service.deleteFileFromBatchNodeSync(
+                this.client.getEndpoint(),
+                this.client.getServiceVersion().getVersion(),
+                poolId,
+                nodeId,
+                filePath,
+                accept,
+                requestOptions,
+                Context.NONE);
+    }
+
+    /**
+     * Returns the content of the specified Compute Node file.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A maximum of 1000
+     * applications can be returned.</td></tr>
+     * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     *
+     * <p><strong>Header Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Header Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     * current system clock time; set it explicitly if you are calling the REST API
+     * directly.</td></tr>
+     *     <tr><td>if-modified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     * client. The operation will be performed only if the resource on the service has
+     * been modified since the specified time.</td></tr>
+     *     <tr><td>if-unmodified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     * client. The operation will be performed only if the resource on the service has
+     * not been modified since the specified time.</td></tr>
+     *     <tr><td>ocp-range</td><td>String</td><td>No</td><td>The byte range to be retrieved. The default is to retrieve the entire file. The
+     * format is bytes=startRange-endRange.</td></tr>
+     * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * BinaryData
+     * }</pre>
+     *
+     * @param poolId The ID of the Pool that contains the Compute Node.
+     * @param nodeId The ID of the Compute Node from which you want to delete the file.
+     * @param filePath The path to the file or directory that you want to delete.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> getFileFromBatchNodeWithResponseAsync(
+            String poolId, String nodeId, String filePath, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(
+                context ->
+                        service.getFileFromBatchNode(
+                                this.client.getEndpoint(),
+                                this.client.getServiceVersion().getVersion(),
+                                poolId,
+                                nodeId,
+                                filePath,
+                                accept,
+                                requestOptions,
+                                context));
+    }
+
+    /**
+     * Returns the content of the specified Compute Node file.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A maximum of 1000
+     * applications can be returned.</td></tr>
+     * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     *
+     * <p><strong>Header Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Header Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     * current system clock time; set it explicitly if you are calling the REST API
+     * directly.</td></tr>
+     *     <tr><td>if-modified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     * client. The operation will be performed only if the resource on the service has
+     * been modified since the specified time.</td></tr>
+     *     <tr><td>if-unmodified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     * client. The operation will be performed only if the resource on the service has
+     * not been modified since the specified time.</td></tr>
+     *     <tr><td>ocp-range</td><td>String</td><td>No</td><td>The byte range to be retrieved. The default is to retrieve the entire file. The
+     * format is bytes=startRange-endRange.</td></tr>
+     * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * BinaryData
+     * }</pre>
+     *
+     * @param poolId The ID of the Pool that contains the Compute Node.
+     * @param nodeId The ID of the Compute Node from which you want to delete the file.
+     * @param filePath The path to the file or directory that you want to delete.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> getFileFromBatchNodeWithResponse(
+            String poolId, String nodeId, String filePath, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return service.getFileFromBatchNodeSync(
+                this.client.getEndpoint(),
+                this.client.getServiceVersion().getVersion(),
+                poolId,
+                nodeId,
+                filePath,
+                accept,
+                requestOptions,
+                Context.NONE);
+    }
+
+    /**
+     * Gets the properties of the specified Compute Node file.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A maximum of 1000
+     * applications can be returned.</td></tr>
+     * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     *
+     * <p><strong>Header Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Header Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     * current system clock time; set it explicitly if you are calling the REST API
+     * directly.</td></tr>
+     *     <tr><td>if-modified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     * client. The operation will be performed only if the resource on the service has
+     * been modified since the specified time.</td></tr>
+     *     <tr><td>if-unmodified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     * client. The operation will be performed only if the resource on the service has
+     * not been modified since the specified time.</td></tr>
+     * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     *
+     * @param poolId The ID of the Pool that contains the Compute Node.
+     * @param nodeId The ID of the Compute Node from which you want to delete the file.
+     * @param filePath The path to the file or directory that you want to delete.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the properties of the specified Compute Node file along with {@link Response} on successful completion of
+     *     {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> getFilePropertiesFromBatchNodeWithResponseAsync(
+            String poolId, String nodeId, String filePath, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(
+                context ->
+                        service.getFilePropertiesFromBatchNode(
+                                this.client.getEndpoint(),
+                                this.client.getServiceVersion().getVersion(),
+                                poolId,
+                                nodeId,
+                                filePath,
+                                accept,
+                                requestOptions,
+                                context));
+    }
+
+    /**
+     * Gets the properties of the specified Compute Node file.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A maximum of 1000
+     * applications can be returned.</td></tr>
+     * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     *
+     * <p><strong>Header Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Header Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     * current system clock time; set it explicitly if you are calling the REST API
+     * directly.</td></tr>
+     *     <tr><td>if-modified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     * client. The operation will be performed only if the resource on the service has
+     * been modified since the specified time.</td></tr>
+     *     <tr><td>if-unmodified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     * client. The operation will be performed only if the resource on the service has
+     * not been modified since the specified time.</td></tr>
+     * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     *
+     * @param poolId The ID of the Pool that contains the Compute Node.
+     * @param nodeId The ID of the Compute Node from which you want to delete the file.
+     * @param filePath The path to the file or directory that you want to delete.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the properties of the specified Compute Node file along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> getFilePropertiesFromBatchNodeWithResponse(
+            String poolId, String nodeId, String filePath, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return service.getFilePropertiesFromBatchNodeSync(
+                this.client.getEndpoint(),
+                this.client.getServiceVersion().getVersion(),
+                poolId,
+                nodeId,
+                filePath,
+                accept,
+                requestOptions,
+                Context.NONE);
+    }
+
+    /**
+     * Lists all of the files in Task directories on the specified Compute Node.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A maximum of 1000
+     * applications can be returned.</td></tr>
+     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A maximum of 1000
+     * applications can be returned.</td></tr>
+     *     <tr><td>$filter</td><td>String</td><td>No</td><td>An OData $filter clause. For more information on constructing this filter, see
+     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-compute-node-files.</td></tr>
+     *     <tr><td>recursive</td><td>Boolean</td><td>No</td><td>Whether to list children of a directory.</td></tr>
+     * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     *
+     * <p><strong>Header Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Header Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     * current system clock time; set it explicitly if you are calling the REST API
+     * directly.</td></tr>
+     * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     name: String (Optional)
+     *     url: String (Optional)
+     *     isDirectory: Boolean (Optional)
+     *     properties (Optional): {
+     *         creationTime: OffsetDateTime (Optional)
+     *         lastModified: OffsetDateTime (Required)
+     *         contentLength: int (Required)
+     *         contentType: String (Optional)
+     *         fileMode: String (Optional)
+     *     }
+     * }
+     * }</pre>
+     *
+     * @param poolId The ID of the Pool that contains the Compute Node.
+     * @param nodeId The ID of the Compute Node whose files you want to list.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the result of listing the files on a Compute Node, or the files associated with a Task on a Compute Node
+     *     along with {@link PagedResponse} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<BinaryData>> listFilesFromBatchNodeSinglePageAsync(
+            String poolId, String nodeId, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(
+                        context ->
+                                service.listFilesFromBatchNode(
+                                        this.client.getEndpoint(),
+                                        this.client.getServiceVersion().getVersion(),
+                                        poolId,
+                                        nodeId,
+                                        accept,
+                                        requestOptions,
+                                        context))
+                .map(
+                        res ->
+                                new PagedResponseBase<>(
+                                        res.getRequest(),
+                                        res.getStatusCode(),
+                                        res.getHeaders(),
+                                        getValues(res.getValue(), "value"),
+                                        getNextLink(res.getValue(), "odata.nextLink"),
+                                        null));
+    }
+
+    /**
+     * Lists all of the files in Task directories on the specified Compute Node.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A maximum of 1000
+     * applications can be returned.</td></tr>
+     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A maximum of 1000
+     * applications can be returned.</td></tr>
+     *     <tr><td>$filter</td><td>String</td><td>No</td><td>An OData $filter clause. For more information on constructing this filter, see
+     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-compute-node-files.</td></tr>
+     *     <tr><td>recursive</td><td>Boolean</td><td>No</td><td>Whether to list children of a directory.</td></tr>
+     * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     *
+     * <p><strong>Header Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Header Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     * current system clock time; set it explicitly if you are calling the REST API
+     * directly.</td></tr>
+     * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     name: String (Optional)
+     *     url: String (Optional)
+     *     isDirectory: Boolean (Optional)
+     *     properties (Optional): {
+     *         creationTime: OffsetDateTime (Optional)
+     *         lastModified: OffsetDateTime (Required)
+     *         contentLength: int (Required)
+     *         contentType: String (Optional)
+     *         fileMode: String (Optional)
+     *     }
+     * }
+     * }</pre>
+     *
+     * @param poolId The ID of the Pool that contains the Compute Node.
+     * @param nodeId The ID of the Compute Node whose files you want to list.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the result of listing the files on a Compute Node, or the files associated with a Task on a Compute Node
+     *     as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<BinaryData> listFilesFromBatchNodeAsync(
+            String poolId, String nodeId, RequestOptions requestOptions) {
+        RequestOptions requestOptionsForNextPage = new RequestOptions();
+        requestOptionsForNextPage.setContext(
+                requestOptions != null && requestOptions.getContext() != null
+                        ? requestOptions.getContext()
+                        : Context.NONE);
+        return new PagedFlux<>(
+                () -> listFilesFromBatchNodeSinglePageAsync(poolId, nodeId, requestOptions),
+                nextLink -> listFilesFromBatchNodeNextSinglePageAsync(nextLink, requestOptionsForNextPage));
+    }
+
+    /**
+     * Lists all of the files in Task directories on the specified Compute Node.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A maximum of 1000
+     * applications can be returned.</td></tr>
+     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A maximum of 1000
+     * applications can be returned.</td></tr>
+     *     <tr><td>$filter</td><td>String</td><td>No</td><td>An OData $filter clause. For more information on constructing this filter, see
+     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-compute-node-files.</td></tr>
+     *     <tr><td>recursive</td><td>Boolean</td><td>No</td><td>Whether to list children of a directory.</td></tr>
+     * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     *
+     * <p><strong>Header Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Header Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     * current system clock time; set it explicitly if you are calling the REST API
+     * directly.</td></tr>
+     * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     name: String (Optional)
+     *     url: String (Optional)
+     *     isDirectory: Boolean (Optional)
+     *     properties (Optional): {
+     *         creationTime: OffsetDateTime (Optional)
+     *         lastModified: OffsetDateTime (Required)
+     *         contentLength: int (Required)
+     *         contentType: String (Optional)
+     *         fileMode: String (Optional)
+     *     }
+     * }
+     * }</pre>
+     *
+     * @param poolId The ID of the Pool that contains the Compute Node.
+     * @param nodeId The ID of the Compute Node whose files you want to list.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the result of listing the files on a Compute Node, or the files associated with a Task on a Compute Node
+     *     along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<BinaryData> listFilesFromBatchNodeSinglePage(
+            String poolId, String nodeId, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        Response<BinaryData> res =
+                service.listFilesFromBatchNodeSync(
+                        this.client.getEndpoint(),
+                        this.client.getServiceVersion().getVersion(),
+                        poolId,
+                        nodeId,
+                        accept,
+                        requestOptions,
+                        Context.NONE);
+        return new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                getValues(res.getValue(), "value"),
+                getNextLink(res.getValue(), "odata.nextLink"),
+                null);
+    }
+
+    /**
+     * Lists all of the files in Task directories on the specified Compute Node.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A maximum of 1000
+     * applications can be returned.</td></tr>
+     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A maximum of 1000
+     * applications can be returned.</td></tr>
+     *     <tr><td>$filter</td><td>String</td><td>No</td><td>An OData $filter clause. For more information on constructing this filter, see
+     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-compute-node-files.</td></tr>
+     *     <tr><td>recursive</td><td>Boolean</td><td>No</td><td>Whether to list children of a directory.</td></tr>
+     * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     *
+     * <p><strong>Header Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Header Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     * current system clock time; set it explicitly if you are calling the REST API
+     * directly.</td></tr>
+     * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     name: String (Optional)
+     *     url: String (Optional)
+     *     isDirectory: Boolean (Optional)
+     *     properties (Optional): {
+     *         creationTime: OffsetDateTime (Optional)
+     *         lastModified: OffsetDateTime (Required)
+     *         contentLength: int (Required)
+     *         contentType: String (Optional)
+     *         fileMode: String (Optional)
+     *     }
+     * }
+     * }</pre>
+     *
+     * @param poolId The ID of the Pool that contains the Compute Node.
+     * @param nodeId The ID of the Compute Node whose files you want to list.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the result of listing the files on a Compute Node, or the files associated with a Task on a Compute Node
+     *     as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<BinaryData> listFilesFromBatchNode(
+            String poolId, String nodeId, RequestOptions requestOptions) {
+        RequestOptions requestOptionsForNextPage = new RequestOptions();
+        requestOptionsForNextPage.setContext(
+                requestOptions != null && requestOptions.getContext() != null
+                        ? requestOptions.getContext()
+                        : Context.NONE);
+        return new PagedIterable<>(
+                () -> listFilesFromBatchNodeSinglePage(poolId, nodeId, requestOptions),
+                nextLink -> listFilesFromBatchNodeNextSinglePage(nextLink, requestOptionsForNextPage));
     }
 
     /**
@@ -4318,6 +5213,7 @@ public final class BatchNodesImpl {
      *         type: String (Required)
      *         typeHandlerVersion: String (Optional)
      *         autoUpgradeMinorVersion: Boolean (Optional)
+     *         enableAutomaticUpgrade: Boolean (Optional)
      *         settings (Optional): {
      *             String: String (Optional)
      *         }
@@ -4403,6 +5299,7 @@ public final class BatchNodesImpl {
      *         type: String (Required)
      *         typeHandlerVersion: String (Optional)
      *         autoUpgradeMinorVersion: Boolean (Optional)
+     *         enableAutomaticUpgrade: Boolean (Optional)
      *         settings (Optional): {
      *             String: String (Optional)
      *         }
@@ -4445,6 +5342,129 @@ public final class BatchNodesImpl {
         final String accept = "application/json";
         Response<BinaryData> res =
                 service.listExtensionsNextSync(
+                        nextLink, this.client.getEndpoint(), accept, requestOptions, Context.NONE);
+        return new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                getValues(res.getValue(), "value"),
+                getNextLink(res.getValue(), "odata.nextLink"),
+                null);
+    }
+
+    /**
+     * Lists all of the files in Task directories on the specified Compute Node.
+     *
+     * <p>Get the next page of items.
+     *
+     * <p><strong>Header Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Header Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     * current system clock time; set it explicitly if you are calling the REST API
+     * directly.</td></tr>
+     * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     name: String (Optional)
+     *     url: String (Optional)
+     *     isDirectory: Boolean (Optional)
+     *     properties (Optional): {
+     *         creationTime: OffsetDateTime (Optional)
+     *         lastModified: OffsetDateTime (Required)
+     *         contentLength: int (Required)
+     *         contentType: String (Optional)
+     *         fileMode: String (Optional)
+     *     }
+     * }
+     * }</pre>
+     *
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the result of listing the files on a Compute Node, or the files associated with a Task on a Compute Node
+     *     along with {@link PagedResponse} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<BinaryData>> listFilesFromBatchNodeNextSinglePageAsync(
+            String nextLink, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(
+                        context ->
+                                service.listFilesFromBatchNodeNext(
+                                        nextLink, this.client.getEndpoint(), accept, requestOptions, context))
+                .map(
+                        res ->
+                                new PagedResponseBase<>(
+                                        res.getRequest(),
+                                        res.getStatusCode(),
+                                        res.getHeaders(),
+                                        getValues(res.getValue(), "value"),
+                                        getNextLink(res.getValue(), "odata.nextLink"),
+                                        null));
+    }
+
+    /**
+     * Lists all of the files in Task directories on the specified Compute Node.
+     *
+     * <p>Get the next page of items.
+     *
+     * <p><strong>Header Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Header Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     * current system clock time; set it explicitly if you are calling the REST API
+     * directly.</td></tr>
+     * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     name: String (Optional)
+     *     url: String (Optional)
+     *     isDirectory: Boolean (Optional)
+     *     properties (Optional): {
+     *         creationTime: OffsetDateTime (Optional)
+     *         lastModified: OffsetDateTime (Required)
+     *         contentLength: int (Required)
+     *         contentType: String (Optional)
+     *         fileMode: String (Optional)
+     *     }
+     * }
+     * }</pre>
+     *
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the result of listing the files on a Compute Node, or the files associated with a Task on a Compute Node
+     *     along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<BinaryData> listFilesFromBatchNodeNextSinglePage(
+            String nextLink, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        Response<BinaryData> res =
+                service.listFilesFromBatchNodeNextSync(
                         nextLink, this.client.getEndpoint(), accept, requestOptions, Context.NONE);
         return new PagedResponseBase<>(
                 res.getRequest(),

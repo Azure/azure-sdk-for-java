@@ -230,6 +230,8 @@ enum DiffDiskPlacement {
 enum ContainerType {
   @doc("A Docker compatible container technology will be used to launch the containers.")
   DockerCompatible: "dockerCompatible",
+  @doc("A CRI based technology will be used to launch the containers.")
+  CriCompatible: "criCompatible"
 }
 
 @doc("AccessScope enums")
@@ -1451,13 +1453,11 @@ specified, there is no time limit on how long the Job may run.
   maxWallClockTime?: duration;
 
   @doc("""
-Note that this value specifically controls the number of retries. The Batch
-service will try each Task once, and may then retry up to this limit. For
-example, if the maximum retry count is 3, Batch tries a Task up to 4 times (one
-initial try and 3 retries). If the maximum retry count is 0, the Batch service
-does not retry Tasks. If the maximum retry count is -1, the Batch service
-retries the Task without limit, however this is not recommended for a start
-task or any task. The default value is 0 (no retries)
+  Note that this value specifically controls the number of retries. 
+  The Batch service will try each Task once, and may then retry up to this limit. 
+  For example, if the maximum retry count is 3, Batch tries a Task up to 4 times (one initial try and 3 retries). 
+  If the maximum retry count is 0, the Batch service does not retry Tasks. 
+  If the maximum retry count is -1, the Batch service retries Tasks without limit. The default value is 0 (no retries).
 """)
   maxTaskRetryCount?: int32;
 }
@@ -1824,14 +1824,11 @@ unless the Compute Node is removed or the Job is deleted.
   retentionTime?: duration;
 
   @doc("""
-Note that this value specifically controls the number of retries for the Task
-executable due to a nonzero exit code. The Batch service will try the Task
-once, and may then retry up to this limit. For example, if the maximum retry
-count is 3, Batch tries the Task up to 4 times (one initial try and 3 retries).
-If the maximum retry count is 0, the Batch service does not retry the Task
-after the first attempt. If the maximum retry count is -1, the Batch service
-retries the Task without limit, however this is not recommended for a start
-task or any task. The default value is 0 (no retries)
+  Note that this value specifically controls the number of retries for the Task executable due to a nonzero exit code. 
+  The Batch service will try the Task once, and may then retry up to this limit. 
+  For example, if the maximum retry count is 3, Batch tries the Task up to 4 times (one initial try and 3 retries). 
+  If the maximum retry count is 0, the Batch service does not retry the Task after the first attempt. 
+  If the maximum retry count is -1, the Batch service retries the Task without limit, however this is not recommended for a start task or any task. The default value is 0 (no retries).
 """)
   maxTaskRetryCount?: int32;
 }
@@ -1955,7 +1952,7 @@ access those files.
   containerSettings?: TaskContainerSettings;
 
   @doc("""
-Files listed under this element are located in the Task's working directory.
+Files listed under this element are located in the Task's working directory. 
 There is a maximum size for the list of resource files.  When the max size is
 exceeded, the request will fail and the response error code will be
 RequestEntityTooLarge. If this occurs, the collection of ResourceFiles must be
@@ -2242,13 +2239,9 @@ block Batch from being able to re-run the StartTask.
   startTask?: StartTask;
 
   @doc("""
-For Windows Nodes, the Batch service installs the Certificates to the specified
-Certificate store and location. For Linux Compute Nodes, the Certificates are
-stored in a directory inside the Task working directory and an environment
-variable AZ_BATCH_CERTIFICATES_DIR is supplied to the Task to query for this
-location. For Certificates with visibility of 'remoteUser', a 'certs' directory
-is created in the user's home directory (e.g., /home/{user-name}/certs) and
-Certificates are placed in that directory.
+For Windows Nodes, the Batch service installs the Certificates to the specified Certificate store and location. For Linux Compute Nodes, the Certificates are stored in a directory inside the Task working directory and an environment variable AZ_BATCH_CERTIFICATES_DIR is supplied to the Task to query for this location. For Certificates with visibility of 'remoteUser', a 'certs' directory is created in the user's home directory (e.g., /home/{user-name}/certs) and Certificates are placed in that directory. 
+Warning: This property is deprecated and will be removed after February, 2024. 
+Please use the [Azure KeyVault Extension](https://learn.microsoft.com/azure/batch/batch-certificate-migration-guide) instead.
 """)
   certificateReferences?: CertificateReference[];
 
@@ -2500,12 +2493,15 @@ upgrade minor versions unless redeployed, even with this property set to true.
 """)
   autoUpgradeMinorVersion?: boolean;
 
+  @doc("Indicates whether the extension should be automatically upgraded by the platform if there is a newer version of the extension available.")
+  enableAutomaticUpgrade?: boolean;
+
   @doc("JSON formatted public settings for the extension.")
   settings?: Record<string>;
 
   @doc("""
 The extension can contain either protectedSettings or
-protectedSettingsFromKeyVault or no protected settings at all.
+protectedSettingsFromKeyVault or no protected settings at all. 
 """)
   protectedSettings?: Record<string>;
 
@@ -2533,7 +2529,7 @@ compute node (VM).
 model DiffDiskSettings {
   @doc("""
   This property can be used by user in the request to choose the location e.g., cache disk space for Ephemeral OS disk provisioning. For more information on Ephemeral OS disk size requirements, please refer to Ephemeral OS disk size requirements for Windows VMs at https://docs.microsoft.com/en-us/azure/virtual-machines/windows/ephemeral-os-disks#size-requirements and Linux VMs at
-https://docs.microsoft.com/en-us/azure/virtual-machines/linux/ephemeral-os-disks#size-requirements.
+https://docs.microsoft.com/en-us/azure/virtual-machines/linux/ephemeral-os-disks#size-requirements. 
 """)
   placement?: DiffDiskPlacement;
 }
@@ -2578,6 +2574,10 @@ virtualMachineConfiguration property.
 """)
   @projectedName("python", "public_ip_address_configuration")
   publicIPAddressConfiguration?: PublicIPAddressConfiguration;
+
+  @doc("Accelerated networking enables single root I/O virtualization (SR-IOV) to a VM, which may lead to improved networking performance. For more details, see: https://learn.microsoft.com/azure/virtual-network/accelerated-networking-overview.")
+  enableAcceleratedNetworking?: boolean
+
 }
 
 #suppress "@azure-tools/typespec-azure-core/casing-style" "The names of Property types must use camelCase"
@@ -2768,7 +2768,7 @@ scheduled on the Compute Node. The default is true.
   waitForSuccess?: boolean;
 }
 
-@doc("A reference to a Certificate to be installed on Compute Nodes in a Pool.")
+@doc("A reference to a Certificate to be installed on Compute Nodes in a Pool. Warning: This object is deprecated and will be removed after February, 2024. Please use the [Azure KeyVault Extension](https://learn.microsoft.com/azure/batch/batch-certificate-migration-guide) instead.")
 model CertificateReference {
   @doc("The thumbprint of the Certificate.")
   thumbprint: string;
@@ -3433,7 +3433,7 @@ it has been created using the update job API.
   constraints?: JobConstraints;
 
   @doc("Specifies how a Job should be assigned to a Pool.")
-  poolInfo: PoolInformation;
+  poolInfo?: PoolInformation;
 
   @doc("The default is noaction.")
   onAllTasksComplete?: OnAllTasksComplete;
@@ -3946,13 +3946,10 @@ block Batch from being able to re-run the StartTask.
   startTask?: StartTask;
 
   @doc("""
-For Windows Nodes, the Batch service installs the Certificates to the specified
-Certificate store and location. For Linux Compute Nodes, the Certificates are
-stored in a directory inside the Task working directory and an environment
-variable AZ_BATCH_CERTIFICATES_DIR is supplied to the Task to query for this
-location. For Certificates with visibility of 'remoteUser', a 'certs' directory
-is created in the user's home directory (e.g., /home/{user-name}/certs) and
-Certificates are placed in that directory.
+For Windows Nodes, the Batch service installs the Certificates to the specified Certificate store and location. 
+For Linux Compute Nodes, the Certificates are stored in a directory inside the Task working directory and an environment variable AZ_BATCH_CERTIFICATES_DIR is supplied to the Task to query for this location. 
+For Certificates with visibility of 'remoteUser', a 'certs' directory is created in the user's home directory (e.g., /home/{user-name}/certs) and Certificates are placed in that directory.
+Warning: This property is deprecated and will be removed after February, 2024. Please use the [Azure KeyVault Extension](https://learn.microsoft.com/azure/batch/batch-certificate-migration-guide) instead.
 """)
   @visibility("read")
   certificateReferences?: CertificateReference[];
@@ -4109,13 +4106,10 @@ block Batch from being able to re-run the StartTask.
   startTask?: StartTask;
 
   @doc("""
-For Windows Nodes, the Batch service installs the Certificates to the specified
-Certificate store and location. For Linux Compute Nodes, the Certificates are
-stored in a directory inside the Task working directory and an environment
-variable AZ_BATCH_CERTIFICATES_DIR is supplied to the Task to query for this
-location. For Certificates with visibility of 'remoteUser', a 'certs' directory
-is created in the user's home directory (e.g., /home/{user-name}/certs) and
-Certificates are placed in that directory.
+For Windows Nodes, the Batch service installs the Certificates to the specified Certificate store and location. 
+For Linux Compute Nodes, the Certificates are stored in a directory inside the Task working directory and an environment variable AZ_BATCH_CERTIFICATES_DIR is supplied to the Task to query for this location. 
+For Certificates with visibility of 'remoteUser', a 'certs' directory is created in the user's home directory (e.g., /home/{user-name}/certs) and Certificates are placed in that directory.
+Warning: This property is deprecated and will be removed after February, 2024. Please use the [Azure KeyVault Extension](https://learn.microsoft.com/azure/batch/batch-certificate-migration-guide) instead.
 """)
   certificateReferences?: CertificateReference[];
 
@@ -4174,13 +4168,12 @@ block Batch from being able to re-run the StartTask.
   startTask?: StartTask;
 
   @doc("""
-For Windows Nodes, the Batch service installs the Certificates to the specified
-Certificate store and location. For Linux Compute Nodes, the Certificates are
-stored in a directory inside the Task working directory and an environment
-variable AZ_BATCH_CERTIFICATES_DIR is supplied to the Task to query for this
-location. For Certificates with visibility of 'remoteUser', a 'certs' directory
-is created in the user's home directory (e.g., /home/{user-name}/certs) and
-Certificates are placed in that directory.
+This list replaces any existing Certificate references configured on the Pool. 
+If you specify an empty collection, any existing Certificate references are removed from the Pool. 
+For Windows Nodes, the Batch service installs the Certificates to the specified Certificate store and location. 
+For Linux Compute Nodes, the Certificates are stored in a directory inside the Task working directory and an environment variable AZ_BATCH_CERTIFICATES_DIR is supplied to the Task to query for this location. 
+For Certificates with visibility of 'remoteUser', a 'certs' directory is created in the user's home directory (e.g., /home/{user-name}/certs) and Certificates are placed in that directory.
+Warning: This property is deprecated and will be removed after February, 2024. Please use the [Azure KeyVault Extension](https://learn.microsoft.com/azure/batch/batch-certificate-migration-guide) instead.
 """)
   certificateReferences: CertificateReference[];
 
@@ -4219,13 +4212,12 @@ block Batch from being able to re-run the StartTask.
   startTask?: StartTask;
 
   @doc("""
-For Windows Nodes, the Batch service installs the Certificates to the specified
-Certificate store and location. For Linux Compute Nodes, the Certificates are
-stored in a directory inside the Task working directory and an environment
-variable AZ_BATCH_CERTIFICATES_DIR is supplied to the Task to query for this
-location. For Certificates with visibility of 'remoteUser', a 'certs' directory
-is created in the user's home directory (e.g., /home/{user-name}/certs) and
-Certificates are placed in that directory.
+If this element is present, it replaces any existing Certificate references configured on the Pool. 
+If omitted, any existing Certificate references are left unchanged. 
+For Windows Nodes, the Batch service installs the Certificates to the specified Certificate store and location. 
+For Linux Compute Nodes, the Certificates are stored in a directory inside the Task working directory and an environment variable AZ_BATCH_CERTIFICATES_DIR is supplied to the Task to query for this location. 
+For Certificates with visibility of 'remoteUser', a 'certs' directory is created in the user's home directory (e.g., /home/{user-name}/certs) and Certificates are placed in that directory.
+Warning: This property is deprecated and will be removed after February, 2024. Please use the [Azure KeyVault Extension](https://learn.microsoft.com/azure/batch/batch-certificate-migration-guide) instead.
 """)
   certificateReferences?: CertificateReference[];
 
@@ -4936,7 +4928,7 @@ common resource files are downloaded for all subtasks including the primary,
 whereas Task resource files are downloaded only for the primary. Also note that
 these resource files are not downloaded to the Task working directory, but
 instead are downloaded to the Task root directory (one directory above the
-working directory).  There is a maximum size for the list of resource files.
+working directory).  There is a maximum size for the list of resource files. 
 When the max size is exceeded, the request will fail and the response error
 code will be RequestEntityTooLarge. If this occurs, the collection of
 ResourceFiles must be reduced in size. This can be achieved using .zip files,
@@ -5317,13 +5309,10 @@ block Batch from being able to re-run the StartTask.
   startTaskInfo?: StartTaskInformation;
 
   @doc("""
-For Windows Nodes, the Batch service installs the Certificates to the specified
-Certificate store and location. For Linux Compute Nodes, the Certificates are
-stored in a directory inside the Task working directory and an environment
-variable AZ_BATCH_CERTIFICATES_DIR is supplied to the Task to query for this
-location. For Certificates with visibility of 'remoteUser', a 'certs' directory
-is created in the user's home directory (e.g., /home/{user-name}/certs) and
-Certificates are placed in that directory.
+For Windows Nodes, the Batch service installs the Certificates to the specified Certificate store and location. 
+For Linux Compute Nodes, the Certificates are stored in a directory inside the Task working directory and an environment variable AZ_BATCH_CERTIFICATES_DIR is supplied to the Task to query for this location. 
+For Certificates with visibility of 'remoteUser', a 'certs' directory is created in the user's home directory (e.g., /home/{user-name}/certs) and Certificates are placed in that directory.
+Warning: This property is deprecated and will be removed after February, 2024. Please use the [Azure KeyVault Extension](https://learn.microsoft.com/azure/batch/batch-certificate-migration-guide) instead.
 """)
   certificateReferences?: CertificateReference[];
 
@@ -5527,7 +5516,7 @@ model NodeDisableSchedulingParameters {
 
 #suppress "@azure-tools/typespec-azure-core/casing-style" "The names of Property types must use camelCase"
 @doc("The remote login settings for a Compute Node.")
-model BatchNodeGetRemoteLoginSettingsResult {
+model BatchNodeRemoteLoginSettingsResult {
   @doc("The IP address used for remote login to the Compute Node.")
   @projectedName("python", "remote_login_ip_address")
   remoteLoginIPAddress: string;

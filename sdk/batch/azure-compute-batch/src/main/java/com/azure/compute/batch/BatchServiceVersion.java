@@ -8,8 +8,8 @@ import com.azure.core.util.ServiceVersion;
 
 /** Service version of BatchClient. */
 public enum BatchServiceVersion implements ServiceVersion {
-    /** Enum value 2022-10-01.16.0. */
-    V2022_10_01_16_0("2022-10-01.16.0");
+    /** Enum value 2023-05-01.17.0. */
+    V2023_05_01_17_0("2023-05-01.17.0");
 
     private final String version;
 
@@ -29,6 +29,6 @@ public enum BatchServiceVersion implements ServiceVersion {
      * @return The latest {@link BatchServiceVersion}.
      */
     public static BatchServiceVersion getLatest() {
-        return V2022_10_01_16_0;
+        return V2023_05_01_17_0;
     }
 }

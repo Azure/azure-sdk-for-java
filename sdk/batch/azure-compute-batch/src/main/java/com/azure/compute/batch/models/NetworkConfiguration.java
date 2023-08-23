@@ -188,4 +188,39 @@ public final class NetworkConfiguration {
         this.publicIPAddressConfiguration = publicIPAddressConfiguration;
         return this;
     }
+
+    /*
+     * Accelerated networking enables single root I/O virtualization (SR-IOV) to a VM, which may lead to improved
+     * networking performance. For more details, see:
+     * https://learn.microsoft.com/azure/virtual-network/accelerated-networking-overview.
+     */
+    @Generated
+    @JsonProperty(value = "enableAcceleratedNetworking")
+    private Boolean enableAcceleratedNetworking;
+
+    /**
+     * Get the enableAcceleratedNetworking property: Accelerated networking enables single root I/O virtualization
+     * (SR-IOV) to a VM, which may lead to improved networking performance. For more details, see:
+     * https://learn.microsoft.com/azure/virtual-network/accelerated-networking-overview.
+     *
+     * @return the enableAcceleratedNetworking value.
+     */
+    @Generated
+    public Boolean isEnableAcceleratedNetworking() {
+        return this.enableAcceleratedNetworking;
+    }
+
+    /**
+     * Set the enableAcceleratedNetworking property: Accelerated networking enables single root I/O virtualization
+     * (SR-IOV) to a VM, which may lead to improved networking performance. For more details, see:
+     * https://learn.microsoft.com/azure/virtual-network/accelerated-networking-overview.
+     *
+     * @param enableAcceleratedNetworking the enableAcceleratedNetworking value to set.
+     * @return the NetworkConfiguration object itself.
+     */
+    @Generated
+    public NetworkConfiguration setEnableAcceleratedNetworking(Boolean enableAcceleratedNetworking) {
+        this.enableAcceleratedNetworking = enableAcceleratedNetworking;
+        return this;
+    }
 }

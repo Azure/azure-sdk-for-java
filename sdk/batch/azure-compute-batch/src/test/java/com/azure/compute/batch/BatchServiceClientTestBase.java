@@ -61,11 +61,11 @@ class BatchServiceClientTestBase extends TestProxyTestBase {
 
     protected CertificatesClient certificatesClient;
 
-    protected FileClient fileClient;
-
     protected JobScheduleClient jobScheduleClient;
 
     protected TaskClient taskClient;
+
+    protected BatchNodesClient nodesClient;
 
 	static final int MAX_LEN_ID = 64;
 
@@ -101,9 +101,9 @@ class BatchServiceClientTestBase extends TestProxyTestBase {
         accountClient = batchClientBuilder.buildAccountClient();
         jobClient = batchClientBuilder.buildJobClient();
         certificatesClient = batchClientBuilder.buildCertificatesClient();
-        fileClient = batchClientBuilder.buildFileClient();
         jobScheduleClient = batchClientBuilder.buildJobScheduleClient();
         taskClient = batchClientBuilder.buildTaskClient();
+        nodesClient = batchClientBuilder.buildBatchNodesClient();
     }
 
     public void addTestRulesOnPlayback(InterceptorManager interceptorManager) {

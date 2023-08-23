@@ -44,4 +44,7 @@ public final class ContainerType extends ExpandableStringEnum<ContainerType> {
     public static Collection<ContainerType> values() {
         return values(ContainerType.class);
     }
+
+    /** A CRI based technology will be used to launch the containers. */
+    @Generated public static final ContainerType CRI_COMPATIBLE = fromString("criCompatible");
 }

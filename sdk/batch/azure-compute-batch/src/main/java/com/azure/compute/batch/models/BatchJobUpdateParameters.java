@@ -5,7 +5,6 @@ package com.azure.compute.batch.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -69,17 +68,6 @@ public final class BatchJobUpdateParameters {
     @Generated
     @JsonProperty(value = "metadata")
     private List<MetadataItem> metadata;
-
-    /**
-     * Creates an instance of BatchJobUpdateParameters class.
-     *
-     * @param poolInfo the poolInfo value to set.
-     */
-    @Generated
-    @JsonCreator
-    public BatchJobUpdateParameters(@JsonProperty(value = "poolInfo") PoolInformation poolInfo) {
-        this.poolInfo = poolInfo;
-    }
 
     /**
      * Get the priority property: Priority values can range from -1000 to 1000, with -1000 being the lowest priority and
@@ -232,6 +220,22 @@ public final class BatchJobUpdateParameters {
     @Generated
     public BatchJobUpdateParameters setMetadata(List<MetadataItem> metadata) {
         this.metadata = metadata;
+        return this;
+    }
+
+    /** Creates an instance of BatchJobUpdateParameters class. */
+    @Generated
+    public BatchJobUpdateParameters() {}
+
+    /**
+     * Set the poolInfo property: Specifies how a Job should be assigned to a Pool.
+     *
+     * @param poolInfo the poolInfo value to set.
+     * @return the BatchJobUpdateParameters object itself.
+     */
+    @Generated
+    public BatchJobUpdateParameters setPoolInfo(PoolInformation poolInfo) {
+        this.poolInfo = poolInfo;
         return this;
     }
 }

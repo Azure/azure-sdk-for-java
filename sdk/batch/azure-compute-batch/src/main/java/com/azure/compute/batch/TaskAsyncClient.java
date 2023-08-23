@@ -8,6 +8,7 @@ import com.azure.compute.batch.models.BatchTask;
 import com.azure.compute.batch.models.BatchTaskCollection;
 import com.azure.compute.batch.models.BatchTaskCreateParameters;
 import com.azure.compute.batch.models.BatchTaskListSubtasksResult;
+import com.azure.compute.batch.models.NodeFile;
 import com.azure.compute.batch.models.TaskAddCollectionResult;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
@@ -2168,5 +2169,561 @@ public final class TaskAsyncClient {
                     HttpHeaderName.IF_UNMODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
         }
         return reactivateWithResponse(jobId, taskId, requestOptions).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Deletes the specified Task file from the Compute Node where the Task ran.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A maximum of 1000
+     * applications can be returned.</td></tr>
+     *     <tr><td>recursive</td><td>Boolean</td><td>No</td><td>Whether to delete children of a directory. If the filePath parameter represents
+     * a directory instead of a file, you can set recursive to true to delete the
+     * directory and all of the files and subdirectories in it. If recursive is false
+     * then the directory must be empty or deletion will fail.</td></tr>
+     * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     *
+     * <p><strong>Header Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Header Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     * current system clock time; set it explicitly if you are calling the REST API
+     * directly.</td></tr>
+     * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     *
+     * @param jobId The ID of the Job that contains the Task.
+     * @param taskId The ID of the Task whose file you want to retrieve.
+     * @param filePath The path to the Task file that you want to get the content of.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> deleteFileFromTaskWithResponse(
+            String jobId, String taskId, String filePath, RequestOptions requestOptions) {
+        return this.serviceClient.deleteFileFromTaskWithResponseAsync(jobId, taskId, filePath, requestOptions);
+    }
+
+    /**
+     * Returns the content of the specified Task file.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A maximum of 1000
+     * applications can be returned.</td></tr>
+     * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     *
+     * <p><strong>Header Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Header Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     * current system clock time; set it explicitly if you are calling the REST API
+     * directly.</td></tr>
+     *     <tr><td>if-modified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     * client. The operation will be performed only if the resource on the service has
+     * been modified since the specified time.</td></tr>
+     *     <tr><td>if-unmodified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     * client. The operation will be performed only if the resource on the service has
+     * not been modified since the specified time.</td></tr>
+     *     <tr><td>ocp-range</td><td>String</td><td>No</td><td>The byte range to be retrieved. The default is to retrieve the entire file. The
+     * format is bytes=startRange-endRange.</td></tr>
+     * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * BinaryData
+     * }</pre>
+     *
+     * @param jobId The ID of the Job that contains the Task.
+     * @param taskId The ID of the Task whose file you want to retrieve.
+     * @param filePath The path to the Task file that you want to get the content of.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> getFileFromTaskWithResponse(
+            String jobId, String taskId, String filePath, RequestOptions requestOptions) {
+        return this.serviceClient.getFileFromTaskWithResponseAsync(jobId, taskId, filePath, requestOptions);
+    }
+
+    /**
+     * Gets the properties of the specified Task file.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A maximum of 1000
+     * applications can be returned.</td></tr>
+     * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     *
+     * <p><strong>Header Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Header Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     * current system clock time; set it explicitly if you are calling the REST API
+     * directly.</td></tr>
+     *     <tr><td>if-modified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     * client. The operation will be performed only if the resource on the service has
+     * been modified since the specified time.</td></tr>
+     *     <tr><td>if-unmodified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     * client. The operation will be performed only if the resource on the service has
+     * not been modified since the specified time.</td></tr>
+     * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     *
+     * @param jobId The ID of the Job that contains the Task.
+     * @param taskId The ID of the Task whose file you want to retrieve.
+     * @param filePath The path to the Task file that you want to get the content of.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the properties of the specified Task file along with {@link Response} on successful completion of {@link
+     *     Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> getFilePropertiesFromTaskWithResponse(
+            String jobId, String taskId, String filePath, RequestOptions requestOptions) {
+        return this.serviceClient.getFilePropertiesFromTaskWithResponseAsync(jobId, taskId, filePath, requestOptions);
+    }
+
+    /**
+     * Lists the files in a Task's directory on its Compute Node.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A maximum of 1000
+     * applications can be returned.</td></tr>
+     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A maximum of 1000
+     * applications can be returned.</td></tr>
+     *     <tr><td>$filter</td><td>String</td><td>No</td><td>An OData $filter clause. For more information on constructing this filter, see
+     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-task-files.</td></tr>
+     *     <tr><td>recursive</td><td>Boolean</td><td>No</td><td>Whether to list children of the Task directory. This parameter can be used in
+     * combination with the filter parameter to list specific type of files.</td></tr>
+     * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     *
+     * <p><strong>Header Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Header Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     * current system clock time; set it explicitly if you are calling the REST API
+     * directly.</td></tr>
+     * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     name: String (Optional)
+     *     url: String (Optional)
+     *     isDirectory: Boolean (Optional)
+     *     properties (Optional): {
+     *         creationTime: OffsetDateTime (Optional)
+     *         lastModified: OffsetDateTime (Required)
+     *         contentLength: int (Required)
+     *         contentType: String (Optional)
+     *         fileMode: String (Optional)
+     *     }
+     * }
+     * }</pre>
+     *
+     * @param jobId The ID of the Job that contains the Task.
+     * @param taskId The ID of the Task whose files you want to list.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the result of listing the files on a Compute Node, or the files associated with a Task on a Compute Node
+     *     as paginated response with {@link PagedFlux}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<BinaryData> listFilesFromTask(String jobId, String taskId, RequestOptions requestOptions) {
+        return this.serviceClient.listFilesFromTaskAsync(jobId, taskId, requestOptions);
+    }
+
+    /**
+     * Deletes the specified Task file from the Compute Node where the Task ran.
+     *
+     * @param jobId The ID of the Job that contains the Task.
+     * @param taskId The ID of the Task whose file you want to retrieve.
+     * @param filePath The path to the Task file that you want to get the content of.
+     * @param timeOut The maximum number of items to return in the response. A maximum of 1000 applications can be
+     *     returned.
+     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
+     *     time; set it explicitly if you are calling the REST API directly.
+     * @param recursive Whether to delete children of a directory. If the filePath parameter represents a directory
+     *     instead of a file, you can set recursive to true to delete the directory and all of the files and
+     *     subdirectories in it. If recursive is false then the directory must be empty or deletion will fail.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> deleteFileFromTask(
+            String jobId, String taskId, String filePath, Integer timeOut, OffsetDateTime ocpDate, Boolean recursive) {
+        // Generated convenience method for deleteFileFromTaskWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (timeOut != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOut), false);
+        }
+        if (ocpDate != null) {
+            requestOptions.setHeader(
+                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
+        }
+        if (recursive != null) {
+            requestOptions.addQueryParam("recursive", String.valueOf(recursive), false);
+        }
+        return deleteFileFromTaskWithResponse(jobId, taskId, filePath, requestOptions).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Deletes the specified Task file from the Compute Node where the Task ran.
+     *
+     * @param jobId The ID of the Job that contains the Task.
+     * @param taskId The ID of the Task whose file you want to retrieve.
+     * @param filePath The path to the Task file that you want to get the content of.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> deleteFileFromTask(String jobId, String taskId, String filePath) {
+        // Generated convenience method for deleteFileFromTaskWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return deleteFileFromTaskWithResponse(jobId, taskId, filePath, requestOptions).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Returns the content of the specified Task file.
+     *
+     * @param jobId The ID of the Job that contains the Task.
+     * @param taskId The ID of the Task whose file you want to retrieve.
+     * @param filePath The path to the Task file that you want to get the content of.
+     * @param timeOut The maximum number of items to return in the response. A maximum of 1000 applications can be
+     *     returned.
+     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
+     *     time; set it explicitly if you are calling the REST API directly.
+     * @param ifModifiedSince A timestamp indicating the last modified time of the resource known to the client. The
+     *     operation will be performed only if the resource on the service has been modified since the specified time.
+     * @param ifUnmodifiedSince A timestamp indicating the last modified time of the resource known to the client. The
+     *     operation will be performed only if the resource on the service has not been modified since the specified
+     *     time.
+     * @param ocpRange The byte range to be retrieved. The default is to retrieve the entire file. The format is
+     *     bytes=startRange-endRange.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<BinaryData> getFileFromTask(
+            String jobId,
+            String taskId,
+            String filePath,
+            Integer timeOut,
+            OffsetDateTime ocpDate,
+            OffsetDateTime ifModifiedSince,
+            OffsetDateTime ifUnmodifiedSince,
+            String ocpRange) {
+        // Generated convenience method for getFileFromTaskWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (timeOut != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOut), false);
+        }
+        if (ocpDate != null) {
+            requestOptions.setHeader(
+                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
+        }
+        if (ifModifiedSince != null) {
+            requestOptions.setHeader(
+                    HttpHeaderName.IF_MODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
+        }
+        if (ifUnmodifiedSince != null) {
+            requestOptions.setHeader(
+                    HttpHeaderName.IF_UNMODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
+        }
+        if (ocpRange != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("ocp-range"), ocpRange);
+        }
+        return getFileFromTaskWithResponse(jobId, taskId, filePath, requestOptions).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Returns the content of the specified Task file.
+     *
+     * @param jobId The ID of the Job that contains the Task.
+     * @param taskId The ID of the Task whose file you want to retrieve.
+     * @param filePath The path to the Task file that you want to get the content of.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<BinaryData> getFileFromTask(String jobId, String taskId, String filePath) {
+        // Generated convenience method for getFileFromTaskWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return getFileFromTaskWithResponse(jobId, taskId, filePath, requestOptions).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Gets the properties of the specified Task file.
+     *
+     * @param jobId The ID of the Job that contains the Task.
+     * @param taskId The ID of the Task whose file you want to retrieve.
+     * @param filePath The path to the Task file that you want to get the content of.
+     * @param timeOut The maximum number of items to return in the response. A maximum of 1000 applications can be
+     *     returned.
+     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
+     *     time; set it explicitly if you are calling the REST API directly.
+     * @param ifModifiedSince A timestamp indicating the last modified time of the resource known to the client. The
+     *     operation will be performed only if the resource on the service has been modified since the specified time.
+     * @param ifUnmodifiedSince A timestamp indicating the last modified time of the resource known to the client. The
+     *     operation will be performed only if the resource on the service has not been modified since the specified
+     *     time.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the properties of the specified Task file on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> getFilePropertiesFromTask(
+            String jobId,
+            String taskId,
+            String filePath,
+            Integer timeOut,
+            OffsetDateTime ocpDate,
+            OffsetDateTime ifModifiedSince,
+            OffsetDateTime ifUnmodifiedSince) {
+        // Generated convenience method for getFilePropertiesFromTaskWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (timeOut != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOut), false);
+        }
+        if (ocpDate != null) {
+            requestOptions.setHeader(
+                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
+        }
+        if (ifModifiedSince != null) {
+            requestOptions.setHeader(
+                    HttpHeaderName.IF_MODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
+        }
+        if (ifUnmodifiedSince != null) {
+            requestOptions.setHeader(
+                    HttpHeaderName.IF_UNMODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
+        }
+        return getFilePropertiesFromTaskWithResponse(jobId, taskId, filePath, requestOptions).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Gets the properties of the specified Task file.
+     *
+     * @param jobId The ID of the Job that contains the Task.
+     * @param taskId The ID of the Task whose file you want to retrieve.
+     * @param filePath The path to the Task file that you want to get the content of.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the properties of the specified Task file on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> getFilePropertiesFromTask(String jobId, String taskId, String filePath) {
+        // Generated convenience method for getFilePropertiesFromTaskWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return getFilePropertiesFromTaskWithResponse(jobId, taskId, filePath, requestOptions).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Lists the files in a Task's directory on its Compute Node.
+     *
+     * @param jobId The ID of the Job that contains the Task.
+     * @param taskId The ID of the Task whose files you want to list.
+     * @param maxresults The maximum number of items to return in the response. A maximum of 1000 applications can be
+     *     returned.
+     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
+     *     time; set it explicitly if you are calling the REST API directly.
+     * @param timeOut The maximum number of items to return in the response. A maximum of 1000 applications can be
+     *     returned.
+     * @param filter An OData $filter clause. For more information on constructing this filter, see
+     *     https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-task-files.
+     * @param recursive Whether to list children of the Task directory. This parameter can be used in combination with
+     *     the filter parameter to list specific type of files.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of listing the files on a Compute Node, or the files associated with a Task on a Compute Node
+     *     as paginated response with {@link PagedFlux}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<NodeFile> listFilesFromTask(
+            String jobId,
+            String taskId,
+            Integer maxresults,
+            OffsetDateTime ocpDate,
+            Integer timeOut,
+            String filter,
+            Boolean recursive) {
+        // Generated convenience method for listFilesFromTask
+        RequestOptions requestOptions = new RequestOptions();
+        if (maxresults != null) {
+            requestOptions.addQueryParam("maxresults", String.valueOf(maxresults), false);
+        }
+        if (ocpDate != null) {
+            requestOptions.setHeader(
+                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
+        }
+        if (timeOut != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOut), false);
+        }
+        if (filter != null) {
+            requestOptions.addQueryParam("$filter", filter, false);
+        }
+        if (recursive != null) {
+            requestOptions.addQueryParam("recursive", String.valueOf(recursive), false);
+        }
+        PagedFlux<BinaryData> pagedFluxResponse = listFilesFromTask(jobId, taskId, requestOptions);
+        return PagedFlux.create(
+                () ->
+                        (continuationToken, pageSize) -> {
+                            Flux<PagedResponse<BinaryData>> flux =
+                                    (continuationToken == null)
+                                            ? pagedFluxResponse.byPage().take(1)
+                                            : pagedFluxResponse.byPage(continuationToken).take(1);
+                            return flux.map(
+                                    pagedResponse ->
+                                            new PagedResponseBase<Void, NodeFile>(
+                                                    pagedResponse.getRequest(),
+                                                    pagedResponse.getStatusCode(),
+                                                    pagedResponse.getHeaders(),
+                                                    pagedResponse.getValue().stream()
+                                                            .map(
+                                                                    protocolMethodData ->
+                                                                            protocolMethodData.toObject(NodeFile.class))
+                                                            .collect(Collectors.toList()),
+                                                    pagedResponse.getContinuationToken(),
+                                                    null));
+                        });
+    }
+
+    /**
+     * Lists the files in a Task's directory on its Compute Node.
+     *
+     * @param jobId The ID of the Job that contains the Task.
+     * @param taskId The ID of the Task whose files you want to list.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of listing the files on a Compute Node, or the files associated with a Task on a Compute Node
+     *     as paginated response with {@link PagedFlux}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<NodeFile> listFilesFromTask(String jobId, String taskId) {
+        // Generated convenience method for listFilesFromTask
+        RequestOptions requestOptions = new RequestOptions();
+        PagedFlux<BinaryData> pagedFluxResponse = listFilesFromTask(jobId, taskId, requestOptions);
+        return PagedFlux.create(
+                () ->
+                        (continuationToken, pageSize) -> {
+                            Flux<PagedResponse<BinaryData>> flux =
+                                    (continuationToken == null)
+                                            ? pagedFluxResponse.byPage().take(1)
+                                            : pagedFluxResponse.byPage(continuationToken).take(1);
+                            return flux.map(
+                                    pagedResponse ->
+                                            new PagedResponseBase<Void, NodeFile>(
+                                                    pagedResponse.getRequest(),
+                                                    pagedResponse.getStatusCode(),
+                                                    pagedResponse.getHeaders(),
+                                                    pagedResponse.getValue().stream()
+                                                            .map(
+                                                                    protocolMethodData ->
+                                                                            protocolMethodData.toObject(NodeFile.class))
+                                                            .collect(Collectors.toList()),
+                                                    pagedResponse.getContinuationToken(),
+                                                    null));
+                        });
     }
 }
