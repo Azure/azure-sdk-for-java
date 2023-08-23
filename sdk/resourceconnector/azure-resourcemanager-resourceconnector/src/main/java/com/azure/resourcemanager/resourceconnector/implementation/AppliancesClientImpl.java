@@ -53,25 +53,25 @@ public final class AppliancesClientImpl implements AppliancesClient {
     private final AppliancesService service;
 
     /** The service client containing this operation class. */
-    private final AppliancesManagementClientImpl client;
+    private final ResourceConnectorImpl client;
 
     /**
      * Initializes an instance of AppliancesClientImpl.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    AppliancesClientImpl(AppliancesManagementClientImpl client) {
+    AppliancesClientImpl(ResourceConnectorImpl client) {
         this.service =
             RestProxy.create(AppliancesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for AppliancesManagementClientAppliances to be used by the proxy service
-     * to perform REST calls.
+     * The interface defining all the services for ResourceConnectorAppliances to be used by the proxy service to
+     * perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "AppliancesManagement")
+    @ServiceInterface(name = "ResourceConnectorApp")
     public interface AppliancesService {
         @Headers({"Content-Type: application/json"})
         @Get("/providers/Microsoft.ResourceConnector/operations")
