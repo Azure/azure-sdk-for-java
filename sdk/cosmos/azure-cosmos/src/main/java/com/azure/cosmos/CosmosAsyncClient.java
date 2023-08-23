@@ -708,9 +708,9 @@ public final class CosmosAsyncClient implements Closeable {
      * String controlContainerId = &quot;throughputControlContainer&quot;;
      * GlobalThroughputControlConfig globalControlConfig =
      *     cosmosAsyncClient.createGlobalThroughputControlConfigBuilder&#40;&quot;&lt;YOUR DATABASE NAME&gt;&quot;, controlContainerId&#41;
-     *     .setControlItemRenewInterval&#40;Duration.ofSeconds&#40;5&#41;&#41;
-     *     .setControlItemExpireInterval&#40;Duration.ofSeconds&#40;20&#41;&#41;
-     *     .build&#40;&#41;;
+     *         .setControlItemRenewInterval&#40;Duration.ofSeconds&#40;5&#41;&#41;
+     *         .setControlItemExpireInterval&#40;Duration.ofSeconds&#40;20&#41;&#41;
+     *         .build&#40;&#41;;
      * cosmosAsyncContainer.enableGlobalThroughputControlGroup&#40;groupConfig, globalControlConfig&#41;;
      * </pre>
      * <!-- end readme-sample-createGlobalThroughputControlConfigBuilder -->

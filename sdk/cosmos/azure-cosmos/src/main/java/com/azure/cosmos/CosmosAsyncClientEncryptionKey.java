@@ -39,7 +39,19 @@ public final class CosmosAsyncClientEncryptionKey {
 
     /**
      * Reads a cosmos client encryption key
-     *
+     * <!-- src_embed com.azure.cosmos.CosmosAsyncClientEncryptionKey.read -->
+     * <pre>
+     * CosmosAsyncClientEncryptionKey cosmosAsyncClientEncryptionKey =
+     *     new CosmosAsyncClientEncryptionKey&#40;id, cosmosAsyncDatabase&#41;;
+     * cosmosAsyncClientEncryptionKey.read&#40;&#41;
+     *     .subscribe&#40;cosmosClientEncryptionKeyResponse -&gt; &#123;
+     *             System.out.println&#40;cosmosClientEncryptionKeyResponse&#41;;
+     *         &#125;,
+     *         throwable -&gt; &#123;
+     *             throwable.printStackTrace&#40;&#41;;
+     *         &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.cosmos.CosmosAsyncClientEncryptionKey.read -->
      * @return a {@link Mono} containing the single resource response with the read client encryption key or an error.
      */
     public Mono<CosmosClientEncryptionKeyResponse> read() {
@@ -48,7 +60,19 @@ public final class CosmosAsyncClientEncryptionKey {
 
     /**
      * Reads a cosmos client encryption key
-     *
+     * <!-- src_embed com.azure.cosmos.CosmosAsyncClientEncryptionKey.read -->
+     * <pre>
+     * CosmosAsyncClientEncryptionKey cosmosAsyncClientEncryptionKey =
+     *     new CosmosAsyncClientEncryptionKey&#40;id, cosmosAsyncDatabase&#41;;
+     * cosmosAsyncClientEncryptionKey.read&#40;&#41;
+     *     .subscribe&#40;cosmosClientEncryptionKeyResponse -&gt; &#123;
+     *             System.out.println&#40;cosmosClientEncryptionKeyResponse&#41;;
+     *         &#125;,
+     *         throwable -&gt; &#123;
+     *             throwable.printStackTrace&#40;&#41;;
+     *         &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.cosmos.CosmosAsyncClientEncryptionKey.read -->
      * @param requestOptions  the request options.
      * @return a {@link Mono} containing the single resource response with the read client encryption key or an error.
      */
@@ -87,7 +111,29 @@ public final class CosmosAsyncClientEncryptionKey {
     /**
      * Replace a cosmos client encryption key.
      * This method is not meant to be invoked directly. It is used within CosmosEncryptionAsyncDatabase.rewrapClientEncryptionKey
-     * @param keyProperties the client encryption key properties to create.
+     * <!-- src_embed com.azure.cosmos.CosmosAsyncClientEncryptionKey.replace -->
+     * <pre>
+     * CosmosAsyncClientEncryptionKey cosmosAsyncClientEncryptionKey =
+     *     new CosmosAsyncClientEncryptionKey&#40;id, cosmosAsyncDatabase&#41;;
+     *
+     * CosmosClientEncryptionKeyProperties keyProperties =
+     *     new CosmosClientEncryptionKeyProperties&#40;
+     *         id,
+     *         encryptionAlgorithm,
+     *         wrappedDataEncryptionKey,
+     *         new EncryptionKeyWrapMetadata&#40;&#41;
+     *     &#41;;
+     *
+     * cosmosAsyncClientEncryptionKey.replace&#40;keyProperties&#41;
+     *     .subscribe&#40;cosmosClientEncryptionKeyResponse -&gt; &#123;
+     *             System.out.println&#40;cosmosClientEncryptionKeyResponse&#41;;
+     *         &#125;,
+     *         throwable -&gt; &#123;
+     *             throwable.printStackTrace&#40;&#41;;
+     *         &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.cosmos.CosmosAsyncClientEncryptionKey.replace -->
+     *  @param keyProperties the client encryption key properties to create.
      * @return a {@link Mono} containing the single resource response with the read client encryption key or an error.
      */
     public Mono<CosmosClientEncryptionKeyResponse> replace(CosmosClientEncryptionKeyProperties keyProperties) {

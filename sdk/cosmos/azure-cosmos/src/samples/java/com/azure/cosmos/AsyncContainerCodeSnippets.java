@@ -124,9 +124,9 @@ public class AsyncContainerCodeSnippets {
         String controlContainerId = "throughputControlContainer";
         GlobalThroughputControlConfig globalControlConfig =
             cosmosAsyncClient.createGlobalThroughputControlConfigBuilder("<YOUR DATABASE NAME>", controlContainerId)
-            .setControlItemRenewInterval(Duration.ofSeconds(5))
-            .setControlItemExpireInterval(Duration.ofSeconds(20))
-            .build();
+                .setControlItemRenewInterval(Duration.ofSeconds(5))
+                .setControlItemExpireInterval(Duration.ofSeconds(20))
+                .build();
         cosmosAsyncContainer.enableGlobalThroughputControlGroup(groupConfig, globalControlConfig);
         // END: readme-sample-createGlobalThroughputControlConfigBuilder
     }
@@ -605,5 +605,47 @@ public class AsyncContainerCodeSnippets {
                 });
         // END: com.azure.cosmos.CosmosAsyncDatabase.readThroughput
     }
+
+    public void cosmosAsyncClientEncryptionKeySample() {
+        String id = "";
+        // BEGIN: com.azure.cosmos.CosmosAsyncClientEncryptionKey.read
+        CosmosAsyncClientEncryptionKey cosmosAsyncClientEncryptionKey =
+            new CosmosAsyncClientEncryptionKey(id, cosmosAsyncDatabase);
+        cosmosAsyncClientEncryptionKey.read()
+            .subscribe(cosmosClientEncryptionKeyResponse -> {
+                    System.out.println(cosmosClientEncryptionKeyResponse);
+                },
+                throwable -> {
+                    throwable.printStackTrace();
+                });
+        // END: com.azure.cosmos.CosmosAsyncClientEncryptionKey.read
+    }
+
+    public void cosmosAsyncClientEncryptionKeyReplaceSample() {
+        String id = "";
+        String encryptionAlgorithm = "";
+        byte[] wrappedDataEncryptionKey = {};
+        // BEGIN: com.azure.cosmos.CosmosAsyncClientEncryptionKey.replace
+        CosmosAsyncClientEncryptionKey cosmosAsyncClientEncryptionKey =
+            new CosmosAsyncClientEncryptionKey(id, cosmosAsyncDatabase);
+
+        CosmosClientEncryptionKeyProperties keyProperties =
+            new CosmosClientEncryptionKeyProperties(
+                id,
+                encryptionAlgorithm,
+                wrappedDataEncryptionKey,
+                new EncryptionKeyWrapMetadata()
+            );
+
+        cosmosAsyncClientEncryptionKey.replace(keyProperties)
+            .subscribe(cosmosClientEncryptionKeyResponse -> {
+                    System.out.println(cosmosClientEncryptionKeyResponse);
+                },
+                throwable -> {
+                    throwable.printStackTrace();
+                });
+        // END: com.azure.cosmos.CosmosAsyncClientEncryptionKey.replace
+    }
+
 
 }
