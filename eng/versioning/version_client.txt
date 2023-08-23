@@ -159,11 +159,11 @@ com.azure:azure-search-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-security-attestation;1.1.16;1.2.0-beta.1
 com.azure:azure-security-confidentialledger;1.0.12;1.1.0-beta.1
 com.azure:azure-security-keyvault-administration;4.3.4;4.4.0-beta.1
-com.azure:azure-security-keyvault-certificates;4.5.4;4.6.0-beta.1
+com.azure:azure-security-keyvault-certificates;4.5.5;4.6.0-beta.1
 com.azure:azure-security-keyvault-jca;2.7.1;2.8.0-beta.1
 com.azure:azure-security-test-keyvault-jca;1.0.0;1.0.0
-com.azure:azure-security-keyvault-keys;4.6.4;4.7.0-beta.1
-com.azure:azure-security-keyvault-secrets;4.6.4;4.7.0-beta.1
+com.azure:azure-security-keyvault-keys;4.6.5;4.7.0-beta.1
+com.azure:azure-security-keyvault-secrets;4.6.5;4.7.0-beta.1
 com.azure:azure-security-keyvault-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-sdk-template;1.1.1234;1.2.2-beta.1
 com.azure:azure-sdk-template-two;1.0.0-beta.1;1.0.0-beta.1
@@ -392,7 +392,7 @@ com.azure.resourcemanager:azure-resourcemanager-machinelearning;1.0.0;1.1.0-beta
 com.azure.resourcemanager:azure-resourcemanager-education;1.0.0-beta.3;1.0.0-beta.4
 com.azure.resourcemanager:azure-resourcemanager-orbital;1.0.0-beta.2;1.0.0-beta.3
 com.azure.resourcemanager:azure-resourcemanager-networkfunction;1.0.0-beta.2;1.0.0-beta.3
-com.azure.resourcemanager:azure-resourcemanager-resourceconnector;1.0.0-beta.2;1.0.0
+com.azure.resourcemanager:azure-resourcemanager-resourceconnector;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-fluidrelay;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-devcenter;1.0.0-beta.5;1.0.0-beta.6
 com.azure.resourcemanager:azure-resourcemanager-connectedvmware;1.0.0-beta.1;1.0.0-beta.2

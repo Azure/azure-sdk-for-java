@@ -23,7 +23,7 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.resourceconnector.fluent.AppliancesClient;
-import com.azure.resourcemanager.resourceconnector.fluent.AppliancesManagementClient;
+import com.azure.resourcemanager.resourceconnector.fluent.ResourceConnector;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.nio.ByteBuffer;
@@ -33,9 +33,9 @@ import java.time.Duration;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** Initializes a new instance of the AppliancesManagementClientImpl type. */
-@ServiceClient(builder = AppliancesManagementClientBuilder.class)
-public final class AppliancesManagementClientImpl implements AppliancesManagementClient {
+/** Initializes a new instance of the ResourceConnectorImpl type. */
+@ServiceClient(builder = ResourceConnectorBuilder.class)
+public final class ResourceConnectorImpl implements ResourceConnector {
     /** The ID of the target subscription. */
     private final String subscriptionId;
 
@@ -121,7 +121,7 @@ public final class AppliancesManagementClientImpl implements AppliancesManagemen
     }
 
     /**
-     * Initializes an instance of AppliancesManagementClient client.
+     * Initializes an instance of ResourceConnector client.
      *
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
@@ -130,7 +130,7 @@ public final class AppliancesManagementClientImpl implements AppliancesManagemen
      * @param subscriptionId The ID of the target subscription.
      * @param endpoint server parameter.
      */
-    AppliancesManagementClientImpl(
+    ResourceConnectorImpl(
         HttpPipeline httpPipeline,
         SerializerAdapter serializerAdapter,
         Duration defaultPollInterval,
@@ -286,5 +286,5 @@ public final class AppliancesManagementClientImpl implements AppliancesManagemen
         }
     }
 
-    private static final ClientLogger LOGGER = new ClientLogger(AppliancesManagementClientImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ResourceConnectorImpl.class);
 }

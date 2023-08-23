@@ -23,9 +23,9 @@ import com.azure.core.management.http.policy.ArmChallengeAuthenticationPolicy;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.resourceconnector.fluent.AppliancesManagementClient;
+import com.azure.resourcemanager.resourceconnector.fluent.ResourceConnector;
 import com.azure.resourcemanager.resourceconnector.implementation.AppliancesImpl;
-import com.azure.resourcemanager.resourceconnector.implementation.AppliancesManagementClientBuilder;
+import com.azure.resourcemanager.resourceconnector.implementation.ResourceConnectorBuilder;
 import com.azure.resourcemanager.resourceconnector.models.Appliances;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
@@ -34,17 +34,17 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-/** Entry point to AppliancesManager. The appliances Rest API spec. */
-public final class AppliancesManager {
+/** Entry point to ResourceConnectorManager. The appliances Rest API spec. */
+public final class ResourceConnectorManager {
     private Appliances appliances;
 
-    private final AppliancesManagementClient clientObject;
+    private final ResourceConnector clientObject;
 
-    private AppliancesManager(HttpPipeline httpPipeline, AzureProfile profile, Duration defaultPollInterval) {
+    private ResourceConnectorManager(HttpPipeline httpPipeline, AzureProfile profile, Duration defaultPollInterval) {
         Objects.requireNonNull(httpPipeline, "'httpPipeline' cannot be null.");
         Objects.requireNonNull(profile, "'profile' cannot be null.");
         this.clientObject =
-            new AppliancesManagementClientBuilder()
+            new ResourceConnectorBuilder()
                 .pipeline(httpPipeline)
                 .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
                 .subscriptionId(profile.getSubscriptionId())
@@ -53,38 +53,38 @@ public final class AppliancesManager {
     }
 
     /**
-     * Creates an instance of Appliances service API entry point.
+     * Creates an instance of Resource Connector service API entry point.
      *
      * @param credential the credential to use.
      * @param profile the Azure profile for client.
-     * @return the Appliances service API instance.
+     * @return the Resource Connector service API instance.
      */
-    public static AppliancesManager authenticate(TokenCredential credential, AzureProfile profile) {
+    public static ResourceConnectorManager authenticate(TokenCredential credential, AzureProfile profile) {
         Objects.requireNonNull(credential, "'credential' cannot be null.");
         Objects.requireNonNull(profile, "'profile' cannot be null.");
         return configure().authenticate(credential, profile);
     }
 
     /**
-     * Creates an instance of Appliances service API entry point.
+     * Creates an instance of Resource Connector service API entry point.
      *
      * @param httpPipeline the {@link HttpPipeline} configured with Azure authentication credential.
      * @param profile the Azure profile for client.
-     * @return the Appliances service API instance.
+     * @return the Resource Connector service API instance.
      */
-    public static AppliancesManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
+    public static ResourceConnectorManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
         Objects.requireNonNull(httpPipeline, "'httpPipeline' cannot be null.");
         Objects.requireNonNull(profile, "'profile' cannot be null.");
-        return new AppliancesManager(httpPipeline, profile, null);
+        return new ResourceConnectorManager(httpPipeline, profile, null);
     }
 
     /**
-     * Gets a Configurable instance that can be used to create AppliancesManager with optional configuration.
+     * Gets a Configurable instance that can be used to create ResourceConnectorManager with optional configuration.
      *
      * @return the Configurable instance allowing configurations.
      */
     public static Configurable configure() {
-        return new AppliancesManager.Configurable();
+        return new ResourceConnectorManager.Configurable();
     }
 
     /** The Configurable allowing configurations to be set. */
@@ -187,13 +187,13 @@ public final class AppliancesManager {
         }
 
         /**
-         * Creates an instance of Appliances service API entry point.
+         * Creates an instance of Resource Connector service API entry point.
          *
          * @param credential the credential to use.
          * @param profile the Azure profile for client.
-         * @return the Appliances service API instance.
+         * @return the Resource Connector service API instance.
          */
-        public AppliancesManager authenticate(TokenCredential credential, AzureProfile profile) {
+        public ResourceConnectorManager authenticate(TokenCredential credential, AzureProfile profile) {
             Objects.requireNonNull(credential, "'credential' cannot be null.");
             Objects.requireNonNull(profile, "'profile' cannot be null.");
 
@@ -256,7 +256,7 @@ public final class AppliancesManager {
                     .httpClient(httpClient)
                     .policies(policies.toArray(new HttpPipelinePolicy[0]))
                     .build();
-            return new AppliancesManager(httpPipeline, profile, defaultPollInterval);
+            return new ResourceConnectorManager(httpPipeline, profile, defaultPollInterval);
         }
     }
 
@@ -273,12 +273,12 @@ public final class AppliancesManager {
     }
 
     /**
-     * Gets wrapped service client AppliancesManagementClient providing direct access to the underlying auto-generated
-     * API implementation, based on Azure REST API.
+     * Gets wrapped service client ResourceConnector providing direct access to the underlying auto-generated API
+     * implementation, based on Azure REST API.
      *
-     * @return Wrapped service client AppliancesManagementClient.
+     * @return Wrapped service client ResourceConnector.
      */
-    public AppliancesManagementClient serviceClient() {
+    public ResourceConnector serviceClient() {
         return this.clientObject;
     }
 }
