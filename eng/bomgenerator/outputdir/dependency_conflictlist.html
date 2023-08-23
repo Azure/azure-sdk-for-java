@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Dependency Issues Report</title>
+    <meta charset="UTF-8"/>
+    <style>
+      body {
+          font-family: Verdana, sans-serif;
+          font-size: 14px;
+          text-size-adjust: none;
+      }
+      table {
+          border-spacing: 0px;
+          width: 65%;
+          font-size: 14px;
+      }
+      table.condensed tr td {
+          padding: 7px 15px;
+      }
+      th, td {
+          padding: 15px;
+          border-bottom: 1px solid #ddd;
+          vertical-align:top;
+      }
+      tr:nth-child(even) {
+          background-color: #f2f2f2;
+      }
+      th.problem {
+          background-color: #af2e2e;
+      }
+      th.warning {
+          background-color: darkorange;
+      }
+      th.success {
+          background-color: forestgreen;
+      }
+      th {
+          background-color: #2E7CAF;
+          color: white;
+          font-weight: 300;
+          text-align: left;
+      }
+      td.version {
+          width: 75px;
+      }
+      .tooltip {
+          position: relative;
+          display: inline-block;
+          border-bottom: 1px dotted black;
+      }
+      .tooltip .tooltiptext {
+          visibility: hidden;
+          background-color: black;
+          color: #fff;
+          white-space: nowrap;
+          text-align: left;
+          padding: 5px;
+          font-size: 14px;
+          position: absolute;
+          z-index: 1;
+          margin-top: 7px;
+          top: 100%;
+          left: 0%;
+      }
+      .tooltip .tooltiptext::after {
+          content: " ";
+          position: absolute;
+          bottom: 100%;  /* At the top of the tooltip */
+          left: 5%;
+          margin-left: -5px;
+          border-width: 5px;
+          border-style: solid;
+          border-color: transparent transparent black transparent;
+      }
+      .tooltip:hover .tooltiptext {
+          visibility: visible;
+      }
+      
+      .success-chain {
+          color: #00CC00;
+      }
+      .fail {
+          color: #CC0000;
+      }
+      
+      @media only screen and (max-width: 1350px) {
+          body, table {
+              font-size: 25px;
+          }
+          table {
+              width: 95%;
+          }
+          td.version {
+              width: 35px;
+          }
+      }
+    </style>
+  </head>
+  <body>
+    <center>
+      <h1>Dependency Conflicts Report</h1>
+      <p>This report analyzed all track 2 GA data plane libraries and found the following conflicts in its dependency management.<br/>It is important to resolve these conflicts to ensure convergence of the dependencies.<br/></p>
+    <table>
+      <thead>
+<tr>
+<th>
+Dropped dependency
+</th>
+<th>
+Reasons
+</th>
+</tr>
+<tr>
+<td>
+com.azure:azure-communication-networktraversal:1.0.0
+</td>
+<td>
+Dependency com.azure:azure-communication-common:1.0.8. Expected version 1.2.11
+<br/>
+Dependency com.azure:azure-core:1.25.0. Expected version 1.42.0
+<br/>
+</td>
+</tr>
+<tr>
+<td>
+com.azure:azure-containers-containerregistry:1.2.0
+</td>
+<td>
+Dependency com.azure:azure-json:1.1.0. Expected version 1.0.1
+<br/>
+</td>
+</tr>
+<tr>
+<td>
+com.azure:azure-core-amqp:2.8.8
+</td>
+<td>
+Dependency com.azure:azure-core:1.41.0. Expected version 1.42.0
+<br/>
+</td>
+</tr>
+<tr>
+<td>
+com.azure:azure-messaging-eventhubs-checkpointstore-blob:1.16.9
+</td>
+<td>
+Dependency com.azure:azure-core:1.41.0. Expected version 1.42.0
+<br/>
+</td>
+</tr>
+<tr>
+<td>
+com.azure:azure-messaging-eventhubs:5.15.8
+</td>
+<td>
+Dependency com.azure:azure-core:1.41.0. Expected version 1.42.0
+<br/>
+</td>
+</tr>
+<tr>
+<td>
+com.azure:azure-messaging-servicebus:7.14.3
+</td>
+<td>
+Dependency com.azure:azure-core:1.41.0. Expected version 1.42.0
+<br/>
+</td>
+</tr>
+<tr>
+<td>
+com.azure:azure-sdk-template:1.1.1234
+</td>
+<td>
+Dependency com.azure:azure-core:1.18.0. Expected version 1.42.0
+<br/>
+</td>
+</tr>
+      <small>Report generated at 17:37:33 on 2023-08-22<br/>
+    </center>
+  </body>
+</html>
