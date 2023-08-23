@@ -222,7 +222,6 @@ public class PartitionPumpManagerTest {
     @Test
     public void startPartitionPumpOnce() {
         // Arrange
-        final Map<String, EventPosition> initialPartitionEventPosition = new HashMap<>();
         final Supplier<PartitionProcessor> supplier = () -> {
             fail("should not have created a another processor");
             return partitionProcessor;
@@ -315,7 +314,6 @@ public class PartitionPumpManagerTest {
     @Test
     public void stopAllPartitionPumps() {
         // Arrange
-        final Map<String, EventPosition> initialPartitionEventPosition = new HashMap<>();
         final Supplier<PartitionProcessor> supplier = () -> {
             fail("should not have created a another processor");
             return partitionProcessor;
@@ -370,7 +368,6 @@ public class PartitionPumpManagerTest {
     @Test
     public void processesEventBatchWithLastEnqueued() throws InterruptedException {
         // Arrange
-        final Map<String, EventPosition> initialPartitionEventPosition = new HashMap<>();
         final Supplier<PartitionProcessor> supplier = () -> partitionProcessor;
         final CountDownLatch receiveCounter = new CountDownLatch(3);
         final boolean trackLastEnqueuedEventProperties = false;
@@ -453,5 +450,203 @@ public class PartitionPumpManagerTest {
         } finally {
             manager.stopAllPartitionPumps();
         }
+    }
+
+    /**
+     * If no checkpoint, no map position, no default position, will use {@link EventPosition#latest()}.
+     */
+    @Test
+    public void startPositionReturnsLatest() {
+        // Arrange
+        final String partitionId = "the-partition-id";
+        final Supplier<PartitionProcessor> supplier = () -> partitionProcessor;
+        final boolean trackLastEnqueuedEventProperties = false;
+        final int maxBatchSize = 2;
+        final Duration maxWaitTime = Duration.ofSeconds(1);
+        final boolean batchReceiveMode = true;
+        final EventProcessorClientOptions options = new EventProcessorClientOptions()
+            .setConsumerGroup("test-consumer")
+            .setTrackLastEnqueuedEventProperties(trackLastEnqueuedEventProperties)
+            .setDefaultEventPosition(null)
+            .setInitialPartitionEventPosition(initialPartitionPositions)
+            .setMaxBatchSize(maxBatchSize)
+            .setMaxWaitTime(maxWaitTime)
+            .setBatchReceiveMode(batchReceiveMode)
+            .setLoadBalancerUpdateInterval(Duration.ofSeconds(10))
+            .setPartitionOwnershipExpirationInterval(Duration.ofMinutes(1))
+            .setLoadBalancingStrategy(LoadBalancingStrategy.BALANCED);
+
+        final EventPosition expected = EventPosition.latest();
+
+        final PartitionPumpManager manager = new PartitionPumpManager(checkpointStore, supplier, builder,
+            DEFAULT_TRACER, options);
+
+        // Act
+        final EventPosition actual = manager.getInitialEventPosition(partitionId, null);
+
+        // Assert
+        assertEquals(expected, actual);
+    }
+
+    /**
+     * Offset is preferred over sequence number if it is part of the checkpoint.
+     */
+    @Test
+    public void startPositionReturnsCheckpointOffset() {
+        // Arrange
+        final String partitionId = "the-partition-id";
+        initialPartitionPositions.put(partitionId, EventPosition.fromSequenceNumber(11L, true));
+        initialPartitionPositions.put("another", EventPosition.earliest());
+
+        final long offset = 242343;
+        final long sequenceNumber = 150;
+        checkpoint.setOffset(offset)
+            .setSequenceNumber(sequenceNumber);
+
+        final EventPosition expected = EventPosition.fromOffset(offset);
+
+        final Supplier<PartitionProcessor> supplier = () -> partitionProcessor;
+        final boolean trackLastEnqueuedEventProperties = false;
+        final int maxBatchSize = 2;
+        final Duration maxWaitTime = Duration.ofSeconds(1);
+        final boolean batchReceiveMode = true;
+
+        final EventProcessorClientOptions options = new EventProcessorClientOptions()
+            .setConsumerGroup("test-consumer")
+            .setTrackLastEnqueuedEventProperties(trackLastEnqueuedEventProperties)
+            .setDefaultEventPosition(EventPosition.fromEnqueuedTime(Instant.ofEpochMilli(1692830454030L)))
+            .setInitialPartitionEventPosition(initialPartitionPositions)
+            .setMaxBatchSize(maxBatchSize)
+            .setMaxWaitTime(maxWaitTime)
+            .setBatchReceiveMode(batchReceiveMode)
+            .setLoadBalancerUpdateInterval(Duration.ofSeconds(10))
+            .setPartitionOwnershipExpirationInterval(Duration.ofMinutes(1))
+            .setLoadBalancingStrategy(LoadBalancingStrategy.BALANCED);
+
+
+        final PartitionPumpManager manager = new PartitionPumpManager(checkpointStore, supplier, builder,
+            DEFAULT_TRACER, options);
+
+        // Act
+        final EventPosition actual = manager.getInitialEventPosition(partitionId, checkpoint);
+
+        // Assert
+        assertEquals(expected, actual);
+    }
+
+    /**
+     * Sequence number is used if offset is null.
+     */
+    @Test
+    public void startPositionReturnsCheckpointSequenceNumber() {
+        // Arrange
+        final String partitionId = "the-partition-id";
+        initialPartitionPositions.put(partitionId, EventPosition.fromSequenceNumber(11L, true));
+        initialPartitionPositions.put("another", EventPosition.earliest());
+
+        final long sequenceNumber = 150;
+        checkpoint.setSequenceNumber(sequenceNumber);
+
+        final Supplier<PartitionProcessor> supplier = () -> partitionProcessor;
+        final boolean trackLastEnqueuedEventProperties = false;
+        final int maxBatchSize = 2;
+        final Duration maxWaitTime = Duration.ofSeconds(1);
+        final boolean batchReceiveMode = true;
+        final EventProcessorClientOptions options = new EventProcessorClientOptions()
+            .setConsumerGroup("test-consumer")
+            .setTrackLastEnqueuedEventProperties(trackLastEnqueuedEventProperties)
+            .setDefaultEventPosition(EventPosition.fromEnqueuedTime(Instant.ofEpochMilli(1692830454030L)))
+            .setInitialPartitionEventPosition(initialPartitionPositions)
+            .setMaxBatchSize(maxBatchSize)
+            .setMaxWaitTime(maxWaitTime)
+            .setBatchReceiveMode(batchReceiveMode)
+            .setLoadBalancerUpdateInterval(Duration.ofSeconds(10))
+            .setPartitionOwnershipExpirationInterval(Duration.ofMinutes(1))
+            .setLoadBalancingStrategy(LoadBalancingStrategy.BALANCED);
+
+        final EventPosition expected = EventPosition.fromSequenceNumber(sequenceNumber);
+
+        final PartitionPumpManager manager = new PartitionPumpManager(checkpointStore, supplier, builder,
+            DEFAULT_TRACER, options);
+
+        // Act
+        final EventPosition actual = manager.getInitialEventPosition(partitionId, checkpoint);
+
+        // Assert
+        assertEquals(expected, actual);
+    }
+
+    /**
+     * If no checkpoint, prefers the position found in the initialPartitionEventPosition map.
+     */
+    @Test
+    public void startPositionReturnsMapPosition() {
+        // Arrange
+        final String partitionId = "the-partition-id";
+        final EventPosition mapPosition = EventPosition.fromSequenceNumber(11L, true);
+        initialPartitionPositions.put(partitionId, mapPosition);
+        initialPartitionPositions.put("another", EventPosition.earliest());
+
+        final Supplier<PartitionProcessor> supplier = () -> partitionProcessor;
+        final boolean trackLastEnqueuedEventProperties = false;
+        final int maxBatchSize = 2;
+        final Duration maxWaitTime = Duration.ofSeconds(1);
+        final boolean batchReceiveMode = true;
+        final EventProcessorClientOptions options = new EventProcessorClientOptions()
+            .setConsumerGroup("test-consumer")
+            .setTrackLastEnqueuedEventProperties(trackLastEnqueuedEventProperties)
+            .setDefaultEventPosition(EventPosition.fromEnqueuedTime(Instant.ofEpochMilli(1692830454030L)))
+            .setInitialPartitionEventPosition(initialPartitionPositions)
+            .setMaxBatchSize(maxBatchSize)
+            .setMaxWaitTime(maxWaitTime)
+            .setBatchReceiveMode(batchReceiveMode)
+            .setLoadBalancerUpdateInterval(Duration.ofSeconds(10))
+            .setPartitionOwnershipExpirationInterval(Duration.ofMinutes(1))
+            .setLoadBalancingStrategy(LoadBalancingStrategy.BALANCED);
+
+        final PartitionPumpManager manager = new PartitionPumpManager(checkpointStore, supplier, builder,
+            DEFAULT_TRACER, options);
+
+        // Act
+        final EventPosition actual = manager.getInitialEventPosition(partitionId, checkpoint);
+
+        // Assert
+        assertEquals(mapPosition, actual);
+    }
+
+    /**
+     * If no checkpoint, no map position, uses the default position.
+     */
+    @Test
+    public void startPositionReturnsDefaultPosition() {
+        // Arrange
+        final String partitionId = "the-partition-id";
+        initialPartitionPositions.put("another", EventPosition.earliest());
+
+        final Supplier<PartitionProcessor> supplier = () -> partitionProcessor;
+        final boolean trackLastEnqueuedEventProperties = false;
+        final int maxBatchSize = 2;
+        final Duration maxWaitTime = Duration.ofSeconds(1);
+        final boolean batchReceiveMode = true;
+        final EventProcessorClientOptions options = new EventProcessorClientOptions()
+            .setConsumerGroup("test-consumer")
+            .setTrackLastEnqueuedEventProperties(trackLastEnqueuedEventProperties)
+            .setDefaultEventPosition(EventPosition.fromEnqueuedTime(Instant.ofEpochMilli(1692830454030L)))
+            .setInitialPartitionEventPosition(initialPartitionPositions)
+            .setMaxBatchSize(maxBatchSize)
+            .setMaxWaitTime(maxWaitTime)
+            .setBatchReceiveMode(batchReceiveMode)
+            .setLoadBalancerUpdateInterval(Duration.ofSeconds(10))
+            .setPartitionOwnershipExpirationInterval(Duration.ofMinutes(1))
+            .setLoadBalancingStrategy(LoadBalancingStrategy.BALANCED);
+
+        final PartitionPumpManager manager = new PartitionPumpManager(checkpointStore, supplier, builder,
+            DEFAULT_TRACER, options);
+
+        // Act
+        final EventPosition actual = manager.getInitialEventPosition(partitionId, checkpoint);
+
+        // Assert
+        assertEquals(options.getDefaultEventPosition(), actual);
     }
 }
