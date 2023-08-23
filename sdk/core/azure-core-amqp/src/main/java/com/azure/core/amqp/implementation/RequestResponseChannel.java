@@ -571,7 +571,7 @@ public class RequestResponseChannel implements AsyncCloseable {
             AmqpRetryOptions retryOptions, boolean isV2) {
             this.isV2 = isV2;
             if (this.isV2) {
-                this.receiveLinkHandler2 = handlerProvider.createReceiveLinkHandler2(connectionId, fullyQualifiedNamespace,
+                this.receiveLinkHandler2 = handlerProvider.createReceiveLinkHandler(connectionId, fullyQualifiedNamespace,
                     linkName, entityPath, DeliverySettleMode.ACCEPT_AND_SETTLE_ON_DELIVERY, false,
                     provider.getReactorDispatcher(), retryOptions);
                 BaseHandler.setHandler(receiveLink, receiveLinkHandler2);
