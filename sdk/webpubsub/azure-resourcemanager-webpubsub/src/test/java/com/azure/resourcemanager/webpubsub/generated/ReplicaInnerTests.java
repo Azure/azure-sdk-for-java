@@ -46,6 +46,7 @@ public final class ReplicaInnerTests {
         Assertions.assertEquals(1902606328, model.sku().capacity());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();
