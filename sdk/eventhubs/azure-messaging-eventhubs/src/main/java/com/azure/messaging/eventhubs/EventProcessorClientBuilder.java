@@ -842,6 +842,7 @@ public class EventProcessorClientBuilder implements
         }
 
         final EventProcessorClientOptions processorOptions = new EventProcessorClientOptions()
+            .setConsumerGroup(consumerGroup)
             .setBatchReceiveMode(processEventBatch != null)
             .setConsumerGroup(consumerGroup)
             .setDefaultEventPosition(defaultInitialEventPosition)
@@ -853,8 +854,8 @@ public class EventProcessorClientBuilder implements
             .setPartitionOwnershipExpirationInterval(partitionOwnershipExpirationInterval)
             .setTrackLastEnqueuedEventProperties(trackLastEnqueuedEventProperties);
 
-        return new EventProcessorClient(eventHubClientBuilder, consumerGroup, getPartitionProcessorSupplier(),
-            checkpointStore, processError, eventHubClientBuilder.createTracer(), processorOptions);
+        return new EventProcessorClient(eventHubClientBuilder, getPartitionProcessorSupplier(), checkpointStore,
+            processError, eventHubClientBuilder.createTracer(), processorOptions);
     }
 
     private Supplier<PartitionProcessor> getPartitionProcessorSupplier() {

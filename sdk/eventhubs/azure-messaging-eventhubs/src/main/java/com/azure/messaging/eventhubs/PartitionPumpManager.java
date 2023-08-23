@@ -347,7 +347,7 @@ class PartitionPumpManager {
 
         final EventPosition initialMapPosition = options.getInitialPartitionEventPosition().get(partitionId);
 
-        if (options.getInitialPartitionEventPosition() != null) {
+        if (initialMapPosition != null) {
             return initialMapPosition;
         }
 

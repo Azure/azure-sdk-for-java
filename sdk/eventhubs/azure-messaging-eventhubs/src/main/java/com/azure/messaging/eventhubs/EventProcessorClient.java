@@ -102,12 +102,13 @@ public class EventProcessorClient {
      * @param checkpointStore The store used for reading and updating partition ownership and checkpoints. information.
      * @param processError Error handler for any errors that occur outside the context of a partition.
      */
-    EventProcessorClient(EventHubClientBuilder eventHubClientBuilder, String consumerGroup,
+    EventProcessorClient(EventHubClientBuilder eventHubClientBuilder,
         Supplier<PartitionProcessor> partitionProcessorFactory, CheckpointStore checkpointStore,
-        Consumer<ErrorContext> processError, Tracer tracer, EventProcessorClientOptions options) {
+        Consumer<ErrorContext> processError, Tracer tracer, EventProcessorClientOptions processorClientOptions) {
 
         Objects.requireNonNull(eventHubClientBuilder, "eventHubClientBuilder cannot be null.");
-        Objects.requireNonNull(consumerGroup, "consumerGroup cannot be null.");
+        Objects.requireNonNull(processorClientOptions, "processorClientOptions cannot be null.");
+        Objects.requireNonNull(processorClientOptions.getConsumerGroup(), "'consumerGroup' cannot be null.");
         Objects.requireNonNull(partitionProcessorFactory, "partitionProcessorFactory cannot be null.");
 
         final EventHubAsyncClient eventHubAsyncClient = eventHubClientBuilder.buildAsyncClient();
@@ -121,18 +122,18 @@ public class EventProcessorClient {
         this.logger = new ClientLogger(EventProcessorClient.class, loggingContext);
         this.fullyQualifiedNamespace = eventHubAsyncClient.getFullyQualifiedNamespace().toLowerCase(Locale.ROOT);
         this.eventHubName = eventHubAsyncClient.getEventHubName().toLowerCase(Locale.ROOT);
-        this.consumerGroup = consumerGroup.toLowerCase(Locale.ROOT);
-        this.loadBalancerUpdateInterval = options.getLoadBalancerUpdateInterval();
+        this.consumerGroup = processorClientOptions.getConsumerGroup().toLowerCase(Locale.ROOT);
+        this.loadBalancerUpdateInterval = processorClientOptions.getLoadBalancerUpdateInterval();
 
         final EventHubsTracer eventHubsTracer = new EventHubsTracer(tracer, fullyQualifiedNamespace, eventHubName);
         this.partitionPumpManager = new PartitionPumpManager(checkpointStore, partitionProcessorFactory,
-            eventHubClientBuilder, eventHubsTracer, options);
+            eventHubClientBuilder, eventHubsTracer, processorClientOptions);
 
         this.partitionBasedLoadBalancer =
             new PartitionBasedLoadBalancer(this.checkpointStore, eventHubAsyncClient,
                 this.fullyQualifiedNamespace, this.eventHubName, this.consumerGroup, this.identifier,
-                options.getPartitionOwnershipExpirationInterval().getSeconds(), this.partitionPumpManager,
-                processError, options.getLoadBalancingStrategy());
+                processorClientOptions.getPartitionOwnershipExpirationInterval().getSeconds(), this.partitionPumpManager,
+                processError, processorClientOptions.getLoadBalancingStrategy());
     }
 
     /**
