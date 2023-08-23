@@ -98,33 +98,19 @@ public class EventProcessorClient {
      * Package-private constructor. Use {@link EventHubClientBuilder} to create an instance.
      *
      * @param eventHubClientBuilder The {@link EventHubClientBuilder}.
-     * @param consumerGroup The consumer group name used in this event processor to consumer events.
      * @param partitionProcessorFactory The factory to create new partition processor(s).
      * @param checkpointStore The store used for reading and updating partition ownership and checkpoints. information.
-     * @param trackLastEnqueuedEventProperties If set to {@code true}, all events received by this EventProcessorClient
-     * will also include the last enqueued event properties for it's respective partitions.
      * @param processError Error handler for any errors that occur outside the context of a partition.
-     * @param initialPartitionEventPosition Map of initial event positions for partition ids.
-     * @param maxBatchSize The maximum batch size to receive per users' process handler invocation.
-     * @param maxWaitTime The maximum time to wait to receive a batch or a single event.
-     * @param batchReceiveMode The boolean value indicating if this processor is configured to receive in batches or
-     * single events.
-     * @param loadBalancerUpdateInterval The time duration between load balancing update cycles.
-     * @param partitionOwnershipExpirationInterval The time duration after which the ownership of partition expires.
-     * @param loadBalancingStrategy The load balancing strategy to use.
      */
     EventProcessorClient(EventHubClientBuilder eventHubClientBuilder, String consumerGroup,
         Supplier<PartitionProcessor> partitionProcessorFactory, CheckpointStore checkpointStore,
-        boolean trackLastEnqueuedEventProperties, Consumer<ErrorContext> processError,
-        Map<String, EventPosition> initialPartitionEventPosition, int maxBatchSize, Duration maxWaitTime,
-        boolean batchReceiveMode, Duration loadBalancerUpdateInterval, Duration partitionOwnershipExpirationInterval,
-        LoadBalancingStrategy loadBalancingStrategy, Tracer tracer) {
+        Consumer<ErrorContext> processError, Tracer tracer, EventProcessorClientOptions options) {
 
         Objects.requireNonNull(eventHubClientBuilder, "eventHubClientBuilder cannot be null.");
         Objects.requireNonNull(consumerGroup, "consumerGroup cannot be null.");
         Objects.requireNonNull(partitionProcessorFactory, "partitionProcessorFactory cannot be null.");
 
-        EventHubAsyncClient eventHubAsyncClient = eventHubClientBuilder.buildAsyncClient();
+        final EventHubAsyncClient eventHubAsyncClient = eventHubClientBuilder.buildAsyncClient();
 
         this.checkpointStore = Objects.requireNonNull(checkpointStore, "checkpointStore cannot be null");
         this.identifier = eventHubAsyncClient.getIdentifier();
@@ -136,18 +122,17 @@ public class EventProcessorClient {
         this.fullyQualifiedNamespace = eventHubAsyncClient.getFullyQualifiedNamespace().toLowerCase(Locale.ROOT);
         this.eventHubName = eventHubAsyncClient.getEventHubName().toLowerCase(Locale.ROOT);
         this.consumerGroup = consumerGroup.toLowerCase(Locale.ROOT);
-        this.loadBalancerUpdateInterval = loadBalancerUpdateInterval;
+        this.loadBalancerUpdateInterval = options.getLoadBalancerUpdateInterval();
 
-        EventHubsTracer ehTracer = new EventHubsTracer(tracer, fullyQualifiedNamespace, eventHubName);
+        final EventHubsTracer eventHubsTracer = new EventHubsTracer(tracer, fullyQualifiedNamespace, eventHubName);
         this.partitionPumpManager = new PartitionPumpManager(checkpointStore, partitionProcessorFactory,
-            eventHubClientBuilder, trackLastEnqueuedEventProperties, ehTracer, initialPartitionEventPosition,
-            maxBatchSize, maxWaitTime, batchReceiveMode);
+            eventHubClientBuilder, eventHubsTracer, options);
 
         this.partitionBasedLoadBalancer =
             new PartitionBasedLoadBalancer(this.checkpointStore, eventHubAsyncClient,
                 this.fullyQualifiedNamespace, this.eventHubName, this.consumerGroup, this.identifier,
-                partitionOwnershipExpirationInterval.getSeconds(), this.partitionPumpManager, processError,
-                loadBalancingStrategy);
+                options.getPartitionOwnershipExpirationInterval().getSeconds(), this.partitionPumpManager,
+                processError, options.getLoadBalancingStrategy());
     }
 
     /**
