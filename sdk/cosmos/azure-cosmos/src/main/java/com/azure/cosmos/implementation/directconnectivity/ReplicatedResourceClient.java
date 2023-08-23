@@ -35,7 +35,6 @@ import java.net.URI;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.function.BiFunction;
 import java.util.function.Function;
@@ -45,21 +44,16 @@ import java.util.function.Function;
  * backend
  */
 public class ReplicatedResourceClient {
-    private final DiagnosticsClientContext diagnosticsClientContext;
     private final Logger logger = LoggerFactory.getLogger(ReplicatedResourceClient.class);
     private static final int GONE_AND_RETRY_WITH_TIMEOUT_IN_SECONDS = 30;
     private static final int STRONG_GONE_AND_RETRY_WITH_RETRY_TIMEOUT_SECONDS = 60;
-    private static final int MIN_BACKOFF_FOR_FAILLING_BACK_TO_OTHER_REGIONS_FOR_READ_REQUESTS_IN_SECONDS = 1;
+    private static final int MIN_BACKOFF_FOR_FAILING_BACK_TO_OTHER_REGIONS_FOR_READ_REQUESTS_IN_SECONDS = 1;
 
     private final AddressSelector addressSelector;
     private final ConsistencyReader consistencyReader;
     private final ConsistencyWriter consistencyWriter;
-    private final Protocol protocol;
     private final TransportClient transportClient;
-    private final boolean enableReadRequestsFallback;
     private final GatewayServiceConfigurationReader serviceConfigReader;
-    private final Configs configs;
-    private final SessionRetryOptions sessionRetryOptions;
 
     public ReplicatedResourceClient(
             DiagnosticsClientContext diagnosticsClientContext,
@@ -69,12 +63,9 @@ public class ReplicatedResourceClient {
             TransportClient transportClient,
             GatewayServiceConfigurationReader serviceConfigReader,
             IAuthorizationTokenProvider authorizationTokenProvider,
-            boolean enableReadRequestsFallback,
             boolean useMultipleWriteLocations,
             SessionRetryOptions sessionRetryOptions) {
-        this.diagnosticsClientContext = diagnosticsClientContext;
-        this.configs = configs;
-        this.protocol = configs.getProtocol();
+        Protocol protocol = configs.getProtocol();
         this.addressSelector = addressSelector;
         if (protocol != Protocol.HTTPS && protocol != Protocol.TCP) {
             throw new IllegalArgumentException("protocol");
@@ -82,7 +73,6 @@ public class ReplicatedResourceClient {
 
         this.transportClient = transportClient;
         this.serviceConfigReader = serviceConfigReader;
-        this.sessionRetryOptions = sessionRetryOptions;
 
         this.consistencyReader = new ConsistencyReader(diagnosticsClientContext,
             configs,
@@ -100,8 +90,6 @@ public class ReplicatedResourceClient {
             serviceConfigReader,
             useMultipleWriteLocations,
             sessionRetryOptions);
-        this.enableReadRequestsFallback = enableReadRequestsFallback;
-
     }
 
     public void enableThroughputControl(ThroughputControlStore throughputControlStore) {
@@ -155,13 +143,19 @@ public class ReplicatedResourceClient {
             new GoneAndRetryWithRetryPolicy(request, retryTimeout),
             null,
             Duration.ofSeconds(
-                ReplicatedResourceClient.MIN_BACKOFF_FOR_FAILLING_BACK_TO_OTHER_REGIONS_FOR_READ_REQUESTS_IN_SECONDS),
+                ReplicatedResourceClient.MIN_BACKOFF_FOR_FAILING_BACK_TO_OTHER_REGIONS_FOR_READ_REQUESTS_IN_SECONDS),
             request,
             addressSelector);
     }
 
-    private Mono<StoreResponse> getStoreResponseMonoWithSpeculation(RxDocumentServiceRequest request, Quadruple<Boolean, Boolean, Duration, Integer> forceRefreshAndTimeout) {
-        CosmosEndToEndOperationLatencyPolicyConfig config = request.requestContext.getEndToEndOperationLatencyPolicyConfig();
+    private Mono<StoreResponse> getStoreResponseMonoWithSpeculation(
+        RxDocumentServiceRequest request,
+        Quadruple<Boolean, Boolean, Duration, Integer> forceRefreshAndTimeout) {
+
+        CosmosEndToEndOperationLatencyPolicyConfig config = request
+            .requestContext
+            .getEndToEndOperationLatencyPolicyConfig();
+
         AvailabilityStrategy strategy = config.getAvailabilityStrategy();
 
         if (!(strategy instanceof ThresholdBasedAvailabilityStrategy)) {
@@ -170,19 +164,29 @@ public class ReplicatedResourceClient {
         }
 
         List<Mono<StoreResponse>> monoList = new ArrayList<>();
-        List<RxDocumentServiceRequest> requestList = new ArrayList<>();
-        final List<URI> effectiveEndpoints = getApplicableEndPoints(request);
-        if (effectiveEndpoints == null || effectiveEndpoints.stream().noneMatch(locationURI -> locationURI != null)) {
+        List<URI> requestLocationsList = new ArrayList<>();
+        final List<URI> orderedEffectiveEndpointsList = getApplicableEndPoints(request);
+        if (orderedEffectiveEndpointsList != null) {
+            int i = 0;
+            while (i < orderedEffectiveEndpointsList.size()) {
+                if (orderedEffectiveEndpointsList.get(i) == null) {
+                    orderedEffectiveEndpointsList.remove(i);
+                } else {
+                    i++;
+                }
+            }
+        }
+
+        if (orderedEffectiveEndpointsList == null || orderedEffectiveEndpointsList.size() == 0) {
             // If no endpoints are available just return original Mono
             return getStoreResponseMono(request, forceRefreshAndTimeout);
         }
 
-        effectiveEndpoints
-            .stream().filter(locationURI -> locationURI != null)
+        orderedEffectiveEndpointsList
             .forEach(locationURI -> {
                 RxDocumentServiceRequest newRequest = request.clone();
                 newRequest.requestContext.routeToLocation(locationURI);
-                requestList.add(newRequest);
+                requestLocationsList.add(locationURI);
                 if (monoList.isEmpty()) {
                     monoList.add(getStoreResponseMono(newRequest, forceRefreshAndTimeout));
                 } else {
@@ -208,13 +212,28 @@ public class ReplicatedResourceClient {
                     List<Throwable> innerThrowables = Exceptions
                         .unwrapMultiple(exception.getCause());
 
+                    int index = 0;
                     for (Throwable innerThrowable : innerThrowables) {
                         Throwable innerException = Exceptions.unwrap(innerThrowable);
 
                         // collect latest CosmosException instance bubbling up for a region
                         if (innerException instanceof CosmosException) {
                             return Utils.as(innerException, CosmosException.class);
+                        } else if (innerException instanceof NoSuchElementException) {
+                            logger.trace(
+                                "Operation in {} completed with empty result because it was cancelled.",
+                                requestLocationsList.get(index));
+                        } else if (logger.isWarnEnabled()) {
+                            String message = "Unexpected Non-CosmosException when processing operation in '"
+                                + requestLocationsList.get(index)
+                                + "'.";
+                            logger.warn(
+                                message,
+                                innerException
+                            );
                         }
+
+                        index++;
                     }
                 }
 
@@ -222,6 +241,11 @@ public class ReplicatedResourceClient {
             });
     }
 
+    /**
+     * Returns the applicable endpoints ordered by preference list if any
+     * @param request - the request context (to provide exclude regions)
+     * @return the applicable endpoints ordered by preference list if any
+     */
     private List<URI> getApplicableEndPoints(RxDocumentServiceRequest request) {
         if (request.isReadOnlyRequest()) {
             return this.transportClient.getGlobalEndpointManager().getApplicableReadEndpoints(request);
