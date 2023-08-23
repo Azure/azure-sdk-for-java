@@ -61,7 +61,7 @@
         <dependency>
             <groupId>com.azure</groupId>
             <artifactId>azure-data-appconfiguration</artifactId>
-            <version>1.4.7</version> <!-- {x-version-update;com.azure:azure-data-appconfiguration;dependency} -->
+            <version>1.4.8</version> <!-- {x-version-update;com.azure:azure-data-appconfiguration;dependency} -->
         </dependency>
         <dependency>
             <groupId>com.azure</groupId>
@@ -76,7 +76,7 @@
         <dependency>
             <groupId>com.azure</groupId>
             <artifactId>azure-storage-blob</artifactId>
-            <version>12.23.0</version> <!-- {x-version-update;com.azure:azure-storage-blob;dependency} -->
+            <version>12.23.1</version> <!-- {x-version-update;com.azure:azure-storage-blob;dependency} -->
         </dependency>
 
         <dependency>
@@ -93,7 +93,7 @@
         <dependency>
             <groupId>com.azure</groupId>
             <artifactId>azure-messaging-eventhubs</artifactId>
-            <version>5.15.7</version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs;dependency} -->
+            <version>5.15.8</version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs;dependency} -->
         </dependency>
         <dependency>
             <groupId>com.azure</groupId>
@@ -108,7 +108,7 @@
         <dependency>
             <groupId>com.azure</groupId>
             <artifactId>azure-ai-textanalytics</artifactId>
-            <version>5.3.1</version> <!-- {x-version-update;com.azure:azure-ai-textanalytics;dependency} -->
+            <version>5.3.2</version> <!-- {x-version-update;com.azure:azure-ai-textanalytics;dependency} -->
         </dependency>
 
 
