@@ -14,9 +14,9 @@ import com.azure.core.management.serializer.SerializerFactory;
 import com.azure.core.util.serializer.SerializerAdapter;
 import java.time.Duration;
 
-/** A builder for creating a new instance of the AppliancesManagementClientImpl type. */
-@ServiceClientBuilder(serviceClients = {AppliancesManagementClientImpl.class})
-public final class AppliancesManagementClientBuilder {
+/** A builder for creating a new instance of the ResourceConnectorImpl type. */
+@ServiceClientBuilder(serviceClients = {ResourceConnectorImpl.class})
+public final class ResourceConnectorBuilder {
     /*
      * The ID of the target subscription.
      */
@@ -26,9 +26,9 @@ public final class AppliancesManagementClientBuilder {
      * Sets The ID of the target subscription.
      *
      * @param subscriptionId the subscriptionId value.
-     * @return the AppliancesManagementClientBuilder.
+     * @return the ResourceConnectorBuilder.
      */
-    public AppliancesManagementClientBuilder subscriptionId(String subscriptionId) {
+    public ResourceConnectorBuilder subscriptionId(String subscriptionId) {
         this.subscriptionId = subscriptionId;
         return this;
     }
@@ -42,9 +42,9 @@ public final class AppliancesManagementClientBuilder {
      * Sets server parameter.
      *
      * @param endpoint the endpoint value.
-     * @return the AppliancesManagementClientBuilder.
+     * @return the ResourceConnectorBuilder.
      */
-    public AppliancesManagementClientBuilder endpoint(String endpoint) {
+    public ResourceConnectorBuilder endpoint(String endpoint) {
         this.endpoint = endpoint;
         return this;
     }
@@ -58,9 +58,9 @@ public final class AppliancesManagementClientBuilder {
      * Sets The environment to connect to.
      *
      * @param environment the environment value.
-     * @return the AppliancesManagementClientBuilder.
+     * @return the ResourceConnectorBuilder.
      */
-    public AppliancesManagementClientBuilder environment(AzureEnvironment environment) {
+    public ResourceConnectorBuilder environment(AzureEnvironment environment) {
         this.environment = environment;
         return this;
     }
@@ -74,9 +74,9 @@ public final class AppliancesManagementClientBuilder {
      * Sets The HTTP pipeline to send requests through.
      *
      * @param pipeline the pipeline value.
-     * @return the AppliancesManagementClientBuilder.
+     * @return the ResourceConnectorBuilder.
      */
-    public AppliancesManagementClientBuilder pipeline(HttpPipeline pipeline) {
+    public ResourceConnectorBuilder pipeline(HttpPipeline pipeline) {
         this.pipeline = pipeline;
         return this;
     }
@@ -90,9 +90,9 @@ public final class AppliancesManagementClientBuilder {
      * Sets The default poll interval for long-running operation.
      *
      * @param defaultPollInterval the defaultPollInterval value.
-     * @return the AppliancesManagementClientBuilder.
+     * @return the ResourceConnectorBuilder.
      */
-    public AppliancesManagementClientBuilder defaultPollInterval(Duration defaultPollInterval) {
+    public ResourceConnectorBuilder defaultPollInterval(Duration defaultPollInterval) {
         this.defaultPollInterval = defaultPollInterval;
         return this;
     }
@@ -106,19 +106,19 @@ public final class AppliancesManagementClientBuilder {
      * Sets The serializer to serialize an object into a string.
      *
      * @param serializerAdapter the serializerAdapter value.
-     * @return the AppliancesManagementClientBuilder.
+     * @return the ResourceConnectorBuilder.
      */
-    public AppliancesManagementClientBuilder serializerAdapter(SerializerAdapter serializerAdapter) {
+    public ResourceConnectorBuilder serializerAdapter(SerializerAdapter serializerAdapter) {
         this.serializerAdapter = serializerAdapter;
         return this;
     }
 
     /**
-     * Builds an instance of AppliancesManagementClientImpl with the provided parameters.
+     * Builds an instance of ResourceConnectorImpl with the provided parameters.
      *
-     * @return an instance of AppliancesManagementClientImpl.
+     * @return an instance of ResourceConnectorImpl.
      */
-    public AppliancesManagementClientImpl buildClient() {
+    public ResourceConnectorImpl buildClient() {
         String localEndpoint = (endpoint != null) ? endpoint : "https://management.azure.com";
         AzureEnvironment localEnvironment = (environment != null) ? environment : AzureEnvironment.AZURE;
         HttpPipeline localPipeline =
@@ -131,8 +131,8 @@ public final class AppliancesManagementClientBuilder {
             (serializerAdapter != null)
                 ? serializerAdapter
                 : SerializerFactory.createDefaultManagementSerializerAdapter();
-        AppliancesManagementClientImpl client =
-            new AppliancesManagementClientImpl(
+        ResourceConnectorImpl client =
+            new ResourceConnectorImpl(
                 localPipeline,
                 localSerializerAdapter,
                 localDefaultPollInterval,

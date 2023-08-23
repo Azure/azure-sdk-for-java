@@ -7,8 +7,8 @@ package com.azure.resourcemanager.resourceconnector.fluent;
 import com.azure.core.http.HttpPipeline;
 import java.time.Duration;
 
-/** The interface for AppliancesManagementClient class. */
-public interface AppliancesManagementClient {
+/** The interface for ResourceConnector class. */
+public interface ResourceConnector {
     /**
      * Gets The ID of the target subscription.
      *

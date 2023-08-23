@@ -12,9 +12,10 @@ public final class AppliancesGetUpgradeGraphSamples {
     /**
      * Sample code: Get Appliance Upgrade Graph.
      *
-     * @param manager Entry point to AppliancesManager.
+     * @param manager Entry point to ResourceConnectorManager.
      */
-    public static void getApplianceUpgradeGraph(com.azure.resourcemanager.resourceconnector.AppliancesManager manager) {
+    public static void getApplianceUpgradeGraph(
+        com.azure.resourcemanager.resourceconnector.ResourceConnectorManager manager) {
         manager
             .appliances()
             .getUpgradeGraphWithResponse(
