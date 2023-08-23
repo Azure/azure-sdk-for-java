@@ -5,9 +5,10 @@ package com.azure.compute.batch;
 
 import com.azure.compute.batch.implementation.BatchNodesImpl;
 import com.azure.compute.batch.models.BatchNode;
-import com.azure.compute.batch.models.BatchNodeGetRemoteLoginSettingsResult;
+import com.azure.compute.batch.models.BatchNodeRemoteLoginSettingsResult;
 import com.azure.compute.batch.models.BatchNodeUser;
 import com.azure.compute.batch.models.NodeDisableSchedulingParameters;
+import com.azure.compute.batch.models.NodeFile;
 import com.azure.compute.batch.models.NodeRebootParameters;
 import com.azure.compute.batch.models.NodeReimageParameters;
 import com.azure.compute.batch.models.NodeUpdateUserParameters;
@@ -1004,6 +1005,7 @@ public final class BatchNodesClient {
      *         type: String (Required)
      *         typeHandlerVersion: String (Optional)
      *         autoUpgradeMinorVersion: Boolean (Optional)
+     *         enableAutomaticUpgrade: Boolean (Optional)
      *         settings (Optional): {
      *             String: String (Optional)
      *         }
@@ -1089,6 +1091,7 @@ public final class BatchNodesClient {
      *         type: String (Required)
      *         typeHandlerVersion: String (Optional)
      *         autoUpgradeMinorVersion: Boolean (Optional)
+     *         enableAutomaticUpgrade: Boolean (Optional)
      *         settings (Optional): {
      *             String: String (Optional)
      *         }
@@ -1334,12 +1337,12 @@ public final class BatchNodesClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public BatchNodeGetRemoteLoginSettingsResult getRemoteLoginSettings(String poolId, String nodeId) {
+    public BatchNodeRemoteLoginSettingsResult getRemoteLoginSettings(String poolId, String nodeId) {
         // Generated convenience method for getRemoteLoginSettingsWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return getRemoteLoginSettingsWithResponse(poolId, nodeId, requestOptions)
                 .getValue()
-                .toObject(BatchNodeGetRemoteLoginSettingsResult.class);
+                .toObject(BatchNodeRemoteLoginSettingsResult.class);
     }
 
     /**
@@ -1801,7 +1804,7 @@ public final class BatchNodesClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public BatchNodeGetRemoteLoginSettingsResult getRemoteLoginSettings(
+    public BatchNodeRemoteLoginSettingsResult getRemoteLoginSettings(
             String poolId, String nodeId, Integer timeOut, OffsetDateTime ocpDate) {
         // Generated convenience method for getRemoteLoginSettingsWithResponse
         RequestOptions requestOptions = new RequestOptions();
@@ -1814,7 +1817,7 @@ public final class BatchNodesClient {
         }
         return getRemoteLoginSettingsWithResponse(poolId, nodeId, requestOptions)
                 .getValue()
-                .toObject(BatchNodeGetRemoteLoginSettingsResult.class);
+                .toObject(BatchNodeRemoteLoginSettingsResult.class);
     }
 
     /**
@@ -2033,5 +2036,517 @@ public final class BatchNodesClient {
         return serviceClient
                 .listExtensions(poolId, nodeId, requestOptions)
                 .mapPage(bodyItemValue -> bodyItemValue.toObject(NodeVMExtension.class));
+    }
+
+    /**
+     * Deletes the specified file from the Compute Node.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A maximum of 1000
+     * applications can be returned.</td></tr>
+     *     <tr><td>recursive</td><td>Boolean</td><td>No</td><td>Whether to delete children of a directory. If the filePath parameter represents
+     * a directory instead of a file, you can set recursive to true to delete the
+     * directory and all of the files and subdirectories in it. If recursive is false
+     * then the directory must be empty or deletion will fail.</td></tr>
+     * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     *
+     * <p><strong>Header Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Header Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     * current system clock time; set it explicitly if you are calling the REST API
+     * directly.</td></tr>
+     * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     *
+     * @param poolId The ID of the Pool that contains the Compute Node.
+     * @param nodeId The ID of the Compute Node from which you want to delete the file.
+     * @param filePath The path to the file or directory that you want to delete.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> deleteFileFromBatchNodeWithResponse(
+            String poolId, String nodeId, String filePath, RequestOptions requestOptions) {
+        return this.serviceClient.deleteFileFromBatchNodeWithResponse(poolId, nodeId, filePath, requestOptions);
+    }
+
+    /**
+     * Returns the content of the specified Compute Node file.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A maximum of 1000
+     * applications can be returned.</td></tr>
+     * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     *
+     * <p><strong>Header Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Header Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     * current system clock time; set it explicitly if you are calling the REST API
+     * directly.</td></tr>
+     *     <tr><td>if-modified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     * client. The operation will be performed only if the resource on the service has
+     * been modified since the specified time.</td></tr>
+     *     <tr><td>if-unmodified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     * client. The operation will be performed only if the resource on the service has
+     * not been modified since the specified time.</td></tr>
+     *     <tr><td>ocp-range</td><td>String</td><td>No</td><td>The byte range to be retrieved. The default is to retrieve the entire file. The
+     * format is bytes=startRange-endRange.</td></tr>
+     * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * BinaryData
+     * }</pre>
+     *
+     * @param poolId The ID of the Pool that contains the Compute Node.
+     * @param nodeId The ID of the Compute Node from which you want to delete the file.
+     * @param filePath The path to the file or directory that you want to delete.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the response body along with {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> getFileFromBatchNodeWithResponse(
+            String poolId, String nodeId, String filePath, RequestOptions requestOptions) {
+        return this.serviceClient.getFileFromBatchNodeWithResponse(poolId, nodeId, filePath, requestOptions);
+    }
+
+    /**
+     * Gets the properties of the specified Compute Node file.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A maximum of 1000
+     * applications can be returned.</td></tr>
+     * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     *
+     * <p><strong>Header Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Header Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     * current system clock time; set it explicitly if you are calling the REST API
+     * directly.</td></tr>
+     *     <tr><td>if-modified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     * client. The operation will be performed only if the resource on the service has
+     * been modified since the specified time.</td></tr>
+     *     <tr><td>if-unmodified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     * client. The operation will be performed only if the resource on the service has
+     * not been modified since the specified time.</td></tr>
+     * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     *
+     * @param poolId The ID of the Pool that contains the Compute Node.
+     * @param nodeId The ID of the Compute Node from which you want to delete the file.
+     * @param filePath The path to the file or directory that you want to delete.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the properties of the specified Compute Node file along with {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> getFilePropertiesFromBatchNodeWithResponse(
+            String poolId, String nodeId, String filePath, RequestOptions requestOptions) {
+        return this.serviceClient.getFilePropertiesFromBatchNodeWithResponse(poolId, nodeId, filePath, requestOptions);
+    }
+
+    /**
+     * Lists all of the files in Task directories on the specified Compute Node.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A maximum of 1000
+     * applications can be returned.</td></tr>
+     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A maximum of 1000
+     * applications can be returned.</td></tr>
+     *     <tr><td>$filter</td><td>String</td><td>No</td><td>An OData $filter clause. For more information on constructing this filter, see
+     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-compute-node-files.</td></tr>
+     *     <tr><td>recursive</td><td>Boolean</td><td>No</td><td>Whether to list children of a directory.</td></tr>
+     * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     *
+     * <p><strong>Header Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Header Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     * current system clock time; set it explicitly if you are calling the REST API
+     * directly.</td></tr>
+     * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     name: String (Optional)
+     *     url: String (Optional)
+     *     isDirectory: Boolean (Optional)
+     *     properties (Optional): {
+     *         creationTime: OffsetDateTime (Optional)
+     *         lastModified: OffsetDateTime (Required)
+     *         contentLength: int (Required)
+     *         contentType: String (Optional)
+     *         fileMode: String (Optional)
+     *     }
+     * }
+     * }</pre>
+     *
+     * @param poolId The ID of the Pool that contains the Compute Node.
+     * @param nodeId The ID of the Compute Node whose files you want to list.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the result of listing the files on a Compute Node, or the files associated with a Task on a Compute Node
+     *     as paginated response with {@link PagedIterable}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<BinaryData> listFilesFromBatchNode(
+            String poolId, String nodeId, RequestOptions requestOptions) {
+        return this.serviceClient.listFilesFromBatchNode(poolId, nodeId, requestOptions);
+    }
+
+    /**
+     * Deletes the specified file from the Compute Node.
+     *
+     * @param poolId The ID of the Pool that contains the Compute Node.
+     * @param nodeId The ID of the Compute Node from which you want to delete the file.
+     * @param filePath The path to the file or directory that you want to delete.
+     * @param timeOut The maximum number of items to return in the response. A maximum of 1000 applications can be
+     *     returned.
+     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
+     *     time; set it explicitly if you are calling the REST API directly.
+     * @param recursive Whether to delete children of a directory. If the filePath parameter represents a directory
+     *     instead of a file, you can set recursive to true to delete the directory and all of the files and
+     *     subdirectories in it. If recursive is false then the directory must be empty or deletion will fail.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void deleteFileFromBatchNode(
+            String poolId, String nodeId, String filePath, Integer timeOut, OffsetDateTime ocpDate, Boolean recursive) {
+        // Generated convenience method for deleteFileFromBatchNodeWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (timeOut != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOut), false);
+        }
+        if (ocpDate != null) {
+            requestOptions.setHeader(
+                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
+        }
+        if (recursive != null) {
+            requestOptions.addQueryParam("recursive", String.valueOf(recursive), false);
+        }
+        deleteFileFromBatchNodeWithResponse(poolId, nodeId, filePath, requestOptions).getValue();
+    }
+
+    /**
+     * Deletes the specified file from the Compute Node.
+     *
+     * @param poolId The ID of the Pool that contains the Compute Node.
+     * @param nodeId The ID of the Compute Node from which you want to delete the file.
+     * @param filePath The path to the file or directory that you want to delete.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void deleteFileFromBatchNode(String poolId, String nodeId, String filePath) {
+        // Generated convenience method for deleteFileFromBatchNodeWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        deleteFileFromBatchNodeWithResponse(poolId, nodeId, filePath, requestOptions).getValue();
+    }
+
+    /**
+     * Returns the content of the specified Compute Node file.
+     *
+     * @param poolId The ID of the Pool that contains the Compute Node.
+     * @param nodeId The ID of the Compute Node from which you want to delete the file.
+     * @param filePath The path to the file or directory that you want to delete.
+     * @param timeOut The maximum number of items to return in the response. A maximum of 1000 applications can be
+     *     returned.
+     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
+     *     time; set it explicitly if you are calling the REST API directly.
+     * @param ifModifiedSince A timestamp indicating the last modified time of the resource known to the client. The
+     *     operation will be performed only if the resource on the service has been modified since the specified time.
+     * @param ifUnmodifiedSince A timestamp indicating the last modified time of the resource known to the client. The
+     *     operation will be performed only if the resource on the service has not been modified since the specified
+     *     time.
+     * @param ocpRange The byte range to be retrieved. The default is to retrieve the entire file. The format is
+     *     bytes=startRange-endRange.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public BinaryData getFileFromBatchNode(
+            String poolId,
+            String nodeId,
+            String filePath,
+            Integer timeOut,
+            OffsetDateTime ocpDate,
+            OffsetDateTime ifModifiedSince,
+            OffsetDateTime ifUnmodifiedSince,
+            String ocpRange) {
+        // Generated convenience method for getFileFromBatchNodeWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (timeOut != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOut), false);
+        }
+        if (ocpDate != null) {
+            requestOptions.setHeader(
+                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
+        }
+        if (ifModifiedSince != null) {
+            requestOptions.setHeader(
+                    HttpHeaderName.IF_MODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
+        }
+        if (ifUnmodifiedSince != null) {
+            requestOptions.setHeader(
+                    HttpHeaderName.IF_UNMODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
+        }
+        if (ocpRange != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("ocp-range"), ocpRange);
+        }
+        return getFileFromBatchNodeWithResponse(poolId, nodeId, filePath, requestOptions).getValue();
+    }
+
+    /**
+     * Returns the content of the specified Compute Node file.
+     *
+     * @param poolId The ID of the Pool that contains the Compute Node.
+     * @param nodeId The ID of the Compute Node from which you want to delete the file.
+     * @param filePath The path to the file or directory that you want to delete.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public BinaryData getFileFromBatchNode(String poolId, String nodeId, String filePath) {
+        // Generated convenience method for getFileFromBatchNodeWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return getFileFromBatchNodeWithResponse(poolId, nodeId, filePath, requestOptions).getValue();
+    }
+
+    /**
+     * Gets the properties of the specified Compute Node file.
+     *
+     * @param poolId The ID of the Pool that contains the Compute Node.
+     * @param nodeId The ID of the Compute Node from which you want to delete the file.
+     * @param filePath The path to the file or directory that you want to delete.
+     * @param timeOut The maximum number of items to return in the response. A maximum of 1000 applications can be
+     *     returned.
+     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
+     *     time; set it explicitly if you are calling the REST API directly.
+     * @param ifModifiedSince A timestamp indicating the last modified time of the resource known to the client. The
+     *     operation will be performed only if the resource on the service has been modified since the specified time.
+     * @param ifUnmodifiedSince A timestamp indicating the last modified time of the resource known to the client. The
+     *     operation will be performed only if the resource on the service has not been modified since the specified
+     *     time.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void getFilePropertiesFromBatchNode(
+            String poolId,
+            String nodeId,
+            String filePath,
+            Integer timeOut,
+            OffsetDateTime ocpDate,
+            OffsetDateTime ifModifiedSince,
+            OffsetDateTime ifUnmodifiedSince) {
+        // Generated convenience method for getFilePropertiesFromBatchNodeWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (timeOut != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOut), false);
+        }
+        if (ocpDate != null) {
+            requestOptions.setHeader(
+                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
+        }
+        if (ifModifiedSince != null) {
+            requestOptions.setHeader(
+                    HttpHeaderName.IF_MODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
+        }
+        if (ifUnmodifiedSince != null) {
+            requestOptions.setHeader(
+                    HttpHeaderName.IF_UNMODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
+        }
+        getFilePropertiesFromBatchNodeWithResponse(poolId, nodeId, filePath, requestOptions).getValue();
+    }
+
+    /**
+     * Gets the properties of the specified Compute Node file.
+     *
+     * @param poolId The ID of the Pool that contains the Compute Node.
+     * @param nodeId The ID of the Compute Node from which you want to delete the file.
+     * @param filePath The path to the file or directory that you want to delete.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void getFilePropertiesFromBatchNode(String poolId, String nodeId, String filePath) {
+        // Generated convenience method for getFilePropertiesFromBatchNodeWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        getFilePropertiesFromBatchNodeWithResponse(poolId, nodeId, filePath, requestOptions).getValue();
+    }
+
+    /**
+     * Lists all of the files in Task directories on the specified Compute Node.
+     *
+     * @param poolId The ID of the Pool that contains the Compute Node.
+     * @param nodeId The ID of the Compute Node whose files you want to list.
+     * @param maxresults The maximum number of items to return in the response. A maximum of 1000 applications can be
+     *     returned.
+     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
+     *     time; set it explicitly if you are calling the REST API directly.
+     * @param timeOut The maximum number of items to return in the response. A maximum of 1000 applications can be
+     *     returned.
+     * @param filter An OData $filter clause. For more information on constructing this filter, see
+     *     https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-compute-node-files.
+     * @param recursive Whether to list children of a directory.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of listing the files on a Compute Node, or the files associated with a Task on a Compute Node
+     *     as paginated response with {@link PagedIterable}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<NodeFile> listFilesFromBatchNode(
+            String poolId,
+            String nodeId,
+            Integer maxresults,
+            OffsetDateTime ocpDate,
+            Integer timeOut,
+            String filter,
+            Boolean recursive) {
+        // Generated convenience method for listFilesFromBatchNode
+        RequestOptions requestOptions = new RequestOptions();
+        if (maxresults != null) {
+            requestOptions.addQueryParam("maxresults", String.valueOf(maxresults), false);
+        }
+        if (ocpDate != null) {
+            requestOptions.setHeader(
+                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
+        }
+        if (timeOut != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOut), false);
+        }
+        if (filter != null) {
+            requestOptions.addQueryParam("$filter", filter, false);
+        }
+        if (recursive != null) {
+            requestOptions.addQueryParam("recursive", String.valueOf(recursive), false);
+        }
+        return serviceClient
+                .listFilesFromBatchNode(poolId, nodeId, requestOptions)
+                .mapPage(bodyItemValue -> bodyItemValue.toObject(NodeFile.class));
+    }
+
+    /**
+     * Lists all of the files in Task directories on the specified Compute Node.
+     *
+     * @param poolId The ID of the Pool that contains the Compute Node.
+     * @param nodeId The ID of the Compute Node whose files you want to list.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of listing the files on a Compute Node, or the files associated with a Task on a Compute Node
+     *     as paginated response with {@link PagedIterable}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<NodeFile> listFilesFromBatchNode(String poolId, String nodeId) {
+        // Generated convenience method for listFilesFromBatchNode
+        RequestOptions requestOptions = new RequestOptions();
+        return serviceClient
+                .listFilesFromBatchNode(poolId, nodeId, requestOptions)
+                .mapPage(bodyItemValue -> bodyItemValue.toObject(NodeFile.class));
     }
 }

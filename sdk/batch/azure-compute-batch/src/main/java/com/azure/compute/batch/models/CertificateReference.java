@@ -9,7 +9,11 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** A reference to a Certificate to be installed on Compute Nodes in a Pool. */
+/**
+ * A reference to a Certificate to be installed on Compute Nodes in a Pool. Warning: This object is deprecated and will
+ * be removed after February, 2024. Please use the [Azure KeyVault
+ * Extension](https://learn.microsoft.com/azure/batch/batch-certificate-migration-guide) instead.
+ */
 @Fluent
 public final class CertificateReference {
 

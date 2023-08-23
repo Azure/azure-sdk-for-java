@@ -16,9 +16,11 @@ using TypeSpec.Versioning;
 @versioned(BatchService.Versions)
 namespace BatchService;
 
+@doc("The Azure Batch service version.")
 enum Versions {
+   @doc("API Version 2023-05-01.17.0")
    @useDependency(Azure.Core.Versions.v1_0_Preview_2)
-  `2022-10-01.16.0`,
+  `2023-05-01.17.0`,
 }
 
 #suppress "@azure-tools/typespec-azure-core/casing-style" "The names of Model types must use camelCase"

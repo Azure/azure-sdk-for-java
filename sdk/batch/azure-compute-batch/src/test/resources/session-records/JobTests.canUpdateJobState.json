@@ -1,0 +1,831 @@
+{
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/pools/BatchUser-testpool?api-version=2023-05-01.17.0",
+      "RequestMethod": "HEAD",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "Date": "Fri, 11 Aug 2023 22:52:05 GMT",
+        "User-Agent": "azsdk-java-azure-compute-batch/1.0.0-beta.1 (1.8.0_241; Windows 10; 10.0)",
+        "x-ms-client-request-id": "6186f2f2-46d7-4a55-a490-db002bd9b504"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "DataServiceVersion": "3.0",
+        "Date": "Fri, 11 Aug 2023 22:52:07 GMT",
+        "ETag": "0x8DB986C0E4D842C",
+        "Last-Modified": "Wed, 09 Aug 2023 00:03:26 GMT",
+        "request-id": "c8bd2067-c51e-4de9-bd6a-2cc9d07db8d2",
+        "Server": "Microsoft-HTTPAPI/2.0",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "Transfer-Encoding": "chunked",
+        "X-Content-Type-Options": "nosniff"
+      },
+      "ResponseBody": null
+    },
+    {
+      "RequestUri": "https://REDACTED/pools/BatchUser-testpool?api-version=2023-05-01.17.0",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "Date": "Fri, 11 Aug 2023 22:52:07 GMT",
+        "User-Agent": "azsdk-java-azure-compute-batch/1.0.0-beta.1 (1.8.0_241; Windows 10; 10.0)",
+        "x-ms-client-request-id": "528b20a3-6bf7-456e-aadd-9b1ca730dc64"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Content-Type": "application/json; odata=minimalmetadata",
+        "DataServiceVersion": "3.0",
+        "Date": "Fri, 11 Aug 2023 22:52:07 GMT",
+        "ETag": "0x8DB986C0E4D842C",
+        "Last-Modified": "Wed, 09 Aug 2023 00:03:26 GMT",
+        "request-id": "e2610d36-8c10-4b6c-911f-f9d149281fdb",
+        "Server": "Microsoft-HTTPAPI/2.0",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "Transfer-Encoding": "chunked",
+        "X-Content-Type-Options": "nosniff"
+      },
+      "ResponseBody": {
+        "odata.metadata": "https://sdktest.westus.batch.azure.com/$metadata#pools/@Element",
+        "id": "BatchUser-testpool",
+        "url": "REDACTED",
+        "eTag": "0x8DB986C0E4D842C",
+        "lastModified": "2023-08-09T00:03:26.6908204Z",
+        "creationTime": "2023-08-09T00:03:26.6908204Z",
+        "state": "active",
+        "stateTransitionTime": "2023-08-09T00:03:26.6908204Z",
+        "allocationState": "steady",
+        "allocationStateTransitionTime": "2023-08-09T00:04:29.0080659Z",
+        "vmSize": "standard_d1_v2",
+        "resizeTimeout": "PT15M",
+        "currentDedicatedNodes": 1,
+        "targetDedicatedNodes": 1,
+        "currentLowPriorityNodes": 0,
+        "targetLowPriorityNodes": 0,
+        "enableAutoScale": false,
+        "enableInterNodeCommunication": false,
+        "userAccounts": [
+          {
+            "name": "test-user",
+            "elevationLevel": "admin",
+            "linuxUserConfiguration": {
+              "uid": 5,
+              "gid": 5
+            }
+          }
+        ],
+        "taskSlotsPerNode": 1,
+        "taskSchedulingPolicy": {
+          "nodeFillType": "Spread"
+        },
+        "virtualMachineConfiguration": {
+          "imageReference": {
+            "publisher": "Canonical",
+            "offer": "UbuntuServer",
+            "sku": "18.04-LTS",
+            "version": "latest"
+          },
+          "nodeAgentSKUId": "batch.node.ubuntu 18.04"
+        },
+        "networkConfiguration": {
+          "subnetId": "/subscriptions/65634139-3762-476b-946d-e221f4cdc2bf/resourceGroups/nikoudsiSDKTest/providers/Microsoft.Network/virtualNetworks/myVnet/subnets/MySubnet",
+          "dynamicVNetAssignmentScope": "none",
+          "enableAcceleratedNetworking": false
+        },
+        "currentNodeCommunicationMode": "classic"
+      }
+    },
+    {
+      "RequestUri": "https://REDACTED/jobs?api-version=2023-05-01.17.0",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "80",
+        "Content-Type": "application/json; odata=minimalmetadata",
+        "Date": "Fri, 11 Aug 2023 22:52:07 GMT",
+        "User-Agent": "azsdk-java-azure-compute-batch/1.0.0-beta.1 (1.8.0_241; Windows 10; 10.0)",
+        "x-ms-client-request-id": "b9d94dce-c1ea-44e3-a832-98232e80c506"
+      },
+      "RequestBody": {
+        "id": "BatchUser-Job-CanUpdateState",
+        "poolInfo": {
+          "poolId": "BatchUser-testpool"
+        }
+      },
+      "StatusCode": 201,
+      "ResponseHeaders": {
+        "DataServiceId": "https://sdktest.westus.batch.azure.com/jobs/job-1",
+        "DataServiceVersion": "3.0",
+        "Date": "Fri, 11 Aug 2023 22:52:07 GMT",
+        "ETag": "0x8DB9ABD96EEC958",
+        "Last-Modified": "Fri, 11 Aug 2023 22:52:07 GMT",
+        "Location": "https://sdktest.westus.batch.azure.com/jobs/job-1",
+        "request-id": "9ca86dd4-0b6a-4cf2-bbb1-896da301a08a",
+        "Server": "Microsoft-HTTPAPI/2.0",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "Transfer-Encoding": "chunked",
+        "X-Content-Type-Options": "nosniff"
+      },
+      "ResponseBody": null
+    },
+    {
+      "RequestUri": "https://REDACTED/jobs/BatchUser-Job-CanUpdateState?api-version=2023-05-01.17.0",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "Date": "Fri, 11 Aug 2023 22:52:07 GMT",
+        "User-Agent": "azsdk-java-azure-compute-batch/1.0.0-beta.1 (1.8.0_241; Windows 10; 10.0)",
+        "x-ms-client-request-id": "0411b384-c818-494f-bcef-ff395c3efcad"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Content-Type": "application/json; odata=minimalmetadata",
+        "DataServiceVersion": "3.0",
+        "Date": "Fri, 11 Aug 2023 22:52:07 GMT",
+        "ETag": "0x8DB9ABD96EEC958",
+        "Last-Modified": "Fri, 11 Aug 2023 22:52:07 GMT",
+        "request-id": "b7a3a018-c41e-481f-ad66-a8440307c579",
+        "Server": "Microsoft-HTTPAPI/2.0",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "Transfer-Encoding": "chunked",
+        "X-Content-Type-Options": "nosniff"
+      },
+      "ResponseBody": {
+        "odata.metadata": "https://sdktest.westus.batch.azure.com/$metadata#jobs/@Element",
+        "id": "BatchUser-Job-CanUpdateState",
+        "url": "REDACTED",
+        "eTag": "0x8DB9ABD96EEC958",
+        "lastModified": "2023-08-11T22:52:07.4785112Z",
+        "creationTime": "2023-08-11T22:52:07.4615177Z",
+        "state": "active",
+        "stateTransitionTime": "2023-08-11T22:52:07.4785112Z",
+        "priority": 0,
+        "maxParallelTasks": -1,
+        "usesTaskDependencies": false,
+        "allowTaskPreemption": false,
+        "constraints": {
+          "maxWallClockTime": "P10675199DT2H48M5.4775807S",
+          "maxTaskRetryCount": 0
+        },
+        "poolInfo": {
+          "poolId": "BatchUser-testpool"
+        },
+        "executionInfo": {
+          "startTime": "2023-08-11T22:52:07.4785112Z",
+          "poolId": "BatchUser-testpool"
+        },
+        "onAllTasksComplete": "noaction",
+        "onTaskFailure": "noaction"
+      }
+    },
+    {
+      "RequestUri": "https://REDACTED/jobs/BatchUser-Job-CanUpdateState?api-version=2023-05-01.17.0",
+      "RequestMethod": "PUT",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "179",
+        "Content-Type": "application/json; odata=minimalmetadata",
+        "Date": "Fri, 11 Aug 2023 22:52:08 GMT",
+        "User-Agent": "azsdk-java-azure-compute-batch/1.0.0-beta.1 (1.8.0_241; Windows 10; 10.0)",
+        "x-ms-client-request-id": "84a3181c-d48e-419a-8021-d3e871ab67bb"
+      },
+      "RequestBody": {
+        "poolInfo": {
+          "poolId": "BatchUser-testpool"
+        },
+        "priority": 500,
+        "allowTaskPreemption": false,
+        "maxParallelTasks": -1,
+        "constraints": {
+          "maxTaskRetryCount": 3
+        },
+        "onAllTasksComplete": "noaction"
+      },
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "DataServiceId": "https://sdktest.westus.batch.azure.com/jobs/BatchUser-Job-CanUpdateState",
+        "DataServiceVersion": "3.0",
+        "Date": "Fri, 11 Aug 2023 22:52:07 GMT",
+        "ETag": "0x8DB9ABD9711436E",
+        "Last-Modified": "Fri, 11 Aug 2023 22:52:07 GMT",
+        "request-id": "f9558a41-5d77-4b65-84d2-db104104e9fc",
+        "Server": "Microsoft-HTTPAPI/2.0",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "Transfer-Encoding": "chunked",
+        "X-Content-Type-Options": "nosniff"
+      },
+      "ResponseBody": null
+    },
+    {
+      "RequestUri": "https://REDACTED/jobs/BatchUser-Job-CanUpdateState?api-version=2023-05-01.17.0",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "Date": "Fri, 11 Aug 2023 22:52:08 GMT",
+        "User-Agent": "azsdk-java-azure-compute-batch/1.0.0-beta.1 (1.8.0_241; Windows 10; 10.0)",
+        "x-ms-client-request-id": "e5666a3a-d75b-461d-a335-7c104135a0e7"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Content-Type": "application/json; odata=minimalmetadata",
+        "DataServiceVersion": "3.0",
+        "Date": "Fri, 11 Aug 2023 22:52:07 GMT",
+        "ETag": "0x8DB9ABD9711436E",
+        "Last-Modified": "Fri, 11 Aug 2023 22:52:07 GMT",
+        "request-id": "5de1f7a9-5569-43dc-8d59-22997bffd915",
+        "Server": "Microsoft-HTTPAPI/2.0",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "Transfer-Encoding": "chunked",
+        "X-Content-Type-Options": "nosniff"
+      },
+      "ResponseBody": {
+        "odata.metadata": "https://sdktest.westus.batch.azure.com/$metadata#jobs/@Element",
+        "id": "BatchUser-Job-CanUpdateState",
+        "url": "REDACTED",
+        "eTag": "0x8DB9ABD9711436E",
+        "lastModified": "2023-08-11T22:52:07.704459Z",
+        "creationTime": "2023-08-11T22:52:07.4615177Z",
+        "state": "active",
+        "stateTransitionTime": "2023-08-11T22:52:07.4785112Z",
+        "priority": 500,
+        "maxParallelTasks": -1,
+        "usesTaskDependencies": false,
+        "allowTaskPreemption": false,
+        "constraints": {
+          "maxWallClockTime": "P10675199DT2H48M5.4775807S",
+          "maxTaskRetryCount": 3
+        },
+        "poolInfo": {
+          "poolId": "BatchUser-testpool"
+        },
+        "executionInfo": {
+          "startTime": "2023-08-11T22:52:07.4785112Z",
+          "poolId": "BatchUser-testpool"
+        },
+        "onAllTasksComplete": "noaction",
+        "onTaskFailure": "noaction"
+      }
+    },
+    {
+      "RequestUri": "https://REDACTED/jobs/BatchUser-Job-CanUpdateState/disable?api-version=2023-05-01.17.0",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "26",
+        "Content-Type": "application/json; odata=minimalmetadata",
+        "Date": "Fri, 11 Aug 2023 22:52:08 GMT",
+        "User-Agent": "azsdk-java-azure-compute-batch/1.0.0-beta.1 (1.8.0_241; Windows 10; 10.0)",
+        "x-ms-client-request-id": "3f20c661-1829-40ba-ac00-7100c312c684"
+      },
+      "RequestBody": {
+        "disableTasks": "requeue"
+      },
+      "StatusCode": 429,
+      "ResponseHeaders": {
+        "Content-Length": "370",
+        "Content-Type": "application/json; odata=minimalmetadata",
+        "DataServiceVersion": "3.0",
+        "Date": "Fri, 11 Aug 2023 22:52:07 GMT",
+        "request-id": "9b234fe7-c4f3-42c1-9b96-d3a59f52008b",
+        "Retry-After": "30",
+        "Server": "Microsoft-HTTPAPI/2.0",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Content-Type-Options": "nosniff"
+      },
+      "ResponseBody": {
+        "odata.metadata": "https://sdktest.westus.batch.azure.com/$metadata#Microsoft.Azure.Batch.Protocol.Entities.Container.errors/@Element",
+        "code": "TooManyRequests",
+        "message": {
+          "lang": "en-US",
+          "value": "Request failed as server encountered too many requests. Please try again.\nRequestId:9b234fe7-c4f3-42c1-9b96-d3a59f52008b\nTime:2023-08-11T22:52:07.7798665Z"
+        }
+      }
+    },
+    {
+      "RequestUri": "https://REDACTED/jobs/BatchUser-Job-CanUpdateState/disable?api-version=2023-05-01.17.0",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "26",
+        "Content-Type": "application/json; odata=minimalmetadata",
+        "Date": "Fri, 11 Aug 2023 22:52:09 GMT",
+        "User-Agent": "azsdk-java-azure-compute-batch/1.0.0-beta.1 (1.8.0_241; Windows 10; 10.0)",
+        "x-ms-client-request-id": "3f20c661-1829-40ba-ac00-7100c312c684"
+      },
+      "RequestBody": {
+        "disableTasks": "requeue"
+      },
+      "StatusCode": 429,
+      "ResponseHeaders": {
+        "Content-Length": "370",
+        "Content-Type": "application/json; odata=minimalmetadata",
+        "DataServiceVersion": "3.0",
+        "Date": "Fri, 11 Aug 2023 22:52:08 GMT",
+        "request-id": "61598cff-6a47-4779-b166-f6a89feff64f",
+        "Retry-After": "30",
+        "Server": "Microsoft-HTTPAPI/2.0",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Content-Type-Options": "nosniff"
+      },
+      "ResponseBody": {
+        "odata.metadata": "https://sdktest.westus.batch.azure.com/$metadata#Microsoft.Azure.Batch.Protocol.Entities.Container.errors/@Element",
+        "code": "TooManyRequests",
+        "message": {
+          "lang": "en-US",
+          "value": "Request failed as server encountered too many requests. Please try again.\nRequestId:61598cff-6a47-4779-b166-f6a89feff64f\nTime:2023-08-11T22:52:08.6206861Z"
+        }
+      }
+    },
+    {
+      "RequestUri": "https://REDACTED/jobs/BatchUser-Job-CanUpdateState/disable?api-version=2023-05-01.17.0",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "26",
+        "Content-Type": "application/json; odata=minimalmetadata",
+        "Date": "Fri, 11 Aug 2023 22:52:10 GMT",
+        "User-Agent": "azsdk-java-azure-compute-batch/1.0.0-beta.1 (1.8.0_241; Windows 10; 10.0)",
+        "x-ms-client-request-id": "3f20c661-1829-40ba-ac00-7100c312c684"
+      },
+      "RequestBody": {
+        "disableTasks": "requeue"
+      },
+      "StatusCode": 202,
+      "ResponseHeaders": {
+        "DataServiceId": "https://sdktest.westus.batch.azure.com/jobs/BatchUser-Job-CanUpdateState/disable",
+        "DataServiceVersion": "3.0",
+        "Date": "Fri, 11 Aug 2023 22:52:09 GMT",
+        "ETag": "0x8DB9ABD989A6E61",
+        "Last-Modified": "Fri, 11 Aug 2023 22:52:10 GMT",
+        "request-id": "4b977734-6270-4add-8151-353ff8e9e174",
+        "Server": "Microsoft-HTTPAPI/2.0",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "Transfer-Encoding": "chunked",
+        "X-Content-Type-Options": "nosniff"
+      },
+      "ResponseBody": null
+    },
+    {
+      "RequestUri": "https://REDACTED/jobs/BatchUser-Job-CanUpdateState?api-version=2023-05-01.17.0",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "Date": "Fri, 11 Aug 2023 22:52:10 GMT",
+        "User-Agent": "azsdk-java-azure-compute-batch/1.0.0-beta.1 (1.8.0_241; Windows 10; 10.0)",
+        "x-ms-client-request-id": "b1dd92ce-4625-4d67-94fe-911f9a798979"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Content-Type": "application/json; odata=minimalmetadata",
+        "DataServiceVersion": "3.0",
+        "Date": "Fri, 11 Aug 2023 22:52:10 GMT",
+        "ETag": "0x8DB9ABD989A6E61",
+        "Last-Modified": "Fri, 11 Aug 2023 22:52:10 GMT",
+        "request-id": "8f61c2d5-3cd6-43fa-80a3-d81ddab01178",
+        "Server": "Microsoft-HTTPAPI/2.0",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "Transfer-Encoding": "chunked",
+        "X-Content-Type-Options": "nosniff"
+      },
+      "ResponseBody": {
+        "odata.metadata": "https://sdktest.westus.batch.azure.com/$metadata#jobs/@Element",
+        "id": "BatchUser-Job-CanUpdateState",
+        "url": "REDACTED",
+        "eTag": "0x8DB9ABD989A6E61",
+        "lastModified": "2023-08-11T22:52:10.2811233Z",
+        "creationTime": "2023-08-11T22:52:07.4615177Z",
+        "state": "disabling",
+        "stateTransitionTime": "2023-08-11T22:52:10.2811233Z",
+        "previousState": "active",
+        "previousStateTransitionTime": "2023-08-11T22:52:07.4785112Z",
+        "priority": 500,
+        "maxParallelTasks": -1,
+        "usesTaskDependencies": false,
+        "allowTaskPreemption": false,
+        "constraints": {
+          "maxWallClockTime": "P10675199DT2H48M5.4775807S",
+          "maxTaskRetryCount": 3
+        },
+        "poolInfo": {
+          "poolId": "BatchUser-testpool"
+        },
+        "executionInfo": {
+          "startTime": "2023-08-11T22:52:07.4785112Z",
+          "poolId": "BatchUser-testpool"
+        },
+        "onAllTasksComplete": "noaction",
+        "onTaskFailure": "noaction"
+      }
+    },
+    {
+      "RequestUri": "https://REDACTED/jobs/BatchUser-Job-CanUpdateState?api-version=2023-05-01.17.0",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "Date": "Fri, 11 Aug 2023 22:52:15 GMT",
+        "User-Agent": "azsdk-java-azure-compute-batch/1.0.0-beta.1 (1.8.0_241; Windows 10; 10.0)",
+        "x-ms-client-request-id": "ce9263f0-465b-46fa-bb9d-3cfd8fc9fdae"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Content-Type": "application/json; odata=minimalmetadata",
+        "DataServiceVersion": "3.0",
+        "Date": "Fri, 11 Aug 2023 22:52:14 GMT",
+        "ETag": "0x8DB9ABD989A6E61",
+        "Last-Modified": "Fri, 11 Aug 2023 22:52:10 GMT",
+        "request-id": "0ae164d4-1d1a-4b37-bae5-432b9c0a992c",
+        "Server": "Microsoft-HTTPAPI/2.0",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "Transfer-Encoding": "chunked",
+        "X-Content-Type-Options": "nosniff"
+      },
+      "ResponseBody": {
+        "odata.metadata": "https://sdktest.westus.batch.azure.com/$metadata#jobs/@Element",
+        "id": "BatchUser-Job-CanUpdateState",
+        "url": "REDACTED",
+        "eTag": "0x8DB9ABD989A6E61",
+        "lastModified": "2023-08-11T22:52:10.2811233Z",
+        "creationTime": "2023-08-11T22:52:07.4615177Z",
+        "state": "disabled",
+        "stateTransitionTime": "2023-08-11T22:52:11.032646Z",
+        "previousState": "active",
+        "previousStateTransitionTime": "2023-08-11T22:52:07.4785112Z",
+        "priority": 500,
+        "maxParallelTasks": -1,
+        "usesTaskDependencies": false,
+        "allowTaskPreemption": false,
+        "constraints": {
+          "maxWallClockTime": "P10675199DT2H48M5.4775807S",
+          "maxTaskRetryCount": 3
+        },
+        "poolInfo": {
+          "poolId": "BatchUser-testpool"
+        },
+        "executionInfo": {
+          "startTime": "2023-08-11T22:52:07.4785112Z",
+          "poolId": "BatchUser-testpool"
+        },
+        "onAllTasksComplete": "noaction",
+        "onTaskFailure": "noaction"
+      }
+    },
+    {
+      "RequestUri": "https://REDACTED/jobs/BatchUser-Job-CanUpdateState?api-version=2023-05-01.17.0",
+      "RequestMethod": "PATCH",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "37",
+        "Content-Type": "application/json; odata=minimalmetadata",
+        "Date": "Fri, 11 Aug 2023 22:52:15 GMT",
+        "User-Agent": "azsdk-java-azure-compute-batch/1.0.0-beta.1 (1.8.0_241; Windows 10; 10.0)",
+        "x-ms-client-request-id": "be5c2b3d-cdba-4f9e-92e1-0de6ac30cfb9"
+      },
+      "RequestBody": {
+        "onAllTasksComplete": "terminatejob"
+      },
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "DataServiceId": "https://sdktest.westus.batch.azure.com/jobs/BatchUser-Job-CanUpdateState",
+        "DataServiceVersion": "3.0",
+        "Date": "Fri, 11 Aug 2023 22:52:14 GMT",
+        "ETag": "0x8DB9ABD9BAB1A71",
+        "Last-Modified": "Fri, 11 Aug 2023 22:52:15 GMT",
+        "request-id": "db208c35-8a28-4a87-a050-c1bd3cf4494d",
+        "Server": "Microsoft-HTTPAPI/2.0",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "Transfer-Encoding": "chunked",
+        "X-Content-Type-Options": "nosniff"
+      },
+      "ResponseBody": null
+    },
+    {
+      "RequestUri": "https://REDACTED/jobs/BatchUser-Job-CanUpdateState?api-version=2023-05-01.17.0",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "Date": "Fri, 11 Aug 2023 22:52:15 GMT",
+        "User-Agent": "azsdk-java-azure-compute-batch/1.0.0-beta.1 (1.8.0_241; Windows 10; 10.0)",
+        "x-ms-client-request-id": "f5b4828e-49d6-4bd4-a59c-94baf136e872"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Content-Type": "application/json; odata=minimalmetadata",
+        "DataServiceVersion": "3.0",
+        "Date": "Fri, 11 Aug 2023 22:52:14 GMT",
+        "ETag": "0x8DB9ABD9BAB1A71",
+        "Last-Modified": "Fri, 11 Aug 2023 22:52:15 GMT",
+        "request-id": "526ae4a5-076f-4245-8d88-7d15658d6597",
+        "Server": "Microsoft-HTTPAPI/2.0",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "Transfer-Encoding": "chunked",
+        "X-Content-Type-Options": "nosniff"
+      },
+      "ResponseBody": {
+        "odata.metadata": "https://sdktest.westus.batch.azure.com/$metadata#jobs/@Element",
+        "id": "BatchUser-Job-CanUpdateState",
+        "url": "REDACTED",
+        "eTag": "0x8DB9ABD9BAB1A71",
+        "lastModified": "2023-08-11T22:52:15.4235505Z",
+        "creationTime": "2023-08-11T22:52:07.4615177Z",
+        "state": "disabled",
+        "stateTransitionTime": "2023-08-11T22:52:11.032646Z",
+        "previousState": "active",
+        "previousStateTransitionTime": "2023-08-11T22:52:07.4785112Z",
+        "priority": 500,
+        "maxParallelTasks": -1,
+        "usesTaskDependencies": false,
+        "allowTaskPreemption": false,
+        "constraints": {
+          "maxWallClockTime": "P10675199DT2H48M5.4775807S",
+          "maxTaskRetryCount": 3
+        },
+        "poolInfo": {
+          "poolId": "BatchUser-testpool"
+        },
+        "executionInfo": {
+          "startTime": "2023-08-11T22:52:07.4785112Z",
+          "poolId": "BatchUser-testpool"
+        },
+        "onAllTasksComplete": "terminatejob",
+        "onTaskFailure": "noaction"
+      }
+    },
+    {
+      "RequestUri": "https://REDACTED/jobs/BatchUser-Job-CanUpdateState/enable?api-version=2023-05-01.17.0",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "Date": "Fri, 11 Aug 2023 22:52:15 GMT",
+        "User-Agent": "azsdk-java-azure-compute-batch/1.0.0-beta.1 (1.8.0_241; Windows 10; 10.0)",
+        "x-ms-client-request-id": "b81afcd7-2b62-4657-8385-b7893117f6c5"
+      },
+      "RequestBody": null,
+      "StatusCode": 202,
+      "ResponseHeaders": {
+        "DataServiceId": "https://sdktest.westus.batch.azure.com/jobs/BatchUser-Job-CanUpdateState/enable",
+        "DataServiceVersion": "3.0",
+        "Date": "Fri, 11 Aug 2023 22:52:14 GMT",
+        "ETag": "0x8DB9ABD9BB99F2C",
+        "Last-Modified": "Fri, 11 Aug 2023 22:52:15 GMT",
+        "request-id": "b6dd80de-be82-462d-9e74-f8d56391d189",
+        "Server": "Microsoft-HTTPAPI/2.0",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "Transfer-Encoding": "chunked",
+        "X-Content-Type-Options": "nosniff"
+      },
+      "ResponseBody": null
+    },
+    {
+      "RequestUri": "https://REDACTED/jobs/BatchUser-Job-CanUpdateState?api-version=2023-05-01.17.0",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "Date": "Fri, 11 Aug 2023 22:52:16 GMT",
+        "User-Agent": "azsdk-java-azure-compute-batch/1.0.0-beta.1 (1.8.0_241; Windows 10; 10.0)",
+        "x-ms-client-request-id": "ab9ef270-a536-4931-9d6b-128901e45a2f"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Content-Type": "application/json; odata=minimalmetadata",
+        "DataServiceVersion": "3.0",
+        "Date": "Fri, 11 Aug 2023 22:52:14 GMT",
+        "ETag": "0x8DB9ABD9BB99F2C",
+        "Last-Modified": "Fri, 11 Aug 2023 22:52:15 GMT",
+        "request-id": "2a2ff804-50ac-4d15-8151-733ba50c7cbe",
+        "Server": "Microsoft-HTTPAPI/2.0",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "Transfer-Encoding": "chunked",
+        "X-Content-Type-Options": "nosniff"
+      },
+      "ResponseBody": {
+        "odata.metadata": "https://sdktest.westus.batch.azure.com/$metadata#jobs/@Element",
+        "id": "BatchUser-Job-CanUpdateState",
+        "url": "REDACTED",
+        "eTag": "0x8DB9ABD9BB99F2C",
+        "lastModified": "2023-08-11T22:52:15.5186988Z",
+        "creationTime": "2023-08-11T22:52:07.4615177Z",
+        "state": "active",
+        "stateTransitionTime": "2023-08-11T22:52:15.5186988Z",
+        "previousState": "disabled",
+        "previousStateTransitionTime": "2023-08-11T22:52:11.032646Z",
+        "priority": 500,
+        "maxParallelTasks": -1,
+        "usesTaskDependencies": false,
+        "allowTaskPreemption": false,
+        "constraints": {
+          "maxWallClockTime": "P10675199DT2H48M5.4775807S",
+          "maxTaskRetryCount": 3
+        },
+        "poolInfo": {
+          "poolId": "BatchUser-testpool"
+        },
+        "executionInfo": {
+          "startTime": "2023-08-11T22:52:07.4785112Z",
+          "poolId": "BatchUser-testpool"
+        },
+        "onAllTasksComplete": "terminatejob",
+        "onTaskFailure": "noaction"
+      }
+    },
+    {
+      "RequestUri": "https://REDACTED/jobs/BatchUser-Job-CanUpdateState/terminate?api-version=2023-05-01.17.0",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "30",
+        "Content-Type": "application/json; odata=minimalmetadata",
+        "Date": "Fri, 11 Aug 2023 22:52:16 GMT",
+        "User-Agent": "azsdk-java-azure-compute-batch/1.0.0-beta.1 (1.8.0_241; Windows 10; 10.0)",
+        "x-ms-client-request-id": "8d62d045-f4a6-4ebe-84b4-7595dd11581a"
+      },
+      "RequestBody": {
+        "terminateReason": "myreason"
+      },
+      "StatusCode": 202,
+      "ResponseHeaders": {
+        "DataServiceId": "https://sdktest.westus.batch.azure.com/jobs/BatchUser-Job-CanUpdateState/terminate",
+        "DataServiceVersion": "3.0",
+        "Date": "Fri, 11 Aug 2023 22:52:14 GMT",
+        "ETag": "0x8DB9ABD9BC6099C",
+        "Last-Modified": "Fri, 11 Aug 2023 22:52:15 GMT",
+        "request-id": "964cf4d2-1312-4283-a677-7745a0e28038",
+        "Server": "Microsoft-HTTPAPI/2.0",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "Transfer-Encoding": "chunked",
+        "X-Content-Type-Options": "nosniff"
+      },
+      "ResponseBody": null
+    },
+    {
+      "RequestUri": "https://REDACTED/jobs/BatchUser-Job-CanUpdateState?api-version=2023-05-01.17.0",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "Date": "Fri, 11 Aug 2023 22:52:16 GMT",
+        "User-Agent": "azsdk-java-azure-compute-batch/1.0.0-beta.1 (1.8.0_241; Windows 10; 10.0)",
+        "x-ms-client-request-id": "4014652b-65c6-4558-b442-b8a77622190d"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Content-Type": "application/json; odata=minimalmetadata",
+        "DataServiceVersion": "3.0",
+        "Date": "Fri, 11 Aug 2023 22:52:14 GMT",
+        "ETag": "0x8DB9ABD9BC6099C",
+        "Last-Modified": "Fri, 11 Aug 2023 22:52:15 GMT",
+        "request-id": "920965b3-958e-41c9-b9e1-ad6ceadcc2aa",
+        "Server": "Microsoft-HTTPAPI/2.0",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "Transfer-Encoding": "chunked",
+        "X-Content-Type-Options": "nosniff"
+      },
+      "ResponseBody": {
+        "odata.metadata": "https://sdktest.westus.batch.azure.com/$metadata#jobs/@Element",
+        "id": "BatchUser-Job-CanUpdateState",
+        "url": "REDACTED",
+        "eTag": "0x8DB9ABD9BC6099C",
+        "lastModified": "2023-08-11T22:52:15.6000668Z",
+        "creationTime": "2023-08-11T22:52:07.4615177Z",
+        "state": "terminating",
+        "stateTransitionTime": "2023-08-11T22:52:15.6000668Z",
+        "previousState": "active",
+        "previousStateTransitionTime": "2023-08-11T22:52:15.5186988Z",
+        "priority": 500,
+        "maxParallelTasks": -1,
+        "usesTaskDependencies": false,
+        "allowTaskPreemption": false,
+        "constraints": {
+          "maxWallClockTime": "P10675199DT2H48M5.4775807S",
+          "maxTaskRetryCount": 3
+        },
+        "poolInfo": {
+          "poolId": "BatchUser-testpool"
+        },
+        "executionInfo": {
+          "startTime": "2023-08-11T22:52:07.4785112Z",
+          "poolId": "BatchUser-testpool",
+          "terminateReason": "myreason"
+        },
+        "onAllTasksComplete": "terminatejob",
+        "onTaskFailure": "noaction"
+      }
+    },
+    {
+      "RequestUri": "https://REDACTED/jobs/BatchUser-Job-CanUpdateState?api-version=2023-05-01.17.0",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "Date": "Fri, 11 Aug 2023 22:52:18 GMT",
+        "User-Agent": "azsdk-java-azure-compute-batch/1.0.0-beta.1 (1.8.0_241; Windows 10; 10.0)",
+        "x-ms-client-request-id": "b800c65a-7166-4ffd-8fb7-1be009e73a8b"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Content-Type": "application/json; odata=minimalmetadata",
+        "DataServiceVersion": "3.0",
+        "Date": "Fri, 11 Aug 2023 22:52:16 GMT",
+        "ETag": "0x8DB9ABD9BC6099C",
+        "Last-Modified": "Fri, 11 Aug 2023 22:52:15 GMT",
+        "request-id": "3ca6f3d6-a95a-4eb6-8c4e-ed890f8895cc",
+        "Server": "Microsoft-HTTPAPI/2.0",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "Transfer-Encoding": "chunked",
+        "X-Content-Type-Options": "nosniff"
+      },
+      "ResponseBody": {
+        "odata.metadata": "https://sdktest.westus.batch.azure.com/$metadata#jobs/@Element",
+        "id": "BatchUser-Job-CanUpdateState",
+        "url": "REDACTED",
+        "eTag": "0x8DB9ABD9BC6099C",
+        "lastModified": "2023-08-11T22:52:15.6000668Z",
+        "creationTime": "2023-08-11T22:52:07.4615177Z",
+        "state": "completed",
+        "stateTransitionTime": "2023-08-11T22:52:16.0450172Z",
+        "previousState": "active",
+        "previousStateTransitionTime": "2023-08-11T22:52:15.5186988Z",
+        "priority": 500,
+        "maxParallelTasks": -1,
+        "usesTaskDependencies": false,
+        "allowTaskPreemption": false,
+        "constraints": {
+          "maxWallClockTime": "P10675199DT2H48M5.4775807S",
+          "maxTaskRetryCount": 3
+        },
+        "poolInfo": {
+          "poolId": "BatchUser-testpool"
+        },
+        "executionInfo": {
+          "startTime": "2023-08-11T22:52:07.4785112Z",
+          "endTime": "2023-08-11T22:52:16.0450172Z",
+          "poolId": "BatchUser-testpool",
+          "terminateReason": "myreason"
+        },
+        "onAllTasksComplete": "terminatejob",
+        "onTaskFailure": "noaction"
+      }
+    },
+    {
+      "RequestUri": "https://REDACTED/jobs/BatchUser-Job-CanUpdateState?api-version=2023-05-01.17.0",
+      "RequestMethod": "DELETE",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "Date": "Fri, 11 Aug 2023 22:52:18 GMT",
+        "User-Agent": "azsdk-java-azure-compute-batch/1.0.0-beta.1 (1.8.0_241; Windows 10; 10.0)",
+        "x-ms-client-request-id": "bdefcb88-af16-4cf4-bb3c-274e47b1c027"
+      },
+      "RequestBody": null,
+      "StatusCode": 202,
+      "ResponseHeaders": {
+        "DataServiceVersion": "3.0",
+        "Date": "Fri, 11 Aug 2023 22:52:17 GMT",
+        "request-id": "c750a462-47df-4663-bf2d-191c21904320",
+        "Server": "Microsoft-HTTPAPI/2.0",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "Transfer-Encoding": "chunked",
+        "X-Content-Type-Options": "nosniff"
+      },
+      "ResponseBody": null
+    }
+  ],
+  "Variables": {}
+}

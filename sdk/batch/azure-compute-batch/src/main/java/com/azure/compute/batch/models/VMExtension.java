@@ -239,4 +239,36 @@ public final class VMExtension {
         this.protectedSettings = protectedSettings;
         return this;
     }
+
+    /*
+     * Indicates whether the extension should be automatically upgraded by the platform if there is a newer version of
+     * the extension available.
+     */
+    @Generated
+    @JsonProperty(value = "enableAutomaticUpgrade")
+    private Boolean enableAutomaticUpgrade;
+
+    /**
+     * Get the enableAutomaticUpgrade property: Indicates whether the extension should be automatically upgraded by the
+     * platform if there is a newer version of the extension available.
+     *
+     * @return the enableAutomaticUpgrade value.
+     */
+    @Generated
+    public Boolean isEnableAutomaticUpgrade() {
+        return this.enableAutomaticUpgrade;
+    }
+
+    /**
+     * Set the enableAutomaticUpgrade property: Indicates whether the extension should be automatically upgraded by the
+     * platform if there is a newer version of the extension available.
+     *
+     * @param enableAutomaticUpgrade the enableAutomaticUpgrade value to set.
+     * @return the VMExtension object itself.
+     */
+    @Generated
+    public VMExtension setEnableAutomaticUpgrade(Boolean enableAutomaticUpgrade) {
+        this.enableAutomaticUpgrade = enableAutomaticUpgrade;
+        return this;
+    }
 }

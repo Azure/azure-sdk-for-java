@@ -12,7 +12,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 import static java.time.OffsetDateTime.now;
@@ -61,9 +60,11 @@ public class SharedKeyTests extends BatchServiceClientTestBase {
             /*
              * Updating Pool
              */
-            BatchPoolUpdateParameters poolUpdateParameters = new BatchPoolUpdateParameters(new LinkedList<>(),
-                    new LinkedList<>(),
-                    new LinkedList<>(List.of(new MetadataItem("foo", "bar"))));
+            ArrayList<MetadataItem> updatedMetadata = new ArrayList<MetadataItem>();
+            updatedMetadata.add(new MetadataItem("foo", "bar"));
+            BatchPoolUpdateParameters poolUpdateParameters = new BatchPoolUpdateParameters(new ArrayList<>(),
+                    new ArrayList<>(),
+                    updatedMetadata);
 
             poolUpdateParameters.setTargetNodeCommunicationMode(NodeCommunicationMode.SIMPLIFIED);
 
@@ -77,7 +78,9 @@ public class SharedKeyTests extends BatchServiceClientTestBase {
             /*
              * Patch Pool
              */
-            BatchPoolPatchParameters poolPatchParameters = new BatchPoolPatchParameters().setMetadata(new ArrayList<>(List.of(new MetadataItem("key1", "value1")))).setTargetNodeCommunicationMode(NodeCommunicationMode.CLASSIC);
+            updatedMetadata.clear();
+            updatedMetadata.add(new MetadataItem("key1", "value1"));
+            BatchPoolPatchParameters poolPatchParameters = new BatchPoolPatchParameters().setMetadata(updatedMetadata).setTargetNodeCommunicationMode(NodeCommunicationMode.CLASSIC);
             Response<Void> patchPoolResponse = poolClientWithSharedKey.patchWithResponse(sharedKeyPoolId, BinaryData.fromObject(poolPatchParameters), null);
             HttpRequest patchPoolRequest = patchPoolResponse.getRequest();
             HttpHeader ocpDateHeader = patchPoolRequest.getHeaders().get(HttpHeaderName.fromString("ocp-date"));

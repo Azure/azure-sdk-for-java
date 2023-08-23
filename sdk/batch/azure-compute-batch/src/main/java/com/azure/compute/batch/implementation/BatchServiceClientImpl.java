@@ -122,18 +122,6 @@ public final class BatchServiceClientImpl {
         return this.certificates;
     }
 
-    /** The FilesImpl object to access its operations. */
-    private final FilesImpl files;
-
-    /**
-     * Gets the FilesImpl object to access its operations.
-     *
-     * @return the FilesImpl object.
-     */
-    public FilesImpl getFiles() {
-        return this.files;
-    }
-
     /** The JobSchedulesImpl object to access its operations. */
     private final JobSchedulesImpl jobSchedules;
 
@@ -217,7 +205,6 @@ public final class BatchServiceClientImpl {
         this.accounts = new AccountsImpl(this);
         this.jobs = new JobsImpl(this);
         this.certificates = new CertificatesImpl(this);
-        this.files = new FilesImpl(this);
         this.jobSchedules = new JobSchedulesImpl(this);
         this.tasks = new TasksImpl(this);
         this.batchNodes = new BatchNodesImpl(this);
