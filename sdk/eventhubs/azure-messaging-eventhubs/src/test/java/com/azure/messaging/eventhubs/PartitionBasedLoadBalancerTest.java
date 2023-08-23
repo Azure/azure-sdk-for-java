@@ -105,6 +105,8 @@ public class PartitionBasedLoadBalancerTest {
 
     private List<AutoCloseable> toClose;
 
+    private final EventProcessorClientOptions processorOptions = new EventProcessorClientOptions();
+
     @BeforeEach
     public void setup(TestInfo testInfo) {
         System.out.println("Running " + testInfo.getDisplayName());
@@ -393,9 +395,19 @@ public class PartitionBasedLoadBalancerTest {
         when(eventHubConsumer.receiveFromPartition(anyString(), any(EventPosition.class), any(ReceiveOptions.class)))
             .thenReturn(Flux.error(new IllegalStateException()));
 
+        processorOptions.setConsumerGroup("test-consumer")
+            .setTrackLastEnqueuedEventProperties(false)
+            .setInitialPartitionEventPosition(Collections.emptyMap())
+            .setMaxBatchSize(1)
+            .setMaxWaitTime(null)
+            .setBatchReceiveMode(BATCH_RECEIVE_MODE)
+            .setLoadBalancerUpdateInterval(Duration.ofSeconds(10))
+            .setPartitionOwnershipExpirationInterval(Duration.ofMinutes(1))
+            .setLoadBalancingStrategy(LoadBalancingStrategy.BALANCED);
+
         PartitionPumpManager partitionPumpManager = new PartitionPumpManager(checkpointStore,
-            () -> partitionProcessor, eventHubClientBuilder, false, DEFAULT_TRACER, new HashMap<>(), 1, null,
-            BATCH_RECEIVE_MODE);
+            () -> partitionProcessor, eventHubClientBuilder, DEFAULT_TRACER, processorOptions);
+
         PartitionBasedLoadBalancer loadBalancer = new PartitionBasedLoadBalancer(checkpointStore,
             eventHubAsyncClient, FQ_NAMESPACE, EVENT_HUB_NAME, CONSUMER_GROUP_NAME, "owner", TimeUnit.SECONDS.toSeconds(5),
             partitionPumpManager, ec -> {
@@ -415,9 +427,20 @@ public class PartitionBasedLoadBalancerTest {
             + "failed")));
         doThrow(new IllegalStateException()).when(partitionProcessor).processEvent(any(EventContext.class));
         when(eventHubAsyncClient.getPartitionIds()).thenReturn(Flux.fromIterable(PARTITION_IDS_2));
-        PartitionPumpManager partitionPumpManager = new PartitionPumpManager(checkpointStore,
-            () -> partitionProcessor, eventHubClientBuilder, false, DEFAULT_TRACER, new HashMap<>(), 1, null,
-            BATCH_RECEIVE_MODE);
+
+        processorOptions.setConsumerGroup("test-consumer")
+            .setTrackLastEnqueuedEventProperties(false)
+            .setInitialPartitionEventPosition(Collections.emptyMap())
+            .setMaxBatchSize(1)
+            .setMaxWaitTime(null)
+            .setBatchReceiveMode(BATCH_RECEIVE_MODE)
+            .setLoadBalancerUpdateInterval(Duration.ofSeconds(10))
+            .setPartitionOwnershipExpirationInterval(Duration.ofMinutes(1))
+            .setLoadBalancingStrategy(LoadBalancingStrategy.BALANCED);
+
+        PartitionPumpManager partitionPumpManager = new PartitionPumpManager(checkpointStore, () -> partitionProcessor,
+            eventHubClientBuilder, DEFAULT_TRACER, processorOptions);
+
         PartitionBasedLoadBalancer loadBalancer = new PartitionBasedLoadBalancer(checkpointStore,
             eventHubAsyncClient, FQ_NAMESPACE, EVENT_HUB_NAME, CONSUMER_GROUP_NAME, "owner", TimeUnit.SECONDS.toSeconds(5),
             partitionPumpManager, ec -> {
@@ -471,9 +494,20 @@ public class PartitionBasedLoadBalancerTest {
                 return new PartitionEvent(PARTITION_CONTEXT, eventDataList.get(i), null);
             }));
 
+
+        processorOptions.setConsumerGroup("test-consumer")
+            .setTrackLastEnqueuedEventProperties(false)
+            .setInitialPartitionEventPosition(Collections.emptyMap())
+            .setMaxBatchSize(1)
+            .setMaxWaitTime(null)
+            .setBatchReceiveMode(BATCH_RECEIVE_MODE)
+            .setLoadBalancerUpdateInterval(Duration.ofSeconds(10))
+            .setPartitionOwnershipExpirationInterval(Duration.ofMinutes(1))
+            .setLoadBalancingStrategy(LoadBalancingStrategy.BALANCED);
+
         final PartitionPumpManager partitionPumpManager = new PartitionPumpManager(mockCheckpointStore,
-            () -> partitionProcessor, eventHubClientBuilder, false, DEFAULT_TRACER,
-            Collections.emptyMap(), 1, null, BATCH_RECEIVE_MODE);
+            () -> partitionProcessor, eventHubClientBuilder, DEFAULT_TRACER, processorOptions);
+
         toClose.add(() -> partitionPumpManager.stopAllPartitionPumps());
         final PartitionBasedLoadBalancer loadBalancer = new PartitionBasedLoadBalancer(mockCheckpointStore,
             eventHubAsyncClient, FQ_NAMESPACE, EVENT_HUB_NAME, CONSUMER_GROUP_NAME, "owner",
@@ -502,9 +536,20 @@ public class PartitionBasedLoadBalancerTest {
         doThrow(new IllegalStateException()).when(partitionProcessor).processEvent(any(EventContext.class));
         List<String> partitionIds = new ArrayList<>();
         when(eventHubAsyncClient.getPartitionIds()).thenReturn(Flux.fromIterable(partitionIds));
+
+        processorOptions.setConsumerGroup("test-consumer")
+            .setTrackLastEnqueuedEventProperties(false)
+            .setInitialPartitionEventPosition(Collections.emptyMap())
+            .setMaxBatchSize(1)
+            .setMaxWaitTime(null)
+            .setBatchReceiveMode(BATCH_RECEIVE_MODE)
+            .setLoadBalancerUpdateInterval(Duration.ofSeconds(10))
+            .setPartitionOwnershipExpirationInterval(Duration.ofMinutes(1))
+            .setLoadBalancingStrategy(LoadBalancingStrategy.BALANCED);
+
         PartitionPumpManager partitionPumpManager = new PartitionPumpManager(checkpointStore,
-            () -> partitionProcessor, eventHubClientBuilder, false, DEFAULT_TRACER, new HashMap<>(), 1, null,
-            BATCH_RECEIVE_MODE);
+            () -> partitionProcessor, eventHubClientBuilder, DEFAULT_TRACER, processorOptions);
+
         toClose.add(() -> partitionPumpManager.stopAllPartitionPumps());
         PartitionBasedLoadBalancer loadBalancer = new PartitionBasedLoadBalancer(checkpointStore,
             eventHubAsyncClient, FQ_NAMESPACE, EVENT_HUB_NAME, CONSUMER_GROUP_NAME, "owner", TimeUnit.SECONDS.toSeconds(5),
@@ -718,6 +763,17 @@ public class PartitionBasedLoadBalancerTest {
     }
 
     private PartitionPumpManager getPartitionPumpManager() {
+
+        processorOptions.setConsumerGroup("test-consumer")
+            .setTrackLastEnqueuedEventProperties(false)
+            .setInitialPartitionEventPosition(Collections.emptyMap())
+            .setMaxBatchSize(1)
+            .setMaxWaitTime(null)
+            .setBatchReceiveMode(BATCH_RECEIVE_MODE)
+            .setLoadBalancerUpdateInterval(Duration.ofSeconds(10))
+            .setPartitionOwnershipExpirationInterval(Duration.ofMinutes(1))
+            .setLoadBalancingStrategy(LoadBalancingStrategy.BALANCED);
+
         PartitionPumpManager pumpManager = new PartitionPumpManager(checkpointStore,
             () -> new PartitionProcessor() {
                 @Override
@@ -737,7 +793,7 @@ public class PartitionBasedLoadBalancerTest {
                         eventProcessingErrorContext.getPartitionContext().getPartitionId(),
                         eventProcessingErrorContext.getThrowable());
                 }
-            }, eventHubClientBuilder, false, DEFAULT_TRACER, new HashMap<>(), 1, null, BATCH_RECEIVE_MODE);
+            }, eventHubClientBuilder, DEFAULT_TRACER, processorOptions);
 
 
         toClose.add(() -> pumpManager.stopAllPartitionPumps());
