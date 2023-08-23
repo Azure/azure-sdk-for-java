@@ -163,69 +163,40 @@ public class ReplicatedResourceClient {
     private Mono<StoreResponse> getStoreResponseMonoWithSpeculation(RxDocumentServiceRequest request, Quadruple<Boolean, Boolean, Duration, Integer> forceRefreshAndTimeout) {
         CosmosEndToEndOperationLatencyPolicyConfig config = request.requestContext.getEndToEndOperationLatencyPolicyConfig();
         AvailabilityStrategy strategy = config.getAvailabilityStrategy();
+
+        if (!(strategy instanceof ThresholdBasedAvailabilityStrategy)) {
+            // If no threshold based availability strategy is defined just return original Mono
+            return getStoreResponseMono(request, forceRefreshAndTimeout);
+        }
+
         List<Mono<StoreResponse>> monoList = new ArrayList<>();
         List<RxDocumentServiceRequest> requestList = new ArrayList<>();
-
         final List<URI> effectiveEndpoints = getApplicableEndPoints(request);
-
-        if (strategy instanceof ThresholdBasedAvailabilityStrategy) {
-
-            if (effectiveEndpoints != null) {
-                effectiveEndpoints
-                    .forEach(locationURI -> {
-                        if (locationURI != null) {
-
-                            Mono<StoreResponse> storeResponseFromApplicableRegion;
-
-                            RxDocumentServiceRequest newRequest = request.clone();
-                            newRequest.requestContext.routeToLocation(locationURI);
-                            requestList.add(newRequest);
-                            if (monoList.isEmpty()) {
-                                storeResponseFromApplicableRegion = getStoreResponseMono(newRequest,
-                                    forceRefreshAndTimeout)
-                                    .doOnError(throwable -> {
-
-                                        Throwable exception = Exceptions.unwrap(throwable);
-
-                                        // collect latest CosmosException instance bubbling up for a region
-                                        if (exception instanceof CosmosException) {
-                                            CosmosException cosmosException = Utils.as(exception, CosmosException.class);
-                                            request.requestContext.regionBasedExceptionMap.put(locationURI, cosmosException);
-                                        }
-                                    });
-
-                                monoList.add(storeResponseFromApplicableRegion);
-                            } else {
-                                storeResponseFromApplicableRegion = getStoreResponseMono(newRequest,
-                                    forceRefreshAndTimeout)
-                                    .delaySubscription(((ThresholdBasedAvailabilityStrategy) strategy)
-                                        .getThreshold()
-                                        .plus(((ThresholdBasedAvailabilityStrategy) strategy)
-                                            .getThresholdStep()
-                                            .multipliedBy(monoList.size() - 1))
-                                    )
-                                    .doOnError(throwable -> {
-
-                                        Throwable exception = Exceptions.unwrap(throwable);
-
-                                        // collect latest CosmosException instance bubbling up for a region
-                                        if (exception instanceof CosmosException) {
-                                            CosmosException cosmosException = Utils.as(exception, CosmosException.class);
-                                            request.requestContext.regionBasedExceptionMap.put(locationURI, cosmosException);
-                                        }
-                                    });
-
-                                monoList.add(storeResponseFromApplicableRegion);
-                            }
-                        }
-                    });
-            }
+        if (effectiveEndpoints == null || effectiveEndpoints.stream().noneMatch(locationURI -> locationURI != null)) {
+            // If no endpoints are available just return original Mono
+            return getStoreResponseMono(request, forceRefreshAndTimeout);
         }
 
-        // If the above conditions are not met, then we will just return the original request
-        if (monoList.isEmpty()) {
-            monoList.add(getStoreResponseMono(request, forceRefreshAndTimeout));
-        }
+        effectiveEndpoints
+            .stream().filter(locationURI -> locationURI != null)
+            .forEach(locationURI -> {
+                RxDocumentServiceRequest newRequest = request.clone();
+                newRequest.requestContext.routeToLocation(locationURI);
+                requestList.add(newRequest);
+                if (monoList.isEmpty()) {
+                    monoList.add(getStoreResponseMono(newRequest, forceRefreshAndTimeout));
+                } else {
+                    monoList
+                        .add(
+                            getStoreResponseMono(newRequest, forceRefreshAndTimeout)
+                                .delaySubscription(((ThresholdBasedAvailabilityStrategy) strategy)
+                                    .getThreshold()
+                                    .plus(((ThresholdBasedAvailabilityStrategy) strategy)
+                                        .getThresholdStep()
+                                        .multipliedBy(monoList.size() - 1))
+                                ));
+                }
+            });
 
         return Mono
             .firstWithValue(monoList)
@@ -234,27 +205,19 @@ public class ReplicatedResourceClient {
 
                 if (exception instanceof NoSuchElementException) {
 
-                    Map<URI, CosmosException> regionBasedExceptionMap = request.requestContext.regionBasedExceptionMap;
+                    List<Throwable> innerThrowables = Exceptions
+                        .unwrapMultiple(exception.getCause());
 
-                    if (effectiveEndpoints != null) {
-                        if (!effectiveEndpoints.isEmpty() && !regionBasedExceptionMap.isEmpty()) {
+                    for (Throwable innerThrowable : innerThrowables) {
+                        Throwable innerException = Exceptions.unwrap(innerThrowable);
 
-                            URI firstApplicableEndpoint = effectiveEndpoints.get(0);
-
-                            CosmosException cosmosExceptionFromFirstApplicableRegion = regionBasedExceptionMap.get(effectiveEndpoints.get(0));
-
-                            // suppressing CosmosException instances from other applicable regions
-                            for (URI failedEndpoint : regionBasedExceptionMap.keySet()) {
-                                if (!failedEndpoint.equals(firstApplicableEndpoint)) {
-                                    cosmosExceptionFromFirstApplicableRegion.addSuppressed(
-                                        regionBasedExceptionMap.get(failedEndpoint));
-                                }
-                            }
-
-                            return cosmosExceptionFromFirstApplicableRegion;
+                        // collect latest CosmosException instance bubbling up for a region
+                        if (innerException instanceof CosmosException) {
+                            return Utils.as(innerException, CosmosException.class);
                         }
                     }
                 }
+
                 return exception;
             });
     }
