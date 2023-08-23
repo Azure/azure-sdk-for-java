@@ -11,9 +11,8 @@ import com.azure.resourcemanager.elasticsan.models.EncryptionType;
 import com.azure.resourcemanager.elasticsan.models.NetworkRuleSet;
 import com.azure.resourcemanager.elasticsan.models.ProvisioningStates;
 import com.azure.resourcemanager.elasticsan.models.StorageTargetType;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.Map;
+import java.util.List;
 
 /** Response for Volume Group request. */
 @Fluent
@@ -25,17 +24,10 @@ public final class VolumeGroupInner extends ProxyResource {
     private VolumeGroupProperties innerProperties;
 
     /*
-     * Resource metadata required by ARM RPC
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
-
-    /*
-     * Azure resource tags.
-     */
-    @JsonProperty(value = "tags")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
-    private Map<String, String> tags;
 
     /** Creates an instance of VolumeGroupInner class. */
     public VolumeGroupInner() {
@@ -51,32 +43,12 @@ public final class VolumeGroupInner extends ProxyResource {
     }
 
     /**
-     * Get the systemData property: Resource metadata required by ARM RPC.
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
      *
      * @return the systemData value.
      */
     public SystemData systemData() {
         return this.systemData;
-    }
-
-    /**
-     * Get the tags property: Azure resource tags.
-     *
-     * @return the tags value.
-     */
-    public Map<String, String> tags() {
-        return this.tags;
-    }
-
-    /**
-     * Set the tags property: Azure resource tags.
-     *
-     * @param tags the tags value to set.
-     * @return the VolumeGroupInner object itself.
-     */
-    public VolumeGroupInner withTags(Map<String, String> tags) {
-        this.tags = tags;
-        return this;
     }
 
     /**
@@ -155,6 +127,15 @@ public final class VolumeGroupInner extends ProxyResource {
         }
         this.innerProperties().withNetworkAcls(networkAcls);
         return this;
+    }
+
+    /**
+     * Get the privateEndpointConnections property: The list of Private Endpoint Connections.
+     *
+     * @return the privateEndpointConnections value.
+     */
+    public List<PrivateEndpointConnectionInner> privateEndpointConnections() {
+        return this.innerProperties() == null ? null : this.innerProperties().privateEndpointConnections();
     }
 
     /**

@@ -8,67 +8,96 @@ import com.azure.communication.identity.models.CommunicationTokenScope;
 import com.azure.communication.identity.models.GetTokenForTeamsUserOptions;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.rest.Response;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static com.azure.communication.identity.CteTestHelper.skipExchangeAadTeamsTokenTest;
+import static com.azure.communication.identity.models.CommunicationTokenScope.CHAT;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class CommunicationIdentityAsyncManagedIdentityTests extends CommunicationIdentityClientTestBase {
 
+    private static final List<CommunicationTokenScope> SCOPES = Collections.singletonList(CHAT);
     private CommunicationIdentityAsyncClient asyncClient;
+    private CommunicationIdentityClientBuilder builder;
 
-    @BeforeEach
-    public void setup() {
-        super.setup();
-        httpClient = buildAsyncAssertingClient(httpClient);
+    @Override
+    public void beforeTest() {
+        super.beforeTest();
+        builder = createClientBuilderUsingManagedIdentity(buildAsyncAssertingClient(httpClient));
     }
 
     @Test
     public void createAsyncIdentityClient() {
         // Arrange
-        CommunicationIdentityClientBuilder builder = createClientBuilderUsingManagedIdentity(httpClient);
         asyncClient = setupAsyncClient(builder, "createAsyncIdentityClientUsingManagedIdentity");
         assertNotNull(asyncClient);
 
         // Action & Assert
         Mono<CommunicationUserIdentifier> response = asyncClient.createUser();
         StepVerifier.create(response)
-                .assertNext(item -> {
-                    assertNotNull(item.getId());
-                    assertFalse(item.getId().isEmpty());
-                })
+                .assertNext(this::verifyUserNotEmpty)
                 .verifyComplete();
     }
 
     @Test
     public void createUserWithResponse() {
         // Arrange
-        CommunicationIdentityClientBuilder builder = createClientBuilderUsingManagedIdentity(httpClient);
         asyncClient = setupAsyncClient(builder, "createUserWithResponseUsingManagedIdentity");
 
         // Action & Assert
         Mono<Response<CommunicationUserIdentifier>> response = asyncClient.createUserWithResponse();
         StepVerifier.create(response)
                 .assertNext(item -> {
-                    assertNotNull(item.getValue().getId());
-                    assertFalse(item.getValue().getId().isEmpty());
                     assertEquals(201, item.getStatusCode(), "Expect status code to be 201");
+                    verifyUserNotEmpty(item.getValue());
                 })
                 .verifyComplete();
     }
 
     @Test
+    public void getToken() {
+        // Arrange
+        asyncClient = setupAsyncClient(builder, "getTokenUsingManagedIdentity");
+
+        // Action & Assert
+        StepVerifier.create(
+                asyncClient.createUser()
+                    .flatMap(communicationUser -> {
+                        return asyncClient.getToken(communicationUser, SCOPES);
+                    }))
+            .assertNext(this::verifyTokenNotEmpty)
+            .verifyComplete();
+    }
+
+    @Test
+    public void getTokenWithResponse() {
+        // Arrange
+        asyncClient = setupAsyncClient(builder, "getTokenWithResponseUsingManagedIdentity");
+
+        // Action & Assert
+        StepVerifier.create(
+                asyncClient.createUser()
+                    .flatMap(communicationUser -> {
+                        return asyncClient.getTokenWithResponse(communicationUser, SCOPES);
+                    }))
+            .assertNext(issuedToken -> {
+                assertEquals(200, issuedToken.getStatusCode(), "Expect status code to be 200");
+                verifyTokenNotEmpty(issuedToken.getValue());
+            })
+            .verifyComplete();
+    }
+
+    @Test
     public void deleteUser() {
         // Arrange
-        CommunicationIdentityClientBuilder builder = createClientBuilderUsingManagedIdentity(httpClient);
         asyncClient = setupAsyncClient(builder, "deleteUserUsingManagedIdentity");
 
         // Action & Assert
@@ -83,7 +112,6 @@ public class CommunicationIdentityAsyncManagedIdentityTests extends Communicatio
     @Test
     public void deleteUserWithResponse() {
         // Arrange
-        CommunicationIdentityClientBuilder builder = createClientBuilderUsingManagedIdentity(httpClient);
         asyncClient = setupAsyncClient(builder, "deleteUserWithResponseUsingManagedIdentity");
 
         // Action & Assert
@@ -101,15 +129,13 @@ public class CommunicationIdentityAsyncManagedIdentityTests extends Communicatio
     @Test
     public void revokeToken() {
         // Arrange
-        CommunicationIdentityClientBuilder builder = createClientBuilderUsingManagedIdentity(httpClient);
         asyncClient = setupAsyncClient(builder, "revokeTokenUsingManagedIdentity");
 
         // Action & Assert
         StepVerifier.create(
                         asyncClient.createUser()
                                 .flatMap(communicationUser -> {
-                                    List<CommunicationTokenScope> scopes = Arrays.asList(CommunicationTokenScope.CHAT);
-                                    return asyncClient.getToken(communicationUser, scopes)
+                                    return asyncClient.getToken(communicationUser, SCOPES)
                                             .flatMap(communicationUserToken -> {
                                                 return asyncClient.revokeTokens(communicationUser);
                                             });
@@ -120,15 +146,13 @@ public class CommunicationIdentityAsyncManagedIdentityTests extends Communicatio
     @Test
     public void revokeTokenWithResponse() {
         // Arrange
-        CommunicationIdentityClientBuilder builder = createClientBuilderUsingManagedIdentity(httpClient);
         asyncClient = setupAsyncClient(builder, "revokeTokenWithResponseUsingManagedIdentity");
 
         // Action & Assert
         StepVerifier.create(
                         asyncClient.createUser()
                                 .flatMap(communicationUser -> {
-                                    List<CommunicationTokenScope> scopes = Arrays.asList(CommunicationTokenScope.CHAT);
-                                    return asyncClient.getToken(communicationUser, scopes)
+                                    return asyncClient.getToken(communicationUser, SCOPES)
                                             .flatMap(communicationUserToken -> {
                                                 return asyncClient.revokeTokensWithResponse(communicationUser);
                                             });
@@ -136,40 +160,6 @@ public class CommunicationIdentityAsyncManagedIdentityTests extends Communicatio
                 .assertNext(item -> {
                     assertEquals(204, item.getStatusCode(), "Expect status code to be 204");
                 })
-                .verifyComplete();
-    }
-
-    @Test
-    public void getToken() {
-        // Arrange
-        CommunicationIdentityClientBuilder builder = createClientBuilderUsingManagedIdentity(httpClient);
-        asyncClient = setupAsyncClient(builder, "getTokenUsingManagedIdentity");
-
-        // Action & Assert
-        StepVerifier.create(
-                        asyncClient.createUser()
-                                .flatMap(communicationUser -> {
-                                    List<CommunicationTokenScope> scopes = Arrays.asList(CommunicationTokenScope.CHAT);
-                                    return asyncClient.getToken(communicationUser, scopes);
-                                }))
-                .assertNext(this::verifyTokenNotEmpty)
-                .verifyComplete();
-    }
-
-    @Test
-    public void getTokenWithResponse() {
-        // Arrange
-        CommunicationIdentityClientBuilder builder = createClientBuilderUsingManagedIdentity(httpClient);
-        asyncClient = setupAsyncClient(builder, "getTokenWithResponseUsingManagedIdentity");
-
-        // Action & Assert
-        StepVerifier.create(
-                        asyncClient.createUser()
-                                .flatMap(communicationUser -> {
-                                    List<CommunicationTokenScope> scopes = Arrays.asList(CommunicationTokenScope.CHAT);
-                                    return asyncClient.getTokenWithResponse(communicationUser, scopes);
-                                }))
-                .assertNext(issuedToken -> verifyTokenNotEmpty(issuedToken.getValue()))
                 .verifyComplete();
     }
 
@@ -181,8 +171,8 @@ public class CommunicationIdentityAsyncManagedIdentityTests extends Communicatio
         }
 
         // Arrange
-        CommunicationIdentityClientBuilder builder = createClientBuilderUsingManagedIdentity(httpClient);
         asyncClient = setupAsyncClient(builder, "getTokenForTeamsUserUsingManagedIdentity");
+
         // Action & Assert
         Mono<AccessToken> response = asyncClient.getTokenForTeamsUser(options);
         StepVerifier.create(response)
@@ -198,14 +188,14 @@ public class CommunicationIdentityAsyncManagedIdentityTests extends Communicatio
         }
 
         // Arrange
-        CommunicationIdentityClientBuilder builder = createClientBuilderUsingManagedIdentity(httpClient);
         asyncClient = setupAsyncClient(builder, "getTokenForTeamsUserWithResponseUsingManagedIdentity");
+
         // Action & Assert
         Mono<Response<AccessToken>> response = asyncClient.getTokenForTeamsUserWithResponse(options);
         StepVerifier.create(response)
                 .assertNext(issuedTokenResponse -> {
                     verifyTokenNotEmpty(issuedTokenResponse.getValue());
-                    assertEquals(200, issuedTokenResponse.getStatusCode(), "Expect status code to be 201");
+                    assertEquals(200, issuedTokenResponse.getStatusCode(), "Expect status code to be 200");
                 })
                 .verifyComplete();
     }

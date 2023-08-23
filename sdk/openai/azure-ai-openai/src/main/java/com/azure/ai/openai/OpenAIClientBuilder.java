@@ -261,7 +261,10 @@ public final class OpenAIClientBuilder
                 (serviceVersion != null) ? serviceVersion : OpenAIServiceVersion.getLatest();
         OpenAIClientImpl client =
                 new OpenAIClientImpl(
-                        localPipeline, JacksonAdapter.createDefaultSerializerAdapter(), endpoint, localServiceVersion);
+                        localPipeline,
+                        JacksonAdapter.createDefaultSerializerAdapter(),
+                        this.endpoint,
+                        localServiceVersion);
         return client;
     }
 
@@ -289,7 +292,6 @@ public final class OpenAIClientBuilder
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
         policies.add(ClientBuilderUtil.validateAndGetRetryPolicy(retryPolicy, retryOptions, new RetryPolicy()));
         policies.add(new AddDatePolicy());
-        policies.add(new CookiePolicy());
         if (azureKeyCredential != null) {
             policies.add(new AzureKeyCredentialPolicy("api-key", azureKeyCredential));
         }

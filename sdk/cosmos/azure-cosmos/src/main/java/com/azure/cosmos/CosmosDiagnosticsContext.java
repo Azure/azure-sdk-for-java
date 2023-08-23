@@ -626,28 +626,30 @@ public final class CosmosDiagnosticsContext {
         ClientSideRequestStatistics requestStats,
         List<CosmosDiagnosticsRequestInfo> requestInfo) {
 
-        ClientSideRequestStatistics.GatewayStatistics gatewayStats = requestStats.getGatewayStatistics();
+        List<ClientSideRequestStatistics.GatewayStatistics> gatewayStatsList = requestStats.getGatewayStatisticsList();
 
-        if (gatewayStats == null) {
+        if (gatewayStatsList == null || gatewayStatsList.size() == 0) {
             return;
         }
 
-        CosmosDiagnosticsRequestInfo info = new CosmosDiagnosticsRequestInfo(
-            requestStats.getActivityId(),
-            null,
-            gatewayStats.getPartitionKeyRangeId(),
-            gatewayStats.getResourceType() + ":" + gatewayStats.getOperationType(),
-            requestStats.getRequestStartTimeUTC(),
-            requestStats.getDuration(),
-            null,
-            gatewayStats.getRequestCharge(),
-            gatewayStats.getResponsePayloadSizeInBytes(),
-            gatewayStats.getStatusCode(),
-            gatewayStats.getSubStatusCode(),
-            new ArrayList<>()
-        );
+        for (ClientSideRequestStatistics.GatewayStatistics gatewayStats : gatewayStatsList) {
+            CosmosDiagnosticsRequestInfo info = new CosmosDiagnosticsRequestInfo(
+                requestStats.getActivityId(),
+                null,
+                gatewayStats.getPartitionKeyRangeId(),
+                gatewayStats.getResourceType() + ":" + gatewayStats.getOperationType(),
+                requestStats.getRequestStartTimeUTC(),
+                requestStats.getDuration(),
+                null,
+                gatewayStats.getRequestCharge(),
+                gatewayStats.getResponsePayloadSizeInBytes(),
+                gatewayStats.getStatusCode(),
+                gatewayStats.getSubStatusCode(),
+                new ArrayList<>()
+            );
 
-        requestInfo.add(info);
+            requestInfo.add(info);
+        }
     }
 
     private static void addRequestInfoForStoreResponses(

@@ -50,4 +50,7 @@ public final class ChatRole extends ExpandableStringEnum<ChatRole> {
     public static Collection<ChatRole> values() {
         return values(ChatRole.class);
     }
+
+    /** The role that provides function results for char completions. */
+    @Generated public static final ChatRole FUNCTION = fromString("function");
 }

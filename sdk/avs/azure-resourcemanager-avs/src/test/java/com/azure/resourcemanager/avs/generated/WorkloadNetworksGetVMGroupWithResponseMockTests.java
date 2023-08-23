@@ -31,7 +31,7 @@ public final class WorkloadNetworksGetVMGroupWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"displayName\":\"eycxcktpiymertee\",\"members\":[\"xqiekkkzddrtk\"],\"status\":\"SUCCESS\",\"provisioningState\":\"Deleting\",\"revision\":2082724442990629363},\"id\":\"a\",\"name\":\"refdee\",\"type\":\"vecuijpx\"}";
+            "{\"properties\":{\"displayName\":\"znvfbycjsxjww\",\"members\":[\"vumwmxqh\"],\"status\":\"FAILURE\",\"provisioningState\":\"Canceled\",\"revision\":2852193462165954889},\"id\":\"dsehaohdjhhflzo\",\"name\":\"xcoxpelnjet\",\"type\":\"gltsxoat\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,11 +62,11 @@ public final class WorkloadNetworksGetVMGroupWithResponseMockTests {
         WorkloadNetworkVMGroup response =
             manager
                 .workloadNetworks()
-                .getVMGroupWithResponse("geuaulx", "nsmjbnkppxynen", "svxeizzgwklnsr", com.azure.core.util.Context.NONE)
+                .getVMGroupWithResponse("rqbsmswziq", "fuhok", "ruswhv", com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals("eycxcktpiymertee", response.displayName());
-        Assertions.assertEquals("xqiekkkzddrtk", response.members().get(0));
-        Assertions.assertEquals(2082724442990629363L, response.revision());
+        Assertions.assertEquals("znvfbycjsxjww", response.displayName());
+        Assertions.assertEquals("vumwmxqh", response.members().get(0));
+        Assertions.assertEquals(2852193462165954889L, response.revision());
     }
 }

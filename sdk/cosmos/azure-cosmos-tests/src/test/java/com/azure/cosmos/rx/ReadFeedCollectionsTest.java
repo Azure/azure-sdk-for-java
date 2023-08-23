@@ -42,7 +42,7 @@ public class ReadFeedCollectionsTest extends TestSuiteBase {
         super(clientBuilder);
     }
 
-    @Test(groups = { "simple" }, timeOut = FEED_TIMEOUT)
+    @Test(groups = { "query" }, timeOut = FEED_TIMEOUT)
     public void readCollections() throws Exception {
 
         CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
@@ -65,7 +65,7 @@ public class ReadFeedCollectionsTest extends TestSuiteBase {
 
     }
 
-    @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
+    @BeforeClass(groups = { "query" }, timeOut = SETUP_TIMEOUT)
     public void before_ReadFeedCollectionsTest() {
         client = getClientBuilder().buildAsyncClient();
         createdDatabase = createDatabase(client, databaseId);
@@ -75,7 +75,7 @@ public class ReadFeedCollectionsTest extends TestSuiteBase {
         }
     }
 
-    @AfterClass(groups = { "simple" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
+    @AfterClass(groups = { "query" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
         safeDeleteDatabase(createdDatabase);
         safeClose(client);

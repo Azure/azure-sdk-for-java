@@ -46,13 +46,6 @@ public interface HDInsightManagementClient {
     Duration getDefaultPollInterval();
 
     /**
-     * Gets the ClustersClient object to access its operations.
-     *
-     * @return the ClustersClient object.
-     */
-    ClustersClient getClusters();
-
-    /**
      * Gets the ApplicationsClient object to access its operations.
      *
      * @return the ApplicationsClient object.
@@ -60,11 +53,11 @@ public interface HDInsightManagementClient {
     ApplicationsClient getApplications();
 
     /**
-     * Gets the LocationsClient object to access its operations.
+     * Gets the ClustersClient object to access its operations.
      *
-     * @return the LocationsClient object.
+     * @return the ClustersClient object.
      */
-    LocationsClient getLocations();
+    ClustersClient getClusters();
 
     /**
      * Gets the ConfigurationsClient object to access its operations.
@@ -81,18 +74,11 @@ public interface HDInsightManagementClient {
     ExtensionsClient getExtensions();
 
     /**
-     * Gets the ScriptActionsClient object to access its operations.
+     * Gets the LocationsClient object to access its operations.
      *
-     * @return the ScriptActionsClient object.
+     * @return the LocationsClient object.
      */
-    ScriptActionsClient getScriptActions();
-
-    /**
-     * Gets the ScriptExecutionHistoriesClient object to access its operations.
-     *
-     * @return the ScriptExecutionHistoriesClient object.
-     */
-    ScriptExecutionHistoriesClient getScriptExecutionHistories();
+    LocationsClient getLocations();
 
     /**
      * Gets the OperationsClient object to access its operations.
@@ -100,13 +86,6 @@ public interface HDInsightManagementClient {
      * @return the OperationsClient object.
      */
     OperationsClient getOperations();
-
-    /**
-     * Gets the VirtualMachinesClient object to access its operations.
-     *
-     * @return the VirtualMachinesClient object.
-     */
-    VirtualMachinesClient getVirtualMachines();
 
     /**
      * Gets the PrivateEndpointConnectionsClient object to access its operations.
@@ -121,4 +100,25 @@ public interface HDInsightManagementClient {
      * @return the PrivateLinkResourcesClient object.
      */
     PrivateLinkResourcesClient getPrivateLinkResources();
+
+    /**
+     * Gets the ScriptActionsClient object to access its operations.
+     *
+     * @return the ScriptActionsClient object.
+     */
+    ScriptActionsClient getScriptActions();
+
+    /**
+     * Gets the ScriptExecutionHistoriesClient object to access its operations.
+     *
+     * @return the ScriptExecutionHistoriesClient object.
+     */
+    ScriptExecutionHistoriesClient getScriptExecutionHistories();
+
+    /**
+     * Gets the VirtualMachinesClient object to access its operations.
+     *
+     * @return the VirtualMachinesClient object.
+     */
+    VirtualMachinesClient getVirtualMachines();
 }

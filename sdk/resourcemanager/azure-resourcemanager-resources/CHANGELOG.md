@@ -1,10 +1,24 @@
 # Release History
 
-## 2.29.0-beta.1 (Unreleased)
+## 2.30.0-beta.2 (Unreleased)
 
 ### Bugs Fixed
 
-- Fixed a bug that methods in `GenericResources` fails when get or delete a resource, if the resource name contains space.
+- Fixed a bug that `GenericResources.deleteById` might select the wrong default api-version for resources whose child 
+  resource type collides with other resources.
+
+## 2.30.0-beta.1 (2023-08-18)
+
+### Features Added
+
+- Supported Deployment Stack as preview. See https://learn.microsoft.com/azure/azure-resource-manager/bicep/deployment-stacks
+
+## 2.29.0 (2023-07-28)
+
+### Bugs Fixed
+
+- Fixed a bug that methods in `GenericResources`, `PolicyAssignments` and `TagOperations` fails when get or delete a 
+  resource, if the resource name contains space.
 
 ## 2.28.0 (2023-06-25)
 

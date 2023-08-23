@@ -12,7 +12,6 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.batch.BatchManager;
 import com.azure.resourcemanager.batch.models.Application;
 import java.nio.ByteBuffer;
@@ -33,7 +32,7 @@ public final class ApplicationsListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"displayName\":\"cirgzp\",\"allowUpdates\":false,\"defaultVersion\":\"zszrnwoiindfpw\"},\"etag\":\"ylwbtlhflsjcdhsz\",\"id\":\"jvfbgofelja\",\"name\":\"rqmq\",\"type\":\"ldvriiiojnalghfk\"}]}";
+            "{\"value\":[{\"properties\":{\"displayName\":\"f\",\"allowUpdates\":false,\"defaultVersion\":\"bfvoowvrv\"},\"etag\":\"gjqppy\",\"id\":\"s\",\"name\":\"ronzmyhgfip\",\"type\":\"sxkm\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,10 +61,10 @@ public final class ApplicationsListMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<Application> response =
-            manager.applications().list("gpikpzimejza", "lfzxiavrmbzonoki", 988966310, Context.NONE);
+            manager.applications().list("exdrrvqahqkg", "tpwijnh", 1759061120, com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("cirgzp", response.iterator().next().displayName());
+        Assertions.assertEquals("f", response.iterator().next().displayName());
         Assertions.assertEquals(false, response.iterator().next().allowUpdates());
-        Assertions.assertEquals("zszrnwoiindfpw", response.iterator().next().defaultVersion());
+        Assertions.assertEquals("bfvoowvrv", response.iterator().next().defaultVersion());
     }
 }

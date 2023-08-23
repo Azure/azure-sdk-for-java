@@ -16,25 +16,25 @@ public class ScenarioOptions {
     private String testClass;
 
     @Value("${SERVICEBUS_CONNECTION_STRING:#{null}}")
-    private String servicebusConnectionString;
+    private String serviceBusConnectionString;
 
     @Value("${SERVICEBUS_ENTITY_TYPE:QUEUE}}")
-    private EntityType servicebusEntityType;
+    private EntityType serviceBusEntityType;
 
     @Value("${SERVICEBUS_QUEUE_NAME:#{null}}")
-    private String servicebusQueueName;
+    private String serviceBusQueueName;
 
     @Value("${SERVICEBUS_SESSION_QUEUE_NAME:#{null}}")
-    private String servicebusSessionQueueName;
+    private String serviceBusSessionQueueName;
 
     @Value("${SERVICEBUS_TOPIC_NAME:#{null}}")
-    private String servicebusTopicName;
+    private String serviceBusTopicName;
 
     @Value("${SERVICEBUS_SUBSCRIPTION_NAME:#{null}}")
-    private String servicebusSubscriptionName;
+    private String serviceBusSubscriptionName;
 
     @Value("${SERVICEBUS_SESSION_SUBSCRIPTION_NAME:#{null}}")
-    private String servicebusSessionSubscriptionName;
+    private String serviceBusSessionSubscriptionName;
 
     @Value("${METRIC_INTERVAL_SEC:60}")
     private String metricIntervalSec;
@@ -43,32 +43,32 @@ public class ScenarioOptions {
         return testClass;
     }
 
-    public String getServicebusConnectionString() {
-        return servicebusConnectionString;
+    public String getServiceBusConnectionString() {
+        return serviceBusConnectionString;
     }
 
-    public EntityType getServicebusEntityType() {
-        return servicebusEntityType;
+    public EntityType getServiceBusEntityType() {
+        return serviceBusEntityType;
     }
 
-    public String getServicebusQueueName() {
-        return servicebusQueueName;
+    public String getServiceBusQueueName() {
+        return serviceBusQueueName;
     }
 
-    public String getServicebusSessionQueueName() {
-        return servicebusSessionQueueName;
+    public String getServiceBusSessionQueueName() {
+        return serviceBusSessionQueueName;
     }
 
-    public String getServicebusTopicName() {
-        return servicebusTopicName;
+    public String getServiceBusTopicName() {
+        return serviceBusTopicName;
     }
 
-    public String getServicebusSubscriptionName() {
-        return servicebusSubscriptionName;
+    public String getServiceBusSubscriptionName() {
+        return serviceBusSubscriptionName;
     }
 
-    public String getServicebusSessionSubscriptionName() {
-        return servicebusSessionSubscriptionName;
+    public String getServicBusSessionSubscriptionName() {
+        return serviceBusSessionSubscriptionName;
     }
 
     public String getMetricIntervalSec() {

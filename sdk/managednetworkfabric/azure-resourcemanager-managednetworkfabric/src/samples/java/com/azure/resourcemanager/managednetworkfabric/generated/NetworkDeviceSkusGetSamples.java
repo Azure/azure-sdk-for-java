@@ -7,7 +7,7 @@ package com.azure.resourcemanager.managednetworkfabric.generated;
 /** Samples for NetworkDeviceSkus Get. */
 public final class NetworkDeviceSkusGetSamples {
     /*
-     * x-ms-original-file: specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/preview/2023-02-01-preview/examples/NetworkDeviceSkus_Get_MaximumSet_Gen.json
+     * x-ms-original-file: specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/NetworkDeviceSkus_Get_MaximumSet_Gen.json
      */
     /**
      * Sample code: NetworkDeviceSkus_Get_MaximumSet_Gen.
@@ -16,6 +16,6 @@ public final class NetworkDeviceSkusGetSamples {
      */
     public static void networkDeviceSkusGetMaximumSetGen(
         com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager manager) {
-        manager.networkDeviceSkus().getWithResponse("DefaultSku", com.azure.core.util.Context.NONE);
+        manager.networkDeviceSkus().getWithResponse("example-deviceSku", com.azure.core.util.Context.NONE);
     }
 }

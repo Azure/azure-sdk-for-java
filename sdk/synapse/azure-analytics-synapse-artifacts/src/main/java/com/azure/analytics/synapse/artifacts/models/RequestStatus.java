@@ -20,6 +20,14 @@ public final class RequestStatus extends ExpandableStringEnum<RequestStatus> {
     public static final RequestStatus FAILED = fromString("Failed");
 
     /**
+     * Creates a new instance of RequestStatus value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public RequestStatus() {}
+
+    /**
      * Creates or finds a RequestStatus from its string representation.
      *
      * @param name a name to look for.

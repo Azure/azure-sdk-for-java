@@ -56,6 +56,6 @@ public final class VolumesFinalizeRelocationMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.volumes().finalizeRelocation("stul", "qypfcv", "er", "hp", com.azure.core.util.Context.NONE);
+        manager.volumes().finalizeRelocation("wivkxo", "zunbixx", "ti", "vcpwpgclrc", com.azure.core.util.Context.NONE);
     }
 }

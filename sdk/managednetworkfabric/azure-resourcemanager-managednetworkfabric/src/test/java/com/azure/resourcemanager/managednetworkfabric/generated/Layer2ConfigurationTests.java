@@ -6,6 +6,7 @@ package com.azure.resourcemanager.managednetworkfabric.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.managednetworkfabric.models.Layer2Configuration;
+import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 
 public final class Layer2ConfigurationTests {
@@ -13,17 +14,18 @@ public final class Layer2ConfigurationTests {
     public void testDeserialize() throws Exception {
         Layer2Configuration model =
             BinaryData
-                .fromString("{\"portCount\":32473122,\"mtu\":1835039462,\"interfaces\":[\"hrphkmcrjdqn\"]}")
+                .fromString("{\"mtu\":1588341225,\"interfaces\":[\"qebuuxjxhfxfjwp\"]}")
                 .toObject(Layer2Configuration.class);
-        Assertions.assertEquals(32473122, model.portCount());
-        Assertions.assertEquals(1835039462, model.mtu());
+        Assertions.assertEquals(1588341225, model.mtu());
+        Assertions.assertEquals("qebuuxjxhfxfjwp", model.interfaces().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Layer2Configuration model = new Layer2Configuration().withPortCount(32473122).withMtu(1835039462);
+        Layer2Configuration model =
+            new Layer2Configuration().withMtu(1588341225).withInterfaces(Arrays.asList("qebuuxjxhfxfjwp"));
         model = BinaryData.fromObject(model).toObject(Layer2Configuration.class);
-        Assertions.assertEquals(32473122, model.portCount());
-        Assertions.assertEquals(1835039462, model.mtu());
+        Assertions.assertEquals(1588341225, model.mtu());
+        Assertions.assertEquals("qebuuxjxhfxfjwp", model.interfaces().get(0));
     }
 }

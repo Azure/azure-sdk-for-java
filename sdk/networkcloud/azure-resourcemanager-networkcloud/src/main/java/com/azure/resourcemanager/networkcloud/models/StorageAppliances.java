@@ -134,8 +134,9 @@ public interface StorageAppliances {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
-    void disableRemoteVendorManagement(String resourceGroupName, String storageApplianceName);
+    OperationStatusResult disableRemoteVendorManagement(String resourceGroupName, String storageApplianceName);
 
     /**
      * Turn off remote vendor management for a storage appliance, if supported.
@@ -148,8 +149,10 @@ public interface StorageAppliances {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
-    void disableRemoteVendorManagement(String resourceGroupName, String storageApplianceName, Context context);
+    OperationStatusResult disableRemoteVendorManagement(
+        String resourceGroupName, String storageApplianceName, Context context);
 
     /**
      * Turn on remote vendor management for a storage appliance, if supported.
@@ -161,8 +164,9 @@ public interface StorageAppliances {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
-    void enableRemoteVendorManagement(String resourceGroupName, String storageApplianceName);
+    OperationStatusResult enableRemoteVendorManagement(String resourceGroupName, String storageApplianceName);
 
     /**
      * Turn on remote vendor management for a storage appliance, if supported.
@@ -176,47 +180,12 @@ public interface StorageAppliances {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
-    void enableRemoteVendorManagement(
+    OperationStatusResult enableRemoteVendorManagement(
         String resourceGroupName,
         String storageApplianceName,
         StorageApplianceEnableRemoteVendorManagementParameters storageApplianceEnableRemoteVendorManagementParameters,
-        Context context);
-
-    /**
-     * Retrieve output from read-only commands exercised against a storage appliance.
-     *
-     * <p>Run and retrieve output from read only commands on the provided storage appliance.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageApplianceName The name of the storage appliance.
-     * @param storageApplianceRunReadCommandsParameters The request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void runReadCommands(
-        String resourceGroupName,
-        String storageApplianceName,
-        StorageApplianceRunReadCommandsParameters storageApplianceRunReadCommandsParameters);
-
-    /**
-     * Retrieve output from read-only commands exercised against a storage appliance.
-     *
-     * <p>Run and retrieve output from read only commands on the provided storage appliance.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageApplianceName The name of the storage appliance.
-     * @param storageApplianceRunReadCommandsParameters The request body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void runReadCommands(
-        String resourceGroupName,
-        String storageApplianceName,
-        StorageApplianceRunReadCommandsParameters storageApplianceRunReadCommandsParameters,
         Context context);
 
     /**

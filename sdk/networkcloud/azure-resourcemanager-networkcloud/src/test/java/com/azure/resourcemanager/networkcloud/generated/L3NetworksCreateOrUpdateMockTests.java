@@ -37,7 +37,7 @@ public final class L3NetworksCreateOrUpdateMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"extendedLocation\":{\"name\":\"rkgwltxeqip\",\"type\":\"gzdyimsfayorp\"},\"properties\":{\"associatedResourceIds\":[\"kj\"],\"clusterId\":\"eslabnsmjkwynq\",\"detailedStatus\":\"Available\",\"detailedStatusMessage\":\"qs\",\"hybridAksClustersAssociatedIds\":[\"wjtq\",\"kev\",\"yltjcrspxklu\",\"cclfgxannn\"],\"hybridAksIpamEnabled\":\"True\",\"hybridAksPluginType\":\"DPDK\",\"interfaceName\":\"sewxigpxvkqm\",\"ipAllocationType\":\"IPV6\",\"ipv4ConnectedPrefix\":\"vpifd\",\"ipv6ConnectedPrefix\":\"ify\",\"l3IsolationDomainId\":\"yzeyuubeid\",\"provisioningState\":\"Succeeded\",\"virtualMachinesAssociatedIds\":[\"toi\",\"hgygvfltgvd\",\"hoynk\"],\"vlan\":7574053259145499155},\"location\":\"twk\",\"tags\":{\"moenodnaien\":\"yrucpcunnuzdq\"},\"id\":\"qh\",\"name\":\"knd\",\"type\":\"elqkaadlkn\"}";
+            "{\"extendedLocation\":{\"name\":\"cqoccq\",\"type\":\"qxwetjtd\"},\"properties\":{\"associatedResourceIds\":[\"tfdoadtx\"],\"clusterId\":\"ge\",\"detailedStatus\":\"Available\",\"detailedStatusMessage\":\"k\",\"hybridAksClustersAssociatedIds\":[\"gssz\",\"vctkbbx\"],\"hybridAksIpamEnabled\":\"True\",\"hybridAksPluginType\":\"OSDevice\",\"interfaceName\":\"ir\",\"ipAllocationType\":\"IPV6\",\"ipv4ConnectedPrefix\":\"abvoyngsuxxcz\",\"ipv6ConnectedPrefix\":\"yqjoghdsa\",\"l3IsolationDomainId\":\"djanormo\",\"provisioningState\":\"Succeeded\",\"virtualMachinesAssociatedIds\":[\"rntu\"],\"vlan\":4317600423711221201},\"location\":\"lu\",\"tags\":{\"jue\":\"mhdeeljslkyozdsf\",\"jtv\":\"rhrhtsl\",\"xvgjbfi\":\"j\"},\"id\":\"bpnjodf\",\"name\":\"bj\",\"type\":\"qwm\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -68,35 +68,36 @@ public final class L3NetworksCreateOrUpdateMockTests {
         L3Network response =
             manager
                 .l3Networks()
-                .define("xjeaoqaqbzgyh")
-                .withRegion("wwhnhjtfvpn")
-                .withExistingResourceGroup("jb")
-                .withExtendedLocation(new ExtendedLocation().withName("w").withType("v"))
-                .withL3IsolationDomainId("e")
-                .withVlan(3969244172864098540L)
-                .withTags(mapOf("jpnwynudql", "i", "lxeehuxiq", "zsauzp", "xls", "zlrayme"))
-                .withHybridAksIpamEnabled(HybridAksIpamEnabled.TRUE)
+                .define("mdtff")
+                .withRegion("hscozawmvgxsmpk")
+                .withExistingResourceGroup("azrhxudd")
+                .withExtendedLocation(new ExtendedLocation().withName("sjmrkkhm").withType("dmdlgyqixokw"))
+                .withL3IsolationDomainId("uowyrnskbyhqu")
+                .withVlan(4661928250048503661L)
+                .withTags(mapOf("wxqouoxudnmc", "irfljf", "oqueqihkkyowltj", "aprhknqiijgencdg"))
+                .withHybridAksIpamEnabled(HybridAksIpamEnabled.FALSE)
                 .withHybridAksPluginType(HybridAksPluginType.DPDK)
-                .withInterfaceName("kn")
-                .withIpAllocationType(IpAllocationType.IPV6)
-                .withIpv4ConnectedPrefix("awnvsbcfhza")
-                .withIpv6ConnectedPrefix("nvhycvdimwrz")
+                .withInterfaceName("t")
+                .withIpAllocationType(IpAllocationType.IPV4)
+                .withIpv4ConnectedPrefix("cyanrfvqtvkhgv")
+                .withIpv6ConnectedPrefix("gxkfnaoaqymhccto")
                 .create();
 
-        Assertions.assertEquals("twk", response.location());
-        Assertions.assertEquals("yrucpcunnuzdq", response.tags().get("moenodnaien"));
-        Assertions.assertEquals("rkgwltxeqip", response.extendedLocation().name());
-        Assertions.assertEquals("gzdyimsfayorp", response.extendedLocation().type());
+        Assertions.assertEquals("lu", response.location());
+        Assertions.assertEquals("mhdeeljslkyozdsf", response.tags().get("jue"));
+        Assertions.assertEquals("cqoccq", response.extendedLocation().name());
+        Assertions.assertEquals("qxwetjtd", response.extendedLocation().type());
         Assertions.assertEquals(HybridAksIpamEnabled.TRUE, response.hybridAksIpamEnabled());
-        Assertions.assertEquals(HybridAksPluginType.DPDK, response.hybridAksPluginType());
-        Assertions.assertEquals("sewxigpxvkqm", response.interfaceName());
+        Assertions.assertEquals(HybridAksPluginType.OSDEVICE, response.hybridAksPluginType());
+        Assertions.assertEquals("ir", response.interfaceName());
         Assertions.assertEquals(IpAllocationType.IPV6, response.ipAllocationType());
-        Assertions.assertEquals("vpifd", response.ipv4ConnectedPrefix());
-        Assertions.assertEquals("ify", response.ipv6ConnectedPrefix());
-        Assertions.assertEquals("yzeyuubeid", response.l3IsolationDomainId());
-        Assertions.assertEquals(7574053259145499155L, response.vlan());
+        Assertions.assertEquals("abvoyngsuxxcz", response.ipv4ConnectedPrefix());
+        Assertions.assertEquals("yqjoghdsa", response.ipv6ConnectedPrefix());
+        Assertions.assertEquals("djanormo", response.l3IsolationDomainId());
+        Assertions.assertEquals(4317600423711221201L, response.vlan());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

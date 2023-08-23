@@ -7,7 +7,7 @@ package com.azure.resourcemanager.managednetworkfabric.generated;
 /** Samples for NetworkToNetworkInterconnects Get. */
 public final class NetworkToNetworkInterconnectsGetSamples {
     /*
-     * x-ms-original-file: specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/preview/2023-02-01-preview/examples/NetworkToNetworkInterconnects_Get_MaximumSet_Gen.json
+     * x-ms-original-file: specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/NetworkToNetworkInterconnects_Get_MaximumSet_Gen.json
      */
     /**
      * Sample code: NetworkToNetworkInterconnects_Get_MaximumSet_Gen.
@@ -18,6 +18,6 @@ public final class NetworkToNetworkInterconnectsGetSamples {
         com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager manager) {
         manager
             .networkToNetworkInterconnects()
-            .getWithResponse("resourceGroupName", "FabricName", "DefaultNNI", com.azure.core.util.Context.NONE);
+            .getWithResponse("example-rg", "example-fabric", "example-nni", com.azure.core.util.Context.NONE);
     }
 }

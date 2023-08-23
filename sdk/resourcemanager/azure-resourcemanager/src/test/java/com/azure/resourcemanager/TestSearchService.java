@@ -73,7 +73,7 @@ public class TestSearchService {
             resource.regenerateAdminKeys(AdminKeyKind.PRIMARY);
             resource.regenerateAdminKeys(AdminKeyKind.SECONDARY);
             Assertions.assertEquals(1, TestUtilities.getSize(resource.listQueryKeys()));
-            if (TestUtils.isRecordMode()) {
+            if (!TestUtils.isRecordMode()) {
                 Assertions.assertNotEquals(adminKeyPrimary, resource.getAdminKeys().primaryKey());
                 Assertions.assertNotEquals(adminKeySecondary, resource.getAdminKeys().secondaryKey());
             }

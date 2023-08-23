@@ -58,6 +58,6 @@ public final class ManagedCertificatesDeleteWithResponseMockTests {
 
         manager
             .managedCertificates()
-            .deleteWithResponse("jlgvvpase", "sgb", "xantuygdhg", com.azure.core.util.Context.NONE);
+            .deleteWithResponse("gno", "ikkgqo", "jwpindedvabbxbh", com.azure.core.util.Context.NONE);
     }
 }

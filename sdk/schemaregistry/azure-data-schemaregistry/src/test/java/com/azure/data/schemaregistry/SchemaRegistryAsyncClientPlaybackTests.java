@@ -144,12 +144,14 @@ public class SchemaRegistryAsyncClientPlaybackTests {
             final HttpRequest request = invocationOnMock.getArgument(0);
 
             final String body = networkRecord.getResponse().remove("Body");
+            final String statusCodeMessage = networkRecord.getResponse().remove("StatusCode");
+            final int statusCode = Integer.parseInt(statusCodeMessage);
 
             assertNotNull(body, "Body cannot be null");
 
             final HttpHeaders headers = new HttpHeaders(networkRecord.getResponse());
 
-            final HttpResponse response = new MockHttpResponse(request, 200, headers, body);
+            final HttpResponse response = new MockHttpResponse(request, statusCode, headers, body);
             return Mono.just(response);
         });
 

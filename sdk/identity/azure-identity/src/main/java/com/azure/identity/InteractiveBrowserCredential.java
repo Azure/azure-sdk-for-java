@@ -21,7 +21,7 @@ import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * <p>Interactive browser authentication is a type of authentication flow offered by
- * <a href="https://learn.microsoft.com/en-us/azure/active-directory/fundamentals/">Azure Active Directory (Azure AD)
+ * <a href="https://learn.microsoft.com/azure/active-directory/fundamentals/">Azure Active Directory (Azure AD)
  * </a> that enables users to sign in to applications and services using a web browser. This authentication method is
  * commonly used for web applications, where users enter their credentials directly into a web page.
  * With interactive browser authentication, the user navigates to a web application and is prompted to enter their
@@ -89,6 +89,9 @@ public class InteractiveBrowserCredential implements TokenCredential {
     private final String authorityHost;
     private final String redirectUrl;
     private final String loginHint;
+    private boolean isCaeEnabledRequestCached;
+    private boolean isCaeDisabledRequestCached;
+    private boolean isCachePopulated;
 
 
     /**
@@ -127,7 +130,8 @@ public class InteractiveBrowserCredential implements TokenCredential {
     @Override
     public Mono<AccessToken> getToken(TokenRequestContext request) {
         return Mono.defer(() -> {
-            if (cachedToken.get() != null) {
+            isCachePopulated = isCachePopulated(request);
+            if (isCachePopulated) {
                 return identityClient.authenticateWithPublicClientCache(request, cachedToken.get())
                     .onErrorResume(t -> Mono.empty());
             } else {
@@ -140,7 +144,15 @@ public class InteractiveBrowserCredential implements TokenCredential {
                              + "code authentication.", request)));
             }
             return identityClient.authenticateWithBrowserInteraction(request, port, redirectUrl, loginHint);
-        })).map(this::updateCache)
+        })).map(msalToken -> {
+            AccessToken accessToken = updateCache(msalToken);
+            if (request.isCaeEnabled()) {
+                isCaeEnabledRequestCached = true;
+            } else {
+                isCaeDisabledRequestCached = true;
+            }
+            return accessToken;
+        })
             .doOnNext(token -> LoggingUtil.logTokenSuccess(LOGGER, request))
             .doOnError(error -> LoggingUtil.logTokenError(LOGGER, identityClient.getIdentityClientOptions(),
                 request, error));
@@ -211,5 +223,10 @@ public class InteractiveBrowserCredential implements TokenCredential {
                                 identityClient.getTenantId(), identityClient.getClientId()),
                     msalToken.getAccount().getTenantProfiles()));
         return msalToken;
+    }
+
+    private boolean isCachePopulated(TokenRequestContext request) {
+        return (cachedToken.get() != null) && ((request.isCaeEnabled() && isCaeEnabledRequestCached)
+                || (!request.isCaeEnabled() && isCaeDisabledRequestCached));
     }
 }

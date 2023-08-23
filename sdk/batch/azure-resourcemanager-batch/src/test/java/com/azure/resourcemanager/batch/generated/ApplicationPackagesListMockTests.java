@@ -12,7 +12,6 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.batch.BatchManager;
 import com.azure.resourcemanager.batch.models.ApplicationPackage;
 import java.nio.ByteBuffer;
@@ -32,7 +31,7 @@ public final class ApplicationPackagesListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"state\":\"Pending\",\"format\":\"r\",\"storageUrl\":\"swibyr\",\"storageUrlExpiry\":\"2021-01-18T20:33:29Z\",\"lastActivationTime\":\"2021-10-26T18:16:31Z\"},\"etag\":\"hfwpracstwit\",\"id\":\"khevxccedc\",\"name\":\"nmdyodnwzxl\",\"type\":\"jc\"}]}";
+            "{\"value\":[{\"properties\":{\"state\":\"Active\",\"format\":\"iatkzwpcnp\",\"storageUrl\":\"cjaesgvvs\",\"storageUrlExpiry\":\"2021-10-01T18:08:28Z\",\"lastActivationTime\":\"2021-05-25T22:54:02Z\"},\"etag\":\"uq\",\"id\":\"hwyg\",\"name\":\"lvdnkfx\",\"type\":\"semdwzrmu\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -61,6 +60,8 @@ public final class ApplicationPackagesListMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<ApplicationPackage> response =
-            manager.applicationPackages().list("fpel", "lppvksrpq", "ujzra", 2035738208, Context.NONE);
+            manager
+                .applicationPackages()
+                .list("dphqamv", "kfwynw", "vtbvkayh", 911796600, com.azure.core.util.Context.NONE);
     }
 }

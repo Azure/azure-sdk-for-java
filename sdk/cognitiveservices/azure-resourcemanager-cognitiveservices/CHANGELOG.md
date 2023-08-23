@@ -1,6 +1,6 @@
 # Release History
 
-## 1.1.0-beta.1 (Unreleased)
+## 1.1.0-beta.2 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,100 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.1.0-beta.1 (2023-07-19)
+
+- Azure Resource Manager CognitiveServices client library for Java. This package contains Microsoft Azure SDK for CognitiveServices Management SDK. Cognitive Services Management Client. Package tag package-2023-05. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+#### `models.Usage` was modified
+
+* `validate()` was removed
+* `withLimit(java.lang.Double)` was removed
+* `models.MetricName name()` -> `models.MetricName name()`
+* `withCurrentValue(java.lang.Double)` was removed
+* `withNextResetTime(java.lang.String)` was removed
+* `java.lang.String quotaPeriod()` -> `java.lang.String quotaPeriod()`
+* `withStatus(models.QuotaUsageStatus)` was removed
+* `java.lang.Double currentValue()` -> `java.lang.Double currentValue()`
+* `withUnit(models.UnitType)` was removed
+* `java.lang.String nextResetTime()` -> `java.lang.String nextResetTime()`
+* `models.UnitType unit()` -> `models.UnitType unit()`
+* `java.lang.Double limit()` -> `java.lang.Double limit()`
+* `withName(models.MetricName)` was removed
+* `withQuotaPeriod(java.lang.String)` was removed
+* `models.QuotaUsageStatus status()` -> `models.QuotaUsageStatus status()`
+
+### Features Added
+
+* `models.AbusePenaltyAction` was added
+
+* `models.DeploymentModelVersionUpgradeOption` was added
+
+* `models.ModelSku` was added
+
+* `models.Models` was added
+
+* `models.Usages` was added
+
+* `models.AbusePenalty` was added
+
+* `models.ModelListResult` was added
+
+* `models.CapacityConfig` was added
+
+* `models.Model` was added
+
+#### `CognitiveServicesManager` was modified
+
+* `models()` was added
+* `usages()` was added
+
+#### `models.UsageListResult` was modified
+
+* `nextLink()` was added
+
+#### `models.DeploymentModel` was modified
+
+* `source()` was added
+* `withSource(java.lang.String)` was added
+
+#### `models.AccountModel` was modified
+
+* `source()` was added
+* `skus()` was added
+* `isDefaultVersion()` was added
+
+#### `models.AccountProperties` was modified
+
+* `abusePenalty()` was added
+
+#### `models.Deployment` was modified
+
+* `sku()` was added
+
+#### `models.DeploymentProperties` was modified
+
+* `withVersionUpgradeOption(models.DeploymentModelVersionUpgradeOption)` was added
+* `versionUpgradeOption()` was added
+* `rateLimits()` was added
+
+#### `models.Usage` was modified
+
+* `innerModel()` was added
+
+#### `models.CommitmentPlanProperties` was modified
+
+* `provisioningIssues()` was added
+
+#### `models.Deployment$Definition` was modified
+
+* `withSku(models.Sku)` was added
+
+#### `models.Deployment$Update` was modified
+
+* `withSku(models.Sku)` was added
 
 ## 1.0.0 (2023-02-24)
 

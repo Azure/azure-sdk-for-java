@@ -56,6 +56,8 @@ public final class HcxEnterpriseSitesDeleteWithResponseMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.hcxEnterpriseSites().deleteWithResponse("dzgkr", "qeevt", "epr", com.azure.core.util.Context.NONE);
+        manager
+            .hcxEnterpriseSites()
+            .deleteWithResponse("vruzslzojhpctfnm", "xotngfdguge", "zihgrkyu", com.azure.core.util.Context.NONE);
     }
 }

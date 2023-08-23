@@ -12,7 +12,6 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.hdinsight.HDInsightManager;
 import com.azure.resourcemanager.hdinsight.models.RuntimeScriptActionDetail;
 import java.nio.ByteBuffer;
@@ -33,7 +32,7 @@ public final class ScriptActionsListByClusterMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"scriptExecutionId\":6984855935225199348,\"startTime\":\"mkqscaz\",\"endTime\":\"wxtzxpuamwab\",\"status\":\"rvxcush\",\"operation\":\"haivm\",\"executionSummary\":[{\"status\":\"flv\",\"instanceCount\":1752644697},{\"status\":\"wywa\",\"instanceCount\":79042241}],\"debugInformation\":\"knsmjblmljhlnymz\",\"name\":\"tqyryuzcbmqqv\",\"uri\":\"mv\",\"parameters\":\"gtayxonsupeujlz\",\"roles\":[\"hcvsqltnzoi\"],\"applicationName\":\"sxgnx\"}]}";
+            "{\"value\":[{\"scriptExecutionId\":7487371903139013200,\"startTime\":\"bwbqamt\",\"endTime\":\"liys\",\"status\":\"kcvmwfauxxepmy\",\"operation\":\"ormcqmic\",\"executionSummary\":[{\"status\":\"pkzfbojxj\",\"instanceCount\":2016154693},{\"status\":\"yqwixvcpwnkwywzw\",\"instanceCount\":47513011}],\"debugInformation\":\"ickduoiqta\",\"name\":\"t\",\"uri\":\"vsknxrwzawnv\",\"parameters\":\"cfhzagxnvhycv\",\"roles\":[\"mwrzregzgyufutrw\",\"weryekzk\",\"hmeott\",\"w\"],\"applicationName\":\"osxw\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,11 +61,11 @@ public final class ScriptActionsListByClusterMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<RuntimeScriptActionDetail> response =
-            manager.scriptActions().listByCluster("cpopmxel", "wcltyjede", Context.NONE);
+            manager.scriptActions().listByCluster("xjeaoqaqbzgyh", "w", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("tqyryuzcbmqqv", response.iterator().next().name());
-        Assertions.assertEquals("mv", response.iterator().next().uri());
-        Assertions.assertEquals("gtayxonsupeujlz", response.iterator().next().parameters());
-        Assertions.assertEquals("hcvsqltnzoi", response.iterator().next().roles().get(0));
+        Assertions.assertEquals("t", response.iterator().next().name());
+        Assertions.assertEquals("vsknxrwzawnv", response.iterator().next().uri());
+        Assertions.assertEquals("cfhzagxnvhycv", response.iterator().next().parameters());
+        Assertions.assertEquals("mwrzregzgyufutrw", response.iterator().next().roles().get(0));
     }
 }

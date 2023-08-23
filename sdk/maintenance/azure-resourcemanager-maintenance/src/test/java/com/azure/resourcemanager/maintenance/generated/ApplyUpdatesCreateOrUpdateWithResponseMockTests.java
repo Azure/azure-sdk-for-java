@@ -32,7 +32,7 @@ public final class ApplyUpdatesCreateOrUpdateWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"status\":\"RetryLater\",\"resourceId\":\"dmoh\",\"lastUpdateTime\":\"2021-07-18T19:44:05Z\"},\"id\":\"vudwx\",\"name\":\"ndnvo\",\"type\":\"gujjugwdkcglh\"}";
+            "{\"properties\":{\"status\":\"InProgress\",\"resourceId\":\"glkfg\",\"lastUpdateTime\":\"2021-10-17T15:49:25Z\"},\"id\":\"euel\",\"name\":\"phsdyhto\",\"type\":\"fikdowwqu\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -63,12 +63,11 @@ public final class ApplyUpdatesCreateOrUpdateWithResponseMockTests {
         ApplyUpdate response =
             manager
                 .applyUpdates()
-                .createOrUpdateWithResponse(
-                    "pgacftadehxnlty", "sop", "usue", "nzwdejba", com.azure.core.util.Context.NONE)
+                .createOrUpdateWithResponse("um", "rp", "xe", "mnzb", com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals(UpdateStatus.RETRY_LATER, response.status());
-        Assertions.assertEquals("dmoh", response.resourceId());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-07-18T19:44:05Z"), response.lastUpdateTime());
+        Assertions.assertEquals(UpdateStatus.IN_PROGRESS, response.status());
+        Assertions.assertEquals("glkfg", response.resourceId());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-10-17T15:49:25Z"), response.lastUpdateTime());
     }
 }

@@ -47,6 +47,8 @@ dns:
 eventhub:
   service: eventhubs
   suffix: generated
+fist:
+  service: iotfirmwaredefense
 graphservicesprod:
   service: graphservices
 help:
@@ -85,6 +87,8 @@ redis:
   suffix: generated
 resources:
   suffix: generated
+riskiq:
+  service: defendereasm
 service-map:
   service: servicemap
 servicebus:

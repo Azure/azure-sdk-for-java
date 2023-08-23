@@ -16,24 +16,25 @@ public final class L2IsolationDomainPatchTests {
         L2IsolationDomainPatch model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"mtu\":720121920,\"annotation\":\"whzlsicohoq\"},\"tags\":{\"gyxzk\":\"vlryavwhheunmmq\"}}")
+                    "{\"properties\":{\"mtu\":1649679831,\"annotation\":\"jzacvumepjpbibn\"},\"tags\":{\"fexleqirccjcly\":\"hep\",\"vczuodacpune\":\"cgxvrpj\",\"oy\":\"tepdjxqes\",\"aewse\":\"uiylpc\"}}")
                 .toObject(L2IsolationDomainPatch.class);
-        Assertions.assertEquals("vlryavwhheunmmq", model.tags().get("gyxzk"));
-        Assertions.assertEquals(720121920, model.mtu());
-        Assertions.assertEquals("whzlsicohoq", model.annotation());
+        Assertions.assertEquals("hep", model.tags().get("fexleqirccjcly"));
+        Assertions.assertEquals(1649679831, model.mtu());
+        Assertions.assertEquals("jzacvumepjpbibn", model.annotation());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         L2IsolationDomainPatch model =
             new L2IsolationDomainPatch()
-                .withTags(mapOf("gyxzk", "vlryavwhheunmmq"))
-                .withMtu(720121920)
-                .withAnnotation("whzlsicohoq");
+                .withTags(
+                    mapOf("fexleqirccjcly", "hep", "vczuodacpune", "cgxvrpj", "oy", "tepdjxqes", "aewse", "uiylpc"))
+                .withMtu(1649679831)
+                .withAnnotation("jzacvumepjpbibn");
         model = BinaryData.fromObject(model).toObject(L2IsolationDomainPatch.class);
-        Assertions.assertEquals("vlryavwhheunmmq", model.tags().get("gyxzk"));
-        Assertions.assertEquals(720121920, model.mtu());
-        Assertions.assertEquals("whzlsicohoq", model.annotation());
+        Assertions.assertEquals("hep", model.tags().get("fexleqirccjcly"));
+        Assertions.assertEquals(1649679831, model.mtu());
+        Assertions.assertEquals("jzacvumepjpbibn", model.annotation());
     }
 
     @SuppressWarnings("unchecked")

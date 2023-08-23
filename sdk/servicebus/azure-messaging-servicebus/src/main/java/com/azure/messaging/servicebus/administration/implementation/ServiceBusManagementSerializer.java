@@ -12,6 +12,7 @@ import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.messaging.servicebus.administration.implementation.models.CreateQueueBodyImpl;
 import com.azure.messaging.servicebus.administration.implementation.models.CreateRuleBodyImpl;
 import com.azure.messaging.servicebus.administration.implementation.models.CreateSubscriptionBodyImpl;
+import com.azure.messaging.servicebus.administration.implementation.models.CreateTopicBodyImpl;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -44,7 +45,7 @@ public class ServiceBusManagementSerializer implements SerializerAdapter {
 
         final Class<?> clazz = object.getClass();
         if (!CreateQueueBodyImpl.class.equals(clazz) && !CreateRuleBodyImpl.class.equals(clazz)
-            && !CreateSubscriptionBodyImpl.class.equals(clazz)) {
+            && !CreateSubscriptionBodyImpl.class.equals(clazz) && !CreateTopicBodyImpl.class.equals(clazz)) {
             return contents;
         }
 

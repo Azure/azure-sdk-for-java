@@ -48,6 +48,7 @@ import com.azure.cosmos.models.ThroughputProperties;
 import com.azure.cosmos.rx.TestSuiteBase;
 import com.azure.cosmos.test.faultinjection.CosmosFaultInjectionHelper;
 import com.azure.cosmos.test.faultinjection.FaultInjectionConditionBuilder;
+import com.azure.cosmos.test.faultinjection.FaultInjectionOperationType;
 import com.azure.cosmos.test.faultinjection.FaultInjectionResultBuilders;
 import com.azure.cosmos.test.faultinjection.FaultInjectionRule;
 import com.azure.cosmos.test.faultinjection.FaultInjectionRuleBuilder;
@@ -229,7 +230,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
 
         assertThat(diagnostics).contains("\"connectionMode\":\"GATEWAY\"");
         assertThat(diagnostics).contains("\"userAgent\":\"" + this.gatewayClientUserAgent + "\"");
-        assertThat(diagnostics).doesNotContain(("\"gatewayStatistics\":null"));
+        assertThat(diagnostics).contains("gatewayStatisticsList");
         assertThat(diagnostics).contains("\"operationType\":\"Create\"");
         assertThat(diagnostics).contains("\"metaDataName\":\"CONTAINER_LOOK_UP\"");
         assertThat(diagnostics).contains("\"serializationType\":\"PARTITION_KEY_FETCH_SERIALIZATION\"");
@@ -261,13 +262,14 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
                     InternalObjectNode.class);
             fail("request should fail as partition key is wrong");
         } catch (CosmosException exception) {
+            System.out.println(exception.getDiagnostics());
             isValidJSON(exception.toString());
             isValidJSON(exception.getMessage());
             String diagnostics = exception.getDiagnostics().toString();
             assertThat(exception.getStatusCode()).isEqualTo(HttpConstants.StatusCodes.NOTFOUND);
             assertThat(diagnostics).contains("\"connectionMode\":\"GATEWAY\"");
             assertThat(diagnostics).contains("\"userAgent\":\"" + this.gatewayClientUserAgent + "\"");
-            assertThat(diagnostics).doesNotContain(("\"gatewayStatistics\":null"));
+            assertThat(diagnostics).contains("gatewayStatisticsList");
             assertThat(diagnostics).contains("\"statusCode\":404");
             assertThat(diagnostics).contains("\"operationType\":\"Read\"");
             assertThat(diagnostics).contains("\"userAgent\":\"" + this.gatewayClientUserAgent + "\"");
@@ -460,19 +462,17 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
                 FeedResponse<InternalObjectNode> feedResponse = iterator.next();
                 queryDiagnostics = feedResponse.getCosmosDiagnostics().toString();
                 if (feedResponseCounter == 0) {
-                    assertThat(queryDiagnostics).contains("QueryPlan Start Time (UTC)=");
-                    assertThat(queryDiagnostics).contains("QueryPlan End Time (UTC)=");
-                    assertThat(queryDiagnostics).contains("QueryPlan Duration (ms)=");
+                    assertThat(queryDiagnostics).contains("queryPlanDiagnosticsContext");
+                    assertThat(queryDiagnostics).contains("startTimeUTC");
+                    assertThat(queryDiagnostics).contains("endTimeUTC");
+                    assertThat(queryDiagnostics).contains("durationInMilliSecs");
                     String requestTimeLine = OBJECT_MAPPER.writeValueAsString(feedResponse.getCosmosDiagnostics().getFeedResponseDiagnostics().getQueryPlanDiagnosticsContext().getRequestTimeline());
                     assertThat(requestTimeLine).contains("connectionConfigured");
                     assertThat(requestTimeLine).contains("requestSent");
                     assertThat(requestTimeLine).contains("transitTime");
                     assertThat(requestTimeLine).contains("received");
                 } else {
-                    assertThat(queryDiagnostics).doesNotContain("QueryPlan Start Time (UTC)=");
-                    assertThat(queryDiagnostics).doesNotContain("QueryPlan End Time (UTC)=");
-                    assertThat(queryDiagnostics).doesNotContain("QueryPlan Duration (ms)=");
-                    assertThat(queryDiagnostics).doesNotContain("QueryPlan RequestTimeline =");
+                    assertThat(queryDiagnostics).contains("\"queryPlanDiagnosticsContext\":null");
                 }
                 feedResponseCounter++;
             }
@@ -717,7 +717,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
         String diagnostics = cosmosDiagnostics.toString();
         assertThat(diagnostics).contains("\"connectionMode\":\"DIRECT\"");
         assertThat(diagnostics).contains("supplementalResponseStatisticsList");
-        assertThat(diagnostics).contains("\"gatewayStatistics\":null");
+        assertThat(diagnostics).contains("gatewayStatisticsList");
         assertThat(diagnostics).contains("addressResolutionStatistics");
         assertThat(diagnostics).contains("\"metaDataName\":\"CONTAINER_LOOK_UP\"");
         assertThat(diagnostics).contains("\"metaDataName\":\"PARTITION_KEY_RANGE_LOOK_UP\"");
@@ -765,7 +765,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
         assertThat(diagnostics).contains("\"connectionMode\":\"DIRECT\"");
         assertThat(diagnostics).contains("supplementalResponseStatisticsList");
         assertThat(diagnostics).contains("responseStatisticsList");
-        assertThat(diagnostics).contains("\"gatewayStatistics\":null");
+        assertThat(diagnostics).contains("gatewayStatisticsList");
         assertThat(diagnostics).contains("addressResolutionStatistics");
         assertThat(diagnostics).contains("\"userAgent\":\"" + userAgent + "\"");
         assertThat(diagnostics).containsPattern("(?s).*?\"activityId\":\"[^\\s\"]+\".*");
@@ -773,7 +773,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
 
     private void validateGatewayModeQueryDiagnostics(String diagnostics, String userAgent) {
         assertThat(diagnostics).contains("\"connectionMode\":\"GATEWAY\"");
-        assertThat(diagnostics).doesNotContain(("\"gatewayStatistics\":null"));
+        assertThat(diagnostics).contains(("gatewayStatisticsList"));
         assertThat(diagnostics).contains("\"operationType\":\"Query\"");
         assertThat(diagnostics).contains("\"userAgent\":\"" + userAgent + "\"");
         assertThat(diagnostics).containsPattern("(?s).*?\"activityId\":\"[^\\s\"]+\".*");
@@ -839,25 +839,23 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
         Boolean qmEnabled,
         boolean expectQueryPlanDiagnostics) {
         if (qmEnabled == null || qmEnabled) {
-            assertThat(queryDiagnostics).contains("Retrieved Document Count");
-            assertThat(queryDiagnostics).contains("Query Preparation Times");
-            assertThat(queryDiagnostics).contains("Runtime Execution Times");
-            assertThat(queryDiagnostics).contains("Partition Execution Timeline");
+            assertThat(queryDiagnostics).contains("retrievedDocumentCount");
+            assertThat(queryDiagnostics).contains("queryPreparationTimes");
+            assertThat(queryDiagnostics).contains("runtimeExecutionTimes");
+            assertThat(queryDiagnostics).contains("fetchExecutionRanges");
         } else {
-            assertThat(queryDiagnostics).doesNotContain("Retrieved Document Count");
-            assertThat(queryDiagnostics).doesNotContain("Query Preparation Times");
-            assertThat(queryDiagnostics).doesNotContain("Runtime Execution Times");
-            assertThat(queryDiagnostics).doesNotContain("Partition Execution Timeline");
+            assertThat(queryDiagnostics).doesNotContain("retrievedDocumentCount");
+            assertThat(queryDiagnostics).doesNotContain("queryPreparationTimes");
+            assertThat(queryDiagnostics).doesNotContain("runtimeExecutionTimes");
+            assertThat(queryDiagnostics).doesNotContain("fetchExecutionRanges");
         }
 
         if (expectQueryPlanDiagnostics) {
-            assertThat(queryDiagnostics).contains("QueryPlan Start Time (UTC)=");
-            assertThat(queryDiagnostics).contains("QueryPlan End Time (UTC)=");
-            assertThat(queryDiagnostics).contains("QueryPlan Duration (ms)=");
+            assertThat(queryDiagnostics).contains("queryPlanDiagnosticsContext");
+            assertThat(queryDiagnostics).contains("startTimeUTC");
+            assertThat(queryDiagnostics).contains("endTimeUTC");
         } else {
-            assertThat(queryDiagnostics).doesNotContain("QueryPlan Start Time (UTC)=");
-            assertThat(queryDiagnostics).doesNotContain("QueryPlan End Time (UTC)=");
-            assertThat(queryDiagnostics).doesNotContain("QueryPlan Duration (ms)=");
+            assertThat(queryDiagnostics).contains("\"queryPlanDiagnosticsContext\":null");
         }
     }
 
@@ -1337,6 +1335,73 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
             if (client2 != null) {
                 client2.close();
             }
+        }
+    }
+
+    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
+    public void responseStatisticRequestStartTimeUTCForDirectCall() {
+        CosmosAsyncClient client = null;
+        String databaseId = DatabaseForTest.generateId();
+        FaultInjectionRule faultInjectionRule = null;
+
+        try {
+            client = new CosmosClientBuilder()
+                .key(TestConfigurations.MASTER_KEY)
+                .endpoint(TestConfigurations.HOST)
+                .endToEndOperationLatencyPolicyConfig(
+                    new CosmosEndToEndOperationLatencyPolicyConfigBuilder(Duration.ofSeconds(2)).build()
+                ).buildAsyncClient();
+
+            createDatabase(client, databaseId);
+            CosmosAsyncContainer container = createCollection(client, databaseId, getCollectionDefinition());
+
+            TestItem testItem = TestItem.createNewItem();
+            container.createItem(testItem).block();
+
+            faultInjectionRule =
+                new FaultInjectionRuleBuilder("PARTITION_IS_MIGRATING")
+                    .condition(
+                        new FaultInjectionConditionBuilder()
+                            .operationType(FaultInjectionOperationType.CREATE_ITEM)
+                            .build()
+                    )
+                    .result(
+                        FaultInjectionResultBuilders
+                            .getResultBuilder(FaultInjectionServerErrorType.PARTITION_IS_MIGRATING)
+                            .times(1)
+                            .build()
+                    )
+                    .duration(Duration.ofMinutes(5))
+                    .build();
+            CosmosFaultInjectionHelper.configureFaultInjectionRules(container, Arrays.asList(faultInjectionRule)).block();
+
+            CosmosDiagnostics cosmosDiagnostics = null;
+            try {
+                cosmosDiagnostics = container.createItem(TestItem.createNewItem())
+                    .block()
+                    .getDiagnostics();
+
+            } catch (Exception exception) {
+                fail("Request should succeeded, but failed with " + exception);
+            }
+
+            List<ClientSideRequestStatistics> clientSideRequestStatistics = (List<ClientSideRequestStatistics>) cosmosDiagnostics.getClientSideRequestStatistics();
+            List<ClientSideRequestStatistics.StoreResponseStatistics> responseStatistic = clientSideRequestStatistics.get(0).getResponseStatisticsList();
+
+            assert responseStatistic.size() == 2;
+
+            Instant firstRequestStartTime = responseStatistic.get(0).getRequestStartTimeUTC();
+            Instant secondRequestStartTime = responseStatistic.get(1).getRequestStartTimeUTC();
+
+            assert firstRequestStartTime != null && secondRequestStartTime != null;
+            assert firstRequestStartTime != secondRequestStartTime;
+            assert firstRequestStartTime.compareTo(secondRequestStartTime) < 0;
+
+        } finally {
+            if (faultInjectionRule != null) {
+                faultInjectionRule.disable();
+            }
+            safeClose(client);
         }
     }
 

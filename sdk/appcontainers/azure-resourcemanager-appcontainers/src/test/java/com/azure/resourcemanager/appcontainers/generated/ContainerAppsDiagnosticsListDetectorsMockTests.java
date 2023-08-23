@@ -32,7 +32,7 @@ public final class ContainerAppsDiagnosticsListDetectorsMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"metadata\":{\"id\":\"hvthlaiwdcxsm\",\"name\":\"zhzdtxetlgydlhqv\",\"description\":\"npxybafiq\",\"author\":\"aarbgjekg\",\"category\":\"lbyulidwcwvmze\",\"supportTopicList\":[],\"analysisTypes\":[],\"type\":\"fhjirwgdnqzbrfk\",\"score\":60.33164},\"dataset\":[],\"status\":{\"message\":\"ksjcitdigs\",\"statusId\":915906581},\"dataProviderMetadata\":{\"providerName\":\"jplkeu\",\"propertyBag\":[]}},\"id\":\"tomflrytswfpf\",\"name\":\"dgycxnmskwhqjjy\",\"type\":\"lurlpshhkvp\"}]}";
+            "{\"value\":[{\"properties\":{\"metadata\":{\"id\":\"gvgovpbbttefjo\",\"name\":\"ssqyzqedik\",\"description\":\"rdbiqmrjge\",\"author\":\"fqlggw\",\"category\":\"wzcxmjpbyephmgt\",\"supportTopicList\":[{\"id\":\"rc\",\"pesId\":\"fqip\"}],\"analysisTypes\":[\"npomy\"],\"type\":\"cabvnuil\",\"score\":64.833626},\"dataset\":[{\"table\":{\"tableName\":\"paugmrmfjlrxwt\",\"columns\":[{},{}],\"rows\":[\"datafkvcisi\",\"datamoaedsxj\",\"datauivedwcgyeewxeiq\",\"datapsmgo\"]},\"renderingProperties\":{\"type\":1932184921,\"title\":\"ljdlrgmspl\",\"description\":\"auf\",\"isVisible\":true}},{\"table\":{\"tableName\":\"new\",\"columns\":[{}],\"rows\":[\"datampqanxrjkixtwbt\",\"dataoypnyg\",\"datashxcylhkg\",\"datansghp\"]},\"renderingProperties\":{\"type\":1324259721,\"title\":\"drwjjkhvyom\",\"description\":\"luzvxnq\",\"isVisible\":false}},{\"table\":{\"tableName\":\"pd\",\"columns\":[{},{},{}],\"rows\":[\"dataisqcssffxuifmcs\"]},\"renderingProperties\":{\"type\":861169012,\"title\":\"dqzrdzsyloll\",\"description\":\"rc\",\"isVisible\":false}}],\"status\":{\"message\":\"xzji\",\"statusId\":1590781119},\"dataProviderMetadata\":{\"providerName\":\"urkihci\",\"propertyBag\":[{\"name\":\"fx\",\"value\":\"c\"},{\"name\":\"nbkkjanurnnq\",\"value\":\"q\"}]}},\"id\":\"pizxqltgrdogyp\",\"name\":\"rxvbfihwuh\",\"type\":\"ctafsrbxrblm\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -61,11 +61,33 @@ public final class ContainerAppsDiagnosticsListDetectorsMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<Diagnostics> response =
-            manager.containerAppsDiagnostics().listDetectors("dwv", "phcnzqtpj", com.azure.core.util.Context.NONE);
+            manager.containerAppsDiagnostics().listDetectors("xxkubvphavp", "h", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("ksjcitdigs", response.iterator().next().properties().status().message());
-        Assertions.assertEquals(915906581, response.iterator().next().properties().status().statusId());
+        Assertions.assertEquals("npomy", response.iterator().next().properties().metadata().analysisTypes().get(0));
         Assertions
-            .assertEquals("jplkeu", response.iterator().next().properties().dataProviderMetadata().providerName());
+            .assertEquals(
+                "paugmrmfjlrxwt", response.iterator().next().properties().dataset().get(0).table().tableName());
+        Assertions
+            .assertEquals(
+                1932184921, response.iterator().next().properties().dataset().get(0).renderingProperties().type());
+        Assertions
+            .assertEquals(
+                "ljdlrgmspl", response.iterator().next().properties().dataset().get(0).renderingProperties().title());
+        Assertions
+            .assertEquals(
+                "auf", response.iterator().next().properties().dataset().get(0).renderingProperties().description());
+        Assertions
+            .assertEquals(
+                true, response.iterator().next().properties().dataset().get(0).renderingProperties().isVisible());
+        Assertions.assertEquals("xzji", response.iterator().next().properties().status().message());
+        Assertions.assertEquals(1590781119, response.iterator().next().properties().status().statusId());
+        Assertions
+            .assertEquals("urkihci", response.iterator().next().properties().dataProviderMetadata().providerName());
+        Assertions
+            .assertEquals(
+                "fx", response.iterator().next().properties().dataProviderMetadata().propertyBag().get(0).name());
+        Assertions
+            .assertEquals(
+                "c", response.iterator().next().properties().dataProviderMetadata().propertyBag().get(0).value());
     }
 }

@@ -15,11 +15,11 @@ public final class ForwardProxyTests {
         ForwardProxy model =
             BinaryData
                 .fromString(
-                    "{\"convention\":\"NoProxy\",\"customHostHeaderName\":\"bdxkqpxokaj\",\"customProtoHeaderName\":\"npime\"}")
+                    "{\"convention\":\"NoProxy\",\"customHostHeaderName\":\"chcbonqvpkvlrxnj\",\"customProtoHeaderName\":\"seiphe\"}")
                 .toObject(ForwardProxy.class);
         Assertions.assertEquals(ForwardProxyConvention.NO_PROXY, model.convention());
-        Assertions.assertEquals("bdxkqpxokaj", model.customHostHeaderName());
-        Assertions.assertEquals("npime", model.customProtoHeaderName());
+        Assertions.assertEquals("chcbonqvpkvlrxnj", model.customHostHeaderName());
+        Assertions.assertEquals("seiphe", model.customProtoHeaderName());
     }
 
     @org.junit.jupiter.api.Test
@@ -27,11 +27,11 @@ public final class ForwardProxyTests {
         ForwardProxy model =
             new ForwardProxy()
                 .withConvention(ForwardProxyConvention.NO_PROXY)
-                .withCustomHostHeaderName("bdxkqpxokaj")
-                .withCustomProtoHeaderName("npime");
+                .withCustomHostHeaderName("chcbonqvpkvlrxnj")
+                .withCustomProtoHeaderName("seiphe");
         model = BinaryData.fromObject(model).toObject(ForwardProxy.class);
         Assertions.assertEquals(ForwardProxyConvention.NO_PROXY, model.convention());
-        Assertions.assertEquals("bdxkqpxokaj", model.customHostHeaderName());
-        Assertions.assertEquals("npime", model.customProtoHeaderName());
+        Assertions.assertEquals("chcbonqvpkvlrxnj", model.customHostHeaderName());
+        Assertions.assertEquals("seiphe", model.customProtoHeaderName());
     }
 }

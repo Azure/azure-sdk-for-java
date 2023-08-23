@@ -42,6 +42,10 @@ public final class SsoDetailsResponseInner {
     @JsonProperty(value = "adminUsers")
     private List<String> adminUsers;
 
+    /** Creates an instance of SsoDetailsResponseInner class. */
+    public SsoDetailsResponseInner() {
+    }
+
     /**
      * Get the isSsoEnabled property: Whether the SSO is enabled for this resource or not.
      *

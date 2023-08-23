@@ -8,17 +8,11 @@ trigger:
       - release/*
   paths:
     include:
-      - sdk/monitor/ci.yml
-      - sdk/monitor/azure-monitor-ingestion/
-      - sdk/monitor/azure-monitor-opentelemetry-exporter/
-      - sdk/monitor/azure-monitor-spring-native/
-      - sdk/monitor/azure-monitor-query/
+      - sdk/monitor/
     exclude:
-      - sdk/monitor/pom.xml
       - sdk/monitor/azure-monitor-ingestion/pom.xml
       - sdk/monitor/azure-monitor-ingestion-perf/pom.xml
       - sdk/monitor/azure-monitor-opentelemetry-exporter/pom.xml
-      - sdk/monitor/azure-monitor-spring-native/pom.xml
       - sdk/monitor/azure-monitor-query/pom.xml
       - sdk/monitor/azure-monitor-query-perf/pom.xml
 
@@ -31,16 +25,13 @@ pr:
       - release/*
   paths:
     include:
-      - sdk/monitor/ci.yml
-      - sdk/monitor/azure-monitor-ingestion/
-      - sdk/monitor/azure-monitor-opentelemetry-exporter/
-      - sdk/monitor/azure-monitor-spring-native/
-      - sdk/monitor/azure-monitor-query/
+      - sdk/monitor/
     exclude:
-      - sdk/monitor/pom.xml
+      - sdk/monitor/azure-monitor-ingestion/pom.xml
+      - sdk/monitor/azure-monitor-ingestion-perf/pom.xml
       - sdk/monitor/azure-monitor-opentelemetry-exporter/pom.xml
-      - sdk/monitor/azure-monitor-spring-native/pom.xml
       - sdk/monitor/azure-monitor-query/pom.xml
+      - sdk/monitor/azure-monitor-query-perf/pom.xml
 
 parameters:
 - name: release_dependsonlivetests
@@ -54,11 +45,7 @@ parameters:
 - name: release_azuremonitoropentelemetryexporter
   displayName: 'azure-monitor-opentelemetry-exporter'
   type: boolean
-  default:
-- name: release_azuremonitorspringnative
-  displayName: 'azure-monitor-azure-monitor-spring-native'
-  type: boolean
-  default:
+  default: true
 - name: release_azuremonitorquery
   displayName: 'azure-monitor-query'
   type: boolean
@@ -78,17 +65,11 @@ extends:
         groupId: com.azure
         safeName: azuremonitoropentelemetryexporter
         releaseInBatch: ${{ parameters.release_azuremonitoropentelemetryexporter }}
-      - name: azure-monitor-spring-native
-        groupId: com.azure
-        safeName: azuremonitorspringnative
-        releaseInBatch: ${{ parameters.release_azuremonitorspringnative }}
       - name: azure-monitor-query
         groupId: com.azure
         safeName: azuremonitorquery
         releaseInBatch: ${{ parameters.release_azuremonitorquery }}
     AdditionalModules:
-      - name: azure-monitor-spring-native-test
-        groupId: com.azure
       - name: azure-monitor-query-perf
         groupId: com.azure
       - name: azure-monitor-ingestion-perf

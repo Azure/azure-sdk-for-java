@@ -32,7 +32,7 @@ public final class WorkloadNetworksListGatewaysMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"displayName\":\"yinzqodfvpgs\",\"path\":\"xgsg\"},\"id\":\"p\",\"name\":\"gzdjtxvzf\",\"type\":\"bqvgaqv\"}]}";
+            "{\"value\":[{\"properties\":{\"displayName\":\"mwwinhehfqpofv\",\"path\":\"cblembnkbwv\"},\"id\":\"vxkdivqihebwtswb\",\"name\":\"uwfmduragegizvc\",\"type\":\"felisdjub\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -61,8 +61,8 @@ public final class WorkloadNetworksListGatewaysMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<WorkloadNetworkGateway> response =
-            manager.workloadNetworks().listGateways("pijrajcivmmghf", "fiwrxgkn", com.azure.core.util.Context.NONE);
+            manager.workloadNetworks().listGateways("dbxiqx", "iiqbi", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("yinzqodfvpgs", response.iterator().next().displayName());
+        Assertions.assertEquals("mwwinhehfqpofv", response.iterator().next().displayName());
     }
 }

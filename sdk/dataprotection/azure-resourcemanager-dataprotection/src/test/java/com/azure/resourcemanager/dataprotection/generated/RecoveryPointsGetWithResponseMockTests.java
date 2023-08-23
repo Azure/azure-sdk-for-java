@@ -30,7 +30,7 @@ public final class RecoveryPointsGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"objectType\":\"AzureBackupRecoveryPoint\"},\"id\":\"ffeycx\",\"name\":\"ktp\",\"type\":\"ymerteeammxq\"}";
+            "{\"properties\":{\"objectType\":\"AzureBackupRecoveryPoint\"},\"id\":\"xfe\",\"name\":\"zjkjexfdeqv\",\"type\":\"psylkkshkbffmbmx\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,11 +62,7 @@ public final class RecoveryPointsGetWithResponseMockTests {
             manager
                 .recoveryPoints()
                 .getWithResponse(
-                    "yxkyxvx",
-                    "vblbjednljlageua",
-                    "lxunsmjbnkppxy",
-                    "enlsvxeizzgwkln",
-                    com.azure.core.util.Context.NONE)
+                    "fwyfwlwxjwet", "psihcla", "zvaylptrsqqw", "tcmwqkchc", com.azure.core.util.Context.NONE)
                 .getValue();
     }
 }

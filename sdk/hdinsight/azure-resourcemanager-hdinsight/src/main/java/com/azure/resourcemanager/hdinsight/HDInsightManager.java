@@ -56,27 +56,27 @@ import java.util.stream.Collectors;
 
 /** Entry point to HDInsightManager. HDInsight Management Client. */
 public final class HDInsightManager {
-    private Clusters clusters;
-
     private Applications applications;
 
-    private Locations locations;
+    private Clusters clusters;
 
     private Configurations configurations;
 
     private Extensions extensions;
 
-    private ScriptActions scriptActions;
-
-    private ScriptExecutionHistories scriptExecutionHistories;
+    private Locations locations;
 
     private Operations operations;
-
-    private VirtualMachines virtualMachines;
 
     private PrivateEndpointConnections privateEndpointConnections;
 
     private PrivateLinkResources privateLinkResources;
+
+    private ScriptActions scriptActions;
+
+    private ScriptExecutionHistories scriptExecutionHistories;
+
+    private VirtualMachines virtualMachines;
 
     private final HDInsightManagementClient clientObject;
 
@@ -243,7 +243,7 @@ public final class HDInsightManager {
                 .append("-")
                 .append("com.azure.resourcemanager.hdinsight")
                 .append("/")
-                .append("1.0.0");
+                .append("1.1.0-beta.1");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder
                     .append(" (")
@@ -301,18 +301,6 @@ public final class HDInsightManager {
     }
 
     /**
-     * Gets the resource collection API of Clusters. It manages Cluster.
-     *
-     * @return Resource collection API of Clusters.
-     */
-    public Clusters clusters() {
-        if (this.clusters == null) {
-            this.clusters = new ClustersImpl(clientObject.getClusters(), this);
-        }
-        return clusters;
-    }
-
-    /**
      * Gets the resource collection API of Applications. It manages Application.
      *
      * @return Resource collection API of Applications.
@@ -325,15 +313,15 @@ public final class HDInsightManager {
     }
 
     /**
-     * Gets the resource collection API of Locations.
+     * Gets the resource collection API of Clusters. It manages Cluster.
      *
-     * @return Resource collection API of Locations.
+     * @return Resource collection API of Clusters.
      */
-    public Locations locations() {
-        if (this.locations == null) {
-            this.locations = new LocationsImpl(clientObject.getLocations(), this);
+    public Clusters clusters() {
+        if (this.clusters == null) {
+            this.clusters = new ClustersImpl(clientObject.getClusters(), this);
         }
-        return locations;
+        return clusters;
     }
 
     /**
@@ -358,6 +346,55 @@ public final class HDInsightManager {
             this.extensions = new ExtensionsImpl(clientObject.getExtensions(), this);
         }
         return extensions;
+    }
+
+    /**
+     * Gets the resource collection API of Locations.
+     *
+     * @return Resource collection API of Locations.
+     */
+    public Locations locations() {
+        if (this.locations == null) {
+            this.locations = new LocationsImpl(clientObject.getLocations(), this);
+        }
+        return locations;
+    }
+
+    /**
+     * Gets the resource collection API of Operations.
+     *
+     * @return Resource collection API of Operations.
+     */
+    public Operations operations() {
+        if (this.operations == null) {
+            this.operations = new OperationsImpl(clientObject.getOperations(), this);
+        }
+        return operations;
+    }
+
+    /**
+     * Gets the resource collection API of PrivateEndpointConnections. It manages PrivateEndpointConnection.
+     *
+     * @return Resource collection API of PrivateEndpointConnections.
+     */
+    public PrivateEndpointConnections privateEndpointConnections() {
+        if (this.privateEndpointConnections == null) {
+            this.privateEndpointConnections =
+                new PrivateEndpointConnectionsImpl(clientObject.getPrivateEndpointConnections(), this);
+        }
+        return privateEndpointConnections;
+    }
+
+    /**
+     * Gets the resource collection API of PrivateLinkResources.
+     *
+     * @return Resource collection API of PrivateLinkResources.
+     */
+    public PrivateLinkResources privateLinkResources() {
+        if (this.privateLinkResources == null) {
+            this.privateLinkResources = new PrivateLinkResourcesImpl(clientObject.getPrivateLinkResources(), this);
+        }
+        return privateLinkResources;
     }
 
     /**
@@ -386,18 +423,6 @@ public final class HDInsightManager {
     }
 
     /**
-     * Gets the resource collection API of Operations.
-     *
-     * @return Resource collection API of Operations.
-     */
-    public Operations operations() {
-        if (this.operations == null) {
-            this.operations = new OperationsImpl(clientObject.getOperations(), this);
-        }
-        return operations;
-    }
-
-    /**
      * Gets the resource collection API of VirtualMachines.
      *
      * @return Resource collection API of VirtualMachines.
@@ -407,31 +432,6 @@ public final class HDInsightManager {
             this.virtualMachines = new VirtualMachinesImpl(clientObject.getVirtualMachines(), this);
         }
         return virtualMachines;
-    }
-
-    /**
-     * Gets the resource collection API of PrivateEndpointConnections. It manages PrivateEndpointConnection.
-     *
-     * @return Resource collection API of PrivateEndpointConnections.
-     */
-    public PrivateEndpointConnections privateEndpointConnections() {
-        if (this.privateEndpointConnections == null) {
-            this.privateEndpointConnections =
-                new PrivateEndpointConnectionsImpl(clientObject.getPrivateEndpointConnections(), this);
-        }
-        return privateEndpointConnections;
-    }
-
-    /**
-     * Gets the resource collection API of PrivateLinkResources.
-     *
-     * @return Resource collection API of PrivateLinkResources.
-     */
-    public PrivateLinkResources privateLinkResources() {
-        if (this.privateLinkResources == null) {
-            this.privateLinkResources = new PrivateLinkResourcesImpl(clientObject.getPrivateLinkResources(), this);
-        }
-        return privateLinkResources;
     }
 
     /**
