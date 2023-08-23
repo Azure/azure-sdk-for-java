@@ -19,7 +19,7 @@ using Azure.ClientGenerator.Core;
 
 namespace BatchService;
 
-// Templates
+// Templates 
 
 /**
  * A remote procedure call (RPC) operation with additional response.
@@ -122,7 +122,7 @@ last aggregation interval is returned.
     """)
       @query
       starttime?: utcDateTime;
-
+    
       @doc("""
     The latest time from which to include metrics. This must be at least two hours
     before the current time. If not specified this defaults to the end time of the
@@ -130,7 +130,7 @@ last aggregation interval is returned.
     """)
       @query
       endtime?: utcDateTime;
-
+    
       @doc("""
     An OData $filter clause. For more information on constructing this filter, see
     https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-account-usage-metrics.
@@ -139,26 +139,6 @@ last aggregation interval is returned.
       $filter?: string;
     },
     BatchResponseHeaders & PoolListUsageMetricsResult,
-    {},
-    BatchError
-  >;
-
-  @summary("Gets lifetime summary statistics for all of the Pools in the specified Account.")
-  @doc("""
-Statistics are aggregated across all Pools that have ever existed in the
-Account, from Account creation to the last update time of the statistics. The
-statistics may not be immediately available. The Batch service performs
-periodic roll-up of statistics. The typical delay is about 30 minutes.
-""")
-  @route("/lifetimepoolstats")
-  @example(
-    "./examples/PoolGetLifetimeStatistics.json",
-    "Pool get lifetime statistics"
-  )
-  @get
-  GetAllLifetimeStatistics is RpcOperation<
-    BatchClientRequestHeaders,
-    BatchResponseHeaders & PoolStatistics,
     {},
     BatchError
   >;
@@ -596,26 +576,6 @@ https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#li
 @operationGroup
 @tag("Jobs")
 interface Job {
-  @summary("Gets lifetime summary statistics for all of the Jobs in the specified Account.")
-  @doc("""
-Statistics are aggregated across all Jobs that have ever existed in the
-Account, from Account creation to the last update time of the statistics. The
-statistics may not be immediately available. The Batch service performs
-periodic roll-up of statistics. The typical delay is about 30 minutes.
-""")
-  @example(
-    "./examples/JobGetLifetimeStatistics.json",
-    "Job get lifetime statistics"
-  )
-  @route("/lifetimejobstats")
-  @get
-  GetAllLifetimeStatistics is RpcOperation<
-    BatchClientRequestHeaders,
-    BatchResponseHeaders & JobStatistics,
-    {},
-    BatchError
-  >;
-
   @summary("Deletes a Job.")
   @doc("""
 Deleting a Job also deletes all Tasks that are part of that Job, and all Job
@@ -830,6 +790,10 @@ Tasks cannot be added and any remaining active Tasks will not be scheduled.
   Terminate is RpcOperation<
     BatchClientRequestHeaders &
       BatchMatchHeaders & {
+        @doc("Type of content")
+        @header("content-type")
+        contentType: "application/json; odata=minimalmetadata";
+
         @doc("The ID of the Job to terminate.")
         @path
         jobId: string;
@@ -1018,6 +982,7 @@ up to date. If you need exact task counts, use a list query.
 @operationGroup
 @tag("Certificates")
 interface Certificates {
+  @deprecated("Warning: This operation is deprecated and will be removed after February, 2024. Please use the [Azure KeyVault Extension](https://learn.microsoft.com/azure/batch/batch-certificate-migration-guide) instead.")
   @summary("Creates a Certificate to the specified Account.")
   @doc("Creates a Certificate to the specified Account.")
   @example("./examples/CertificateAdd.json", "Certificate Create")
@@ -1046,6 +1011,7 @@ interface Certificates {
     BatchError
   >;
 
+  @deprecated("Warning: This operation is deprecated and will be removed after February, 2024. Please use the [Azure KeyVault Extension](https://learn.microsoft.com/azure/batch/batch-certificate-migration-guide) instead.")
   @summary("Lists all of the Certificates that have been added to the specified Account.")
   @doc("Lists all of the Certificates that have been added to the specified Account.")
   @example("./examples/CertificateList.json", "Certificate list")
@@ -1069,6 +1035,7 @@ https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#li
     BatchError
   >;
 
+  @deprecated("Warning: This operation is deprecated and will be removed after February, 2024. Please use the [Azure KeyVault Extension](https://learn.microsoft.com/azure/batch/batch-certificate-migration-guide) instead.")
   @summary("Cancels a failed deletion of a Certificate from the specified Account.")
   @doc("""
 If you try to delete a Certificate that is being used by a Pool or Compute
@@ -1108,6 +1075,7 @@ then you can try again to delete the Certificate.
     BatchError
   >;
 
+  @deprecated("Warning: This operation is deprecated and will be removed after February, 2024. Please use the [Azure KeyVault Extension](https://learn.microsoft.com/azure/batch/batch-certificate-migration-guide) instead.")
   @summary("Deletes a Certificate from the specified Account.")
   @doc("""
 You cannot delete a Certificate if a resource (Pool or Compute Node) is using
@@ -1142,6 +1110,7 @@ active if you decide that you want to continue using the Certificate.
     BatchError
   >;
 
+  @deprecated("Warning: This operation is deprecated and will be removed after February, 2024. Please use the [Azure KeyVault Extension](https://learn.microsoft.com/azure/batch/batch-certificate-migration-guide) instead.")
   @doc("Gets information about the specified Certificate.")
   @example("./examples/CertificateGet.json", "Certificate get")
   @route("/certificates(thumbprintAlgorithm={thumbprintAlgorithm},thumbprint={thumbprint})")
@@ -1166,206 +1135,6 @@ active if you decide that you want to continue using the Certificate.
   >;
 }
 
-#suppress "@azure-tools/typespec-azure-core/casing-style" "The names of Model types must use camelCase"
-#suppress "@azure-tools/typespec-azure-core/no-rpc-path-params" "Operations defined using RpcOperation should not have path parameters."
-@operationGroup
-@tag("Files")
-interface File {
-  @summary("Deletes the specified Task file from the Compute Node where the Task ran.")
-  @doc("Deletes the specified Task file from the Compute Node where the Task ran.")
-  @example("./examples/FileDeleteFromTask.json", "File delete from task")
-  @route("/jobs/{jobId}/tasks/{taskId}/files/{filePath}")
-  @delete
-  DeleteFromTask is RpcOperation<
-    BatchJobFileClientRequestHeaders & {
-      @doc("""
-Whether to delete children of a directory. If the filePath parameter represents
-a directory instead of a file, you can set recursive to true to delete the
-directory and all of the files and subdirectories in it. If recursive is false
-then the directory must be empty or deletion will fail.
-""")
-      @query
-      recursive?: boolean;
-    },
-    BatchClientResponseHeaders & {
-      @doc("A process exit code.")
-      @statusCode
-      code: "200";
-    },
-    {},
-    BatchError
-  >;
-
-  @doc("Returns the content of the specified Task file.")
-  @example("./examples/FileGetFromTask.json", "Get File From Task")
-  @route("/jobs/{jobId}/tasks/{taskId}/files/{filePath}")
-  @get
-  GetFromTask is RpcOperation<
-    BatchJobFileClientRequestHeaders &
-      BatchModifiedSinceHeaders & {
-        @doc("""
-The byte range to be retrieved. The default is to retrieve the entire file. The
-format is bytes=startRange-endRange.
-""")
-        @header
-        `ocp-range`?: string;
-      },
-    BatchResponseHeaders &
-      FileResponse & {
-        @doc("Type of content")
-        @header("content-type")
-        contentType: "application/octet-stream";
-
-        @body
-        @doc("A response containing the file content.")
-        file: bytes;
-      },
-    {},
-    BatchError
-  >;
-
-  @doc("Gets the properties of the specified Task file.")
-  @example(
-    "./examples/FileGetPropertiesFromTask.json",
-    "File get properties from task"
-  )
-  @route("/jobs/{jobId}/tasks/{taskId}/files/{filePath}")
-  @head
-  GetPropertiesFromTask is RpcOperation<
-    BatchJobFileClientRequestHeaders & BatchModifiedSinceHeaders,
-    BatchResponseHeaders & FileResponse,
-    {},
-    BatchError
-  >;
-
-  @summary("Deletes the specified file from the Compute Node.")
-  @doc("Deletes the specified file from the Compute Node.")
-  @example("./examples/FileDeleteFromNode.json", "File delete from node")
-  @route("/pools/{poolId}/nodes/{nodeId}/files/{filePath}")
-  @delete
-  DeleteFromBatchNode is RpcOperation<
-    BatchPoolFileClientRequestHeaders & {
-      @doc("""
-Whether to delete children of a directory. If the filePath parameter represents
-a directory instead of a file, you can set recursive to true to delete the
-directory and all of the files and subdirectories in it. If recursive is false
-then the directory must be empty or deletion will fail.
-""")
-      @query
-      recursive?: boolean;
-    },
-    BatchClientResponseHeaders & {
-      @doc("A process exit code.")
-      @statusCode
-      code: "200";
-    },
-    {},
-    BatchError
-  >;
-
-  @doc("Returns the content of the specified Compute Node file.")
-  @example("./examples/FileGetFromNode.json", "Get File From Compute Node")
-  @route("/pools/{poolId}/nodes/{nodeId}/files/{filePath}")
-  @get
-  GetFromBatchNode is RpcOperation<
-    BatchPoolFileClientRequestHeaders &
-      BatchModifiedSinceHeaders & {
-        @doc("""
-The byte range to be retrieved. The default is to retrieve the entire file. The
-format is bytes=startRange-endRange.
-""")
-        @header
-        `ocp-range`?: string;
-      },
-    BatchResponseHeaders &
-      FileResponse & {
-        @body
-        @doc("A response containing the file content.")
-        file: bytes;
-      },
-    {},
-    BatchError
-  >;
-
-  @doc("Gets the properties of the specified Compute Node file.")
-  @example(
-    "./examples/FileGetPropertiesFromNode.json",
-    "File get properties from node"
-  )
-  @route("/pools/{poolId}/nodes/{nodeId}/files/{filePath}")
-  @head
-  GetPropertiesFromBatchNode is RpcOperation<
-    BatchPoolFileClientRequestHeaders & BatchModifiedSinceHeaders,
-    BatchResponseHeaders & FileResponse,
-    {},
-    BatchError
-  >;
-
-  @summary("Lists the files in a Task's directory on its Compute Node.")
-  @doc("Lists the files in a Task's directory on its Compute Node.")
-  @example("./examples/FileListFromTask.json", "File list from task")
-  @route("/jobs/{jobId}/tasks/{taskId}/files")
-  @get
-  ListFromTask is RpcOperation<
-    BatchApplicationListHeaders & {
-      @doc("The ID of the Job that contains the Task.")
-      @path
-      jobId: string;
-
-      @doc("The ID of the Task whose files you want to list.")
-      @path
-      taskId: string;
-
-      @doc("""
-An OData $filter clause. For more information on constructing this filter, see
-https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-task-files.
-""")
-      @query
-      $filter?: string;
-
-      @doc("""
-Whether to list children of the Task directory. This parameter can be used in
-combination with the filter parameter to list specific type of files.
-""")
-      @query
-      recursive?: boolean;
-    },
-    BatchResponseHeaders & NodeFileListResult,
-    {},
-    BatchError
-  >;
-
-  @summary("Lists all of the files in Task directories on the specified Compute Node.")
-  @doc("Lists all of the files in Task directories on the specified Compute Node.")
-  @example("./examples/FileListFromNode.json", "File list from node")
-  @route("/pools/{poolId}/nodes/{nodeId}/files")
-  @get
-  ListFromBatchNode is RpcOperation<
-    BatchApplicationListHeaders & {
-      @doc("The ID of the Pool that contains the Compute Node.")
-      @path
-      poolId: string;
-
-      @doc("The ID of the Compute Node whose files you want to list.")
-      @path
-      nodeId: string;
-
-      @doc("""
-An OData $filter clause. For more information on constructing this filter, see
-https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-compute-node-files.
-""")
-      @query
-      $filter?: string;
-
-      @doc("Whether to list children of a directory.")
-      @query
-      recursive?: boolean;
-    },
-    BatchResponseHeaders & NodeFileListResult,
-    {},
-    BatchError
-  >;
-}
 
 #suppress "@azure-tools/typespec-azure-core/casing-style" "The names of Model types must use camelCase"
 #suppress "@azure-tools/typespec-azure-core/no-rpc-path-params" "Operations defined using RpcOperation should not have path parameters."
@@ -1988,6 +1757,107 @@ will fail if the Job has completed (or is terminating or deleting).
     {},
     BatchError
   >;
+
+  @summary("Deletes the specified Task file from the Compute Node where the Task ran.")
+  @doc("Deletes the specified Task file from the Compute Node where the Task ran.")
+  @example("./examples/FileDeleteFromTask.json", "File delete from task")
+  @route("/jobs/{jobId}/tasks/{taskId}/files/{filePath}")
+  @delete
+  DeleteFileFromTask is RpcOperation<
+    BatchTaskFileClientPathParameters & {
+      @doc("""
+Whether to delete children of a directory. If the filePath parameter represents
+a directory instead of a file, you can set recursive to true to delete the
+directory and all of the files and subdirectories in it. If recursive is false
+then the directory must be empty or deletion will fail.
+""")
+      @query
+      recursive?: boolean;
+    },
+    BatchClientResponseHeaders & {
+      @doc("A process exit code.")
+      @statusCode
+      code: "200";
+    },
+    {},
+    BatchError
+  >;
+
+  @doc("Returns the content of the specified Task file.")
+  @example("./examples/FileGetFromTask.json", "Get File From Task")
+  @route("/jobs/{jobId}/tasks/{taskId}/files/{filePath}")
+  @get
+  GetFileFromTask is RpcOperation<
+    BatchTaskFileClientPathParameters &
+      BatchModifiedSinceHeaders & {
+        @doc("""
+The byte range to be retrieved. The default is to retrieve the entire file. The
+format is bytes=startRange-endRange.
+""")
+        @header
+        `ocp-range`?: string;
+      },
+    BatchResponseHeaders &
+      FileResponse & {
+        @doc("Type of content")
+        @header("content-type")
+        contentType: "application/octet-stream";
+
+        @body
+        @doc("A response containing the file content.")
+        file: bytes;
+      },
+    {},
+    BatchError
+  >;
+
+  @doc("Gets the properties of the specified Task file.")
+  @example(
+    "./examples/FileGetPropertiesFromTask.json",
+    "File get properties from task"
+  )
+  @route("/jobs/{jobId}/tasks/{taskId}/files/{filePath}")
+  @head
+  GetFilePropertiesFromTask is RpcOperation<
+    BatchTaskFileClientPathParameters & BatchModifiedSinceHeaders,
+    BatchResponseHeaders & FileResponse,
+    {},
+    BatchError
+  >;
+
+  @summary("Lists the files in a Task's directory on its Compute Node.")
+  @doc("Lists the files in a Task's directory on its Compute Node.")
+  @example("./examples/FileListFromTask.json", "File list from task")
+  @route("/jobs/{jobId}/tasks/{taskId}/files")
+  @get
+  ListFilesFromTask is RpcOperation<
+    BatchApplicationListHeaders & {
+      @doc("The ID of the Job that contains the Task.")
+      @path
+      jobId: string;
+
+      @doc("The ID of the Task whose files you want to list.")
+      @path
+      taskId: string;
+
+      @doc("""
+An OData $filter clause. For more information on constructing this filter, see
+https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-task-files.
+""")
+      @query
+      $filter?: string;
+
+      @doc("""
+Whether to list children of the Task directory. This parameter can be used in
+combination with the filter parameter to list specific type of files.
+""")
+      @query
+      recursive?: boolean;
+    },
+    BatchResponseHeaders & NodeFileListResult,
+    {},
+    BatchError
+  >;
 }
 
 #suppress "@azure-tools/typespec-azure-core/casing-style" "The names of Model types must use camelCase"
@@ -2222,6 +2092,10 @@ scheduling state is enabled.
   @post
   DisableScheduling is RpcOperation<
     BatchClientRequestHeaders & {
+      @doc("Type of content")
+      @header("content-type")
+      contentType: "application/json; odata=minimalmetadata";
+
       @doc("The ID of the Pool that contains the Compute Node.")
       @path
       poolId: string;
@@ -2302,7 +2176,7 @@ API.
       @path
       nodeId: string;
     },
-    BatchResponseHeaders & BatchNodeGetRemoteLoginSettingsResult,
+    BatchResponseHeaders & BatchNodeRemoteLoginSettingsResult,
     {},
     BatchError
   >;
@@ -2472,6 +2346,99 @@ about.
     BatchError
   >;
 
+  @summary("Deletes the specified file from the Compute Node.")
+  @doc("Deletes the specified file from the Compute Node.")
+  @example("./examples/FileDeleteFromNode.json", "File delete from node")
+  @route("/pools/{poolId}/nodes/{nodeId}/files/{filePath}")
+  @delete
+  DeleteFileFromBatchNode is RpcOperation<
+    BatchNodeFileClientPathParameters & {
+      @doc("""
+Whether to delete children of a directory. If the filePath parameter represents
+a directory instead of a file, you can set recursive to true to delete the
+directory and all of the files and subdirectories in it. If recursive is false
+then the directory must be empty or deletion will fail.
+""")
+      @query
+      recursive?: boolean;
+    },
+    BatchClientResponseHeaders & {
+      @doc("A process exit code.")
+      @statusCode
+      code: "200";
+    },
+    {},
+    BatchError
+  >;
+
+  @doc("Returns the content of the specified Compute Node file.")
+  @example("./examples/FileGetFromNode.json", "Get File From Compute Node")
+  @route("/pools/{poolId}/nodes/{nodeId}/files/{filePath}")
+  @get
+  GetFileFromBatchNode is RpcOperation<
+    BatchNodeFileClientPathParameters &
+      BatchModifiedSinceHeaders & {
+        @doc("""
+The byte range to be retrieved. The default is to retrieve the entire file. The
+format is bytes=startRange-endRange.
+""")
+        @header
+        `ocp-range`?: string;
+      },
+    BatchResponseHeaders &
+      FileResponse & {
+        @body
+        @doc("A response containing the file content.")
+        file: bytes;
+      },
+    {},
+    BatchError
+  >;
+
+  @doc("Gets the properties of the specified Compute Node file.")
+  @example(
+    "./examples/FileGetPropertiesFromNode.json",
+    "File get properties from node"
+  )
+  @route("/pools/{poolId}/nodes/{nodeId}/files/{filePath}")
+  @head
+  GetFilePropertiesFromBatchNode is RpcOperation<
+    BatchNodeFileClientPathParameters & BatchModifiedSinceHeaders,
+    BatchResponseHeaders & FileResponse,
+    {},
+    BatchError
+  >;
+
+  @summary("Lists all of the files in Task directories on the specified Compute Node.")
+  @doc("Lists all of the files in Task directories on the specified Compute Node.")
+  @example("./examples/FileListFromNode.json", "File list from node")
+  @route("/pools/{poolId}/nodes/{nodeId}/files")
+  @get
+  ListFilesFromBatchNode is RpcOperation<
+    BatchApplicationListHeaders & {
+      @doc("The ID of the Pool that contains the Compute Node.")
+      @path
+      poolId: string;
+
+      @doc("The ID of the Compute Node whose files you want to list.")
+      @path
+      nodeId: string;
+
+      @doc("""
+An OData $filter clause. For more information on constructing this filter, see
+https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-compute-node-files.
+""")
+      @query
+      $filter?: string;
+
+      @doc("Whether to list children of a directory.")
+      @query
+      recursive?: boolean;
+    },
+    BatchResponseHeaders & NodeFileListResult,
+    {},
+    BatchError
+  >;
 
 }
 
@@ -2680,7 +2647,7 @@ applications can be returned.
   @query
   @minValue(1)
   @maxValue(1000)
-
+  
   maxresults?: int32 = 1000;
 
   #suppress "@azure-tools/typespec-azure-core/casing-style" "The names of Model types must use camelCase"
@@ -2691,12 +2658,12 @@ directly.
 """)
   @header
   @format("date-time-rfc1123")
-
+  
   `ocp-date`?: string;
 }
 
-@doc("Common header parms for Pool related File operartions")
-model BatchPoolFileClientRequestHeaders extends BatchClientRequestHeaders {
+@doc("Common path parms for Node related File operartions")
+model BatchNodeFileClientPathParameters extends BatchClientRequestHeaders {
   @doc("The ID of the Pool that contains the Compute Node.")
   @path
   poolId: string;
@@ -2710,8 +2677,8 @@ model BatchPoolFileClientRequestHeaders extends BatchClientRequestHeaders {
   filePath: string;
 }
 
-@doc("Common header parms for Job related File operartions")
-model BatchJobFileClientRequestHeaders extends BatchClientRequestHeaders {
+@doc("Common path parms for Task related File operartions")
+model BatchTaskFileClientPathParameters extends BatchClientRequestHeaders {
   @doc("The ID of the Job that contains the Task.")
   @path
   jobId: string;
@@ -2756,4 +2723,5 @@ directly.
   @format("date-time-rfc1123")
   `ocp-date`?: string;
 }
+
 

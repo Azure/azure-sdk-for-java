@@ -32,41 +32,6 @@ public class JobTests extends BatchServiceClientTestBase {
         }
     }
 
-    /*
-    * Test TypeSpec Shared model among GET-PUT Roundtrip operation
-    * */
-    @Test
-    public void testJobUnifiedModel() throws Exception {
-    	String jobId = getStringIdWithUserNamePrefix("-Job-canPut");
-    	PoolInformation poolInfo = new PoolInformation();
-        poolInfo.setPoolId(poolId);
-        JobClient jobClient = batchClientBuilder.buildJobClient();
-        BatchJobCreateParameters jobCreateParameters = new BatchJobCreateParameters(jobId, poolInfo);
-
-        jobClient.create(jobCreateParameters);
-
-        try {
-            //GET
-        	BatchJob job = jobClient.get(jobId);
-
-            //UPDATE
-            Integer updatedPriority = 500;
-            OnAllTasksComplete updatedTasksComplete = OnAllTasksComplete.TERMINATE_JOB;
-        	job.setPriority(updatedPriority);
-        	job.setOnAllTasksComplete(updatedTasksComplete);
-        	job.setPoolInfo(new PoolInformation().setPoolId(poolId));
-            jobClient.update(jobId, job);
-
-            //GET After UPDATE
-            job = jobClient.get(jobId);
-            Assertions.assertEquals(updatedPriority, job.getPriority());
-            Assertions.assertEquals(updatedTasksComplete, job.getOnAllTasksComplete());
-        }
-        finally {
-        	jobClient.delete(jobId);
-        }
-    }
-
     @Test
     public void canCrudJob() throws Exception {
     	 // CREATE
@@ -135,71 +100,71 @@ public class JobTests extends BatchServiceClientTestBase {
         }
     }
 
-//    @Test
-//    public void canUpdateJobState() throws Exception {
-//        // CREATE
-//        String jobId = getStringIdWithUserNamePrefix("-Job-CanUpdateState");
-//        PoolInformation poolInfo = new PoolInformation();
-//        poolInfo.setPoolId(poolId);
-//
-//        BatchJob jobToAdd = new BatchJob();
-//        jobToAdd.setId(jobId);
-//        jobToAdd.setPoolInfo(poolInfo);
-//
-//        jobClient.add(jobToAdd);
-//
-//        try {
-//            // GET
-//            BatchJob job = jobClient.get(jobId);
-//            Assertions.assertEquals(JobState.ACTIVE, job.getState());
-//
-//            // UPDATE
-//            Integer maxTaskRetryCount = 3;
-//            Integer priority = 500;
-//            jobClient.update(jobId, new BatchJob().setPoolInfo(poolInfo).setPriority(priority).setConstraints(new JobConstraints().setMaxTaskRetryCount(maxTaskRetryCount)));
-//
-//            job = jobClient.get(jobId);
-//            Assertions.assertEquals(priority, job.getPriority());
-//            Assertions.assertEquals(maxTaskRetryCount, job.getConstraints().getMaxTaskRetryCount());
-//
-//            jobClient.disable(jobId, new BatchJobDisableParameters(DisableJobOption.REQUEUE));
-//            job = jobClient.get(jobId);
-//            Assertions.assertEquals(JobState.DISABLING, job.getState());
-//
-//            Thread.sleep(5 * 1000);
-//
-//            job = jobClient.get(jobId);
-//            Assertions.assertEquals(JobState.DISABLED, job.getState());
-//            Assertions.assertEquals(OnAllTasksComplete.NO_ACTION, job.getOnAllTasksComplete());
-//
-//            jobClient.patch(jobId, new BatchJob().setOnAllTasksComplete(OnAllTasksComplete.TERMINATE_JOB));
-//            job = jobClient.get(jobId);
-//            Assertions.assertEquals(OnAllTasksComplete.TERMINATE_JOB, job.getOnAllTasksComplete());
-//
-//            jobClient.enable(jobId);
-//            job = jobClient.get(jobId);
-//            Assertions.assertEquals(JobState.ACTIVE, job.getState());
-//
-////            RequestOptions options = new RequestOptions();
-////            options.setBody(BinaryData.fromObject(new BatchJobTerminateParameters().setTerminateReason("myreason")));
-//
-//            jobClient.terminate(jobId, null, null, null, null, null, null, null, null, new BatchJobTerminateParameters().setTerminateReason("myreason"));
-//            job = jobClient.get(jobId);
-//            Assertions.assertEquals(JobState.TERMINATING, job.getState());
-//
-//            Thread.sleep(2 * 1000);
-//            job = jobClient.get(jobId);
-//            Assertions.assertEquals(JobState.COMPLETED, job.getState());
-//        }
-//        finally {
-//            try {
-//                jobClient.delete(jobId);
-//            }
-//            catch (Exception e) {
-//                // Ignore here
-//            }
-//        }
-//    }
+    @Test
+    public void canUpdateJobState() throws Exception {
+        // CREATE
+        String jobId = getStringIdWithUserNamePrefix("-Job-CanUpdateState");
+        PoolInformation poolInfo = new PoolInformation();
+        poolInfo.setPoolId(poolId);
+
+        BatchJobCreateParameters jobtoCreate = new BatchJobCreateParameters(jobId, poolInfo);
+        jobClient.create(jobtoCreate);
+
+        try {
+            // GET
+            BatchJob job = jobClient.get(jobId);
+            Assertions.assertEquals(JobState.ACTIVE, job.getState());
+
+            // UPDATE
+            Integer maxTaskRetryCount = 3;
+            Integer priority = 500;
+            job.setPriority(priority);
+            job.setConstraints(new JobConstraints().setMaxTaskRetryCount(maxTaskRetryCount));
+            job.setPoolInfo(new PoolInformation().setPoolId(poolId));
+            jobClient.update(jobId, job);
+
+            job = jobClient.get(jobId);
+            Assertions.assertEquals(priority, job.getPriority());
+            Assertions.assertEquals(maxTaskRetryCount, job.getConstraints().getMaxTaskRetryCount());
+
+            jobClient.disable(jobId, new BatchJobDisableParameters(DisableJobOption.REQUEUE));
+            job = jobClient.get(jobId);
+            Assertions.assertEquals(JobState.DISABLING, job.getState());
+
+            Thread.sleep(5 * 1000);
+
+            job = jobClient.get(jobId);
+            Assertions.assertTrue(job.getState() == JobState.DISABLED || job.getState() == JobState.DISABLING);
+            Assertions.assertEquals(OnAllTasksComplete.NO_ACTION, job.getOnAllTasksComplete());
+
+            //PATCH
+            BatchJobUpdateParameters jobUpdateParameters = new BatchJobUpdateParameters();
+            jobUpdateParameters.setOnAllTasksComplete(OnAllTasksComplete.TERMINATE_JOB);
+            jobClient.patch(jobId, jobUpdateParameters);
+            job = jobClient.get(jobId);
+            Assertions.assertEquals(OnAllTasksComplete.TERMINATE_JOB, job.getOnAllTasksComplete());
+
+            jobClient.enable(jobId);
+            job = jobClient.get(jobId);
+            Assertions.assertEquals(JobState.ACTIVE, job.getState());
+
+            jobClient.terminate(jobId, null, null, new BatchJobTerminateParameters().setTerminateReason("myreason"), null);
+            job = jobClient.get(jobId);
+            Assertions.assertEquals(JobState.TERMINATING, job.getState());
+
+            Thread.sleep(2 * 1000);
+            job = jobClient.get(jobId);
+            Assertions.assertEquals(JobState.COMPLETED, job.getState());
+        }
+        finally {
+            try {
+                jobClient.delete(jobId);
+            }
+            catch (Exception e) {
+                // Ignore here
+            }
+        }
+    }
 
     @Test
     public void canCRUDJobWithPoolNodeCommunicationMode() throws Exception {

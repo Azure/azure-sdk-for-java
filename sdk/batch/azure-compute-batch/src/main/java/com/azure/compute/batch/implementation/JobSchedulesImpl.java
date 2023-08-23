@@ -989,7 +989,7 @@ public final class JobSchedulesImpl {
      *                         ]
      *                         licenseType: String (Optional)
      *                         containerConfiguration (Optional): {
-     *                             type: String(dockerCompatible) (Required)
+     *                             type: String(dockerCompatible/criCompatible) (Required)
      *                             containerImageNames (Optional): [
      *                                 String (Optional)
      *                             ]
@@ -1012,6 +1012,7 @@ public final class JobSchedulesImpl {
      *                                 type: String (Required)
      *                                 typeHandlerVersion: String (Optional)
      *                                 autoUpgradeMinorVersion: Boolean (Optional)
+     *                                 enableAutomaticUpgrade: Boolean (Optional)
      *                                 settings (Optional): {
      *                                     String: String (Optional)
      *                                 }
@@ -1070,6 +1071,7 @@ public final class JobSchedulesImpl {
      *                                 String (Optional)
      *                             ]
      *                         }
+     *                         enableAcceleratedNetworking: Boolean (Optional)
      *                     }
      *                     startTask (Optional): {
      *                         commandLine: String (Required)
@@ -1441,7 +1443,7 @@ public final class JobSchedulesImpl {
      *                         ]
      *                         licenseType: String (Optional)
      *                         containerConfiguration (Optional): {
-     *                             type: String(dockerCompatible) (Required)
+     *                             type: String(dockerCompatible/criCompatible) (Required)
      *                             containerImageNames (Optional): [
      *                                 String (Optional)
      *                             ]
@@ -1464,6 +1466,7 @@ public final class JobSchedulesImpl {
      *                                 type: String (Required)
      *                                 typeHandlerVersion: String (Optional)
      *                                 autoUpgradeMinorVersion: Boolean (Optional)
+     *                                 enableAutomaticUpgrade: Boolean (Optional)
      *                                 settings (Optional): {
      *                                     String: String (Optional)
      *                                 }
@@ -1522,6 +1525,7 @@ public final class JobSchedulesImpl {
      *                                 String (Optional)
      *                             ]
      *                         }
+     *                         enableAcceleratedNetworking: Boolean (Optional)
      *                     }
      *                     startTask (Optional): {
      *                         commandLine: String (Required)
@@ -1883,7 +1887,7 @@ public final class JobSchedulesImpl {
      *                         ]
      *                         licenseType: String (Optional)
      *                         containerConfiguration (Optional): {
-     *                             type: String(dockerCompatible) (Required)
+     *                             type: String(dockerCompatible/criCompatible) (Required)
      *                             containerImageNames (Optional): [
      *                                 String (Optional)
      *                             ]
@@ -1906,6 +1910,7 @@ public final class JobSchedulesImpl {
      *                                 type: String (Required)
      *                                 typeHandlerVersion: String (Optional)
      *                                 autoUpgradeMinorVersion: Boolean (Optional)
+     *                                 enableAutomaticUpgrade: Boolean (Optional)
      *                                 settings (Optional): {
      *                                     String: String (Optional)
      *                                 }
@@ -1964,6 +1969,7 @@ public final class JobSchedulesImpl {
      *                                 String (Optional)
      *                             ]
      *                         }
+     *                         enableAcceleratedNetworking: Boolean (Optional)
      *                     }
      *                     startTask (Optional): {
      *                         commandLine: String (Required)
@@ -2308,7 +2314,7 @@ public final class JobSchedulesImpl {
      *                         ]
      *                         licenseType: String (Optional)
      *                         containerConfiguration (Optional): {
-     *                             type: String(dockerCompatible) (Required)
+     *                             type: String(dockerCompatible/criCompatible) (Required)
      *                             containerImageNames (Optional): [
      *                                 String (Optional)
      *                             ]
@@ -2331,6 +2337,7 @@ public final class JobSchedulesImpl {
      *                                 type: String (Required)
      *                                 typeHandlerVersion: String (Optional)
      *                                 autoUpgradeMinorVersion: Boolean (Optional)
+     *                                 enableAutomaticUpgrade: Boolean (Optional)
      *                                 settings (Optional): {
      *                                     String: String (Optional)
      *                                 }
@@ -2389,6 +2396,7 @@ public final class JobSchedulesImpl {
      *                                 String (Optional)
      *                             ]
      *                         }
+     *                         enableAcceleratedNetworking: Boolean (Optional)
      *                     }
      *                     startTask (Optional): {
      *                         commandLine: String (Required)
@@ -2741,7 +2749,7 @@ public final class JobSchedulesImpl {
      *                         ]
      *                         licenseType: String (Optional)
      *                         containerConfiguration (Optional): {
-     *                             type: String(dockerCompatible) (Required)
+     *                             type: String(dockerCompatible/criCompatible) (Required)
      *                             containerImageNames (Optional): [
      *                                 String (Optional)
      *                             ]
@@ -2764,6 +2772,7 @@ public final class JobSchedulesImpl {
      *                                 type: String (Required)
      *                                 typeHandlerVersion: String (Optional)
      *                                 autoUpgradeMinorVersion: Boolean (Optional)
+     *                                 enableAutomaticUpgrade: Boolean (Optional)
      *                                 settings (Optional): {
      *                                     String: String (Optional)
      *                                 }
@@ -2822,6 +2831,7 @@ public final class JobSchedulesImpl {
      *                                 String (Optional)
      *                             ]
      *                         }
+     *                         enableAcceleratedNetworking: Boolean (Optional)
      *                     }
      *                     startTask (Optional): {
      *                         commandLine: String (Required)
@@ -3200,7 +3210,7 @@ public final class JobSchedulesImpl {
      *                         ]
      *                         licenseType: String (Optional)
      *                         containerConfiguration (Optional): {
-     *                             type: String(dockerCompatible) (Required)
+     *                             type: String(dockerCompatible/criCompatible) (Required)
      *                             containerImageNames (Optional): [
      *                                 String (Optional)
      *                             ]
@@ -3223,6 +3233,7 @@ public final class JobSchedulesImpl {
      *                                 type: String (Required)
      *                                 typeHandlerVersion: String (Optional)
      *                                 autoUpgradeMinorVersion: Boolean (Optional)
+     *                                 enableAutomaticUpgrade: Boolean (Optional)
      *                                 settings (Optional): {
      *                                     String: String (Optional)
      *                                 }
@@ -3281,6 +3292,7 @@ public final class JobSchedulesImpl {
      *                                 String (Optional)
      *                             ]
      *                         }
+     *                         enableAcceleratedNetworking: Boolean (Optional)
      *                     }
      *                     startTask (Optional): {
      *                         commandLine: String (Required)
@@ -3990,7 +4002,7 @@ public final class JobSchedulesImpl {
      *                         ]
      *                         licenseType: String (Optional)
      *                         containerConfiguration (Optional): {
-     *                             type: String(dockerCompatible) (Required)
+     *                             type: String(dockerCompatible/criCompatible) (Required)
      *                             containerImageNames (Optional): [
      *                                 String (Optional)
      *                             ]
@@ -4013,6 +4025,7 @@ public final class JobSchedulesImpl {
      *                                 type: String (Required)
      *                                 typeHandlerVersion: String (Optional)
      *                                 autoUpgradeMinorVersion: Boolean (Optional)
+     *                                 enableAutomaticUpgrade: Boolean (Optional)
      *                                 settings (Optional): {
      *                                     String: String (Optional)
      *                                 }
@@ -4071,6 +4084,7 @@ public final class JobSchedulesImpl {
      *                                 String (Optional)
      *                             ]
      *                         }
+     *                         enableAcceleratedNetworking: Boolean (Optional)
      *                     }
      *                     startTask (Optional): {
      *                         commandLine: String (Required)
@@ -4397,7 +4411,7 @@ public final class JobSchedulesImpl {
      *                         ]
      *                         licenseType: String (Optional)
      *                         containerConfiguration (Optional): {
-     *                             type: String(dockerCompatible) (Required)
+     *                             type: String(dockerCompatible/criCompatible) (Required)
      *                             containerImageNames (Optional): [
      *                                 String (Optional)
      *                             ]
@@ -4420,6 +4434,7 @@ public final class JobSchedulesImpl {
      *                                 type: String (Required)
      *                                 typeHandlerVersion: String (Optional)
      *                                 autoUpgradeMinorVersion: Boolean (Optional)
+     *                                 enableAutomaticUpgrade: Boolean (Optional)
      *                                 settings (Optional): {
      *                                     String: String (Optional)
      *                                 }
@@ -4478,6 +4493,7 @@ public final class JobSchedulesImpl {
      *                                 String (Optional)
      *                             ]
      *                         }
+     *                         enableAcceleratedNetworking: Boolean (Optional)
      *                     }
      *                     startTask (Optional): {
      *                         commandLine: String (Required)
@@ -4816,7 +4832,7 @@ public final class JobSchedulesImpl {
      *                         ]
      *                         licenseType: String (Optional)
      *                         containerConfiguration (Optional): {
-     *                             type: String(dockerCompatible) (Required)
+     *                             type: String(dockerCompatible/criCompatible) (Required)
      *                             containerImageNames (Optional): [
      *                                 String (Optional)
      *                             ]
@@ -4839,6 +4855,7 @@ public final class JobSchedulesImpl {
      *                                 type: String (Required)
      *                                 typeHandlerVersion: String (Optional)
      *                                 autoUpgradeMinorVersion: Boolean (Optional)
+     *                                 enableAutomaticUpgrade: Boolean (Optional)
      *                                 settings (Optional): {
      *                                     String: String (Optional)
      *                                 }
@@ -4897,6 +4914,7 @@ public final class JobSchedulesImpl {
      *                                 String (Optional)
      *                             ]
      *                         }
+     *                         enableAcceleratedNetworking: Boolean (Optional)
      *                     }
      *                     startTask (Optional): {
      *                         commandLine: String (Required)
@@ -5267,7 +5285,7 @@ public final class JobSchedulesImpl {
      *                         ]
      *                         licenseType: String (Optional)
      *                         containerConfiguration (Optional): {
-     *                             type: String(dockerCompatible) (Required)
+     *                             type: String(dockerCompatible/criCompatible) (Required)
      *                             containerImageNames (Optional): [
      *                                 String (Optional)
      *                             ]
@@ -5290,6 +5308,7 @@ public final class JobSchedulesImpl {
      *                                 type: String (Required)
      *                                 typeHandlerVersion: String (Optional)
      *                                 autoUpgradeMinorVersion: Boolean (Optional)
+     *                                 enableAutomaticUpgrade: Boolean (Optional)
      *                                 settings (Optional): {
      *                                     String: String (Optional)
      *                                 }
@@ -5348,6 +5367,7 @@ public final class JobSchedulesImpl {
      *                                 String (Optional)
      *                             ]
      *                         }
+     *                         enableAcceleratedNetworking: Boolean (Optional)
      *                     }
      *                     startTask (Optional): {
      *                         commandLine: String (Required)
@@ -5707,7 +5727,7 @@ public final class JobSchedulesImpl {
      *                         ]
      *                         licenseType: String (Optional)
      *                         containerConfiguration (Optional): {
-     *                             type: String(dockerCompatible) (Required)
+     *                             type: String(dockerCompatible/criCompatible) (Required)
      *                             containerImageNames (Optional): [
      *                                 String (Optional)
      *                             ]
@@ -5730,6 +5750,7 @@ public final class JobSchedulesImpl {
      *                                 type: String (Required)
      *                                 typeHandlerVersion: String (Optional)
      *                                 autoUpgradeMinorVersion: Boolean (Optional)
+     *                                 enableAutomaticUpgrade: Boolean (Optional)
      *                                 settings (Optional): {
      *                                     String: String (Optional)
      *                                 }
@@ -5788,6 +5809,7 @@ public final class JobSchedulesImpl {
      *                                 String (Optional)
      *                             ]
      *                         }
+     *                         enableAcceleratedNetworking: Boolean (Optional)
      *                     }
      *                     startTask (Optional): {
      *                         commandLine: String (Required)
@@ -6154,7 +6176,7 @@ public final class JobSchedulesImpl {
      *                         ]
      *                         licenseType: String (Optional)
      *                         containerConfiguration (Optional): {
-     *                             type: String(dockerCompatible) (Required)
+     *                             type: String(dockerCompatible/criCompatible) (Required)
      *                             containerImageNames (Optional): [
      *                                 String (Optional)
      *                             ]
@@ -6177,6 +6199,7 @@ public final class JobSchedulesImpl {
      *                                 type: String (Required)
      *                                 typeHandlerVersion: String (Optional)
      *                                 autoUpgradeMinorVersion: Boolean (Optional)
+     *                                 enableAutomaticUpgrade: Boolean (Optional)
      *                                 settings (Optional): {
      *                                     String: String (Optional)
      *                                 }
@@ -6235,6 +6258,7 @@ public final class JobSchedulesImpl {
      *                                 String (Optional)
      *                             ]
      *                         }
+     *                         enableAcceleratedNetworking: Boolean (Optional)
      *                     }
      *                     startTask (Optional): {
      *                         commandLine: String (Required)
@@ -6579,7 +6603,7 @@ public final class JobSchedulesImpl {
      *                         ]
      *                         licenseType: String (Optional)
      *                         containerConfiguration (Optional): {
-     *                             type: String(dockerCompatible) (Required)
+     *                             type: String(dockerCompatible/criCompatible) (Required)
      *                             containerImageNames (Optional): [
      *                                 String (Optional)
      *                             ]
@@ -6602,6 +6626,7 @@ public final class JobSchedulesImpl {
      *                                 type: String (Required)
      *                                 typeHandlerVersion: String (Optional)
      *                                 autoUpgradeMinorVersion: Boolean (Optional)
+     *                                 enableAutomaticUpgrade: Boolean (Optional)
      *                                 settings (Optional): {
      *                                     String: String (Optional)
      *                                 }
@@ -6660,6 +6685,7 @@ public final class JobSchedulesImpl {
      *                                 String (Optional)
      *                             ]
      *                         }
+     *                         enableAcceleratedNetworking: Boolean (Optional)
      *                     }
      *                     startTask (Optional): {
      *                         commandLine: String (Required)
@@ -7012,7 +7038,7 @@ public final class JobSchedulesImpl {
      *                         ]
      *                         licenseType: String (Optional)
      *                         containerConfiguration (Optional): {
-     *                             type: String(dockerCompatible) (Required)
+     *                             type: String(dockerCompatible/criCompatible) (Required)
      *                             containerImageNames (Optional): [
      *                                 String (Optional)
      *                             ]
@@ -7035,6 +7061,7 @@ public final class JobSchedulesImpl {
      *                                 type: String (Required)
      *                                 typeHandlerVersion: String (Optional)
      *                                 autoUpgradeMinorVersion: Boolean (Optional)
+     *                                 enableAutomaticUpgrade: Boolean (Optional)
      *                                 settings (Optional): {
      *                                     String: String (Optional)
      *                                 }
@@ -7093,6 +7120,7 @@ public final class JobSchedulesImpl {
      *                                 String (Optional)
      *                             ]
      *                         }
+     *                         enableAcceleratedNetworking: Boolean (Optional)
      *                     }
      *                     startTask (Optional): {
      *                         commandLine: String (Required)
