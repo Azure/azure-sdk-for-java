@@ -36,7 +36,7 @@ METRICS_ADVISOR_MAX_LIST_ELEMENTS=<max-list-elements>
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-ai-metricsadvisor</artifactId>
-    <version>1.2.0-beta.1</version>
+    <version>1.1.11</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})

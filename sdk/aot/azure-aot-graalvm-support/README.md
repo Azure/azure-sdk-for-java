@@ -33,7 +33,7 @@ documentation.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-aot-graalvm-support</artifactId>
-    <version>1.0.0-beta.4</version>
+    <version>1.0.0-beta.3</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -46,7 +46,7 @@ client.  For more details on this library, please refer to [this README](https:/
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-aot-graalvm-support-netty</artifactId>
-    <version>1.0.0-beta.4</version>
+    <version>1.0.0-beta.3</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})

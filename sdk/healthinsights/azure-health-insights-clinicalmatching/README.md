@@ -25,7 +25,7 @@ For more information about creating the resource or how to get the location and 
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-health-insights-clinicalmatching</artifactId>
-    <version>1.0.0-beta.2</version>
+    <version>1.0.0-beta.1</version>
 </dependency>
 ```
 

@@ -26,7 +26,7 @@ For more information about permissions, see [here][azure_purview_permissions].
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-analytics-purview-administration</artifactId>
-  <version>1.0.0-beta.2</version>
+  <version>1.0.0-beta.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -48,7 +48,7 @@ To use the [DefaultAzureCredential][DefaultAzureCredential] provider shown below
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.10.0</version>
+    <version>1.9.2</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})

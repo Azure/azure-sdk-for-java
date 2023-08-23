@@ -22,7 +22,7 @@ For more information about creating the resource or how to get the location and 
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-ai-anomalydetector</artifactId>
-  <version>3.0.0-beta.6</version>
+  <version>3.0.0-beta.5</version>
 </dependency>
 ```
 

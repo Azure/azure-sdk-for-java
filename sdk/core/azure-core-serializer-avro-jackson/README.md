@@ -15,7 +15,7 @@ Azure Core Jackson Avro Serializer is a plugin for the `azure-core` `AvroSeriali
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-core-serializer-avro-jackson</artifactId>
-    <version>1.0.0-beta.2</version>
+    <version>1.0.0-beta.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})

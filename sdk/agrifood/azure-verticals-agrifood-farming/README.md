@@ -25,7 +25,7 @@ Use FarmBeats client library for Python to do the following.
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-verticals-agrifood-farming</artifactId>
-  <version>1.0.0-beta.4</version>
+  <version>1.0.0-beta.3</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
