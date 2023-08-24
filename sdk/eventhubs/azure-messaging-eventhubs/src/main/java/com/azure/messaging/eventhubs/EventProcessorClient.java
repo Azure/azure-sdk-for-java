@@ -92,6 +92,7 @@ public class EventProcessorClient {
     private final String eventHubName;
     private final String consumerGroup;
     private final Duration loadBalancerUpdateInterval;
+    private final EventProcessorClientOptions processorClientOptions;
 
     /**
      * Package-private constructor. Use {@link EventHubClientBuilder} to create an instance.
@@ -106,7 +107,9 @@ public class EventProcessorClient {
         Consumer<ErrorContext> processError, Tracer tracer, EventProcessorClientOptions processorClientOptions) {
 
         Objects.requireNonNull(eventHubClientBuilder, "eventHubClientBuilder cannot be null.");
-        Objects.requireNonNull(processorClientOptions, "processorClientOptions cannot be null.");
+        this.processorClientOptions = Objects.requireNonNull(processorClientOptions,
+            "processorClientOptions cannot be null.");
+
         Objects.requireNonNull(processorClientOptions.getConsumerGroup(), "'consumerGroup' cannot be null.");
         Objects.requireNonNull(partitionProcessorFactory, "partitionProcessorFactory cannot be null.");
 
@@ -133,6 +136,15 @@ public class EventProcessorClient {
                 this.fullyQualifiedNamespace, this.eventHubName, this.consumerGroup, this.identifier,
                 processorClientOptions.getPartitionOwnershipExpirationInterval().getSeconds(), this.partitionPumpManager,
                 processError, processorClientOptions.getLoadBalancingStrategy());
+    }
+
+    /**
+     * Package-private to get processor options.
+     *
+     * @return Gets the processor options set.
+     */
+    EventProcessorClientOptions getEventProcessorClientOptions() {
+        return processorClientOptions;
     }
 
     /**
