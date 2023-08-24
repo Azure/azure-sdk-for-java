@@ -188,17 +188,22 @@ public class ReplicatedResourceClient {
                 newRequest.requestContext.routeToLocation(locationURI);
                 requestLocationsList.add(locationURI);
                 if (monoList.isEmpty()) {
-                    monoList.add(getStoreResponseMono(newRequest, forceRefreshAndTimeout));
+                    monoList.add(
+                        getStoreResponseMono(newRequest, forceRefreshAndTimeout)
+                            .doOnSubscribe(c ->
+                                logger.info("STARTING to process target location " + locationURI.toString())));
                 } else {
                     monoList
                         .add(
                             getStoreResponseMono(newRequest, forceRefreshAndTimeout)
+                                .doOnSubscribe(c -> logger.info("STARTING to process target location " + locationURI.toString()))
                                 .delaySubscription(((ThresholdBasedAvailabilityStrategy) strategy)
                                     .getThreshold()
                                     .plus(((ThresholdBasedAvailabilityStrategy) strategy)
                                         .getThresholdStep()
                                         .multipliedBy(monoList.size() - 1))
-                                ));
+                                )
+                        );
                 }
             });
 
