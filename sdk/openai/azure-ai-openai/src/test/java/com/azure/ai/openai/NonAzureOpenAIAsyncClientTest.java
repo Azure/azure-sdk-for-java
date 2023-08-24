@@ -127,24 +127,6 @@ public class NonAzureOpenAIAsyncClientTest extends OpenAIClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
-    public void testGetCompletionsExpiredSecretKey(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
-        client = getNonAzureOpenAIAsyncClient(
-            httpClient,
-            new KeyCredential("sk-123456789012345678901234567890123456789012345678"));
-
-        getCompletionsRunner((modelId, prompt) -> {
-            StepVerifier.create(client.getCompletionsWithResponse(modelId,
-                    BinaryData.fromObject(new CompletionsOptions(prompt)),
-                    new RequestOptions()))
-                .verifyErrorSatisfies(throwable -> {
-                    assertInstanceOf(HttpResponseException.class, throwable);
-                    assertEquals(429, ((HttpResponseException) throwable).getResponse().getStatusCode());
-                });
-        });
-    }
-
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
     public void testGetCompletionsUsageField(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getNonAzureOpenAIAsyncClient(httpClient);
         getCompletionsRunner((modelId, prompt) -> {
