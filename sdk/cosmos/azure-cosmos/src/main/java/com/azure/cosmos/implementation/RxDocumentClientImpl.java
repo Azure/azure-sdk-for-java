@@ -90,6 +90,7 @@ import java.lang.management.ManagementFactory;
 import java.net.URI;
 import java.net.URLEncoder;
 import java.nio.ByteBuffer;
+import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -1001,14 +1002,78 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         }, Queues.SMALL_BUFFER_SIZE, 1);
     }
 
+    private static void applyExceptionToMergedDiagnostics(
+        CosmosQueryRequestOptions requestOptions,
+        CosmosException exception) {
+
+        List<CosmosDiagnostics> cancelledRequestDiagnostics =
+            ImplementationBridgeHelpers
+                .CosmosQueryRequestOptionsHelper
+                .getCosmosQueryRequestOptionsAccessor()
+                .getCancelledRequestDiagnosticsTracker(requestOptions);
+
+        // if there is any cancelled requests, collect cosmos diagnostics
+        if (cancelledRequestDiagnostics != null && !cancelledRequestDiagnostics.isEmpty()) {
+            // combine all the cosmos diagnostics
+            CosmosDiagnostics aggregratedCosmosDiagnostics =
+                cancelledRequestDiagnostics
+                    .stream()
+                    .reduce((first, toBeMerged) -> {
+                        ClientSideRequestStatistics clientSideRequestStatistics =
+                            ImplementationBridgeHelpers
+                                .CosmosDiagnosticsHelper
+                                .getCosmosDiagnosticsAccessor()
+                                .getClientSideRequestStatisticsRaw(first);
+
+                        ClientSideRequestStatistics toBeMergedClientSideRequestStatistics =
+                            ImplementationBridgeHelpers
+                                .CosmosDiagnosticsHelper
+                                .getCosmosDiagnosticsAccessor()
+                                .getClientSideRequestStatisticsRaw(first);
+
+                        if (clientSideRequestStatistics == null) {
+                            return toBeMerged;
+                        } else {
+                            clientSideRequestStatistics.mergeClientSideRequestStatistics(toBeMergedClientSideRequestStatistics);
+                            return first;
+                        }
+                    })
+                    .get();
+
+            BridgeInternal.setCosmosDiagnostics(exception, aggregratedCosmosDiagnostics);
+        }
+    }
+
     private static <T> Flux<FeedResponse<T>> getFeedResponseFluxWithTimeout(
         Flux<FeedResponse<T>> feedResponseFlux,
         CosmosEndToEndOperationLatencyPolicyConfig endToEndPolicyConfig,
         CosmosQueryRequestOptions requestOptions,
         final AtomicBoolean isQueryCancelledOnTimeout) {
 
+        Duration endToEndTimeout = endToEndPolicyConfig.getEndToEndOperationTimeout();
+
+
+        Flux<FeedResponse<T>> flux;
+        if (endToEndTimeout.isNegative()) {
+            return feedResponseFlux
+                .timeout(endToEndTimeout)
+                .onErrorMap(throwable -> {
+                    if (throwable instanceof TimeoutException) {
+                        CosmosException cancellationException = getNegativeTimeoutException(null, endToEndTimeout);
+                        cancellationException.setStackTrace(throwable.getStackTrace());
+
+                        isQueryCancelledOnTimeout.set(true);
+
+                        applyExceptionToMergedDiagnostics(requestOptions, cancellationException);
+
+                        return cancellationException;
+                    }
+                    return throwable;
+                });
+        }
+
         return feedResponseFlux
-            .timeout(endToEndPolicyConfig.getEndToEndOperationTimeout())
+            .timeout(endToEndTimeout)
             .onErrorMap(throwable -> {
                 if (throwable instanceof TimeoutException) {
                     CosmosException exception = new OperationCancelledException();
@@ -1016,42 +1081,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
                     isQueryCancelledOnTimeout.set(true);
 
-                    List<CosmosDiagnostics> cancelledRequestDiagnostics =
-                        ImplementationBridgeHelpers
-                            .CosmosQueryRequestOptionsHelper
-                            .getCosmosQueryRequestOptionsAccessor()
-                            .getCancelledRequestDiagnosticsTracker(requestOptions);
-
-                    // if there is any cancelled requests, collect cosmos diagnostics
-                    if (cancelledRequestDiagnostics != null && !cancelledRequestDiagnostics.isEmpty()) {
-                        // combine all the cosmos diagnostics
-                        CosmosDiagnostics aggregratedCosmosDiagnostics =
-                            cancelledRequestDiagnostics
-                                .stream()
-                                .reduce((first, toBeMerged) -> {
-                                    ClientSideRequestStatistics clientSideRequestStatistics =
-                                        ImplementationBridgeHelpers
-                                            .CosmosDiagnosticsHelper
-                                            .getCosmosDiagnosticsAccessor()
-                                            .getClientSideRequestStatisticsRaw(first);
-
-                                    ClientSideRequestStatistics toBeMergedClientSideRequestStatistics =
-                                        ImplementationBridgeHelpers
-                                            .CosmosDiagnosticsHelper
-                                            .getCosmosDiagnosticsAccessor()
-                                            .getClientSideRequestStatisticsRaw(first);
-
-                                    if (clientSideRequestStatistics == null) {
-                                        return toBeMerged;
-                                    } else {
-                                        clientSideRequestStatistics.mergeClientSideRequestStatistics(toBeMergedClientSideRequestStatistics);
-                                        return first;
-                                    }
-                                })
-                                .get();
-
-                        BridgeInternal.setCosmosDiagnostics(exception, aggregratedCosmosDiagnostics);
-                    }
+                    applyExceptionToMergedDiagnostics(requestOptions, exception);
 
                     return exception;
                 }
@@ -2022,9 +2052,15 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                                                                                   CosmosEndToEndOperationLatencyPolicyConfig endToEndPolicyConfig,
                                                                                                   Mono<T> rxDocumentServiceResponseMono) {
         if (endToEndPolicyConfig != null && endToEndPolicyConfig.isEnabled()) {
+
+            Duration endToEndTimeout = endToEndPolicyConfig.getEndToEndOperationTimeout();
+            if (endToEndTimeout.isNegative()) {
+                return Mono.error(getNegativeTimeoutException(request, endToEndTimeout));
+            }
+
             request.requestContext.setEndToEndOperationLatencyPolicyConfig(endToEndPolicyConfig);
             return rxDocumentServiceResponseMono
-                .timeout(endToEndPolicyConfig.getEndToEndOperationTimeout())
+                .timeout(endToEndTimeout)
                 .onErrorMap(throwable -> getCancellationException(request, throwable));
         }
         return rxDocumentServiceResponseMono;
@@ -2043,6 +2079,23 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             }
         }
         return throwable;
+    }
+
+    private static CosmosException getNegativeTimeoutException(RxDocumentServiceRequest request, Duration negativeTimeout) {
+        checkNotNull(negativeTimeout, "Argument 'negativeTimeout' must not be null");
+        checkArgument(
+            negativeTimeout.isNegative(),
+            "This exception should only be used for negative timeouts");
+
+        String message = String.format("Negative timeout '%s' provided.",  negativeTimeout);
+        CosmosException exception = new OperationCancelledException(message, null);
+        BridgeInternal.setSubStatusCode(exception, HttpConstants.SubStatusCodes.NEGATIVE_TIMEOUT_PROVIDED);
+        if (request != null && request.requestContext != null) {
+            request.requestContext.setIsRequestCancelledOnTimeout(new AtomicBoolean(true));
+            return BridgeInternal.setCosmosDiagnostics(exception, request.requestContext.cosmosDiagnostics);
+        }
+
+        return exception;
     }
 
     @Override
