@@ -444,7 +444,7 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
             chatCompletionsOptions.setDataSources(Arrays.asList(extensionConfiguration));
 
             StepVerifier.create(client.getChatCompletions(deploymentName, chatCompletionsOptions))
-                .assertNext(OpenAIClientTestBase::assertChatCompletionWednesday)
+                .assertNext(OpenAIClientTestBase::assertChatCompletionsCognitiveSearch)
                 .verifyComplete();
         });
     }
@@ -471,7 +471,7 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
             StepVerifier.create(client.getChatCompletionsStream(deploymentName, chatCompletionsOptions))
                 .recordWith(ArrayList::new)
                 .thenConsumeWhile(_chatCompletion -> true)
-                .consumeRecordedWith(chatCompletions -> assertChatCompletionsStreamingWednesday(chatCompletions.stream()))
+                .consumeRecordedWith(chatCompletions -> assertChatCompletionsStreamingCognitiveSearch(chatCompletions.stream()))
                 .verifyComplete();
         });
     }

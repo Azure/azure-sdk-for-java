@@ -375,7 +375,7 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
             chatCompletionsOptions.setDataSources(Arrays.asList(extensionConfiguration));
             ChatCompletions chatCompletions = client.getChatCompletions(deploymentName, chatCompletionsOptions);
 
-            assertChatCompletionWednesday(chatCompletions);
+            assertChatCompletionsCognitiveSearch(chatCompletions);
         });
     }
 
@@ -399,7 +399,7 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
             chatCompletionsOptions.setDataSources(Arrays.asList(extensionConfiguration));
             IterableStream<ChatCompletions> resultChatCompletions = client.getChatCompletionsStream(deploymentName, chatCompletionsOptions);
 
-            assertChatCompletionsStreamingWednesday(resultChatCompletions.stream());
+            assertChatCompletionsStreamingCognitiveSearch(resultChatCompletions.stream());
         });
     }
 }

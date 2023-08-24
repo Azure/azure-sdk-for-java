@@ -362,7 +362,7 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
         assertNull(contentFilterResults.getSelfHarm());
     }
 
-    static void assertChatCompletionWednesday(ChatCompletions chatCompletions) {
+    static void assertChatCompletionsCognitiveSearch(ChatCompletions chatCompletions) {
         List<ChatChoice> choices = chatCompletions.getChoices();
         assertNotNull(choices);
         assertTrue(choices.size() > 0);
@@ -383,7 +383,7 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
     // - Citations come in the first message
     // - All remaining messages contain deltas
     // - Last message has the FinishReason set
-    static void assertChatCompletionsStreamingWednesday(Stream<ChatCompletions> chatCompletionsStream) {
+    static void assertChatCompletionsStreamingCognitiveSearch(Stream<ChatCompletions> chatCompletionsStream) {
         List<ChatCompletions> chatCompletions = chatCompletionsStream.collect(Collectors.toList());
         assertTrue(chatCompletions.toArray().length > 1);
 
