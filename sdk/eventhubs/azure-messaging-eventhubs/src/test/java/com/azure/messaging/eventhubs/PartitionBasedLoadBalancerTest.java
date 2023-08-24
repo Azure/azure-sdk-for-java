@@ -397,7 +397,7 @@ public class PartitionBasedLoadBalancerTest {
 
         processorOptions.setConsumerGroup("test-consumer")
             .setTrackLastEnqueuedEventProperties(false)
-            .setInitialPartitionEventPosition(Collections.emptyMap())
+            .setInitialEventPositionProvider(null)
             .setMaxBatchSize(1)
             .setMaxWaitTime(null)
             .setBatchReceiveMode(BATCH_RECEIVE_MODE)
@@ -430,7 +430,7 @@ public class PartitionBasedLoadBalancerTest {
 
         processorOptions.setConsumerGroup("test-consumer")
             .setTrackLastEnqueuedEventProperties(false)
-            .setInitialPartitionEventPosition(Collections.emptyMap())
+            .setInitialEventPositionProvider(null)
             .setMaxBatchSize(1)
             .setMaxWaitTime(null)
             .setBatchReceiveMode(BATCH_RECEIVE_MODE)
@@ -497,7 +497,7 @@ public class PartitionBasedLoadBalancerTest {
 
         processorOptions.setConsumerGroup("test-consumer")
             .setTrackLastEnqueuedEventProperties(false)
-            .setInitialPartitionEventPosition(Collections.emptyMap())
+            .setInitialEventPositionProvider(null)
             .setMaxBatchSize(1)
             .setMaxWaitTime(null)
             .setBatchReceiveMode(BATCH_RECEIVE_MODE)
@@ -539,7 +539,7 @@ public class PartitionBasedLoadBalancerTest {
 
         processorOptions.setConsumerGroup("test-consumer")
             .setTrackLastEnqueuedEventProperties(false)
-            .setInitialPartitionEventPosition(Collections.emptyMap())
+            .setInitialEventPositionProvider(null)
             .setMaxBatchSize(1)
             .setMaxWaitTime(null)
             .setBatchReceiveMode(BATCH_RECEIVE_MODE)
@@ -766,7 +766,7 @@ public class PartitionBasedLoadBalancerTest {
 
         processorOptions.setConsumerGroup("test-consumer")
             .setTrackLastEnqueuedEventProperties(false)
-            .setInitialPartitionEventPosition(Collections.emptyMap())
+            .setInitialEventPositionProvider(null)
             .setMaxBatchSize(1)
             .setMaxWaitTime(null)
             .setBatchReceiveMode(BATCH_RECEIVE_MODE)

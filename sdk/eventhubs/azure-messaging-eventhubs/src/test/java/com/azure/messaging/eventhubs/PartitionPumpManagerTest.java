@@ -169,7 +169,7 @@ public class PartitionPumpManagerTest {
         final EventProcessorClientOptions options = new EventProcessorClientOptions()
             .setConsumerGroup("test-consumer")
             .setTrackLastEnqueuedEventProperties(trackLastEnqueuedEventProperties)
-            .setInitialPartitionEventPosition(initialPartitionPositions)
+            .setInitialEventPositionProvider(id -> initialPartitionPositions.get(id))
             .setMaxBatchSize(maxBatchSize)
             .setMaxWaitTime(maxWaitTime)
             .setBatchReceiveMode(batchReceiveMode)
@@ -233,7 +233,7 @@ public class PartitionPumpManagerTest {
         final EventProcessorClientOptions options = new EventProcessorClientOptions()
             .setConsumerGroup("test-consumer")
             .setTrackLastEnqueuedEventProperties(trackLastEnqueuedEventProperties)
-            .setInitialPartitionEventPosition(initialPartitionPositions)
+            .setInitialEventPositionProvider(id -> initialPartitionPositions.get(id))
             .setMaxBatchSize(maxBatchSize)
             .setMaxWaitTime(maxWaitTime)
             .setBatchReceiveMode(batchReceiveMode)
@@ -276,7 +276,7 @@ public class PartitionPumpManagerTest {
         final EventProcessorClientOptions options = new EventProcessorClientOptions()
             .setConsumerGroup("test-consumer")
             .setTrackLastEnqueuedEventProperties(trackLastEnqueuedEventProperties)
-            .setInitialPartitionEventPosition(initialPartitionPositions)
+            .setInitialEventPositionProvider(id -> initialPartitionPositions.get(id))
             .setMaxBatchSize(maxBatchSize)
             .setMaxWaitTime(maxWaitTime)
             .setBatchReceiveMode(batchReceiveMode)
@@ -325,7 +325,7 @@ public class PartitionPumpManagerTest {
         final EventProcessorClientOptions options = new EventProcessorClientOptions()
             .setConsumerGroup("test-consumer")
             .setTrackLastEnqueuedEventProperties(trackLastEnqueuedEventProperties)
-            .setInitialPartitionEventPosition(initialPartitionPositions)
+            .setInitialEventPositionProvider(id -> initialPartitionPositions.get(id))
             .setMaxBatchSize(maxBatchSize)
             .setMaxWaitTime(maxWaitTime)
             .setBatchReceiveMode(batchReceiveMode)
@@ -377,7 +377,7 @@ public class PartitionPumpManagerTest {
         final EventProcessorClientOptions options = new EventProcessorClientOptions()
             .setConsumerGroup("test-consumer")
             .setTrackLastEnqueuedEventProperties(trackLastEnqueuedEventProperties)
-            .setInitialPartitionEventPosition(initialPartitionPositions)
+            .setInitialEventPositionProvider(id -> initialPartitionPositions.get(id))
             .setMaxBatchSize(maxBatchSize)
             .setMaxWaitTime(maxWaitTime)
             .setBatchReceiveMode(batchReceiveMode)
@@ -467,8 +467,7 @@ public class PartitionPumpManagerTest {
         final EventProcessorClientOptions options = new EventProcessorClientOptions()
             .setConsumerGroup("test-consumer")
             .setTrackLastEnqueuedEventProperties(trackLastEnqueuedEventProperties)
-            .setDefaultEventPosition(null)
-            .setInitialPartitionEventPosition(initialPartitionPositions)
+            .setInitialEventPositionProvider(null)
             .setMaxBatchSize(maxBatchSize)
             .setMaxWaitTime(maxWaitTime)
             .setBatchReceiveMode(batchReceiveMode)
@@ -514,8 +513,8 @@ public class PartitionPumpManagerTest {
         final EventProcessorClientOptions options = new EventProcessorClientOptions()
             .setConsumerGroup("test-consumer")
             .setTrackLastEnqueuedEventProperties(trackLastEnqueuedEventProperties)
-            .setDefaultEventPosition(EventPosition.fromEnqueuedTime(Instant.ofEpochMilli(1692830454030L)))
-            .setInitialPartitionEventPosition(initialPartitionPositions)
+            .setInitialEventPositionProvider(
+                unused -> EventPosition.fromEnqueuedTime(Instant.ofEpochMilli(1692830454030L)))
             .setMaxBatchSize(maxBatchSize)
             .setMaxWaitTime(maxWaitTime)
             .setBatchReceiveMode(batchReceiveMode)
@@ -555,8 +554,7 @@ public class PartitionPumpManagerTest {
         final EventProcessorClientOptions options = new EventProcessorClientOptions()
             .setConsumerGroup("test-consumer")
             .setTrackLastEnqueuedEventProperties(trackLastEnqueuedEventProperties)
-            .setDefaultEventPosition(EventPosition.fromEnqueuedTime(Instant.ofEpochMilli(1692830454030L)))
-            .setInitialPartitionEventPosition(initialPartitionPositions)
+            .setInitialEventPositionProvider(id -> initialPartitionPositions.get(id))
             .setMaxBatchSize(maxBatchSize)
             .setMaxWaitTime(maxWaitTime)
             .setBatchReceiveMode(batchReceiveMode)
@@ -595,8 +593,7 @@ public class PartitionPumpManagerTest {
         final EventProcessorClientOptions options = new EventProcessorClientOptions()
             .setConsumerGroup("test-consumer")
             .setTrackLastEnqueuedEventProperties(trackLastEnqueuedEventProperties)
-            .setDefaultEventPosition(EventPosition.fromEnqueuedTime(Instant.ofEpochMilli(1692830454030L)))
-            .setInitialPartitionEventPosition(initialPartitionPositions)
+            .setInitialEventPositionProvider(id -> initialPartitionPositions.get(id))
             .setMaxBatchSize(maxBatchSize)
             .setMaxWaitTime(maxWaitTime)
             .setBatchReceiveMode(batchReceiveMode)
@@ -621,7 +618,7 @@ public class PartitionPumpManagerTest {
     public void startPositionReturnsDefaultPosition() {
         // Arrange
         final String partitionId = "the-partition-id";
-        initialPartitionPositions.put("another", EventPosition.earliest());
+        final EventPosition defaultEventPosition = EventPosition.fromEnqueuedTime(Instant.ofEpochMilli(1692830454030L));
 
         final Supplier<PartitionProcessor> supplier = () -> partitionProcessor;
         final boolean trackLastEnqueuedEventProperties = false;
@@ -631,8 +628,7 @@ public class PartitionPumpManagerTest {
         final EventProcessorClientOptions options = new EventProcessorClientOptions()
             .setConsumerGroup("test-consumer")
             .setTrackLastEnqueuedEventProperties(trackLastEnqueuedEventProperties)
-            .setDefaultEventPosition(EventPosition.fromEnqueuedTime(Instant.ofEpochMilli(1692830454030L)))
-            .setInitialPartitionEventPosition(initialPartitionPositions)
+            .setInitialEventPositionProvider(unused -> defaultEventPosition)
             .setMaxBatchSize(maxBatchSize)
             .setMaxWaitTime(maxWaitTime)
             .setBatchReceiveMode(batchReceiveMode)
@@ -647,6 +643,6 @@ public class PartitionPumpManagerTest {
         final EventPosition actual = manager.getInitialEventPosition(partitionId, checkpoint);
 
         // Assert
-        assertEquals(options.getDefaultEventPosition(), actual);
+        assertEquals(defaultEventPosition, actual);
     }
 }

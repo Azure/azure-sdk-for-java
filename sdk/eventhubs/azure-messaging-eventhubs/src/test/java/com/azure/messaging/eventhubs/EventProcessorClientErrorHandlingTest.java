@@ -90,7 +90,7 @@ public class EventProcessorClientErrorHandlingTest {
 
         processorOptions.setConsumerGroup("cg")
             .setTrackLastEnqueuedEventProperties(false)
-            .setInitialPartitionEventPosition(Collections.emptyMap())
+            .setInitialEventPositionProvider(null)
             .setMaxBatchSize(1)
             .setMaxWaitTime(null)
             .setBatchReceiveMode(false)
@@ -125,7 +125,7 @@ public class EventProcessorClientErrorHandlingTest {
 
         processorOptions.setConsumerGroup("cg")
             .setTrackLastEnqueuedEventProperties(false)
-            .setInitialPartitionEventPosition(Collections.emptyMap())
+            .setInitialEventPositionProvider(null)
             .setMaxBatchSize(1)
             .setMaxWaitTime(null)
             .setBatchReceiveMode(false)
@@ -151,7 +151,7 @@ public class EventProcessorClientErrorHandlingTest {
 
         processorOptions.setConsumerGroup("cg")
             .setTrackLastEnqueuedEventProperties(false)
-            .setInitialPartitionEventPosition(Collections.emptyMap())
+            .setInitialEventPositionProvider(null)
             .setMaxBatchSize(1)
             .setMaxWaitTime(null)
             .setBatchReceiveMode(false)
@@ -178,7 +178,7 @@ public class EventProcessorClientErrorHandlingTest {
 
         processorOptions.setConsumerGroup("cg")
             .setTrackLastEnqueuedEventProperties(false)
-            .setInitialPartitionEventPosition(Collections.emptyMap())
+            .setInitialEventPositionProvider(null)
             .setMaxBatchSize(1)
             .setMaxWaitTime(null)
             .setBatchReceiveMode(false)

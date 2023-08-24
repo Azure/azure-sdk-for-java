@@ -160,7 +160,7 @@ public class EventProcessorClientTest {
 
         processorOptions.setConsumerGroup(consumerGroup)
             .setTrackLastEnqueuedEventProperties(false)
-            .setInitialPartitionEventPosition(Collections.emptyMap())
+            .setInitialEventPositionProvider(null)
             .setMaxBatchSize(1)
             .setMaxWaitTime(null)
             .setBatchReceiveMode(false)
@@ -272,7 +272,7 @@ public class EventProcessorClientTest {
 
         processorOptions.setConsumerGroup("test-consumer")
             .setTrackLastEnqueuedEventProperties(false)
-            .setInitialPartitionEventPosition(Collections.emptyMap())
+            .setInitialEventPositionProvider(null)
             .setMaxBatchSize(1)
             .setMaxWaitTime(null)
             .setBatchReceiveMode(false)
@@ -365,7 +365,7 @@ public class EventProcessorClientTest {
 
         processorOptions.setConsumerGroup("test-consumer")
             .setTrackLastEnqueuedEventProperties(false)
-            .setInitialPartitionEventPosition(Collections.emptyMap())
+            .setInitialEventPositionProvider(null)
             .setMaxBatchSize(2)
             .setMaxWaitTime(null)
             .setBatchReceiveMode(true)
@@ -443,7 +443,7 @@ public class EventProcessorClientTest {
 
         processorOptions.setConsumerGroup("test-consumer")
             .setTrackLastEnqueuedEventProperties(false)
-            .setInitialPartitionEventPosition(Collections.emptyMap())
+            .setInitialEventPositionProvider(null)
             .setMaxBatchSize(1)
             .setMaxWaitTime(null)
             .setBatchReceiveMode(false)
@@ -519,7 +519,7 @@ public class EventProcessorClientTest {
 
         processorOptions.setConsumerGroup("test-consumer")
             .setTrackLastEnqueuedEventProperties(false)
-            .setInitialPartitionEventPosition(Collections.emptyMap())
+            .setInitialEventPositionProvider(null)
             .setMaxBatchSize(1)
             .setMaxWaitTime(null)
             .setBatchReceiveMode(false)
@@ -588,7 +588,7 @@ public class EventProcessorClientTest {
 
         processorOptions.setConsumerGroup(consumerGroup)
             .setTrackLastEnqueuedEventProperties(false)
-            .setInitialPartitionEventPosition(Collections.emptyMap())
+            .setInitialEventPositionProvider(null)
             .setMaxBatchSize(2)
             .setMaxWaitTime(Duration.ofSeconds(1))
             .setBatchReceiveMode(true)
@@ -642,7 +642,7 @@ public class EventProcessorClientTest {
 
         processorOptions.setConsumerGroup(consumerGroup)
             .setTrackLastEnqueuedEventProperties(false)
-            .setInitialPartitionEventPosition(Collections.emptyMap())
+            .setInitialEventPositionProvider(null)
             .setMaxBatchSize(2)
             .setMaxWaitTime(null)
             .setBatchReceiveMode(true)
@@ -694,7 +694,7 @@ public class EventProcessorClientTest {
 
         processorOptions.setConsumerGroup("test-consumer")
             .setTrackLastEnqueuedEventProperties(false)
-            .setInitialPartitionEventPosition(Collections.emptyMap())
+            .setInitialEventPositionProvider(null)
             .setMaxBatchSize(2)
             .setMaxWaitTime(null)
             .setBatchReceiveMode(true)
@@ -744,7 +744,7 @@ public class EventProcessorClientTest {
 
         processorOptions.setConsumerGroup("test-consumer")
             .setTrackLastEnqueuedEventProperties(false)
-            .setInitialPartitionEventPosition(Collections.emptyMap())
+            .setInitialEventPositionProvider(null)
             .setMaxBatchSize(2)
             .setMaxWaitTime(Duration.ofSeconds(1))
             .setBatchReceiveMode(true)
@@ -815,7 +815,7 @@ public class EventProcessorClientTest {
 
         processorOptions.setConsumerGroup("test-consumer")
             .setTrackLastEnqueuedEventProperties(false)
-            .setInitialPartitionEventPosition(Collections.emptyMap())
+            .setInitialEventPositionProvider(null)
             .setMaxBatchSize(1)
             .setMaxWaitTime(Duration.ofSeconds(1))
             .setBatchReceiveMode(false)
