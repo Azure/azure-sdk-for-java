@@ -204,8 +204,10 @@ io.opentelemetry:opentelemetry-api-logs;1.26.0-alpha
 io.opentelemetry:opentelemetry-sdk-testing;1.28.0
 io.opentelemetry:opentelemetry-sdk-extension-autoconfigure;1.28.0
 io.opentelemetry:opentelemetry-sdk-extension-autoconfigure-spi;1.28.0
-io.opentelemetry.instrumentation:opentelemetry-runtime-telemetry-java8;1.27.0-alpha
-io.opentelemetry.instrumentation:opentelemetry-spring-boot-starter;1.27.0-alpha
+io.opentelemetry.instrumentation:opentelemetry-runtime-telemetry-java8;1.28.0-alpha
+io.opentelemetry.instrumentation:opentelemetry-spring-boot-starter;1.28.0-alpha
+io.opentelemetry.instrumentation:opentelemetry-jdbc;1.28.0-alpha
+io.opentelemetry.instrumentation:opentelemetry-logback-appender-1.0;1.28.0-alpha
 io.projectreactor:reactor-test;3.4.31
 io.github.hakky54:logcaptor;2.9.0
 com.squareup.okio:okio;3.3.0
