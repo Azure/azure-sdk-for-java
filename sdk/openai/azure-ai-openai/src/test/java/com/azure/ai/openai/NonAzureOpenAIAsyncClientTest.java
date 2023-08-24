@@ -13,7 +13,7 @@ import com.azure.ai.openai.models.CompletionsOptions;
 import com.azure.ai.openai.models.CompletionsUsage;
 import com.azure.ai.openai.models.Embeddings;
 import com.azure.ai.openai.models.FunctionCallConfig;
-import com.azure.ai.openai.models.NonAzureOpenAIKeyCredential;
+import com.azure.core.credential.KeyCredential;
 import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
@@ -42,7 +42,7 @@ public class NonAzureOpenAIAsyncClientTest extends OpenAIClientTestBase {
             .buildAsyncClient();
     }
 
-    private OpenAIAsyncClient getNonAzureOpenAIAsyncClient(HttpClient httpClient, NonAzureOpenAIKeyCredential keyCredential) {
+    private OpenAIAsyncClient getNonAzureOpenAIAsyncClient(HttpClient httpClient, KeyCredential keyCredential) {
         return getNonAzureOpenAIClientBuilder(
             interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient)
             .credential(keyCredential)
@@ -112,7 +112,7 @@ public class NonAzureOpenAIAsyncClientTest extends OpenAIClientTestBase {
     public void testGetCompletionsBadSecretKey(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getNonAzureOpenAIAsyncClient(
             httpClient,
-            new NonAzureOpenAIKeyCredential("not_token_looking_string"));
+            new KeyCredential("not_token_looking_string"));
 
         getCompletionsRunner((modelId, prompt) -> {
             StepVerifier.create(client.getCompletionsWithResponse(modelId,
@@ -130,7 +130,7 @@ public class NonAzureOpenAIAsyncClientTest extends OpenAIClientTestBase {
     public void testGetCompletionsExpiredSecretKey(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getNonAzureOpenAIAsyncClient(
             httpClient,
-            new NonAzureOpenAIKeyCredential("sk-123456789012345678901234567890123456789012345678"));
+            new KeyCredential("sk-123456789012345678901234567890123456789012345678"));
 
         getCompletionsRunner((modelId, prompt) -> {
             StepVerifier.create(client.getCompletionsWithResponse(modelId,

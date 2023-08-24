@@ -23,7 +23,6 @@ import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.http.policy.AddDatePolicy;
 import com.azure.core.http.policy.AddHeadersFromContextPolicy;
 import com.azure.core.http.policy.AddHeadersPolicy;
-import com.azure.core.http.policy.AzureKeyCredentialPolicy;
 import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.CookiePolicy;
 import com.azure.core.http.policy.HttpLogOptions;
@@ -41,6 +40,7 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.builder.ClientBuilderUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -182,23 +182,24 @@ public final class OpenAIClientBuilder
     @Generated private AzureKeyCredential azureKeyCredential;
 
     /** {@inheritDoc}. */
-    @Generated
     @Override
     public OpenAIClientBuilder credential(AzureKeyCredential azureKeyCredential) {
-        this.azureKeyCredential = azureKeyCredential;
-        return this;
+        return this.credential((KeyCredential) azureKeyCredential);
     }
 
-    private KeyCredential nonAzureOpenAIKeyCredential;
+    /**
+     * The KeyCredential used for OpenAi authentication. It could be either of Azure or Non-Azure OpenAI API key.
+     */
+    private KeyCredential keyCredential;
 
     /**
-     * The NonAzureOpenAiKeyCredential used for public OpenAi authentication.
+     * The KeyCredential used for OpenAi authentication. It could be either of Azure or Non-Azure OpenAI API key.
      *
-     * @param nonAzureOpenAIKeyCredential The credential for non-azure public OpenAI authenticaton.
+     * @param keyCredential The credential for OpenAI authentication.
      * @return the object itself.
      */
-    public OpenAIClientBuilder credential(KeyCredential nonAzureOpenAIKeyCredential) {
-        this.nonAzureOpenAIKeyCredential = nonAzureOpenAIKeyCredential;
+    public OpenAIClientBuilder credential(KeyCredential keyCredential) {
+        this.keyCredential = keyCredential;
         return this;
     }
 
@@ -292,9 +293,17 @@ public final class OpenAIClientBuilder
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
         policies.add(ClientBuilderUtil.validateAndGetRetryPolicy(retryPolicy, retryOptions, new RetryPolicy()));
         policies.add(new AddDatePolicy());
-        if (azureKeyCredential != null) {
-            policies.add(new AzureKeyCredentialPolicy("api-key", azureKeyCredential));
+        policies.add(new CookiePolicy());
+        if (keyCredential != null) {
+            KeyCredentialPolicy keyCredentialPolicy;
+            if (endpoint != null) {
+                keyCredentialPolicy = new KeyCredentialPolicy("api-key", keyCredential);
+            } else {
+                keyCredentialPolicy = new KeyCredentialPolicy("Authorization", keyCredential, "Bearer");
+            }
+            policies.add(keyCredentialPolicy);
         }
+
         if (tokenCredential != null) {
             policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, DEFAULT_SCOPES));
         }
@@ -313,51 +322,10 @@ public final class OpenAIClientBuilder
     }
 
     private NonAzureOpenAIClientImpl buildInnerNonAzureOpenAIClient() {
-        HttpPipeline localPipeline = (pipeline != null) ? pipeline : createHttpPipelineNonAzureOpenAI();
+        HttpPipeline localPipeline = (pipeline != null) ? pipeline : createHttpPipeline();
         NonAzureOpenAIClientImpl client =
                 new NonAzureOpenAIClientImpl(localPipeline, JacksonAdapter.createDefaultSerializerAdapter());
         return client;
-    }
-
-    private HttpPipeline createHttpPipelineNonAzureOpenAI() {
-        Configuration buildConfiguration =
-                (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
-        HttpLogOptions localHttpLogOptions = this.httpLogOptions == null ? new HttpLogOptions() : this.httpLogOptions;
-        ClientOptions localClientOptions = this.clientOptions == null ? new ClientOptions() : this.clientOptions;
-        List<HttpPipelinePolicy> policies = new ArrayList<>();
-        String clientName = PROPERTIES.getOrDefault(SDK_NAME, "UnknownName");
-        String clientVersion = PROPERTIES.getOrDefault(SDK_VERSION, "UnknownVersion");
-        String applicationId = CoreUtils.getApplicationId(localClientOptions, localHttpLogOptions);
-        policies.add(new UserAgentPolicy(applicationId, clientName, clientVersion, buildConfiguration));
-        policies.add(new RequestIdPolicy());
-        policies.add(new AddHeadersFromContextPolicy());
-        HttpHeaders headers = new HttpHeaders();
-        localClientOptions.getHeaders().forEach(header -> headers.set(header.getName(), header.getValue()));
-        if (headers.getSize() > 0) {
-            policies.add(new AddHeadersPolicy(headers));
-        }
-        this.pipelinePolicies.stream()
-                .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
-                .forEach(p -> policies.add(p));
-        HttpPolicyProviders.addBeforeRetryPolicies(policies);
-        policies.add(ClientBuilderUtil.validateAndGetRetryPolicy(retryPolicy, retryOptions, new RetryPolicy()));
-        policies.add(new AddDatePolicy());
-        policies.add(new CookiePolicy());
-        if (nonAzureOpenAIKeyCredential != null) {
-            policies.add(new KeyCredentialPolicy("Authorization", nonAzureOpenAIKeyCredential, "Bearer"));
-        }
-        this.pipelinePolicies.stream()
-                .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
-                .forEach(p -> policies.add(p));
-        HttpPolicyProviders.addAfterRetryPolicies(policies);
-        policies.add(new HttpLoggingPolicy(httpLogOptions));
-        HttpPipeline httpPipeline =
-                new HttpPipelineBuilder()
-                        .policies(policies.toArray(new HttpPipelinePolicy[0]))
-                        .httpClient(httpClient)
-                        .clientOptions(localClientOptions)
-                        .build();
-        return httpPipeline;
     }
 
     /**
@@ -366,10 +334,12 @@ public final class OpenAIClientBuilder
      * @return an instance of OpenAIAsyncClient.
      */
     public OpenAIAsyncClient buildAsyncClient() {
-        if (nonAzureOpenAIKeyCredential != null) {
-            return new OpenAIAsyncClient(buildInnerNonAzureOpenAIClient());
+        // Connect to OpenAI service only need to have API key. "Authorization: Bearer OPENAI_API_KEY"
+        // So we assume if user doesn't provide endpoint, it will redirect to create a Non-Azure OpenAI service.
+        if (this.endpoint != null) {
+            return new OpenAIAsyncClient(buildInnerClient());
         }
-        return new OpenAIAsyncClient(buildInnerClient());
+        return new OpenAIAsyncClient(buildInnerNonAzureOpenAIClient());
     }
 
     /**
@@ -378,10 +348,12 @@ public final class OpenAIClientBuilder
      * @return an instance of OpenAIClient.
      */
     public OpenAIClient buildClient() {
-        if (nonAzureOpenAIKeyCredential != null) {
-            return new OpenAIClient(buildInnerNonAzureOpenAIClient());
+        // Connect to OpenAI service only need to have API key. "Authorization: Bearer OPENAI_API_KEY"
+        // So we assume if user doesn't provide endpoint, it will redirect to create a Non-Azure OpenAI service.
+        if (this.endpoint != null) {
+            return new OpenAIClient(buildInnerClient());
         }
-        return new OpenAIClient(buildInnerClient());
+        return new OpenAIClient(buildInnerNonAzureOpenAIClient());
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(OpenAIClientBuilder.class);
