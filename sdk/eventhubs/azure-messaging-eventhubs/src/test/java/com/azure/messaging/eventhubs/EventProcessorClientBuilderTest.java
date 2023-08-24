@@ -7,9 +7,6 @@ import com.azure.core.util.Configuration;
 import com.azure.messaging.eventhubs.implementation.ClientConstants;
 import com.azure.messaging.eventhubs.models.EventPosition;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.Arguments;
-import org.junit.jupiter.params.provider.MethodSource;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -18,7 +15,6 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.function.Function;
-import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -156,23 +152,10 @@ public class EventProcessorClientBuilderTest {
         assertNotNull(eventProcessorClient);
     }
 
-    public static Stream<Arguments> initialOffsetProviderSetMoreThanOne() {
-        EventPosition defaultEventPosition = EventPosition.fromOffset(10L);
+    @Test
+    public void initialOffsetProviderSetMoreThanOne() {
         Map<String, EventPosition> eventPositionMap = new HashMap<>();
         Function<String, EventPosition> eventPositionFunction = id -> EventPosition.fromOffset(20L);
-
-        return Stream.of(
-            Arguments.of(defaultEventPosition, eventPositionMap, eventPositionFunction),
-            Arguments.of(defaultEventPosition, eventPositionMap, null),
-            Arguments.of(defaultEventPosition, null, eventPositionFunction),
-            Arguments.of(null, eventPositionMap, eventPositionFunction));
-    }
-
-    @MethodSource
-    @ParameterizedTest
-    public void initialOffsetProviderSetMoreThanOne(EventPosition defaultEventPosition,
-        Map<String, EventPosition> eventPositionMap, Function<String, EventPosition> eventPositionFunction) {
-
         EventProcessorClientBuilder builder = new EventProcessorClientBuilder()
             .connectionString(CORRECT_CONNECTION_STRING)
             .consumerGroup("consumer-group")
@@ -190,9 +173,6 @@ public class EventProcessorClientBuilderTest {
             })
             .checkpointStore(new SampleCheckpointStore());
 
-        if (defaultEventPosition != null) {
-            builder.initialPartitionEventPosition(defaultEventPosition);
-        }
         if (eventPositionMap != null) {
             builder.initialPartitionEventPosition(eventPositionMap);
         }
@@ -289,47 +269,5 @@ public class EventProcessorClientBuilderTest {
 
         // Should not exist in the map.
         assertNull(function.apply("non-existent-id"));
-    }
-
-    /**
-     * Tests that the correct EventPosition is returned when
-     * {@link EventProcessorClientBuilder#initialPartitionEventPosition(EventPosition)} is used.
-     */
-    @Test
-    public void initialEventPositionDefaultPosition() {
-        // Arrange
-        String partitionId = "1";
-        EventPosition expected = EventPosition.fromOffset(222L);
-
-        // Act
-        EventProcessorClient client = new EventProcessorClientBuilder()
-            .connectionString(CORRECT_CONNECTION_STRING)
-            .consumerGroup("consumer-group")
-            .processEventBatch(eventBatchContext -> {
-                eventBatchContext.getEvents().forEach(event -> {
-                    System.out
-                        .println("Partition id = " + eventBatchContext.getPartitionContext().getPartitionId() + " and "
-                            + "sequence number of event = " + event.getSequenceNumber());
-                });
-            }, 5, Duration.ofSeconds(1))
-            .processError(errorContext -> {
-                System.out.printf("Error occurred in partition processor for partition %s, %s%n",
-                    errorContext.getPartitionContext().getPartitionId(),
-                    errorContext.getThrowable());
-            })
-            .checkpointStore(new SampleCheckpointStore())
-            .initialPartitionEventPosition(expected)
-            .buildEventProcessorClient();
-
-        // Assert
-        EventProcessorClientOptions options = client.getEventProcessorClientOptions();
-        Function<String, EventPosition> function = options.getInitialEventPositionProvider();
-
-        assertNotNull(function, "'initialEventPositionProvider' should not be null.");
-
-        EventPosition actual = function.apply(partitionId);
-        assertEquals(expected, actual);
-
-        assertEquals(expected, function.apply("non-existent-id"));
     }
 }

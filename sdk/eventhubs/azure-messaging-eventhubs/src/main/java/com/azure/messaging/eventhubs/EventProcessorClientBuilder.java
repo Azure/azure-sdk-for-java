@@ -156,7 +156,6 @@ public class EventProcessorClientBuilder implements
     private Duration loadBalancingUpdateInterval;
     private Duration partitionOwnershipExpirationInterval;
     private LoadBalancingStrategy loadBalancingStrategy = LoadBalancingStrategy.GREEDY;
-    private EventPosition defaultInitialEventPosition = null;
     private Function<String, EventPosition> initialEventPositionProvider;
 
     /**
@@ -757,29 +756,6 @@ public class EventProcessorClientBuilder implements
     }
 
     /**
-     * Sets the default starting position for each partition if a checkpoint for that partition does not exist in the
-     * {@link CheckpointStore}.
-     *
-     * <p>
-     * Only <strong>one overload</strong> of {@code initialPartitionEventPosition} should be used when constructing
-     * an {@link EventProcessorClient}.
-     * </p>
-     *
-     * @param initialEventPosition Event position to start reading events.  Applies to every partition in the Event Hub
-     * without a checkpoint nor an entry in the {@link #initialPartitionEventPosition(Map) initial position map}.
-     *
-     * @return The updated {@link EventProcessorClientBuilder} instance.
-     *
-     * @throws NullPointerException if {@code initialEventPosition} is null.
-     */
-    public EventProcessorClientBuilder initialPartitionEventPosition(EventPosition initialEventPosition) {
-        this.defaultInitialEventPosition = Objects.requireNonNull(initialEventPosition,
-            "'initialEventPosition' cannot be null.");
-
-        return this;
-    }
-
-    /**
      * Sets the map containing the event position to use for each partition if a checkpoint for the partition does not
      * exist in {@link CheckpointStore}. This map is keyed off of the partition id.
      *
@@ -875,11 +851,6 @@ public class EventProcessorClientBuilder implements
             .setTrackLastEnqueuedEventProperties(trackLastEnqueuedEventProperties);
 
         int numberOfTimesSet = 0;
-
-        if (defaultInitialEventPosition != null) {
-            numberOfTimesSet++;
-            processorOptions.setInitialEventPositionProvider(unused -> defaultInitialEventPosition);
-        }
 
         if (initialPartitionEventPosition != null) {
             numberOfTimesSet++;
