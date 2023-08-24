@@ -344,14 +344,12 @@ class PartitionPumpManager {
             return EventPosition.fromSequenceNumber(checkpoint.getSequenceNumber());
         }
 
-        if (options.getInitialPartitionEventPosition() != null
-            && options.getInitialPartitionEventPosition().containsKey(partitionId)) {
+        if (options.getInitialEventPositionProvider() != null) {
+            final EventPosition initialPosition = options.getInitialEventPositionProvider().apply(partitionId);
 
-                return options.getInitialPartitionEventPosition().get(partitionId);
-        }
-
-        if (options.getDefaultEventPosition() != null) {
-            return options.getDefaultEventPosition();
+            if (initialPosition != null) {
+                return initialPosition;
+            }
         }
 
         return EventPosition.latest();
