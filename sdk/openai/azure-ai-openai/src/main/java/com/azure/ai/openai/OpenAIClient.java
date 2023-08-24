@@ -425,17 +425,16 @@ public final class OpenAIClient {
     public ChatCompletions getChatCompletions(
             String deploymentOrModelName, ChatCompletionsOptions chatCompletionsOptions) {
         RequestOptions requestOptions = new RequestOptions();
-        if (chatCompletionsOptions.getDataSources() == null
-            || chatCompletionsOptions.getDataSources().isEmpty()) {
+        if (chatCompletionsOptions.getDataSources() == null || chatCompletionsOptions.getDataSources().isEmpty()) {
             return getChatCompletionsWithResponse(
-                deploymentOrModelName, BinaryData.fromObject(chatCompletionsOptions), requestOptions)
-                .getValue()
-                .toObject(ChatCompletions.class);
+                            deploymentOrModelName, BinaryData.fromObject(chatCompletionsOptions), requestOptions)
+                    .getValue()
+                    .toObject(ChatCompletions.class);
         } else {
             return getChatCompletionsWithAzureExtensionsWithResponse(
-                deploymentOrModelName, BinaryData.fromObject(chatCompletionsOptions), requestOptions)
-                .getValue()
-                .toObject(ChatCompletions.class);
+                            deploymentOrModelName, BinaryData.fromObject(chatCompletionsOptions), requestOptions)
+                    .getValue()
+                    .toObject(ChatCompletions.class);
         }
     }
 
@@ -462,18 +461,22 @@ public final class OpenAIClient {
         chatCompletionsOptions.setStream(true);
         RequestOptions requestOptions = new RequestOptions();
         Flux<ByteBuffer> responseStream;
-
-        if (chatCompletionsOptions.getDataSources() == null
-            || chatCompletionsOptions.getDataSources().isEmpty()) {
-            responseStream = getChatCompletionsWithResponse(
-                    deploymentOrModelName, BinaryData.fromObject(chatCompletionsOptions), requestOptions)
-                    .getValue()
-                    .toFluxByteBuffer();
+        if (chatCompletionsOptions.getDataSources() == null || chatCompletionsOptions.getDataSources().isEmpty()) {
+            responseStream =
+                    getChatCompletionsWithResponse(
+                                    deploymentOrModelName,
+                                    BinaryData.fromObject(chatCompletionsOptions),
+                                    requestOptions)
+                            .getValue()
+                            .toFluxByteBuffer();
         } else {
-            responseStream = getChatCompletionsWithAzureExtensionsWithResponse(
-                    deploymentOrModelName, BinaryData.fromObject(chatCompletionsOptions), requestOptions)
-                    .getValue()
-                    .toFluxByteBuffer();
+            responseStream =
+                    getChatCompletionsWithAzureExtensionsWithResponse(
+                                    deploymentOrModelName,
+                                    BinaryData.fromObject(chatCompletionsOptions),
+                                    requestOptions)
+                            .getValue()
+                            .toFluxByteBuffer();
         }
         OpenAIServerSentEvents<ChatCompletions> chatCompletionsStream =
                 new OpenAIServerSentEvents<>(responseStream, ChatCompletions.class);

@@ -427,18 +427,16 @@ public final class OpenAIAsyncClient {
     public Mono<ChatCompletions> getChatCompletions(
             String deploymentOrModelName, ChatCompletionsOptions chatCompletionsOptions) {
         RequestOptions requestOptions = new RequestOptions();
-
-        if (chatCompletionsOptions.getDataSources() == null
-            || chatCompletionsOptions.getDataSources().isEmpty()) {
+        if (chatCompletionsOptions.getDataSources() == null || chatCompletionsOptions.getDataSources().isEmpty()) {
             return getChatCompletionsWithResponse(
-                deploymentOrModelName, BinaryData.fromObject(chatCompletionsOptions), requestOptions)
-                .flatMap(FluxUtil::toMono)
-                .map(protocolMethodData -> protocolMethodData.toObject(ChatCompletions.class));
+                            deploymentOrModelName, BinaryData.fromObject(chatCompletionsOptions), requestOptions)
+                    .flatMap(FluxUtil::toMono)
+                    .map(protocolMethodData -> protocolMethodData.toObject(ChatCompletions.class));
         } else {
             return getChatCompletionsWithAzureExtensionsWithResponse(
-                deploymentOrModelName, BinaryData.fromObject(chatCompletionsOptions), requestOptions)
-                .flatMap(FluxUtil::toMono)
-                .map(protocolMethodData -> protocolMethodData.toObject(ChatCompletions.class));
+                            deploymentOrModelName, BinaryData.fromObject(chatCompletionsOptions), requestOptions)
+                    .flatMap(FluxUtil::toMono)
+                    .map(protocolMethodData -> protocolMethodData.toObject(ChatCompletions.class));
         }
     }
 
@@ -465,18 +463,21 @@ public final class OpenAIAsyncClient {
         chatCompletionsOptions.setStream(true);
         RequestOptions requestOptions = new RequestOptions();
         Flux<ByteBuffer> responseStream;
-
-        if (chatCompletionsOptions.getDataSources() == null
-            || chatCompletionsOptions.getDataSources().isEmpty()) {
-            responseStream = getChatCompletionsWithResponse(
-                    deploymentOrModelName, BinaryData.fromObject(chatCompletionsOptions), requestOptions)
-                    .flatMapMany(response -> response.getValue().toFluxByteBuffer());
+        if (chatCompletionsOptions.getDataSources() == null || chatCompletionsOptions.getDataSources().isEmpty()) {
+            responseStream =
+                    getChatCompletionsWithResponse(
+                                    deploymentOrModelName,
+                                    BinaryData.fromObject(chatCompletionsOptions),
+                                    requestOptions)
+                            .flatMapMany(response -> response.getValue().toFluxByteBuffer());
         } else {
-            responseStream = getChatCompletionsWithAzureExtensionsWithResponse(
-                deploymentOrModelName, BinaryData.fromObject(chatCompletionsOptions), requestOptions)
-                .flatMapMany(response -> response.getValue().toFluxByteBuffer());
+            responseStream =
+                    getChatCompletionsWithAzureExtensionsWithResponse(
+                                    deploymentOrModelName,
+                                    BinaryData.fromObject(chatCompletionsOptions),
+                                    requestOptions)
+                            .flatMapMany(response -> response.getValue().toFluxByteBuffer());
         }
-
         OpenAIServerSentEvents<ChatCompletions> chatCompletionsStream =
                 new OpenAIServerSentEvents<>(responseStream, ChatCompletions.class);
         return chatCompletionsStream.getEvents();
