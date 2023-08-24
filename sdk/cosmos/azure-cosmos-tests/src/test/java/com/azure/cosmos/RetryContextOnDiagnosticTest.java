@@ -209,7 +209,7 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
         Mockito.when(retryPolicy.getRetryContext()).thenReturn(retryContext);
         Mockito.when(retryContext.getRetryCount()).thenReturn(1);
 
-        Mockito.when(mockRetryFactory.getRequestPolicy()).thenReturn(retryPolicy);
+        Mockito.when(mockRetryFactory.getRequestPolicy(null)).thenReturn(retryPolicy);
         Mockito.when(mockStoreModel.processMessage(ArgumentMatchers.any(RxDocumentServiceRequest.class))).thenReturn(Mono.just(mockRxDocumentServiceResponse));
         Mockito.when(mockRxDocumentServiceResponse.getResource(Document.class)).thenReturn(new Document());
         RequestOptions requestOptions = new RequestOptions();
@@ -225,7 +225,7 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
         retryContext = Mockito.mock(RetryContext.class);
         Mockito.when(retryPolicy.getRetryContext()).thenReturn(retryContext);
         Mockito.when(retryContext.getRetryCount()).thenReturn(1);
-        Mockito.when(mockRetryFactory.getRequestPolicy()).thenReturn(retryPolicy);
+        Mockito.when(mockRetryFactory.getRequestPolicy(null)).thenReturn(retryPolicy);
         responseFlux = rxDocumentClient.readDocument(itemSelfLink, requestOptions);
         validateServiceResponseSuccess(responseFlux);
 
@@ -235,7 +235,7 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
         retryContext = Mockito.mock(RetryContext.class);
         Mockito.when(retryPolicy.getRetryContext()).thenReturn(retryContext);
         Mockito.when(retryContext.getRetryCount()).thenReturn(1);
-        Mockito.when(mockRetryFactory.getRequestPolicy()).thenReturn(retryPolicy);
+        Mockito.when(mockRetryFactory.getRequestPolicy(null)).thenReturn(retryPolicy);
         responseFlux = rxDocumentClient.deleteDocument(itemSelfLink, requestOptions);
         validateServiceResponseSuccess(responseFlux);
 
@@ -245,7 +245,7 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
         retryContext = Mockito.mock(RetryContext.class);
         Mockito.when(retryPolicy.getRetryContext()).thenReturn(retryContext);
         Mockito.when(retryContext.getRetryCount()).thenReturn(1);
-        Mockito.when(mockRetryFactory.getRequestPolicy()).thenReturn(retryPolicy);
+        Mockito.when(mockRetryFactory.getRequestPolicy(null)).thenReturn(retryPolicy);
         responseFlux = rxDocumentClient.replaceDocument(itemSelfLink, new Document(), requestOptions);
         validateServiceResponseSuccess(responseFlux);
 
@@ -255,7 +255,7 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
         retryContext = Mockito.mock(RetryContext.class);
         Mockito.when(retryPolicy.getRetryContext()).thenReturn(retryContext);
         Mockito.when(retryContext.getRetryCount()).thenReturn(1);
-        Mockito.when(mockRetryFactory.getRequestPolicy()).thenReturn(retryPolicy);
+        Mockito.when(mockRetryFactory.getRequestPolicy(null)).thenReturn(retryPolicy);
         responseFlux = rxDocumentClient.upsertDocument(itemSelfLink, new Document(), requestOptions, false);
         validateServiceResponseSuccess(responseFlux);
 

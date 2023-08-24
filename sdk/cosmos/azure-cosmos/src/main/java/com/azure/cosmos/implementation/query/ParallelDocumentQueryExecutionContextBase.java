@@ -103,7 +103,8 @@ public abstract class ParallelDocumentQueryExecutionContextBase<T>
                     commonRequestHeaders,
                     createRequestFunc,
                     executeFunc,
-                    () -> client.getResetSessionTokenRetryPolicy().getRequestPolicy(),
+                    // TODO @fabianm wire up clientContext
+                    () -> client.getResetSessionTokenRetryPolicy().getRequestPolicy(null),
                     targetRange);
 
             documentProducers.add(dp);
@@ -173,7 +174,8 @@ public abstract class ParallelDocumentQueryExecutionContextBase<T>
                     commonRequestHeaders,
                     createRequestFunc,
                     executeFunc,
-                    () -> client.getResetSessionTokenRetryPolicy().getRequestPolicy(),
+                    // TODO @fabianm wire up clientContext
+                    () -> client.getResetSessionTokenRetryPolicy().getRequestPolicy(null),
                     feedRangeEpk);
 
             documentProducers.add(dp);

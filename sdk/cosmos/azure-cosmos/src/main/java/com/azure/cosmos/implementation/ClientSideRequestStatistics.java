@@ -135,20 +135,25 @@ public class ClientSideRequestStatistics {
         storeResponseStatistics.requestResourceType = request.getResourceType();
         storeResponseStatistics.requestSessionToken = request.getHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN);
         storeResponseStatistics.e2ePolicyCfg = null;
-        storeResponseStatistics.locationEndpointToRoute = null;
-        if (request.requestContext.getEndToEndOperationLatencyPolicyConfig() != null) {
-            storeResponseStatistics.e2ePolicyCfg =
-                request.requestContext.getEndToEndOperationLatencyPolicyConfig().toString();
-        }
+        storeResponseStatistics.excludedRegions = null;
         activityId = request.getActivityId().toString();
 
         this.requestPayloadSizeInBytes = request.getContentLength();
 
         URI locationEndPoint = null;
         if (request.requestContext != null) {
-            if (request.requestContext.locationEndpointToRoute != null) {
+            if (request.requestContext.getEndToEndOperationLatencyPolicyConfig() != null) {
+                storeResponseStatistics.e2ePolicyCfg =
+                    request.requestContext.getEndToEndOperationLatencyPolicyConfig().toString();
+            }
+
+            if (request.requestContext.getExcludeRegions() != null) {
                 locationEndPoint = request.requestContext.locationEndpointToRoute;
-                storeResponseStatistics.locationEndpointToRoute = locationEndPoint.toString();
+            }
+
+            List<String> excludedRegions = request.requestContext.getExcludeRegions();
+            if (excludedRegions != null && !excludedRegions.isEmpty()) {
+                storeResponseStatistics.excludedRegions = String.join(", ", excludedRegions);
             }
         }
 
@@ -582,7 +587,7 @@ public class ClientSideRequestStatistics {
         private String e2ePolicyCfg;
 
         @JsonSerialize
-        private String locationEndpointToRoute;
+        private String excludedRegions;
 
         @JsonIgnore
         private String regionName;

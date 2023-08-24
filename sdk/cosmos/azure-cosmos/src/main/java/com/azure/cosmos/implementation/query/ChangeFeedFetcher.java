@@ -60,7 +60,8 @@ class ChangeFeedFetcher<T> extends Fetcher<T> {
             this.feedRangeContinuationFeedRangeGoneRetryPolicy = null;
             this.createRequestFunc = createRequestFunc;
         } else {
-            DocumentClientRetryPolicy retryPolicyInstance = client.getResetSessionTokenRetryPolicy().getRequestPolicy();
+            // TODO @fabianm wire up clientContext
+            DocumentClientRetryPolicy retryPolicyInstance = client.getResetSessionTokenRetryPolicy().getRequestPolicy(null);
             String collectionLink = PathsHelper.generatePath(
                 ResourceType.DocumentCollection, changeFeedState.getContainerRid(), false);
             retryPolicyInstance = new InvalidPartitionExceptionRetryPolicy(

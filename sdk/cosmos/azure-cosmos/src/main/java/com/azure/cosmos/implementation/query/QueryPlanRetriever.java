@@ -60,8 +60,9 @@ class QueryPlanRetriever {
         request.useGatewayMode = true;
         request.setByteBuffer(ModelBridgeInternal.serializeJsonToByteBuffer(sqlQuerySpec));
 
+        // TODO @fabianm wire up clientContext
         final DocumentClientRetryPolicy retryPolicyInstance =
-            queryClient.getResetSessionTokenRetryPolicy().getRequestPolicy();
+            queryClient.getResetSessionTokenRetryPolicy().getRequestPolicy(null);
 
         Function<RxDocumentServiceRequest, Mono<PartitionedQueryExecutionInfo>> executeFunc = req -> {
             return BackoffRetryUtility.executeRetry(() -> {
