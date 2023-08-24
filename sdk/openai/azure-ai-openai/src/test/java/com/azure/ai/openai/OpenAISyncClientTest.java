@@ -1,9 +1,11 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-
 package com.azure.ai.openai;
 
 import com.azure.ai.openai.functions.MyFunctionCallArguments;
+import com.azure.ai.openai.models.AzureChatExtensionConfiguration;
+import com.azure.ai.openai.models.AzureChatExtensionType;
+import com.azure.ai.openai.models.AzureCognitiveSearchChatExtensionConfiguration;
 import com.azure.ai.openai.models.ChatChoice;
 import com.azure.ai.openai.models.ChatCompletions;
 import com.azure.ai.openai.models.ChatCompletionsOptions;
@@ -304,8 +306,7 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
     public void testCompletionContentFiltering(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
-        //TODO: revert this service version lock. This is only so that we can test Completions' content filtering
-        client = getOpenAIClient(httpClient, OpenAIServiceVersion.V2023_06_01_PREVIEW);
+        client = getOpenAIClient(httpClient, serviceVersion);
         getCompletionsContentFilterRunner((modelId, prompt) -> {
             CompletionsOptions completionsOptions = new CompletionsOptions(Arrays.asList(prompt));
             // work around for this model, there seem to be some issues with Completions in gpt-turbo models
@@ -320,8 +321,7 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
     public void testCompletionStreamContentFiltering(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
-        //TODO: revert this service version lock. This is only so that we can test Completions' content filtering
-        client = getOpenAIClient(httpClient, OpenAIServiceVersion.V2023_06_01_PREVIEW);
+        client = getOpenAIClient(httpClient, serviceVersion);
         getCompletionsRunner((deploymentId, prompt) -> {
             IterableStream<Completions> resultCompletions = client.getCompletionsStream(deploymentId, new CompletionsOptions(prompt));
             assertTrue(resultCompletions.stream().toArray().length > 1);
@@ -352,6 +352,54 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
                 }
                 i++;
             }
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    public void testChatCompletionsBasicSearchExtension(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        client = getOpenAIClient(httpClient, serviceVersion);
+
+        getChatCompletionsAzureChatSearchRunner((deploymentName, chatCompletionsOptions) -> {
+            AzureCognitiveSearchChatExtensionConfiguration cognitiveSearchConfiguration =
+                new AzureCognitiveSearchChatExtensionConfiguration(
+                    "https://openaisdktestsearch.search.windows.net",
+                    getAzureCognitiveSearchKey(),
+                    "openai-test-index-carbon-wiki"
+                );
+            AzureChatExtensionConfiguration extensionConfiguration =
+                new AzureChatExtensionConfiguration(
+                    AzureChatExtensionType.AZURE_COGNITIVE_SEARCH,
+                    BinaryData.fromObject(cognitiveSearchConfiguration));
+
+            chatCompletionsOptions.setDataSources(Arrays.asList(extensionConfiguration));
+            ChatCompletions chatCompletions = client.getChatCompletions(deploymentName, chatCompletionsOptions);
+
+            assertChatCompletionsCognitiveSearch(chatCompletions);
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    public void testChatCompletionsStreamingBasicSearchExtension(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        client = getOpenAIClient(httpClient, serviceVersion);
+
+        getChatCompletionsAzureChatSearchRunner((deploymentName, chatCompletionsOptions) -> {
+            AzureCognitiveSearchChatExtensionConfiguration cognitiveSearchConfiguration =
+                new AzureCognitiveSearchChatExtensionConfiguration(
+                    "https://openaisdktestsearch.search.windows.net",
+                    getAzureCognitiveSearchKey(),
+                    "openai-test-index-carbon-wiki"
+                );
+            AzureChatExtensionConfiguration extensionConfiguration =
+                new AzureChatExtensionConfiguration(
+                    AzureChatExtensionType.AZURE_COGNITIVE_SEARCH,
+                    BinaryData.fromObject(cognitiveSearchConfiguration));
+
+            chatCompletionsOptions.setDataSources(Arrays.asList(extensionConfiguration));
+            IterableStream<ChatCompletions> resultChatCompletions = client.getChatCompletionsStream(deploymentName, chatCompletionsOptions);
+
+            assertChatCompletionsStreamingCognitiveSearch(resultChatCompletions.stream());
         });
     }
 }
