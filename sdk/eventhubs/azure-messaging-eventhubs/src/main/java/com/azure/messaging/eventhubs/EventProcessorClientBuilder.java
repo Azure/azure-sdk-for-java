@@ -30,7 +30,6 @@ import com.azure.messaging.eventhubs.models.InitializationContext;
 
 import java.net.URL;
 import java.time.Duration;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.function.Consumer;
