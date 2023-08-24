@@ -38,3 +38,6 @@ extends:
       - name: azure-resourcemanager-hdinsight
         groupId: com.azure.resourcemanager
         safeName: azureresourcemanagerhdinsight
+      - name: azure-resourcemanager-hdinsight-containers
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagerhdinsightcontainers
