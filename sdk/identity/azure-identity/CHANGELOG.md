@@ -7,6 +7,7 @@
 ### Breaking Changes
 
 ### Bugs Fixed
+- Allowed to use the builder methods that accept the certificate as an InputStream in the ClientCertificateCredentialBuilder class.
 
 ### Other Changes
 
