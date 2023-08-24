@@ -762,15 +762,9 @@ public class EventProcessorClientBuilder implements
      * {@link CheckpointStore}.
      *
      * <p>
-     * The starting position for each partition is determined using the following steps:
-     * <ol>
-     *     <li>Check the {@link CheckpointStore} for that partition's checkpoint.</li>
-     *     <li>If {@link #initialPartitionEventPosition(Function)} is set, evaluates for an {@link EventPosition}.</li>
-     *     <li>If initial mapping provider is not set or the function return's {@code null}, checks
-     *     {@link #initialPartitionEventPosition(Map)} for an entry.</li>
-     *     <li>If an entry does not exist, check if {@link #initialPartitionEventPosition(EventPosition)} is set.</li>
-     *     <li>Else, use {@link EventPosition#latest()}.</li>
-     * </ol>
+     * Only <strong>one overload</strong> of {@code initialPartitionEventPosition} should be used when constructing
+     * an {@link EventProcessorClient}.
+     * </p>
      *
      * @param initialEventPosition Event position to start reading events.  Applies to every partition in the Event Hub
      * without a checkpoint nor an entry in the {@link #initialPartitionEventPosition(Map) initial position map}.
@@ -787,15 +781,9 @@ public class EventProcessorClientBuilder implements
      * exist in {@link CheckpointStore}. This map is keyed off of the partition id.
      *
      * <p>
-     * The starting position for each partition is determined using the following steps:
-     * <ol>
-     *     <li>Check the {@link CheckpointStore} for that partition's checkpoint.</li>
-     *     <li>If {@link #initialPartitionEventPosition(Function)} is set, evaluates for an {@link EventPosition}.</li>
-     *     <li>If initial mapping provider is not set or the function return's {@code null}, checks
-     *     {@link #initialPartitionEventPosition(Map)} for an entry.</li>
-     *     <li>If an entry does not exist, check if {@link #initialPartitionEventPosition(EventPosition)} is set.</li>
-     *     <li>Else, use {@link EventPosition#latest()}.</li>
-     * </ol>
+     * Only <strong>one overload</strong> of {@code initialPartitionEventPosition} should be used when constructing
+     * an {@link EventProcessorClient}.
+     * </p>
      *
      * @param initialPartitionEventPosition Map of initial event positions for partition ids.
      *
@@ -814,15 +802,9 @@ public class EventProcessorClientBuilder implements
      * {@link CheckpointStore}.
      *
      * <p>
-     * The starting position for each partition is determined using the following steps:
-     * <ol>
-     *     <li>Check the {@link CheckpointStore} for that partition's checkpoint.</li>
-     *     <li>If {@link #initialPartitionEventPosition(Function)} is set, evaluates for an {@link EventPosition}.</li>
-     *     <li>If initial mapping provider is not set or the function return's {@code null}, checks
-     *     {@link #initialPartitionEventPosition(Map)} for an entry.</li>
-     *     <li>If an entry does not exist, check if {@link #initialPartitionEventPosition(EventPosition)} is set.</li>
-     *     <li>Else, use {@link EventPosition#latest()}.</li>
-     * </ol>
+     * Only <strong>one overload</strong> of {@code initialPartitionEventPosition} should be used when constructing
+     * an {@link EventProcessorClient}.
+     * </p>
      *
      * @param initialEventPositionProvider Function that maps the given {@code partitionId} to an
      *      {@link EventPosition}.
@@ -850,7 +832,8 @@ public class EventProcessorClientBuilder implements
      *     {@code consumerGroup} is {@code null}.
      * @throws IllegalArgumentException if the credentials have not been set using either
      *     {@link #connectionString(String)} or {@link #credential(String, String, TokenCredential)}. Or, if a proxy is
-     *     specified but the transport type is not {@link AmqpTransportType#AMQP_WEB_SOCKETS web sockets}.
+     *     specified but the transport type is not {@link AmqpTransportType#AMQP_WEB_SOCKETS web sockets}.  Or, if more
+     *     than one overload for {@code setInitialEventPositionProvider} is set.
      */
     public EventProcessorClient buildEventProcessorClient() {
         Objects.requireNonNull(processError, "'processError' cannot be null");
@@ -879,14 +862,36 @@ public class EventProcessorClientBuilder implements
             .setConsumerGroup(consumerGroup)
             .setBatchReceiveMode(processEventBatch != null)
             .setConsumerGroup(consumerGroup)
-            .setDefaultEventPosition(defaultInitialEventPosition)
-            .setInitialPartitionEventPosition(initialPartitionEventPosition)
             .setLoadBalancingStrategy(loadBalancingStrategy)
             .setLoadBalancerUpdateInterval(loadBalancingUpdateInterval)
             .setMaxBatchSize(maxBatchSize)
             .setMaxWaitTime(maxWaitTime)
             .setPartitionOwnershipExpirationInterval(partitionOwnershipExpirationInterval)
             .setTrackLastEnqueuedEventProperties(trackLastEnqueuedEventProperties);
+
+        int numberOfTimesSet = 0;
+
+        if (defaultInitialEventPosition != null) {
+            numberOfTimesSet++;
+            processorOptions.setInitialEventPositionProvider(unused -> defaultInitialEventPosition);
+        }
+
+        if (initialPartitionEventPosition != null) {
+            numberOfTimesSet++;
+            processorOptions.setInitialEventPositionProvider(
+                partitionId -> initialPartitionEventPosition.get(partitionId));
+        }
+
+        if (initialEventPositionProvider != null) {
+            numberOfTimesSet++;
+            processorOptions.setInitialEventPositionProvider(initialEventPositionProvider);
+        }
+
+        if (numberOfTimesSet > 1) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Only 1 overload for setInitialEventPositionProvider can be set.  The overload is set "
+                    + numberOfTimesSet + " times."));
+        }
 
         return new EventProcessorClient(eventHubClientBuilder, getPartitionProcessorSupplier(), checkpointStore,
             processError, eventHubClientBuilder.createTracer(), processorOptions);
