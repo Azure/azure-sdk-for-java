@@ -7,11 +7,19 @@ import com.azure.core.util.Configuration;
 import com.azure.messaging.eventhubs.implementation.ClientConstants;
 import java.time.Duration;
 
+import com.azure.messaging.eventhubs.models.EventPosition;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -147,4 +155,53 @@ public class EventProcessorClientBuilderTest {
         assertNotNull(eventProcessorClient);
     }
 
+    public static Stream<Arguments> initialOffsetProviderSetMoreThanOne() {
+        EventPosition defaultEventPosition = EventPosition.fromOffset(10L);
+        Map<String, EventPosition> eventPositionMap = new HashMap<>();
+        Function<String, EventPosition> eventPositionFunction = id -> EventPosition.fromOffset(20L);
+
+        return Stream.of(
+            Arguments.of(defaultEventPosition, eventPositionMap, eventPositionFunction),
+            Arguments.of(defaultEventPosition, eventPositionMap, null),
+            Arguments.of(defaultEventPosition, null, eventPositionFunction),
+            Arguments.of(null, eventPositionMap, eventPositionFunction),
+            Arguments.of(null, null, eventPositionFunction));
+    }
+
+    @MethodSource
+    @ParameterizedTest
+    public void initialOffsetProviderSetMoreThanOne(EventPosition defaultEventPosition,
+        Map<String, EventPosition> eventPositionMap, Function<String, EventPosition> eventPositionFunction) {
+
+        EventProcessorClientBuilder builder = new EventProcessorClientBuilder()
+            .connectionString(CORRECT_CONNECTION_STRING)
+            .consumerGroup("consumer-group")
+            .processEventBatch(eventBatchContext -> {
+                eventBatchContext.getEvents().forEach(event -> {
+                    System.out
+                        .println("Partition id = " + eventBatchContext.getPartitionContext().getPartitionId() + " and "
+                            + "sequence number of event = " + event.getSequenceNumber());
+                });
+            }, 5, Duration.ofSeconds(1))
+            .processError(errorContext -> {
+                System.out.printf("Error occurred in partition processor for partition %s, %s%n",
+                    errorContext.getPartitionContext().getPartitionId(),
+                    errorContext.getThrowable());
+            })
+            .checkpointStore(new SampleCheckpointStore());
+
+        if (defaultEventPosition != null) {
+            builder.initialPartitionEventPosition(defaultEventPosition);
+        }
+        if (eventPositionMap != null) {
+            builder.initialPartitionEventPosition(eventPositionMap);
+        }
+        if (eventPositionFunction != null) {
+            builder.initialPartitionEventPosition(eventPositionFunction);
+        }
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            builder.buildEventProcessorClient();
+        });
+    }
 }
