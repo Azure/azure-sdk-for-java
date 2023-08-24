@@ -151,7 +151,7 @@ public class EventProcessorClientBuilder implements
     private Consumer<InitializationContext> processPartitionInitialization;
     private Consumer<CloseContext> processPartitionClose;
     private boolean trackLastEnqueuedEventProperties;
-    private Map<String, EventPosition> initialPartitionEventPosition = new HashMap<>();
+    private Map<String, EventPosition> initialPartitionEventPosition = null;
     private int maxBatchSize = 1; // setting this to 1 by default
     private Duration maxWaitTime;
     private Duration loadBalancingUpdateInterval;
