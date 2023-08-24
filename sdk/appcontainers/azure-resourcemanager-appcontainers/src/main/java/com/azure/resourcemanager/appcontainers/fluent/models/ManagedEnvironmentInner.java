@@ -12,6 +12,7 @@ import com.azure.resourcemanager.appcontainers.models.CustomDomainConfiguration;
 import com.azure.resourcemanager.appcontainers.models.DaprConfiguration;
 import com.azure.resourcemanager.appcontainers.models.EnvironmentProvisioningState;
 import com.azure.resourcemanager.appcontainers.models.KedaConfiguration;
+import com.azure.resourcemanager.appcontainers.models.ManagedEnvironmentPropertiesPeerAuthentication;
 import com.azure.resourcemanager.appcontainers.models.VnetConfiguration;
 import com.azure.resourcemanager.appcontainers.models.WorkloadProfile;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -377,6 +378,30 @@ public final class ManagedEnvironmentInner extends Resource {
             this.innerProperties = new ManagedEnvironmentProperties();
         }
         this.innerProperties().withInfrastructureResourceGroup(infrastructureResourceGroup);
+        return this;
+    }
+
+    /**
+     * Get the peerAuthentication property: Peer authentication settings for the Managed Environment.
+     *
+     * @return the peerAuthentication value.
+     */
+    public ManagedEnvironmentPropertiesPeerAuthentication peerAuthentication() {
+        return this.innerProperties() == null ? null : this.innerProperties().peerAuthentication();
+    }
+
+    /**
+     * Set the peerAuthentication property: Peer authentication settings for the Managed Environment.
+     *
+     * @param peerAuthentication the peerAuthentication value to set.
+     * @return the ManagedEnvironmentInner object itself.
+     */
+    public ManagedEnvironmentInner withPeerAuthentication(
+        ManagedEnvironmentPropertiesPeerAuthentication peerAuthentication) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagedEnvironmentProperties();
+        }
+        this.innerProperties().withPeerAuthentication(peerAuthentication);
         return this;
     }
 

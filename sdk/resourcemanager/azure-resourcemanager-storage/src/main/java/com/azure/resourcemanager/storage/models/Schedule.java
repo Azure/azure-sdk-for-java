@@ -17,6 +17,15 @@ public final class Schedule extends ExpandableStringEnum<Schedule> {
     public static final Schedule WEEKLY = fromString("Weekly");
 
     /**
+     * Creates a new instance of Schedule value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public Schedule() {
+    }
+
+    /**
      * Creates or finds a Schedule from its string representation.
      *
      * @param name a name to look for.

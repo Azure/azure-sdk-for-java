@@ -57,11 +57,10 @@ public final class BlobServicesClientImpl implements BlobServicesClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "StorageManagementCli")
-    private interface BlobServicesService {
+    public interface BlobServicesService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage"
-                + "/storageAccounts/{accountName}/blobServices")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/blobServices")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<BlobServiceItems>> list(
@@ -75,8 +74,7 @@ public final class BlobServicesClientImpl implements BlobServicesClient {
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage"
-                + "/storageAccounts/{accountName}/blobServices/{BlobServicesName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/blobServices/{BlobServicesName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<BlobServicePropertiesInner>> setServiceProperties(
@@ -92,8 +90,7 @@ public final class BlobServicesClientImpl implements BlobServicesClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage"
-                + "/storageAccounts/{accountName}/blobServices/{BlobServicesName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/blobServices/{BlobServicesName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<BlobServicePropertiesInner>> getServiceProperties(
@@ -439,15 +436,16 @@ public final class BlobServicesClientImpl implements BlobServicesClient {
      *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param parameters The properties of a storage account’s Blob service, including properties for Storage Analytics
      *     and CORS (Cross-Origin Resource Sharing) rules.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of a storage account’s Blob service.
+     * @return the properties of a storage account’s Blob service along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public BlobServicePropertiesInner setServiceProperties(
-        String resourceGroupName, String accountName, BlobServicePropertiesInner parameters) {
-        return setServicePropertiesAsync(resourceGroupName, accountName, parameters).block();
+    public Response<BlobServicePropertiesInner> setServicePropertiesWithResponse(
+        String resourceGroupName, String accountName, BlobServicePropertiesInner parameters, Context context) {
+        return setServicePropertiesWithResponseAsync(resourceGroupName, accountName, parameters, context).block();
     }
 
     /**
@@ -460,16 +458,15 @@ public final class BlobServicesClientImpl implements BlobServicesClient {
      *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param parameters The properties of a storage account’s Blob service, including properties for Storage Analytics
      *     and CORS (Cross-Origin Resource Sharing) rules.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of a storage account’s Blob service along with {@link Response}.
+     * @return the properties of a storage account’s Blob service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BlobServicePropertiesInner> setServicePropertiesWithResponse(
-        String resourceGroupName, String accountName, BlobServicePropertiesInner parameters, Context context) {
-        return setServicePropertiesWithResponseAsync(resourceGroupName, accountName, parameters, context).block();
+    public BlobServicePropertiesInner setServiceProperties(
+        String resourceGroupName, String accountName, BlobServicePropertiesInner parameters) {
+        return setServicePropertiesWithResponse(resourceGroupName, accountName, parameters, Context.NONE).getValue();
     }
 
     /**
@@ -606,25 +603,6 @@ public final class BlobServicesClientImpl implements BlobServicesClient {
      *     insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
      *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of a storage account’s Blob service, including properties for Storage Analytics and CORS
-     *     (Cross-Origin Resource Sharing) rules.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public BlobServicePropertiesInner getServiceProperties(String resourceGroupName, String accountName) {
-        return getServicePropertiesAsync(resourceGroupName, accountName).block();
-    }
-
-    /**
-     * Gets the properties of a storage account’s Blob service, including properties for Storage Analytics and CORS
-     * (Cross-Origin Resource Sharing) rules.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
-     * @param accountName The name of the storage account within the specified resource group. Storage account names
-     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -636,5 +614,24 @@ public final class BlobServicesClientImpl implements BlobServicesClient {
     public Response<BlobServicePropertiesInner> getServicePropertiesWithResponse(
         String resourceGroupName, String accountName, Context context) {
         return getServicePropertiesWithResponseAsync(resourceGroupName, accountName, context).block();
+    }
+
+    /**
+     * Gets the properties of a storage account’s Blob service, including properties for Storage Analytics and CORS
+     * (Cross-Origin Resource Sharing) rules.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names
+     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the properties of a storage account’s Blob service, including properties for Storage Analytics and CORS
+     *     (Cross-Origin Resource Sharing) rules.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public BlobServicePropertiesInner getServiceProperties(String resourceGroupName, String accountName) {
+        return getServicePropertiesWithResponse(resourceGroupName, accountName, Context.NONE).getValue();
     }
 }

@@ -823,6 +823,17 @@ public final class DiskInner extends Resource {
     }
 
     /**
+     * Get the lastOwnershipUpdateTime property: The UTC time when the ownership state of the disk was last changed
+     * i.e., the time the disk was last attached or detached from a VM or the time when the VM to which the disk was
+     * attached was deallocated or started.
+     *
+     * @return the lastOwnershipUpdateTime value.
+     */
+    public OffsetDateTime lastOwnershipUpdateTime() {
+        return this.innerProperties() == null ? null : this.innerProperties().lastOwnershipUpdateTime();
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.

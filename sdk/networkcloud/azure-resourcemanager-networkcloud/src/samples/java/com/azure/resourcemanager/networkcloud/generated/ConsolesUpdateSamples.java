@@ -14,7 +14,7 @@ import java.util.Map;
 /** Samples for Consoles Update. */
 public final class ConsolesUpdateSamples {
     /*
-     * x-ms-original-file: specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2023-05-01-preview/examples/Consoles_Patch.json
+     * x-ms-original-file: specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2023-07-01/examples/Consoles_Patch.json
      */
     /**
      * Sample code: Patch virtual machine console.
@@ -29,13 +29,14 @@ public final class ConsolesUpdateSamples {
                 .getValue();
         resource
             .update()
-            .withTags(mapOf("key1", "myvalue1", "key2", "myvalue2"))
+            .withTags(mapOf("key1", "fakeTokenPlaceholder", "key2", "fakeTokenPlaceholder"))
             .withEnabled(ConsoleEnabled.TRUE)
             .withExpiration(OffsetDateTime.parse("2022-06-01T01:27:03.008Z"))
             .withSshPublicKey(new SshPublicKey().withKeyData("fakeTokenPlaceholder"))
             .apply();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

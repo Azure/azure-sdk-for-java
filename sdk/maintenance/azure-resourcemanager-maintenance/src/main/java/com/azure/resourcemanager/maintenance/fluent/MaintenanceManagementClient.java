@@ -88,6 +88,27 @@ public interface MaintenanceManagementClient {
     ApplyUpdateForResourceGroupsClient getApplyUpdateForResourceGroups();
 
     /**
+     * Gets the ConfigurationAssignmentsWithinSubscriptionsClient object to access its operations.
+     *
+     * @return the ConfigurationAssignmentsWithinSubscriptionsClient object.
+     */
+    ConfigurationAssignmentsWithinSubscriptionsClient getConfigurationAssignmentsWithinSubscriptions();
+
+    /**
+     * Gets the ConfigurationAssignmentsForSubscriptionsClient object to access its operations.
+     *
+     * @return the ConfigurationAssignmentsForSubscriptionsClient object.
+     */
+    ConfigurationAssignmentsForSubscriptionsClient getConfigurationAssignmentsForSubscriptions();
+
+    /**
+     * Gets the ConfigurationAssignmentsForResourceGroupsClient object to access its operations.
+     *
+     * @return the ConfigurationAssignmentsForResourceGroupsClient object.
+     */
+    ConfigurationAssignmentsForResourceGroupsClient getConfigurationAssignmentsForResourceGroups();
+
+    /**
      * Gets the OperationsClient object to access its operations.
      *
      * @return the OperationsClient object.

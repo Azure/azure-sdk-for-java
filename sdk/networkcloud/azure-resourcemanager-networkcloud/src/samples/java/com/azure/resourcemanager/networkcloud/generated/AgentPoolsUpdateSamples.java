@@ -12,7 +12,7 @@ import java.util.Map;
 /** Samples for AgentPools Update. */
 public final class AgentPoolsUpdateSamples {
     /*
-     * x-ms-original-file: specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2023-05-01-preview/examples/AgentPools_Patch.json
+     * x-ms-original-file: specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2023-07-01/examples/AgentPools_Patch.json
      */
     /**
      * Sample code: Patch Kubernetes cluster agent pool.
@@ -29,12 +29,13 @@ public final class AgentPoolsUpdateSamples {
                 .getValue();
         resource
             .update()
-            .withTags(mapOf("key1", "myvalue1", "key2", "myvalue2"))
+            .withTags(mapOf("key1", "fakeTokenPlaceholder", "key2", "fakeTokenPlaceholder"))
             .withCount(3L)
             .withUpgradeSettings(new AgentPoolUpgradeSettings().withMaxSurge("1"))
             .apply();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

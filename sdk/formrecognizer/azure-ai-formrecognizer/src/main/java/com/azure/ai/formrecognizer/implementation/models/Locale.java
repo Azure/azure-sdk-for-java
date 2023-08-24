@@ -26,6 +26,14 @@ public final class Locale extends ExpandableStringEnum<Locale> {
     public static final Locale EN_US = fromString("en-US");
 
     /**
+     * Creates a new instance of Locale value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public Locale() {}
+
+    /**
      * Creates or finds a Locale from its string representation.
      *
      * @param name a name to look for.
@@ -36,7 +44,11 @@ public final class Locale extends ExpandableStringEnum<Locale> {
         return fromString(name, Locale.class);
     }
 
-    /** @return known Locale values. */
+    /**
+     * Gets known Locale values.
+     *
+     * @return known Locale values.
+     */
     public static Collection<Locale> values() {
         return values(Locale.class);
     }

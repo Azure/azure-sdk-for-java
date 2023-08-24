@@ -47,7 +47,6 @@ public final class DocumentWord {
      * Set the content property: Text content of the word.
      *
      * @param content the content value to set.
-     * @return the DocumentWord object itself.
      */
     private void setContent(String content) {
         this.content = content;
@@ -70,7 +69,6 @@ public final class DocumentWord {
      * relative to the element orientation.
      *
      * @param boundingPolygon the boundingPolygon value to set.
-     * @return the DocumentWord object itself.
      */
     private void setBoundingPolygon(List<Point> boundingPolygon) {
         this.boundingPolygon = boundingPolygon;
@@ -89,7 +87,6 @@ public final class DocumentWord {
      * Set the span property: Location of the word in the reading order concatenated content.
      *
      * @param span the span value to set.
-     * @return the DocumentWord object itself.
      */
     private void setSpan(DocumentSpan span) {
         this.span = span;
@@ -108,7 +105,6 @@ public final class DocumentWord {
      * Set the confidence property: Confidence of correctly extracting the word.
      *
      * @param confidence the confidence value to set.
-     * @return the DocumentWord object itself.
      */
     private void setConfidence(float confidence) {
         this.confidence = confidence;

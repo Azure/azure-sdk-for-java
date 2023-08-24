@@ -7,7 +7,7 @@ package com.azure.resourcemanager.avs.generated;
 /** Samples for Locations CheckQuotaAvailability. */
 public final class LocationsCheckQuotaAvailabilitySamples {
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2022-05-01/examples/Locations_CheckQuotaAvailability.json
+     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/Locations_CheckQuotaAvailability.json
      */
     /**
      * Sample code: Locations_CheckQuotaAvailability.

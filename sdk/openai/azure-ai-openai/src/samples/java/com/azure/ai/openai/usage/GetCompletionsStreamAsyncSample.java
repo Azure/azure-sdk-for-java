@@ -5,9 +5,7 @@ package com.azure.ai.openai.usage;
 
 import com.azure.ai.openai.OpenAIAsyncClient;
 import com.azure.ai.openai.OpenAIClientBuilder;
-import com.azure.ai.openai.models.Choice;
 import com.azure.ai.openai.models.CompletionsOptions;
-import com.azure.ai.openai.models.CompletionsUsage;
 import com.azure.core.credential.AzureKeyCredential;
 
 import java.util.ArrayList;
@@ -39,21 +37,16 @@ public class GetCompletionsStreamAsyncSample {
         List<String> prompt = new ArrayList<>();
         prompt.add("Why did the eagles not carry Frodo Baggins to Mordor?");
 
-        client.getCompletionsStream(deploymentOrModelId,
-                new CompletionsOptions(prompt).setMaxTokens(1000).setStream(true))
-            .subscribe(completions -> {
-                System.out.printf("Model ID=%s is created at %s.%n", completions.getId(), completions.getCreatedAt());
-                for (Choice choice : completions.getChoices()) {
-                    System.out.printf("Index: %d, Text: %s.%n", choice.getIndex(), choice.getText());
-                }
-
-                CompletionsUsage usage = completions.getUsage();
-                if (usage != null) {
-                    System.out.printf("Usage: number of prompt token is %d, "
-                            + "number of completion token is %d, and number of total tokens in request and response is %d.%n",
-                        usage.getPromptTokens(), usage.getCompletionTokens(), usage.getTotalTokens());
-                }
-            });
+        client.getCompletionsStream(deploymentOrModelId, new CompletionsOptions(prompt).setMaxTokens(1000).setStream(true))
+            // Remove .skip(1) when using Non-Azure OpenAI API
+            // Note: the first chat completions can be ignored when using Azure OpenAI service which is a known service bug.
+            // TODO: remove .skip(1) when service fix the issue.
+            .skip(1)
+            .map(completions -> completions.getChoices().get(0).getText())
+            .subscribe(
+                System.out::print,
+                error -> System.err.println("There was an error getting completions." + error),
+                () -> System.out.println("Completed called getCompletions."));
 
         // The .subscribe() creation and assignment is not a blocking call. For the purpose of this example, we sleep
         // the thread so the program does not end before the send operation is complete. Using .block() instead of

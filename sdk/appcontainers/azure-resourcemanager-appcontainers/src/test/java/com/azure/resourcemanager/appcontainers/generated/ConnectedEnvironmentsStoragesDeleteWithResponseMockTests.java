@@ -58,6 +58,6 @@ public final class ConnectedEnvironmentsStoragesDeleteWithResponseMockTests {
 
         manager
             .connectedEnvironmentsStorages()
-            .deleteWithResponse("ao", "jrmzvupor", "zdfuydzvkfvxcnqm", com.azure.core.util.Context.NONE);
+            .deleteWithResponse("xff", "shkwfbkgozxwopd", "yd", com.azure.core.util.Context.NONE);
     }
 }

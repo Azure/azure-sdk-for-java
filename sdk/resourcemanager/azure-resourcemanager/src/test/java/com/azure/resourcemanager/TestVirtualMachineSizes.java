@@ -8,6 +8,7 @@ import com.azure.resourcemanager.compute.models.KnownWindowsVirtualMachineImage;
 import com.azure.resourcemanager.compute.models.VirtualMachine;
 import com.azure.resourcemanager.compute.models.VirtualMachineSize;
 import com.azure.resourcemanager.compute.models.VirtualMachines;
+import com.azure.resourcemanager.test.ResourceManagerTestProxyTestBase;
 import com.azure.resourcemanager.test.utils.TestUtilities;
 import com.azure.core.management.Region;
 import org.junit.jupiter.api.Assertions;
@@ -30,7 +31,7 @@ public class TestVirtualMachineSizes extends TestTemplate<VirtualMachine, Virtua
                 .withoutPrimaryPublicIPAddress()
                 .withPopularWindowsImage(KnownWindowsVirtualMachineImage.WINDOWS_SERVER_2012_R2_DATACENTER)
                 .withAdminUsername("testuser")
-                .withAdminPassword("fakePasswordPlaceholder")
+                .withAdminPassword(ResourceManagerTestProxyTestBase.password())
                 .withSize(availableSize.name()) // Use the first size
                 .create();
 

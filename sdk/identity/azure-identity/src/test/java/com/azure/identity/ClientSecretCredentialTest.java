@@ -92,8 +92,8 @@ public class ClientSecretCredentialTest {
         String secret = "secret";
         String token1 = "token1";
         String token2 = "token2";
-        TokenRequestContext request1 = new TokenRequestContext().addScopes("https://management.azure.com").setEnableCae(true);
-        TokenRequestContext request2 = new TokenRequestContext().addScopes("https://vault.azure.net").setEnableCae(true);
+        TokenRequestContext request1 = new TokenRequestContext().addScopes("https://management.azure.com").setCaeEnabled(true);
+        TokenRequestContext request2 = new TokenRequestContext().addScopes("https://vault.azure.net").setCaeEnabled(true);
         OffsetDateTime expiresAt = OffsetDateTime.now(ZoneOffset.UTC).plusHours(1);
 
         // mock

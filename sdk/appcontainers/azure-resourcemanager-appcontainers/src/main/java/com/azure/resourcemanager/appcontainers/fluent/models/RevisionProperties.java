@@ -7,6 +7,7 @@ package com.azure.resourcemanager.appcontainers.fluent.models;
 import com.azure.core.annotation.Immutable;
 import com.azure.resourcemanager.appcontainers.models.RevisionHealthState;
 import com.azure.resourcemanager.appcontainers.models.RevisionProvisioningState;
+import com.azure.resourcemanager.appcontainers.models.RevisionRunningState;
 import com.azure.resourcemanager.appcontainers.models.Template;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
@@ -76,6 +77,12 @@ public final class RevisionProperties {
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private RevisionProvisioningState provisioningState;
+
+    /*
+     * Current running state of the revision
+     */
+    @JsonProperty(value = "runningState", access = JsonProperty.Access.WRITE_ONLY)
+    private RevisionRunningState runningState;
 
     /** Creates an instance of RevisionProperties class. */
     public RevisionProperties() {
@@ -171,6 +178,15 @@ public final class RevisionProperties {
      */
     public RevisionProvisioningState provisioningState() {
         return this.provisioningState;
+    }
+
+    /**
+     * Get the runningState property: Current running state of the revision.
+     *
+     * @return the runningState value.
+     */
+    public RevisionRunningState runningState() {
+        return this.runningState;
     }
 
     /**

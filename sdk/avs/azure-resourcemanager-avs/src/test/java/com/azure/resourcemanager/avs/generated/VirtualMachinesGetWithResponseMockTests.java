@@ -30,7 +30,7 @@ public final class VirtualMachinesGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"displayName\":\"qmjxlyyzglgouwtl\",\"moRefId\":\"jyuojqtobaxkjeyt\",\"folderPath\":\"lbfjkwr\",\"restrictMovement\":\"Disabled\"},\"id\":\"kqbh\",\"name\":\"y\",\"type\":\"qunjqh\"}";
+            "{\"properties\":{\"displayName\":\"mozusgzvlnsnnjz\",\"moRefId\":\"afolpymwamxqzrag\",\"folderPath\":\"dphtv\",\"restrictMovement\":\"Enabled\"},\"id\":\"a\",\"name\":\"vl\",\"type\":\"jchcsrlzknmzla\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -61,7 +61,7 @@ public final class VirtualMachinesGetWithResponseMockTests {
         VirtualMachine response =
             manager
                 .virtualMachines()
-                .getWithResponse("nnbsoqeqa", "arvlagunbt", "febwlnbmhyreeudz", "av", com.azure.core.util.Context.NONE)
+                .getWithResponse("jafi", "lhguyn", "chl", "mltx", com.azure.core.util.Context.NONE)
                 .getValue();
     }
 }

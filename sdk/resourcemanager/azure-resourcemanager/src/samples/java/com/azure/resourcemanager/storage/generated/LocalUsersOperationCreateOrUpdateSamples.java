@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.storage.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.storage.fluent.models.LocalUserInner;
 import com.azure.resourcemanager.storage.models.PermissionScope;
 import com.azure.resourcemanager.storage.models.SshPublicKey;
@@ -13,7 +12,7 @@ import java.util.Arrays;
 /** Samples for LocalUsersOperation CreateOrUpdate. */
 public final class LocalUsersOperationCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2022-09-01/examples/LocalUserCreate.json
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-01-01/examples/LocalUserCreate.json
      */
     /**
      * Sample code: CreateLocalUser.
@@ -44,14 +43,13 @@ public final class LocalUsersOperationCreateOrUpdateSamples {
                                     .withResourceName("share2")))
                     .withHomeDirectory("homedirectory")
                     .withSshAuthorizedKeys(
-                        Arrays
-                            .asList(new SshPublicKey().withDescription("key name").withKey("ssh-rsa keykeykeykeykey=")))
+                        Arrays.asList(new SshPublicKey().withDescription("key name").withKey("fakeTokenPlaceholder")))
                     .withHasSshPassword(true),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2022-09-01/examples/LocalUserUpdate.json
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-01-01/examples/LocalUserUpdate.json
      */
     /**
      * Sample code: UpdateLocalUser.
@@ -73,6 +71,6 @@ public final class LocalUsersOperationCreateOrUpdateSamples {
                     .withHasSharedKey(false)
                     .withHasSshKey(false)
                     .withHasSshPassword(false),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

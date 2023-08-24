@@ -13,7 +13,7 @@ public final class ScriptPackagePropertiesTests {
         ScriptPackageProperties model =
             BinaryData
                 .fromString(
-                    "{\"description\":\"nuuzkopbm\",\"version\":\"rfdwoyu\",\"company\":\"ziuiefozbhdm\",\"uri\":\"l\"}")
+                    "{\"description\":\"usps\",\"version\":\"sdvlmfwdgzxulucv\",\"company\":\"mrsreuzvxurisjnh\",\"uri\":\"txifqj\"}")
                 .toObject(ScriptPackageProperties.class);
     }
 

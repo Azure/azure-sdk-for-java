@@ -26,9 +26,6 @@ public final class ApplicationGatewayCustomErrorStatusCode
     /** Static value HttpStatus408 for ApplicationGatewayCustomErrorStatusCode. */
     public static final ApplicationGatewayCustomErrorStatusCode HTTP_STATUS408 = fromString("HttpStatus408");
 
-    /** Static value HttpStatus499 for ApplicationGatewayCustomErrorStatusCode. */
-    public static final ApplicationGatewayCustomErrorStatusCode HTTP_STATUS499 = fromString("HttpStatus499");
-
     /** Static value HttpStatus500 for ApplicationGatewayCustomErrorStatusCode. */
     public static final ApplicationGatewayCustomErrorStatusCode HTTP_STATUS500 = fromString("HttpStatus500");
 

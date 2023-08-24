@@ -3,9 +3,9 @@
 
 package com.azure.ai.formrecognizer.documentanalysis.implementation.util;
 
+import com.azure.ai.formrecognizer.documentanalysis.administration.models.OperationDetails;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.OperationKind;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.OperationStatus;
-import com.azure.ai.formrecognizer.documentanalysis.administration.models.OperationDetails;
 import com.azure.core.models.ResponseError;
 
 import java.time.OffsetDateTime;
@@ -41,6 +41,8 @@ public final class OperationDetailsHelper {
 
         void setResourceLocation(OperationDetails operationDetails, String resourceLocation);
         void setTags(OperationDetails operationDetails, Map<String, String> tags);
+
+        void setServiceVersion(OperationDetails operationDetails, String serviceVersion);
     }
 
     /**
@@ -85,5 +87,9 @@ public final class OperationDetailsHelper {
     }
     static void setTags(OperationDetails operationDetails, Map<String, String> tags) {
         accessor.setTags(operationDetails, tags);
+    }
+
+    static void setServiceVersion(OperationDetails operationDetails, String serviceVersion) {
+        accessor.setServiceVersion(operationDetails, serviceVersion);
     }
 }

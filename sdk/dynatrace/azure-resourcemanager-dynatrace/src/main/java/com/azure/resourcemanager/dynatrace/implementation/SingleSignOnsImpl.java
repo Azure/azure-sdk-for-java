@@ -27,16 +27,6 @@ public final class SingleSignOnsImpl implements SingleSignOns {
         this.serviceManager = serviceManager;
     }
 
-    public DynatraceSingleSignOnResource get(String resourceGroupName, String monitorName, String configurationName) {
-        DynatraceSingleSignOnResourceInner inner =
-            this.serviceClient().get(resourceGroupName, monitorName, configurationName);
-        if (inner != null) {
-            return new DynatraceSingleSignOnResourceImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<DynatraceSingleSignOnResource> getWithResponse(
         String resourceGroupName, String monitorName, String configurationName, Context context) {
         Response<DynatraceSingleSignOnResourceInner> inner =
@@ -47,6 +37,16 @@ public final class SingleSignOnsImpl implements SingleSignOns {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new DynatraceSingleSignOnResourceImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public DynatraceSingleSignOnResource get(String resourceGroupName, String monitorName, String configurationName) {
+        DynatraceSingleSignOnResourceInner inner =
+            this.serviceClient().get(resourceGroupName, monitorName, configurationName);
+        if (inner != null) {
+            return new DynatraceSingleSignOnResourceImpl(inner, this.manager());
         } else {
             return null;
         }

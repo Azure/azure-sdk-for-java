@@ -18,6 +18,14 @@ public final class VirtualMachinePublicIpAddressDnsSettingsConfiguration {
     @JsonProperty(value = "domainNameLabel", required = true)
     private String domainNameLabel;
 
+    /*
+     * The Domain name label scope of the PublicIPAddress resources that will be created. The generated name label is
+     * the concatenation of the hashed domain name label with policy according to the domain name label scope and vm
+     * network profile unique ID.
+     */
+    @JsonProperty(value = "domainNameLabelScope")
+    private DomainNameLabelScopeTypes domainNameLabelScope;
+
     /** Creates an instance of VirtualMachinePublicIpAddressDnsSettingsConfiguration class. */
     public VirtualMachinePublicIpAddressDnsSettingsConfiguration() {
     }
@@ -41,6 +49,31 @@ public final class VirtualMachinePublicIpAddressDnsSettingsConfiguration {
      */
     public VirtualMachinePublicIpAddressDnsSettingsConfiguration withDomainNameLabel(String domainNameLabel) {
         this.domainNameLabel = domainNameLabel;
+        return this;
+    }
+
+    /**
+     * Get the domainNameLabelScope property: The Domain name label scope of the PublicIPAddress resources that will be
+     * created. The generated name label is the concatenation of the hashed domain name label with policy according to
+     * the domain name label scope and vm network profile unique ID.
+     *
+     * @return the domainNameLabelScope value.
+     */
+    public DomainNameLabelScopeTypes domainNameLabelScope() {
+        return this.domainNameLabelScope;
+    }
+
+    /**
+     * Set the domainNameLabelScope property: The Domain name label scope of the PublicIPAddress resources that will be
+     * created. The generated name label is the concatenation of the hashed domain name label with policy according to
+     * the domain name label scope and vm network profile unique ID.
+     *
+     * @param domainNameLabelScope the domainNameLabelScope value to set.
+     * @return the VirtualMachinePublicIpAddressDnsSettingsConfiguration object itself.
+     */
+    public VirtualMachinePublicIpAddressDnsSettingsConfiguration withDomainNameLabelScope(
+        DomainNameLabelScopeTypes domainNameLabelScope) {
+        this.domainNameLabelScope = domainNameLabelScope;
         return this;
     }
 
