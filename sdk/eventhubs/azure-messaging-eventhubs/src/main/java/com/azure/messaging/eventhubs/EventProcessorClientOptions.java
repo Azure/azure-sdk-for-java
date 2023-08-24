@@ -7,6 +7,7 @@ import com.azure.messaging.eventhubs.models.EventPosition;
 
 import java.time.Duration;
 import java.util.Map;
+import java.util.function.Function;
 
 /**
  * Package-private class specifying the options set when creating EventProcessorClient.
@@ -20,8 +21,8 @@ class EventProcessorClientOptions {
     private Duration maxWaitTime;
     private Duration partitionOwnershipExpirationInterval;
     private Boolean trackLastEnqueuedEventProperties;
-    private Map<String, EventPosition> initialPartitionEventPosition;
-    private EventPosition defaultEventPosition;
+
+    private Function<String, EventPosition> initialEventPositionProvider;
 
     /**
      * Gets the consumer group used to receive events.
@@ -45,45 +46,21 @@ class EventProcessorClientOptions {
     }
 
     /**
-     * Gets the default starting position in a partition.
+     * Gets the function to map a partition id to its {@link EventPosition}.
      *
-     * @return The default starting position in a partition.
+     * @return Function to map a partition id to its {@link EventPosition}.
      */
-    EventPosition getDefaultEventPosition() {
-        return defaultEventPosition;
+    Function<String, EventPosition> getInitialEventPositionProvider() {
+        return initialEventPositionProvider;
     }
 
     /**
-     * Sets the default starting position in a partition.
+     * Sets the function to map a partition id to its {@link EventPosition}.
      *
-     * @param defaultEventPosition The default starting position in a partition.
-     *
-     * @return The updated {@link EventProcessorClientOptions} object.
+     * @param initialEventPositionProvider The function to map a partition id to its {@link EventPosition}.
      */
-    EventProcessorClientOptions setDefaultEventPosition(EventPosition defaultEventPosition) {
-        this.defaultEventPosition = defaultEventPosition;
-        return this;
-    }
-
-    /**
-     * Gets a map of initial event positions for partition ids.
-     *
-     * @return A map of initial event positions for partition ids.
-     */
-    Map<String, EventPosition> getInitialPartitionEventPosition() {
-        return initialPartitionEventPosition;
-    }
-
-    /**
-     * Sets a map of initial event positions for partition ids.
-     *
-     * @param initialPartitionEventPosition Map of initial event positions for partition ids.
-     *
-     * @return The updated {@link EventProcessorClientOptions} object.
-     */
-    EventProcessorClientOptions setInitialPartitionEventPosition(Map<String, EventPosition> initialPartitionEventPosition) {
-        this.initialPartitionEventPosition = initialPartitionEventPosition;
-        return this;
+    void setInitialEventPositionProvider(Function<String, EventPosition> initialEventPositionProvider) {
+        this.initialEventPositionProvider = initialEventPositionProvider;
     }
 
     /**
