@@ -28,7 +28,7 @@
     <dependency>
       <groupId>org.postgresql</groupId>
       <artifactId>postgresql</artifactId>
-      <version>42.3.8</version> <!-- {x-version-update;org.postgresql:postgresql;external_dependency} -->
+      <version>42.6.0</version> <!-- {x-version-update;org.postgresql:postgresql;external_dependency} -->
       <scope>provided</scope>
     </dependency>
     <dependency>
@@ -72,13 +72,13 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-enforcer-plugin</artifactId>
-        <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
+        <version>3.3.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
         <configuration>
           <rules>
             <bannedDependencies>
               <includes>
                 <include>com.mysql:mysql-connector-j:[8.0.33]</include> <!-- {x-include-update;com.mysql:mysql-connector-j;external_dependency} -->
-                <include>org.postgresql:postgresql:[42.3.8]</include> <!-- {x-include-update;org.postgresql:postgresql;external_dependency} -->
+                <include>org.postgresql:postgresql:[42.6.0]</include> <!-- {x-include-update;org.postgresql:postgresql;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>
