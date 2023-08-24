@@ -59,8 +59,11 @@ class EventProcessorClientOptions {
      *
      * @param initialEventPositionProvider The function to map a partition id to its {@link EventPosition}.
      */
-    void setInitialEventPositionProvider(Function<String, EventPosition> initialEventPositionProvider) {
+    EventProcessorClientOptions setInitialEventPositionProvider(
+        Function<String, EventPosition> initialEventPositionProvider) {
+
         this.initialEventPositionProvider = initialEventPositionProvider;
+        return this;
     }
 
     /**
