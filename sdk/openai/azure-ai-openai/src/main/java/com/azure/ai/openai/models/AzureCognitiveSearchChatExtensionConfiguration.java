@@ -31,7 +31,7 @@ public class AzureCognitiveSearchChatExtensionConfiguration {
     private String indexName;
 
     /**
-     * Creates and instance of AzureCognitiveSearchChatExtensionConfiguration
+     * Creates an instance of AzureCognitiveSearchChatExtensionConfiguration
      *
      * @param endpoint absolute path for the Azure Cognitive Search resource
      * @param key the API key for the Azure Cognitive search endpoint
