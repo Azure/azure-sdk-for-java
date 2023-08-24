@@ -30,13 +30,12 @@ Because in LIVE mode we are hitting an actual resource, we must set the appropri
 
 Depending on which package you are testing, it may need special environment variables to test successfully. All packages have a *TestBase.java file inside their corresponding test folder and each one of these contain the special environment variables the tests need in order to run. Make sure to set these variables before running the tests themselves. You may need to restart your development environment after creating or updating these environment variables.
 
-You can run the `mvn verify` command after setting the `AZURE_TEST_MODE` variable to `LIVE`.
+You can run the `mvn verify` command after setting the `AZURE_TEST_MODE` variable to `LIVE`. You will also need to set the `AZURE_TEST_RUN_lIVE` variable to `true`.
 
 ### Record mode
 
-RECORD mode is similar to LIVE mode because it also hits an actual resource. In addition to hitting the resource, RECORD mode will also record the successful calls to the service in json format. As mentioned, the recordings are stored in the package root folder under `target/test-classes/session-records`.
-
-These newly generated files will have to be copied to the previously mentioned `resources/session-records` after completion to make sure the PLAYBACK tests run with an updated version of the calls we made. Make sure to change the name of the recording files to match the names of the ones that are already in the `resources/session-records` folder. 
+RECORD mode is similar to LIVE mode because it also hits an actual resource. In addition to hitting the resource, RECORD mode will also record the successful calls to the service in json format. 
+To update and run the recordings follow this guide [Azure Core Test shared library for Java](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core-test/README.md#run-and-record-tests)
 
 If you would like to generate new recordings for a single test, setting `AZURE_TEST_MODE` to `RECORD`, reopen Visual Studio, and run the test in Visual Studio normally.
 ### Managed Identity Tests

@@ -513,6 +513,7 @@ public class IdentityClientTests {
             });
             when(builder.logPii(anyBoolean())).thenReturn(builder);
             when(builder.validateAuthority(anyBoolean())).thenReturn(builder);
+            when(builder.instanceDiscovery(anyBoolean())).thenReturn(builder);
             when(builder.build()).thenReturn(application);
         })) {
             // Mocking the static builder to ensure we pass the right thing to it.

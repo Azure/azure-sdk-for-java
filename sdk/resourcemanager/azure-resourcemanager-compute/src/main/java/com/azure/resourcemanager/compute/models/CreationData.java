@@ -82,6 +82,12 @@ public final class CreationData {
     @JsonProperty(value = "performancePlus")
     private Boolean performancePlus;
 
+    /*
+     * Required if createOption is CopyFromSanSnapshot. This is the ARM id of the source elastic san volume snapshot.
+     */
+    @JsonProperty(value = "elasticSanResourceId")
+    private String elasticSanResourceId;
+
     /** Creates an instance of CreationData class. */
     public CreationData() {
     }
@@ -313,6 +319,28 @@ public final class CreationData {
      */
     public CreationData withPerformancePlus(Boolean performancePlus) {
         this.performancePlus = performancePlus;
+        return this;
+    }
+
+    /**
+     * Get the elasticSanResourceId property: Required if createOption is CopyFromSanSnapshot. This is the ARM id of the
+     * source elastic san volume snapshot.
+     *
+     * @return the elasticSanResourceId value.
+     */
+    public String elasticSanResourceId() {
+        return this.elasticSanResourceId;
+    }
+
+    /**
+     * Set the elasticSanResourceId property: Required if createOption is CopyFromSanSnapshot. This is the ARM id of the
+     * source elastic san volume snapshot.
+     *
+     * @param elasticSanResourceId the elasticSanResourceId value to set.
+     * @return the CreationData object itself.
+     */
+    public CreationData withElasticSanResourceId(String elasticSanResourceId) {
+        this.elasticSanResourceId = elasticSanResourceId;
         return this;
     }
 

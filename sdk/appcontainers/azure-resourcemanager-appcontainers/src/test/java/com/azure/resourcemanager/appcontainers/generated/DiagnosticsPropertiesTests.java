@@ -7,6 +7,7 @@ package com.azure.resourcemanager.appcontainers.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.appcontainers.models.DiagnosticDataProviderMetadata;
 import com.azure.resourcemanager.appcontainers.models.DiagnosticDataProviderMetadataPropertyBagItem;
+import com.azure.resourcemanager.appcontainers.models.DiagnosticDataTableResponseColumn;
 import com.azure.resourcemanager.appcontainers.models.DiagnosticDataTableResponseObject;
 import com.azure.resourcemanager.appcontainers.models.DiagnosticRendering;
 import com.azure.resourcemanager.appcontainers.models.DiagnosticSupportTopic;
@@ -23,19 +24,22 @@ public final class DiagnosticsPropertiesTests {
         DiagnosticsProperties model =
             BinaryData
                 .fromString(
-                    "{\"metadata\":{\"id\":\"talmett\",\"name\":\"gdslqxihhrmoo\",\"description\":\"qseypxiutcxa\",\"author\":\"hyrpetogebjoxs\",\"category\":\"vnh\",\"supportTopicList\":[{\"id\":\"q\",\"pesId\":\"kzjcjbtrgae\"},{\"id\":\"vibr\",\"pesId\":\"jsto\"},{\"id\":\"eitpkxztmo\",\"pesId\":\"klf\"}],\"analysisTypes\":[\"gfcwqmpimaqxzhem\",\"yhohujswtwkozzwc\"],\"type\":\"kb\",\"score\":85.47861},\"dataset\":[{\"table\":{\"tableName\":\"jwltlwtjjgu\",\"columns\":[],\"rows\":[]},\"renderingProperties\":{\"type\":663696450,\"title\":\"vkcdmxzr\",\"description\":\"aimlnwiaaom\",\"isVisible\":false}},{\"table\":{\"tableName\":\"z\",\"columns\":[],\"rows\":[]},\"renderingProperties\":{\"type\":1226042956,\"title\":\"wwnpj\",\"description\":\"fz\",\"isVisible\":false}},{\"table\":{\"tableName\":\"wahfbousnfepgfew\",\"columns\":[],\"rows\":[]},\"renderingProperties\":{\"type\":1791330628,\"title\":\"ncxykxhdjhlimm\",\"description\":\"x\",\"isVisible\":true}}],\"status\":{\"message\":\"orxvxcjzhqiz\",\"statusId\":444626662},\"dataProviderMetadata\":{\"providerName\":\"gqscj\",\"propertyBag\":[{\"name\":\"juhdqazkmtgguwpi\",\"value\":\"ajc\"},{\"name\":\"m\",\"value\":\"hfcf\"}]}}")
+                    "{\"metadata\":{\"id\":\"v\",\"name\":\"zgemjdftuljlt\",\"description\":\"ceamtm\",\"author\":\"u\",\"category\":\"ejwcwwqiok\",\"supportTopicList\":[{\"id\":\"mojmsvpkjprvkw\",\"pesId\":\"zqljyxgtczh\"}],\"analysisTypes\":[\"bsdshmkxmaehvbbx\",\"ripltf\"],\"type\":\"tbaxk\",\"score\":35.67025},\"dataset\":[{\"table\":{\"tableName\":\"pyklyhpluodpvru\",\"columns\":[{\"columnName\":\"zibt\",\"dataType\":\"stgktst\",\"columnType\":\"xeclzedqbcvhzlhp\"}],\"rows\":[\"dataqkdlw\",\"dataqfbumlkxtrqjf\",\"datamlmbtxhwgfwsrta\"]},\"renderingProperties\":{\"type\":337783528,\"title\":\"brhu\",\"description\":\"kh\",\"isVisible\":false}}],\"status\":{\"message\":\"ookk\",\"statusId\":870237510},\"dataProviderMetadata\":{\"providerName\":\"vleo\",\"propertyBag\":[{\"name\":\"uiqtqzfavy\",\"value\":\"qqybarye\"}]}}")
                 .toObject(DiagnosticsProperties.class);
-        Assertions.assertEquals("gfcwqmpimaqxzhem", model.metadata().analysisTypes().get(0));
-        Assertions.assertEquals("jwltlwtjjgu", model.dataset().get(0).table().tableName());
-        Assertions.assertEquals(663696450, model.dataset().get(0).renderingProperties().type());
-        Assertions.assertEquals("vkcdmxzr", model.dataset().get(0).renderingProperties().title());
-        Assertions.assertEquals("aimlnwiaaom", model.dataset().get(0).renderingProperties().description());
+        Assertions.assertEquals("bsdshmkxmaehvbbx", model.metadata().analysisTypes().get(0));
+        Assertions.assertEquals("pyklyhpluodpvru", model.dataset().get(0).table().tableName());
+        Assertions.assertEquals("zibt", model.dataset().get(0).table().columns().get(0).columnName());
+        Assertions.assertEquals("stgktst", model.dataset().get(0).table().columns().get(0).dataType());
+        Assertions.assertEquals("xeclzedqbcvhzlhp", model.dataset().get(0).table().columns().get(0).columnType());
+        Assertions.assertEquals(337783528, model.dataset().get(0).renderingProperties().type());
+        Assertions.assertEquals("brhu", model.dataset().get(0).renderingProperties().title());
+        Assertions.assertEquals("kh", model.dataset().get(0).renderingProperties().description());
         Assertions.assertEquals(false, model.dataset().get(0).renderingProperties().isVisible());
-        Assertions.assertEquals("orxvxcjzhqiz", model.status().message());
-        Assertions.assertEquals(444626662, model.status().statusId());
-        Assertions.assertEquals("gqscj", model.dataProviderMetadata().providerName());
-        Assertions.assertEquals("juhdqazkmtgguwpi", model.dataProviderMetadata().propertyBag().get(0).name());
-        Assertions.assertEquals("ajc", model.dataProviderMetadata().propertyBag().get(0).value());
+        Assertions.assertEquals("ookk", model.status().message());
+        Assertions.assertEquals(870237510, model.status().statusId());
+        Assertions.assertEquals("vleo", model.dataProviderMetadata().providerName());
+        Assertions.assertEquals("uiqtqzfavy", model.dataProviderMetadata().propertyBag().get(0).name());
+        Assertions.assertEquals("qqybarye", model.dataProviderMetadata().propertyBag().get(0).value());
     }
 
     @org.junit.jupiter.api.Test
@@ -44,76 +48,54 @@ public final class DiagnosticsPropertiesTests {
             new DiagnosticsProperties()
                 .withMetadata(
                     new DiagnosticsDefinition()
-                        .withSupportTopicList(
-                            Arrays
-                                .asList(
-                                    new DiagnosticSupportTopic(),
-                                    new DiagnosticSupportTopic(),
-                                    new DiagnosticSupportTopic()))
-                        .withAnalysisTypes(Arrays.asList("gfcwqmpimaqxzhem", "yhohujswtwkozzwc")))
+                        .withSupportTopicList(Arrays.asList(new DiagnosticSupportTopic()))
+                        .withAnalysisTypes(Arrays.asList("bsdshmkxmaehvbbx", "ripltf")))
                 .withDataset(
                     Arrays
                         .asList(
                             new DiagnosticsDataApiResponse()
                                 .withTable(
                                     new DiagnosticDataTableResponseObject()
-                                        .withTableName("jwltlwtjjgu")
-                                        .withColumns(Arrays.asList())
-                                        .withRows(Arrays.asList()))
+                                        .withTableName("pyklyhpluodpvru")
+                                        .withColumns(
+                                            Arrays
+                                                .asList(
+                                                    new DiagnosticDataTableResponseColumn()
+                                                        .withColumnName("zibt")
+                                                        .withDataType("stgktst")
+                                                        .withColumnType("xeclzedqbcvhzlhp")))
+                                        .withRows(
+                                            Arrays.asList("dataqkdlw", "dataqfbumlkxtrqjf", "datamlmbtxhwgfwsrta")))
                                 .withRenderingProperties(
                                     new DiagnosticRendering()
-                                        .withType(663696450)
-                                        .withTitle("vkcdmxzr")
-                                        .withDescription("aimlnwiaaom")
-                                        .withIsVisible(false)),
-                            new DiagnosticsDataApiResponse()
-                                .withTable(
-                                    new DiagnosticDataTableResponseObject()
-                                        .withTableName("z")
-                                        .withColumns(Arrays.asList())
-                                        .withRows(Arrays.asList()))
-                                .withRenderingProperties(
-                                    new DiagnosticRendering()
-                                        .withType(1226042956)
-                                        .withTitle("wwnpj")
-                                        .withDescription("fz")
-                                        .withIsVisible(false)),
-                            new DiagnosticsDataApiResponse()
-                                .withTable(
-                                    new DiagnosticDataTableResponseObject()
-                                        .withTableName("wahfbousnfepgfew")
-                                        .withColumns(Arrays.asList())
-                                        .withRows(Arrays.asList()))
-                                .withRenderingProperties(
-                                    new DiagnosticRendering()
-                                        .withType(1791330628)
-                                        .withTitle("ncxykxhdjhlimm")
-                                        .withDescription("x")
-                                        .withIsVisible(true))))
-                .withStatus(new DiagnosticsStatus().withMessage("orxvxcjzhqiz").withStatusId(444626662))
+                                        .withType(337783528)
+                                        .withTitle("brhu")
+                                        .withDescription("kh")
+                                        .withIsVisible(false))))
+                .withStatus(new DiagnosticsStatus().withMessage("ookk").withStatusId(870237510))
                 .withDataProviderMetadata(
                     new DiagnosticDataProviderMetadata()
-                        .withProviderName("gqscj")
+                        .withProviderName("vleo")
                         .withPropertyBag(
                             Arrays
                                 .asList(
                                     new DiagnosticDataProviderMetadataPropertyBagItem()
-                                        .withName("juhdqazkmtgguwpi")
-                                        .withValue("ajc"),
-                                    new DiagnosticDataProviderMetadataPropertyBagItem()
-                                        .withName("m")
-                                        .withValue("hfcf"))));
+                                        .withName("uiqtqzfavy")
+                                        .withValue("qqybarye"))));
         model = BinaryData.fromObject(model).toObject(DiagnosticsProperties.class);
-        Assertions.assertEquals("gfcwqmpimaqxzhem", model.metadata().analysisTypes().get(0));
-        Assertions.assertEquals("jwltlwtjjgu", model.dataset().get(0).table().tableName());
-        Assertions.assertEquals(663696450, model.dataset().get(0).renderingProperties().type());
-        Assertions.assertEquals("vkcdmxzr", model.dataset().get(0).renderingProperties().title());
-        Assertions.assertEquals("aimlnwiaaom", model.dataset().get(0).renderingProperties().description());
+        Assertions.assertEquals("bsdshmkxmaehvbbx", model.metadata().analysisTypes().get(0));
+        Assertions.assertEquals("pyklyhpluodpvru", model.dataset().get(0).table().tableName());
+        Assertions.assertEquals("zibt", model.dataset().get(0).table().columns().get(0).columnName());
+        Assertions.assertEquals("stgktst", model.dataset().get(0).table().columns().get(0).dataType());
+        Assertions.assertEquals("xeclzedqbcvhzlhp", model.dataset().get(0).table().columns().get(0).columnType());
+        Assertions.assertEquals(337783528, model.dataset().get(0).renderingProperties().type());
+        Assertions.assertEquals("brhu", model.dataset().get(0).renderingProperties().title());
+        Assertions.assertEquals("kh", model.dataset().get(0).renderingProperties().description());
         Assertions.assertEquals(false, model.dataset().get(0).renderingProperties().isVisible());
-        Assertions.assertEquals("orxvxcjzhqiz", model.status().message());
-        Assertions.assertEquals(444626662, model.status().statusId());
-        Assertions.assertEquals("gqscj", model.dataProviderMetadata().providerName());
-        Assertions.assertEquals("juhdqazkmtgguwpi", model.dataProviderMetadata().propertyBag().get(0).name());
-        Assertions.assertEquals("ajc", model.dataProviderMetadata().propertyBag().get(0).value());
+        Assertions.assertEquals("ookk", model.status().message());
+        Assertions.assertEquals(870237510, model.status().statusId());
+        Assertions.assertEquals("vleo", model.dataProviderMetadata().providerName());
+        Assertions.assertEquals("uiqtqzfavy", model.dataProviderMetadata().propertyBag().get(0).name());
+        Assertions.assertEquals("qqybarye", model.dataProviderMetadata().propertyBag().get(0).value());
     }
 }

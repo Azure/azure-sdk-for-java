@@ -35,7 +35,7 @@ public final class MetricsConfigurationsCreateOrUpdateMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"extendedLocation\":{\"name\":\"vhl\",\"type\":\"dculregp\"},\"properties\":{\"collectionInterval\":8741120039848211654,\"detailedStatus\":\"Error\",\"detailedStatusMessage\":\"vr\",\"disabledMetrics\":[\"vgysh\",\"rdgrtwmewjzlp\",\"kcfazzw\",\"cayer\"],\"enabledMetrics\":[\"ansyb\",\"lpolwzrghsrle\"],\"provisioningState\":\"Succeeded\"},\"location\":\"scjfncjwvuagf\",\"tags\":{\"klzmijajw\":\"ltngvmreupt\",\"fsvagh\":\"l\"},\"id\":\"pynwlslrcigtzjcv\",\"name\":\"xqlaps\",\"type\":\"ssov\"}";
+            "{\"extendedLocation\":{\"name\":\"w\",\"type\":\"ch\"},\"properties\":{\"collectionInterval\":5033961721581707117,\"detailedStatus\":\"Applied\",\"detailedStatusMessage\":\"kshfy\",\"disabledMetrics\":[\"ibjepzwhj\"],\"enabledMetrics\":[\"dgbggcjxzh\",\"livwehsud\",\"mymbhdosmbng\",\"q\"],\"provisioningState\":\"Succeeded\"},\"location\":\"duvxd\",\"tags\":{\"mnrs\":\"xatm\",\"dmiplois\":\"nxoirxy\",\"ntwgkvyo\":\"kzsoxz\"},\"id\":\"psapzu\",\"name\":\"zwwy\",\"type\":\"bdjzghximkg\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -66,23 +66,24 @@ public final class MetricsConfigurationsCreateOrUpdateMockTests {
         ClusterMetricsConfiguration response =
             manager
                 .metricsConfigurations()
-                .define("c")
-                .withRegion("ftxudqy")
-                .withExistingCluster("jwzzqseuzu", "kykcyqhyqqzz")
-                .withExtendedLocation(new ExtendedLocation().withName("keys").withType("ewfopazdazg"))
-                .withCollectionInterval(1353577403006428053L)
-                .withTags(mapOf("emmjauwcg", "bunaucmcirtn", "itranizerwguda", "efnoh"))
-                .withEnabledMetrics(Arrays.asList("eyowmndcovd", "zqauxzan", "mk", "fruwkud"))
+                .define("gwn")
+                .withRegion("svkkjbjolpyokl")
+                .withExistingCluster("udayprldidwmtf", "bvtzldzchub")
+                .withExtendedLocation(new ExtendedLocation().withName("zuvigvl").withType("hfrbzakpjt"))
+                .withCollectionInterval(735504182529978592L)
+                .withTags(mapOf("hmlieoigowxxb", "znad", "qe", "tpsyi", "wanvmwdvgjqcrbko", "qwtqszzgyksik"))
+                .withEnabledMetrics(Arrays.asList("bgngcrusxhirc"))
                 .create();
 
-        Assertions.assertEquals("scjfncjwvuagf", response.location());
-        Assertions.assertEquals("ltngvmreupt", response.tags().get("klzmijajw"));
-        Assertions.assertEquals("vhl", response.extendedLocation().name());
-        Assertions.assertEquals("dculregp", response.extendedLocation().type());
-        Assertions.assertEquals(8741120039848211654L, response.collectionInterval());
-        Assertions.assertEquals("ansyb", response.enabledMetrics().get(0));
+        Assertions.assertEquals("duvxd", response.location());
+        Assertions.assertEquals("xatm", response.tags().get("mnrs"));
+        Assertions.assertEquals("w", response.extendedLocation().name());
+        Assertions.assertEquals("ch", response.extendedLocation().type());
+        Assertions.assertEquals(5033961721581707117L, response.collectionInterval());
+        Assertions.assertEquals("dgbggcjxzh", response.enabledMetrics().get(0));
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

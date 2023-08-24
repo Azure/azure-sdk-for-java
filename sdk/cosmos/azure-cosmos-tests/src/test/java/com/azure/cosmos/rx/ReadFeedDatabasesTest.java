@@ -32,7 +32,7 @@ public class ReadFeedDatabasesTest extends TestSuiteBase {
         super(clientBuilder);
     }
 
-    @Test(groups = { "simple" }, timeOut = FEED_TIMEOUT)
+    @Test(groups = { "query" }, timeOut = FEED_TIMEOUT)
     public void readDatabases() throws Exception {
         int maxItemCount = 2;
 
@@ -50,7 +50,7 @@ public class ReadFeedDatabasesTest extends TestSuiteBase {
         validateQuerySuccess(feedObservable.byPage(maxItemCount), validator, FEED_TIMEOUT);
     }
 
-    @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
+    @BeforeClass(groups = { "query" }, timeOut = SETUP_TIMEOUT)
     public void before_ReadFeedDatabasesTest() throws URISyntaxException {
         client = getClientBuilder().buildAsyncClient();
         allDatabases = client.readAllDatabases()
@@ -67,7 +67,7 @@ public class ReadFeedDatabasesTest extends TestSuiteBase {
         return client.createDatabase(db, new CosmosDatabaseRequestOptions()).block().getProperties();
     }
 
-    @AfterClass(groups = { "simple" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
+    @AfterClass(groups = { "query" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
         for (int i = 0; i < 5; i ++) {
             safeDeleteDatabase(client.getDatabase(createdDatabases.get(i).getId()));

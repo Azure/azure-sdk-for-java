@@ -16,6 +16,10 @@ public final class KeyPolicy {
     @JsonProperty(value = "keyExpirationPeriodInDays", required = true)
     private int keyExpirationPeriodInDays;
 
+    /** Creates an instance of KeyPolicy class. */
+    public KeyPolicy() {
+    }
+
     /**
      * Get the keyExpirationPeriodInDays property: The key expiration period in days.
      *

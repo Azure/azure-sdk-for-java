@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.dynatrace.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for TagRules List. */
 public final class TagRulesListSamples {
     /*
-     * x-ms-original-file: specification/dynatrace/resource-manager/Dynatrace.Observability/stable/2021-09-01/examples/TagRules_List_MaximumSet_Gen.json
+     * x-ms-original-file: specification/dynatrace/resource-manager/Dynatrace.Observability/stable/2023-04-27/examples/TagRules_List_MaximumSet_Gen.json
      */
     /**
      * Sample code: TagRules_List_MaximumSet_Gen.
@@ -17,11 +15,11 @@ public final class TagRulesListSamples {
      * @param manager Entry point to DynatraceManager.
      */
     public static void tagRulesListMaximumSetGen(com.azure.resourcemanager.dynatrace.DynatraceManager manager) {
-        manager.tagRules().list("myResourceGroup", "myMonitor", Context.NONE);
+        manager.tagRules().list("myResourceGroup", "myMonitor", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/dynatrace/resource-manager/Dynatrace.Observability/stable/2021-09-01/examples/TagRules_List_MinimumSet_Gen.json
+     * x-ms-original-file: specification/dynatrace/resource-manager/Dynatrace.Observability/stable/2023-04-27/examples/TagRules_List_MinimumSet_Gen.json
      */
     /**
      * Sample code: TagRules_List_MinimumSet_Gen.
@@ -29,6 +27,6 @@ public final class TagRulesListSamples {
      * @param manager Entry point to DynatraceManager.
      */
     public static void tagRulesListMinimumSetGen(com.azure.resourcemanager.dynatrace.DynatraceManager manager) {
-        manager.tagRules().list("myResourceGroup", "myMonitor", Context.NONE);
+        manager.tagRules().list("myResourceGroup", "myMonitor", com.azure.core.util.Context.NONE);
     }
 }

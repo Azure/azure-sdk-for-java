@@ -182,8 +182,7 @@ public final class SecretClientBuilder implements
 
         if (buildEndpoint == null) {
             throw LOGGER.logExceptionAsError(
-                new IllegalStateException(
-                    KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.VAULT_END_POINT_REQUIRED)));
+                new IllegalStateException(KeyVaultErrorCodeStrings.VAULT_END_POINT_REQUIRED));
         }
 
         SecretServiceVersion serviceVersion = version != null ? version : SecretServiceVersion.getLatest();
@@ -193,9 +192,7 @@ public final class SecretClientBuilder implements
         }
 
         if (credential == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalStateException(
-                    KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.CREDENTIAL_REQUIRED)));
+            throw LOGGER.logExceptionAsError(new IllegalStateException(KeyVaultErrorCodeStrings.CREDENTIALS_REQUIRED));
         }
 
         // Closest to API goes first, closest to wire goes last.

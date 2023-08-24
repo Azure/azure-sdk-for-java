@@ -251,6 +251,22 @@ public final class ContainerAppImpl implements ContainerApp, ContainerApp.Defini
         return serviceManager.containerApps().getAuthToken(resourceGroupName, containerAppName);
     }
 
+    public ContainerApp start() {
+        return serviceManager.containerApps().start(resourceGroupName, containerAppName);
+    }
+
+    public ContainerApp start(Context context) {
+        return serviceManager.containerApps().start(resourceGroupName, containerAppName, context);
+    }
+
+    public ContainerApp stop() {
+        return serviceManager.containerApps().stop(resourceGroupName, containerAppName);
+    }
+
+    public ContainerApp stop(Context context) {
+        return serviceManager.containerApps().stop(resourceGroupName, containerAppName, context);
+    }
+
     public ContainerAppImpl withRegion(Region location) {
         this.innerModel().withLocation(location.toString());
         return this;

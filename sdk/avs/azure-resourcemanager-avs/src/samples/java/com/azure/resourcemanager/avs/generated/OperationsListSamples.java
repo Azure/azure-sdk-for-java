@@ -7,7 +7,7 @@ package com.azure.resourcemanager.avs.generated;
 /** Samples for Operations List. */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2022-05-01/examples/Operations_List.json
+     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/Operations_List.json
      */
     /**
      * Sample code: Operations_List.

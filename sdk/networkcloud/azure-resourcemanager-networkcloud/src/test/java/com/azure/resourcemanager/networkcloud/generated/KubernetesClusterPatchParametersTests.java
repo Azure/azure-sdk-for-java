@@ -17,27 +17,28 @@ public final class KubernetesClusterPatchParametersTests {
         KubernetesClusterPatchParameters model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"controlPlaneNodeConfiguration\":{\"count\":2920344548186760497},\"kubernetesVersion\":\"gfgrwsdp\"},\"tags\":{\"vzbglbyvi\":\"t\"}}")
+                    "{\"properties\":{\"controlPlaneNodeConfiguration\":{\"count\":1324024361512589812},\"kubernetesVersion\":\"rrouuxvnsasbcry\"},\"tags\":{\"xnazpmkml\":\"izrxklob\"}}")
                 .toObject(KubernetesClusterPatchParameters.class);
-        Assertions.assertEquals("t", model.tags().get("vzbglbyvi"));
-        Assertions.assertEquals(2920344548186760497L, model.controlPlaneNodeConfiguration().count());
-        Assertions.assertEquals("gfgrwsdp", model.kubernetesVersion());
+        Assertions.assertEquals("izrxklob", model.tags().get("xnazpmkml"));
+        Assertions.assertEquals(1324024361512589812L, model.controlPlaneNodeConfiguration().count());
+        Assertions.assertEquals("rrouuxvnsasbcry", model.kubernetesVersion());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         KubernetesClusterPatchParameters model =
             new KubernetesClusterPatchParameters()
-                .withTags(mapOf("vzbglbyvi", "t"))
+                .withTags(mapOf("xnazpmkml", "izrxklob"))
                 .withControlPlaneNodeConfiguration(
-                    new ControlPlaneNodePatchConfiguration().withCount(2920344548186760497L))
-                .withKubernetesVersion("gfgrwsdp");
+                    new ControlPlaneNodePatchConfiguration().withCount(1324024361512589812L))
+                .withKubernetesVersion("rrouuxvnsasbcry");
         model = BinaryData.fromObject(model).toObject(KubernetesClusterPatchParameters.class);
-        Assertions.assertEquals("t", model.tags().get("vzbglbyvi"));
-        Assertions.assertEquals(2920344548186760497L, model.controlPlaneNodeConfiguration().count());
-        Assertions.assertEquals("gfgrwsdp", model.kubernetesVersion());
+        Assertions.assertEquals("izrxklob", model.tags().get("xnazpmkml"));
+        Assertions.assertEquals(1324024361512589812L, model.controlPlaneNodeConfiguration().count());
+        Assertions.assertEquals("rrouuxvnsasbcry", model.kubernetesVersion());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

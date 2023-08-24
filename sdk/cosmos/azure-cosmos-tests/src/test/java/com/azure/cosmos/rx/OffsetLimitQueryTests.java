@@ -53,7 +53,7 @@ public class OffsetLimitQueryTests extends TestSuiteBase {
         super(clientBuilder);
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT, dataProvider = "queryMetricsArgProvider")
+    @Test(groups = {"query"}, timeOut = TIMEOUT, dataProvider = "queryMetricsArgProvider")
     public void queryDocuments(Boolean qmEnabled) {
         int skipCount = 4;
         int takeCount = 10;
@@ -80,7 +80,7 @@ public class OffsetLimitQueryTests extends TestSuiteBase {
         validateQuerySuccess(queryObservable.byPage(5), validator, TIMEOUT);
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    @Test(groups = {"query"}, timeOut = TIMEOUT)
     public void drainAllDocumentsUsingOffsetLimit() {
         int skipCount = 0;
         int takeCount = 2;
@@ -110,7 +110,7 @@ public class OffsetLimitQueryTests extends TestSuiteBase {
         assertThat(finalResponse.getContinuationToken()).isNull();
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    @Test(groups = {"query"}, timeOut = TIMEOUT)
     public void offsetContinuationTokenRoundTrips() {
         // Positive
         OffsetContinuationToken offsetContinuationToken = new OffsetContinuationToken(42, "asdf");
@@ -131,7 +131,7 @@ public class OffsetLimitQueryTests extends TestSuiteBase {
             .isFalse();
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT * 10)
+    @Test(groups = {"query"}, timeOut = TIMEOUT * 10)
     public void queryDocumentsWithOffsetContinuationTokens() {
         int skipCount = 3;
         int takeCount = 10;
@@ -139,7 +139,7 @@ public class OffsetLimitQueryTests extends TestSuiteBase {
         this.queryWithContinuationTokensAndPageSizes(query, new int[] {1, 5, 15}, takeCount);
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT, dataProvider = "queryMetricsArgProvider")
+    @Test(groups = {"query"}, timeOut = TIMEOUT, dataProvider = "queryMetricsArgProvider")
     public void queryDocumentsWithDistinct(Boolean qmEnabled) {
         int skipCount = 4;
         int takeCount = 10;
@@ -167,7 +167,7 @@ public class OffsetLimitQueryTests extends TestSuiteBase {
         validateQuerySuccess(queryObservable.byPage(5), validator, TIMEOUT);
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT, dataProvider = "queryMetricsArgProvider")
+    @Test(groups = {"query"}, timeOut = TIMEOUT, dataProvider = "queryMetricsArgProvider")
     public void queryDocumentsWithAggregate(Boolean qmEnabled) {
         int skipCount = 0;
         int takeCount = 10;
@@ -261,12 +261,12 @@ public class OffsetLimitQueryTests extends TestSuiteBase {
         }
     }
 
-    @AfterClass(groups = {"simple"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
+    @AfterClass(groups = {"query"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
         safeClose(client);
     }
 
-    @BeforeClass(groups = {"simple"}, timeOut = 3 * SETUP_TIMEOUT)
+    @BeforeClass(groups = {"query"}, timeOut = 3 * SETUP_TIMEOUT)
     public void beforeClass() throws Exception {
         client = this.getClientBuilder().buildAsyncClient();
         createdCollection = getSharedMultiPartitionCosmosContainer(client);

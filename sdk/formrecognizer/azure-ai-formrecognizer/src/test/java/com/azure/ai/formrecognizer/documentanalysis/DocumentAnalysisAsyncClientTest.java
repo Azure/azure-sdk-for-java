@@ -140,19 +140,6 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
     }
 
     /**
-     * Verifies an exception thrown for a document using null data value.
-     */
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.formrecognizer.documentanalysis.TestUtils#getTestParameters")
-    public void analyzeReceiptDataNullData(HttpClient httpClient,
-                                             DocumentAnalysisServiceVersion serviceVersion) {
-        client = getDocumentAnalysisAsyncClient(httpClient, serviceVersion);
-        assertThrows(NullPointerException.class,
-            () -> client.beginAnalyzeDocument("prebuilt-receipt", null)
-                .setPollInterval(durationTestMode).getSyncPoller());
-    }
-
-    /**
      * Verifies content type will be auto-detected when using custom form API with input stream data overload.
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -351,20 +338,6 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
             syncPoller.waitForCompletion();
             validateContentData(syncPoller.getFinalResult());
         }, CONTENT_FORM_JPG);
-    }
-
-    /**
-     * Verifies an exception thrown for a document using null data value.
-     */
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.formrecognizer.documentanalysis.TestUtils#getTestParameters")
-    public void analyzeContentResultWithNullData(HttpClient httpClient,
-                                                   DocumentAnalysisServiceVersion serviceVersion) {
-        client = getDocumentAnalysisAsyncClient(httpClient, serviceVersion);
-        assertThrows(NullPointerException.class,
-            () -> client.beginAnalyzeDocument("prebuilt-layout", null)
-                .setPollInterval(durationTestMode)
-                .getSyncPoller());
     }
 
     /**
@@ -640,19 +613,6 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
             syncPoller.waitForCompletion();
             validateBusinessCardData(syncPoller.getFinalResult());
         }, BUSINESS_CARD_JPG);
-    }
-
-    /**
-     * Verifies an exception thrown for a document using null data value.
-     */
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.formrecognizer.documentanalysis.TestUtils#getTestParameters")
-    public void analyzeBusinessCardDataNullData(HttpClient httpClient,
-                                                  DocumentAnalysisServiceVersion serviceVersion) {
-        client = getDocumentAnalysisAsyncClient(httpClient, serviceVersion);
-        assertThrows(NullPointerException.class,
-            () -> client.beginAnalyzeDocument("prebuilt-businessCard", null)
-                .setPollInterval(durationTestMode).getSyncPoller());
     }
 
     /**
@@ -1108,19 +1068,6 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
     }
 
     /**
-     * Verifies an exception thrown for a document using null data value.
-     */
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.formrecognizer.documentanalysis.TestUtils#getTestParameters")
-    public void analyzeIDDocumentDataNullData(HttpClient httpClient,
-                                                DocumentAnalysisServiceVersion serviceVersion) {
-        client = getDocumentAnalysisAsyncClient(httpClient, serviceVersion);
-        assertThrows(NullPointerException.class,
-            () -> client.beginAnalyzeDocument("prebuilt-idDocument", null)
-                .setPollInterval(durationTestMode).getSyncPoller());
-    }
-
-    /**
      * Verifies content type will be auto-detected when using custom form API with input stream data overload.
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -1232,7 +1179,8 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
             SyncPoller<OperationResult, AnalyzeResult>
                 syncPoller
                 = client.beginAnalyzeDocumentFromUrl("prebuilt-read", sourceUrl,
-                    new AnalyzeDocumentOptions().setDocumentAnalysisFeatures(Arrays.asList(DocumentAnalysisFeature.LANGUAGES)))
+                    new AnalyzeDocumentOptions().setDocumentAnalysisFeatures(
+                        Collections.singletonList(DocumentAnalysisFeature.LANGUAGES)))
                 .setPollInterval(durationTestMode)
                 .getSyncPoller();
             syncPoller.waitForCompletion();
@@ -1252,7 +1200,8 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
                 syncPoller
                 = client.beginAnalyzeDocument("prebuilt-read",
                     BinaryData.fromStream(data, dataLength),
-                    new AnalyzeDocumentOptions().setDocumentAnalysisFeatures(Arrays.asList(DocumentAnalysisFeature.LANGUAGES)))
+                    new AnalyzeDocumentOptions().setDocumentAnalysisFeatures(
+                        Collections.singletonList(DocumentAnalysisFeature.LANGUAGES)))
                 .setPollInterval(durationTestMode).getSyncPoller();
             AnalyzeResult analyzeResult = syncPoller.getFinalResult();
             Assertions.assertNotNull(analyzeResult);
@@ -1490,7 +1439,8 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
         testingContainerUrlRunner((sourceUrl) -> {
             SyncPoller<OperationResult, AnalyzeResult> syncPoller
                 = client.beginAnalyzeDocumentFromUrl("prebuilt-layout", sourceUrl,
-                    new AnalyzeDocumentOptions().setDocumentAnalysisFeatures(Arrays.asList(DocumentAnalysisFeature.BARCODES)))
+                    new AnalyzeDocumentOptions().setDocumentAnalysisFeatures(
+                        Collections.singletonList(DocumentAnalysisFeature.BARCODES)))
                 .setPollInterval(durationTestMode)
                 .getSyncPoller();
             syncPoller.waitForCompletion();

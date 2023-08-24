@@ -32,7 +32,7 @@ public final class ApplyUpdatesGetParentWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"status\":\"InProgress\",\"resourceId\":\"yb\",\"lastUpdateTime\":\"2021-06-25T18:07:24Z\"},\"id\":\"oqfbowskanyk\",\"name\":\"zlcuiywgqywgndrv\",\"type\":\"nhzgpphrcgyn\"}";
+            "{\"properties\":{\"status\":\"InProgress\",\"resourceId\":\"cblylpstdbhhxsr\",\"lastUpdateTime\":\"2021-01-07T21:40:15Z\"},\"id\":\"cers\",\"name\":\"dntnevf\",\"type\":\"wjmy\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -64,18 +64,18 @@ public final class ApplyUpdatesGetParentWithResponseMockTests {
             manager
                 .applyUpdates()
                 .getParentWithResponse(
-                    "ghmewuam",
-                    "uhrzayvvt",
-                    "gvdfgiotkftutq",
-                    "ln",
-                    "xlefgugnxkrx",
-                    "qmi",
-                    "tthzrvqd",
+                    "bgycduiertgccym",
+                    "aolps",
+                    "lqlfm",
+                    "dnbbglzps",
+                    "iydmcwyhzdxs",
+                    "adbzmnvdfznud",
+                    "od",
                     com.azure.core.util.Context.NONE)
                 .getValue();
 
         Assertions.assertEquals(UpdateStatus.IN_PROGRESS, response.status());
-        Assertions.assertEquals("yb", response.resourceId());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-06-25T18:07:24Z"), response.lastUpdateTime());
+        Assertions.assertEquals("cblylpstdbhhxsr", response.resourceId());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-01-07T21:40:15Z"), response.lastUpdateTime());
     }
 }

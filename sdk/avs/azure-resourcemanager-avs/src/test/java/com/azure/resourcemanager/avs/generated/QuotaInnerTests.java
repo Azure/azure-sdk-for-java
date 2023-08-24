@@ -13,7 +13,7 @@ public final class QuotaInnerTests {
         QuotaInner model =
             BinaryData
                 .fromString(
-                    "{\"hostsRemaining\":{\"imexgstxgcpodgma\":1804797907,\"r\":600216788},\"quotaEnabled\":\"Enabled\"}")
+                    "{\"hostsRemaining\":{\"de\":229483686,\"jzicwifsjt\":856772857},\"quotaEnabled\":\"Disabled\"}")
                 .toObject(QuotaInner.class);
     }
 

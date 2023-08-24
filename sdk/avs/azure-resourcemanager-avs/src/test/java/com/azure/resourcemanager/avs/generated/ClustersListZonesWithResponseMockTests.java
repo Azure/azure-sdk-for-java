@@ -30,7 +30,7 @@ public final class ClustersListZonesWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"zones\":[{\"hosts\":[\"qvci\",\"pevf\",\"mblrrilbywd\",\"smiccwrwfscj\"],\"zone\":\"ynszquji\"}]}";
+            "{\"zones\":[{\"hosts\":[\"ihchrphkmcrjdqn\"],\"zone\":\"fzpbgtgkyl\"},{\"hosts\":[\"hrjeuutlw\",\"ez\",\"zhokvbwnhh\"],\"zone\":\"lgehg\"},{\"hosts\":[\"pifhpfeoajvgcxtx\",\"csheafidltugsr\",\"smkss\",\"h\"],\"zone\":\"ftxfkf\"},{\"hosts\":[\"prhptillu\"],\"zone\":\"iqtgdqoh\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -61,7 +61,7 @@ public final class ClustersListZonesWithResponseMockTests {
         ClusterZoneList response =
             manager
                 .clusters()
-                .listZonesWithResponse("cubiipuipw", "qonmacj", "k", com.azure.core.util.Context.NONE)
+                .listZonesWithResponse("nwm", "tmvpdvjdhtt", "a", com.azure.core.util.Context.NONE)
                 .getValue();
     }
 }

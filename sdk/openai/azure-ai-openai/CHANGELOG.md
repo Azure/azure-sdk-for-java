@@ -4,6 +4,8 @@
 
 ### Features Added
 
+- Support for BYOD (Bring Your Own Data) was added. [Related link](https://learn.microsoft.com/azure/ai-services/openai/use-your-data-quickstart)
+
 ### Breaking Changes
 
 ### Bugs Fixed

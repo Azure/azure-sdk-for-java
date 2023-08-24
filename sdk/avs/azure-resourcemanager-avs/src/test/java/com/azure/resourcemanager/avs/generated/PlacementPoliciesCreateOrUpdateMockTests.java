@@ -33,7 +33,7 @@ public final class PlacementPoliciesCreateOrUpdateMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"type\":\"PlacementPolicyProperties\",\"state\":\"Disabled\",\"displayName\":\"zdvpiw\",\"provisioningState\":\"Succeeded\"},\"id\":\"szdtmaajquh\",\"name\":\"xylrjvmtygjbmz\",\"type\":\"ospspshckf\"}";
+            "{\"properties\":{\"type\":\"PlacementPolicyProperties\",\"state\":\"Enabled\",\"displayName\":\"ggsvoujkxibdaf\",\"provisioningState\":\"Succeeded\"},\"id\":\"mdyomkxfbvfbh\",\"name\":\"y\",\"type\":\"rhpw\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -64,13 +64,15 @@ public final class PlacementPoliciesCreateOrUpdateMockTests {
         PlacementPolicy response =
             manager
                 .placementPolicies()
-                .define("w")
-                .withExistingCluster("uyilflqoiquvrehm", "njhvsujztc", "ytqj")
+                .define("a")
+                .withExistingCluster("wwsko", "dcbrwimuvq", "josovyrrl")
                 .withProperties(
-                    new PlacementPolicyProperties().withState(PlacementPolicyState.DISABLED).withDisplayName("fprnjl"))
+                    new PlacementPolicyProperties()
+                        .withState(PlacementPolicyState.ENABLED)
+                        .withDisplayName("qtljqobbpihehc"))
                 .create();
 
-        Assertions.assertEquals(PlacementPolicyState.DISABLED, response.properties().state());
-        Assertions.assertEquals("zdvpiw", response.properties().displayName());
+        Assertions.assertEquals(PlacementPolicyState.ENABLED, response.properties().state());
+        Assertions.assertEquals("ggsvoujkxibdaf", response.properties().displayName());
     }
 }

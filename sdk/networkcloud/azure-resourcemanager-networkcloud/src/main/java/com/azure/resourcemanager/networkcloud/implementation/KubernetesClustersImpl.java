@@ -11,9 +11,11 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.networkcloud.fluent.KubernetesClustersClient;
 import com.azure.resourcemanager.networkcloud.fluent.models.KubernetesClusterInner;
+import com.azure.resourcemanager.networkcloud.fluent.models.OperationStatusResultInner;
 import com.azure.resourcemanager.networkcloud.models.KubernetesCluster;
 import com.azure.resourcemanager.networkcloud.models.KubernetesClusterRestartNodeParameters;
 import com.azure.resourcemanager.networkcloud.models.KubernetesClusters;
+import com.azure.resourcemanager.networkcloud.models.OperationStatusResult;
 
 public final class KubernetesClustersImpl implements KubernetesClusters {
     private static final ClientLogger LOGGER = new ClientLogger(KubernetesClustersImpl.class);
@@ -83,23 +85,35 @@ public final class KubernetesClustersImpl implements KubernetesClusters {
         this.serviceClient().delete(resourceGroupName, kubernetesClusterName, context);
     }
 
-    public void restartNode(
+    public OperationStatusResult restartNode(
         String resourceGroupName,
         String kubernetesClusterName,
         KubernetesClusterRestartNodeParameters kubernetesClusterRestartNodeParameters) {
-        this
-            .serviceClient()
-            .restartNode(resourceGroupName, kubernetesClusterName, kubernetesClusterRestartNodeParameters);
+        OperationStatusResultInner inner =
+            this
+                .serviceClient()
+                .restartNode(resourceGroupName, kubernetesClusterName, kubernetesClusterRestartNodeParameters);
+        if (inner != null) {
+            return new OperationStatusResultImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
-    public void restartNode(
+    public OperationStatusResult restartNode(
         String resourceGroupName,
         String kubernetesClusterName,
         KubernetesClusterRestartNodeParameters kubernetesClusterRestartNodeParameters,
         Context context) {
-        this
-            .serviceClient()
-            .restartNode(resourceGroupName, kubernetesClusterName, kubernetesClusterRestartNodeParameters, context);
+        OperationStatusResultInner inner =
+            this
+                .serviceClient()
+                .restartNode(resourceGroupName, kubernetesClusterName, kubernetesClusterRestartNodeParameters, context);
+        if (inner != null) {
+            return new OperationStatusResultImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public KubernetesCluster getById(String id) {

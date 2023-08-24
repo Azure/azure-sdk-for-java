@@ -7,7 +7,7 @@ package com.azure.resourcemanager.maintenance.generated;
 /** Samples for Operations List. */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: specification/maintenance/resource-manager/Microsoft.Maintenance/stable/2021-05-01/examples/Operations_List.json
+     * x-ms-original-file: specification/maintenance/resource-manager/Microsoft.Maintenance/stable/2023-04-01/examples/Operations_List.json
      */
     /**
      * Sample code: Operations_List.
