@@ -4,8 +4,8 @@
 package com.azure.security.keyvault.keys.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.security.keyvault.keys.implementation.models.LifetimeActionTrigger;
-import com.azure.security.keyvault.keys.implementation.models.LifetimeActionType;
+import com.azure.security.keyvault.keys.implementation.models.LifetimeActionsTrigger;
+import com.azure.security.keyvault.keys.implementation.models.LifetimeActionsType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -14,10 +14,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class KeyRotationLifetimeAction {
     @JsonProperty(value = "trigger")
-    private final LifetimeActionTrigger trigger;
+    private final LifetimeActionsTrigger trigger;
 
     @JsonProperty(value = "action")
-    private final LifetimeActionType actionType;
+    private final LifetimeActionsType actionType;
 
     /**
      * Creates a {@link KeyRotationLifetimeAction}.
@@ -25,8 +25,8 @@ public final class KeyRotationLifetimeAction {
      * @param action The {@link KeyRotationPolicyAction policy action}.
      */
     public KeyRotationLifetimeAction(KeyRotationPolicyAction action) {
-        this.actionType = new LifetimeActionType().setType(action);
-        this.trigger = new LifetimeActionTrigger();
+        this.actionType = new LifetimeActionsType().setType(action);
+        this.trigger = new LifetimeActionsTrigger();
     }
 
     /**

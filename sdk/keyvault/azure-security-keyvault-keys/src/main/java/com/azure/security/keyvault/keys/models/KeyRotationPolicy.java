@@ -4,12 +4,10 @@
 package com.azure.security.keyvault.keys.models;
 
 import com.azure.security.keyvault.keys.implementation.models.KeyRotationPolicyAttributes;
-import com.azure.security.keyvault.keys.implementation.models.LifetimeAction;
+import com.azure.security.keyvault.keys.implementation.models.LifetimeActions;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
-import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -117,11 +115,11 @@ public final class KeyRotationPolicy {
     }
 
     @JsonProperty(value = "lifetimeActions")
-    private void unpackLifetimeActions(List<LifetimeAction> lifetimeActions) {
+    private void unpackLifetimeActions(List<LifetimeActions> lifetimeActions) {
         if (lifetimeActions != null) {
             this.lifetimeActions = new ArrayList<>();
 
-            for (LifetimeAction lifetimeAction : lifetimeActions) {
+            for (LifetimeActions lifetimeAction : lifetimeActions) {
                 this.lifetimeActions.add(new KeyRotationLifetimeAction(lifetimeAction.getAction().getType())
                     .setTimeBeforeExpiry(lifetimeAction.getTrigger().getTimeBeforeExpiry())
                     .setTimeAfterCreate(lifetimeAction.getTrigger().getTimeAfterCreate()));
@@ -134,10 +132,8 @@ public final class KeyRotationPolicy {
         if (attributes != null) {
             this.attributes = attributes;
 
-            this.createdOn = OffsetDateTime.of(LocalDateTime.ofEpochSecond(attributes.getCreatedOn(), 0, ZoneOffset.UTC),
-                ZoneOffset.UTC);
-            this.updatedOn = OffsetDateTime.of(LocalDateTime.ofEpochSecond(attributes.getUpdatedOn(), 0, ZoneOffset.UTC),
-                ZoneOffset.UTC);
+            this.createdOn = attributes.getCreated();
+            this.updatedOn = attributes.getUpdated();
         }
     }
 }

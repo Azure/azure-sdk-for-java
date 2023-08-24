@@ -55,7 +55,7 @@ public final class KeyVaultKeyIdentifier {
             }
 
             this.sourceId = sourceId;
-            this.vaultUrl = String.format("%s://%s", url.getProtocol(), url.getHost());
+            this.vaultUrl = url.getProtocol() + "://" + url.getHost();
             this.name = pathSegments[2];
             this.version = pathSegments.length == 4 ? pathSegments[3] : null;
         } catch (MalformedURLException e) {

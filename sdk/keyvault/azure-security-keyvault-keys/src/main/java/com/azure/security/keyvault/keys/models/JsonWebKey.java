@@ -3,10 +3,10 @@
 
 package com.azure.security.keyvault.keys.models;
 
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.security.keyvault.keys.implementation.Base64UrlJsonDeserializer;
 import com.azure.security.keyvault.keys.implementation.Base64UrlJsonSerializer;
-import com.azure.security.keyvault.keys.implementation.ByteExtensions;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -232,7 +232,7 @@ public class JsonWebKey {
     @JsonSerialize(using = Base64UrlJsonSerializer.class)
     @JsonDeserialize(using = Base64UrlJsonDeserializer.class)
     public byte[] getN() {
-        return ByteExtensions.clone(this.n);
+        return CoreUtils.clone(this.n);
     }
 
     /**
@@ -243,7 +243,7 @@ public class JsonWebKey {
      * @return the JsonWebKey object itself.
      */
     public JsonWebKey setN(byte[] n) {
-        this.n = ByteExtensions.clone(n);
+        this.n = CoreUtils.clone(n);
         return this;
     }
 
@@ -256,7 +256,7 @@ public class JsonWebKey {
     @JsonSerialize(using = Base64UrlJsonSerializer.class)
     @JsonDeserialize(using = Base64UrlJsonDeserializer.class)
     public byte[] getE() {
-        return ByteExtensions.clone(this.e);
+        return CoreUtils.clone(this.e);
     }
 
     /**
@@ -267,7 +267,7 @@ public class JsonWebKey {
      * @return the JsonWebKey object itself.
      */
     public JsonWebKey setE(byte[] e) {
-        this.e = ByteExtensions.clone(e);
+        this.e = CoreUtils.clone(e);
         return this;
     }
 
@@ -280,7 +280,7 @@ public class JsonWebKey {
     @JsonSerialize(using = Base64UrlJsonSerializer.class)
     @JsonDeserialize(using = Base64UrlJsonDeserializer.class)
     public byte[] getD() {
-        return ByteExtensions.clone(this.d);
+        return CoreUtils.clone(this.d);
     }
 
     /**
@@ -291,7 +291,7 @@ public class JsonWebKey {
      * @return the JsonWebKey object itself.
      */
     public JsonWebKey setD(byte[] d) {
-        this.d = ByteExtensions.clone(d);
+        this.d = CoreUtils.clone(d);
         return this;
     }
 
@@ -304,7 +304,7 @@ public class JsonWebKey {
     @JsonSerialize(using = Base64UrlJsonSerializer.class)
     @JsonDeserialize(using = Base64UrlJsonDeserializer.class)
     public byte[] getDp() {
-        return ByteExtensions.clone(this.dp);
+        return CoreUtils.clone(this.dp);
     }
 
     /**
@@ -315,7 +315,7 @@ public class JsonWebKey {
      * @return the JsonWebKey object itself.
      */
     public JsonWebKey setDp(byte[] dp) {
-        this.dp = ByteExtensions.clone(dp);
+        this.dp = CoreUtils.clone(dp);
         return this;
     }
 
@@ -328,7 +328,7 @@ public class JsonWebKey {
     @JsonSerialize(using = Base64UrlJsonSerializer.class)
     @JsonDeserialize(using = Base64UrlJsonDeserializer.class)
     public byte[] getDq() {
-        return ByteExtensions.clone(this.dq);
+        return CoreUtils.clone(this.dq);
     }
 
     /**
@@ -339,7 +339,7 @@ public class JsonWebKey {
      * @return the JsonWebKey object itself.
      */
     public JsonWebKey setDq(byte[] dq) {
-        this.dq = ByteExtensions.clone(dq);
+        this.dq = CoreUtils.clone(dq);
         return this;
     }
 
@@ -352,7 +352,7 @@ public class JsonWebKey {
     @JsonSerialize(using = Base64UrlJsonSerializer.class)
     @JsonDeserialize(using = Base64UrlJsonDeserializer.class)
     public byte[] getQi() {
-        return ByteExtensions.clone(this.qi);
+        return CoreUtils.clone(this.qi);
     }
 
     /**
@@ -363,7 +363,7 @@ public class JsonWebKey {
      * @return the JsonWebKey object itself.
      */
     public JsonWebKey setQi(byte[] qi) {
-        this.qi = ByteExtensions.clone(qi);
+        this.qi = CoreUtils.clone(qi);
         return this;
     }
 
@@ -376,7 +376,7 @@ public class JsonWebKey {
     @JsonSerialize(using = Base64UrlJsonSerializer.class)
     @JsonDeserialize(using = Base64UrlJsonDeserializer.class)
     public byte[] getP() {
-        return ByteExtensions.clone(this.p);
+        return CoreUtils.clone(this.p);
     }
 
     /**
@@ -387,7 +387,7 @@ public class JsonWebKey {
      * @return the JsonWebKey object itself.
      */
     public JsonWebKey setP(byte[] p) {
-        this.p = ByteExtensions.clone(p);
+        this.p = CoreUtils.clone(p);
         return this;
     }
 
@@ -400,7 +400,7 @@ public class JsonWebKey {
     @JsonSerialize(using = Base64UrlJsonSerializer.class)
     @JsonDeserialize(using = Base64UrlJsonDeserializer.class)
     public byte[] getQ() {
-        return ByteExtensions.clone(this.q);
+        return CoreUtils.clone(this.q);
     }
 
     /**
@@ -411,7 +411,7 @@ public class JsonWebKey {
      * @return the JsonWebKey object itself.
      */
     public JsonWebKey setQ(byte[] q) {
-        this.q = ByteExtensions.clone(q);
+        this.q = CoreUtils.clone(q);
         return this;
     }
 
@@ -424,7 +424,7 @@ public class JsonWebKey {
     @JsonSerialize(using = Base64UrlJsonSerializer.class)
     @JsonDeserialize(using = Base64UrlJsonDeserializer.class)
     public byte[] getK() {
-        return ByteExtensions.clone(this.k);
+        return CoreUtils.clone(this.k);
     }
 
     /**
@@ -435,7 +435,7 @@ public class JsonWebKey {
      * @return the JsonWebKey object itself.
      */
     public JsonWebKey setK(byte[] k) {
-        this.k = ByteExtensions.clone(k);
+        this.k = CoreUtils.clone(k);
         return this;
     }
 
@@ -448,7 +448,7 @@ public class JsonWebKey {
     @JsonSerialize(using = Base64UrlJsonSerializer.class)
     @JsonDeserialize(using = Base64UrlJsonDeserializer.class)
     public byte[] getT() {
-        return ByteExtensions.clone(this.t);
+        return CoreUtils.clone(this.t);
     }
 
     /**
@@ -459,7 +459,7 @@ public class JsonWebKey {
      * @return the JsonWebKey object itself.
      */
     public JsonWebKey setT(byte[] t) {
-        this.t = ByteExtensions.clone(t);
+        this.t = CoreUtils.clone(t);
         return this;
     }
 
@@ -503,7 +503,7 @@ public class JsonWebKey {
     @JsonSerialize(using = Base64UrlJsonSerializer.class)
     @JsonDeserialize(using = Base64UrlJsonDeserializer.class)
     public byte[] getX() {
-        return ByteExtensions.clone(this.x);
+        return CoreUtils.clone(this.x);
     }
 
     /**
@@ -514,7 +514,7 @@ public class JsonWebKey {
      * @return the JsonWebKey object itself.
      */
     public JsonWebKey setX(byte[] x) {
-        this.x = ByteExtensions.clone(x);
+        this.x = CoreUtils.clone(x);
         return this;
     }
 
@@ -527,7 +527,7 @@ public class JsonWebKey {
     @JsonSerialize(using = Base64UrlJsonSerializer.class)
     @JsonDeserialize(using = Base64UrlJsonDeserializer.class)
     public byte[] getY() {
-        return ByteExtensions.clone(this.y);
+        return CoreUtils.clone(this.y);
     }
 
     /**
@@ -538,7 +538,7 @@ public class JsonWebKey {
      * @return the JsonWebKey object itself.
      */
     public JsonWebKey setY(byte[] y) {
-        this.y = ByteExtensions.clone(y);
+        this.y = CoreUtils.clone(y);
         return this;
     }
 

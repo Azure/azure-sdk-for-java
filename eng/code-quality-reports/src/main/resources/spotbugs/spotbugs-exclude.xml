@@ -138,10 +138,6 @@
         <Method name="deserialize"/>
       </And>
       <And>
-        <Class name="com.azure.security.keyvault.keys.implementation.ByteExtensions"/>
-        <Method name="clone"/>
-      </And>
-      <And>
         <Class name="com.azure.security.keyvault.keys.models.KeyProperties"/>
         <Method name="decode"/>
       </And>
