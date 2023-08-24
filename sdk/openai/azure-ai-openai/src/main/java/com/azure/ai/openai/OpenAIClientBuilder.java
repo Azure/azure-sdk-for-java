@@ -40,7 +40,6 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.builder.ClientBuilderUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -187,9 +186,7 @@ public final class OpenAIClientBuilder
         return this.credential((KeyCredential) azureKeyCredential);
     }
 
-    /**
-     * The KeyCredential used for OpenAi authentication. It could be either of Azure or Non-Azure OpenAI API key.
-     */
+    /** The KeyCredential used for OpenAi authentication. It could be either of Azure or Non-Azure OpenAI API key. */
     private KeyCredential keyCredential;
 
     /**
@@ -269,7 +266,6 @@ public final class OpenAIClientBuilder
         return client;
     }
 
-    @Generated
     private HttpPipeline createHttpPipeline() {
         Configuration buildConfiguration =
                 (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
@@ -303,7 +299,6 @@ public final class OpenAIClientBuilder
             }
             policies.add(keyCredentialPolicy);
         }
-
         if (tokenCredential != null) {
             policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, DEFAULT_SCOPES));
         }
