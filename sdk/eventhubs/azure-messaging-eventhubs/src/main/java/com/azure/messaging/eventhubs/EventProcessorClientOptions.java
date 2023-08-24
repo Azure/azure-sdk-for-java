@@ -6,7 +6,6 @@ package com.azure.messaging.eventhubs;
 import com.azure.messaging.eventhubs.models.EventPosition;
 
 import java.time.Duration;
-import java.util.Map;
 import java.util.function.Function;
 
 /**
