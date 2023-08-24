@@ -94,7 +94,7 @@ import static com.azure.security.keyvault.keys.models.KeyType.RSA_HSM;
  * <h2>Encrypt Data</h2>
  * The {@link CryptographyAsyncClient} can be used to encrypt data.
  *
- * <p><strong>Asynchronous Code Sample:</strong></p>
+ * <p><strong>Code Sample:</strong></p>
  * <p>The following code sample demonstrates how to asynchronously encrypt data using the
  * {@link CryptographyAsyncClient#encrypt(EncryptionAlgorithm, byte[])} API.</p>
  *
@@ -111,7 +111,7 @@ import static com.azure.security.keyvault.keys.models.KeyType.RSA_HSM;
  * </pre>
  * <!-- end com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.encrypt#EncryptionAlgorithm-byte -->
  *
- * <p><strong>Note:</strong> For synchronous sample, refer to {@link CryptographyClient}.</p>
+ * <p><strong>Note:</strong> For the synchronous sample, refer to {@link CryptographyClient}.</p>
  *
  * <br/>
  *
@@ -120,7 +120,7 @@ import static com.azure.security.keyvault.keys.models.KeyType.RSA_HSM;
  * <h2>Decrypt Data</h2>
  * The {@link CryptographyAsyncClient} can be used to decrypt data.
  *
- * <p><strong>Asynchronous Code Sample:</strong></p>
+ * <p><strong>Code Sample:</strong></p>
  *
  * <p>The following code sample demonstrates how to asynchronously decrypt data using the
  * {@link CryptographyAsyncClient#decrypt(EncryptionAlgorithm, byte[])} API.</p>
@@ -137,7 +137,7 @@ import static com.azure.security.keyvault.keys.models.KeyType.RSA_HSM;
  * </pre>
  * <!-- end com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.decrypt#EncryptionAlgorithm-byte -->
  *
- * <p><strong>Note:</strong> For synchronous sample, refer to {@link CryptographyClient}.</p>
+ * <p><strong>Note:</strong> For the synchronous sample, refer to {@link CryptographyClient}.</p>
  *
  * @see com.azure.security.keyvault.keys.cryptography
  * @see CryptographyClientBuilder

@@ -22,7 +22,7 @@ import com.azure.security.keyvault.secrets.models.SecretProperties;
  * The SecretClient provides synchronous methods to manage {@link KeyVaultSecret secrets} in the Azure Key Vault. The
  * client supports creating, retrieving, updating, deleting, purging, backing up, restoring, and listing the
  * {@link KeyVaultSecret secrets}. The client also supports listing {@link DeletedSecret deleted secrets} for a
- * soft-delete enabled Azure Key Vault.
+ * soft-delete enabled key vault.
  *
  * <h2>Getting Started</h2>
  *
@@ -38,7 +38,7 @@ import com.azure.security.keyvault.secrets.models.SecretProperties;
  * <a href="https://learn.microsoft.com/java/api/overview/azure/identity-readme?view=azure-java-stable">
  *     Azure Identity documentation"</a>.</p>
  *
- * <p><strong>Construct the sync client</strong></p>
+ * <p><strong>Sample: Construct Synchronous Secret client</strong></p>
  * <!-- src_embed com.azure.security.keyvault.SecretClient.instantiation -->
  * <pre>
  * SecretClient secretClient = new SecretClientBuilder&#40;&#41;
@@ -53,7 +53,7 @@ import com.azure.security.keyvault.secrets.models.SecretProperties;
  * <hr/>
  *
  * <h2>Create a Secret</h2>
- * The {@link SecretClient} can be used to create a secret in the Azure KeyVault.
+ * The {@link SecretClient} can be used to create a secret in the key vault.
  *
  * <p><strong>Code Sample:</strong></p>
  * <p>The following code sample demonstrates how to synchronously create and store a secret in the key vault,
@@ -66,7 +66,7 @@ import com.azure.security.keyvault.secrets.models.SecretProperties;
  * </pre>
  * <!-- end com.azure.security.keyvault.SecretClient.setSecret#string-string -->
  *
- * <p><strong>Note:</strong> For asynchronous sample, refer to
+ * <p><strong>Note:</strong> For the asynchronous sample, refer to
  * {@link com.azure.security.keyvault.secrets.SecretAsyncClient}.</p>
  *
  * <br/>
@@ -74,8 +74,7 @@ import com.azure.security.keyvault.secrets.models.SecretProperties;
  * <hr/>
  *
  * <h2>Get a Secret</h2>
- * The {@link SecretClient} can be used to retrieve a secret from the
- * Azure KeyVault.
+ * The {@link SecretClient} can be used to retrieve a secret from the key vault.
  *
  * <p><strong>Code Sample:</strong></p>
  * <p>The following code sample demonstrates how to synchronously retrieve a previously stored secret from the Azure
@@ -89,17 +88,17 @@ import com.azure.security.keyvault.secrets.models.SecretProperties;
  * </pre>
  * <!-- end com.azure.security.keyvault.SecretClient.getSecret#string -->
  *
- * <p><strong>Note:</strong> For asynchronous sample, refer to {@link SecretAsyncClient}.</p>
+ * <p><strong>Note:</strong> For the asynchronous sample, refer to {@link SecretAsyncClient}.</p>
  *
  * <br/>
  *
  * <hr/>
  *
- * <h2>Delete Secret</h2>
- * The {@link SecretClient} can be used to delete a secret from the Azure KeyVault.
+ * <h2>Delete a Secret</h2>
+ * The {@link SecretClient} can be used to delete a secret from the key vault.
  *
  * <p><strong>Code Sample:</strong></p>
- * <p>The following code sample demonstrates how to delete a secret from the Azure KeyVault, using
+ * <p>The following code sample demonstrates how to delete a secret from the key vault, using
  * the {@link SecretClient#beginDeleteSecret(String)} API.</p>
  *
  * <!-- src_embed com.azure.security.keyvault.SecretClient.deleteSecret#String -->
@@ -120,7 +119,7 @@ import com.azure.security.keyvault.secrets.models.SecretProperties;
  * </pre>
  * <!-- end com.azure.security.keyvault.SecretClient.deleteSecret#String -->
  *
- * <p><strong>Note:</strong> For asynchronous sample, refer to {@link SecretAsyncClient}.</p>
+ * <p><strong>Note:</strong> For the asynchronous sample, refer to {@link SecretAsyncClient}.</p>
  *
  * @see SecretClientBuilder
  * @see SyncPoller

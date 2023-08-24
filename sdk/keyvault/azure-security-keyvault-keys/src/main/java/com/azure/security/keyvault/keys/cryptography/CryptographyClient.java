@@ -75,7 +75,7 @@ import reactor.core.publisher.Mono;
  * <h2>Encrypt Data</h2>
  * The {@link CryptographyClient} can be used to encrypt data.
  *
- * <p><strong>Synchronous Code Sample:</strong></p>
+ * <p><strong>Code Sample:</strong></p>
  * <p>The following code sample demonstrates how to synchronously encrypt data using the
  * {@link CryptographyClient#encrypt(EncryptionAlgorithm, byte[])} API.
  * </p>
@@ -92,7 +92,7 @@ import reactor.core.publisher.Mono;
  * </pre>
  * <!-- end com.azure.security.keyvault.keys.cryptography.CryptographyClient.encrypt#EncryptionAlgorithm-byte -->
  *
- * <p><strong>Note:</strong> For asynchronous sample, refer to {@link CryptographyAsyncClient}.</p>
+ * <p><strong>Note:</strong> For the asynchronous sample, refer to {@link CryptographyAsyncClient}.</p>
  *
  * <br/>
  *
@@ -101,7 +101,7 @@ import reactor.core.publisher.Mono;
  * <h2>Decrypt Data</h2>
  * The {@link CryptographyClient} can be used to decrypt data.
  *
- * <p><strong>Synchronous Code Sample:</strong></p>
+ * <p><strong>Code Sample:</strong></p>
  * <p>The following code sample demonstrates how to synchronously decrypt data using the
  * {@link CryptographyClient#decrypt(EncryptionAlgorithm, byte[])} API.</p>
  *
@@ -116,7 +116,7 @@ import reactor.core.publisher.Mono;
  * </pre>
  * <!-- end com.azure.security.keyvault.keys.cryptography.CryptographyClient.decrypt#EncryptionAlgorithm-byte -->
  *
- * <p><strong>Note:</strong> For asynchronous sample, refer to {@link CryptographyAsyncClient}.</p>
+ * <p><strong>Note:</strong> For the asynchronous sample, refer to {@link CryptographyAsyncClient}.</p>
  *
  * @see com.azure.security.keyvault.keys.cryptography
  * @see CryptographyClientBuilder

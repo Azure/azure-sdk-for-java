@@ -2,19 +2,19 @@
 // Licensed under the MIT License.
 
 /**
- * <p><a href="https://learn.microsoft.com/azure/certificate-vault/general/">Azure KeyVault</a> is a cloud-based service
+ * <p><a href="https://learn.microsoft.com/azure/certificate-vault/general/">Azure Key Vault</a> is a cloud-based service
  * provided by Microsoft Azure that allows users to securely store and manage cryptographic certificates used for encrypting
  * and decrypting data. It is a part of Azure Key Vault, which is a cloud-based service for managing cryptographic certificates,
- * secrets, and certificates.</p>
+ * keys, and secrets.</p>
  *
  * <p>Azure Key Vault Certificates provides a centralized and highly secure location for storing certificates, which
  * eliminates the need to store sensitive certificate material in application code or configuration files.
  * By leveraging Azure Key Vault, you can better protect your certificates and ensure their availability
  * when needed.</p>
  *
- * <p>Key features of Azure Key Vault Certificates service include:</p>
+ * <p>Key features of the Azure Key Vault Certificates service include:</p>
  *
- * <ol>
+ * <ul>
  *  <li>Secure storage: Certificates are stored securely within Azure Key Vault, which provides robust encryption
  *  and access control mechanisms to protect against unauthorized access.</li>
  *  <li>Certificate lifecycle management: You can create, import, and manage certificates within Azure Key Vault.
@@ -24,9 +24,9 @@
  *  <li>Integration with Azure services: Key Vault Certificates can be easily integrated with other Azure services,
  *  such as Azure App Service, Azure Functions, and Azure Virtual Machines, to enable secure authentication
  *  and encryption.</li>
- * </ol>
+ * </ul>
  *
- * <p>The Azure KeyVault Certificates client library allows developers to securely store and manage certificates
+ * <p>The Azure Key Vault Certificates client library allows developers to securely store and manage certificates
  * within Azure Key Vault. The library provides a set of APIs that enable developers to securely create, import,
  * retrieve, update, and perform other certificate-related operations.</p>
  *
@@ -35,26 +35,26 @@
  * <p>What is a Certificate Client?</p>
  *
  * <p>The certificate client performs the interactions with the Azure Key Vault service for getting, setting, updating,
- * deleting, and listing certificates and its versions. Asynchronous (`CertificateAsyncClient`) and synchronous (`CertificateClient`) clients
+ * deleting, and listing certificates and its versions. Asynchronous (CertificateAsyncClient) and synchronous (CertificateClient) clients
  * exist in the SDK allowing for the selection of a client based on an application's use case. Once you have
- * initialized a certificate, you can interact with the primary resource types in Key Vault.</p>
+ * initialized a certificate, you can interact with the primary resource types in the Azure Key Vault.</p>
  *
- * <p>What is an Azure KeyVault Certificate ?</p>
+ * <p>What is an Azure Key Vault Certificate ?</p>
  *
- * <p>Azure Key Vault supports certificates with secret content types (`PKCS12` and `PEM`). The certificate can be
- * backed by keys in Azure Key Vault of types (`EC` and `RSA`). In addition to the certificate policy, the following
+ * <p>Azure Key Vault supports certificates with secret content types (PKCS12 and PEM). The certificate can be
+ * backed by keys in Azure Key Vault of types (EC and RSA). In addition to the certificate policy, the following
  * attributes may be specified:.</p>
  *
- * <ol>
+ * <ul>
  * <li>enabled: Specifies whether the certificate is enabled and usable.</li>
  * <li>created: Indicates when this version of the certificate was created.</li>
  * <li>updated: Indicates when this version of the certificate was updated.</li>
- * </ol>
+ * </ul>
  *
  * <h2>Getting Started</h2>
  *
  * <p>In order to interact with the Azure Key Vault service, you will need to create an instance of the
- * {@link com.azure.security.keyvault.certificates.CertificateClient} class, a vault url and a credential object.</p>
+ * {@link com.azure.security.keyvault.certificates.CertificateClient} or {@link com.azure.security.keyvault.certificates.CertificateAsyncClient} class, a vault url and a credential object.</p>
  *
  * <p>The examples shown in this document use a credential object named DefaultAzureCredential for authentication,
  * which is appropriate for most scenarios, including local development and production environments. Additionally,
@@ -80,10 +80,10 @@
  * </pre>
  * <!-- end com.azure.security.keyvault.certificates.CertificateClient.instantiation  -->
  *
- * <p><strong>Sample: Construct Asynchronous Certificates Client</strong></p>
+ * <p><strong>Sample: Construct Asynchronous Certificate Client</strong></p>
  *
  * <p>The following code sample demonstrates the creation of a
- * {@link com.azure.security.keyvault.certificates.CertificateClient}, using the
+ * {@link com.azure.security.keyvault.certificates.CertificateAsyncClient}, using the
  * {@link com.azure.security.keyvault.certificates.CertificateClientBuilder} to configure it.</p>
  *
  * <!-- src_embed com.azure.security.keyvault.certificates.CertificateAsyncClient.instantiation -->
@@ -103,10 +103,10 @@
  * <h2>Create a Certificate</h2>
  * The {@link com.azure.security.keyvault.certificates.CertificateClient} or
  * {@link com.azure.security.keyvault.certificates.CertificateAsyncClient} can be used to create a certificate in
- * the Azure KeyVault.
+ * the key vault.
  *
  * <p><strong>Synchronous Code Sample:</strong></p>
- * <p>The following code sample demonstrates how to synchronously create a certificate in the Azure KeyVault,
+ * <p>The following code sample demonstrates how to synchronously create a certificate in the key vault,
  * using the {@link com.azure.security.keyvault.certificates.CertificateClient#beginCreateCertificate(java.lang.String, com.azure.security.keyvault.certificates.models.CertificatePolicy)} API.</p>
  *
  * <!-- src_embed com.azure.security.keyvault.certificates.CertificateClient.beginCreateCertificate#String-CertificatePolicy -->
@@ -121,7 +121,7 @@
  * </pre>
  * <!-- end com.azure.security.keyvault.certificates.CertificateClient.beginCreateCertificate#String-CertificatePolicy -->
  *
- * <p><strong>Note:</strong> For asynchronous sample, refer to
+ * <p><strong>Note:</strong> For the asynchronous sample, refer to
  * {@link com.azure.security.keyvault.certificates.CertificateAsyncClient}.</p>
  *
  * <br/>
@@ -131,10 +131,10 @@
  * <h2>Get a Certificate</h2>
  * The {@link com.azure.security.keyvault.certificates.CertificateClient} or
  * {@link com.azure.security.keyvault.certificates.CertificateAsyncClient} can be used to retrieve a certificate from the
- * Azure KeyVault.
+ * key vault.
  *
  * <p><strong>Synchronous Code Sample:</strong></p>
- * <p>The following code sample demonstrates how to synchronously retrieve a certificate from the Azure KeyVault, using
+ * <p>The following code sample demonstrates how to synchronously retrieve a certificate from the key vault, using
  * the {@link com.azure.security.keyvault.certificates.CertificateClient#getCertificate(java.lang.String)}.</p>
  *
  * <!-- src_embed com.azure.security.keyvault.certificates.CertificateClient.getCertificatePolicy#string -->
@@ -144,21 +144,21 @@
  * </pre>
  * <!-- end com.azure.security.keyvault.certificates.CertificateClient.getCertificatePolicy#string -->
  *
- * <p><strong>Note:</strong> For asynchronous sample, refer to
+ * <p><strong>Note:</strong> For the asynchronous sample, refer to
  * {@link com.azure.security.keyvault.certificates.CertificateAsyncClient}.</p>
  *
  * <br/>
  *
  * <hr/>
  *
- * <h2>Delete Certificate</h2>
+ * <h2>Delete a Certificate</h2>
  * The {@link com.azure.security.keyvault.certificates.CertificateClient} or
  * {@link com.azure.security.keyvault.certificates.CertificateAsyncClient} can be used to delete a certificate from
- * the Azure KeyVault.
+ * the key vault.
  *
  * <p><strong>Synchronous Code Sample:</strong></p>
- * <p>The following code sample demonstrates how to synchronously delete a certificate from the Azure
- * KeyVault, using the {@link com.azure.security.keyvault.certificates.CertificateClient#beginDeleteCertificate(java.lang.String)} API.</p>
+ * <p>The following code sample demonstrates how to synchronously delete a certificate from the
+ * key vault, using the {@link com.azure.security.keyvault.certificates.CertificateClient#beginDeleteCertificate(java.lang.String)} API.</p>
  *
  * <!-- src_embed com.azure.security.keyvault.certificates.CertificateClient.beginDeleteCertificate#String -->
  * <pre>
@@ -172,7 +172,7 @@
  * </pre>
  * <!-- end com.azure.security.keyvault.certificates.CertificateClient.beginDeleteCertificate#String -->
  *
- * <p><strong>Note:</strong> For asynchronous sample, refer to
+ * <p><strong>Note:</strong> For the asynchronous sample, refer to
  * {@link com.azure.security.keyvault.certificates.CertificateAsyncClient}.</p>
  *
  * @see com.azure.security.keyvault.certificates.CertificateClient

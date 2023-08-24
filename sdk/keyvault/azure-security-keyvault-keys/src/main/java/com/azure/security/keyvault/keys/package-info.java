@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 
 /**
- * <p><a href="https://learn.microsoft.com/azure/key-vault/general/">Azure KeyVault</a> is a cloud-based service
+ * <p><a href="https://learn.microsoft.com/azure/key-vault/general/">Azure Key Vault</a> is a cloud-based service
  * provided by Microsoft Azure that allows users to securely store and manage cryptographic keys used for encrypting
  * and decrypting data. It is a part of Azure Key Vault, which is a cloud-based service for managing cryptographic keys,
  * secrets, and certificates.</p>
@@ -16,7 +16,7 @@
  * The service supports various key types and algorithms, including symmetric keys, asymmetric keys, and
  * Elliptic Curve Cryptography (ECC) keys.</p>
  *
- * <p>The Azure KeyVault Keys client library allows developers to interact with the Azure KeyVault service
+ * <p>The Azure Key Vault Keys client library allows developers to interact with the Azure Key Vault service
  * from their applications. The library provides a set of APIs that enable developers to securely create keys,
  * import existing keys, delete keys, retrieving key metadata, encrypting and decrypting data using keys,
  * and signing and verifying signatures using keys.</p>
@@ -29,18 +29,18 @@
  * exist in the SDK allowing for the selection of a client based on an application's use case. Once you have
  * initialized a key, you can interact with the primary resource types in Key Vault.</p>
  *
- * <p>What is an Azure KeyVault Key ?</p>
+ * <p>What is an Azure Key Vault Key ?</p>
  * <p>Azure Key Vault supports multiple key types (RSA and EC) and algorithms, and enables the use of
  * Hardware Security Modules (HSM) for high value keys. In addition to the key material, the following attributes may
  * be specified:</p>
  *
- * <ol>
+ * <ul>
  *     <li>enabled: Specifies whether the key is enabled and usable for cryptographic operations.</li>
  *     <li>notBefore: Identifies the time before which the key must not be used for cryptographic operations.</li>
  *     <li>expires: Identifies the expiration time on or after which the key MUST NOT be used for cryptographic operations.</li>
  *     <li>created: Indicates when this version of the key was created.</li>
  *     <li>updated: Indicates when this version of the key was updated.</li>
- * </ol>
+ * </ul>
  *
  * <h2>Getting Started</h2>
  *
@@ -91,7 +91,7 @@
  *
  * <h2>Create a Cryptographic Key</h2>
  * The {@link com.azure.security.keyvault.keys.KeyClient} or
- * {@link com.azure.security.keyvault.keys.KeyAsyncClient} can be used to create a key in the Azure KeyVault.
+ * {@link com.azure.security.keyvault.keys.KeyAsyncClient} can be used to create a key in the key vault.
  *
  * <p><strong>Synchronous Code Sample:</strong></p>
  * <p>The following code sample demonstrates how to synchronously create a cryptographic key in the key vault,
@@ -104,7 +104,7 @@
  * </pre>
  * <!-- end com.azure.security.keyvault.keys.KeyClient.createKey#String-KeyType -->
  *
- * <p><strong>Note:</strong> For asynchronous sample, refer to
+ * <p><strong>Note:</strong> For the asynchronous sample, refer to
  * {@link com.azure.security.keyvault.keys.KeyAsyncClient}.</p>
  *
  * <br/>
@@ -114,10 +114,10 @@
  * <h2>Get a Cryptographic Key</h2>
  * The {@link com.azure.security.keyvault.keys.KeyClient} or
  * {@link com.azure.security.keyvault.keys.KeyAsyncClient} can be used to retrieve a key from the
- * Azure KeyVault.
+ * key vault.
  *
  * <p><strong>Synchronous Code Sample:</strong></p>
- * <p>The following code sample demonstrates how to synchronously retrieve a key from the Azure KeyVault, using
+ * <p>The following code sample demonstrates how to synchronously retrieve a key from the key vault, using
  * the {@link com.azure.security.keyvault.keys.KeyClient#getKey(java.lang.String)} API.</p>
  *
  * <!-- src_embed com.azure.security.keyvault.keys.KeyClient.getKey#String -->
@@ -129,20 +129,20 @@
  * </pre>
  * <!-- end com.azure.security.keyvault.keys.KeyClient.getKey#String -->
  *
- * <p><strong>Note:</strong> For asynchronous sample, refer to
+ * <p><strong>Note:</strong> For the asynchronous sample, refer to
  * {@link com.azure.security.keyvault.keys.KeyAsyncClient}.</p>
  *
  * <br/>
  *
  * <hr/>
  *
- * <h2>Delete Key</h2>
+ * <h2>Delete a Cryptographic Key</h2>
  * The {@link com.azure.security.keyvault.keys.KeyClient} or
- * {@link com.azure.security.keyvault.keys.KeyAsyncClient} can be used to delete a key from the Azure KeyVault.
+ * {@link com.azure.security.keyvault.keys.KeyAsyncClient} can be used to delete a key from the key vault.
  *
  * <p><strong>Synchronous Code Sample:</strong></p>
- * <p>The following code sample demonstrates how to synchronously delete a key from the Azure
- * KeyVault, using the {@link com.azure.security.keyvault.keys.KeyClient#beginDeleteKey(java.lang.String)} API.</p>
+ * <p>The following code sample demonstrates how to synchronously delete a key from the
+ * key vault, using the {@link com.azure.security.keyvault.keys.KeyClient#beginDeleteKey(java.lang.String)} API.</p>
  *
  * <!-- src_embed com.azure.security.keyvault.keys.KeyClient.deleteKey#String -->
  * <pre>
@@ -161,7 +161,7 @@
  * </pre>
  * <!-- end com.azure.security.keyvault.keys.KeyClient.deleteKey#String -->
  *
- * <p><strong>Note:</strong> For asynchronous sample, refer to
+ * <p><strong>Note:</strong> For the asynchronous sample, refer to
  * {@link com.azure.security.keyvault.keys.KeyAsyncClient}.</p>
  *
  * @see com.azure.security.keyvault.keys.KeyClient

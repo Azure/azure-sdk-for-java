@@ -41,14 +41,14 @@ import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
 
 /**
- * The CertificateAsyncClient provides asynchronous methods to manage {@link KeyVaultCertificate certifcates} in the
- * Azure Key Vault. The client supports creating, retrieving, updating, merging, deleting, purging, backing up,
+ * The CertificateAsyncClient provides asynchronous methods to manage {@link KeyVaultCertificate certifcates} in
+ * a key vault. The client supports creating, retrieving, updating, merging, deleting, purging, backing up,
  * restoring and listing the {@link KeyVaultCertificate certificates}. The client also supports listing
- * {@link DeletedCertificate deleted certificates} for a soft-delete enabled Azure Key Vault.
+ * {@link DeletedCertificate deleted certificates} for a soft-delete enabled key vault.
  *
  * <p>The client further allows creating, retrieving, updating, deleting and listing the
  * {@link CertificateIssuer certificate issuers}. The client also supports creating, listing and deleting
- * {@link CertificateContact certificate contacts}</p>
+ * {@link CertificateContact certificate contacts}.</p>
  *
  * <h2>Getting Started</h2>
  *
@@ -64,10 +64,10 @@ import static com.azure.core.util.FluxUtil.withContext;
  * <a href="https://learn.microsoft.com/java/api/overview/azure/identity-readme?view=azure-java-stable">
  * Azure Identity documentation"</a>.</p>
  *
- * <p><strong>Sample: Construct Asynchronous Certificates Client</strong></p>
+ * <p><strong>Sample: Construct Asynchronous Certificate Client</strong></p>
  *
  * <p>The following code sample demonstrates the creation of a
- * {@link com.azure.security.keyvault.certificates.CertificateClient}, using the
+ * {@link com.azure.security.keyvault.certificates.CertificateAsyncClient}, using the
  * {@link com.azure.security.keyvault.certificates.CertificateClientBuilder} to configure it.</p>
  *
  * <!-- src_embed com.azure.security.keyvault.certificates.CertificateAsyncClient.instantiation -->
@@ -85,10 +85,10 @@ import static com.azure.core.util.FluxUtil.withContext;
  * <hr/>
  *
  * <h2>Create a Certificate</h2>
- * The {@link CertificateAsyncClient} can be used to create a certificate in the Azure KeyVault.
+ * The {@link CertificateAsyncClient} can be used to create a certificate in the key vault.
  *
- * <p><strong>Asynchronous Code Sample:</strong></p>
- * <p>The following code sample demonstrates how to asynchronously create a certificate in the Azuer KeyVault,
+ * <p><strong>Code Sample:</strong></p>
+ * <p>The following code sample demonstrates how to asynchronously create a certificate in the key vault,
  * using the {@link CertificateAsyncClient#beginCreateCertificate(String, CertificatePolicy)} API.</p>
  *
  * <!-- src_embed com.azure.security.keyvault.certificates.CertificateAsyncClient.beginCreateCertificate#String-CertificatePolicy -->
@@ -104,17 +104,17 @@ import static com.azure.core.util.FluxUtil.withContext;
  * </pre>
  * <!-- end com.azure.security.keyvault.certificates.CertificateAsyncClient.beginCreateCertificate#String-CertificatePolicy -->
  *
- * <p><strong>Note:</strong> For synchronous sample, refer to {@link CertificateClient}.</p>
+ * <p><strong>Note:</strong> For the synchronous sample, refer to {@link CertificateClient}.</p>
  *
  * <br/>
  *
  * <hr/>
  *
  * <h2>Get a Certificate</h2>
- * The {@link CertificateAsyncClient} can be used to retrieve a certificate from the Azure KeyVault.
+ * The {@link CertificateAsyncClient} can be used to retrieve a certificate from the key vault.
  *
- * <p><strong>Asynchronous Code Sample:</strong></p>
- * <p>The following code sample demonstrates how to asynchronously retrieve a certificate from the Azure KeyVault, using
+ * <p><strong>Code Sample:</strong></p>
+ * <p>The following code sample demonstrates how to asynchronously retrieve a certificate from the key vault, using
  * the {@link CertificateAsyncClient#getCertificate(String)} API.</p>
  *
  * <!-- src_embed com.azure.security.keyvault.certificates.CertificateAsyncClient.getCertificate#String -->
@@ -127,16 +127,16 @@ import static com.azure.core.util.FluxUtil.withContext;
  * </pre>
  * <!-- end com.azure.security.keyvault.certificates.CertificateAsyncClient.getCertificate#String -->
  *
- * <p><strong>Note:</strong> For synchronous sample, refer to {@link CertificateClient}.</p>
+ * <p><strong>Note:</strong> For the synchronous sample, refer to {@link CertificateClient}.</p>
  *
  * <br/>
  *
  * <hr/>
  *
- * <h2>Delete Certificate</h2>
- * The {@link CertificateAsyncClient} can be used to delete a certificate from the Azure KeyVault.
+ * <h2>Delete a Certificate</h2>
+ * The {@link CertificateAsyncClient} can be used to delete a certificate from the key vault.
  *
- * <p><strong>Asynchronous Code Sample:</strong></p>
+ * <p><strong>Code Sample:</strong></p>
  * <p>The following code sample demonstrates how to asynchronously delete a certificate from the Azure
  * KeyVault, using the {@link CertificateAsyncClient#beginDeleteCertificate(String)} API.</p>
  *
@@ -151,7 +151,7 @@ import static com.azure.core.util.FluxUtil.withContext;
  * </pre>
  * <!-- end com.azure.security.keyvault.certificates.CertificateAsyncClient.beginDeleteCertificate#String -->
  *
- * <p><strong>Note:</strong> For synchronous sample, refer to {@link CertificateClient}.</p>
+ * <p><strong>Note:</strong> For the synchronous sample, refer to {@link CertificateClient}.</p>
  *
  * @see com.azure.security.keyvault.certificates
  * @see CertificateClientBuilder

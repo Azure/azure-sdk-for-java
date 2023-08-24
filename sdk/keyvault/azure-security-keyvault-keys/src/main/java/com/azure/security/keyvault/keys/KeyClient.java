@@ -72,9 +72,9 @@ import com.azure.security.keyvault.keys.models.ReleaseKeyResult;
  * <hr/>
  *
  * <h2>Create a Cryptographic Key</h2>
- * The {@link KeyClient} can be used to create a key in the Azure KeyVault.
+ * The {@link KeyClient} can be used to create a key in the key vault.
  *
- * <p><strong>Synchronous Code Sample:</strong></p>
+ * <p><strong>Code Sample:</strong></p>
  * <p>The following code sample demonstrates how to synchronously create a cryptographic key in the key vault,
  * using the {@link KeyClient#createKey(String, KeyType)} API.</p>
  *
@@ -85,17 +85,17 @@ import com.azure.security.keyvault.keys.models.ReleaseKeyResult;
  * </pre>
  * <!-- end com.azure.security.keyvault.keys.KeyClient.createKey#String-KeyType -->
  *
- * <p><strong>Note:</strong> For asynchronous sample, refer to {@link KeyAsyncClient}.</p>
+ * <p><strong>Note:</strong> For the asynchronous sample, refer to {@link KeyAsyncClient}.</p>
  *
  * <br/>
  *
  * <hr/>
  *
  * <h2>Get a Cryptographic Key</h2>
- * The {@link KeyClient} can be used to retrieve a key from the Azure KeyVault.
+ * The {@link KeyClient} can be used to retrieve a key from the key vault.
  *
- * <p><strong>Synchronous Code Sample:</strong></p>
- * <p>The following code sample demonstrates how to synchronously retrieve a key from the Azure KeyVault, using
+ * <p><strong>Code Sample:</strong></p>
+ * <p>The following code sample demonstrates how to synchronously retrieve a key from the key vault, using
  * the {@link KeyClient#getKey(String)} API.</p>
  *
  * <!-- src_embed com.azure.security.keyvault.keys.KeyClient.getKey#String -->
@@ -107,18 +107,18 @@ import com.azure.security.keyvault.keys.models.ReleaseKeyResult;
  * </pre>
  * <!-- end com.azure.security.keyvault.keys.KeyClient.getKey#String -->
  *
- * <p><strong>Note:</strong> For asynchronous sample, refer to {@link KeyAsyncClient}.</p>
+ * <p><strong>Note:</strong> For the asynchronous sample, refer to {@link KeyAsyncClient}.</p>
  *
  * <br/>
  *
  * <hr/>
  *
- * <h2>Delete Key</h2>
- * The {@link KeyClient} can be used to delete a key from the Azure KeyVault.
+ * <h2>Delete a Cryptographic Key</h2>
+ * The {@link KeyClient} can be used to delete a key from the key vault.
  *
- * <p><strong>Synchronous Code Sample:</strong></p>
- * <p>The following code sample demonstrates how to synchronously delete a key from the Azure
- * KeyVault, using the {@link KeyClient#beginDeleteKey(String)} API.</p>
+ * <p><strong>Code Sample:</strong></p>
+ * <p>The following code sample demonstrates how to synchronously delete a key from the
+ * key vault, using the {@link KeyClient#beginDeleteKey(String)} API.</p>
  *
  * <!-- src_embed com.azure.security.keyvault.keys.KeyClient.deleteKey#String -->
  * <pre>
@@ -137,7 +137,7 @@ import com.azure.security.keyvault.keys.models.ReleaseKeyResult;
  * </pre>
  * <!-- end com.azure.security.keyvault.keys.KeyClient.deleteKey#String -->
  *
- * <p><strong>Note:</strong> For asynchronous sample, refer to {@link KeyAsyncClient}.</p>
+ * <p><strong>Note:</strong> For the asynchronous sample, refer to {@link KeyAsyncClient}.</p>
  *
  * @see com.azure.security.keyvault.keys
  * @see KeyClientBuilder

@@ -45,7 +45,7 @@ import static com.azure.core.util.FluxUtil.withContext;
  * The {@link KeyAsyncClient} provides asynchronous methods to manage {@link KeyVaultKey keys} in the Azure Key Vault.
  * The client supports creating, retrieving, updating, deleting, purging, backing up, restoring, listing, releasing
  * and rotating the {@link KeyVaultKey keys}. The client also supports listing {@link DeletedKey deleted keys} for a
- * soft-delete enabled Azure Key Vault.
+ * soft-delete enabled key vault.
  *
  * <h2>Getting Started</h2>
  *
@@ -80,9 +80,9 @@ import static com.azure.core.util.FluxUtil.withContext;
  * <hr/>
  *
  * <h2>Create a Cryptographic Key</h2>
- * The {@link KeyAsyncClient} can be used to create a key in the Azure KeyVault.
+ * The {@link KeyAsyncClient} can be used to create a key in the key vault.
  *
- * <p><strong>Asynchronous Code Sample:</strong></p>
+ * <p><strong>Code Sample:</strong></p>
  * <p>The following code sample demonstrates how to asynchronously create a cryptographic key in the key vault,
  * using the {@link KeyAsyncClient#createKey(String, KeyType)} API.</p>
  *
@@ -96,17 +96,17 @@ import static com.azure.core.util.FluxUtil.withContext;
  * </pre>
  * <!-- end com.azure.security.keyvault.keys.KeyAsyncClient.createKey#String-KeyType -->
  *
- * <p><strong>Note:</strong> For synchronous sample, refer to {@link KeyClient}.</p>
+ * <p><strong>Note:</strong> For the synchronous sample, refer to {@link KeyClient}.</p>
  *
  * <br/>
  *
  * <hr/>
  *
  * <h2>Get a Cryptographic Key</h2>
- * The {@link KeyAsyncClient} can be used to retrieve a key from the Azure KeyVault.
+ * The {@link KeyAsyncClient} can be used to retrieve a key from the key vault.
  *
- * <p><strong>Asynchronous Code Sample:</strong></p>
- * <p>The following code sample demonstrates how to asynchronously retrieve a key from the Azure KeyVault, using
+ * <p><strong>Code Sample:</strong></p>
+ * <p>The following code sample demonstrates how to asynchronously retrieve a key from the key vault, using
  * the {@link KeyAsyncClient#getKey(String)} API.</p>
  *
  * <!-- src_embed com.azure.security.keyvault.keys.KeyAsyncClient.getKey#String -->
@@ -119,22 +119,22 @@ import static com.azure.core.util.FluxUtil.withContext;
  * </pre>
  * <!-- end com.azure.security.keyvault.keys.KeyAsyncClient.getKey#String -->
  *
- * <p><strong>Note:</strong> For synchronous sample, refer to {@link KeyClient}.</p>
+ * <p><strong>Note:</strong> For the synchronous sample, refer to {@link KeyClient}.</p>
  *
  * <br/>
  *
  * <hr/>
  *
- * <h2>Delete Key</h2>
- * The {@link KeyAsyncClient} can be used to delete a key from the Azure KeyVault.
+ * <h2>Delete a Cryptographic Key</h2>
+ * The {@link KeyAsyncClient} can be used to delete a key from the key vault.
  *
- * <p><strong>Asynchronous Code Sample:</strong></p>
+ * <p><strong>Code Sample:</strong></p>
  * <p>The following code sample demonstrates how to asynchronously delete a key from the Azure
- * KeyVault, using the {@link KeyAsyncClient#beginDeleteKey(String)} API.</p>
+ * Key Vault, using the {@link KeyAsyncClient#beginDeleteKey(String)} API.</p>
  *
  * <!-- src_embed com.azure.security.keyvault.keys.KeyAsyncClient.deleteKey#String -->
  * <pre>
- * keyAsyncClient.beginDeleteKey&#40;&quot;keyName&quot;&#41;
+ * keyAsyncClient.beginDelCeteKey&#40;&quot;keyName&quot;&#41;
  *     .subscribe&#40;pollResponse -&gt; &#123;
  *         System.out.printf&#40;&quot;Deletion status: %s%n&quot;, pollResponse.getStatus&#40;&#41;&#41;;
  *         System.out.printf&#40;&quot;Key name: %s%n&quot;, pollResponse.getValue&#40;&#41;.getName&#40;&#41;&#41;;
@@ -143,7 +143,7 @@ import static com.azure.core.util.FluxUtil.withContext;
  * </pre>
  * <!-- end com.azure.security.keyvault.keys.KeyAsyncClient.deleteKey#String -->
  *
- * <p><strong>Note:</strong> For synchronous sample, refer to {@link KeyClient}.</p>
+ * <p><strong>Note:</strong> For the synchronous sample, refer to {@link KeyClient}.</p>
  *
  * @see com.azure.security.keyvault.keys
  * @see KeyClientBuilder

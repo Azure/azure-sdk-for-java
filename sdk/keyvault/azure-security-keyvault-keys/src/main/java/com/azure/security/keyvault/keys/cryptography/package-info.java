@@ -2,14 +2,10 @@
 // Licensed under the MIT License.
 
 /**
- * <p><a href="https://learn.microsoft.com/azure/key-vault/general/">Azure KeyVault</a> is a cloud-based service
+ * <p><a href="https://learn.microsoft.com/azure/key-vault/general/">Azure Key Vault</a> is a cloud-based service
  * provided by Microsoft Azure that allows users to securely store and manage cryptographic keys used for encrypting
  * and decrypting data. It is a part of Azure Key Vault, which is a cloud-based service for managing cryptographic keys,
  * secrets, and certificates.</p>
- *
- * <p>Azure Key Vault Keys Cryptography enables you to perform cryptographic operations using keys stored in
- * Azure Key Vault. It offers a set of APIs and tools to help you encrypt, decrypt, sign, and verify data using
- * cryptographic keys securely stored in Key Vault.</p>
  *
  * <p>The service supports various cryptographic algorithms and operations, including symmetric and asymmetric
  * encryption, digital signatures, hashing, and random number generation. You can use the service to perform
@@ -21,7 +17,7 @@
  * access control policies, and audit logging. It helps you protect your sensitive data and comply with industry
  * standards and regulatory requirements.</p>
  *
- * <p>The Azure KeyVault Keys Cryptography client library allows developers to interact with the Azure KeyVault service
+ * <p>The Azure Key Vault Keys Cryptography client library allows developers to interact with the Azure Key Vault service
  * from their applications. The library provides a set of APIs that enable developers to securely encrypt, decrypt,
  * sign, and verify data using cryptographic keys securely stored in Key Vault.</p>
  *
@@ -103,7 +99,7 @@
  * </pre>
  * <!-- end com.azure.security.keyvault.keys.cryptography.CryptographyClient.encrypt#EncryptionAlgorithm-byte -->
  *
- * <p><strong>Note:</strong> For asynchronous sample, refer to
+ * <p><strong>Note:</strong> For the asynchronous sample, refer to
  * {@link com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient}.</p>
  *
  * <br/>
@@ -129,7 +125,7 @@
  * </pre>
  * <!-- end com.azure.security.keyvault.keys.cryptography.CryptographyClient.decrypt#EncryptionAlgorithm-byte -->
  *
- * <p><strong>Note:</strong> For asynchronous sample, refer to
+ * <p><strong>Note:</strong> For the asynchronous sample, refer to
  * {@link com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient}.</p>
  *
  * @see com.azure.security.keyvault.keys.cryptography.CryptographyClient
