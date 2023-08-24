@@ -769,9 +769,13 @@ public class EventProcessorClientBuilder implements
      * without a checkpoint nor an entry in the {@link #initialPartitionEventPosition(Map) initial position map}.
      *
      * @return The updated {@link EventProcessorClientBuilder} instance.
+     *
+     * @throws NullPointerException if {@code initialEventPosition} is null.
      */
     public EventProcessorClientBuilder initialPartitionEventPosition(EventPosition initialEventPosition) {
-        this.defaultInitialEventPosition = initialEventPosition;
+        this.defaultInitialEventPosition = Objects.requireNonNull(initialEventPosition,
+            "'initialEventPosition' cannot be null.");
+
         return this;
     }
 
@@ -809,10 +813,12 @@ public class EventProcessorClientBuilder implements
      *      {@link EventPosition}.
      *
      * @return The updated {@link EventProcessorClientBuilder} instance.
+     * @throws NullPointerException if {@code initialEventPositionProvider} is null.
      */
     public EventProcessorClientBuilder initialPartitionEventPosition(
         Function<String, EventPosition> initialEventPositionProvider) {
-        this.initialEventPositionProvider = initialEventPositionProvider;
+        this.initialEventPositionProvider = Objects.requireNonNull(initialEventPositionProvider,
+            "'initialEventPositionProvider' cannot be null.");
         return this;
     }
 
@@ -888,7 +894,7 @@ public class EventProcessorClientBuilder implements
 
         if (numberOfTimesSet > 1) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Only 1 overload for setInitialEventPositionProvider can be set.  The overload is set "
+                "Only 1 overload for initialEventPositionProvider can be set.  The overload is set "
                     + numberOfTimesSet + " times."));
         }
 
