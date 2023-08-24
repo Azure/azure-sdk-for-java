@@ -8,7 +8,7 @@
  * low-level details of authentication protocols.</p>
  *
  * <p>The library provides a unified way to obtain credentials for various Azure authentication
- * mechanisms, such as Azure Active Directory (AAD), shared access signatures and API keys. It abstracts the
+ * mechanisms, such as Azure Active Directory (AAD), shared access signatures, and API keys. It abstracts the
  * complexities of authentication and provides a consistent programming model for accessing Azure services.</p>
  *
  * <p>By using the library, users can easily integrate Azure authentication into their applications, retrieve the
@@ -17,11 +17,11 @@
  *
  * <p>The library offers several authentication types for authenticating with Azure services. Here are some of the
  * authentication mechanisms supported by the library:</p>
- * <ol>
- *     <li>Azure Active Directory (AAD) Authentication.</li>
+ * <ul>
+ *     <li>Azure Active Directory (AAD) Authentication</li>
  *     <li>Shared Access Signature (SAS) Authentication</li>
- *     <li>Key Based Authentication.</li>
- * </ol>
+ *     <li>Key Based Authentication</li>
+ * </ul>
  *
  * <h2>Azure Active Directory (AAD) Authentication</h2>
  *
@@ -33,7 +33,7 @@
  * <a href="https://learn.microsoft.com/java/api/overview/azure/identity-readme?view=azure-java-stable">Azure Identity</a>
  * library in your application as it offers pluggable implementation of
  * {@link com.azure.core.credential.TokenCredential} for various AAD based authentication mechanism including
- * service principal, managed identity and more.</p>
+ * service principal, managed identity, and more.</p>
  *
  * <br/>
  *
@@ -78,8 +78,7 @@
  *
  * <!-- src_embed com.azure.core.credential.azureKeyCredential -->
  * <pre>
- * AzureKeyCredential azureKeyCredential =
- *     new AzureKeyCredential&#40;&quot;AZURE-SERVICE-KEY&quot;&#41;;
+ * AzureKeyCredential azureKeyCredential = new AzureKeyCredential&#40;&quot;AZURE-SERVICE-KEY&quot;&#41;;
  * </pre>
  * <!-- end com.azure.core.credential.azureKeyCredential -->
  *

@@ -15,7 +15,7 @@ import java.util.Objects;
  * simple form of authentication to ensure that only authorized clients can access the protected resources or APIs.
  * This authentication is commonly used for accessing certain services, such as Azure Cognitive Services, Azure Search,
  * or Azure Management APIs. Each service may have its own specific way of using API keys, but the general concept
- * remains the same. The  {@link com.azure.core.credential.AzureKeyCredential} allows you to authenticate
+ * remains the same. The {@link com.azure.core.credential.AzureKeyCredential} allows you to authenticate
  * using a key.</p>
  *
  * <p><strong>Code Samples</strong></p>
@@ -24,8 +24,7 @@ import java.util.Objects;
  *
  * <!-- src_embed com.azure.core.credential.azureKeyCredential -->
  * <pre>
- * AzureKeyCredential azureKeyCredential =
- *     new AzureKeyCredential&#40;&quot;AZURE-SERVICE-KEY&quot;&#41;;
+ * AzureKeyCredential azureKeyCredential = new AzureKeyCredential&#40;&quot;AZURE-SERVICE-KEY&quot;&#41;;
  * </pre>
  * <!-- end com.azure.core.credential.azureKeyCredential -->
  *

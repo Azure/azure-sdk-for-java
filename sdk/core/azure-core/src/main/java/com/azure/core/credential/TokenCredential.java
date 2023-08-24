@@ -7,8 +7,8 @@ import reactor.core.publisher.Mono;
 
 /**
  * <p>Token Credential interface serves as a fundamental component for managing and providing access tokens required for
- * <a href="https://learn.microsoft.com/en-us/azure/active-directory/fundamentals/">Azure Active Directory (Azure AD)
- * </a> authentication when making requests to Azure services.</p>
+ * <a href="https://learn.microsoft.com/azure/active-directory/fundamentals/">Azure Active Directory (Azure AD)</a>
+ * authentication when making requests to Azure services.</p>
  *
  * <p>The {@link TokenCredential} interface, offers {@link TokenCredential#getToken(TokenRequestContext)}
  * and {@link TokenCredential#getTokenSync(TokenRequestContext)} methods. These methods are responsible for
@@ -28,24 +28,28 @@ import reactor.core.publisher.Mono;
  *
  * <p>Here are some examples of credential classes that implement the Token Credential interface:</p>
  *
- * <ol>
- *     <li>DefaultAzureCredential: Represents a credential that tries a series of authentication methods to
+ * <ul>
+ *     <li><a href="https://learn.microsoft.com/java/api/com.azure.identity.defaultazurecredential?view=azure-java-stable">DefaultAzureCredential</a>:
+ *     Represents a credential that tries a series of authentication methods to
  *     authenticate requests automatically. It simplifies the process by automatically selecting an appropriate
  *     authentication mechanism based on the environment, such as environment variables, managed identities, and
  *     developer tool credentials.</li>
  *
- *     <li>ClientSecretCredential: Represents a credential that uses a client ID, client secret, and tenant
+ *     <li><a href="https://learn.microsoft.com/java/api/com.azure.identity.clientsecretcredential?view=azure-java-stable">ClientSecretCredential</a>:
+ *     Represents a credential that uses a client ID, client secret, and tenant
  *     ID to authenticate. It is suitable for scenarios where you have a client application that needs to authenticate
  *     with Azure services using a client secret.</li>
  *
- *     <li>ClientCertificateCredential: Represents a credential that uses a client ID, client certificate, and
+ *     <li><a href="https://learn.microsoft.com/java/api/com.azure.identity.clientcertificatecredential?view=azure-java-stable">ClientCertificateCredential</a>:
+ *     Represents a credential that uses a client ID, client certificate, and
  *     tenant ID for authentication. This credential is useful when your client application has a client certificate
  *     available for authentication.</li>
  *
- *     <li>InteractiveBrowserCredential: Represents a credential that performs an interactive authentication
+ *     <li><a href="https://learn.microsoft.com/java/api/com.azure.identity.interactivebrowsercredential?view=azure-java-stable">InteractiveBrowserCredential</a>:
+ *     Represents a credential that performs an interactive authentication
  *     flow with the user in a browser. It is useful for scenarios where the user needs to provide consent or
  *     multi-factor authentication is required.</li>
- * </ol>
+ * </ul>
  *
  * <p>You can find more credential classes that implement the {@link TokenCredential} interface in our
  * <a href="https://learn.microsoft.com/java/api/overview/azure/identity-readme?view=azure-java-stable">Azure Identity</a>

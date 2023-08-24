@@ -3,10 +3,6 @@
 
 package com.azure.core.credential;
 
-import reactor.core.publisher.Mono;
-
-import java.time.OffsetDateTime;
-
 /**
  * Codesnippets for {@link AzureNamedKeyCredential}.
  */

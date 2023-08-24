@@ -3,8 +3,6 @@
 
 package com.azure.core.credential;
 
-import reactor.core.publisher.Mono;
-
 /**
  * Codesnippets for {@link AzureNamedKeyCredential}.
  */
@@ -26,8 +24,7 @@ public class AzureNamedKeyCredentialJavadocCodeSnippets {
 
     public void azureKeyCredential() {
         // BEGIN: com.azure.core.credential.azureKeyCredential
-        AzureKeyCredential azureKeyCredential =
-            new AzureKeyCredential("AZURE-SERVICE-KEY");
+        AzureKeyCredential azureKeyCredential = new AzureKeyCredential("AZURE-SERVICE-KEY");
         // END: com.azure.core.credential.azureKeyCredential
     }
 }

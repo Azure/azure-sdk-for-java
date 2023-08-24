@@ -14,9 +14,8 @@ import java.util.Objects;
  *
  * <p>A key is a unique identifier or token that is associated with a specific user or application. It serves as a
  * simple form of authentication to ensure that only authorized clients can access the protected resources or APIs.
- * This authentication is commonly used for accessing certain services, such as Azure Cognitive Services, Azure Search,
- * or Azure Management APIs. Each service may have its own specific way of using API keys, but the general concept
- * remains the same.</p>
+ * This authentication is commonly used for accessing certain services, such as Azure Tables and Azure Event Hubs.
+ * Each service may have its own specific way of using API keys, but the general concept remains the same.</p>
  *
  * <p>The {@link com.azure.core.credential.AzureNamedKeyCredential} can be created for keys which have a name
  * identifier associated with them.</p>
