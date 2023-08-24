@@ -134,6 +134,12 @@ public class ClientSideRequestStatistics {
         storeResponseStatistics.requestOperationType = request.getOperationType();
         storeResponseStatistics.requestResourceType = request.getResourceType();
         storeResponseStatistics.requestSessionToken = request.getHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN);
+        storeResponseStatistics.e2ePolicyCfg = null;
+        storeResponseStatistics.locationEndpointToRoute = null;
+        if (request.requestContext.getEndToEndOperationLatencyPolicyConfig() != null) {
+            storeResponseStatistics.e2ePolicyCfg =
+                request.requestContext.getEndToEndOperationLatencyPolicyConfig().toString();
+        }
         activityId = request.getActivityId().toString();
 
         this.requestPayloadSizeInBytes = request.getContentLength();
@@ -142,6 +148,7 @@ public class ClientSideRequestStatistics {
         if (request.requestContext != null) {
             if (request.requestContext.locationEndpointToRoute != null) {
                 locationEndPoint = request.requestContext.locationEndpointToRoute;
+                storeResponseStatistics.locationEndpointToRoute = locationEndPoint.toString();
             }
         }
 
@@ -570,6 +577,12 @@ public class ClientSideRequestStatistics {
         private OperationType requestOperationType;
         @JsonSerialize
         private String requestSessionToken;
+
+        @JsonSerialize
+        private String e2ePolicyCfg;
+
+        @JsonSerialize
+        private String locationEndpointToRoute;
 
         @JsonIgnore
         private String regionName;

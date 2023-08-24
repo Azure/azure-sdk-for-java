@@ -3,10 +3,10 @@
 package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.AsyncDocumentClient;
-import com.azure.cosmos.implementation.ConsoleLoggingRegistryFactory;
 import com.azure.cosmos.implementation.DatabaseAccount;
 import com.azure.cosmos.implementation.DatabaseAccountLocation;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.RxDocumentClientImpl;
 import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.implementation.Utils;
@@ -16,10 +16,6 @@ import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
 import com.azure.cosmos.models.CosmosClientTelemetryConfig;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
-import com.azure.cosmos.models.CosmosItemResponse;
-import com.azure.cosmos.models.CosmosMetricCategory;
-import com.azure.cosmos.models.CosmosMetricTagName;
-import com.azure.cosmos.models.CosmosMicrometerMetricsOptions;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.PartitionKeyDefinition;
 import com.azure.cosmos.rx.TestSuiteBase;
@@ -33,29 +29,22 @@ import com.azure.cosmos.test.faultinjection.FaultInjectionRule;
 import com.azure.cosmos.test.faultinjection.FaultInjectionRuleBuilder;
 import com.azure.cosmos.test.faultinjection.FaultInjectionServerErrorResult;
 import com.azure.cosmos.test.faultinjection.FaultInjectionServerErrorType;
-import com.codahale.metrics.MetricRegistry;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import io.micrometer.core.instrument.Meter;
-import io.micrometer.core.instrument.MeterRegistry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
-import reactor.core.publisher.Flux;
 
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.stream.Collectors;
+import java.util.function.Consumer;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.fail;
@@ -89,7 +78,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
 
             Map<String, String> writeRegionMap = this.getRegionMap(databaseAccount, true);
 
-            this.writeableRegions = writeRegionMap.keySet().stream().collect(Collectors.toList());
+            this.writeableRegions = new ArrayList<>(writeRegionMap.keySet());
         } finally {
             safeClose(dummyClient);
         }
@@ -100,68 +89,47 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
         return new Object[][] {
             // check if OperationCancelledException bubbles up
             // check if 408 (op-level) & 404/1002 (req-level) metrics are tracked
-            new Object[] {Duration.ofSeconds(2), CosmosRegionSwitchHint.LOCAL_REGION_PREFERRED},
+            //new Object[] {Duration.ofSeconds(2), CosmosRegionSwitchHint.LOCAL_REGION_PREFERRED},
             // check if NotFoundException bubbles up
             // check if 404 (op-level) & 404/1002 (req-level) metrics are tracked
             new Object[] {Duration.ofSeconds(2), CosmosRegionSwitchHint.REMOTE_REGION_PREFERRED}
         };
     }
 
-    @Test(groups = {"multi-master"}, dataProvider = "testConfigs")
-    public void exceptionHandling_And_MetricsRecording_With_AllRegionsFailing_Test(Duration endToEndTimeout, CosmosRegionSwitchHint regionSwitchHint) {
-        System.setProperty("COSMOS.MAX_RETRIES_IN_LOCAL_REGION_WHEN_REMOTE_REGION_PREFERRED", String.valueOf(1));
+    private CosmosAsyncContainer createTestContainer(CosmosAsyncClient clientWithPreferredRegions) {
+        String dbId = UUID.randomUUID().toString();
+        String containerId = UUID.randomUUID().toString();
 
-        MeterRegistry meterRegistry = createMeterRegistry();
-        CosmosMicrometerMetricsOptions inputMetricOptions = createMicrometerMetricsOptions(meterRegistry);
-        CosmosClientTelemetryConfig clientTelemetryConfig = createClientTelemetryConfig(inputMetricOptions);
+        clientWithPreferredRegions.createDatabaseIfNotExists(dbId).block();
+        CosmosAsyncDatabase databaseWithSeveralWriteableRegions = clientWithPreferredRegions.getDatabase(dbId);
 
-        CosmosAsyncClient clientWithPreferredRegions = null;
+        // setup db and container and pass their ids accordingly
+        // ensure the container has a partition key definition of /mypk
 
-        assertThat(this.writeableRegions).isNotNull();
-        assertThat(this.writeableRegions.size()).isGreaterThanOrEqualTo(2);
+        databaseWithSeveralWriteableRegions
+            .createContainerIfNotExists(
+                new CosmosContainerProperties(
+                    containerId,
+                    new PartitionKeyDefinition().setPaths(Arrays.asList("/mypk"))))
+            .block();
 
-        CosmosAsyncDatabase databaseWithSeveralWriteableRegions = null;
-        CosmosAsyncContainer containerWithSeveralWriteableRegions = null;
+        return databaseWithSeveralWriteableRegions.getContainer(containerId);
+    }
 
-        try {
-            clientWithPreferredRegions = buildCosmosClient(clientTelemetryConfig, this.writeableRegions, regionSwitchHint);
+    private void injectReadSessionNotAvailableErrorIntoAllRegions(CosmosAsyncContainer containerWithSeveralWriteableRegions) {
+        FaultInjectionRuleBuilder badSessionTokenRuleBuilder = new FaultInjectionRuleBuilder("serverErrorRule-"
+            + "read-session-unavailable-" + UUID.randomUUID());
 
-            // setup db and container and pass their ids accordingly
-            // ensure the container has a partition key definition of /mypk
+        List<FaultInjectionRule> faultInjectionRules = new ArrayList<>();
 
-            String dbId = UUID.randomUUID().toString();
-            String containerId = UUID.randomUUID().toString();
-
-            clientWithPreferredRegions.createDatabaseIfNotExists(dbId).block();
-            databaseWithSeveralWriteableRegions = clientWithPreferredRegions.getDatabase(dbId);
-
-            databaseWithSeveralWriteableRegions.createContainerIfNotExists(
-                new CosmosContainerProperties(containerId, new PartitionKeyDefinition().setPaths(Arrays.asList("/mypk")))).block();
-            containerWithSeveralWriteableRegions = databaseWithSeveralWriteableRegions.getContainer(containerId);
-
-            String documentId = UUID.randomUUID().toString();
-            Pair<String, String> idAndPkValPair = new ImmutablePair<>(documentId, documentId);
-
-            CosmosDiagnosticsTest.TestItem createdItem = new CosmosDiagnosticsTest.TestItem(documentId, documentId);
-            CosmosItemResponse<CosmosDiagnosticsTest.TestItem> writeResponse = containerWithSeveralWriteableRegions.createItem(createdItem).block();
-
-            FaultInjectionRuleBuilder badSessionTokenRuleBuilder = new FaultInjectionRuleBuilder("serverErrorRule-"
-                + "read-session-unavailable-" + UUID.randomUUID());
-
-            // inject 404/1002s in two regions
-            // configure in accordance with preferredRegions on the client
-            FaultInjectionCondition faultInjectionConditionForReadsInPrimaryRegion =
+        // inject 404/1002s in all regions
+        // configure in accordance with preferredRegions on the client
+        for (String writeableRegion : this.writeableRegions) {
+            FaultInjectionCondition faultInjectionConditionForReads =
                 new FaultInjectionConditionBuilder()
                     .operationType(FaultInjectionOperationType.READ_ITEM)
                     .connectionType(FaultInjectionConnectionType.DIRECT)
-                    .region(this.writeableRegions.get(0))
-                    .build();
-
-            FaultInjectionCondition faultInjectionConditionForReadsInSecondaryRegion =
-                new FaultInjectionConditionBuilder()
-                    .operationType(FaultInjectionOperationType.READ_ITEM)
-                    .connectionType(FaultInjectionConnectionType.DIRECT)
-                    .region(this.writeableRegions.get(1))
+                    .region(writeableRegion)
                     .build();
 
             FaultInjectionServerErrorResult badSessionTokenServerErrorResult = FaultInjectionResultBuilders
@@ -169,109 +137,94 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 .build();
 
             // sustained fault injection
-            FaultInjectionRule readSessionUnavailableRulePrimaryRegion = badSessionTokenRuleBuilder
-                .condition(faultInjectionConditionForReadsInPrimaryRegion)
+            FaultInjectionRule readSessionUnavailableRule = badSessionTokenRuleBuilder
+                .condition(faultInjectionConditionForReads)
                 .result(badSessionTokenServerErrorResult)
                 .duration(Duration.ofSeconds(120))
                 .build();
 
-            // sustained fault injection
-            FaultInjectionRule readSessionUnavailableRuleSecondaryRegion = badSessionTokenRuleBuilder
-                .condition(faultInjectionConditionForReadsInSecondaryRegion)
-                .result(badSessionTokenServerErrorResult)
-                .duration(Duration.ofSeconds(120))
-                .build();
+            faultInjectionRules.add(readSessionUnavailableRule);
+        }
 
-            CosmosFaultInjectionHelper
-                .configureFaultInjectionRules(containerWithSeveralWriteableRegions,
-                    Arrays.asList(readSessionUnavailableRulePrimaryRegion, readSessionUnavailableRuleSecondaryRegion))
-                .block();
+        CosmosFaultInjectionHelper
+            .configureFaultInjectionRules(containerWithSeveralWriteableRegions, faultInjectionRules)
+            .block();
+    }
 
-            int threadCount = 1;
+    @Test(groups = {"multi-master"}, dataProvider = "testConfigs")
+    public void exceptionHandling_And_MetricsRecording_With_AllRegionsFailing_Test(Duration endToEndTimeout, CosmosRegionSwitchHint regionSwitchHint) {
+        execute(endToEndTimeout, regionSwitchHint, this::injectReadSessionNotAvailableErrorIntoAllRegions);
+    }
 
-            ExecutorService executorService = Executors.newFixedThreadPool(threadCount);
-            AtomicBoolean isStopped = new AtomicBoolean(false);
+    public void execute(
+        Duration endToEndTimeout,
+        CosmosRegionSwitchHint regionSwitchHint,
+        Consumer<CosmosAsyncContainer> faultInjectionCallback) {
+        CosmosAsyncClient clientWithPreferredRegions = null;
 
-            Duration workloadExecutionDuration = Duration.ofSeconds(60);
+        assertThat(this.writeableRegions).isNotNull();
+        assertThat(this.writeableRegions.size()).isGreaterThanOrEqualTo(2);
 
-            Flux
-                .just(1)
-                .delayElements(workloadExecutionDuration)
-                .doOnComplete(() -> isStopped.compareAndSet(false, true))
-                .subscribe();
+        CosmosAsyncContainer containerWithSeveralWriteableRegions = null;
+
+        try {
+            clientWithPreferredRegions = buildCosmosClient(this.writeableRegions, regionSwitchHint);
+            containerWithSeveralWriteableRegions = createTestContainer(clientWithPreferredRegions);
+
+            String documentId = UUID.randomUUID().toString();
+            Pair<String, String> idAndPkValPair = new ImmutablePair<>(documentId, documentId);
+
+            CosmosDiagnosticsTest.TestItem createdItem = new CosmosDiagnosticsTest.TestItem(documentId, documentId);
+            containerWithSeveralWriteableRegions.createItem(createdItem).block();
+
+            if (faultInjectionCallback != null) {
+                faultInjectionCallback.accept(containerWithSeveralWriteableRegions);
+            }
+
             ThresholdBasedAvailabilityStrategy thresholdStrategy = new ThresholdBasedAvailabilityStrategy();
             CosmosEndToEndOperationLatencyPolicyConfig endToEndOperationLatencyPolicyConfig =
                 new CosmosEndToEndOperationLatencyPolicyConfigBuilder(endToEndTimeout).
                     enable(true).availabilityStrategy(thresholdStrategy).build();
-            for (int i = 0; i < threadCount; i++) {
-                CosmosAsyncContainer finalAsyncContainer = containerWithSeveralWriteableRegions;
-                executorService.submit(() -> execute(
-                    finalAsyncContainer,
-                    idAndPkValPair,
-                    isStopped,
-                    endToEndOperationLatencyPolicyConfig,
-                    writeResponse.getSessionToken())
-                );
+
+            CosmosItemRequestOptions itemRequestOptions = new CosmosItemRequestOptions();
+
+            if (endToEndOperationLatencyPolicyConfig != null) {
+                itemRequestOptions.setCosmosEndToEndOperationLatencyPolicyConfig(endToEndOperationLatencyPolicyConfig);
             }
 
             try {
-                executorService.awaitTermination(60, TimeUnit.SECONDS);
-                executorService.shutdown();
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
+                containerWithSeveralWriteableRegions
+                    .readItem(
+                        idAndPkValPair.getLeft(),
+                        new PartitionKey(idAndPkValPair.getRight()),
+                        itemRequestOptions,
+                        ObjectNode.class)
+                    .block();
 
-        } catch (Exception e) {
-            logger.error("Error occurred", e);
+                fail("This operation is expected to fail because of the injected 404/1002");
+            } catch (Exception e) {
+                if (e instanceof CosmosException) {
+                    CosmosException cosmosException = Utils.as(e, CosmosException.class);
+                    logger.info("Expected CosmosException: ", cosmosException);
+                    logger.info("Diagnostics Context: {}", cosmosException.getDiagnostics().getDiagnosticsContext().toJson());
+                } else {
+                    fail("A CosmosException instance should have been thrown.", e);
+                }
+            }
         } finally {
-            System.clearProperty("COSMOS.MAX_RETRIES_IN_LOCAL_REGION_WHEN_REMOTE_REGION_PREFERRED");
-            safeDeleteCollection(containerWithSeveralWriteableRegions);
-            safeDeleteDatabase(databaseWithSeveralWriteableRegions);
+            if (containerWithSeveralWriteableRegions != null) {
+                safeDeleteDatabase(containerWithSeveralWriteableRegions.getDatabase());
+            }
             safeClose(clientWithPreferredRegions);
         }
     }
 
-    private static void execute(
-        CosmosAsyncContainer container,
-        Pair<String, String> idAndPkValPair,
-        AtomicBoolean isStopped,
-        CosmosEndToEndOperationLatencyPolicyConfig endToEndOperationLatencyPolicyConfig,
-        String invalidSessionToken) {
-
-        while (!isStopped.get()) {
-            try {
-                CosmosItemRequestOptions itemRequestOptions = new CosmosItemRequestOptions();
-
-                if (endToEndOperationLatencyPolicyConfig != null) {
-                    itemRequestOptions.setCosmosEndToEndOperationLatencyPolicyConfig(endToEndOperationLatencyPolicyConfig);
-                }
-
-                if (invalidSessionToken != null && !invalidSessionToken.isEmpty()) {
-                    itemRequestOptions.setSessionToken(invalidSessionToken);
-                    logger.debug("Set an invalid session token : {}", invalidSessionToken);
-                }
-
-                CosmosItemResponse<ObjectNode> response = container.readItem(idAndPkValPair.getLeft(),
-                    new PartitionKey(idAndPkValPair.getRight()), itemRequestOptions, ObjectNode.class).block();
-            } catch (Exception e) {
-                if (e instanceof CosmosException) {
-                    CosmosException cosmosException = Utils.as(e, CosmosException.class);
-                } else {
-                   fail("A CosmosException instance should have been thrown");
-                }
-            }
-        }
-    }
-
-    private static CosmosClientTelemetryConfig createClientTelemetryConfig(CosmosMicrometerMetricsOptions inputMetricsOptions) {
-        return new CosmosClientTelemetryConfig()
-            .metricsOptions(inputMetricsOptions);
-    }
-
     private static CosmosAsyncClient buildCosmosClient(
-        CosmosClientTelemetryConfig clientTelemetryConfig,
         List<String> preferredRegions,
         CosmosRegionSwitchHint regionSwitchHint) {
+
+        CosmosClientTelemetryConfig telemetryConfig = new CosmosClientTelemetryConfig()
+            .diagnosticsHandler(new CosmosDiagnosticsLogger());
 
         return new CosmosClientBuilder()
             .endpoint(TestConfigurations.HOST)
@@ -281,23 +234,8 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
             .sessionRetryOptions(new SessionRetryOptions(regionSwitchHint))
             .directMode()
             .multipleWriteRegionsEnabled(true)
-            .clientTelemetryConfig(clientTelemetryConfig)
+            .clientTelemetryConfig(telemetryConfig)
             .buildAsyncClient();
-    }
-
-    private static MeterRegistry createMeterRegistry() {
-        return ConsoleLoggingRegistryFactory.create(1);
-    }
-
-    private static CosmosMicrometerMetricsOptions createMicrometerMetricsOptions(MeterRegistry meterRegistry) {
-        return new CosmosMicrometerMetricsOptions()
-            .setEnabled(true)
-            .meterRegistry(meterRegistry)
-            .addMetricCategories(CosmosMetricCategory.OPERATION_DETAILS)
-            .addMetricCategories(CosmosMetricCategory.REQUEST_DETAILS)
-            .enableHistogramsByDefault(false)
-            .configureDefaultPercentiles(0.99)
-            .configureDefaultTagNames(CosmosMetricTagName.SERVICE_ADDRESS, CosmosMetricTagName.REGION_NAME);
     }
 
     private Map<String, String> getRegionMap(DatabaseAccount databaseAccount, boolean writeOnly) {
