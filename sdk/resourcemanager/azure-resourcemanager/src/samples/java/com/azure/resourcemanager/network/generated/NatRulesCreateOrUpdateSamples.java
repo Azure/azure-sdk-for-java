@@ -13,7 +13,7 @@ import java.util.Arrays;
 /** Samples for NatRules CreateOrUpdate. */
 public final class NatRulesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-02-01/examples/NatRulePut.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-04-01/examples/NatRulePut.json
      */
     /**
      * Sample code: NatRulePut.

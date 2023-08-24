@@ -15,11 +15,12 @@ public final class RestoreSettingsTests {
     public void testDeserialize() throws Exception {
         RestoreSettings model =
             BinaryData
-                .fromString("{\"crossSubscriptionRestoreSettings\":{\"crossSubscriptionRestoreState\":\"Disabled\"}}")
+                .fromString(
+                    "{\"crossSubscriptionRestoreSettings\":{\"crossSubscriptionRestoreState\":\"PermanentlyDisabled\"}}")
                 .toObject(RestoreSettings.class);
         Assertions
             .assertEquals(
-                CrossSubscriptionRestoreState.DISABLED,
+                CrossSubscriptionRestoreState.PERMANENTLY_DISABLED,
                 model.crossSubscriptionRestoreSettings().crossSubscriptionRestoreState());
     }
 
@@ -29,11 +30,11 @@ public final class RestoreSettingsTests {
             new RestoreSettings()
                 .withCrossSubscriptionRestoreSettings(
                     new CrossSubscriptionRestoreSettings()
-                        .withCrossSubscriptionRestoreState(CrossSubscriptionRestoreState.DISABLED));
+                        .withCrossSubscriptionRestoreState(CrossSubscriptionRestoreState.PERMANENTLY_DISABLED));
         model = BinaryData.fromObject(model).toObject(RestoreSettings.class);
         Assertions
             .assertEquals(
-                CrossSubscriptionRestoreState.DISABLED,
+                CrossSubscriptionRestoreState.PERMANENTLY_DISABLED,
                 model.crossSubscriptionRestoreSettings().crossSubscriptionRestoreState());
     }
 }

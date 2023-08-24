@@ -20,6 +20,15 @@ public final class ImmutabilityPolicyUpdateType extends ExpandableStringEnum<Imm
     public static final ImmutabilityPolicyUpdateType EXTEND = fromString("extend");
 
     /**
+     * Creates a new instance of ImmutabilityPolicyUpdateType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ImmutabilityPolicyUpdateType() {
+    }
+
+    /**
      * Creates or finds a ImmutabilityPolicyUpdateType from its string representation.
      *
      * @param name a name to look for.

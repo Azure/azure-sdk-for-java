@@ -7,7 +7,7 @@ package com.azure.resourcemanager.network.generated;
 /** Samples for ExpressRouteCircuits List. */
 public final class ExpressRouteCircuitsListSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-02-01/examples/ExpressRouteCircuitListBySubscription.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-04-01/examples/ExpressRouteCircuitListBySubscription.json
      */
     /**
      * Sample code: List ExpressRouteCircuits in a subscription.

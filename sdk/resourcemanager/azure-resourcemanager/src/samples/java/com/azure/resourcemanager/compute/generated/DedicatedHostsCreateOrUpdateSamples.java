@@ -12,7 +12,7 @@ import java.util.Map;
 /** Samples for DedicatedHosts CreateOrUpdate. */
 public final class DedicatedHostsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/dedicatedHostExamples/DedicatedHost_CreateOrUpdate.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-07-01/examples/dedicatedHostExamples/DedicatedHost_CreateOrUpdate.json
      */
     /**
      * Sample code: Create or update a dedicated host .

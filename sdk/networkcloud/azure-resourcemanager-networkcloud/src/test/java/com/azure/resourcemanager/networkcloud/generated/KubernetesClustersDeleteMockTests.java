@@ -56,6 +56,6 @@ public final class KubernetesClustersDeleteMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.kubernetesClusters().delete("qegxyivpin", "mhwbjijkgqx", com.azure.core.util.Context.NONE);
+        manager.kubernetesClusters().delete("bjgmnzj", "t", com.azure.core.util.Context.NONE);
     }
 }

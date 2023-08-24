@@ -50,6 +50,10 @@ public final class OperationInner {
     @JsonProperty(value = "actionType", access = JsonProperty.Access.WRITE_ONLY)
     private ActionType actionType;
 
+    /** Creates an instance of OperationInner class. */
+    public OperationInner() {
+    }
+
     /**
      * Get the name property: The name of the operation, as per Resource-Based Access Control (RBAC). Examples:
      * "Microsoft.Compute/virtualMachines/write", "Microsoft.Compute/virtualMachines/capture/action".

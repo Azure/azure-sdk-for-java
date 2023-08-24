@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.appcontainers.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.resourcemanager.appcontainers.models.ContainerAppReplicaRunningState;
 import com.azure.resourcemanager.appcontainers.models.ReplicaContainer;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
@@ -20,10 +21,28 @@ public final class ReplicaProperties {
     private OffsetDateTime createdTime;
 
     /*
+     * Current running state of the replica
+     */
+    @JsonProperty(value = "runningState", access = JsonProperty.Access.WRITE_ONLY)
+    private ContainerAppReplicaRunningState runningState;
+
+    /*
+     * The details of replica current running state
+     */
+    @JsonProperty(value = "runningStateDetails", access = JsonProperty.Access.WRITE_ONLY)
+    private String runningStateDetails;
+
+    /*
      * The containers collection under a replica.
      */
     @JsonProperty(value = "containers")
     private List<ReplicaContainer> containers;
+
+    /*
+     * The init containers collection under a replica.
+     */
+    @JsonProperty(value = "initContainers")
+    private List<ReplicaContainer> initContainers;
 
     /** Creates an instance of ReplicaProperties class. */
     public ReplicaProperties() {
@@ -36,6 +55,24 @@ public final class ReplicaProperties {
      */
     public OffsetDateTime createdTime() {
         return this.createdTime;
+    }
+
+    /**
+     * Get the runningState property: Current running state of the replica.
+     *
+     * @return the runningState value.
+     */
+    public ContainerAppReplicaRunningState runningState() {
+        return this.runningState;
+    }
+
+    /**
+     * Get the runningStateDetails property: The details of replica current running state.
+     *
+     * @return the runningStateDetails value.
+     */
+    public String runningStateDetails() {
+        return this.runningStateDetails;
     }
 
     /**
@@ -59,6 +96,26 @@ public final class ReplicaProperties {
     }
 
     /**
+     * Get the initContainers property: The init containers collection under a replica.
+     *
+     * @return the initContainers value.
+     */
+    public List<ReplicaContainer> initContainers() {
+        return this.initContainers;
+    }
+
+    /**
+     * Set the initContainers property: The init containers collection under a replica.
+     *
+     * @param initContainers the initContainers value to set.
+     * @return the ReplicaProperties object itself.
+     */
+    public ReplicaProperties withInitContainers(List<ReplicaContainer> initContainers) {
+        this.initContainers = initContainers;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -66,6 +123,9 @@ public final class ReplicaProperties {
     public void validate() {
         if (containers() != null) {
             containers().forEach(e -> e.validate());
+        }
+        if (initContainers() != null) {
+            initContainers().forEach(e -> e.validate());
         }
     }
 }

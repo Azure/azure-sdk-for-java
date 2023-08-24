@@ -74,7 +74,7 @@ public class ContentTypeDetectionTest {
 
     /**
      * Test for big-endian TIFF content type detection for {@link Utility#detectContentType} method.
-     * No file available. Input must begin with: 4D 4D 00 2A in hex value, which is 77, 77, 0, 42 in decimal
+     * No file available. Input must begin with: 4D 00 2A in hex value, which is 77, 77, 0, 42 in decimal
      */
     @Test
     public void tiffBigEndianContentDetectionTest() {

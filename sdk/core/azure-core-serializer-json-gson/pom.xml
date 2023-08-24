@@ -71,24 +71,24 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.42.0-beta.2</version> <!-- {x-version-update;com.azure:azure-core;current} -->
+      <version>1.43.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-json</artifactId>
-      <version>1.0.1</version> <!-- {x-version-update;com.azure:azure-json;dependency} -->
+      <version>1.1.0</version> <!-- {x-version-update;com.azure:azure-json;dependency} -->
     </dependency>
 
     <dependency>
       <groupId>com.google.code.gson</groupId>
       <artifactId>gson</artifactId>
-      <version>2.10.1</version> <!-- {x-version-update;com.google.code.gson:gson;external_dependency} -->
+      <version>2.10</version> <!-- {x-version-update;com.google.code.gson:gson;external_dependency} -->
     </dependency>
 
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-json</artifactId>
-      <version>1.0.1</version> <!-- {x-version-update;com.azure:azure-json;dependency} -->
+      <version>1.1.0</version> <!-- {x-version-update;com.azure:azure-json;dependency} -->
       <type>test-jar</type>
       <scope>test</scope>
     </dependency>
@@ -120,7 +120,7 @@
     <dependency>
       <groupId>io.projectreactor</groupId>
       <artifactId>reactor-test</artifactId>
-      <version>3.5.8</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
+      <version>3.4.31</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -130,12 +130,12 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-enforcer-plugin</artifactId>
-        <version>3.3.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
+        <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
         <configuration>
           <rules>
             <bannedDependencies>
               <includes>
-                <include>com.google.code.gson:gson:[2.10.1]</include> <!-- {x-include-update;com.google.code.gson:gson;external_dependency} -->
+                <include>com.google.code.gson:gson:[2.10]</include> <!-- {x-include-update;com.google.code.gson:gson;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>

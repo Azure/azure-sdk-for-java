@@ -10,7 +10,8 @@ import com.azure.resourcemanager.resourceconnector.models.ArtifactProfile;
 public final class ArtifactProfileTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ArtifactProfile model = BinaryData.fromString("{\"endpoint\":\"nmayhuybb\"}").toObject(ArtifactProfile.class);
+        ArtifactProfile model =
+            BinaryData.fromString("{\"endpoint\":\"ffdfdosygexpa\"}").toObject(ArtifactProfile.class);
     }
 
     @org.junit.jupiter.api.Test

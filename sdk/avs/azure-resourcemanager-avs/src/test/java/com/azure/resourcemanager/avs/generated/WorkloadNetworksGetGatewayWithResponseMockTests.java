@@ -31,7 +31,7 @@ public final class WorkloadNetworksGetGatewayWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"displayName\":\"hyrmewipmvekdx\",\"path\":\"uqgsj\"},\"id\":\"xundxgk\",\"name\":\"twzhhzjhfjmhv\",\"type\":\"muvgp\"}";
+            "{\"properties\":{\"displayName\":\"spofapvuhry\",\"path\":\"iofrzgbzjedmstk\"},\"id\":\"nlvxbcuii\",\"name\":\"nktwfansnvpdibmi\",\"type\":\"ostbzbkiwb\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,9 +62,9 @@ public final class WorkloadNetworksGetGatewayWithResponseMockTests {
         WorkloadNetworkGateway response =
             manager
                 .workloadNetworks()
-                .getGatewayWithResponse("gafcqu", "rdve", "nwsdtutnwlduyc", com.azure.core.util.Context.NONE)
+                .getGatewayWithResponse("gbqi", "kxkbsazgakgacyr", "m", com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals("hyrmewipmvekdx", response.displayName());
+        Assertions.assertEquals("spofapvuhry", response.displayName());
     }
 }

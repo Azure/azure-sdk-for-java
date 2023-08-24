@@ -7,7 +7,7 @@ package com.azure.resourcemanager.compute.generated;
 /** Samples for VirtualMachineImagesEdgeZone List. */
 public final class VirtualMachineImagesEdgeZoneListSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/virtualMachineImageExamples/VirtualMachineImagesEdgeZone_List_MaximumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-07-01/examples/virtualMachineImageExamples/VirtualMachineImagesEdgeZone_List_MaximumSet_Gen.json
      */
     /**
      * Sample code: VirtualMachineImagesEdgeZone_List_MaximumSet_Gen.
@@ -34,7 +34,7 @@ public final class VirtualMachineImagesEdgeZoneListSamples {
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/virtualMachineImageExamples/VirtualMachineImagesEdgeZone_List_MinimumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-07-01/examples/virtualMachineImageExamples/VirtualMachineImagesEdgeZone_List_MinimumSet_Gen.json
      */
     /**
      * Sample code: VirtualMachineImagesEdgeZone_List_MinimumSet_Gen.

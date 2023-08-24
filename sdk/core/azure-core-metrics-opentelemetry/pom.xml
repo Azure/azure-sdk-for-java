@@ -12,7 +12,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-core-metrics-opentelemetry</artifactId>
-  <version>1.0.0-beta.11</version> <!-- {x-version-update;com.azure:azure-core-metrics-opentelemetry;current} -->
+  <version>1.0.0-beta.12</version> <!-- {x-version-update;com.azure:azure-core-metrics-opentelemetry;current} -->
 
   <name>Microsoft Azure OpenTelemetry metrics plugin</name>
   <description>This package contains the OpenTelemetry metrics plugin for Azure client libraries.</description>
@@ -46,7 +46,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.42.0-beta.2</version> <!-- {x-version-update;com.azure:azure-core;current} -->
+      <version>1.43.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
     </dependency>
     <dependency>
       <groupId>com.google.code.findbugs</groupId>
@@ -73,7 +73,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-test</artifactId>
-      <version>1.19.0-beta.1</version>  <!-- {x-version-update;com.azure:azure-core-test;current} -->
+      <version>1.20.0-beta.1</version>  <!-- {x-version-update;com.azure:azure-core-test;current} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -115,7 +115,7 @@
     <dependency>
       <groupId>org.assertj</groupId>
       <artifactId>assertj-core</artifactId>
-      <version>3.24.2</version>  <!-- {x-version-update;org.assertj:assertj-core;external_dependency} -->
+      <version>3.22.0</version>  <!-- {x-version-update;org.assertj:assertj-core;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -131,7 +131,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-enforcer-plugin</artifactId>
-        <version>3.3.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
+        <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
         <configuration>
           <rules>
             <bannedDependencies>

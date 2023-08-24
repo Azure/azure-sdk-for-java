@@ -65,18 +65,18 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-json</artifactId>
-      <version>1.1.0-beta.1</version> <!-- {x-version-update;com.azure:azure-json;current} -->
+      <version>1.2.0-beta.1</version> <!-- {x-version-update;com.azure:azure-json;current} -->
     </dependency>
     <dependency>
       <groupId>com.google.code.gson</groupId>
       <artifactId>gson</artifactId>
-      <version>2.10.1</version> <!-- {x-version-update;com.google.code.gson:gson;external_dependency} -->
+      <version>2.10</version> <!-- {x-version-update;com.google.code.gson:gson;external_dependency} -->
     </dependency>
 
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-json</artifactId>
-      <version>1.1.0-beta.1</version> <!-- {x-version-update;com.azure:azure-json;current} -->
+      <version>1.2.0-beta.1</version> <!-- {x-version-update;com.azure:azure-json;current} -->
       <type>test-jar</type>
       <scope>test</scope>
     </dependency>
@@ -106,12 +106,12 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-enforcer-plugin</artifactId>
-        <version>3.3.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
+        <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
         <configuration>
           <rules>
             <bannedDependencies>
               <includes>
-                <include>com.google.code.gson:gson:[2.10.1]</include> <!-- {x-include-update;com.google.code.gson:gson;external_dependency} -->
+                <include>com.google.code.gson:gson:[2.10]</include> <!-- {x-include-update;com.google.code.gson:gson;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>
@@ -137,7 +137,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.11.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
+        <version>3.10.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
         <configuration>
           <compilerArgs>
             <arg>-Xlint:deprecation</arg>

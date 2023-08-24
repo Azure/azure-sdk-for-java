@@ -62,11 +62,13 @@ public interface HcxEnterpriseSite {
     interface Definition
         extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
+
     /** The HcxEnterpriseSite definition stages. */
     interface DefinitionStages {
         /** The first stage of the HcxEnterpriseSite definition. */
         interface Blank extends WithParentResource {
         }
+
         /** The stage of the HcxEnterpriseSite definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
@@ -78,6 +80,7 @@ public interface HcxEnterpriseSite {
              */
             WithCreate withExistingPrivateCloud(String resourceGroupName, String privateCloudName);
         }
+
         /**
          * The stage of the HcxEnterpriseSite definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
@@ -99,6 +102,7 @@ public interface HcxEnterpriseSite {
             HcxEnterpriseSite create(Context context);
         }
     }
+
     /**
      * Begins update for the HcxEnterpriseSite resource.
      *
@@ -123,9 +127,11 @@ public interface HcxEnterpriseSite {
          */
         HcxEnterpriseSite apply(Context context);
     }
+
     /** The HcxEnterpriseSite update stages. */
     interface UpdateStages {
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

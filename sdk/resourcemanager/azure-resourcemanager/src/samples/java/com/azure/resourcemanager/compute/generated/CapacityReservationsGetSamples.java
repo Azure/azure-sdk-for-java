@@ -9,7 +9,7 @@ import com.azure.resourcemanager.compute.models.CapacityReservationInstanceViewT
 /** Samples for CapacityReservations Get. */
 public final class CapacityReservationsGetSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/capacityReservationExamples/CapacityReservation_Get.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-07-01/examples/capacityReservationExamples/CapacityReservation_Get.json
      */
     /**
      * Sample code: Get a capacity reservation.

@@ -7,7 +7,7 @@ package com.azure.resourcemanager.network.generated;
 /** Samples for VirtualApplianceSites Get. */
 public final class VirtualApplianceSitesGetSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-02-01/examples/NetworkVirtualApplianceSiteGet.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-04-01/examples/NetworkVirtualApplianceSiteGet.json
      */
     /**
      * Sample code: GetNetwork Virtual Appliance Site.

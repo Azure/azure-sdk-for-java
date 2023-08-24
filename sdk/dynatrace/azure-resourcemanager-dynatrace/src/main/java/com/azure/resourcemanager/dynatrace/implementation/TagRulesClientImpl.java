@@ -12,7 +12,6 @@ import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
-import com.azure.core.annotation.Patch;
 import com.azure.core.annotation.PathParam;
 import com.azure.core.annotation.Put;
 import com.azure.core.annotation.QueryParam;
@@ -35,7 +34,6 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.dynatrace.fluent.TagRulesClient;
 import com.azure.resourcemanager.dynatrace.fluent.models.TagRuleInner;
 import com.azure.resourcemanager.dynatrace.models.TagRuleListResult;
-import com.azure.resourcemanager.dynatrace.models.TagRuleUpdate;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -64,11 +62,10 @@ public final class TagRulesClientImpl implements TagRulesClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "DynatraceObservabili")
-    private interface TagRulesService {
+    public interface TagRulesService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Dynatrace.Observability"
-                + "/monitors/{monitorName}/tagRules/{ruleSetName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Dynatrace.Observability/monitors/{monitorName}/tagRules/{ruleSetName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<TagRuleInner>> get(
@@ -83,8 +80,7 @@ public final class TagRulesClientImpl implements TagRulesClient {
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Dynatrace.Observability"
-                + "/monitors/{monitorName}/tagRules/{ruleSetName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Dynatrace.Observability/monitors/{monitorName}/tagRules/{ruleSetName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
@@ -99,26 +95,8 @@ public final class TagRulesClientImpl implements TagRulesClient {
             Context context);
 
         @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Dynatrace.Observability"
-                + "/monitors/{monitorName}/tagRules/{ruleSetName}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<TagRuleInner>> update(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("monitorName") String monitorName,
-            @PathParam("ruleSetName") String ruleSetName,
-            @BodyParam("application/json") TagRuleUpdate resource,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Dynatrace.Observability"
-                + "/monitors/{monitorName}/tagRules/{ruleSetName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Dynatrace.Observability/monitors/{monitorName}/tagRules/{ruleSetName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
@@ -133,8 +111,7 @@ public final class TagRulesClientImpl implements TagRulesClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Dynatrace.Observability"
-                + "/monitors/{monitorName}/tagRules")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Dynatrace.Observability/monitors/{monitorName}/tagRules")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<TagRuleListResult>> list(
@@ -284,22 +261,6 @@ public final class TagRulesClientImpl implements TagRulesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param ruleSetName Monitor resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a TagRule.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public TagRuleInner get(String resourceGroupName, String monitorName, String ruleSetName) {
-        return getAsync(resourceGroupName, monitorName, ruleSetName).block();
-    }
-
-    /**
-     * Get a TagRule.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Monitor resource name.
-     * @param ruleSetName Monitor resource name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -310,6 +271,22 @@ public final class TagRulesClientImpl implements TagRulesClient {
     public Response<TagRuleInner> getWithResponse(
         String resourceGroupName, String monitorName, String ruleSetName, Context context) {
         return getWithResponseAsync(resourceGroupName, monitorName, ruleSetName, context).block();
+    }
+
+    /**
+     * Get a TagRule.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param monitorName Monitor resource name.
+     * @param ruleSetName Monitor resource name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a TagRule.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public TagRuleInner get(String resourceGroupName, String monitorName, String ruleSetName) {
+        return getWithResponse(resourceGroupName, monitorName, ruleSetName, Context.NONE).getValue();
     }
 
     /**
@@ -493,7 +470,7 @@ public final class TagRulesClientImpl implements TagRulesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<TagRuleInner>, TagRuleInner> beginCreateOrUpdate(
         String resourceGroupName, String monitorName, String ruleSetName, TagRuleInner resource) {
-        return beginCreateOrUpdateAsync(resourceGroupName, monitorName, ruleSetName, resource).getSyncPoller();
+        return this.beginCreateOrUpdateAsync(resourceGroupName, monitorName, ruleSetName, resource).getSyncPoller();
     }
 
     /**
@@ -512,7 +489,9 @@ public final class TagRulesClientImpl implements TagRulesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<TagRuleInner>, TagRuleInner> beginCreateOrUpdate(
         String resourceGroupName, String monitorName, String ruleSetName, TagRuleInner resource, Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, monitorName, ruleSetName, resource, context).getSyncPoller();
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, monitorName, ruleSetName, resource, context)
+            .getSyncPoller();
     }
 
     /**
@@ -591,180 +570,6 @@ public final class TagRulesClientImpl implements TagRulesClient {
     public TagRuleInner createOrUpdate(
         String resourceGroupName, String monitorName, String ruleSetName, TagRuleInner resource, Context context) {
         return createOrUpdateAsync(resourceGroupName, monitorName, ruleSetName, resource, context).block();
-    }
-
-    /**
-     * Update a TagRule.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Monitor resource name.
-     * @param ruleSetName Monitor resource name.
-     * @param resource The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return tag rules for a monitor resource along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<TagRuleInner>> updateWithResponseAsync(
-        String resourceGroupName, String monitorName, String ruleSetName, TagRuleUpdate resource) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (monitorName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter monitorName is required and cannot be null."));
-        }
-        if (ruleSetName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter ruleSetName is required and cannot be null."));
-        }
-        if (resource == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resource is required and cannot be null."));
-        } else {
-            resource.validate();
-        }
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            monitorName,
-                            ruleSetName,
-                            resource,
-                            accept,
-                            context))
-            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Update a TagRule.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Monitor resource name.
-     * @param ruleSetName Monitor resource name.
-     * @param resource The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return tag rules for a monitor resource along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<TagRuleInner>> updateWithResponseAsync(
-        String resourceGroupName, String monitorName, String ruleSetName, TagRuleUpdate resource, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (monitorName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter monitorName is required and cannot be null."));
-        }
-        if (ruleSetName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter ruleSetName is required and cannot be null."));
-        }
-        if (resource == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resource is required and cannot be null."));
-        } else {
-            resource.validate();
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                monitorName,
-                ruleSetName,
-                resource,
-                accept,
-                context);
-    }
-
-    /**
-     * Update a TagRule.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Monitor resource name.
-     * @param ruleSetName Monitor resource name.
-     * @param resource The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return tag rules for a monitor resource on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<TagRuleInner> updateAsync(
-        String resourceGroupName, String monitorName, String ruleSetName, TagRuleUpdate resource) {
-        return updateWithResponseAsync(resourceGroupName, monitorName, ruleSetName, resource)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Update a TagRule.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Monitor resource name.
-     * @param ruleSetName Monitor resource name.
-     * @param resource The resource properties to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return tag rules for a monitor resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public TagRuleInner update(
-        String resourceGroupName, String monitorName, String ruleSetName, TagRuleUpdate resource) {
-        return updateAsync(resourceGroupName, monitorName, ruleSetName, resource).block();
-    }
-
-    /**
-     * Update a TagRule.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Monitor resource name.
-     * @param ruleSetName Monitor resource name.
-     * @param resource The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return tag rules for a monitor resource along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<TagRuleInner> updateWithResponse(
-        String resourceGroupName, String monitorName, String ruleSetName, TagRuleUpdate resource, Context context) {
-        return updateWithResponseAsync(resourceGroupName, monitorName, ruleSetName, resource, context).block();
     }
 
     /**
@@ -929,7 +734,7 @@ public final class TagRulesClientImpl implements TagRulesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String monitorName, String ruleSetName) {
-        return beginDeleteAsync(resourceGroupName, monitorName, ruleSetName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, monitorName, ruleSetName).getSyncPoller();
     }
 
     /**
@@ -947,7 +752,7 @@ public final class TagRulesClientImpl implements TagRulesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String monitorName, String ruleSetName, Context context) {
-        return beginDeleteAsync(resourceGroupName, monitorName, ruleSetName, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, monitorName, ruleSetName, context).getSyncPoller();
     }
 
     /**

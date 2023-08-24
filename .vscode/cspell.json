@@ -148,6 +148,7 @@
     "sdk/eventhubs/azure-messaging-eventhubs-stress/Dockerfile",
     "sdk/eventgrid/azure-messaging-eventgrid/**",
     "sdk/cosmos/azure-cosmos/**",
+    "sdk/cosmos/azure-cosmos-test/**",
     "sdk/identity/azure-identity/**",
     "sdk/keyvault/azure-security-keyvault-administration/**",
     "sdk/keyvault/azure-security-keyvault-certificates/**",
@@ -679,7 +680,9 @@
       "words": [
         "Pfast",
         "Pdirect",
-	"Pmulti"
+	      "Pmulti",
+        "Psplit",
+        "Pquery"
       ]
     },
     {

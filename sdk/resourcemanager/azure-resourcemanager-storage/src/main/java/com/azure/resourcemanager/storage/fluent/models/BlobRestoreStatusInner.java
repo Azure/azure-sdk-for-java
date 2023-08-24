@@ -38,6 +38,10 @@ public final class BlobRestoreStatusInner {
     @JsonProperty(value = "parameters", access = JsonProperty.Access.WRITE_ONLY)
     private BlobRestoreParameters parameters;
 
+    /** Creates an instance of BlobRestoreStatusInner class. */
+    public BlobRestoreStatusInner() {
+    }
+
     /**
      * Get the status property: The status of blob restore progress. Possible values are: - InProgress: Indicates that
      * blob restore is ongoing. - Complete: Indicates that blob restore has been completed successfully. - Failed:

@@ -63,6 +63,7 @@
     <module>sdk/datalakestore</module>
     <module>sdk/datamigration</module>
     <module>sdk/dataprotection</module>
+    <module>sdk/defendereasm</module>
     <module>sdk/delegatednetwork</module>
     <module>sdk/deploymentmanager</module>
     <module>sdk/desktopvirtualization</module>

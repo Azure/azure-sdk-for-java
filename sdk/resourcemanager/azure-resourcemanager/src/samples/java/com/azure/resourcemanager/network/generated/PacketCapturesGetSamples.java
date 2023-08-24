@@ -7,7 +7,7 @@ package com.azure.resourcemanager.network.generated;
 /** Samples for PacketCaptures Get. */
 public final class PacketCapturesGetSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-02-01/examples/NetworkWatcherPacketCaptureGet.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-04-01/examples/NetworkWatcherPacketCaptureGet.json
      */
     /**
      * Sample code: Get packet capture.

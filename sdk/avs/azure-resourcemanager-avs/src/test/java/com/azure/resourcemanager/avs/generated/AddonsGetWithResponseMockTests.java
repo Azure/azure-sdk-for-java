@@ -30,7 +30,7 @@ public final class AddonsGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"addonType\":\"AddonProperties\",\"provisioningState\":\"Canceled\"},\"id\":\"qzvnersbycucr\",\"name\":\"namikzebrqbsms\",\"type\":\"ziqgfuh\"}";
+            "{\"properties\":{\"addonType\":\"AddonProperties\",\"provisioningState\":\"Failed\"},\"id\":\"eb\",\"name\":\"fulbmoichdl\",\"type\":\"nfpubntnbatz\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -59,9 +59,6 @@ public final class AddonsGetWithResponseMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         Addon response =
-            manager
-                .addons()
-                .getWithResponse("vuwcobiegstmnin", "jizcilnghgs", "ejjtbxqmul", com.azure.core.util.Context.NONE)
-                .getValue();
+            manager.addons().getWithResponse("hcspo", "aqa", "sipi", com.azure.core.util.Context.NONE).getValue();
     }
 }

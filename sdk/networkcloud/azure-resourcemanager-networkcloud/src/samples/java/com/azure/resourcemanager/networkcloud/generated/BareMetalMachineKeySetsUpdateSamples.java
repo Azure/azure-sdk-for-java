@@ -15,7 +15,7 @@ import java.util.Map;
 /** Samples for BareMetalMachineKeySets Update. */
 public final class BareMetalMachineKeySetsUpdateSamples {
     /*
-     * x-ms-original-file: specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2023-05-01-preview/examples/BareMetalMachineKeySets_Patch.json
+     * x-ms-original-file: specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2023-07-01/examples/BareMetalMachineKeySets_Patch.json
      */
     /**
      * Sample code: Patch bare metal machine key set of cluster.
@@ -32,7 +32,7 @@ public final class BareMetalMachineKeySetsUpdateSamples {
                 .getValue();
         resource
             .update()
-            .withTags(mapOf("key1", "myvalue1", "key2", "myvalue2"))
+            .withTags(mapOf("key1", "fakeTokenPlaceholder", "key2", "fakeTokenPlaceholder"))
             .withExpiration(OffsetDateTime.parse("2022-12-31T23:59:59.008Z"))
             .withJumpHostsAllowed(Arrays.asList("192.0.2.1", "192.0.2.5"))
             .withUserList(
@@ -49,6 +49,7 @@ public final class BareMetalMachineKeySetsUpdateSamples {
             .apply();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

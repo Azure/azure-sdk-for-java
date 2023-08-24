@@ -7,7 +7,7 @@ package com.azure.resourcemanager.network.generated;
 /** Samples for ExpressRoutePortsLocations Get. */
 public final class ExpressRoutePortsLocationsGetSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-02-01/examples/ExpressRoutePortsLocationGet.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-04-01/examples/ExpressRoutePortsLocationGet.json
      */
     /**
      * Sample code: ExpressRoutePortsLocationGet.
