@@ -34,6 +34,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 /**
@@ -157,6 +158,7 @@ public class EventProcessorClientBuilder implements
     private Duration partitionOwnershipExpirationInterval;
     private LoadBalancingStrategy loadBalancingStrategy = LoadBalancingStrategy.GREEDY;
     private EventPosition defaultInitialEventPosition = null;
+    private Function<String, EventPosition> initialEventPositionProvider;
 
     /**
      * Creates a new instance of {@link EventProcessorClientBuilder}.
@@ -760,10 +762,12 @@ public class EventProcessorClientBuilder implements
      * {@link CheckpointStore}.
      *
      * <p>
-     * The starting position for each partition is determined using the following steps.
+     * The starting position for each partition is determined using the following steps:
      * <ol>
      *     <li>Check the {@link CheckpointStore} for that partition's checkpoint.</li>
-     *     <li>If it does not exist, check {@link #initialPartitionEventPosition(Map)} for an entry.</li>
+     *     <li>If {@link #initialPartitionEventPosition(Function)} is set, evaluates for an {@link EventPosition}.</li>
+     *     <li>If initial mapping provider is not set or the function return's {@code null}, checks
+     *     {@link #initialPartitionEventPosition(Map)} for an entry.</li>
      *     <li>If an entry does not exist, check if {@link #initialPartitionEventPosition(EventPosition)} is set.</li>
      *     <li>Else, use {@link EventPosition#latest()}.</li>
      * </ol>
@@ -781,11 +785,17 @@ public class EventProcessorClientBuilder implements
     /**
      * Sets the map containing the event position to use for each partition if a checkpoint for the partition does not
      * exist in {@link CheckpointStore}. This map is keyed off of the partition id.
+     *
      * <p>
-     * If there is no checkpoint in {@link CheckpointStore}, there is no entry in this map, and the
-     * {@link #initialPartitionEventPosition(EventPosition) default starting position} is not set, the processing of
-     * the partition will start from {@link EventPosition#latest() latest} position.
-     * </p>
+     * The starting position for each partition is determined using the following steps:
+     * <ol>
+     *     <li>Check the {@link CheckpointStore} for that partition's checkpoint.</li>
+     *     <li>If {@link #initialPartitionEventPosition(Function)} is set, evaluates for an {@link EventPosition}.</li>
+     *     <li>If initial mapping provider is not set or the function return's {@code null}, checks
+     *     {@link #initialPartitionEventPosition(Map)} for an entry.</li>
+     *     <li>If an entry does not exist, check if {@link #initialPartitionEventPosition(EventPosition)} is set.</li>
+     *     <li>Else, use {@link EventPosition#latest()}.</li>
+     * </ol>
      *
      * @param initialPartitionEventPosition Map of initial event positions for partition ids.
      *
@@ -799,6 +809,31 @@ public class EventProcessorClientBuilder implements
         return this;
     }
 
+    /**
+     * Sets the default starting position for each partition if a checkpoint for that partition does not exist in the
+     * {@link CheckpointStore}.
+     *
+     * <p>
+     * The starting position for each partition is determined using the following steps:
+     * <ol>
+     *     <li>Check the {@link CheckpointStore} for that partition's checkpoint.</li>
+     *     <li>If {@link #initialPartitionEventPosition(Function)} is set, evaluates for an {@link EventPosition}.</li>
+     *     <li>If initial mapping provider is not set or the function return's {@code null}, checks
+     *     {@link #initialPartitionEventPosition(Map)} for an entry.</li>
+     *     <li>If an entry does not exist, check if {@link #initialPartitionEventPosition(EventPosition)} is set.</li>
+     *     <li>Else, use {@link EventPosition#latest()}.</li>
+     * </ol>
+     *
+     * @param initialEventPositionProvider Function that maps the given {@code partitionId} to an
+     *      {@link EventPosition}.
+     *
+     * @return The updated {@link EventProcessorClientBuilder} instance.
+     */
+    public EventProcessorClientBuilder initialPartitionEventPosition(
+        Function<String, EventPosition> initialEventPositionProvider) {
+        this.initialEventPositionProvider = initialEventPositionProvider;
+        return this;
+    }
 
     /**
      * This will create a new {@link EventProcessorClient} configured with the options set in this builder. Each call to
