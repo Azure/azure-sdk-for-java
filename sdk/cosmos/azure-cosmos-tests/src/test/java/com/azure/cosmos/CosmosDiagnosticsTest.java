@@ -1409,7 +1409,6 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
     public void negativeE2ETimeoutWithPointOperation() {
         CosmosAsyncClient client = null;
         String databaseId = DatabaseForTest.generateId();
-        FaultInjectionRule faultInjectionRule = null;
 
         try {
             client = new CosmosClientBuilder()
@@ -1444,7 +1443,6 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
     public void negativeE2ETimeoutWithQueryOperation() {
         CosmosAsyncClient client = null;
         String databaseId = DatabaseForTest.generateId();
-        FaultInjectionRule faultInjectionRule = null;
 
         try {
             client = new CosmosClientBuilder()
