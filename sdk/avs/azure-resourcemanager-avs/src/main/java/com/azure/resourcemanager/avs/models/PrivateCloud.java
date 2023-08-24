@@ -200,6 +200,15 @@ public interface PrivateCloud {
     Encryption encryption();
 
     /**
+     * Gets the extendedNetworkBlocks property: Array of additional networks noncontiguous with networkBlock. Networks
+     * must be unique and non-overlapping across VNet in your subscription, on-premise, and this privateCloud
+     * networkBlock attribute. Make sure the CIDR format conforms to (A.B.C.D/X).
+     *
+     * @return the extendedNetworkBlocks value.
+     */
+    List<String> extendedNetworkBlocks();
+
+    /**
      * Gets the region of the resource.
      *
      * @return the region of the resource.
@@ -235,11 +244,13 @@ public interface PrivateCloud {
             DefinitionStages.WithSku,
             DefinitionStages.WithCreate {
     }
+
     /** The PrivateCloud definition stages. */
     interface DefinitionStages {
         /** The first stage of the PrivateCloud definition. */
         interface Blank extends WithLocation {
         }
+
         /** The stage of the PrivateCloud definition allowing to specify location. */
         interface WithLocation {
             /**
@@ -258,6 +269,7 @@ public interface PrivateCloud {
              */
             WithResourceGroup withRegion(String location);
         }
+
         /** The stage of the PrivateCloud definition allowing to specify parent resource. */
         interface WithResourceGroup {
             /**
@@ -268,6 +280,7 @@ public interface PrivateCloud {
              */
             WithSku withExistingResourceGroup(String resourceGroupName);
         }
+
         /** The stage of the PrivateCloud definition allowing to specify sku. */
         interface WithSku {
             /**
@@ -278,6 +291,7 @@ public interface PrivateCloud {
              */
             WithCreate withSku(Sku sku);
         }
+
         /**
          * The stage of the PrivateCloud definition which contains all the minimum required properties for the resource
          * to be created, but also allows for any other optional properties to be specified.
@@ -294,7 +308,8 @@ public interface PrivateCloud {
                 DefinitionStages.WithInternet,
                 DefinitionStages.WithIdentitySources,
                 DefinitionStages.WithAvailability,
-                DefinitionStages.WithEncryption {
+                DefinitionStages.WithEncryption,
+                DefinitionStages.WithExtendedNetworkBlocks {
             /**
              * Executes the create request.
              *
@@ -310,6 +325,7 @@ public interface PrivateCloud {
              */
             PrivateCloud create(Context context);
         }
+
         /** The stage of the PrivateCloud definition allowing to specify tags. */
         interface WithTags {
             /**
@@ -320,6 +336,7 @@ public interface PrivateCloud {
              */
             WithCreate withTags(Map<String, String> tags);
         }
+
         /** The stage of the PrivateCloud definition allowing to specify identity. */
         interface WithIdentity {
             /**
@@ -330,6 +347,7 @@ public interface PrivateCloud {
              */
             WithCreate withIdentity(PrivateCloudIdentity identity);
         }
+
         /** The stage of the PrivateCloud definition allowing to specify circuit. */
         interface WithCircuit {
             /**
@@ -340,6 +358,7 @@ public interface PrivateCloud {
              */
             WithCreate withCircuit(Circuit circuit);
         }
+
         /** The stage of the PrivateCloud definition allowing to specify networkBlock. */
         interface WithNetworkBlock {
             /**
@@ -354,6 +373,7 @@ public interface PrivateCloud {
              */
             WithCreate withNetworkBlock(String networkBlock);
         }
+
         /** The stage of the PrivateCloud definition allowing to specify vcenterPassword. */
         interface WithVcenterPassword {
             /**
@@ -365,6 +385,7 @@ public interface PrivateCloud {
              */
             WithCreate withVcenterPassword(String vcenterPassword);
         }
+
         /** The stage of the PrivateCloud definition allowing to specify nsxtPassword. */
         interface WithNsxtPassword {
             /**
@@ -376,6 +397,7 @@ public interface PrivateCloud {
              */
             WithCreate withNsxtPassword(String nsxtPassword);
         }
+
         /** The stage of the PrivateCloud definition allowing to specify secondaryCircuit. */
         interface WithSecondaryCircuit {
             /**
@@ -388,6 +410,7 @@ public interface PrivateCloud {
              */
             WithCreate withSecondaryCircuit(Circuit secondaryCircuit);
         }
+
         /** The stage of the PrivateCloud definition allowing to specify managementCluster. */
         interface WithManagementCluster {
             /**
@@ -398,6 +421,7 @@ public interface PrivateCloud {
              */
             WithCreate withManagementCluster(ManagementCluster managementCluster);
         }
+
         /** The stage of the PrivateCloud definition allowing to specify internet. */
         interface WithInternet {
             /**
@@ -408,6 +432,7 @@ public interface PrivateCloud {
              */
             WithCreate withInternet(InternetEnum internet);
         }
+
         /** The stage of the PrivateCloud definition allowing to specify identitySources. */
         interface WithIdentitySources {
             /**
@@ -418,6 +443,7 @@ public interface PrivateCloud {
              */
             WithCreate withIdentitySources(List<IdentitySource> identitySources);
         }
+
         /** The stage of the PrivateCloud definition allowing to specify availability. */
         interface WithAvailability {
             /**
@@ -429,6 +455,7 @@ public interface PrivateCloud {
              */
             WithCreate withAvailability(AvailabilityProperties availability);
         }
+
         /** The stage of the PrivateCloud definition allowing to specify encryption. */
         interface WithEncryption {
             /**
@@ -439,7 +466,23 @@ public interface PrivateCloud {
              */
             WithCreate withEncryption(Encryption encryption);
         }
+
+        /** The stage of the PrivateCloud definition allowing to specify extendedNetworkBlocks. */
+        interface WithExtendedNetworkBlocks {
+            /**
+             * Specifies the extendedNetworkBlocks property: Array of additional networks noncontiguous with
+             * networkBlock. Networks must be unique and non-overlapping across VNet in your subscription, on-premise,
+             * and this privateCloud networkBlock attribute. Make sure the CIDR format conforms to (A.B.C.D/X)..
+             *
+             * @param extendedNetworkBlocks Array of additional networks noncontiguous with networkBlock. Networks must
+             *     be unique and non-overlapping across VNet in your subscription, on-premise, and this privateCloud
+             *     networkBlock attribute. Make sure the CIDR format conforms to (A.B.C.D/X).
+             * @return the next definition stage.
+             */
+            WithCreate withExtendedNetworkBlocks(List<String> extendedNetworkBlocks);
+        }
     }
+
     /**
      * Begins update for the PrivateCloud resource.
      *
@@ -454,7 +497,8 @@ public interface PrivateCloud {
             UpdateStages.WithManagementCluster,
             UpdateStages.WithInternet,
             UpdateStages.WithIdentitySources,
-            UpdateStages.WithEncryption {
+            UpdateStages.WithEncryption,
+            UpdateStages.WithExtendedNetworkBlocks {
         /**
          * Executes the update request.
          *
@@ -470,6 +514,7 @@ public interface PrivateCloud {
          */
         PrivateCloud apply(Context context);
     }
+
     /** The PrivateCloud update stages. */
     interface UpdateStages {
         /** The stage of the PrivateCloud update allowing to specify tags. */
@@ -482,6 +527,7 @@ public interface PrivateCloud {
              */
             Update withTags(Map<String, String> tags);
         }
+
         /** The stage of the PrivateCloud update allowing to specify identity. */
         interface WithIdentity {
             /**
@@ -492,6 +538,7 @@ public interface PrivateCloud {
              */
             Update withIdentity(PrivateCloudIdentity identity);
         }
+
         /** The stage of the PrivateCloud update allowing to specify managementCluster. */
         interface WithManagementCluster {
             /**
@@ -502,6 +549,7 @@ public interface PrivateCloud {
              */
             Update withManagementCluster(ManagementCluster managementCluster);
         }
+
         /** The stage of the PrivateCloud update allowing to specify internet. */
         interface WithInternet {
             /**
@@ -512,6 +560,7 @@ public interface PrivateCloud {
              */
             Update withInternet(InternetEnum internet);
         }
+
         /** The stage of the PrivateCloud update allowing to specify identitySources. */
         interface WithIdentitySources {
             /**
@@ -522,6 +571,7 @@ public interface PrivateCloud {
              */
             Update withIdentitySources(List<IdentitySource> identitySources);
         }
+
         /** The stage of the PrivateCloud update allowing to specify encryption. */
         interface WithEncryption {
             /**
@@ -532,7 +582,23 @@ public interface PrivateCloud {
              */
             Update withEncryption(Encryption encryption);
         }
+
+        /** The stage of the PrivateCloud update allowing to specify extendedNetworkBlocks. */
+        interface WithExtendedNetworkBlocks {
+            /**
+             * Specifies the extendedNetworkBlocks property: Array of additional networks noncontiguous with
+             * networkBlock. Networks must be unique and non-overlapping across VNet in your subscription, on-premise,
+             * and this privateCloud networkBlock attribute. Make sure the CIDR format conforms to (A.B.C.D/X)..
+             *
+             * @param extendedNetworkBlocks Array of additional networks noncontiguous with networkBlock. Networks must
+             *     be unique and non-overlapping across VNet in your subscription, on-premise, and this privateCloud
+             *     networkBlock attribute. Make sure the CIDR format conforms to (A.B.C.D/X).
+             * @return the next definition stage.
+             */
+            Update withExtendedNetworkBlocks(List<String> extendedNetworkBlocks);
+        }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

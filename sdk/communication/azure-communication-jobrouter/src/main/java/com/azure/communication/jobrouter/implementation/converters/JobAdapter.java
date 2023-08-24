@@ -12,6 +12,7 @@ import com.azure.communication.jobrouter.implementation.models.RouterJobItemInte
 import com.azure.communication.jobrouter.implementation.models.RouterWorkerSelectorInternal;
 import com.azure.communication.jobrouter.implementation.models.ScheduleAndSuspendModeInternal;
 import com.azure.communication.jobrouter.models.CreateJobOptions;
+import com.azure.communication.jobrouter.models.CreateJobWithClassificationPolicyOptions;
 import com.azure.communication.jobrouter.models.LabelValue;
 import com.azure.communication.jobrouter.models.QueueAndMatchMode;
 import com.azure.communication.jobrouter.models.RouterJob;
@@ -71,12 +72,44 @@ public class JobAdapter {
             .setLabels(labels)
             .setNotes(notes)
             .setPriority(createJobOptions.getPriority())
-            .setClassificationPolicyId(createJobOptions.getClassificationPolicyId())
             .setDispositionCode(createJobOptions.getDispositionCode())
-            .setClassificationPolicyId(createJobOptions.getClassificationPolicyId())
             .setRequestedWorkerSelectors(workerSelectorsInternal)
             .setTags(tags)
             .setMatchingMode(convertMatchingModeToInternal(createJobOptions.getMatchingMode()));
+    }
+
+    /**
+     * Converts {@link CreateJobWithClassificationPolicyOptions} to {@link RouterJobInternal}.
+     * @param createJobWithClassificationPolicyOptions Container with options to create {@link RouterJobInternal}
+     * @return RouterJob
+     */
+    public static RouterJobInternal convertCreateJobWithClassificationPolicyOptionsToRouterJob(CreateJobWithClassificationPolicyOptions createJobWithClassificationPolicyOptions) {
+        Map<String, LabelValue> labelValueMap = createJobWithClassificationPolicyOptions.getLabels();
+        Map<String, Object> labels = labelValueMap != null ? labelValueMap.entrySet().stream()
+            .collect(Collectors.toMap(Map.Entry::getKey, entry -> entry.getValue().getValue())) : null;
+        Map<String, LabelValue> tagValueMap = createJobWithClassificationPolicyOptions.getLabels();
+        Map<String, Object> tags = tagValueMap != null ? tagValueMap.entrySet().stream()
+            .collect(Collectors.toMap(Map.Entry::getKey, entry -> entry.getValue().getValue())) : null;
+        List<RouterWorkerSelector> workerSelectors = createJobWithClassificationPolicyOptions.getRequestedWorkerSelectors();
+        List<RouterWorkerSelectorInternal> workerSelectorsInternal = workerSelectors != null ? workerSelectors.stream()
+            .map(ws -> convertWorkerSelectorToInternal(ws))
+            .collect(Collectors.toList()) : null;
+        List<RouterJobNote> jobNotes = createJobWithClassificationPolicyOptions.getNotes();
+        Map<String, String> notes = jobNotes != null ? jobNotes.stream()
+            .collect(Collectors.toMap(note -> note.getAddedAt().toString(), note -> note.getMessage())) : null;
+
+        return new RouterJobInternal()
+            .setChannelId(createJobWithClassificationPolicyOptions.getChannelId())
+            .setChannelReference(createJobWithClassificationPolicyOptions.getChannelReference())
+            .setQueueId(createJobWithClassificationPolicyOptions.getQueueId())
+            .setLabels(labels)
+            .setNotes(notes)
+            .setPriority(createJobWithClassificationPolicyOptions.getPriority())
+            .setClassificationPolicyId(createJobWithClassificationPolicyOptions.getClassificationPolicyId())
+            .setDispositionCode(createJobWithClassificationPolicyOptions.getDispositionCode())
+            .setRequestedWorkerSelectors(workerSelectorsInternal)
+            .setTags(tags)
+            .setMatchingMode(convertMatchingModeToInternal(createJobWithClassificationPolicyOptions.getMatchingMode()));
     }
 
     /**

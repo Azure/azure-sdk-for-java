@@ -15,23 +15,23 @@ public final class WorkloadNetworkVMGroupPropertiesTests {
         WorkloadNetworkVMGroupProperties model =
             BinaryData
                 .fromString(
-                    "{\"displayName\":\"gnayqigynduh\",\"members\":[\"qlkth\",\"maqolbgycduie\",\"tgccymvaolpss\"],\"status\":\"FAILURE\",\"provisioningState\":\"Failed\",\"revision\":940610692718193227}")
+                    "{\"displayName\":\"zfoqouicybxar\",\"members\":[\"zuf\",\"x\",\"iqopidoamciod\",\"khazxkhnzbonlwn\"],\"status\":\"FAILURE\",\"provisioningState\":\"Updating\",\"revision\":8928756986200818231}")
                 .toObject(WorkloadNetworkVMGroupProperties.class);
-        Assertions.assertEquals("gnayqigynduh", model.displayName());
-        Assertions.assertEquals("qlkth", model.members().get(0));
-        Assertions.assertEquals(940610692718193227L, model.revision());
+        Assertions.assertEquals("zfoqouicybxar", model.displayName());
+        Assertions.assertEquals("zuf", model.members().get(0));
+        Assertions.assertEquals(8928756986200818231L, model.revision());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         WorkloadNetworkVMGroupProperties model =
             new WorkloadNetworkVMGroupProperties()
-                .withDisplayName("gnayqigynduh")
-                .withMembers(Arrays.asList("qlkth", "maqolbgycduie", "tgccymvaolpss"))
-                .withRevision(940610692718193227L);
+                .withDisplayName("zfoqouicybxar")
+                .withMembers(Arrays.asList("zuf", "x", "iqopidoamciod", "khazxkhnzbonlwn"))
+                .withRevision(8928756986200818231L);
         model = BinaryData.fromObject(model).toObject(WorkloadNetworkVMGroupProperties.class);
-        Assertions.assertEquals("gnayqigynduh", model.displayName());
-        Assertions.assertEquals("qlkth", model.members().get(0));
-        Assertions.assertEquals(940610692718193227L, model.revision());
+        Assertions.assertEquals("zfoqouicybxar", model.displayName());
+        Assertions.assertEquals("zuf", model.members().get(0));
+        Assertions.assertEquals(8928756986200818231L, model.revision());
     }
 }

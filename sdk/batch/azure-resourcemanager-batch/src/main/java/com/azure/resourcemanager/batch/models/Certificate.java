@@ -126,11 +126,13 @@ public interface Certificate {
     interface Definition
         extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
+
     /** The Certificate definition stages. */
     interface DefinitionStages {
         /** The first stage of the Certificate definition. */
         interface Blank extends WithParentResource {
         }
+
         /** The stage of the Certificate definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
@@ -142,6 +144,7 @@ public interface Certificate {
              */
             WithCreate withExistingBatchAccount(String resourceGroupName, String accountName);
         }
+
         /**
          * The stage of the Certificate definition which contains all the minimum required properties for the resource
          * to be created, but also allows for any other optional properties to be specified.
@@ -168,6 +171,7 @@ public interface Certificate {
              */
             Certificate create(Context context);
         }
+
         /** The stage of the Certificate definition allowing to specify password. */
         interface WithPassword {
             /**
@@ -181,6 +185,7 @@ public interface Certificate {
              */
             WithCreate withPassword(String password);
         }
+
         /** The stage of the Certificate definition allowing to specify thumbprintAlgorithm. */
         interface WithThumbprintAlgorithm {
             /**
@@ -194,6 +199,7 @@ public interface Certificate {
              */
             WithCreate withThumbprintAlgorithm(String thumbprintAlgorithm);
         }
+
         /** The stage of the Certificate definition allowing to specify thumbprint. */
         interface WithThumbprint {
             /**
@@ -207,6 +213,7 @@ public interface Certificate {
              */
             WithCreate withThumbprint(String thumbprint);
         }
+
         /** The stage of the Certificate definition allowing to specify format. */
         interface WithFormat {
             /**
@@ -218,6 +225,7 @@ public interface Certificate {
              */
             WithCreate withFormat(CertificateFormat format);
         }
+
         /** The stage of the Certificate definition allowing to specify ifMatch. */
         interface WithIfMatch {
             /**
@@ -232,6 +240,7 @@ public interface Certificate {
              */
             WithCreate withIfMatch(String ifMatch);
         }
+
         /** The stage of the Certificate definition allowing to specify ifNoneMatch. */
         interface WithIfNoneMatch {
             /**
@@ -245,6 +254,7 @@ public interface Certificate {
             WithCreate withIfNoneMatch(String ifNoneMatch);
         }
     }
+
     /**
      * Begins update for the Certificate resource.
      *
@@ -275,6 +285,7 @@ public interface Certificate {
          */
         Certificate apply(Context context);
     }
+
     /** The Certificate update stages. */
     interface UpdateStages {
         /** The stage of the Certificate update allowing to specify data. */
@@ -290,6 +301,7 @@ public interface Certificate {
              */
             Update withData(String data);
         }
+
         /** The stage of the Certificate update allowing to specify password. */
         interface WithPassword {
             /**
@@ -303,6 +315,7 @@ public interface Certificate {
              */
             Update withPassword(String password);
         }
+
         /** The stage of the Certificate update allowing to specify thumbprintAlgorithm. */
         interface WithThumbprintAlgorithm {
             /**
@@ -316,6 +329,7 @@ public interface Certificate {
              */
             Update withThumbprintAlgorithm(String thumbprintAlgorithm);
         }
+
         /** The stage of the Certificate update allowing to specify thumbprint. */
         interface WithThumbprint {
             /**
@@ -329,6 +343,7 @@ public interface Certificate {
              */
             Update withThumbprint(String thumbprint);
         }
+
         /** The stage of the Certificate update allowing to specify format. */
         interface WithFormat {
             /**
@@ -340,6 +355,7 @@ public interface Certificate {
              */
             Update withFormat(CertificateFormat format);
         }
+
         /** The stage of the Certificate update allowing to specify ifMatch. */
         interface WithIfMatch {
             /**
@@ -353,6 +369,7 @@ public interface Certificate {
             Update withIfMatch(String ifMatch);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

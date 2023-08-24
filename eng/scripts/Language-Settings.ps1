@@ -9,6 +9,7 @@ $GithubUri = "https://github.com/Azure/azure-sdk-for-java"
 $PackageRepositoryUri = "https://repo1.maven.org/maven2"
 
 . "$PSScriptRoot/docs/Docs-ToC.ps1"
+. "$PSScriptRoot/docs/Docs-Onboarding.ps1"
 
 function Get-java-PackageInfoFromRepo ($pkgPath, $serviceDirectory)
 {
@@ -281,6 +282,7 @@ $PackageExclusions = @{
   "azure-cosmos-spark_3-1_2-12" = "Javadoc dependency issue.";
   "azure-cosmos-spark_3-2_2-12" = "Javadoc dependency issue.";
   "azure-cosmos-spark_3-3_2-12" = "Javadoc dependency issue.";
+  "azure-cosmos-spark_3-4_2-12" = "Javadoc dependency issue.";  
   "azure-cosmos-test" = "Don't want to include the test framework package.";
   "azure-aot-graalvm-support-netty" = "No Javadocs for the package.";
   "azure-aot-graalvm-support" = "No Javadocs for the package.";
@@ -292,6 +294,7 @@ $PackageExclusions = @{
   "azure-applicationinsights-query" = "Cannot find namespaces in javadoc package.";
   "azure-resourcemanager-voiceservices" = "Doc build attempts to download a package that does not have published sources.";
   "azure-resourcemanager-storagemover" = "Attempts to azure-sdk-build-tool and fails";
+  "azure-security-keyvault-jca" = "Consistently hangs docs build, might be a spring package https://github.com/Azure/azure-sdk-for-java/issues/35389";
 }
 
 # Validates if the package will succeed in the CI build by validating the
@@ -313,6 +316,12 @@ function SourcePackageHasComFolder($artifactNamePrefix, $packageDirectory) {
 
     $sourcesJarPath = (Get-ChildItem -File -Path $packageDirectory -Filter "*-sources.jar")[0]
     $sourcesExtractPath = Join-Path $packageDirectory "sources"
+    
+    # Ensure that the sources folder is empty before extracting the jar
+    # otherwise there could be file collisions from a previous extraction run on
+    # the same system.
+    Remove-Item $sourcesExtractPath/* -Force -Recurse -ErrorAction Ignore
+
     Add-Type -AssemblyName System.IO.Compression.FileSystem
     [System.IO.Compression.ZipFile]::ExtractToDirectory($sourcesJarPath, $sourcesExtractPath)
 
@@ -736,6 +745,8 @@ function Get-java-DocsMsMetadataForPackage($PackageInfo) {
   }
 }
 
+# Defined in common.ps1 as:
+# $ValidateDocsMsPackagesFn = "Validate-${Language}-DocMsPackages" 
 function Validate-java-DocMsPackages ($PackageInfo, $PackageInfos, $DocValidationImageId) {
   # While eng/common/scripts/Update-DocsMsMetadata.ps1 is still passing a single packageInfo, process as a batch
   if (!$PackageInfos) {
@@ -744,9 +755,10 @@ function Validate-java-DocMsPackages ($PackageInfo, $PackageInfos, $DocValidatio
 
   if (!(ValidatePackages $PackageInfos $DocValidationImageId)) {
     Write-Error "Package validation failed" -ErrorAction Continue
+    return $false
   }
 
-  return
+  return $true
 }
 
 function Get-java-EmitterName() {

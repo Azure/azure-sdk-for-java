@@ -11,7 +11,6 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.batch.BatchManager;
 import com.azure.resourcemanager.batch.models.Application;
 import java.nio.ByteBuffer;
@@ -32,7 +31,7 @@ public final class ApplicationsGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"displayName\":\"vtldgmfpgvmpip\",\"allowUpdates\":false,\"defaultVersion\":\"haq\"},\"etag\":\"ss\",\"id\":\"wutwbdsre\",\"name\":\"pdrhne\",\"type\":\"yowqkdwytisibir\"}";
+            "{\"properties\":{\"displayName\":\"wz\",\"allowUpdates\":true,\"defaultVersion\":\"lmctlpd\"},\"etag\":\"itvgbmhrixkwm\",\"id\":\"ijejvegrhbpn\",\"name\":\"ixexcc\",\"type\":\"dreaxh\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -61,10 +60,13 @@ public final class ApplicationsGetWithResponseMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         Application response =
-            manager.applications().getWithResponse("gzrf", "eeyebi", "ikayuhqlbjbsybb", Context.NONE).getValue();
+            manager
+                .applications()
+                .getWithResponse("vblm", "vkzuhbxvvyhgso", "byrqufeg", com.azure.core.util.Context.NONE)
+                .getValue();
 
-        Assertions.assertEquals("vtldgmfpgvmpip", response.displayName());
-        Assertions.assertEquals(false, response.allowUpdates());
-        Assertions.assertEquals("haq", response.defaultVersion());
+        Assertions.assertEquals("wz", response.displayName());
+        Assertions.assertEquals(true, response.allowUpdates());
+        Assertions.assertEquals("lmctlpd", response.defaultVersion());
     }
 }

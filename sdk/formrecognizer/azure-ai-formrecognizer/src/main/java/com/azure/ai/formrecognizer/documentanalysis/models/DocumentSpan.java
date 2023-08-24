@@ -34,7 +34,6 @@ public final class DocumentSpan {
      * Set the offset property: Zero-based index of the content represented by the span.
      *
      * @param offset the offset value to set.
-     * @return the DocumentSpan object itself.
      */
     private void setOffset(int offset) {
         this.offset = offset;
@@ -53,7 +52,6 @@ public final class DocumentSpan {
      * Set the length property: Number of characters in the content represented by the span.
      *
      * @param length the length value to set.
-     * @return the DocumentSpan object itself.
      */
     private void setLength(int length) {
         this.length = length;

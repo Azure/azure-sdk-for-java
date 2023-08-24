@@ -64,7 +64,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-amqp</artifactId>
-      <version>2.9.0-beta.5</version> <!-- {x-version-update;com.azure:azure-core-amqp;current} -->
+      <version>2.9.0-beta.6</version> <!-- {x-version-update;com.azure:azure-core-amqp;current} -->
     </dependency>
 
     <dependency>
@@ -88,7 +88,7 @@
     <dependency>
       <groupId>io.projectreactor</groupId>
       <artifactId>reactor-test</artifactId>
-      <version>3.4.30</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
+      <version>3.4.31</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>

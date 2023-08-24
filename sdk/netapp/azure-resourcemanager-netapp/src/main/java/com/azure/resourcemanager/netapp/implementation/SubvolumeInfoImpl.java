@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.netapp.implementation;
 
-import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.netapp.fluent.models.SubvolumeInfoInner;
 import com.azure.resourcemanager.netapp.models.SubvolumeInfo;
@@ -26,10 +25,6 @@ public final class SubvolumeInfoImpl implements SubvolumeInfo, SubvolumeInfo.Def
 
     public String type() {
         return this.innerModel().type();
-    }
-
-    public SystemData systemData() {
-        return this.innerModel().systemData();
     }
 
     public String path() {

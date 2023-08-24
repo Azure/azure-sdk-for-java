@@ -12,17 +12,15 @@ public final class KubernetesClusterRestartNodeParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         KubernetesClusterRestartNodeParameters model =
-            BinaryData
-                .fromString("{\"nodeName\":\"mtdherngb\"}")
-                .toObject(KubernetesClusterRestartNodeParameters.class);
-        Assertions.assertEquals("mtdherngb", model.nodeName());
+            BinaryData.fromString("{\"nodeName\":\"schori\"}").toObject(KubernetesClusterRestartNodeParameters.class);
+        Assertions.assertEquals("schori", model.nodeName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         KubernetesClusterRestartNodeParameters model =
-            new KubernetesClusterRestartNodeParameters().withNodeName("mtdherngb");
+            new KubernetesClusterRestartNodeParameters().withNodeName("schori");
         model = BinaryData.fromObject(model).toObject(KubernetesClusterRestartNodeParameters.class);
-        Assertions.assertEquals("mtdherngb", model.nodeName());
+        Assertions.assertEquals("schori", model.nodeName());
     }
 }

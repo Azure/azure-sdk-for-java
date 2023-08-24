@@ -22,7 +22,7 @@ import java.util.Map;
 /** Samples for VpnGateways CreateOrUpdate. */
 public final class VpnGatewaysCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-11-01/examples/VpnGatewayPut.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-04-01/examples/VpnGatewayPut.json
      */
     /**
      * Sample code: VpnGatewayPut.
@@ -40,7 +40,7 @@ public final class VpnGatewaysCreateOrUpdateSamples {
                 "gateway1",
                 new VpnGatewayInner()
                     .withLocation("westcentralus")
-                    .withTags(mapOf("key1", "value1"))
+                    .withTags(mapOf("key1", "fakeTokenPlaceholder"))
                     .withVirtualHub(
                         new SubResource()
                             .withId(
@@ -103,6 +103,7 @@ public final class VpnGatewaysCreateOrUpdateSamples {
                 com.azure.core.util.Context.NONE);
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

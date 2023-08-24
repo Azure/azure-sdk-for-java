@@ -12,14 +12,14 @@ public final class ResourceCapabilitiesBaseTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ResourceCapabilitiesBase model =
-            BinaryData.fromString("{\"type\":\"bpf\"}").toObject(ResourceCapabilitiesBase.class);
-        Assertions.assertEquals("bpf", model.type());
+            BinaryData.fromString("{\"type\":\"zdzevndh\"}").toObject(ResourceCapabilitiesBase.class);
+        Assertions.assertEquals("zdzevndh", model.type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ResourceCapabilitiesBase model = new ResourceCapabilitiesBase().withType("bpf");
+        ResourceCapabilitiesBase model = new ResourceCapabilitiesBase().withType("zdzevndh");
         model = BinaryData.fromObject(model).toObject(ResourceCapabilitiesBase.class);
-        Assertions.assertEquals("bpf", model.type());
+        Assertions.assertEquals("zdzevndh", model.type());
     }
 }

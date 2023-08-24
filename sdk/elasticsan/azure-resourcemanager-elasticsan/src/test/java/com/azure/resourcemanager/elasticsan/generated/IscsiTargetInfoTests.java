@@ -8,23 +8,22 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.elasticsan.models.IscsiTargetInfo;
 import com.azure.resourcemanager.elasticsan.models.OperationalStatus;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class IscsiTargetInfoTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         IscsiTargetInfo model =
             BinaryData
                 .fromString(
-                    "{\"targetIqn\":\"nj\",\"targetPortalHostname\":\"lwtgrhpdj\",\"targetPortalPort\":523400535,\"provisioningState\":\"Deleting\",\"status\":\"Running\"}")
+                    "{\"targetIqn\":\"pnvjtoqnermclf\",\"targetPortalHostname\":\"phoxus\",\"targetPortalPort\":2041952882,\"provisioningState\":\"Canceled\",\"status\":\"Invalid\"}")
                 .toObject(IscsiTargetInfo.class);
-        Assertions.assertEquals(OperationalStatus.RUNNING, model.status());
+        Assertions.assertEquals(OperationalStatus.INVALID, model.status());
     }
 
-    @Test
-    public void testSerialize() {
-        IscsiTargetInfo model = new IscsiTargetInfo().withStatus(OperationalStatus.RUNNING);
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        IscsiTargetInfo model = new IscsiTargetInfo().withStatus(OperationalStatus.INVALID);
         model = BinaryData.fromObject(model).toObject(IscsiTargetInfo.class);
-        Assertions.assertEquals(OperationalStatus.RUNNING, model.status());
+        Assertions.assertEquals(OperationalStatus.INVALID, model.status());
     }
 }

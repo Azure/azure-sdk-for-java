@@ -18,8 +18,6 @@ import com.azure.resourcemanager.elasticsan.models.VolumeCreateOption;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
-import java.util.HashMap;
-import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
@@ -35,7 +33,8 @@ public final class VolumesCreateMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"volumeId\":\"tdhxujznbmpowuwp\",\"creationData\":{\"createSource\":\"None\",\"sourceUri\":\"eualupjmkhf\"},\"sizeGiB\":3301190446287542210,\"storageTarget\":{\"targetIqn\":\"wsrtjriplrbpbe\",\"targetPortalHostname\":\"ghfg\",\"targetPortalPort\":107282315,\"provisioningState\":\"Creating\",\"status\":\"Stopped\"}},\"tags\":{\"egibtnmxiebww\":\"qhjk\"},\"id\":\"loayqcgw\",\"name\":\"tzjuzgwyzmhtxo\",\"type\":\"gmtsavjcbpwxqpsr\"}";
+            "{\"properties\":{\"volumeId\":\"i\",\"creationData\":{\"createSource\":\"None\",\"sourceUri\":\"atmtdhtmdvy\"},\"sizeGiB\":7303334041566766737,\"storageTarget\":{\"targetIqn\":\"gszywk\",\"targetPortalHostname\":\"rryuzhlhkjo\",\"targetPortalPort\":1145336567,\"provisioningState\":\"Pending\",\"status\":\"Stopped"
+                + " (deallocated)\"}},\"id\":\"t\",\"name\":\"inrvgoupmfi\",\"type\":\"bfggjioolvr\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -66,28 +65,15 @@ public final class VolumesCreateMockTests {
         Volume response =
             manager
                 .volumes()
-                .define("bnbbeldawkz")
-                .withExistingVolumegroup("rcrgvx", "vgomz", "fmisg")
-                .withTags(mapOf("wjue", "uojgj", "x", "otwmcdyt", "nrjawgqwg", "it"))
+                .define("apfcqdpsq")
+                .withExistingVolumegroup("hwyg", "lvdnkfx", "semdwzrmu")
+                .withSizeGiB(2764555725436180174L)
                 .withCreationData(
-                    new SourceCreationData().withCreateSource(VolumeCreateOption.NONE).withSourceUri("kauhashsfwxo"))
-                .withSizeGiB(499852451661669688L)
+                    new SourceCreationData().withCreateSource(VolumeCreateOption.NONE).withSourceUri("ypql"))
                 .create();
 
-        Assertions.assertEquals("qhjk", response.tags().get("egibtnmxiebww"));
         Assertions.assertEquals(VolumeCreateOption.NONE, response.creationData().createSource());
-        Assertions.assertEquals("eualupjmkhf", response.creationData().sourceUri());
-        Assertions.assertEquals(3301190446287542210L, response.sizeGiB());
-    }
-
-    @SuppressWarnings("unchecked")
-    private static <T> Map<String, T> mapOf(Object... inputs) {
-        Map<String, T> map = new HashMap<>();
-        for (int i = 0; i < inputs.length; i += 2) {
-            String key = (String) inputs[i];
-            T value = (T) inputs[i + 1];
-            map.put(key, value);
-        }
-        return map;
+        Assertions.assertEquals("atmtdhtmdvy", response.creationData().sourceUri());
+        Assertions.assertEquals(7303334041566766737L, response.sizeGiB());
     }
 }

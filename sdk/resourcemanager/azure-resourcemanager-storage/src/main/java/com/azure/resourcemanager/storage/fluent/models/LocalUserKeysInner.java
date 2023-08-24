@@ -24,6 +24,10 @@ public final class LocalUserKeysInner {
     @JsonProperty(value = "sharedKey", access = JsonProperty.Access.WRITE_ONLY)
     private String sharedKey;
 
+    /** Creates an instance of LocalUserKeysInner class. */
+    public LocalUserKeysInner() {
+    }
+
     /**
      * Get the sshAuthorizedKeys property: Optional, local user ssh authorized keys for SFTP.
      *

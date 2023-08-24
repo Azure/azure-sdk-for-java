@@ -40,6 +40,10 @@ public final class ManagementPolicySnapShot {
     @JsonProperty(value = "delete")
     private DateAfterCreation delete;
 
+    /** Creates an instance of ManagementPolicySnapShot class. */
+    public ManagementPolicySnapShot() {
+    }
+
     /**
      * Get the tierToCool property: The function to tier blob snapshot to cool storage.
      *

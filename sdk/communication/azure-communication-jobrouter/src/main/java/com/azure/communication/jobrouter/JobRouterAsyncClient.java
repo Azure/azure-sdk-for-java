@@ -21,6 +21,7 @@ import com.azure.communication.jobrouter.models.CancelJobOptions;
 import com.azure.communication.jobrouter.models.CloseJobOptions;
 import com.azure.communication.jobrouter.models.CompleteJobOptions;
 import com.azure.communication.jobrouter.models.CreateJobOptions;
+import com.azure.communication.jobrouter.models.CreateJobWithClassificationPolicyOptions;
 import com.azure.communication.jobrouter.models.CreateWorkerOptions;
 import com.azure.communication.jobrouter.models.DeclineJobOfferOptions;
 import com.azure.communication.jobrouter.models.ListJobsOptions;
@@ -106,6 +107,33 @@ public final class JobRouterAsyncClient {
     }
 
     /**
+     * Create a job with classification policy.
+     *
+     * @param createJobWithClassificationPolicyOptions Options to create RouterJob.
+     * @return a unit of work to be routed.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<RouterJob> createJobWithClassificationPolicy(CreateJobWithClassificationPolicyOptions createJobWithClassificationPolicyOptions) {
+        try {
+            RouterJobInternal routerJob = JobAdapter.convertCreateJobWithClassificationPolicyOptionsToRouterJob(createJobWithClassificationPolicyOptions);
+            return withContext(context -> upsertJobWithResponse(createJobWithClassificationPolicyOptions.getId(), routerJob, context)
+                .flatMap(
+                    (Response<RouterJob> res) -> {
+                        if (res.getValue() != null) {
+                            return Mono.just(res.getValue());
+                        } else {
+                            return Mono.empty();
+                        }
+                    }));
+        } catch (RuntimeException ex) {
+            return monoError(LOGGER, ex);
+        }
+    }
+
+    /**
      * Create a job.
      *
      * @param createJobOptions Options to create RouterJob.
@@ -125,7 +153,27 @@ public final class JobRouterAsyncClient {
     }
 
     /**
+     * Create a job with classification policy.
+     *
+     * @param createJobWithClassificationPolicyOptions Options to create RouterJob.
+     * @return a unit of work to be routed.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<RouterJob>> createJobWithClassificationPolicyWithResponse(CreateJobWithClassificationPolicyOptions createJobWithClassificationPolicyOptions) {
+        try {
+            RouterJobInternal routerJob = JobAdapter.convertCreateJobWithClassificationPolicyOptionsToRouterJob(createJobWithClassificationPolicyOptions);
+            return withContext(context -> upsertJobWithResponse(createJobWithClassificationPolicyOptions.getId(), routerJob, context));
+        } catch (RuntimeException ex) {
+            return monoError(LOGGER, ex);
+        }
+    }
+
+    /**
      * Updates a job.
+     * Follows https://www.rfc-editor.org/rfc/rfc7386.
      *
      * @param updateJobOptions Options to update RouterJob.
      * @return a unit of work to be routed.
@@ -153,6 +201,7 @@ public final class JobRouterAsyncClient {
 
     /**
      * Updates a job.
+     * Follows https://www.rfc-editor.org/rfc/rfc7386.
      *
      * @param updateJobOptions Options to update RouterJob.
      * @return a unit of work to be routed.
@@ -929,6 +978,7 @@ public final class JobRouterAsyncClient {
 
     /**
      * Update a worker.
+     * Follows https://www.rfc-editor.org/rfc/rfc7386.
      *
      * @param updateWorkerOptions Container for inputs to update a worker.
      * @return an entity for jobs to be routed to.
@@ -956,6 +1006,7 @@ public final class JobRouterAsyncClient {
 
     /**
      * Update a worker.
+     * Follows https://www.rfc-editor.org/rfc/rfc7386.
      *
      * @param updateWorkerOptions Container for inputs to update a worker.
      * @return an entity for jobs to be routed to.
