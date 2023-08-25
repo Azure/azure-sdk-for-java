@@ -54,8 +54,9 @@ class OpenTelemetryUtils {
             if (io.opentelemetry.context.Context.class.isAssignableFrom(traceContextObj.getClass())) {
                 return (io.opentelemetry.context.Context) traceContextObj;
             } else if (!warnedOnContextType) {
-                // TODO (limolkova) The context we have here is created by azure-core-tracing-opentelemetry.
-                // but if otel or appinsights agents are used, the azure-core-tracing-opentelemetry is shaded and records shaded context.
+                // TODO (limolkova) https://github.com/Azure/azure-sdk-for-java/issues/36537
+                // The context we have here is created by azure-core-tracing-opentelemetry.
+                // but if otel or applicationInsights agents are used, the azure-core-tracing-opentelemetry is shaded and records shaded context.
                 // if azure-core-metrics-opentelemetry is NOT shaded, we won't be able to reuse this context since it's not compatible.
                 // I.e. it works fine if both are shaded or not shaded and warns (once) if just one of them is shaded.
                 // We should fix this by adding azure-core-metrics-opentelemetry to otel agent

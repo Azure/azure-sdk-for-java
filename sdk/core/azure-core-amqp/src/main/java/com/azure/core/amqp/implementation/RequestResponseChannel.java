@@ -396,7 +396,13 @@ public class RequestResponseChannel implements AsyncCloseable {
     }
 
     private void settleMessage(Message message) {
-        final UnsignedLong correlationId = UnsignedLong.valueOf((long)message.getCorrelationId());
+        UnsignedLong correlationId;
+        if (message.getCorrelationId() instanceof UnsignedLong) {
+            correlationId = (UnsignedLong)message.getCorrelationId();
+        } else {
+            String id = String.valueOf(message.getCorrelationId());
+            correlationId = UnsignedLong.valueOf(id);
+        }
         final MonoSink<Message> sink = unconfirmedSends.remove(correlationId);
 
         if (sink == null) {

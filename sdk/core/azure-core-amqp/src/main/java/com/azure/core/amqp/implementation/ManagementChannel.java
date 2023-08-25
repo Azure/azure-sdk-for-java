@@ -64,17 +64,6 @@ public class ManagementChannel implements AmqpManagementNode {
         }));
     }
 
-    private <T> Mono<T> errorIfEmpty(RequestResponseChannel channel, com.azure.core.amqp.models.DeliveryState deliveryState) {
-        return Mono.error(() -> {
-            String error = String.format(
-                "entityPath[%s] deliveryState[%s] No response received from management channel.", entityPath, deliveryState);
-            AmqpException exception = new AmqpException(true, error, channel.getErrorContext());
-            return logger.atError()
-                .addKeyValue(DELIVERY_STATE_KEY, deliveryState)
-                .log(exception);
-        });
-    }
-
     @Override
     public Mono<AmqpAnnotatedMessage> send(AmqpAnnotatedMessage message, DeliveryOutcome deliveryOutcome) {
         return isAuthorized().then(createChannel.flatMap(channel -> {
@@ -132,6 +121,17 @@ public class ManagementChannel implements AmqpManagementNode {
 
         final Throwable throwable = ExceptionUtil.toException(errorCondition, statusDescription, errorContext);
         sink.error(throwable);
+    }
+
+    private <T> Mono<T> errorIfEmpty(RequestResponseChannel channel, com.azure.core.amqp.models.DeliveryState deliveryState) {
+        return Mono.error(() -> {
+            String error = String.format(
+                "entityPath[%s] deliveryState[%s] No response received from management channel.", entityPath, deliveryState);
+            AmqpException exception = new AmqpException(true, error, channel.getErrorContext());
+            return logger.atError()
+                .addKeyValue(DELIVERY_STATE_KEY, deliveryState)
+                .log(exception);
+        });
     }
 
     private Mono<Void> isAuthorized() {
