@@ -1,14 +1,6 @@
 ## Release History
 
-### 3.39.0-beta.1 (Unreleased)
-
-#### Features Added
-
-#### Breaking Changes
-
-#### Bugs Fixed
-
-#### Other Changes
+### 3.39.0 (2023-10-07)
 
 ### 5.5.0 (2023-08-28)
 
