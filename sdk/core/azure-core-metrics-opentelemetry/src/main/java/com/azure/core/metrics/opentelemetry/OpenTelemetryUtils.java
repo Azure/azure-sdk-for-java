@@ -45,7 +45,7 @@ class OpenTelemetryUtils {
         }
     }
     /**
-     * Returns OpenTelemetry trace context from given com.azure.core.xt under PARENT_TRACE_CONTEXT_KEY.
+     * Returns OpenTelemetry trace context from given com.azure.core.Context under PARENT_TRACE_CONTEXT_KEY.
      * If not context is found, returns {@link io.opentelemetry.context.Context#current()}.
      */
     static io.opentelemetry.context.Context getTraceContextOrCurrent(Context azContext) {

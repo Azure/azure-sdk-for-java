@@ -16,7 +16,6 @@ import java.util.Objects;
 import java.util.concurrent.Semaphore;
 import java.util.function.Function;
 
-import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.MESSAGE_ID_LOGGING_KEY;
 import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.SEQUENCE_NUMBER_KEY;
 
 /**

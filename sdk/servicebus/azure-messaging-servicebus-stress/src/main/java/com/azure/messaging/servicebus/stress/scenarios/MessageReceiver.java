@@ -7,15 +7,12 @@ import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.ServiceBusReceivedMessage;
 import com.azure.messaging.servicebus.ServiceBusReceiverClient;
-import com.azure.messaging.servicebus.implementation.ServiceBusConstants;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 
-import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.LOCK_TOKEN_KEY;
-import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.MESSAGE_ID_LOGGING_KEY;
 import static com.azure.messaging.servicebus.stress.scenarios.TestUtils.getReceiverBuilder;
 
 /**
@@ -46,10 +43,10 @@ public class MessageReceiver extends ServiceBusScenario {
                 try {
                     client.complete(receivedMessage);
                 } catch (Throwable ex) {
-                    LOGGER.atError()
-                        .addKeyValue(MESSAGE_ID_LOGGING_KEY, receivedMessage.getMessageId())
-                        .addKeyValue(LOCK_TOKEN_KEY, receivedMessage.getLockToken())
-                        .log("Completion error.", ex);
+                    LOGGER.error("Completion error. messageId: {}, lockToken: {}",
+                        receivedMessage.getMessageId(),
+                        receivedMessage.getLockToken(),
+                        ex);
                 }
 
                 count++;

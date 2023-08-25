@@ -219,7 +219,11 @@ public enum AmqpResponseCode {
      * is found.
      */
     public static AmqpResponseCode fromValue(final int value) {
-        return VALUE_MAP[value];
+        if (value >= 0 && value < VALUE_MAP.length) {
+            return VALUE_MAP[value];
+        }
+
+        return null;
     }
 
     /**

@@ -436,7 +436,7 @@ public class ManagementChannel implements ServiceBusManagementNode {
             final Message message = createManagementMessage(OPERATION_UPDATE_DISPOSITION, associatedLinkName);
 
             final Map<String, Object> requestBody = new HashMap<>();
-            requestBody.put(ManagementConstants.LOCK_TOKENS_KEY, new UUID[]{UUID.fromString(lockToken)});
+            requestBody.put(ManagementConstants.LOCK_TOKENS_KEY, lockTokens);
             requestBody.put(ManagementConstants.DISPOSITION_STATUS_KEY, dispositionStatus.getValue());
 
             if (deadLetterReason != null) {
