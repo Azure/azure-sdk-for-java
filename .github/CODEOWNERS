@@ -154,7 +154,7 @@
 
 /sdk/loganalytics/microsoft-azure-loganalytics/      @ischrei
 
-# PRLabel:  %Monitor - Exporter
+# PRLabel:  %OpenTelemetry
 /sdk/monitor/azure-monitor-opentelemetry-exporter/   @trask @ramthi @heyams @jeanbisutti
 
 # PRLabel:  %Monitor
@@ -204,7 +204,7 @@
 # PRLabel: %azure-spring
 /sdk/spring-experimental/                            @backwind1233 @chenrujun @hui1110 @netyyyy @saragluna @stliu @yiliuTo @moarychan @fangjian0423
 
-# PRLabel:  %Monitor - Spring native
+# PRLabel:  %Monitor - Spring
 /sdk/spring/spring-cloud-azure-starter-monitor       @jeanbisutti @trask @ramthi @heyams
 /sdk/spring/spring-cloud-azure-starter-monitor-test  @jeanbisutti @trask @ramthi @heyams
 
@@ -532,25 +532,25 @@
 # ServiceLabel: %Monitor %Service Attention
 #/<NotInRepo>/          @SameergMS @dadunl
 
-# ServiceLabel: %Monitor - Autoscale %Service Attention
+# ServiceLabel: %Monitor %Service Attention
 #/<NotInRepo>/          @AzMonEssential
 
-# ServiceLabel: %Monitor - ActivityLogs %Service Attention
+# ServiceLabel: %Monitor %Service Attention
 #/<NotInRepo>/          @AzMonEssential
 
-# ServiceLabel: %Monitor - Metrics %Service Attention
+# ServiceLabel: %Monitor %Service Attention
 #/<NotInRepo>/          @AzMonEssential
 
-# ServiceLabel: %Monitor - Diagnostic Settings %Service Attention
+# ServiceLabel: %Monitor Settings %Service Attention
 #/<NotInRepo>/          @AzMonEssential
 
-# ServiceLabel: %Monitor - Alerts %Service Attention
+# ServiceLabel: %Monitor %Service Attention
 #/<NotInRepo>/          @AzmonAlerts
 
-# ServiceLabel: %Monitor - ActionGroups %Service Attention
+# ServiceLabel: %Monitor %Service Attention
 #/<NotInRepo>/          @AzmonActionG
 
-# ServiceLabel: %Monitor - LogAnalytics %Service Attention
+# ServiceLabel: %Monitor %Service Attention
 #/<NotInRepo>/          @AzmonLogA
 
 # ServiceLabel: %Monitor - ApplicationInsights %Service Attention
@@ -739,7 +739,7 @@
 # ServiceLabel: %Communication %Service Attention
 #/<NotInRepo>/          @acsdevx-msft
 
-# ServiceLabel: %Monitor - Exporter %Service Attention
+# ServiceLabel: %OpenTelemetry %Service Attention
 #/<NotInRepo>/          @@cijothomas @@reyang @@rajkumar-rangaraj @@TimothyMothra @@vishweshbankwar @@ramthi
 
 # ServiceLabel: %Cost Management - Budget %Service Attention
