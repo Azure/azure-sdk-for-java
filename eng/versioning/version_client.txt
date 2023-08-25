@@ -417,7 +417,7 @@ com.azure.resourcemanager:azure-resourcemanager-paloaltonetworks-ngfw;1.0.0;1.1.
 com.azure.resourcemanager:azure-resourcemanager-newrelicobservability;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-qumulo;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-selfhelp;1.0.0;1.1.0-beta.1
-com.azure.resourcemanager:azure-resourcemanager-networkcloud;1.0.0-beta.2;1.0.0
+com.azure.resourcemanager:azure-resourcemanager-networkcloud;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-cosmosdbforpostgresql;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-managementgroups;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-managednetworkfabric;1.0.0;1.1.0-beta.1
@@ -426,6 +426,7 @@ com.azure.resourcemanager:azure-resourcemanager-quantum;1.0.0-beta.1;1.0.0-beta.
 com.azure.resourcemanager:azure-resourcemanager-sphere;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-chaos;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-defendereasm;1.0.0-beta.1;1.0.0-beta.2
+com.azure.resourcemanager:azure-resourcemanager-hdinsight-containers;1.0.0-beta.1;1.0.0-beta.2
 com.azure.tools:azure-sdk-archetype;1.0.0;1.2.0-beta.1
 com.azure.tools:azure-sdk-build-tool;1.0.0;1.1.0-beta.1
 
