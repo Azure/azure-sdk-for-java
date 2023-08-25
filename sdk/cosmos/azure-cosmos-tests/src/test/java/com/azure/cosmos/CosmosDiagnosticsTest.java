@@ -1409,6 +1409,79 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
         }
     }
 
+    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
+    public void negativeE2ETimeoutWithPointOperation() {
+        CosmosAsyncClient client = null;
+        String databaseId = DatabaseForTest.generateId();
+
+        try {
+            client = new CosmosClientBuilder()
+                .key(TestConfigurations.MASTER_KEY)
+                .endpoint(TestConfigurations.HOST)
+                .buildAsyncClient();
+
+            createDatabase(client, databaseId);
+            CosmosAsyncContainer container = createCollection(client, databaseId, getCollectionDefinition());
+
+            TestItem testItem = TestItem.createNewItem();
+            CosmosItemRequestOptions requestOptions = new CosmosItemRequestOptions();
+            requestOptions.setCosmosEndToEndOperationLatencyPolicyConfig(
+                new CosmosEndToEndOperationLatencyPolicyConfigBuilder(Duration.ofSeconds(-1)).build()
+            );
+            container.createItem(testItem, requestOptions).block();
+            fail("This should have failed with an exception");
+        } catch(OperationCancelledException cancelledException) {
+            assertThat(cancelledException).isNotNull();
+            assertThat(cancelledException.getStatusCode()).isEqualTo(408);
+            assertThat(cancelledException.getSubStatusCode())
+                .isEqualTo(HttpConstants.SubStatusCodes.NEGATIVE_TIMEOUT_PROVIDED);
+            assertThat(cancelledException.getDiagnostics()).isNotNull();
+            logger.info("Expected request timeout: ", cancelledException);
+        }
+        finally {
+            safeClose(client);
+        }
+    }
+
+    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
+    public void negativeE2ETimeoutWithQueryOperation() {
+        CosmosAsyncClient client = null;
+        String databaseId = DatabaseForTest.generateId();
+
+        try {
+            client = new CosmosClientBuilder()
+                .key(TestConfigurations.MASTER_KEY)
+                .endpoint(TestConfigurations.HOST)
+                .buildAsyncClient();
+
+            createDatabase(client, databaseId);
+            CosmosAsyncContainer container = createCollection(client, databaseId, getCollectionDefinition());
+
+            TestItem testItem = TestItem.createNewItem();
+            container.createItem(testItem).block();
+            
+            CosmosQueryRequestOptions requestOptions = new CosmosQueryRequestOptions();
+            requestOptions.setCosmosEndToEndOperationLatencyPolicyConfig(
+                new CosmosEndToEndOperationLatencyPolicyConfigBuilder(Duration.ofSeconds(-1)).build()
+            );
+            CosmosPagedFlux<ObjectNode> flux = container.readAllItems(requestOptions, ObjectNode.class);
+            List<ObjectNode> results = flux.collectList().block();
+                
+            fail("This should have failed with an exception");
+        } catch(OperationCancelledException cancelledException) {
+            assertThat(cancelledException).isNotNull();
+            assertThat(cancelledException.getStatusCode()).isEqualTo(408);
+            assertThat(cancelledException.getSubStatusCode())
+                .isEqualTo(HttpConstants.SubStatusCodes.NEGATIVE_TIMEOUT_PROVIDED);
+            // No pending requests - so, diagnostics are not guaranteed to be there
+            // assertThat(cancelledException.getDiagnostics()).isNotNull();
+            logger.info("Expected request timeout: ", cancelledException);
+        }
+        finally {
+            safeClose(client);
+        }
+    }
+
     private InternalObjectNode getInternalObjectNode() {
         InternalObjectNode internalObjectNode = new InternalObjectNode();
         String uuid = UUID.randomUUID().toString();
