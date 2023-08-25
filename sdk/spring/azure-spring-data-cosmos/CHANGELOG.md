@@ -1,6 +1,6 @@
 ## Release History
 
-### 3.38.0-beta.1 (2023-08-25)
+### 3.38.0 (2023-08-25)
 
 #### Bugs Fixed
 * Fixed an issue with IN statement in annotated queries not working for `Long` data type - See [PR 36249](https://github.com/Azure/azure-sdk-for-java/pull/36249).
