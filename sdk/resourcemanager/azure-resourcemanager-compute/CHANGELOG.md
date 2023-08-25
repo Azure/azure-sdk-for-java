@@ -8,7 +8,7 @@
 
 ### Bugs Fixed
 
-- Fixed bug that create proximity placement group with `VirtualMachineScaleSet` fails.
+- Fixed bug that create proximity placement group with `VirtualMachineScaleSet` fails. ([#36417](https://github.com/Azure/azure-sdk-for-java/issues/36417))
 
 ### Other Changes
 
