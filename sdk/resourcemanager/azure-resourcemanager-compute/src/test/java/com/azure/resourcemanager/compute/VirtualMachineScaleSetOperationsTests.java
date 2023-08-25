@@ -1965,6 +1965,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
             .withExistingResourceGroup(rgName)
             .withFlexibleOrchestrationMode()
             .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_A0)
+            // create ProximityPlacementGroup with the VMSS
             .withNewProximityPlacementGroup("ppg", ProximityPlacementGroupType.STANDARD)
             .withExistingPrimaryNetworkSubnet(network, "subnet1")
             .withoutPrimaryInternetFacingLoadBalancer()
