@@ -2458,56 +2458,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         }
     }
 
-    private List<String> getEffectiveExcludedRegionsForHedging(
-        List<String> initialExcludedRegions,
-        List<String> applicableRegions,
-        String currentRegion) {
-
-        // For hedging operations execution should only happen in the targeted region - no cross-regional
-        // fail-overs should happen
-        List<String> effectiveExcludedRegions = new ArrayList<>();
-        if (initialExcludedRegions != null) {
-            effectiveExcludedRegions.addAll(initialExcludedRegions);
-        }
-
-        for (String applicableRegion: applicableRegions) {
-            if (!applicableRegion.equals(currentRegion)) {
-                effectiveExcludedRegions.add(applicableRegion);
-            }
-        }
-
-        return effectiveExcludedRegions;
-    }
-
-    private static boolean isNonTransientResultForHedging(int statusCode, int subStatusCode) {
-        // All 1xx, 2xx and 3xx status codes should be treated as final result
-        if (statusCode < HttpConstants.StatusCodes.BADREQUEST) {
-            return true;
-        }
-
-        // Status codes below indicate non-transient errors
-        if (statusCode == HttpConstants.StatusCodes.BADREQUEST
-            || statusCode == HttpConstants.StatusCodes.CONFLICT
-            || statusCode == HttpConstants.StatusCodes.METHOD_NOT_ALLOWED
-            || statusCode == HttpConstants.StatusCodes.PRECONDITION_FAILED
-            || statusCode == HttpConstants.StatusCodes.REQUEST_ENTITY_TOO_LARGE
-            || statusCode == HttpConstants.StatusCodes.UNAUTHORIZED) {
-
-            return true;
-        }
-
-        // 404 - NotFound is also a final result - it means document was not yet available
-        // after enforcing whatever the consistency model is
-        if (statusCode == HttpConstants.StatusCodes.NOTFOUND
-            && subStatusCode == HttpConstants.SubStatusCodes.UNKNOWN) {
-
-            return true;
-        }
-
-        // All other errors should be treated as possibly transient
-        return false;
-    }
-
     @Override
     public Mono<ResourceResponse<Document>> readDocument(String documentLink, RequestOptions options) {
         return wrapPointOperationWithAvailabilityStrategy(
@@ -4958,6 +4908,56 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 return exception;
             })
             .doFinally(s -> diagnosticsFactory.merge());
+    }
+
+    private List<String> getEffectiveExcludedRegionsForHedging(
+        List<String> initialExcludedRegions,
+        List<String> applicableRegions,
+        String currentRegion) {
+
+        // For hedging operations execution should only happen in the targeted region - no cross-regional
+        // fail-overs should happen
+        List<String> effectiveExcludedRegions = new ArrayList<>();
+        if (initialExcludedRegions != null) {
+            effectiveExcludedRegions.addAll(initialExcludedRegions);
+        }
+
+        for (String applicableRegion: applicableRegions) {
+            if (!applicableRegion.equals(currentRegion)) {
+                effectiveExcludedRegions.add(applicableRegion);
+            }
+        }
+
+        return effectiveExcludedRegions;
+    }
+
+    private static boolean isNonTransientResultForHedging(int statusCode, int subStatusCode) {
+        // All 1xx, 2xx and 3xx status codes should be treated as final result
+        if (statusCode < HttpConstants.StatusCodes.BADREQUEST) {
+            return true;
+        }
+
+        // Status codes below indicate non-transient errors
+        if (statusCode == HttpConstants.StatusCodes.BADREQUEST
+            || statusCode == HttpConstants.StatusCodes.CONFLICT
+            || statusCode == HttpConstants.StatusCodes.METHOD_NOT_ALLOWED
+            || statusCode == HttpConstants.StatusCodes.PRECONDITION_FAILED
+            || statusCode == HttpConstants.StatusCodes.REQUEST_ENTITY_TOO_LARGE
+            || statusCode == HttpConstants.StatusCodes.UNAUTHORIZED) {
+
+            return true;
+        }
+
+        // 404 - NotFound is also a final result - it means document was not yet available
+        // after enforcing whatever the consistency model is
+        if (statusCode == HttpConstants.StatusCodes.NOTFOUND
+            && subStatusCode == HttpConstants.SubStatusCodes.UNKNOWN) {
+
+            return true;
+        }
+
+        // All other errors should be treated as possibly transient
+        return false;
     }
 
     private DiagnosticsClientContext getEffectiveClientContext(DiagnosticsClientContext clientContextOverride) {
