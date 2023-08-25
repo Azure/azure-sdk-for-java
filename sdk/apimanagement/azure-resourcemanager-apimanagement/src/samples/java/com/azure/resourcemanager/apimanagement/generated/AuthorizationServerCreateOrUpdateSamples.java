@@ -12,7 +12,7 @@ import java.util.Arrays;
 /** Samples for AuthorizationServer CreateOrUpdate. */
 public final class AuthorizationServerCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementCreateAuthorizationServer.json
+     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementCreateAuthorizationServer.json
      */
     /**
      * Sample code: ApiManagementCreateAuthorizationServer.
@@ -26,6 +26,8 @@ public final class AuthorizationServerCreateOrUpdateSamples {
             .define("newauthServer")
             .withExistingService("rg1", "apimService1")
             .withDisplayName("test2")
+            .withUseInTestConsole(false)
+            .withUseInApiDocumentation(true)
             .withClientRegistrationEndpoint("https://www.contoso.com/apps")
             .withAuthorizationEndpoint("https://www.contoso.com/oauth2/auth")
             .withGrantTypes(Arrays.asList(GrantType.AUTHORIZATION_CODE, GrantType.IMPLICIT))

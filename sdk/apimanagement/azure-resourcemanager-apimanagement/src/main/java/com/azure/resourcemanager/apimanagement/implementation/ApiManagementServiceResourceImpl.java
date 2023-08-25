@@ -20,6 +20,7 @@ import com.azure.resourcemanager.apimanagement.models.ApiManagementServiceUpdate
 import com.azure.resourcemanager.apimanagement.models.ApiVersionConstraint;
 import com.azure.resourcemanager.apimanagement.models.CertificateConfiguration;
 import com.azure.resourcemanager.apimanagement.models.HostnameConfiguration;
+import com.azure.resourcemanager.apimanagement.models.NatGatewayState;
 import com.azure.resourcemanager.apimanagement.models.PlatformVersion;
 import com.azure.resourcemanager.apimanagement.models.PublicNetworkAccess;
 import com.azure.resourcemanager.apimanagement.models.RemotePrivateEndpointConnectionWrapper;
@@ -206,6 +207,19 @@ public final class ApiManagementServiceResourceImpl
         return this.innerModel().enableClientCertificate();
     }
 
+    public NatGatewayState natGatewayState() {
+        return this.innerModel().natGatewayState();
+    }
+
+    public List<String> outboundPublicIpAddresses() {
+        List<String> inner = this.innerModel().outboundPublicIpAddresses();
+        if (inner != null) {
+            return Collections.unmodifiableList(inner);
+        } else {
+            return Collections.emptyList();
+        }
+    }
+
     public Boolean disableGateway() {
         return this.innerModel().disableGateway();
     }
@@ -241,6 +255,10 @@ public final class ApiManagementServiceResourceImpl
 
     public String regionName() {
         return this.location();
+    }
+
+    public String resourceGroupName() {
+        return resourceGroupName;
     }
 
     public ApiManagementServiceResourceInner innerModel() {
@@ -348,19 +366,20 @@ public final class ApiManagementServiceResourceImpl
         return serviceManager.apiManagementServices().backup(resourceGroupName, serviceName, parameters, context);
     }
 
-    public ApiManagementServiceGetSsoTokenResult getSsoToken() {
-        return serviceManager.apiManagementServices().getSsoToken(resourceGroupName, serviceName);
+    public ApiManagementServiceResource migrateToStv2() {
+        return serviceManager.apiManagementServices().migrateToStv2(resourceGroupName, serviceName);
+    }
+
+    public ApiManagementServiceResource migrateToStv2(Context context) {
+        return serviceManager.apiManagementServices().migrateToStv2(resourceGroupName, serviceName, context);
     }
 
     public Response<ApiManagementServiceGetSsoTokenResult> getSsoTokenWithResponse(Context context) {
         return serviceManager.apiManagementServices().getSsoTokenWithResponse(resourceGroupName, serviceName, context);
     }
 
-    public ApiManagementServiceResource applyNetworkConfigurationUpdates(
-        ApiManagementServiceApplyNetworkConfigurationParameters parameters) {
-        return serviceManager
-            .apiManagementServices()
-            .applyNetworkConfigurationUpdates(resourceGroupName, serviceName, parameters);
+    public ApiManagementServiceGetSsoTokenResult getSsoToken() {
+        return serviceManager.apiManagementServices().getSsoToken(resourceGroupName, serviceName);
     }
 
     public ApiManagementServiceResource applyNetworkConfigurationUpdates() {
@@ -532,6 +551,16 @@ public final class ApiManagementServiceResourceImpl
             return this;
         } else {
             this.updateParameters.withEnableClientCertificate(enableClientCertificate);
+            return this;
+        }
+    }
+
+    public ApiManagementServiceResourceImpl withNatGatewayState(NatGatewayState natGatewayState) {
+        if (isInCreateMode()) {
+            this.innerModel().withNatGatewayState(natGatewayState);
+            return this;
+        } else {
+            this.updateParameters.withNatGatewayState(natGatewayState);
             return this;
         }
     }

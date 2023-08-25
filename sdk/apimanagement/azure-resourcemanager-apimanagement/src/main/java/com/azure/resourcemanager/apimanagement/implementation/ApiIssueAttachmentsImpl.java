@@ -53,11 +53,6 @@ public final class ApiIssueAttachmentsImpl implements ApiIssueAttachments {
         return Utils.mapPage(inner, inner1 -> new IssueAttachmentContractImpl(inner1, this.manager()));
     }
 
-    public void getEntityTag(
-        String resourceGroupName, String serviceName, String apiId, String issueId, String attachmentId) {
-        this.serviceClient().getEntityTag(resourceGroupName, serviceName, apiId, issueId, attachmentId);
-    }
-
     public ApiIssueAttachmentsGetEntityTagResponse getEntityTagWithResponse(
         String resourceGroupName,
         String serviceName,
@@ -70,15 +65,9 @@ public final class ApiIssueAttachmentsImpl implements ApiIssueAttachments {
             .getEntityTagWithResponse(resourceGroupName, serviceName, apiId, issueId, attachmentId, context);
     }
 
-    public IssueAttachmentContract get(
+    public void getEntityTag(
         String resourceGroupName, String serviceName, String apiId, String issueId, String attachmentId) {
-        IssueAttachmentContractInner inner =
-            this.serviceClient().get(resourceGroupName, serviceName, apiId, issueId, attachmentId);
-        if (inner != null) {
-            return new IssueAttachmentContractImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        this.serviceClient().getEntityTag(resourceGroupName, serviceName, apiId, issueId, attachmentId);
     }
 
     public Response<IssueAttachmentContract> getWithResponse(
@@ -101,14 +90,15 @@ public final class ApiIssueAttachmentsImpl implements ApiIssueAttachments {
         }
     }
 
-    public void delete(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        String issueId,
-        String attachmentId,
-        String ifMatch) {
-        this.serviceClient().delete(resourceGroupName, serviceName, apiId, issueId, attachmentId, ifMatch);
+    public IssueAttachmentContract get(
+        String resourceGroupName, String serviceName, String apiId, String issueId, String attachmentId) {
+        IssueAttachmentContractInner inner =
+            this.serviceClient().get(resourceGroupName, serviceName, apiId, issueId, attachmentId);
+        if (inner != null) {
+            return new IssueAttachmentContractImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public Response<Void> deleteWithResponse(
@@ -122,6 +112,16 @@ public final class ApiIssueAttachmentsImpl implements ApiIssueAttachments {
         return this
             .serviceClient()
             .deleteWithResponse(resourceGroupName, serviceName, apiId, issueId, attachmentId, ifMatch, context);
+    }
+
+    public void delete(
+        String resourceGroupName,
+        String serviceName,
+        String apiId,
+        String issueId,
+        String attachmentId,
+        String ifMatch) {
+        this.serviceClient().delete(resourceGroupName, serviceName, apiId, issueId, attachmentId, ifMatch);
     }
 
     public IssueAttachmentContract getById(String id) {

@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.apimanagement.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ApiManagementServiceSkus ListAvailableServiceSkus. */
 public final class ApiManagementServiceSkusListAvailableServiceSkusSamples {
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementListSKUs-Dedicated.json
+     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementListSKUs-Dedicated.json
      */
     /**
      * Sample code: ApiManagementListSKUs-Dedicated.
@@ -18,11 +16,13 @@ public final class ApiManagementServiceSkusListAvailableServiceSkusSamples {
      */
     public static void apiManagementListSKUsDedicated(
         com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
-        manager.apiManagementServiceSkus().listAvailableServiceSkus("rg1", "apimService1", Context.NONE);
+        manager
+            .apiManagementServiceSkus()
+            .listAvailableServiceSkus("rg1", "apimService1", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementListSKUs-Consumption.json
+     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementListSKUs-Consumption.json
      */
     /**
      * Sample code: ApiManagementListSKUs-Consumption.
@@ -31,6 +31,8 @@ public final class ApiManagementServiceSkusListAvailableServiceSkusSamples {
      */
     public static void apiManagementListSKUsConsumption(
         com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
-        manager.apiManagementServiceSkus().listAvailableServiceSkus("rg1", "apimService1", Context.NONE);
+        manager
+            .apiManagementServiceSkus()
+            .listAvailableServiceSkus("rg1", "apimService1", com.azure.core.util.Context.NONE);
     }
 }

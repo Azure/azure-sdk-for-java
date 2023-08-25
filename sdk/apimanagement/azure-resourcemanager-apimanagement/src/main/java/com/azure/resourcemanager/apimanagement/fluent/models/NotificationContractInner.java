@@ -18,6 +18,10 @@ public final class NotificationContractInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private NotificationContractProperties innerProperties;
 
+    /** Creates an instance of NotificationContractInner class. */
+    public NotificationContractInner() {
+    }
+
     /**
      * Get the innerProperties property: Notification entity contract properties.
      *

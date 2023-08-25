@@ -42,22 +42,13 @@ public final class ApiVersionSetsImpl implements ApiVersionSets {
         return Utils.mapPage(inner, inner1 -> new ApiVersionSetContractImpl(inner1, this.manager()));
     }
 
-    public void getEntityTag(String resourceGroupName, String serviceName, String versionSetId) {
-        this.serviceClient().getEntityTag(resourceGroupName, serviceName, versionSetId);
-    }
-
     public ApiVersionSetsGetEntityTagResponse getEntityTagWithResponse(
         String resourceGroupName, String serviceName, String versionSetId, Context context) {
         return this.serviceClient().getEntityTagWithResponse(resourceGroupName, serviceName, versionSetId, context);
     }
 
-    public ApiVersionSetContract get(String resourceGroupName, String serviceName, String versionSetId) {
-        ApiVersionSetContractInner inner = this.serviceClient().get(resourceGroupName, serviceName, versionSetId);
-        if (inner != null) {
-            return new ApiVersionSetContractImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+    public void getEntityTag(String resourceGroupName, String serviceName, String versionSetId) {
+        this.serviceClient().getEntityTag(resourceGroupName, serviceName, versionSetId);
     }
 
     public Response<ApiVersionSetContract> getWithResponse(
@@ -75,13 +66,22 @@ public final class ApiVersionSetsImpl implements ApiVersionSets {
         }
     }
 
-    public void delete(String resourceGroupName, String serviceName, String versionSetId, String ifMatch) {
-        this.serviceClient().delete(resourceGroupName, serviceName, versionSetId, ifMatch);
+    public ApiVersionSetContract get(String resourceGroupName, String serviceName, String versionSetId) {
+        ApiVersionSetContractInner inner = this.serviceClient().get(resourceGroupName, serviceName, versionSetId);
+        if (inner != null) {
+            return new ApiVersionSetContractImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public Response<Void> deleteWithResponse(
         String resourceGroupName, String serviceName, String versionSetId, String ifMatch, Context context) {
         return this.serviceClient().deleteWithResponse(resourceGroupName, serviceName, versionSetId, ifMatch, context);
+    }
+
+    public void delete(String resourceGroupName, String serviceName, String versionSetId, String ifMatch) {
+        this.serviceClient().delete(resourceGroupName, serviceName, versionSetId, ifMatch);
     }
 
     public ApiVersionSetContract getById(String id) {

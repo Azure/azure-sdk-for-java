@@ -22,6 +22,10 @@ public final class OAuth2AuthenticationSettingsContract {
     @JsonProperty(value = "scope")
     private String scope;
 
+    /** Creates an instance of OAuth2AuthenticationSettingsContract class. */
+    public OAuth2AuthenticationSettingsContract() {
+    }
+
     /**
      * Get the authorizationServerId property: OAuth authorization server identifier.
      *

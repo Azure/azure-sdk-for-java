@@ -74,6 +74,13 @@ public interface IssueContract {
     String apiId();
 
     /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
+
+    /**
      * Gets the inner com.azure.resourcemanager.apimanagement.fluent.models.IssueContractInner object.
      *
      * @return the inner object.
@@ -84,23 +91,26 @@ public interface IssueContract {
     interface Definition
         extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
+
     /** The IssueContract definition stages. */
     interface DefinitionStages {
         /** The first stage of the IssueContract definition. */
         interface Blank extends WithParentResource {
         }
+
         /** The stage of the IssueContract definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
              * Specifies resourceGroupName, serviceName, apiId.
              *
-             * @param resourceGroupName The name of the resource group.
+             * @param resourceGroupName The name of the resource group. The name is case insensitive.
              * @param serviceName The name of the API Management service.
              * @param apiId API identifier. Must be unique in the current API Management service instance.
              * @return the next definition stage.
              */
             WithCreate withExistingApi(String resourceGroupName, String serviceName, String apiId);
         }
+
         /**
          * The stage of the IssueContract definition which contains all the minimum required properties for the resource
          * to be created, but also allows for any other optional properties to be specified.
@@ -128,6 +138,7 @@ public interface IssueContract {
              */
             IssueContract create(Context context);
         }
+
         /** The stage of the IssueContract definition allowing to specify title. */
         interface WithTitle {
             /**
@@ -138,6 +149,7 @@ public interface IssueContract {
              */
             WithCreate withTitle(String title);
         }
+
         /** The stage of the IssueContract definition allowing to specify description. */
         interface WithDescription {
             /**
@@ -148,6 +160,7 @@ public interface IssueContract {
              */
             WithCreate withDescription(String description);
         }
+
         /** The stage of the IssueContract definition allowing to specify userId. */
         interface WithUserId {
             /**
@@ -158,6 +171,7 @@ public interface IssueContract {
              */
             WithCreate withUserId(String userId);
         }
+
         /** The stage of the IssueContract definition allowing to specify createdDate. */
         interface WithCreatedDate {
             /**
@@ -168,6 +182,7 @@ public interface IssueContract {
              */
             WithCreate withCreatedDate(OffsetDateTime createdDate);
         }
+
         /** The stage of the IssueContract definition allowing to specify state. */
         interface WithState {
             /**
@@ -178,6 +193,7 @@ public interface IssueContract {
              */
             WithCreate withState(State state);
         }
+
         /** The stage of the IssueContract definition allowing to specify apiId. */
         interface WithApiId {
             /**
@@ -188,6 +204,7 @@ public interface IssueContract {
              */
             WithCreate withApiId(String apiId);
         }
+
         /** The stage of the IssueContract definition allowing to specify ifMatch. */
         interface WithIfMatch {
             /**
@@ -201,6 +218,7 @@ public interface IssueContract {
             WithCreate withIfMatch(String ifMatch);
         }
     }
+
     /**
      * Begins update for the IssueContract resource.
      *
@@ -232,6 +250,7 @@ public interface IssueContract {
          */
         IssueContract apply(Context context);
     }
+
     /** The IssueContract update stages. */
     interface UpdateStages {
         /** The stage of the IssueContract update allowing to specify title. */
@@ -244,6 +263,7 @@ public interface IssueContract {
              */
             Update withTitle(String title);
         }
+
         /** The stage of the IssueContract update allowing to specify description. */
         interface WithDescription {
             /**
@@ -254,6 +274,7 @@ public interface IssueContract {
              */
             Update withDescription(String description);
         }
+
         /** The stage of the IssueContract update allowing to specify userId. */
         interface WithUserId {
             /**
@@ -264,6 +285,7 @@ public interface IssueContract {
              */
             Update withUserId(String userId);
         }
+
         /** The stage of the IssueContract update allowing to specify createdDate. */
         interface WithCreatedDate {
             /**
@@ -274,6 +296,7 @@ public interface IssueContract {
              */
             Update withCreatedDate(OffsetDateTime createdDate);
         }
+
         /** The stage of the IssueContract update allowing to specify state. */
         interface WithState {
             /**
@@ -284,6 +307,7 @@ public interface IssueContract {
              */
             Update withState(State state);
         }
+
         /** The stage of the IssueContract update allowing to specify apiId. */
         interface WithApiId {
             /**
@@ -294,6 +318,7 @@ public interface IssueContract {
              */
             Update withApiId(String apiId);
         }
+
         /** The stage of the IssueContract update allowing to specify ifMatch. */
         interface WithIfMatch {
             /**
@@ -307,6 +332,7 @@ public interface IssueContract {
             Update withIfMatch(String ifMatch);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *
