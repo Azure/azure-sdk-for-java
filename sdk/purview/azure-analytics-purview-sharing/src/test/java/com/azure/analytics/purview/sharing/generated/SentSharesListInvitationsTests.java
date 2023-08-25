@@ -4,6 +4,7 @@
 
 package com.azure.analytics.purview.sharing.generated;
 
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.util.BinaryData;
@@ -21,10 +22,20 @@ public final class SentSharesListInvitationsTests extends PurviewShareClientTest
         Assertions.assertEquals(200, response.iterableByPage().iterator().next().getStatusCode());
         Assertions.assertEquals(
                 "Wed, 13 Sep 2017 17:33:55 GMT",
-                response.iterableByPage().iterator().next().getHeaders().get("Date").getValue());
+                response.iterableByPage()
+                        .iterator()
+                        .next()
+                        .getHeaders()
+                        .get(HttpHeaderName.fromString("Date"))
+                        .getValue());
         Assertions.assertEquals(
                 "5d862c55-4de9-4a46-969d-cf1ed3e235ed",
-                response.iterableByPage().iterator().next().getHeaders().get("x-ms-correlation-request-id").getValue());
+                response.iterableByPage()
+                        .iterator()
+                        .next()
+                        .getHeaders()
+                        .get(HttpHeaderName.fromString("x-ms-correlation-request-id"))
+                        .getValue());
         Assertions.assertEquals(
                 BinaryData.fromString(
                                 "{\"type\":\"sentShares/sentShareInvitations\",\"id\":\"9F154FA4-93D1-426B-A908-A9CAC7192B21\",\"invitationKind\":\"User\",\"properties\":{\"expirationDate\":null,\"notify\":true,\"senderEmail\":\"testSender@microsoft.com\",\"senderName\":\"Test Sender\",\"senderTenantName\":\"Test Tenant\",\"sentAt\":\"2022-08-04T13:04:32.8172128Z\",\"shareStatus\":\"Detached\",\"state\":\"Succeeded\",\"targetEmail\":\"testReceiver@microsoft.com\"}}")

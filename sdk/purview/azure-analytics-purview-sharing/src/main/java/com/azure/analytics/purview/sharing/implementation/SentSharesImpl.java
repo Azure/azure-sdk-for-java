@@ -35,6 +35,8 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.polling.DefaultPollingStrategy;
 import com.azure.core.util.polling.PollerFlux;
+import com.azure.core.util.polling.PollingStrategyOptions;
+import com.azure.core.util.polling.SyncDefaultPollingStrategy;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.core.util.serializer.TypeReference;
 import java.time.Duration;
@@ -89,6 +91,26 @@ public final class SentSharesImpl {
                 RequestOptions requestOptions,
                 Context context);
 
+        @Get("/sentShares")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> listSentSharesSync(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("referenceName") String referenceName,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
         @Get("/sentShares/{sentShareId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
@@ -102,6 +124,26 @@ public final class SentSharesImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getSentShare(
+                @HostParam("endpoint") String endpoint,
+                @PathParam("sentShareId") String sentShareId,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Get("/sentShares/{sentShareId}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> getSentShareSync(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("sentShareId") String sentShareId,
                 @QueryParam("api-version") String apiVersion,
@@ -130,6 +172,27 @@ public final class SentSharesImpl {
                 RequestOptions requestOptions,
                 Context context);
 
+        @Put("/sentShares/{sentShareId}")
+        @ExpectedResponses({200, 201})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> createOrReplaceSentShareSync(
+                @HostParam("endpoint") String endpoint,
+                @PathParam("sentShareId") String sentShareId,
+                @QueryParam("api-version") String apiVersion,
+                @BodyParam("application/json") BinaryData sentShare,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
         @Delete("/sentShares/{sentShareId}")
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(
@@ -143,6 +206,26 @@ public final class SentSharesImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> deleteSentShare(
+                @HostParam("endpoint") String endpoint,
+                @PathParam("sentShareId") String sentShareId,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Delete("/sentShares/{sentShareId}")
+        @ExpectedResponses({202})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> deleteSentShareSync(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("sentShareId") String sentShareId,
                 @QueryParam("api-version") String apiVersion,
@@ -170,6 +253,26 @@ public final class SentSharesImpl {
                 RequestOptions requestOptions,
                 Context context);
 
+        @Get("/sentShares/{sentShareId}/sentShareInvitations")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> listSentShareInvitationsSync(
+                @HostParam("endpoint") String endpoint,
+                @PathParam("sentShareId") String sentShareId,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
         @Get("/sentShares/{sentShareId}/sentShareInvitations/{sentShareInvitationId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
@@ -183,6 +286,27 @@ public final class SentSharesImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getSentShareInvitation(
+                @HostParam("endpoint") String endpoint,
+                @PathParam("sentShareId") String sentShareId,
+                @PathParam("sentShareInvitationId") String sentShareInvitationId,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Get("/sentShares/{sentShareId}/sentShareInvitations/{sentShareInvitationId}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> getSentShareInvitationSync(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("sentShareId") String sentShareId,
                 @PathParam("sentShareInvitationId") String sentShareInvitationId,
@@ -213,6 +337,28 @@ public final class SentSharesImpl {
                 RequestOptions requestOptions,
                 Context context);
 
+        @Put("/sentShares/{sentShareId}/sentShareInvitations/{sentShareInvitationId}")
+        @ExpectedResponses({201})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> createSentShareInvitationSync(
+                @HostParam("endpoint") String endpoint,
+                @PathParam("sentShareId") String sentShareId,
+                @PathParam("sentShareInvitationId") String sentShareInvitationId,
+                @QueryParam("api-version") String apiVersion,
+                @BodyParam("application/json") BinaryData sentShareInvitation,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
         @Delete("/sentShares/{sentShareId}/sentShareInvitations/{sentShareInvitationId}")
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(
@@ -234,6 +380,27 @@ public final class SentSharesImpl {
                 RequestOptions requestOptions,
                 Context context);
 
+        @Delete("/sentShares/{sentShareId}/sentShareInvitations/{sentShareInvitationId}")
+        @ExpectedResponses({202})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> deleteSentShareInvitationSync(
+                @HostParam("endpoint") String endpoint,
+                @PathParam("sentShareId") String sentShareId,
+                @PathParam("sentShareInvitationId") String sentShareInvitationId,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
         @Post("/sentShares/{sentShareId}/sentShareInvitations/{sentShareInvitationId}:notify")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
@@ -247,6 +414,27 @@ public final class SentSharesImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> notifyUserSentShareInvitation(
+                @HostParam("endpoint") String endpoint,
+                @PathParam("sentShareId") String sentShareId,
+                @PathParam("sentShareInvitationId") String sentShareInvitationId,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Post("/sentShares/{sentShareId}/sentShareInvitations/{sentShareInvitationId}:notify")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> notifyUserSentShareInvitationSync(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("sentShareId") String sentShareId,
                 @PathParam("sentShareInvitationId") String sentShareInvitationId,
@@ -286,7 +474,45 @@ public final class SentSharesImpl {
                 value = ResourceModifiedException.class,
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> listSentSharesNextSync(
+                @PathParam(value = "nextLink", encoded = true) String nextLink,
+                @HostParam("endpoint") String endpoint,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Get("{nextLink}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listSentShareInvitationsNext(
+                @PathParam(value = "nextLink", encoded = true) String nextLink,
+                @HostParam("endpoint") String endpoint,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Get("{nextLink}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> listSentShareInvitationsNextSync(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
                 @HostParam("endpoint") String endpoint,
                 @HeaderParam("Accept") String accept,
@@ -427,11 +653,71 @@ public final class SentSharesImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return list of sent shares along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<BinaryData> listSentSharesSinglePage(String referenceName, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        Response<BinaryData> res =
+                service.listSentSharesSync(
+                        this.client.getEndpoint(),
+                        referenceName,
+                        this.client.getServiceVersion().getVersion(),
+                        accept,
+                        requestOptions,
+                        Context.NONE);
+        return new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                getValues(res.getValue(), "value"),
+                getNextLink(res.getValue(), "nextLink"),
+                null);
+    }
+
+    /**
+     * Get a list of sent shares.
+     *
+     * <p>List sent shares.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>filter</td><td>String</td><td>No</td><td>Filters the results using OData syntax</td></tr>
+     *     <tr><td>orderby</td><td>String</td><td>No</td><td>Sorts the results using OData syntax</td></tr>
+     * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     id: String (Optional)
+     *     type: String (Optional)
+     * }
+     * }</pre>
+     *
+     * @param referenceName A name that references a data store.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return list of sent shares as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listSentShares(String referenceName, RequestOptions requestOptions) {
-        return new PagedIterable<>(listSentSharesAsync(referenceName, requestOptions));
+        RequestOptions requestOptionsForNextPage = new RequestOptions();
+        requestOptionsForNextPage.setContext(
+                requestOptions != null && requestOptions.getContext() != null
+                        ? requestOptions.getContext()
+                        : Context.NONE);
+        return new PagedIterable<>(
+                () -> listSentSharesSinglePage(referenceName, requestOptions),
+                nextLink -> listSentSharesNextSinglePage(nextLink, requestOptionsForNextPage));
     }
 
     /**
@@ -494,7 +780,14 @@ public final class SentSharesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getSentShareWithResponse(String sentShareId, RequestOptions requestOptions) {
-        return getSentShareWithResponseAsync(sentShareId, requestOptions).block();
+        final String accept = "application/json";
+        return service.getSentShareSync(
+                this.client.getEndpoint(),
+                sentShareId,
+                this.client.getServiceVersion().getVersion(),
+                accept,
+                requestOptions,
+                Context.NONE);
     }
 
     /**
@@ -575,6 +868,52 @@ public final class SentSharesImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a sent share data transfer object along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> createOrReplaceSentShareWithResponse(
+            String sentShareId, BinaryData sentShare, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return service.createOrReplaceSentShareSync(
+                this.client.getEndpoint(),
+                sentShareId,
+                this.client.getServiceVersion().getVersion(),
+                sentShare,
+                accept,
+                requestOptions,
+                Context.NONE);
+    }
+
+    /**
+     * Create or replace a sent share.
+     *
+     * <p>Create or replace a sent share.
+     *
+     * <p><strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     id: String (Optional)
+     *     type: String (Optional)
+     * }
+     * }</pre>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     id: String (Optional)
+     *     type: String (Optional)
+     * }
+     * }</pre>
+     *
+     * @param sentShareId Id of the sent share.
+     * @param sentShare The sent share to create or replace.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the {@link PollerFlux} for polling of a sent share data transfer object.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
@@ -584,12 +923,12 @@ public final class SentSharesImpl {
                 Duration.ofSeconds(1),
                 () -> this.createOrReplaceSentShareWithResponseAsync(sentShareId, sentShare, requestOptions),
                 new DefaultPollingStrategy<>(
-                        this.client.getHttpPipeline(),
-                        "{endpoint}".replace("{endpoint}", this.client.getEndpoint()),
-                        null,
-                        requestOptions != null && requestOptions.getContext() != null
-                                ? requestOptions.getContext()
-                                : Context.NONE),
+                        new PollingStrategyOptions(this.client.getHttpPipeline())
+                                .setEndpoint("{endpoint}".replace("{endpoint}", this.client.getEndpoint()))
+                                .setContext(
+                                        requestOptions != null && requestOptions.getContext() != null
+                                                ? requestOptions.getContext()
+                                                : Context.NONE)),
                 TypeReference.createInstance(BinaryData.class),
                 TypeReference.createInstance(BinaryData.class));
     }
@@ -629,7 +968,18 @@ public final class SentSharesImpl {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<BinaryData, BinaryData> beginCreateOrReplaceSentShare(
             String sentShareId, BinaryData sentShare, RequestOptions requestOptions) {
-        return this.beginCreateOrReplaceSentShareAsync(sentShareId, sentShare, requestOptions).getSyncPoller();
+        return SyncPoller.createPoller(
+                Duration.ofSeconds(1),
+                () -> this.createOrReplaceSentShareWithResponse(sentShareId, sentShare, requestOptions),
+                new SyncDefaultPollingStrategy<>(
+                        new PollingStrategyOptions(this.client.getHttpPipeline())
+                                .setEndpoint("{endpoint}".replace("{endpoint}", this.client.getEndpoint()))
+                                .setContext(
+                                        requestOptions != null && requestOptions.getContext() != null
+                                                ? requestOptions.getContext()
+                                                : Context.NONE)),
+                TypeReference.createInstance(BinaryData.class),
+                TypeReference.createInstance(BinaryData.class));
     }
 
     /**
@@ -709,6 +1059,50 @@ public final class SentSharesImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return response for long running operation along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> deleteSentShareWithResponse(String sentShareId, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return service.deleteSentShareSync(
+                this.client.getEndpoint(),
+                sentShareId,
+                this.client.getServiceVersion().getVersion(),
+                accept,
+                requestOptions,
+                Context.NONE);
+    }
+
+    /**
+     * Deletes a sent share.
+     *
+     * <p>Delete a sent share.
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     endTime: OffsetDateTime (Optional)
+     *     error (Optional): {
+     *         code: String (Required)
+     *         details (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         message: String (Required)
+     *         target: String (Optional)
+     *     }
+     *     id: String (Optional)
+     *     startTime: OffsetDateTime (Optional)
+     *     status: String(Running/TransientFailure/Succeeded/Failed/NotStarted) (Required)
+     * }
+     * }</pre>
+     *
+     * @param sentShareId Id of the sent share.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the {@link PollerFlux} for polling of response for long running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
@@ -717,12 +1111,12 @@ public final class SentSharesImpl {
                 Duration.ofSeconds(1),
                 () -> this.deleteSentShareWithResponseAsync(sentShareId, requestOptions),
                 new DefaultPollingStrategy<>(
-                        this.client.getHttpPipeline(),
-                        "{endpoint}".replace("{endpoint}", this.client.getEndpoint()),
-                        null,
-                        requestOptions != null && requestOptions.getContext() != null
-                                ? requestOptions.getContext()
-                                : Context.NONE),
+                        new PollingStrategyOptions(this.client.getHttpPipeline())
+                                .setEndpoint("{endpoint}".replace("{endpoint}", this.client.getEndpoint()))
+                                .setContext(
+                                        requestOptions != null && requestOptions.getContext() != null
+                                                ? requestOptions.getContext()
+                                                : Context.NONE)),
                 TypeReference.createInstance(BinaryData.class),
                 TypeReference.createInstance(Void.class));
     }
@@ -761,7 +1155,18 @@ public final class SentSharesImpl {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<BinaryData, Void> beginDeleteSentShare(String sentShareId, RequestOptions requestOptions) {
-        return this.beginDeleteSentShareAsync(sentShareId, requestOptions).getSyncPoller();
+        return SyncPoller.createPoller(
+                Duration.ofSeconds(1),
+                () -> this.deleteSentShareWithResponse(sentShareId, requestOptions),
+                new SyncDefaultPollingStrategy<>(
+                        new PollingStrategyOptions(this.client.getHttpPipeline())
+                                .setEndpoint("{endpoint}".replace("{endpoint}", this.client.getEndpoint()))
+                                .setContext(
+                                        requestOptions != null && requestOptions.getContext() != null
+                                                ? requestOptions.getContext()
+                                                : Context.NONE)),
+                TypeReference.createInstance(BinaryData.class),
+                TypeReference.createInstance(Void.class));
     }
 
     /**
@@ -898,11 +1303,72 @@ public final class SentSharesImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return list of the sent share invitations along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<BinaryData> listSentShareInvitationsSinglePage(
+            String sentShareId, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        Response<BinaryData> res =
+                service.listSentShareInvitationsSync(
+                        this.client.getEndpoint(),
+                        sentShareId,
+                        this.client.getServiceVersion().getVersion(),
+                        accept,
+                        requestOptions,
+                        Context.NONE);
+        return new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                getValues(res.getValue(), "value"),
+                getNextLink(res.getValue(), "nextLink"),
+                null);
+    }
+
+    /**
+     * List all sent share invitations in a sent share
+     *
+     * <p>List sent share recipients.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>filter</td><td>String</td><td>No</td><td>Filters the results using OData syntax</td></tr>
+     *     <tr><td>orderby</td><td>String</td><td>No</td><td>Sorts the results using OData syntax</td></tr>
+     * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     id: String (Optional)
+     *     type: String (Optional)
+     * }
+     * }</pre>
+     *
+     * @param sentShareId Id of the sent share.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return list of the sent share invitations as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listSentShareInvitations(String sentShareId, RequestOptions requestOptions) {
-        return new PagedIterable<>(listSentShareInvitationsAsync(sentShareId, requestOptions));
+        RequestOptions requestOptionsForNextPage = new RequestOptions();
+        requestOptionsForNextPage.setContext(
+                requestOptions != null && requestOptions.getContext() != null
+                        ? requestOptions.getContext()
+                        : Context.NONE);
+        return new PagedIterable<>(
+                () -> listSentShareInvitationsSinglePage(sentShareId, requestOptions),
+                nextLink -> listSentShareInvitationsNextSinglePage(nextLink, requestOptionsForNextPage));
     }
 
     /**
@@ -970,7 +1436,15 @@ public final class SentSharesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getSentShareInvitationWithResponse(
             String sentShareId, String sentShareInvitationId, RequestOptions requestOptions) {
-        return getSentShareInvitationWithResponseAsync(sentShareId, sentShareInvitationId, requestOptions).block();
+        final String accept = "application/json";
+        return service.getSentShareInvitationSync(
+                this.client.getEndpoint(),
+                sentShareId,
+                sentShareInvitationId,
+                this.client.getServiceVersion().getVersion(),
+                accept,
+                requestOptions,
+                Context.NONE);
     }
 
     /**
@@ -1066,9 +1540,16 @@ public final class SentSharesImpl {
             String sentShareInvitationId,
             BinaryData sentShareInvitation,
             RequestOptions requestOptions) {
-        return createSentShareInvitationWithResponseAsync(
-                        sentShareId, sentShareInvitationId, sentShareInvitation, requestOptions)
-                .block();
+        final String accept = "application/json";
+        return service.createSentShareInvitationSync(
+                this.client.getEndpoint(),
+                sentShareId,
+                sentShareInvitationId,
+                this.client.getServiceVersion().getVersion(),
+                sentShareInvitation,
+                accept,
+                requestOptions,
+                Context.NONE);
     }
 
     /**
@@ -1151,6 +1632,53 @@ public final class SentSharesImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return response for long running operation along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> deleteSentShareInvitationWithResponse(
+            String sentShareId, String sentShareInvitationId, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return service.deleteSentShareInvitationSync(
+                this.client.getEndpoint(),
+                sentShareId,
+                sentShareInvitationId,
+                this.client.getServiceVersion().getVersion(),
+                accept,
+                requestOptions,
+                Context.NONE);
+    }
+
+    /**
+     * Delete Invitation in a share.
+     *
+     * <p>Delete a sent share invitation.
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     endTime: OffsetDateTime (Optional)
+     *     error (Optional): {
+     *         code: String (Required)
+     *         details (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         message: String (Required)
+     *         target: String (Optional)
+     *     }
+     *     id: String (Optional)
+     *     startTime: OffsetDateTime (Optional)
+     *     status: String(Running/TransientFailure/Succeeded/Failed/NotStarted) (Required)
+     * }
+     * }</pre>
+     *
+     * @param sentShareId Id of the sent share.
+     * @param sentShareInvitationId Id of the sent share invitation.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the {@link PollerFlux} for polling of response for long running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
@@ -1162,12 +1690,12 @@ public final class SentSharesImpl {
                         this.deleteSentShareInvitationWithResponseAsync(
                                 sentShareId, sentShareInvitationId, requestOptions),
                 new DefaultPollingStrategy<>(
-                        this.client.getHttpPipeline(),
-                        "{endpoint}".replace("{endpoint}", this.client.getEndpoint()),
-                        null,
-                        requestOptions != null && requestOptions.getContext() != null
-                                ? requestOptions.getContext()
-                                : Context.NONE),
+                        new PollingStrategyOptions(this.client.getHttpPipeline())
+                                .setEndpoint("{endpoint}".replace("{endpoint}", this.client.getEndpoint()))
+                                .setContext(
+                                        requestOptions != null && requestOptions.getContext() != null
+                                                ? requestOptions.getContext()
+                                                : Context.NONE)),
                 TypeReference.createInstance(BinaryData.class),
                 TypeReference.createInstance(Void.class));
     }
@@ -1208,8 +1736,18 @@ public final class SentSharesImpl {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<BinaryData, Void> beginDeleteSentShareInvitation(
             String sentShareId, String sentShareInvitationId, RequestOptions requestOptions) {
-        return this.beginDeleteSentShareInvitationAsync(sentShareId, sentShareInvitationId, requestOptions)
-                .getSyncPoller();
+        return SyncPoller.createPoller(
+                Duration.ofSeconds(1),
+                () -> this.deleteSentShareInvitationWithResponse(sentShareId, sentShareInvitationId, requestOptions),
+                new SyncDefaultPollingStrategy<>(
+                        new PollingStrategyOptions(this.client.getHttpPipeline())
+                                .setEndpoint("{endpoint}".replace("{endpoint}", this.client.getEndpoint()))
+                                .setContext(
+                                        requestOptions != null && requestOptions.getContext() != null
+                                                ? requestOptions.getContext()
+                                                : Context.NONE)),
+                TypeReference.createInstance(BinaryData.class),
+                TypeReference.createInstance(Void.class));
     }
 
     /**
@@ -1278,8 +1816,15 @@ public final class SentSharesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> notifyUserSentShareInvitationWithResponse(
             String sentShareId, String sentShareInvitationId, RequestOptions requestOptions) {
-        return notifyUserSentShareInvitationWithResponseAsync(sentShareId, sentShareInvitationId, requestOptions)
-                .block();
+        final String accept = "application/json";
+        return service.notifyUserSentShareInvitationSync(
+                this.client.getEndpoint(),
+                sentShareId,
+                sentShareInvitationId,
+                this.client.getServiceVersion().getVersion(),
+                accept,
+                requestOptions,
+                Context.NONE);
     }
 
     /**
@@ -1341,6 +1886,42 @@ public final class SentSharesImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return list of sent shares along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<BinaryData> listSentSharesNextSinglePage(String nextLink, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        Response<BinaryData> res =
+                service.listSentSharesNextSync(
+                        nextLink, this.client.getEndpoint(), accept, requestOptions, Context.NONE);
+        return new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                getValues(res.getValue(), "value"),
+                getNextLink(res.getValue(), "nextLink"),
+                null);
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     id: String (Optional)
+     *     type: String (Optional)
+     * }
+     * }</pre>
+     *
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return list of the sent share invitations along with {@link PagedResponse} on successful completion of {@link
      *     Mono}.
      */
@@ -1361,6 +1942,43 @@ public final class SentSharesImpl {
                                         getValues(res.getValue(), "value"),
                                         getNextLink(res.getValue(), "nextLink"),
                                         null));
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     id: String (Optional)
+     *     type: String (Optional)
+     * }
+     * }</pre>
+     *
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return list of the sent share invitations along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<BinaryData> listSentShareInvitationsNextSinglePage(
+            String nextLink, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        Response<BinaryData> res =
+                service.listSentShareInvitationsNextSync(
+                        nextLink, this.client.getEndpoint(), accept, requestOptions, Context.NONE);
+        return new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                getValues(res.getValue(), "value"),
+                getNextLink(res.getValue(), "nextLink"),
+                null);
     }
 
     private List<BinaryData> getValues(BinaryData binaryData, String path) {

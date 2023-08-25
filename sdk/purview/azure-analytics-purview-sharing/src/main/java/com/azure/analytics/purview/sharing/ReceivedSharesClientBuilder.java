@@ -21,7 +21,6 @@ import com.azure.core.http.policy.AddDatePolicy;
 import com.azure.core.http.policy.AddHeadersFromContextPolicy;
 import com.azure.core.http.policy.AddHeadersPolicy;
 import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
-import com.azure.core.http.policy.CookiePolicy;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
@@ -34,6 +33,7 @@ import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.builder.ClientBuilderUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
 import java.util.ArrayList;
 import java.util.List;
@@ -74,6 +74,9 @@ public final class ReceivedSharesClientBuilder
     @Generated
     @Override
     public ReceivedSharesClientBuilder pipeline(HttpPipeline pipeline) {
+        if (this.pipeline != null && pipeline == null) {
+            LOGGER.info("HttpPipeline is being set to 'null' when it was previously configured.");
+        }
         this.pipeline = pipeline;
         return this;
     }
@@ -224,7 +227,10 @@ public final class ReceivedSharesClientBuilder
                 (serviceVersion != null) ? serviceVersion : PurviewShareServiceVersion.getLatest();
         PurviewShareClientImpl client =
                 new PurviewShareClientImpl(
-                        localPipeline, JacksonAdapter.createDefaultSerializerAdapter(), endpoint, localServiceVersion);
+                        localPipeline,
+                        JacksonAdapter.createDefaultSerializerAdapter(),
+                        this.endpoint,
+                        localServiceVersion);
         return client;
     }
 
@@ -252,7 +258,6 @@ public final class ReceivedSharesClientBuilder
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
         policies.add(ClientBuilderUtil.validateAndGetRetryPolicy(retryPolicy, retryOptions, new RetryPolicy()));
         policies.add(new AddDatePolicy());
-        policies.add(new CookiePolicy());
         if (tokenCredential != null) {
             policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, DEFAULT_SCOPES));
         }
@@ -287,6 +292,8 @@ public final class ReceivedSharesClientBuilder
      */
     @Generated
     public ReceivedSharesClient buildClient() {
-        return new ReceivedSharesClient(new ReceivedSharesAsyncClient(buildInnerClient().getReceivedShares()));
+        return new ReceivedSharesClient(buildInnerClient().getReceivedShares());
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ReceivedSharesClientBuilder.class);
 }
