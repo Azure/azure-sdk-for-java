@@ -85,6 +85,8 @@ service
     * [1.0.0-beta.5](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-appcontainers/1.0.0-beta.5)
 * [package-preview-2022-06](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/app/resource-manager#tag-package-preview-2022-06)
     * [1.0.0-beta.4](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-appcontainers/1.0.0-beta.4)
+* [package-2023-05](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/app/resource-manager#tag-package-2023-05)
+    * [1.0.0-beta.6](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-appcontainers/1.0.0-beta.6)
 * [package-2022-03](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/app/resource-manager#tag-package-2022-03)
     * [1.0.0-beta.3](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-appcontainers/1.0.0-beta.3)
     * [1.0.0-beta.2](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-appcontainers/1.0.0-beta.2)
@@ -139,6 +141,8 @@ service
 <details>
 <summary> avs </summary>
 
+* [package-2023-03-01](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/vmware/resource-manager#tag-package-2023-03-01)
+    * [1.1.0](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-avs/1.1.0)
 * [package-2022-05-01](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/vmware/resource-manager#tag-package-2022-05-01)
     * [1.0.0](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-avs/1.0.0)
     * [1.0.0-beta.4](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-avs/1.0.0-beta.4)
@@ -516,6 +520,14 @@ service
 
 <br/>
 <details>
+<summary> defendereasm </summary>
+
+* [package-preview-2023-04](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/riskiq/resource-manager#tag-package-preview-2023-04)
+    * [1.0.0-beta.1](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-defendereasm/1.0.0-beta.1)
+</details>
+
+<br/>
+<details>
 <summary> delegatednetwork </summary>
 
 * [package-2021-03-15](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/dnc/resource-manager#tag-package-2021-03-15)
@@ -643,6 +655,8 @@ service
 <details>
 <summary> dynatrace </summary>
 
+* [package-2023-04-27](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/dynatrace/resource-manager#tag-package-2023-04-27)
+    * [1.0.0-beta.3](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-dynatrace/1.0.0-beta.3)
 * [package-2021-09-01-preview](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/dynatrace/resource-manager#tag-package-2021-09-01-preview)
     * [1.0.0-beta.1](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-dynatrace/1.0.0-beta.1)
 * [package-2021-09-01](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/dynatrace/resource-manager#tag-package-2021-09-01)
@@ -787,6 +801,14 @@ service
     * [1.0.0-beta.3](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-hdinsight/1.0.0-beta.3)
     * [1.0.0-beta.2](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-hdinsight/1.0.0-beta.2)
     * [1.0.0-beta.1](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-hdinsight/1.0.0-beta.1)
+</details>
+
+<br/>
+<details>
+<summary> hdinsight-containers </summary>
+
+* [package-2023-06-preview](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/hdinsight/resource-manager/Microsoft.HDInsight/HDInsightOnAks#tag-package-2023-06-preview)
+    * [1.0.0-beta.1](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-hdinsight-containers/1.0.0-beta.1)
 </details>
 
 <br/>
@@ -1001,6 +1023,8 @@ service
 <details>
 <summary> maintenance </summary>
 
+* [package-2023-04](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/maintenance/resource-manager#tag-package-2023-04)
+    * [1.0.0](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-maintenance/1.0.0)
 * [package-2021-05](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/maintenance/resource-manager#tag-package-2021-05)
     * [1.0.0-beta.3](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-maintenance/1.0.0-beta.3)
     * [1.0.0-beta.2](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-maintenance/1.0.0-beta.2)
@@ -1039,6 +1063,8 @@ service
 <details>
 <summary> maps </summary>
 
+* [package-2023-06](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/maps/resource-manager#tag-package-2023-06)
+    * [1.0.0](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-maps/1.0.0)
 * [package-2021-02](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/maps/resource-manager#tag-package-2021-02)
     * [1.0.0-beta.2](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-maps/1.0.0-beta.2)
     * [1.0.0-beta.1](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-maps/1.0.0-beta.1)
@@ -1366,6 +1392,8 @@ service
 <details>
 <summary> recoveryservices </summary>
 
+* [package-2023-04](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/recoveryservices/resource-manager#tag-package-2023-04)
+    * [1.2.0](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-recoveryservices/1.2.0)
 * [package-2023-02](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/recoveryservices/resource-manager#tag-package-2023-02)
     * [1.1.0](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-recoveryservices/1.1.0)
 * [package-2023-01](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/recoveryservices/resource-manager#tag-package-2023-01)
@@ -1450,6 +1478,7 @@ service
 <summary> resourceconnector </summary>
 
 * [package-2022-10-27](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/resourceconnector/resource-manager#tag-package-2022-10-27)
+    * [1.0.0](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-resourceconnector/1.0.0)
     * [1.0.0-beta.2](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-resourceconnector/1.0.0-beta.2)
 * [package-2022-04-15-preview](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/resourceconnector/resource-manager#tag-package-2022-04-15-preview)
     * [1.0.0-beta.1](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-resourceconnector/1.0.0-beta.1)
