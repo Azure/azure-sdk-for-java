@@ -546,7 +546,11 @@ public final class CosmosDiagnosticsContext {
         }
 
         if (this.finalError != null) {
-            ctxNode.put("exception", this.finalError.toString());
+            if (this.finalError instanceof CosmosException) {
+                ctxNode.put("exception", ((CosmosException)this.finalError).toString(false));
+            } else {
+                ctxNode.put("exception", this.finalError.getMessage());
+            }
         }
 
         if (this.diagnostics != null && this.diagnostics.size() > 0) {

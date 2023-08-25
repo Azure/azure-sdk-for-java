@@ -479,6 +479,54 @@ public class CosmosException extends AzureException {
         }
     }
 
+    String toString(boolean includeDiagnostics) {
+        try {
+            ObjectNode exceptionMessageNode = mapper.createObjectNode();
+            exceptionMessageNode.put("ClassName", getClass().getSimpleName());
+            exceptionMessageNode.put(USER_AGENT_KEY, this.getUserAgent());
+            exceptionMessageNode.put("statusCode", statusCode);
+            exceptionMessageNode.put("resourceAddress", resourceAddress);
+            if (cosmosError != null) {
+                exceptionMessageNode.put("error", cosmosError.toJson());
+            }
+
+            exceptionMessageNode.put("innerErrorMessage", innerErrorMessage());
+            exceptionMessageNode.put("causeInfo", causeInfo());
+            if (responseHeaders != null) {
+                exceptionMessageNode.put("responseHeaders", responseHeaders.toString());
+            }
+
+            List<Map.Entry<String, String>> filterRequestHeaders = filterSensitiveData(requestHeaders);
+            if (filterRequestHeaders != null) {
+                exceptionMessageNode.put("requestHeaders", filterRequestHeaders.toString());
+            }
+
+            if (StringUtils.isNotEmpty(this.faultInjectionRuleId)) {
+                exceptionMessageNode.put("faultInjectionRuleId", this.faultInjectionRuleId);
+            }
+
+            if(includeDiagnostics && this.cosmosDiagnostics != null) {
+                cosmosDiagnostics.fillCosmosDiagnostics(exceptionMessageNode, null);
+            }
+
+            return mapper.writeValueAsString(exceptionMessageNode);
+        } catch (JsonProcessingException ex) {
+            return String.format(
+                "%s {%s=%s, error=%s, resourceAddress=%s, statusCode=%s, message=%s, causeInfo=%s, responseHeaders=%s, requestHeaders=%s, faultInjectionRuleId=[%s] }",
+                getClass().getSimpleName(),
+                USER_AGENT_KEY,
+                this.getUserAgent(),
+                cosmosError,
+                resourceAddress,
+                statusCode,
+                getMessage(),
+                causeInfo(),
+                responseHeaders,
+                filterSensitiveData(requestHeaders),
+                this.faultInjectionRuleId);
+        }
+    }
+
     String innerErrorMessage() {
         String innerErrorMessage = super.getMessage();
         if (cosmosError != null) {
