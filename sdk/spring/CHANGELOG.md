@@ -1,5 +1,6 @@
 # Release History
 # (Unreleased)
+Upgrade Spring Boot dependencies version to 2.7.15 and Spring Cloud dependencies version to 2021.0.8
 Upgrade Spring Boot dependencies version to 2.7.14 and Spring Cloud dependencies version to 2021.0.8
 
 ## 5.4.0 (2023-08-02)
