@@ -1,15 +1,9 @@
 ## Release History
 
-### 5.5.0-beta.1 (Unreleased)
-
-#### Features Added
-
-#### Breaking Changes
+### 5.5.0 (2023-08-28)
 
 #### Bugs Fixed
 * Fixed an issue with IN statement in annotated queries not working for `Long` data type - See [PR 36267](https://github.com/Azure/azure-sdk-for-java/pull/36267).
-
-#### Other Changes
 
 ### 5.4.0 (2023-08-02)
 
