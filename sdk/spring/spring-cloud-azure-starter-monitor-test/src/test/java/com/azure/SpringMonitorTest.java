@@ -12,6 +12,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
+import java.util.stream.Collectors;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -63,7 +65,9 @@ public class SpringMonitorTest {
         .isEqualTo(new URL("https://test.in.applicationinsights.azure.com/v2.1/track"));
 
     List<TelemetryItem> telemetryItems = customValidationPolicy.actualTelemetryItems;
-    assertThat(telemetryItems.size()).isEqualTo(5);
+    List<String> telemetryTypes =
+        telemetryItems.stream().map(telemetry -> telemetry.getName()).collect(Collectors.toList());
+    assertThat(telemetryItems.size()).as("Telemetry: " + telemetryTypes).isEqualTo(5);
 
     // Log telemetry
     TelemetryItem telemetry1 = telemetryItems.get(0);
