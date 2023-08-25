@@ -30,9 +30,8 @@ import com.azure.core.util.BinaryData;
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.SyncPoller;
-import reactor.core.publisher.Flux;
-
 import java.nio.ByteBuffer;
+import reactor.core.publisher.Flux;
 
 /** Initializes a new instance of the synchronous OpenAIClient type. */
 @ServiceClient(builder = OpenAIClientBuilder.class)
@@ -485,9 +484,9 @@ public final class OpenAIClient {
                     .toObject(ImageResponse.class);
         } else {
             return beginBeginAzureBatchImageGeneration(imageGenerationOptionsBinaryData, requestOptions)
-                .getFinalResult()
-                .toObject(ImageOperationResponse.class)
-                .getResult();
+                    .getFinalResult()
+                    .toObject(ImageOperationResponse.class)
+                    .getResult();
         }
     }
 
