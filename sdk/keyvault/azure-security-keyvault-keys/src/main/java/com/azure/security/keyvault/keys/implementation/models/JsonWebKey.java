@@ -12,6 +12,7 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.security.keyvault.keys.models.KeyCurveName;
+import com.azure.security.keyvault.keys.models.KeyOperation;
 import com.azure.security.keyvault.keys.models.KeyType;
 import java.io.IOException;
 import java.util.List;
@@ -33,7 +34,7 @@ public final class JsonWebKey implements JsonSerializable<JsonWebKey> {
     /*
      * The key_ops property.
      */
-    private List<String> keyOps;
+    private List<KeyOperation> keyOps;
 
     /*
      * RSA modulus.
@@ -150,7 +151,7 @@ public final class JsonWebKey implements JsonSerializable<JsonWebKey> {
      *
      * @return the keyOps value.
      */
-    public List<String> getKeyOps() {
+    public List<KeyOperation> getKeyOps() {
         return this.keyOps;
     }
 
@@ -160,7 +161,7 @@ public final class JsonWebKey implements JsonSerializable<JsonWebKey> {
      * @param keyOps the keyOps value to set.
      * @return the JsonWebKey object itself.
      */
-    public JsonWebKey setKeyOps(List<String> keyOps) {
+    public JsonWebKey setKeyOps(List<KeyOperation> keyOps) {
         this.keyOps = keyOps;
         return this;
     }
@@ -514,7 +515,8 @@ public final class JsonWebKey implements JsonSerializable<JsonWebKey> {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("kid", this.kid);
         jsonWriter.writeStringField("kty", Objects.toString(this.kty, null));
-        jsonWriter.writeArrayField("key_ops", this.keyOps, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField(
+                "key_ops", this.keyOps, (writer, element) -> writer.writeString(Objects.toString(element, null)));
         jsonWriter.writeStringField("n", Objects.toString(this.n, null));
         jsonWriter.writeStringField("e", Objects.toString(this.e, null));
         jsonWriter.writeStringField("d", Objects.toString(this.d, null));
@@ -552,7 +554,8 @@ public final class JsonWebKey implements JsonSerializable<JsonWebKey> {
                         } else if ("kty".equals(fieldName)) {
                             deserializedJsonWebKey.kty = KeyType.fromString(reader.getString());
                         } else if ("key_ops".equals(fieldName)) {
-                            List<String> keyOps = reader.readArray(reader1 -> reader1.getString());
+                            List<KeyOperation> keyOps =
+                                    reader.readArray(reader1 -> KeyOperation.fromString(reader1.getString()));
                             deserializedJsonWebKey.keyOps = keyOps;
                         } else if ("n".equals(fieldName)) {
                             deserializedJsonWebKey.n =

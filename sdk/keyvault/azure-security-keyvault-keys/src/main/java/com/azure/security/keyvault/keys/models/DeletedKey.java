@@ -5,11 +5,9 @@ package com.azure.security.keyvault.keys.models;
 
 import com.azure.security.keyvault.keys.KeyAsyncClient;
 import com.azure.security.keyvault.keys.KeyClient;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.time.Instant;
+import com.azure.security.keyvault.keys.implementation.DeletedKeyHelper;
+
 import java.time.OffsetDateTime;
-import java.time.ZoneOffset;
-import java.util.Map;
 
 /**
  * Deleted Key is the resource consisting of name, recovery id, deleted date, scheduled purge date and its attributes
@@ -20,19 +18,30 @@ import java.util.Map;
  * @see KeyAsyncClient
  */
 public final class DeletedKey extends KeyVaultKey {
+    static {
+        DeletedKeyHelper.setAccessor(new DeletedKeyHelper.DeletedKeyAccessor() {
+            @Override
+            public void setRecoveryId(DeletedKey deletedKey, String recoveryId) {
+                deletedKey.recoveryId = recoveryId;
+            }
+
+            @Override
+            public void setScheduledPurgeDate(DeletedKey deletedKey, OffsetDateTime scheduledPurgeDate) {
+                deletedKey.scheduledPurgeDate = scheduledPurgeDate;
+            }
+
+            @Override
+            public void setDeletedOn(DeletedKey deletedKey, OffsetDateTime deletedOn) {
+                deletedKey.deletedOn = deletedOn;
+            }
+        });
+    }
 
     /**
      * The url of the recovery object, used to identify and recover the deleted
      * key.
      */
-    @JsonProperty(value = "recoveryId")
     private String recoveryId;
-
-    /**
-     * The Json Web Key
-     */
-    @JsonProperty(value = "key")
-    private JsonWebKey keyMaterial;
 
     /**
      * The time when the key is scheduled to be purged, in UTC.
@@ -72,40 +81,12 @@ public final class DeletedKey extends KeyVaultKey {
     }
 
     /**
-     * Unpacks the scheduledPurageDate json response. Converts the {@link Long scheduledPurgeDate} epoch second value to
-     * OffsetDateTime and updates the value of class variable scheduledPurgeDate.
-     */
-    @JsonProperty("scheduledPurgeDate")
-    private void unpackScheduledPurgeDate(Long scheduledPurgeDate) {
-        this.scheduledPurgeDate =
-            OffsetDateTime.ofInstant(Instant.ofEpochMilli(scheduledPurgeDate * 1000L), ZoneOffset.UTC);
-    }
-
-    /**
-     * Unpacks the deletedDate json response. Converts the {@link Long deletedDate} epoch second value to OffsetDateTime
-     * and updates the value of class variable deletedDate.
-     */
-    @JsonProperty("deletedDate")
-    private void unpackDeletedDate(Long deletedDate) {
-        this.deletedOn = OffsetDateTime.ofInstant(Instant.ofEpochMilli(deletedDate * 1000L), ZoneOffset.UTC);
-    }
-
-    /**
-     * Unpacks the key material json response and updates the variables in the Key Base object.
-     * @param key The key value mapping of the key material
-     */
-    @JsonProperty("key")
-    private void unpackKeyMaterial(Map<String, Object> key) {
-        keyMaterial = properties.createKeyMaterialFromJson(key);
-    }
-
-    /**
      * Get the key value.
      *
      * @return the key value
      */
     public JsonWebKey getKey() {
-        return this.keyMaterial;
+        return super.getKey();
     }
 
 }

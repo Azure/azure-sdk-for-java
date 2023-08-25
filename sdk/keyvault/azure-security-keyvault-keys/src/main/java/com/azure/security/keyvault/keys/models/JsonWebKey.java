@@ -43,11 +43,8 @@ import java.security.spec.RSAPublicKeySpec;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.Objects;
 
 /**
  * As of http://tools.ietf.org/html/draft-ietf-jose-json-web-key-18.
@@ -791,7 +788,7 @@ public class JsonWebKey {
         try {
             KeyPairGenerator kpg = KeyPairGenerator.getInstance("EC", provider);
 
-            ECGenParameterSpec gps = new ECGenParameterSpec(CURVE_TO_SPEC_NAME.get(crv));
+            ECGenParameterSpec gps = new ECGenParameterSpec(getCurveSpecName(crv));
             kpg.initialize(gps);
 
             // Generate dummy keypair to get parameter spec.
@@ -862,11 +859,8 @@ public class JsonWebKey {
             ECParameterSpec spec = key.getParams();
             EllipticCurve crv = spec.getCurve();
 
-            List<KeyCurveName> curveList = Arrays.asList(KeyCurveName.P_256, KeyCurveName.P_384,
-                KeyCurveName.P_521, KeyCurveName.P_256K);
-
-            for (KeyCurveName curve : curveList) {
-                ECGenParameterSpec gps = new ECGenParameterSpec(CURVE_TO_SPEC_NAME.get(curve));
+            for (KeyCurveName curve : KNOWN_CURVE_NAMES) {
+                ECGenParameterSpec gps = new ECGenParameterSpec(getCurveSpecName(curve));
                 KeyPairGenerator kpg = KeyPairGenerator.getInstance("EC", provider);
                 kpg.initialize(gps);
 
@@ -926,8 +920,7 @@ public class JsonWebKey {
             return null;
         }
 
-        SecretKey secretKey = new SecretKeySpec(k, "AES");
-        return secretKey;
+        return new SecretKeySpec(k, "AES");
     }
 
     @Override
@@ -935,10 +928,12 @@ public class JsonWebKey {
         if (obj == this) {
             return true;
         }
+
         if (obj instanceof JsonWebKey) {
             return this.equals((JsonWebKey) obj);
         }
-        return super.equals(obj);
+
+        return false;
     }
 
     /**
@@ -954,66 +949,22 @@ public class JsonWebKey {
             return false;
         }
 
-        if (!objectEquals(keyId, jwk.keyId)) {
-            return false;
-        }
-
-        if (!objectEquals(keyType, jwk.keyType)) {
-            return false;
-        }
-
-        if (!objectEquals(keyOps, jwk.keyOps)) {
-            return false;
-        }
-
-        if (!objectEquals(crv, jwk.crv)) {
-            return false;
-        }
-
-        if (!Arrays.equals(k, jwk.k)) {
-            return false;
-        }
-
-        // Public parameters
-        if (!Arrays.equals(n, jwk.n)) {
-            return false;
-        }
-        if (!Arrays.equals(e, jwk.e)) {
-            return false;
-        }
-
-        // Private parameters
-        if (!Arrays.equals(d, jwk.d)) {
-            return false;
-        }
-        if (!Arrays.equals(dp, jwk.dp)) {
-            return false;
-        }
-        if (!Arrays.equals(dq, jwk.dq)) {
-            return false;
-        }
-        if (!Arrays.equals(qi, jwk.qi)) {
-            return false;
-        }
-        if (!Arrays.equals(p, jwk.p)) {
-            return false;
-        }
-        if (!Arrays.equals(q, jwk.q)) {
-            return false;
-        }
-        if (!Arrays.equals(x, jwk.x)) {
-            return false;
-        }
-        if (!Arrays.equals(y, jwk.y)) {
-            return false;
-        }
-
-        // HSM token
-        if (!Arrays.equals(t, jwk.t)) {
-            return false;
-        }
-
-        return true;
+        return Objects.equals(keyId, jwk.keyId)
+            && Objects.equals(keyType, jwk.keyType)
+            && Objects.equals(keyOps, jwk.keyOps)
+            && Objects.equals(crv, jwk.crv)
+            && Arrays.equals(k, jwk.k)
+            && Arrays.equals(n, jwk.n)
+            && Arrays.equals(e, jwk.e)
+            && Arrays.equals(d, jwk.d)
+            && Arrays.equals(dp, jwk.dp)
+            && Arrays.equals(dq, jwk.dq)
+            && Arrays.equals(qi, jwk.qi)
+            && Arrays.equals(p, jwk.p)
+            && Arrays.equals(q, jwk.q)
+            && Arrays.equals(x, jwk.x)
+            && Arrays.equals(y, jwk.y)
+            && Arrays.equals(t, jwk.t);
     }
 
     /**
@@ -1043,16 +994,6 @@ public class JsonWebKey {
     public boolean isValid() {
         if (keyType == null) {
             return false;
-        }
-
-        if (keyOps != null) {
-            final Set<KeyOperation> set =
-                new HashSet<KeyOperation>(KeyOperation.values());
-            for (int i = 0; i < keyOps.size(); i++) {
-                if (!set.contains(keyOps.get(i))) {
-                    return false;
-                }
-            }
         }
 
         if (KeyType.OCT.equals(keyType) || KeyType.OCT_HSM.equals(keyType)) {
@@ -1201,31 +1142,30 @@ public class JsonWebKey {
             return 0;
         }
 
-        for (int i = 0; i < obj.length; i++) {
-            hashCode = (hashCode << 3) | (hashCode >> 29) ^ obj[i];
+        for (byte b : obj) {
+            hashCode = (hashCode << 3) | (hashCode >> 29) ^ b;
         }
         return hashCode;
     }
 
-    private static final Map<KeyCurveName, String> CURVE_TO_SPEC_NAME = setupCurveToSpecMap();
+    private static String getCurveSpecName(KeyCurveName curveName) {
+        if (curveName == null) {
+            return null;
+        }
 
-    private static Map<KeyCurveName, String> setupCurveToSpecMap() {
-        Map<KeyCurveName, String> curveToSpecMap = new HashMap<>();
-        curveToSpecMap.put(KeyCurveName.P_256, "secp256r1");
-        curveToSpecMap.put(KeyCurveName.P_384, "secp384r1");
-        curveToSpecMap.put(KeyCurveName.P_521, "secp521r1");
-        curveToSpecMap.put(KeyCurveName.P_256K, "secp256k1");
-
-        return curveToSpecMap;
-    }
-
-    private boolean objectEquals(Object a, Object b) {
-        if (a == null && b == null) {
-            return true;
-        } else if (a != null && b != null) {
-            return a.equals(b);
+        if (curveName == KeyCurveName.P_256) {
+            return "secp256r1";
+        } else if (curveName == KeyCurveName.P_384) {
+            return "secp384r1";
+        } else if (curveName == KeyCurveName.P_521) {
+            return "secp521r1";
+        } else if (curveName == KeyCurveName.P_256K) {
+            return "secp256k1";
         } else {
-            return false;
+            return null;
         }
     }
+
+    private static final List<KeyCurveName> KNOWN_CURVE_NAMES = Arrays.asList(
+        KeyCurveName.P_256, KeyCurveName.P_384, KeyCurveName.P_521, KeyCurveName.P_256K);
 }

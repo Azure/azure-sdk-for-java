@@ -4,6 +4,7 @@
 package com.azure.security.keyvault.keys.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.security.keyvault.keys.implementation.KeyRotationLifetimeActionHelper;
 import com.azure.security.keyvault.keys.implementation.models.LifetimeActionsTrigger;
 import com.azure.security.keyvault.keys.implementation.models.LifetimeActionsType;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -13,11 +14,34 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 @Fluent
 public final class KeyRotationLifetimeAction {
+    static {
+        KeyRotationLifetimeActionHelper.setAccessor(new KeyRotationLifetimeActionHelper.KeyRotationLifetimeActionAccessor() {
+            @Override
+            public void setActionType(KeyRotationLifetimeAction action, LifetimeActionsType actionsType) {
+                action.actionType = actionsType;
+            }
+
+            @Override
+            public LifetimeActionsType getActionType(KeyRotationLifetimeAction action) {
+                return action.actionType;
+            }
+
+            @Override
+            public void setTrigger(KeyRotationLifetimeAction action, LifetimeActionsTrigger trigger) {
+                action.trigger = trigger;
+            }
+
+            @Override
+            public LifetimeActionsTrigger getTrigger(KeyRotationLifetimeAction action) {
+                return action.trigger;
+            }
+        });
+    }
     @JsonProperty(value = "trigger")
-    private final LifetimeActionsTrigger trigger;
+    private LifetimeActionsTrigger trigger;
 
     @JsonProperty(value = "action")
-    private final LifetimeActionsType actionType;
+    private LifetimeActionsType actionType;
 
     /**
      * Creates a {@link KeyRotationLifetimeAction}.

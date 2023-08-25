@@ -6,6 +6,7 @@ package com.azure.security.keyvault.keys.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.security.keyvault.keys.KeyAsyncClient;
 import com.azure.security.keyvault.keys.KeyClient;
+import com.azure.security.keyvault.keys.implementation.KeyVaultKeyHelper;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;
@@ -20,6 +21,20 @@ import java.util.Map;
  */
 @Fluent
 public class KeyVaultKey {
+    static {
+        KeyVaultKeyHelper.setAccessor(new KeyVaultKeyHelper.KeyVaultKeyAccessor() {
+            @Override
+            public KeyVaultKey createKeyVaultKey() {
+                return new KeyVaultKey();
+            }
+
+            @Override
+            public void setKey(KeyVaultKey keyVaultKey, JsonWebKey jsonWebKey) {
+                keyVaultKey.key = jsonWebKey;
+            }
+        });
+    }
+
     /**
      * The Json Web Key.
      */

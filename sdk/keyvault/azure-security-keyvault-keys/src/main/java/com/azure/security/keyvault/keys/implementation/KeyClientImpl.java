@@ -40,15 +40,11 @@ import com.azure.security.keyvault.keys.implementation.models.DeletedKeyItem;
 import com.azure.security.keyvault.keys.implementation.models.DeletedKeyListResult;
 import com.azure.security.keyvault.keys.implementation.models.GetRandomBytesRequest;
 import com.azure.security.keyvault.keys.implementation.models.JsonWebKey;
-import com.azure.security.keyvault.keys.implementation.models.JsonWebKeyCurveName;
 import com.azure.security.keyvault.keys.implementation.models.JsonWebKeyEncryptionAlgorithm;
-import com.azure.security.keyvault.keys.implementation.models.JsonWebKeyOperation;
 import com.azure.security.keyvault.keys.implementation.models.JsonWebKeySignatureAlgorithm;
-import com.azure.security.keyvault.keys.implementation.models.JsonWebKeyType;
 import com.azure.security.keyvault.keys.implementation.models.KeyAttributes;
 import com.azure.security.keyvault.keys.implementation.models.KeyBundle;
 import com.azure.security.keyvault.keys.implementation.models.KeyCreateParameters;
-import com.azure.security.keyvault.keys.implementation.models.KeyEncryptionAlgorithm;
 import com.azure.security.keyvault.keys.implementation.models.KeyImportParameters;
 import com.azure.security.keyvault.keys.implementation.models.KeyItem;
 import com.azure.security.keyvault.keys.implementation.models.KeyListResult;
@@ -56,7 +52,6 @@ import com.azure.security.keyvault.keys.implementation.models.KeyOperationResult
 import com.azure.security.keyvault.keys.implementation.models.KeyOperationsParameters;
 import com.azure.security.keyvault.keys.implementation.models.KeyReleaseParameters;
 import com.azure.security.keyvault.keys.implementation.models.KeyReleasePolicy;
-import com.azure.security.keyvault.keys.implementation.models.KeyReleaseResult;
 import com.azure.security.keyvault.keys.implementation.models.KeyRestoreParameters;
 import com.azure.security.keyvault.keys.implementation.models.KeyRotationPolicy;
 import com.azure.security.keyvault.keys.implementation.models.KeySignParameters;
@@ -65,6 +60,11 @@ import com.azure.security.keyvault.keys.implementation.models.KeyVaultErrorExcep
 import com.azure.security.keyvault.keys.implementation.models.KeyVerifyParameters;
 import com.azure.security.keyvault.keys.implementation.models.KeyVerifyResult;
 import com.azure.security.keyvault.keys.implementation.models.RandomBytes;
+import com.azure.security.keyvault.keys.models.KeyCurveName;
+import com.azure.security.keyvault.keys.models.KeyExportEncryptionAlgorithm;
+import com.azure.security.keyvault.keys.models.KeyOperation;
+import com.azure.security.keyvault.keys.models.KeyType;
+import com.azure.security.keyvault.keys.models.ReleaseKeyResult;
 import java.util.List;
 import java.util.Map;
 import reactor.core.publisher.Mono;
@@ -509,7 +509,7 @@ public final class KeyClientImpl {
         @Post("/keys/{key-name}/{key-version}/release")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(KeyVaultErrorException.class)
-        Mono<Response<KeyReleaseResult>> release(
+        Mono<Response<ReleaseKeyResult>> release(
                 @HostParam("vaultBaseUrl") String vaultBaseUrl,
                 @PathParam("key-name") String keyName,
                 @PathParam("key-version") String keyVersion,
@@ -521,7 +521,7 @@ public final class KeyClientImpl {
         @Post("/keys/{key-name}/{key-version}/release")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(KeyVaultErrorException.class)
-        Response<KeyReleaseResult> releaseSync(
+        Response<ReleaseKeyResult> releaseSync(
                 @HostParam("vaultBaseUrl") String vaultBaseUrl,
                 @PathParam("key-name") String keyName,
                 @PathParam("key-version") String keyVersion,
@@ -737,13 +737,14 @@ public final class KeyClientImpl {
      * @param keyName The name for the new key. The system will generate the version name for the new key. The value you
      *     provide may be copied globally for the purpose of running the service. The value provided should not include
      *     personally identifiable or sensitive information.
-     * @param kty The type of key to create. For valid values, see JsonWebKeyType.
+     * @param kty JsonWebKey Key Type (kty), as defined in
+     *     https://tools.ietf.org/html/draft-ietf-jose-json-web-algorithms-40.
      * @param keySize The key size in bits. For example: 2048, 3072, or 4096 for RSA.
      * @param publicExponent The public exponent for a RSA key.
-     * @param keyOps Array of JsonWebKeyOperation.
+     * @param keyOps Array of KeyOperation.
      * @param keyAttributes The attributes of a key managed by the key vault service.
      * @param tags Application specific metadata in the form of key-value pairs.
-     * @param curve Elliptic curve name. For valid values, see JsonWebKeyCurveName.
+     * @param crv Elliptic curve name.
      * @param releasePolicy The policy rules under which the key can be exported.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
@@ -755,13 +756,13 @@ public final class KeyClientImpl {
     public Mono<Response<KeyBundle>> createKeyWithResponseAsync(
             String vaultBaseUrl,
             String keyName,
-            JsonWebKeyType kty,
+            KeyType kty,
             Integer keySize,
             Integer publicExponent,
-            List<JsonWebKeyOperation> keyOps,
+            List<KeyOperation> keyOps,
             KeyAttributes keyAttributes,
             Map<String, String> tags,
-            JsonWebKeyCurveName curve,
+            KeyCurveName crv,
             KeyReleasePolicy releasePolicy) {
         final String accept = "application/json";
         KeyCreateParameters parameters = new KeyCreateParameters();
@@ -771,7 +772,7 @@ public final class KeyClientImpl {
         parameters.setKeyOps(keyOps);
         parameters.setKeyAttributes(keyAttributes);
         parameters.setTags(tags);
-        parameters.setCurve(curve);
+        parameters.setCrv(crv);
         parameters.setReleasePolicy(releasePolicy);
         return FluxUtil.withContext(
                 context -> service.createKey(vaultBaseUrl, keyName, this.getApiVersion(), parameters, accept, context));
@@ -787,13 +788,14 @@ public final class KeyClientImpl {
      * @param keyName The name for the new key. The system will generate the version name for the new key. The value you
      *     provide may be copied globally for the purpose of running the service. The value provided should not include
      *     personally identifiable or sensitive information.
-     * @param kty The type of key to create. For valid values, see JsonWebKeyType.
+     * @param kty JsonWebKey Key Type (kty), as defined in
+     *     https://tools.ietf.org/html/draft-ietf-jose-json-web-algorithms-40.
      * @param keySize The key size in bits. For example: 2048, 3072, or 4096 for RSA.
      * @param publicExponent The public exponent for a RSA key.
-     * @param keyOps Array of JsonWebKeyOperation.
+     * @param keyOps Array of KeyOperation.
      * @param keyAttributes The attributes of a key managed by the key vault service.
      * @param tags Application specific metadata in the form of key-value pairs.
-     * @param curve Elliptic curve name. For valid values, see JsonWebKeyCurveName.
+     * @param crv Elliptic curve name.
      * @param releasePolicy The policy rules under which the key can be exported.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -806,13 +808,13 @@ public final class KeyClientImpl {
     public Mono<Response<KeyBundle>> createKeyWithResponseAsync(
             String vaultBaseUrl,
             String keyName,
-            JsonWebKeyType kty,
+            KeyType kty,
             Integer keySize,
             Integer publicExponent,
-            List<JsonWebKeyOperation> keyOps,
+            List<KeyOperation> keyOps,
             KeyAttributes keyAttributes,
             Map<String, String> tags,
-            JsonWebKeyCurveName curve,
+            KeyCurveName crv,
             KeyReleasePolicy releasePolicy,
             Context context) {
         final String accept = "application/json";
@@ -823,7 +825,7 @@ public final class KeyClientImpl {
         parameters.setKeyOps(keyOps);
         parameters.setKeyAttributes(keyAttributes);
         parameters.setTags(tags);
-        parameters.setCurve(curve);
+        parameters.setCrv(crv);
         parameters.setReleasePolicy(releasePolicy);
         return service.createKey(vaultBaseUrl, keyName, this.getApiVersion(), parameters, accept, context);
     }
@@ -838,13 +840,14 @@ public final class KeyClientImpl {
      * @param keyName The name for the new key. The system will generate the version name for the new key. The value you
      *     provide may be copied globally for the purpose of running the service. The value provided should not include
      *     personally identifiable or sensitive information.
-     * @param kty The type of key to create. For valid values, see JsonWebKeyType.
+     * @param kty JsonWebKey Key Type (kty), as defined in
+     *     https://tools.ietf.org/html/draft-ietf-jose-json-web-algorithms-40.
      * @param keySize The key size in bits. For example: 2048, 3072, or 4096 for RSA.
      * @param publicExponent The public exponent for a RSA key.
-     * @param keyOps Array of JsonWebKeyOperation.
+     * @param keyOps Array of KeyOperation.
      * @param keyAttributes The attributes of a key managed by the key vault service.
      * @param tags Application specific metadata in the form of key-value pairs.
-     * @param curve Elliptic curve name. For valid values, see JsonWebKeyCurveName.
+     * @param crv Elliptic curve name.
      * @param releasePolicy The policy rules under which the key can be exported.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
@@ -855,13 +858,13 @@ public final class KeyClientImpl {
     public Mono<KeyBundle> createKeyAsync(
             String vaultBaseUrl,
             String keyName,
-            JsonWebKeyType kty,
+            KeyType kty,
             Integer keySize,
             Integer publicExponent,
-            List<JsonWebKeyOperation> keyOps,
+            List<KeyOperation> keyOps,
             KeyAttributes keyAttributes,
             Map<String, String> tags,
-            JsonWebKeyCurveName curve,
+            KeyCurveName crv,
             KeyReleasePolicy releasePolicy) {
         return createKeyWithResponseAsync(
                         vaultBaseUrl,
@@ -872,7 +875,7 @@ public final class KeyClientImpl {
                         keyOps,
                         keyAttributes,
                         tags,
-                        curve,
+                        crv,
                         releasePolicy)
                 .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -887,13 +890,14 @@ public final class KeyClientImpl {
      * @param keyName The name for the new key. The system will generate the version name for the new key. The value you
      *     provide may be copied globally for the purpose of running the service. The value provided should not include
      *     personally identifiable or sensitive information.
-     * @param kty The type of key to create. For valid values, see JsonWebKeyType.
+     * @param kty JsonWebKey Key Type (kty), as defined in
+     *     https://tools.ietf.org/html/draft-ietf-jose-json-web-algorithms-40.
      * @param keySize The key size in bits. For example: 2048, 3072, or 4096 for RSA.
      * @param publicExponent The public exponent for a RSA key.
-     * @param keyOps Array of JsonWebKeyOperation.
+     * @param keyOps Array of KeyOperation.
      * @param keyAttributes The attributes of a key managed by the key vault service.
      * @param tags Application specific metadata in the form of key-value pairs.
-     * @param curve Elliptic curve name. For valid values, see JsonWebKeyCurveName.
+     * @param crv Elliptic curve name.
      * @param releasePolicy The policy rules under which the key can be exported.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -905,13 +909,13 @@ public final class KeyClientImpl {
     public Mono<KeyBundle> createKeyAsync(
             String vaultBaseUrl,
             String keyName,
-            JsonWebKeyType kty,
+            KeyType kty,
             Integer keySize,
             Integer publicExponent,
-            List<JsonWebKeyOperation> keyOps,
+            List<KeyOperation> keyOps,
             KeyAttributes keyAttributes,
             Map<String, String> tags,
-            JsonWebKeyCurveName curve,
+            KeyCurveName crv,
             KeyReleasePolicy releasePolicy,
             Context context) {
         return createKeyWithResponseAsync(
@@ -923,7 +927,7 @@ public final class KeyClientImpl {
                         keyOps,
                         keyAttributes,
                         tags,
-                        curve,
+                        crv,
                         releasePolicy,
                         context)
                 .flatMap(res -> Mono.justOrEmpty(res.getValue()));
@@ -939,13 +943,14 @@ public final class KeyClientImpl {
      * @param keyName The name for the new key. The system will generate the version name for the new key. The value you
      *     provide may be copied globally for the purpose of running the service. The value provided should not include
      *     personally identifiable or sensitive information.
-     * @param kty The type of key to create. For valid values, see JsonWebKeyType.
+     * @param kty JsonWebKey Key Type (kty), as defined in
+     *     https://tools.ietf.org/html/draft-ietf-jose-json-web-algorithms-40.
      * @param keySize The key size in bits. For example: 2048, 3072, or 4096 for RSA.
      * @param publicExponent The public exponent for a RSA key.
-     * @param keyOps Array of JsonWebKeyOperation.
+     * @param keyOps Array of KeyOperation.
      * @param keyAttributes The attributes of a key managed by the key vault service.
      * @param tags Application specific metadata in the form of key-value pairs.
-     * @param curve Elliptic curve name. For valid values, see JsonWebKeyCurveName.
+     * @param crv Elliptic curve name.
      * @param releasePolicy The policy rules under which the key can be exported.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -957,13 +962,13 @@ public final class KeyClientImpl {
     public Response<KeyBundle> createKeyWithResponse(
             String vaultBaseUrl,
             String keyName,
-            JsonWebKeyType kty,
+            KeyType kty,
             Integer keySize,
             Integer publicExponent,
-            List<JsonWebKeyOperation> keyOps,
+            List<KeyOperation> keyOps,
             KeyAttributes keyAttributes,
             Map<String, String> tags,
-            JsonWebKeyCurveName curve,
+            KeyCurveName crv,
             KeyReleasePolicy releasePolicy,
             Context context) {
         final String accept = "application/json";
@@ -974,7 +979,7 @@ public final class KeyClientImpl {
         parameters.setKeyOps(keyOps);
         parameters.setKeyAttributes(keyAttributes);
         parameters.setTags(tags);
-        parameters.setCurve(curve);
+        parameters.setCrv(crv);
         parameters.setReleasePolicy(releasePolicy);
         return service.createKeySync(vaultBaseUrl, keyName, this.getApiVersion(), parameters, accept, context);
     }
@@ -989,13 +994,14 @@ public final class KeyClientImpl {
      * @param keyName The name for the new key. The system will generate the version name for the new key. The value you
      *     provide may be copied globally for the purpose of running the service. The value provided should not include
      *     personally identifiable or sensitive information.
-     * @param kty The type of key to create. For valid values, see JsonWebKeyType.
+     * @param kty JsonWebKey Key Type (kty), as defined in
+     *     https://tools.ietf.org/html/draft-ietf-jose-json-web-algorithms-40.
      * @param keySize The key size in bits. For example: 2048, 3072, or 4096 for RSA.
      * @param publicExponent The public exponent for a RSA key.
-     * @param keyOps Array of JsonWebKeyOperation.
+     * @param keyOps Array of KeyOperation.
      * @param keyAttributes The attributes of a key managed by the key vault service.
      * @param tags Application specific metadata in the form of key-value pairs.
-     * @param curve Elliptic curve name. For valid values, see JsonWebKeyCurveName.
+     * @param crv Elliptic curve name.
      * @param releasePolicy The policy rules under which the key can be exported.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
@@ -1006,13 +1012,13 @@ public final class KeyClientImpl {
     public KeyBundle createKey(
             String vaultBaseUrl,
             String keyName,
-            JsonWebKeyType kty,
+            KeyType kty,
             Integer keySize,
             Integer publicExponent,
-            List<JsonWebKeyOperation> keyOps,
+            List<KeyOperation> keyOps,
             KeyAttributes keyAttributes,
             Map<String, String> tags,
-            JsonWebKeyCurveName curve,
+            KeyCurveName crv,
             KeyReleasePolicy releasePolicy) {
         return createKeyWithResponse(
                         vaultBaseUrl,
@@ -1023,7 +1029,7 @@ public final class KeyClientImpl {
                         keyOps,
                         keyAttributes,
                         tags,
-                        curve,
+                        crv,
                         releasePolicy,
                         Context.NONE)
                 .getValue();
@@ -1513,7 +1519,7 @@ public final class KeyClientImpl {
             String vaultBaseUrl,
             String keyName,
             String keyVersion,
-            List<JsonWebKeyOperation> keyOps,
+            List<KeyOperation> keyOps,
             KeyAttributes keyAttributes,
             Map<String, String> tags,
             KeyReleasePolicy releasePolicy) {
@@ -1555,7 +1561,7 @@ public final class KeyClientImpl {
             String vaultBaseUrl,
             String keyName,
             String keyVersion,
-            List<JsonWebKeyOperation> keyOps,
+            List<KeyOperation> keyOps,
             KeyAttributes keyAttributes,
             Map<String, String> tags,
             KeyReleasePolicy releasePolicy,
@@ -1593,7 +1599,7 @@ public final class KeyClientImpl {
             String vaultBaseUrl,
             String keyName,
             String keyVersion,
-            List<JsonWebKeyOperation> keyOps,
+            List<KeyOperation> keyOps,
             KeyAttributes keyAttributes,
             Map<String, String> tags,
             KeyReleasePolicy releasePolicy) {
@@ -1626,7 +1632,7 @@ public final class KeyClientImpl {
             String vaultBaseUrl,
             String keyName,
             String keyVersion,
-            List<JsonWebKeyOperation> keyOps,
+            List<KeyOperation> keyOps,
             KeyAttributes keyAttributes,
             Map<String, String> tags,
             KeyReleasePolicy releasePolicy,
@@ -1661,7 +1667,7 @@ public final class KeyClientImpl {
             String vaultBaseUrl,
             String keyName,
             String keyVersion,
-            List<JsonWebKeyOperation> keyOps,
+            List<KeyOperation> keyOps,
             KeyAttributes keyAttributes,
             Map<String, String> tags,
             KeyReleasePolicy releasePolicy,
@@ -1700,7 +1706,7 @@ public final class KeyClientImpl {
             String vaultBaseUrl,
             String keyName,
             String keyVersion,
-            List<JsonWebKeyOperation> keyOps,
+            List<KeyOperation> keyOps,
             KeyAttributes keyAttributes,
             Map<String, String> tags,
             KeyReleasePolicy releasePolicy) {
@@ -4021,13 +4027,13 @@ public final class KeyClientImpl {
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<KeyReleaseResult>> releaseWithResponseAsync(
+    public Mono<Response<ReleaseKeyResult>> releaseWithResponseAsync(
             String vaultBaseUrl,
             String keyName,
             String keyVersion,
             String targetAttestationToken,
             String nonce,
-            KeyEncryptionAlgorithm enc) {
+            KeyExportEncryptionAlgorithm enc) {
         final String accept = "application/json";
         KeyReleaseParameters parameters = new KeyReleaseParameters();
         parameters.setTargetAttestationToken(targetAttestationToken);
@@ -4059,13 +4065,13 @@ public final class KeyClientImpl {
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<KeyReleaseResult>> releaseWithResponseAsync(
+    public Mono<Response<ReleaseKeyResult>> releaseWithResponseAsync(
             String vaultBaseUrl,
             String keyName,
             String keyVersion,
             String targetAttestationToken,
             String nonce,
-            KeyEncryptionAlgorithm enc,
+            KeyExportEncryptionAlgorithm enc,
             Context context) {
         final String accept = "application/json";
         KeyReleaseParameters parameters = new KeyReleaseParameters();
@@ -4093,13 +4099,13 @@ public final class KeyClientImpl {
      * @return the release result, containing the released key on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<KeyReleaseResult> releaseAsync(
+    public Mono<ReleaseKeyResult> releaseAsync(
             String vaultBaseUrl,
             String keyName,
             String keyVersion,
             String targetAttestationToken,
             String nonce,
-            KeyEncryptionAlgorithm enc) {
+            KeyExportEncryptionAlgorithm enc) {
         return releaseWithResponseAsync(vaultBaseUrl, keyName, keyVersion, targetAttestationToken, nonce, enc)
                 .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -4123,13 +4129,13 @@ public final class KeyClientImpl {
      * @return the release result, containing the released key on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<KeyReleaseResult> releaseAsync(
+    public Mono<ReleaseKeyResult> releaseAsync(
             String vaultBaseUrl,
             String keyName,
             String keyVersion,
             String targetAttestationToken,
             String nonce,
-            KeyEncryptionAlgorithm enc,
+            KeyExportEncryptionAlgorithm enc,
             Context context) {
         return releaseWithResponseAsync(vaultBaseUrl, keyName, keyVersion, targetAttestationToken, nonce, enc, context)
                 .flatMap(res -> Mono.justOrEmpty(res.getValue()));
@@ -4154,13 +4160,13 @@ public final class KeyClientImpl {
      * @return the release result, containing the released key along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<KeyReleaseResult> releaseWithResponse(
+    public Response<ReleaseKeyResult> releaseWithResponse(
             String vaultBaseUrl,
             String keyName,
             String keyVersion,
             String targetAttestationToken,
             String nonce,
-            KeyEncryptionAlgorithm enc,
+            KeyExportEncryptionAlgorithm enc,
             Context context) {
         final String accept = "application/json";
         KeyReleaseParameters parameters = new KeyReleaseParameters();
@@ -4189,13 +4195,13 @@ public final class KeyClientImpl {
      * @return the release result, containing the released key.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public KeyReleaseResult release(
+    public ReleaseKeyResult release(
             String vaultBaseUrl,
             String keyName,
             String keyVersion,
             String targetAttestationToken,
             String nonce,
-            KeyEncryptionAlgorithm enc) {
+            KeyExportEncryptionAlgorithm enc) {
         return releaseWithResponse(vaultBaseUrl, keyName, keyVersion, targetAttestationToken, nonce, enc, Context.NONE)
                 .getValue();
     }

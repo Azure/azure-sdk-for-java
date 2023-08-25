@@ -6,6 +6,7 @@ package com.azure.security.keyvault.keys.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.security.keyvault.keys.KeyAsyncClient;
 import com.azure.security.keyvault.keys.KeyClient;
+import com.azure.security.keyvault.keys.implementation.KeyPropertiesHelper;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.net.MalformedURLException;
@@ -27,6 +28,49 @@ import java.util.Map;
  */
 @Fluent
 public class KeyProperties {
+    static {
+        KeyPropertiesHelper.setAccessor(new KeyPropertiesHelper.KeyPropertiesAccessor() {
+            @Override
+            public void setCreatedOn(KeyProperties keyProperties, OffsetDateTime createdOn) {
+                keyProperties.createdOn = createdOn;
+            }
+
+            @Override
+            public void setUpdatedOn(KeyProperties keyProperties, OffsetDateTime updatedOn) {
+                keyProperties.updatedOn = updatedOn;
+            }
+
+            @Override
+            public void setRecoveryLevel(KeyProperties keyProperties, String recoveryLevel) {
+                keyProperties.recoveryLevel = recoveryLevel;
+            }
+
+            @Override
+            public void setName(KeyProperties keyProperties, String name) {
+                keyProperties.name = name;
+            }
+
+            @Override
+            public void setVersion(KeyProperties keyProperties, String version) {
+                keyProperties.version = version;
+            }
+
+            @Override
+            public void setId(KeyProperties keyProperties, String id) {
+                keyProperties.id = id;
+            }
+
+            @Override
+            public void setManaged(KeyProperties keyProperties, Boolean managed) {
+                keyProperties.managed = managed;
+            }
+
+            @Override
+            public void setRecoverableDays(KeyProperties keyProperties, Integer recoverableDays) {
+                keyProperties.recoverableDays = recoverableDays;
+            }
+        });
+    }
     /**
      * Determines whether the object is enabled.
      */
@@ -340,14 +384,6 @@ public class KeyProperties {
         }
 
         return null;
-    }
-
-    Object lazyValueSelection(Object input1, Object input2) {
-        if (input1 == null) {
-            return input2;
-        }
-
-        return input1;
     }
 
     @JsonProperty(value = "kid")

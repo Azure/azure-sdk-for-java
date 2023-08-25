@@ -9,6 +9,9 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.security.keyvault.keys.models.KeyCurveName;
+import com.azure.security.keyvault.keys.models.KeyOperation;
+import com.azure.security.keyvault.keys.models.KeyType;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
@@ -18,9 +21,9 @@ import java.util.Objects;
 @Fluent
 public final class KeyCreateParameters implements JsonSerializable<KeyCreateParameters> {
     /*
-     * The type of key to create. For valid values, see JsonWebKeyType.
+     * JsonWebKey Key Type (kty), as defined in https://tools.ietf.org/html/draft-ietf-jose-json-web-algorithms-40.
      */
-    private JsonWebKeyType kty;
+    private KeyType kty;
 
     /*
      * The key size in bits. For example: 2048, 3072, or 4096 for RSA.
@@ -35,7 +38,7 @@ public final class KeyCreateParameters implements JsonSerializable<KeyCreatePara
     /*
      * The key_ops property.
      */
-    private List<JsonWebKeyOperation> keyOps;
+    private List<KeyOperation> keyOps;
 
     /*
      * The attributes of a key managed by the key vault service.
@@ -48,9 +51,9 @@ public final class KeyCreateParameters implements JsonSerializable<KeyCreatePara
     private Map<String, String> tags;
 
     /*
-     * Elliptic curve name. For valid values, see JsonWebKeyCurveName.
+     * Elliptic curve name.
      */
-    private JsonWebKeyCurveName curve;
+    private KeyCurveName crv;
 
     /*
      * The policy rules under which the key can be exported.
@@ -61,21 +64,23 @@ public final class KeyCreateParameters implements JsonSerializable<KeyCreatePara
     public KeyCreateParameters() {}
 
     /**
-     * Get the kty property: The type of key to create. For valid values, see JsonWebKeyType.
+     * Get the kty property: JsonWebKey Key Type (kty), as defined in
+     * https://tools.ietf.org/html/draft-ietf-jose-json-web-algorithms-40.
      *
      * @return the kty value.
      */
-    public JsonWebKeyType getKty() {
+    public KeyType getKty() {
         return this.kty;
     }
 
     /**
-     * Set the kty property: The type of key to create. For valid values, see JsonWebKeyType.
+     * Set the kty property: JsonWebKey Key Type (kty), as defined in
+     * https://tools.ietf.org/html/draft-ietf-jose-json-web-algorithms-40.
      *
      * @param kty the kty value to set.
      * @return the KeyCreateParameters object itself.
      */
-    public KeyCreateParameters setKty(JsonWebKeyType kty) {
+    public KeyCreateParameters setKty(KeyType kty) {
         this.kty = kty;
         return this;
     }
@@ -125,7 +130,7 @@ public final class KeyCreateParameters implements JsonSerializable<KeyCreatePara
      *
      * @return the keyOps value.
      */
-    public List<JsonWebKeyOperation> getKeyOps() {
+    public List<KeyOperation> getKeyOps() {
         return this.keyOps;
     }
 
@@ -135,7 +140,7 @@ public final class KeyCreateParameters implements JsonSerializable<KeyCreatePara
      * @param keyOps the keyOps value to set.
      * @return the KeyCreateParameters object itself.
      */
-    public KeyCreateParameters setKeyOps(List<JsonWebKeyOperation> keyOps) {
+    public KeyCreateParameters setKeyOps(List<KeyOperation> keyOps) {
         this.keyOps = keyOps;
         return this;
     }
@@ -181,22 +186,22 @@ public final class KeyCreateParameters implements JsonSerializable<KeyCreatePara
     }
 
     /**
-     * Get the curve property: Elliptic curve name. For valid values, see JsonWebKeyCurveName.
+     * Get the crv property: Elliptic curve name.
      *
-     * @return the curve value.
+     * @return the crv value.
      */
-    public JsonWebKeyCurveName getCurve() {
-        return this.curve;
+    public KeyCurveName getCrv() {
+        return this.crv;
     }
 
     /**
-     * Set the curve property: Elliptic curve name. For valid values, see JsonWebKeyCurveName.
+     * Set the crv property: Elliptic curve name.
      *
-     * @param curve the curve value to set.
+     * @param crv the crv value to set.
      * @return the KeyCreateParameters object itself.
      */
-    public KeyCreateParameters setCurve(JsonWebKeyCurveName curve) {
-        this.curve = curve;
+    public KeyCreateParameters setCrv(KeyCurveName crv) {
+        this.crv = crv;
         return this;
     }
 
@@ -230,7 +235,7 @@ public final class KeyCreateParameters implements JsonSerializable<KeyCreatePara
                 "key_ops", this.keyOps, (writer, element) -> writer.writeString(Objects.toString(element, null)));
         jsonWriter.writeJsonField("attributes", this.keyAttributes);
         jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
-        jsonWriter.writeStringField("crv", Objects.toString(this.curve, null));
+        jsonWriter.writeStringField("crv", Objects.toString(this.crv, null));
         jsonWriter.writeJsonField("release_policy", this.releasePolicy);
         return jsonWriter.writeEndObject();
     }
@@ -253,14 +258,14 @@ public final class KeyCreateParameters implements JsonSerializable<KeyCreatePara
                         reader.nextToken();
 
                         if ("kty".equals(fieldName)) {
-                            deserializedKeyCreateParameters.kty = JsonWebKeyType.fromString(reader.getString());
+                            deserializedKeyCreateParameters.kty = KeyType.fromString(reader.getString());
                         } else if ("key_size".equals(fieldName)) {
                             deserializedKeyCreateParameters.keySize = reader.getNullable(JsonReader::getInt);
                         } else if ("public_exponent".equals(fieldName)) {
                             deserializedKeyCreateParameters.publicExponent = reader.getNullable(JsonReader::getInt);
                         } else if ("key_ops".equals(fieldName)) {
-                            List<JsonWebKeyOperation> keyOps =
-                                    reader.readArray(reader1 -> JsonWebKeyOperation.fromString(reader1.getString()));
+                            List<KeyOperation> keyOps =
+                                    reader.readArray(reader1 -> KeyOperation.fromString(reader1.getString()));
                             deserializedKeyCreateParameters.keyOps = keyOps;
                         } else if ("attributes".equals(fieldName)) {
                             deserializedKeyCreateParameters.keyAttributes = KeyAttributes.fromJson(reader);
@@ -268,7 +273,7 @@ public final class KeyCreateParameters implements JsonSerializable<KeyCreatePara
                             Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
                             deserializedKeyCreateParameters.tags = tags;
                         } else if ("crv".equals(fieldName)) {
-                            deserializedKeyCreateParameters.curve = JsonWebKeyCurveName.fromString(reader.getString());
+                            deserializedKeyCreateParameters.crv = KeyCurveName.fromString(reader.getString());
                         } else if ("release_policy".equals(fieldName)) {
                             deserializedKeyCreateParameters.releasePolicy = KeyReleasePolicy.fromJson(reader);
                         } else {

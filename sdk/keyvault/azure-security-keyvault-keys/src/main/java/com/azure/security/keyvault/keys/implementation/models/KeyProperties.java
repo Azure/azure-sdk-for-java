@@ -9,6 +9,8 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.security.keyvault.keys.models.KeyCurveName;
+import com.azure.security.keyvault.keys.models.KeyType;
 import java.io.IOException;
 import java.util.Objects;
 
@@ -22,9 +24,9 @@ public final class KeyProperties implements JsonSerializable<KeyProperties> {
     private Boolean exportable;
 
     /*
-     * The type of key pair to be used for the certificate.
+     * JsonWebKey Key Type (kty), as defined in https://tools.ietf.org/html/draft-ietf-jose-json-web-algorithms-40.
      */
-    private JsonWebKeyType keyType;
+    private KeyType kty;
 
     /*
      * The key size in bits. For example: 2048, 3072, or 4096 for RSA.
@@ -37,9 +39,9 @@ public final class KeyProperties implements JsonSerializable<KeyProperties> {
     private Boolean reuseKey;
 
     /*
-     * Elliptic curve name. For valid values, see JsonWebKeyCurveName.
+     * Elliptic curve name.
      */
-    private JsonWebKeyCurveName curve;
+    private KeyCurveName crv;
 
     /** Creates an instance of KeyProperties class. */
     public KeyProperties() {}
@@ -67,22 +69,24 @@ public final class KeyProperties implements JsonSerializable<KeyProperties> {
     }
 
     /**
-     * Get the keyType property: The type of key pair to be used for the certificate.
+     * Get the kty property: JsonWebKey Key Type (kty), as defined in
+     * https://tools.ietf.org/html/draft-ietf-jose-json-web-algorithms-40.
      *
-     * @return the keyType value.
+     * @return the kty value.
      */
-    public JsonWebKeyType getKeyType() {
-        return this.keyType;
+    public KeyType getKty() {
+        return this.kty;
     }
 
     /**
-     * Set the keyType property: The type of key pair to be used for the certificate.
+     * Set the kty property: JsonWebKey Key Type (kty), as defined in
+     * https://tools.ietf.org/html/draft-ietf-jose-json-web-algorithms-40.
      *
-     * @param keyType the keyType value to set.
+     * @param kty the kty value to set.
      * @return the KeyProperties object itself.
      */
-    public KeyProperties setKeyType(JsonWebKeyType keyType) {
-        this.keyType = keyType;
+    public KeyProperties setKty(KeyType kty) {
+        this.kty = kty;
         return this;
     }
 
@@ -127,22 +131,22 @@ public final class KeyProperties implements JsonSerializable<KeyProperties> {
     }
 
     /**
-     * Get the curve property: Elliptic curve name. For valid values, see JsonWebKeyCurveName.
+     * Get the crv property: Elliptic curve name.
      *
-     * @return the curve value.
+     * @return the crv value.
      */
-    public JsonWebKeyCurveName getCurve() {
-        return this.curve;
+    public KeyCurveName getCrv() {
+        return this.crv;
     }
 
     /**
-     * Set the curve property: Elliptic curve name. For valid values, see JsonWebKeyCurveName.
+     * Set the crv property: Elliptic curve name.
      *
-     * @param curve the curve value to set.
+     * @param crv the crv value to set.
      * @return the KeyProperties object itself.
      */
-    public KeyProperties setCurve(JsonWebKeyCurveName curve) {
-        this.curve = curve;
+    public KeyProperties setCrv(KeyCurveName crv) {
+        this.crv = crv;
         return this;
     }
 
@@ -150,10 +154,10 @@ public final class KeyProperties implements JsonSerializable<KeyProperties> {
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeBooleanField("exportable", this.exportable);
-        jsonWriter.writeStringField("kty", Objects.toString(this.keyType, null));
+        jsonWriter.writeStringField("kty", Objects.toString(this.kty, null));
         jsonWriter.writeNumberField("key_size", this.keySize);
         jsonWriter.writeBooleanField("reuse_key", this.reuseKey);
-        jsonWriter.writeStringField("crv", Objects.toString(this.curve, null));
+        jsonWriter.writeStringField("crv", Objects.toString(this.crv, null));
         return jsonWriter.writeEndObject();
     }
 
@@ -176,13 +180,13 @@ public final class KeyProperties implements JsonSerializable<KeyProperties> {
                         if ("exportable".equals(fieldName)) {
                             deserializedKeyProperties.exportable = reader.getNullable(JsonReader::getBoolean);
                         } else if ("kty".equals(fieldName)) {
-                            deserializedKeyProperties.keyType = JsonWebKeyType.fromString(reader.getString());
+                            deserializedKeyProperties.kty = KeyType.fromString(reader.getString());
                         } else if ("key_size".equals(fieldName)) {
                             deserializedKeyProperties.keySize = reader.getNullable(JsonReader::getInt);
                         } else if ("reuse_key".equals(fieldName)) {
                             deserializedKeyProperties.reuseKey = reader.getNullable(JsonReader::getBoolean);
                         } else if ("crv".equals(fieldName)) {
-                            deserializedKeyProperties.curve = JsonWebKeyCurveName.fromString(reader.getString());
+                            deserializedKeyProperties.crv = KeyCurveName.fromString(reader.getString());
                         } else {
                             reader.skipChildren();
                         }

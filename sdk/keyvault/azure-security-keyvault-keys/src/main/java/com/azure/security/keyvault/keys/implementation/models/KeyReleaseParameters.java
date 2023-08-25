@@ -9,6 +9,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.security.keyvault.keys.models.KeyExportEncryptionAlgorithm;
 import java.io.IOException;
 import java.util.Objects;
 
@@ -28,7 +29,7 @@ public final class KeyReleaseParameters implements JsonSerializable<KeyReleasePa
     /*
      * The encryption algorithm to use to protected the exported key material
      */
-    private KeyEncryptionAlgorithm enc;
+    private KeyExportEncryptionAlgorithm enc;
 
     /** Creates an instance of KeyReleaseParameters class. */
     public KeyReleaseParameters() {}
@@ -78,7 +79,7 @@ public final class KeyReleaseParameters implements JsonSerializable<KeyReleasePa
      *
      * @return the enc value.
      */
-    public KeyEncryptionAlgorithm getEnc() {
+    public KeyExportEncryptionAlgorithm getEnc() {
         return this.enc;
     }
 
@@ -88,7 +89,7 @@ public final class KeyReleaseParameters implements JsonSerializable<KeyReleasePa
      * @param enc the enc value to set.
      * @return the KeyReleaseParameters object itself.
      */
-    public KeyReleaseParameters setEnc(KeyEncryptionAlgorithm enc) {
+    public KeyReleaseParameters setEnc(KeyExportEncryptionAlgorithm enc) {
         this.enc = enc;
         return this;
     }
@@ -125,7 +126,7 @@ public final class KeyReleaseParameters implements JsonSerializable<KeyReleasePa
                             deserializedKeyReleaseParameters.nonce = reader.getString();
                         } else if ("enc".equals(fieldName)) {
                             deserializedKeyReleaseParameters.enc =
-                                    KeyEncryptionAlgorithm.fromString(reader.getString());
+                                    KeyExportEncryptionAlgorithm.fromString(reader.getString());
                         } else {
                             reader.skipChildren();
                         }

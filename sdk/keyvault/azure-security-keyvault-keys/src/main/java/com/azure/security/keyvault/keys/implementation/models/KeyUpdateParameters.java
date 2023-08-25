@@ -9,6 +9,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.security.keyvault.keys.models.KeyOperation;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
@@ -20,7 +21,7 @@ public final class KeyUpdateParameters implements JsonSerializable<KeyUpdatePara
     /*
      * Json web key operations. For more information on possible key operations, see JsonWebKeyOperation.
      */
-    private List<JsonWebKeyOperation> keyOps;
+    private List<KeyOperation> keyOps;
 
     /*
      * The attributes of a key managed by the key vault service.
@@ -46,7 +47,7 @@ public final class KeyUpdateParameters implements JsonSerializable<KeyUpdatePara
      *
      * @return the keyOps value.
      */
-    public List<JsonWebKeyOperation> getKeyOps() {
+    public List<KeyOperation> getKeyOps() {
         return this.keyOps;
     }
 
@@ -57,7 +58,7 @@ public final class KeyUpdateParameters implements JsonSerializable<KeyUpdatePara
      * @param keyOps the keyOps value to set.
      * @return the KeyUpdateParameters object itself.
      */
-    public KeyUpdateParameters setKeyOps(List<JsonWebKeyOperation> keyOps) {
+    public KeyUpdateParameters setKeyOps(List<KeyOperation> keyOps) {
         this.keyOps = keyOps;
         return this;
     }
@@ -150,8 +151,8 @@ public final class KeyUpdateParameters implements JsonSerializable<KeyUpdatePara
                         reader.nextToken();
 
                         if ("key_ops".equals(fieldName)) {
-                            List<JsonWebKeyOperation> keyOps =
-                                    reader.readArray(reader1 -> JsonWebKeyOperation.fromString(reader1.getString()));
+                            List<KeyOperation> keyOps =
+                                    reader.readArray(reader1 -> KeyOperation.fromString(reader1.getString()));
                             deserializedKeyUpdateParameters.keyOps = keyOps;
                         } else if ("attributes".equals(fieldName)) {
                             deserializedKeyUpdateParameters.keyAttributes = KeyAttributes.fromJson(reader);

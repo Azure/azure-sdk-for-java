@@ -38,7 +38,7 @@ title: KeyClient
 namespace: com.azure.security.keyvault.keys
 models-subpackage: implementation.models
 custom-types-subpackage: models
-custom-types: KeyCurveName,KeyExportEncryptionAlgorithm,KeyOperation,KeyRotationPolicyAction,KeyType
+custom-types: KeyCurveName,KeyExportEncryptionAlgorithm,KeyOperation,KeyRotationPolicyAction,KeyType,ReleaseKeyResult
 customization-class: src/main/java/KeysCustomizations.java
 enable-sync-stack: true
 generate-client-interfaces: false
@@ -50,48 +50,40 @@ add-context-parameter: true
 context-client-method-parameter: true
 generic-response-type: true
 stream-style-serialization: true
+directive:
+    - rename-model:
+        from: KeyReleaseResult
+        to: ReleaseKeyResult
 ```
 
 ### Rename expandable string enum models
 
 ```yaml
 directive:
-  - from: swagger-document
+  - from: "keys.json"
     where: $.definitions
     transform: >
-      $.KeyType = $["JsonWebKey"]["properties"]["kty"];
+      $.KeyType = $.JsonWebKey.properties.kty;
       $.KeyType["x-ms-enum"].name = "KeyType";
-      $["JsonWebKey"]["properties"]["kty"] = { "$ref": "#/definitions/KeyType" };
-```
-
-```yaml
-directive:
-  - from: swagger-document
-    where: $.definitions
-    transform: >
+      $.JsonWebKey.properties.kty = { "$ref": "#/definitions/KeyType" };
       $.KeyProperties.properties.kty = { "$ref": "#/definitions/KeyType" };
       $.KeyCreateParameters.properties.kty = { "$ref": "#/definitions/KeyType" };
 
-      $.KeyCurveName = $["JsonWebKey"]["properties"]["crv"];
+      $.KeyCurveName = $.JsonWebKey.properties.crv;
       $.KeyCurveName.description = "Elliptic curve name.";
       $.KeyCurveName["x-ms-enum"].name = "KeyCurveName";
-      $["JsonWebKey"]["properties"]["crv"] = { "$ref": "#/definitions/KeyCurveName" };
+      $.JsonWebKey.properties.crv = { "$ref": "#/definitions/KeyCurveName" };
       $.KeyProperties.properties.crv = { "$ref": "#/definitions/KeyCurveName" };
       $.KeyCreateParameters.properties.crv = { "$ref": "#/definitions/KeyCurveName" };
-```
 
-```yaml
-directive:
-  - from: swagger-document
-    where: $.definitions.KeyExportParameters
-    transform: >
-      $.properties.enc["x-ms-enum"].name = "KeyExportEncryptionAlgorithm";
-```
+      $.KeyExportEncryptionAlgorithm = $.KeyExportParameters.properties.enc;
+      $.KeyExportEncryptionAlgorithm["x-ms-enum"].name = "KeyExportEncryptionAlgorithm";
+      $.KeyExportParameters.properties.enc = { "$ref": "#/definitions/KeyExportEncryptionAlgorithm" };
+      $.KeyReleaseParameters.properties.enc = { "$ref": "#/definitions/KeyExportEncryptionAlgorithm" };
 
-```yaml
-directive:
-  - from: swagger-document
-    where: $.definitions.KeyCreateParameters
-    transform: >
-      $.properties["key_ops"].items["x-ms-enum"].name = "KeyOperation";
+      $.KeyOperation = $.KeyCreateParameters.properties.key_ops.items;
+      $.KeyOperation["x-ms-enum"].name = "KeyOperation";
+      $.JsonWebKey.properties.key_ops.items = { "$ref": "#/definitions/KeyOperation" };
+      $.KeyCreateParameters.properties.key_ops.items = { "$ref": "#/definitions/KeyOperation" };
+      $.KeyUpdateParameters.properties.key_ops.items = { "$ref": "#/definitions/KeyOperation" };
 ```

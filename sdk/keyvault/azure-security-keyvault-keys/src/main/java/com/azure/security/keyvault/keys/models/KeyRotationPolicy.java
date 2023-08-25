@@ -3,9 +3,10 @@
 
 package com.azure.security.keyvault.keys.models;
 
+import com.azure.security.keyvault.keys.implementation.KeyRotationLifetimeActionHelper;
+import com.azure.security.keyvault.keys.implementation.KeyRotationPolicyHelper;
 import com.azure.security.keyvault.keys.implementation.models.KeyRotationPolicyAttributes;
 import com.azure.security.keyvault.keys.implementation.models.LifetimeActions;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
@@ -15,13 +16,24 @@ import java.util.List;
  * The complete key rotation policy that belongs to a key.
  */
 public final class KeyRotationPolicy {
-    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
-    private String id;
+    static {
+        KeyRotationPolicyHelper.setAccessor(new KeyRotationPolicyHelper.KeyRotationPolicyAccessor() {
+            @Override
+            public void setImpl(KeyRotationPolicy policy,
+                com.azure.security.keyvault.keys.implementation.models.KeyRotationPolicy impl) {
+                policy.impl = impl;
+            }
+
+            @Override
+            public com.azure.security.keyvault.keys.implementation.models.KeyRotationPolicy getImpl(KeyRotationPolicy policy) {
+                return policy.impl;
+            }
+        });
+    }
+
+    private com.azure.security.keyvault.keys.implementation.models.KeyRotationPolicy impl;
 
     private List<KeyRotationLifetimeAction> lifetimeActions;
-    private KeyRotationPolicyAttributes attributes;
-    private OffsetDateTime createdOn;
-    private OffsetDateTime updatedOn;
 
     /**
      * Get the identifier of the {@link KeyRotationPolicy policy}.
@@ -31,7 +43,7 @@ public final class KeyRotationPolicy {
      * @return The identifier of the {@link KeyRotationPolicy policy}.
      */
     public String getId() {
-        return this.id;
+        return impl.getId();
     }
 
     /**
@@ -42,6 +54,18 @@ public final class KeyRotationPolicy {
      * @return The {@link KeyRotationLifetimeAction actions} in this {@link KeyRotationPolicy policy}.
      */
     public List<KeyRotationLifetimeAction> getLifetimeActions() {
+        if (this.lifetimeActions == null && impl.getLifetimeActions() != null) {
+            List<KeyRotationLifetimeAction> mappedActions = new ArrayList<>(impl.getLifetimeActions().size());
+
+            for (LifetimeActions action : impl.getLifetimeActions()) {
+                KeyRotationLifetimeAction mappedAction = new KeyRotationLifetimeAction(action.getAction().getType());
+                KeyRotationLifetimeActionHelper.setActionType(mappedAction, action.getAction());
+                KeyRotationLifetimeActionHelper.setTrigger(mappedAction, action.getTrigger());
+            }
+
+            this.lifetimeActions = mappedActions;
+        }
+
         return this.lifetimeActions;
     }
 
@@ -55,7 +79,22 @@ public final class KeyRotationPolicy {
      * @return The updated {@link KeyRotationPolicy} object.
      */
     public KeyRotationPolicy setLifetimeActions(List<KeyRotationLifetimeAction> lifetimeActions) {
+        if (lifetimeActions == null) {
+            this.lifetimeActions = null;
+            impl.setLifetimeActions(null);
+            return this;
+        }
+
+        List<LifetimeActions> mappedActions = new ArrayList<>(lifetimeActions.size());
+
+        for (KeyRotationLifetimeAction action : lifetimeActions) {
+            mappedActions.add(new LifetimeActions()
+                .setAction(KeyRotationLifetimeActionHelper.getActionType(action))
+                .setTrigger(KeyRotationLifetimeActionHelper.getTrigger(action)));
+        }
+
         this.lifetimeActions = lifetimeActions;
+        impl.setLifetimeActions(mappedActions);
 
         return this;
     }
@@ -69,7 +108,7 @@ public final class KeyRotationPolicy {
      * @return The expiration time in ISO 8601 format.
      */
     public String getExpiresIn() {
-        return this.attributes == null ? null : this.attributes.getExpiryTime();
+        return impl.getAttributes() == null ? null : impl.getAttributes().getExpiryTime();
     }
 
     /**
@@ -83,11 +122,11 @@ public final class KeyRotationPolicy {
      * @return The updated {@link KeyRotationPolicy} object.
      */
     public KeyRotationPolicy setExpiresIn(String expiresIn) {
-        if (attributes == null) {
-            this.attributes = new KeyRotationPolicyAttributes();
+        if (impl.getAttributes() == null) {
+            impl.setAttributes(new KeyRotationPolicyAttributes());
         }
 
-        this.attributes.setExpiryTime(expiresIn);
+        impl.getAttributes().setExpiryTime(expiresIn);
 
         return this;
     }
@@ -100,7 +139,7 @@ public final class KeyRotationPolicy {
      * @return The {@link KeyRotationPolicy policy's} created time in UTC.
      */
     public OffsetDateTime getCreatedOn() {
-        return this.createdOn;
+        return impl.getAttributes() == null ? null : impl.getAttributes().getCreated();
     }
 
     /**
@@ -111,29 +150,6 @@ public final class KeyRotationPolicy {
      * @return The {@link KeyRotationPolicy policy's} last updated time in UTC.
      */
     public OffsetDateTime getUpdatedOn() {
-        return this.updatedOn;
-    }
-
-    @JsonProperty(value = "lifetimeActions")
-    private void unpackLifetimeActions(List<LifetimeActions> lifetimeActions) {
-        if (lifetimeActions != null) {
-            this.lifetimeActions = new ArrayList<>();
-
-            for (LifetimeActions lifetimeAction : lifetimeActions) {
-                this.lifetimeActions.add(new KeyRotationLifetimeAction(lifetimeAction.getAction().getType())
-                    .setTimeBeforeExpiry(lifetimeAction.getTrigger().getTimeBeforeExpiry())
-                    .setTimeAfterCreate(lifetimeAction.getTrigger().getTimeAfterCreate()));
-            }
-        }
-    }
-
-    @JsonProperty("attributes")
-    private void unpackAttributes(KeyRotationPolicyAttributes attributes) {
-        if (attributes != null) {
-            this.attributes = attributes;
-
-            this.createdOn = attributes.getCreated();
-            this.updatedOn = attributes.getUpdated();
-        }
+        return impl.getAttributes() == null ? null : impl.getAttributes().getUpdated();
     }
 }
