@@ -515,7 +515,7 @@ import static com.azure.core.util.FluxUtil.monoError;
  * <p>The {@link TextAnalyticsAsyncClient#beginSingleLabelClassify(Iterable, String, String) beginSingleLabelClassify}
  * method returns a list of single-label classification for the provided list of documents.</p>
  *
- * <p>strong>Note:</strong> this method is supported since service API version {@link TextAnalyticsServiceVersion#V2022_05_01}.</p>
+ * <p><strong>Note:</strong> this method is supported since service API version {@link TextAnalyticsServiceVersion#V2022_05_01}.</p>
  *
  * <!-- src_embed AsyncClient.beginSingleLabelClassify#Iterable-String-String -->
  * <pre>
@@ -568,7 +568,7 @@ import static com.azure.core.util.FluxUtil.monoError;
  * <p>The {@link TextAnalyticsAsyncClient#beginMultiLabelClassify(Iterable, String, String) beginMultiLabelClassify}
  * method returns a list of multi-label classification for the provided list of document.</p>
  *
- * <p>strong>Note:</strong> this method is supported since service API version {@link TextAnalyticsServiceVersion#V2022_05_01}.</p>
+ * <p><strong>Note:</strong> this method is supported since service API version {@link TextAnalyticsServiceVersion#V2022_05_01}.</p>
  *
  * <!-- src_embed AsyncClient.beginMultiLabelClassify#Iterable-String-String -->
  * <pre>

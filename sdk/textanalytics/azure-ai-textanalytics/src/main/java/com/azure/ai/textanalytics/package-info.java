@@ -524,7 +524,7 @@
  * java.lang.String, java.lang.String) beginMultiLabelClassify}  method returns a list of multi-label classification
  * for the provided list of {@link java.lang.String document}.</p>
  *
- * <p>strong>Note:</strong> this method is supported since service API version
+ * <p><strong>Note:</strong> this method is supported since service API version
  * {@link com.azure.ai.textanalytics.TextAnalyticsServiceVersion#V2022_05_01}.</p>
  *
  * <!-- src_embed Client.beginMultiLabelClassify#Iterable-String-String -->

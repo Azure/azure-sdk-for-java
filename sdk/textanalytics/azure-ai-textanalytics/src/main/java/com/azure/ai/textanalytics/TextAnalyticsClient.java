@@ -486,7 +486,7 @@ import static com.azure.ai.textanalytics.implementation.Utility.toTextAnalyticsE
  * <p>The {@link TextAnalyticsClient#beginSingleLabelClassify(Iterable, String, String) beginSingleLabelClassify}
  * method returns a list of single-label classification for the provided list of documents.</p>
  *
- * <p>strong>Note:</strong> this method is supported since service API version {@link TextAnalyticsServiceVersion#V2022_05_01}.</p>
+ * <p><strong>Note:</strong> this method is supported since service API version {@link TextAnalyticsServiceVersion#V2022_05_01}.</p>
  *
  * <!-- src_embed Client.beginSingleLabelClassify#Iterable-String-String -->
  * <pre>
@@ -526,7 +526,7 @@ import static com.azure.ai.textanalytics.implementation.Utility.toTextAnalyticsE
  * <p>The {@link TextAnalyticsClient#beginMultiLabelClassify(Iterable, String, String) beginMultiLabelClassify}
  * method returns a list of multi-label classification for the provided list of document.</p>
  *
- * <p>strong>Note:</strong> this method is supported since service API version {@link TextAnalyticsServiceVersion#V2022_05_01}.</p>
+ * <p><strong>Note:</strong> this method is supported since service API version {@link TextAnalyticsServiceVersion#V2022_05_01}.</p>
  *
  * <!-- src_embed Client.beginMultiLabelClassify#Iterable-String-String -->
  * <pre>
