@@ -4,13 +4,12 @@
 
 package com.azure.resourcemanager.apimanagement.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.apimanagement.models.NotificationName;
 
 /** Samples for Notification Get. */
 public final class NotificationGetSamples {
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementGetNotification.json
+     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementGetNotification.json
      */
     /**
      * Sample code: ApiManagementGetNotification.
@@ -22,6 +21,9 @@ public final class NotificationGetSamples {
         manager
             .notifications()
             .getWithResponse(
-                "rg1", "apimService1", NotificationName.REQUEST_PUBLISHER_NOTIFICATION_MESSAGE, Context.NONE);
+                "rg1",
+                "apimService1",
+                NotificationName.REQUEST_PUBLISHER_NOTIFICATION_MESSAGE,
+                com.azure.core.util.Context.NONE);
     }
 }

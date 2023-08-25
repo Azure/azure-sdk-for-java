@@ -55,11 +55,10 @@ public final class ApiProductsClientImpl implements ApiProductsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "ApiManagementClientA")
-    private interface ApiProductsService {
+    public interface ApiProductsService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement"
-                + "/service/{serviceName}/apis/{apiId}/products")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/apis/{apiId}/products")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ProductCollection>> listByApis(
@@ -89,7 +88,7 @@ public final class ApiProductsClientImpl implements ApiProductsClient {
     /**
      * Lists all Products, which the API is part of.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
      * @param filter | Field | Usage | Supported operators | Supported functions
@@ -160,7 +159,7 @@ public final class ApiProductsClientImpl implements ApiProductsClient {
     /**
      * Lists all Products, which the API is part of.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
      * @param filter | Field | Usage | Supported operators | Supported functions
@@ -235,7 +234,7 @@ public final class ApiProductsClientImpl implements ApiProductsClient {
     /**
      * Lists all Products, which the API is part of.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
      * @param filter | Field | Usage | Supported operators | Supported functions
@@ -259,7 +258,7 @@ public final class ApiProductsClientImpl implements ApiProductsClient {
     /**
      * Lists all Products, which the API is part of.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -281,7 +280,7 @@ public final class ApiProductsClientImpl implements ApiProductsClient {
     /**
      * Lists all Products, which the API is part of.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
      * @param filter | Field | Usage | Supported operators | Supported functions
@@ -312,7 +311,7 @@ public final class ApiProductsClientImpl implements ApiProductsClient {
     /**
      * Lists all Products, which the API is part of.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -331,7 +330,7 @@ public final class ApiProductsClientImpl implements ApiProductsClient {
     /**
      * Lists all Products, which the API is part of.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
      * @param filter | Field | Usage | Supported operators | Supported functions
@@ -360,7 +359,8 @@ public final class ApiProductsClientImpl implements ApiProductsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -396,7 +396,8 @@ public final class ApiProductsClientImpl implements ApiProductsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

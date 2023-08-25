@@ -48,22 +48,13 @@ public final class ApiSchemasImpl implements ApiSchemas {
         return Utils.mapPage(inner, inner1 -> new SchemaContractImpl(inner1, this.manager()));
     }
 
-    public void getEntityTag(String resourceGroupName, String serviceName, String apiId, String schemaId) {
-        this.serviceClient().getEntityTag(resourceGroupName, serviceName, apiId, schemaId);
-    }
-
     public ApiSchemasGetEntityTagResponse getEntityTagWithResponse(
         String resourceGroupName, String serviceName, String apiId, String schemaId, Context context) {
         return this.serviceClient().getEntityTagWithResponse(resourceGroupName, serviceName, apiId, schemaId, context);
     }
 
-    public SchemaContract get(String resourceGroupName, String serviceName, String apiId, String schemaId) {
-        SchemaContractInner inner = this.serviceClient().get(resourceGroupName, serviceName, apiId, schemaId);
-        if (inner != null) {
-            return new SchemaContractImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+    public void getEntityTag(String resourceGroupName, String serviceName, String apiId, String schemaId) {
+        this.serviceClient().getEntityTag(resourceGroupName, serviceName, apiId, schemaId);
     }
 
     public Response<SchemaContract> getWithResponse(
@@ -81,8 +72,13 @@ public final class ApiSchemasImpl implements ApiSchemas {
         }
     }
 
-    public void delete(String resourceGroupName, String serviceName, String apiId, String schemaId, String ifMatch) {
-        this.serviceClient().delete(resourceGroupName, serviceName, apiId, schemaId, ifMatch);
+    public SchemaContract get(String resourceGroupName, String serviceName, String apiId, String schemaId) {
+        SchemaContractInner inner = this.serviceClient().get(resourceGroupName, serviceName, apiId, schemaId);
+        if (inner != null) {
+            return new SchemaContractImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public Response<Void> deleteWithResponse(
@@ -96,6 +92,10 @@ public final class ApiSchemasImpl implements ApiSchemas {
         return this
             .serviceClient()
             .deleteWithResponse(resourceGroupName, serviceName, apiId, schemaId, ifMatch, force, context);
+    }
+
+    public void delete(String resourceGroupName, String serviceName, String apiId, String schemaId, String ifMatch) {
+        this.serviceClient().delete(resourceGroupName, serviceName, apiId, schemaId, ifMatch);
     }
 
     public SchemaContract getById(String id) {

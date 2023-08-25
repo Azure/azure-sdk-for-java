@@ -30,7 +30,11 @@ public final class ApiOperationsCreateOrUpdateResponse
         super(request, statusCode, rawHeaders, value, headers);
     }
 
-    /** @return the deserialized response body. */
+    /**
+     * Gets the deserialized response body.
+     *
+     * @return the deserialized response body.
+     */
     @Override
     public OperationContractInner getValue() {
         return super.getValue();

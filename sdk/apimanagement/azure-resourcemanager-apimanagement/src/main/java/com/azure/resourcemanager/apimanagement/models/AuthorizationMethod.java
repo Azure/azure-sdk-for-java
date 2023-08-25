@@ -48,6 +48,9 @@ public enum AuthorizationMethod {
      */
     @JsonCreator
     public static AuthorizationMethod fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         AuthorizationMethod[] items = AuthorizationMethod.values();
         for (AuthorizationMethod item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -57,6 +60,7 @@ public enum AuthorizationMethod {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

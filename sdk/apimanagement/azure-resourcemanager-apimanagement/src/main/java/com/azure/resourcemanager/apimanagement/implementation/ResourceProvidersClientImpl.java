@@ -57,11 +57,10 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      */
     @Host("{$host}")
     @ServiceInterface(name = "ApiManagementClientR")
-    private interface ResourceProvidersService {
+    public interface ResourceProvidersService {
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement"
-                + "/service/{serviceName}/connectivityCheck")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/connectivityCheck")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> performConnectivityCheckAsync(
@@ -79,7 +78,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * Performs a connectivity check between the API Management service and a given destination, and returns metrics for
      * the connection, as well as errors encountered while trying to establish it.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param connectivityCheckRequestParams Connectivity Check request parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -139,7 +138,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * Performs a connectivity check between the API Management service and a given destination, and returns metrics for
      * the connection, as well as errors encountered while trying to establish it.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param connectivityCheckRequestParams Connectivity Check request parameters.
      * @param context The context to associate with this operation.
@@ -200,7 +199,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * Performs a connectivity check between the API Management service and a given destination, and returns metrics for
      * the connection, as well as errors encountered while trying to establish it.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param connectivityCheckRequestParams Connectivity Check request parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -229,7 +228,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * Performs a connectivity check between the API Management service and a given destination, and returns metrics for
      * the connection, as well as errors encountered while trying to establish it.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param connectivityCheckRequestParams Connectivity Check request parameters.
      * @param context The context to associate with this operation.
@@ -263,7 +262,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * Performs a connectivity check between the API Management service and a given destination, and returns metrics for
      * the connection, as well as errors encountered while trying to establish it.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param connectivityCheckRequestParams Connectivity Check request parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -275,7 +274,8 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     public SyncPoller<PollResult<ConnectivityCheckResponseInner>, ConnectivityCheckResponseInner>
         beginPerformConnectivityCheckAsync(
             String resourceGroupName, String serviceName, ConnectivityCheckRequest connectivityCheckRequestParams) {
-        return beginPerformConnectivityCheckAsyncAsync(resourceGroupName, serviceName, connectivityCheckRequestParams)
+        return this
+            .beginPerformConnectivityCheckAsyncAsync(resourceGroupName, serviceName, connectivityCheckRequestParams)
             .getSyncPoller();
     }
 
@@ -283,7 +283,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * Performs a connectivity check between the API Management service and a given destination, and returns metrics for
      * the connection, as well as errors encountered while trying to establish it.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param connectivityCheckRequestParams Connectivity Check request parameters.
      * @param context The context to associate with this operation.
@@ -299,7 +299,8 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
             String serviceName,
             ConnectivityCheckRequest connectivityCheckRequestParams,
             Context context) {
-        return beginPerformConnectivityCheckAsyncAsync(
+        return this
+            .beginPerformConnectivityCheckAsyncAsync(
                 resourceGroupName, serviceName, connectivityCheckRequestParams, context)
             .getSyncPoller();
     }
@@ -308,7 +309,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * Performs a connectivity check between the API Management service and a given destination, and returns metrics for
      * the connection, as well as errors encountered while trying to establish it.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param connectivityCheckRequestParams Connectivity Check request parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -328,7 +329,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * Performs a connectivity check between the API Management service and a given destination, and returns metrics for
      * the connection, as well as errors encountered while trying to establish it.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param connectivityCheckRequestParams Connectivity Check request parameters.
      * @param context The context to associate with this operation.
@@ -353,7 +354,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * Performs a connectivity check between the API Management service and a given destination, and returns metrics for
      * the connection, as well as errors encountered while trying to establish it.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param connectivityCheckRequestParams Connectivity Check request parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -372,7 +373,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * Performs a connectivity check between the API Management service and a given destination, and returns metrics for
      * the connection, as well as errors encountered while trying to establish it.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param connectivityCheckRequestParams Connectivity Check request parameters.
      * @param context The context to associate with this operation.

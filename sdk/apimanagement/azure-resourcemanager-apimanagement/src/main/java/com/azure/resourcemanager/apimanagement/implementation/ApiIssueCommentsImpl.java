@@ -53,11 +53,6 @@ public final class ApiIssueCommentsImpl implements ApiIssueComments {
         return Utils.mapPage(inner, inner1 -> new IssueCommentContractImpl(inner1, this.manager()));
     }
 
-    public void getEntityTag(
-        String resourceGroupName, String serviceName, String apiId, String issueId, String commentId) {
-        this.serviceClient().getEntityTag(resourceGroupName, serviceName, apiId, issueId, commentId);
-    }
-
     public ApiIssueCommentsGetEntityTagResponse getEntityTagWithResponse(
         String resourceGroupName, String serviceName, String apiId, String issueId, String commentId, Context context) {
         return this
@@ -65,15 +60,9 @@ public final class ApiIssueCommentsImpl implements ApiIssueComments {
             .getEntityTagWithResponse(resourceGroupName, serviceName, apiId, issueId, commentId, context);
     }
 
-    public IssueCommentContract get(
+    public void getEntityTag(
         String resourceGroupName, String serviceName, String apiId, String issueId, String commentId) {
-        IssueCommentContractInner inner =
-            this.serviceClient().get(resourceGroupName, serviceName, apiId, issueId, commentId);
-        if (inner != null) {
-            return new IssueCommentContractImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        this.serviceClient().getEntityTag(resourceGroupName, serviceName, apiId, issueId, commentId);
     }
 
     public Response<IssueCommentContract> getWithResponse(
@@ -91,9 +80,15 @@ public final class ApiIssueCommentsImpl implements ApiIssueComments {
         }
     }
 
-    public void delete(
-        String resourceGroupName, String serviceName, String apiId, String issueId, String commentId, String ifMatch) {
-        this.serviceClient().delete(resourceGroupName, serviceName, apiId, issueId, commentId, ifMatch);
+    public IssueCommentContract get(
+        String resourceGroupName, String serviceName, String apiId, String issueId, String commentId) {
+        IssueCommentContractInner inner =
+            this.serviceClient().get(resourceGroupName, serviceName, apiId, issueId, commentId);
+        if (inner != null) {
+            return new IssueCommentContractImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public Response<Void> deleteWithResponse(
@@ -107,6 +102,11 @@ public final class ApiIssueCommentsImpl implements ApiIssueComments {
         return this
             .serviceClient()
             .deleteWithResponse(resourceGroupName, serviceName, apiId, issueId, commentId, ifMatch, context);
+    }
+
+    public void delete(
+        String resourceGroupName, String serviceName, String apiId, String issueId, String commentId, String ifMatch) {
+        this.serviceClient().delete(resourceGroupName, serviceName, apiId, issueId, commentId, ifMatch);
     }
 
     public IssueCommentContract getById(String id) {

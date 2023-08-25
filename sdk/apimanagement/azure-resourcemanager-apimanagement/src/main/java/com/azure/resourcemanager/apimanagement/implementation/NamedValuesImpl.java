@@ -53,22 +53,13 @@ public final class NamedValuesImpl implements NamedValues {
         return Utils.mapPage(inner, inner1 -> new NamedValueContractImpl(inner1, this.manager()));
     }
 
-    public void getEntityTag(String resourceGroupName, String serviceName, String namedValueId) {
-        this.serviceClient().getEntityTag(resourceGroupName, serviceName, namedValueId);
-    }
-
     public NamedValuesGetEntityTagResponse getEntityTagWithResponse(
         String resourceGroupName, String serviceName, String namedValueId, Context context) {
         return this.serviceClient().getEntityTagWithResponse(resourceGroupName, serviceName, namedValueId, context);
     }
 
-    public NamedValueContract get(String resourceGroupName, String serviceName, String namedValueId) {
-        NamedValueContractInner inner = this.serviceClient().get(resourceGroupName, serviceName, namedValueId);
-        if (inner != null) {
-            return new NamedValueContractImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+    public void getEntityTag(String resourceGroupName, String serviceName, String namedValueId) {
+        this.serviceClient().getEntityTag(resourceGroupName, serviceName, namedValueId);
     }
 
     public Response<NamedValueContract> getWithResponse(
@@ -86,8 +77,13 @@ public final class NamedValuesImpl implements NamedValues {
         }
     }
 
-    public void delete(String resourceGroupName, String serviceName, String namedValueId, String ifMatch) {
-        this.serviceClient().delete(resourceGroupName, serviceName, namedValueId, ifMatch);
+    public NamedValueContract get(String resourceGroupName, String serviceName, String namedValueId) {
+        NamedValueContractInner inner = this.serviceClient().get(resourceGroupName, serviceName, namedValueId);
+        if (inner != null) {
+            return new NamedValueContractImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public Response<Void> deleteWithResponse(
@@ -95,14 +91,8 @@ public final class NamedValuesImpl implements NamedValues {
         return this.serviceClient().deleteWithResponse(resourceGroupName, serviceName, namedValueId, ifMatch, context);
     }
 
-    public NamedValueSecretContract listValue(String resourceGroupName, String serviceName, String namedValueId) {
-        NamedValueSecretContractInner inner =
-            this.serviceClient().listValue(resourceGroupName, serviceName, namedValueId);
-        if (inner != null) {
-            return new NamedValueSecretContractImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+    public void delete(String resourceGroupName, String serviceName, String namedValueId, String ifMatch) {
+        this.serviceClient().delete(resourceGroupName, serviceName, namedValueId, ifMatch);
     }
 
     public Response<NamedValueSecretContract> listValueWithResponse(
@@ -115,6 +105,16 @@ public final class NamedValuesImpl implements NamedValues {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new NamedValueSecretContractImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public NamedValueSecretContract listValue(String resourceGroupName, String serviceName, String namedValueId) {
+        NamedValueSecretContractInner inner =
+            this.serviceClient().listValue(resourceGroupName, serviceName, namedValueId);
+        if (inner != null) {
+            return new NamedValueSecretContractImpl(inner, this.manager());
         } else {
             return null;
         }

@@ -30,7 +30,11 @@ public final class IdentityProvidersGetResponse
         super(request, statusCode, rawHeaders, value, headers);
     }
 
-    /** @return the deserialized response body. */
+    /**
+     * Gets the deserialized response body.
+     *
+     * @return the deserialized response body.
+     */
     @Override
     public IdentityProviderContractInner getValue() {
         return super.getValue();

@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.apimanagement.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Tag DetachFromProduct. */
 public final class TagDetachFromProductSamples {
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementDeleteProductTag.json
+     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementDeleteProductTag.json
      */
     /**
      * Sample code: ApiManagementDeleteProductTag.
@@ -21,6 +19,10 @@ public final class TagDetachFromProductSamples {
         manager
             .tags()
             .detachFromProductWithResponse(
-                "rg1", "apimService1", "59d5b28d1f7fab116c282650", "59d5b28e1f7fab116402044e", Context.NONE);
+                "rg1",
+                "apimService1",
+                "59d5b28d1f7fab116c282650",
+                "59d5b28e1f7fab116402044e",
+                com.azure.core.util.Context.NONE);
     }
 }

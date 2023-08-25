@@ -58,11 +58,10 @@ public final class ProductGroupsClientImpl implements ProductGroupsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "ApiManagementClientP")
-    private interface ProductGroupsService {
+    public interface ProductGroupsService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement"
-                + "/service/{serviceName}/products/{productId}/groups")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/products/{productId}/groups")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<GroupCollection>> listByProduct(
@@ -80,8 +79,7 @@ public final class ProductGroupsClientImpl implements ProductGroupsClient {
 
         @Headers({"Content-Type: application/json"})
         @Head(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement"
-                + "/service/{serviceName}/products/{productId}/groups/{groupId}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/products/{productId}/groups/{groupId}")
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> checkEntityExists(
@@ -97,8 +95,7 @@ public final class ProductGroupsClientImpl implements ProductGroupsClient {
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement"
-                + "/service/{serviceName}/products/{productId}/groups/{groupId}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/products/{productId}/groups/{groupId}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<GroupContractInner>> createOrUpdate(
@@ -114,8 +111,7 @@ public final class ProductGroupsClientImpl implements ProductGroupsClient {
 
         @Headers({"Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement"
-                + "/service/{serviceName}/products/{productId}/groups/{groupId}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/products/{productId}/groups/{groupId}")
         @ExpectedResponses({200, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> delete(
@@ -143,7 +139,7 @@ public final class ProductGroupsClientImpl implements ProductGroupsClient {
     /**
      * Lists the collection of developer groups associated with the specified product.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param productId Product identifier. Must be unique in the current API Management service instance.
      * @param filter | Field | Usage | Supported operators | Supported functions
@@ -215,7 +211,7 @@ public final class ProductGroupsClientImpl implements ProductGroupsClient {
     /**
      * Lists the collection of developer groups associated with the specified product.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param productId Product identifier. Must be unique in the current API Management service instance.
      * @param filter | Field | Usage | Supported operators | Supported functions
@@ -291,7 +287,7 @@ public final class ProductGroupsClientImpl implements ProductGroupsClient {
     /**
      * Lists the collection of developer groups associated with the specified product.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param productId Product identifier. Must be unique in the current API Management service instance.
      * @param filter | Field | Usage | Supported operators | Supported functions
@@ -316,7 +312,7 @@ public final class ProductGroupsClientImpl implements ProductGroupsClient {
     /**
      * Lists the collection of developer groups associated with the specified product.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param productId Product identifier. Must be unique in the current API Management service instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -338,7 +334,7 @@ public final class ProductGroupsClientImpl implements ProductGroupsClient {
     /**
      * Lists the collection of developer groups associated with the specified product.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param productId Product identifier. Must be unique in the current API Management service instance.
      * @param filter | Field | Usage | Supported operators | Supported functions
@@ -370,7 +366,7 @@ public final class ProductGroupsClientImpl implements ProductGroupsClient {
     /**
      * Lists the collection of developer groups associated with the specified product.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param productId Product identifier. Must be unique in the current API Management service instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -390,7 +386,7 @@ public final class ProductGroupsClientImpl implements ProductGroupsClient {
     /**
      * Lists the collection of developer groups associated with the specified product.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param productId Product identifier. Must be unique in the current API Management service instance.
      * @param filter | Field | Usage | Supported operators | Supported functions
@@ -421,7 +417,7 @@ public final class ProductGroupsClientImpl implements ProductGroupsClient {
     /**
      * Checks that Group entity specified by identifier is associated with the Product entity.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param productId Product identifier. Must be unique in the current API Management service instance.
      * @param groupId Group identifier. Must be unique in the current API Management service instance.
@@ -479,7 +475,7 @@ public final class ProductGroupsClientImpl implements ProductGroupsClient {
     /**
      * Checks that Group entity specified by identifier is associated with the Product entity.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param productId Product identifier. Must be unique in the current API Management service instance.
      * @param groupId Group identifier. Must be unique in the current API Management service instance.
@@ -535,7 +531,7 @@ public final class ProductGroupsClientImpl implements ProductGroupsClient {
     /**
      * Checks that Group entity specified by identifier is associated with the Product entity.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param productId Product identifier. Must be unique in the current API Management service instance.
      * @param groupId Group identifier. Must be unique in the current API Management service instance.
@@ -548,29 +544,13 @@ public final class ProductGroupsClientImpl implements ProductGroupsClient {
     private Mono<Void> checkEntityExistsAsync(
         String resourceGroupName, String serviceName, String productId, String groupId) {
         return checkEntityExistsWithResponseAsync(resourceGroupName, serviceName, productId, groupId)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
      * Checks that Group entity specified by identifier is associated with the Product entity.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param serviceName The name of the API Management service.
-     * @param productId Product identifier. Must be unique in the current API Management service instance.
-     * @param groupId Group identifier. Must be unique in the current API Management service instance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void checkEntityExists(String resourceGroupName, String serviceName, String productId, String groupId) {
-        checkEntityExistsAsync(resourceGroupName, serviceName, productId, groupId).block();
-    }
-
-    /**
-     * Checks that Group entity specified by identifier is associated with the Product entity.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param productId Product identifier. Must be unique in the current API Management service instance.
      * @param groupId Group identifier. Must be unique in the current API Management service instance.
@@ -587,9 +567,25 @@ public final class ProductGroupsClientImpl implements ProductGroupsClient {
     }
 
     /**
+     * Checks that Group entity specified by identifier is associated with the Product entity.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serviceName The name of the API Management service.
+     * @param productId Product identifier. Must be unique in the current API Management service instance.
+     * @param groupId Group identifier. Must be unique in the current API Management service instance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void checkEntityExists(String resourceGroupName, String serviceName, String productId, String groupId) {
+        checkEntityExistsWithResponse(resourceGroupName, serviceName, productId, groupId, Context.NONE);
+    }
+
+    /**
      * Adds the association between the specified developer group with the specified product.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param productId Product identifier. Must be unique in the current API Management service instance.
      * @param groupId Group identifier. Must be unique in the current API Management service instance.
@@ -647,7 +643,7 @@ public final class ProductGroupsClientImpl implements ProductGroupsClient {
     /**
      * Adds the association between the specified developer group with the specified product.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param productId Product identifier. Must be unique in the current API Management service instance.
      * @param groupId Group identifier. Must be unique in the current API Management service instance.
@@ -703,7 +699,7 @@ public final class ProductGroupsClientImpl implements ProductGroupsClient {
     /**
      * Adds the association between the specified developer group with the specified product.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param productId Product identifier. Must be unique in the current API Management service instance.
      * @param groupId Group identifier. Must be unique in the current API Management service instance.
@@ -716,38 +712,13 @@ public final class ProductGroupsClientImpl implements ProductGroupsClient {
     private Mono<GroupContractInner> createOrUpdateAsync(
         String resourceGroupName, String serviceName, String productId, String groupId) {
         return createOrUpdateWithResponseAsync(resourceGroupName, serviceName, productId, groupId)
-            .flatMap(
-                (Response<GroupContractInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Adds the association between the specified developer group with the specified product.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param serviceName The name of the API Management service.
-     * @param productId Product identifier. Must be unique in the current API Management service instance.
-     * @param groupId Group identifier. Must be unique in the current API Management service instance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return contract details.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public GroupContractInner createOrUpdate(
-        String resourceGroupName, String serviceName, String productId, String groupId) {
-        return createOrUpdateAsync(resourceGroupName, serviceName, productId, groupId).block();
-    }
-
-    /**
-     * Adds the association between the specified developer group with the specified product.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param productId Product identifier. Must be unique in the current API Management service instance.
      * @param groupId Group identifier. Must be unique in the current API Management service instance.
@@ -764,9 +735,27 @@ public final class ProductGroupsClientImpl implements ProductGroupsClient {
     }
 
     /**
+     * Adds the association between the specified developer group with the specified product.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serviceName The name of the API Management service.
+     * @param productId Product identifier. Must be unique in the current API Management service instance.
+     * @param groupId Group identifier. Must be unique in the current API Management service instance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return contract details.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public GroupContractInner createOrUpdate(
+        String resourceGroupName, String serviceName, String productId, String groupId) {
+        return createOrUpdateWithResponse(resourceGroupName, serviceName, productId, groupId, Context.NONE).getValue();
+    }
+
+    /**
      * Deletes the association between the specified group and product.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param productId Product identifier. Must be unique in the current API Management service instance.
      * @param groupId Group identifier. Must be unique in the current API Management service instance.
@@ -824,7 +813,7 @@ public final class ProductGroupsClientImpl implements ProductGroupsClient {
     /**
      * Deletes the association between the specified group and product.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param productId Product identifier. Must be unique in the current API Management service instance.
      * @param groupId Group identifier. Must be unique in the current API Management service instance.
@@ -880,7 +869,7 @@ public final class ProductGroupsClientImpl implements ProductGroupsClient {
     /**
      * Deletes the association between the specified group and product.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param productId Product identifier. Must be unique in the current API Management service instance.
      * @param groupId Group identifier. Must be unique in the current API Management service instance.
@@ -892,29 +881,13 @@ public final class ProductGroupsClientImpl implements ProductGroupsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String serviceName, String productId, String groupId) {
         return deleteWithResponseAsync(resourceGroupName, serviceName, productId, groupId)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
      * Deletes the association between the specified group and product.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param serviceName The name of the API Management service.
-     * @param productId Product identifier. Must be unique in the current API Management service instance.
-     * @param groupId Group identifier. Must be unique in the current API Management service instance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String serviceName, String productId, String groupId) {
-        deleteAsync(resourceGroupName, serviceName, productId, groupId).block();
-    }
-
-    /**
-     * Deletes the association between the specified group and product.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param productId Product identifier. Must be unique in the current API Management service instance.
      * @param groupId Group identifier. Must be unique in the current API Management service instance.
@@ -931,9 +904,26 @@ public final class ProductGroupsClientImpl implements ProductGroupsClient {
     }
 
     /**
+     * Deletes the association between the specified group and product.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serviceName The name of the API Management service.
+     * @param productId Product identifier. Must be unique in the current API Management service instance.
+     * @param groupId Group identifier. Must be unique in the current API Management service instance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void delete(String resourceGroupName, String serviceName, String productId, String groupId) {
+        deleteWithResponse(resourceGroupName, serviceName, productId, groupId, Context.NONE);
+    }
+
+    /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -969,7 +959,8 @@ public final class ProductGroupsClientImpl implements ProductGroupsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
