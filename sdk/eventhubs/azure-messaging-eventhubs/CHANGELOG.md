@@ -4,7 +4,7 @@
 
 ### Features Added
 
-- Added support for a default EventPosition that applies to all partitions and a Function<String, EventPosition> that maps a partition id to EventPosition in EventProcessorClientBuilder. ([#36485](https://github.com/Azure/azure-sdk-for-java/pull/36485))
+- Added support for a Function<String, EventPosition> that maps a partition id to EventPosition in EventProcessorClientBuilder. ([#36485](https://github.com/Azure/azure-sdk-for-java/pull/36485))
 - Added support for tracing options and configuration. ([#33600](https://github.com/Azure/azure-sdk-for-java/issues/33600))
 - Aligned with OpenTelemetry messaging semantic conventions (when latest azure-core-tracing-opentelemetry package is used). ([#33600](https://github.com/Azure/azure-sdk-for-java/issues/33600))
 
