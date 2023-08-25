@@ -681,8 +681,8 @@ class SparkE2EWriteITest
             .getDatabase(cosmosDatabase)
             .createContainerIfNotExists(
               targetContainerName,
-            "/pk",
-                ThroughputProperties.createManualThroughput(400))
+              "/pk",
+              ThroughputProperties.createManualThroughput(400))
             .block()
         val targetContainer = cosmosClient.getDatabase(cosmosDatabase).getContainer(targetContainerName)
 
