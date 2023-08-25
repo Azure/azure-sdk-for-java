@@ -42,6 +42,14 @@ service
 
 <br/>
 <details>
+<summary> apicenter </summary>
+
+* [package-2023-07-01-preview](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/apicenter/resource-manager#tag-package-2023-07-01-preview)
+    * [1.0.0-beta.1](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-apicenter/1.0.0-beta.1)
+</details>
+
+<br/>
+<details>
 <summary> apimanagement </summary>
 
 * [package-2021-08](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/apimanagement/resource-manager#tag-package-2021-08)
@@ -1200,6 +1208,8 @@ service
 <details>
 <summary> networkcloud </summary>
 
+* [package-2023-07-01](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/networkcloud/resource-manager#tag-package-2023-07-01)
+    * [1.0.0](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-networkcloud/1.0.0)
 * [package-2023-05-01-preview](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/networkcloud/resource-manager#tag-package-2023-05-01-preview)
     * [1.0.0-beta.2](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-networkcloud/1.0.0-beta.2)
 * [package-2022-12-12-preview](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/networkcloud/resource-manager#tag-package-2022-12-12-preview)
