@@ -21,7 +21,9 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * Sample demonstrates the "Azure OpenAI on your data" feature.
+ * Sample demonstrates the "Azure OpenAI on your data" feature. Prerequisites and guides
+ * for this feature can be found at:
+ * https://learn.microsoft.com/azure/ai-services/openai/use-your-data-quickstart?tabs=command-line&pivots=programming-language-studio
  */
 public class ChatCompletionsWithYourData {
     /**
@@ -43,6 +45,11 @@ public class ChatCompletionsWithYourData {
         chatMessages.add(new ChatMessage(ChatRole.USER, "How many of our customers are using the latest version of our SDK?"));
 
         ChatCompletionsOptions chatCompletionsOptions = new ChatCompletionsOptions(chatMessages);
+
+        // These configuration values come from your Azure Cognitive Search resource. Using Azure
+        // Cognitive Search as a data source is briefly described in the "Azure OpenAI on
+        // your data" quickstart, linked above. A more detailed guide can be found here:
+        // https://learn.microsoft.com/azure/search/search-get-started-portal
 
         // Your Azure Cognitive Search endpoint, admin key, and index name
         String azureSearchEndpoint = "{azure-cognitive-search-endpoint}";
