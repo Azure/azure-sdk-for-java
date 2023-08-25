@@ -343,7 +343,7 @@ class ServiceBusMessageSerializer implements MessageSerializer {
         if (statusCode != AmqpResponseCode.OK) {
             LOGGER.atWarning()
                 .addKeyValue("statusCode", statusCode)
-                .log("AMQP response did not contain OK status code.", statusCode);
+                .log("AMQP response did not contain OK status code.");
             return Collections.emptyList();
         }
 
