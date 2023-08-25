@@ -396,13 +396,12 @@ public class RequestResponseChannel implements AsyncCloseable {
     }
 
     private void settleMessage(Message message) {
-        final String id = String.valueOf(message.getCorrelationId());
-        final UnsignedLong correlationId = UnsignedLong.valueOf(id);
+        final UnsignedLong correlationId = UnsignedLong.valueOf((long)message.getCorrelationId());
         final MonoSink<Message> sink = unconfirmedSends.remove(correlationId);
 
         if (sink == null) {
             logger.atWarning()
-                .addKeyValue("messageId", id)
+                .addKeyValue("messageId", message.getCorrelationId())
                 .log("Received delivery without pending message.");
             return;
         }

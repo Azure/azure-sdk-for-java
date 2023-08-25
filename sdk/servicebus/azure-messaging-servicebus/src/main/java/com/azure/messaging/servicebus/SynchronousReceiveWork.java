@@ -4,6 +4,7 @@
 package com.azure.messaging.servicebus;
 
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.messaging.servicebus.implementation.ServiceBusConstants;
 import reactor.core.Disposable;
 import reactor.core.Disposables;
 import reactor.core.publisher.Flux;
@@ -152,13 +153,17 @@ class SynchronousReceiveWork {
         final int numberLeft = remaining.decrementAndGet();
 
         if (numberLeft < 0) {
-            logger.info("Number left {} < 0. Not emitting downstream.", numberLeft);
+            logger.atInfo()
+                .addKeyValue("numberLeft", numberLeft)
+                .log("Not emitting downstream.");
             return false;
         }
 
         final Sinks.EmitResult result = downstreamEmitter.tryEmitNext(message);
         if (result != Sinks.EmitResult.OK) {
-            logger.info("Could not emit downstream. EmitResult: {}", result);
+            logger.atInfo()
+                .addKeyValue("emitResult", result)
+                .log("Could not emit downstream.");
             return false;
         }
 

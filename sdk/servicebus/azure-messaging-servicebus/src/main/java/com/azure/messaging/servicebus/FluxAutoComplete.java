@@ -16,6 +16,7 @@ import java.util.Objects;
 import java.util.concurrent.Semaphore;
 import java.util.function.Function;
 
+import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.MESSAGE_ID_LOGGING_KEY;
 import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.SEQUENCE_NUMBER_KEY;
 
 /**
@@ -72,7 +73,9 @@ final class FluxAutoComplete extends FluxOperator<ServiceBusMessageContext, Serv
 
         @Override
         protected void hookOnSubscribe(Subscription subscription) {
-            logger.info("Subscription received. Subscribing downstream. {}", subscription);
+            logger.atInfo()
+                .addKeyValue("subscription", subscription)
+                .log("Subscription received.", subscription);
             downstream.onSubscribe(this);
         }
 
@@ -149,7 +152,9 @@ final class FluxAutoComplete extends FluxOperator<ServiceBusMessageContext, Serv
             try {
                 function.apply(context).block();
             } catch (Exception e) {
-                logger.warning("Unable to '{}' message.", operation, e);
+                logger.atWarning()
+                    .addKeyValue("operation", operation)
+                    .log("Operation on message failed.", e);
 
                 // On an error, we'll stop requesting from upstream and pass the error downstream.
                 upstream().cancel();
