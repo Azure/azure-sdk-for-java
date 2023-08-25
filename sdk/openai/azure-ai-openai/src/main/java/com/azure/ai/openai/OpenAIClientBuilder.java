@@ -45,6 +45,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+import static com.azure.ai.openai.implementation.NonAzureOpenAIClientImpl.OPEN_AI_ENDPOINT;
+
 /** A builder for creating a new instance of the OpenAIClient type. */
 @ServiceClientBuilder(serviceClients = {OpenAIClient.class, OpenAIAsyncClient.class})
 public final class OpenAIClientBuilder
@@ -292,7 +294,9 @@ public final class OpenAIClientBuilder
         policies.add(new CookiePolicy());
         if (keyCredential != null) {
             KeyCredentialPolicy keyCredentialPolicy;
-            if (endpoint != null) {
+            // Connect to OpenAI service needs to have endpoints start with "https://api.openai.com/".
+            // By default, if user doesn't provide endpoint, it will redirect to create an Azure OpenAI service.
+            if (endpoint != null && !endpoint.startsWith(OPEN_AI_ENDPOINT)) {
                 keyCredentialPolicy = new KeyCredentialPolicy("api-key", keyCredential);
             } else {
                 keyCredentialPolicy = new KeyCredentialPolicy("Authorization", keyCredential, "Bearer");
@@ -329,9 +333,9 @@ public final class OpenAIClientBuilder
      * @return an instance of OpenAIAsyncClient.
      */
     public OpenAIAsyncClient buildAsyncClient() {
-        // Connect to OpenAI service only need to have API key. "Authorization: Bearer OPENAI_API_KEY"
-        // So we assume if user doesn't provide endpoint, it will redirect to create a Non-Azure OpenAI service.
-        if (this.endpoint != null) {
+        // Connect to OpenAI service needs to have endpoints start with "https://api.openai.com/".
+        // By default, if user doesn't provide endpoint, it will redirect to create an Azure OpenAI service.
+        if (endpoint != null && !endpoint.startsWith(OPEN_AI_ENDPOINT)) {
             return new OpenAIAsyncClient(buildInnerClient());
         }
         return new OpenAIAsyncClient(buildInnerNonAzureOpenAIClient());
@@ -343,9 +347,9 @@ public final class OpenAIClientBuilder
      * @return an instance of OpenAIClient.
      */
     public OpenAIClient buildClient() {
-        // Connect to OpenAI service only need to have API key. "Authorization: Bearer OPENAI_API_KEY"
-        // So we assume if user doesn't provide endpoint, it will redirect to create a Non-Azure OpenAI service.
-        if (this.endpoint != null) {
+        // Connect to OpenAI service needs to have endpoints start with "https://api.openai.com/".
+        // By default, if user doesn't provide endpoint, it will redirect to create an Azure OpenAI service.
+        if (endpoint != null && !endpoint.startsWith(OPEN_AI_ENDPOINT)) {
             return new OpenAIClient(buildInnerClient());
         }
         return new OpenAIClient(buildInnerNonAzureOpenAIClient());
