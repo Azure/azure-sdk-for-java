@@ -23,6 +23,7 @@ import java.util.Map;
 import java.util.Objects;
 
 import static com.azure.core.amqp.implementation.AmqpLoggingUtils.addKeyValueIfNotNull;
+import static com.azure.core.amqp.implementation.ClientConstants.DELIVERY_STATE_KEY;
 import static com.azure.core.amqp.implementation.ClientConstants.ENTITY_PATH_KEY;
 import static com.azure.core.amqp.implementation.ClientConstants.ERROR_CONDITION_KEY;
 import static com.azure.core.amqp.implementation.ClientConstants.ERROR_DESCRIPTION_KEY;
@@ -59,9 +60,7 @@ public class ManagementChannel implements AmqpManagementNode {
             return channel.sendWithAck(protonJMessage)
                 .handle((Message responseMessage, SynchronousSink<AmqpAnnotatedMessage> sink) ->
                     handleResponse(responseMessage, sink, channel.getErrorContext()))
-                .switchIfEmpty(Mono.error(() -> new AmqpException(true, String.format(
-                    "entityPath[%s] No response received from management channel.", entityPath),
-                    channel.getErrorContext())));
+                .switchIfEmpty(errorIfEmpty(channel, null));
         }));
     }
 
@@ -74,9 +73,7 @@ public class ManagementChannel implements AmqpManagementNode {
             return channel.sendWithAck(protonJMessage, protonJDeliveryState)
                 .handle((Message responseMessage, SynchronousSink<AmqpAnnotatedMessage> sink) ->
                     handleResponse(responseMessage, sink, channel.getErrorContext()))
-                .switchIfEmpty(Mono.error(() -> new AmqpException(true, String.format(
-                    "entityPath[%s] outcome[%s] No response received from management channel.", entityPath,
-                    deliveryOutcome.getDeliveryState()), channel.getErrorContext())));
+                .switchIfEmpty(errorIfEmpty(channel, deliveryOutcome.getDeliveryState()));
         }));
     }
 
@@ -124,6 +121,17 @@ public class ManagementChannel implements AmqpManagementNode {
 
         final Throwable throwable = ExceptionUtil.toException(errorCondition, statusDescription, errorContext);
         sink.error(throwable);
+    }
+
+    private <T> Mono<T> errorIfEmpty(RequestResponseChannel channel, com.azure.core.amqp.models.DeliveryState deliveryState) {
+        return Mono.error(() -> {
+            String error = String.format(
+                "entityPath[%s] deliveryState[%s] No response received from management channel.", entityPath, deliveryState);
+            AmqpException exception = new AmqpException(true, error, channel.getErrorContext());
+            return logger.atError()
+                .addKeyValue(DELIVERY_STATE_KEY, deliveryState)
+                .log(exception);
+        });
     }
 
     private Mono<Void> isAuthorized() {
