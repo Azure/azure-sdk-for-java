@@ -84,7 +84,7 @@ import static com.azure.core.util.FluxUtil.monoError;
  * <h2>Getting Started</h2>
  *
  * <p>In order to interact with the Text Analytics features in Azure AI Language Service, you'll need to create an
- * instance of the Text Analytics Client class. To make this possible you'll need the key credential of the service.
+ * instance of the {@link TextAnalyticsAsyncClient}. To make this possible you'll need the key credential of the service.
  * Alternatively, you can use AAD authentication via
  * <a href="https://learn.microsoft.com/java/api/overview/azure/identity-readme?view=azure-java-stable">Azure Identity</a>
  * to connect to the service.</p>
@@ -131,6 +131,7 @@ import static com.azure.core.util.FluxUtil.monoError;
  * <!-- end com.azure.ai.textanalytics.TextAnalyticsAsyncClient.extractKeyPhrases#String -->
  *
  * <p>See <a href="https://aka.ms/talangs">this</a> for supported languages in Text Analytics API.</p>
+ *
  * <p><strong>Note:</strong> For synchronous sample, refer to {@link TextAnalyticsClient}.</p>
  *
  * <h3>Named Entities Recognition(NER): Prebuilt Model</h3>
@@ -151,6 +152,7 @@ import static com.azure.core.util.FluxUtil.monoError;
  * <!-- end com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeEntities#String -->
  *
  * <p>See <a href="https://aka.ms/talangs">this</a> for supported languages in Text Analytics API.</p>
+ *
  * <p><strong>Note:</strong> For synchronous sample, refer to {@link TextAnalyticsClient}.</p>
  *
  * <h3>Custom Named Entities Recognition(NER): Custom Model</h3>
@@ -200,6 +202,7 @@ import static com.azure.core.util.FluxUtil.monoError;
  * <!-- end AsyncClient.beginRecognizeCustomEntities#Iterable-String-String -->
  *
  * <p>See <a href="https://aka.ms/talangs">this</a> for supported languages in Text Analytics API.</p>
+ *
  * <p><strong>Note:</strong> For synchronous sample, refer to {@link TextAnalyticsClient}.</p>
  *
  * <h3>Linked Entities Recognition</h3>
@@ -225,6 +228,7 @@ import static com.azure.core.util.FluxUtil.monoError;
  * <!-- end com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeLinkedEntities#String -->
  *
  * <p>See <a href="https://aka.ms/talangs">this</a> for supported languages in Text Analytics API.</p>
+ *
  * <p><strong>Note:</strong> For synchronous sample, refer to {@link TextAnalyticsClient}.</p>
  *
  * <h3>Personally Identifiable Information(PII) Entities Recognition</h3>
@@ -249,6 +253,7 @@ import static com.azure.core.util.FluxUtil.monoError;
  * <!-- end com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizePiiEntities#String -->
  *
  * <p>See <a href="https://aka.ms/talangs">this</a> for supported languages in Text Analytics API.</p>
+ *
  * <p><strong>Note:</strong> For synchronous sample, refer to {@link TextAnalyticsClient}.</p>
  *
  * <h3>Text Analytics for Health: Prebuilt Model</h3>
@@ -304,6 +309,7 @@ import static com.azure.core.util.FluxUtil.monoError;
  * <!-- end com.azure.ai.textanalytics.TextAnalyticsAsyncClient.beginAnalyzeHealthcareEntities#Iterable -->
  *
  * <p>See <a href="https://aka.ms/talangs">this</a> for supported languages in Text Analytics API.</p>
+ *
  * <p><strong>Note:</strong> For synchronous sample, refer to {@link TextAnalyticsClient}.</p>
  *
  * <br/>
@@ -368,6 +374,7 @@ import static com.azure.core.util.FluxUtil.monoError;
  * <!-- end AsyncClient.beginExtractSummary#Iterable -->
  *
  * <p>See <a href="https://aka.ms/talangs">this</a> for supported languages in Text Analytics API.</p>
+ *
  * <p><strong>Note:</strong> For synchronous sample, refer to {@link TextAnalyticsClient}.</p>
  *
  * <h3>Abstractive summarization</h3>
@@ -427,6 +434,7 @@ import static com.azure.core.util.FluxUtil.monoError;
  * <!-- end AsyncClient.beginAbstractSummary#Iterable -->
  *
  * <p>See <a href="https://aka.ms/talangs">this</a> for supported languages in Text Analytics API.</p>
+ *
  * <p><strong>Note:</strong> For synchronous sample, refer to {@link TextAnalyticsClient}.</p>
  *
  * <br/>
@@ -467,6 +475,7 @@ import static com.azure.core.util.FluxUtil.monoError;
  * <!-- end com.azure.ai.textanalytics.TextAnalyticsAsyncClient.analyzeSentiment#String-String-AnalyzeSentimentOptions -->
  *
  * <p>See <a href="https://aka.ms/talangs">this</a> for supported languages in Text Analytics API.</p>
+ *
  * <p><strong>Note:</strong> For synchronous sample, refer to {@link TextAnalyticsClient}.</p>
  *
  * <h3>Detect Language</h3>
@@ -489,13 +498,14 @@ import static com.azure.core.util.FluxUtil.monoError;
  * <!-- end com.azure.ai.textanalytics.TextAnalyticsAsyncClient.detectLanguage#String -->
  *
  * <p>See <a href="https://aka.ms/talangs">this</a> for supported languages in Text Analytics API.</p>
+ *
  * <p><strong>Note:</strong> For synchronous sample, refer to {@link TextAnalyticsClient}.</p>
  *
  * <h3>Single-Label Classification</h3>
  * <p>The {@link TextAnalyticsAsyncClient#beginSingleLabelClassify(Iterable, String, String) beginSingleLabelClassify}
  * method returns a list of single-label classification for the provided list of documents.</p>
  *
- * <p>Note: this method is supported since service API version {@link TextAnalyticsServiceVersion#V2022_05_01}.</p>
+ * <p>strong>Note:</strong> this method is supported since service API version {@link TextAnalyticsServiceVersion#V2022_05_01}.</p>
  *
  * <!-- src_embed AsyncClient.beginSingleLabelClassify#Iterable-String-String -->
  * <pre>
@@ -541,13 +551,14 @@ import static com.azure.core.util.FluxUtil.monoError;
  * <!-- end AsyncClient.beginSingleLabelClassify#Iterable-String-String -->
  *
  * <p>See <a href="https://aka.ms/talangs">this</a> for supported languages in Text Analytics API.</p>
+ *
  * <p><strong>Note:</strong> For synchronous sample, refer to {@link TextAnalyticsClient}.</p>
  *
  * <h3>Multi-Label Classification</h3>
  * <p>The {@link TextAnalyticsAsyncClient#beginMultiLabelClassify(Iterable, String, String) beginMultiLabelClassify}
  * method returns a list of multi-label classification for the provided list of document.</p>
  *
- * <p>Note: this method is supported since service API version {@link TextAnalyticsServiceVersion#V2022_05_01}.</p>
+ * <p>strong>Note:</strong> this method is supported since service API version {@link TextAnalyticsServiceVersion#V2022_05_01}.</p>
  *
  * <!-- src_embed AsyncClient.beginMultiLabelClassify#Iterable-String-String -->
  * <pre>
@@ -587,6 +598,7 @@ import static com.azure.core.util.FluxUtil.monoError;
  * <!-- end AsyncClient.beginMultiLabelClassify#Iterable-String-String -->
  *
  * <p>See <a href="https://aka.ms/talangs">this</a> for supported languages in Text Analytics API.</p>
+ *
  * <p><strong>Note:</strong> For synchronous sample, refer to {@link TextAnalyticsClient}.</p>
  *
  * <br/>
@@ -641,6 +653,7 @@ import static com.azure.core.util.FluxUtil.monoError;
  * <!-- end com.azure.ai.textanalytics.TextAnalyticsAsyncClient.beginAnalyzeActions#Iterable-TextAnalyticsActions -->
  *
  * <p>See <a href="https://aka.ms/talangs">this</a> for supported languages in Text Analytics API.</p>
+ *
  * <p><strong>Note:</strong> For synchronous sample, refer to {@link TextAnalyticsClient}.</p>
  *
  * @see TextAnalyticsClientBuilder
