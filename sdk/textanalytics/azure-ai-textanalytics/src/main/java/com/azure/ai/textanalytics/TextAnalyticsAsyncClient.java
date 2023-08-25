@@ -117,6 +117,9 @@ import static com.azure.core.util.FluxUtil.monoError;
  *
  * <h2>Extract information</h2>
  *
+ * <p>Text Analytics client can use Natural Language Understanding (NLU) to extract information from unstructured text.
+ * For example, identify key phrases or Personally Identifiable, etc. Below you can look at the samples on how to use it.</p>
+ *
  * <h3>Key Phrases Extraction</h3>
  *
  * <p>The {@link TextAnalyticsAsyncClient#extractKeyPhrases(String) extractKeyPhrases}
@@ -318,6 +321,9 @@ import static com.azure.core.util.FluxUtil.monoError;
  *
  * <h2>Summarize text-based content: Document Summarization</h2>
  *
+ * <p>Text Analytics client can use Natural Language Understanding (NLU) to summarize lengthy documents.
+ * For example, extractive or abstractive summarization. Below you can look at the samples on how to use it.</p>
+ *
  * <h3>Extractive summarization</h3>
  *
  * <p>The {@link TextAnalyticsAsyncClient#beginExtractSummary(Iterable) beginExtractSummary}
@@ -442,6 +448,10 @@ import static com.azure.core.util.FluxUtil.monoError;
  * <hr/>
  *
  * <h2>Classify Text</h2>
+ *
+ * <p>Text Analytics client can use Natural Language Understanding (NLU) to detect the language or
+ * classify the sentiment of text you have. For example, language detection, sentiment analysis, or
+ * custom text classification. Below you can look at the samples on how to use it.</p>
  *
  * <h3>Analyze Sentiment and Mine Text for Opinions</h3>
  *

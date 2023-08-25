@@ -95,6 +95,9 @@
  *
  * <h2>Extract information</h2>
  *
+ * <p>Text Analytics client can be use Natural Language Understanding (NLU) to extract information from unstructured text.
+ * For example, identify key phrases or Personally Identifiable, etc. Below you can look at the samples on how to use it.</p>
+ *
  * <h3>Key Phrases Extraction</h3>
  *
  * <p>The {@link com.azure.ai.textanalytics.TextAnalyticsClient#extractKeyPhrases(java.lang.String) extractKeyPhrases}
@@ -293,6 +296,9 @@
  *
  * <h2>Summarize text-based content: Document Summarization</h2>
  *
+ * <p>Text Analytics client can use Natural Language Understanding (NLU) to summarize lengthy documents.
+ * For example, extractive or abstractive summarization. Below you can look at the samples on how to use it.</p>
+ *
  * <h3>Extractive summarization</h3>
  * <p>The {@link com.azure.ai.textanalytics.TextAnalyticsClient#beginExtractSummary(java.lang.Iterable) beginExtractSummary}
  * method returns a list of extract summaries for the provided list of {@link java.lang.String document}.</p>
@@ -405,6 +411,10 @@
  * <hr/>
  *
  * <h2>Classify Text</h2>
+ *
+ * <p>Text Analytics client can use Natural Language Understanding (NLU) to detect the language or
+ * classify the sentiment of text you have. For example, language detection, sentiment analysis, or
+ * custom text classification. Below you can look at the samples on how to use it.</p>
  *
  * <h3>Analyze Sentiment and Mine Text for Opinions</h3>
  *
