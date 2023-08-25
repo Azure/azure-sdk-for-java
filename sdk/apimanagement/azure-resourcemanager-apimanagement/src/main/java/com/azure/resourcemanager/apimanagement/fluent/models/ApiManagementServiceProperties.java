@@ -11,6 +11,7 @@ import com.azure.resourcemanager.apimanagement.models.ApiManagementServiceBasePr
 import com.azure.resourcemanager.apimanagement.models.ApiVersionConstraint;
 import com.azure.resourcemanager.apimanagement.models.CertificateConfiguration;
 import com.azure.resourcemanager.apimanagement.models.HostnameConfiguration;
+import com.azure.resourcemanager.apimanagement.models.NatGatewayState;
 import com.azure.resourcemanager.apimanagement.models.PublicNetworkAccess;
 import com.azure.resourcemanager.apimanagement.models.RemotePrivateEndpointConnectionWrapper;
 import com.azure.resourcemanager.apimanagement.models.VirtualNetworkConfiguration;
@@ -33,6 +34,10 @@ public final class ApiManagementServiceProperties extends ApiManagementServiceBa
      */
     @JsonProperty(value = "publisherName", required = true)
     private String publisherName;
+
+    /** Creates an instance of ApiManagementServiceProperties class. */
+    public ApiManagementServiceProperties() {
+    }
 
     /**
      * Get the publisherEmail property: Publisher email.
@@ -136,6 +141,13 @@ public final class ApiManagementServiceProperties extends ApiManagementServiceBa
     @Override
     public ApiManagementServiceProperties withEnableClientCertificate(Boolean enableClientCertificate) {
         super.withEnableClientCertificate(enableClientCertificate);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ApiManagementServiceProperties withNatGatewayState(NatGatewayState natGatewayState) {
+        super.withNatGatewayState(natGatewayState);
         return this;
     }
 

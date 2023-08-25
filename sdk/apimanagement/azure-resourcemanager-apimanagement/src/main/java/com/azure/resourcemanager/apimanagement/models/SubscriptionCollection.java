@@ -30,6 +30,10 @@ public final class SubscriptionCollection {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of SubscriptionCollection class. */
+    public SubscriptionCollection() {
+    }
+
     /**
      * Get the value property: Page values.
      *

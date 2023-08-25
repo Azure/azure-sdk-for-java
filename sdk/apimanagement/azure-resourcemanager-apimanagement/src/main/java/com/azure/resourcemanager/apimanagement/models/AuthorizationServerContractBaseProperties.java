@@ -12,33 +12,28 @@ import java.util.List;
 @Fluent
 public class AuthorizationServerContractBaseProperties {
     /*
-     * Description of the authorization server. Can contain HTML formatting
-     * tags.
+     * Description of the authorization server. Can contain HTML formatting tags.
      */
     @JsonProperty(value = "description")
     private String description;
 
     /*
-     * HTTP verbs supported by the authorization endpoint. GET must be always
-     * present. POST is optional.
+     * HTTP verbs supported by the authorization endpoint. GET must be always present. POST is optional.
      */
     @JsonProperty(value = "authorizationMethods")
     private List<AuthorizationMethod> authorizationMethods;
 
     /*
-     * Method of authentication supported by the token endpoint of this
-     * authorization server. Possible values are Basic and/or Body. When Body
-     * is specified, client credentials and other parameters are passed within
-     * the request body in the application/x-www-form-urlencoded format.
+     * Method of authentication supported by the token endpoint of this authorization server. Possible values are Basic
+     * and/or Body. When Body is specified, client credentials and other parameters are passed within the request body
+     * in the application/x-www-form-urlencoded format.
      */
     @JsonProperty(value = "clientAuthenticationMethod")
     private List<ClientAuthenticationMethod> clientAuthenticationMethod;
 
     /*
-     * Additional parameters required by the token endpoint of this
-     * authorization server represented as an array of JSON objects with name
-     * and value string properties, i.e. {"name" : "name value", "value": "a
-     * value"}.
+     * Additional parameters required by the token endpoint of this authorization server represented as an array of
+     * JSON objects with name and value string properties, i.e. {"name" : "name value", "value": "a value"}.
      */
     @JsonProperty(value = "tokenBodyParameters")
     private List<TokenBodyParameterContract> tokenBodyParameters;
@@ -50,17 +45,15 @@ public class AuthorizationServerContractBaseProperties {
     private String tokenEndpoint;
 
     /*
-     * If true, authorization server will include state parameter from the
-     * authorization request to its response. Client may use state parameter to
-     * raise protocol security.
+     * If true, authorization server will include state parameter from the authorization request to its response.
+     * Client may use state parameter to raise protocol security.
      */
     @JsonProperty(value = "supportState")
     private Boolean supportState;
 
     /*
-     * Access token scope that is going to be requested by default. Can be
-     * overridden at the API level. Should be provided in the form of a string
-     * containing space-delimited values.
+     * Access token scope that is going to be requested by default. Can be overridden at the API level. Should be
+     * provided in the form of a string containing space-delimited values.
      */
     @JsonProperty(value = "defaultScope")
     private String defaultScope;
@@ -72,18 +65,22 @@ public class AuthorizationServerContractBaseProperties {
     private List<BearerTokenSendingMethod> bearerTokenSendingMethods;
 
     /*
-     * Can be optionally specified when resource owner password grant type is
-     * supported by this authorization server. Default resource owner username.
+     * Can be optionally specified when resource owner password grant type is supported by this authorization server.
+     * Default resource owner username.
      */
     @JsonProperty(value = "resourceOwnerUsername")
     private String resourceOwnerUsername;
 
     /*
-     * Can be optionally specified when resource owner password grant type is
-     * supported by this authorization server. Default resource owner password.
+     * Can be optionally specified when resource owner password grant type is supported by this authorization server.
+     * Default resource owner password.
      */
     @JsonProperty(value = "resourceOwnerPassword")
     private String resourceOwnerPassword;
+
+    /** Creates an instance of AuthorizationServerContractBaseProperties class. */
+    public AuthorizationServerContractBaseProperties() {
+    }
 
     /**
      * Get the description property: Description of the authorization server. Can contain HTML formatting tags.

@@ -13,7 +13,7 @@ public interface ProductApis {
     /**
      * Lists a collection of the APIs associated with a product.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param productId Product identifier. Must be unique in the current API Management service instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -26,7 +26,7 @@ public interface ProductApis {
     /**
      * Lists a collection of the APIs associated with a product.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param productId Product identifier. Must be unique in the current API Management service instance.
      * @param filter | Field | Usage | Supported operators | Supported functions
@@ -56,21 +56,7 @@ public interface ProductApis {
     /**
      * Checks that API entity specified by identifier is associated with the Product entity.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param serviceName The name of the API Management service.
-     * @param productId Product identifier. Must be unique in the current API Management service instance.
-     * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
-     *     revision has ;rev=n as a suffix where n is the revision number.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void checkEntityExists(String resourceGroupName, String serviceName, String productId, String apiId);
-
-    /**
-     * Checks that API entity specified by identifier is associated with the Product entity.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param productId Product identifier. Must be unique in the current API Management service instance.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
@@ -85,9 +71,9 @@ public interface ProductApis {
         String resourceGroupName, String serviceName, String productId, String apiId, Context context);
 
     /**
-     * Adds an API to the specified product.
+     * Checks that API entity specified by identifier is associated with the Product entity.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param productId Product identifier. Must be unique in the current API Management service instance.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
@@ -95,14 +81,13 @@ public interface ProductApis {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return aPI details.
      */
-    ApiContract createOrUpdate(String resourceGroupName, String serviceName, String productId, String apiId);
+    void checkEntityExists(String resourceGroupName, String serviceName, String productId, String apiId);
 
     /**
      * Adds an API to the specified product.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param productId Product identifier. Must be unique in the current API Management service instance.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
@@ -117,9 +102,9 @@ public interface ProductApis {
         String resourceGroupName, String serviceName, String productId, String apiId, Context context);
 
     /**
-     * Deletes the specified API from the specified product.
+     * Adds an API to the specified product.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param productId Product identifier. Must be unique in the current API Management service instance.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
@@ -127,13 +112,14 @@ public interface ProductApis {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return aPI details.
      */
-    void delete(String resourceGroupName, String serviceName, String productId, String apiId);
+    ApiContract createOrUpdate(String resourceGroupName, String serviceName, String productId, String apiId);
 
     /**
      * Deletes the specified API from the specified product.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param productId Product identifier. Must be unique in the current API Management service instance.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
@@ -146,4 +132,18 @@ public interface ProductApis {
      */
     Response<Void> deleteWithResponse(
         String resourceGroupName, String serviceName, String productId, String apiId, Context context);
+
+    /**
+     * Deletes the specified API from the specified product.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serviceName The name of the API Management service.
+     * @param productId Product identifier. Must be unique in the current API Management service instance.
+     * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
+     *     revision has ;rev=n as a suffix where n is the revision number.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void delete(String resourceGroupName, String serviceName, String productId, String apiId);
 }

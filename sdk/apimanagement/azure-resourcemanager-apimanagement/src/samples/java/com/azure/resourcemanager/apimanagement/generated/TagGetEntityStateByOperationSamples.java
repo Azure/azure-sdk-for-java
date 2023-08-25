@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.apimanagement.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Tag GetEntityStateByOperation. */
 public final class TagGetEntityStateByOperationSamples {
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementHeadApiOperationTag.json
+     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementHeadApiOperationTag.json
      */
     /**
      * Sample code: ApiManagementHeadApiOperationTag.
@@ -26,6 +24,6 @@ public final class TagGetEntityStateByOperationSamples {
                 "59d6bb8f1f7fab13dc67ec9b",
                 "59d6bb8f1f7fab13dc67ec9a",
                 "59306a29e4bbd510dc24e5f9",
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

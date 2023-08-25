@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.apimanagement.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Product ListByService. */
 public final class ProductListByServiceSamples {
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementListProducts.json
+     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementListProducts.json
      */
     /**
      * Sample code: ApiManagementListProducts.
@@ -17,6 +15,8 @@ public final class ProductListByServiceSamples {
      * @param manager Entry point to ApiManagementManager.
      */
     public static void apiManagementListProducts(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
-        manager.products().listByService("rg1", "apimService1", null, null, null, null, null, Context.NONE);
+        manager
+            .products()
+            .listByService("rg1", "apimService1", null, null, null, null, null, com.azure.core.util.Context.NONE);
     }
 }

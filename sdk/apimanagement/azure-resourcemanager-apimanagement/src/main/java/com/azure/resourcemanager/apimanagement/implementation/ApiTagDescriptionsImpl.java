@@ -50,10 +50,6 @@ public final class ApiTagDescriptionsImpl implements ApiTagDescriptions {
         return Utils.mapPage(inner, inner1 -> new TagDescriptionContractImpl(inner1, this.manager()));
     }
 
-    public void getEntityTag(String resourceGroupName, String serviceName, String apiId, String tagDescriptionId) {
-        this.serviceClient().getEntityTag(resourceGroupName, serviceName, apiId, tagDescriptionId);
-    }
-
     public ApiTagDescriptionsGetEntityTagResponse getEntityTagWithResponse(
         String resourceGroupName, String serviceName, String apiId, String tagDescriptionId, Context context) {
         return this
@@ -61,15 +57,8 @@ public final class ApiTagDescriptionsImpl implements ApiTagDescriptions {
             .getEntityTagWithResponse(resourceGroupName, serviceName, apiId, tagDescriptionId, context);
     }
 
-    public TagDescriptionContract get(
-        String resourceGroupName, String serviceName, String apiId, String tagDescriptionId) {
-        TagDescriptionContractInner inner =
-            this.serviceClient().get(resourceGroupName, serviceName, apiId, tagDescriptionId);
-        if (inner != null) {
-            return new TagDescriptionContractImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+    public void getEntityTag(String resourceGroupName, String serviceName, String apiId, String tagDescriptionId) {
+        this.serviceClient().getEntityTag(resourceGroupName, serviceName, apiId, tagDescriptionId);
     }
 
     public Response<TagDescriptionContract> getWithResponse(
@@ -87,9 +76,15 @@ public final class ApiTagDescriptionsImpl implements ApiTagDescriptions {
         }
     }
 
-    public void delete(
-        String resourceGroupName, String serviceName, String apiId, String tagDescriptionId, String ifMatch) {
-        this.serviceClient().delete(resourceGroupName, serviceName, apiId, tagDescriptionId, ifMatch);
+    public TagDescriptionContract get(
+        String resourceGroupName, String serviceName, String apiId, String tagDescriptionId) {
+        TagDescriptionContractInner inner =
+            this.serviceClient().get(resourceGroupName, serviceName, apiId, tagDescriptionId);
+        if (inner != null) {
+            return new TagDescriptionContractImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public Response<Void> deleteWithResponse(
@@ -102,6 +97,11 @@ public final class ApiTagDescriptionsImpl implements ApiTagDescriptions {
         return this
             .serviceClient()
             .deleteWithResponse(resourceGroupName, serviceName, apiId, tagDescriptionId, ifMatch, context);
+    }
+
+    public void delete(
+        String resourceGroupName, String serviceName, String apiId, String tagDescriptionId, String ifMatch) {
+        this.serviceClient().delete(resourceGroupName, serviceName, apiId, tagDescriptionId, ifMatch);
     }
 
     public TagDescriptionContract getById(String id) {

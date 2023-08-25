@@ -23,6 +23,10 @@ public final class PortalSignupSettingsProperties {
     @JsonProperty(value = "termsOfService")
     private TermsOfServiceProperties termsOfService;
 
+    /** Creates an instance of PortalSignupSettingsProperties class. */
+    public PortalSignupSettingsProperties() {
+    }
+
     /**
      * Get the enabled property: Allow users to sign up on a developer portal.
      *

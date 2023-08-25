@@ -13,7 +13,7 @@ public interface GlobalSchemas {
     /**
      * Lists a collection of schemas registered with service instance.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -25,7 +25,7 @@ public interface GlobalSchemas {
     /**
      * Lists a collection of schemas registered with service instance.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param filter | Field | Usage | Supported operators | Supported functions
      *     |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| name | filter | ge, le, eq,
@@ -44,19 +44,7 @@ public interface GlobalSchemas {
     /**
      * Gets the entity state (Etag) version of the Schema specified by its identifier.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param serviceName The name of the API Management service.
-     * @param schemaId Schema id identifier. Must be unique in the current API Management service instance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void getEntityTag(String resourceGroupName, String serviceName, String schemaId);
-
-    /**
-     * Gets the entity state (Etag) version of the Schema specified by its identifier.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param schemaId Schema id identifier. Must be unique in the current API Management service instance.
      * @param context The context to associate with this operation.
@@ -69,22 +57,21 @@ public interface GlobalSchemas {
         String resourceGroupName, String serviceName, String schemaId, Context context);
 
     /**
-     * Gets the details of the Schema specified by its identifier.
+     * Gets the entity state (Etag) version of the Schema specified by its identifier.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param schemaId Schema id identifier. Must be unique in the current API Management service instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of the Schema specified by its identifier.
      */
-    GlobalSchemaContract get(String resourceGroupName, String serviceName, String schemaId);
+    void getEntityTag(String resourceGroupName, String serviceName, String schemaId);
 
     /**
      * Gets the details of the Schema specified by its identifier.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param schemaId Schema id identifier. Must be unique in the current API Management service instance.
      * @param context The context to associate with this operation.
@@ -97,23 +84,22 @@ public interface GlobalSchemas {
         String resourceGroupName, String serviceName, String schemaId, Context context);
 
     /**
-     * Deletes specific Schema.
+     * Gets the details of the Schema specified by its identifier.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param schemaId Schema id identifier. Must be unique in the current API Management service instance.
-     * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the details of the Schema specified by its identifier.
      */
-    void delete(String resourceGroupName, String serviceName, String schemaId, String ifMatch);
+    GlobalSchemaContract get(String resourceGroupName, String serviceName, String schemaId);
 
     /**
      * Deletes specific Schema.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param schemaId Schema id identifier. Must be unique in the current API Management service instance.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
@@ -126,6 +112,20 @@ public interface GlobalSchemas {
      */
     Response<Void> deleteWithResponse(
         String resourceGroupName, String serviceName, String schemaId, String ifMatch, Context context);
+
+    /**
+     * Deletes specific Schema.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serviceName The name of the API Management service.
+     * @param schemaId Schema id identifier. Must be unique in the current API Management service instance.
+     * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
+     *     request or it should be * for unconditional update.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void delete(String resourceGroupName, String serviceName, String schemaId, String ifMatch);
 
     /**
      * Gets the details of the Schema specified by its identifier.

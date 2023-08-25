@@ -29,6 +29,10 @@ public final class PolicyCollectionInner {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of PolicyCollectionInner class. */
+    public PolicyCollectionInner() {
+    }
+
     /**
      * Get the value property: Policy Contract value.
      *

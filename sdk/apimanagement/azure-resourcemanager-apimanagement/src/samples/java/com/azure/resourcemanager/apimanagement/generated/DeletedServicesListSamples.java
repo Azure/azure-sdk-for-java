@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.apimanagement.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for DeletedServices List. */
 public final class DeletedServicesListSamples {
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementDeletedServicesListBySubscription.json
+     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementDeletedServicesListBySubscription.json
      */
     /**
      * Sample code: ApiManagementDeletedServicesListBySubscription.
@@ -18,6 +16,6 @@ public final class DeletedServicesListSamples {
      */
     public static void apiManagementDeletedServicesListBySubscription(
         com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
-        manager.deletedServices().list(Context.NONE);
+        manager.deletedServices().list(com.azure.core.util.Context.NONE);
     }
 }

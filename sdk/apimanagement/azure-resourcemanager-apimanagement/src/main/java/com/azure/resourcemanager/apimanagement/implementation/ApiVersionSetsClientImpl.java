@@ -65,11 +65,10 @@ public final class ApiVersionSetsClientImpl implements ApiVersionSetsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "ApiManagementClientA")
-    private interface ApiVersionSetsService {
+    public interface ApiVersionSetsService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement"
-                + "/service/{serviceName}/apiVersionSets")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/apiVersionSets")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ApiVersionSetCollection>> listByService(
@@ -86,8 +85,7 @@ public final class ApiVersionSetsClientImpl implements ApiVersionSetsClient {
 
         @Headers({"Content-Type: application/json"})
         @Head(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement"
-                + "/service/{serviceName}/apiVersionSets/{versionSetId}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/apiVersionSets/{versionSetId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<ApiVersionSetsGetEntityTagResponse> getEntityTag(
@@ -102,8 +100,7 @@ public final class ApiVersionSetsClientImpl implements ApiVersionSetsClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement"
-                + "/service/{serviceName}/apiVersionSets/{versionSetId}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/apiVersionSets/{versionSetId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<ApiVersionSetsGetResponse> get(
@@ -118,8 +115,7 @@ public final class ApiVersionSetsClientImpl implements ApiVersionSetsClient {
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement"
-                + "/service/{serviceName}/apiVersionSets/{versionSetId}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/apiVersionSets/{versionSetId}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<ApiVersionSetsCreateOrUpdateResponse> createOrUpdate(
@@ -136,8 +132,7 @@ public final class ApiVersionSetsClientImpl implements ApiVersionSetsClient {
 
         @Headers({"Content-Type: application/json"})
         @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement"
-                + "/service/{serviceName}/apiVersionSets/{versionSetId}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/apiVersionSets/{versionSetId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<ApiVersionSetsUpdateResponse> update(
@@ -154,8 +149,7 @@ public final class ApiVersionSetsClientImpl implements ApiVersionSetsClient {
 
         @Headers({"Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement"
-                + "/service/{serviceName}/apiVersionSets/{versionSetId}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/apiVersionSets/{versionSetId}")
         @ExpectedResponses({200, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> delete(
@@ -183,7 +177,7 @@ public final class ApiVersionSetsClientImpl implements ApiVersionSetsClient {
     /**
      * Lists a collection of API Version Sets in the specified service instance.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param filter | Field | Usage | Supported operators | Supported functions
      *     |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;.
@@ -248,7 +242,7 @@ public final class ApiVersionSetsClientImpl implements ApiVersionSetsClient {
     /**
      * Lists a collection of API Version Sets in the specified service instance.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param filter | Field | Usage | Supported operators | Supported functions
      *     |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;.
@@ -311,7 +305,7 @@ public final class ApiVersionSetsClientImpl implements ApiVersionSetsClient {
     /**
      * Lists a collection of API Version Sets in the specified service instance.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param filter | Field | Usage | Supported operators | Supported functions
      *     |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;.
@@ -333,7 +327,7 @@ public final class ApiVersionSetsClientImpl implements ApiVersionSetsClient {
     /**
      * Lists a collection of API Version Sets in the specified service instance.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -353,7 +347,7 @@ public final class ApiVersionSetsClientImpl implements ApiVersionSetsClient {
     /**
      * Lists a collection of API Version Sets in the specified service instance.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param filter | Field | Usage | Supported operators | Supported functions
      *     |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;.
@@ -376,7 +370,7 @@ public final class ApiVersionSetsClientImpl implements ApiVersionSetsClient {
     /**
      * Lists a collection of API Version Sets in the specified service instance.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -394,7 +388,7 @@ public final class ApiVersionSetsClientImpl implements ApiVersionSetsClient {
     /**
      * Lists a collection of API Version Sets in the specified service instance.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param filter | Field | Usage | Supported operators | Supported functions
      *     |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;.
@@ -415,7 +409,7 @@ public final class ApiVersionSetsClientImpl implements ApiVersionSetsClient {
     /**
      * Gets the entity state (Etag) version of the Api Version Set specified by its identifier.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param versionSetId Api Version Set identifier. Must be unique in the current API Management service instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -469,7 +463,7 @@ public final class ApiVersionSetsClientImpl implements ApiVersionSetsClient {
     /**
      * Gets the entity state (Etag) version of the Api Version Set specified by its identifier.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param versionSetId Api Version Set identifier. Must be unique in the current API Management service instance.
      * @param context The context to associate with this operation.
@@ -521,7 +515,7 @@ public final class ApiVersionSetsClientImpl implements ApiVersionSetsClient {
     /**
      * Gets the entity state (Etag) version of the Api Version Set specified by its identifier.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param versionSetId Api Version Set identifier. Must be unique in the current API Management service instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -533,28 +527,13 @@ public final class ApiVersionSetsClientImpl implements ApiVersionSetsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> getEntityTagAsync(String resourceGroupName, String serviceName, String versionSetId) {
         return getEntityTagWithResponseAsync(resourceGroupName, serviceName, versionSetId)
-            .flatMap((ApiVersionSetsGetEntityTagResponse res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
      * Gets the entity state (Etag) version of the Api Version Set specified by its identifier.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param serviceName The name of the API Management service.
-     * @param versionSetId Api Version Set identifier. Must be unique in the current API Management service instance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void getEntityTag(String resourceGroupName, String serviceName, String versionSetId) {
-        getEntityTagAsync(resourceGroupName, serviceName, versionSetId).block();
-    }
-
-    /**
-     * Gets the entity state (Etag) version of the Api Version Set specified by its identifier.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param versionSetId Api Version Set identifier. Must be unique in the current API Management service instance.
      * @param context The context to associate with this operation.
@@ -570,9 +549,24 @@ public final class ApiVersionSetsClientImpl implements ApiVersionSetsClient {
     }
 
     /**
+     * Gets the entity state (Etag) version of the Api Version Set specified by its identifier.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serviceName The name of the API Management service.
+     * @param versionSetId Api Version Set identifier. Must be unique in the current API Management service instance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void getEntityTag(String resourceGroupName, String serviceName, String versionSetId) {
+        getEntityTagWithResponse(resourceGroupName, serviceName, versionSetId, Context.NONE);
+    }
+
+    /**
      * Gets the details of the Api Version Set specified by its identifier.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param versionSetId Api Version Set identifier. Must be unique in the current API Management service instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -625,7 +619,7 @@ public final class ApiVersionSetsClientImpl implements ApiVersionSetsClient {
     /**
      * Gets the details of the Api Version Set specified by its identifier.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param versionSetId Api Version Set identifier. Must be unique in the current API Management service instance.
      * @param context The context to associate with this operation.
@@ -676,7 +670,7 @@ public final class ApiVersionSetsClientImpl implements ApiVersionSetsClient {
     /**
      * Gets the details of the Api Version Set specified by its identifier.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param versionSetId Api Version Set identifier. Must be unique in the current API Management service instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -688,36 +682,13 @@ public final class ApiVersionSetsClientImpl implements ApiVersionSetsClient {
     private Mono<ApiVersionSetContractInner> getAsync(
         String resourceGroupName, String serviceName, String versionSetId) {
         return getWithResponseAsync(resourceGroupName, serviceName, versionSetId)
-            .flatMap(
-                (ApiVersionSetsGetResponse res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Gets the details of the Api Version Set specified by its identifier.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param serviceName The name of the API Management service.
-     * @param versionSetId Api Version Set identifier. Must be unique in the current API Management service instance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of the Api Version Set specified by its identifier.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ApiVersionSetContractInner get(String resourceGroupName, String serviceName, String versionSetId) {
-        return getAsync(resourceGroupName, serviceName, versionSetId).block();
-    }
-
-    /**
-     * Gets the details of the Api Version Set specified by its identifier.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param versionSetId Api Version Set identifier. Must be unique in the current API Management service instance.
      * @param context The context to associate with this operation.
@@ -733,9 +704,25 @@ public final class ApiVersionSetsClientImpl implements ApiVersionSetsClient {
     }
 
     /**
+     * Gets the details of the Api Version Set specified by its identifier.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serviceName The name of the API Management service.
+     * @param versionSetId Api Version Set identifier. Must be unique in the current API Management service instance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the details of the Api Version Set specified by its identifier.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ApiVersionSetContractInner get(String resourceGroupName, String serviceName, String versionSetId) {
+        return getWithResponse(resourceGroupName, serviceName, versionSetId, Context.NONE).getValue();
+    }
+
+    /**
      * Creates or Updates a Api Version Set.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param versionSetId Api Version Set identifier. Must be unique in the current API Management service instance.
      * @param parameters Create or update parameters.
@@ -801,7 +788,7 @@ public final class ApiVersionSetsClientImpl implements ApiVersionSetsClient {
     /**
      * Creates or Updates a Api Version Set.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param versionSetId Api Version Set identifier. Must be unique in the current API Management service instance.
      * @param parameters Create or update parameters.
@@ -866,38 +853,7 @@ public final class ApiVersionSetsClientImpl implements ApiVersionSetsClient {
     /**
      * Creates or Updates a Api Version Set.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param serviceName The name of the API Management service.
-     * @param versionSetId Api Version Set identifier. Must be unique in the current API Management service instance.
-     * @param parameters Create or update parameters.
-     * @param ifMatch ETag of the Entity. Not required when creating an entity, but required when updating an entity.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return aPI Version Set Contract details on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ApiVersionSetContractInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String serviceName,
-        String versionSetId,
-        ApiVersionSetContractInner parameters,
-        String ifMatch) {
-        return createOrUpdateWithResponseAsync(resourceGroupName, serviceName, versionSetId, parameters, ifMatch)
-            .flatMap(
-                (ApiVersionSetsCreateOrUpdateResponse res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Creates or Updates a Api Version Set.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param versionSetId Api Version Set identifier. Must be unique in the current API Management service instance.
      * @param parameters Create or update parameters.
@@ -911,39 +867,13 @@ public final class ApiVersionSetsClientImpl implements ApiVersionSetsClient {
         String resourceGroupName, String serviceName, String versionSetId, ApiVersionSetContractInner parameters) {
         final String ifMatch = null;
         return createOrUpdateWithResponseAsync(resourceGroupName, serviceName, versionSetId, parameters, ifMatch)
-            .flatMap(
-                (ApiVersionSetsCreateOrUpdateResponse res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Creates or Updates a Api Version Set.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param serviceName The name of the API Management service.
-     * @param versionSetId Api Version Set identifier. Must be unique in the current API Management service instance.
-     * @param parameters Create or update parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return aPI Version Set Contract details.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ApiVersionSetContractInner createOrUpdate(
-        String resourceGroupName, String serviceName, String versionSetId, ApiVersionSetContractInner parameters) {
-        final String ifMatch = null;
-        return createOrUpdateAsync(resourceGroupName, serviceName, versionSetId, parameters, ifMatch).block();
-    }
-
-    /**
-     * Creates or Updates a Api Version Set.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param versionSetId Api Version Set identifier. Must be unique in the current API Management service instance.
      * @param parameters Create or update parameters.
@@ -968,9 +898,30 @@ public final class ApiVersionSetsClientImpl implements ApiVersionSetsClient {
     }
 
     /**
+     * Creates or Updates a Api Version Set.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serviceName The name of the API Management service.
+     * @param versionSetId Api Version Set identifier. Must be unique in the current API Management service instance.
+     * @param parameters Create or update parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return aPI Version Set Contract details.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ApiVersionSetContractInner createOrUpdate(
+        String resourceGroupName, String serviceName, String versionSetId, ApiVersionSetContractInner parameters) {
+        final String ifMatch = null;
+        return createOrUpdateWithResponse(
+                resourceGroupName, serviceName, versionSetId, parameters, ifMatch, Context.NONE)
+            .getValue();
+    }
+
+    /**
      * Updates the details of the Api VersionSet specified by its identifier.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param versionSetId Api Version Set identifier. Must be unique in the current API Management service instance.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
@@ -1040,7 +991,7 @@ public final class ApiVersionSetsClientImpl implements ApiVersionSetsClient {
     /**
      * Updates the details of the Api VersionSet specified by its identifier.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param versionSetId Api Version Set identifier. Must be unique in the current API Management service instance.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
@@ -1109,7 +1060,7 @@ public final class ApiVersionSetsClientImpl implements ApiVersionSetsClient {
     /**
      * Updates the details of the Api VersionSet specified by its identifier.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param versionSetId Api Version Set identifier. Must be unique in the current API Management service instance.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
@@ -1128,44 +1079,13 @@ public final class ApiVersionSetsClientImpl implements ApiVersionSetsClient {
         String ifMatch,
         ApiVersionSetUpdateParameters parameters) {
         return updateWithResponseAsync(resourceGroupName, serviceName, versionSetId, ifMatch, parameters)
-            .flatMap(
-                (ApiVersionSetsUpdateResponse res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Updates the details of the Api VersionSet specified by its identifier.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param serviceName The name of the API Management service.
-     * @param versionSetId Api Version Set identifier. Must be unique in the current API Management service instance.
-     * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
-     * @param parameters Update parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return aPI Version Set Contract details.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ApiVersionSetContractInner update(
-        String resourceGroupName,
-        String serviceName,
-        String versionSetId,
-        String ifMatch,
-        ApiVersionSetUpdateParameters parameters) {
-        return updateAsync(resourceGroupName, serviceName, versionSetId, ifMatch, parameters).block();
-    }
-
-    /**
-     * Updates the details of the Api VersionSet specified by its identifier.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param versionSetId Api Version Set identifier. Must be unique in the current API Management service instance.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
@@ -1190,9 +1110,34 @@ public final class ApiVersionSetsClientImpl implements ApiVersionSetsClient {
     }
 
     /**
+     * Updates the details of the Api VersionSet specified by its identifier.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serviceName The name of the API Management service.
+     * @param versionSetId Api Version Set identifier. Must be unique in the current API Management service instance.
+     * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
+     *     request or it should be * for unconditional update.
+     * @param parameters Update parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return aPI Version Set Contract details.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ApiVersionSetContractInner update(
+        String resourceGroupName,
+        String serviceName,
+        String versionSetId,
+        String ifMatch,
+        ApiVersionSetUpdateParameters parameters) {
+        return updateWithResponse(resourceGroupName, serviceName, versionSetId, ifMatch, parameters, Context.NONE)
+            .getValue();
+    }
+
+    /**
      * Deletes specific Api Version Set.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param versionSetId Api Version Set identifier. Must be unique in the current API Management service instance.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
@@ -1251,7 +1196,7 @@ public final class ApiVersionSetsClientImpl implements ApiVersionSetsClient {
     /**
      * Deletes specific Api Version Set.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param versionSetId Api Version Set identifier. Must be unique in the current API Management service instance.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
@@ -1308,7 +1253,7 @@ public final class ApiVersionSetsClientImpl implements ApiVersionSetsClient {
     /**
      * Deletes specific Api Version Set.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param versionSetId Api Version Set identifier. Must be unique in the current API Management service instance.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
@@ -1321,30 +1266,13 @@ public final class ApiVersionSetsClientImpl implements ApiVersionSetsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String serviceName, String versionSetId, String ifMatch) {
         return deleteWithResponseAsync(resourceGroupName, serviceName, versionSetId, ifMatch)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
      * Deletes specific Api Version Set.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param serviceName The name of the API Management service.
-     * @param versionSetId Api Version Set identifier. Must be unique in the current API Management service instance.
-     * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String serviceName, String versionSetId, String ifMatch) {
-        deleteAsync(resourceGroupName, serviceName, versionSetId, ifMatch).block();
-    }
-
-    /**
-     * Deletes specific Api Version Set.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param versionSetId Api Version Set identifier. Must be unique in the current API Management service instance.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
@@ -1362,9 +1290,27 @@ public final class ApiVersionSetsClientImpl implements ApiVersionSetsClient {
     }
 
     /**
+     * Deletes specific Api Version Set.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serviceName The name of the API Management service.
+     * @param versionSetId Api Version Set identifier. Must be unique in the current API Management service instance.
+     * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
+     *     request or it should be * for unconditional update.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void delete(String resourceGroupName, String serviceName, String versionSetId, String ifMatch) {
+        deleteWithResponse(resourceGroupName, serviceName, versionSetId, ifMatch, Context.NONE);
+    }
+
+    /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1400,7 +1346,8 @@ public final class ApiVersionSetsClientImpl implements ApiVersionSetsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

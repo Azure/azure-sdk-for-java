@@ -20,6 +20,10 @@ public final class ContentItemContractInner extends ProxyResource {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, Object> properties;
 
+    /** Creates an instance of ContentItemContractInner class. */
+    public ContentItemContractInner() {
+    }
+
     /**
      * Get the properties property: Properties of the content item.
      *
