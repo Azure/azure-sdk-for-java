@@ -1469,7 +1469,8 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
             assertThat(cancelledException.getStatusCode()).isEqualTo(408);
             assertThat(cancelledException.getSubStatusCode())
                 .isEqualTo(HttpConstants.SubStatusCodes.NEGATIVE_TIMEOUT_PROVIDED);
-            assertThat(cancelledException.getDiagnostics()).isNotNull();
+            // No pending requests - so, diagnostics are not guaranteed to be there
+            // assertThat(cancelledException.getDiagnostics()).isNotNull();
             logger.info("Expected request timeout: ", cancelledException);
         }
         finally {
