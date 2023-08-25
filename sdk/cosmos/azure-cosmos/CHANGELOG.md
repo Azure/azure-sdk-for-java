@@ -7,7 +7,7 @@
 #### Breaking Changes
 
 #### Bugs Fixed
-* Fixed possible `NullPointerException` candidates - See [PR 36426](https://github.com/Azure/azure-sdk-for-java/pull/36426)
+* Fixed possible `NullPointerException` issue if health-check flow kicks in before RNTBD context negotiation for a given channel - See [PR 36397](https://github.com/Azure/azure-sdk-for-java/pull/36397). 
 
 #### Other Changes
 
