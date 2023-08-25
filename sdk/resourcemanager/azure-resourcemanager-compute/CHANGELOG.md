@@ -6,6 +6,10 @@
 
 - Supported updating delete options for OS disk, data disks and network interfaces attached to `VirtualMachine`.
 
+### Bugs Fixed
+
+- Fixed bug that create proximity placement group with `VirtualMachineScaleSet` fails. ([#36417](https://github.com/Azure/azure-sdk-for-java/issues/36417))
+
 ### Other Changes
 
 #### Dependency Updates
