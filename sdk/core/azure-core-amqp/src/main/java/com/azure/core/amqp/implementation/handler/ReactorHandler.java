@@ -41,6 +41,6 @@ public class ReactorHandler extends BaseHandler {
     public void onReactorFinal(Event e) {
         logger.atInfo()
             .addKeyValue("event", e)
-            .log ("reactor.onReactorFinal.");
+            .log("reactor.onReactorFinal.");
     }
 }
