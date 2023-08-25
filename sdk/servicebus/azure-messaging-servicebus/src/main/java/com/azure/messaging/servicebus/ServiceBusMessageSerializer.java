@@ -418,7 +418,7 @@ class ServiceBusMessageSerializer implements MessageSerializer {
 
             } else {
                 LOGGER.atWarning()
-                    .addKeyValue("actualType", body.getClass())
+                    .addKeyValue("actualType", body.getType())
                     .log("Message body is not correct. Not setting body contents.");
 
                 amqpMessageBody = AmqpMessageBody.fromData(EMPTY_BYTE_ARRAY);

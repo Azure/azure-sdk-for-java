@@ -74,7 +74,7 @@ final class FluxAutoComplete extends FluxOperator<ServiceBusMessageContext, Serv
         protected void hookOnSubscribe(Subscription subscription) {
             logger.atInfo()
                 .addKeyValue("subscription", subscription)
-                .log("Subscription received.", subscription);
+                .log("Subscription received. Subscribing downstream.");
             downstream.onSubscribe(this);
         }
 
