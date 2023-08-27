@@ -1,10 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.ai.openai.usage;
+package com.azure.ai.openai;
 
-import com.azure.ai.openai.OpenAIClient;
-import com.azure.ai.openai.OpenAIClientBuilder;
 import com.azure.ai.openai.models.AzureChatExtensionConfiguration;
 import com.azure.ai.openai.models.AzureChatExtensionType;
 import com.azure.ai.openai.models.AzureCognitiveSearchChatExtensionConfiguration;
@@ -23,7 +21,7 @@ import java.util.List;
 /**
  * Sample demonstrates the "Azure OpenAI on your data" feature. Prerequisites and guides
  * for this feature can be found at:
- * https://learn.microsoft.com/azure/ai-services/openai/use-your-data-quickstart?tabs=command-line&pivots=programming-language-studio
+ * <a href="https://learn.microsoft.com/azure/ai-services/openai/use-your-data-quickstart?tabs=command-line&pivots=programming-language-studio">Bring Your Own Data</a>
  */
 public class ChatCompletionsWithYourData {
     /**

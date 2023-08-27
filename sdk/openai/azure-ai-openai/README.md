@@ -35,7 +35,7 @@ If you want to see the full code for these snippets check out our [samples folde
 
 ### Adding the package to your product
 
-[//]: # ({x-version-update-start;com.azure:azure-ai-openai;dependency})
+[//]: # ({x-version-update-start;com.azure:azure-ai-openai;current})
 ```xml
 <dependency>
     <groupId>com.azure</groupId>
@@ -209,7 +209,9 @@ for (ChatChoice choice : chatCompletions.getChoices()) {
 ```
 For a complete sample example, see sample [Chat Completions][sample_get_chat_completions].
 
-For `function call` sample, see sample [function call][sample_chat_completion_function_call].
+For `function call` sample, see [function call][sample_chat_completion_function_call].
+
+For `Bring Your Own Data` sample, see [Bring Your Own Data][sample_chat_completion_function_call].
 
 Please refer to the service documentation for a conceptual discussion of [text completion][microsoft_docs_openai_completion].
 
@@ -333,6 +335,7 @@ For details on contributing to this repository, see the [contributing guide](htt
 [samples_folder]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai
 [samples_readme]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/openai/azure-ai-openai/src/samples
 [sample_chat_completion_function_call]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai/FunctionCallSample.java
+[sample_chat_completion_BYOD]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai/ChatCompletionsWithYourData.java
 [sample_get_chat_completions]: https://Dgithub.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai/usage/GetChatCompletionsSample.java
 [sample_get_chat_completions_streaming]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai/usage/GetChatCompletionsStreamSample.java
 [sample_get_completions]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai/usage/GetCompletionsSample.java
