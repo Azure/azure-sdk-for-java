@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.4 (Unreleased)
+## 1.0.0-beta.4 (2023-08-28)
 
 ### Features Added
 
@@ -10,9 +10,12 @@
 
 - Replaced usage of class `NonAzureOpenAIKeyCredential` by Azure Core class `KeyCredential`.
 
-### Bugs Fixed
-
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.41.0` to version `1.42.0`.
+- Upgraded `azure-core-http-netty` from `1.13.5` to version `1.13.6`.
 
 ## 1.0.0-beta.3 (2023-07-19)
 
