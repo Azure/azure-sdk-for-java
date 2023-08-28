@@ -115,9 +115,15 @@ public class FileShareTestHelper {
         FileOutputStream fos = new FileOutputStream(file);
 
         if (size > Constants.MB) {
-            for (int i = 0; i < size / Constants.MB; i++) {
-                int dataSize = Math.min(Constants.MB, size - i * Constants.MB);
-                fos.write(getRandomBuffer(dataSize));
+            int mbWrites = size / Constants.MB;
+            int remainder = size % Constants.MB;
+
+            for (int i = 0; i < mbWrites; i++) {
+                fos.write(getRandomBuffer(Constants.MB));
+            }
+
+            if (remainder > 0) {
+                fos.write(getRandomBuffer(remainder));
             }
         } else {
             fos.write(getRandomBuffer(size));
