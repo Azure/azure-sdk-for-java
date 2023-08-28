@@ -60,7 +60,7 @@ public class HttpUrlConnectionDeadlockTests {
 
     @Test
     public void attemptToDeadlock() {
-        HttpClient httpClient = new HttpUrlConnectionClientProvider.createInstance();
+        HttpClient httpClient = new HttpUrlConnectionClientProvider().createInstance();
 
         String endpoint = server.getHttpUri() + GET_ENDPOINT;
 
