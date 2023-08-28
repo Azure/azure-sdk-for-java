@@ -1,8 +1,8 @@
 steps:
 # Fail the build if any of the packages failed validation. Valid values are
-# "true" or "false"
+# "true", "" (validation did not run) or "false"
 - pwsh: |
-    if ('$(DocsMsPackagesAllValid)' -eq 'true') {
+    if ('$(DocsMsPackagesAllValid)' -in 'true', '') {
       Write-Host "All packages passed validation."
     } else {
       Write-Error "Some packages failed validation."
