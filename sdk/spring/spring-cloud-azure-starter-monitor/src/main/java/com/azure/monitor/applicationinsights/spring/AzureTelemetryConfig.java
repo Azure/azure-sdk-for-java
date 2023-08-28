@@ -6,18 +6,14 @@ package com.azure.monitor.applicationinsights.spring;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.monitor.opentelemetry.exporter.AzureMonitorExporterBuilder;
-import io.opentelemetry.api.logs.GlobalLoggerProvider;
-import io.opentelemetry.sdk.logs.SdkLoggerProvider;
-import io.opentelemetry.sdk.logs.export.BatchLogRecordProcessor;
 import io.opentelemetry.sdk.logs.export.LogRecordExporter;
 import io.opentelemetry.sdk.metrics.export.MetricExporter;
 import io.opentelemetry.sdk.trace.export.SpanExporter;
+import java.util.Optional;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
-import java.util.Optional;
 
 /**
  * Config for Azure Telemetry
@@ -109,19 +105,8 @@ public class AzureTelemetryConfig {
         if (!azureMonitorExporterBuilderOpt.isPresent()) {
             return null;
         }
-        LogRecordExporter logRecordExporter = azureMonitorExporterBuilderOpt.get().buildLogRecordExporter();
-        initOTelLogger(logRecordExporter);
-        return logRecordExporter;
+        return azureMonitorExporterBuilderOpt.get().buildLogRecordExporter();
     }
 
-    private void initOTelLogger(LogRecordExporter logRecordExporter) {
-        if (azureMonitorExporterBuilderOpt.isPresent()) {
-            BatchLogRecordProcessor batchLogRecordProcessor = BatchLogRecordProcessor.builder(logRecordExporter).build();
-            SdkLoggerProvider loggerProvider =
-                SdkLoggerProvider.builder()
-                    .addLogRecordProcessor(batchLogRecordProcessor)
-                    .build();
-            GlobalLoggerProvider.set(loggerProvider);
-        }
-    }
+
 }
