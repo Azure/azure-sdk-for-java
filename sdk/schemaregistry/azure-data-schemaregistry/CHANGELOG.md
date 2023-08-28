@@ -4,6 +4,8 @@
 
 ### Features Added
 
+- Add support for protobuf schema format.
+
 ### Breaking Changes
 
 ### Bugs Fixed
