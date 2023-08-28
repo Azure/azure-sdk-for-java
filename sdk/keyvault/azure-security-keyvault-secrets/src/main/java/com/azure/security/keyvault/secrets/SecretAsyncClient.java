@@ -249,6 +249,7 @@ public final class SecretAsyncClient {
      *
      * @param name The name of the secret.
      * @return A {@link Mono} containing the requested {@link KeyVaultSecret secret}.
+     * @throws NullPointerException if {@code name} is {@code null}.
      * @throws ResourceNotFoundException when a secret with {@code name} doesn't exist in the key vault.
      * @throws HttpResponseException if {@code name} is empty string.
      */
@@ -283,9 +284,10 @@ public final class SecretAsyncClient {
      * call is equivalent to calling {@link #getSecret(String)}, with the latest version being retrieved.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the
      * requested {@link KeyVaultSecret secret}.
+     * @throws NullPointerException if {@code name} is {@code null}.
      * @throws ResourceNotFoundException when a secret with {@code name} and {@code version} doesn't exist in the key
      * vault.
-     * @throws HttpResponseException if {@code name}  name} or {@code version} is empty string.
+     * @throws HttpResponseException if {@code name} and {@code version} is empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<KeyVaultSecret> getSecret(String name, String version) {
@@ -317,12 +319,17 @@ public final class SecretAsyncClient {
      * to calling {@link #getSecret(String)}, with the latest version being retrieved.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the
      * requested {@link KeyVaultSecret secret}.
+     * @throws NullPointerException if {@code name} is {@code null}.
      * @throws ResourceNotFoundException when a secret with {@code name} and {@code version} doesn't exist in the key
      * vault.
-     * @throws HttpResponseException if {@code name}  name} or {@code version} is empty string.
+     * @throws HttpResponseException if {@code name} and {@code version} is empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<KeyVaultSecret>> getSecretWithResponse(String name, String version) {
+        if (name == null) {
+            return monoError(LOGGER, new NullPointerException("name cannot be null."));
+        }
+
         try {
             return implClient.getSecretWithResponseAsync(vaultUrl, name, version)
                 .onErrorMap(KeyVaultErrorException.class, SecretAsyncClient::mapGetSecretException)
@@ -470,6 +477,7 @@ public final class SecretAsyncClient {
             .map(SecretsModelsUtils::createDeletedSecret);
     }
 
+    // See other map*Exception methods for explanation of why this is done.
     static HttpResponseException mapDeleteSecretException(HttpResponseException ex) {
         return (ex.getResponse().getStatusCode() == 404)
             ? new ResourceNotFoundException(ex.getMessage(), ex.getResponse(), ex.getValue())
@@ -668,6 +676,7 @@ public final class SecretAsyncClient {
             .map(SecretsModelsUtils::createKeyVaultSecret);
     }
 
+    // See other map*Exception methods for explanation of why this is done.
     static HttpResponseException mapRecoverDeletedSecretException(HttpResponseException ex) {
         return (ex.getResponse().getStatusCode() == 404)
             ? new ResourceNotFoundException(ex.getMessage(), ex.getResponse(), ex.getValue())
