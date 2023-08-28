@@ -56,30 +56,29 @@ public class AppConfigurationApplicationSettingPropertySourceSnapshotTest {
 
     private static final String SNAPSHOT_NAME = "snapshot_test";
 
-    private static final ConfigurationSetting ITEM_1 = createItem(KEY_FILTER, TEST_KEY_1, TEST_VALUE_1, TEST_LABEL_1,
-        EMPTY_CONTENT_TYPE);
+    private static final ConfigurationSetting ITEM_1 =
+        createItem(KEY_FILTER, TEST_KEY_1, TEST_VALUE_1, TEST_LABEL_1, EMPTY_CONTENT_TYPE);
 
-    private static final ConfigurationSetting ITEM_2 = createItem(KEY_FILTER, TEST_KEY_2, TEST_VALUE_2, TEST_LABEL_2,
-        EMPTY_CONTENT_TYPE);
+    private static final ConfigurationSetting ITEM_2 =
+        createItem(KEY_FILTER, TEST_KEY_2, TEST_VALUE_2, TEST_LABEL_2, EMPTY_CONTENT_TYPE);
 
-    private static final ConfigurationSetting ITEM_3 = createItem(KEY_FILTER, TEST_KEY_3, TEST_VALUE_3, TEST_LABEL_3,
-        EMPTY_CONTENT_TYPE);
+    private static final ConfigurationSetting ITEM_3 =
+        createItem(KEY_FILTER, TEST_KEY_3, TEST_VALUE_3, TEST_LABEL_3, EMPTY_CONTENT_TYPE);
 
-    private static final ConfigurationSetting ITEM_4 = createItem("/bar/", "test_key_4", "test_value_4", "test_label_4",
-        EMPTY_CONTENT_TYPE);
+    private static final ConfigurationSetting ITEM_4 =
+        createItem("/bar/", "test_key_4", "test_value_4", "test_label_4", EMPTY_CONTENT_TYPE);
 
     private static final FeatureFlagConfigurationSetting FEATURE_ITEM = createItemFeatureFlag(".appconfig.featureflag/",
-        "Alpha",
-        FEATURE_VALUE, FEATURE_LABEL, FEATURE_FLAG_CONTENT_TYPE);
+        "Alpha", FEATURE_VALUE, FEATURE_LABEL, FEATURE_FLAG_CONTENT_TYPE);
 
-    private static final ConfigurationSetting ITEM_NULL = createItem(KEY_FILTER, TEST_KEY_3, TEST_VALUE_3, TEST_LABEL_3,
-        null);
+    private static final ConfigurationSetting ITEM_NULL =
+        createItem(KEY_FILTER, TEST_KEY_3, TEST_VALUE_3, TEST_LABEL_3, null);
 
     private static final ObjectMapper MAPPER = new ObjectMapper();
 
     private List<ConfigurationSetting> testItems = new ArrayList<>();
 
-    private AppConfigurationApplicationSettingPropertySource propertySource;
+    private AppConfigurationSnapshotPropertySource propertySource;
 
     @Mock
     private AppConfigurationReplicaClient clientMock;
@@ -110,8 +109,8 @@ public class AppConfigurationApplicationSettingPropertySourceSnapshotTest {
 
         TRIM.add(KEY_FILTER);
 
-        propertySource = new AppConfigurationApplicationSettingPropertySource(TEST_STORE_NAME, clientMock,
-            keyVaultClientFactoryMock, null, null, SNAPSHOT_NAME, 60);
+        propertySource = new AppConfigurationSnapshotPropertySource(TEST_STORE_NAME, clientMock,
+            keyVaultClientFactoryMock, SNAPSHOT_NAME, 60);
     }
 
     @AfterEach
@@ -124,19 +123,19 @@ public class AppConfigurationApplicationSettingPropertySourceSnapshotTest {
         when(configurationListMock.iterator()).thenReturn(testItems.iterator());
         when(clientMock.listSettingSnapshot(Mockito.any())).thenReturn(configurationListMock)
             .thenReturn(configurationListMock);
-        when(clientMock.getTracingInfo()).thenReturn(new TracingInfo(false, false, 0, Configuration.getGlobalConfiguration()));
+        when(clientMock.getTracingInfo())
+            .thenReturn(new TracingInfo(false, false, 0, Configuration.getGlobalConfiguration()));
 
         propertySource.initProperties(TRIM);
 
         String[] keyNames = propertySource.getPropertyNames();
-        String[] expectedKeyNames = testItems.stream()
-            .map(t -> {
-                if (t.getKey().startsWith(".appconfig.featureflag/")) {
-                    return t.getKey().replace(".appconfig.featureflag/", "feature-management.");
-                }
-                return t.getKey().replaceFirst("^" + KEY_FILTER, "").replace("/", ".");
-            
-            }).toArray(String[]::new);
+        String[] expectedKeyNames = testItems.stream().map(t -> {
+            if (t.getKey().startsWith(".appconfig.featureflag/")) {
+                return t.getKey().replace(".appconfig.featureflag/", "feature-management.");
+            }
+            return t.getKey().replaceFirst("^" + KEY_FILTER, "").replace("/", ".");
+
+        }).toArray(String[]::new);
 
         assertThat(keyNames).containsExactlyInAnyOrder(expectedKeyNames);
 
@@ -148,12 +147,11 @@ public class AppConfigurationApplicationSettingPropertySourceSnapshotTest {
 
     @Test
     public void testPropertyNameSlashConvertedToDots() throws IOException {
-        ConfigurationSetting slashedProp = createItem(KEY_FILTER, TEST_SLASH_KEY, TEST_SLASH_VALUE, null,
-            EMPTY_CONTENT_TYPE);
+        ConfigurationSetting slashedProp =
+            createItem(KEY_FILTER, TEST_SLASH_KEY, TEST_SLASH_VALUE, null, EMPTY_CONTENT_TYPE);
         List<ConfigurationSetting> settings = new ArrayList<>();
         settings.add(slashedProp);
-        when(configurationListMock.iterator()).thenReturn(settings.iterator())
-            .thenReturn(Collections.emptyIterator());
+        when(configurationListMock.iterator()).thenReturn(settings.iterator()).thenReturn(Collections.emptyIterator());
         when(clientMock.listSettingSnapshot(Mockito.any())).thenReturn(configurationListMock)
             .thenReturn(configurationListMock);
 
@@ -172,15 +170,14 @@ public class AppConfigurationApplicationSettingPropertySourceSnapshotTest {
     public void initNullValidContentTypeTest() throws IOException {
         List<ConfigurationSetting> items = new ArrayList<>();
         items.add(ITEM_NULL);
-        when(configurationListMock.iterator()).thenReturn(items.iterator())
-            .thenReturn(Collections.emptyIterator());
+        when(configurationListMock.iterator()).thenReturn(items.iterator()).thenReturn(Collections.emptyIterator());
         when(clientMock.listSettingSnapshot(Mockito.any())).thenReturn(configurationListMock);
 
         propertySource.initProperties(TRIM);
 
         String[] keyNames = propertySource.getPropertyNames();
-        String[] expectedKeyNames = items.stream()
-            .map(t -> t.getKey().substring(KEY_FILTER.length())).toArray(String[]::new);
+        String[] expectedKeyNames =
+            items.stream().map(t -> t.getKey().substring(KEY_FILTER.length())).toArray(String[]::new);
 
         assertThat(keyNames).containsExactlyInAnyOrder(expectedKeyNames);
     }

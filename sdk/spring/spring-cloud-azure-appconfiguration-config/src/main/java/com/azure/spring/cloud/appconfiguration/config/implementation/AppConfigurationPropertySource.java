@@ -6,7 +6,9 @@ import static com.azure.spring.cloud.appconfiguration.config.implementation.AppC
 import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.DEFAULT_REQUIREMENT_TYPE;
 import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.DEFAULT_ROLLOUT_PERCENTAGE;
 import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.DEFAULT_ROLLOUT_PERCENTAGE_CAPS;
+import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.FEATURE_FLAG_CONTENT_TYPE;
 import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.FEATURE_FLAG_PREFIX;
+import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.FEATURE_MANAGEMENT_KEY;
 import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.GROUPS;
 import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.GROUPS_CAPS;
 import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.REQUIREMENT_TYPE_SERVICE;
@@ -16,19 +18,29 @@ import static com.azure.spring.cloud.appconfiguration.config.implementation.AppC
 import static java.util.Collections.emptyList;
 import static java.util.stream.Collectors.toMap;
 
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.stream.IntStream;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.env.EnumerablePropertySource;
+import org.springframework.util.ReflectionUtils;
+import org.springframework.util.StringUtils;
 
 import com.azure.data.appconfiguration.ConfigurationClient;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.FeatureFlagConfigurationSetting;
 import com.azure.data.appconfiguration.models.FeatureFlagFilter;
+import com.azure.data.appconfiguration.models.SecretReferenceConfigurationSetting;
+import com.azure.security.keyvault.secrets.models.KeyVaultSecret;
 import com.azure.spring.cloud.appconfiguration.config.implementation.feature.entity.Feature;
 import com.azure.spring.cloud.appconfiguration.config.implementation.http.policy.TracingInfo;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -42,13 +54,16 @@ import com.fasterxml.jackson.databind.json.JsonMapper;
  * Azure App Configuration PropertySource unique per Store Label(Profile) combo.
  *
  * <p>
- * i.e. If connecting to 2 stores and have 2 labels set 4 AppConfigurationPropertySources need to be created.
+ * i.e. If connecting to 2 stores and have 2 labels set 4 AppConfigurationPropertySources need to be
+ * created.
  * </p>
  */
 abstract class AppConfigurationPropertySource extends EnumerablePropertySource<ConfigurationClient> {
 
-    private static final ObjectMapper CASE_INSENSITIVE_MAPPER = JsonMapper.builder()
-        .configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES, true).build();
+    private static final Logger LOGGER = LoggerFactory.getLogger(AppConfigurationPropertySource.class);
+
+    private static final ObjectMapper CASE_INSENSITIVE_MAPPER =
+        JsonMapper.builder().configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES, true).build();
 
     protected final Map<String, Object> properties = new LinkedHashMap<>();
 
@@ -56,11 +71,14 @@ abstract class AppConfigurationPropertySource extends EnumerablePropertySource<C
 
     protected final AppConfigurationReplicaClient replicaClient;
 
-    AppConfigurationPropertySource(String name, AppConfigurationReplicaClient replicaClient) {
+    private int maxRetryTime;
+
+    AppConfigurationPropertySource(String name, AppConfigurationReplicaClient replicaClient, int maxRetryTime) {
         // The context alone does not uniquely define a PropertySource, append storeName
         // and label to uniquely define a PropertySource
         super(name);
         this.replicaClient = replicaClient;
+        this.maxRetryTime = maxRetryTime;
     }
 
     @Override
@@ -165,6 +183,120 @@ abstract class AppConfigurationPropertySource extends EnumerablePropertySource<C
         }
     }
 
+    protected void processConfigurationSettings(List<ConfigurationSetting> settings, String keyFilter,
+        List<String> trimStrings, AppConfigurationKeyVaultClientFactory keyVaultClientFactory)
+        throws JsonProcessingException {
+        for (ConfigurationSetting setting : settings) {
+            if (trimStrings == null && StringUtils.hasText(keyFilter)) {
+                trimStrings = new ArrayList<>();
+                trimStrings.add(keyFilter.substring(0, keyFilter.length() - 1));
+            }
+            String key = trimKey(setting.getKey(), trimStrings);
+
+            if (setting instanceof SecretReferenceConfigurationSetting) {
+                String entry = getKeyVaultEntry(keyVaultClientFactory, (SecretReferenceConfigurationSetting) setting);
+
+                // Null in the case of failFast is false, will just skip entry.
+                if (entry != null) {
+                    properties.put(key, entry);
+                }
+            } else if (StringUtils.hasText(setting.getContentType())
+                && JsonConfigurationParser.isJsonContentType(setting.getContentType())) {
+                Map<String, Object> jsonSettings = JsonConfigurationParser.parseJsonSetting(setting);
+                for (Entry<String, Object> jsonSetting : jsonSettings.entrySet()) {
+                    key = trimKey(jsonSetting.getKey(), trimStrings);
+                    properties.put(key, jsonSetting.getValue());
+                }
+            } else {
+                properties.put(key, setting.getValue());
+            }
+        }
+    }
+
+    protected void processConfigurationSettingsSnapshot(List<ConfigurationSetting> settings, List<String> trimStrings,
+        AppConfigurationKeyVaultClientFactory keyVaultClientFactory) throws JsonProcessingException {
+        TracingInfo tracing = replicaClient.getTracingInfo();
+        for (ConfigurationSetting setting : settings) {
+            String key = trimKey(setting.getKey(), trimStrings);
+
+            if (setting instanceof SecretReferenceConfigurationSetting) {
+                String entry = getKeyVaultEntry(keyVaultClientFactory, (SecretReferenceConfigurationSetting) setting);
+
+                // Null in the case of failFast is false, will just skip entry.
+                if (entry != null) {
+                    properties.put(key, entry);
+                }
+            } else if (setting instanceof FeatureFlagConfigurationSetting
+                && FEATURE_FLAG_CONTENT_TYPE.equals(setting.getContentType())) {
+                // Feature Flags are only part of this if they come from a snapshot
+                featureConfigurationSettings.add(setting);
+                FeatureFlagConfigurationSetting featureFlag = (FeatureFlagConfigurationSetting) setting;
+
+                String configName =
+                    FEATURE_MANAGEMENT_KEY + setting.getKey().trim().substring(FEATURE_FLAG_PREFIX.length());
+
+                updateTelemetry(featureFlag, tracing);
+
+                properties.put(configName, createFeature(featureFlag));
+            } else if (StringUtils.hasText(setting.getContentType())
+                && JsonConfigurationParser.isJsonContentType(setting.getContentType())) {
+                Map<String, Object> jsonSettings = JsonConfigurationParser.parseJsonSetting(setting);
+                for (Entry<String, Object> jsonSetting : jsonSettings.entrySet()) {
+                    key = trimKey(jsonSetting.getKey(), trimStrings);
+                    properties.put(key, jsonSetting.getValue());
+                }
+            } else {
+                properties.put(key, setting.getValue());
+            }
+        }
+    }
+
+    protected String trimKey(String key, List<String> trimStrings) {
+        key = key.trim();
+        if (trimStrings != null) {
+            for (String trim : trimStrings) {
+                if (key.startsWith(trim)) {
+                    return key.replaceFirst("^" + trim, "").replace('/', '.');
+                }
+            }
+        }
+        return key.replace("/", ".");
+    }
+
+    /**
+     * Given a Setting's Key Vault Reference stored in the Settings value, it will get its entry in Key
+     * Vault.
+     *
+     * @param secretReference {"uri": "&lt;your-vault-url&gt;/secret/&lt;secret&gt;/&lt;version&gt;"}
+     * @return Key Vault Secret Value
+     */
+    protected String getKeyVaultEntry(AppConfigurationKeyVaultClientFactory keyVaultClientFactory,
+        SecretReferenceConfigurationSetting secretReference) {
+        String secretValue = null;
+        try {
+            URI uri = null;
+            KeyVaultSecret secret = null;
+
+            // Parsing Key Vault Reference for URI
+            try {
+                uri = new URI(secretReference.getSecretId());
+                secret = keyVaultClientFactory.getClient("https://" + uri.getHost()).getSecret(uri, maxRetryTime);
+            } catch (URISyntaxException e) {
+                LOGGER.error("Error Processing Key Vault Entry URI.");
+                ReflectionUtils.rethrowRuntimeException(e);
+            }
+
+            if (secret == null) {
+                throw new IOException("No Key Vault Secret found for Reference.");
+            }
+            secretValue = secret.getValue();
+        } catch (RuntimeException | IOException e) {
+            LOGGER.error("Error Retrieving Key Vault Entry");
+            ReflectionUtils.rethrowRuntimeException(e);
+        }
+        return secretValue;
+    }
+
     private String getFeatureSimpleName(ConfigurationSetting setting) {
         return setting.getKey().trim().substring(FEATURE_FLAG_PREFIX.length());
     }
@@ -179,9 +311,8 @@ abstract class AppConfigurationPropertySource extends EnumerablePropertySource<C
     }
 
     private static List<Object> convertToListOrEmptyList(Map<String, Object> parameters, String key) {
-        List<Object> listObjects = CASE_INSENSITIVE_MAPPER.convertValue(parameters.get(key),
-            new TypeReference<List<Object>>() {
-            });
+        List<Object> listObjects =
+            CASE_INSENSITIVE_MAPPER.convertValue(parameters.get(key), new TypeReference<List<Object>>() {});
         return listObjects == null ? emptyList() : listObjects;
     }
 }
