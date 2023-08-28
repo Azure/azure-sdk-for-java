@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.apimanagement.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Backend Delete. */
 public final class BackendDeleteSamples {
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementDeleteBackend.json
+     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementDeleteBackend.json
      */
     /**
      * Sample code: ApiManagementDeleteBackend.
@@ -18,6 +16,8 @@ public final class BackendDeleteSamples {
      */
     public static void apiManagementDeleteBackend(
         com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
-        manager.backends().deleteWithResponse("rg1", "apimService1", "sfbackend", "*", Context.NONE);
+        manager
+            .backends()
+            .deleteWithResponse("rg1", "apimService1", "sfbackend", "*", com.azure.core.util.Context.NONE);
     }
 }

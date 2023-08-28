@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.apimanagement.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for GatewayApi Delete. */
 public final class GatewayApiDeleteSamples {
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementDeleteGatewayApi.json
+     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementDeleteGatewayApi.json
      */
     /**
      * Sample code: ApiManagementDeleteGatewayApi.
@@ -18,6 +16,8 @@ public final class GatewayApiDeleteSamples {
      */
     public static void apiManagementDeleteGatewayApi(
         com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
-        manager.gatewayApis().deleteWithResponse("rg1", "apimService1", "gw1", "echo-api", Context.NONE);
+        manager
+            .gatewayApis()
+            .deleteWithResponse("rg1", "apimService1", "gw1", "echo-api", com.azure.core.util.Context.NONE);
     }
 }

@@ -65,6 +65,13 @@ public interface SchemaContract {
     Object components();
 
     /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
+
+    /**
      * Gets the inner com.azure.resourcemanager.apimanagement.fluent.models.SchemaContractInner object.
      *
      * @return the inner object.
@@ -75,17 +82,19 @@ public interface SchemaContract {
     interface Definition
         extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
+
     /** The SchemaContract definition stages. */
     interface DefinitionStages {
         /** The first stage of the SchemaContract definition. */
         interface Blank extends WithParentResource {
         }
+
         /** The stage of the SchemaContract definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
              * Specifies resourceGroupName, serviceName, apiId.
              *
-             * @param resourceGroupName The name of the resource group.
+             * @param resourceGroupName The name of the resource group. The name is case insensitive.
              * @param serviceName The name of the API Management service.
              * @param apiId API revision identifier. Must be unique in the current API Management service instance.
              *     Non-current revision has ;rev=n as a suffix where n is the revision number.
@@ -93,6 +102,7 @@ public interface SchemaContract {
              */
             WithCreate withExistingApi(String resourceGroupName, String serviceName, String apiId);
         }
+
         /**
          * The stage of the SchemaContract definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
@@ -118,6 +128,7 @@ public interface SchemaContract {
              */
             SchemaContract create(Context context);
         }
+
         /** The stage of the SchemaContract definition allowing to specify contentType. */
         interface WithContentType {
             /**
@@ -138,6 +149,7 @@ public interface SchemaContract {
              */
             WithCreate withContentType(String contentType);
         }
+
         /** The stage of the SchemaContract definition allowing to specify value. */
         interface WithValue {
             /**
@@ -150,6 +162,7 @@ public interface SchemaContract {
              */
             WithCreate withValue(String value);
         }
+
         /** The stage of the SchemaContract definition allowing to specify definitions. */
         interface WithDefinitions {
             /**
@@ -161,6 +174,7 @@ public interface SchemaContract {
              */
             WithCreate withDefinitions(Object definitions);
         }
+
         /** The stage of the SchemaContract definition allowing to specify components. */
         interface WithComponents {
             /**
@@ -172,6 +186,7 @@ public interface SchemaContract {
              */
             WithCreate withComponents(Object components);
         }
+
         /** The stage of the SchemaContract definition allowing to specify ifMatch. */
         interface WithIfMatch {
             /**
@@ -185,6 +200,7 @@ public interface SchemaContract {
             WithCreate withIfMatch(String ifMatch);
         }
     }
+
     /**
      * Begins update for the SchemaContract resource.
      *
@@ -214,6 +230,7 @@ public interface SchemaContract {
          */
         SchemaContract apply(Context context);
     }
+
     /** The SchemaContract update stages. */
     interface UpdateStages {
         /** The stage of the SchemaContract update allowing to specify contentType. */
@@ -236,6 +253,7 @@ public interface SchemaContract {
              */
             Update withContentType(String contentType);
         }
+
         /** The stage of the SchemaContract update allowing to specify value. */
         interface WithValue {
             /**
@@ -248,6 +266,7 @@ public interface SchemaContract {
              */
             Update withValue(String value);
         }
+
         /** The stage of the SchemaContract update allowing to specify definitions. */
         interface WithDefinitions {
             /**
@@ -259,6 +278,7 @@ public interface SchemaContract {
              */
             Update withDefinitions(Object definitions);
         }
+
         /** The stage of the SchemaContract update allowing to specify components. */
         interface WithComponents {
             /**
@@ -270,6 +290,7 @@ public interface SchemaContract {
              */
             Update withComponents(Object components);
         }
+
         /** The stage of the SchemaContract update allowing to specify ifMatch. */
         interface WithIfMatch {
             /**
@@ -283,6 +304,7 @@ public interface SchemaContract {
             Update withIfMatch(String ifMatch);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

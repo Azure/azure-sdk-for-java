@@ -11,18 +11,22 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class BackendTlsProperties {
     /*
-     * Flag indicating whether SSL certificate chain validation should be done
-     * when using self-signed certificates for this backend host.
+     * Flag indicating whether SSL certificate chain validation should be done when using self-signed certificates for
+     * this backend host.
      */
     @JsonProperty(value = "validateCertificateChain")
     private Boolean validateCertificateChain;
 
     /*
-     * Flag indicating whether SSL certificate name validation should be done
-     * when using self-signed certificates for this backend host.
+     * Flag indicating whether SSL certificate name validation should be done when using self-signed certificates for
+     * this backend host.
      */
     @JsonProperty(value = "validateCertificateName")
     private Boolean validateCertificateName;
+
+    /** Creates an instance of BackendTlsProperties class. */
+    public BackendTlsProperties() {
+    }
 
     /**
      * Get the validateCertificateChain property: Flag indicating whether SSL certificate chain validation should be

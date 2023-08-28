@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.apimanagement.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for GatewayApi GetEntityTag. */
 public final class GatewayApiGetEntityTagSamples {
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementHeadGatewayApi.json
+     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementHeadGatewayApi.json
      */
     /**
      * Sample code: ApiManagementHeadGatewayApi.
@@ -18,6 +16,8 @@ public final class GatewayApiGetEntityTagSamples {
      */
     public static void apiManagementHeadGatewayApi(
         com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
-        manager.gatewayApis().getEntityTagWithResponse("rg1", "apimService1", "gw1", "api1", Context.NONE);
+        manager
+            .gatewayApis()
+            .getEntityTagWithResponse("rg1", "apimService1", "gw1", "api1", com.azure.core.util.Context.NONE);
     }
 }

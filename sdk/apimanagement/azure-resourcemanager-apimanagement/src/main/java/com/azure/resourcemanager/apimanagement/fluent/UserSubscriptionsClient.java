@@ -16,7 +16,7 @@ public interface UserSubscriptionsClient {
     /**
      * Lists the collection of subscriptions of the specified user.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param userId User identifier. Must be unique in the current API Management service instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -30,7 +30,7 @@ public interface UserSubscriptionsClient {
     /**
      * Lists the collection of subscriptions of the specified user.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param userId User identifier. Must be unique in the current API Management service instance.
      * @param filter | Field | Usage | Supported operators | Supported functions
@@ -63,23 +63,7 @@ public interface UserSubscriptionsClient {
     /**
      * Gets the specified Subscription entity associated with a particular user.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param serviceName The name of the API Management service.
-     * @param userId User identifier. Must be unique in the current API Management service instance.
-     * @param sid Subscription entity Identifier. The entity represents the association between a user and a product in
-     *     API Management.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified Subscription entity associated with a particular user.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SubscriptionContractInner get(String resourceGroupName, String serviceName, String userId, String sid);
-
-    /**
-     * Gets the specified Subscription entity associated with a particular user.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param userId User identifier. Must be unique in the current API Management service instance.
      * @param sid Subscription entity Identifier. The entity represents the association between a user and a product in
@@ -93,4 +77,20 @@ public interface UserSubscriptionsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     UserSubscriptionsGetResponse getWithResponse(
         String resourceGroupName, String serviceName, String userId, String sid, Context context);
+
+    /**
+     * Gets the specified Subscription entity associated with a particular user.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serviceName The name of the API Management service.
+     * @param userId User identifier. Must be unique in the current API Management service instance.
+     * @param sid Subscription entity Identifier. The entity represents the association between a user and a product in
+     *     API Management.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified Subscription entity associated with a particular user.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SubscriptionContractInner get(String resourceGroupName, String serviceName, String userId, String sid);
 }

@@ -34,6 +34,10 @@ public final class ParameterExampleContract {
     @JsonProperty(value = "externalValue")
     private String externalValue;
 
+    /** Creates an instance of ParameterExampleContract class. */
+    public ParameterExampleContract() {
+    }
+
     /**
      * Get the summary property: Short description for the example.
      *
