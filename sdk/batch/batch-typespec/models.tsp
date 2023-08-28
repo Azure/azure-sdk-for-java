@@ -5637,3 +5637,16 @@ model NodeVMExtensionList {
   @nextLink
   `odata.nextLink`?: string;
 }
+
+@doc("Options for GetFileFromBatchNode API.")
+model GetFileFromBatchNodeOptions {
+  ...BatchNodeFileClientPathParameters,
+  ...BatchModifiedSinceHeaders,
+
+  @doc("""
+  The byte range to be retrieved. The default is to retrieve the entire file. The
+  format is bytes=startRange-endRange.
+  """)
+  @header
+  `ocp-range`?: string;
+}

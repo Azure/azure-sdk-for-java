@@ -4,7 +4,7 @@
   "description": "TypeSpec project for emitting java SDK",
   "license": "MIT",
   "dependencies": {
-    "@azure-tools/typespec-java": "latest",
+    "@azure-tools/typespec-java": "../../../../autorest.java/typespec-extension/azure-tools-typespec-java-0.8.10.tgz",
     "@typespec/openapi": "latest",
     "@azure-tools/typespec-autorest": "latest"
   },

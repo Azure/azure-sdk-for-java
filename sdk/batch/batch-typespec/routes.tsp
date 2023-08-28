@@ -2376,15 +2376,7 @@ then the directory must be empty or deletion will fail.
   @route("/pools/{poolId}/nodes/{nodeId}/files/{filePath}")
   @get
   GetFileFromBatchNode is RpcOperation<
-    BatchNodeFileClientPathParameters &
-      BatchModifiedSinceHeaders & {
-        @doc("""
-The byte range to be retrieved. The default is to retrieve the entire file. The
-format is bytes=startRange-endRange.
-""")
-        @header
-        `ocp-range`?: string;
-      },
+    GetFileFromBatchNodeOptions,
     BatchResponseHeaders &
       FileResponse & {
         @body
@@ -2647,7 +2639,7 @@ applications can be returned.
   @query
   @minValue(1)
   @maxValue(1000)
-  
+  // @projectedName("java", "maxPageSize")
   maxresults?: int32 = 1000;
 
   #suppress "@azure-tools/typespec-azure-core/casing-style" "The names of Model types must use camelCase"

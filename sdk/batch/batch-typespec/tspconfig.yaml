@@ -12,6 +12,8 @@ options:
     namer: false
     generate-samples: false
     generate-tests: false
+    dev-options:
+      support-quantum-model: true
   "@azure-tools/typespec-autorest":
     "output-file": "BatchService.json"
 
