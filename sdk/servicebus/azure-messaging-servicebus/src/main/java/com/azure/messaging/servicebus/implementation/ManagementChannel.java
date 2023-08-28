@@ -429,7 +429,7 @@ public class ManagementChannel implements ServiceBusManagementNode {
                 .addKeyValue(ServiceBusConstants.LOCK_TOKEN_KEY, lockToken)
                 .addKeyValue(DISPOSITION_STATUS_KEY, dispositionStatus)
                 .addKeyValue(SESSION_ID_KEY, sessionId)
-                .log("Scheduling disposition.");
+                .log("Scheduling disposition (via management node).");
 
             final Message message = createManagementMessage(OPERATION_UPDATE_DISPOSITION, associatedLinkName);
 
