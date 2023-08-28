@@ -8,7 +8,12 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for VirtualNetworkType. */
+/**
+ * The type of VPN in which API Management service needs to be configured in. None (Default Value) means the API
+ * Management service is not part of any Virtual Network, External means the API Management deployment is set up inside
+ * a Virtual Network having an Internet Facing Endpoint, and Internal means that API Management deployment is setup
+ * inside a Virtual Network having an Intranet Facing Endpoint only.
+ */
 public final class VirtualNetworkType extends ExpandableStringEnum<VirtualNetworkType> {
     /** Static value None for VirtualNetworkType. */
     public static final VirtualNetworkType NONE = fromString("None");
@@ -18,6 +23,15 @@ public final class VirtualNetworkType extends ExpandableStringEnum<VirtualNetwor
 
     /** Static value Internal for VirtualNetworkType. */
     public static final VirtualNetworkType INTERNAL = fromString("Internal");
+
+    /**
+     * Creates a new instance of VirtualNetworkType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public VirtualNetworkType() {
+    }
 
     /**
      * Creates or finds a VirtualNetworkType from its string representation.
@@ -30,7 +44,11 @@ public final class VirtualNetworkType extends ExpandableStringEnum<VirtualNetwor
         return fromString(name, VirtualNetworkType.class);
     }
 
-    /** @return known VirtualNetworkType values. */
+    /**
+     * Gets known VirtualNetworkType values.
+     *
+     * @return known VirtualNetworkType values.
+     */
     public static Collection<VirtualNetworkType> values() {
         return values(VirtualNetworkType.class);
     }

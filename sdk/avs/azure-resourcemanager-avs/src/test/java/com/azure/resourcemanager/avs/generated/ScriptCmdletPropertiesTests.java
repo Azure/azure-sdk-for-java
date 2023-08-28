@@ -13,7 +13,7 @@ public final class ScriptCmdletPropertiesTests {
         ScriptCmdletProperties model =
             BinaryData
                 .fromString(
-                    "{\"description\":\"cjabudurgkakmo\",\"timeout\":\"hjjklff\",\"parameters\":[{\"type\":\"Bool\",\"name\":\"lgzrfzeeyeb\",\"description\":\"ikayuhqlbjbsybb\",\"visibility\":\"Visible\",\"optional\":\"Optional\"}]}")
+                    "{\"description\":\"kh\",\"timeout\":\"ygo\",\"parameters\":[{\"type\":\"String\",\"name\":\"qjbvleorfmlu\",\"description\":\"tqzfavyv\",\"visibility\":\"Hidden\",\"optional\":\"Optional\"},{\"type\":\"Credential\",\"name\":\"euayjkqabqgzsles\",\"description\":\"bhernntiew\",\"visibility\":\"Visible\",\"optional\":\"Required\"},{\"type\":\"Credential\",\"name\":\"rbe\",\"description\":\"agohbuff\",\"visibility\":\"Hidden\",\"optional\":\"Optional\"}]}")
                 .toObject(ScriptCmdletProperties.class);
     }
 

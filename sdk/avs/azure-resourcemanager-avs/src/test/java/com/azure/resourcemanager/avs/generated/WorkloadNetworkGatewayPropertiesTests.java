@@ -13,15 +13,15 @@ public final class WorkloadNetworkGatewayPropertiesTests {
     public void testDeserialize() throws Exception {
         WorkloadNetworkGatewayProperties model =
             BinaryData
-                .fromString("{\"displayName\":\"hhuao\",\"path\":\"pcqeqx\"}")
+                .fromString("{\"displayName\":\"xacqqudfnbyx\",\"path\":\"aabjyvayffimrz\"}")
                 .toObject(WorkloadNetworkGatewayProperties.class);
-        Assertions.assertEquals("hhuao", model.displayName());
+        Assertions.assertEquals("xacqqudfnbyx", model.displayName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        WorkloadNetworkGatewayProperties model = new WorkloadNetworkGatewayProperties().withDisplayName("hhuao");
+        WorkloadNetworkGatewayProperties model = new WorkloadNetworkGatewayProperties().withDisplayName("xacqqudfnbyx");
         model = BinaryData.fromObject(model).toObject(WorkloadNetworkGatewayProperties.class);
-        Assertions.assertEquals("hhuao", model.displayName());
+        Assertions.assertEquals("xacqqudfnbyx", model.displayName());
     }
 }

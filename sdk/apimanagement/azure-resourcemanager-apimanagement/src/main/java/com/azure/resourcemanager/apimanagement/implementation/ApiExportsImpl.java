@@ -28,16 +28,6 @@ public final class ApiExportsImpl implements ApiExports {
         this.serviceManager = serviceManager;
     }
 
-    public ApiExportResult get(
-        String resourceGroupName, String serviceName, String apiId, ExportFormat format, ExportApi export) {
-        ApiExportResultInner inner = this.serviceClient().get(resourceGroupName, serviceName, apiId, format, export);
-        if (inner != null) {
-            return new ApiExportResultImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<ApiExportResult> getWithResponse(
         String resourceGroupName,
         String serviceName,
@@ -53,6 +43,16 @@ public final class ApiExportsImpl implements ApiExports {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new ApiExportResultImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public ApiExportResult get(
+        String resourceGroupName, String serviceName, String apiId, ExportFormat format, ExportApi export) {
+        ApiExportResultInner inner = this.serviceClient().get(resourceGroupName, serviceName, apiId, format, export);
+        if (inner != null) {
+            return new ApiExportResultImpl(inner, this.manager());
         } else {
             return null;
         }

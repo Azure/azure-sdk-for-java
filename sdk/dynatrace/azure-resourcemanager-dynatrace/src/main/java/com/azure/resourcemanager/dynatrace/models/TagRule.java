@@ -77,11 +77,13 @@ public interface TagRule {
     interface Definition
         extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
+
     /** The TagRule definition stages. */
     interface DefinitionStages {
         /** The first stage of the TagRule definition. */
         interface Blank extends WithParentResource {
         }
+
         /** The stage of the TagRule definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
@@ -93,6 +95,7 @@ public interface TagRule {
              */
             WithCreate withExistingMonitor(String resourceGroupName, String monitorName);
         }
+
         /**
          * The stage of the TagRule definition which contains all the minimum required properties for the resource to be
          * created, but also allows for any other optional properties to be specified.
@@ -113,6 +116,7 @@ public interface TagRule {
              */
             TagRule create(Context context);
         }
+
         /** The stage of the TagRule definition allowing to specify logRules. */
         interface WithLogRules {
             /**
@@ -123,6 +127,7 @@ public interface TagRule {
              */
             WithCreate withLogRules(LogRules logRules);
         }
+
         /** The stage of the TagRule definition allowing to specify metricRules. */
         interface WithMetricRules {
             /**
@@ -134,6 +139,7 @@ public interface TagRule {
             WithCreate withMetricRules(MetricRules metricRules);
         }
     }
+
     /**
      * Begins update for the TagRule resource.
      *
@@ -158,6 +164,7 @@ public interface TagRule {
          */
         TagRule apply(Context context);
     }
+
     /** The TagRule update stages. */
     interface UpdateStages {
         /** The stage of the TagRule update allowing to specify logRules. */
@@ -170,6 +177,7 @@ public interface TagRule {
              */
             Update withLogRules(LogRules logRules);
         }
+
         /** The stage of the TagRule update allowing to specify metricRules. */
         interface WithMetricRules {
             /**
@@ -181,6 +189,7 @@ public interface TagRule {
             Update withMetricRules(MetricRules metricRules);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

@@ -22,6 +22,10 @@ public final class VMExtensionPayloadInner {
     @JsonProperty(value = "environmentId")
     private String environmentId;
 
+    /** Creates an instance of VMExtensionPayloadInner class. */
+    public VMExtensionPayloadInner() {
+    }
+
     /**
      * Get the ingestionKey property: Ingestion key of the environment.
      *

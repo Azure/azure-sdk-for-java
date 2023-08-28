@@ -264,9 +264,9 @@ implements IDocumentQueryExecutionContext<T> {
                 requestHeaders.put(HttpConstants.HttpHeaders.DEDICATED_GATEWAY_PER_REQUEST_CACHE_STALENESS,
                     String.valueOf(Utils.getMaxIntegratedCacheStalenessInMillis(cosmosQueryRequestOptions.getDedicatedGatewayRequestOptions())));
             }
-            if (cosmosQueryRequestOptions.getDedicatedGatewayRequestOptions().getBypassIntegratedCache()) {
+            if (cosmosQueryRequestOptions.getDedicatedGatewayRequestOptions().isIntegratedCacheBypassed()) {
                 requestHeaders.put(HttpConstants.HttpHeaders.DEDICATED_GATEWAY_PER_REQUEST_BYPASS_CACHE,
-                    String.valueOf(cosmosQueryRequestOptions.getDedicatedGatewayRequestOptions().getBypassIntegratedCache()));
+                    String.valueOf(cosmosQueryRequestOptions.getDedicatedGatewayRequestOptions().isIntegratedCacheBypassed()));
             }
         }
 

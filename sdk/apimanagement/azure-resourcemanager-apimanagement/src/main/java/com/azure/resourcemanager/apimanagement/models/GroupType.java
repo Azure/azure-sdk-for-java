@@ -7,7 +7,7 @@ package com.azure.resourcemanager.apimanagement.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for GroupType. */
+/** Group type. */
 public enum GroupType {
     /** Enum value custom. */
     CUSTOM("custom"),
@@ -33,6 +33,9 @@ public enum GroupType {
      */
     @JsonCreator
     public static GroupType fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         GroupType[] items = GroupType.values();
         for (GroupType item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -42,6 +45,7 @@ public enum GroupType {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

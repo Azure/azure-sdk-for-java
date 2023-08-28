@@ -68,6 +68,14 @@ public final class DiagnosticContractImpl
         return this.innerModel().operationNameFormat();
     }
 
+    public Boolean metrics() {
+        return this.innerModel().metrics();
+    }
+
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public DiagnosticContractInner innerModel() {
         return this.innerObject;
     }
@@ -224,6 +232,11 @@ public final class DiagnosticContractImpl
 
     public DiagnosticContractImpl withOperationNameFormat(OperationNameFormat operationNameFormat) {
         this.innerModel().withOperationNameFormat(operationNameFormat);
+        return this;
+    }
+
+    public DiagnosticContractImpl withMetrics(Boolean metrics) {
+        this.innerModel().withMetrics(metrics);
         return this;
     }
 

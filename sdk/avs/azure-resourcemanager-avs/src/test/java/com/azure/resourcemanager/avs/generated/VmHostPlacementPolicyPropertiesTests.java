@@ -19,15 +19,15 @@ public final class VmHostPlacementPolicyPropertiesTests {
         VmHostPlacementPolicyProperties model =
             BinaryData
                 .fromString(
-                    "{\"type\":\"VmHost\",\"vmMembers\":[\"fxqknpirgneptt\",\"qmsniffcdmqnro\",\"lpijnkrxfrd\",\"hcrat\"],\"hostMembers\":[\"zronasxift\",\"zq\"],\"affinityType\":\"Affinity\",\"affinityStrength\":\"Should\",\"azureHybridBenefitType\":\"None\",\"state\":\"Disabled\",\"displayName\":\"ogczhonnxkrlg\",\"provisioningState\":\"Building\"}")
+                    "{\"type\":\"VmHost\",\"vmMembers\":[\"ffukiscvw\"],\"hostMembers\":[\"hwplefaxvx\",\"l\",\"btgn\",\"nzeyqxtjj\"],\"affinityType\":\"Affinity\",\"affinityStrength\":\"Should\",\"azureHybridBenefitType\":\"SqlHost\",\"state\":\"Disabled\",\"displayName\":\"vodggxdbee\",\"provisioningState\":\"Building\"}")
                 .toObject(VmHostPlacementPolicyProperties.class);
         Assertions.assertEquals(PlacementPolicyState.DISABLED, model.state());
-        Assertions.assertEquals("ogczhonnxkrlg", model.displayName());
-        Assertions.assertEquals("fxqknpirgneptt", model.vmMembers().get(0));
-        Assertions.assertEquals("zronasxift", model.hostMembers().get(0));
+        Assertions.assertEquals("vodggxdbee", model.displayName());
+        Assertions.assertEquals("ffukiscvw", model.vmMembers().get(0));
+        Assertions.assertEquals("hwplefaxvx", model.hostMembers().get(0));
         Assertions.assertEquals(AffinityType.AFFINITY, model.affinityType());
         Assertions.assertEquals(AffinityStrength.SHOULD, model.affinityStrength());
-        Assertions.assertEquals(AzureHybridBenefitType.NONE, model.azureHybridBenefitType());
+        Assertions.assertEquals(AzureHybridBenefitType.SQL_HOST, model.azureHybridBenefitType());
     }
 
     @org.junit.jupiter.api.Test
@@ -35,19 +35,19 @@ public final class VmHostPlacementPolicyPropertiesTests {
         VmHostPlacementPolicyProperties model =
             new VmHostPlacementPolicyProperties()
                 .withState(PlacementPolicyState.DISABLED)
-                .withDisplayName("ogczhonnxkrlg")
-                .withVmMembers(Arrays.asList("fxqknpirgneptt", "qmsniffcdmqnro", "lpijnkrxfrd", "hcrat"))
-                .withHostMembers(Arrays.asList("zronasxift", "zq"))
+                .withDisplayName("vodggxdbee")
+                .withVmMembers(Arrays.asList("ffukiscvw"))
+                .withHostMembers(Arrays.asList("hwplefaxvx", "l", "btgn", "nzeyqxtjj"))
                 .withAffinityType(AffinityType.AFFINITY)
                 .withAffinityStrength(AffinityStrength.SHOULD)
-                .withAzureHybridBenefitType(AzureHybridBenefitType.NONE);
+                .withAzureHybridBenefitType(AzureHybridBenefitType.SQL_HOST);
         model = BinaryData.fromObject(model).toObject(VmHostPlacementPolicyProperties.class);
         Assertions.assertEquals(PlacementPolicyState.DISABLED, model.state());
-        Assertions.assertEquals("ogczhonnxkrlg", model.displayName());
-        Assertions.assertEquals("fxqknpirgneptt", model.vmMembers().get(0));
-        Assertions.assertEquals("zronasxift", model.hostMembers().get(0));
+        Assertions.assertEquals("vodggxdbee", model.displayName());
+        Assertions.assertEquals("ffukiscvw", model.vmMembers().get(0));
+        Assertions.assertEquals("hwplefaxvx", model.hostMembers().get(0));
         Assertions.assertEquals(AffinityType.AFFINITY, model.affinityType());
         Assertions.assertEquals(AffinityStrength.SHOULD, model.affinityStrength());
-        Assertions.assertEquals(AzureHybridBenefitType.NONE, model.azureHybridBenefitType());
+        Assertions.assertEquals(AzureHybridBenefitType.SQL_HOST, model.azureHybridBenefitType());
     }
 }

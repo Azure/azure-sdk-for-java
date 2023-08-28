@@ -33,7 +33,7 @@ public final class ClustersCreateOrUpdateMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"sku\":{\"name\":\"gzukxitmm\"},\"properties\":{\"clusterSize\":451636472,\"provisioningState\":\"Succeeded\",\"clusterId\":1748959674,\"hosts\":[\"xrxc\"]},\"id\":\"juisavokqdzf\",\"name\":\"azivjlfrqttbajl\",\"type\":\"atnwxyiopi\"}";
+            "{\"sku\":{\"name\":\"thwtzol\"},\"properties\":{\"clusterSize\":1713502373,\"provisioningState\":\"Succeeded\",\"clusterId\":989403174,\"hosts\":[\"bwjscjpahlxveab\",\"qxnmwmqt\",\"bxyijddtvq\",\"ttadijae\"]},\"id\":\"kmr\",\"name\":\"ieekpndzaa\",\"type\":\"mudqmeq\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -64,15 +64,15 @@ public final class ClustersCreateOrUpdateMockTests {
         Cluster response =
             manager
                 .clusters()
-                .define("hjoxo")
-                .withExistingPrivateCloud("dvoqyt", "byowbblgyavutp")
-                .withSku(new Sku().withName("smsks"))
-                .withClusterSize(1784593893)
-                .withHosts(Arrays.asList("kcgxxlxsffgcvi", "qzdwlvwlyoup", "gfbkjubdyh", "kfm"))
+                .define("bphbqzmizakakank")
+                .withExistingPrivateCloud("cwsldri", "etpwbralll")
+                .withSku(new Sku().withName("p"))
+                .withClusterSize(1316748102)
+                .withHosts(Arrays.asList("hjlmu", "y", "primr", "opteecj"))
                 .create();
 
-        Assertions.assertEquals("gzukxitmm", response.sku().name());
-        Assertions.assertEquals(451636472, response.clusterSize());
-        Assertions.assertEquals("xrxc", response.hosts().get(0));
+        Assertions.assertEquals("thwtzol", response.sku().name());
+        Assertions.assertEquals(1713502373, response.clusterSize());
+        Assertions.assertEquals("bwjscjpahlxveab", response.hosts().get(0));
     }
 }

@@ -61,6 +61,13 @@ public interface ApiReleaseContract {
     String notes();
 
     /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
+
+    /**
      * Gets the inner com.azure.resourcemanager.apimanagement.fluent.models.ApiReleaseContractInner object.
      *
      * @return the inner object.
@@ -71,23 +78,26 @@ public interface ApiReleaseContract {
     interface Definition
         extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
+
     /** The ApiReleaseContract definition stages. */
     interface DefinitionStages {
         /** The first stage of the ApiReleaseContract definition. */
         interface Blank extends WithParentResource {
         }
+
         /** The stage of the ApiReleaseContract definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
              * Specifies resourceGroupName, serviceName, apiId.
              *
-             * @param resourceGroupName The name of the resource group.
+             * @param resourceGroupName The name of the resource group. The name is case insensitive.
              * @param serviceName The name of the API Management service.
              * @param apiId API identifier. Must be unique in the current API Management service instance.
              * @return the next definition stage.
              */
             WithCreate withExistingApi(String resourceGroupName, String serviceName, String apiId);
         }
+
         /**
          * The stage of the ApiReleaseContract definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
@@ -109,6 +119,7 @@ public interface ApiReleaseContract {
              */
             ApiReleaseContract create(Context context);
         }
+
         /** The stage of the ApiReleaseContract definition allowing to specify apiId. */
         interface WithApiId {
             /**
@@ -119,6 +130,7 @@ public interface ApiReleaseContract {
              */
             WithCreate withApiId(String apiId);
         }
+
         /** The stage of the ApiReleaseContract definition allowing to specify notes. */
         interface WithNotes {
             /**
@@ -129,6 +141,7 @@ public interface ApiReleaseContract {
              */
             WithCreate withNotes(String notes);
         }
+
         /** The stage of the ApiReleaseContract definition allowing to specify ifMatch. */
         interface WithIfMatch {
             /**
@@ -142,6 +155,7 @@ public interface ApiReleaseContract {
             WithCreate withIfMatch(String ifMatch);
         }
     }
+
     /**
      * Begins update for the ApiReleaseContract resource.
      *
@@ -166,6 +180,7 @@ public interface ApiReleaseContract {
          */
         ApiReleaseContract apply(Context context);
     }
+
     /** The ApiReleaseContract update stages. */
     interface UpdateStages {
         /** The stage of the ApiReleaseContract update allowing to specify apiId. */
@@ -178,6 +193,7 @@ public interface ApiReleaseContract {
              */
             Update withApiId(String apiId);
         }
+
         /** The stage of the ApiReleaseContract update allowing to specify notes. */
         interface WithNotes {
             /**
@@ -188,6 +204,7 @@ public interface ApiReleaseContract {
              */
             Update withNotes(String notes);
         }
+
         /** The stage of the ApiReleaseContract update allowing to specify ifMatch. */
         interface WithIfMatch {
             /**
@@ -201,6 +218,7 @@ public interface ApiReleaseContract {
             Update withIfMatch(String ifMatch);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

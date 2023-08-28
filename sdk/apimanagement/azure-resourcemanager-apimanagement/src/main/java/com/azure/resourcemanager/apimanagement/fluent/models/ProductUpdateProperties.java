@@ -18,6 +18,10 @@ public final class ProductUpdateProperties extends ProductEntityBaseParameters {
     @JsonProperty(value = "displayName")
     private String displayName;
 
+    /** Creates an instance of ProductUpdateProperties class. */
+    public ProductUpdateProperties() {
+    }
+
     /**
      * Get the displayName property: Product name.
      *

@@ -52,6 +52,10 @@ public final class IssueContractImpl implements IssueContract, IssueContract.Def
         return this.innerModel().apiId();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public IssueContractInner innerModel() {
         return this.innerObject;
     }

@@ -4,6 +4,7 @@
 
 ### Features Added
 
+- Added support for a Function<String, EventPosition> that maps a partition id to EventPosition in EventProcessorClientBuilder. ([#36485](https://github.com/Azure/azure-sdk-for-java/pull/36485))
 - Added support for tracing options and configuration. ([#33600](https://github.com/Azure/azure-sdk-for-java/issues/33600))
 - Aligned with OpenTelemetry messaging semantic conventions (when latest azure-core-tracing-opentelemetry package is used). ([#33600](https://github.com/Azure/azure-sdk-for-java/issues/33600))
 
@@ -16,6 +17,15 @@
   ([#35299](https://github.com/Azure/azure-sdk-for-java/issues/35299))
 
 ### Other Changes
+
+## 5.15.8 (2023-08-18)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.41.0` to version `1.42.0`.
+- Upgraded `azure-core-amqp` from `2.8.7` to version `2.8.8`.
 
 ## 5.15.7 (2023-07-25)
 

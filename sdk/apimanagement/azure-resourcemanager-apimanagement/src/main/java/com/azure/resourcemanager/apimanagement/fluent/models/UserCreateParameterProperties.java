@@ -17,8 +17,7 @@ import java.util.List;
 @Fluent
 public final class UserCreateParameterProperties extends UserEntityBaseParameters {
     /*
-     * Email address. Must not be empty and must be unique within the service
-     * instance.
+     * Email address. Must not be empty and must be unique within the service instance.
      */
     @JsonProperty(value = "email", required = true)
     private String email;
@@ -42,18 +41,20 @@ public final class UserCreateParameterProperties extends UserEntityBaseParameter
     private String password;
 
     /*
-     * Determines the type of application which send the create user request.
-     * Default is legacy portal.
+     * Determines the type of application which send the create user request. Default is legacy portal.
      */
     @JsonProperty(value = "appType")
     private AppType appType;
 
     /*
-     * Determines the type of confirmation e-mail that will be sent to the
-     * newly created user.
+     * Determines the type of confirmation e-mail that will be sent to the newly created user.
      */
     @JsonProperty(value = "confirmation")
     private Confirmation confirmation;
+
+    /** Creates an instance of UserCreateParameterProperties class. */
+    public UserCreateParameterProperties() {
+    }
 
     /**
      * Get the email property: Email address. Must not be empty and must be unique within the service instance.

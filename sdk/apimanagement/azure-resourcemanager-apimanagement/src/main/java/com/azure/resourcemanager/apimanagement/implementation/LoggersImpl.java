@@ -41,22 +41,13 @@ public final class LoggersImpl implements Loggers {
         return Utils.mapPage(inner, inner1 -> new LoggerContractImpl(inner1, this.manager()));
     }
 
-    public void getEntityTag(String resourceGroupName, String serviceName, String loggerId) {
-        this.serviceClient().getEntityTag(resourceGroupName, serviceName, loggerId);
-    }
-
     public LoggersGetEntityTagResponse getEntityTagWithResponse(
         String resourceGroupName, String serviceName, String loggerId, Context context) {
         return this.serviceClient().getEntityTagWithResponse(resourceGroupName, serviceName, loggerId, context);
     }
 
-    public LoggerContract get(String resourceGroupName, String serviceName, String loggerId) {
-        LoggerContractInner inner = this.serviceClient().get(resourceGroupName, serviceName, loggerId);
-        if (inner != null) {
-            return new LoggerContractImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+    public void getEntityTag(String resourceGroupName, String serviceName, String loggerId) {
+        this.serviceClient().getEntityTag(resourceGroupName, serviceName, loggerId);
     }
 
     public Response<LoggerContract> getWithResponse(
@@ -74,13 +65,22 @@ public final class LoggersImpl implements Loggers {
         }
     }
 
-    public void delete(String resourceGroupName, String serviceName, String loggerId, String ifMatch) {
-        this.serviceClient().delete(resourceGroupName, serviceName, loggerId, ifMatch);
+    public LoggerContract get(String resourceGroupName, String serviceName, String loggerId) {
+        LoggerContractInner inner = this.serviceClient().get(resourceGroupName, serviceName, loggerId);
+        if (inner != null) {
+            return new LoggerContractImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public Response<Void> deleteWithResponse(
         String resourceGroupName, String serviceName, String loggerId, String ifMatch, Context context) {
         return this.serviceClient().deleteWithResponse(resourceGroupName, serviceName, loggerId, ifMatch, context);
+    }
+
+    public void delete(String resourceGroupName, String serviceName, String loggerId, String ifMatch) {
+        this.serviceClient().delete(resourceGroupName, serviceName, loggerId, ifMatch);
     }
 
     public LoggerContract getById(String id) {

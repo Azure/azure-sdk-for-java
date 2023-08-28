@@ -32,7 +32,7 @@ public final class WorkloadNetworksCreateDhcpMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"dhcpType\":\"WorkloadNetworkDhcpEntity\",\"displayName\":\"nlu\",\"segments\":[\"rrfx\",\"eebtijvacvb\"],\"provisioningState\":\"Succeeded\",\"revision\":7742391335254617781},\"id\":\"xl\",\"name\":\"jrnwxacev\",\"type\":\"h\"}";
+            "{\"properties\":{\"dhcpType\":\"WorkloadNetworkDhcpEntity\",\"displayName\":\"fuughtuqfec\",\"segments\":[\"ygtuhx\"],\"provisioningState\":\"Succeeded\",\"revision\":8894754548360108244},\"id\":\"wmrswnjlxuzrh\",\"name\":\"pusxjb\",\"type\":\"qehgpd\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -63,13 +63,13 @@ public final class WorkloadNetworksCreateDhcpMockTests {
         WorkloadNetworkDhcp response =
             manager
                 .workloadNetworks()
-                .defineDhcp("lzo")
-                .withExistingPrivateCloud("mzdlyjdfqwmkyo", "ufdvruz")
+                .defineDhcp("ixjawrtm")
+                .withExistingPrivateCloud("opionszon", "pngajin")
                 .withProperties(
-                    new WorkloadNetworkDhcpEntity().withDisplayName("ctfnmdxotng").withRevision(3597759724277023056L))
+                    new WorkloadNetworkDhcpEntity().withDisplayName("myccx").withRevision(6733942550770793710L))
                 .create();
 
-        Assertions.assertEquals("nlu", response.properties().displayName());
-        Assertions.assertEquals(7742391335254617781L, response.properties().revision());
+        Assertions.assertEquals("fuughtuqfec", response.properties().displayName());
+        Assertions.assertEquals(8894754548360108244L, response.properties().revision());
     }
 }

@@ -27,15 +27,6 @@ public final class TagRulesImpl implements TagRules {
         this.serviceManager = serviceManager;
     }
 
-    public TagRule get(String resourceGroupName, String monitorName, String ruleSetName) {
-        TagRuleInner inner = this.serviceClient().get(resourceGroupName, monitorName, ruleSetName);
-        if (inner != null) {
-            return new TagRuleImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<TagRule> getWithResponse(
         String resourceGroupName, String monitorName, String ruleSetName, Context context) {
         Response<TagRuleInner> inner =
@@ -46,6 +37,15 @@ public final class TagRulesImpl implements TagRules {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new TagRuleImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public TagRule get(String resourceGroupName, String monitorName, String ruleSetName) {
+        TagRuleInner inner = this.serviceClient().get(resourceGroupName, monitorName, ruleSetName);
+        if (inner != null) {
+            return new TagRuleImpl(inner, this.manager());
         } else {
             return null;
         }

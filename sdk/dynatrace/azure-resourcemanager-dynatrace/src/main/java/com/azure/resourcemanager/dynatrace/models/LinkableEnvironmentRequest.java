@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.dynatrace.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Request for getting all the linkable environments for a user. */
@@ -13,20 +14,24 @@ public final class LinkableEnvironmentRequest {
     /*
      * Tenant Id of the user in which they want to link the environment
      */
-    @JsonProperty(value = "tenantId")
+    @JsonProperty(value = "tenantId", required = true)
     private String tenantId;
 
     /*
      * user principal id of the user
      */
-    @JsonProperty(value = "userPrincipal")
+    @JsonProperty(value = "userPrincipal", required = true)
     private String userPrincipal;
 
     /*
      * Azure region in which we want to link the environment
      */
-    @JsonProperty(value = "region")
+    @JsonProperty(value = "region", required = true)
     private String region;
+
+    /** Creates an instance of LinkableEnvironmentRequest class. */
+    public LinkableEnvironmentRequest() {
+    }
 
     /**
      * Get the tenantId property: Tenant Id of the user in which they want to link the environment.
@@ -94,5 +99,25 @@ public final class LinkableEnvironmentRequest {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (tenantId() == null) {
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property tenantId in model LinkableEnvironmentRequest"));
+        }
+        if (userPrincipal() == null) {
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property userPrincipal in model LinkableEnvironmentRequest"));
+        }
+        if (region() == null) {
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property region in model LinkableEnvironmentRequest"));
+        }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(LinkableEnvironmentRequest.class);
 }
