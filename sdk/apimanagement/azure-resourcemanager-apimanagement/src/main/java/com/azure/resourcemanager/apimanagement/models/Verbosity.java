@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for Verbosity. */
+/** The verbosity level applied to traces emitted by trace policies. */
 public final class Verbosity extends ExpandableStringEnum<Verbosity> {
     /** Static value verbose for Verbosity. */
     public static final Verbosity VERBOSE = fromString("verbose");
@@ -18,6 +18,15 @@ public final class Verbosity extends ExpandableStringEnum<Verbosity> {
 
     /** Static value error for Verbosity. */
     public static final Verbosity ERROR = fromString("error");
+
+    /**
+     * Creates a new instance of Verbosity value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public Verbosity() {
+    }
 
     /**
      * Creates or finds a Verbosity from its string representation.
@@ -30,7 +39,11 @@ public final class Verbosity extends ExpandableStringEnum<Verbosity> {
         return fromString(name, Verbosity.class);
     }
 
-    /** @return known Verbosity values. */
+    /**
+     * Gets known Verbosity values.
+     *
+     * @return known Verbosity values.
+     */
     public static Collection<Verbosity> values() {
         return values(Verbosity.class);
     }

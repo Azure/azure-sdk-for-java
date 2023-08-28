@@ -21,24 +21,22 @@ public class ApiManagementServiceBaseProperties {
     private String notificationSenderEmail;
 
     /*
-     * The current provisioning state of the API Management service which can
-     * be one of the following:
+     * The current provisioning state of the API Management service which can be one of the following:
      * Created/Activating/Succeeded/Updating/Failed/Stopped/Terminating/TerminationFailed/Deleted.
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private String provisioningState;
 
     /*
-     * The provisioning state of the API Management service, which is targeted
-     * by the long running operation started on the service.
+     * The provisioning state of the API Management service, which is targeted by the long running operation started on
+     * the service.
      */
     @JsonProperty(value = "targetProvisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private String targetProvisioningState;
 
     /*
-     * Creation UTC date of the API Management service.The date conforms to the
-     * following format: `yyyy-MM-ddTHH:mm:ssZ` as specified by the ISO 8601
-     * standard.
+     * Creation UTC date of the API Management service.The date conforms to the following format:
+     * `yyyy-MM-ddTHH:mm:ssZ` as specified by the ISO 8601 standard.
      */
     @JsonProperty(value = "createdAtUtc", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime createdAtUtc;
@@ -86,34 +84,30 @@ public class ApiManagementServiceBaseProperties {
     private List<HostnameConfiguration> hostnameConfigurations;
 
     /*
-     * Public Static Load Balanced IP addresses of the API Management service
-     * in Primary region. Available only for Basic, Standard, Premium and
-     * Isolated SKU.
+     * Public Static Load Balanced IP addresses of the API Management service in Primary region. Available only for
+     * Basic, Standard, Premium and Isolated SKU.
      */
     @JsonProperty(value = "publicIPAddresses", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> publicIpAddresses;
 
     /*
-     * Private Static Load Balanced IP addresses of the API Management service
-     * in Primary region which is deployed in an Internal Virtual Network.
-     * Available only for Basic, Standard, Premium and Isolated SKU.
+     * Private Static Load Balanced IP addresses of the API Management service in Primary region which is deployed in
+     * an Internal Virtual Network. Available only for Basic, Standard, Premium and Isolated SKU.
      */
     @JsonProperty(value = "privateIPAddresses", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> privateIpAddresses;
 
     /*
-     * Public Standard SKU IP V4 based IP address to be associated with Virtual
-     * Network deployed service in the region. Supported only for Developer and
-     * Premium SKU being deployed in Virtual Network.
+     * Public Standard SKU IP V4 based IP address to be associated with Virtual Network deployed service in the region.
+     * Supported only for Developer and Premium SKU being deployed in Virtual Network.
      */
     @JsonProperty(value = "publicIpAddressId")
     private String publicIpAddressId;
 
     /*
-     * Whether or not public endpoint access is allowed for this API Management
-     * service.  Value is optional but if passed in, must be 'Enabled' or
-     * 'Disabled'. If 'Disabled', private endpoints are the exclusive access
-     * method. Default value is 'Enabled'
+     * Whether or not public endpoint access is allowed for this API Management service.  Value is optional but if
+     * passed in, must be 'Enabled' or 'Disabled'. If 'Disabled', private endpoints are the exclusive access method.
+     * Default value is 'Enabled'
      */
     @JsonProperty(value = "publicNetworkAccess")
     private PublicNetworkAccess publicNetworkAccess;
@@ -132,74 +126,73 @@ public class ApiManagementServiceBaseProperties {
 
     /*
      * Custom properties of the API Management service.</br>Setting
-     * `Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Ciphers.TripleDes168`
-     * will disable the cipher TLS_RSA_WITH_3DES_EDE_CBC_SHA for all TLS(1.0,
-     * 1.1 and 1.2).</br>Setting
-     * `Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Protocols.Tls11`
-     * can be used to disable just TLS 1.1.</br>Setting
-     * `Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Protocols.Tls10`
-     * can be used to disable TLS 1.0 on an API Management service.</br>Setting
-     * `Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Backend.Protocols.Tls11`
-     * can be used to disable just TLS 1.1 for communications with
-     * backends.</br>Setting
-     * `Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Backend.Protocols.Tls10`
-     * can be used to disable TLS 1.0 for communications with
-     * backends.</br>Setting
-     * `Microsoft.WindowsAzure.ApiManagement.Gateway.Protocols.Server.Http2`
-     * can be used to enable HTTP2 protocol on an API Management
-     * service.</br>Not specifying any of these properties on PATCH operation
-     * will reset omitted properties' values to their defaults. For all the
-     * settings except Http2 the default value is `True` if the service was
-     * created on or before April 1st 2018 and `False` otherwise. Http2
-     * setting's default value is `False`.</br></br>You can disable any of next
-     * ciphers by using settings
+     * `Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Ciphers.TripleDes168` will disable the cipher
+     * TLS_RSA_WITH_3DES_EDE_CBC_SHA for all TLS(1.0, 1.1 and 1.2).</br>Setting
+     * `Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Protocols.Tls11` can be used to disable just TLS
+     * 1.1.</br>Setting `Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Protocols.Tls10` can be used to disable
+     * TLS 1.0 on an API Management service.</br>Setting
+     * `Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Backend.Protocols.Tls11` can be used to disable just TLS
+     * 1.1 for communications with backends.</br>Setting
+     * `Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Backend.Protocols.Tls10` can be used to disable TLS 1.0
+     * for communications with backends.</br>Setting
+     * `Microsoft.WindowsAzure.ApiManagement.Gateway.Protocols.Server.Http2` can be used to enable HTTP2 protocol on an
+     * API Management service.</br>Not specifying any of these properties on PATCH operation will reset omitted
+     * properties' values to their defaults. For all the settings except Http2 the default value is `True` if the
+     * service was created on or before April 1, 2018 and `False` otherwise. Http2 setting's default value is
+     * `False`.</br></br>You can disable any of the following ciphers by using settings
      * `Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Ciphers.[cipher_name]`:
-     * TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA,
-     * TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA,
-     * TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA, TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA,
-     * TLS_RSA_WITH_AES_128_GCM_SHA256, TLS_RSA_WITH_AES_256_CBC_SHA256,
-     * TLS_RSA_WITH_AES_128_CBC_SHA256, TLS_RSA_WITH_AES_256_CBC_SHA,
-     * TLS_RSA_WITH_AES_128_CBC_SHA. For example,
-     * `Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Ciphers.TLS_RSA_WITH_AES_128_CBC_SHA256`:`false`.
-     * The default value is `true` for them.  Note: next ciphers can't be
-     * disabled since they are required by Azure CloudService internal
-     * components:
-     * TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA384,TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256,TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384,TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256,TLS_RSA_WITH_AES_256_GCM_SHA384
+     * TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA, TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA, TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA,
+     * TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA, TLS_RSA_WITH_AES_128_GCM_SHA256, TLS_RSA_WITH_AES_256_CBC_SHA256,
+     * TLS_RSA_WITH_AES_128_CBC_SHA256, TLS_RSA_WITH_AES_256_CBC_SHA, TLS_RSA_WITH_AES_128_CBC_SHA. For example,
+     * `Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Ciphers.TLS_RSA_WITH_AES_128_CBC_SHA256`:`false`. The
+     * default value is `true` for them.</br> Note: The following ciphers can't be disabled since they are required by
+     * internal platform components:
+     * TLS_AES_256_GCM_SHA384,TLS_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA384,TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256,TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384,TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256
      */
     @JsonProperty(value = "customProperties")
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> customProperties;
 
     /*
-     * List of Certificates that need to be installed in the API Management
-     * service. Max supported certificates that can be installed is 10.
+     * List of Certificates that need to be installed in the API Management service. Max supported certificates that
+     * can be installed is 10.
      */
     @JsonProperty(value = "certificates")
     private List<CertificateConfiguration> certificates;
 
     /*
-     * Property only meant to be used for Consumption SKU Service. This
-     * enforces a client certificate to be presented on each request to the
-     * gateway. This also enables the ability to authenticate the certificate
-     * in the policy on the gateway.
+     * Property only meant to be used for Consumption SKU Service. This enforces a client certificate to be presented
+     * on each request to the gateway. This also enables the ability to authenticate the certificate in the policy on
+     * the gateway.
      */
     @JsonProperty(value = "enableClientCertificate")
     private Boolean enableClientCertificate;
 
     /*
-     * Property only valid for an Api Management service deployed in multiple
-     * locations. This can be used to disable the gateway in master region.
+     * Property can be used to enable NAT Gateway for this API Management service.
+     */
+    @JsonProperty(value = "natGatewayState")
+    private NatGatewayState natGatewayState;
+
+    /*
+     * Outbound public IPV4 address prefixes associated with NAT Gateway deployed service. Available only for Premium
+     * SKU on stv2 platform.
+     */
+    @JsonProperty(value = "outboundPublicIPAddresses", access = JsonProperty.Access.WRITE_ONLY)
+    private List<String> outboundPublicIpAddresses;
+
+    /*
+     * Property only valid for an Api Management service deployed in multiple locations. This can be used to disable
+     * the gateway in master region.
      */
     @JsonProperty(value = "disableGateway")
     private Boolean disableGateway;
 
     /*
-     * The type of VPN in which API Management service needs to be configured
-     * in. None (Default Value) means the API Management service is not part of
-     * any Virtual Network, External means the API Management deployment is set
-     * up inside a Virtual Network having an Internet Facing Endpoint, and
-     * Internal means that API Management deployment is setup inside a Virtual
-     * Network having an Intranet Facing Endpoint only.
+     * The type of VPN in which API Management service needs to be configured in. None (Default Value) means the API
+     * Management service is not part of any Virtual Network, External means the API Management deployment is set up
+     * inside a Virtual Network having an Internet Facing Endpoint, and Internal means that API Management deployment
+     * is setup inside a Virtual Network having an Intranet Facing Endpoint only.
      */
     @JsonProperty(value = "virtualNetworkType")
     private VirtualNetworkType virtualNetworkType;
@@ -211,9 +204,8 @@ public class ApiManagementServiceBaseProperties {
     private ApiVersionConstraint apiVersionConstraint;
 
     /*
-     * Undelete Api Management Service if it was previously soft-deleted. If
-     * this flag is specified and set to True all other properties will be
-     * ignored.
+     * Undelete Api Management Service if it was previously soft-deleted. If this flag is specified and set to True all
+     * other properties will be ignored.
      */
     @JsonProperty(value = "restore")
     private Boolean restore;
@@ -229,6 +221,10 @@ public class ApiManagementServiceBaseProperties {
      */
     @JsonProperty(value = "platformVersion", access = JsonProperty.Access.WRITE_ONLY)
     private PlatformVersion platformVersion;
+
+    /** Creates an instance of ApiManagementServiceBaseProperties class. */
+    public ApiManagementServiceBaseProperties() {
+    }
 
     /**
      * Get the notificationSenderEmail property: Email address from which the notification will be sent.
@@ -479,16 +475,16 @@ public class ApiManagementServiceBaseProperties {
      * `Microsoft.WindowsAzure.ApiManagement.Gateway.Protocols.Server.Http2` can be used to enable HTTP2 protocol on an
      * API Management service.&lt;/br&gt;Not specifying any of these properties on PATCH operation will reset omitted
      * properties' values to their defaults. For all the settings except Http2 the default value is `True` if the
-     * service was created on or before April 1st 2018 and `False` otherwise. Http2 setting's default value is
-     * `False`.&lt;/br&gt;&lt;/br&gt;You can disable any of next ciphers by using settings
+     * service was created on or before April 1, 2018 and `False` otherwise. Http2 setting's default value is
+     * `False`.&lt;/br&gt;&lt;/br&gt;You can disable any of the following ciphers by using settings
      * `Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Ciphers.[cipher_name]`:
      * TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA, TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA, TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA,
      * TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA, TLS_RSA_WITH_AES_128_GCM_SHA256, TLS_RSA_WITH_AES_256_CBC_SHA256,
      * TLS_RSA_WITH_AES_128_CBC_SHA256, TLS_RSA_WITH_AES_256_CBC_SHA, TLS_RSA_WITH_AES_128_CBC_SHA. For example,
      * `Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Ciphers.TLS_RSA_WITH_AES_128_CBC_SHA256`:`false`. The
-     * default value is `true` for them. Note: next ciphers can't be disabled since they are required by Azure
-     * CloudService internal components:
-     * TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA384,TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256,TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384,TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256,TLS_RSA_WITH_AES_256_GCM_SHA384.
+     * default value is `true` for them.&lt;/br&gt; Note: The following ciphers can't be disabled since they are
+     * required by internal platform components:
+     * TLS_AES_256_GCM_SHA384,TLS_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA384,TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256,TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384,TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256.
      *
      * @return the customProperties value.
      */
@@ -510,16 +506,16 @@ public class ApiManagementServiceBaseProperties {
      * `Microsoft.WindowsAzure.ApiManagement.Gateway.Protocols.Server.Http2` can be used to enable HTTP2 protocol on an
      * API Management service.&lt;/br&gt;Not specifying any of these properties on PATCH operation will reset omitted
      * properties' values to their defaults. For all the settings except Http2 the default value is `True` if the
-     * service was created on or before April 1st 2018 and `False` otherwise. Http2 setting's default value is
-     * `False`.&lt;/br&gt;&lt;/br&gt;You can disable any of next ciphers by using settings
+     * service was created on or before April 1, 2018 and `False` otherwise. Http2 setting's default value is
+     * `False`.&lt;/br&gt;&lt;/br&gt;You can disable any of the following ciphers by using settings
      * `Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Ciphers.[cipher_name]`:
      * TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA, TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA, TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA,
      * TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA, TLS_RSA_WITH_AES_128_GCM_SHA256, TLS_RSA_WITH_AES_256_CBC_SHA256,
      * TLS_RSA_WITH_AES_128_CBC_SHA256, TLS_RSA_WITH_AES_256_CBC_SHA, TLS_RSA_WITH_AES_128_CBC_SHA. For example,
      * `Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Ciphers.TLS_RSA_WITH_AES_128_CBC_SHA256`:`false`. The
-     * default value is `true` for them. Note: next ciphers can't be disabled since they are required by Azure
-     * CloudService internal components:
-     * TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA384,TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256,TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384,TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256,TLS_RSA_WITH_AES_256_GCM_SHA384.
+     * default value is `true` for them.&lt;/br&gt; Note: The following ciphers can't be disabled since they are
+     * required by internal platform components:
+     * TLS_AES_256_GCM_SHA384,TLS_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA384,TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256,TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384,TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256.
      *
      * @param customProperties the customProperties value to set.
      * @return the ApiManagementServiceBaseProperties object itself.
@@ -573,6 +569,36 @@ public class ApiManagementServiceBaseProperties {
     public ApiManagementServiceBaseProperties withEnableClientCertificate(Boolean enableClientCertificate) {
         this.enableClientCertificate = enableClientCertificate;
         return this;
+    }
+
+    /**
+     * Get the natGatewayState property: Property can be used to enable NAT Gateway for this API Management service.
+     *
+     * @return the natGatewayState value.
+     */
+    public NatGatewayState natGatewayState() {
+        return this.natGatewayState;
+    }
+
+    /**
+     * Set the natGatewayState property: Property can be used to enable NAT Gateway for this API Management service.
+     *
+     * @param natGatewayState the natGatewayState value to set.
+     * @return the ApiManagementServiceBaseProperties object itself.
+     */
+    public ApiManagementServiceBaseProperties withNatGatewayState(NatGatewayState natGatewayState) {
+        this.natGatewayState = natGatewayState;
+        return this;
+    }
+
+    /**
+     * Get the outboundPublicIpAddresses property: Outbound public IPV4 address prefixes associated with NAT Gateway
+     * deployed service. Available only for Premium SKU on stv2 platform.
+     *
+     * @return the outboundPublicIpAddresses value.
+     */
+    public List<String> outboundPublicIpAddresses() {
+        return this.outboundPublicIpAddresses;
     }
 
     /**

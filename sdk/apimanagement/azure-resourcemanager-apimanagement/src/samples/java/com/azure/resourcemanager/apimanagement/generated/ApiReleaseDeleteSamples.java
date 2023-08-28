@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.apimanagement.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ApiRelease Delete. */
 public final class ApiReleaseDeleteSamples {
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementDeleteApiRelease.json
+     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementDeleteApiRelease.json
      */
     /**
      * Sample code: ApiManagementDeleteApiRelease.
@@ -20,6 +18,7 @@ public final class ApiReleaseDeleteSamples {
         com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
         manager
             .apiReleases()
-            .deleteWithResponse("rg1", "apimService1", "5a5fcc09124a7fa9b89f2f1d", "testrev", "*", Context.NONE);
+            .deleteWithResponse(
+                "rg1", "apimService1", "5a5fcc09124a7fa9b89f2f1d", "testrev", "*", com.azure.core.util.Context.NONE);
     }
 }

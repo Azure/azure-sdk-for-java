@@ -39,6 +39,10 @@ public final class IssueCommentContractImpl
         return this.innerModel().userId();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public IssueCommentContractInner innerModel() {
         return this.innerObject;
     }

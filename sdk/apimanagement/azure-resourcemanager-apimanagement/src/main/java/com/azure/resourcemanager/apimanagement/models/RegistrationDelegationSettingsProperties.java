@@ -16,6 +16,10 @@ public final class RegistrationDelegationSettingsProperties {
     @JsonProperty(value = "enabled")
     private Boolean enabled;
 
+    /** Creates an instance of RegistrationDelegationSettingsProperties class. */
+    public RegistrationDelegationSettingsProperties() {
+    }
+
     /**
      * Get the enabled property: Enable or disable delegation for user registration.
      *

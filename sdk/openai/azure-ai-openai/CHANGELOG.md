@@ -8,6 +8,8 @@
 
 ### Breaking Changes
 
+- Replaced usage of class `NonAzureOpenAIKeyCredential` by Azure Core class `KeyCredential`.
+
 ### Bugs Fixed
 
 ### Other Changes

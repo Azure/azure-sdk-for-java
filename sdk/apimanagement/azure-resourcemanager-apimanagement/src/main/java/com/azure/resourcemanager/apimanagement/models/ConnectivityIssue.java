@@ -36,6 +36,10 @@ public final class ConnectivityIssue {
     @JsonProperty(value = "context", access = JsonProperty.Access.WRITE_ONLY)
     private List<Map<String, String>> context;
 
+    /** Creates an instance of ConnectivityIssue class. */
+    public ConnectivityIssue() {
+    }
+
     /**
      * Get the origin property: The origin of the issue.
      *

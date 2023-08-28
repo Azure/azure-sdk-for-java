@@ -44,22 +44,13 @@ public final class DiagnosticsImpl implements Diagnostics {
         return Utils.mapPage(inner, inner1 -> new DiagnosticContractImpl(inner1, this.manager()));
     }
 
-    public void getEntityTag(String resourceGroupName, String serviceName, String diagnosticId) {
-        this.serviceClient().getEntityTag(resourceGroupName, serviceName, diagnosticId);
-    }
-
     public DiagnosticsGetEntityTagResponse getEntityTagWithResponse(
         String resourceGroupName, String serviceName, String diagnosticId, Context context) {
         return this.serviceClient().getEntityTagWithResponse(resourceGroupName, serviceName, diagnosticId, context);
     }
 
-    public DiagnosticContract get(String resourceGroupName, String serviceName, String diagnosticId) {
-        DiagnosticContractInner inner = this.serviceClient().get(resourceGroupName, serviceName, diagnosticId);
-        if (inner != null) {
-            return new DiagnosticContractImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+    public void getEntityTag(String resourceGroupName, String serviceName, String diagnosticId) {
+        this.serviceClient().getEntityTag(resourceGroupName, serviceName, diagnosticId);
     }
 
     public Response<DiagnosticContract> getWithResponse(
@@ -77,10 +68,8 @@ public final class DiagnosticsImpl implements Diagnostics {
         }
     }
 
-    public DiagnosticContract createOrUpdate(
-        String resourceGroupName, String serviceName, String diagnosticId, DiagnosticContractInner parameters) {
-        DiagnosticContractInner inner =
-            this.serviceClient().createOrUpdate(resourceGroupName, serviceName, diagnosticId, parameters);
+    public DiagnosticContract get(String resourceGroupName, String serviceName, String diagnosticId) {
+        DiagnosticContractInner inner = this.serviceClient().get(resourceGroupName, serviceName, diagnosticId);
         if (inner != null) {
             return new DiagnosticContractImpl(inner, this.manager());
         } else {
@@ -110,14 +99,10 @@ public final class DiagnosticsImpl implements Diagnostics {
         }
     }
 
-    public DiagnosticContract update(
-        String resourceGroupName,
-        String serviceName,
-        String diagnosticId,
-        String ifMatch,
-        DiagnosticContractInner parameters) {
+    public DiagnosticContract createOrUpdate(
+        String resourceGroupName, String serviceName, String diagnosticId, DiagnosticContractInner parameters) {
         DiagnosticContractInner inner =
-            this.serviceClient().update(resourceGroupName, serviceName, diagnosticId, ifMatch, parameters);
+            this.serviceClient().createOrUpdate(resourceGroupName, serviceName, diagnosticId, parameters);
         if (inner != null) {
             return new DiagnosticContractImpl(inner, this.manager());
         } else {
@@ -147,13 +132,28 @@ public final class DiagnosticsImpl implements Diagnostics {
         }
     }
 
-    public void delete(String resourceGroupName, String serviceName, String diagnosticId, String ifMatch) {
-        this.serviceClient().delete(resourceGroupName, serviceName, diagnosticId, ifMatch);
+    public DiagnosticContract update(
+        String resourceGroupName,
+        String serviceName,
+        String diagnosticId,
+        String ifMatch,
+        DiagnosticContractInner parameters) {
+        DiagnosticContractInner inner =
+            this.serviceClient().update(resourceGroupName, serviceName, diagnosticId, ifMatch, parameters);
+        if (inner != null) {
+            return new DiagnosticContractImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public Response<Void> deleteWithResponse(
         String resourceGroupName, String serviceName, String diagnosticId, String ifMatch, Context context) {
         return this.serviceClient().deleteWithResponse(resourceGroupName, serviceName, diagnosticId, ifMatch, context);
+    }
+
+    public void delete(String resourceGroupName, String serviceName, String diagnosticId, String ifMatch) {
+        this.serviceClient().delete(resourceGroupName, serviceName, diagnosticId, ifMatch);
     }
 
     private DiagnosticsClient serviceClient() {

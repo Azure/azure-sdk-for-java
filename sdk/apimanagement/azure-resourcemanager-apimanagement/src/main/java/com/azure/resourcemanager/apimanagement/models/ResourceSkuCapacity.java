@@ -34,6 +34,10 @@ public final class ResourceSkuCapacity {
     @JsonProperty(value = "scaleType", access = JsonProperty.Access.WRITE_ONLY)
     private ResourceSkuCapacityScaleType scaleType;
 
+    /** Creates an instance of ResourceSkuCapacity class. */
+    public ResourceSkuCapacity() {
+    }
+
     /**
      * Get the minimum property: The minimum capacity.
      *
