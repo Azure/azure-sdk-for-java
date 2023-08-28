@@ -130,7 +130,7 @@ public class LargeQuerySample {
         String findBatchEndpointsQuery = String.format(
             "%1$s | sort by TimeGenerated desc | extend batch_num = row_cumsum(1) / %2$s | summarize batchStart=min(TimeGenerated) by batch_num | sort by batch_num desc | project batchStart",
             originalQuery,
-            maxRowPerBatch);
+            maxRowsPerBatch);
 
         LogsQueryResult result = client.queryWorkspace(workspaceId, findBatchEndpointsQuery, QueryTimeInterval.ALL);
         List<LogsTableRow> rows = result.getTable().getRows();
