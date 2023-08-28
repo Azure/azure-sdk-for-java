@@ -10,14 +10,16 @@ import org.apache.qpid.proton.amqp.transport.DeliveryState;
  */
 public final class DeliveryNotOnLinkException extends RuntimeException {
 
-    public static DeliveryNotOnLinkException linkClosed(String deliveryTag) {
-        return new DeliveryNotOnLinkException("Cannot send disposition."
-            + " Reason: Unable to look up the delivery for the delivery tag " + deliveryTag + " as the link is closed.");
+    public static DeliveryNotOnLinkException linkClosed(String deliveryTag, DeliveryState desiredState) {
+        return new DeliveryNotOnLinkException(
+            "Cannot process the disposition request to set the state as '" + desiredState + "' for the delivery with delivery tag (id) '" + deliveryTag + "'."
+            + " Reason: Unable to look up the delivery for the delivery tag as the link is closed.");
     }
 
-    public static DeliveryNotOnLinkException noMatchingDelivery(String deliveryTag) {
-        return new DeliveryNotOnLinkException("Cannot send disposition."
-            + " Reason: The delivery with the delivery tag " + deliveryTag + " does not exist in the link's DeliveryMap.");
+    public static DeliveryNotOnLinkException noMatchingDelivery(String deliveryTag, DeliveryState desiredState) {
+        return new DeliveryNotOnLinkException(
+            "Cannot process the disposition request to set the state as '" + desiredState + "' for the delivery with delivery tag (id) '" + deliveryTag + "'."
+            + " Reason: The delivery with the delivery tag does not exist in the link's DeliveryMap.");
     }
 
     private DeliveryNotOnLinkException(String message) {

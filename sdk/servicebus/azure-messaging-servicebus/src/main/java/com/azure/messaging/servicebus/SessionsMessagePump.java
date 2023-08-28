@@ -753,12 +753,12 @@ final class SessionsMessagePump {
             }
             final String sessionId = message.getSessionId();
             final ServiceBusSessionReactorReceiver receiver = receivers.get(sessionId);
+            final DeliveryState deliveryState = MessageUtils.getDeliveryState(dispositionStatus, deadLetterReason,
+                deadLetterDescription, propertiesToModify, transactionContext);
             if (receiver != null) {
-                final DeliveryState deliveryState = MessageUtils.getDeliveryState(dispositionStatus, deadLetterReason,
-                    deadLetterDescription, propertiesToModify, transactionContext);
                 return receiver.updateDisposition(message.getLockToken(), deliveryState);
             } else {
-                return Mono.error(DeliveryNotOnLinkException.noMatchingDelivery(message.getLockToken()));
+                return Mono.error(DeliveryNotOnLinkException.noMatchingDelivery(message.getLockToken(), deliveryState));
             }
         }
 
