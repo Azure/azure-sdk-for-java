@@ -7,7 +7,7 @@
 #### Breaking Changes
 
 #### Bugs Fixed
-* Fixed an issue where spark job fail due to 409 when `ItemBulkUpdate` is being configured - See [PR 36541](https://github.com/Azure/azure-sdk-for-java/pull/36541)
+* Fixed an issue where spark job failed due to 409 when `ItemBulkUpdate` is being configured - See [PR 36541](https://github.com/Azure/azure-sdk-for-java/pull/36541)
 
 #### Other Changes
 
