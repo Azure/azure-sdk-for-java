@@ -6,7 +6,6 @@ package com.azure.core.http.httpurlconnection;
 import com.azure.core.http.*;
 import com.azure.core.test.http.LocalTestServer;
 import com.azure.core.util.Context;
-import io.vertx.core.http.HttpClosedException;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -38,7 +37,7 @@ import java.util.concurrent.TimeUnit;
 import static org.junit.jupiter.api.Assertions.*;
 
 @Execution(ExecutionMode.SAME_THREAD)
-public class AsyncHttpUrlConnectionClientTests {
+public class HttpUrlConnectionAsyncClientTest {
     static final String RETURN_HEADERS_AS_IS_PATH = "/returnHeadersAsIs";
     private static final byte[] SHORT_BODY = "hi there".getBytes(StandardCharsets.UTF_8);
     private static final byte[] LONG_BODY = createLongBody();

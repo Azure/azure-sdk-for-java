@@ -13,7 +13,7 @@ import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
 
 @Execution(ExecutionMode.SAME_THREAD)
-public class AsyncHttpUrlConnectionClientAsyncHttpClientTests extends HttpClientTests {
+public class HttpUrlConnectionAsyncHttpClientTests extends HttpClientTests {
     private static LocalTestServer server;
 
     @BeforeAll
@@ -41,7 +41,6 @@ public class AsyncHttpUrlConnectionClientAsyncHttpClientTests extends HttpClient
     }
 
     @Override
-    // To be updated once a builder has been established
     protected HttpClient createHttpClient() {
         return new AsyncHttpUrlConnectionClientBuilder.build();
     }

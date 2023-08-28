@@ -15,9 +15,9 @@ import java.util.function.Predicate;
  *
  * Avoids having to implement workarounds in the client code to make them available just for testing purposes.
  */
-final class AsyncHttpUrlConnectionClientTestHelper {
+final class HttpUrlConnectionAsyncClientTestHelper {
 
-    private AsyncHttpUrlConnectionClientTestHelper() {
+    private HttpUrlConnectionAsyncClientTestHelper() {
         // Utility class
     }
 
