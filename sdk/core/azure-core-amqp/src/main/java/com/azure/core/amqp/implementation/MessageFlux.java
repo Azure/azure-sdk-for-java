@@ -7,6 +7,7 @@ import com.azure.core.amqp.AmqpEndpointState;
 import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpRetryPolicy;
 import com.azure.core.amqp.FixedAmqpRetryPolicy;
+import com.azure.core.amqp.implementation.handler.DeliveryNotOnLinkException;
 import com.azure.core.util.AsyncCloseable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.logging.LoggingEventBuilder;
@@ -939,20 +940,22 @@ public final class MessageFlux extends FluxOperator<AmqpReceiveLink, Message> {
                 //      RecoverableReactorReceiver, Or downstream cancels parent RecoverableReactorReceiver.
                 // 1 & 2 means we don't have to read the 'volatile' variables 'parent.done', 'parent.cancelled'
                 //
-                final String message = String.format("The disposition request to set the state as %s for the message"
-                        + " with id %s cannot be processed as the link that delivered the message is disconnected."
-                        + " Any new link to continue the receive operation can disposition only the message that arrives"
-                        + " on that link [State- link.done:%b link.cancelled:%b parent.done:%b parent.cancelled:%b]",
-                    deliveryState, deliveryTag, done, s == CANCELLED_SUBSCRIPTION, parent.done, parent.cancelled);
+                final String state = String.format("[link.done:%b link.cancelled:%b parent.done:%b parent.cancelled:%b]",
+                    done, s == CANCELLED_SUBSCRIPTION, parent.done, parent.cancelled);
 
-                Throwable cause = parent.error;
-                if (cause == null) {
-                    cause = this.error;
+                final DeliveryNotOnLinkException dispositionError = DeliveryNotOnLinkException.linkClosed(deliveryTag, deliveryState);
+                final Throwable receiverError = this.error;
+                if (receiverError != null) {
+                    dispositionError.addSuppressed(receiverError);
                 }
-                final IllegalStateException error = new IllegalStateException(message, cause);
+                final Throwable upstreamError = parent.error;
+                if (upstreamError != null) {
+                    dispositionError.addSuppressed(upstreamError);
+                }
                 return monoError(logger.atError()
                     .addKeyValue(DELIVERY_TAG_KEY, deliveryTag)
-                    .addKeyValue(DELIVERY_STATE_KEY, deliveryState), error);
+                    .addKeyValue(DELIVERY_STATE_KEY, deliveryState)
+                    .addKeyValue("messageFluxState", state), dispositionError);
             }
             return receiver.updateDisposition(deliveryTag, deliveryState);
         }

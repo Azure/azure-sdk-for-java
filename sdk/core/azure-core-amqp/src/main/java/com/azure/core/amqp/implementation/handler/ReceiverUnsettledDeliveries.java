@@ -181,7 +181,7 @@ public final class ReceiverUnsettledDeliveries implements AutoCloseable {
      */
     public Mono<Void> sendDisposition(String deliveryTag, DeliveryState desiredState) {
         if (isTerminated.get()) {
-            return monoError(logger, DeliveryNotOnLinkException.linkClosed(deliveryTag));
+            return monoError(logger, DeliveryNotOnLinkException.linkClosed(deliveryTag, desiredState));
         } else {
             return sendDispositionImpl(deliveryTag, desiredState);
         }
@@ -366,11 +366,7 @@ public final class ReceiverUnsettledDeliveries implements AutoCloseable {
     private Mono<Void> sendDispositionImpl(String deliveryTag, DeliveryState desiredState) {
         final Delivery delivery = deliveries.get(deliveryTag);
         if (delivery == null) {
-            logger.atWarning()
-                .addKeyValue(DELIVERY_TAG_KEY, deliveryTag)
-                .log("Delivery not found to update disposition.");
-
-            return monoError(logger, DeliveryNotOnLinkException.noMatchingDelivery(deliveryTag));
+            return monoError(logger, DeliveryNotOnLinkException.noMatchingDelivery(deliveryTag, desiredState));
         }
 
         final DispositionWork work = new DispositionWork(deliveryTag, desiredState, timeout);

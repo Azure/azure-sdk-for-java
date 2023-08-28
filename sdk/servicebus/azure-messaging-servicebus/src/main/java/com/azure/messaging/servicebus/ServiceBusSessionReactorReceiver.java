@@ -65,7 +65,7 @@ final class ServiceBusSessionReactorReceiver implements AmqpReceiveLink {
                     return tracer.traceMono("ServiceBus.renewSessionLock", renewLock);
                 });
             };
-            // The operation that recurs renewal using the above 'lockRenewFunc' function.
+            // The operation that recurs renewal using the above 'lockRenewFunc' Function.
             final LockRenewalOperation recurringLockRenew = new LockRenewalOperation(sessionId, maxSessionLockRenew,
                 true, lockRenewFunc, lockedUntil);
             this.disposables.add(recurringLockRenew);
