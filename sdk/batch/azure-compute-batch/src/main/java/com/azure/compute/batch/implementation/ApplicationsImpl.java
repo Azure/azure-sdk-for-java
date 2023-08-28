@@ -29,6 +29,7 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.UrlBuilder;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -197,18 +198,6 @@ public final class ApplicationsImpl {
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
-     * <p><strong>Header Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
@@ -271,18 +260,6 @@ public final class ApplicationsImpl {
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
-     * <p><strong>Header Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
@@ -311,8 +288,31 @@ public final class ApplicationsImpl {
                         ? requestOptions.getContext()
                         : Context.NONE);
         return new PagedFlux<>(
-                () -> listSinglePageAsync(requestOptions),
-                nextLink -> listNextSinglePageAsync(nextLink, requestOptionsForNextPage));
+                (pageSize) -> {
+                    RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
+                    if (pageSize != null) {
+                        requestOptionsLocal.addRequestCallback(
+                                requestLocal -> {
+                                    UrlBuilder urlBuilder = UrlBuilder.parse(requestLocal.getUrl());
+                                    urlBuilder.setQueryParameter("maxresults", String.valueOf(pageSize));
+                                    requestLocal.setUrl(urlBuilder.toString());
+                                });
+                    }
+                    return listSinglePageAsync(requestOptionsLocal);
+                },
+                (nextLink, pageSize) -> {
+                    RequestOptions requestOptionsLocal = new RequestOptions();
+                    requestOptionsLocal.setContext(requestOptionsForNextPage.getContext());
+                    if (pageSize != null) {
+                        requestOptionsLocal.addRequestCallback(
+                                requestLocal -> {
+                                    UrlBuilder urlBuilder = UrlBuilder.parse(requestLocal.getUrl());
+                                    urlBuilder.setQueryParameter("maxresults", String.valueOf(pageSize));
+                                    requestLocal.setUrl(urlBuilder.toString());
+                                });
+                    }
+                    return listNextSinglePageAsync(nextLink, requestOptionsLocal);
+                });
     }
 
     /**
@@ -334,18 +334,6 @@ public final class ApplicationsImpl {
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
-     * <p><strong>Header Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addHeader}
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -405,18 +393,6 @@ public final class ApplicationsImpl {
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
-     * <p><strong>Header Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
@@ -445,8 +421,31 @@ public final class ApplicationsImpl {
                         ? requestOptions.getContext()
                         : Context.NONE);
         return new PagedIterable<>(
-                () -> listSinglePage(requestOptions),
-                nextLink -> listNextSinglePage(nextLink, requestOptionsForNextPage));
+                (pageSize) -> {
+                    RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
+                    if (pageSize != null) {
+                        requestOptionsLocal.addRequestCallback(
+                                requestLocal -> {
+                                    UrlBuilder urlBuilder = UrlBuilder.parse(requestLocal.getUrl());
+                                    urlBuilder.setQueryParameter("maxresults", String.valueOf(pageSize));
+                                    requestLocal.setUrl(urlBuilder.toString());
+                                });
+                    }
+                    return listSinglePage(requestOptionsLocal);
+                },
+                (nextLink, pageSize) -> {
+                    RequestOptions requestOptionsLocal = new RequestOptions();
+                    requestOptionsLocal.setContext(requestOptionsForNextPage.getContext());
+                    if (pageSize != null) {
+                        requestOptionsLocal.addRequestCallback(
+                                requestLocal -> {
+                                    UrlBuilder urlBuilder = UrlBuilder.parse(requestLocal.getUrl());
+                                    urlBuilder.setQueryParameter("maxresults", String.valueOf(pageSize));
+                                    requestLocal.setUrl(urlBuilder.toString());
+                                });
+                    }
+                    return listNextSinglePage(nextLink, requestOptionsLocal);
+                });
     }
 
     /**
@@ -466,18 +465,6 @@ public final class ApplicationsImpl {
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
-     * <p><strong>Header Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addHeader}
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -532,18 +519,6 @@ public final class ApplicationsImpl {
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
-     * <p><strong>Header Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
@@ -580,18 +555,6 @@ public final class ApplicationsImpl {
      * Lists all of the applications available in the specified Account.
      *
      * <p>Get the next page of items.
-     *
-     * <p><strong>Header Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addHeader}
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -636,18 +599,6 @@ public final class ApplicationsImpl {
      * Lists all of the applications available in the specified Account.
      *
      * <p>Get the next page of items.
-     *
-     * <p><strong>Header Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addHeader}
      *
      * <p><strong>Response Body Schema</strong>
      *

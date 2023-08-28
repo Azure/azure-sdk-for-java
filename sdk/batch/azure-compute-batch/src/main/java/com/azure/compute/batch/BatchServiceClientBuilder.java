@@ -256,7 +256,10 @@ public final class BatchServiceClientBuilder
                 (serviceVersion != null) ? serviceVersion : BatchServiceVersion.getLatest();
         BatchServiceClientImpl client =
                 new BatchServiceClientImpl(
-                        localPipeline, JacksonAdapter.createDefaultSerializerAdapter(), endpoint, localServiceVersion);
+                        localPipeline,
+                        JacksonAdapter.createDefaultSerializerAdapter(),
+                        this.endpoint,
+                        localServiceVersion);
         return client;
     }
 

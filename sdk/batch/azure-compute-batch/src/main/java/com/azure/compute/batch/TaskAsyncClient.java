@@ -66,18 +66,6 @@ public final class TaskAsyncClient {
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
-     * <p><strong>Header Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     *
      * <p><strong>Request Body Schema</strong>
      *
      * <pre>{@code
@@ -242,18 +230,6 @@ public final class TaskAsyncClient {
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
-     * <p><strong>Header Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addHeader}
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -476,18 +452,6 @@ public final class TaskAsyncClient {
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
-     * <p><strong>Header Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     *
      * <p><strong>Request Body Schema</strong>
      *
      * <pre>{@code
@@ -688,9 +652,6 @@ public final class TaskAsyncClient {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
      *     <tr><td>if-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
      * The operation will be performed only if the resource's current ETag on the
      * service exactly matches the value specified by the client.</td></tr>
@@ -746,9 +707,6 @@ public final class TaskAsyncClient {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
      *     <tr><td>if-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
      * The operation will be performed only if the resource's current ETag on the
      * service exactly matches the value specified by the client.</td></tr>
@@ -984,9 +942,6 @@ public final class TaskAsyncClient {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
      *     <tr><td>if-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
      * The operation will be performed only if the resource's current ETag on the
      * service exactly matches the value specified by the client.</td></tr>
@@ -1225,9 +1180,6 @@ public final class TaskAsyncClient {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
      *     <tr><td>if-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
      * The operation will be performed only if the resource's current ETag on the
      * service exactly matches the value specified by the client.</td></tr>
@@ -1284,9 +1236,6 @@ public final class TaskAsyncClient {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
      *     <tr><td>if-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
      * The operation will be performed only if the resource's current ETag on the
      * service exactly matches the value specified by the client.</td></tr>
@@ -1567,18 +1516,6 @@ public final class TaskAsyncClient {
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
-     * <p><strong>Header Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
@@ -1666,17 +1603,200 @@ public final class TaskAsyncClient {
     }
 
     /**
-     * Creates a Task to the specified Job.
+     * Deletes the specified Task file from the Compute Node where the Task ran.
      *
-     * <p>The maximum lifetime of a Task from addition to completion is 180 days. If a Task has not completed within 180
-     * days of being added it will be terminated by the Batch service and left in whatever state it was in at that time.
+     * <p><strong>Query Parameters</strong>
      *
-     * @param jobId The ID of the Job to which the Task is to be created.
-     * @param task The Task to be created.
-     * @param timeOut The maximum number of items to return in the response. A maximum of 1000 applications can be
-     *     returned.
-     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
-     *     time; set it explicitly if you are calling the REST API directly.
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A maximum of 1000
+     * applications can be returned.</td></tr>
+     *     <tr><td>recursive</td><td>Boolean</td><td>No</td><td>Whether to delete children of a directory. If the filePath parameter represents
+     * a directory instead of a file, you can set recursive to true to delete the
+     * directory and all of the files and subdirectories in it. If recursive is false
+     * then the directory must be empty or deletion will fail.</td></tr>
+     * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     *
+     * @param jobId The ID of the Job that contains the Task.
+     * @param taskId The ID of the Task whose file you want to retrieve.
+     * @param filePath The path to the Task file that you want to get the content of.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> deleteFileFromTaskWithResponse(
+            String jobId, String taskId, String filePath, RequestOptions requestOptions) {
+        return this.serviceClient.deleteFileFromTaskWithResponseAsync(jobId, taskId, filePath, requestOptions);
+    }
+
+    /**
+     * Returns the content of the specified Task file.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A maximum of 1000
+     * applications can be returned.</td></tr>
+     * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     *
+     * <p><strong>Header Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Header Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>if-modified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     * client. The operation will be performed only if the resource on the service has
+     * been modified since the specified time.</td></tr>
+     *     <tr><td>if-unmodified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     * client. The operation will be performed only if the resource on the service has
+     * not been modified since the specified time.</td></tr>
+     *     <tr><td>ocp-range</td><td>String</td><td>No</td><td>The byte range to be retrieved. The default is to retrieve the entire file. The
+     * format is bytes=startRange-endRange.</td></tr>
+     * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * BinaryData
+     * }</pre>
+     *
+     * @param jobId The ID of the Job that contains the Task.
+     * @param taskId The ID of the Task whose file you want to retrieve.
+     * @param filePath The path to the Task file that you want to get the content of.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> getFileFromTaskWithResponse(
+            String jobId, String taskId, String filePath, RequestOptions requestOptions) {
+        return this.serviceClient.getFileFromTaskWithResponseAsync(jobId, taskId, filePath, requestOptions);
+    }
+
+    /**
+     * Gets the properties of the specified Task file.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A maximum of 1000
+     * applications can be returned.</td></tr>
+     * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     *
+     * <p><strong>Header Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Header Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>if-modified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     * client. The operation will be performed only if the resource on the service has
+     * been modified since the specified time.</td></tr>
+     *     <tr><td>if-unmodified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     * client. The operation will be performed only if the resource on the service has
+     * not been modified since the specified time.</td></tr>
+     * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     *
+     * @param jobId The ID of the Job that contains the Task.
+     * @param taskId The ID of the Task whose file you want to retrieve.
+     * @param filePath The path to the Task file that you want to get the content of.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the properties of the specified Task file along with {@link Response} on successful completion of {@link
+     *     Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> getFilePropertiesFromTaskWithResponse(
+            String jobId, String taskId, String filePath, RequestOptions requestOptions) {
+        return this.serviceClient.getFilePropertiesFromTaskWithResponseAsync(jobId, taskId, filePath, requestOptions);
+    }
+
+    /**
+     * Lists the files in a Task's directory on its Compute Node.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A maximum of 1000
+     * applications can be returned.</td></tr>
+     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A maximum of 1000
+     * applications can be returned.</td></tr>
+     *     <tr><td>$filter</td><td>String</td><td>No</td><td>An OData $filter clause. For more information on constructing this filter, see
+     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-task-files.</td></tr>
+     *     <tr><td>recursive</td><td>Boolean</td><td>No</td><td>Whether to list children of the Task directory. This parameter can be used in
+     * combination with the filter parameter to list specific type of files.</td></tr>
+     * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     name: String (Optional)
+     *     url: String (Optional)
+     *     isDirectory: Boolean (Optional)
+     *     properties (Optional): {
+     *         creationTime: OffsetDateTime (Optional)
+     *         lastModified: OffsetDateTime (Required)
+     *         contentLength: int (Required)
+     *         contentType: String (Optional)
+     *         fileMode: String (Optional)
+     *     }
+     * }
+     * }</pre>
+     *
+     * @param jobId The ID of the Job that contains the Task.
+     * @param taskId The ID of the Task whose files you want to list.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the result of listing the files on a Compute Node, or the files associated with a Task on a Compute Node
+     *     as paginated response with {@link PagedFlux}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<BinaryData> listFilesFromTask(String jobId, String taskId, RequestOptions requestOptions) {
+        return this.serviceClient.listFilesFromTaskAsync(jobId, taskId, requestOptions);
+    }
+
+    /**
+     * Deletes the specified Task file from the Compute Node where the Task ran.
+     *
+     * @param jobId The ID of the Job that contains the Task.
+     * @param taskId The ID of the Task whose file you want to retrieve.
+     * @param filePath The path to the Task file that you want to get the content of.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1687,15 +1807,124 @@ public final class TaskAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> create(String jobId, BatchTaskCreateParameters task, Integer timeOut, OffsetDateTime ocpDate) {
+    public Mono<Void> deleteFileFromTask(String jobId, String taskId, String filePath) {
+        // Generated convenience method for deleteFileFromTaskWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return deleteFileFromTaskWithResponse(jobId, taskId, filePath, requestOptions).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Returns the content of the specified Task file.
+     *
+     * @param jobId The ID of the Job that contains the Task.
+     * @param taskId The ID of the Task whose file you want to retrieve.
+     * @param filePath The path to the Task file that you want to get the content of.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<BinaryData> getFileFromTask(String jobId, String taskId, String filePath) {
+        // Generated convenience method for getFileFromTaskWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return getFileFromTaskWithResponse(jobId, taskId, filePath, requestOptions).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Gets the properties of the specified Task file.
+     *
+     * @param jobId The ID of the Job that contains the Task.
+     * @param taskId The ID of the Task whose file you want to retrieve.
+     * @param filePath The path to the Task file that you want to get the content of.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the properties of the specified Task file on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> getFilePropertiesFromTask(String jobId, String taskId, String filePath) {
+        // Generated convenience method for getFilePropertiesFromTaskWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return getFilePropertiesFromTaskWithResponse(jobId, taskId, filePath, requestOptions).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Lists the files in a Task's directory on its Compute Node.
+     *
+     * @param jobId The ID of the Job that contains the Task.
+     * @param taskId The ID of the Task whose files you want to list.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of listing the files on a Compute Node, or the files associated with a Task on a Compute Node
+     *     as paginated response with {@link PagedFlux}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<NodeFile> listFilesFromTask(String jobId, String taskId) {
+        // Generated convenience method for listFilesFromTask
+        RequestOptions requestOptions = new RequestOptions();
+        PagedFlux<BinaryData> pagedFluxResponse = listFilesFromTask(jobId, taskId, requestOptions);
+        return PagedFlux.create(
+                () ->
+                        (continuationToken, pageSize) -> {
+                            Flux<PagedResponse<BinaryData>> flux =
+                                    (continuationToken == null)
+                                            ? pagedFluxResponse.byPage().take(1)
+                                            : pagedFluxResponse.byPage(continuationToken).take(1);
+                            return flux.map(
+                                    pagedResponse ->
+                                            new PagedResponseBase<Void, NodeFile>(
+                                                    pagedResponse.getRequest(),
+                                                    pagedResponse.getStatusCode(),
+                                                    pagedResponse.getHeaders(),
+                                                    pagedResponse.getValue().stream()
+                                                            .map(
+                                                                    protocolMethodData ->
+                                                                            protocolMethodData.toObject(NodeFile.class))
+                                                            .collect(Collectors.toList()),
+                                                    pagedResponse.getContinuationToken(),
+                                                    null));
+                        });
+    }
+
+    /**
+     * Creates a Task to the specified Job.
+     *
+     * <p>The maximum lifetime of a Task from addition to completion is 180 days. If a Task has not completed within 180
+     * days of being added it will be terminated by the Batch service and left in whatever state it was in at that time.
+     *
+     * @param jobId The ID of the Job to which the Task is to be created.
+     * @param task The Task to be created.
+     * @param timeOut The maximum number of items to return in the response. A maximum of 1000 applications can be
+     *     returned.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> create(String jobId, BatchTaskCreateParameters task, Integer timeOut) {
         // Generated convenience method for createWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (timeOut != null) {
             requestOptions.addQueryParam("timeOut", String.valueOf(timeOut), false);
-        }
-        if (ocpDate != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
         }
         return createWithResponse(jobId, BinaryData.fromObject(task), requestOptions).flatMap(FluxUtil::toMono);
     }
@@ -1707,10 +1936,6 @@ public final class TaskAsyncClient {
      * Task. Use the list subtasks API to retrieve information about subtasks.
      *
      * @param jobId The ID of the Job.
-     * @param maxresults The maximum number of items to return in the response. A maximum of 1000 applications can be
-     *     returned.
-     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
-     *     time; set it explicitly if you are calling the REST API directly.
      * @param timeOut The maximum number of items to return in the response. A maximum of 1000 applications can be
      *     returned.
      * @param filter An OData $filter clause. For more information on constructing this filter, see
@@ -1727,23 +1952,9 @@ public final class TaskAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BatchTask> list(
-            String jobId,
-            Integer maxresults,
-            OffsetDateTime ocpDate,
-            Integer timeOut,
-            String filter,
-            String select,
-            String expand) {
+    public PagedFlux<BatchTask> list(String jobId, Integer timeOut, String filter, String select, String expand) {
         // Generated convenience method for list
         RequestOptions requestOptions = new RequestOptions();
-        if (maxresults != null) {
-            requestOptions.addQueryParam("maxresults", String.valueOf(maxresults), false);
-        }
-        if (ocpDate != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
-        }
         if (timeOut != null) {
             requestOptions.addQueryParam("timeOut", String.valueOf(timeOut), false);
         }
@@ -1799,8 +2010,6 @@ public final class TaskAsyncClient {
      * @param collection The Tasks to be added.
      * @param timeOut The maximum number of items to return in the response. A maximum of 1000 applications can be
      *     returned.
-     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
-     *     time; set it explicitly if you are calling the REST API directly.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1811,16 +2020,11 @@ public final class TaskAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<TaskAddCollectionResult> addCollection(
-            String jobId, BatchTaskCollection collection, Integer timeOut, OffsetDateTime ocpDate) {
+    public Mono<TaskAddCollectionResult> addCollection(String jobId, BatchTaskCollection collection, Integer timeOut) {
         // Generated convenience method for addCollectionWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (timeOut != null) {
             requestOptions.addQueryParam("timeOut", String.valueOf(timeOut), false);
-        }
-        if (ocpDate != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
         }
         return addCollectionWithResponse(jobId, BinaryData.fromObject(collection), requestOptions)
                 .flatMap(FluxUtil::toMono)
@@ -1838,8 +2042,6 @@ public final class TaskAsyncClient {
      * @param taskId The ID of the Task to delete.
      * @param timeOut The maximum number of items to return in the response. A maximum of 1000 applications can be
      *     returned.
-     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
-     *     time; set it explicitly if you are calling the REST API directly.
      * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1851,8 +2053,7 @@ public final class TaskAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> delete(
-            String jobId, String taskId, Integer timeOut, OffsetDateTime ocpDate, RequestConditions requestConditions) {
+    public Mono<Void> delete(String jobId, String taskId, Integer timeOut, RequestConditions requestConditions) {
         // Generated convenience method for deleteWithResponse
         RequestOptions requestOptions = new RequestOptions();
         String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
@@ -1861,10 +2062,6 @@ public final class TaskAsyncClient {
         OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
         if (timeOut != null) {
             requestOptions.addQueryParam("timeOut", String.valueOf(timeOut), false);
-        }
-        if (ocpDate != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
         }
         if (ifMatch != null) {
             requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
@@ -1893,8 +2090,6 @@ public final class TaskAsyncClient {
      * @param taskId The ID of the Task to get information about.
      * @param timeOut The maximum number of items to return in the response. A maximum of 1000 applications can be
      *     returned.
-     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
-     *     time; set it explicitly if you are calling the REST API directly.
      * @param select An OData $select clause.
      * @param expand An OData $expand clause.
      * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
@@ -1915,7 +2110,6 @@ public final class TaskAsyncClient {
             String jobId,
             String taskId,
             Integer timeOut,
-            OffsetDateTime ocpDate,
             String select,
             String expand,
             RequestConditions requestConditions) {
@@ -1927,10 +2121,6 @@ public final class TaskAsyncClient {
         OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
         if (timeOut != null) {
             requestOptions.addQueryParam("timeOut", String.valueOf(timeOut), false);
-        }
-        if (ocpDate != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
         }
         if (select != null) {
             requestOptions.addQueryParam("$select", select, false);
@@ -1965,8 +2155,6 @@ public final class TaskAsyncClient {
      * @param parameters The parameters for the request.
      * @param timeOut The maximum number of items to return in the response. A maximum of 1000 applications can be
      *     returned.
-     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
-     *     time; set it explicitly if you are calling the REST API directly.
      * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1979,12 +2167,7 @@ public final class TaskAsyncClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> update(
-            String jobId,
-            String taskId,
-            BatchTask parameters,
-            Integer timeOut,
-            OffsetDateTime ocpDate,
-            RequestConditions requestConditions) {
+            String jobId, String taskId, BatchTask parameters, Integer timeOut, RequestConditions requestConditions) {
         // Generated convenience method for updateWithResponse
         RequestOptions requestOptions = new RequestOptions();
         String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
@@ -1993,10 +2176,6 @@ public final class TaskAsyncClient {
         OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
         if (timeOut != null) {
             requestOptions.addQueryParam("timeOut", String.valueOf(timeOut), false);
-        }
-        if (ocpDate != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
         }
         if (ifMatch != null) {
             requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
@@ -2025,8 +2204,6 @@ public final class TaskAsyncClient {
      * @param taskId The ID of the Task.
      * @param timeOut The maximum number of items to return in the response. A maximum of 1000 applications can be
      *     returned.
-     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
-     *     time; set it explicitly if you are calling the REST API directly.
      * @param select An OData $select clause.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2038,16 +2215,11 @@ public final class TaskAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BatchTaskListSubtasksResult> listSubtasks(
-            String jobId, String taskId, Integer timeOut, OffsetDateTime ocpDate, String select) {
+    public Mono<BatchTaskListSubtasksResult> listSubtasks(String jobId, String taskId, Integer timeOut, String select) {
         // Generated convenience method for listSubtasksWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (timeOut != null) {
             requestOptions.addQueryParam("timeOut", String.valueOf(timeOut), false);
-        }
-        if (ocpDate != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
         }
         if (select != null) {
             requestOptions.addQueryParam("$select", select, false);
@@ -2068,8 +2240,6 @@ public final class TaskAsyncClient {
      * @param taskId The ID of the Task to terminate.
      * @param timeOut The maximum number of items to return in the response. A maximum of 1000 applications can be
      *     returned.
-     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
-     *     time; set it explicitly if you are calling the REST API directly.
      * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2081,8 +2251,7 @@ public final class TaskAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> terminate(
-            String jobId, String taskId, Integer timeOut, OffsetDateTime ocpDate, RequestConditions requestConditions) {
+    public Mono<Void> terminate(String jobId, String taskId, Integer timeOut, RequestConditions requestConditions) {
         // Generated convenience method for terminateWithResponse
         RequestOptions requestOptions = new RequestOptions();
         String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
@@ -2091,10 +2260,6 @@ public final class TaskAsyncClient {
         OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
         if (timeOut != null) {
             requestOptions.addQueryParam("timeOut", String.valueOf(timeOut), false);
-        }
-        if (ocpDate != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
         }
         if (ifMatch != null) {
             requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
@@ -2126,8 +2291,6 @@ public final class TaskAsyncClient {
      * @param taskId The ID of the Task to reactivate.
      * @param timeOut The maximum number of items to return in the response. A maximum of 1000 applications can be
      *     returned.
-     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
-     *     time; set it explicitly if you are calling the REST API directly.
      * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2139,8 +2302,7 @@ public final class TaskAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> reactivate(
-            String jobId, String taskId, Integer timeOut, OffsetDateTime ocpDate, RequestConditions requestConditions) {
+    public Mono<Void> reactivate(String jobId, String taskId, Integer timeOut, RequestConditions requestConditions) {
         // Generated convenience method for reactivateWithResponse
         RequestOptions requestOptions = new RequestOptions();
         String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
@@ -2149,10 +2311,6 @@ public final class TaskAsyncClient {
         OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
         if (timeOut != null) {
             requestOptions.addQueryParam("timeOut", String.valueOf(timeOut), false);
-        }
-        if (ocpDate != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
         }
         if (ifMatch != null) {
             requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
@@ -2174,232 +2332,11 @@ public final class TaskAsyncClient {
     /**
      * Deletes the specified Task file from the Compute Node where the Task ran.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A maximum of 1000
-     * applications can be returned.</td></tr>
-     *     <tr><td>recursive</td><td>Boolean</td><td>No</td><td>Whether to delete children of a directory. If the filePath parameter represents
-     * a directory instead of a file, you can set recursive to true to delete the
-     * directory and all of the files and subdirectories in it. If recursive is false
-     * then the directory must be empty or deletion will fail.</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
-     * <p><strong>Header Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     *
-     * @param jobId The ID of the Job that contains the Task.
-     * @param taskId The ID of the Task whose file you want to retrieve.
-     * @param filePath The path to the Task file that you want to get the content of.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteFileFromTaskWithResponse(
-            String jobId, String taskId, String filePath, RequestOptions requestOptions) {
-        return this.serviceClient.deleteFileFromTaskWithResponseAsync(jobId, taskId, filePath, requestOptions);
-    }
-
-    /**
-     * Returns the content of the specified Task file.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A maximum of 1000
-     * applications can be returned.</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
-     * <p><strong>Header Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
-     *     <tr><td>if-modified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
-     * client. The operation will be performed only if the resource on the service has
-     * been modified since the specified time.</td></tr>
-     *     <tr><td>if-unmodified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
-     * client. The operation will be performed only if the resource on the service has
-     * not been modified since the specified time.</td></tr>
-     *     <tr><td>ocp-range</td><td>String</td><td>No</td><td>The byte range to be retrieved. The default is to retrieve the entire file. The
-     * format is bytes=startRange-endRange.</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * BinaryData
-     * }</pre>
-     *
-     * @param jobId The ID of the Job that contains the Task.
-     * @param taskId The ID of the Task whose file you want to retrieve.
-     * @param filePath The path to the Task file that you want to get the content of.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getFileFromTaskWithResponse(
-            String jobId, String taskId, String filePath, RequestOptions requestOptions) {
-        return this.serviceClient.getFileFromTaskWithResponseAsync(jobId, taskId, filePath, requestOptions);
-    }
-
-    /**
-     * Gets the properties of the specified Task file.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A maximum of 1000
-     * applications can be returned.</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
-     * <p><strong>Header Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
-     *     <tr><td>if-modified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
-     * client. The operation will be performed only if the resource on the service has
-     * been modified since the specified time.</td></tr>
-     *     <tr><td>if-unmodified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
-     * client. The operation will be performed only if the resource on the service has
-     * not been modified since the specified time.</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     *
-     * @param jobId The ID of the Job that contains the Task.
-     * @param taskId The ID of the Task whose file you want to retrieve.
-     * @param filePath The path to the Task file that you want to get the content of.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the properties of the specified Task file along with {@link Response} on successful completion of {@link
-     *     Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> getFilePropertiesFromTaskWithResponse(
-            String jobId, String taskId, String filePath, RequestOptions requestOptions) {
-        return this.serviceClient.getFilePropertiesFromTaskWithResponseAsync(jobId, taskId, filePath, requestOptions);
-    }
-
-    /**
-     * Lists the files in a Task's directory on its Compute Node.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A maximum of 1000
-     * applications can be returned.</td></tr>
-     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A maximum of 1000
-     * applications can be returned.</td></tr>
-     *     <tr><td>$filter</td><td>String</td><td>No</td><td>An OData $filter clause. For more information on constructing this filter, see
-     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-task-files.</td></tr>
-     *     <tr><td>recursive</td><td>Boolean</td><td>No</td><td>Whether to list children of the Task directory. This parameter can be used in
-     * combination with the filter parameter to list specific type of files.</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
-     * <p><strong>Header Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     name: String (Optional)
-     *     url: String (Optional)
-     *     isDirectory: Boolean (Optional)
-     *     properties (Optional): {
-     *         creationTime: OffsetDateTime (Optional)
-     *         lastModified: OffsetDateTime (Required)
-     *         contentLength: int (Required)
-     *         contentType: String (Optional)
-     *         fileMode: String (Optional)
-     *     }
-     * }
-     * }</pre>
-     *
-     * @param jobId The ID of the Job that contains the Task.
-     * @param taskId The ID of the Task whose files you want to list.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the result of listing the files on a Compute Node, or the files associated with a Task on a Compute Node
-     *     as paginated response with {@link PagedFlux}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> listFilesFromTask(String jobId, String taskId, RequestOptions requestOptions) {
-        return this.serviceClient.listFilesFromTaskAsync(jobId, taskId, requestOptions);
-    }
-
-    /**
-     * Deletes the specified Task file from the Compute Node where the Task ran.
-     *
      * @param jobId The ID of the Job that contains the Task.
      * @param taskId The ID of the Task whose file you want to retrieve.
      * @param filePath The path to the Task file that you want to get the content of.
      * @param timeOut The maximum number of items to return in the response. A maximum of 1000 applications can be
      *     returned.
-     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
-     *     time; set it explicitly if you are calling the REST API directly.
      * @param recursive Whether to delete children of a directory. If the filePath parameter represents a directory
      *     instead of a file, you can set recursive to true to delete the directory and all of the files and
      *     subdirectories in it. If recursive is false then the directory must be empty or deletion will fail.
@@ -2414,41 +2351,15 @@ public final class TaskAsyncClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteFileFromTask(
-            String jobId, String taskId, String filePath, Integer timeOut, OffsetDateTime ocpDate, Boolean recursive) {
+            String jobId, String taskId, String filePath, Integer timeOut, Boolean recursive) {
         // Generated convenience method for deleteFileFromTaskWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (timeOut != null) {
             requestOptions.addQueryParam("timeOut", String.valueOf(timeOut), false);
         }
-        if (ocpDate != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
-        }
         if (recursive != null) {
             requestOptions.addQueryParam("recursive", String.valueOf(recursive), false);
         }
-        return deleteFileFromTaskWithResponse(jobId, taskId, filePath, requestOptions).flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Deletes the specified Task file from the Compute Node where the Task ran.
-     *
-     * @param jobId The ID of the Job that contains the Task.
-     * @param taskId The ID of the Task whose file you want to retrieve.
-     * @param filePath The path to the Task file that you want to get the content of.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteFileFromTask(String jobId, String taskId, String filePath) {
-        // Generated convenience method for deleteFileFromTaskWithResponse
-        RequestOptions requestOptions = new RequestOptions();
         return deleteFileFromTaskWithResponse(jobId, taskId, filePath, requestOptions).flatMap(FluxUtil::toMono);
     }
 
@@ -2460,8 +2371,6 @@ public final class TaskAsyncClient {
      * @param filePath The path to the Task file that you want to get the content of.
      * @param timeOut The maximum number of items to return in the response. A maximum of 1000 applications can be
      *     returned.
-     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
-     *     time; set it explicitly if you are calling the REST API directly.
      * @param ifModifiedSince A timestamp indicating the last modified time of the resource known to the client. The
      *     operation will be performed only if the resource on the service has been modified since the specified time.
      * @param ifUnmodifiedSince A timestamp indicating the last modified time of the resource known to the client. The
@@ -2484,7 +2393,6 @@ public final class TaskAsyncClient {
             String taskId,
             String filePath,
             Integer timeOut,
-            OffsetDateTime ocpDate,
             OffsetDateTime ifModifiedSince,
             OffsetDateTime ifUnmodifiedSince,
             String ocpRange) {
@@ -2492,10 +2400,6 @@ public final class TaskAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         if (timeOut != null) {
             requestOptions.addQueryParam("timeOut", String.valueOf(timeOut), false);
-        }
-        if (ocpDate != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
         }
         if (ifModifiedSince != null) {
             requestOptions.setHeader(
@@ -2512,28 +2416,6 @@ public final class TaskAsyncClient {
     }
 
     /**
-     * Returns the content of the specified Task file.
-     *
-     * @param jobId The ID of the Job that contains the Task.
-     * @param taskId The ID of the Task whose file you want to retrieve.
-     * @param filePath The path to the Task file that you want to get the content of.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BinaryData> getFileFromTask(String jobId, String taskId, String filePath) {
-        // Generated convenience method for getFileFromTaskWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return getFileFromTaskWithResponse(jobId, taskId, filePath, requestOptions).flatMap(FluxUtil::toMono);
-    }
-
-    /**
      * Gets the properties of the specified Task file.
      *
      * @param jobId The ID of the Job that contains the Task.
@@ -2541,8 +2423,6 @@ public final class TaskAsyncClient {
      * @param filePath The path to the Task file that you want to get the content of.
      * @param timeOut The maximum number of items to return in the response. A maximum of 1000 applications can be
      *     returned.
-     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
-     *     time; set it explicitly if you are calling the REST API directly.
      * @param ifModifiedSince A timestamp indicating the last modified time of the resource known to the client. The
      *     operation will be performed only if the resource on the service has been modified since the specified time.
      * @param ifUnmodifiedSince A timestamp indicating the last modified time of the resource known to the client. The
@@ -2563,17 +2443,12 @@ public final class TaskAsyncClient {
             String taskId,
             String filePath,
             Integer timeOut,
-            OffsetDateTime ocpDate,
             OffsetDateTime ifModifiedSince,
             OffsetDateTime ifUnmodifiedSince) {
         // Generated convenience method for getFilePropertiesFromTaskWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (timeOut != null) {
             requestOptions.addQueryParam("timeOut", String.valueOf(timeOut), false);
-        }
-        if (ocpDate != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
         }
         if (ifModifiedSince != null) {
             requestOptions.setHeader(
@@ -2587,36 +2462,10 @@ public final class TaskAsyncClient {
     }
 
     /**
-     * Gets the properties of the specified Task file.
-     *
-     * @param jobId The ID of the Job that contains the Task.
-     * @param taskId The ID of the Task whose file you want to retrieve.
-     * @param filePath The path to the Task file that you want to get the content of.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of the specified Task file on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> getFilePropertiesFromTask(String jobId, String taskId, String filePath) {
-        // Generated convenience method for getFilePropertiesFromTaskWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return getFilePropertiesFromTaskWithResponse(jobId, taskId, filePath, requestOptions).flatMap(FluxUtil::toMono);
-    }
-
-    /**
      * Lists the files in a Task's directory on its Compute Node.
      *
      * @param jobId The ID of the Job that contains the Task.
      * @param taskId The ID of the Task whose files you want to list.
-     * @param maxresults The maximum number of items to return in the response. A maximum of 1000 applications can be
-     *     returned.
-     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
-     *     time; set it explicitly if you are calling the REST API directly.
      * @param timeOut The maximum number of items to return in the response. A maximum of 1000 applications can be
      *     returned.
      * @param filter An OData $filter clause. For more information on constructing this filter, see
@@ -2635,22 +2484,9 @@ public final class TaskAsyncClient {
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<NodeFile> listFilesFromTask(
-            String jobId,
-            String taskId,
-            Integer maxresults,
-            OffsetDateTime ocpDate,
-            Integer timeOut,
-            String filter,
-            Boolean recursive) {
+            String jobId, String taskId, Integer timeOut, String filter, Boolean recursive) {
         // Generated convenience method for listFilesFromTask
         RequestOptions requestOptions = new RequestOptions();
-        if (maxresults != null) {
-            requestOptions.addQueryParam("maxresults", String.valueOf(maxresults), false);
-        }
-        if (ocpDate != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
-        }
         if (timeOut != null) {
             requestOptions.addQueryParam("timeOut", String.valueOf(timeOut), false);
         }
@@ -2660,49 +2496,6 @@ public final class TaskAsyncClient {
         if (recursive != null) {
             requestOptions.addQueryParam("recursive", String.valueOf(recursive), false);
         }
-        PagedFlux<BinaryData> pagedFluxResponse = listFilesFromTask(jobId, taskId, requestOptions);
-        return PagedFlux.create(
-                () ->
-                        (continuationToken, pageSize) -> {
-                            Flux<PagedResponse<BinaryData>> flux =
-                                    (continuationToken == null)
-                                            ? pagedFluxResponse.byPage().take(1)
-                                            : pagedFluxResponse.byPage(continuationToken).take(1);
-                            return flux.map(
-                                    pagedResponse ->
-                                            new PagedResponseBase<Void, NodeFile>(
-                                                    pagedResponse.getRequest(),
-                                                    pagedResponse.getStatusCode(),
-                                                    pagedResponse.getHeaders(),
-                                                    pagedResponse.getValue().stream()
-                                                            .map(
-                                                                    protocolMethodData ->
-                                                                            protocolMethodData.toObject(NodeFile.class))
-                                                            .collect(Collectors.toList()),
-                                                    pagedResponse.getContinuationToken(),
-                                                    null));
-                        });
-    }
-
-    /**
-     * Lists the files in a Task's directory on its Compute Node.
-     *
-     * @param jobId The ID of the Job that contains the Task.
-     * @param taskId The ID of the Task whose files you want to list.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of listing the files on a Compute Node, or the files associated with a Task on a Compute Node
-     *     as paginated response with {@link PagedFlux}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<NodeFile> listFilesFromTask(String jobId, String taskId) {
-        // Generated convenience method for listFilesFromTask
-        RequestOptions requestOptions = new RequestOptions();
         PagedFlux<BinaryData> pagedFluxResponse = listFilesFromTask(jobId, taskId, requestOptions);
         return PagedFlux.create(
                 () ->

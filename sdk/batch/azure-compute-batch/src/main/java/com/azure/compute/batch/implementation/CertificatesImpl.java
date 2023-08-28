@@ -32,6 +32,7 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.UrlBuilder;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -322,18 +323,6 @@ public final class CertificatesImpl {
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
-     * <p><strong>Header Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     *
      * <p><strong>Request Body Schema</strong>
      *
      * <pre>{@code
@@ -399,18 +388,6 @@ public final class CertificatesImpl {
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
-     * <p><strong>Header Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addHeader}
      *
      * <p><strong>Request Body Schema</strong>
      *
@@ -480,18 +457,6 @@ public final class CertificatesImpl {
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
-     * <p><strong>Header Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addHeader}
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -570,18 +535,6 @@ public final class CertificatesImpl {
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
-     * <p><strong>Header Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
@@ -625,8 +578,31 @@ public final class CertificatesImpl {
                         ? requestOptions.getContext()
                         : Context.NONE);
         return new PagedFlux<>(
-                () -> listSinglePageAsync(requestOptions),
-                nextLink -> listNextSinglePageAsync(nextLink, requestOptionsForNextPage));
+                (pageSize) -> {
+                    RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
+                    if (pageSize != null) {
+                        requestOptionsLocal.addRequestCallback(
+                                requestLocal -> {
+                                    UrlBuilder urlBuilder = UrlBuilder.parse(requestLocal.getUrl());
+                                    urlBuilder.setQueryParameter("maxresults", String.valueOf(pageSize));
+                                    requestLocal.setUrl(urlBuilder.toString());
+                                });
+                    }
+                    return listSinglePageAsync(requestOptionsLocal);
+                },
+                (nextLink, pageSize) -> {
+                    RequestOptions requestOptionsLocal = new RequestOptions();
+                    requestOptionsLocal.setContext(requestOptionsForNextPage.getContext());
+                    if (pageSize != null) {
+                        requestOptionsLocal.addRequestCallback(
+                                requestLocal -> {
+                                    UrlBuilder urlBuilder = UrlBuilder.parse(requestLocal.getUrl());
+                                    urlBuilder.setQueryParameter("maxresults", String.valueOf(pageSize));
+                                    requestLocal.setUrl(urlBuilder.toString());
+                                });
+                    }
+                    return listNextSinglePageAsync(nextLink, requestOptionsLocal);
+                });
     }
 
     /**
@@ -647,18 +623,6 @@ public final class CertificatesImpl {
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
-     * <p><strong>Header Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addHeader}
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -733,18 +697,6 @@ public final class CertificatesImpl {
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
-     * <p><strong>Header Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
@@ -788,8 +740,31 @@ public final class CertificatesImpl {
                         ? requestOptions.getContext()
                         : Context.NONE);
         return new PagedIterable<>(
-                () -> listSinglePage(requestOptions),
-                nextLink -> listNextSinglePage(nextLink, requestOptionsForNextPage));
+                (pageSize) -> {
+                    RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
+                    if (pageSize != null) {
+                        requestOptionsLocal.addRequestCallback(
+                                requestLocal -> {
+                                    UrlBuilder urlBuilder = UrlBuilder.parse(requestLocal.getUrl());
+                                    urlBuilder.setQueryParameter("maxresults", String.valueOf(pageSize));
+                                    requestLocal.setUrl(urlBuilder.toString());
+                                });
+                    }
+                    return listSinglePage(requestOptionsLocal);
+                },
+                (nextLink, pageSize) -> {
+                    RequestOptions requestOptionsLocal = new RequestOptions();
+                    requestOptionsLocal.setContext(requestOptionsForNextPage.getContext());
+                    if (pageSize != null) {
+                        requestOptionsLocal.addRequestCallback(
+                                requestLocal -> {
+                                    UrlBuilder urlBuilder = UrlBuilder.parse(requestLocal.getUrl());
+                                    urlBuilder.setQueryParameter("maxresults", String.valueOf(pageSize));
+                                    requestLocal.setUrl(urlBuilder.toString());
+                                });
+                    }
+                    return listNextSinglePage(nextLink, requestOptionsLocal);
+                });
     }
 
     /**
@@ -811,18 +786,6 @@ public final class CertificatesImpl {
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
-     * <p><strong>Header Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addHeader}
      *
      * @param thumbprintAlgorithm The algorithm used to derive the thumbprint parameter. This must be sha1.
      * @param thumbprint The thumbprint of the Certificate being deleted.
@@ -869,18 +832,6 @@ public final class CertificatesImpl {
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
-     * <p><strong>Header Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     *
      * @param thumbprintAlgorithm The algorithm used to derive the thumbprint parameter. This must be sha1.
      * @param thumbprint The thumbprint of the Certificate being deleted.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -925,18 +876,6 @@ public final class CertificatesImpl {
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
-     * <p><strong>Header Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addHeader}
      *
      * @param thumbprintAlgorithm The algorithm used to derive the thumbprint parameter. This must be sha1.
      * @param thumbprint The thumbprint of the Certificate to be deleted.
@@ -985,18 +924,6 @@ public final class CertificatesImpl {
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
-     * <p><strong>Header Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     *
      * @param thumbprintAlgorithm The algorithm used to derive the thumbprint parameter. This must be sha1.
      * @param thumbprint The thumbprint of the Certificate to be deleted.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1034,18 +961,6 @@ public final class CertificatesImpl {
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
-     * <p><strong>Header Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addHeader}
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -1116,18 +1031,6 @@ public final class CertificatesImpl {
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
-     * <p><strong>Header Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
@@ -1183,18 +1086,6 @@ public final class CertificatesImpl {
      * Lists all of the Certificates that have been added to the specified Account.
      *
      * <p>Get the next page of items.
-     *
-     * <p><strong>Header Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addHeader}
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -1255,18 +1146,6 @@ public final class CertificatesImpl {
      * Lists all of the Certificates that have been added to the specified Account.
      *
      * <p>Get the next page of items.
-     *
-     * <p><strong>Header Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addHeader}
      *
      * <p><strong>Response Body Schema</strong>
      *

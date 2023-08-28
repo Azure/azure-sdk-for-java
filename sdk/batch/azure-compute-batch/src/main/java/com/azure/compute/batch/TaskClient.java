@@ -56,18 +56,6 @@ public final class TaskClient {
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
-     * <p><strong>Header Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     *
      * <p><strong>Request Body Schema</strong>
      *
      * <pre>{@code
@@ -232,18 +220,6 @@ public final class TaskClient {
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
-     * <p><strong>Header Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addHeader}
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -466,18 +442,6 @@ public final class TaskClient {
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
-     * <p><strong>Header Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     *
      * <p><strong>Request Body Schema</strong>
      *
      * <pre>{@code
@@ -677,9 +641,6 @@ public final class TaskClient {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
      *     <tr><td>if-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
      * The operation will be performed only if the resource's current ETag on the
      * service exactly matches the value specified by the client.</td></tr>
@@ -735,9 +696,6 @@ public final class TaskClient {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
      *     <tr><td>if-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
      * The operation will be performed only if the resource's current ETag on the
      * service exactly matches the value specified by the client.</td></tr>
@@ -973,9 +931,6 @@ public final class TaskClient {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
      *     <tr><td>if-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
      * The operation will be performed only if the resource's current ETag on the
      * service exactly matches the value specified by the client.</td></tr>
@@ -1214,9 +1169,6 @@ public final class TaskClient {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
      *     <tr><td>if-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
      * The operation will be performed only if the resource's current ETag on the
      * service exactly matches the value specified by the client.</td></tr>
@@ -1273,9 +1225,6 @@ public final class TaskClient {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
      *     <tr><td>if-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
      * The operation will be performed only if the resource's current ETag on the
      * service exactly matches the value specified by the client.</td></tr>
@@ -1528,18 +1477,6 @@ public final class TaskClient {
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
-     * <p><strong>Header Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
@@ -1634,484 +1571,6 @@ public final class TaskClient {
     @Generated
     TaskClient(TasksImpl serviceClient) {
         this.serviceClient = serviceClient;
-    }
-
-    /**
-     * Creates a Task to the specified Job.
-     *
-     * <p>The maximum lifetime of a Task from addition to completion is 180 days. If a Task has not completed within 180
-     * days of being added it will be terminated by the Batch service and left in whatever state it was in at that time.
-     *
-     * @param jobId The ID of the Job to which the Task is to be created.
-     * @param task The Task to be created.
-     * @param timeOut The maximum number of items to return in the response. A maximum of 1000 applications can be
-     *     returned.
-     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
-     *     time; set it explicitly if you are calling the REST API directly.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void create(String jobId, BatchTaskCreateParameters task, Integer timeOut, OffsetDateTime ocpDate) {
-        // Generated convenience method for createWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (timeOut != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOut), false);
-        }
-        if (ocpDate != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
-        }
-        createWithResponse(jobId, BinaryData.fromObject(task), requestOptions).getValue();
-    }
-
-    /**
-     * Lists all of the Tasks that are associated with the specified Job.
-     *
-     * <p>For multi-instance Tasks, information such as affinityId, executionInfo and nodeInfo refer to the primary
-     * Task. Use the list subtasks API to retrieve information about subtasks.
-     *
-     * @param jobId The ID of the Job.
-     * @param maxresults The maximum number of items to return in the response. A maximum of 1000 applications can be
-     *     returned.
-     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
-     *     time; set it explicitly if you are calling the REST API directly.
-     * @param timeOut The maximum number of items to return in the response. A maximum of 1000 applications can be
-     *     returned.
-     * @param filter An OData $filter clause. For more information on constructing this filter, see
-     *     https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-tasks.
-     * @param select An OData $select clause.
-     * @param expand An OData $expand clause.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of listing the Tasks in a Job as paginated response with {@link PagedIterable}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BatchTask> list(
-            String jobId,
-            Integer maxresults,
-            OffsetDateTime ocpDate,
-            Integer timeOut,
-            String filter,
-            String select,
-            String expand) {
-        // Generated convenience method for list
-        RequestOptions requestOptions = new RequestOptions();
-        if (maxresults != null) {
-            requestOptions.addQueryParam("maxresults", String.valueOf(maxresults), false);
-        }
-        if (ocpDate != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
-        }
-        if (timeOut != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOut), false);
-        }
-        if (filter != null) {
-            requestOptions.addQueryParam("$filter", filter, false);
-        }
-        if (select != null) {
-            requestOptions.addQueryParam("$select", select, false);
-        }
-        if (expand != null) {
-            requestOptions.addQueryParam("$expand", expand, false);
-        }
-        return serviceClient
-                .list(jobId, requestOptions)
-                .mapPage(bodyItemValue -> bodyItemValue.toObject(BatchTask.class));
-    }
-
-    /**
-     * Adds a collection of Tasks to the specified Job.
-     *
-     * <p>Note that each Task must have a unique ID. The Batch service may not return the results for each Task in the
-     * same order the Tasks were submitted in this request. If the server times out or the connection is closed during
-     * the request, the request may have been partially or fully processed, or not at all. In such cases, the user
-     * should re-issue the request. Note that it is up to the user to correctly handle failures when re-issuing a
-     * request. For example, you should use the same Task IDs during a retry so that if the prior operation succeeded,
-     * the retry will not create extra Tasks unexpectedly. If the response contains any Tasks which failed to add, a
-     * client can retry the request. In a retry, it is most efficient to resubmit only Tasks that failed to add, and to
-     * omit Tasks that were successfully added on the first attempt. The maximum lifetime of a Task from addition to
-     * completion is 180 days. If a Task has not completed within 180 days of being added it will be terminated by the
-     * Batch service and left in whatever state it was in at that time.
-     *
-     * @param jobId The ID of the Job to which the Task collection is to be added.
-     * @param collection The Tasks to be added.
-     * @param timeOut The maximum number of items to return in the response. A maximum of 1000 applications can be
-     *     returned.
-     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
-     *     time; set it explicitly if you are calling the REST API directly.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of adding a collection of Tasks to a Job.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public TaskAddCollectionResult addCollection(
-            String jobId, BatchTaskCollection collection, Integer timeOut, OffsetDateTime ocpDate) {
-        // Generated convenience method for addCollectionWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (timeOut != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOut), false);
-        }
-        if (ocpDate != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
-        }
-        return addCollectionWithResponse(jobId, BinaryData.fromObject(collection), requestOptions)
-                .getValue()
-                .toObject(TaskAddCollectionResult.class);
-    }
-
-    /**
-     * Deletes a Task from the specified Job.
-     *
-     * <p>When a Task is deleted, all of the files in its directory on the Compute Node where it ran are also deleted
-     * (regardless of the retention time). For multi-instance Tasks, the delete Task operation applies synchronously to
-     * the primary task; subtasks and their files are then deleted asynchronously in the background.
-     *
-     * @param jobId The ID of the Job from which to delete the Task.
-     * @param taskId The ID of the Task to delete.
-     * @param timeOut The maximum number of items to return in the response. A maximum of 1000 applications can be
-     *     returned.
-     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
-     *     time; set it explicitly if you are calling the REST API directly.
-     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(
-            String jobId, String taskId, Integer timeOut, OffsetDateTime ocpDate, RequestConditions requestConditions) {
-        // Generated convenience method for deleteWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
-        String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
-        OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
-        OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
-        if (timeOut != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOut), false);
-        }
-        if (ocpDate != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
-        }
-        if (ifMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
-        }
-        if (ifNoneMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
-        }
-        if (ifModifiedSince != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.IF_MODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
-        }
-        if (ifUnmodifiedSince != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.IF_UNMODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
-        }
-        deleteWithResponse(jobId, taskId, requestOptions).getValue();
-    }
-
-    /**
-     * Gets information about the specified Task.
-     *
-     * <p>For multi-instance Tasks, information such as affinityId, executionInfo and nodeInfo refer to the primary
-     * Task. Use the list subtasks API to retrieve information about subtasks.
-     *
-     * @param jobId The ID of the Job that contains the Task.
-     * @param taskId The ID of the Task to get information about.
-     * @param timeOut The maximum number of items to return in the response. A maximum of 1000 applications can be
-     *     returned.
-     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
-     *     time; set it explicitly if you are calling the REST API directly.
-     * @param select An OData $select clause.
-     * @param expand An OData $expand clause.
-     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return batch will retry Tasks when a recovery operation is triggered on a Node. Examples of recovery operations
-     *     include (but are not limited to) when an unhealthy Node is rebooted or a Compute Node disappeared due to host
-     *     failure. Retries due to recovery operations are independent of and are not counted against the
-     *     maxTaskRetryCount.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public BatchTask get(
-            String jobId,
-            String taskId,
-            Integer timeOut,
-            OffsetDateTime ocpDate,
-            String select,
-            String expand,
-            RequestConditions requestConditions) {
-        // Generated convenience method for getWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
-        String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
-        OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
-        OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
-        if (timeOut != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOut), false);
-        }
-        if (ocpDate != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
-        }
-        if (select != null) {
-            requestOptions.addQueryParam("$select", select, false);
-        }
-        if (expand != null) {
-            requestOptions.addQueryParam("$expand", expand, false);
-        }
-        if (ifMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
-        }
-        if (ifNoneMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
-        }
-        if (ifModifiedSince != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.IF_MODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
-        }
-        if (ifUnmodifiedSince != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.IF_UNMODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
-        }
-        return getWithResponse(jobId, taskId, requestOptions).getValue().toObject(BatchTask.class);
-    }
-
-    /**
-     * Updates the properties of the specified Task.
-     *
-     * @param jobId The ID of the Job containing the Task.
-     * @param taskId The ID of the Task to update.
-     * @param parameters The parameters for the request.
-     * @param timeOut The maximum number of items to return in the response. A maximum of 1000 applications can be
-     *     returned.
-     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
-     *     time; set it explicitly if you are calling the REST API directly.
-     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void update(
-            String jobId,
-            String taskId,
-            BatchTask parameters,
-            Integer timeOut,
-            OffsetDateTime ocpDate,
-            RequestConditions requestConditions) {
-        // Generated convenience method for updateWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
-        String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
-        OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
-        OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
-        if (timeOut != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOut), false);
-        }
-        if (ocpDate != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
-        }
-        if (ifMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
-        }
-        if (ifNoneMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
-        }
-        if (ifModifiedSince != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.IF_MODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
-        }
-        if (ifUnmodifiedSince != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.IF_UNMODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
-        }
-        updateWithResponse(jobId, taskId, BinaryData.fromObject(parameters), requestOptions).getValue();
-    }
-
-    /**
-     * Lists all of the subtasks that are associated with the specified multi-instance Task.
-     *
-     * <p>If the Task is not a multi-instance Task then this returns an empty collection.
-     *
-     * @param jobId The ID of the Job.
-     * @param taskId The ID of the Task.
-     * @param timeOut The maximum number of items to return in the response. A maximum of 1000 applications can be
-     *     returned.
-     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
-     *     time; set it explicitly if you are calling the REST API directly.
-     * @param select An OData $select clause.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of listing the subtasks of a Task.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public BatchTaskListSubtasksResult listSubtasks(
-            String jobId, String taskId, Integer timeOut, OffsetDateTime ocpDate, String select) {
-        // Generated convenience method for listSubtasksWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (timeOut != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOut), false);
-        }
-        if (ocpDate != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
-        }
-        if (select != null) {
-            requestOptions.addQueryParam("$select", select, false);
-        }
-        return listSubtasksWithResponse(jobId, taskId, requestOptions)
-                .getValue()
-                .toObject(BatchTaskListSubtasksResult.class);
-    }
-
-    /**
-     * Terminates the specified Task.
-     *
-     * <p>When the Task has been terminated, it moves to the completed state. For multi-instance Tasks, the terminate
-     * Task operation applies synchronously to the primary task; subtasks are then terminated asynchronously in the
-     * background.
-     *
-     * @param jobId The ID of the Job containing the Task.
-     * @param taskId The ID of the Task to terminate.
-     * @param timeOut The maximum number of items to return in the response. A maximum of 1000 applications can be
-     *     returned.
-     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
-     *     time; set it explicitly if you are calling the REST API directly.
-     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void terminate(
-            String jobId, String taskId, Integer timeOut, OffsetDateTime ocpDate, RequestConditions requestConditions) {
-        // Generated convenience method for terminateWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
-        String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
-        OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
-        OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
-        if (timeOut != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOut), false);
-        }
-        if (ocpDate != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
-        }
-        if (ifMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
-        }
-        if (ifNoneMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
-        }
-        if (ifModifiedSince != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.IF_MODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
-        }
-        if (ifUnmodifiedSince != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.IF_UNMODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
-        }
-        terminateWithResponse(jobId, taskId, requestOptions).getValue();
-    }
-
-    /**
-     * Reactivates a Task, allowing it to run again even if its retry count has been exhausted.
-     *
-     * <p>Reactivation makes a Task eligible to be retried again up to its maximum retry count. The Task's state is
-     * changed to active. As the Task is no longer in the completed state, any previous exit code or failure information
-     * is no longer available after reactivation. Each time a Task is reactivated, its retry count is reset to 0.
-     * Reactivation will fail for Tasks that are not completed or that previously completed successfully (with an exit
-     * code of 0). Additionally, it will fail if the Job has completed (or is terminating or deleting).
-     *
-     * @param jobId The ID of the Job containing the Task.
-     * @param taskId The ID of the Task to reactivate.
-     * @param timeOut The maximum number of items to return in the response. A maximum of 1000 applications can be
-     *     returned.
-     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
-     *     time; set it explicitly if you are calling the REST API directly.
-     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void reactivate(
-            String jobId, String taskId, Integer timeOut, OffsetDateTime ocpDate, RequestConditions requestConditions) {
-        // Generated convenience method for reactivateWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
-        String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
-        OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
-        OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
-        if (timeOut != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOut), false);
-        }
-        if (ocpDate != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
-        }
-        if (ifMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
-        }
-        if (ifNoneMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
-        }
-        if (ifModifiedSince != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.IF_MODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
-        }
-        if (ifUnmodifiedSince != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.IF_UNMODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
-        }
-        reactivateWithResponse(jobId, taskId, requestOptions).getValue();
     }
 
     /**
@@ -2374,18 +1833,6 @@ public final class TaskClient {
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
-     * <p><strong>Header Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     *
      * @param jobId The ID of the Job that contains the Task.
      * @param taskId The ID of the Task whose file you want to retrieve.
      * @param filePath The path to the Task file that you want to get the content of.
@@ -2422,9 +1869,6 @@ public final class TaskClient {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
      *     <tr><td>if-modified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
      * been modified since the specified time.</td></tr>
@@ -2479,9 +1923,6 @@ public final class TaskClient {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
      *     <tr><td>if-modified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
      * been modified since the specified time.</td></tr>
@@ -2529,18 +1970,6 @@ public final class TaskClient {
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
-     * <p><strong>Header Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
@@ -2580,45 +2009,6 @@ public final class TaskClient {
      * @param jobId The ID of the Job that contains the Task.
      * @param taskId The ID of the Task whose file you want to retrieve.
      * @param filePath The path to the Task file that you want to get the content of.
-     * @param timeOut The maximum number of items to return in the response. A maximum of 1000 applications can be
-     *     returned.
-     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
-     *     time; set it explicitly if you are calling the REST API directly.
-     * @param recursive Whether to delete children of a directory. If the filePath parameter represents a directory
-     *     instead of a file, you can set recursive to true to delete the directory and all of the files and
-     *     subdirectories in it. If recursive is false then the directory must be empty or deletion will fail.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteFileFromTask(
-            String jobId, String taskId, String filePath, Integer timeOut, OffsetDateTime ocpDate, Boolean recursive) {
-        // Generated convenience method for deleteFileFromTaskWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (timeOut != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOut), false);
-        }
-        if (ocpDate != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
-        }
-        if (recursive != null) {
-            requestOptions.addQueryParam("recursive", String.valueOf(recursive), false);
-        }
-        deleteFileFromTaskWithResponse(jobId, taskId, filePath, requestOptions).getValue();
-    }
-
-    /**
-     * Deletes the specified Task file from the Compute Node where the Task ran.
-     *
-     * @param jobId The ID of the Job that contains the Task.
-     * @param taskId The ID of the Task whose file you want to retrieve.
-     * @param filePath The path to the Task file that you want to get the content of.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2632,65 +2022,6 @@ public final class TaskClient {
         // Generated convenience method for deleteFileFromTaskWithResponse
         RequestOptions requestOptions = new RequestOptions();
         deleteFileFromTaskWithResponse(jobId, taskId, filePath, requestOptions).getValue();
-    }
-
-    /**
-     * Returns the content of the specified Task file.
-     *
-     * @param jobId The ID of the Job that contains the Task.
-     * @param taskId The ID of the Task whose file you want to retrieve.
-     * @param filePath The path to the Task file that you want to get the content of.
-     * @param timeOut The maximum number of items to return in the response. A maximum of 1000 applications can be
-     *     returned.
-     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
-     *     time; set it explicitly if you are calling the REST API directly.
-     * @param ifModifiedSince A timestamp indicating the last modified time of the resource known to the client. The
-     *     operation will be performed only if the resource on the service has been modified since the specified time.
-     * @param ifUnmodifiedSince A timestamp indicating the last modified time of the resource known to the client. The
-     *     operation will be performed only if the resource on the service has not been modified since the specified
-     *     time.
-     * @param ocpRange The byte range to be retrieved. The default is to retrieve the entire file. The format is
-     *     bytes=startRange-endRange.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public BinaryData getFileFromTask(
-            String jobId,
-            String taskId,
-            String filePath,
-            Integer timeOut,
-            OffsetDateTime ocpDate,
-            OffsetDateTime ifModifiedSince,
-            OffsetDateTime ifUnmodifiedSince,
-            String ocpRange) {
-        // Generated convenience method for getFileFromTaskWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (timeOut != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOut), false);
-        }
-        if (ocpDate != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
-        }
-        if (ifModifiedSince != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.IF_MODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
-        }
-        if (ifUnmodifiedSince != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.IF_UNMODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
-        }
-        if (ocpRange != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("ocp-range"), ocpRange);
-        }
-        return getFileFromTaskWithResponse(jobId, taskId, filePath, requestOptions).getValue();
     }
 
     /**
@@ -2721,58 +2052,6 @@ public final class TaskClient {
      * @param jobId The ID of the Job that contains the Task.
      * @param taskId The ID of the Task whose file you want to retrieve.
      * @param filePath The path to the Task file that you want to get the content of.
-     * @param timeOut The maximum number of items to return in the response. A maximum of 1000 applications can be
-     *     returned.
-     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
-     *     time; set it explicitly if you are calling the REST API directly.
-     * @param ifModifiedSince A timestamp indicating the last modified time of the resource known to the client. The
-     *     operation will be performed only if the resource on the service has been modified since the specified time.
-     * @param ifUnmodifiedSince A timestamp indicating the last modified time of the resource known to the client. The
-     *     operation will be performed only if the resource on the service has not been modified since the specified
-     *     time.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void getFilePropertiesFromTask(
-            String jobId,
-            String taskId,
-            String filePath,
-            Integer timeOut,
-            OffsetDateTime ocpDate,
-            OffsetDateTime ifModifiedSince,
-            OffsetDateTime ifUnmodifiedSince) {
-        // Generated convenience method for getFilePropertiesFromTaskWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (timeOut != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOut), false);
-        }
-        if (ocpDate != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
-        }
-        if (ifModifiedSince != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.IF_MODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
-        }
-        if (ifUnmodifiedSince != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.IF_UNMODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
-        }
-        getFilePropertiesFromTaskWithResponse(jobId, taskId, filePath, requestOptions).getValue();
-    }
-
-    /**
-     * Gets the properties of the specified Task file.
-     *
-     * @param jobId The ID of the Job that contains the Task.
-     * @param taskId The ID of the Task whose file you want to retrieve.
-     * @param filePath The path to the Task file that you want to get the content of.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2786,63 +2065,6 @@ public final class TaskClient {
         // Generated convenience method for getFilePropertiesFromTaskWithResponse
         RequestOptions requestOptions = new RequestOptions();
         getFilePropertiesFromTaskWithResponse(jobId, taskId, filePath, requestOptions).getValue();
-    }
-
-    /**
-     * Lists the files in a Task's directory on its Compute Node.
-     *
-     * @param jobId The ID of the Job that contains the Task.
-     * @param taskId The ID of the Task whose files you want to list.
-     * @param maxresults The maximum number of items to return in the response. A maximum of 1000 applications can be
-     *     returned.
-     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
-     *     time; set it explicitly if you are calling the REST API directly.
-     * @param timeOut The maximum number of items to return in the response. A maximum of 1000 applications can be
-     *     returned.
-     * @param filter An OData $filter clause. For more information on constructing this filter, see
-     *     https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-task-files.
-     * @param recursive Whether to list children of the Task directory. This parameter can be used in combination with
-     *     the filter parameter to list specific type of files.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of listing the files on a Compute Node, or the files associated with a Task on a Compute Node
-     *     as paginated response with {@link PagedIterable}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<NodeFile> listFilesFromTask(
-            String jobId,
-            String taskId,
-            Integer maxresults,
-            OffsetDateTime ocpDate,
-            Integer timeOut,
-            String filter,
-            Boolean recursive) {
-        // Generated convenience method for listFilesFromTask
-        RequestOptions requestOptions = new RequestOptions();
-        if (maxresults != null) {
-            requestOptions.addQueryParam("maxresults", String.valueOf(maxresults), false);
-        }
-        if (ocpDate != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
-        }
-        if (timeOut != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOut), false);
-        }
-        if (filter != null) {
-            requestOptions.addQueryParam("$filter", filter, false);
-        }
-        if (recursive != null) {
-            requestOptions.addQueryParam("recursive", String.valueOf(recursive), false);
-        }
-        return serviceClient
-                .listFilesFromTask(jobId, taskId, requestOptions)
-                .mapPage(bodyItemValue -> bodyItemValue.toObject(NodeFile.class));
     }
 
     /**
@@ -2864,6 +2086,576 @@ public final class TaskClient {
     public PagedIterable<NodeFile> listFilesFromTask(String jobId, String taskId) {
         // Generated convenience method for listFilesFromTask
         RequestOptions requestOptions = new RequestOptions();
+        return serviceClient
+                .listFilesFromTask(jobId, taskId, requestOptions)
+                .mapPage(bodyItemValue -> bodyItemValue.toObject(NodeFile.class));
+    }
+
+    /**
+     * Creates a Task to the specified Job.
+     *
+     * <p>The maximum lifetime of a Task from addition to completion is 180 days. If a Task has not completed within 180
+     * days of being added it will be terminated by the Batch service and left in whatever state it was in at that time.
+     *
+     * @param jobId The ID of the Job to which the Task is to be created.
+     * @param task The Task to be created.
+     * @param timeOut The maximum number of items to return in the response. A maximum of 1000 applications can be
+     *     returned.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void create(String jobId, BatchTaskCreateParameters task, Integer timeOut) {
+        // Generated convenience method for createWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (timeOut != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOut), false);
+        }
+        createWithResponse(jobId, BinaryData.fromObject(task), requestOptions).getValue();
+    }
+
+    /**
+     * Lists all of the Tasks that are associated with the specified Job.
+     *
+     * <p>For multi-instance Tasks, information such as affinityId, executionInfo and nodeInfo refer to the primary
+     * Task. Use the list subtasks API to retrieve information about subtasks.
+     *
+     * @param jobId The ID of the Job.
+     * @param timeOut The maximum number of items to return in the response. A maximum of 1000 applications can be
+     *     returned.
+     * @param filter An OData $filter clause. For more information on constructing this filter, see
+     *     https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-tasks.
+     * @param select An OData $select clause.
+     * @param expand An OData $expand clause.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of listing the Tasks in a Job as paginated response with {@link PagedIterable}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<BatchTask> list(String jobId, Integer timeOut, String filter, String select, String expand) {
+        // Generated convenience method for list
+        RequestOptions requestOptions = new RequestOptions();
+        if (timeOut != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOut), false);
+        }
+        if (filter != null) {
+            requestOptions.addQueryParam("$filter", filter, false);
+        }
+        if (select != null) {
+            requestOptions.addQueryParam("$select", select, false);
+        }
+        if (expand != null) {
+            requestOptions.addQueryParam("$expand", expand, false);
+        }
+        return serviceClient
+                .list(jobId, requestOptions)
+                .mapPage(bodyItemValue -> bodyItemValue.toObject(BatchTask.class));
+    }
+
+    /**
+     * Adds a collection of Tasks to the specified Job.
+     *
+     * <p>Note that each Task must have a unique ID. The Batch service may not return the results for each Task in the
+     * same order the Tasks were submitted in this request. If the server times out or the connection is closed during
+     * the request, the request may have been partially or fully processed, or not at all. In such cases, the user
+     * should re-issue the request. Note that it is up to the user to correctly handle failures when re-issuing a
+     * request. For example, you should use the same Task IDs during a retry so that if the prior operation succeeded,
+     * the retry will not create extra Tasks unexpectedly. If the response contains any Tasks which failed to add, a
+     * client can retry the request. In a retry, it is most efficient to resubmit only Tasks that failed to add, and to
+     * omit Tasks that were successfully added on the first attempt. The maximum lifetime of a Task from addition to
+     * completion is 180 days. If a Task has not completed within 180 days of being added it will be terminated by the
+     * Batch service and left in whatever state it was in at that time.
+     *
+     * @param jobId The ID of the Job to which the Task collection is to be added.
+     * @param collection The Tasks to be added.
+     * @param timeOut The maximum number of items to return in the response. A maximum of 1000 applications can be
+     *     returned.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of adding a collection of Tasks to a Job.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public TaskAddCollectionResult addCollection(String jobId, BatchTaskCollection collection, Integer timeOut) {
+        // Generated convenience method for addCollectionWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (timeOut != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOut), false);
+        }
+        return addCollectionWithResponse(jobId, BinaryData.fromObject(collection), requestOptions)
+                .getValue()
+                .toObject(TaskAddCollectionResult.class);
+    }
+
+    /**
+     * Deletes a Task from the specified Job.
+     *
+     * <p>When a Task is deleted, all of the files in its directory on the Compute Node where it ran are also deleted
+     * (regardless of the retention time). For multi-instance Tasks, the delete Task operation applies synchronously to
+     * the primary task; subtasks and their files are then deleted asynchronously in the background.
+     *
+     * @param jobId The ID of the Job from which to delete the Task.
+     * @param taskId The ID of the Task to delete.
+     * @param timeOut The maximum number of items to return in the response. A maximum of 1000 applications can be
+     *     returned.
+     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void delete(String jobId, String taskId, Integer timeOut, RequestConditions requestConditions) {
+        // Generated convenience method for deleteWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
+        String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
+        OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
+        OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
+        if (timeOut != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOut), false);
+        }
+        if (ifMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
+        }
+        if (ifNoneMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
+        }
+        if (ifModifiedSince != null) {
+            requestOptions.setHeader(
+                    HttpHeaderName.IF_MODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
+        }
+        if (ifUnmodifiedSince != null) {
+            requestOptions.setHeader(
+                    HttpHeaderName.IF_UNMODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
+        }
+        deleteWithResponse(jobId, taskId, requestOptions).getValue();
+    }
+
+    /**
+     * Gets information about the specified Task.
+     *
+     * <p>For multi-instance Tasks, information such as affinityId, executionInfo and nodeInfo refer to the primary
+     * Task. Use the list subtasks API to retrieve information about subtasks.
+     *
+     * @param jobId The ID of the Job that contains the Task.
+     * @param taskId The ID of the Task to get information about.
+     * @param timeOut The maximum number of items to return in the response. A maximum of 1000 applications can be
+     *     returned.
+     * @param select An OData $select clause.
+     * @param expand An OData $expand clause.
+     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return batch will retry Tasks when a recovery operation is triggered on a Node. Examples of recovery operations
+     *     include (but are not limited to) when an unhealthy Node is rebooted or a Compute Node disappeared due to host
+     *     failure. Retries due to recovery operations are independent of and are not counted against the
+     *     maxTaskRetryCount.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public BatchTask get(
+            String jobId,
+            String taskId,
+            Integer timeOut,
+            String select,
+            String expand,
+            RequestConditions requestConditions) {
+        // Generated convenience method for getWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
+        String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
+        OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
+        OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
+        if (timeOut != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOut), false);
+        }
+        if (select != null) {
+            requestOptions.addQueryParam("$select", select, false);
+        }
+        if (expand != null) {
+            requestOptions.addQueryParam("$expand", expand, false);
+        }
+        if (ifMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
+        }
+        if (ifNoneMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
+        }
+        if (ifModifiedSince != null) {
+            requestOptions.setHeader(
+                    HttpHeaderName.IF_MODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
+        }
+        if (ifUnmodifiedSince != null) {
+            requestOptions.setHeader(
+                    HttpHeaderName.IF_UNMODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
+        }
+        return getWithResponse(jobId, taskId, requestOptions).getValue().toObject(BatchTask.class);
+    }
+
+    /**
+     * Updates the properties of the specified Task.
+     *
+     * @param jobId The ID of the Job containing the Task.
+     * @param taskId The ID of the Task to update.
+     * @param parameters The parameters for the request.
+     * @param timeOut The maximum number of items to return in the response. A maximum of 1000 applications can be
+     *     returned.
+     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void update(
+            String jobId, String taskId, BatchTask parameters, Integer timeOut, RequestConditions requestConditions) {
+        // Generated convenience method for updateWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
+        String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
+        OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
+        OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
+        if (timeOut != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOut), false);
+        }
+        if (ifMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
+        }
+        if (ifNoneMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
+        }
+        if (ifModifiedSince != null) {
+            requestOptions.setHeader(
+                    HttpHeaderName.IF_MODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
+        }
+        if (ifUnmodifiedSince != null) {
+            requestOptions.setHeader(
+                    HttpHeaderName.IF_UNMODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
+        }
+        updateWithResponse(jobId, taskId, BinaryData.fromObject(parameters), requestOptions).getValue();
+    }
+
+    /**
+     * Lists all of the subtasks that are associated with the specified multi-instance Task.
+     *
+     * <p>If the Task is not a multi-instance Task then this returns an empty collection.
+     *
+     * @param jobId The ID of the Job.
+     * @param taskId The ID of the Task.
+     * @param timeOut The maximum number of items to return in the response. A maximum of 1000 applications can be
+     *     returned.
+     * @param select An OData $select clause.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of listing the subtasks of a Task.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public BatchTaskListSubtasksResult listSubtasks(String jobId, String taskId, Integer timeOut, String select) {
+        // Generated convenience method for listSubtasksWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (timeOut != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOut), false);
+        }
+        if (select != null) {
+            requestOptions.addQueryParam("$select", select, false);
+        }
+        return listSubtasksWithResponse(jobId, taskId, requestOptions)
+                .getValue()
+                .toObject(BatchTaskListSubtasksResult.class);
+    }
+
+    /**
+     * Terminates the specified Task.
+     *
+     * <p>When the Task has been terminated, it moves to the completed state. For multi-instance Tasks, the terminate
+     * Task operation applies synchronously to the primary task; subtasks are then terminated asynchronously in the
+     * background.
+     *
+     * @param jobId The ID of the Job containing the Task.
+     * @param taskId The ID of the Task to terminate.
+     * @param timeOut The maximum number of items to return in the response. A maximum of 1000 applications can be
+     *     returned.
+     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void terminate(String jobId, String taskId, Integer timeOut, RequestConditions requestConditions) {
+        // Generated convenience method for terminateWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
+        String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
+        OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
+        OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
+        if (timeOut != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOut), false);
+        }
+        if (ifMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
+        }
+        if (ifNoneMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
+        }
+        if (ifModifiedSince != null) {
+            requestOptions.setHeader(
+                    HttpHeaderName.IF_MODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
+        }
+        if (ifUnmodifiedSince != null) {
+            requestOptions.setHeader(
+                    HttpHeaderName.IF_UNMODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
+        }
+        terminateWithResponse(jobId, taskId, requestOptions).getValue();
+    }
+
+    /**
+     * Reactivates a Task, allowing it to run again even if its retry count has been exhausted.
+     *
+     * <p>Reactivation makes a Task eligible to be retried again up to its maximum retry count. The Task's state is
+     * changed to active. As the Task is no longer in the completed state, any previous exit code or failure information
+     * is no longer available after reactivation. Each time a Task is reactivated, its retry count is reset to 0.
+     * Reactivation will fail for Tasks that are not completed or that previously completed successfully (with an exit
+     * code of 0). Additionally, it will fail if the Job has completed (or is terminating or deleting).
+     *
+     * @param jobId The ID of the Job containing the Task.
+     * @param taskId The ID of the Task to reactivate.
+     * @param timeOut The maximum number of items to return in the response. A maximum of 1000 applications can be
+     *     returned.
+     * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void reactivate(String jobId, String taskId, Integer timeOut, RequestConditions requestConditions) {
+        // Generated convenience method for reactivateWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
+        String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
+        OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
+        OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
+        if (timeOut != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOut), false);
+        }
+        if (ifMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
+        }
+        if (ifNoneMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
+        }
+        if (ifModifiedSince != null) {
+            requestOptions.setHeader(
+                    HttpHeaderName.IF_MODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
+        }
+        if (ifUnmodifiedSince != null) {
+            requestOptions.setHeader(
+                    HttpHeaderName.IF_UNMODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
+        }
+        reactivateWithResponse(jobId, taskId, requestOptions).getValue();
+    }
+
+    /**
+     * Deletes the specified Task file from the Compute Node where the Task ran.
+     *
+     * @param jobId The ID of the Job that contains the Task.
+     * @param taskId The ID of the Task whose file you want to retrieve.
+     * @param filePath The path to the Task file that you want to get the content of.
+     * @param timeOut The maximum number of items to return in the response. A maximum of 1000 applications can be
+     *     returned.
+     * @param recursive Whether to delete children of a directory. If the filePath parameter represents a directory
+     *     instead of a file, you can set recursive to true to delete the directory and all of the files and
+     *     subdirectories in it. If recursive is false then the directory must be empty or deletion will fail.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void deleteFileFromTask(String jobId, String taskId, String filePath, Integer timeOut, Boolean recursive) {
+        // Generated convenience method for deleteFileFromTaskWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (timeOut != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOut), false);
+        }
+        if (recursive != null) {
+            requestOptions.addQueryParam("recursive", String.valueOf(recursive), false);
+        }
+        deleteFileFromTaskWithResponse(jobId, taskId, filePath, requestOptions).getValue();
+    }
+
+    /**
+     * Returns the content of the specified Task file.
+     *
+     * @param jobId The ID of the Job that contains the Task.
+     * @param taskId The ID of the Task whose file you want to retrieve.
+     * @param filePath The path to the Task file that you want to get the content of.
+     * @param timeOut The maximum number of items to return in the response. A maximum of 1000 applications can be
+     *     returned.
+     * @param ifModifiedSince A timestamp indicating the last modified time of the resource known to the client. The
+     *     operation will be performed only if the resource on the service has been modified since the specified time.
+     * @param ifUnmodifiedSince A timestamp indicating the last modified time of the resource known to the client. The
+     *     operation will be performed only if the resource on the service has not been modified since the specified
+     *     time.
+     * @param ocpRange The byte range to be retrieved. The default is to retrieve the entire file. The format is
+     *     bytes=startRange-endRange.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public BinaryData getFileFromTask(
+            String jobId,
+            String taskId,
+            String filePath,
+            Integer timeOut,
+            OffsetDateTime ifModifiedSince,
+            OffsetDateTime ifUnmodifiedSince,
+            String ocpRange) {
+        // Generated convenience method for getFileFromTaskWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (timeOut != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOut), false);
+        }
+        if (ifModifiedSince != null) {
+            requestOptions.setHeader(
+                    HttpHeaderName.IF_MODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
+        }
+        if (ifUnmodifiedSince != null) {
+            requestOptions.setHeader(
+                    HttpHeaderName.IF_UNMODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
+        }
+        if (ocpRange != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("ocp-range"), ocpRange);
+        }
+        return getFileFromTaskWithResponse(jobId, taskId, filePath, requestOptions).getValue();
+    }
+
+    /**
+     * Gets the properties of the specified Task file.
+     *
+     * @param jobId The ID of the Job that contains the Task.
+     * @param taskId The ID of the Task whose file you want to retrieve.
+     * @param filePath The path to the Task file that you want to get the content of.
+     * @param timeOut The maximum number of items to return in the response. A maximum of 1000 applications can be
+     *     returned.
+     * @param ifModifiedSince A timestamp indicating the last modified time of the resource known to the client. The
+     *     operation will be performed only if the resource on the service has been modified since the specified time.
+     * @param ifUnmodifiedSince A timestamp indicating the last modified time of the resource known to the client. The
+     *     operation will be performed only if the resource on the service has not been modified since the specified
+     *     time.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void getFilePropertiesFromTask(
+            String jobId,
+            String taskId,
+            String filePath,
+            Integer timeOut,
+            OffsetDateTime ifModifiedSince,
+            OffsetDateTime ifUnmodifiedSince) {
+        // Generated convenience method for getFilePropertiesFromTaskWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (timeOut != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOut), false);
+        }
+        if (ifModifiedSince != null) {
+            requestOptions.setHeader(
+                    HttpHeaderName.IF_MODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
+        }
+        if (ifUnmodifiedSince != null) {
+            requestOptions.setHeader(
+                    HttpHeaderName.IF_UNMODIFIED_SINCE, String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
+        }
+        getFilePropertiesFromTaskWithResponse(jobId, taskId, filePath, requestOptions).getValue();
+    }
+
+    /**
+     * Lists the files in a Task's directory on its Compute Node.
+     *
+     * @param jobId The ID of the Job that contains the Task.
+     * @param taskId The ID of the Task whose files you want to list.
+     * @param timeOut The maximum number of items to return in the response. A maximum of 1000 applications can be
+     *     returned.
+     * @param filter An OData $filter clause. For more information on constructing this filter, see
+     *     https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-task-files.
+     * @param recursive Whether to list children of the Task directory. This parameter can be used in combination with
+     *     the filter parameter to list specific type of files.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of listing the files on a Compute Node, or the files associated with a Task on a Compute Node
+     *     as paginated response with {@link PagedIterable}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<NodeFile> listFilesFromTask(
+            String jobId, String taskId, Integer timeOut, String filter, Boolean recursive) {
+        // Generated convenience method for listFilesFromTask
+        RequestOptions requestOptions = new RequestOptions();
+        if (timeOut != null) {
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOut), false);
+        }
+        if (filter != null) {
+            requestOptions.addQueryParam("$filter", filter, false);
+        }
+        if (recursive != null) {
+            requestOptions.addQueryParam("recursive", String.valueOf(recursive), false);
+        }
         return serviceClient
                 .listFilesFromTask(jobId, taskId, requestOptions)
                 .mapPage(bodyItemValue -> bodyItemValue.toObject(NodeFile.class));

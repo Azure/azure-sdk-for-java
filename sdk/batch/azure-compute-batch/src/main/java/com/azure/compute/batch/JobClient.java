@@ -58,9 +58,6 @@ public final class JobClient {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
      *     <tr><td>if-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
      * The operation will be performed only if the resource's current ETag on the
      * service exactly matches the value specified by the client.</td></tr>
@@ -112,9 +109,6 @@ public final class JobClient {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
      *     <tr><td>if-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
      * The operation will be performed only if the resource's current ETag on the
      * service exactly matches the value specified by the client.</td></tr>
@@ -555,9 +549,6 @@ public final class JobClient {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
      *     <tr><td>if-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
      * The operation will be performed only if the resource's current ETag on the
      * service exactly matches the value specified by the client.</td></tr>
@@ -869,9 +860,6 @@ public final class JobClient {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
      *     <tr><td>if-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
      * The operation will be performed only if the resource's current ETag on the
      * service exactly matches the value specified by the client.</td></tr>
@@ -1317,9 +1305,6 @@ public final class JobClient {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
      *     <tr><td>if-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
      * The operation will be performed only if the resource's current ETag on the
      * service exactly matches the value specified by the client.</td></tr>
@@ -1383,9 +1368,6 @@ public final class JobClient {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
      *     <tr><td>if-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
      * The operation will be performed only if the resource's current ETag on the
      * service exactly matches the value specified by the client.</td></tr>
@@ -1441,9 +1423,6 @@ public final class JobClient {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
      *     <tr><td>if-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
      * The operation will be performed only if the resource's current ETag on the
      * service exactly matches the value specified by the client.</td></tr>
@@ -1502,18 +1481,6 @@ public final class JobClient {
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
-     * <p><strong>Header Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addHeader}
      *
      * <p><strong>Request Body Schema</strong>
      *
@@ -1895,18 +1862,6 @@ public final class JobClient {
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
-     * <p><strong>Header Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addHeader}
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -2328,18 +2283,6 @@ public final class JobClient {
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
-     * <p><strong>Header Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addHeader}
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -2768,18 +2711,6 @@ public final class JobClient {
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
-     * <p><strong>Header Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
@@ -2860,18 +2791,6 @@ public final class JobClient {
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
-     * <p><strong>Header Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addHeader}
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -3224,8 +3143,6 @@ public final class JobClient {
      * @param jobId The ID of the Job to delete.
      * @param timeOut The maximum number of items to return in the response. A maximum of 1000 applications can be
      *     returned.
-     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
-     *     time; set it explicitly if you are calling the REST API directly.
      * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -3236,7 +3153,7 @@ public final class JobClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String jobId, Integer timeOut, OffsetDateTime ocpDate, RequestConditions requestConditions) {
+    public void delete(String jobId, Integer timeOut, RequestConditions requestConditions) {
         // Generated convenience method for deleteWithResponse
         RequestOptions requestOptions = new RequestOptions();
         String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
@@ -3245,10 +3162,6 @@ public final class JobClient {
         OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
         if (timeOut != null) {
             requestOptions.addQueryParam("timeOut", String.valueOf(timeOut), false);
-        }
-        if (ocpDate != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
         }
         if (ifMatch != null) {
             requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
@@ -3273,8 +3186,6 @@ public final class JobClient {
      * @param jobId The ID of the Job.
      * @param timeOut The maximum number of items to return in the response. A maximum of 1000 applications can be
      *     returned.
-     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
-     *     time; set it explicitly if you are calling the REST API directly.
      * @param select An OData $select clause.
      * @param expand An OData $expand clause.
      * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
@@ -3289,12 +3200,7 @@ public final class JobClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BatchJob get(
-            String jobId,
-            Integer timeOut,
-            OffsetDateTime ocpDate,
-            String select,
-            String expand,
-            RequestConditions requestConditions) {
+            String jobId, Integer timeOut, String select, String expand, RequestConditions requestConditions) {
         // Generated convenience method for getWithResponse
         RequestOptions requestOptions = new RequestOptions();
         String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
@@ -3303,10 +3209,6 @@ public final class JobClient {
         OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
         if (timeOut != null) {
             requestOptions.addQueryParam("timeOut", String.valueOf(timeOut), false);
-        }
-        if (ocpDate != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
         }
         if (select != null) {
             requestOptions.addQueryParam("$select", select, false);
@@ -3341,8 +3243,6 @@ public final class JobClient {
      * @param parameters The parameters for the request.
      * @param timeOut The maximum number of items to return in the response. A maximum of 1000 applications can be
      *     returned.
-     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
-     *     time; set it explicitly if you are calling the REST API directly.
      * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -3354,11 +3254,7 @@ public final class JobClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void patch(
-            String jobId,
-            BatchJobUpdateParameters parameters,
-            Integer timeOut,
-            OffsetDateTime ocpDate,
-            RequestConditions requestConditions) {
+            String jobId, BatchJobUpdateParameters parameters, Integer timeOut, RequestConditions requestConditions) {
         // Generated convenience method for patchWithResponse
         RequestOptions requestOptions = new RequestOptions();
         String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
@@ -3367,10 +3263,6 @@ public final class JobClient {
         OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
         if (timeOut != null) {
             requestOptions.addQueryParam("timeOut", String.valueOf(timeOut), false);
-        }
-        if (ocpDate != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
         }
         if (ifMatch != null) {
             requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
@@ -3400,8 +3292,6 @@ public final class JobClient {
      * @param parameters The parameters for the request.
      * @param timeOut The maximum number of items to return in the response. A maximum of 1000 applications can be
      *     returned.
-     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
-     *     time; set it explicitly if you are calling the REST API directly.
      * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -3412,12 +3302,7 @@ public final class JobClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void update(
-            String jobId,
-            BatchJob parameters,
-            Integer timeOut,
-            OffsetDateTime ocpDate,
-            RequestConditions requestConditions) {
+    public void update(String jobId, BatchJob parameters, Integer timeOut, RequestConditions requestConditions) {
         // Generated convenience method for updateWithResponse
         RequestOptions requestOptions = new RequestOptions();
         String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
@@ -3426,10 +3311,6 @@ public final class JobClient {
         OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
         if (timeOut != null) {
             requestOptions.addQueryParam("timeOut", String.valueOf(timeOut), false);
-        }
-        if (ocpDate != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
         }
         if (ifMatch != null) {
             requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
@@ -3462,8 +3343,6 @@ public final class JobClient {
      * @param parameters The parameters for the request.
      * @param timeOut The maximum number of items to return in the response. A maximum of 1000 applications can be
      *     returned.
-     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
-     *     time; set it explicitly if you are calling the REST API directly.
      * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -3475,11 +3354,7 @@ public final class JobClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void disable(
-            String jobId,
-            BatchJobDisableParameters parameters,
-            Integer timeOut,
-            OffsetDateTime ocpDate,
-            RequestConditions requestConditions) {
+            String jobId, BatchJobDisableParameters parameters, Integer timeOut, RequestConditions requestConditions) {
         // Generated convenience method for disableWithResponse
         RequestOptions requestOptions = new RequestOptions();
         String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
@@ -3488,10 +3363,6 @@ public final class JobClient {
         OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
         if (timeOut != null) {
             requestOptions.addQueryParam("timeOut", String.valueOf(timeOut), false);
-        }
-        if (ocpDate != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
         }
         if (ifMatch != null) {
             requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
@@ -3521,8 +3392,6 @@ public final class JobClient {
      * @param jobId The ID of the Job to enable.
      * @param timeOut The maximum number of items to return in the response. A maximum of 1000 applications can be
      *     returned.
-     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
-     *     time; set it explicitly if you are calling the REST API directly.
      * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -3533,7 +3402,7 @@ public final class JobClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void enable(String jobId, Integer timeOut, OffsetDateTime ocpDate, RequestConditions requestConditions) {
+    public void enable(String jobId, Integer timeOut, RequestConditions requestConditions) {
         // Generated convenience method for enableWithResponse
         RequestOptions requestOptions = new RequestOptions();
         String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
@@ -3542,10 +3411,6 @@ public final class JobClient {
         OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
         if (timeOut != null) {
             requestOptions.addQueryParam("timeOut", String.valueOf(timeOut), false);
-        }
-        if (ocpDate != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
         }
         if (ifMatch != null) {
             requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
@@ -3576,8 +3441,6 @@ public final class JobClient {
      * @param jobId The ID of the Job to terminate.
      * @param timeOut The maximum number of items to return in the response. A maximum of 1000 applications can be
      *     returned.
-     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
-     *     time; set it explicitly if you are calling the REST API directly.
      * @param parameters The parameters for the request.
      * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3592,7 +3455,6 @@ public final class JobClient {
     public void terminate(
             String jobId,
             Integer timeOut,
-            OffsetDateTime ocpDate,
             BatchJobTerminateParameters parameters,
             RequestConditions requestConditions) {
         // Generated convenience method for terminateWithResponse
@@ -3603,10 +3465,6 @@ public final class JobClient {
         OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
         if (timeOut != null) {
             requestOptions.addQueryParam("timeOut", String.valueOf(timeOut), false);
-        }
-        if (ocpDate != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
         }
         if (parameters != null) {
             requestOptions.setBody(BinaryData.fromObject(parameters));
@@ -3641,8 +3499,6 @@ public final class JobClient {
      * @param parameters The Job to be crated.
      * @param timeOut The maximum number of items to return in the response. A maximum of 1000 applications can be
      *     returned.
-     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
-     *     time; set it explicitly if you are calling the REST API directly.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3652,15 +3508,11 @@ public final class JobClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void create(BatchJobCreateParameters parameters, Integer timeOut, OffsetDateTime ocpDate) {
+    public void create(BatchJobCreateParameters parameters, Integer timeOut) {
         // Generated convenience method for createWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (timeOut != null) {
             requestOptions.addQueryParam("timeOut", String.valueOf(timeOut), false);
-        }
-        if (ocpDate != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
         }
         createWithResponse(BinaryData.fromObject(parameters), requestOptions).getValue();
     }
@@ -3668,10 +3520,6 @@ public final class JobClient {
     /**
      * Lists all of the Jobs in the specified Account.
      *
-     * @param maxresults The maximum number of items to return in the response. A maximum of 1000 applications can be
-     *     returned.
-     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
-     *     time; set it explicitly if you are calling the REST API directly.
      * @param timeOut The maximum number of items to return in the response. A maximum of 1000 applications can be
      *     returned.
      * @param filter An OData $filter clause. For more information on constructing this filter, see
@@ -3688,17 +3536,9 @@ public final class JobClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BatchJob> list(
-            Integer maxresults, OffsetDateTime ocpDate, Integer timeOut, String filter, String select, String expand) {
+    public PagedIterable<BatchJob> list(Integer timeOut, String filter, String select, String expand) {
         // Generated convenience method for list
         RequestOptions requestOptions = new RequestOptions();
-        if (maxresults != null) {
-            requestOptions.addQueryParam("maxresults", String.valueOf(maxresults), false);
-        }
-        if (ocpDate != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
-        }
         if (timeOut != null) {
             requestOptions.addQueryParam("timeOut", String.valueOf(timeOut), false);
         }
@@ -3718,10 +3558,6 @@ public final class JobClient {
      * Lists the Jobs that have been created under the specified Job Schedule.
      *
      * @param jobScheduleId The ID of the Job Schedule from which you want to get a list of Jobs.
-     * @param maxresults The maximum number of items to return in the response. A maximum of 1000 applications can be
-     *     returned.
-     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
-     *     time; set it explicitly if you are calling the REST API directly.
      * @param timeOut The maximum number of items to return in the response. A maximum of 1000 applications can be
      *     returned.
      * @param filter An OData $filter clause. For more information on constructing this filter, see
@@ -3739,22 +3575,9 @@ public final class JobClient {
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BatchJob> listFromJobSchedule(
-            String jobScheduleId,
-            Integer maxresults,
-            OffsetDateTime ocpDate,
-            Integer timeOut,
-            String filter,
-            String select,
-            String expand) {
+            String jobScheduleId, Integer timeOut, String filter, String select, String expand) {
         // Generated convenience method for listFromJobSchedule
         RequestOptions requestOptions = new RequestOptions();
-        if (maxresults != null) {
-            requestOptions.addQueryParam("maxresults", String.valueOf(maxresults), false);
-        }
-        if (ocpDate != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
-        }
         if (timeOut != null) {
             requestOptions.addQueryParam("timeOut", String.valueOf(timeOut), false);
         }
@@ -3782,10 +3605,6 @@ public final class JobClient {
      * code 409 (Conflict) with an error code of JobPreparationTaskNotSpecified.
      *
      * @param jobId The ID of the Job.
-     * @param maxresults The maximum number of items to return in the response. A maximum of 1000 applications can be
-     *     returned.
-     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
-     *     time; set it explicitly if you are calling the REST API directly.
      * @param timeOut The maximum number of items to return in the response. A maximum of 1000 applications can be
      *     returned.
      * @param filter An OData $filter clause. For more information on constructing this filter, see
@@ -3803,16 +3622,9 @@ public final class JobClient {
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<JobPreparationAndReleaseTaskExecutionInformation> listPreparationAndReleaseTaskStatus(
-            String jobId, Integer maxresults, OffsetDateTime ocpDate, Integer timeOut, String filter, String select) {
+            String jobId, Integer timeOut, String filter, String select) {
         // Generated convenience method for listPreparationAndReleaseTaskStatus
         RequestOptions requestOptions = new RequestOptions();
-        if (maxresults != null) {
-            requestOptions.addQueryParam("maxresults", String.valueOf(maxresults), false);
-        }
-        if (ocpDate != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
-        }
         if (timeOut != null) {
             requestOptions.addQueryParam("timeOut", String.valueOf(timeOut), false);
         }
@@ -3839,8 +3651,6 @@ public final class JobClient {
      * @param jobId The ID of the Job.
      * @param timeOut The maximum number of items to return in the response. A maximum of 1000 applications can be
      *     returned.
-     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
-     *     time; set it explicitly if you are calling the REST API directly.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3851,15 +3661,11 @@ public final class JobClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public TaskCountsResult getTaskCounts(String jobId, Integer timeOut, OffsetDateTime ocpDate) {
+    public TaskCountsResult getTaskCounts(String jobId, Integer timeOut) {
         // Generated convenience method for getTaskCountsWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (timeOut != null) {
             requestOptions.addQueryParam("timeOut", String.valueOf(timeOut), false);
-        }
-        if (ocpDate != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
         }
         return getTaskCountsWithResponse(jobId, requestOptions).getValue().toObject(TaskCountsResult.class);
     }

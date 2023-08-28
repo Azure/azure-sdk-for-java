@@ -103,7 +103,7 @@ public class FileTests extends BatchServiceClientTestBase {
             if (waitForTasksToComplete(taskClient, jobId, TASK_COMPLETE_TIMEOUT_IN_SECONDS)) {
                 BatchTask task = taskClient.get(jobId, taskId);
                 String nodeId = task.getNodeInfo().getNodeId();
-                PagedIterable<NodeFile> files = nodesClient.listFilesFromBatchNode(poolId, nodeId, null, null, null, null, true);
+                PagedIterable<NodeFile> files = nodesClient.listFilesFromBatchNode(poolId, nodeId, null, null, true);
                 String fileName = null;
                 for (NodeFile f : files) {
                     if (f.getName().endsWith("stdout.txt")) {
@@ -113,7 +113,7 @@ public class FileTests extends BatchServiceClientTestBase {
                 }
                 Assert.assertNotNull(fileName);
 
-                BinaryData binaryData = nodesClient.getFileFromBatchNode(poolId, nodeId, fileName);
+                BinaryData binaryData = nodesClient.getFileFromBatchNode(new GetFileFromBatchNodeOptions(poolId, nodeId, fileName));
                 String fileContent = new String(binaryData.toBytes(), StandardCharsets.UTF_8);
                 Assert.assertEquals("hello\n", fileContent);
 

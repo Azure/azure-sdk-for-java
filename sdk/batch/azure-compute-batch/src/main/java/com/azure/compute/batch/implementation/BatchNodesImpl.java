@@ -35,6 +35,7 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.UrlBuilder;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -981,18 +982,6 @@ public final class BatchNodesImpl {
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
-     * <p><strong>Header Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     *
      * <p><strong>Request Body Schema</strong>
      *
      * <pre>{@code
@@ -1050,18 +1039,6 @@ public final class BatchNodesImpl {
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
-     * <p><strong>Header Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     *
      * <p><strong>Request Body Schema</strong>
      *
      * <pre>{@code
@@ -1117,18 +1094,6 @@ public final class BatchNodesImpl {
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
-     * <p><strong>Header Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the machine on which you want to delete a user Account.
      * @param userName The name of the user Account to delete.
@@ -1172,18 +1137,6 @@ public final class BatchNodesImpl {
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
-     * <p><strong>Header Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the machine on which you want to delete a user Account.
      * @param userName The name of the user Account to delete.
@@ -1226,18 +1179,6 @@ public final class BatchNodesImpl {
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
-     * <p><strong>Header Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addHeader}
      *
      * <p><strong>Request Body Schema</strong>
      *
@@ -1298,18 +1239,6 @@ public final class BatchNodesImpl {
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
-     * <p><strong>Header Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     *
      * <p><strong>Request Body Schema</strong>
      *
      * <pre>{@code
@@ -1363,18 +1292,6 @@ public final class BatchNodesImpl {
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
-     * <p><strong>Header Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addHeader}
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -1573,18 +1490,6 @@ public final class BatchNodesImpl {
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
-     * <p><strong>Header Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
@@ -1779,18 +1684,6 @@ public final class BatchNodesImpl {
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
-     * <p><strong>Header Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     *
      * <p><strong>Request Body Schema</strong>
      *
      * <pre>{@code
@@ -1851,18 +1744,6 @@ public final class BatchNodesImpl {
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
-     * <p><strong>Header Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     *
      * <p><strong>Request Body Schema</strong>
      *
      * <pre>{@code
@@ -1921,18 +1802,6 @@ public final class BatchNodesImpl {
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
-     * <p><strong>Header Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addHeader}
      *
      * <p><strong>Request Body Schema</strong>
      *
@@ -1995,18 +1864,6 @@ public final class BatchNodesImpl {
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
-     * <p><strong>Header Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     *
      * <p><strong>Request Body Schema</strong>
      *
      * <pre>{@code
@@ -2064,18 +1921,6 @@ public final class BatchNodesImpl {
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
-     * <p><strong>Header Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addHeader}
      *
      * <p><strong>Request Body Schema</strong>
      *
@@ -2138,18 +1983,6 @@ public final class BatchNodesImpl {
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
-     * <p><strong>Header Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     *
      * <p><strong>Request Body Schema</strong>
      *
      * <pre>{@code
@@ -2208,18 +2041,6 @@ public final class BatchNodesImpl {
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
-     * <p><strong>Header Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node on which you want to enable Task scheduling.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2261,18 +2082,6 @@ public final class BatchNodesImpl {
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
-     * <p><strong>Header Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node on which you want to enable Task scheduling.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2312,18 +2121,6 @@ public final class BatchNodesImpl {
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
-     * <p><strong>Header Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addHeader}
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -2378,18 +2175,6 @@ public final class BatchNodesImpl {
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
-     * <p><strong>Header Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
@@ -2440,18 +2225,6 @@ public final class BatchNodesImpl {
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
-     * <p><strong>Header Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
@@ -2501,18 +2274,6 @@ public final class BatchNodesImpl {
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
-     * <p><strong>Header Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
@@ -2559,18 +2320,6 @@ public final class BatchNodesImpl {
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
-     * <p><strong>Header Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addHeader}
      *
      * <p><strong>Request Body Schema</strong>
      *
@@ -2642,18 +2391,6 @@ public final class BatchNodesImpl {
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
-     * <p><strong>Header Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     *
      * <p><strong>Request Body Schema</strong>
      *
      * <pre>{@code
@@ -2721,18 +2458,6 @@ public final class BatchNodesImpl {
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
-     * <p><strong>Header Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addHeader}
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -2941,18 +2666,6 @@ public final class BatchNodesImpl {
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
-     * <p><strong>Header Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
@@ -3125,8 +2838,31 @@ public final class BatchNodesImpl {
                         ? requestOptions.getContext()
                         : Context.NONE);
         return new PagedFlux<>(
-                () -> listSinglePageAsync(poolId, requestOptions),
-                nextLink -> listNextSinglePageAsync(nextLink, requestOptionsForNextPage));
+                (pageSize) -> {
+                    RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
+                    if (pageSize != null) {
+                        requestOptionsLocal.addRequestCallback(
+                                requestLocal -> {
+                                    UrlBuilder urlBuilder = UrlBuilder.parse(requestLocal.getUrl());
+                                    urlBuilder.setQueryParameter("maxresults", String.valueOf(pageSize));
+                                    requestLocal.setUrl(urlBuilder.toString());
+                                });
+                    }
+                    return listSinglePageAsync(poolId, requestOptionsLocal);
+                },
+                (nextLink, pageSize) -> {
+                    RequestOptions requestOptionsLocal = new RequestOptions();
+                    requestOptionsLocal.setContext(requestOptionsForNextPage.getContext());
+                    if (pageSize != null) {
+                        requestOptionsLocal.addRequestCallback(
+                                requestLocal -> {
+                                    UrlBuilder urlBuilder = UrlBuilder.parse(requestLocal.getUrl());
+                                    urlBuilder.setQueryParameter("maxresults", String.valueOf(pageSize));
+                                    requestLocal.setUrl(urlBuilder.toString());
+                                });
+                    }
+                    return listNextSinglePageAsync(nextLink, requestOptionsLocal);
+                });
     }
 
     /**
@@ -3147,18 +2883,6 @@ public final class BatchNodesImpl {
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
-     * <p><strong>Header Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addHeader}
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -3363,18 +3087,6 @@ public final class BatchNodesImpl {
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
-     * <p><strong>Header Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
@@ -3547,8 +3259,31 @@ public final class BatchNodesImpl {
                         ? requestOptions.getContext()
                         : Context.NONE);
         return new PagedIterable<>(
-                () -> listSinglePage(poolId, requestOptions),
-                nextLink -> listNextSinglePage(nextLink, requestOptionsForNextPage));
+                (pageSize) -> {
+                    RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
+                    if (pageSize != null) {
+                        requestOptionsLocal.addRequestCallback(
+                                requestLocal -> {
+                                    UrlBuilder urlBuilder = UrlBuilder.parse(requestLocal.getUrl());
+                                    urlBuilder.setQueryParameter("maxresults", String.valueOf(pageSize));
+                                    requestLocal.setUrl(urlBuilder.toString());
+                                });
+                    }
+                    return listSinglePage(poolId, requestOptionsLocal);
+                },
+                (nextLink, pageSize) -> {
+                    RequestOptions requestOptionsLocal = new RequestOptions();
+                    requestOptionsLocal.setContext(requestOptionsForNextPage.getContext());
+                    if (pageSize != null) {
+                        requestOptionsLocal.addRequestCallback(
+                                requestLocal -> {
+                                    UrlBuilder urlBuilder = UrlBuilder.parse(requestLocal.getUrl());
+                                    urlBuilder.setQueryParameter("maxresults", String.valueOf(pageSize));
+                                    requestLocal.setUrl(urlBuilder.toString());
+                                });
+                    }
+                    return listNextSinglePage(nextLink, requestOptionsLocal);
+                });
     }
 
     /**
@@ -3565,18 +3300,6 @@ public final class BatchNodesImpl {
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
-     * <p><strong>Header Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addHeader}
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -3661,18 +3384,6 @@ public final class BatchNodesImpl {
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
-     * <p><strong>Header Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
@@ -3754,18 +3465,6 @@ public final class BatchNodesImpl {
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
-     * <p><strong>Header Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addHeader}
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -3859,18 +3558,6 @@ public final class BatchNodesImpl {
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
-     * <p><strong>Header Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
@@ -3928,8 +3615,31 @@ public final class BatchNodesImpl {
                         ? requestOptions.getContext()
                         : Context.NONE);
         return new PagedFlux<>(
-                () -> listExtensionsSinglePageAsync(poolId, nodeId, requestOptions),
-                nextLink -> listExtensionsNextSinglePageAsync(nextLink, requestOptionsForNextPage));
+                (pageSize) -> {
+                    RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
+                    if (pageSize != null) {
+                        requestOptionsLocal.addRequestCallback(
+                                requestLocal -> {
+                                    UrlBuilder urlBuilder = UrlBuilder.parse(requestLocal.getUrl());
+                                    urlBuilder.setQueryParameter("maxresults", String.valueOf(pageSize));
+                                    requestLocal.setUrl(urlBuilder.toString());
+                                });
+                    }
+                    return listExtensionsSinglePageAsync(poolId, nodeId, requestOptionsLocal);
+                },
+                (nextLink, pageSize) -> {
+                    RequestOptions requestOptionsLocal = new RequestOptions();
+                    requestOptionsLocal.setContext(requestOptionsForNextPage.getContext());
+                    if (pageSize != null) {
+                        requestOptionsLocal.addRequestCallback(
+                                requestLocal -> {
+                                    UrlBuilder urlBuilder = UrlBuilder.parse(requestLocal.getUrl());
+                                    urlBuilder.setQueryParameter("maxresults", String.valueOf(pageSize));
+                                    requestLocal.setUrl(urlBuilder.toString());
+                                });
+                    }
+                    return listExtensionsNextSinglePageAsync(nextLink, requestOptionsLocal);
+                });
     }
 
     /**
@@ -3948,18 +3658,6 @@ public final class BatchNodesImpl {
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
-     * <p><strong>Header Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addHeader}
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -4049,18 +3747,6 @@ public final class BatchNodesImpl {
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
-     * <p><strong>Header Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
@@ -4119,8 +3805,31 @@ public final class BatchNodesImpl {
                         ? requestOptions.getContext()
                         : Context.NONE);
         return new PagedIterable<>(
-                () -> listExtensionsSinglePage(poolId, nodeId, requestOptions),
-                nextLink -> listExtensionsNextSinglePage(nextLink, requestOptionsForNextPage));
+                (pageSize) -> {
+                    RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
+                    if (pageSize != null) {
+                        requestOptionsLocal.addRequestCallback(
+                                requestLocal -> {
+                                    UrlBuilder urlBuilder = UrlBuilder.parse(requestLocal.getUrl());
+                                    urlBuilder.setQueryParameter("maxresults", String.valueOf(pageSize));
+                                    requestLocal.setUrl(urlBuilder.toString());
+                                });
+                    }
+                    return listExtensionsSinglePage(poolId, nodeId, requestOptionsLocal);
+                },
+                (nextLink, pageSize) -> {
+                    RequestOptions requestOptionsLocal = new RequestOptions();
+                    requestOptionsLocal.setContext(requestOptionsForNextPage.getContext());
+                    if (pageSize != null) {
+                        requestOptionsLocal.addRequestCallback(
+                                requestLocal -> {
+                                    UrlBuilder urlBuilder = UrlBuilder.parse(requestLocal.getUrl());
+                                    urlBuilder.setQueryParameter("maxresults", String.valueOf(pageSize));
+                                    requestLocal.setUrl(urlBuilder.toString());
+                                });
+                    }
+                    return listExtensionsNextSinglePage(nextLink, requestOptionsLocal);
+                });
     }
 
     /**
@@ -4140,18 +3849,6 @@ public final class BatchNodesImpl {
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
-     * <p><strong>Header Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addHeader}
      *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node from which you want to delete the file.
@@ -4198,18 +3895,6 @@ public final class BatchNodesImpl {
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
-     * <p><strong>Header Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node from which you want to delete the file.
      * @param filePath The path to the file or directory that you want to delete.
@@ -4254,9 +3939,6 @@ public final class BatchNodesImpl {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
      *     <tr><td>if-modified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
      * been modified since the specified time.</td></tr>
@@ -4321,9 +4003,6 @@ public final class BatchNodesImpl {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
      *     <tr><td>if-modified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
      * been modified since the specified time.</td></tr>
@@ -4386,9 +4065,6 @@ public final class BatchNodesImpl {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
      *     <tr><td>if-modified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
      * been modified since the specified time.</td></tr>
@@ -4446,9 +4122,6 @@ public final class BatchNodesImpl {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
      *     <tr><td>if-modified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
      * been modified since the specified time.</td></tr>
@@ -4502,18 +4175,6 @@ public final class BatchNodesImpl {
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
-     * <p><strong>Header Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addHeader}
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -4586,18 +4247,6 @@ public final class BatchNodesImpl {
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
-     * <p><strong>Header Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
@@ -4634,8 +4283,31 @@ public final class BatchNodesImpl {
                         ? requestOptions.getContext()
                         : Context.NONE);
         return new PagedFlux<>(
-                () -> listFilesFromBatchNodeSinglePageAsync(poolId, nodeId, requestOptions),
-                nextLink -> listFilesFromBatchNodeNextSinglePageAsync(nextLink, requestOptionsForNextPage));
+                (pageSize) -> {
+                    RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
+                    if (pageSize != null) {
+                        requestOptionsLocal.addRequestCallback(
+                                requestLocal -> {
+                                    UrlBuilder urlBuilder = UrlBuilder.parse(requestLocal.getUrl());
+                                    urlBuilder.setQueryParameter("maxresults", String.valueOf(pageSize));
+                                    requestLocal.setUrl(urlBuilder.toString());
+                                });
+                    }
+                    return listFilesFromBatchNodeSinglePageAsync(poolId, nodeId, requestOptionsLocal);
+                },
+                (nextLink, pageSize) -> {
+                    RequestOptions requestOptionsLocal = new RequestOptions();
+                    requestOptionsLocal.setContext(requestOptionsForNextPage.getContext());
+                    if (pageSize != null) {
+                        requestOptionsLocal.addRequestCallback(
+                                requestLocal -> {
+                                    UrlBuilder urlBuilder = UrlBuilder.parse(requestLocal.getUrl());
+                                    urlBuilder.setQueryParameter("maxresults", String.valueOf(pageSize));
+                                    requestLocal.setUrl(urlBuilder.toString());
+                                });
+                    }
+                    return listFilesFromBatchNodeNextSinglePageAsync(nextLink, requestOptionsLocal);
+                });
     }
 
     /**
@@ -4656,18 +4328,6 @@ public final class BatchNodesImpl {
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
-     * <p><strong>Header Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addHeader}
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -4737,18 +4397,6 @@ public final class BatchNodesImpl {
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
-     * <p><strong>Header Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
@@ -4785,26 +4433,37 @@ public final class BatchNodesImpl {
                         ? requestOptions.getContext()
                         : Context.NONE);
         return new PagedIterable<>(
-                () -> listFilesFromBatchNodeSinglePage(poolId, nodeId, requestOptions),
-                nextLink -> listFilesFromBatchNodeNextSinglePage(nextLink, requestOptionsForNextPage));
+                (pageSize) -> {
+                    RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
+                    if (pageSize != null) {
+                        requestOptionsLocal.addRequestCallback(
+                                requestLocal -> {
+                                    UrlBuilder urlBuilder = UrlBuilder.parse(requestLocal.getUrl());
+                                    urlBuilder.setQueryParameter("maxresults", String.valueOf(pageSize));
+                                    requestLocal.setUrl(urlBuilder.toString());
+                                });
+                    }
+                    return listFilesFromBatchNodeSinglePage(poolId, nodeId, requestOptionsLocal);
+                },
+                (nextLink, pageSize) -> {
+                    RequestOptions requestOptionsLocal = new RequestOptions();
+                    requestOptionsLocal.setContext(requestOptionsForNextPage.getContext());
+                    if (pageSize != null) {
+                        requestOptionsLocal.addRequestCallback(
+                                requestLocal -> {
+                                    UrlBuilder urlBuilder = UrlBuilder.parse(requestLocal.getUrl());
+                                    urlBuilder.setQueryParameter("maxresults", String.valueOf(pageSize));
+                                    requestLocal.setUrl(urlBuilder.toString());
+                                });
+                    }
+                    return listFilesFromBatchNodeNextSinglePage(nextLink, requestOptionsLocal);
+                });
     }
 
     /**
      * Lists the Compute Nodes in the specified Pool.
      *
      * <p>Get the next page of items.
-     *
-     * <p><strong>Header Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addHeader}
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -4994,18 +4653,6 @@ public final class BatchNodesImpl {
      *
      * <p>Get the next page of items.
      *
-     * <p><strong>Header Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
@@ -5190,18 +4837,6 @@ public final class BatchNodesImpl {
      *
      * <p>Get the next page of items.
      *
-     * <p><strong>Header Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
@@ -5276,18 +4911,6 @@ public final class BatchNodesImpl {
      *
      * <p>Get the next page of items.
      *
-     * <p><strong>Header Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
@@ -5357,18 +4980,6 @@ public final class BatchNodesImpl {
      *
      * <p>Get the next page of items.
      *
-     * <p><strong>Header Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
@@ -5419,18 +5030,6 @@ public final class BatchNodesImpl {
      * Lists all of the files in Task directories on the specified Compute Node.
      *
      * <p>Get the next page of items.
-     *
-     * <p><strong>Header Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addHeader}
      *
      * <p><strong>Response Body Schema</strong>
      *

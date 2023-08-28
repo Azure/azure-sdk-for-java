@@ -82,18 +82,6 @@ public final class PoolAsyncClient {
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
-     * <p><strong>Header Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
@@ -135,18 +123,6 @@ public final class PoolAsyncClient {
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
-     * <p><strong>Header Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addHeader}
      *
      * <p><strong>Request Body Schema</strong>
      *
@@ -418,18 +394,6 @@ public final class PoolAsyncClient {
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
-     * <p><strong>Header Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addHeader}
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -778,9 +742,6 @@ public final class PoolAsyncClient {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
      *     <tr><td>if-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
      * The operation will be performed only if the resource's current ETag on the
      * service exactly matches the value specified by the client.</td></tr>
@@ -830,9 +791,6 @@ public final class PoolAsyncClient {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
      *     <tr><td>if-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
      * The operation will be performed only if the resource's current ETag on the
      * service exactly matches the value specified by the client.</td></tr>
@@ -889,9 +847,6 @@ public final class PoolAsyncClient {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
      *     <tr><td>if-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
      * The operation will be performed only if the resource's current ETag on the
      * service exactly matches the value specified by the client.</td></tr>
@@ -1252,9 +1207,6 @@ public final class PoolAsyncClient {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
      *     <tr><td>if-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
      * The operation will be performed only if the resource's current ETag on the
      * service exactly matches the value specified by the client.</td></tr>
@@ -1373,18 +1325,6 @@ public final class PoolAsyncClient {
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
-     * <p><strong>Header Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     *
      * @param poolId The ID of the Pool on which to disable automatic scaling.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1423,9 +1363,6 @@ public final class PoolAsyncClient {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
      *     <tr><td>if-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
      * The operation will be performed only if the resource's current ETag on the
      * service exactly matches the value specified by the client.</td></tr>
@@ -1483,18 +1420,6 @@ public final class PoolAsyncClient {
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
-     * <p><strong>Header Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addHeader}
      *
      * <p><strong>Request Body Schema</strong>
      *
@@ -1565,9 +1490,6 @@ public final class PoolAsyncClient {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
      *     <tr><td>if-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
      * The operation will be performed only if the resource's current ETag on the
      * service exactly matches the value specified by the client.</td></tr>
@@ -1636,9 +1558,6 @@ public final class PoolAsyncClient {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
      *     <tr><td>if-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
      * The operation will be performed only if the resource's current ETag on the
      * service exactly matches the value specified by the client.</td></tr>
@@ -1686,18 +1605,6 @@ public final class PoolAsyncClient {
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
-     * <p><strong>Header Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addHeader}
      *
      * <p><strong>Request Body Schema</strong>
      *
@@ -1810,9 +1717,6 @@ public final class PoolAsyncClient {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
-     * current system clock time; set it explicitly if you are calling the REST API
-     * directly.</td></tr>
      *     <tr><td>if-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
      * The operation will be performed only if the resource's current ETag on the
      * service exactly matches the value specified by the client.</td></tr>
@@ -2246,10 +2150,6 @@ public final class PoolAsyncClient {
      * a startTime or endTime these filters default to the start and end times of the last aggregation interval
      * currently available; that is, only the last aggregation interval is returned.
      *
-     * @param maxresults The maximum number of items to return in the response. A maximum of 1000 applications can be
-     *     returned.
-     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
-     *     time; set it explicitly if you are calling the REST API directly.
      * @param timeOut The maximum number of items to return in the response. A maximum of 1000 applications can be
      *     returned.
      * @param starttime The earliest time from which to include metrics. This must be at least two and a half hours
@@ -2270,21 +2170,9 @@ public final class PoolAsyncClient {
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<PoolUsageMetrics> listUsageMetrics(
-            Integer maxresults,
-            OffsetDateTime ocpDate,
-            Integer timeOut,
-            OffsetDateTime starttime,
-            OffsetDateTime endtime,
-            String filter) {
+            Integer timeOut, OffsetDateTime starttime, OffsetDateTime endtime, String filter) {
         // Generated convenience method for listUsageMetrics
         RequestOptions requestOptions = new RequestOptions();
-        if (maxresults != null) {
-            requestOptions.addQueryParam("maxresults", String.valueOf(maxresults), false);
-        }
-        if (ocpDate != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
-        }
         if (timeOut != null) {
             requestOptions.addQueryParam("timeOut", String.valueOf(timeOut), false);
         }
@@ -2331,8 +2219,6 @@ public final class PoolAsyncClient {
      * @param parameters The Pool to be created.
      * @param timeOut The maximum number of items to return in the response. A maximum of 1000 applications can be
      *     returned.
-     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
-     *     time; set it explicitly if you are calling the REST API directly.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2343,15 +2229,11 @@ public final class PoolAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> create(BatchPoolCreateParameters parameters, Integer timeOut, OffsetDateTime ocpDate) {
+    public Mono<Void> create(BatchPoolCreateParameters parameters, Integer timeOut) {
         // Generated convenience method for createWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (timeOut != null) {
             requestOptions.addQueryParam("timeOut", String.valueOf(timeOut), false);
-        }
-        if (ocpDate != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
         }
         return createWithResponse(BinaryData.fromObject(parameters), requestOptions).flatMap(FluxUtil::toMono);
     }
@@ -2359,10 +2241,6 @@ public final class PoolAsyncClient {
     /**
      * Lists all of the Pools in the specified Account.
      *
-     * @param maxresults The maximum number of items to return in the response. A maximum of 1000 applications can be
-     *     returned.
-     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
-     *     time; set it explicitly if you are calling the REST API directly.
      * @param timeOut The maximum number of items to return in the response. A maximum of 1000 applications can be
      *     returned.
      * @param filter An OData $filter clause. For more information on constructing this filter, see
@@ -2379,17 +2257,9 @@ public final class PoolAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BatchPool> list(
-            Integer maxresults, OffsetDateTime ocpDate, Integer timeOut, String filter, String select, String expand) {
+    public PagedFlux<BatchPool> list(Integer timeOut, String filter, String select, String expand) {
         // Generated convenience method for list
         RequestOptions requestOptions = new RequestOptions();
-        if (maxresults != null) {
-            requestOptions.addQueryParam("maxresults", String.valueOf(maxresults), false);
-        }
-        if (ocpDate != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
-        }
         if (timeOut != null) {
             requestOptions.addQueryParam("timeOut", String.valueOf(timeOut), false);
         }
@@ -2442,8 +2312,6 @@ public final class PoolAsyncClient {
      * @param poolId The ID of the Pool to get.
      * @param timeOut The maximum number of items to return in the response. A maximum of 1000 applications can be
      *     returned.
-     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
-     *     time; set it explicitly if you are calling the REST API directly.
      * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2455,8 +2323,7 @@ public final class PoolAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> delete(
-            String poolId, Integer timeOut, OffsetDateTime ocpDate, RequestConditions requestConditions) {
+    public Mono<Void> delete(String poolId, Integer timeOut, RequestConditions requestConditions) {
         // Generated convenience method for deleteWithResponse
         RequestOptions requestOptions = new RequestOptions();
         String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
@@ -2465,10 +2332,6 @@ public final class PoolAsyncClient {
         OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
         if (timeOut != null) {
             requestOptions.addQueryParam("timeOut", String.valueOf(timeOut), false);
-        }
-        if (ocpDate != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
         }
         if (ifMatch != null) {
             requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
@@ -2493,8 +2356,6 @@ public final class PoolAsyncClient {
      * @param poolId The ID of the Pool to get.
      * @param timeOut The maximum number of items to return in the response. A maximum of 1000 applications can be
      *     returned.
-     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
-     *     time; set it explicitly if you are calling the REST API directly.
      * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2505,8 +2366,7 @@ public final class PoolAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Boolean> exists(
-            String poolId, Integer timeOut, OffsetDateTime ocpDate, RequestConditions requestConditions) {
+    public Mono<Boolean> exists(String poolId, Integer timeOut, RequestConditions requestConditions) {
         // Generated convenience method for existsWithResponse
         RequestOptions requestOptions = new RequestOptions();
         String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
@@ -2515,10 +2375,6 @@ public final class PoolAsyncClient {
         OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
         if (timeOut != null) {
             requestOptions.addQueryParam("timeOut", String.valueOf(timeOut), false);
-        }
-        if (ocpDate != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
         }
         if (ifMatch != null) {
             requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
@@ -2543,8 +2399,6 @@ public final class PoolAsyncClient {
      * @param poolId The ID of the Pool to get.
      * @param timeOut The maximum number of items to return in the response. A maximum of 1000 applications can be
      *     returned.
-     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
-     *     time; set it explicitly if you are calling the REST API directly.
      * @param select An OData $select clause.
      * @param expand An OData $expand clause.
      * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
@@ -2559,12 +2413,7 @@ public final class PoolAsyncClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BatchPool> get(
-            String poolId,
-            Integer timeOut,
-            OffsetDateTime ocpDate,
-            String select,
-            String expand,
-            RequestConditions requestConditions) {
+            String poolId, Integer timeOut, String select, String expand, RequestConditions requestConditions) {
         // Generated convenience method for getWithResponse
         RequestOptions requestOptions = new RequestOptions();
         String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
@@ -2573,10 +2422,6 @@ public final class PoolAsyncClient {
         OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
         if (timeOut != null) {
             requestOptions.addQueryParam("timeOut", String.valueOf(timeOut), false);
-        }
-        if (ocpDate != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
         }
         if (select != null) {
             requestOptions.addQueryParam("$select", select, false);
@@ -2614,8 +2459,6 @@ public final class PoolAsyncClient {
      * @param parameters The parameters for the request.
      * @param timeOut The maximum number of items to return in the response. A maximum of 1000 applications can be
      *     returned.
-     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
-     *     time; set it explicitly if you are calling the REST API directly.
      * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2628,11 +2471,7 @@ public final class PoolAsyncClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> patch(
-            String poolId,
-            BatchPoolPatchParameters parameters,
-            Integer timeOut,
-            OffsetDateTime ocpDate,
-            RequestConditions requestConditions) {
+            String poolId, BatchPoolPatchParameters parameters, Integer timeOut, RequestConditions requestConditions) {
         // Generated convenience method for patchWithResponse
         RequestOptions requestOptions = new RequestOptions();
         String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
@@ -2641,10 +2480,6 @@ public final class PoolAsyncClient {
         OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
         if (timeOut != null) {
             requestOptions.addQueryParam("timeOut", String.valueOf(timeOut), false);
-        }
-        if (ocpDate != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
         }
         if (ifMatch != null) {
             requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
@@ -2669,8 +2504,6 @@ public final class PoolAsyncClient {
      * @param poolId The ID of the Pool on which to disable automatic scaling.
      * @param timeOut The maximum number of items to return in the response. A maximum of 1000 applications can be
      *     returned.
-     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
-     *     time; set it explicitly if you are calling the REST API directly.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2681,15 +2514,11 @@ public final class PoolAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> disableAutoScale(String poolId, Integer timeOut, OffsetDateTime ocpDate) {
+    public Mono<Void> disableAutoScale(String poolId, Integer timeOut) {
         // Generated convenience method for disableAutoScaleWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (timeOut != null) {
             requestOptions.addQueryParam("timeOut", String.valueOf(timeOut), false);
-        }
-        if (ocpDate != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
         }
         return disableAutoScaleWithResponse(poolId, requestOptions).flatMap(FluxUtil::toMono);
     }
@@ -2706,8 +2535,6 @@ public final class PoolAsyncClient {
      * @param parameters The parameters for the request.
      * @param timeOut The maximum number of items to return in the response. A maximum of 1000 applications can be
      *     returned.
-     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
-     *     time; set it explicitly if you are calling the REST API directly.
      * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2723,7 +2550,6 @@ public final class PoolAsyncClient {
             String poolId,
             BatchPoolEnableAutoScaleParameters parameters,
             Integer timeOut,
-            OffsetDateTime ocpDate,
             RequestConditions requestConditions) {
         // Generated convenience method for enableAutoScaleWithResponse
         RequestOptions requestOptions = new RequestOptions();
@@ -2733,10 +2559,6 @@ public final class PoolAsyncClient {
         OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
         if (timeOut != null) {
             requestOptions.addQueryParam("timeOut", String.valueOf(timeOut), false);
-        }
-        if (ocpDate != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
         }
         if (ifMatch != null) {
             requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
@@ -2766,8 +2588,6 @@ public final class PoolAsyncClient {
      * @param parameters The parameters for the request.
      * @param timeOut The maximum number of items to return in the response. A maximum of 1000 applications can be
      *     returned.
-     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
-     *     time; set it explicitly if you are calling the REST API directly.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2780,15 +2600,11 @@ public final class PoolAsyncClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AutoScaleRun> evaluateAutoScale(
-            String poolId, BatchPoolEvaluateAutoScaleParameters parameters, Integer timeOut, OffsetDateTime ocpDate) {
+            String poolId, BatchPoolEvaluateAutoScaleParameters parameters, Integer timeOut) {
         // Generated convenience method for evaluateAutoScaleWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (timeOut != null) {
             requestOptions.addQueryParam("timeOut", String.valueOf(timeOut), false);
-        }
-        if (ocpDate != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
         }
         return evaluateAutoScaleWithResponse(poolId, BinaryData.fromObject(parameters), requestOptions)
                 .flatMap(FluxUtil::toMono)
@@ -2808,8 +2624,6 @@ public final class PoolAsyncClient {
      * @param parameters The parameters for the request.
      * @param timeOut The maximum number of items to return in the response. A maximum of 1000 applications can be
      *     returned.
-     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
-     *     time; set it explicitly if you are calling the REST API directly.
      * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2822,11 +2636,7 @@ public final class PoolAsyncClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> resize(
-            String poolId,
-            BatchPoolResizeParameters parameters,
-            Integer timeOut,
-            OffsetDateTime ocpDate,
-            RequestConditions requestConditions) {
+            String poolId, BatchPoolResizeParameters parameters, Integer timeOut, RequestConditions requestConditions) {
         // Generated convenience method for resizeWithResponse
         RequestOptions requestOptions = new RequestOptions();
         String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
@@ -2835,10 +2645,6 @@ public final class PoolAsyncClient {
         OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
         if (timeOut != null) {
             requestOptions.addQueryParam("timeOut", String.valueOf(timeOut), false);
-        }
-        if (ocpDate != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
         }
         if (ifMatch != null) {
             requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
@@ -2869,8 +2675,6 @@ public final class PoolAsyncClient {
      * @param poolId The ID of the Pool to get.
      * @param timeOut The maximum number of items to return in the response. A maximum of 1000 applications can be
      *     returned.
-     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
-     *     time; set it explicitly if you are calling the REST API directly.
      * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2882,8 +2686,7 @@ public final class PoolAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> stopResize(
-            String poolId, Integer timeOut, OffsetDateTime ocpDate, RequestConditions requestConditions) {
+    public Mono<Void> stopResize(String poolId, Integer timeOut, RequestConditions requestConditions) {
         // Generated convenience method for stopResizeWithResponse
         RequestOptions requestOptions = new RequestOptions();
         String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
@@ -2892,10 +2695,6 @@ public final class PoolAsyncClient {
         OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
         if (timeOut != null) {
             requestOptions.addQueryParam("timeOut", String.valueOf(timeOut), false);
-        }
-        if (ocpDate != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
         }
         if (ifMatch != null) {
             requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
@@ -2925,8 +2724,6 @@ public final class PoolAsyncClient {
      * @param parameters The parameters for the request.
      * @param timeOut The maximum number of items to return in the response. A maximum of 1000 applications can be
      *     returned.
-     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
-     *     time; set it explicitly if you are calling the REST API directly.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2937,16 +2734,11 @@ public final class PoolAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> updateProperties(
-            String poolId, BatchPoolUpdateParameters parameters, Integer timeOut, OffsetDateTime ocpDate) {
+    public Mono<Void> updateProperties(String poolId, BatchPoolUpdateParameters parameters, Integer timeOut) {
         // Generated convenience method for updatePropertiesWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (timeOut != null) {
             requestOptions.addQueryParam("timeOut", String.valueOf(timeOut), false);
-        }
-        if (ocpDate != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
         }
         return updatePropertiesWithResponse(poolId, BinaryData.fromObject(parameters), requestOptions)
                 .flatMap(FluxUtil::toMono);
@@ -2962,8 +2754,6 @@ public final class PoolAsyncClient {
      * @param parameters The parameters for the request.
      * @param timeOut The maximum number of items to return in the response. A maximum of 1000 applications can be
      *     returned.
-     * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
-     *     time; set it explicitly if you are calling the REST API directly.
      * @param requestConditions Specifies HTTP options for conditional requests based on modification time.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2976,11 +2766,7 @@ public final class PoolAsyncClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> removeNodes(
-            String poolId,
-            NodeRemoveParameters parameters,
-            Integer timeOut,
-            OffsetDateTime ocpDate,
-            RequestConditions requestConditions) {
+            String poolId, NodeRemoveParameters parameters, Integer timeOut, RequestConditions requestConditions) {
         // Generated convenience method for removeNodesWithResponse
         RequestOptions requestOptions = new RequestOptions();
         String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
@@ -2989,10 +2775,6 @@ public final class PoolAsyncClient {
         OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
         if (timeOut != null) {
             requestOptions.addQueryParam("timeOut", String.valueOf(timeOut), false);
-        }
-        if (ocpDate != null) {
-            requestOptions.setHeader(
-                    HttpHeaderName.fromString("ocp-date"), String.valueOf(new DateTimeRfc1123(ocpDate)));
         }
         if (ifMatch != null) {
             requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);

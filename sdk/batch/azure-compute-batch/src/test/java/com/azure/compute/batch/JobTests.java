@@ -148,7 +148,7 @@ public class JobTests extends BatchServiceClientTestBase {
             job = jobClient.get(jobId);
             Assertions.assertEquals(JobState.ACTIVE, job.getState());
 
-            jobClient.terminate(jobId, null, null, new BatchJobTerminateParameters().setTerminateReason("myreason"), null);
+            jobClient.terminate(jobId, null, new BatchJobTerminateParameters().setTerminateReason("myreason"), null);
             job = jobClient.get(jobId);
             Assertions.assertEquals(JobState.TERMINATING, job.getState());
 
