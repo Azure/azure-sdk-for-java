@@ -26,7 +26,6 @@ import static org.mockito.Mockito.when;
 // and v1 can invoke this API with NULL ServiceBusReceivedMessage object. So the following tests asserts the instrumentation
 // paths are safe from NPE in v1.
 //
-// TODO anuchan: inform Liudmila about non-null guarantee in v2 & discuss that these tests are scoped to v1.
 public class ServiceBusReceiverInstrumentationTests {
     @Test
     public void testInstrumentNullMessageNoMeter() {
