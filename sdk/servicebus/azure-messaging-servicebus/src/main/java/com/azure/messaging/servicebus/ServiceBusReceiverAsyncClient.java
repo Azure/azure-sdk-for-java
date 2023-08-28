@@ -48,6 +48,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Consumer;
 
 import static com.azure.core.amqp.implementation.ClientConstants.ENTITY_PATH_KEY;
 import static com.azure.core.amqp.implementation.ClientConstants.LINK_NAME_KEY;
@@ -386,17 +387,18 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
             // Assert the internal invariant for above 'sessionManager = null' i.e, session-unaware call-sites should not set these options.
             throw new IllegalStateException("Session-specific options are not expected to be present on a client for session unaware entity.");
         }
-        this.isOnV2 = this.connectionCacheWrapper.isV2();
         this.isSessionEnabled = false;
+        this.isOnV2 = this.connectionCacheWrapper.isV2();
 
-        this.managementNodeLocks = new LockContainer<>(cleanupInterval);
-        this.renewalContainer = new LockContainer<>(EXPIRED_RENEWAL_CLEANUP_INTERVAL, renewal -> {
+        this.managementNodeLocks = new LockContainer<OffsetDateTime>(cleanupInterval);
+        final Consumer<LockRenewalOperation> onExpired = renewal -> {
             LOGGER.atVerbose()
                 .addKeyValue(LOCK_TOKEN_KEY, renewal.getLockToken())
                 .addKeyValue("status", renewal.getStatus())
                 .log("Closing expired renewal operation.", renewal.getThrowable());
             renewal.close();
-        });
+        };
+        this.renewalContainer = new LockContainer<LockRenewalOperation>(EXPIRED_RENEWAL_CLEANUP_INTERVAL, onExpired);
 
         this.identifier = identifier;
         this.tracer = instrumentation.getTracer();
@@ -419,26 +421,27 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         this.messageSerializer = Objects.requireNonNull(messageSerializer, "'messageSerializer' cannot be null.");
         this.onClientClose = Objects.requireNonNull(onClientClose, "'onClientClose' cannot be null.");
         this.sessionManager = Objects.requireNonNull(sessionManager, "'sessionManager' cannot be null.");
-        this.isOnV2 = this.connectionCacheWrapper.isV2();
         this.isSessionEnabled = true;
+        this.isOnV2 = this.connectionCacheWrapper.isV2();
         final boolean isV2SessionManager = this.sessionManager instanceof ServiceBusSingleSessionManager;
         // Once side-by-side support for V1 is no longer needed, we'll directly use the "ServiceBusSingleSessionManager" type
         // in the constructor and IServiceBusSessionManager interface will be deleted (so excuse the temporary 'I' prefix
-        // used to avoid type conflict with V1 ServiceBusSessionManager, V1 ServiceBusSessionManager will also be deleted
-        // once side-by-side support for V1 is no longer needed).
+        // used to avoid type conflict with V1 ServiceBusSessionManager. The V1 ServiceBusSessionManager will also be deleted
+        // once side-by-side support is no longer needed).
         if (isOnV2 ^ isV2SessionManager) {
             throw LOGGER.logExceptionAsError(
                 new IllegalArgumentException("For V2 Session, the manager should be ServiceBusSingleSessionManager, and ConnectionCache should be on V2."));
         }
 
-        this.managementNodeLocks = new LockContainer<>(cleanupInterval);
-        this.renewalContainer = new LockContainer<>(EXPIRED_RENEWAL_CLEANUP_INTERVAL, renewal -> {
+        this.managementNodeLocks = new LockContainer<OffsetDateTime>(cleanupInterval);
+        final Consumer<LockRenewalOperation> onExpired = renewal -> {
             LOGGER.atInfo()
                 .addKeyValue(SESSION_ID_KEY, renewal.getSessionId())
                 .addKeyValue("status", renewal.getStatus())
                 .log("Closing expired renewal operation.", renewal.getThrowable());
             renewal.close();
-        });
+        };
+        this.renewalContainer = new LockContainer<LockRenewalOperation>(EXPIRED_RENEWAL_CLEANUP_INTERVAL, onExpired);
 
         this.identifier = sessionManager.getIdentifier();
         this.tracer = instrumentation.getTracer();
@@ -1569,60 +1572,50 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
             .addKeyValue(DISPOSITION_STATUS_KEY, dispositionStatus)
             .log("Disposition started.");
 
-        // This operation is not kicked off until it is subscribed to.
-        final Mono<Void> performOnManagement = connectionProcessor
-            .flatMap(connection -> connection.getManagementNode(entityPath, entityType))
-            .flatMap(node -> node.updateDisposition(lockToken, dispositionStatus, deadLetterReason,
-                deadLetterErrorDescription, propertiesToModify, sessionId, getLinkName(sessionId), transactionContext))
-            .then(Mono.fromRunnable(() -> {
-                LOGGER.atInfo()
-                    .addKeyValue(LOCK_TOKEN_KEY, lockToken)
-                    .addKeyValue(ENTITY_PATH_KEY, entityPath)
-                    .addKeyValue(DISPOSITION_STATUS_KEY, dispositionStatus)
-                    .log("Disposition (via management node) completed.");
-
-                message.setIsSettled();
-                managementNodeLocks.remove(lockToken);
-                renewalContainer.remove(lockToken);
-            }));
-
-        Mono<Void> updateDispositionOperation;
-        if (isOnV2 && isSessionEnabled) {
-            // 'this.sessionManager': Already validated for non-null & ServiceBusSingleSessionManager type in the Constructor.
-            updateDispositionOperation = sessionManager.updateDisposition(lockToken, sessionId, dispositionStatus,
-                propertiesToModify, deadLetterReason, deadLetterErrorDescription, transactionContext)
-                // Unlike V1, in V2, if the lock token cannot be found on the session link, we won't fall back to
-                // 'performOnManagement'. We learned that once the session link is closed, the session is lost, and
-                // settlement cannot be performed on the management node (Same approach in .NET, JS, Go).
-                .then(Mono.fromRunnable(() -> {
-                    LOGGER.atInfo()
-                        .addKeyValue(LOCK_TOKEN_KEY, lockToken)
-                        .addKeyValue(ENTITY_PATH_KEY, entityPath)
-                        .addKeyValue(DISPOSITION_STATUS_KEY, dispositionStatus)
-                        .log("Disposition completed.");
-                    message.setIsSettled();
-                }));
-        } else if (sessionManager != null) {
-            updateDispositionOperation = sessionManager.updateDisposition(lockToken, sessionId, dispositionStatus,
-                propertiesToModify, deadLetterReason, deadLetterErrorDescription, transactionContext)
-                .flatMap(isSuccess -> {
-                    if (isSuccess) {
+        final Mono<Void> updateDispositionOperation;
+        if (isSessionEnabled) {
+            // The final this.sessionManager is guaranteed to be set when final isSessionEnabled is true.
+            if (isOnV2) {
+                // V2: The final this.sessionManager is guaranteed to be 'ServiceBusSingleSessionManager'.
+                updateDispositionOperation = sessionManager.updateDisposition(lockToken, sessionId, dispositionStatus,
+                        propertiesToModify, deadLetterReason, deadLetterErrorDescription, transactionContext)
+                    // Unlike V1, if the lock token cannot be found on the session link (because it is closed), V2 won't
+                    // fall back to 'dispositionViaManagementNode'. Once the session link is closed, the session is lost,
+                    // and disposition cannot be performed on the management node (Same approach in .NET, JS, Go).
+                    .then(Mono.fromRunnable(() -> {
+                        LOGGER.atInfo()
+                            .addKeyValue(LOCK_TOKEN_KEY, lockToken)
+                            .addKeyValue(ENTITY_PATH_KEY, entityPath)
+                            .addKeyValue(DISPOSITION_STATUS_KEY, dispositionStatus)
+                            .log("Disposition completed.");
                         message.setIsSettled();
-                        renewalContainer.remove(lockToken);
-                        return Mono.empty();
-                    }
-
-                    LOGGER.info("Could not perform on session manger. Performing on management node.");
-                    return performOnManagement;
-                });
+                        // The session-lock-renew logic in V2 is localized to ServiceBusReactorReceiver instance that
+                        // ServiceBusSingleSessionManager composes. The logic does not use 'renewalContainer', hence
+                        // unlike V1, no call to renewalContainer.remove(lockToken).
+                    }));
+            } else {
+                // V1: The final this.sessionManager is guaranteed to be 'ServiceBusSessionManager'.
+                updateDispositionOperation = sessionManager.updateDisposition(lockToken, sessionId, dispositionStatus,
+                        propertiesToModify, deadLetterReason, deadLetterErrorDescription, transactionContext)
+                    .flatMap(isSuccess -> {
+                        if (isSuccess) {
+                            message.setIsSettled();
+                            renewalContainer.remove(lockToken);
+                            return Mono.empty();
+                        }
+                        LOGGER.info("Could not perform on session manger. Performing on management node.");
+                        return dispositionViaManagementNode(message, dispositionStatus, deadLetterReason,
+                            deadLetterErrorDescription, propertiesToModify, transactionContext);
+                    });
+            }
         } else {
             final ServiceBusAsyncConsumer existingConsumer = consumer.get();
             if (isManagementToken(lockToken) || existingConsumer == null) {
-                updateDispositionOperation = performOnManagement;
+                updateDispositionOperation = dispositionViaManagementNode(message, dispositionStatus, deadLetterReason,
+                    deadLetterErrorDescription, propertiesToModify, transactionContext);
             } else {
-
                 updateDispositionOperation = existingConsumer.updateDisposition(lockToken, dispositionStatus,
-                    deadLetterReason, deadLetterErrorDescription, propertiesToModify, transactionContext)
+                        deadLetterReason, deadLetterErrorDescription, propertiesToModify, transactionContext)
                     .then(Mono.fromRunnable(() -> {
                         LOGGER.atVerbose()
                             .addKeyValue(LOCK_TOKEN_KEY, lockToken)
@@ -1651,6 +1644,28 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
                         return new ServiceBusException(throwable, ServiceBusErrorSource.UNKNOWN);
                 }
             });
+    }
+
+    private Mono<Void> dispositionViaManagementNode(ServiceBusReceivedMessage message, DispositionStatus dispositionStatus,
+        String deadLetterReason, String deadLetterErrorDescription, Map<String, Object> propertiesToModify,
+        ServiceBusTransactionContext transactionContext) {
+        final String lockToken = message.getLockToken();
+        final String sessionId = message.getSessionId();
+        return connectionProcessor
+            .flatMap(connection -> connection.getManagementNode(entityPath, entityType))
+            .flatMap(node -> node.updateDisposition(lockToken, dispositionStatus, deadLetterReason,
+                deadLetterErrorDescription, propertiesToModify, sessionId, getLinkName(sessionId), transactionContext))
+            .then(Mono.fromRunnable(() -> {
+                LOGGER.atInfo()
+                    .addKeyValue(LOCK_TOKEN_KEY, lockToken)
+                    .addKeyValue(ENTITY_PATH_KEY, entityPath)
+                    .addKeyValue(DISPOSITION_STATUS_KEY, dispositionStatus)
+                    .log("Disposition (via management node) completed.");
+
+                message.setIsSettled();
+                managementNodeLocks.remove(lockToken);
+                renewalContainer.remove(lockToken);
+            }));
     }
 
     private ServiceBusAsyncConsumer getOrCreateConsumer() {
