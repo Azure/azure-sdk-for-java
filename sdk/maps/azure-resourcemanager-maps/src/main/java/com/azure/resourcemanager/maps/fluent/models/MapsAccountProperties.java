@@ -5,7 +5,11 @@
 package com.azure.resourcemanager.maps.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.resourcemanager.maps.models.CorsRules;
+import com.azure.resourcemanager.maps.models.Encryption;
+import com.azure.resourcemanager.maps.models.LinkedResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
 /** Additional Map account properties. */
 @Fluent
@@ -18,16 +22,41 @@ public final class MapsAccountProperties {
 
     /*
      * Allows toggle functionality on Azure Policy to disable Azure Maps local authentication support. This will
-     * disable Shared Keys authentication from any usage.
+     * disable Shared Keys and Shared Access Signature Token authentication from any usage.
      */
     @JsonProperty(value = "disableLocalAuth")
     private Boolean disableLocalAuth;
 
     /*
-     * the state of the provisioning.
+     * The provisioning state of the Map account resource, Account updates can only be performed on terminal states.
+     * Terminal states: `Succeeded` and `Failed`
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private String provisioningState;
+
+    /*
+     * The array of associated resources to the Map account. Linked resource in the array cannot individually update,
+     * you must update all linked resources in the array together. These resources may be used on operations on the
+     * Azure Maps REST API. Access is controlled by the Map Account Managed Identity(s) permissions to those
+     * resource(s).
+     */
+    @JsonProperty(value = "linkedResources")
+    private List<LinkedResource> linkedResources;
+
+    /*
+     * Specifies CORS rules for the Blob service. You can include up to five CorsRule elements in the request. If no
+     * CorsRule elements are included in the request body, all CORS rules will be deleted, and CORS will be disabled
+     * for the Blob service.
+     */
+    @JsonProperty(value = "cors")
+    private CorsRules cors;
+
+    /*
+     * (Optional) Discouraged to include in resource definition. Only needed where it is possible to disable platform
+     * (AKA infrastructure) encryption. Azure SQL TDE is an example of this. Values are enabled and disabled.
+     */
+    @JsonProperty(value = "encryption")
+    private Encryption encryption;
 
     /** Creates an instance of MapsAccountProperties class. */
     public MapsAccountProperties() {
@@ -44,7 +73,8 @@ public final class MapsAccountProperties {
 
     /**
      * Get the disableLocalAuth property: Allows toggle functionality on Azure Policy to disable Azure Maps local
-     * authentication support. This will disable Shared Keys authentication from any usage.
+     * authentication support. This will disable Shared Keys and Shared Access Signature Token authentication from any
+     * usage.
      *
      * @return the disableLocalAuth value.
      */
@@ -54,7 +84,8 @@ public final class MapsAccountProperties {
 
     /**
      * Set the disableLocalAuth property: Allows toggle functionality on Azure Policy to disable Azure Maps local
-     * authentication support. This will disable Shared Keys authentication from any usage.
+     * authentication support. This will disable Shared Keys and Shared Access Signature Token authentication from any
+     * usage.
      *
      * @param disableLocalAuth the disableLocalAuth value to set.
      * @return the MapsAccountProperties object itself.
@@ -65,7 +96,8 @@ public final class MapsAccountProperties {
     }
 
     /**
-     * Get the provisioningState property: the state of the provisioning.
+     * Get the provisioningState property: The provisioning state of the Map account resource, Account updates can only
+     * be performed on terminal states. Terminal states: `Succeeded` and `Failed`.
      *
      * @return the provisioningState value.
      */
@@ -74,10 +106,93 @@ public final class MapsAccountProperties {
     }
 
     /**
+     * Get the linkedResources property: The array of associated resources to the Map account. Linked resource in the
+     * array cannot individually update, you must update all linked resources in the array together. These resources may
+     * be used on operations on the Azure Maps REST API. Access is controlled by the Map Account Managed Identity(s)
+     * permissions to those resource(s).
+     *
+     * @return the linkedResources value.
+     */
+    public List<LinkedResource> linkedResources() {
+        return this.linkedResources;
+    }
+
+    /**
+     * Set the linkedResources property: The array of associated resources to the Map account. Linked resource in the
+     * array cannot individually update, you must update all linked resources in the array together. These resources may
+     * be used on operations on the Azure Maps REST API. Access is controlled by the Map Account Managed Identity(s)
+     * permissions to those resource(s).
+     *
+     * @param linkedResources the linkedResources value to set.
+     * @return the MapsAccountProperties object itself.
+     */
+    public MapsAccountProperties withLinkedResources(List<LinkedResource> linkedResources) {
+        this.linkedResources = linkedResources;
+        return this;
+    }
+
+    /**
+     * Get the cors property: Specifies CORS rules for the Blob service. You can include up to five CorsRule elements in
+     * the request. If no CorsRule elements are included in the request body, all CORS rules will be deleted, and CORS
+     * will be disabled for the Blob service.
+     *
+     * @return the cors value.
+     */
+    public CorsRules cors() {
+        return this.cors;
+    }
+
+    /**
+     * Set the cors property: Specifies CORS rules for the Blob service. You can include up to five CorsRule elements in
+     * the request. If no CorsRule elements are included in the request body, all CORS rules will be deleted, and CORS
+     * will be disabled for the Blob service.
+     *
+     * @param cors the cors value to set.
+     * @return the MapsAccountProperties object itself.
+     */
+    public MapsAccountProperties withCors(CorsRules cors) {
+        this.cors = cors;
+        return this;
+    }
+
+    /**
+     * Get the encryption property: (Optional) Discouraged to include in resource definition. Only needed where it is
+     * possible to disable platform (AKA infrastructure) encryption. Azure SQL TDE is an example of this. Values are
+     * enabled and disabled.
+     *
+     * @return the encryption value.
+     */
+    public Encryption encryption() {
+        return this.encryption;
+    }
+
+    /**
+     * Set the encryption property: (Optional) Discouraged to include in resource definition. Only needed where it is
+     * possible to disable platform (AKA infrastructure) encryption. Azure SQL TDE is an example of this. Values are
+     * enabled and disabled.
+     *
+     * @param encryption the encryption value to set.
+     * @return the MapsAccountProperties object itself.
+     */
+    public MapsAccountProperties withEncryption(Encryption encryption) {
+        this.encryption = encryption;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (linkedResources() != null) {
+            linkedResources().forEach(e -> e.validate());
+        }
+        if (cors() != null) {
+            cors().validate();
+        }
+        if (encryption() != null) {
+            encryption().validate();
+        }
     }
 }

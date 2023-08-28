@@ -23,6 +23,10 @@ public final class ManagementPolicyDefinition {
     @JsonProperty(value = "filters")
     private ManagementPolicyFilter filters;
 
+    /** Creates an instance of ManagementPolicyDefinition class. */
+    public ManagementPolicyDefinition() {
+    }
+
     /**
      * Get the actions property: An object that defines the action set.
      *

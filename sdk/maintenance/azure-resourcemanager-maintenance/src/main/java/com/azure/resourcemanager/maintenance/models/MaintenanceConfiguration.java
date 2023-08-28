@@ -83,6 +83,13 @@ public interface MaintenanceConfiguration {
     Visibility visibility();
 
     /**
+     * Gets the installPatches property: The input parameters to be passed to the patch run operation.
+     *
+     * @return the installPatches value.
+     */
+    InputPatchConfiguration installPatches();
+
+    /**
      * Gets the startDateTime property: Effective start date of the maintenance window in YYYY-MM-DD hh:mm format. The
      * start date can be set to either the current date or future date. The window will be created in the time zone
      * provided and adjusted to daylight savings according to that time zone.
@@ -126,9 +133,10 @@ public interface MaintenanceConfiguration {
      * integer]['Week(s)'] [Optional comma separated list of weekdays Monday-Sunday]. Weekly schedule examples are
      * recurEvery: 3Weeks, recurEvery: Week Saturday,Sunday. Monthly schedules are formatted as [Frequency as
      * integer]['Month(s)'] [Comma separated list of month days] or [Frequency as integer]['Month(s)'] [Week of Month
-     * (First, Second, Third, Fourth, Last)] [Weekday Monday-Sunday]. Monthly schedule examples are recurEvery: Month,
-     * recurEvery: 2Months, recurEvery: Month day23,day24, recurEvery: Month Last Sunday, recurEvery: Month Fourth
-     * Monday.
+     * (First, Second, Third, Fourth, Last)] [Weekday Monday-Sunday] [Optional Offset(No. of days)]. Offset value must
+     * be between -6 to 6 inclusive. Monthly schedule examples are recurEvery: Month, recurEvery: 2Months, recurEvery:
+     * Month day23,day24, recurEvery: Month Last Sunday, recurEvery: Month Fourth Monday, recurEvery: Month Last Sunday
+     * Offset-3, recurEvery: Month Third Sunday Offset6.
      *
      * @return the recurEvery value.
      */
@@ -166,11 +174,13 @@ public interface MaintenanceConfiguration {
     interface Definition
         extends DefinitionStages.Blank, DefinitionStages.WithResourceGroup, DefinitionStages.WithCreate {
     }
+
     /** The MaintenanceConfiguration definition stages. */
     interface DefinitionStages {
         /** The first stage of the MaintenanceConfiguration definition. */
         interface Blank extends WithResourceGroup {
         }
+
         /** The stage of the MaintenanceConfiguration definition allowing to specify parent resource. */
         interface WithResourceGroup {
             /**
@@ -181,6 +191,7 @@ public interface MaintenanceConfiguration {
              */
             WithCreate withExistingResourceGroup(String resourceGroupName);
         }
+
         /**
          * The stage of the MaintenanceConfiguration definition which contains all the minimum required properties for
          * the resource to be created, but also allows for any other optional properties to be specified.
@@ -192,6 +203,7 @@ public interface MaintenanceConfiguration {
                 DefinitionStages.WithExtensionProperties,
                 DefinitionStages.WithMaintenanceScope,
                 DefinitionStages.WithVisibility,
+                DefinitionStages.WithInstallPatches,
                 DefinitionStages.WithStartDateTime,
                 DefinitionStages.WithExpirationDateTime,
                 DefinitionStages.WithDuration,
@@ -212,6 +224,7 @@ public interface MaintenanceConfiguration {
              */
             MaintenanceConfiguration create(Context context);
         }
+
         /** The stage of the MaintenanceConfiguration definition allowing to specify location. */
         interface WithLocation {
             /**
@@ -230,6 +243,7 @@ public interface MaintenanceConfiguration {
              */
             WithCreate withRegion(String location);
         }
+
         /** The stage of the MaintenanceConfiguration definition allowing to specify tags. */
         interface WithTags {
             /**
@@ -240,6 +254,7 @@ public interface MaintenanceConfiguration {
              */
             WithCreate withTags(Map<String, String> tags);
         }
+
         /** The stage of the MaintenanceConfiguration definition allowing to specify namespace. */
         interface WithNamespace {
             /**
@@ -250,6 +265,7 @@ public interface MaintenanceConfiguration {
              */
             WithCreate withNamespace(String namespace);
         }
+
         /** The stage of the MaintenanceConfiguration definition allowing to specify extensionProperties. */
         interface WithExtensionProperties {
             /**
@@ -261,6 +277,7 @@ public interface MaintenanceConfiguration {
              */
             WithCreate withExtensionProperties(Map<String, String> extensionProperties);
         }
+
         /** The stage of the MaintenanceConfiguration definition allowing to specify maintenanceScope. */
         interface WithMaintenanceScope {
             /**
@@ -271,6 +288,7 @@ public interface MaintenanceConfiguration {
              */
             WithCreate withMaintenanceScope(MaintenanceScope maintenanceScope);
         }
+
         /** The stage of the MaintenanceConfiguration definition allowing to specify visibility. */
         interface WithVisibility {
             /**
@@ -282,6 +300,18 @@ public interface MaintenanceConfiguration {
              */
             WithCreate withVisibility(Visibility visibility);
         }
+
+        /** The stage of the MaintenanceConfiguration definition allowing to specify installPatches. */
+        interface WithInstallPatches {
+            /**
+             * Specifies the installPatches property: The input parameters to be passed to the patch run operation..
+             *
+             * @param installPatches The input parameters to be passed to the patch run operation.
+             * @return the next definition stage.
+             */
+            WithCreate withInstallPatches(InputPatchConfiguration installPatches);
+        }
+
         /** The stage of the MaintenanceConfiguration definition allowing to specify startDateTime. */
         interface WithStartDateTime {
             /**
@@ -296,6 +326,7 @@ public interface MaintenanceConfiguration {
              */
             WithCreate withStartDateTime(String startDateTime);
         }
+
         /** The stage of the MaintenanceConfiguration definition allowing to specify expirationDateTime. */
         interface WithExpirationDateTime {
             /**
@@ -312,6 +343,7 @@ public interface MaintenanceConfiguration {
              */
             WithCreate withExpirationDateTime(String expirationDateTime);
         }
+
         /** The stage of the MaintenanceConfiguration definition allowing to specify duration. */
         interface WithDuration {
             /**
@@ -324,6 +356,7 @@ public interface MaintenanceConfiguration {
              */
             WithCreate withDuration(String duration);
         }
+
         /** The stage of the MaintenanceConfiguration definition allowing to specify timeZone. */
         interface WithTimeZone {
             /**
@@ -338,6 +371,7 @@ public interface MaintenanceConfiguration {
              */
             WithCreate withTimeZone(String timeZone);
         }
+
         /** The stage of the MaintenanceConfiguration definition allowing to specify recurEvery. */
         interface WithRecurEvery {
             /**
@@ -348,9 +382,11 @@ public interface MaintenanceConfiguration {
              * as integer]['Week(s)'] [Optional comma separated list of weekdays Monday-Sunday]. Weekly schedule
              * examples are recurEvery: 3Weeks, recurEvery: Week Saturday,Sunday. Monthly schedules are formatted as
              * [Frequency as integer]['Month(s)'] [Comma separated list of month days] or [Frequency as
-             * integer]['Month(s)'] [Week of Month (First, Second, Third, Fourth, Last)] [Weekday Monday-Sunday].
-             * Monthly schedule examples are recurEvery: Month, recurEvery: 2Months, recurEvery: Month day23,day24,
-             * recurEvery: Month Last Sunday, recurEvery: Month Fourth Monday..
+             * integer]['Month(s)'] [Week of Month (First, Second, Third, Fourth, Last)] [Weekday Monday-Sunday]
+             * [Optional Offset(No. of days)]. Offset value must be between -6 to 6 inclusive. Monthly schedule examples
+             * are recurEvery: Month, recurEvery: 2Months, recurEvery: Month day23,day24, recurEvery: Month Last Sunday,
+             * recurEvery: Month Fourth Monday, recurEvery: Month Last Sunday Offset-3, recurEvery: Month Third Sunday
+             * Offset6..
              *
              * @param recurEvery Rate at which a Maintenance window is expected to recur. The rate can be expressed as
              *     daily, weekly, or monthly schedules. Daily schedule are formatted as recurEvery: [Frequency as
@@ -359,14 +395,17 @@ public interface MaintenanceConfiguration {
              *     integer]['Week(s)'] [Optional comma separated list of weekdays Monday-Sunday]. Weekly schedule
              *     examples are recurEvery: 3Weeks, recurEvery: Week Saturday,Sunday. Monthly schedules are formatted as
              *     [Frequency as integer]['Month(s)'] [Comma separated list of month days] or [Frequency as
-             *     integer]['Month(s)'] [Week of Month (First, Second, Third, Fourth, Last)] [Weekday Monday-Sunday].
-             *     Monthly schedule examples are recurEvery: Month, recurEvery: 2Months, recurEvery: Month day23,day24,
-             *     recurEvery: Month Last Sunday, recurEvery: Month Fourth Monday.
+             *     integer]['Month(s)'] [Week of Month (First, Second, Third, Fourth, Last)] [Weekday Monday-Sunday]
+             *     [Optional Offset(No. of days)]. Offset value must be between -6 to 6 inclusive. Monthly schedule
+             *     examples are recurEvery: Month, recurEvery: 2Months, recurEvery: Month day23,day24, recurEvery: Month
+             *     Last Sunday, recurEvery: Month Fourth Monday, recurEvery: Month Last Sunday Offset-3, recurEvery:
+             *     Month Third Sunday Offset6.
              * @return the next definition stage.
              */
             WithCreate withRecurEvery(String recurEvery);
         }
     }
+
     /**
      * Begins update for the MaintenanceConfiguration resource.
      *
@@ -381,6 +420,7 @@ public interface MaintenanceConfiguration {
             UpdateStages.WithExtensionProperties,
             UpdateStages.WithMaintenanceScope,
             UpdateStages.WithVisibility,
+            UpdateStages.WithInstallPatches,
             UpdateStages.WithStartDateTime,
             UpdateStages.WithExpirationDateTime,
             UpdateStages.WithDuration,
@@ -401,6 +441,7 @@ public interface MaintenanceConfiguration {
          */
         MaintenanceConfiguration apply(Context context);
     }
+
     /** The MaintenanceConfiguration update stages. */
     interface UpdateStages {
         /** The stage of the MaintenanceConfiguration update allowing to specify tags. */
@@ -413,6 +454,7 @@ public interface MaintenanceConfiguration {
              */
             Update withTags(Map<String, String> tags);
         }
+
         /** The stage of the MaintenanceConfiguration update allowing to specify namespace. */
         interface WithNamespace {
             /**
@@ -423,6 +465,7 @@ public interface MaintenanceConfiguration {
              */
             Update withNamespace(String namespace);
         }
+
         /** The stage of the MaintenanceConfiguration update allowing to specify extensionProperties. */
         interface WithExtensionProperties {
             /**
@@ -434,6 +477,7 @@ public interface MaintenanceConfiguration {
              */
             Update withExtensionProperties(Map<String, String> extensionProperties);
         }
+
         /** The stage of the MaintenanceConfiguration update allowing to specify maintenanceScope. */
         interface WithMaintenanceScope {
             /**
@@ -444,6 +488,7 @@ public interface MaintenanceConfiguration {
              */
             Update withMaintenanceScope(MaintenanceScope maintenanceScope);
         }
+
         /** The stage of the MaintenanceConfiguration update allowing to specify visibility. */
         interface WithVisibility {
             /**
@@ -455,6 +500,18 @@ public interface MaintenanceConfiguration {
              */
             Update withVisibility(Visibility visibility);
         }
+
+        /** The stage of the MaintenanceConfiguration update allowing to specify installPatches. */
+        interface WithInstallPatches {
+            /**
+             * Specifies the installPatches property: The input parameters to be passed to the patch run operation..
+             *
+             * @param installPatches The input parameters to be passed to the patch run operation.
+             * @return the next definition stage.
+             */
+            Update withInstallPatches(InputPatchConfiguration installPatches);
+        }
+
         /** The stage of the MaintenanceConfiguration update allowing to specify startDateTime. */
         interface WithStartDateTime {
             /**
@@ -469,6 +526,7 @@ public interface MaintenanceConfiguration {
              */
             Update withStartDateTime(String startDateTime);
         }
+
         /** The stage of the MaintenanceConfiguration update allowing to specify expirationDateTime. */
         interface WithExpirationDateTime {
             /**
@@ -485,6 +543,7 @@ public interface MaintenanceConfiguration {
              */
             Update withExpirationDateTime(String expirationDateTime);
         }
+
         /** The stage of the MaintenanceConfiguration update allowing to specify duration. */
         interface WithDuration {
             /**
@@ -497,6 +556,7 @@ public interface MaintenanceConfiguration {
              */
             Update withDuration(String duration);
         }
+
         /** The stage of the MaintenanceConfiguration update allowing to specify timeZone. */
         interface WithTimeZone {
             /**
@@ -511,6 +571,7 @@ public interface MaintenanceConfiguration {
              */
             Update withTimeZone(String timeZone);
         }
+
         /** The stage of the MaintenanceConfiguration update allowing to specify recurEvery. */
         interface WithRecurEvery {
             /**
@@ -521,9 +582,11 @@ public interface MaintenanceConfiguration {
              * as integer]['Week(s)'] [Optional comma separated list of weekdays Monday-Sunday]. Weekly schedule
              * examples are recurEvery: 3Weeks, recurEvery: Week Saturday,Sunday. Monthly schedules are formatted as
              * [Frequency as integer]['Month(s)'] [Comma separated list of month days] or [Frequency as
-             * integer]['Month(s)'] [Week of Month (First, Second, Third, Fourth, Last)] [Weekday Monday-Sunday].
-             * Monthly schedule examples are recurEvery: Month, recurEvery: 2Months, recurEvery: Month day23,day24,
-             * recurEvery: Month Last Sunday, recurEvery: Month Fourth Monday..
+             * integer]['Month(s)'] [Week of Month (First, Second, Third, Fourth, Last)] [Weekday Monday-Sunday]
+             * [Optional Offset(No. of days)]. Offset value must be between -6 to 6 inclusive. Monthly schedule examples
+             * are recurEvery: Month, recurEvery: 2Months, recurEvery: Month day23,day24, recurEvery: Month Last Sunday,
+             * recurEvery: Month Fourth Monday, recurEvery: Month Last Sunday Offset-3, recurEvery: Month Third Sunday
+             * Offset6..
              *
              * @param recurEvery Rate at which a Maintenance window is expected to recur. The rate can be expressed as
              *     daily, weekly, or monthly schedules. Daily schedule are formatted as recurEvery: [Frequency as
@@ -532,14 +595,17 @@ public interface MaintenanceConfiguration {
              *     integer]['Week(s)'] [Optional comma separated list of weekdays Monday-Sunday]. Weekly schedule
              *     examples are recurEvery: 3Weeks, recurEvery: Week Saturday,Sunday. Monthly schedules are formatted as
              *     [Frequency as integer]['Month(s)'] [Comma separated list of month days] or [Frequency as
-             *     integer]['Month(s)'] [Week of Month (First, Second, Third, Fourth, Last)] [Weekday Monday-Sunday].
-             *     Monthly schedule examples are recurEvery: Month, recurEvery: 2Months, recurEvery: Month day23,day24,
-             *     recurEvery: Month Last Sunday, recurEvery: Month Fourth Monday.
+             *     integer]['Month(s)'] [Week of Month (First, Second, Third, Fourth, Last)] [Weekday Monday-Sunday]
+             *     [Optional Offset(No. of days)]. Offset value must be between -6 to 6 inclusive. Monthly schedule
+             *     examples are recurEvery: Month, recurEvery: 2Months, recurEvery: Month day23,day24, recurEvery: Month
+             *     Last Sunday, recurEvery: Month Fourth Monday, recurEvery: Month Last Sunday Offset-3, recurEvery:
+             *     Month Third Sunday Offset6.
              * @return the next definition stage.
              */
             Update withRecurEvery(String recurEvery);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

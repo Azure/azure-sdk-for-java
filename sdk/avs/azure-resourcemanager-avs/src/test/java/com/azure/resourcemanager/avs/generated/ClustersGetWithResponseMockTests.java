@@ -31,7 +31,7 @@ public final class ClustersGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"sku\":{\"name\":\"soldweyuqdunv\"},\"properties\":{\"clusterSize\":1255734454,\"provisioningState\":\"Cancelled\",\"clusterId\":79634570,\"hosts\":[\"ktalywjhhgdnhxms\"]},\"id\":\"v\",\"name\":\"omi\",\"type\":\"ox\"}";
+            "{\"sku\":{\"name\":\"nac\"},\"properties\":{\"clusterSize\":1670865281,\"provisioningState\":\"Succeeded\",\"clusterId\":1394471326,\"hosts\":[\"zvytnrzvuljraaer\"]},\"id\":\"nok\",\"name\":\"gukkjqnvbroy\",\"type\":\"a\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,11 +62,11 @@ public final class ClustersGetWithResponseMockTests {
         Cluster response =
             manager
                 .clusters()
-                .getWithResponse("daxconfozauorsuk", "kwbqplhlvnuu", "pzlrphw", com.azure.core.util.Context.NONE)
+                .getWithResponse("kdlpa", "zrcxfailcfxwmdbo", "dfgsftufqobrj", com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals("soldweyuqdunv", response.sku().name());
-        Assertions.assertEquals(1255734454, response.clusterSize());
-        Assertions.assertEquals("ktalywjhhgdnhxms", response.hosts().get(0));
+        Assertions.assertEquals("nac", response.sku().name());
+        Assertions.assertEquals(1670865281, response.clusterSize());
+        Assertions.assertEquals("zvytnrzvuljraaer", response.hosts().get(0));
     }
 }

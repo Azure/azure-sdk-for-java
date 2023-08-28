@@ -85,9 +85,9 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
      */
     DataLakeDirectoryAsyncClient(HttpPipeline pipeline, String url, DataLakeServiceVersion serviceVersion,
         String accountName, String fileSystemName, String directoryName, BlockBlobAsyncClient blockBlobAsyncClient,
-        AzureSasCredential sasToken, CpkInfo customerProvidedKey) {
+        AzureSasCredential sasToken, CpkInfo customerProvidedKey, boolean isTokenCredentialAuthenticated) {
         super(pipeline, url, serviceVersion, accountName, fileSystemName, directoryName, PathResourceType.DIRECTORY,
-            blockBlobAsyncClient, sasToken, customerProvidedKey);
+            blockBlobAsyncClient, sasToken, customerProvidedKey, isTokenCredentialAuthenticated);
     }
 
     DataLakeDirectoryAsyncClient(DataLakePathAsyncClient dataLakePathAsyncClient) {
@@ -95,7 +95,8 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
             dataLakePathAsyncClient.getServiceVersion(), dataLakePathAsyncClient.getAccountName(),
             dataLakePathAsyncClient.getFileSystemName(), Utility.urlEncode(dataLakePathAsyncClient.pathName),
             PathResourceType.DIRECTORY, dataLakePathAsyncClient.getBlockBlobAsyncClient(),
-            dataLakePathAsyncClient.getSasToken(), dataLakePathAsyncClient.getCpkInfo());
+            dataLakePathAsyncClient.getSasToken(), dataLakePathAsyncClient.getCpkInfo(),
+            dataLakePathAsyncClient.isTokenCredentialAuthenticated());
     }
 
     /**
@@ -142,7 +143,7 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
         }
         return new DataLakeDirectoryAsyncClient(getHttpPipeline(), getAccountUrl(), getServiceVersion(),
             getAccountName(), getFileSystemName(), getObjectPath(), this.blockBlobAsyncClient, getSasToken(),
-            finalCustomerProvidedKey);
+            finalCustomerProvidedKey, isTokenCredentialAuthenticated());
     }
 
     /**
@@ -166,6 +167,29 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> delete() {
         return deleteWithResponse(false, null).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Recursively deletes a directory and all contents within the directory.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.deleteRecursively -->
+     * <pre>
+     * client.deleteRecursively&#40;&#41;.subscribe&#40;response -&gt;
+     *     System.out.println&#40;&quot;Delete request completed&quot;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.deleteRecursively -->
+     *
+     * <p>For more information see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/delete">Azure
+     * Docs</a></p>
+     *
+     * @return A reactive response signalling completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> deleteRecursively() {
+        return deleteWithResponse(true, null).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -308,7 +332,8 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
 
         return new DataLakeFileAsyncClient(getHttpPipeline(), getAccountUrl(),
             getServiceVersion(), getAccountName(), getFileSystemName(), Utility.urlEncode(pathPrefix
-            + Utility.urlDecode(fileName)), blockBlobAsyncClient, this.getSasToken(), getCpkInfo());
+            + Utility.urlDecode(fileName)), blockBlobAsyncClient, this.getSasToken(), getCpkInfo(),
+            isTokenCredentialAuthenticated());
     }
 
     /**
@@ -697,7 +722,7 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
         return new DataLakeDirectoryAsyncClient(getHttpPipeline(), getAccountUrl(), getServiceVersion(),
             getAccountName(), getFileSystemName(),
             Utility.urlEncode(pathPrefix + Utility.urlDecode(subdirectoryName)), blockBlobAsyncClient,
-            this.getSasToken(), getCpkInfo());
+            this.getSasToken(), getCpkInfo(), isTokenCredentialAuthenticated());
     }
 
     /**

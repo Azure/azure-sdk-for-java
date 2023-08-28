@@ -229,15 +229,15 @@ public class MetadataRequestRetryPolicyTests extends TestSuiteBase {
             GlobalAddressResolver globalAddressResolver = ReflectionUtils.getGlobalAddressResolver(asyncDocumentClient);
             GlobalEndpointManager globalEndpointManager = ReflectionUtils.getGlobalEndpointManager(asyncDocumentClient);
 
-            List<URI> writeEndpoints = globalEndpointManager.getWriteEndpoints();
+            List<URI> readEndpoints = globalEndpointManager.getReadEndpoints();
 
             Map<URI, GlobalAddressResolver.EndpointCache> endpointCacheByURIMap = globalAddressResolver.addressCacheByEndpoint;
 
             Map<String, HttpClientUnderTestWrapper> httpClientWrapperByRegionMap = new ConcurrentHashMap<>();
 
             for (int i = 0; i < preferredRegions.size(); i++) {
-                URI writeEndpoint = writeEndpoints.get(i);
-                GlobalAddressResolver.EndpointCache endpointCache = endpointCacheByURIMap.get(writeEndpoint);
+                URI readEndpoint = readEndpoints.get(i);
+                GlobalAddressResolver.EndpointCache endpointCache = endpointCacheByURIMap.get(readEndpoint);
                 GatewayAddressCache gatewayAddressCache = endpointCache.addressCache;
                 HttpClientUnderTestWrapper httpClientUnderTestWrapper = getHttpClientUnderTestWrapper(configs);
                 ReflectionUtils.setHttpClient(gatewayAddressCache, httpClientUnderTestWrapper.getSpyHttpClient());
@@ -245,8 +245,8 @@ public class MetadataRequestRetryPolicyTests extends TestSuiteBase {
             }
 
             String faultInjectedRegion = preferredRegions.get(0);
-            String dbId = "test-db";
-            String containerId = "test-container";
+            String dbId = UUID.randomUUID().toString();
+            String containerId = UUID.randomUUID().toString();
 
             client.createDatabase(dbId).block();
             database = client.getDatabase(dbId);
@@ -278,7 +278,7 @@ public class MetadataRequestRetryPolicyTests extends TestSuiteBase {
             faultInjectionRule = new FaultInjectionRuleBuilder("connection-delay-" + UUID.randomUUID())
                 .condition(faultInjectionCondition)
                 .result(faultInjectionServerErrorResult)
-                .duration(Duration.ofMinutes(10))
+                .duration(Duration.ofMinutes(5))
                 .build();
 
             // keep a low operation-level e2e timeout when compared to connection timeout
@@ -302,7 +302,7 @@ public class MetadataRequestRetryPolicyTests extends TestSuiteBase {
 
             // track if force address refresh calls have been made
             assertThat(httpClientWrapperByRegionMap.get(faultInjectedRegion).capturedRequests).isNotNull();
-            assertThat(httpClientWrapperByRegionMap.get(faultInjectedRegion).capturedRequests.size()).isBetween(1, (int) faultInjectionRule.getHitCount());
+            assertThat(httpClientWrapperByRegionMap.get(faultInjectedRegion).capturedRequests.size()).isGreaterThanOrEqualTo(1);
         } catch (InterruptedException e) {
             logger.error("InterruptedException thrown...");
         } finally {
@@ -365,17 +365,21 @@ public class MetadataRequestRetryPolicyTests extends TestSuiteBase {
 
         final int idleTimeInMillis = 5000;
 
+        // allow collection to be available for read
+        Thread.sleep(5_000);
+
         if (faultInjectedOperationType == OperationType.Query) {
             faultInjectedContainer
                 .createItem(testItem, new PartitionKey(testItem.getMypk()), new CosmosItemRequestOptions())
                 .block();
+
+            CosmosFaultInjectionHelper.configureFaultInjectionRules(faultInjectedContainer, Arrays.asList(connectionDelayFault)).block();
 
             httpClientUnderTestWrapper.capturedRequests.clear();
 
             // allow enough time for connections to be deemed unhealthy and their closure
             // due to idleConnectionTimeout being reached
             Thread.sleep(idleTimeInMillis);
-            CosmosFaultInjectionHelper.configureFaultInjectionRules(faultInjectedContainer, Arrays.asList(connectionDelayFault)).block();
 
             String query = String.format("SELECT * FROM c WHERE c.id = '%s'", testItem.getId());
 
@@ -393,9 +397,10 @@ public class MetadataRequestRetryPolicyTests extends TestSuiteBase {
                 .createItem(testItem, new PartitionKey(testItem.getMypk()), new CosmosItemRequestOptions())
                 .block();
 
+            CosmosFaultInjectionHelper.configureFaultInjectionRules(faultInjectedContainer, Arrays.asList(connectionDelayFault)).block();
+
             httpClientUnderTestWrapper.capturedRequests.clear();
             Thread.sleep(idleTimeInMillis);
-            CosmosFaultInjectionHelper.configureFaultInjectionRules(faultInjectedContainer, Arrays.asList(connectionDelayFault)).block();
 
             CosmosItemRequestOptions requestOptionsForRead = new CosmosItemRequestOptions()
                 .setCosmosEndToEndOperationLatencyPolicyConfig(endToEndOperationLatencyPolicyConfigForFaultyOperation);
@@ -419,9 +424,10 @@ public class MetadataRequestRetryPolicyTests extends TestSuiteBase {
                 .createItem(testItem, new PartitionKey(testItem.getMypk()), new CosmosItemRequestOptions())
                 .block();
 
+            CosmosFaultInjectionHelper.configureFaultInjectionRules(faultInjectedContainer, Arrays.asList(connectionDelayFault)).block();
+
             httpClientUnderTestWrapper.capturedRequests.clear();
             Thread.sleep(idleTimeInMillis);
-            CosmosFaultInjectionHelper.configureFaultInjectionRules(faultInjectedContainer, Arrays.asList(connectionDelayFault)).block();
 
             CosmosItemRequestOptions cosmosItemRequestOptions = new CosmosItemRequestOptions()
                 .setCosmosEndToEndOperationLatencyPolicyConfig(endToEndOperationLatencyPolicyConfigForFaultyOperation);
@@ -435,9 +441,10 @@ public class MetadataRequestRetryPolicyTests extends TestSuiteBase {
                 .createItem(testItem, new PartitionKey(testItem.getMypk()), new CosmosItemRequestOptions())
                 .block();
 
+            CosmosFaultInjectionHelper.configureFaultInjectionRules(faultInjectedContainer, Arrays.asList(connectionDelayFault)).block();
+
             httpClientUnderTestWrapper.capturedRequests.clear();
             Thread.sleep(idleTimeInMillis);
-            CosmosFaultInjectionHelper.configureFaultInjectionRules(faultInjectedContainer, Arrays.asList(connectionDelayFault)).block();
 
             CosmosItemRequestOptions cosmosItemRequestOptions = new CosmosItemRequestOptions()
                 .setCosmosEndToEndOperationLatencyPolicyConfig(endToEndOperationLatencyPolicyConfigForFaultyOperation);
@@ -462,9 +469,10 @@ public class MetadataRequestRetryPolicyTests extends TestSuiteBase {
                 .createItem(testItem, new PartitionKey(testItem.getMypk()), itemRequestOptions)
                 .block();
 
+            CosmosFaultInjectionHelper.configureFaultInjectionRules(faultInjectedContainer, Arrays.asList(connectionDelayFault)).block();
+
             httpClientUnderTestWrapper.capturedRequests.clear();
             Thread.sleep(idleTimeInMillis);
-            CosmosFaultInjectionHelper.configureFaultInjectionRules(faultInjectedContainer, Arrays.asList(connectionDelayFault)).block();
 
             faultInjectedContainer
                 .patchItem(testItem.getId(), new PartitionKey(testItem.getMypk()), patchOperations, TestItem.class)

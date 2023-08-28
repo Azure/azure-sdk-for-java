@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.appcontainers.implementation;
 
-import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.appcontainers.fluent.models.WorkloadProfileStatesInner;
 import com.azure.resourcemanager.appcontainers.models.WorkloadProfileStates;
 import com.azure.resourcemanager.appcontainers.models.WorkloadProfileStatesProperties;
@@ -35,10 +34,6 @@ public final class WorkloadProfileStatesImpl implements WorkloadProfileStates {
 
     public WorkloadProfileStatesProperties properties() {
         return this.innerModel().properties();
-    }
-
-    public SystemData systemData() {
-        return this.innerModel().systemData();
     }
 
     public WorkloadProfileStatesInner innerModel() {

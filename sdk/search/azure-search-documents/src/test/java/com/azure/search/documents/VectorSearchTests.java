@@ -123,7 +123,7 @@ public class VectorSearchTests extends SearchTestBase {
         SearchAsyncClient searchClient = getSearchClientBuilder(HOTEL_INDEX_NAME, false).buildAsyncClient();
 
         SearchOptions searchOptions = new SearchOptions()
-            .setVector(new SearchQueryVector()
+            .setVectors(new SearchQueryVector()
                 .setValue(VectorSearchEmbeddings.SEARCH_VECTORIZE_DESCRIPTION)
                 .setKNearestNeighborsCount(3)
                 .setFields("DescriptionVector"))
@@ -140,7 +140,7 @@ public class VectorSearchTests extends SearchTestBase {
         SearchClient searchClient = getSearchClientBuilder(HOTEL_INDEX_NAME, true).buildClient();
 
         SearchOptions searchOptions = new SearchOptions()
-            .setVector(new SearchQueryVector()
+            .setVectors(new SearchQueryVector()
                 .setValue(VectorSearchEmbeddings.SEARCH_VECTORIZE_DESCRIPTION)
                 .setKNearestNeighborsCount(3)
                 .setFields("DescriptionVector"))
@@ -158,7 +158,7 @@ public class VectorSearchTests extends SearchTestBase {
         SearchAsyncClient searchClient = getSearchClientBuilder(HOTEL_INDEX_NAME, false).buildAsyncClient();
 
         SearchOptions searchOptions = new SearchOptions()
-            .setVector(new SearchQueryVector()
+            .setVectors(new SearchQueryVector()
                 .setValue(VectorSearchEmbeddings.SEARCH_VECTORIZE_DESCRIPTION)
                 .setKNearestNeighborsCount(3)
                 .setFields("DescriptionVector"))
@@ -176,7 +176,7 @@ public class VectorSearchTests extends SearchTestBase {
         SearchClient searchClient = getSearchClientBuilder(HOTEL_INDEX_NAME, true).buildClient();
 
         SearchOptions searchOptions = new SearchOptions()
-            .setVector(new SearchQueryVector()
+            .setVectors(new SearchQueryVector()
                 .setValue(VectorSearchEmbeddings.SEARCH_VECTORIZE_DESCRIPTION)
                 .setKNearestNeighborsCount(3)
                 .setFields("DescriptionVector"))
@@ -195,7 +195,7 @@ public class VectorSearchTests extends SearchTestBase {
         SearchAsyncClient searchClient = getSearchClientBuilder(HOTEL_INDEX_NAME, false).buildAsyncClient();
 
         SearchOptions searchOptions = new SearchOptions()
-            .setVector(new SearchQueryVector()
+            .setVectors(new SearchQueryVector()
                 .setValue(VectorSearchEmbeddings.SEARCH_VECTORIZE_DESCRIPTION)
                 .setKNearestNeighborsCount(3)
                 .setFields("DescriptionVector"))
@@ -213,7 +213,7 @@ public class VectorSearchTests extends SearchTestBase {
         SearchClient searchClient = getSearchClientBuilder(HOTEL_INDEX_NAME, true).buildClient();
 
         SearchOptions searchOptions = new SearchOptions()
-            .setVector(new SearchQueryVector()
+            .setVectors(new SearchQueryVector()
                 .setValue(VectorSearchEmbeddings.SEARCH_VECTORIZE_DESCRIPTION)
                 .setKNearestNeighborsCount(3)
                 .setFields("DescriptionVector"))
@@ -232,7 +232,7 @@ public class VectorSearchTests extends SearchTestBase {
         SearchAsyncClient searchClient = getSearchClientBuilder(HOTEL_INDEX_NAME, false).buildAsyncClient();
 
         SearchOptions searchOptions = new SearchOptions()
-            .setVector(new SearchQueryVector()
+            .setVectors(new SearchQueryVector()
                 .setValue(VectorSearchEmbeddings.SEARCH_VECTORIZE_DESCRIPTION)
                 .setKNearestNeighborsCount(3)
                 .setFields("DescriptionVector"))
@@ -277,7 +277,7 @@ public class VectorSearchTests extends SearchTestBase {
         SearchClient searchClient = getSearchClientBuilder(HOTEL_INDEX_NAME, true).buildClient();
 
         SearchOptions searchOptions = new SearchOptions()
-            .setVector(new SearchQueryVector()
+            .setVectors(new SearchQueryVector()
                 .setValue(VectorSearchEmbeddings.SEARCH_VECTORIZE_DESCRIPTION)
                 .setKNearestNeighborsCount(3)
                 .setFields("DescriptionVector"))

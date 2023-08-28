@@ -259,7 +259,7 @@ public final class RecoveryServicesManagementClientImpl implements RecoveryServi
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2023-02-01";
+        this.apiVersion = "2023-04-01";
         this.vaultCertificates = new VaultCertificatesClientImpl(this);
         this.registeredIdentities = new RegisteredIdentitiesClientImpl(this);
         this.replicationUsages = new ReplicationUsagesClientImpl(this);

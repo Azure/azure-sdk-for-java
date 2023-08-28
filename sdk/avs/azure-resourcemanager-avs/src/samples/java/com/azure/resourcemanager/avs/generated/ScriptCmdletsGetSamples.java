@@ -7,7 +7,7 @@ package com.azure.resourcemanager.avs.generated;
 /** Samples for ScriptCmdlets Get. */
 public final class ScriptCmdletsGetSamples {
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2022-05-01/examples/ScriptCmdlets_Get.json
+     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/ScriptCmdlets_Get.json
      */
     /**
      * Sample code: ScriptCmdlets_Get.
@@ -18,10 +18,6 @@ public final class ScriptCmdletsGetSamples {
         manager
             .scriptCmdlets()
             .getWithResponse(
-                "group1",
-                "{privateCloudName}",
-                "{scriptPackageName}",
-                "New-ExternalSsoDomain",
-                com.azure.core.util.Context.NONE);
+                "group1", "cloud1", "package@1.0.2", "New-ExternalSsoDomain", com.azure.core.util.Context.NONE);
     }
 }

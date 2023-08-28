@@ -10,8 +10,6 @@ import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.test.models.TestProxySanitizer;
-import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.resourcemanager.eventhubs.models.AccessRights;
 import com.azure.resourcemanager.eventhubs.models.DisasterRecoveryPairingAuthorizationKey;
 import com.azure.resourcemanager.eventhubs.models.DisasterRecoveryPairingAuthorizationRule;
@@ -54,15 +52,6 @@ public class EventHubTests extends ResourceManagerTestProxyTestBase {
     protected ResourceManager resourceManager;
     private String rgName = "";
     private final Region region = Region.US_EAST;
-
-    public EventHubTests() {
-        addSanitizers(
-            new TestProxySanitizer(String.format("$..%s", "aliasPrimaryConnectionString"), null, REDACTED_VALUE, TestProxySanitizerType.BODY_KEY),
-            new TestProxySanitizer(String.format("$..%s", "aliasSecondaryConnectionString"), null, REDACTED_VALUE, TestProxySanitizerType.BODY_KEY),
-            new TestProxySanitizer(String.format("$..%s", "primaryKey"), null, REDACTED_VALUE, TestProxySanitizerType.BODY_KEY),
-            new TestProxySanitizer(String.format("$..%s", "secondaryKey"), null, REDACTED_VALUE, TestProxySanitizerType.BODY_KEY)
-        );
-    }
 
     @Override
     protected HttpPipeline buildHttpPipeline(

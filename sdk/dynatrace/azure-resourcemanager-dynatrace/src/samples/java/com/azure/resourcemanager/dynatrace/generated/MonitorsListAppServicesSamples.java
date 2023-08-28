@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.dynatrace.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Monitors ListAppServices. */
 public final class MonitorsListAppServicesSamples {
     /*
-     * x-ms-original-file: specification/dynatrace/resource-manager/Dynatrace.Observability/stable/2021-09-01/examples/Monitors_ListAppServices_MaximumSet_Gen.json
+     * x-ms-original-file: specification/dynatrace/resource-manager/Dynatrace.Observability/stable/2023-04-27/examples/Monitors_ListAppServices_MaximumSet_Gen.json
      */
     /**
      * Sample code: Monitors_ListAppServices_MaximumSet_Gen.
@@ -18,11 +16,11 @@ public final class MonitorsListAppServicesSamples {
      */
     public static void monitorsListAppServicesMaximumSetGen(
         com.azure.resourcemanager.dynatrace.DynatraceManager manager) {
-        manager.monitors().listAppServices("myResourceGroup", "myMonitor", Context.NONE);
+        manager.monitors().listAppServices("myResourceGroup", "myMonitor", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/dynatrace/resource-manager/Dynatrace.Observability/stable/2021-09-01/examples/Monitors_ListAppServices_MinimumSet_Gen.json
+     * x-ms-original-file: specification/dynatrace/resource-manager/Dynatrace.Observability/stable/2023-04-27/examples/Monitors_ListAppServices_MinimumSet_Gen.json
      */
     /**
      * Sample code: Monitors_ListAppServices_MinimumSet_Gen.
@@ -31,6 +29,6 @@ public final class MonitorsListAppServicesSamples {
      */
     public static void monitorsListAppServicesMinimumSetGen(
         com.azure.resourcemanager.dynatrace.DynatraceManager manager) {
-        manager.monitors().listAppServices("myResourceGroup", "myMonitor", Context.NONE);
+        manager.monitors().listAppServices("myResourceGroup", "myMonitor", com.azure.core.util.Context.NONE);
     }
 }

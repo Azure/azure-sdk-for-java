@@ -28,23 +28,24 @@ public class HttpUrlConnectionClient implements HttpClient {
 
     // Method to send using the stored request
     public Mono<HttpResponse> send() {
-        return send(this.request);
+        return Mono.fromCallable(() -> sendSync(this.request, Context.NONE));
     }
 
     // Asynchronous send method returning a Mono of HttpResponse
     @Override
     public Mono<HttpResponse> send(HttpRequest httpRequest) {
-        return Mono.fromCallable(() -> sendSynchronous(httpRequest));
+        return Mono.fromCallable(() -> sendSync(httpRequest, Context.NONE));
+    }
+
+    // Override the send method with additional context for interface compliance
+    @Override
+    public Mono<HttpResponse> send(HttpRequest request, Context context) {
+        return Mono.fromCallable(() -> sendSync(request, context));
     }
 
     // Synchronous send method with additional context, primarily for interface compliance
     @Override
     public HttpResponse sendSync(HttpRequest httpRequest, Context context) {
-        return sendSynchronous(httpRequest);
-    }
-
-    // Main synchronous send method
-    public HttpResponse sendSynchronous(HttpRequest httpRequest) {
         HttpMethod httpMethod = httpRequest.getHttpMethod();
 
         // Check if the HTTP method is PATCH, if so, use the SocketClient to handle it
@@ -168,11 +169,5 @@ public class HttpUrlConnectionClient implements HttpClient {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    // Override the send method with additional context for interface compliance
-    @Override
-    public Mono<HttpResponse> send(HttpRequest request, Context context) {
-        return HttpClient.super.send(request, context);
     }
 }

@@ -4,9 +4,8 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpClientProvider;
 
 public class HttpUrlConnectionClientProvider implements HttpClientProvider {
-
     @Override
     public HttpClient createInstance() {
-        return null;
+        return new HttpUrlConnectionClientBuilder().build();
     }
 }

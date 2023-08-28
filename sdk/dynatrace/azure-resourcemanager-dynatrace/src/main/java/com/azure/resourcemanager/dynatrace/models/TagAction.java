@@ -17,6 +17,15 @@ public final class TagAction extends ExpandableStringEnum<TagAction> {
     public static final TagAction EXCLUDE = fromString("Exclude");
 
     /**
+     * Creates a new instance of TagAction value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public TagAction() {
+    }
+
+    /**
      * Creates or finds a TagAction from its string representation.
      *
      * @param name a name to look for.

@@ -60,11 +60,11 @@ public final class VolumesAuthorizeReplicationMockTests {
         manager
             .volumes()
             .authorizeReplication(
-                "ybfhjxa",
-                "vvjgslor",
-                "il",
-                "yw",
-                new AuthorizeRequest().withRemoteVolumeResourceId("kgkxn"),
+                "tgguwpijrajcivmm",
+                "hfcf",
+                "wrxgkneuvy",
+                "nzqodfvpg",
+                new AuthorizeRequest().withRemoteVolumeResourceId("oxgsgbpfgzdjtx"),
                 com.azure.core.util.Context.NONE);
     }
 }

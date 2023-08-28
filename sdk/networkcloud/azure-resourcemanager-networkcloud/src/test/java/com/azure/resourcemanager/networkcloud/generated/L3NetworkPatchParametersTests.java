@@ -14,17 +14,21 @@ public final class L3NetworkPatchParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         L3NetworkPatchParameters model =
-            BinaryData.fromString("{\"tags\":{\"yetefyp\":\"gsnnf\"}}").toObject(L3NetworkPatchParameters.class);
-        Assertions.assertEquals("gsnnf", model.tags().get("yetefyp"));
+            BinaryData
+                .fromString("{\"tags\":{\"ycjimryvwgcwwpbm\":\"oafcluqvox\"}}")
+                .toObject(L3NetworkPatchParameters.class);
+        Assertions.assertEquals("oafcluqvox", model.tags().get("ycjimryvwgcwwpbm"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        L3NetworkPatchParameters model = new L3NetworkPatchParameters().withTags(mapOf("yetefyp", "gsnnf"));
+        L3NetworkPatchParameters model =
+            new L3NetworkPatchParameters().withTags(mapOf("ycjimryvwgcwwpbm", "oafcluqvox"));
         model = BinaryData.fromObject(model).toObject(L3NetworkPatchParameters.class);
-        Assertions.assertEquals("gsnnf", model.tags().get("yetefyp"));
+        Assertions.assertEquals("oafcluqvox", model.tags().get("ycjimryvwgcwwpbm"));
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

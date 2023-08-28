@@ -63,6 +63,7 @@ public class SpyClientUnderTestFactory {
                     clientTelemetryConfig,
                     null,
                     null,
+                    null,
                     null);
         }
 

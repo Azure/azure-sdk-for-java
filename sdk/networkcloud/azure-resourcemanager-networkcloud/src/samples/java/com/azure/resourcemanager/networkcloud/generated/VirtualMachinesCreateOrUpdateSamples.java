@@ -27,7 +27,7 @@ import java.util.Map;
 /** Samples for VirtualMachines CreateOrUpdate. */
 public final class VirtualMachinesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2023-05-01-preview/examples/VirtualMachines_Create.json
+     * x-ms-original-file: specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2023-07-01/examples/VirtualMachines_Create.json
      */
     /**
      * Sample code: Create or update virtual machine.
@@ -66,7 +66,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
                             .asList(
                                 "/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/volumes/volumeName")))
             .withVmImage("myacr.azurecr.io/foobar:latest")
-            .withTags(mapOf("key1", "myvalue1", "key2", "myvalue2"))
+            .withTags(mapOf("key1", "fakeTokenPlaceholder", "key2", "fakeTokenPlaceholder"))
             .withBootMethod(VirtualMachineBootMethod.UEFI)
             .withNetworkAttachments(
                 Arrays
@@ -100,6 +100,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
             .create();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

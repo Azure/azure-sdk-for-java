@@ -4,13 +4,12 @@
 
 package com.azure.resourcemanager.storage.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.storage.models.StorageAccountCheckNameAvailabilityParameters;
 
 /** Samples for StorageAccounts CheckNameAvailability. */
 public final class StorageAccountsCheckNameAvailabilitySamples {
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2022-09-01/examples/StorageAccountCheckNameAvailability.json
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-01-01/examples/StorageAccountCheckNameAvailability.json
      */
     /**
      * Sample code: StorageAccountCheckNameAvailability.
@@ -24,6 +23,7 @@ public final class StorageAccountsCheckNameAvailabilitySamples {
             .serviceClient()
             .getStorageAccounts()
             .checkNameAvailabilityWithResponse(
-                new StorageAccountCheckNameAvailabilityParameters().withName("sto3363"), Context.NONE);
+                new StorageAccountCheckNameAvailabilityParameters().withName("sto3363"),
+                com.azure.core.util.Context.NONE);
     }
 }

@@ -50,13 +50,14 @@ class ImmutabilityPolicyImpl
     public Mono<ImmutabilityPolicy> createResourceAsync() {
         BlobContainersClient client = this.manager().serviceClient().getBlobContainers();
         return client
-            .createOrUpdateImmutabilityPolicyAsync(
+            .createOrUpdateImmutabilityPolicyWithResponseAsync(
                 this.resourceGroupName,
                 this.accountName,
                 this.containerName,
                 null,
                 new ImmutabilityPolicyInner()
                     .withImmutabilityPeriodSinceCreationInDays(this.cImmutabilityPeriodSinceCreationInDays))
+            .flatMap(r -> Mono.justOrEmpty(r.getValue()))
             .map(innerToFluentMap(this));
     }
 
@@ -64,13 +65,14 @@ class ImmutabilityPolicyImpl
     public Mono<ImmutabilityPolicy> updateResourceAsync() {
         BlobContainersClient client = this.manager().serviceClient().getBlobContainers();
         return client
-            .createOrUpdateImmutabilityPolicyAsync(
+            .createOrUpdateImmutabilityPolicyWithResponseAsync(
                 this.resourceGroupName,
                 this.accountName,
                 this.containerName,
                 this.eTagState.ifMatchValueOnUpdate(this.innerModel().etag()),
                 new ImmutabilityPolicyInner()
                     .withImmutabilityPeriodSinceCreationInDays(this.uImmutabilityPeriodSinceCreationInDays))
+            .flatMap(r -> Mono.justOrEmpty(r.getValue()))
             .map(innerToFluentMap(this))
             .map(
                 self -> {
@@ -82,7 +84,9 @@ class ImmutabilityPolicyImpl
     @Override
     protected Mono<ImmutabilityPolicyInner> getInnerAsync() {
         BlobContainersClient client = this.manager().serviceClient().getBlobContainers();
-        return client.getImmutabilityPolicyAsync(this.resourceGroupName, this.accountName, this.containerName, null);
+        return client.getImmutabilityPolicyWithResponseAsync(
+            this.resourceGroupName, this.accountName, this.containerName, null)
+            .flatMap(r -> Mono.justOrEmpty(r.getValue()));
     }
 
     @Override
