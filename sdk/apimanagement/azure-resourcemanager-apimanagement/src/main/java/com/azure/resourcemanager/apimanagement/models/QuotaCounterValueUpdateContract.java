@@ -17,6 +17,10 @@ public final class QuotaCounterValueUpdateContract {
     @JsonProperty(value = "properties")
     private QuotaCounterValueContractProperties innerProperties;
 
+    /** Creates an instance of QuotaCounterValueUpdateContract class. */
+    public QuotaCounterValueUpdateContract() {
+    }
+
     /**
      * Get the innerProperties property: Quota counter value details.
      *

@@ -1,10 +1,24 @@
 # Release History
 
-## 2.30.0-beta.1 (Unreleased)
+## 2.31.0-beta.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 2.30.0 (2023-08-25)
 
 ### Features Added
 
 - Supported updating delete options for OS disk, data disks and network interfaces attached to `VirtualMachine`.
+
+### Bugs Fixed
+
+- Fixed bug that create proximity placement group with `VirtualMachineScaleSet` fails. ([#36417](https://github.com/Azure/azure-sdk-for-java/issues/36417))
 
 ### Other Changes
 

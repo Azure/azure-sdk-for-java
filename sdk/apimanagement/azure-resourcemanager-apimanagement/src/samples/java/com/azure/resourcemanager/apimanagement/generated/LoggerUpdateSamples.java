@@ -4,14 +4,13 @@
 
 package com.azure.resourcemanager.apimanagement.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.apimanagement.models.LoggerContract;
 import com.azure.resourcemanager.apimanagement.models.LoggerType;
 
 /** Samples for Logger Update. */
 public final class LoggerUpdateSamples {
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementUpdateLogger.json
+     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementUpdateLogger.json
      */
     /**
      * Sample code: ApiManagementUpdateLogger.
@@ -20,7 +19,10 @@ public final class LoggerUpdateSamples {
      */
     public static void apiManagementUpdateLogger(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
         LoggerContract resource =
-            manager.loggers().getWithResponse("rg1", "apimService1", "eh1", Context.NONE).getValue();
+            manager
+                .loggers()
+                .getWithResponse("rg1", "apimService1", "eh1", com.azure.core.util.Context.NONE)
+                .getValue();
         resource
             .update()
             .withLoggerType(LoggerType.AZURE_EVENT_HUB)

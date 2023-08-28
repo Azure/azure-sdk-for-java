@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.apimanagement.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ProductGroup CreateOrUpdate. */
 public final class ProductGroupCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementCreateProductGroup.json
+     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementCreateProductGroup.json
      */
     /**
      * Sample code: ApiManagementCreateProductGroup.
@@ -20,6 +18,7 @@ public final class ProductGroupCreateOrUpdateSamples {
         com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
         manager
             .productGroups()
-            .createOrUpdateWithResponse("rg1", "apimService1", "testproduct", "templateGroup", Context.NONE);
+            .createOrUpdateWithResponse(
+                "rg1", "apimService1", "testproduct", "templateGroup", com.azure.core.util.Context.NONE);
     }
 }

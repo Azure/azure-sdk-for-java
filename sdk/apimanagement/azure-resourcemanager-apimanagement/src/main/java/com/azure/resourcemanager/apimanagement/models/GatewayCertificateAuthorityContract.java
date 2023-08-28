@@ -38,6 +38,13 @@ public interface GatewayCertificateAuthorityContract {
     Boolean isTrusted();
 
     /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
+
+    /**
      * Gets the inner com.azure.resourcemanager.apimanagement.fluent.models.GatewayCertificateAuthorityContractInner
      * object.
      *
@@ -49,17 +56,19 @@ public interface GatewayCertificateAuthorityContract {
     interface Definition
         extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
+
     /** The GatewayCertificateAuthorityContract definition stages. */
     interface DefinitionStages {
         /** The first stage of the GatewayCertificateAuthorityContract definition. */
         interface Blank extends WithParentResource {
         }
+
         /** The stage of the GatewayCertificateAuthorityContract definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
              * Specifies resourceGroupName, serviceName, gatewayId.
              *
-             * @param resourceGroupName The name of the resource group.
+             * @param resourceGroupName The name of the resource group. The name is case insensitive.
              * @param serviceName The name of the API Management service.
              * @param gatewayId Gateway entity identifier. Must be unique in the current API Management service
              *     instance. Must not have value 'managed'.
@@ -67,6 +76,7 @@ public interface GatewayCertificateAuthorityContract {
              */
             WithCreate withExistingGateway(String resourceGroupName, String serviceName, String gatewayId);
         }
+
         /**
          * The stage of the GatewayCertificateAuthorityContract definition which contains all the minimum required
          * properties for the resource to be created, but also allows for any other optional properties to be specified.
@@ -87,6 +97,7 @@ public interface GatewayCertificateAuthorityContract {
              */
             GatewayCertificateAuthorityContract create(Context context);
         }
+
         /** The stage of the GatewayCertificateAuthorityContract definition allowing to specify isTrusted. */
         interface WithIsTrusted {
             /**
@@ -97,6 +108,7 @@ public interface GatewayCertificateAuthorityContract {
              */
             WithCreate withIsTrusted(Boolean isTrusted);
         }
+
         /** The stage of the GatewayCertificateAuthorityContract definition allowing to specify ifMatch. */
         interface WithIfMatch {
             /**
@@ -110,6 +122,7 @@ public interface GatewayCertificateAuthorityContract {
             WithCreate withIfMatch(String ifMatch);
         }
     }
+
     /**
      * Begins update for the GatewayCertificateAuthorityContract resource.
      *
@@ -134,6 +147,7 @@ public interface GatewayCertificateAuthorityContract {
          */
         GatewayCertificateAuthorityContract apply(Context context);
     }
+
     /** The GatewayCertificateAuthorityContract update stages. */
     interface UpdateStages {
         /** The stage of the GatewayCertificateAuthorityContract update allowing to specify isTrusted. */
@@ -146,6 +160,7 @@ public interface GatewayCertificateAuthorityContract {
              */
             Update withIsTrusted(Boolean isTrusted);
         }
+
         /** The stage of the GatewayCertificateAuthorityContract update allowing to specify ifMatch. */
         interface WithIfMatch {
             /**
@@ -159,6 +174,7 @@ public interface GatewayCertificateAuthorityContract {
             Update withIfMatch(String ifMatch);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

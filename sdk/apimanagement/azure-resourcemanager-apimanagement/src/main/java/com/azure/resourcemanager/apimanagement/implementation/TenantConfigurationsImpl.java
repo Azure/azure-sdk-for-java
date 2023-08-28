@@ -119,17 +119,6 @@ public final class TenantConfigurationsImpl implements TenantConfigurations {
         }
     }
 
-    public TenantConfigurationSyncStateContract getSyncState(
-        String resourceGroupName, String serviceName, ConfigurationIdName configurationName) {
-        TenantConfigurationSyncStateContractInner inner =
-            this.serviceClient().getSyncState(resourceGroupName, serviceName, configurationName);
-        if (inner != null) {
-            return new TenantConfigurationSyncStateContractImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<TenantConfigurationSyncStateContract> getSyncStateWithResponse(
         String resourceGroupName, String serviceName, ConfigurationIdName configurationName, Context context) {
         Response<TenantConfigurationSyncStateContractInner> inner =
@@ -140,6 +129,17 @@ public final class TenantConfigurationsImpl implements TenantConfigurations {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new TenantConfigurationSyncStateContractImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public TenantConfigurationSyncStateContract getSyncState(
+        String resourceGroupName, String serviceName, ConfigurationIdName configurationName) {
+        TenantConfigurationSyncStateContractInner inner =
+            this.serviceClient().getSyncState(resourceGroupName, serviceName, configurationName);
+        if (inner != null) {
+            return new TenantConfigurationSyncStateContractImpl(inner, this.manager());
         } else {
             return null;
         }

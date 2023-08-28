@@ -22,6 +22,10 @@ public final class SubscriptionKeyParameterNamesContract {
     @JsonProperty(value = "query")
     private String query;
 
+    /** Creates an instance of SubscriptionKeyParameterNamesContract class. */
+    public SubscriptionKeyParameterNamesContract() {
+    }
+
     /**
      * Get the headerProperty property: Subscription key header name.
      *

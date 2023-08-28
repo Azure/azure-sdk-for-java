@@ -12,8 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class ConnectivityCheckRequestSource {
     /*
-     * The API Management service region from where to start the connectivity
-     * check operation.
+     * The API Management service region from where to start the connectivity check operation.
      */
     @JsonProperty(value = "region", required = true)
     private String region;
@@ -23,6 +22,10 @@ public final class ConnectivityCheckRequestSource {
      */
     @JsonProperty(value = "instance")
     private Long instance;
+
+    /** Creates an instance of ConnectivityCheckRequestSource class. */
+    public ConnectivityCheckRequestSource() {
+    }
 
     /**
      * Get the region property: The API Management service region from where to start the connectivity check operation.

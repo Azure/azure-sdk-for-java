@@ -51,11 +51,10 @@ public final class PolicyDescriptionsClientImpl implements PolicyDescriptionsCli
      */
     @Host("{$host}")
     @ServiceInterface(name = "ApiManagementClientP")
-    private interface PolicyDescriptionsService {
+    public interface PolicyDescriptionsService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement"
-                + "/service/{serviceName}/policyDescriptions")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/policyDescriptions")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<PolicyDescriptionCollectionInner>> listByService(
@@ -72,13 +71,14 @@ public final class PolicyDescriptionsClientImpl implements PolicyDescriptionsCli
     /**
      * Lists all policy descriptions.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param scope Policy scope.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return descriptions of APIM policies along with {@link Response} on successful completion of {@link Mono}.
+     * @return descriptions of API Management policies along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<PolicyDescriptionCollectionInner>> listByServiceWithResponseAsync(
@@ -122,14 +122,15 @@ public final class PolicyDescriptionsClientImpl implements PolicyDescriptionsCli
     /**
      * Lists all policy descriptions.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param scope Policy scope.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return descriptions of APIM policies along with {@link Response} on successful completion of {@link Mono}.
+     * @return descriptions of API Management policies along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<PolicyDescriptionCollectionInner>> listByServiceWithResponseAsync(
@@ -170,83 +171,51 @@ public final class PolicyDescriptionsClientImpl implements PolicyDescriptionsCli
     /**
      * Lists all policy descriptions.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param serviceName The name of the API Management service.
-     * @param scope Policy scope.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return descriptions of APIM policies on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PolicyDescriptionCollectionInner> listByServiceAsync(
-        String resourceGroupName, String serviceName, PolicyScopeContract scope) {
-        return listByServiceWithResponseAsync(resourceGroupName, serviceName, scope)
-            .flatMap(
-                (Response<PolicyDescriptionCollectionInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Lists all policy descriptions.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return descriptions of APIM policies on successful completion of {@link Mono}.
+     * @return descriptions of API Management policies on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PolicyDescriptionCollectionInner> listByServiceAsync(String resourceGroupName, String serviceName) {
         final PolicyScopeContract scope = null;
         return listByServiceWithResponseAsync(resourceGroupName, serviceName, scope)
-            .flatMap(
-                (Response<PolicyDescriptionCollectionInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Lists all policy descriptions.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param serviceName The name of the API Management service.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return descriptions of APIM policies.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PolicyDescriptionCollectionInner listByService(String resourceGroupName, String serviceName) {
-        final PolicyScopeContract scope = null;
-        return listByServiceAsync(resourceGroupName, serviceName, scope).block();
-    }
-
-    /**
-     * Lists all policy descriptions.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param scope Policy scope.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return descriptions of APIM policies along with {@link Response}.
+     * @return descriptions of API Management policies along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PolicyDescriptionCollectionInner> listByServiceWithResponse(
         String resourceGroupName, String serviceName, PolicyScopeContract scope, Context context) {
         return listByServiceWithResponseAsync(resourceGroupName, serviceName, scope, context).block();
+    }
+
+    /**
+     * Lists all policy descriptions.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serviceName The name of the API Management service.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return descriptions of API Management policies.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PolicyDescriptionCollectionInner listByService(String resourceGroupName, String serviceName) {
+        final PolicyScopeContract scope = null;
+        return listByServiceWithResponse(resourceGroupName, serviceName, scope, Context.NONE).getValue();
     }
 }

@@ -7,7 +7,7 @@ package com.azure.resourcemanager.apimanagement.generated;
 /** Samples for ApiTagDescription CreateOrUpdate. */
 public final class ApiTagDescriptionCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementCreateApiTagDescription.json
+     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementCreateApiTagDescription.json
      */
     /**
      * Sample code: ApiManagementCreateApiTagDescription.

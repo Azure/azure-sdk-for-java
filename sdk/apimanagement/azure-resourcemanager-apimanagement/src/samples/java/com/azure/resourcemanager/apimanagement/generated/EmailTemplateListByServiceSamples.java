@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.apimanagement.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for EmailTemplate ListByService. */
 public final class EmailTemplateListByServiceSamples {
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementListTemplates.json
+     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementListTemplates.json
      */
     /**
      * Sample code: ApiManagementListTemplates.
@@ -18,6 +16,8 @@ public final class EmailTemplateListByServiceSamples {
      */
     public static void apiManagementListTemplates(
         com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
-        manager.emailTemplates().listByService("rg1", "apimService1", null, null, null, Context.NONE);
+        manager
+            .emailTemplates()
+            .listByService("rg1", "apimService1", null, null, null, com.azure.core.util.Context.NONE);
     }
 }

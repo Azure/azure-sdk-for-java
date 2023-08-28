@@ -39,6 +39,9 @@ public enum PolicyScopeContract {
      */
     @JsonCreator
     public static PolicyScopeContract fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         PolicyScopeContract[] items = PolicyScopeContract.values();
         for (PolicyScopeContract item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -48,6 +51,7 @@ public enum PolicyScopeContract {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

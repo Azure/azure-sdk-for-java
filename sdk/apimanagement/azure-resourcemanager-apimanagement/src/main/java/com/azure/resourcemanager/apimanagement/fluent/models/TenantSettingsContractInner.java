@@ -18,6 +18,10 @@ public final class TenantSettingsContractInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private TenantSettingsContractProperties innerProperties;
 
+    /** Creates an instance of TenantSettingsContractInner class. */
+    public TenantSettingsContractInner() {
+    }
+
     /**
      * Get the innerProperties property: TenantSettings entity contract properties.
      *

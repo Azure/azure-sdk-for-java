@@ -17,6 +17,10 @@ public final class BackendUpdateParameters {
     @JsonProperty(value = "properties")
     private BackendUpdateParameterProperties innerProperties;
 
+    /** Creates an instance of BackendUpdateParameters class. */
+    public BackendUpdateParameters() {
+    }
+
     /**
      * Get the innerProperties property: Backend entity update contract properties.
      *
@@ -119,7 +123,7 @@ public final class BackendUpdateParameters {
     }
 
     /**
-     * Get the resourceId property: Management Uri of the Resource in External System. This url can be the Arm Resource
+     * Get the resourceId property: Management Uri of the Resource in External System. This URL can be the Arm Resource
      * Id of Logic Apps, Function Apps or API Apps.
      *
      * @return the resourceId value.
@@ -129,7 +133,7 @@ public final class BackendUpdateParameters {
     }
 
     /**
-     * Set the resourceId property: Management Uri of the Resource in External System. This url can be the Arm Resource
+     * Set the resourceId property: Management Uri of the Resource in External System. This URL can be the Arm Resource
      * Id of Logic Apps, Function Apps or API Apps.
      *
      * @param resourceId the resourceId value to set.
@@ -190,7 +194,7 @@ public final class BackendUpdateParameters {
     }
 
     /**
-     * Get the proxy property: Backend Proxy Contract Properties.
+     * Get the proxy property: Backend gateway Contract Properties.
      *
      * @return the proxy value.
      */
@@ -199,7 +203,7 @@ public final class BackendUpdateParameters {
     }
 
     /**
-     * Set the proxy property: Backend Proxy Contract Properties.
+     * Set the proxy property: Backend gateway Contract Properties.
      *
      * @param proxy the proxy value to set.
      * @return the BackendUpdateParameters object itself.
