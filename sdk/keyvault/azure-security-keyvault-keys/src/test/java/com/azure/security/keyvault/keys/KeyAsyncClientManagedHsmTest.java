@@ -32,7 +32,7 @@ public class KeyAsyncClientManagedHsmTest extends KeyAsyncClientTest implements 
     }
 
     /**
-     * Tests that a RSA key created.
+     * Tests that an RSA key created.
      */
     @Override
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)

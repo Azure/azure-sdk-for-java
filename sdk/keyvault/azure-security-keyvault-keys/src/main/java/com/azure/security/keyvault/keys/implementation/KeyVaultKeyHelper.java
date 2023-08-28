@@ -3,7 +3,6 @@
 package com.azure.security.keyvault.keys.implementation;
 
 import com.azure.security.keyvault.keys.models.JsonWebKey;
-import com.azure.security.keyvault.keys.models.KeyProperties;
 import com.azure.security.keyvault.keys.models.KeyVaultKey;
 
 public final class KeyVaultKeyHelper {
@@ -19,7 +18,7 @@ public final class KeyVaultKeyHelper {
         // accessor.
         if (accessor == null) {
             try {
-                KeyVaultKeyHelper.class.getClassLoader().loadClass(KeyVaultKey.class.getName());
+                Class.forName(KeyVaultKey.class.getName(), true, KeyVaultKeyHelper.class.getClassLoader());
             } catch (ClassNotFoundException e) {
                 throw new RuntimeException(e);
             }

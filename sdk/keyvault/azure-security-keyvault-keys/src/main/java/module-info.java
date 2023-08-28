@@ -12,12 +12,11 @@ module com.azure.security.keyvault.keys {
     exports com.azure.security.keyvault.keys.cryptography.models;
     exports com.azure.security.keyvault.keys.models;
 
-    opens com.azure.security.keyvault.keys to com.azure.core, com.fasterxml.jackson.databind;
-    opens com.azure.security.keyvault.keys.cryptography to com.azure.core, com.fasterxml.jackson.databind;
-    opens com.azure.security.keyvault.keys.cryptography.implementation to com.azure.core,
-        com.fasterxml.jackson.databind;
-    opens com.azure.security.keyvault.keys.cryptography.models to com.azure.core, com.fasterxml.jackson.databind;
-    opens com.azure.security.keyvault.keys.implementation to com.azure.core, com.fasterxml.jackson.databind;
-    opens com.azure.security.keyvault.keys.implementation.models to com.azure.core, com.fasterxml.jackson.databind;
-    opens com.azure.security.keyvault.keys.models to com.azure.core, com.fasterxml.jackson.databind;
+    opens com.azure.security.keyvault.keys to com.azure.core;
+    opens com.azure.security.keyvault.keys.cryptography to com.azure.core;
+    opens com.azure.security.keyvault.keys.cryptography.implementation to com.azure.core;
+    opens com.azure.security.keyvault.keys.cryptography.models to com.azure.core;
+    opens com.azure.security.keyvault.keys.implementation to com.azure.core;
+    opens com.azure.security.keyvault.keys.implementation.models to com.azure.core;
+    opens com.azure.security.keyvault.keys.models to com.azure.core;
 }

@@ -4,6 +4,7 @@
 package com.azure.security.keyvault.keys.cryptography;
 
 import com.azure.core.util.Context;
+import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.security.keyvault.keys.cryptography.models.DecryptParameters;
 import com.azure.security.keyvault.keys.cryptography.models.DecryptResult;
@@ -30,15 +31,6 @@ class AesKeyCryptographyClient extends LocalKeyCryptographyClient {
 
     static final int AES_BLOCK_SIZE = 16;
 
-    /**
-     * Creates a {@link AesKeyCryptographyClient} to perform local cryptography operations.
-     *
-     * @param serviceClient The client to route the requests through.
-     */
-    AesKeyCryptographyClient(CryptographyClientImpl serviceClient) {
-        super(serviceClient);
-    }
-
     AesKeyCryptographyClient(JsonWebKey key, CryptographyClientImpl serviceClient) {
         super(serviceClient);
         this.key = key.toAes().getEncoded();
@@ -55,8 +47,13 @@ class AesKeyCryptographyClient extends LocalKeyCryptographyClient {
     @Override
     Mono<EncryptResult> encryptAsync(EncryptionAlgorithm algorithm, byte[] plaintext, JsonWebKey jsonWebKey,
                                      Context context) {
-        Objects.requireNonNull(algorithm, "Encryption algorithm cannot be null.");
-        Objects.requireNonNull(plaintext, "Plaintext cannot be null.");
+        if (algorithm == null) {
+            return Mono.error(new NullPointerException("Encryption algorithm cannot be null."));
+        }
+
+        if (plaintext == null) {
+            return Mono.error(new NullPointerException("Plaintext cannot be null."));
+        }
 
         try {
             return encryptInternalAsync(algorithm, plaintext, null, null, jsonWebKey, context);
@@ -75,7 +72,9 @@ class AesKeyCryptographyClient extends LocalKeyCryptographyClient {
 
     @Override
     Mono<EncryptResult> encryptAsync(EncryptParameters encryptParameters, JsonWebKey jsonWebKey, Context context) {
-        Objects.requireNonNull(encryptParameters, "Encrypt parameters cannot be null.");
+        if (encryptParameters == null) {
+            return Mono.error(new NullPointerException("Encrypt parameters cannot be null."));
+        }
 
         try {
             return encryptInternalAsync(encryptParameters.getAlgorithm(), encryptParameters.getPlainText(),
@@ -96,14 +95,9 @@ class AesKeyCryptographyClient extends LocalKeyCryptographyClient {
     private Mono<EncryptResult> encryptInternalAsync(EncryptionAlgorithm algorithm, byte[] plaintext, byte[] iv,
                                                      byte[] additionalAuthenticatedData, JsonWebKey jsonWebKey,
                                                      Context context) {
-        if (isGcm(algorithm)) {
-            return Mono.error(
-                new UnsupportedOperationException("AES-GCM is not supported for local cryptography operations."));
-        }
-
-        if (!isAes(algorithm)) {
-            return Mono.error(
-                new IllegalStateException("Encryption algorithm provided is not supported: " + algorithm));
+        RuntimeException validationAlgorithm = validateEncryptionAlgorithm(algorithm);
+        if (validationAlgorithm != null) {
+            return Mono.error(validationAlgorithm);
         }
 
         key = getKey(jsonWebKey);
@@ -121,47 +115,34 @@ class AesKeyCryptographyClient extends LocalKeyCryptographyClient {
 
         SymmetricEncryptionAlgorithm symmetricEncryptionAlgorithm = (SymmetricEncryptionAlgorithm) baseAlgorithm;
 
-        ICryptoTransform transform;
-
+        final byte[] finalIv;
         if (iv == null) {
             if (isAes(algorithm)) {
-                iv = generateRandomByteArray(AES_BLOCK_SIZE);
+                finalIv = generateRandomByteArray(AES_BLOCK_SIZE);
             } else {
                 return Mono.error(
                     new IllegalStateException("Encryption algorithm provided is not supported: " + algorithm));
             }
+        } else {
+            finalIv = iv;
         }
 
-        try {
-            transform = symmetricEncryptionAlgorithm.createEncryptor(key, iv, additionalAuthenticatedData,
-                null);
-        } catch (Exception e) {
-            return Mono.error(e);
-        }
+        return Mono.fromCallable(() -> {
+            byte[] ciphertext = symmetricEncryptionAlgorithm.createEncryptor(key, finalIv, additionalAuthenticatedData,
+                null)
+                .doFinal(plaintext);
 
-        byte[] ciphertext;
-
-        try {
-            ciphertext = transform.doFinal(plaintext);
-        } catch (Exception e) {
-            return Mono.error(e);
-        }
-
-        return Mono.just(new EncryptResult(ciphertext, algorithm, jsonWebKey.getId(), iv, null,
-            additionalAuthenticatedData));
+            return new EncryptResult(ciphertext, algorithm, jsonWebKey.getId(), finalIv, null,
+                additionalAuthenticatedData);
+        });
     }
 
     private EncryptResult encryptInternal(EncryptionAlgorithm algorithm, byte[] plaintext, byte[] iv,
                                           byte[] additionalAuthenticatedData, JsonWebKey jsonWebKey,
                                           Context context) {
-        if (isGcm(algorithm)) {
-            throw LOGGER.logExceptionAsError(
-                new UnsupportedOperationException("AES-GCM is not supported for local cryptography operations."));
-        }
-
-        if (!isAes(algorithm)) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalStateException("Encryption algorithm provided is not supported: " + algorithm));
+        RuntimeException validationAlgorithm = validateEncryptionAlgorithm(algorithm);
+        if (validationAlgorithm != null) {
+            throw LOGGER.logExceptionAsError(validationAlgorithm);
         }
 
         key = getKey(jsonWebKey);
@@ -179,8 +160,6 @@ class AesKeyCryptographyClient extends LocalKeyCryptographyClient {
 
         SymmetricEncryptionAlgorithm symmetricEncryptionAlgorithm = (SymmetricEncryptionAlgorithm) baseAlgorithm;
 
-        ICryptoTransform transform;
-
         if (iv == null) {
             if (isAes(algorithm)) {
                 iv = generateRandomByteArray(AES_BLOCK_SIZE);
@@ -191,8 +170,12 @@ class AesKeyCryptographyClient extends LocalKeyCryptographyClient {
         }
 
         try {
-            transform = symmetricEncryptionAlgorithm.createEncryptor(key, iv, additionalAuthenticatedData,
-                null);
+            byte[] ciphertext = symmetricEncryptionAlgorithm.createEncryptor(key, iv, additionalAuthenticatedData,
+                null)
+                .doFinal(plaintext);
+
+            return new EncryptResult(ciphertext, algorithm, jsonWebKey.getId(), iv, null,
+                additionalAuthenticatedData);
         } catch (Exception e) {
             if (e instanceof RuntimeException) {
                 throw LOGGER.logExceptionAsError((RuntimeException) e);
@@ -200,28 +183,18 @@ class AesKeyCryptographyClient extends LocalKeyCryptographyClient {
                 throw LOGGER.logExceptionAsError(new RuntimeException(e));
             }
         }
-
-        byte[] ciphertext;
-
-        try {
-            ciphertext = transform.doFinal(plaintext);
-        } catch (Exception e) {
-            if (e instanceof RuntimeException) {
-                throw LOGGER.logExceptionAsError((RuntimeException) e);
-            } else {
-                throw LOGGER.logExceptionAsError(new RuntimeException(e));
-            }
-        }
-
-        return new EncryptResult(ciphertext, algorithm, jsonWebKey.getId(), iv, null,
-            additionalAuthenticatedData);
     }
 
     @Override
     Mono<DecryptResult> decryptAsync(EncryptionAlgorithm algorithm, byte[] ciphertext, JsonWebKey jsonWebKey,
                                      Context context) {
-        Objects.requireNonNull(algorithm, "Encryption algorithm cannot be null.");
-        Objects.requireNonNull(ciphertext, "Ciphertext cannot be null.");
+        if (algorithm == null) {
+            return Mono.error(new NullPointerException("Encryption algorithm cannot be null."));
+        }
+
+        if (ciphertext == null) {
+            return Mono.error(new NullPointerException("Ciphertext cannot be null."));
+        }
 
         try {
             return decryptInternalAsync(algorithm, ciphertext, null, null, null, jsonWebKey, context);
@@ -261,14 +234,9 @@ class AesKeyCryptographyClient extends LocalKeyCryptographyClient {
     private Mono<DecryptResult> decryptInternalAsync(EncryptionAlgorithm algorithm, byte[] ciphertext, byte[] iv,
                                                      byte[] additionalAuthenticatedData, byte[] authenticationTag,
                                                      JsonWebKey jsonWebKey, Context context) {
-        if (isGcm(algorithm)) {
-            return Mono.error(
-                new UnsupportedOperationException("AES-GCM is not supported for local cryptography operations."));
-        }
-
-        if (!isAes(algorithm)) {
-            return Mono.error(
-                new IllegalStateException("Encryption algorithm provided is not supported: " + algorithm));
+        RuntimeException validationAlgorithm = validateEncryptionAlgorithm(algorithm);
+        if (validationAlgorithm != null) {
+            return Mono.error(validationAlgorithm);
         }
 
         key = getKey(jsonWebKey);
@@ -286,39 +254,25 @@ class AesKeyCryptographyClient extends LocalKeyCryptographyClient {
 
         SymmetricEncryptionAlgorithm symmetricEncryptionAlgorithm = (SymmetricEncryptionAlgorithm) baseAlgorithm;
 
-        ICryptoTransform transform;
-
-        Objects.requireNonNull(iv, "'iv' cannot be null in local decryption operations.");
-
-        try {
-            transform = symmetricEncryptionAlgorithm.createDecryptor(key, iv, additionalAuthenticatedData,
-                authenticationTag);
-        } catch (Exception e) {
-            return Mono.error(e);
+        if (iv == null) {
+            return Mono.error(new NullPointerException("'iv' cannot be null in local decryption operations."));
         }
 
-        byte[] plaintext;
+        return Mono.fromCallable(() -> {
+            byte[] plaintext = symmetricEncryptionAlgorithm.createDecryptor(key, iv, additionalAuthenticatedData,
+                authenticationTag)
+                .doFinal(ciphertext);
 
-        try {
-            plaintext = transform.doFinal(ciphertext);
-        } catch (Exception e) {
-            return Mono.error(e);
-        }
-
-        return Mono.just(new DecryptResult(plaintext, algorithm, jsonWebKey.getId()));
+            return new DecryptResult(plaintext, algorithm, jsonWebKey.getId());
+        });
     }
 
     private DecryptResult decryptInternal(EncryptionAlgorithm algorithm, byte[] ciphertext, byte[] iv,
                                           byte[] additionalAuthenticatedData, byte[] authenticationTag,
                                           JsonWebKey jsonWebKey, Context context) {
-        if (isGcm(algorithm)) {
-            throw LOGGER.logExceptionAsError(
-                new UnsupportedOperationException("AES-GCM is not supported for local cryptography operations."));
-        }
-
-        if (!isAes(algorithm)) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalStateException("Encryption algorithm provided is not supported: " + algorithm));
+        RuntimeException algorithmValidation = validateEncryptionAlgorithm(algorithm);
+        if (algorithmValidation != null) {
+            throw LOGGER.logExceptionAsError(algorithmValidation);
         }
 
         key = getKey(jsonWebKey);
@@ -336,13 +290,14 @@ class AesKeyCryptographyClient extends LocalKeyCryptographyClient {
 
         SymmetricEncryptionAlgorithm symmetricEncryptionAlgorithm = (SymmetricEncryptionAlgorithm) baseAlgorithm;
 
-        ICryptoTransform transform;
-
         Objects.requireNonNull(iv, "'iv' cannot be null in local decryption operations.");
 
         try {
-            transform = symmetricEncryptionAlgorithm.createDecryptor(key, iv, additionalAuthenticatedData,
-                authenticationTag);
+            byte[] plaintext = symmetricEncryptionAlgorithm.createDecryptor(key, iv, additionalAuthenticatedData,
+                authenticationTag)
+                .doFinal(ciphertext);
+
+            return new DecryptResult(plaintext, algorithm, jsonWebKey.getId());
         } catch (Exception e) {
             if (e instanceof RuntimeException) {
                 throw LOGGER.logExceptionAsError((RuntimeException) e);
@@ -350,20 +305,18 @@ class AesKeyCryptographyClient extends LocalKeyCryptographyClient {
                 throw LOGGER.logExceptionAsError(new RuntimeException(e));
             }
         }
+    }
 
-        byte[] plaintext;
-
-        try {
-            plaintext = transform.doFinal(ciphertext);
-        } catch (Exception e) {
-            if (e instanceof RuntimeException) {
-                throw LOGGER.logExceptionAsError((RuntimeException) e);
-            } else {
-                throw LOGGER.logExceptionAsError(new RuntimeException(e));
-            }
+    private static RuntimeException validateEncryptionAlgorithm(EncryptionAlgorithm algorithm) {
+        if (isGcm(algorithm)) {
+            return new UnsupportedOperationException("AES-GCM is not supported for local cryptography operations.");
         }
 
-        return new DecryptResult(plaintext, algorithm, jsonWebKey.getId());
+        if (!isAes(algorithm)) {
+            return new IllegalStateException("Encryption algorithm provided is not supported: " + algorithm);
+        }
+
+        return null;
     }
 
     @Override
@@ -390,14 +343,20 @@ class AesKeyCryptographyClient extends LocalKeyCryptographyClient {
     }
 
     @Override
-    Mono<WrapResult> wrapKeyAsync(KeyWrapAlgorithm algorithm, byte[] keyToWrap, JsonWebKey jsonWebKey, Context context) {
-        Objects.requireNonNull(algorithm, "Key wrap algorithm cannot be null.");
-        Objects.requireNonNull(keyToWrap, "Key content to be wrapped cannot be null.");
+    Mono<WrapResult> wrapKeyAsync(KeyWrapAlgorithm algorithm, byte[] keyToWrap, JsonWebKey jsonWebKey,
+        Context context) {
+        if (algorithm == null) {
+            return Mono.error(new NullPointerException("Key wrap algorithm cannot be null."));
+        }
+
+        if (keyToWrap == null) {
+            return Mono.error(new NullPointerException("Key content to be wrapped cannot be null."));
+        }
 
         key = getKey(jsonWebKey);
 
         if (key == null || key.length == 0) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException("key"));
+            return FluxUtil.monoError(LOGGER, new IllegalArgumentException("key"));
         }
 
         // Interpret the algorithm
@@ -409,23 +368,12 @@ class AesKeyCryptographyClient extends LocalKeyCryptographyClient {
 
         LocalKeyWrapAlgorithm localKeyWrapAlgorithm = (LocalKeyWrapAlgorithm) baseAlgorithm;
 
-        ICryptoTransform transform;
+        return Mono.fromCallable(() -> {
+            byte[] encrypted = localKeyWrapAlgorithm.createEncryptor(key, null, null)
+                .doFinal(keyToWrap);
 
-        try {
-            transform = localKeyWrapAlgorithm.createEncryptor(key, null, null);
-        } catch (Exception e) {
-            return Mono.error(e);
-        }
-
-        byte[] encrypted;
-
-        try {
-            encrypted = transform.doFinal(keyToWrap);
-        } catch (Exception e) {
-            return Mono.error(e);
-        }
-
-        return Mono.just(new WrapResult(encrypted, algorithm, jsonWebKey.getId()));
+            return new WrapResult(encrypted, algorithm, jsonWebKey.getId());
+        });
     }
 
     @Override
@@ -478,8 +426,13 @@ class AesKeyCryptographyClient extends LocalKeyCryptographyClient {
     @Override
     Mono<UnwrapResult> unwrapKeyAsync(KeyWrapAlgorithm algorithm, byte[] encryptedKey, JsonWebKey jsonWebKey,
                                       Context context) {
-        Objects.requireNonNull(algorithm, "Key wrap algorithm cannot be null.");
-        Objects.requireNonNull(encryptedKey, "Encrypted key content to be unwrapped cannot be null.");
+        if (algorithm == null) {
+            return Mono.error(new NullPointerException("Key wrap algorithm cannot be null."));
+        }
+
+        if (encryptedKey == null) {
+            return Mono.error(new NullPointerException("Encrypted key content to be unwrapped cannot be null."));
+        }
 
         this.key = getKey(jsonWebKey);
 
@@ -491,23 +444,12 @@ class AesKeyCryptographyClient extends LocalKeyCryptographyClient {
 
         LocalKeyWrapAlgorithm localKeyWrapAlgorithm = (LocalKeyWrapAlgorithm) baseAlgorithm;
 
-        ICryptoTransform transform;
+        return Mono.fromCallable(() -> {
+            byte[] decrypted = localKeyWrapAlgorithm.createDecryptor(this.key, null, null)
+                .doFinal(encryptedKey);
 
-        try {
-            transform = localKeyWrapAlgorithm.createDecryptor(this.key, null, null);
-        } catch (Exception e) {
-            return Mono.error(e);
-        }
-
-        byte[] decrypted;
-
-        try {
-            decrypted = transform.doFinal(encryptedKey);
-        } catch (Exception e) {
-            return Mono.error(e);
-        }
-
-        return Mono.just(new UnwrapResult(decrypted, algorithm, jsonWebKey.getId()));
+            return new UnwrapResult(decrypted, algorithm, jsonWebKey.getId());
+        });
     }
 
     @Override
@@ -525,10 +467,11 @@ class AesKeyCryptographyClient extends LocalKeyCryptographyClient {
 
         LocalKeyWrapAlgorithm localKeyWrapAlgorithm = (LocalKeyWrapAlgorithm) baseAlgorithm;
 
-        ICryptoTransform transform;
-
         try {
-            transform = localKeyWrapAlgorithm.createDecryptor(this.key, null, null);
+            byte[] decrypted = localKeyWrapAlgorithm.createDecryptor(this.key, null, null)
+                .doFinal(encryptedKey);
+
+            return new UnwrapResult(decrypted, algorithm, jsonWebKey.getId());
         } catch (Exception e) {
             if (e instanceof RuntimeException) {
                 throw LOGGER.logExceptionAsError((RuntimeException) e);
@@ -536,20 +479,6 @@ class AesKeyCryptographyClient extends LocalKeyCryptographyClient {
                 throw LOGGER.logExceptionAsError(new RuntimeException(e));
             }
         }
-
-        byte[] decrypted;
-
-        try {
-            decrypted = transform.doFinal(encryptedKey);
-        } catch (Exception e) {
-            if (e instanceof RuntimeException) {
-                throw LOGGER.logExceptionAsError((RuntimeException) e);
-            } else {
-                throw LOGGER.logExceptionAsError(new RuntimeException(e));
-            }
-        }
-
-        return new UnwrapResult(decrypted, algorithm, jsonWebKey.getId());
     }
 
     @Override
@@ -573,12 +502,11 @@ class AesKeyCryptographyClient extends LocalKeyCryptographyClient {
         return verify(algorithm, data, signature, key, context);
     }
 
-    private byte[] generateRandomByteArray(int sizeInBytes) {
+    private static byte[] generateRandomByteArray(int sizeInBytes) {
         byte[] iv = new byte[0];
-        SecureRandom randomSecureRandom;
 
         try {
-            randomSecureRandom = SecureRandom.getInstance("SHA1PRNG");
+            SecureRandom randomSecureRandom = SecureRandom.getInstance("SHA1PRNG");
             iv = new byte[sizeInBytes];
             randomSecureRandom.nextBytes(iv);
         } catch (NoSuchAlgorithmException e) {
@@ -588,7 +516,7 @@ class AesKeyCryptographyClient extends LocalKeyCryptographyClient {
         return iv;
     }
 
-    private boolean isAes(EncryptionAlgorithm encryptionAlgorithm) {
+    private static boolean isAes(EncryptionAlgorithm encryptionAlgorithm) {
         return (encryptionAlgorithm == EncryptionAlgorithm.A128CBC
             || encryptionAlgorithm == EncryptionAlgorithm.A192CBC
             || encryptionAlgorithm == EncryptionAlgorithm.A256CBC
@@ -597,7 +525,7 @@ class AesKeyCryptographyClient extends LocalKeyCryptographyClient {
             || encryptionAlgorithm == EncryptionAlgorithm.A256CBCPAD);
     }
 
-    private boolean isGcm(EncryptionAlgorithm encryptionAlgorithm) {
+    private static boolean isGcm(EncryptionAlgorithm encryptionAlgorithm) {
         return (encryptionAlgorithm == EncryptionAlgorithm.A128GCM
             || encryptionAlgorithm == EncryptionAlgorithm.A192GCM
             || encryptionAlgorithm == EncryptionAlgorithm.A256GCM);

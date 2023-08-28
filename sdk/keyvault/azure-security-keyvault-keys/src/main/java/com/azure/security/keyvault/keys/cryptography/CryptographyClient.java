@@ -295,10 +295,8 @@ public class CryptographyClient {
         }
 
         if (!checkKeyPermissions(key.getKeyOps(), KeyOperation.ENCRYPT)) {
-            throw LOGGER.logExceptionAsError(
-                new UnsupportedOperationException(
-                    String.format("Encrypt operation is missing permission/not supported for key with id: %s",
-                        key.getId())));
+            throw LOGGER.logExceptionAsError(new UnsupportedOperationException(
+                "Encrypt operation is missing permission/not supported for key with id: " + key.getId()));
         }
 
         return localKeyCryptographyClient.encrypt(algorithm, plaintext, key, context);
@@ -364,10 +362,8 @@ public class CryptographyClient {
         }
 
         if (!checkKeyPermissions(key.getKeyOps(), KeyOperation.ENCRYPT)) {
-            throw LOGGER.logExceptionAsError(
-                new UnsupportedOperationException(
-                    String.format("Encrypt operation is missing permission/not supported for key with id: %s",
-                        key.getId())));
+            throw LOGGER.logExceptionAsError(new UnsupportedOperationException(
+                "Encrypt operation is missing permission/not supported for key with id: " + key.getId()));
         }
 
         return localKeyCryptographyClient.encrypt(encryptParameters, key, context);
@@ -486,9 +482,8 @@ public class CryptographyClient {
         }
 
         if (!checkKeyPermissions(key.getKeyOps(), KeyOperation.DECRYPT)) {
-            throw LOGGER.logExceptionAsError(
-                new UnsupportedOperationException(
-                    String.format("Decrypt operation is not allowed for key with id: %s", key.getId())));
+            throw LOGGER.logExceptionAsError(new UnsupportedOperationException(
+                "Decrypt operation is not allowed for key with id: " + key.getId()));
         }
 
         return localKeyCryptographyClient.decrypt(algorithm, ciphertext, key, context);
@@ -556,9 +551,8 @@ public class CryptographyClient {
         }
 
         if (!checkKeyPermissions(key.getKeyOps(), KeyOperation.DECRYPT)) {
-            throw LOGGER.logExceptionAsError(
-                new UnsupportedOperationException(
-                    String.format("Decrypt operation is not allowed for key with id: %s", key.getId())));
+            throw LOGGER.logExceptionAsError(new UnsupportedOperationException(
+                "Decrypt operation is not allowed for key with id: " + key.getId()));
         }
 
         return localKeyCryptographyClient.decrypt(decryptParameters, key, context);
@@ -658,9 +652,8 @@ public class CryptographyClient {
         }
 
         if (!checkKeyPermissions(key.getKeyOps(), KeyOperation.SIGN)) {
-            throw LOGGER.logExceptionAsError(
-                new UnsupportedOperationException(
-                    String.format("Sign operation is not allowed for key with id: %s", key.getId())));
+            throw LOGGER.logExceptionAsError(new UnsupportedOperationException(
+                "Sign operation is not allowed for key with id: " + key.getId()));
         }
 
         return localKeyCryptographyClient.sign(algorithm, digest, key, context);
@@ -768,9 +761,8 @@ public class CryptographyClient {
         }
 
         if (!checkKeyPermissions(key.getKeyOps(), KeyOperation.VERIFY)) {
-            throw LOGGER.logExceptionAsError(
-                new UnsupportedOperationException(
-                    String.format("Verify operation is not allowed for key with id: %s", key.getId())));
+            throw LOGGER.logExceptionAsError(new UnsupportedOperationException(
+                "Verify operation is not allowed for key with id: " + key.getId()));
         }
 
         return localKeyCryptographyClient.verify(algorithm, digest, signature, key, context);
@@ -868,9 +860,8 @@ public class CryptographyClient {
         }
 
         if (!checkKeyPermissions(this.key.getKeyOps(), KeyOperation.WRAP_KEY)) {
-            throw LOGGER.logExceptionAsError(
-                new UnsupportedOperationException(
-                    String.format("Wrap key operation is not allowed for key with id: %s", this.key.getId())));
+            throw LOGGER.logExceptionAsError(new UnsupportedOperationException(
+                "Wrap key operation is not allowed for key with id: " + this.key.getId()));
         }
 
         return localKeyCryptographyClient.wrapKey(algorithm, key, this.key, context);
@@ -976,9 +967,8 @@ public class CryptographyClient {
         }
 
         if (!checkKeyPermissions(key.getKeyOps(), KeyOperation.UNWRAP_KEY)) {
-            throw LOGGER.logExceptionAsError(
-                new UnsupportedOperationException(
-                    String.format("Unwrap key operation is not allowed for key with id: %s", key.getId())));
+            throw LOGGER.logExceptionAsError(new UnsupportedOperationException(
+                "Unwrap key operation is not allowed for key with id: " + key.getId()));
         }
 
         return localKeyCryptographyClient.unwrapKey(algorithm, encryptedKey, key, context);
@@ -1072,9 +1062,8 @@ public class CryptographyClient {
         }
 
         if (!checkKeyPermissions(key.getKeyOps(), KeyOperation.SIGN)) {
-            throw LOGGER.logExceptionAsError(
-                new UnsupportedOperationException(
-                    String.format("Sign operation is not allowed for key with id: %s", key.getId())));
+            throw LOGGER.logExceptionAsError(new UnsupportedOperationException(
+                "Sign operation is not allowed for key with id: %s" + key.getId()));
         }
 
         return localKeyCryptographyClient.signData(algorithm, data, key, context);
@@ -1179,9 +1168,8 @@ public class CryptographyClient {
         }
 
         if (!checkKeyPermissions(key.getKeyOps(), KeyOperation.VERIFY)) {
-            throw LOGGER.logExceptionAsError(
-                new UnsupportedOperationException(
-                    String.format("Verify operation is not allowed for key with id: %s", key.getId())));
+            throw LOGGER.logExceptionAsError(new UnsupportedOperationException(
+                "Verify operation is not allowed for key with id: " + key.getId()));
         }
 
         return localKeyCryptographyClient.verifyData(algorithm, data, signature, key, context);

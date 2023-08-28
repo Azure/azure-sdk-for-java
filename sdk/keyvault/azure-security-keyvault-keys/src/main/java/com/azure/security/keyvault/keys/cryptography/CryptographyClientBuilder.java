@@ -174,7 +174,7 @@ public final class CryptographyClientBuilder implements
      */
     public CryptographyClient buildClient() {
         if (jsonWebKey == null) {
-            if (Strings.isNullOrEmpty(keyId)) {
+            if (CoreUtils.isNullOrEmpty(keyId)) {
                 throw LOGGER.logExceptionAsError(new IllegalStateException(
                     "An Azure Key Vault key identifier is required to build the cryptography client if a JSON Web Key"
                         + " is not provided."));
@@ -224,7 +224,7 @@ public final class CryptographyClientBuilder implements
      */
     public CryptographyAsyncClient buildAsyncClient() {
         if (jsonWebKey == null) {
-            if (Strings.isNullOrEmpty(keyId)) {
+            if (CoreUtils.isNullOrEmpty(keyId)) {
                 throw LOGGER.logExceptionAsError(new IllegalStateException(
                     "An Azure Key Vault key identifier is required to build the cryptography client if a JSON Web Key"
                         + " is not provided."));
@@ -252,8 +252,8 @@ public final class CryptographyClientBuilder implements
     }
 
     HttpPipeline setupPipeline() {
-        Configuration buildConfiguration =
-            (configuration == null) ? Configuration.getGlobalConfiguration().clone() : configuration;
+        Configuration buildConfiguration = (configuration == null)
+            ? Configuration.getGlobalConfiguration().clone() : configuration;
 
         // Closest to API goes first, closest to wire goes last.
         final List<HttpPipelinePolicy> policies = new ArrayList<>();

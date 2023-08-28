@@ -6,7 +6,6 @@ import com.azure.core.util.BinaryData;
 import com.azure.core.util.CoreUtils;
 import com.azure.security.keyvault.keys.implementation.DeletedKeyHelper;
 import com.azure.security.keyvault.keys.implementation.KeyPropertiesHelper;
-import com.azure.security.keyvault.keys.implementation.KeyRotationLifetimeActionHelper;
 import com.azure.security.keyvault.keys.implementation.KeyRotationPolicyHelper;
 import com.azure.security.keyvault.keys.implementation.KeyVaultKeyHelper;
 import com.azure.security.keyvault.keys.models.CreateKeyOptions;
@@ -14,16 +13,11 @@ import com.azure.security.keyvault.keys.models.DeletedKey;
 import com.azure.security.keyvault.keys.models.JsonWebKey;
 import com.azure.security.keyvault.keys.models.KeyProperties;
 import com.azure.security.keyvault.keys.models.KeyReleasePolicy;
-import com.azure.security.keyvault.keys.models.KeyRotationLifetimeAction;
 import com.azure.security.keyvault.keys.models.KeyRotationPolicy;
 import com.azure.security.keyvault.keys.models.KeyVaultKey;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.time.OffsetDateTime;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 import java.util.function.Consumer;
 
@@ -238,14 +232,7 @@ public final class KeyVaultKeysModelsUtils {
 
     public static KeyRotationPolicy mapKeyRotationPolicyImpl(
         com.azure.security.keyvault.keys.implementation.models.KeyRotationPolicy impl) {
-        if (impl == null) {
-            return null;
-        }
-
-        KeyRotationPolicy policy = new KeyRotationPolicy();
-        KeyRotationPolicyHelper.setImpl(policy, impl);
-
-        return policy;
+        return (impl == null) ? null : KeyRotationPolicyHelper.createPolicy(impl);
     }
 
     public static com.azure.security.keyvault.keys.implementation.models.KeyRotationPolicy mapKeyRotationPolicy(

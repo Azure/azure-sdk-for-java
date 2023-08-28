@@ -3,6 +3,8 @@
 
 package com.azure.security.keyvault.keys.cryptography;
 
+import com.azure.core.util.CoreUtils;
+
 /**
  * Abstract base class for all Algorithm objects.
  *
@@ -12,7 +14,7 @@ abstract class Algorithm {
     private final String name;
 
     Algorithm(String name) {
-        if (Strings.isNullOrWhiteSpace(name)) {
+        if (CoreUtils.isNullOrEmpty(name) || name.trim().isEmpty()) {
             throw new IllegalArgumentException("name");
         }
 
@@ -21,7 +23,7 @@ abstract class Algorithm {
 
     /*
      * Gets the name of the algorithm.
-     * 
+     *
      * @return The name of the algorithm.
      */
     public String getName() {

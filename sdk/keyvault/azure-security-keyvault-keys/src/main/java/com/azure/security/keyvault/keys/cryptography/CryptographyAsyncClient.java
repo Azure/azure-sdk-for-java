@@ -194,10 +194,14 @@ public class CryptographyAsyncClient {
 
     Mono<Response<KeyVaultKey>> getKeyWithResponse(Context context) {
         if (implClient != null) {
+            return service.getKeyAsync(vaultUrl, name, version, serviceVersion, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE, context)
+                .doOnRequest(ignored -> LOGGER.verbose("Retrieving key - {}", name))
+                .doOnSuccess(response -> LOGGER.verbose("Retrieved key - {}", response.getValue().getName()))
+                .doOnError(error -> LOGGER.warning("Failed to get key - {}", name, error));
             return implClient.getKeyAsync(context);
         } else {
-            throw LOGGER.logExceptionAsError(new UnsupportedOperationException(
-                "Operation not supported when in operating local-only mode"));
+            return FluxUtil.monoError(LOGGER,
+                new UnsupportedOperationException("Operation not supported when in operating local-only mode"));
         }
     }
 

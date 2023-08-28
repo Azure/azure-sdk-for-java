@@ -50,10 +50,10 @@ import java.net.HttpURLConnection;
 import java.time.Duration;
 import java.util.Arrays;
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 import static com.azure.security.keyvault.keys.KeyAsyncClient.mapDeletedKeyItemPagedResponse;
 import static com.azure.security.keyvault.keys.KeyAsyncClient.mapKeyItemPagedResponse;
-import static com.azure.security.keyvault.keys.KeyAsyncClient.validateCreateOptions;
 import static com.azure.security.keyvault.keys.implementation.models.KeyVaultKeysModelsUtils.createDeletedKey;
 import static com.azure.security.keyvault.keys.implementation.models.KeyVaultKeysModelsUtils.createKeyAttributes;
 import static com.azure.security.keyvault.keys.implementation.models.KeyVaultKeysModelsUtils.createKeyVaultKey;
@@ -274,15 +274,15 @@ public final class KeyClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<KeyVaultKey> createKeyWithResponse(CreateKeyOptions createKeyOptions, Context context) {
-        RuntimeException validation = validateCreateOptions(createKeyOptions, "createKeyOptions", true);
-        if (validation != null) {
-            throw LOGGER.logExceptionAsError(validation);
+        if (createKeyOptions == null) {
+            throw LOGGER.logExceptionAsError(new NullPointerException("'createKeyOptions' cannot be null."));
         }
 
-        Response<KeyBundle> response = implClient.createKeyWithResponse(vaultUrl, createKeyOptions.getName(),
-            createKeyOptions.getKeyType(), null, null, createKeyOptions.getKeyOperations(),
+        Response<KeyBundle> response = callWithMappedException(() -> implClient.createKeyWithResponse(vaultUrl,
+            createKeyOptions.getName(), createKeyOptions.getKeyType(), null, null, createKeyOptions.getKeyOperations(),
             createKeyAttributes(createKeyOptions), createKeyOptions.getTags(), null,
-            mapKeyReleasePolicy(createKeyOptions.getReleasePolicy()), context);
+            mapKeyReleasePolicy(createKeyOptions.getReleasePolicy()), context),
+            KeyAsyncClient::mapCreateKeyException);
 
         return new SimpleResponse<>(response, createKeyVaultKey(response.getValue()));
     }
@@ -376,16 +376,16 @@ public final class KeyClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<KeyVaultKey> createRsaKeyWithResponse(CreateRsaKeyOptions createRsaKeyOptions, Context context) {
-        RuntimeException validation = validateCreateOptions(createRsaKeyOptions, "createRsaKeyOptions", false);
-        if (validation != null) {
-            throw LOGGER.logExceptionAsError(validation);
+        if (createRsaKeyOptions == null) {
+            throw LOGGER.logExceptionAsError(new NullPointerException("'createRsaKeyOptions' cannot be null."));
         }
 
-        Response<KeyBundle> response = implClient.createKeyWithResponse(vaultUrl, createRsaKeyOptions.getName(),
-                createRsaKeyOptions.getKeyType(), createRsaKeyOptions.getKeySize(),
-                createRsaKeyOptions.getPublicExponent(), createRsaKeyOptions.getKeyOperations(),
-                createKeyAttributes(createRsaKeyOptions), createRsaKeyOptions.getTags(), null,
-                mapKeyReleasePolicy(createRsaKeyOptions.getReleasePolicy()), context);
+        Response<KeyBundle> response = callWithMappedException(() -> implClient.createKeyWithResponse(vaultUrl,
+            createRsaKeyOptions.getName(), createRsaKeyOptions.getKeyType(), createRsaKeyOptions.getKeySize(),
+            createRsaKeyOptions.getPublicExponent(), createRsaKeyOptions.getKeyOperations(),
+            createKeyAttributes(createRsaKeyOptions), createRsaKeyOptions.getTags(), null,
+            mapKeyReleasePolicy(createRsaKeyOptions.getReleasePolicy()), context),
+            KeyAsyncClient::mapCreateKeyException);
 
         return new SimpleResponse<>(response, createKeyVaultKey(response.getValue()));
     }
@@ -482,15 +482,16 @@ public final class KeyClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<KeyVaultKey> createEcKeyWithResponse(CreateEcKeyOptions createEcKeyOptions, Context context) {
-        RuntimeException validation = validateCreateOptions(createEcKeyOptions, "createEcKeyOptions", false);
-        if (validation != null) {
-            throw LOGGER.logExceptionAsError(validation);
+        if (createEcKeyOptions == null) {
+            throw LOGGER.logExceptionAsError(new NullPointerException("'createEcKeyOptions' cannot be null."));
         }
 
-        Response<KeyBundle> response = implClient.createKeyWithResponse(vaultUrl, createEcKeyOptions.getName(),
-            createEcKeyOptions.getKeyType(), null, null, createEcKeyOptions.getKeyOperations(),
-            createKeyAttributes(createEcKeyOptions), createEcKeyOptions.getTags(),
-            createEcKeyOptions.getCurveName(), mapKeyReleasePolicy(createEcKeyOptions.getReleasePolicy()), context);
+        Response<KeyBundle> response = callWithMappedException(() -> implClient.createKeyWithResponse(vaultUrl,
+            createEcKeyOptions.getName(), createEcKeyOptions.getKeyType(), null, null,
+            createEcKeyOptions.getKeyOperations(), createKeyAttributes(createEcKeyOptions),
+            createEcKeyOptions.getTags(), createEcKeyOptions.getCurveName(),
+            mapKeyReleasePolicy(createEcKeyOptions.getReleasePolicy()), context),
+            KeyAsyncClient::mapCreateKeyException);
 
         return new SimpleResponse<>(response, createKeyVaultKey(response.getValue()));
     }
@@ -578,15 +579,15 @@ public final class KeyClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<KeyVaultKey> createOctKeyWithResponse(CreateOctKeyOptions createOctKeyOptions, Context context) {
-        RuntimeException validation = validateCreateOptions(createOctKeyOptions, "createOctKeyOptions", false);
-        if (validation != null) {
-            throw LOGGER.logExceptionAsError(validation);
+        if (createOctKeyOptions == null) {
+            throw LOGGER.logExceptionAsError(new NullPointerException("'createOctKeyOptions' cannot be null."));
         }
 
-        Response<KeyBundle> response = implClient.createKeyWithResponse(vaultUrl, createOctKeyOptions.getName(),
-            createOctKeyOptions.getKeyType(), createOctKeyOptions.getKeySize(), null,
+        Response<KeyBundle> response = callWithMappedException(() -> implClient.createKeyWithResponse(vaultUrl,
+            createOctKeyOptions.getName(), createOctKeyOptions.getKeyType(), createOctKeyOptions.getKeySize(), null,
             createOctKeyOptions.getKeyOperations(), createKeyAttributes(createOctKeyOptions),
-            createOctKeyOptions.getTags(), null, mapKeyReleasePolicy(createOctKeyOptions.getReleasePolicy()), context);
+            createOctKeyOptions.getTags(), null, mapKeyReleasePolicy(createOctKeyOptions.getReleasePolicy()), context),
+            KeyAsyncClient::mapCreateKeyException);
 
         return new SimpleResponse<>(response, createKeyVaultKey(response.getValue()));
     }
@@ -710,7 +711,7 @@ public final class KeyClient {
             throw LOGGER.logExceptionAsError(new RuntimeException("'importKeyOptions.getName()' cannot be empty."));
         }
 
-        Response<KeyBundle> response = implClient.importKeyWithResponse(vaultUrl,importKeyOptions.getName(),
+        Response<KeyBundle> response = implClient.importKeyWithResponse(vaultUrl, importKeyOptions.getName(),
             mapJsonWebKey(importKeyOptions.getKey()), importKeyOptions.isHardwareProtected(),
             createKeyAttributes(importKeyOptions), importKeyOptions.getTags(),
             mapKeyReleasePolicy(importKeyOptions.getReleasePolicy()), context);
@@ -787,7 +788,8 @@ public final class KeyClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<KeyVaultKey> getKeyWithResponse(String name, String version, Context context) {
-        Response<KeyBundle> response = implClient.getKeyWithResponse(vaultUrl, name, version, context);
+        Response<KeyBundle> response = callWithMappedException(() ->
+            implClient.getKeyWithResponse(vaultUrl, name, version, context), KeyAsyncClient::mapGetKeyException);
 
         return new SimpleResponse<>(response, createKeyVaultKey(response.getValue()));
     }
@@ -963,7 +965,8 @@ public final class KeyClient {
 
     private Function<PollingContext<DeletedKey>, PollResponse<DeletedKey>> deleteActivationOperation(String name) {
         return pollingContext -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED,
-            createDeletedKey(implClient.deleteKey(vaultUrl, name)));
+            callWithMappedException(() -> createDeletedKey(implClient.deleteKey(vaultUrl, name)),
+                KeyAsyncClient::mapDeleteKeyException));
     }
 
     private Function<PollingContext<DeletedKey>, PollResponse<DeletedKey>> deletePollOperation(String name) {
@@ -1046,7 +1049,8 @@ public final class KeyClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DeletedKey> getDeletedKeyWithResponse(String name, Context context) {
-        Response<DeletedKeyBundle> response = implClient.getDeletedKeyWithResponse(vaultUrl, name, context);
+        Response<DeletedKeyBundle> response = callWithMappedException(() ->
+            implClient.getDeletedKeyWithResponse(vaultUrl, name, context), KeyAsyncClient::mapGetDeletedKeyException);
 
         return new SimpleResponse<>(response, createDeletedKey(response.getValue()));
     }
@@ -1101,7 +1105,8 @@ public final class KeyClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> purgeDeletedKeyWithResponse(String name, Context context) {
-        return implClient.purgeDeletedKeyWithResponse(vaultUrl, name, context);
+        return callWithMappedException(() -> implClient.purgeDeletedKeyWithResponse(vaultUrl, name, context),
+            KeyAsyncClient::mapPurgeDeletedKeyException);
     }
 
     /**
@@ -1143,7 +1148,8 @@ public final class KeyClient {
 
     private Function<PollingContext<KeyVaultKey>, PollResponse<KeyVaultKey>> recoverActivationOperation(String name) {
         return pollingContext -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED,
-            createKeyVaultKey(implClient.recoverDeletedKey(vaultUrl, name)));
+            createKeyVaultKey(callWithMappedException(() -> implClient.recoverDeletedKey(vaultUrl, name),
+                KeyAsyncClient::mapRecoverDeletedKeyException)));
     }
 
     private Function<PollingContext<KeyVaultKey>, PollResponse<KeyVaultKey>> recoverPollOperation(
@@ -1241,7 +1247,8 @@ public final class KeyClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<byte[]> backupKeyWithResponse(String name, Context context) {
-        Response<BackupKeyResult> response = implClient.backupKeyWithResponse(vaultUrl, name, context);
+        Response<BackupKeyResult> response = callWithMappedException(() ->
+            implClient.backupKeyWithResponse(vaultUrl, name, context), KeyAsyncClient::mapBackupKeyException);
 
         return new SimpleResponse<>(response, response.getValue().getValue());
     }
@@ -1318,7 +1325,8 @@ public final class KeyClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<KeyVaultKey> restoreKeyBackupWithResponse(byte[] backup, Context context) {
-        Response<KeyBundle> response = implClient.restoreKeyWithResponse(vaultUrl, backup, context);
+        Response<KeyBundle> response = callWithMappedException(() ->
+            implClient.restoreKeyWithResponse(vaultUrl, backup, context), KeyAsyncClient::mapRestoreKeyException);
 
         return new SimpleResponse<>(response, createKeyVaultKey(response.getValue()));
     }
@@ -1784,8 +1792,8 @@ public final class KeyClient {
         KeyExportEncryptionAlgorithm algorithm = releaseKeyOptions == null
             ? null : releaseKeyOptions.getAlgorithm();
 
-        return implClient.releaseWithResponse(vaultUrl, name, version, targetAttestationToken, nonce, algorithm,
-            context);
+        return callWithMappedException(() -> implClient.releaseWithResponse(vaultUrl, name, version,
+            targetAttestationToken, nonce, algorithm, context), KeyAsyncClient::mapReleaseKeyException);
     }
 
     /**
@@ -1846,7 +1854,8 @@ public final class KeyClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<KeyVaultKey> rotateKeyWithResponse(String name, Context context) {
-        Response<KeyBundle> response = implClient.rotateKeyWithResponse(vaultUrl, name, context);
+        Response<KeyBundle> response = callWithMappedException(() ->
+            implClient.rotateKeyWithResponse(vaultUrl, name, context), KeyAsyncClient::mapRotateKeyException);
 
         return new SimpleResponse<>(response, createKeyVaultKey(response.getValue()));
     }
@@ -1908,7 +1917,8 @@ public final class KeyClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<KeyRotationPolicy> getKeyRotationPolicyWithResponse(String keyName, Context context) {
         Response<com.azure.security.keyvault.keys.implementation.models.KeyRotationPolicy> response =
-            implClient.getKeyRotationPolicyWithResponse(vaultUrl, keyName, context);
+            callWithMappedException(() -> implClient.getKeyRotationPolicyWithResponse(vaultUrl, keyName, context),
+                KeyAsyncClient::mapGetKeyRotationPolicyException);
 
         return new SimpleResponse<>(response, mapKeyRotationPolicyImpl(response.getValue()));
     }
@@ -2001,9 +2011,18 @@ public final class KeyClient {
                                                                            KeyRotationPolicy keyRotationPolicy,
                                                                            Context context) {
         Response<com.azure.security.keyvault.keys.implementation.models.KeyRotationPolicy> response =
-            implClient.updateKeyRotationPolicyWithResponse(vaultUrl, keyName, mapKeyRotationPolicy(keyRotationPolicy),
-                context);
+            callWithMappedException(() -> implClient.updateKeyRotationPolicyWithResponse(vaultUrl, keyName,
+                mapKeyRotationPolicy(keyRotationPolicy), context), KeyAsyncClient::mapUpdateKeyRotationPolicyException);
 
         return new SimpleResponse<>(response, mapKeyRotationPolicyImpl(response.getValue()));
+    }
+
+    private static <T> T callWithMappedException(Supplier<T> call,
+        Function<KeyVaultErrorException, HttpResponseException> exceptionMapper) {
+        try {
+            return call.get();
+        } catch (KeyVaultErrorException ex) {
+            throw exceptionMapper.apply(ex);
+        }
     }
 }

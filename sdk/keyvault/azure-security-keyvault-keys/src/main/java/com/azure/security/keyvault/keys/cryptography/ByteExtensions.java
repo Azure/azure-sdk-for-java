@@ -3,68 +3,7 @@
 
 package com.azure.security.keyvault.keys.cryptography;
 
-import java.util.Arrays;
-
-class ByteExtensions {
-
-    static byte[] or(byte[] self, byte[] other) {
-        return or(self, other, 0);
-    }
-
-    static byte[] or(byte[] self, byte[] other, int offset) {
-        if (self == null) {
-            throw new IllegalArgumentException("self");
-        }
-
-        if (other == null) {
-            throw new IllegalArgumentException("other");
-        }
-
-        if (self.length > other.length - offset) {
-            throw new IllegalArgumentException("self and other lengths do not match");
-        }
-
-        byte[] result = new byte[self.length];
-
-        for (int i = 0; i < self.length; i++) {
-            result[i] = (byte) (self[i] | other[offset + i]);
-        }
-
-        return result;
-    }
-
-    static byte[] xor(byte[] self, byte[] other) {
-        return xor(self, other, 0);
-    }
-
-    static byte[] xor(byte[] self, byte[] other, int offset) {
-        if (self == null) {
-            throw new IllegalArgumentException("self");
-        }
-
-        if (other == null) {
-            throw new IllegalArgumentException("other");
-        }
-
-        if (self.length > other.length - offset) {
-            throw new IllegalArgumentException("self and other lengths do not match");
-        }
-
-        byte[] result = new byte[self.length];
-
-        for (int i = 0; i < self.length; i++) {
-            result[i] = (byte) (self[i] ^ other[offset + i]);
-        }
-
-        return result;
-    }
-
-    static void zero(byte[] self) {
-        if (self != null) {
-            Arrays.fill(self, (byte) 0);
-        }
-    }
-
+final class ByteExtensions {
     /*
      * Compares two byte arrays in constant time.
      *
@@ -92,5 +31,8 @@ class ByteExtensions {
         }
 
         return difference == 0;
+    }
+
+    private ByteExtensions() {
     }
 }

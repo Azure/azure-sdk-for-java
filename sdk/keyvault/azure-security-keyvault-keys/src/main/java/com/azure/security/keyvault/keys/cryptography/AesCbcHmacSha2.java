@@ -4,6 +4,8 @@
 package com.azure.security.keyvault.keys.cryptography;
 
 import com.azure.core.util.logging.ClientLogger;
+import reactor.util.function.Tuple3;
+import reactor.util.function.Tuples;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
@@ -27,12 +29,13 @@ abstract class AesCbcHmacSha2 extends SymmetricEncryptionAlgorithm {
         final byte[] hmacKey;
         final ICryptoTransform inner;
 
-        AbstractAesCbcHmacSha2CryptoTransform(String name, byte[] keyMaterial, byte[] initializationVector, byte[] authenticationData, ICryptoTransform.Factory<byte[]> factory)
+        AbstractAesCbcHmacSha2CryptoTransform(String name, byte[] keyMaterial, byte[] initializationVector,
+            byte[] authenticationData, ICryptoTransform.Factory<byte[]> factory)
             throws InvalidKeyException, NoSuchAlgorithmException, InvalidAlgorithmParameterException, NoSuchPaddingException {
-            Triplet<byte[], byte[], Mac> parameters = getAlgorithmParameters(name, keyMaterial);
-            inner = factory.create(parameters.getLeft());
-            hmacKey = parameters.getMiddle();
-            hmac = parameters.getRight();
+            Tuple3<byte[], byte[], Mac> parameters = getAlgorithmParameters(name, keyMaterial);
+            inner = factory.create(parameters.getT1());
+            hmacKey = parameters.getT2();
+            hmac = parameters.getT3();
             aadLength = toBigEndian(authenticationData.length * BYTE_TO_BITS);
             hmac.update(authenticationData);
             hmac.update(initializationVector);
@@ -53,7 +56,7 @@ abstract class AesCbcHmacSha2 extends SymmetricEncryptionAlgorithm {
             return longRepresentation;
         }
 
-        private Triplet<byte[], byte[], Mac> getAlgorithmParameters(String algorithm, byte[] key)
+        private Tuple3<byte[], byte[], Mac> getAlgorithmParameters(String algorithm, byte[] key)
             throws InvalidKeyException, NoSuchAlgorithmException {
 
             byte[] aesKey;
@@ -112,7 +115,7 @@ abstract class AesCbcHmacSha2 extends SymmetricEncryptionAlgorithm {
                 throw new IllegalArgumentException(String.format("Unsupported algorithm: %s", algorithm));
             }
 
-            return new Triplet<>(aesKey, hmacKey, hmac);
+            return Tuples.of(aesKey, hmacKey, hmac);
         }
     }
 

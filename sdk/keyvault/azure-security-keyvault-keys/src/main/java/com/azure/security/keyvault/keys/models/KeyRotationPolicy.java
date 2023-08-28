@@ -19,21 +19,33 @@ public final class KeyRotationPolicy {
     static {
         KeyRotationPolicyHelper.setAccessor(new KeyRotationPolicyHelper.KeyRotationPolicyAccessor() {
             @Override
-            public void setImpl(KeyRotationPolicy policy,
+            public KeyRotationPolicy createPolicy(
                 com.azure.security.keyvault.keys.implementation.models.KeyRotationPolicy impl) {
-                policy.impl = impl;
+                return new KeyRotationPolicy(impl);
             }
 
             @Override
-            public com.azure.security.keyvault.keys.implementation.models.KeyRotationPolicy getImpl(KeyRotationPolicy policy) {
+            public com.azure.security.keyvault.keys.implementation.models.KeyRotationPolicy getImpl(
+                KeyRotationPolicy policy) {
                 return policy.impl;
             }
         });
     }
 
-    private com.azure.security.keyvault.keys.implementation.models.KeyRotationPolicy impl;
+    private final com.azure.security.keyvault.keys.implementation.models.KeyRotationPolicy impl;
 
     private List<KeyRotationLifetimeAction> lifetimeActions;
+
+    /**
+     * Creates an instance of {@link KeyRotationPolicy}.
+     */
+    public KeyRotationPolicy() {
+        this(new com.azure.security.keyvault.keys.implementation.models.KeyRotationPolicy());
+    }
+
+    KeyRotationPolicy(com.azure.security.keyvault.keys.implementation.models.KeyRotationPolicy impl) {
+        this.impl = impl;
+    }
 
     /**
      * Get the identifier of the {@link KeyRotationPolicy policy}.
@@ -61,6 +73,8 @@ public final class KeyRotationPolicy {
                 KeyRotationLifetimeAction mappedAction = new KeyRotationLifetimeAction(action.getAction().getType());
                 KeyRotationLifetimeActionHelper.setActionType(mappedAction, action.getAction());
                 KeyRotationLifetimeActionHelper.setTrigger(mappedAction, action.getTrigger());
+
+                mappedActions.add(mappedAction);
             }
 
             this.lifetimeActions = mappedActions;

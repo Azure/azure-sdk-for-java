@@ -34,18 +34,6 @@ class EcKeyCryptographyClient extends LocalKeyCryptographyClient {
 
     private KeyPair keyPair;
 
-    /**
-     * Creates a EcKeyCryptographyClient that uses {@code service} to service requests
-     *
-     * @param serviceClient the client to use for service side cryptography operations.
-     */
-    EcKeyCryptographyClient(CryptographyClientImpl serviceClient) {
-        super(serviceClient);
-
-        this.serviceClient = serviceClient;
-        this.provider = null;
-    }
-
     EcKeyCryptographyClient(JsonWebKey key, CryptographyClientImpl serviceClient) {
         super(serviceClient);
 
@@ -108,8 +96,13 @@ class EcKeyCryptographyClient extends LocalKeyCryptographyClient {
 
     @Override
     Mono<SignResult> signAsync(SignatureAlgorithm algorithm, byte[] digest, JsonWebKey key, Context context) {
-        Objects.requireNonNull(algorithm, "Signature algorithm cannot be null.");
-        Objects.requireNonNull(digest, "Digest content cannot be null.");
+        if (algorithm == null) {
+            return Mono.error(new NullPointerException("Signature algorithm cannot be null."));
+        }
+
+        if (digest == null) {
+            return Mono.error(new NullPointerException("Digest content cannot be null."));
+        }
 
         keyPair = getKeyPair(key);
 
@@ -144,11 +137,7 @@ class EcKeyCryptographyClient extends LocalKeyCryptographyClient {
 
         ISignatureTransform signer = algo.createSignatureTransform(keyPair, provider);
 
-        try {
-            return Mono.just(new SignResult(signer.sign(digest), algorithm, key.getId()));
-        } catch (Exception e) {
-            return Mono.error(e);
-        }
+        return Mono.fromCallable(() -> new SignResult(signer.sign(digest), algorithm, key.getId()));
     }
 
     @Override
@@ -203,9 +192,17 @@ class EcKeyCryptographyClient extends LocalKeyCryptographyClient {
     @Override
     Mono<VerifyResult> verifyAsync(SignatureAlgorithm algorithm, byte[] digest, byte[] signature, JsonWebKey key,
                                    Context context) {
-        Objects.requireNonNull(algorithm, "Signature algorithm cannot be null.");
-        Objects.requireNonNull(digest, "Digest content cannot be null.");
-        Objects.requireNonNull(signature, "Signature to be verified cannot be null.");
+        if (algorithm == null) {
+            return Mono.error(new NullPointerException("Signature algorithm cannot be null."));
+        }
+
+        if (digest == null) {
+            return Mono.error(new NullPointerException("Digest content cannot be null."));
+        }
+
+        if (signature == null) {
+            return Mono.error(new NullPointerException("Signature to be verified cannot be null."));
+        }
 
         keyPair = getKeyPair(key);
 
@@ -241,11 +238,7 @@ class EcKeyCryptographyClient extends LocalKeyCryptographyClient {
 
         ISignatureTransform signer = algo.createSignatureTransform(keyPair, provider);
 
-        try {
-            return Mono.just(new VerifyResult(signer.verify(digest, signature), algorithm, key.getId()));
-        } catch (Exception e) {
-            return Mono.error(e);
-        }
+        return Mono.fromCallable(() -> new VerifyResult(signer.verify(digest, signature), algorithm, key.getId()));
     }
 
     @Override
@@ -360,7 +353,7 @@ class EcKeyCryptographyClient extends LocalKeyCryptographyClient {
         }
     }
 
-    private byte[] calculateDigest(SignatureAlgorithm algorithm, byte[] data) throws NoSuchAlgorithmException {
+    private static byte[] calculateDigest(SignatureAlgorithm algorithm, byte[] data) throws NoSuchAlgorithmException {
         HashAlgorithm hashAlgorithm = SignatureHashResolver.DEFAULT.get(algorithm);
         MessageDigest md = MessageDigest.getInstance(hashAlgorithm.toString());
 

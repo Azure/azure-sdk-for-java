@@ -6,6 +6,7 @@ import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpPipelinePosition;
@@ -20,6 +21,8 @@ import java.time.OffsetDateTime;
  * Common test utilities.
  */
 public final class TestUtils {
+    private static final HttpHeaderName CUSTOM_HEADER = HttpHeaderName.fromString("Custom-Header");
+
     /**
      * Private constructor so this class cannot be instantiated.
      */
@@ -29,7 +32,7 @@ public final class TestUtils {
     public static class PerCallPolicy implements HttpPipelinePolicy {
         @Override
         public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-            context.getHttpRequest().setHeader("Custom-Header", "Some Value");
+            context.getHttpRequest().setHeader(CUSTOM_HEADER, "Some Value");
 
             return next.process();
         }
@@ -43,7 +46,7 @@ public final class TestUtils {
     public static class PerRetryPolicy implements HttpPipelinePolicy {
         @Override
         public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-            context.getHttpRequest().setHeader("Custom-Header", "Some Value");
+            context.getHttpRequest().setHeader(CUSTOM_HEADER, "Some Value");
 
             return next.process();
         }

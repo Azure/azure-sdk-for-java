@@ -6,7 +6,6 @@ package com.azure.security.keyvault.keys.cryptography;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
-import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
@@ -17,9 +16,6 @@ import com.azure.security.keyvault.keys.cryptography.implementation.KeySignReque
 import com.azure.security.keyvault.keys.cryptography.implementation.KeyVerifyRequest;
 import com.azure.security.keyvault.keys.cryptography.implementation.KeyVerifyResponse;
 import com.azure.security.keyvault.keys.cryptography.implementation.KeyWrapUnwrapRequest;
-import com.azure.security.keyvault.keys.cryptography.implementation.SecretKey;
-import com.azure.security.keyvault.keys.cryptography.implementation.SecretRequestAttributes;
-import com.azure.security.keyvault.keys.cryptography.implementation.SecretRequestParameters;
 import com.azure.security.keyvault.keys.cryptography.models.DecryptParameters;
 import com.azure.security.keyvault.keys.cryptography.models.DecryptResult;
 import com.azure.security.keyvault.keys.cryptography.models.EncryptParameters;
@@ -33,19 +29,13 @@ import com.azure.security.keyvault.keys.cryptography.models.VerifyResult;
 import com.azure.security.keyvault.keys.cryptography.models.WrapResult;
 import com.azure.security.keyvault.keys.models.JsonWebKey;
 import com.azure.security.keyvault.keys.models.KeyOperation;
-import com.azure.security.keyvault.keys.models.KeyType;
 import com.azure.security.keyvault.keys.models.KeyVaultKey;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ArrayNode;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import reactor.core.publisher.Mono;
 
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.Base64;
 import java.util.List;
 import java.util.Objects;
 
@@ -58,7 +48,6 @@ import static com.azure.security.keyvault.keys.models.KeyType.RSA_HSM;
 
 class CryptographyClientImpl {
     private static final ClientLogger LOGGER = new ClientLogger(CryptographyClientImpl.class);
-    private static final ObjectMapper MAPPER = new ObjectMapper();
     private static final String HTTP_REST_PROXY_SYNC_PROXY_ENABLE = "com.azure.core.http.restproxy.syncproxy.enable";
 
     static final String SECRETS_COLLECTION = "secrets";
@@ -114,10 +103,7 @@ class CryptographyClientImpl {
     }
 
     private Mono<Response<KeyVaultKey>> getKeyAsync(String name, String version, Context context) {
-        return service.getKeyAsync(vaultUrl, name, version, serviceVersion, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE, context)
-            .doOnRequest(ignored -> LOGGER.verbose("Retrieving key - {}", name))
-            .doOnSuccess(response -> LOGGER.verbose("Retrieved key - {}", response.getValue().getName()))
-            .doOnError(error -> LOGGER.warning("Failed to get key - {}", name, error));
+
     }
 
     private Response<KeyVaultKey> getKey(String name, String version, Context context) {
@@ -125,87 +111,6 @@ class CryptographyClientImpl {
         context = enableSyncRestProxy(context);
 
         return service.getKey(vaultUrl, name, version, serviceVersion, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE, context);
-    }
-
-    Mono<Response<JsonWebKey>> getSecretKeyAsync(Context context) {
-        return service.getSecretAsync(vaultUrl, keyName, version, serviceVersion, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE,
-                context)
-            .doOnRequest(ignored -> LOGGER.verbose("Retrieving key - {}", keyName))
-            .doOnSuccess(response -> LOGGER.verbose("Retrieved key - {}", response.getValue().getName()))
-            .doOnError(error -> LOGGER.warning("Failed to get key - {}", keyName, error))
-            .flatMap((stringResponse -> {
-                try {
-                    return Mono.just(new SimpleResponse<>(stringResponse.getRequest(),
-                        stringResponse.getStatusCode(),
-                        stringResponse.getHeaders(), transformSecretKey(stringResponse.getValue())));
-                } catch (JsonProcessingException e) {
-                    return Mono.error(e);
-                }
-            }));
-    }
-
-    Response<JsonWebKey> getSecretKey(Context context) {
-        context = context == null ? Context.NONE : context;
-        context = enableSyncRestProxy(context);
-
-        Response<SecretKey> secretKeyResponse =
-            service.getSecret(vaultUrl, keyName, version, serviceVersion, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE,
-                context);
-
-        try {
-            return new SimpleResponse<>(secretKeyResponse.getRequest(), secretKeyResponse.getStatusCode(),
-                secretKeyResponse.getHeaders(), transformSecretKey(secretKeyResponse.getValue()));
-        } catch (JsonProcessingException e) {
-            throw LOGGER.logExceptionAsError(new RuntimeException(e));
-        }
-    }
-
-    Mono<Response<SecretKey>> setSecretKeyAsync(SecretKey secret, Context context) {
-        Objects.requireNonNull(secret, "The secret key cannot be null.");
-
-        SecretRequestParameters parameters = new SecretRequestParameters()
-            .setValue(secret.getValue())
-            .setTags(secret.getProperties().getTags())
-            .setContentType(secret.getProperties().getContentType())
-            .setSecretAttributes(new SecretRequestAttributes(secret.getProperties()));
-
-        return service.setSecretAsync(vaultUrl, secret.getName(), serviceVersion, ACCEPT_LANGUAGE, parameters,
-                CONTENT_TYPE_HEADER_VALUE, context)
-            .doOnRequest(ignored -> LOGGER.verbose("Setting secret - {}", secret.getName()))
-            .doOnSuccess(response -> LOGGER.verbose("Set secret - {}", response.getValue().getName()))
-            .doOnError(error -> LOGGER.warning("Failed to set secret - {}", secret.getName(), error));
-    }
-
-    Response<SecretKey> setSecretKey(SecretKey secret, Context context) {
-        Objects.requireNonNull(secret, "The Secret input parameter cannot be null.");
-
-        SecretRequestParameters parameters = new SecretRequestParameters()
-            .setValue(secret.getValue())
-            .setTags(secret.getProperties().getTags())
-            .setContentType(secret.getProperties().getContentType())
-            .setSecretAttributes(new SecretRequestAttributes(secret.getProperties()));
-        context = context == null ? Context.NONE : context;
-        context = enableSyncRestProxy(context);
-
-        return service.setSecret(vaultUrl, secret.getName(), serviceVersion, ACCEPT_LANGUAGE, parameters,
-            CONTENT_TYPE_HEADER_VALUE, context);
-    }
-
-    JsonWebKey transformSecretKey(SecretKey secretKey) throws JsonProcessingException {
-        ObjectNode rootNode = MAPPER.createObjectNode();
-        ArrayNode a = MAPPER.createArrayNode();
-
-        a.add(KeyOperation.WRAP_KEY.toString());
-        a.add(KeyOperation.UNWRAP_KEY.toString());
-        a.add(KeyOperation.ENCRYPT.toString());
-        a.add(KeyOperation.DECRYPT.toString());
-
-        rootNode.put("k", Base64.getUrlDecoder().decode(secretKey.getValue()));
-        rootNode.put("kid", this.keyId);
-        rootNode.put("kty", KeyType.OCT.toString());
-        rootNode.set("key_ops", a);
-
-        return MAPPER.treeToValue(rootNode, JsonWebKey.class);
     }
 
     Mono<EncryptResult> encryptAsync(EncryptionAlgorithm algorithm, byte[] plaintext, Context context) {
@@ -601,10 +506,10 @@ class CryptographyClientImpl {
             String keyName = (tokens.length >= 3 ? tokens[2] : null);
             String keyCollection = (tokens.length >= 2 ? tokens[1] : null);
 
-            if (Strings.isNullOrEmpty(endpoint)) {
+            if (CoreUtils.isNullOrEmpty(endpoint)) {
                 throw LOGGER.logExceptionAsError(
                     new IllegalArgumentException("Key endpoint in key identifier is invalid."));
-            } else if (Strings.isNullOrEmpty(keyName)) {
+            } else if (CoreUtils.isNullOrEmpty(keyName)) {
                 throw LOGGER.logExceptionAsError(
                     new IllegalArgumentException("Key name in key identifier is invalid."));
             }
