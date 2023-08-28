@@ -48,8 +48,7 @@ This workaround allows you to avoid the cost of exporting data to a storage acco
 This sample shows how to partition a large query into smaller queries using the `LogsBatchQuery` class. The sample provides examples for 
 row-based partitioning and byte-size partitioning. The partitioning is based on the timestamp "TimeGenerated". 
 
-This sample is suitable for simple data retrieval queries that utilize a subset of KQL operators. The subset of KQL operators supported are can
-be found [here][kql_language_subset].
+This sample is suitable for simple data retrieval queries that utilize a subset of KQL operators. The subset of supported KQL operators can be found [here][kql_language_subset].
 
 ## Next steps
 
