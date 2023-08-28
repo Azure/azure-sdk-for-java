@@ -13,6 +13,7 @@ import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.amqp.implementation.RequestResponseChannelClosedException;
 import com.azure.core.amqp.implementation.RetryUtil;
 import com.azure.core.amqp.implementation.StringUtil;
+import com.azure.core.amqp.implementation.handler.DeliveryNotOnLinkException;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.IterableStream;
@@ -1614,18 +1615,37 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
                 updateDispositionOperation = dispositionViaManagementNode(message, dispositionStatus, deadLetterReason,
                     deadLetterErrorDescription, propertiesToModify, transactionContext);
             } else {
-                updateDispositionOperation = existingConsumer.updateDisposition(lockToken, dispositionStatus,
-                        deadLetterReason, deadLetterErrorDescription, propertiesToModify, transactionContext)
-                    .then(Mono.fromRunnable(() -> {
-                        LOGGER.atVerbose()
-                            .addKeyValue(LOCK_TOKEN_KEY, lockToken)
-                            .addKeyValue(ENTITY_PATH_KEY, entityPath)
-                            .addKeyValue(DISPOSITION_STATUS_KEY, dispositionStatus)
-                            .log("Disposition completed.");
+                if (isOnV2) {
+                    updateDispositionOperation = existingConsumer.updateDisposition(lockToken, dispositionStatus,
+                            deadLetterReason, deadLetterErrorDescription, propertiesToModify, transactionContext)
+                        .<Void>then(Mono.fromRunnable(() -> {
+                            LOGGER.atVerbose()
+                                .addKeyValue(LOCK_TOKEN_KEY, lockToken)
+                                .addKeyValue(ENTITY_PATH_KEY, entityPath)
+                                .addKeyValue(DISPOSITION_STATUS_KEY, dispositionStatus)
+                                .log("Disposition completed.");
 
-                        message.setIsSettled();
-                        renewalContainer.remove(lockToken);
-                    }));
+                            message.setIsSettled();
+                            renewalContainer.remove(lockToken);
+                        })).onErrorResume(DeliveryNotOnLinkException.class, __ -> {
+                            // V2: fallback to Disposition via Management Channel on DeliveryNotOnLinkException.
+                            return dispositionViaManagementNode(message, dispositionStatus, deadLetterReason,
+                                deadLetterErrorDescription, propertiesToModify, transactionContext);
+                        });
+                } else {
+                    updateDispositionOperation = existingConsumer.updateDisposition(lockToken, dispositionStatus,
+                            deadLetterReason, deadLetterErrorDescription, propertiesToModify, transactionContext)
+                        .then(Mono.fromRunnable(() -> {
+                            LOGGER.atVerbose()
+                                .addKeyValue(LOCK_TOKEN_KEY, lockToken)
+                                .addKeyValue(ENTITY_PATH_KEY, entityPath)
+                                .addKeyValue(DISPOSITION_STATUS_KEY, dispositionStatus)
+                                .log("Disposition completed.");
+
+                            message.setIsSettled();
+                            renewalContainer.remove(lockToken);
+                        }));
+                }
             }
         }
 
