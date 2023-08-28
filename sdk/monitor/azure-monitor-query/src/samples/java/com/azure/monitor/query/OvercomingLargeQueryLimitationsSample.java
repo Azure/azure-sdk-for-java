@@ -120,7 +120,7 @@ public class LargeQuerySample {
      * Helper method to create a list of time intervals for a batch query based on the row count limit.
      *
      * @param originalQuery The original query string.
-     * @param maxRowPerBatch The maximum row count per batch. If multiple log entries returned in the original query
+     * @param maxRowsPerBatch The maximum row count per batch. If multiple log entries returned in the original query
      *                       have the exact same timestamp, the row count per batch may exceed this limit.
      * @return A list of {@link QueryTimeInterval} objects.
      */
