@@ -2095,9 +2095,11 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         }
     }
 
-    private static <T> Mono<T> getRxDocumentServiceResponseMonoWithE2ETimeout(RxDocumentServiceRequest request,
-                                                                                                  CosmosEndToEndOperationLatencyPolicyConfig endToEndPolicyConfig,
-                                                                                                  Mono<T> rxDocumentServiceResponseMono) {
+    private static <T> Mono<T> getRxDocumentServiceResponseMonoWithE2ETimeout(
+        RxDocumentServiceRequest request,
+        CosmosEndToEndOperationLatencyPolicyConfig endToEndPolicyConfig,
+        Mono<T> rxDocumentServiceResponseMono) {
+
         if (endToEndPolicyConfig != null && endToEndPolicyConfig.isEnabled()) {
 
             Duration endToEndTimeout = endToEndPolicyConfig.getEndToEndOperationTimeout();
@@ -5051,7 +5053,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         ThresholdBasedAvailabilityStrategy availabilityStrategy =
             (ThresholdBasedAvailabilityStrategy)endToEndPolicyConfig.getAvailabilityStrategy();
-        List<Mono<ResourceResponse<Document>>> monoList = new ArrayList<>();
+        List<Mono<NonTransientPointOperationResult>> monoList = new ArrayList<>();
 
         final ScopedDiagnosticsFactory diagnosticsFactory = new ScopedDiagnosticsFactory(this);
 
@@ -5062,6 +5064,16 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 if (monoList.isEmpty()) {
                     monoList.add(
                         callback.apply(clonedOptions, endToEndPolicyConfig, diagnosticsFactory)
+                            .map(response -> new NonTransientPointOperationResult(response))
+                            .onErrorResume(
+                                t -> {
+                                    final Throwable unwrappedException = Exceptions.unwrap(t);
+                                    return unwrappedException instanceof CosmosException;
+                                },
+                                t -> {
+                                    final CosmosException cosmosException = (CosmosException)Exceptions.unwrap(t);
+                                    return Mono.just(new NonTransientPointOperationResult(cosmosException));
+                                })
                                 .doOnSubscribe(c -> logger.info("STARTING to process {} operation in region '{}'", operationType, region))
                     );
                 } else {
@@ -5073,6 +5085,22 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                     );
                     monoList.add(
                         callback.apply(clonedOptions, endToEndPolicyConfig, diagnosticsFactory)
+                                .map(response -> new NonTransientPointOperationResult(response))
+                                .onErrorResume(
+                                    t -> {
+                                        final Throwable unwrappedException = Exceptions.unwrap(t);
+                                        return unwrappedException instanceof CosmosException;
+                                    },
+                                    t -> {
+                                        final CosmosException cosmosException = (CosmosException)Exceptions.unwrap(t);
+                                        if (isNonTransientResultForHedging(
+                                            cosmosException.getStatusCode(),
+                                            cosmosException.getSubStatusCode())) {
+                                            return Mono.just(new NonTransientPointOperationResult(cosmosException));
+                                        } else {
+                                            return Mono.error(cosmosException);
+                                        }
+                                    })
                                 .doOnSubscribe(c -> logger.info("STARTING to process {} operation in region '{}'", operationType, region))
                                 .delaySubscription((availabilityStrategy)
                                     .getThreshold()
@@ -5080,23 +5108,19 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                         .getThresholdStep()
                                         .multipliedBy(monoList.size() - 1))
                                 )
-                                .onErrorComplete(exception -> {
-                                    final Throwable unwrappedException = Exceptions.unwrap(exception);
-                                    if (!(unwrappedException instanceof CosmosException)) {
-                                        return false;
-                                    }
-
-                                    final CosmosException cosmosException = (CosmosException) unwrappedException;
-                                    return !isNonTransientResultForHedging(
-                                        cosmosException.getStatusCode(),
-                                        cosmosException.getSubStatusCode());
-                                })
                     );
                 }
             });
 
         return Mono
-            .firstWithSignal(monoList)
+            .firstWithValue(monoList)
+            .flatMap(nonTransientResult -> {
+                if (nonTransientResult.isError()) {
+                    return Mono.error(nonTransientResult.exception);
+                }
+
+                return Mono.just(nonTransientResult.response);
+            })
             .onErrorMap(throwable -> {
                 Throwable exception = Exceptions.unwrap(throwable);
 
@@ -5133,6 +5157,12 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     private static boolean isNonTransientResultForHedging(int statusCode, int subStatusCode) {
         // All 1xx, 2xx and 3xx status codes should be treated as final result
         if (statusCode < HttpConstants.StatusCodes.BADREQUEST) {
+            return true;
+        }
+
+        // Treat OperationCancelledException as non-transient timeout
+        if (statusCode == HttpConstants.StatusCodes.REQUEST_TIMEOUT &&
+            subStatusCode == HttpConstants.SubStatusCodes.CLIENT_OPERATION_TIMEOUT) {
             return true;
         }
 
@@ -5250,6 +5280,35 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     @FunctionalInterface
     private interface DocumentPointOperation {
         Mono<ResourceResponse<Document>> apply(RequestOptions requestOptions, CosmosEndToEndOperationLatencyPolicyConfig endToEndOperationLatencyPolicyConfig, DiagnosticsClientContext clientContextOverride);
+    }
+
+    private static class NonTransientPointOperationResult {
+        private final ResourceResponse<Document> response;
+        private final CosmosException exception;
+
+        public NonTransientPointOperationResult(CosmosException exception) {
+            checkNotNull(exception, "Argument 'exception' must not be null.");
+            this.exception = exception;
+            this.response = null;
+        }
+
+        public NonTransientPointOperationResult(ResourceResponse<Document> response) {
+            checkNotNull(response, "Argument 'response' must not be null.");
+            this.exception = null;
+            this.response = response;
+        }
+
+        public boolean isError() {
+            return this.exception != null;
+        }
+
+        public CosmosException getException() {
+            return this.exception;
+        }
+
+        public ResourceResponse<Document> getResponse() {
+            return this.response;
+        }
     }
 
     private static class ScopedDiagnosticsFactory implements DiagnosticsClientContext {
