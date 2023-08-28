@@ -4,7 +4,7 @@
 
 ### Setup
 
-> see https://github.com/Azure/autorestU.java
+> see https://github.com/Azure/autorest.java
 
 ### Generation
 > see https://github.com/Azure/autorest.java/releases for the latest version of autorest
