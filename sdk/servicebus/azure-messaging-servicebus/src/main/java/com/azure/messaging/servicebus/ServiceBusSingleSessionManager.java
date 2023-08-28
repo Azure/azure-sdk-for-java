@@ -81,14 +81,14 @@ final class ServiceBusSingleSessionManager implements IServiceBusSessionManager 
     public Mono<Boolean> updateDisposition(String lockToken, String sessionId, DispositionStatus dispositionStatus,
         Map<String, Object> propertiesToModify, String deadLetterReason, String deadLetterDescription,
         ServiceBusTransactionContext transactionContext) {
+        final DeliveryState deliveryState = MessageUtils.getDeliveryState(dispositionStatus, deadLetterReason,
+            deadLetterDescription, propertiesToModify, transactionContext);
         if (this.sessionId.equals(sessionId)) {
-            final DeliveryState deliveryState = MessageUtils.getDeliveryState(dispositionStatus, deadLetterReason,
-                deadLetterDescription, propertiesToModify, transactionContext);
             return sessionReceiver.updateDisposition(lockToken, deliveryState).thenReturn(true);
             // Once the side-by-side support for V1 is no longer needed, as part of deleting V1 ServiceBusSessionManager,
             // Update this method to return Mono<Void> and remove the thenReturn(true).
         } else {
-            return Mono.error(DeliveryNotOnLinkException.noMatchingDelivery(lockToken));
+            return Mono.error(DeliveryNotOnLinkException.noMatchingDelivery(lockToken, deliveryState));
         }
     }
 

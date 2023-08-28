@@ -8,6 +8,7 @@ import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpRetryPolicy;
 import com.azure.core.amqp.FixedAmqpRetryPolicy;
 import com.azure.core.amqp.exception.AmqpException;
+import com.azure.core.amqp.implementation.handler.DeliveryNotOnLinkException;
 import org.apache.qpid.proton.amqp.messaging.Accepted;
 import org.apache.qpid.proton.message.Message;
 import org.junit.jupiter.api.AfterEach;
@@ -25,6 +26,7 @@ import org.mockito.internal.verification.AtLeast;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.Sinks;
+import reactor.test.StepVerifier;
 import reactor.test.publisher.TestPublisher;
 
 import java.io.IOException;
@@ -786,6 +788,52 @@ public class MessageFluxIsolatedTest {
             Assertions.assertEquals(dispositionTags.get(i), secondReceiverDispositionTags.get(j));
         }
         upstream.assertCancelled();
+    }
+
+    @ParameterizedTest
+    @CsvSource({
+        "EmissionDriven,1",
+        "RequestDriven,0"
+    })
+    @Execution(ExecutionMode.SAME_THREAD)
+    public void updateDispositionShouldErrorIfReceiverIsGone(CreditFlowMode creditFlowMode, int prefetch) {
+        final TestPublisher<ReactorReceiver> upstream = TestPublisher.create();
+        final MessageFlux messageFlux = new MessageFlux(upstream.flux(), prefetch, creditFlowMode, retryPolicy);
+
+        final ReactorReceiver receiver = mock(ReactorReceiver.class);
+        final ReactorReceiverFacade receiverFacade = new ReactorReceiverFacade(upstream, receiver);
+        when(receiver.getEndpointStates()).thenReturn(receiverFacade.getEndpointStates());
+        when(receiver.receive()).thenReturn(receiverFacade.getMessages());
+        when(receiver.closeAsync()).thenReturn(Mono.empty());
+        final RuntimeException endpointError = new RuntimeException("endpoint-error");
+
+        try (VirtualTimeStepVerifier verifier = new VirtualTimeStepVerifier()) {
+            verifier.create(() -> messageFlux)
+                .then(receiverFacade.emit())
+                .thenRequest(5)
+                .then(receiverFacade.emitEndpointStates(AmqpEndpointState.ACTIVE))
+                .then(receiverFacade.errorEndpointStates(endpointError))
+                .verifyErrorSatisfies(error -> {
+                    Assertions.assertEquals(endpointError, error);
+                });
+        }
+        upstream.assertCancelled();
+        // The MessageFlux is terminated as a result of backing link (receiver) error, and that link no longer exists.
+        StepVerifier.create(messageFlux.updateDisposition("t", Accepted.getInstance()))
+            .verifyErrorSatisfies(dispositionError -> {
+                Assertions.assertTrue(dispositionError instanceof DeliveryNotOnLinkException);
+                final Throwable[] suppressed = dispositionError.getSuppressed();
+                Assertions.assertNotNull(suppressed);
+                Assertions.assertTrue(suppressed.length > 0);
+                // Assert the endpoint error is included in the dispositionError.
+                boolean foundEndpointError = false;
+                for (Throwable e : suppressed) {
+                    if (!foundEndpointError) {
+                        foundEndpointError = (e == endpointError);
+                    }
+                }
+                Assertions.assertTrue(foundEndpointError);
+            });
     }
 
     @ParameterizedTest
