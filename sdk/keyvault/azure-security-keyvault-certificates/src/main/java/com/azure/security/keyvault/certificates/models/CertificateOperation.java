@@ -3,19 +3,36 @@
 
 package com.azure.security.keyvault.certificates.models;
 
-import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.security.keyvault.certificates.implementation.CertificateOperationHelper;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.Map;
 
 /**
- * A certificate operation is returned in case of long running service requests.
+ * A certificate operation is returned in case of long-running service requests.
  */
 public final class CertificateOperation {
     private static final ClientLogger LOGGER = new ClientLogger(CertificateOperation.class);
+
+    static {
+        CertificateOperationHelper.setAccessor(CertificateOperation::new);
+    }
+
+    private final com.azure.security.keyvault.certificates.implementation.models.CertificateOperation impl;
+
+    /**
+     * Creates an instance of {@link CertificateOperation}.
+     */
+    public CertificateOperation() {
+        impl = new com.azure.security.keyvault.certificates.implementation.models.CertificateOperation();
+    }
+
+    private CertificateOperation(
+        com.azure.security.keyvault.certificates.implementation.models.CertificateOperation impl) {
+        this.impl = impl;
+        unpackId(impl.getId(), this);
+    }
 
     /**
      * URL for the Azure KeyVault service.
@@ -28,78 +45,12 @@ public final class CertificateOperation {
     private String name;
 
     /**
-     * The certificate id.
-     */
-    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
-    private String id;
-
-    /**
-     * Name of the referenced issuer object or reserved names; for example,
-     * 'Self' or 'Unknown'.
-     */
-    private String issuerName;
-
-    /**
-     * Type of certificate to be requested from the issuer provider.
-     */
-    private String certificateType;
-
-    /**
-     * Indicates if the certificates generated under this policy should be
-     * published to certificate transparency logs.
-     */
-    private boolean certificateTransparency;
-
-    /**
-     * The certificate signing request (CSR) that is being used in the
-     * certificate operation.
-     */
-    @JsonProperty(value = "csr")
-    private byte[] csr;
-
-    /**
-     * Indicates if cancellation was requested on the certificate operation.
-     */
-    @JsonProperty(value = "cancellation_requested")
-    private Boolean cancellationRequested;
-
-    /**
-     * Status of the certificate operation.
-     */
-    @JsonProperty(value = "status")
-    private String status;
-
-    /**
-     * The status details of the certificate operation.
-     */
-    @JsonProperty(value = "status_details")
-    private String statusDetails;
-
-    /**
-     * Error encountered, if any, during the certificate operation.
-     */
-    @JsonProperty(value = "error")
-    private CertificateOperationError error;
-
-    /**
-     * Location which contains the result of the certificate operation.
-     */
-    @JsonProperty(value = "target")
-    private String target;
-
-    /**
-     * Identifier for the certificate operation.
-     */
-    @JsonProperty(value = "request_id")
-    private String requestId;
-
-    /**
      * Get the identifier.
      *
      * @return the identifier.
      */
     public String getId() {
-        return this.id;
+        return impl.getId();
     }
 
     /**
@@ -108,7 +59,7 @@ public final class CertificateOperation {
      * @return the issuer name
      */
     public String getIssuerName() {
-        return this.issuerName;
+        return impl.getIssuerParameters() == null ? null : impl.getIssuerParameters().getName();
     }
 
     /**
@@ -117,7 +68,7 @@ public final class CertificateOperation {
      * @return the certificateType
      */
     public String getCertificateType() {
-        return this.certificateType;
+        return impl.getIssuerParameters() == null ? null : impl.getIssuerParameters().getCertificateType();
     }
 
     /**
@@ -126,7 +77,7 @@ public final class CertificateOperation {
      * @return the certificateTransparency status.
      */
     public boolean isCertificateTransparent() {
-        return this.certificateTransparency;
+        return impl.getIssuerParameters() != null && impl.getIssuerParameters().isCertificateTransparency();
     }
 
     /**
@@ -135,7 +86,7 @@ public final class CertificateOperation {
      * @return the csr.
      */
     public byte[] getCsr() {
-        return CoreUtils.clone(this.csr);
+        return impl.getCsr();
     }
 
     /**
@@ -144,7 +95,7 @@ public final class CertificateOperation {
      * @return the cancellationRequested status.
      */
     public Boolean getCancellationRequested() {
-        return this.cancellationRequested;
+        return impl.isCancellationRequested();
     }
 
     /**
@@ -153,7 +104,7 @@ public final class CertificateOperation {
      * @return the status
      */
     public String getStatus() {
-        return this.status;
+        return impl.getStatus();
     }
 
     /**
@@ -162,7 +113,7 @@ public final class CertificateOperation {
      * @return the status details
      */
     public String getStatusDetails() {
-        return this.statusDetails;
+        return impl.getStatusDetails();
     }
 
     /**
@@ -171,7 +122,7 @@ public final class CertificateOperation {
      * @return the error
      */
     public CertificateOperationError getError() {
-        return this.error;
+        return impl.getError();
     }
 
     /**
@@ -180,7 +131,7 @@ public final class CertificateOperation {
      * @return the target
      */
     public String getTarget() {
-        return this.target;
+        return impl.getTarget();
     }
 
     /**
@@ -189,7 +140,7 @@ public final class CertificateOperation {
      * @return the requestId
      */
     public String getRequestId() {
-        return this.requestId;
+        return impl.getRequestId();
     }
 
     /**
@@ -210,24 +161,16 @@ public final class CertificateOperation {
         return this.name;
     }
 
-    @JsonProperty("issuer")
-    private void unpackIssuerParameters(Map<String, Object> issuerParameters) {
-        issuerName = (String) issuerParameters.get("name");
-        certificateType =  (String) issuerParameters.get("cty");
-        certificateTransparency = issuerParameters.get("cert_transparency") != null ? (Boolean) issuerParameters.get("cert_transparency") : false;
-    }
-
-    @JsonProperty(value = "id")
-    void unpackId(String id) {
+    static void unpackId(String id, CertificateOperation operation) {
         if (id != null && id.length() > 0) {
-            this.id = id;
             try {
                 URL url = new URL(id);
                 String[] tokens = url.getPath().split("/");
-                this.vaultUrl = (tokens.length >= 2 ? tokens[1] : null);
-                this.name = (tokens.length >= 3 ? tokens[2] : null);
+                operation.vaultUrl = (tokens.length >= 2 ? tokens[1] : null);
+                operation.name = (tokens.length >= 3 ? tokens[2] : null);
             } catch (MalformedURLException e) {
-                throw LOGGER.logExceptionAsError(new IllegalArgumentException("The Azure Key Vault endpoint url is malformed.", e));
+                throw LOGGER.logExceptionAsError(
+                    new IllegalArgumentException("The Azure Key Vault endpoint url is malformed.", e));
             }
         }
     }

@@ -3,7 +3,8 @@
 
 package com.azure.security.keyvault.certificates.models;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.security.keyvault.certificates.implementation.models.CertificateIssuerItem;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -12,23 +13,23 @@ import java.net.URL;
  * Represents base properties of an {@link CertificateIssuer}.
  */
 public class IssuerProperties {
-    /**
-     * The issuer id.
-     */
-    @JsonProperty(value = "id")
-    private String id;
+    private final CertificateIssuerItem impl;
 
     /**
-     * The issuer provider.
+     * Creates an instance of {@link IssuerProperties}.
      */
-    @JsonProperty(value = "provider")
-    private String provider;
+    public IssuerProperties() {
+        this.impl = new CertificateIssuerItem();
+    }
+
+    private IssuerProperties(CertificateIssuerItem impl) {
+        this.impl = impl;
+    }
 
     /**
      * Name of the referenced issuer object or reserved names; for example,
      * 'Self' or 'Unknown'.
      */
-    @JsonProperty(value = "name")
     String name;
 
     /**
@@ -36,7 +37,7 @@ public class IssuerProperties {
      * @return the identifier.
      */
     public String getId() {
-        return id;
+        return impl.getId();
     }
 
     /**
@@ -44,7 +45,7 @@ public class IssuerProperties {
      * @return the issuer provider
      */
     public String getProvider() {
-        return provider;
+        return impl.getProvider();
     }
 
     /**
@@ -61,18 +62,16 @@ public class IssuerProperties {
      * @return the updated IssuerProperties object
      */
     public IssuerProperties setProvider(String provider) {
-        this.provider = provider;
+        impl.setProvider(provider);
         return this;
     }
 
-    @JsonProperty(value = "id")
-    void unpackId(String id) {
-        if (id != null && id.length() > 0) {
-            this.id = id;
+    static void unpackId(String id, IssuerProperties properties) {
+        if (CoreUtils.isNullOrEmpty(id)) {
             try {
                 URL url = new URL(id);
                 String[] tokens = url.getPath().split("/");
-                this.name = (tokens.length >= 4 ? tokens[3] : null);
+                properties.name = (tokens.length >= 4 ? tokens[3] : null);
             } catch (MalformedURLException e) {
                 e.printStackTrace();
             }
