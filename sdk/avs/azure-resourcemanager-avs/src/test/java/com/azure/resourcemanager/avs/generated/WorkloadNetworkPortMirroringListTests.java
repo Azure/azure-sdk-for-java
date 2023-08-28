@@ -13,7 +13,7 @@ public final class WorkloadNetworkPortMirroringListTests {
         WorkloadNetworkPortMirroringList model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"properties\":{\"displayName\":\"hzxct\",\"direction\":\"BIDIRECTIONAL\",\"source\":\"kdmoi\",\"destination\":\"ostmgrcf\",\"status\":\"FAILURE\",\"provisioningState\":\"Deleting\",\"revision\":181548071743719809},\"id\":\"hhkxbp\",\"name\":\"jy\",\"type\":\"jhxxjyn\"}],\"nextLink\":\"divkrt\"}")
+                    "{\"value\":[{\"properties\":{\"displayName\":\"ogs\",\"direction\":\"EGRESS\",\"source\":\"vfdnwnwmewzsyyce\",\"destination\":\"soibjudpfrx\",\"status\":\"FAILURE\",\"provisioningState\":\"Failed\",\"revision\":1649253814789212920},\"id\":\"tdwkqbrq\",\"name\":\"bpaxhexiilivpdt\",\"type\":\"irqtdqoa\"},{\"properties\":{\"displayName\":\"uzf\",\"direction\":\"INGRESS\",\"source\":\"yfxrx\",\"destination\":\"eptra\",\"status\":\"SUCCESS\",\"provisioningState\":\"Building\",\"revision\":6292061975589121523},\"id\":\"nwxuqlcvydyp\",\"name\":\"tdooaoj\",\"type\":\"niodkooeb\"},{\"properties\":{\"displayName\":\"jhemms\",\"direction\":\"INGRESS\",\"source\":\"c\",\"destination\":\"dtjinfw\",\"status\":\"SUCCESS\",\"provisioningState\":\"Canceled\",\"revision\":9167541690912774024},\"id\":\"jvefkdlfoakggkfp\",\"name\":\"gaowpulpqblylsyx\",\"type\":\"qjnsjervtia\"}],\"nextLink\":\"sdszue\"}")
                 .toObject(WorkloadNetworkPortMirroringList.class);
     }
 

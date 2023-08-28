@@ -29,6 +29,12 @@ public final class SendDtmfRequestInternal {
     @JsonProperty(value = "operationContext")
     private String operationContext;
 
+    /*
+     * The callback URI to override the main callback URI.
+     */
+    @JsonProperty(value = "callbackUri")
+    private String callbackUri;
+
     /**
      * Get the tones property: List of tones to be sent to target participant.
      *
@@ -86,6 +92,26 @@ public final class SendDtmfRequestInternal {
      */
     public SendDtmfRequestInternal setOperationContext(String operationContext) {
         this.operationContext = operationContext;
+        return this;
+    }
+
+    /**
+     * Get the callbackUri property: The callback URI to override the main callback URI.
+     *
+     * @return the callbackUri value.
+     */
+    public String getCallbackUri() {
+        return this.callbackUri;
+    }
+
+    /**
+     * Set the callbackUri property: The callback URI to override the main callback URI.
+     *
+     * @param callbackUri the callbackUri value to set.
+     * @return the SendDtmfRequestInternal object itself.
+     */
+    public SendDtmfRequestInternal setCallbackUri(String callbackUri) {
+        this.callbackUri = callbackUri;
         return this;
     }
 }

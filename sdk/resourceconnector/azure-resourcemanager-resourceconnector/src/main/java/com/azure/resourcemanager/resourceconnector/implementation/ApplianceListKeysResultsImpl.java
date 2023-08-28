@@ -16,11 +16,11 @@ import java.util.Map;
 public final class ApplianceListKeysResultsImpl implements ApplianceListKeysResults {
     private ApplianceListKeysResultsInner innerObject;
 
-    private final com.azure.resourcemanager.resourceconnector.AppliancesManager serviceManager;
+    private final com.azure.resourcemanager.resourceconnector.ResourceConnectorManager serviceManager;
 
     ApplianceListKeysResultsImpl(
         ApplianceListKeysResultsInner innerObject,
-        com.azure.resourcemanager.resourceconnector.AppliancesManager serviceManager) {
+        com.azure.resourcemanager.resourceconnector.ResourceConnectorManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -56,7 +56,7 @@ public final class ApplianceListKeysResultsImpl implements ApplianceListKeysResu
         return this.innerObject;
     }
 
-    private com.azure.resourcemanager.resourceconnector.AppliancesManager manager() {
+    private com.azure.resourcemanager.resourceconnector.ResourceConnectorManager manager() {
         return this.serviceManager;
     }
 }

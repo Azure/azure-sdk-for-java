@@ -89,7 +89,7 @@
 /sdk/communication/azure-resourcemanager-communication/
 
 # PRLabel: %Communication - Rooms
-/sdk/communication/azure-communication-rooms/       @minnieliu @paolamvhz @alexokun @Mrayyan @shwali-msft @allchiang-msft @mikehang-msft
+/sdk/communication/azure-communication-rooms/       @minnieliu @paolamvhz @alexokun @Mrayyan @shwali-msft @allchiang-msft @mikehang-msft
 
 # PRLabel: %Container Registry
 /sdk/containerregistry/                              @lmolkova @alzimmermsft
@@ -107,7 +107,7 @@
 /sdk/cosmos/                                         @kushagraThapar @FabianMeiswinkel @kirankumarkolli @xinlian12 @milismsft @aayush3011 @simorenoh @jeet1995 @Pilchie
 
 # PRLabel: %Load Testing
-/sdk/loadtesting/                                    @Harshan01 @abranj1219
+/sdk/loadtesting/                                    @Harshan01 @prativen
 
 # ServiceLabel: %Device Update for IoT Hub %Service Attention
 /sdk/deviceupdate/                                   @dpokluda
@@ -154,13 +154,11 @@
 
 /sdk/loganalytics/microsoft-azure-loganalytics/      @ischrei
 
-# PRLabel:  %Monitor - Exporter
+# PRLabel:  %OpenTelemetry
 /sdk/monitor/azure-monitor-opentelemetry-exporter/   @trask @ramthi @heyams @jeanbisutti
 
 # PRLabel:  %Monitor
 /sdk/monitor/azure-monitor-query*/                   @srnagar @lmolkova @Azure/azure-sdk-write-monitor-data-plane
-
-# PRLabel:  %Monitor
 /sdk/monitor/azure-monitor-ingestion*/               @srnagar @lmolkova @Azure/azure-sdk-write-monitor-data-plane
 
 # PRLabel: %Mixed Reality Authentication
@@ -204,7 +202,7 @@
 # PRLabel: %azure-spring
 /sdk/spring-experimental/                            @backwind1233 @chenrujun @hui1110 @netyyyy @saragluna @stliu @yiliuTo @moarychan @fangjian0423
 
-# PRLabel:  %Monitor - Spring native
+# PRLabel:  %Monitor - Spring
 /sdk/spring/spring-cloud-azure-starter-monitor       @jeanbisutti @trask @ramthi @heyams
 /sdk/spring/spring-cloud-azure-starter-monitor-test  @jeanbisutti @trask @ramthi @heyams
 
@@ -530,28 +528,7 @@
 #/<NotInRepo>/          @kpiteira
 
 # ServiceLabel: %Monitor %Service Attention
-#/<NotInRepo>/          @SameergMS @dadunl
-
-# ServiceLabel: %Monitor - Autoscale %Service Attention
-#/<NotInRepo>/          @AzMonEssential
-
-# ServiceLabel: %Monitor - ActivityLogs %Service Attention
-#/<NotInRepo>/          @AzMonEssential
-
-# ServiceLabel: %Monitor - Metrics %Service Attention
-#/<NotInRepo>/          @AzMonEssential
-
-# ServiceLabel: %Monitor - Diagnostic Settings %Service Attention
-#/<NotInRepo>/          @AzMonEssential
-
-# ServiceLabel: %Monitor - Alerts %Service Attention
-#/<NotInRepo>/          @AzmonAlerts
-
-# ServiceLabel: %Monitor - ActionGroups %Service Attention
-#/<NotInRepo>/          @AzmonActionG
-
-# ServiceLabel: %Monitor - LogAnalytics %Service Attention
-#/<NotInRepo>/          @AzmonLogA
+#/<NotInRepo>/          @SameergMS @dadunl @AzMonEssential @AzmonAlerts @AzmonActionG @AzmonLogA
 
 # ServiceLabel: %Monitor - ApplicationInsights %Service Attention
 #/<NotInRepo>/          @azmonapplicationinsights
@@ -739,7 +716,7 @@
 # ServiceLabel: %Communication %Service Attention
 #/<NotInRepo>/          @acsdevx-msft
 
-# ServiceLabel: %Monitor - Exporter %Service Attention
+# ServiceLabel: %OpenTelemetry %Service Attention
 #/<NotInRepo>/          @@cijothomas @@reyang @@rajkumar-rangaraj @@TimothyMothra @@vishweshbankwar @@ramthi
 
 # ServiceLabel: %Cost Management - Budget %Service Attention

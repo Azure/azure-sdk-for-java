@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for CertificateSource. */
+/** Certificate Source. */
 public final class CertificateSource extends ExpandableStringEnum<CertificateSource> {
     /** Static value Managed for CertificateSource. */
     public static final CertificateSource MANAGED = fromString("Managed");
@@ -23,6 +23,15 @@ public final class CertificateSource extends ExpandableStringEnum<CertificateSou
     public static final CertificateSource BUILT_IN = fromString("BuiltIn");
 
     /**
+     * Creates a new instance of CertificateSource value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public CertificateSource() {
+    }
+
+    /**
      * Creates or finds a CertificateSource from its string representation.
      *
      * @param name a name to look for.
@@ -33,7 +42,11 @@ public final class CertificateSource extends ExpandableStringEnum<CertificateSou
         return fromString(name, CertificateSource.class);
     }
 
-    /** @return known CertificateSource values. */
+    /**
+     * Gets known CertificateSource values.
+     *
+     * @return known CertificateSource values.
+     */
     public static Collection<CertificateSource> values() {
         return values(CertificateSource.class);
     }

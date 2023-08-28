@@ -4,13 +4,12 @@
 
 package com.azure.resourcemanager.apimanagement.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.apimanagement.models.PolicyIdName;
 
 /** Samples for ProductPolicy Get. */
 public final class ProductPolicyGetSamples {
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementGetProductPolicy.json
+     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementGetProductPolicy.json
      */
     /**
      * Sample code: ApiManagementGetProductPolicy.
@@ -22,6 +21,11 @@ public final class ProductPolicyGetSamples {
         manager
             .productPolicies()
             .getWithResponse(
-                "rg1", "apimService1", "kjoshiarmTemplateProduct4", PolicyIdName.POLICY, null, Context.NONE);
+                "rg1",
+                "apimService1",
+                "kjoshiarmTemplateProduct4",
+                PolicyIdName.POLICY,
+                null,
+                com.azure.core.util.Context.NONE);
     }
 }

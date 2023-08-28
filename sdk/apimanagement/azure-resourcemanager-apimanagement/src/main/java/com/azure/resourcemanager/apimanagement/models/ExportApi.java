@@ -14,6 +14,15 @@ public final class ExportApi extends ExpandableStringEnum<ExportApi> {
     public static final ExportApi TRUE = fromString("true");
 
     /**
+     * Creates a new instance of ExportApi value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ExportApi() {
+    }
+
+    /**
      * Creates or finds a ExportApi from its string representation.
      *
      * @param name a name to look for.
@@ -24,7 +33,11 @@ public final class ExportApi extends ExpandableStringEnum<ExportApi> {
         return fromString(name, ExportApi.class);
     }
 
-    /** @return known ExportApi values. */
+    /**
+     * Gets known ExportApi values.
+     *
+     * @return known ExportApi values.
+     */
     public static Collection<ExportApi> values() {
         return values(ExportApi.class);
     }

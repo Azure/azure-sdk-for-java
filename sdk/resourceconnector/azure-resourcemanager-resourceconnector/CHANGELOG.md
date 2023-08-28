@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.3 (Unreleased)
+## 1.1.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,38 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.0.0 (2023-08-23)
+
+- Azure Resource Manager Resource Connector client library for Java. This package contains Microsoft Azure SDK for Resource Connector Management SDK. The appliances Rest API spec. Package tag package-2022-10-27. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+* `AppliancesManager$Configurable` was removed
+
+* `AppliancesManager` was removed
+
+#### `models.Appliances` was modified
+
+* `listKeysWithResponse(java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
+
+#### `models.Appliance` was modified
+
+* `listKeysWithResponse(com.azure.core.util.Context)` was removed
+
+### Features Added
+
+* `ResourceConnectorManager$Configurable` was added
+
+* `ResourceConnectorManager` was added
+
+#### `models.Appliances` was modified
+
+* `listKeysWithResponse(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+
+#### `models.Appliance` was modified
+
+* `listKeysWithResponse(java.lang.String,com.azure.core.util.Context)` was added
 
 ## 1.0.0-beta.2 (2023-04-26)
 

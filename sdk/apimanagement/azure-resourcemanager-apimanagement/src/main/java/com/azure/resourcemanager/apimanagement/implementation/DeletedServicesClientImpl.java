@@ -61,7 +61,7 @@ public final class DeletedServicesClientImpl implements DeletedServicesClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "ApiManagementClientD")
-    private interface DeletedServicesService {
+    public interface DeletedServicesService {
         @Headers({"Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.ApiManagement/deletedservices")
         @ExpectedResponses({200})
@@ -75,8 +75,7 @@ public final class DeletedServicesClientImpl implements DeletedServicesClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.ApiManagement/locations/{location}/deletedservices"
-                + "/{serviceName}")
+            "/subscriptions/{subscriptionId}/providers/Microsoft.ApiManagement/locations/{location}/deletedservices/{serviceName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<DeletedServiceContractInner>> getByName(
@@ -90,8 +89,7 @@ public final class DeletedServicesClientImpl implements DeletedServicesClient {
 
         @Headers({"Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.ApiManagement/locations/{location}/deletedservices"
-                + "/{serviceName}")
+            "/subscriptions/{subscriptionId}/providers/Microsoft.ApiManagement/locations/{location}/deletedservices/{serviceName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> purge(
@@ -365,30 +363,7 @@ public final class DeletedServicesClientImpl implements DeletedServicesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<DeletedServiceContractInner> getByNameAsync(String serviceName, String location) {
-        return getByNameWithResponseAsync(serviceName, location)
-            .flatMap(
-                (Response<DeletedServiceContractInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Get soft-deleted Api Management Service by name.
-     *
-     * @param serviceName The name of the API Management service.
-     * @param location The location of the deleted API Management service.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return soft-deleted Api Management Service by name.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public DeletedServiceContractInner getByName(String serviceName, String location) {
-        return getByNameAsync(serviceName, location).block();
+        return getByNameWithResponseAsync(serviceName, location).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -406,6 +381,21 @@ public final class DeletedServicesClientImpl implements DeletedServicesClient {
     public Response<DeletedServiceContractInner> getByNameWithResponse(
         String serviceName, String location, Context context) {
         return getByNameWithResponseAsync(serviceName, location, context).block();
+    }
+
+    /**
+     * Get soft-deleted Api Management Service by name.
+     *
+     * @param serviceName The name of the API Management service.
+     * @param location The location of the deleted API Management service.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return soft-deleted Api Management Service by name.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public DeletedServiceContractInner getByName(String serviceName, String location) {
+        return getByNameWithResponse(serviceName, location, Context.NONE).getValue();
     }
 
     /**
@@ -562,7 +552,7 @@ public final class DeletedServicesClientImpl implements DeletedServicesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DeletedServiceContractInner>, DeletedServiceContractInner> beginPurge(
         String serviceName, String location) {
-        return beginPurgeAsync(serviceName, location).getSyncPoller();
+        return this.beginPurgeAsync(serviceName, location).getSyncPoller();
     }
 
     /**
@@ -579,7 +569,7 @@ public final class DeletedServicesClientImpl implements DeletedServicesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DeletedServiceContractInner>, DeletedServiceContractInner> beginPurge(
         String serviceName, String location, Context context) {
-        return beginPurgeAsync(serviceName, location, context).getSyncPoller();
+        return this.beginPurgeAsync(serviceName, location, context).getSyncPoller();
     }
 
     /**
@@ -647,7 +637,8 @@ public final class DeletedServicesClientImpl implements DeletedServicesClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -684,7 +675,8 @@ public final class DeletedServicesClientImpl implements DeletedServicesClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

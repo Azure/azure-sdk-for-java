@@ -8,7 +8,10 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ApimIdentityType. */
+/**
+ * The type of identity used for the resource. The type 'SystemAssigned, UserAssigned' includes both an implicitly
+ * created identity and a set of user assigned identities. The type 'None' will remove any identities from the service.
+ */
 public final class ApimIdentityType extends ExpandableStringEnum<ApimIdentityType> {
     /** Static value SystemAssigned for ApimIdentityType. */
     public static final ApimIdentityType SYSTEM_ASSIGNED = fromString("SystemAssigned");
@@ -23,6 +26,15 @@ public final class ApimIdentityType extends ExpandableStringEnum<ApimIdentityTyp
     public static final ApimIdentityType NONE = fromString("None");
 
     /**
+     * Creates a new instance of ApimIdentityType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ApimIdentityType() {
+    }
+
+    /**
      * Creates or finds a ApimIdentityType from its string representation.
      *
      * @param name a name to look for.
@@ -33,7 +45,11 @@ public final class ApimIdentityType extends ExpandableStringEnum<ApimIdentityTyp
         return fromString(name, ApimIdentityType.class);
     }
 
-    /** @return known ApimIdentityType values. */
+    /**
+     * Gets known ApimIdentityType values.
+     *
+     * @return known ApimIdentityType values.
+     */
     public static Collection<ApimIdentityType> values() {
         return values(ApimIdentityType.class);
     }

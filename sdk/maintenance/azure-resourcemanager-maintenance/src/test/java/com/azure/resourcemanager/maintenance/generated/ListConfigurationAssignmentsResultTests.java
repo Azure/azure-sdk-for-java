@@ -6,8 +6,13 @@ package com.azure.resourcemanager.maintenance.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.maintenance.fluent.models.ConfigurationAssignmentInner;
+import com.azure.resourcemanager.maintenance.models.ConfigurationAssignmentFilterProperties;
 import com.azure.resourcemanager.maintenance.models.ListConfigurationAssignmentsResult;
+import com.azure.resourcemanager.maintenance.models.TagOperators;
+import com.azure.resourcemanager.maintenance.models.TagSettingsProperties;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 
 public final class ListConfigurationAssignmentsResultTests {
@@ -16,11 +21,16 @@ public final class ListConfigurationAssignmentsResultTests {
         ListConfigurationAssignmentsResult model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"location\":\"blgphuticn\",\"properties\":{\"maintenanceConfigurationId\":\"aozwyiftyhxhu\",\"resourceId\":\"k\"},\"id\":\"yxolniwp\",\"name\":\"cukjf\",\"type\":\"giawx\"},{\"location\":\"ryplwckbasyypn\",\"properties\":{\"maintenanceConfigurationId\":\"sgcbac\",\"resourceId\":\"ejk\"},\"id\":\"ynqgoulzndlikwyq\",\"name\":\"gfgibm\",\"type\":\"dgak\"}]}")
+                    "{\"value\":[{\"location\":\"enhwlrs\",\"properties\":{\"maintenanceConfigurationId\":\"zpwv\",\"resourceId\":\"dqgbiqylihkaetc\",\"filter\":{\"resourceTypes\":[\"civfsnkymuctq\",\"jf\",\"ebrjcxe\"],\"resourceGroups\":[\"wutttxfvjrbi\",\"phxepcyvahf\",\"ljkyqxjvuuj\",\"gidokgjljyoxgvcl\"],\"osTypes\":[\"sncghkjeszz\",\"bijhtxfvgxbf\",\"mxnehmp\"],\"locations\":[\"xgodebfqkkrbmp\",\"kgriwflzlfbx\"],\"tagSettings\":{\"tags\":{\"ycispnqzahmgkb\":[],\"pyydhi\":[]},\"filterOperator\":\"All\"}}},\"id\":\"qkpikadrgvtqagnb\",\"name\":\"ynhijggme\",\"type\":\"fsiarbutr\"},{\"location\":\"pnazzm\",\"properties\":{\"maintenanceConfigurationId\":\"unmpxttd\",\"resourceId\":\"rbnlankxmyskp\",\"filter\":{\"resourceTypes\":[\"btkcxywnytnrsyn\",\"qidybyx\",\"zfcl\",\"aaxdbabphlwrq\"],\"resourceGroups\":[\"tsthsucocm\",\"yyazttbt\",\"wrqpue\",\"ckzywbiexzfeyue\"],\"osTypes\":[\"bxu\"],\"locations\":[\"hqwa\",\"muzyoxaepdk\",\"jancu\",\"rhdwbavxbniw\"],\"tagSettings\":{\"tags\":{\"zt\":[]},\"filterOperator\":\"All\"}}},\"id\":\"gnxytxhpzxbz\",\"name\":\"fzab\",\"type\":\"lcuhxwtctyqiklb\"}]}")
                 .toObject(ListConfigurationAssignmentsResult.class);
-        Assertions.assertEquals("blgphuticn", model.value().get(0).location());
-        Assertions.assertEquals("aozwyiftyhxhu", model.value().get(0).maintenanceConfigurationId());
-        Assertions.assertEquals("k", model.value().get(0).resourceId());
+        Assertions.assertEquals("enhwlrs", model.value().get(0).location());
+        Assertions.assertEquals("zpwv", model.value().get(0).maintenanceConfigurationId());
+        Assertions.assertEquals("dqgbiqylihkaetc", model.value().get(0).resourceId());
+        Assertions.assertEquals("civfsnkymuctq", model.value().get(0).filter().resourceTypes().get(0));
+        Assertions.assertEquals("wutttxfvjrbi", model.value().get(0).filter().resourceGroups().get(0));
+        Assertions.assertEquals("sncghkjeszz", model.value().get(0).filter().osTypes().get(0));
+        Assertions.assertEquals("xgodebfqkkrbmp", model.value().get(0).filter().locations().get(0));
+        Assertions.assertEquals(TagOperators.ALL, model.value().get(0).filter().tagSettings().filterOperator());
     }
 
     @org.junit.jupiter.api.Test
@@ -31,16 +41,59 @@ public final class ListConfigurationAssignmentsResultTests {
                     Arrays
                         .asList(
                             new ConfigurationAssignmentInner()
-                                .withLocation("blgphuticn")
-                                .withMaintenanceConfigurationId("aozwyiftyhxhu")
-                                .withResourceId("k"),
+                                .withLocation("enhwlrs")
+                                .withMaintenanceConfigurationId("zpwv")
+                                .withResourceId("dqgbiqylihkaetc")
+                                .withFilter(
+                                    new ConfigurationAssignmentFilterProperties()
+                                        .withResourceTypes(Arrays.asList("civfsnkymuctq", "jf", "ebrjcxe"))
+                                        .withResourceGroups(
+                                            Arrays
+                                                .asList(
+                                                    "wutttxfvjrbi", "phxepcyvahf", "ljkyqxjvuuj", "gidokgjljyoxgvcl"))
+                                        .withOsTypes(Arrays.asList("sncghkjeszz", "bijhtxfvgxbf", "mxnehmp"))
+                                        .withLocations(Arrays.asList("xgodebfqkkrbmp", "kgriwflzlfbx"))
+                                        .withTagSettings(
+                                            new TagSettingsProperties()
+                                                .withTags(
+                                                    mapOf("ycispnqzahmgkb", Arrays.asList(), "pyydhi", Arrays.asList()))
+                                                .withFilterOperator(TagOperators.ALL))),
                             new ConfigurationAssignmentInner()
-                                .withLocation("ryplwckbasyypn")
-                                .withMaintenanceConfigurationId("sgcbac")
-                                .withResourceId("ejk")));
+                                .withLocation("pnazzm")
+                                .withMaintenanceConfigurationId("unmpxttd")
+                                .withResourceId("rbnlankxmyskp")
+                                .withFilter(
+                                    new ConfigurationAssignmentFilterProperties()
+                                        .withResourceTypes(
+                                            Arrays.asList("btkcxywnytnrsyn", "qidybyx", "zfcl", "aaxdbabphlwrq"))
+                                        .withResourceGroups(
+                                            Arrays.asList("tsthsucocm", "yyazttbt", "wrqpue", "ckzywbiexzfeyue"))
+                                        .withOsTypes(Arrays.asList("bxu"))
+                                        .withLocations(Arrays.asList("hqwa", "muzyoxaepdk", "jancu", "rhdwbavxbniw"))
+                                        .withTagSettings(
+                                            new TagSettingsProperties()
+                                                .withTags(mapOf("zt", Arrays.asList()))
+                                                .withFilterOperator(TagOperators.ALL)))));
         model = BinaryData.fromObject(model).toObject(ListConfigurationAssignmentsResult.class);
-        Assertions.assertEquals("blgphuticn", model.value().get(0).location());
-        Assertions.assertEquals("aozwyiftyhxhu", model.value().get(0).maintenanceConfigurationId());
-        Assertions.assertEquals("k", model.value().get(0).resourceId());
+        Assertions.assertEquals("enhwlrs", model.value().get(0).location());
+        Assertions.assertEquals("zpwv", model.value().get(0).maintenanceConfigurationId());
+        Assertions.assertEquals("dqgbiqylihkaetc", model.value().get(0).resourceId());
+        Assertions.assertEquals("civfsnkymuctq", model.value().get(0).filter().resourceTypes().get(0));
+        Assertions.assertEquals("wutttxfvjrbi", model.value().get(0).filter().resourceGroups().get(0));
+        Assertions.assertEquals("sncghkjeszz", model.value().get(0).filter().osTypes().get(0));
+        Assertions.assertEquals("xgodebfqkkrbmp", model.value().get(0).filter().locations().get(0));
+        Assertions.assertEquals(TagOperators.ALL, model.value().get(0).filter().tagSettings().filterOperator());
+    }
+
+    // Use "Map.of" if available
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
     }
 }

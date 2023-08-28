@@ -17,7 +17,6 @@ import com.azure.resourcemanager.appcontainers.fluent.models.JobSecretsCollectio
 import com.azure.resourcemanager.appcontainers.models.ContainerAppJobExecutions;
 import com.azure.resourcemanager.appcontainers.models.Job;
 import com.azure.resourcemanager.appcontainers.models.JobExecutionBase;
-import com.azure.resourcemanager.appcontainers.models.JobExecutionNamesCollection;
 import com.azure.resourcemanager.appcontainers.models.JobExecutionTemplate;
 import com.azure.resourcemanager.appcontainers.models.JobSecretsCollection;
 import com.azure.resourcemanager.appcontainers.models.Jobs;
@@ -86,8 +85,8 @@ public final class JobsImpl implements Jobs {
         this.serviceClient().delete(resourceGroupName, jobName, context);
     }
 
-    public JobExecutionBase start(String resourceGroupName, String jobName, JobExecutionTemplate template) {
-        JobExecutionBaseInner inner = this.serviceClient().start(resourceGroupName, jobName, template);
+    public JobExecutionBase start(String resourceGroupName, String jobName) {
+        JobExecutionBaseInner inner = this.serviceClient().start(resourceGroupName, jobName);
         if (inner != null) {
             return new JobExecutionBaseImpl(inner, this.manager());
         } else {
@@ -113,10 +112,8 @@ public final class JobsImpl implements Jobs {
         this.serviceClient().stopExecution(resourceGroupName, jobName, jobExecutionName, context);
     }
 
-    public ContainerAppJobExecutions stopMultipleExecutions(
-        String resourceGroupName, String jobName, JobExecutionNamesCollection jobExecutionName) {
-        ContainerAppJobExecutionsInner inner =
-            this.serviceClient().stopMultipleExecutions(resourceGroupName, jobName, jobExecutionName);
+    public ContainerAppJobExecutions stopMultipleExecutions(String resourceGroupName, String jobName) {
+        ContainerAppJobExecutionsInner inner = this.serviceClient().stopMultipleExecutions(resourceGroupName, jobName);
         if (inner != null) {
             return new ContainerAppJobExecutionsImpl(inner, this.manager());
         } else {
@@ -124,10 +121,9 @@ public final class JobsImpl implements Jobs {
         }
     }
 
-    public ContainerAppJobExecutions stopMultipleExecutions(
-        String resourceGroupName, String jobName, JobExecutionNamesCollection jobExecutionName, Context context) {
+    public ContainerAppJobExecutions stopMultipleExecutions(String resourceGroupName, String jobName, Context context) {
         ContainerAppJobExecutionsInner inner =
-            this.serviceClient().stopMultipleExecutions(resourceGroupName, jobName, jobExecutionName, context);
+            this.serviceClient().stopMultipleExecutions(resourceGroupName, jobName, context);
         if (inner != null) {
             return new ContainerAppJobExecutionsImpl(inner, this.manager());
         } else {
