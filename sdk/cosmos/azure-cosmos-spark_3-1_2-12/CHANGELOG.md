@@ -1,15 +1,9 @@
 ## Release History
 
-### 4.22.0-beta.1 (Unreleased)
-
-#### Features Added
-
-#### Breaking Changes
+### 4.21.1 (2023-08-28)
 
 #### Bugs Fixed
 * Fixed an issue where spark job failed due to 409 when `ItemBulkUpdate` is being configured - See [PR 36541](https://github.com/Azure/azure-sdk-for-java/pull/36541)
-
-#### Other Changes
 
 ### 4.21.0 (2023-08-09)
 
