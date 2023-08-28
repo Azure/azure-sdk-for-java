@@ -12,6 +12,8 @@ options:
     namer: false
     generate-samples: false
     generate-tests: false
+    skip-special-headers:
+      - "ocp-date"
     dev-options:
       support-quantum-model: true
   "@azure-tools/typespec-autorest":
