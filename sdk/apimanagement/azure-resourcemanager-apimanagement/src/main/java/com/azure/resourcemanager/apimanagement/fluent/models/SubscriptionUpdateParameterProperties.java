@@ -25,11 +25,9 @@ public final class SubscriptionUpdateParameterProperties {
     private String scope;
 
     /*
-     * Subscription expiration date. The setting is for audit purposes only and
-     * the subscription is not automatically expired. The subscription
-     * lifecycle can be managed by using the `state` property. The date
-     * conforms to the following format: `yyyy-MM-ddTHH:mm:ssZ` as specified by
-     * the ISO 8601 standard.
+     * Subscription expiration date. The setting is for audit purposes only and the subscription is not automatically
+     * expired. The subscription lifecycle can be managed by using the `state` property. The date conforms to the
+     * following format: `yyyy-MM-ddTHH:mm:ssZ` as specified by the ISO 8601 standard.
      */
     @JsonProperty(value = "expirationDate")
     private OffsetDateTime expirationDate;
@@ -53,21 +51,17 @@ public final class SubscriptionUpdateParameterProperties {
     private String secondaryKey;
 
     /*
-     * Subscription state. Possible states are * active – the subscription is
-     * active, * suspended – the subscription is blocked, and the subscriber
-     * cannot call any APIs of the product, * submitted – the subscription
-     * request has been made by the developer, but has not yet been approved or
-     * rejected, * rejected – the subscription request has been denied by an
-     * administrator, * cancelled – the subscription has been cancelled by the
-     * developer or administrator, * expired – the subscription reached its
-     * expiration date and was deactivated.
+     * Subscription state. Possible states are * active – the subscription is active, * suspended – the subscription is
+     * blocked, and the subscriber cannot call any APIs of the product, * submitted – the subscription request has been
+     * made by the developer, but has not yet been approved or rejected, * rejected – the subscription request has been
+     * denied by an administrator, * cancelled – the subscription has been cancelled by the developer or administrator,
+     * * expired – the subscription reached its expiration date and was deactivated.
      */
     @JsonProperty(value = "state")
     private SubscriptionState state;
 
     /*
-     * Comments describing subscription state change by the administrator when
-     * the state is changed to the 'rejected'.
+     * Comments describing subscription state change by the administrator when the state is changed to the 'rejected'.
      */
     @JsonProperty(value = "stateComment")
     private String stateComment;
@@ -77,6 +71,10 @@ public final class SubscriptionUpdateParameterProperties {
      */
     @JsonProperty(value = "allowTracing")
     private Boolean allowTracing;
+
+    /** Creates an instance of SubscriptionUpdateParameterProperties class. */
+    public SubscriptionUpdateParameterProperties() {
+    }
 
     /**
      * Get the ownerId property: User identifier path: /users/{userId}.

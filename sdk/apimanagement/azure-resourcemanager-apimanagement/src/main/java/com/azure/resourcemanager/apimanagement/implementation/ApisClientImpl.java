@@ -71,11 +71,10 @@ public final class ApisClientImpl implements ApisClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "ApiManagementClientA")
-    private interface ApisService {
+    public interface ApisService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement"
-                + "/service/{serviceName}/apis")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/apis")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ApiCollection>> listByService(
@@ -94,8 +93,7 @@ public final class ApisClientImpl implements ApisClient {
 
         @Headers({"Content-Type: application/json"})
         @Head(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement"
-                + "/service/{serviceName}/apis/{apiId}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/apis/{apiId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<ApisGetEntityTagResponse> getEntityTag(
@@ -110,8 +108,7 @@ public final class ApisClientImpl implements ApisClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement"
-                + "/service/{serviceName}/apis/{apiId}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/apis/{apiId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<ApisGetResponse> get(
@@ -126,8 +123,7 @@ public final class ApisClientImpl implements ApisClient {
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement"
-                + "/service/{serviceName}/apis/{apiId}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/apis/{apiId}")
         @ExpectedResponses({200, 201, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
@@ -144,8 +140,7 @@ public final class ApisClientImpl implements ApisClient {
 
         @Headers({"Content-Type: application/json"})
         @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement"
-                + "/service/{serviceName}/apis/{apiId}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/apis/{apiId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<ApisUpdateResponse> update(
@@ -162,8 +157,7 @@ public final class ApisClientImpl implements ApisClient {
 
         @Headers({"Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement"
-                + "/service/{serviceName}/apis/{apiId}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/apis/{apiId}")
         @ExpectedResponses({200, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> delete(
@@ -180,8 +174,7 @@ public final class ApisClientImpl implements ApisClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement"
-                + "/service/{serviceName}/apisByTags")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/apisByTags")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<TagResourceCollection>> listByTags(
@@ -221,7 +214,7 @@ public final class ApisClientImpl implements ApisClient {
     /**
      * Lists all APIs of the API Management service instance.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param filter | Field | Usage | Supported operators | Supported functions
      *     |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| name | filter | ge, le, eq,
@@ -300,7 +293,7 @@ public final class ApisClientImpl implements ApisClient {
     /**
      * Lists all APIs of the API Management service instance.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param filter | Field | Usage | Supported operators | Supported functions
      *     |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| name | filter | ge, le, eq,
@@ -378,7 +371,7 @@ public final class ApisClientImpl implements ApisClient {
     /**
      * Lists all APIs of the API Management service instance.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param filter | Field | Usage | Supported operators | Supported functions
      *     |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| name | filter | ge, le, eq,
@@ -415,7 +408,7 @@ public final class ApisClientImpl implements ApisClient {
     /**
      * Lists all APIs of the API Management service instance.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -439,7 +432,7 @@ public final class ApisClientImpl implements ApisClient {
     /**
      * Lists all APIs of the API Management service instance.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param filter | Field | Usage | Supported operators | Supported functions
      *     |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| name | filter | ge, le, eq,
@@ -478,7 +471,7 @@ public final class ApisClientImpl implements ApisClient {
     /**
      * Lists all APIs of the API Management service instance.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -499,7 +492,7 @@ public final class ApisClientImpl implements ApisClient {
     /**
      * Lists all APIs of the API Management service instance.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param filter | Field | Usage | Supported operators | Supported functions
      *     |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| name | filter | ge, le, eq,
@@ -535,7 +528,7 @@ public final class ApisClientImpl implements ApisClient {
     /**
      * Gets the entity state (Etag) version of the API specified by its identifier.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
      *     revision has ;rev=n as a suffix where n is the revision number.
@@ -590,7 +583,7 @@ public final class ApisClientImpl implements ApisClient {
     /**
      * Gets the entity state (Etag) version of the API specified by its identifier.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
      *     revision has ;rev=n as a suffix where n is the revision number.
@@ -643,7 +636,7 @@ public final class ApisClientImpl implements ApisClient {
     /**
      * Gets the entity state (Etag) version of the API specified by its identifier.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
      *     revision has ;rev=n as a suffix where n is the revision number.
@@ -655,30 +648,13 @@ public final class ApisClientImpl implements ApisClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> getEntityTagAsync(String resourceGroupName, String serviceName, String apiId) {
-        return getEntityTagWithResponseAsync(resourceGroupName, serviceName, apiId)
-            .flatMap((ApisGetEntityTagResponse res) -> Mono.empty());
+        return getEntityTagWithResponseAsync(resourceGroupName, serviceName, apiId).flatMap(ignored -> Mono.empty());
     }
 
     /**
      * Gets the entity state (Etag) version of the API specified by its identifier.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param serviceName The name of the API Management service.
-     * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
-     *     revision has ;rev=n as a suffix where n is the revision number.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void getEntityTag(String resourceGroupName, String serviceName, String apiId) {
-        getEntityTagAsync(resourceGroupName, serviceName, apiId).block();
-    }
-
-    /**
-     * Gets the entity state (Etag) version of the API specified by its identifier.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
      *     revision has ;rev=n as a suffix where n is the revision number.
@@ -695,9 +671,25 @@ public final class ApisClientImpl implements ApisClient {
     }
 
     /**
+     * Gets the entity state (Etag) version of the API specified by its identifier.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serviceName The name of the API Management service.
+     * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
+     *     revision has ;rev=n as a suffix where n is the revision number.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void getEntityTag(String resourceGroupName, String serviceName, String apiId) {
+        getEntityTagWithResponse(resourceGroupName, serviceName, apiId, Context.NONE);
+    }
+
+    /**
      * Gets the details of the API specified by its identifier.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
      *     revision has ;rev=n as a suffix where n is the revision number.
@@ -750,7 +742,7 @@ public final class ApisClientImpl implements ApisClient {
     /**
      * Gets the details of the API specified by its identifier.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
      *     revision has ;rev=n as a suffix where n is the revision number.
@@ -802,7 +794,7 @@ public final class ApisClientImpl implements ApisClient {
     /**
      * Gets the details of the API specified by its identifier.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
      *     revision has ;rev=n as a suffix where n is the revision number.
@@ -814,37 +806,13 @@ public final class ApisClientImpl implements ApisClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ApiContractInner> getAsync(String resourceGroupName, String serviceName, String apiId) {
         return getWithResponseAsync(resourceGroupName, serviceName, apiId)
-            .flatMap(
-                (ApisGetResponse res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Gets the details of the API specified by its identifier.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param serviceName The name of the API Management service.
-     * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
-     *     revision has ;rev=n as a suffix where n is the revision number.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of the API specified by its identifier.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ApiContractInner get(String resourceGroupName, String serviceName, String apiId) {
-        return getAsync(resourceGroupName, serviceName, apiId).block();
-    }
-
-    /**
-     * Gets the details of the API specified by its identifier.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
      *     revision has ;rev=n as a suffix where n is the revision number.
@@ -861,9 +829,26 @@ public final class ApisClientImpl implements ApisClient {
     }
 
     /**
+     * Gets the details of the API specified by its identifier.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serviceName The name of the API Management service.
+     * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
+     *     revision has ;rev=n as a suffix where n is the revision number.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the details of the API specified by its identifier.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ApiContractInner get(String resourceGroupName, String serviceName, String apiId) {
+        return getWithResponse(resourceGroupName, serviceName, apiId, Context.NONE).getValue();
+    }
+
+    /**
      * Creates new or updates existing specified API of the API Management service instance.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
      *     revision has ;rev=n as a suffix where n is the revision number.
@@ -930,7 +915,7 @@ public final class ApisClientImpl implements ApisClient {
     /**
      * Creates new or updates existing specified API of the API Management service instance.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
      *     revision has ;rev=n as a suffix where n is the revision number.
@@ -996,7 +981,7 @@ public final class ApisClientImpl implements ApisClient {
     /**
      * Creates new or updates existing specified API of the API Management service instance.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
      *     revision has ;rev=n as a suffix where n is the revision number.
@@ -1029,7 +1014,36 @@ public final class ApisClientImpl implements ApisClient {
     /**
      * Creates new or updates existing specified API of the API Management service instance.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serviceName The name of the API Management service.
+     * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
+     *     revision has ;rev=n as a suffix where n is the revision number.
+     * @param parameters Create or update parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of aPI details.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<ApiContractInner>, ApiContractInner> beginCreateOrUpdateAsync(
+        String resourceGroupName, String serviceName, String apiId, ApiCreateOrUpdateParameter parameters) {
+        final String ifMatch = null;
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            createOrUpdateWithResponseAsync(resourceGroupName, serviceName, apiId, parameters, ifMatch);
+        return this
+            .client
+            .<ApiContractInner, ApiContractInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                ApiContractInner.class,
+                ApiContractInner.class,
+                this.client.getContext());
+    }
+
+    /**
+     * Creates new or updates existing specified API of the API Management service instance.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
      *     revision has ;rev=n as a suffix where n is the revision number.
@@ -1061,12 +1075,11 @@ public final class ApisClientImpl implements ApisClient {
     /**
      * Creates new or updates existing specified API of the API Management service instance.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
      *     revision has ;rev=n as a suffix where n is the revision number.
      * @param parameters Create or update parameters.
-     * @param ifMatch ETag of the Entity. Not required when creating an entity, but required when updating an entity.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1074,45 +1087,45 @@ public final class ApisClientImpl implements ApisClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ApiContractInner>, ApiContractInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        ApiCreateOrUpdateParameter parameters,
-        String ifMatch) {
-        return beginCreateOrUpdateAsync(resourceGroupName, serviceName, apiId, parameters, ifMatch).getSyncPoller();
-    }
-
-    /**
-     * Creates new or updates existing specified API of the API Management service instance.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param serviceName The name of the API Management service.
-     * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
-     *     revision has ;rev=n as a suffix where n is the revision number.
-     * @param parameters Create or update parameters.
-     * @param ifMatch ETag of the Entity. Not required when creating an entity, but required when updating an entity.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of aPI details.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ApiContractInner>, ApiContractInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        ApiCreateOrUpdateParameter parameters,
-        String ifMatch,
-        Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, serviceName, apiId, parameters, ifMatch, context)
+        String resourceGroupName, String serviceName, String apiId, ApiCreateOrUpdateParameter parameters) {
+        final String ifMatch = null;
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, serviceName, apiId, parameters, ifMatch)
             .getSyncPoller();
     }
 
     /**
      * Creates new or updates existing specified API of the API Management service instance.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serviceName The name of the API Management service.
+     * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
+     *     revision has ;rev=n as a suffix where n is the revision number.
+     * @param parameters Create or update parameters.
+     * @param ifMatch ETag of the Entity. Not required when creating an entity, but required when updating an entity.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of aPI details.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<ApiContractInner>, ApiContractInner> beginCreateOrUpdate(
+        String resourceGroupName,
+        String serviceName,
+        String apiId,
+        ApiCreateOrUpdateParameter parameters,
+        String ifMatch,
+        Context context) {
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, serviceName, apiId, parameters, ifMatch, context)
+            .getSyncPoller();
+    }
+
+    /**
+     * Creates new or updates existing specified API of the API Management service instance.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
      *     revision has ;rev=n as a suffix where n is the revision number.
@@ -1138,7 +1151,7 @@ public final class ApisClientImpl implements ApisClient {
     /**
      * Creates new or updates existing specified API of the API Management service instance.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
      *     revision has ;rev=n as a suffix where n is the revision number.
@@ -1160,7 +1173,7 @@ public final class ApisClientImpl implements ApisClient {
     /**
      * Creates new or updates existing specified API of the API Management service instance.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
      *     revision has ;rev=n as a suffix where n is the revision number.
@@ -1188,31 +1201,7 @@ public final class ApisClientImpl implements ApisClient {
     /**
      * Creates new or updates existing specified API of the API Management service instance.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param serviceName The name of the API Management service.
-     * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
-     *     revision has ;rev=n as a suffix where n is the revision number.
-     * @param parameters Create or update parameters.
-     * @param ifMatch ETag of the Entity. Not required when creating an entity, but required when updating an entity.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return aPI details.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ApiContractInner createOrUpdate(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        ApiCreateOrUpdateParameter parameters,
-        String ifMatch) {
-        return createOrUpdateAsync(resourceGroupName, serviceName, apiId, parameters, ifMatch).block();
-    }
-
-    /**
-     * Creates new or updates existing specified API of the API Management service instance.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
      *     revision has ;rev=n as a suffix where n is the revision number.
@@ -1232,7 +1221,7 @@ public final class ApisClientImpl implements ApisClient {
     /**
      * Creates new or updates existing specified API of the API Management service instance.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
      *     revision has ;rev=n as a suffix where n is the revision number.
@@ -1258,7 +1247,7 @@ public final class ApisClientImpl implements ApisClient {
     /**
      * Updates the specified API of the API Management service instance.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
      *     revision has ;rev=n as a suffix where n is the revision number.
@@ -1325,7 +1314,7 @@ public final class ApisClientImpl implements ApisClient {
     /**
      * Updates the specified API of the API Management service instance.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
      *     revision has ;rev=n as a suffix where n is the revision number.
@@ -1395,7 +1384,7 @@ public final class ApisClientImpl implements ApisClient {
     /**
      * Updates the specified API of the API Management service instance.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
      *     revision has ;rev=n as a suffix where n is the revision number.
@@ -1411,41 +1400,13 @@ public final class ApisClientImpl implements ApisClient {
     private Mono<ApiContractInner> updateAsync(
         String resourceGroupName, String serviceName, String apiId, String ifMatch, ApiUpdateContract parameters) {
         return updateWithResponseAsync(resourceGroupName, serviceName, apiId, ifMatch, parameters)
-            .flatMap(
-                (ApisUpdateResponse res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Updates the specified API of the API Management service instance.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param serviceName The name of the API Management service.
-     * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
-     *     revision has ;rev=n as a suffix where n is the revision number.
-     * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
-     * @param parameters API Update Contract parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return aPI details.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ApiContractInner update(
-        String resourceGroupName, String serviceName, String apiId, String ifMatch, ApiUpdateContract parameters) {
-        return updateAsync(resourceGroupName, serviceName, apiId, ifMatch, parameters).block();
-    }
-
-    /**
-     * Updates the specified API of the API Management service instance.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
      *     revision has ;rev=n as a suffix where n is the revision number.
@@ -1470,9 +1431,30 @@ public final class ApisClientImpl implements ApisClient {
     }
 
     /**
+     * Updates the specified API of the API Management service instance.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serviceName The name of the API Management service.
+     * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
+     *     revision has ;rev=n as a suffix where n is the revision number.
+     * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
+     *     request or it should be * for unconditional update.
+     * @param parameters API Update Contract parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return aPI details.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ApiContractInner update(
+        String resourceGroupName, String serviceName, String apiId, String ifMatch, ApiUpdateContract parameters) {
+        return updateWithResponse(resourceGroupName, serviceName, apiId, ifMatch, parameters, Context.NONE).getValue();
+    }
+
+    /**
      * Deletes the specified API of the API Management service instance.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
      *     revision has ;rev=n as a suffix where n is the revision number.
@@ -1534,7 +1516,7 @@ public final class ApisClientImpl implements ApisClient {
     /**
      * Deletes the specified API of the API Management service instance.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
      *     revision has ;rev=n as a suffix where n is the revision number.
@@ -1599,29 +1581,7 @@ public final class ApisClientImpl implements ApisClient {
     /**
      * Deletes the specified API of the API Management service instance.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param serviceName The name of the API Management service.
-     * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
-     *     revision has ;rev=n as a suffix where n is the revision number.
-     * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
-     * @param deleteRevisions Delete all revisions of the Api.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(
-        String resourceGroupName, String serviceName, String apiId, String ifMatch, Boolean deleteRevisions) {
-        return deleteWithResponseAsync(resourceGroupName, serviceName, apiId, ifMatch, deleteRevisions)
-            .flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * Deletes the specified API of the API Management service instance.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
      *     revision has ;rev=n as a suffix where n is the revision number.
@@ -1636,32 +1596,13 @@ public final class ApisClientImpl implements ApisClient {
     private Mono<Void> deleteAsync(String resourceGroupName, String serviceName, String apiId, String ifMatch) {
         final Boolean deleteRevisions = null;
         return deleteWithResponseAsync(resourceGroupName, serviceName, apiId, ifMatch, deleteRevisions)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
      * Deletes the specified API of the API Management service instance.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param serviceName The name of the API Management service.
-     * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
-     *     revision has ;rev=n as a suffix where n is the revision number.
-     * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String serviceName, String apiId, String ifMatch) {
-        final Boolean deleteRevisions = null;
-        deleteAsync(resourceGroupName, serviceName, apiId, ifMatch, deleteRevisions).block();
-    }
-
-    /**
-     * Deletes the specified API of the API Management service instance.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
      *     revision has ;rev=n as a suffix where n is the revision number.
@@ -1687,9 +1628,28 @@ public final class ApisClientImpl implements ApisClient {
     }
 
     /**
+     * Deletes the specified API of the API Management service instance.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serviceName The name of the API Management service.
+     * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
+     *     revision has ;rev=n as a suffix where n is the revision number.
+     * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
+     *     request or it should be * for unconditional update.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void delete(String resourceGroupName, String serviceName, String apiId, String ifMatch) {
+        final Boolean deleteRevisions = null;
+        deleteWithResponse(resourceGroupName, serviceName, apiId, ifMatch, deleteRevisions, Context.NONE);
+    }
+
+    /**
      * Lists a collection of apis associated with tags.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param filter | Field | Usage | Supported operators | Supported functions
      *     |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| name | filter | ge, le, eq,
@@ -1766,7 +1726,7 @@ public final class ApisClientImpl implements ApisClient {
     /**
      * Lists a collection of apis associated with tags.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param filter | Field | Usage | Supported operators | Supported functions
      *     |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| name | filter | ge, le, eq,
@@ -1842,7 +1802,7 @@ public final class ApisClientImpl implements ApisClient {
     /**
      * Lists a collection of apis associated with tags.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param filter | Field | Usage | Supported operators | Supported functions
      *     |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| name | filter | ge, le, eq,
@@ -1876,7 +1836,7 @@ public final class ApisClientImpl implements ApisClient {
     /**
      * Lists a collection of apis associated with tags.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1897,7 +1857,7 @@ public final class ApisClientImpl implements ApisClient {
     /**
      * Lists a collection of apis associated with tags.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param filter | Field | Usage | Supported operators | Supported functions
      *     |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| name | filter | ge, le, eq,
@@ -1935,7 +1895,7 @@ public final class ApisClientImpl implements ApisClient {
     /**
      * Lists a collection of apis associated with tags.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1955,7 +1915,7 @@ public final class ApisClientImpl implements ApisClient {
     /**
      * Lists a collection of apis associated with tags.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param filter | Field | Usage | Supported operators | Supported functions
      *     |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| name | filter | ge, le, eq,
@@ -1990,7 +1950,8 @@ public final class ApisClientImpl implements ApisClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2025,7 +1986,8 @@ public final class ApisClientImpl implements ApisClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2061,7 +2023,8 @@ public final class ApisClientImpl implements ApisClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2096,7 +2059,8 @@ public final class ApisClientImpl implements ApisClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

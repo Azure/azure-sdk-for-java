@@ -19,6 +19,7 @@ import com.azure.resourcemanager.apimanagement.models.ContentFormat;
 import com.azure.resourcemanager.apimanagement.models.Protocol;
 import com.azure.resourcemanager.apimanagement.models.SoapApiType;
 import com.azure.resourcemanager.apimanagement.models.SubscriptionKeyParameterNamesContract;
+import com.azure.resourcemanager.apimanagement.models.TranslateRequiredQueryParametersConduct;
 import java.util.Collections;
 import java.util.List;
 
@@ -126,6 +127,10 @@ public final class ApiContractImpl implements ApiContract, ApiContract.Definitio
 
     public ApiLicenseInformation license() {
         return this.innerModel().license();
+    }
+
+    public String resourceGroupName() {
+        return resourceGroupName;
     }
 
     public ApiContractInner innerModel() {
@@ -255,6 +260,12 @@ public final class ApiContractImpl implements ApiContract, ApiContract.Definitio
 
     public ApiContractImpl withSoapApiType(SoapApiType soapApiType) {
         this.createParameters.withSoapApiType(soapApiType);
+        return this;
+    }
+
+    public ApiContractImpl withTranslateRequiredQueryParametersConduct(
+        TranslateRequiredQueryParametersConduct translateRequiredQueryParametersConduct) {
+        this.createParameters.withTranslateRequiredQueryParametersConduct(translateRequiredQueryParametersConduct);
         return this;
     }
 

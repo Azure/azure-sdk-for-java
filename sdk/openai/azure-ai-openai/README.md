@@ -35,12 +35,12 @@ If you want to see the full code for these snippets check out our [samples folde
 
 ### Adding the package to your product
 
-[//]: # ({x-version-update-start;com.azure:azure-ai-openai;current})
+[//]: # ({x-version-update-start;com.azure:azure-ai-openai;dependency})
 ```xml
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-ai-openai</artifactId>
-    <version>1.0.0-beta.2</version>
+    <version>1.0.0-beta.3</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -77,14 +77,14 @@ The SDK also supports operating against the public non-Azure OpenAI. The respons
 
 ```java readme-sample-createNonAzureOpenAISyncClientApiKey
 OpenAIClient client = new OpenAIClientBuilder()
-    .credential(new NonAzureOpenAIKeyCredential("{openai-secret-key}"))
+    .credential(new KeyCredential("{openai-secret-key}"))
     .buildClient();
 ```
 or 
 
 ```java readme-sample-createNonAzureOpenAIAsyncClientApiKey
 OpenAIAsyncClient client = new OpenAIClientBuilder()
-    .credential(new NonAzureOpenAIKeyCredential("{openai-secret-key}"))
+    .credential(new KeyCredential("{openai-secret-key}"))
     .buildAsyncClient();
 ```
 

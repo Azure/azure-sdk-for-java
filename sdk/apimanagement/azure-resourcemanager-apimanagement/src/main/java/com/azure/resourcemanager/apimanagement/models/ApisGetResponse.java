@@ -25,7 +25,11 @@ public final class ApisGetResponse extends ResponseBase<ApisGetHeaders, ApiContr
         super(request, statusCode, rawHeaders, value, headers);
     }
 
-    /** @return the deserialized response body. */
+    /**
+     * Gets the deserialized response body.
+     *
+     * @return the deserialized response body.
+     */
     @Override
     public ApiContractInner getValue() {
         return super.getValue();

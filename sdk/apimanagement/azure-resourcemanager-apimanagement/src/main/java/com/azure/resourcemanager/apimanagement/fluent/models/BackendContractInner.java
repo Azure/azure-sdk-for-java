@@ -22,6 +22,10 @@ public final class BackendContractInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private BackendContractProperties innerProperties;
 
+    /** Creates an instance of BackendContractInner class. */
+    public BackendContractInner() {
+    }
+
     /**
      * Get the innerProperties property: Backend entity contract properties.
      *
@@ -124,7 +128,7 @@ public final class BackendContractInner extends ProxyResource {
     }
 
     /**
-     * Get the resourceId property: Management Uri of the Resource in External System. This url can be the Arm Resource
+     * Get the resourceId property: Management Uri of the Resource in External System. This URL can be the Arm Resource
      * Id of Logic Apps, Function Apps or API Apps.
      *
      * @return the resourceId value.
@@ -134,7 +138,7 @@ public final class BackendContractInner extends ProxyResource {
     }
 
     /**
-     * Set the resourceId property: Management Uri of the Resource in External System. This url can be the Arm Resource
+     * Set the resourceId property: Management Uri of the Resource in External System. This URL can be the Arm Resource
      * Id of Logic Apps, Function Apps or API Apps.
      *
      * @param resourceId the resourceId value to set.
@@ -195,7 +199,7 @@ public final class BackendContractInner extends ProxyResource {
     }
 
     /**
-     * Get the proxy property: Backend Proxy Contract Properties.
+     * Get the proxy property: Backend gateway Contract Properties.
      *
      * @return the proxy value.
      */
@@ -204,7 +208,7 @@ public final class BackendContractInner extends ProxyResource {
     }
 
     /**
-     * Set the proxy property: Backend Proxy Contract Properties.
+     * Set the proxy property: Backend gateway Contract Properties.
      *
      * @param proxy the proxy value to set.
      * @return the BackendContractInner object itself.

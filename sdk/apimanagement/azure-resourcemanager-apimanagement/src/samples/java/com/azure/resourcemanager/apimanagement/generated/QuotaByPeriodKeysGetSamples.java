@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.apimanagement.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for QuotaByPeriodKeys Get. */
 public final class QuotaByPeriodKeysGetSamples {
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementGetQuotaCounterKeysByQuotaPeriod.json
+     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementGetQuotaCounterKeysByQuotaPeriod.json
      */
     /**
      * Sample code: ApiManagementGetQuotaCounterKeysByQuotaPeriod.
@@ -18,6 +16,8 @@ public final class QuotaByPeriodKeysGetSamples {
      */
     public static void apiManagementGetQuotaCounterKeysByQuotaPeriod(
         com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
-        manager.quotaByPeriodKeys().getWithResponse("rg1", "apimService1", "ba", "0_P3Y6M4DT12H30M5S", Context.NONE);
+        manager
+            .quotaByPeriodKeys()
+            .getWithResponse("rg1", "apimService1", "ba", "0_P3Y6M4DT12H30M5S", com.azure.core.util.Context.NONE);
     }
 }

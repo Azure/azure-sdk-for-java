@@ -26,8 +26,8 @@ public final class CertificateContractProperties {
     private String thumbprint;
 
     /*
-     * Expiration date of the certificate. The date conforms to the following
-     * format: `yyyy-MM-ddTHH:mm:ssZ` as specified by the ISO 8601 standard.
+     * Expiration date of the certificate. The date conforms to the following format: `yyyy-MM-ddTHH:mm:ssZ` as
+     * specified by the ISO 8601 standard.
      *
      */
     @JsonProperty(value = "expirationDate", required = true)
@@ -38,6 +38,10 @@ public final class CertificateContractProperties {
      */
     @JsonProperty(value = "keyVault")
     private KeyVaultContractProperties keyVault;
+
+    /** Creates an instance of CertificateContractProperties class. */
+    public CertificateContractProperties() {
+    }
 
     /**
      * Get the subject property: Subject attribute of the certificate.

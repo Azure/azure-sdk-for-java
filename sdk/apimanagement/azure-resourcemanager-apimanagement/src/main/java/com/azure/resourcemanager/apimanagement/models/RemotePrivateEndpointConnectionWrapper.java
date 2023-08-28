@@ -36,6 +36,10 @@ public final class RemotePrivateEndpointConnectionWrapper {
     @JsonProperty(value = "properties")
     private PrivateEndpointConnectionWrapperProperties innerProperties;
 
+    /** Creates an instance of RemotePrivateEndpointConnectionWrapper class. */
+    public RemotePrivateEndpointConnectionWrapper() {
+    }
+
     /**
      * Get the id property: Private Endpoint connection resource id.
      *

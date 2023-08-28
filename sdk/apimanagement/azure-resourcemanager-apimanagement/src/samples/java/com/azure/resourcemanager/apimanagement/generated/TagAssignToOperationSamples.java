@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.apimanagement.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Tag AssignToOperation. */
 public final class TagAssignToOperationSamples {
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementCreateApiOperationTag.json
+     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementCreateApiOperationTag.json
      */
     /**
      * Sample code: ApiManagementCreateApiOperationTag.
@@ -21,6 +19,11 @@ public final class TagAssignToOperationSamples {
         manager
             .tags()
             .assignToOperationWithResponse(
-                "rg1", "apimService1", "5931a75ae4bbd512a88c680b", "5931a75ae4bbd512a88c680a", "tagId1", Context.NONE);
+                "rg1",
+                "apimService1",
+                "5931a75ae4bbd512a88c680b",
+                "5931a75ae4bbd512a88c680a",
+                "tagId1",
+                com.azure.core.util.Context.NONE);
     }
 }

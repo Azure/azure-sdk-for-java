@@ -31,11 +31,14 @@ public final class GlobalSchemaContractProperties {
     private Object value;
 
     /*
-     * Global Schema document object for json-based schema formats(e.g. json
-     * schema).
+     * Global Schema document object for json-based schema formats(e.g. json schema).
      */
     @JsonProperty(value = "document")
     private Object document;
+
+    /** Creates an instance of GlobalSchemaContractProperties class. */
+    public GlobalSchemaContractProperties() {
+    }
 
     /**
      * Get the schemaType property: Schema Type. Immutable.

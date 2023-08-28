@@ -46,6 +46,13 @@ public interface GatewayContract {
     String description();
 
     /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
+
+    /**
      * Gets the inner com.azure.resourcemanager.apimanagement.fluent.models.GatewayContractInner object.
      *
      * @return the inner object.
@@ -56,22 +63,25 @@ public interface GatewayContract {
     interface Definition
         extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
+
     /** The GatewayContract definition stages. */
     interface DefinitionStages {
         /** The first stage of the GatewayContract definition. */
         interface Blank extends WithParentResource {
         }
+
         /** The stage of the GatewayContract definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
              * Specifies resourceGroupName, serviceName.
              *
-             * @param resourceGroupName The name of the resource group.
+             * @param resourceGroupName The name of the resource group. The name is case insensitive.
              * @param serviceName The name of the API Management service.
              * @return the next definition stage.
              */
             WithCreate withExistingService(String resourceGroupName, String serviceName);
         }
+
         /**
          * The stage of the GatewayContract definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
@@ -93,6 +103,7 @@ public interface GatewayContract {
              */
             GatewayContract create(Context context);
         }
+
         /** The stage of the GatewayContract definition allowing to specify locationData. */
         interface WithLocationData {
             /**
@@ -103,6 +114,7 @@ public interface GatewayContract {
              */
             WithCreate withLocationData(ResourceLocationDataContract locationData);
         }
+
         /** The stage of the GatewayContract definition allowing to specify description. */
         interface WithDescription {
             /**
@@ -113,6 +125,7 @@ public interface GatewayContract {
              */
             WithCreate withDescription(String description);
         }
+
         /** The stage of the GatewayContract definition allowing to specify ifMatch. */
         interface WithIfMatch {
             /**
@@ -126,6 +139,7 @@ public interface GatewayContract {
             WithCreate withIfMatch(String ifMatch);
         }
     }
+
     /**
      * Begins update for the GatewayContract resource.
      *
@@ -150,6 +164,7 @@ public interface GatewayContract {
          */
         GatewayContract apply(Context context);
     }
+
     /** The GatewayContract update stages. */
     interface UpdateStages {
         /** The stage of the GatewayContract update allowing to specify locationData. */
@@ -162,6 +177,7 @@ public interface GatewayContract {
              */
             Update withLocationData(ResourceLocationDataContract locationData);
         }
+
         /** The stage of the GatewayContract update allowing to specify description. */
         interface WithDescription {
             /**
@@ -172,6 +188,7 @@ public interface GatewayContract {
              */
             Update withDescription(String description);
         }
+
         /** The stage of the GatewayContract update allowing to specify ifMatch. */
         interface WithIfMatch {
             /**
@@ -185,6 +202,7 @@ public interface GatewayContract {
             Update withIfMatch(String ifMatch);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *
@@ -203,15 +221,6 @@ public interface GatewayContract {
     /**
      * Retrieves gateway keys.
      *
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return gateway authentication keys.
-     */
-    GatewayKeysContract listKeys();
-
-    /**
-     * Retrieves gateway keys.
-     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -221,14 +230,13 @@ public interface GatewayContract {
     Response<GatewayKeysContract> listKeysWithResponse(Context context);
 
     /**
-     * Regenerates specified gateway key invalidating any tokens created with it.
+     * Retrieves gateway keys.
      *
-     * @param parameters Gateway key regeneration request contract properties.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return gateway authentication keys.
      */
-    void regenerateKey(GatewayKeyRegenerationRequestContract parameters);
+    GatewayKeysContract listKeys();
 
     /**
      * Regenerates specified gateway key invalidating any tokens created with it.
@@ -243,15 +251,14 @@ public interface GatewayContract {
     Response<Void> regenerateKeyWithResponse(GatewayKeyRegenerationRequestContract parameters, Context context);
 
     /**
-     * Gets the Shared Access Authorization Token for the gateway.
+     * Regenerates specified gateway key invalidating any tokens created with it.
      *
-     * @param parameters Gateway token request contract properties.
+     * @param parameters Gateway key regeneration request contract properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Shared Access Authorization Token for the gateway.
      */
-    GatewayTokenContract generateToken(GatewayTokenRequestContract parameters);
+    void regenerateKey(GatewayKeyRegenerationRequestContract parameters);
 
     /**
      * Gets the Shared Access Authorization Token for the gateway.
@@ -264,4 +271,15 @@ public interface GatewayContract {
      * @return the Shared Access Authorization Token for the gateway along with {@link Response}.
      */
     Response<GatewayTokenContract> generateTokenWithResponse(GatewayTokenRequestContract parameters, Context context);
+
+    /**
+     * Gets the Shared Access Authorization Token for the gateway.
+     *
+     * @param parameters Gateway token request contract properties.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Shared Access Authorization Token for the gateway.
+     */
+    GatewayTokenContract generateToken(GatewayTokenRequestContract parameters);
 }

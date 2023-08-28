@@ -24,6 +24,10 @@ public final class TenantSettingsCollection {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
+    /** Creates an instance of TenantSettingsCollection class. */
+    public TenantSettingsCollection() {
+    }
+
     /**
      * Get the value property: Page values.
      *

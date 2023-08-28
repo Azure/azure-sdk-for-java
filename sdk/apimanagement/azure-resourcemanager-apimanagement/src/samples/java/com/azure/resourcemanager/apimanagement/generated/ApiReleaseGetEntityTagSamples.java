@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.apimanagement.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ApiRelease GetEntityTag. */
 public final class ApiReleaseGetEntityTagSamples {
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementHeadApiRelease.json
+     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementHeadApiRelease.json
      */
     /**
      * Sample code: ApiManagementHeadApiRelease.
@@ -20,6 +18,7 @@ public final class ApiReleaseGetEntityTagSamples {
         com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
         manager
             .apiReleases()
-            .getEntityTagWithResponse("rg1", "apimService1", "a1", "5a7cb545298324c53224a799", Context.NONE);
+            .getEntityTagWithResponse(
+                "rg1", "apimService1", "a1", "5a7cb545298324c53224a799", com.azure.core.util.Context.NONE);
     }
 }

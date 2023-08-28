@@ -28,22 +28,13 @@ public final class SignUpSettingsImpl implements SignUpSettings {
         this.serviceManager = serviceManager;
     }
 
-    public void getEntityTag(String resourceGroupName, String serviceName) {
-        this.serviceClient().getEntityTag(resourceGroupName, serviceName);
-    }
-
     public SignUpSettingsGetEntityTagResponse getEntityTagWithResponse(
         String resourceGroupName, String serviceName, Context context) {
         return this.serviceClient().getEntityTagWithResponse(resourceGroupName, serviceName, context);
     }
 
-    public PortalSignupSettings get(String resourceGroupName, String serviceName) {
-        PortalSignupSettingsInner inner = this.serviceClient().get(resourceGroupName, serviceName);
-        if (inner != null) {
-            return new PortalSignupSettingsImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+    public void getEntityTag(String resourceGroupName, String serviceName) {
+        this.serviceClient().getEntityTag(resourceGroupName, serviceName);
     }
 
     public Response<PortalSignupSettings> getWithResponse(
@@ -60,9 +51,13 @@ public final class SignUpSettingsImpl implements SignUpSettings {
         }
     }
 
-    public void update(
-        String resourceGroupName, String serviceName, String ifMatch, PortalSignupSettingsInner parameters) {
-        this.serviceClient().update(resourceGroupName, serviceName, ifMatch, parameters);
+    public PortalSignupSettings get(String resourceGroupName, String serviceName) {
+        PortalSignupSettingsInner inner = this.serviceClient().get(resourceGroupName, serviceName);
+        if (inner != null) {
+            return new PortalSignupSettingsImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public Response<Void> updateWithResponse(
@@ -74,15 +69,9 @@ public final class SignUpSettingsImpl implements SignUpSettings {
         return this.serviceClient().updateWithResponse(resourceGroupName, serviceName, ifMatch, parameters, context);
     }
 
-    public PortalSignupSettings createOrUpdate(
-        String resourceGroupName, String serviceName, PortalSignupSettingsInner parameters) {
-        PortalSignupSettingsInner inner =
-            this.serviceClient().createOrUpdate(resourceGroupName, serviceName, parameters);
-        if (inner != null) {
-            return new PortalSignupSettingsImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+    public void update(
+        String resourceGroupName, String serviceName, String ifMatch, PortalSignupSettingsInner parameters) {
+        this.serviceClient().update(resourceGroupName, serviceName, ifMatch, parameters);
     }
 
     public Response<PortalSignupSettings> createOrUpdateWithResponse(
@@ -101,6 +90,17 @@ public final class SignUpSettingsImpl implements SignUpSettings {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new PortalSignupSettingsImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public PortalSignupSettings createOrUpdate(
+        String resourceGroupName, String serviceName, PortalSignupSettingsInner parameters) {
+        PortalSignupSettingsInner inner =
+            this.serviceClient().createOrUpdate(resourceGroupName, serviceName, parameters);
+        if (inner != null) {
+            return new PortalSignupSettingsImpl(inner, this.manager());
         } else {
             return null;
         }

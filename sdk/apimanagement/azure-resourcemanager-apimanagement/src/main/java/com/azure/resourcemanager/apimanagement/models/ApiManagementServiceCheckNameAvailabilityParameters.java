@@ -17,6 +17,10 @@ public final class ApiManagementServiceCheckNameAvailabilityParameters {
     @JsonProperty(value = "name", required = true)
     private String name;
 
+    /** Creates an instance of ApiManagementServiceCheckNameAvailabilityParameters class. */
+    public ApiManagementServiceCheckNameAvailabilityParameters() {
+    }
+
     /**
      * Get the name property: The name to check for availability.
      *

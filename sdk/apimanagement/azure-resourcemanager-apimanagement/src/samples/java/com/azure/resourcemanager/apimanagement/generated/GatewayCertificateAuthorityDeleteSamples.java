@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.apimanagement.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for GatewayCertificateAuthority Delete. */
 public final class GatewayCertificateAuthorityDeleteSamples {
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementDeleteGatewayCertificateAuthority.json
+     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementDeleteGatewayCertificateAuthority.json
      */
     /**
      * Sample code: ApiManagementDeleteGatewayCertificateAuthority.
@@ -20,6 +18,6 @@ public final class GatewayCertificateAuthorityDeleteSamples {
         com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
         manager
             .gatewayCertificateAuthorities()
-            .deleteWithResponse("rg1", "apimService1", "gw1", "default", "*", Context.NONE);
+            .deleteWithResponse("rg1", "apimService1", "gw1", "default", "*", com.azure.core.util.Context.NONE);
     }
 }

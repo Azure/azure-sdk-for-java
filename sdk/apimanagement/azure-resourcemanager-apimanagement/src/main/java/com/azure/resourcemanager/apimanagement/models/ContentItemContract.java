@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.apimanagement.models;
 
+import com.azure.core.util.Context;
 import com.azure.resourcemanager.apimanagement.fluent.models.ContentItemContractInner;
 import java.util.Map;
 
@@ -38,9 +39,153 @@ public interface ContentItemContract {
     Map<String, Object> properties();
 
     /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
+
+    /**
      * Gets the inner com.azure.resourcemanager.apimanagement.fluent.models.ContentItemContractInner object.
      *
      * @return the inner object.
      */
     ContentItemContractInner innerModel();
+
+    /** The entirety of the ContentItemContract definition. */
+    interface Definition
+        extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
+    }
+
+    /** The ContentItemContract definition stages. */
+    interface DefinitionStages {
+        /** The first stage of the ContentItemContract definition. */
+        interface Blank extends WithParentResource {
+        }
+
+        /** The stage of the ContentItemContract definition allowing to specify parent resource. */
+        interface WithParentResource {
+            /**
+             * Specifies resourceGroupName, serviceName, contentTypeId.
+             *
+             * @param resourceGroupName The name of the resource group. The name is case insensitive.
+             * @param serviceName The name of the API Management service.
+             * @param contentTypeId Content type identifier.
+             * @return the next definition stage.
+             */
+            WithCreate withExistingContentType(String resourceGroupName, String serviceName, String contentTypeId);
+        }
+
+        /**
+         * The stage of the ContentItemContract definition which contains all the minimum required properties for the
+         * resource to be created, but also allows for any other optional properties to be specified.
+         */
+        interface WithCreate extends DefinitionStages.WithProperties, DefinitionStages.WithIfMatch {
+            /**
+             * Executes the create request.
+             *
+             * @return the created resource.
+             */
+            ContentItemContract create();
+
+            /**
+             * Executes the create request.
+             *
+             * @param context The context to associate with this operation.
+             * @return the created resource.
+             */
+            ContentItemContract create(Context context);
+        }
+
+        /** The stage of the ContentItemContract definition allowing to specify properties. */
+        interface WithProperties {
+            /**
+             * Specifies the properties property: Properties of the content item..
+             *
+             * @param properties Properties of the content item.
+             * @return the next definition stage.
+             */
+            WithCreate withProperties(Map<String, Object> properties);
+        }
+
+        /** The stage of the ContentItemContract definition allowing to specify ifMatch. */
+        interface WithIfMatch {
+            /**
+             * Specifies the ifMatch property: ETag of the Entity. Not required when creating an entity, but required
+             * when updating an entity..
+             *
+             * @param ifMatch ETag of the Entity. Not required when creating an entity, but required when updating an
+             *     entity.
+             * @return the next definition stage.
+             */
+            WithCreate withIfMatch(String ifMatch);
+        }
+    }
+
+    /**
+     * Begins update for the ContentItemContract resource.
+     *
+     * @return the stage of resource update.
+     */
+    ContentItemContract.Update update();
+
+    /** The template for ContentItemContract update. */
+    interface Update extends UpdateStages.WithProperties, UpdateStages.WithIfMatch {
+        /**
+         * Executes the update request.
+         *
+         * @return the updated resource.
+         */
+        ContentItemContract apply();
+
+        /**
+         * Executes the update request.
+         *
+         * @param context The context to associate with this operation.
+         * @return the updated resource.
+         */
+        ContentItemContract apply(Context context);
+    }
+
+    /** The ContentItemContract update stages. */
+    interface UpdateStages {
+        /** The stage of the ContentItemContract update allowing to specify properties. */
+        interface WithProperties {
+            /**
+             * Specifies the properties property: Properties of the content item..
+             *
+             * @param properties Properties of the content item.
+             * @return the next definition stage.
+             */
+            Update withProperties(Map<String, Object> properties);
+        }
+
+        /** The stage of the ContentItemContract update allowing to specify ifMatch. */
+        interface WithIfMatch {
+            /**
+             * Specifies the ifMatch property: ETag of the Entity. Not required when creating an entity, but required
+             * when updating an entity..
+             *
+             * @param ifMatch ETag of the Entity. Not required when creating an entity, but required when updating an
+             *     entity.
+             * @return the next definition stage.
+             */
+            Update withIfMatch(String ifMatch);
+        }
+    }
+
+    /**
+     * Refreshes the resource to sync with Azure.
+     *
+     * @return the refreshed resource.
+     */
+    ContentItemContract refresh();
+
+    /**
+     * Refreshes the resource to sync with Azure.
+     *
+     * @param context The context to associate with this operation.
+     * @return the refreshed resource.
+     */
+    ContentItemContract refresh(Context context);
 }

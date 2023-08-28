@@ -23,6 +23,10 @@ public final class RecipientsContractProperties {
     @JsonProperty(value = "users")
     private List<String> users;
 
+    /** Creates an instance of RecipientsContractProperties class. */
+    public RecipientsContractProperties() {
+    }
+
     /**
      * Get the emails property: List of Emails subscribed for the notification.
      *
