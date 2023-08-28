@@ -2639,7 +2639,7 @@ applications can be returned.
   @query
   @minValue(1)
   @maxValue(1000)
-  // @projectedName("java", "maxPageSize")
+  @projectedName("java", "maxPageSize")
   maxresults?: int32 = 1000;
 
   #suppress "@azure-tools/typespec-azure-core/casing-style" "The names of Model types must use camelCase"
