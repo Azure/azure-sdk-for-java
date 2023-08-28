@@ -1204,7 +1204,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
             .flatMap(connection -> connection.getManagementNode(entityPath, entityType))
             .flatMap(serviceBusManagementNode ->
                 serviceBusManagementNode.renewMessageLock(lockToken, getLinkName(null)))
-            .map(offsetDateTime -> managementNodeLocks.addOrUpdate(lockToken, offsetDateTime,
+            .map(offsetDateTime -> isOnV2 ? offsetDateTime : managementNodeLocks.addOrUpdate(lockToken, offsetDateTime,
                 offsetDateTime));
     }
 
