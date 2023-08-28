@@ -5066,15 +5066,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                         callback.apply(clonedOptions, endToEndPolicyConfig, diagnosticsFactory)
                             .map(response -> new NonTransientPointOperationResult(response))
                             .onErrorResume(
-                                t -> {
-                                    final Throwable unwrappedException = Exceptions.unwrap(t);
-                                    return unwrappedException instanceof CosmosException;
-                                },
-                                t -> {
-                                    final CosmosException cosmosException = (CosmosException)Exceptions.unwrap(t);
-                                    return Mono.just(new NonTransientPointOperationResult(cosmosException));
-                                })
-                                .doOnSubscribe(c -> logger.info("STARTING to process {} operation in region '{}'", operationType, region))
+                                t -> isCosmosException(t),
+                                t -> handleCosmosExceptionForHedging(t))
+                            .doOnSubscribe(c -> logger.info("STARTING to process {} operation in region '{}'", operationType, region))
                     );
                 } else {
                     clonedOptions.setExcludeRegions(
@@ -5087,20 +5081,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                         callback.apply(clonedOptions, endToEndPolicyConfig, diagnosticsFactory)
                                 .map(response -> new NonTransientPointOperationResult(response))
                                 .onErrorResume(
-                                    t -> {
-                                        final Throwable unwrappedException = Exceptions.unwrap(t);
-                                        return unwrappedException instanceof CosmosException;
-                                    },
-                                    t -> {
-                                        final CosmosException cosmosException = (CosmosException)Exceptions.unwrap(t);
-                                        if (isNonTransientResultForHedging(
-                                            cosmosException.getStatusCode(),
-                                            cosmosException.getSubStatusCode())) {
-                                            return Mono.just(new NonTransientPointOperationResult(cosmosException));
-                                        } else {
-                                            return Mono.error(cosmosException);
-                                        }
-                                    })
+                                    t -> isCosmosException(t),
+                                    t -> handleCosmosExceptionForHedging(t))
                                 .doOnSubscribe(c -> logger.info("STARTING to process {} operation in region '{}'", operationType, region))
                                 .delaySubscription((availabilityStrategy)
                                     .getThreshold()
@@ -5125,13 +5107,56 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 Throwable exception = Exceptions.unwrap(throwable);
 
                 if (exception instanceof NoSuchElementException) {
-                    return new OperationCancelledException().initCause(exception);
+
+                    List<Throwable> innerThrowables = Exceptions
+                        .unwrapMultiple(exception.getCause());
+
+                    int index = 0;
+                    for (Throwable innerThrowable : innerThrowables) {
+                        Throwable innerException = Exceptions.unwrap(innerThrowable);
+
+                        // collect latest CosmosException instance bubbling up for a region
+                        if (innerException instanceof CosmosException) {
+                            return Utils.as(innerException, CosmosException.class);
+                        } else if (exception instanceof NoSuchElementException) {
+                            logger.trace(
+                                "Operation in {} completed with empty result because it was cancelled.",
+                                orderedApplicableRegionsForSpeculation.get(index));
+                        } else if (logger.isWarnEnabled()) {
+                            String message = "Unexpected Non-CosmosException when processing operation in '"
+                                + orderedApplicableRegionsForSpeculation.get(index)
+                                + "'.";
+                            logger.warn(
+                                message,
+                                innerException
+                            );
+                        }
+
+                        index++;
+                    }
                 }
 
                 return exception;
             })
             .doFinally(s -> diagnosticsFactory.merge());
     }
+
+    private static boolean isCosmosException(Throwable t) {
+        final Throwable unwrappedException = Exceptions.unwrap(t);
+        return unwrappedException instanceof CosmosException;
+    }
+
+    private static Mono<NonTransientPointOperationResult> handleCosmosExceptionForHedging(Throwable t) {
+        final CosmosException cosmosException = (CosmosException)Exceptions.unwrap(t);
+        if (isNonTransientResultForHedging(
+            cosmosException.getStatusCode(),
+            cosmosException.getSubStatusCode())) {
+            return Mono.just(new NonTransientPointOperationResult(cosmosException));
+        } else {
+            return Mono.error(cosmosException);
+        }
+    }
+
 
     private List<String> getEffectiveExcludedRegionsForHedging(
         List<String> initialExcludedRegions,
