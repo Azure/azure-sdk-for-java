@@ -3,18 +3,22 @@
 package com.azure;
 
 import static java.util.concurrent.TimeUnit.SECONDS;
+import static org.assertj.core.api.Assertions.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.azure.core.http.*;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.*;
+import io.opentelemetry.sdk.logs.export.LogRecordExporter;
+import io.opentelemetry.sdk.metrics.export.MetricExporter;
+import io.opentelemetry.sdk.trace.export.SpanExporter;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.stream.Collectors;
-
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
@@ -36,6 +40,15 @@ public class SpringMonitorTest {
 
   @Autowired private TestRestTemplate restTemplate;
 
+  @Autowired ObjectProvider<List<SpanExporter>> otelSpanExportersProvider; // See
+  // io.opentelemetry.instrumentation.spring.autoconfigure.OpenTelemetryAutoConfiguration
+
+  @Autowired ObjectProvider<List<LogRecordExporter>> otelLoggerExportersProvider; // See
+  // io.opentelemetry.instrumentation.spring.autoconfigure.OpenTelemetryAutoConfiguration
+
+  @Autowired ObjectProvider<List<MetricExporter>> otelMetricExportersProvider; // See
+  // io.opentelemetry.instrumentation.spring.autoconfigure.OpenTelemetryAutoConfiguration
+
   @Configuration(proxyBeanMethods = false)
   static class TestConfiguration {
 
@@ -52,6 +65,42 @@ public class SpringMonitorTest {
           .policies(policy)
           .build();
     }
+  }
+
+  @Test
+  public void applicationContextShouldOnlyContainTheAzureSpanExporter() {
+    List<SpanExporter> spanExporters = otelSpanExportersProvider.getIfAvailable();
+    assertThat(spanExporters).hasSize(1);
+
+    SpanExporter spanExporter = spanExporters.get(0);
+    String exporterClassName = spanExporter.getClass().getName();
+    assertThat(exporterClassName)
+        .isEqualTo(
+            "com.azure.monitor.opentelemetry.exporter.AzureMonitorTraceExporter"); // AzureMonitorTraceExporter is not public
+  }
+
+  @Test
+  public void applicationContextShouldOnlyContainTheAzureLogRecordExporter() {
+    List<LogRecordExporter> logRecordExporters = otelLoggerExportersProvider.getIfAvailable();
+    assertThat(logRecordExporters).hasSize(1);
+
+    LogRecordExporter logRecordExporter = logRecordExporters.get(0);
+    String exporterClassName = logRecordExporter.getClass().getName();
+    assertThat(exporterClassName)
+        .isEqualTo(
+            "com.azure.monitor.opentelemetry.exporter.AzureMonitorLogRecordExporter"); // AzureMonitorLogRecordExporter is not public
+  }
+
+  @Test
+  public void applicationContextShouldOnlyContainTheAzureMetricExporter() {
+    List<MetricExporter> metricExporters = otelMetricExportersProvider.getIfAvailable();
+    assertThat(metricExporters).hasSize(1);
+
+    MetricExporter metricExporter = metricExporters.get(0);
+    String exporterClassName = metricExporter.getClass().getName();
+    assertThat(exporterClassName)
+        .isEqualTo(
+            "com.azure.monitor.opentelemetry.exporter.AzureMonitorMetricExporter"); // AzureMonitorMetricExporter is not public
   }
 
   @Test
