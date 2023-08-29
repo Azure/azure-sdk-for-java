@@ -70,33 +70,40 @@ public class SpringMonitorTest {
     assertThat(telemetryItems.size()).as("Telemetry: " + telemetryTypes).isEqualTo(5);
 
     // Log telemetry
-    TelemetryItem telemetry1 = telemetryItems.get(0);
-    assertThat(telemetry1.getName()).isEqualTo("Message");
-    MonitorDomain logBaseData = telemetry1.getData().getBaseData();
+    List<TelemetryItem> logs =
+        telemetryItems.stream()
+            .filter(telemetry -> telemetry.getName().equals("Message"))
+            .collect(Collectors.toList());
+    assertThat(logs).hasSize(3);
+
+    TelemetryItem firstLogTelemetry = logs.get(0);
+    MonitorDomain logBaseData = firstLogTelemetry.getData().getBaseData();
     MessageData logData = (MessageData) logBaseData;
     assertThat(logData.getMessage())
         .isEqualTo("Initializing Spring DispatcherServlet 'dispatcherServlet'");
     assertThat(logData.getSeverityLevel()).isEqualTo(SeverityLevel.INFORMATION);
 
-    TelemetryItem telemetry2 = telemetryItems.get(1);
-    assertThat(telemetry2.getName()).isEqualTo("Message");
-
-    TelemetryItem telemetry3 = telemetryItems.get(2);
-    assertThat(telemetry3.getName()).isEqualTo("Message");
-
     // SQL telemetry
-    TelemetryItem telemetry4 = telemetryItems.get(3);
-    assertThat(telemetry4.getName()).isEqualTo("RemoteDependency");
-    MonitorDomain remoteBaseData = telemetry4.getData().getBaseData();
+    List<TelemetryItem> remoteDependencies =
+        telemetryItems.stream()
+            .filter(telemetry -> telemetry.getName().equals("RemoteDependency"))
+            .collect(Collectors.toList());
+    assertThat(remoteDependencies).hasSize(1);
+
+    TelemetryItem remoteDependency = remoteDependencies.get(0);
+    MonitorDomain remoteBaseData = remoteDependency.getData().getBaseData();
     RemoteDependencyData remoteDependencyData = (RemoteDependencyData) remoteBaseData;
     assertThat(remoteDependencyData.getType()).isEqualTo("SQL");
     assertThat(remoteDependencyData.getData())
         .isEqualTo("create table test_table (id bigint not null, primary key (id))");
 
     // HTTP telemetry
-    TelemetryItem telemetry5 = telemetryItems.get(4);
-    assertThat(telemetry5.getName()).isEqualTo("Request");
-    MonitorDomain requestBaseData = telemetry5.getData().getBaseData();
+    List<TelemetryItem> requests =
+        telemetryItems.stream()
+            .filter(telemetry -> telemetry.getName().equals("Request"))
+            .collect(Collectors.toList());
+    TelemetryItem request = requests.get(0);
+    MonitorDomain requestBaseData = request.getData().getBaseData();
     RequestData requestData = (RequestData) requestBaseData;
     assertThat(requestData.getUrl()).contains(Controller.URL);
     assertThat(requestData.isSuccess()).isTrue();
