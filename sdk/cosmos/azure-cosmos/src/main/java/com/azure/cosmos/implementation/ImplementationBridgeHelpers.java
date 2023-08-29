@@ -745,6 +745,8 @@ public class ImplementationBridgeHelpers {
                 String identifier,
                 String errorMessage,
                 long transportRequestId);
+
+            boolean isNotEmpty(CosmosDiagnostics cosmosDiagnostics);
         }
     }
 

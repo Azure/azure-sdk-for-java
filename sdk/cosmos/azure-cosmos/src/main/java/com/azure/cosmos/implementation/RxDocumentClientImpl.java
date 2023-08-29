@@ -5421,7 +5421,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             this.isMerged = true;
             CosmosDiagnosticsContext ctx = null;
 
-            if (requestOptions == null &&
+            if (requestOptions != null &&
                 requestOptions.getDiagnosticsContext() != null) {
 
                 ctx = requestOptions.getDiagnosticsContext();
@@ -5439,11 +5439,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             }
 
             for (CosmosDiagnostics diagnostics : this.createdDiagnostics) {
-                if (diagnostics.getDiagnosticsContext() == null) {
-                    ImplementationBridgeHelpers
-                        .CosmosDiagnosticsContextHelper
-                        .getCosmosDiagnosticsContextAccessor()
-                        .addDiagnostics(ctx, diagnostics);
+                if (diagnostics.getDiagnosticsContext() == null && diagnosticsAccessor.isNotEmpty(diagnostics)) {
+                    ctxAccessor.addDiagnostics(ctx, diagnostics);
                 }
             }
         }

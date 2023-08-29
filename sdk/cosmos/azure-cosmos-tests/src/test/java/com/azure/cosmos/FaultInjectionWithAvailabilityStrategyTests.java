@@ -43,6 +43,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
@@ -169,6 +170,9 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
         Consumer<CosmosAsyncContainer> injectReadSessionNotAvailableIntoFirstRegionOnly =
             (c) -> injectReadSessionNotAvailableError(c, this.getFirstRegion());
 
+        Consumer<CosmosAsyncContainer> injectReadSessionNotAvailableIntoAllExceptFirstRegion =
+            (c) -> injectReadSessionNotAvailableError(c, this.getAllRegionsExceptFirst());
+
         BiConsumer<Integer, Integer> validateStatusCodeIsReadSessionNotAvailableError =
             (statusCode, subStatusCode) -> {
                 assertThat(statusCode).isEqualTo(HttpConstants.StatusCodes.NOTFOUND);
@@ -179,28 +183,43 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
             (statusCode, subStatusCode) -> assertThat(statusCode).isEqualTo(HttpConstants.StatusCodes.OK);
 
         Consumer<CosmosDiagnosticsContext> validateDiagnosticsContextHasDiagnosticsForAllRegions =
-            (d) -> {
+            (ctx) -> {
                 logger.debug(
                     "Diagnostics Context to evaluate: {}",
-                    d != null ? d.toJson() : "NULL");
+                    ctx != null ? ctx.toJson() : "NULL");
 
-                assertThat(d).isNotNull();
-                assertThat(d.getDiagnostics()).isNotNull();
-                assertThat(d.getDiagnostics().size()).isEqualTo(this.writeableRegions.size());
+                assertThat(ctx).isNotNull();
+                assertThat(ctx.getDiagnostics()).isNotNull();
+                assertThat(ctx.getDiagnostics().size()).isEqualTo(this.writeableRegions.size());
+                assertThat(ctx.getContactedRegionNames().size()).isEqualTo(this.writeableRegions.size());
+            };
+
+        Consumer<CosmosDiagnosticsContext> validateDiagnosticsContextHasDiagnosticsForOnlyFirstRegion =
+            (ctx) -> {
+                logger.info(
+                    "Diagnostics Context to evaluate: {}",
+                    ctx != null ? ctx.toJson() : "NULL");
+
+                assertThat(ctx).isNotNull();
+                assertThat(ctx.getDiagnostics()).isNotNull();
+                assertThat(ctx.getDiagnostics().size()).isEqualTo (1);
+                assertThat(ctx.getContactedRegionNames().size()).isEqualTo(1);
+                assertThat(ctx.getContactedRegionNames().iterator().next())
+                    .isEqualTo(this.writeableRegions.get(0).toLowerCase(Locale.ROOT));
             };
 
         return new Object[][] {
             new Object[] {
                 "404-1002_AllRegions_RemotePreferred",
                 Duration.ofSeconds(1),
-                defaultAvailabilityStrategy,
+                eagerThresholdAvailabilityStrategy,
                 CosmosRegionSwitchHint.REMOTE_REGION_PREFERRED,
                 sameDocumentIdJustCreated,
                 injectReadSessionNotAvailableIntoAllRegions,
                 validateStatusCodeIsReadSessionNotAvailableError,
                 validateDiagnosticsContextHasDiagnosticsForAllRegions
             },
-            /*new Object[] {
+            new Object[] {
                 "404-1002_OnlyFirstRegion_RemotePreferred",
                 Duration.ofSeconds(1),
                 eagerThresholdAvailabilityStrategy,
@@ -209,7 +228,17 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 injectReadSessionNotAvailableIntoFirstRegionOnly,
                 expectedStatusCode200Ok,
                 validateDiagnosticsContextHasDiagnosticsForAllRegions
-            },*/
+            },
+            new Object[] {
+                "404-1002_AllExceptFirstRegion_RemotePreferred",
+                Duration.ofSeconds(1),
+                defaultAvailabilityStrategy,
+                CosmosRegionSwitchHint.REMOTE_REGION_PREFERRED,
+                sameDocumentIdJustCreated,
+                injectReadSessionNotAvailableIntoAllExceptFirstRegion,
+                expectedStatusCode200Ok,
+                validateDiagnosticsContextHasDiagnosticsForOnlyFirstRegion
+            },
         };
     }
 

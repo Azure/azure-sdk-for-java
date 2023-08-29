@@ -147,9 +147,7 @@ public class ClientSideRequestStatistics {
                     request.requestContext.getEndToEndOperationLatencyPolicyConfig().toString();
             }
 
-            if (request.requestContext.getExcludeRegions() != null) {
-                locationEndPoint = request.requestContext.locationEndpointToRoute;
-            }
+            locationEndPoint = request.requestContext.locationEndpointToRoute;
 
             List<String> excludedRegions = request.requestContext.getExcludeRegions();
             if (excludedRegions != null && !excludedRegions.isEmpty()) {
