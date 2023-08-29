@@ -127,8 +127,9 @@
   <build>
     <plugins>
       <plugin>
-        <artifactId>maven-resources-plugin</artifactId> <!-- {x-version-update;org.apache.maven.plugins:maven-resources-plugin;external_dependency} -->
-        <version>3.3.0</version>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-resources-plugin</artifactId>
+        <version>3.3.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-resources-plugin;external_dependency} -->
         <executions>
           <execution>
             <id>copy-resources</id>
@@ -137,20 +138,10 @@
               <goal>copy-resources</goal>
             </goals>
             <configuration>
+              <outputDirectory>${basedir}/target/test-classes</outputDirectory>
               <resources>
                 <resource>
-                  <directory>src/test/java</directory>
-                  <filtering>true</filtering>
-                  <excludes>
-                    <exclude>**/*.der</exclude>
-                  </excludes>
-                </resource>
-                <resource>
-                  <directory>src/test/java</directory>
-                  <filtering>false</filtering>
-                  <includes>
-                    <include>**/*.der</include>
-                  </includes>
+                  <directory>${basedir}/src/test/resources</directory>
                 </resource>
               </resources>
             </configuration>
