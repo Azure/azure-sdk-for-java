@@ -19,6 +19,10 @@ public final class BackendReconnectContract extends ProxyResource {
     @JsonProperty(value = "properties")
     private BackendReconnectProperties innerProperties;
 
+    /** Creates an instance of BackendReconnectContract class. */
+    public BackendReconnectContract() {
+    }
+
     /**
      * Get the innerProperties property: Reconnect request properties.
      *

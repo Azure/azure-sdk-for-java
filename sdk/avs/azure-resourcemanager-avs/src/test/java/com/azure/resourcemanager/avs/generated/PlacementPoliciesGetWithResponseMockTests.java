@@ -32,7 +32,7 @@ public final class PlacementPoliciesGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"type\":\"PlacementPolicyProperties\",\"state\":\"Enabled\",\"displayName\":\"fgrwsdpgratzvz\",\"provisioningState\":\"Updating\"},\"id\":\"byvi\",\"name\":\"tctbrxkjzwrgxffm\",\"type\":\"hkwfbkgozxwop\"}";
+            "{\"properties\":{\"type\":\"PlacementPolicyProperties\",\"state\":\"Disabled\",\"displayName\":\"xcdglj\",\"provisioningState\":\"Deleting\"},\"id\":\"euachtomfl\",\"name\":\"ytswfp\",\"type\":\"mdgycxn\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -63,10 +63,10 @@ public final class PlacementPoliciesGetWithResponseMockTests {
         PlacementPolicy response =
             manager
                 .placementPolicies()
-                .getWithResponse("zruwn", "qxpxiwfcngjsaa", "iixtmkzj", "kv", com.azure.core.util.Context.NONE)
+                .getWithResponse("mzegjon", "hj", "rwgdnqzbrfks", "zhzmtksjci", com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals(PlacementPolicyState.ENABLED, response.properties().state());
-        Assertions.assertEquals("fgrwsdpgratzvz", response.properties().displayName());
+        Assertions.assertEquals(PlacementPolicyState.DISABLED, response.properties().state());
+        Assertions.assertEquals("xcdglj", response.properties().displayName());
     }
 }

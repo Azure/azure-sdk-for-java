@@ -4,13 +4,12 @@
 
 package com.azure.resourcemanager.apimanagement.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.apimanagement.models.PolicyIdName;
 
 /** Samples for ApiPolicy GetEntityTag. */
 public final class ApiPolicyGetEntityTagSamples {
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementHeadApiPolicy.json
+     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementHeadApiPolicy.json
      */
     /**
      * Sample code: ApiManagementHeadApiPolicy.
@@ -22,6 +21,10 @@ public final class ApiPolicyGetEntityTagSamples {
         manager
             .apiPolicies()
             .getEntityTagWithResponse(
-                "rg1", "apimService1", "57d1f7558aa04f15146d9d8a", PolicyIdName.POLICY, Context.NONE);
+                "rg1",
+                "apimService1",
+                "57d1f7558aa04f15146d9d8a",
+                PolicyIdName.POLICY,
+                com.azure.core.util.Context.NONE);
     }
 }

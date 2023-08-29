@@ -21,20 +21,7 @@ public interface PoliciesClient {
     /**
      * Lists all the Global Policy definitions of the Api Management service.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param serviceName The name of the API Management service.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of the list policy operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    PolicyCollectionInner listByService(String resourceGroupName, String serviceName);
-
-    /**
-     * Lists all the Global Policy definitions of the Api Management service.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -47,22 +34,22 @@ public interface PoliciesClient {
         String resourceGroupName, String serviceName, Context context);
 
     /**
-     * Gets the entity state (Etag) version of the Global policy definition in the Api Management service.
+     * Lists all the Global Policy definitions of the Api Management service.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
-     * @param policyId The identifier of the Policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of the list policy operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void getEntityTag(String resourceGroupName, String serviceName, PolicyIdName policyId);
+    PolicyCollectionInner listByService(String resourceGroupName, String serviceName);
 
     /**
      * Gets the entity state (Etag) version of the Global policy definition in the Api Management service.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param policyId The identifier of the Policy.
      * @param context The context to associate with this operation.
@@ -76,23 +63,22 @@ public interface PoliciesClient {
         String resourceGroupName, String serviceName, PolicyIdName policyId, Context context);
 
     /**
-     * Get the Global policy definition of the Api Management service.
+     * Gets the entity state (Etag) version of the Global policy definition in the Api Management service.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param policyId The identifier of the Policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Global policy definition of the Api Management service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PolicyContractInner get(String resourceGroupName, String serviceName, PolicyIdName policyId);
+    void getEntityTag(String resourceGroupName, String serviceName, PolicyIdName policyId);
 
     /**
      * Get the Global policy definition of the Api Management service.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param policyId The identifier of the Policy.
      * @param format Policy Export Format.
@@ -111,25 +97,23 @@ public interface PoliciesClient {
         Context context);
 
     /**
-     * Creates or updates the global policy configuration of the Api Management service.
+     * Get the Global policy definition of the Api Management service.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param policyId The identifier of the Policy.
-     * @param parameters The policy contents to apply.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return policy Contract details.
+     * @return the Global policy definition of the Api Management service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PolicyContractInner createOrUpdate(
-        String resourceGroupName, String serviceName, PolicyIdName policyId, PolicyContractInner parameters);
+    PolicyContractInner get(String resourceGroupName, String serviceName, PolicyIdName policyId);
 
     /**
      * Creates or updates the global policy configuration of the Api Management service.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param policyId The identifier of the Policy.
      * @param parameters The policy contents to apply.
@@ -150,24 +134,25 @@ public interface PoliciesClient {
         Context context);
 
     /**
-     * Deletes the global policy configuration of the Api Management Service.
+     * Creates or updates the global policy configuration of the Api Management service.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param policyId The identifier of the Policy.
-     * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * @param parameters The policy contents to apply.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return policy Contract details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String resourceGroupName, String serviceName, PolicyIdName policyId, String ifMatch);
+    PolicyContractInner createOrUpdate(
+        String resourceGroupName, String serviceName, PolicyIdName policyId, PolicyContractInner parameters);
 
     /**
      * Deletes the global policy configuration of the Api Management Service.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param policyId The identifier of the Policy.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
@@ -181,4 +166,19 @@ public interface PoliciesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<Void> deleteWithResponse(
         String resourceGroupName, String serviceName, PolicyIdName policyId, String ifMatch, Context context);
+
+    /**
+     * Deletes the global policy configuration of the Api Management Service.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serviceName The name of the API Management service.
+     * @param policyId The identifier of the Policy.
+     * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
+     *     request or it should be * for unconditional update.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void delete(String resourceGroupName, String serviceName, PolicyIdName policyId, String ifMatch);
 }

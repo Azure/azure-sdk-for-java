@@ -19,6 +19,10 @@ public final class PortalRevisionContractInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private PortalRevisionContractProperties innerProperties;
 
+    /** Creates an instance of PortalRevisionContractInner class. */
+    public PortalRevisionContractInner() {
+    }
+
     /**
      * Get the innerProperties property: Properties of the portal revisions.
      *

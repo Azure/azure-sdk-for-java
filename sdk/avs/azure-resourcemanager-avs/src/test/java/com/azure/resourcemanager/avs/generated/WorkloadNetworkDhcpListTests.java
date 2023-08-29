@@ -13,7 +13,7 @@ public final class WorkloadNetworkDhcpListTests {
         WorkloadNetworkDhcpList model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"properties\":{\"dhcpType\":\"WorkloadNetworkDhcpEntity\",\"displayName\":\"ualupjmkh\",\"segments\":[],\"provisioningState\":\"Building\",\"revision\":416543254607758865},\"id\":\"wsrtjriplrbpbe\",\"name\":\"tghfgblcgwxzvl\",\"type\":\"qhjk\"}],\"nextLink\":\"gibtnm\"}")
+                    "{\"value\":[{\"properties\":{\"dhcpType\":\"WorkloadNetworkDhcpEntity\",\"displayName\":\"gjltdtbnnhado\",\"segments\":[\"kvci\",\"hnvpamqgxq\",\"u\"],\"provisioningState\":\"Canceled\",\"revision\":5551509476153562500},\"id\":\"ggxkallatmelwuip\",\"name\":\"ccjzkzivgvv\",\"type\":\"nayrhyrnxxmueedn\"},{\"properties\":{\"dhcpType\":\"WorkloadNetworkDhcpEntity\",\"displayName\":\"v\",\"segments\":[\"wq\",\"tchealmf\",\"tdaaygdvwvg\"],\"provisioningState\":\"Updating\",\"revision\":492065479137109444},\"id\":\"xrtfudxep\",\"name\":\"gyqagvrvmnpkuk\",\"type\":\"himdbl\"}],\"nextLink\":\"wi\"}")
                 .toObject(WorkloadNetworkDhcpList.class);
     }
 

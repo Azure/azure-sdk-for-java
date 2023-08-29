@@ -16,6 +16,10 @@ public final class SubscriptionsDelegationSettingsProperties {
     @JsonProperty(value = "enabled")
     private Boolean enabled;
 
+    /** Creates an instance of SubscriptionsDelegationSettingsProperties class. */
+    public SubscriptionsDelegationSettingsProperties() {
+    }
+
     /**
      * Get the enabled property: Enable or disable delegation for subscriptions.
      *

@@ -17,11 +17,11 @@ public final class DatastoreInnerTests {
         DatastoreInner model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"provisioningState\":\"Creating\",\"netAppVolume\":{\"id\":\"vjrbirphxepcyvah\"},\"diskPoolVolume\":{\"targetId\":\"ljkyqxjvuuj\",\"lunName\":\"gidokgjljyoxgvcl\",\"mountOption\":\"ATTACH\",\"path\":\"ncghkje\"},\"status\":\"Accessible\"},\"id\":\"hbijhtxfvgxb\",\"name\":\"smx\",\"type\":\"eh\"}")
+                    "{\"properties\":{\"provisioningState\":\"Pending\",\"netAppVolume\":{\"id\":\"slqb\"},\"diskPoolVolume\":{\"targetId\":\"fxoblytkb\",\"lunName\":\"mpew\",\"mountOption\":\"ATTACH\",\"path\":\"krvrns\"},\"status\":\"DeadOrError\"},\"id\":\"q\",\"name\":\"ohxcrsbfova\",\"type\":\"rruvwbhsq\"}")
                 .toObject(DatastoreInner.class);
-        Assertions.assertEquals("vjrbirphxepcyvah", model.netAppVolume().id());
-        Assertions.assertEquals("ljkyqxjvuuj", model.diskPoolVolume().targetId());
-        Assertions.assertEquals("gidokgjljyoxgvcl", model.diskPoolVolume().lunName());
+        Assertions.assertEquals("slqb", model.netAppVolume().id());
+        Assertions.assertEquals("fxoblytkb", model.diskPoolVolume().targetId());
+        Assertions.assertEquals("mpew", model.diskPoolVolume().lunName());
         Assertions.assertEquals(MountOptionEnum.ATTACH, model.diskPoolVolume().mountOption());
     }
 
@@ -29,16 +29,16 @@ public final class DatastoreInnerTests {
     public void testSerialize() throws Exception {
         DatastoreInner model =
             new DatastoreInner()
-                .withNetAppVolume(new NetAppVolume().withId("vjrbirphxepcyvah"))
+                .withNetAppVolume(new NetAppVolume().withId("slqb"))
                 .withDiskPoolVolume(
                     new DiskPoolVolume()
-                        .withTargetId("ljkyqxjvuuj")
-                        .withLunName("gidokgjljyoxgvcl")
+                        .withTargetId("fxoblytkb")
+                        .withLunName("mpew")
                         .withMountOption(MountOptionEnum.ATTACH));
         model = BinaryData.fromObject(model).toObject(DatastoreInner.class);
-        Assertions.assertEquals("vjrbirphxepcyvah", model.netAppVolume().id());
-        Assertions.assertEquals("ljkyqxjvuuj", model.diskPoolVolume().targetId());
-        Assertions.assertEquals("gidokgjljyoxgvcl", model.diskPoolVolume().lunName());
+        Assertions.assertEquals("slqb", model.netAppVolume().id());
+        Assertions.assertEquals("fxoblytkb", model.diskPoolVolume().targetId());
+        Assertions.assertEquals("mpew", model.diskPoolVolume().lunName());
         Assertions.assertEquals(MountOptionEnum.ATTACH, model.diskPoolVolume().mountOption());
     }
 }

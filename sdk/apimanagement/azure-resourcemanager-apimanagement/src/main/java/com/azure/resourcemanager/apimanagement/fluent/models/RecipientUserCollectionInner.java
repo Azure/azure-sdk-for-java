@@ -29,6 +29,10 @@ public final class RecipientUserCollectionInner {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of RecipientUserCollectionInner class. */
+    public RecipientUserCollectionInner() {
+    }
+
     /**
      * Get the value property: Page values.
      *

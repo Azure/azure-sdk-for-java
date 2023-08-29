@@ -13,26 +13,7 @@ public interface ApiExports {
      * Gets the details of the API specified by its identifier in the format specified to the Storage Blob with SAS Key
      * valid for 5 minutes.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param serviceName The name of the API Management service.
-     * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
-     *     revision has ;rev=n as a suffix where n is the revision number.
-     * @param format Format in which to export the Api Details to the Storage Blob with Sas Key valid for 5 minutes.
-     * @param export Query parameter required to export the API details.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of the API specified by its identifier in the format specified to the Storage Blob with SAS
-     *     Key valid for 5 minutes.
-     */
-    ApiExportResult get(
-        String resourceGroupName, String serviceName, String apiId, ExportFormat format, ExportApi export);
-
-    /**
-     * Gets the details of the API specified by its identifier in the format specified to the Storage Blob with SAS Key
-     * valid for 5 minutes.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
      *     revision has ;rev=n as a suffix where n is the revision number.
@@ -52,4 +33,23 @@ public interface ApiExports {
         ExportFormat format,
         ExportApi export,
         Context context);
+
+    /**
+     * Gets the details of the API specified by its identifier in the format specified to the Storage Blob with SAS Key
+     * valid for 5 minutes.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serviceName The name of the API Management service.
+     * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
+     *     revision has ;rev=n as a suffix where n is the revision number.
+     * @param format Format in which to export the Api Details to the Storage Blob with Sas Key valid for 5 minutes.
+     * @param export Query parameter required to export the API details.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the details of the API specified by its identifier in the format specified to the Storage Blob with SAS
+     *     Key valid for 5 minutes.
+     */
+    ApiExportResult get(
+        String resourceGroupName, String serviceName, String apiId, ExportFormat format, ExportApi export);
 }

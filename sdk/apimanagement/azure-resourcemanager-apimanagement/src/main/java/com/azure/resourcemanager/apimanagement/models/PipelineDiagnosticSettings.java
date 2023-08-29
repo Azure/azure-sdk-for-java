@@ -22,6 +22,10 @@ public final class PipelineDiagnosticSettings {
     @JsonProperty(value = "response")
     private HttpMessageDiagnostic response;
 
+    /** Creates an instance of PipelineDiagnosticSettings class. */
+    public PipelineDiagnosticSettings() {
+    }
+
     /**
      * Get the request property: Diagnostic settings for request.
      *

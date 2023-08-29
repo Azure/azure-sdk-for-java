@@ -18,6 +18,10 @@ public final class LoggerUpdateContract {
     @JsonProperty(value = "properties")
     private LoggerUpdateParameters innerProperties;
 
+    /** Creates an instance of LoggerUpdateContract class. */
+    public LoggerUpdateContract() {
+    }
+
     /**
      * Get the innerProperties property: Logger entity update contract properties.
      *

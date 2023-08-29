@@ -11,11 +11,15 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class ApiExportResultValue {
     /*
-     * Link to the Storage Blob containing the result of the export operation.
-     * The Blob Uri is only valid for 5 minutes.
+     * Link to the Storage Blob containing the result of the export operation. The Blob Uri is only valid for 5
+     * minutes.
      */
     @JsonProperty(value = "link")
     private String link;
+
+    /** Creates an instance of ApiExportResultValue class. */
+    public ApiExportResultValue() {
+    }
 
     /**
      * Get the link property: Link to the Storage Blob containing the result of the export operation. The Blob Uri is

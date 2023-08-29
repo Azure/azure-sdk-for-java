@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.apimanagement.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.apimanagement.models.KeyType;
 import com.azure.resourcemanager.apimanagement.models.UserTokenParameters;
 import java.time.OffsetDateTime;
@@ -12,7 +11,7 @@ import java.time.OffsetDateTime;
 /** Samples for User GetSharedAccessToken. */
 public final class UserGetSharedAccessTokenSamples {
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementUserToken.json
+     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementUserToken.json
      */
     /**
      * Sample code: ApiManagementUserToken.
@@ -29,6 +28,6 @@ public final class UserGetSharedAccessTokenSamples {
                 new UserTokenParameters()
                     .withKeyType(KeyType.PRIMARY)
                     .withExpiry(OffsetDateTime.parse("2019-04-21T00:44:24.2845269Z")),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

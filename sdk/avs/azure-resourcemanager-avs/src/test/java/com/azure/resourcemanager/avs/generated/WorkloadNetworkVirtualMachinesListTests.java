@@ -13,7 +13,7 @@ public final class WorkloadNetworkVirtualMachinesListTests {
         WorkloadNetworkVirtualMachinesList model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"properties\":{\"displayName\":\"zpswiydmc\",\"vmType\":\"EDGE\"},\"id\":\"zdxss\",\"name\":\"dbzm\",\"type\":\"vdfznudaodvxzb\"},{\"properties\":{\"displayName\":\"lylpstdb\",\"vmType\":\"SERVICE\"},\"id\":\"srzdzucerscdn\",\"name\":\"nevf\",\"type\":\"wjmy\"}],\"nextLink\":\"dsslswt\"}")
+                    "{\"value\":[{\"properties\":{\"displayName\":\"szzcmrvexztv\",\"vmType\":\"SERVICE\"},\"id\":\"gsfraoyzkoow\",\"name\":\"lmnguxaw\",\"type\":\"aldsy\"},{\"properties\":{\"displayName\":\"imerqfobwyznk\",\"vmType\":\"REGULAR\"},\"id\":\"utwpfhp\",\"name\":\"gmhrskdsnfdsdoak\",\"type\":\"tdlmkkzevd\"},{\"properties\":{\"displayName\":\"wpusdsttwvogv\",\"vmType\":\"REGULAR\"},\"id\":\"jdcngqqm\",\"name\":\"akufgmjz\",\"type\":\"wr\"},{\"properties\":{\"displayName\":\"twaenuuzko\",\"vmType\":\"EDGE\"},\"id\":\"inrfdwoyu\",\"name\":\"hziuiefozbhdms\",\"type\":\"l\"}],\"nextLink\":\"qhoftrmaequiah\"}")
                 .toObject(WorkloadNetworkVirtualMachinesList.class);
     }
 

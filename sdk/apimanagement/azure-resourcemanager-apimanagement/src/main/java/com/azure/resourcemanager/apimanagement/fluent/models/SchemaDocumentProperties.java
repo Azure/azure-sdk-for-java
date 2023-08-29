@@ -11,25 +11,26 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class SchemaDocumentProperties {
     /*
-     * Json escaped string defining the document representing the Schema. Used
-     * for schemas other than Swagger/OpenAPI.
+     * Json escaped string defining the document representing the Schema. Used for schemas other than Swagger/OpenAPI.
      */
     @JsonProperty(value = "value")
     private String value;
 
     /*
-     * Types definitions. Used for Swagger/OpenAPI v1 schemas only, null
-     * otherwise.
+     * Types definitions. Used for Swagger/OpenAPI v1 schemas only, null otherwise.
      */
     @JsonProperty(value = "definitions")
     private Object definitions;
 
     /*
-     * Types definitions. Used for Swagger/OpenAPI v2/v3 schemas only, null
-     * otherwise.
+     * Types definitions. Used for Swagger/OpenAPI v2/v3 schemas only, null otherwise.
      */
     @JsonProperty(value = "components")
     private Object components;
+
+    /** Creates an instance of SchemaDocumentProperties class. */
+    public SchemaDocumentProperties() {
+    }
 
     /**
      * Get the value property: Json escaped string defining the document representing the Schema. Used for schemas other

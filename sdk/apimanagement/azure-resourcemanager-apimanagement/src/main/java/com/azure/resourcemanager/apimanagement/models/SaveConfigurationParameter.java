@@ -17,6 +17,10 @@ public final class SaveConfigurationParameter {
     @JsonProperty(value = "properties")
     private SaveConfigurationParameterProperties innerProperties;
 
+    /** Creates an instance of SaveConfigurationParameter class. */
+    public SaveConfigurationParameter() {
+    }
+
     /**
      * Get the innerProperties property: Properties of the Save Configuration Parameters.
      *

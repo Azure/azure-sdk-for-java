@@ -31,22 +31,13 @@ public final class DelegationSettingsImpl implements DelegationSettings {
         this.serviceManager = serviceManager;
     }
 
-    public void getEntityTag(String resourceGroupName, String serviceName) {
-        this.serviceClient().getEntityTag(resourceGroupName, serviceName);
-    }
-
     public DelegationSettingsGetEntityTagResponse getEntityTagWithResponse(
         String resourceGroupName, String serviceName, Context context) {
         return this.serviceClient().getEntityTagWithResponse(resourceGroupName, serviceName, context);
     }
 
-    public PortalDelegationSettings get(String resourceGroupName, String serviceName) {
-        PortalDelegationSettingsInner inner = this.serviceClient().get(resourceGroupName, serviceName);
-        if (inner != null) {
-            return new PortalDelegationSettingsImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+    public void getEntityTag(String resourceGroupName, String serviceName) {
+        this.serviceClient().getEntityTag(resourceGroupName, serviceName);
     }
 
     public Response<PortalDelegationSettings> getWithResponse(
@@ -64,9 +55,13 @@ public final class DelegationSettingsImpl implements DelegationSettings {
         }
     }
 
-    public void update(
-        String resourceGroupName, String serviceName, String ifMatch, PortalDelegationSettingsInner parameters) {
-        this.serviceClient().update(resourceGroupName, serviceName, ifMatch, parameters);
+    public PortalDelegationSettings get(String resourceGroupName, String serviceName) {
+        PortalDelegationSettingsInner inner = this.serviceClient().get(resourceGroupName, serviceName);
+        if (inner != null) {
+            return new PortalDelegationSettingsImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public Response<Void> updateWithResponse(
@@ -78,15 +73,9 @@ public final class DelegationSettingsImpl implements DelegationSettings {
         return this.serviceClient().updateWithResponse(resourceGroupName, serviceName, ifMatch, parameters, context);
     }
 
-    public PortalDelegationSettings createOrUpdate(
-        String resourceGroupName, String serviceName, PortalDelegationSettingsInner parameters) {
-        PortalDelegationSettingsInner inner =
-            this.serviceClient().createOrUpdate(resourceGroupName, serviceName, parameters);
-        if (inner != null) {
-            return new PortalDelegationSettingsImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+    public void update(
+        String resourceGroupName, String serviceName, String ifMatch, PortalDelegationSettingsInner parameters) {
+        this.serviceClient().update(resourceGroupName, serviceName, ifMatch, parameters);
     }
 
     public Response<PortalDelegationSettings> createOrUpdateWithResponse(
@@ -110,11 +99,12 @@ public final class DelegationSettingsImpl implements DelegationSettings {
         }
     }
 
-    public PortalSettingValidationKeyContract listSecrets(String resourceGroupName, String serviceName) {
-        PortalSettingValidationKeyContractInner inner =
-            this.serviceClient().listSecrets(resourceGroupName, serviceName);
+    public PortalDelegationSettings createOrUpdate(
+        String resourceGroupName, String serviceName, PortalDelegationSettingsInner parameters) {
+        PortalDelegationSettingsInner inner =
+            this.serviceClient().createOrUpdate(resourceGroupName, serviceName, parameters);
         if (inner != null) {
-            return new PortalSettingValidationKeyContractImpl(inner, this.manager());
+            return new PortalDelegationSettingsImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -130,6 +120,16 @@ public final class DelegationSettingsImpl implements DelegationSettings {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new PortalSettingValidationKeyContractImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public PortalSettingValidationKeyContract listSecrets(String resourceGroupName, String serviceName) {
+        PortalSettingValidationKeyContractInner inner =
+            this.serviceClient().listSecrets(resourceGroupName, serviceName);
+        if (inner != null) {
+            return new PortalSettingValidationKeyContractImpl(inner, this.manager());
         } else {
             return null;
         }

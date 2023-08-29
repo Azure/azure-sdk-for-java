@@ -17,6 +17,10 @@ public final class AccessInformationContractInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private AccessInformationContractProperties innerProperties;
 
+    /** Creates an instance of AccessInformationContractInner class. */
+    public AccessInformationContractInner() {
+    }
+
     /**
      * Get the innerProperties property: AccessInformation entity contract properties.
      *
