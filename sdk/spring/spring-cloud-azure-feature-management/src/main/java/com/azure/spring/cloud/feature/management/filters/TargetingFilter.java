@@ -260,6 +260,9 @@ public class TargetingFilter implements FeatureFilter {
     }
 
     private boolean isTargeted(String contextId, double percentage) {
+        if (percentage == 100) {
+            return true;
+        }
         return isTargetedPercentage(contextId) < percentage;
     }
 

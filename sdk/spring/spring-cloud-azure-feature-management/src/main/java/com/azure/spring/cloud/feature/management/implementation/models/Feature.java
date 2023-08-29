@@ -5,6 +5,7 @@ package com.azure.spring.cloud.feature.management.implementation.models;
 import static com.azure.spring.cloud.feature.management.implementation.FeatureManagementConstants.DEFAULT_REQUIREMENT_TYPE;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import com.azure.spring.cloud.feature.management.models.FeatureFilterEvaluationContext;
@@ -24,10 +25,16 @@ public class Feature {
     private Boolean evaluate = true;
 
     @JsonProperty("requirement-type")
-    private String requirementType = DEFAULT_REQUIREMENT_TYPE;;
+    private String requirementType = DEFAULT_REQUIREMENT_TYPE;
 
     @JsonProperty("enabled-for")
     private Map<Integer, FeatureFilterEvaluationContext> enabledFor;
+
+    @JsonProperty("allocation")
+    private Allocation allocation;
+
+    @JsonProperty("variants")
+    private List<VariantReference> variants;
 
     /**
      * @return the key
@@ -83,6 +90,34 @@ public class Feature {
      */
     public void setRequirementType(String requirementType) {
         this.requirementType = requirementType;
+    }
+
+    /**
+     * @return the allocation
+     */
+    public Allocation getAllocation() {
+        return allocation;
+    }
+
+    /**
+     * @param allocation the allocation to set
+     */
+    public void setAllocation(Allocation allocation) {
+        this.allocation = allocation;
+    }
+
+    /**
+     * @return the variants
+     */
+    public List<VariantReference> getVariants() {
+        return variants;
+    }
+
+    /**
+     * @param variants the variants to set
+     */
+    public void setVariants(List<VariantReference> variants) {
+        this.variants = variants;
     }
 
 }
