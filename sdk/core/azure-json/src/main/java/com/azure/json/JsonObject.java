@@ -328,7 +328,7 @@ public class JsonObject extends JsonDataStructure {
         while(token != JsonToken.END_OBJECT) {
 
             //todo remove this debug line
-            System.out.printf("Token: %s%n", token);
+            //System.out.printf("Token: %s%n", token);
 
             switch (token) {
 
