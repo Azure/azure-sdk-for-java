@@ -19,22 +19,22 @@ import org.springframework.context.annotation.Configuration;
  * Config for Azure Telemetry
  */
 @Configuration(proxyBeanMethods = false)
-public class AzureTelemetryConfig {
+public class AzureSpringMonitorConfig {
 
-    private static final ClientLogger LOGGER = new ClientLogger(AzureTelemetryConfig.class);
+    private static final ClientLogger LOGGER = new ClientLogger(AzureSpringMonitorConfig.class);
 
     private static final String CONNECTION_STRING_ERROR_MESSAGE = "Unable to find the Application Insights connection string.";
 
     private final Optional<AzureMonitorExporterBuilder> azureMonitorExporterBuilderOpt;
 
     /**
-     * Create an instance of AzureTelemetryConfig
+     * Create an instance of AzureSpringMonitorConfig
      * @param connectionStringSysProp connection string system property
-     * @param azureTelemetryActivation a instance of AzureTelemetryActivation
+     * @param azureSpringMonitorActivation a instance of AzureTelemetryActivation
      * @param httpPipeline an instance of HttpPipeline
      */
-    public AzureTelemetryConfig(@Value("${applicationinsights.connection.string:}") String connectionStringSysProp, AzureTelemetryActivation azureTelemetryActivation, ObjectProvider<HttpPipeline> httpPipeline) {
-        if (azureTelemetryActivation.isTrue()) {
+    public AzureSpringMonitorConfig(@Value("${applicationinsights.connection.string:}") String connectionStringSysProp, AzureSpringMonitorActivation azureSpringMonitorActivation, ObjectProvider<HttpPipeline> httpPipeline) {
+        if (azureSpringMonitorActivation.isTrue()) {
             this.azureMonitorExporterBuilderOpt = createAzureMonitorExporterBuilder(connectionStringSysProp, httpPipeline);
             if (!isNativeRuntimeExecution()) {
                 LOGGER.warning("You are using Application Insights for Spring in a non-native GraalVM runtime environment. We recommend using the Application Insights Java agent.");
@@ -77,7 +77,7 @@ public class AzureTelemetryConfig {
      * @return MetricExporter
      */
     @Bean
-    public MetricExporter metricExporter() {
+    public MetricExporter azureSpringMonitorMetricExporter() {
         if (!azureMonitorExporterBuilderOpt.isPresent()) {
             return null;
         }
@@ -89,7 +89,7 @@ public class AzureTelemetryConfig {
      * @return SpanExporter
      */
     @Bean
-    public SpanExporter spanExporter() {
+    public SpanExporter azureSpringMonitorSpanExporter() {
         if (!azureMonitorExporterBuilderOpt.isPresent()) {
             return null;
         }
@@ -101,7 +101,7 @@ public class AzureTelemetryConfig {
      * @return LogRecordExporter
      */
     @Bean
-    public LogRecordExporter logRecordExporter() {
+    public LogRecordExporter azureSpringMonitorlogRecordExporter() {
         if (!azureMonitorExporterBuilderOpt.isPresent()) {
             return null;
         }
