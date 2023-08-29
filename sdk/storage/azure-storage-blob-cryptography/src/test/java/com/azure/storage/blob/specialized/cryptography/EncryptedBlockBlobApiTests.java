@@ -75,6 +75,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
 import java.nio.file.OpenOption;
@@ -1648,6 +1649,37 @@ public class EncryptedBlockBlobApiTests extends BlobCryptographyTestBase {
                 .block()).getValue()).block();
 
         assertArrayEquals(byteBufferList.get(0).array(), downloadedData);
+    }
+
+    @ParameterizedTest
+    @MethodSource("encryptionDataCaseInsensitivitySupplier")
+    public void encryptionDataCaseInsensitivityDownloadToFile(String newKey, EncryptionVersion version)
+        throws IOException {
+        bec = getEncryptionClient(version, generateBlobName());
+        File file = getRandomFile(Constants.KB);
+        FileInputStream fileStream = new FileInputStream(file);
+        File outFile = getRandomFile(Constants.KB);
+        if (outFile.exists()) {
+            outFile.delete();
+        }
+        bec.upload(fileStream, file.length(), true);
+        // change casing of encryption data key
+        Map<String, String> metadata = bec.getProperties().getMetadata();
+        String encryptionData = metadata.get(ENCRYPTION_DATA_KEY);
+        Map<String, String> encryptionMetadata = new HashMap<>();
+        encryptionMetadata.put(newKey, encryptionData);
+        bec.setMetadata(encryptionMetadata);
+        // call with downloadToFile to test code path for non-specified BlobRange
+        bec.downloadToFile(outFile.toPath().toString(), true);
+        compareFiles(file, outFile, 0, file.length());
+        File outFile2 = getRandomFile(Constants.KB);
+        if (outFile2.exists()) {
+            outFile2.delete();
+        }
+        // now call downloadToFileWithResponse with BlobRange passed to ensure ranged download is working
+        bec.downloadToFileWithResponse(outFile2.toString(), new BlobRange(0, (long) Constants.KB), null, null, null,
+            false, null, Context.NONE);
+        compareFiles(file, outFile, 0, file.length());
     }
 
     private static Stream<Arguments> encryptionDataCaseInsensitivitySupplier() {
