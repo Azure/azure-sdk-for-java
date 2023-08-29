@@ -7,6 +7,7 @@
 ### Breaking Changes
 
 ### Bugs Fixed
+- Fixed bug where a blob's contents could not be encrypted if the metadata's key set on the blob had any uppercase letters. The metadata key is now able to handle any casing.
 
 ### Other Changes
 
