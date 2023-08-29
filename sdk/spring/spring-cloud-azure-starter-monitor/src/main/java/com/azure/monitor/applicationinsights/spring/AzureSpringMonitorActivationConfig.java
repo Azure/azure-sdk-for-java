@@ -7,18 +7,18 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * Config for AzureTelemetryActivation
+ * Config for AzureSpringMonitorActivation
  */
 @Configuration(proxyBeanMethods = false)
-public class AzureTelemetryActivationConfig {
+public class AzureSpringMonitorActivationConfig {
 
     /**
-     * Declare an AzureTelemetryActivation bean
-     * @return AzureTelemetryActivation
+     * Declare an AzureSpringMonitorActivation bean
+     * @return AzureSpringMonitorActivation
      */
     @Bean
-    public AzureTelemetryActivation azureTelemetryActivation() {
-        return new AzureTelemetryActivation();
+    public AzureSpringMonitorActivation azureSpringMonitorActivation() {
+        return new AzureSpringMonitorActivation();
     }
 
 

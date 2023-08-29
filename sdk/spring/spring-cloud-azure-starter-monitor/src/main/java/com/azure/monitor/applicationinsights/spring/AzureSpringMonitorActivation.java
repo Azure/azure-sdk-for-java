@@ -4,17 +4,17 @@
 package com.azure.monitor.applicationinsights.spring;
 
 /**
- * Azure telemetry activation
+ * Azure Azure Spring Monitor activation
  */
-public final class AzureTelemetryActivation {
+public final class AzureSpringMonitorActivation {
 
-    /** a flag to indicate if AzureTelemetry is activated or not. */
+    /** a flag to indicate if Azure Spring Monitor is activated or not. */
     private final boolean activated;
 
     /**
-     * Creates an instance of {@link AzureTelemetryActivation}.
+     * Creates an instance of {@link AzureSpringMonitorActivation}.
      */
-    public AzureTelemetryActivation() {
+    public AzureSpringMonitorActivation() {
         this.activated = true; // We leave the AzureTelemetryActivation class because it could be used to provide the ability
         // to disable the starter features
     }
