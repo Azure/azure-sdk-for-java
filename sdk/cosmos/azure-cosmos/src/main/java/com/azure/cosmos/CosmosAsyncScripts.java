@@ -5,6 +5,7 @@ package com.azure.cosmos;
 import com.azure.core.util.Context;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.OperationType;
+import com.azure.cosmos.implementation.RequestOptions;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.StoredProcedure;
 import com.azure.cosmos.implementation.Trigger;
@@ -566,10 +567,12 @@ public class CosmosAsyncScripts {
                                                                            CosmosStoredProcedureRequestOptions options,
                                                                            Context context) {
         String spanName = "createStoredProcedure." + container.getId();
-        Mono<CosmosStoredProcedureResponse> responseMono = createStoredProcedureInternal(sProc, options);
+        RequestOptions nonNullRequestOptions = options != null
+            ? ModelBridgeInternal.toRequestOptions(options)
+            : new RequestOptions();
+        Mono<CosmosStoredProcedureResponse> responseMono = createStoredProcedureInternal(sProc, nonNullRequestOptions);
         CosmosAsyncClient client = database.getClient();
-        CosmosDiagnosticsThresholds requestDiagnosticThresholds =
-            ModelBridgeInternal.toRequestOptions(options).getDiagnosticsThresholds();
+
         return client.getDiagnosticsProvider().traceEnabledCosmosResponsePublisher(
             responseMono,
             context,
@@ -580,16 +583,16 @@ public class CosmosAsyncScripts {
             null,
             OperationType.Create,
             ResourceType.StoredProcedure,
-            client.getEffectiveDiagnosticsThresholds(requestDiagnosticThresholds));
+            nonNullRequestOptions);
     }
 
     private Mono<CosmosStoredProcedureResponse> createStoredProcedureInternal(StoredProcedure sProc,
-                                                                           CosmosStoredProcedureRequestOptions options) {
+                                                                           RequestOptions nonNullRequestOptions) {
         return database.getDocClientWrapper()
             .createStoredProcedure(
                 container.getLink(),
                 sProc,
-                ModelBridgeInternal.toRequestOptions(options))
+                nonNullRequestOptions)
             .map(ModelBridgeInternal::createCosmosStoredProcedureResponse)
             .single();
     }
@@ -612,7 +615,7 @@ public class CosmosAsyncScripts {
             null,
             OperationType.Create,
             ResourceType.UserDefinedFunction,
-            client.getEffectiveDiagnosticsThresholds(null));
+            null);
     }
 
     private Mono<CosmosUserDefinedFunctionResponse> createUserDefinedFunctionInternal(
@@ -638,7 +641,7 @@ public class CosmosAsyncScripts {
             null,
             OperationType.Create,
             ResourceType.Trigger,
-            client.getEffectiveDiagnosticsThresholds(null));
+            null);
     }
 
     private Mono<CosmosTriggerResponse> createTriggerInternal(CosmosTriggerProperties properties) {

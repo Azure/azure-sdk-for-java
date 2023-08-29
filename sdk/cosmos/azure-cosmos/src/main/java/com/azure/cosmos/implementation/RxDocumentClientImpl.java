@@ -17,6 +17,7 @@ import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.SessionRetryOptions;
 import com.azure.cosmos.ThresholdBasedAvailabilityStrategy;
+import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.ImmutablePair;
 import com.azure.cosmos.implementation.batch.BatchResponseParser;
@@ -132,13 +133,21 @@ import static com.azure.cosmos.models.ModelBridgeInternal.serializeJsonToByteBuf
 public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorizationTokenProvider, CpuMemoryListener,
     DiagnosticsClientContext {
 
+    private final static List<String> EMPTY_REGION_LIST = UnmodifiableList.unmodifiableList(new ArrayList<>());
+
+    private final static List<URI> EMPTY_ENDPOINT_LIST = UnmodifiableList.unmodifiableList(new ArrayList<>());
+
     private final static
     ImplementationBridgeHelpers.CosmosDiagnosticsHelper.CosmosDiagnosticsAccessor diagnosticsAccessor =
         ImplementationBridgeHelpers.CosmosDiagnosticsHelper.getCosmosDiagnosticsAccessor();
 
     private final static
-    ImplementationBridgeHelpers.CosmosClientTelemetryConfigHelper.CosmosClientTelemetryConfigAccessor ctxAccessor =
+    ImplementationBridgeHelpers.CosmosClientTelemetryConfigHelper.CosmosClientTelemetryConfigAccessor telemetryCfgAccessor =
         ImplementationBridgeHelpers.CosmosClientTelemetryConfigHelper.getCosmosClientTelemetryConfigAccessor();
+
+    private final static
+    ImplementationBridgeHelpers.CosmosDiagnosticsContextHelper.CosmosDiagnosticsContextAccessor ctxAccessor =
+        ImplementationBridgeHelpers.CosmosDiagnosticsContextHelper.getCosmosDiagnosticsContextAccessor();
     private static final String tempMachineId = "uuid:" + UUID.randomUUID();
     private static final AtomicInteger activeClientsCnt = new AtomicInteger(0);
     private static final Map<String, Integer> clientMap = new ConcurrentHashMap<>();
@@ -506,7 +515,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
     @Override
     public CosmosDiagnostics createDiagnostics() {
-       return diagnosticsAccessor.create(this, ctxAccessor.getSamplingRate(this.clientTelemetryConfig));
+       return diagnosticsAccessor.create(this, telemetryCfgAccessor.getSamplingRate(this.clientTelemetryConfig));
     }
     private void initializeGatewayConfigurationReader() {
         this.gatewayConfigurationReader = new GatewayServiceConfigurationReader(this.globalEndpointManager);
@@ -3567,7 +3576,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     @Override
     public Mono<StoredProcedureResponse> executeStoredProcedure(String storedProcedureLink,
                                                                       RequestOptions options, List<Object> procedureParams) {
-        // TODO @fabianm wire up clientContext
         DocumentClientRetryPolicy documentClientRetryPolicy = this.resetSessionTokenRetryPolicy.getRequestPolicy(null);
         return ObservableHelper.inlineIfPossibleAsObs(() -> executeStoredProcedureInternal(storedProcedureLink, options, procedureParams, documentClientRetryPolicy), documentClientRetryPolicy);
     }
@@ -3577,7 +3585,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                                          ServerBatchRequest serverBatchRequest,
                                                          RequestOptions options,
                                                          boolean disableAutomaticIdGeneration) {
-        // TODO @fabianm wire up clientContext
         DocumentClientRetryPolicy documentClientRetryPolicy = this.resetSessionTokenRetryPolicy.getRequestPolicy(null);
         return ObservableHelper.inlineIfPossibleAsObs(() -> executeBatchRequestInternal(collectionLink, serverBatchRequest, options, documentClientRetryPolicy, disableAutomaticIdGeneration), documentClientRetryPolicy);
     }
@@ -5037,7 +5044,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             resourceType == ResourceType.Document,
             "This method can only be used for document point operations.");
 
-        CosmosEndToEndOperationLatencyPolicyConfig endToEndPolicyConfig = getEndToEndOperationLatencyPolicyConfig(nonNullRequestOptions);
+        CosmosEndToEndOperationLatencyPolicyConfig endToEndPolicyConfig =
+            getEndToEndOperationLatencyPolicyConfig(nonNullRequestOptions);
 
         List<String> orderedApplicableRegionsForSpeculation = getApplicableRegionsForSpeculation(
             endToEndPolicyConfig,
@@ -5094,8 +5102,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                         callback.apply(clonedOptions, endToEndPolicyConfig, diagnosticsFactory)
                                 .map(response -> new NonTransientPointOperationResult(response))
                                 .onErrorResume(
-                                    t -> isCosmosException(t),
-                                    t -> handleCosmosExceptionForHedging(t));
+                                    t -> isNonTransientCosmosException(t),
+                                    t -> Mono.just(
+                                        new NonTransientPointOperationResult(
+                                            Utils.as(Exceptions.unwrap(t), CosmosException.class))));
 
                     Duration delayForCrossRegionalRetry = (availabilityStrategy)
                         .getThreshold()
@@ -5106,7 +5116,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                     if (logger.isDebugEnabled()) {
                         monoList.add(
                             regionalCrossRegionRetryMono
-                                .doOnSubscribe(c -> logger.info("STARTING to process {} operation in region '{}'", operationType, region))
+                                .doOnSubscribe(c -> logger.debug("STARTING to process {} operation in region '{}'", operationType, region))
                                 .delaySubscription(delayForCrossRegionalRetry));
                     } else {
                         monoList.add(
@@ -5116,9 +5126,17 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 }
             });
 
+        // NOTE - merging diagnosticsFactory cannot only happen in
+        // doFinally operator because the doFinally operator is a side effect method -
+        // meaning it executes concurrently with firing the onComplete/onError signal
+        // doFinally is also triggered by cancellation
+        // So, to make sure merging the Context happens synchronously in line we
+        // have to ensure merging is happening on error/completion
+        // and also in doOnCancel.
         return Mono
             .firstWithValue(monoList)
             .flatMap(nonTransientResult -> {
+                diagnosticsFactory.merge(nonNullRequestOptions);
                 if (nonTransientResult.isError()) {
                     return Mono.error(nonTransientResult.exception);
                 }
@@ -5139,7 +5157,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
                         // collect latest CosmosException instance bubbling up for a region
                         if (innerException instanceof CosmosException) {
-                            return Utils.as(innerException, CosmosException.class);
+                            CosmosException cosmosException = Utils.as(innerException, CosmosException.class);
+                            diagnosticsFactory.merge(nonNullRequestOptions);
+                            return cosmosException;
                         } else if (exception instanceof NoSuchElementException) {
                             logger.trace(
                                 "Operation in {} completed with empty result because it was cancelled.",
@@ -5158,27 +5178,23 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                     }
                 }
 
+                diagnosticsFactory.merge(nonNullRequestOptions);
+
                 return exception;
             })
-            .doFinally(s -> diagnosticsFactory.merge());
+            .doOnCancel(() -> diagnosticsFactory.merge(nonNullRequestOptions));
     }
 
-    private static boolean isCosmosException(Throwable t) {
+    private static boolean isNonTransientCosmosException(Throwable t) {
         final Throwable unwrappedException = Exceptions.unwrap(t);
-        return unwrappedException instanceof CosmosException;
-    }
-
-    private static Mono<NonTransientPointOperationResult> handleCosmosExceptionForHedging(Throwable t) {
-        final CosmosException cosmosException = (CosmosException)Exceptions.unwrap(t);
-        if (isNonTransientResultForHedging(
-            cosmosException.getStatusCode(),
-            cosmosException.getSubStatusCode())) {
-            return Mono.just(new NonTransientPointOperationResult(cosmosException));
-        } else {
-            return Mono.error(cosmosException);
+        if (!(unwrappedException instanceof CosmosException)) {
+            return false;
         }
+        CosmosException cosmosException = Utils.as(unwrappedException, CosmosException.class);
+        return isNonTransientResultForHedging(
+            cosmosException.getStatusCode(),
+            cosmosException.getSubStatusCode());
     }
-
 
     private List<String> getEffectiveExcludedRegionsForHedging(
         List<String> initialExcludedRegions,
@@ -5261,12 +5277,12 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             return withoutNulls(this.globalEndpointManager.getApplicableWriteEndpoints(excludedRegions));
         }
 
-        return List.of();
+        return EMPTY_ENDPOINT_LIST;
     }
 
     private static List<URI> withoutNulls(List<URI> orderedEffectiveEndpointsList) {
         if (orderedEffectiveEndpointsList == null) {
-            return List.of();
+            return EMPTY_ENDPOINT_LIST;
         }
 
         int i = 0;
@@ -5289,19 +5305,19 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         RequestOptions options) {
 
         if (endToEndPolicyConfig == null || !endToEndPolicyConfig.isEnabled()) {
-            return List.of();
+            return EMPTY_REGION_LIST;
         }
 
         if (resourceType != ResourceType.Document) {
-            return List.of();
+            return EMPTY_REGION_LIST;
         }
 
         if (operationType.isWriteOperation() && !isIdempotentWriteRetriesEnabled) {
-            return List.of();
+            return EMPTY_REGION_LIST;
         }
 
         if (!(endToEndPolicyConfig.getAvailabilityStrategy() instanceof ThresholdBasedAvailabilityStrategy)) {
-            return List.of();
+            return EMPTY_REGION_LIST;
         }
 
         List<URI> endpoints = getApplicableEndPoints(operationType, options);
@@ -5377,10 +5393,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         @Override
         public CosmosDiagnostics createDiagnostics() {
-            if (this.isMerged) {
-                // TODO @fabianm - do we need this - or should we just return?
-                throw new IllegalStateException("Nota llowed to create new diagnostics after merging.");
-            }
+            assert !this.isMerged : "Not allowed to create new diagnostics after merging.";
+
             CosmosDiagnostics diagnostics = inner.createDiagnostics();
             createdDiagnostics.add(diagnostics);
             return diagnostics;
@@ -5391,34 +5405,45 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             return inner.getUserAgent();
         }
 
-        public void merge() {
+        public void merge(RequestOptions requestOptions) {
             if (isMerged) {
-                // TODO @fabianm - do we need this - or should we just return?
-                throw new IllegalStateException("Cannot merge diagnostics multiple times.");
+                return;
+            }
+
+            this.mergeCore(requestOptions);
+        }
+
+        private synchronized void mergeCore(RequestOptions requestOptions) {
+            if (isMerged) {
+                return;
             }
 
             this.isMerged = true;
-            HashSet<CosmosDiagnosticsContext> distinctContexts = new HashSet<>();
-            for (CosmosDiagnostics diagnostics : this.createdDiagnostics) {
-                if (diagnostics.getDiagnosticsContext() != null) {
-                    distinctContexts.add(diagnostics.getDiagnosticsContext());
+            CosmosDiagnosticsContext ctx = null;
+
+            if (requestOptions == null &&
+                requestOptions.getDiagnosticsContext() != null) {
+
+                ctx = requestOptions.getDiagnosticsContext();
+            } else {
+                for (CosmosDiagnostics diagnostics : this.createdDiagnostics) {
+                    if (diagnostics.getDiagnosticsContext() != null) {
+                        ctx = diagnostics.getDiagnosticsContext();
+                        break;
+                    }
                 }
             }
 
-            if (distinctContexts.size() > 1) {
-                // TODO @fabianm - do we need this - or should we just return?
-                throw new IllegalStateException("At most one CosmosDiagnosticsContext expected.");
+            if (ctx == null) {
+                return;
             }
 
-            if (distinctContexts.size() == 1) {
-                CosmosDiagnosticsContext ctx = distinctContexts.iterator().next();
-                for (CosmosDiagnostics diagnostics : this.createdDiagnostics) {
-                    if (diagnostics.getDiagnosticsContext() == null) {
-                        ImplementationBridgeHelpers
-                            .CosmosDiagnosticsContextHelper
-                            .getCosmosDiagnosticsContextAccessor()
-                            .addDiagnostics(ctx, diagnostics);
-                    }
+            for (CosmosDiagnostics diagnostics : this.createdDiagnostics) {
+                if (diagnostics.getDiagnosticsContext() == null) {
+                    ImplementationBridgeHelpers
+                        .CosmosDiagnosticsContextHelper
+                        .getCosmosDiagnosticsContextAccessor()
+                        .addDiagnostics(ctx, diagnostics);
                 }
             }
         }

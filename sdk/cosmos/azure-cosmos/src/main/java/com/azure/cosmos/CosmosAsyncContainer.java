@@ -410,7 +410,7 @@ public class CosmosAsyncContainer {
                                 readResponse,
                                 200,
                                 cosmosException.getRequestCharge(),
-                                this.isContentResponseOnWriteEffectivelyEnabled(options)));
+                                this.isContentResponseOnWriteEffectivelyEnabled(requestOptions)));
                         }
 
                         return Mono.error(cosmosException);
@@ -419,7 +419,7 @@ public class CosmosAsyncContainer {
     }
 
     private <T> Mono<CosmosItemResponse<T>> createItemWithTrackingId(
-        T item, CosmosItemRequestOptions options, String trackingId) {
+        T item, RequestOptions options, String trackingId) {
 
         checkNotNull(trackingId, "Argument 'trackingId' must not be null.");
 
@@ -444,8 +444,7 @@ public class CosmosAsyncContainer {
                 InternalObjectNode internalObjectNode = InternalObjectNode.fromObjectToInternalObjectNode(item);
                 String itemId = internalObjectNode.getId();
 
-                CosmosItemRequestOptions readRequestOptions = itemOptionsAccessor
-                    .clone(options);
+                RequestOptions readRequestOptions = new RequestOptions(options);
                 readRequestOptions.setConsistencyLevel(null);
 
                 @SuppressWarnings("unchecked")
@@ -465,14 +464,13 @@ public class CosmosAsyncContainer {
                             PartitionKeyDefinition pkDef = collection.getPartitionKey();
                             PartitionKeyInternal partitionKeyInternal = RxDocumentClientImpl
                                 .extractPartitionKeyValueFromDocument(internalObjectNode, pkDef);
-                            RequestOptions requestOptions = ModelBridgeInternal.toRequestOptions(readRequestOptions);
                             PartitionKey partitionKey = ImplementationBridgeHelpers
                                 .PartitionKeyHelper
                                     .getPartitionKeyAccessor()
                                     .toPartitionKey(partitionKeyInternal);
-                            requestOptions.setPartitionKey(partitionKey);
+                            readRequestOptions.setPartitionKey(partitionKey);
 
-                            return clientWrapper.readDocument(getItemLink(itemId), requestOptions)
+                            return clientWrapper.readDocument(getItemLink(itemId), readRequestOptions)
                                                 .map(response -> {
                                                     mergeDiagnostics(response, cosmosException);
                                                     return ModelBridgeInternal
@@ -503,7 +501,7 @@ public class CosmosAsyncContainer {
             });
     }
 
-    private boolean isContentResponseOnWriteEffectivelyEnabled(CosmosItemRequestOptions options) {
+    private boolean isContentResponseOnWriteEffectivelyEnabled(RequestOptions options) {
         Boolean requestOptionsContentResponseEnabled = null;
         if (options != null) {
             requestOptionsContentResponseEnabled = options.isContentResponseOnWriteEnabled();
@@ -526,11 +524,12 @@ public class CosmosAsyncContainer {
         String trackingId = null;
         CosmosItemRequestOptions effectiveOptions = getEffectiveOptions(nonIdempotentWriteRetryPolicy, options);
 
+        RequestOptions requestOptions =  ModelBridgeInternal.toRequestOptions(effectiveOptions);
         if (nonIdempotentWriteRetryPolicy.isEnabled() && nonIdempotentWriteRetryPolicy.useTrackingIdProperty()) {
             trackingId = UUID.randomUUID().toString();
-            responseMono = createItemWithTrackingId(item, effectiveOptions, trackingId);
+            responseMono = createItemWithTrackingId(item, requestOptions, trackingId);
         } else {
-            responseMono = createItemInternalCore(item, effectiveOptions, null);
+            responseMono = createItemInternalCore(item, requestOptions, null);
         }
 
         CosmosAsyncClient client = database
@@ -547,19 +546,17 @@ public class CosmosAsyncContainer {
                 ModelBridgeInternal.getConsistencyLevel(effectiveOptions),
                 OperationType.Create,
                 ResourceType.Document,
-                client.getEffectiveDiagnosticsThresholds(
-                    itemOptionsAccessor.getDiagnosticsThresholds(effectiveOptions)),
+                requestOptions,
                 trackingId);
     }
 
     private <T> Mono<CosmosItemResponse<T>> createItemInternalCore(
         T item,
-        CosmosItemRequestOptions options,
+        RequestOptions requestOptions,
         String trackingId) {
 
         @SuppressWarnings("unchecked")
         Class<T> itemType = (Class<T>) item.getClass();
-        RequestOptions requestOptions = ModelBridgeInternal.toRequestOptions(options);
         requestOptions.setTrackingId(trackingId);
         return database.getDocClientWrapper()
                    .createDocument(getLink(),
@@ -1242,7 +1239,7 @@ public class CosmosAsyncContainer {
                         .getConsistencyLevel(cosmosBatchRequestOptions),
                     OperationType.Batch,
                     ResourceType.Document,
-                    client.getEffectiveDiagnosticsThresholds(requestOptionsInternal.getDiagnosticsThresholds()));
+                    requestOptionsInternal);
         });
     }
 
@@ -2099,7 +2096,7 @@ public class CosmosAsyncContainer {
                 requestOptions.getConsistencyLevel(),
                 OperationType.Delete,
                 ResourceType.Document,
-                client.getEffectiveDiagnosticsThresholds(requestOptions.getDiagnosticsThresholds()),
+                requestOptions,
                 null);
     }
 
@@ -2125,7 +2122,7 @@ public class CosmosAsyncContainer {
                 requestOptions.getConsistencyLevel(),
                 OperationType.Delete,
                 ResourceType.PartitionKey,
-                client.getEffectiveDiagnosticsThresholds(requestOptions.getDiagnosticsThresholds()),
+                requestOptions,
                 null);
     }
 
@@ -2195,6 +2192,8 @@ public class CosmosAsyncContainer {
             responseMono = this.replaceItemInternalCore(itemType, itemId, doc, effectiveOptions, null);
         }
 
+        RequestOptions requestOptions = ModelBridgeInternal.toRequestOptions(effectiveOptions);
+
         CosmosAsyncClient client = database
             .getClient();
         return client
@@ -2209,8 +2208,7 @@ public class CosmosAsyncContainer {
                 ModelBridgeInternal.getConsistencyLevel(effectiveOptions),
                 OperationType.Replace,
                 ResourceType.Document,
-                client.getEffectiveDiagnosticsThresholds(
-                    itemOptionsAccessor.getDiagnosticsThresholds(effectiveOptions)),
+                requestOptions,
                 trackingId);
     }
 
@@ -2251,7 +2249,7 @@ public class CosmosAsyncContainer {
                 ModelBridgeInternal.getConsistencyLevel(options),
                 OperationType.Patch,
                 ResourceType.Document,
-                client.getEffectiveDiagnosticsThresholds(itemOptionsAccessor.getDiagnosticsThresholds(options)),
+                requestOptions,
                 null);
     }
 
@@ -2290,8 +2288,7 @@ public class CosmosAsyncContainer {
                 ModelBridgeInternal.getConsistencyLevel(effectiveOptions),
                 OperationType.Upsert,
                 ResourceType.Document,
-                client.getEffectiveDiagnosticsThresholds(
-                    itemOptionsAccessor.getDiagnosticsThresholds(effectiveOptions)),
+                requestOptions,
                 null);
     }
 
@@ -2317,7 +2314,7 @@ public class CosmosAsyncContainer {
                 requestOptions.getConsistencyLevel(),
                 OperationType.Read,
                 ResourceType.Document,
-                client.getEffectiveDiagnosticsThresholds(requestOptions.getDiagnosticsThresholds()),
+                requestOptions,
                 null);
     }
 
@@ -2343,7 +2340,7 @@ public class CosmosAsyncContainer {
                 null,
                 OperationType.Read,
                 ResourceType.DocumentCollection,
-                client.getEffectiveDiagnosticsThresholds(requestOptions.getDiagnosticsThresholds()));
+                requestOptions);
     }
 
     private Mono<CosmosContainerResponse> deleteInternal(CosmosContainerRequestOptions options, Context context) {
@@ -2368,7 +2365,7 @@ public class CosmosAsyncContainer {
                 null,
                 OperationType.Replace,
                 ResourceType.DocumentCollection,
-                client.getEffectiveDiagnosticsThresholds(requestOptions.getDiagnosticsThresholds()));
+                requestOptions);
     }
 
     private Mono<CosmosContainerResponse> replaceInternal(CosmosContainerProperties containerProperties,
@@ -2393,7 +2390,7 @@ public class CosmosAsyncContainer {
                 null,
                 OperationType.Replace,
                 ResourceType.DocumentCollection,
-                client.getEffectiveDiagnosticsThresholds(requestOptions.getDiagnosticsThresholds()));
+                requestOptions);
     }
 
     private Mono<ThroughputResponse> readThroughputInternal(Context context) {
@@ -2420,7 +2417,7 @@ public class CosmosAsyncContainer {
                 null,
                 OperationType.Read,
                 ResourceType.Offer,
-                client.getEffectiveDiagnosticsThresholds(requestOptions.getDiagnosticsThresholds()));
+                requestOptions);
     }
 
     private Mono<ThroughputResponse> readThroughputInternal(Mono<CosmosContainerResponse> responseMono) {
@@ -2473,7 +2470,7 @@ public class CosmosAsyncContainer {
                 null,
                 OperationType.Replace,
                 ResourceType.Offer,
-                client.getEffectiveDiagnosticsThresholds(requestOptions.getDiagnosticsThresholds()));
+                requestOptions);
     }
 
     private Mono<ThroughputResponse> replaceThroughputInternal(Mono<CosmosContainerResponse> responseMono,

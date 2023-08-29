@@ -4,6 +4,7 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.ConsistencyLevel;
+import com.azure.cosmos.CosmosDiagnosticsContext;
 import com.azure.cosmos.CosmosDiagnosticsThresholds;
 import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfig;
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
@@ -49,6 +50,8 @@ public class RequestOptions {
     private CosmosEndToEndOperationLatencyPolicyConfig endToEndOperationLatencyConfig;
     private List<String> excludeRegions;
 
+    private CosmosDiagnosticsContext diagnosticsCtx;
+
     public RequestOptions() {}
 
     public RequestOptions(RequestOptions toBeCloned) {
@@ -73,6 +76,7 @@ public class RequestOptions {
         this.trackingId = toBeCloned.trackingId;
         this.nonIdempotentWriteRetriesEnabled = toBeCloned.nonIdempotentWriteRetriesEnabled;
         this.endToEndOperationLatencyConfig = toBeCloned.endToEndOperationLatencyConfig;
+        this.diagnosticsCtx = toBeCloned.diagnosticsCtx;
 
         if (toBeCloned.customOptions != null) {
             this.customOptions = new HashMap<>(toBeCloned.customOptions);
@@ -490,6 +494,14 @@ public class RequestOptions {
 
     public void setDiagnosticsThresholds(CosmosDiagnosticsThresholds thresholds) {
         this.thresholds = thresholds;
+    }
+
+    public void setDiagnosticsContext(CosmosDiagnosticsContext ctx) {
+        this.diagnosticsCtx = ctx;
+    }
+
+    public CosmosDiagnosticsContext getDiagnosticsContext() {
+        return this.diagnosticsCtx;
     }
 
     public void setCosmosEndToEndLatencyPolicyConfig(CosmosEndToEndOperationLatencyPolicyConfig endToEndOperationLatencyPolicyConfig) {

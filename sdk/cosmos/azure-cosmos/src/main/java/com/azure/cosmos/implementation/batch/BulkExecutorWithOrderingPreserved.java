@@ -1043,8 +1043,7 @@ public final class BulkExecutorWithOrderingPreserved<TContext> implements Dispos
                     options.getConsistencyLevel(),
                     OperationType.Batch,
                     ResourceType.Document,
-                    clientAccessor.getEffectiveDiagnosticsThresholds(
-                        this.cosmosClient, options.getDiagnosticsThresholds()));
+                    options);
         });
     }
 
