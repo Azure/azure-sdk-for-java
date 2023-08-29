@@ -40,14 +40,14 @@ public class SpringMonitorTest {
 
   @Autowired private TestRestTemplate restTemplate;
 
-  @Autowired ObjectProvider<List<SpanExporter>> otelSpanExportersProvider; // See
-  // io.opentelemetry.instrumentation.spring.autoconfigure.OpenTelemetryAutoConfiguration
+  // See io.opentelemetry.instrumentation.spring.autoconfigure.OpenTelemetryAutoConfiguration
+  @Autowired ObjectProvider<List<SpanExporter>> otelSpanExportersProvider;
 
-  @Autowired ObjectProvider<List<LogRecordExporter>> otelLoggerExportersProvider; // See
-  // io.opentelemetry.instrumentation.spring.autoconfigure.OpenTelemetryAutoConfiguration
+  // See io.opentelemetry.instrumentation.spring.autoconfigure.OpenTelemetryAutoConfiguration
+  @Autowired ObjectProvider<List<LogRecordExporter>> otelLoggerExportersProvider;
 
-  @Autowired ObjectProvider<List<MetricExporter>> otelMetricExportersProvider; // See
-  // io.opentelemetry.instrumentation.spring.autoconfigure.OpenTelemetryAutoConfiguration
+  // See io.opentelemetry.instrumentation.spring.autoconfigure.OpenTelemetryAutoConfiguration
+  @Autowired ObjectProvider<List<MetricExporter>> otelMetricExportersProvider;
 
   @Configuration(proxyBeanMethods = false)
   static class TestConfiguration {
