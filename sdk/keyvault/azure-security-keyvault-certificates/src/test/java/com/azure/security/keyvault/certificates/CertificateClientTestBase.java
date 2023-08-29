@@ -39,7 +39,6 @@ import com.azure.security.keyvault.certificates.models.CertificatePolicy;
 import com.azure.security.keyvault.certificates.models.CertificatePolicyAction;
 import com.azure.security.keyvault.certificates.models.ImportCertificateOptions;
 import com.azure.security.keyvault.certificates.models.KeyVaultCertificate;
-import com.azure.security.keyvault.certificates.models.KeyVaultCertificateWithPolicy;
 import com.azure.security.keyvault.certificates.models.LifetimeAction;
 import com.azure.security.keyvault.certificates.models.WellKnownIssuerNames;
 import org.junit.jupiter.api.Test;
@@ -49,9 +48,16 @@ import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.security.KeyFactory;
+import java.security.NoSuchAlgorithmException;
+import java.security.PrivateKey;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
+import java.security.spec.InvalidKeySpecException;
+import java.security.spec.PKCS8EncodedKeySpec;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -498,7 +504,6 @@ public abstract class CertificateClientTestBase extends TestProxyTestBase {
         throws IOException;
 
     void importPemCertificateRunner(Consumer<ImportCertificateOptions> testRunner) throws IOException {
-
         byte[] certificateContent = readCertificate("pemCert.pem");
 
         String certificateName = testResourceNamer.randomName("importCertPem", 25);
@@ -514,21 +519,47 @@ public abstract class CertificateClientTestBase extends TestProxyTestBase {
     }
 
     @Test
+    public abstract void mergeCertificate(HttpClient httpClient, CertificateServiceVersion serviceVersion);
+
+    @Test
     public abstract void mergeCertificateNotFound(HttpClient httpClient, CertificateServiceVersion serviceVersion);
 
-    private byte[] readCertificate(String certName) throws IOException {
-        String pemPath = getClass().getClassLoader().getResource(certName).getPath();
-        StringBuilder pemCert = new StringBuilder();
+    protected byte[] readCertificate(String filename) throws IOException {
+        String path = Objects.requireNonNull(getClass().getClassLoader().getResource(filename)).getPath();
+        StringBuilder certificate = new StringBuilder();
 
-        try (BufferedReader br = new BufferedReader(new FileReader(pemPath))) {
+        try (BufferedReader br = new BufferedReader(new FileReader(path))) {
             String line;
 
             while ((line = br.readLine()) != null) {
-                pemCert.append(line).append("\n");
+                certificate.append(line).append("\n");
             }
         }
 
-        return pemCert.toString().getBytes();
+        return certificate.toString().getBytes();
+    }
+
+    protected PrivateKey loadPrivateKey(String filename)
+        throws IOException, NoSuchAlgorithmException, InvalidKeySpecException {
+
+        /*String path = Objects.requireNonNull(getClass().getClassLoader().getResource(filename)).getPath();
+        StringBuilder key = new StringBuilder();
+
+        try (BufferedReader br = new BufferedReader(new FileReader(path))) {
+            String line;
+
+            while ((line = br.readLine()) != null && !line.startsWith("-----")) {
+                key.append(line);
+            }
+        }
+
+        byte[] keyBytes = key.toString().getBytes();*/
+        byte[] keyBytes = Files.readAllBytes(Paths.get("src", "test", "resources", filename));
+
+        PKCS8EncodedKeySpec spec = new PKCS8EncodedKeySpec(keyBytes);
+        KeyFactory kf = KeyFactory.getInstance("RSA");
+
+        return kf.generatePrivate(spec);
     }
 
     @SuppressWarnings("ArraysAsListWithZeroOrOneArgument")
@@ -565,13 +596,12 @@ public abstract class CertificateClientTestBase extends TestProxyTestBase {
         return hexString.toString().replace("-", "");
     }
 
-    X509Certificate loadCerToX509Certificate(KeyVaultCertificateWithPolicy certificate)
-        throws CertificateException, IOException {
+    X509Certificate loadCerToX509Certificate(byte[] certificate) throws CertificateException, IOException {
+        assertNotNull(certificate);
 
-        assertNotNull(certificate.getCer());
-
-        ByteArrayInputStream cerStream = new ByteArrayInputStream(certificate.getCer());
+        ByteArrayInputStream cerStream = new ByteArrayInputStream(certificate);
         CertificateFactory certificateFactory = CertificateFactory.getInstance("X.509");
+
         X509Certificate x509Certificate = (X509Certificate) certificateFactory.generateCertificate(cerStream);
 
         cerStream.close();

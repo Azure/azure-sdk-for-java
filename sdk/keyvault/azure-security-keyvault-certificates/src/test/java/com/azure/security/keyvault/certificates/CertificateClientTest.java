@@ -27,15 +27,34 @@ import com.azure.security.keyvault.certificates.models.IssuerProperties;
 import com.azure.security.keyvault.certificates.models.KeyVaultCertificate;
 import com.azure.security.keyvault.certificates.models.KeyVaultCertificateWithPolicy;
 import com.azure.security.keyvault.certificates.models.MergeCertificateOptions;
+import org.junit.jupiter.api.condition.DisabledForJreRange;
+import org.junit.jupiter.api.condition.JRE;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
+import sun.security.pkcs10.PKCS10;
+import sun.security.util.ObjectIdentifier;
+import sun.security.x509.AlgorithmId;
+import sun.security.x509.CertificateAlgorithmId;
+import sun.security.x509.CertificateSerialNumber;
+import sun.security.x509.CertificateValidity;
+import sun.security.x509.CertificateX509Key;
+import sun.security.x509.X509CertImpl;
+import sun.security.x509.X509CertInfo;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
+import java.security.PrivateKey;
+import java.security.SignatureException;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
+import java.security.spec.InvalidKeySpecException;
 import java.time.Duration;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -887,7 +906,7 @@ public class CertificateClientTest extends CertificateClientTestBase {
             X509Certificate x509Certificate = null;
 
             try {
-                x509Certificate = loadCerToX509Certificate(importedCertificate);
+                x509Certificate = loadCerToX509Certificate(importedCertificate.getCer());
             } catch (CertificateException | IOException e) {
                 e.printStackTrace();
                 fail();
@@ -896,6 +915,65 @@ public class CertificateClientTest extends CertificateClientTestBase {
             assertEquals("CN=KeyVaultTest", x509Certificate.getSubjectX500Principal().getName());
             assertEquals("CN=KeyVaultTest", x509Certificate.getIssuerX500Principal().getName());
         });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getTestParameters")
+    @DisabledForJreRange(min = JRE.JAVA_17) // Access to sun.security.* classes used here is not possible on Java 17+.
+    @SuppressWarnings("ArraysAsListWithZeroOrOneArgument")
+    public void mergeCertificate(HttpClient httpClient, CertificateServiceVersion serviceVersion) {
+        try {
+            createCertificateClient(httpClient, serviceVersion);
+
+            String certificateName = testResourceNamer.randomName("testCert", 25);
+            String issuer = "Unknown";
+            String subject = "CN=MyCert";
+            SyncPoller<CertificateOperation, KeyVaultCertificateWithPolicy> createCertificatePoller =
+                certificateClient.beginCreateCertificate(certificateName,
+                    new CertificatePolicy(issuer, subject).setCertificateTransparent(false));
+
+            createCertificatePoller.waitUntil(LongRunningOperationStatus.IN_PROGRESS);
+
+            CertificateOperation certificateOperation = createCertificatePoller.poll().getValue();
+            byte[] certificateSignRequest = certificateOperation.getCsr();
+            PKCS10 pkcs10 = new PKCS10(certificateSignRequest);
+            byte[] certificateToMerge = readCertificate("mergeCert.pem");
+            X509Certificate x509ToMerge = loadCerToX509Certificate(certificateToMerge);
+            PrivateKey privateKey = loadPrivateKey("priv8.der");
+            X509CertInfo certInfo = new X509CertInfo();
+            Date from = new Date();
+            Date to = new Date(from.getTime() + 60 * 86400000L);
+            CertificateValidity interval = new CertificateValidity(from, to);
+            AlgorithmId algorithmId = new AlgorithmId(new ObjectIdentifier("1.2.840.113549.1.1.11")); // algorithm = SHA256withRSA
+
+            certInfo.set(X509CertInfo.SERIAL_NUMBER, new CertificateSerialNumber(1));
+            certInfo.set(X509CertInfo.VALIDITY, interval);
+            certInfo.set(X509CertInfo.ISSUER, x509ToMerge.getSubjectDN());
+            certInfo.set(X509CertInfo.SUBJECT, pkcs10.getSubjectName());
+            certInfo.set(X509CertInfo.KEY, new CertificateX509Key(pkcs10.getSubjectPublicKeyInfo()));
+            certInfo.set(X509CertInfo.ALGORITHM_ID, new CertificateAlgorithmId(algorithmId));
+
+            // Sign the cert to identify the algorithm that's used.
+            X509CertImpl x509CertImpl = new X509CertImpl(certInfo);
+
+            x509CertImpl.sign(privateKey, "SHA256withRSA"); // algId =  1.2.840.113549.1.1.11
+
+            byte[] base64CertificateToMerge = x509CertImpl.getEncoded();
+
+            MergeCertificateOptions mergeCertificateOptions =
+                new MergeCertificateOptions(certificateName, Collections.singletonList(base64CertificateToMerge));
+
+            KeyVaultCertificateWithPolicy mergedCertificate =
+                certificateClient.mergeCertificate(mergeCertificateOptions);
+
+            PollResponse<CertificateOperation> pollResponse = createCertificatePoller.poll();
+
+            assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, pollResponse.getStatus());
+        } catch (CertificateException | InvalidKeyException | InvalidKeySpecException | IOException
+                 | NoSuchAlgorithmException | NoSuchProviderException | SignatureException e) {
+
+            fail(e);
+        }
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
