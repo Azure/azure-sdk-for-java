@@ -24,6 +24,7 @@ import com.azure.storage.blob.BlobServiceClient;
 import com.azure.storage.blob.BlobServiceClientBuilder;
 import com.azure.storage.blob.BlobUrlParts;
 import com.azure.storage.blob.ProgressReceiver;
+import com.azure.storage.blob.models.BlobDownloadAsyncResponse;
 import com.azure.storage.blob.models.BlobDownloadHeaders;
 import com.azure.storage.blob.models.BlobDownloadResponse;
 import com.azure.storage.blob.models.BlobErrorCode;
@@ -87,6 +88,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -1594,6 +1596,58 @@ public class EncryptedBlockBlobApiTests extends BlobCryptographyTestBase {
 
         assertEquals("2017-11-09",
             client.getPropertiesWithResponse(null, null, null).getHeaders().getValue("x-ms-version"));
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {"ENCRYPTIONDATA", "EncryptionData", "eNcRyPtIoNdAtA"})
+    public void encryptionDataCaseInsensitivity(String newKey) {
+        byte[] data = getRandomByteArray(Constants.KB);
+        bec = getEncryptionClient(EncryptionVersion.V2, generateBlobName());
+        bec.upload(BinaryData.fromBytes(data));
+        // change casing of encryption data key
+        Map<String, String> metadata = bec.getProperties().getMetadata();
+        String encryptionData = metadata.get("encryptiondata");
+        Map<String, String> encryptionMetadata = new HashMap<>();
+        encryptionMetadata.put(newKey, encryptionData);
+        bec.setMetadata(encryptionMetadata);
+        ByteArrayOutputStream os = new ByteArrayOutputStream();
+
+        // call with downloadStream to test code path for non-specified BlobRange
+        bec.downloadStream(os);
+        assertArrayEquals(data, os.toByteArray());
+        // now call downloadStreamWithResponse with BlobRange passed to ensure ranged download is working
+        os = new ByteArrayOutputStream();
+        bec.downloadStreamWithResponse(os, new BlobRange(0, (long) Constants.KB), null, null, false, null,
+            Context.NONE);
+        assertArrayEquals(data, os.toByteArray());
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {"ENCRYPTIONDATA", "EncryptionData", "eNcRyPtIoNdAtA"})
+    public void encryptionDataCaseInsensitivityAsyncClient(String newKey) {
+        beac = getEncryptionAsyncClient(EncryptionVersion.V2);
+        List<ByteBuffer> byteBufferList = new ArrayList<>();
+        byteBufferList.add(getRandomData(Constants.KB));
+        Flux<ByteBuffer> flux = Flux.fromIterable(byteBufferList);
+        beac.upload(flux, null).block();
+        // change casing of encryption data key
+        Map<String, String> metadata = Objects.requireNonNull(beac.getProperties().block()).getMetadata();
+        String encryptionData = metadata.get("encryptiondata");
+        Map<String, String> encryptionMetadata = new HashMap<>();
+        encryptionMetadata.put(newKey, encryptionData);
+        beac.setMetadata(encryptionMetadata).block();
+
+        // call with downloadStream to test code path for non-specified BlobRange
+        StepVerifier.create(FluxUtil.collectBytesInByteBufferStream(beac.downloadStream()).map(ByteBuffer::wrap))
+            .assertNext(outputByteBuffer -> compareListToBuffer(byteBufferList, outputByteBuffer))
+            .verifyComplete();
+
+        // now call downloadStreamWithResponse with BlobRange passed to ensure ranged download is working
+        byte[] downloadedData = FluxUtil.collectBytesInByteBufferStream(Objects.requireNonNull(
+            beac.downloadStreamWithResponse(new BlobRange(0, (long) Constants.KB), null, null, false)
+                .block()).getValue()).block();
+
+        assertArrayEquals(byteBufferList.get(0).array(), downloadedData);
     }
 
     private static void compareListToBuffer(List<ByteBuffer> buffers, ByteBuffer result) {

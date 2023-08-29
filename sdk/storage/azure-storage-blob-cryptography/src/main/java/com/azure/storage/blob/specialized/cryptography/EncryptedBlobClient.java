@@ -47,7 +47,9 @@ import java.io.UncheckedIOException;
 import java.nio.file.OpenOption;
 import java.nio.file.StandardOpenOption;
 import java.time.Duration;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
@@ -486,9 +488,14 @@ public class EncryptedBlobClient extends BlobClient {
             this.getPropertiesWithResponse(requestConditions, timeout, context).getValue();
 
         requestConditions.setIfMatch(initialProperties.getETag());
-        if (initialProperties.getMetadata().get(ENCRYPTION_DATA_KEY) != null) {
+        Map<String, String> caseInsensitiveMetadata = new HashMap<>();
+        for (Map.Entry<String, String> entry : initialProperties.getMetadata().entrySet()) {
+            caseInsensitiveMetadata.put(entry.getKey().toLowerCase(Locale.ROOT), entry.getValue());
+        }
+
+        if (caseInsensitiveMetadata.get(ENCRYPTION_DATA_KEY) != null) {
             context = context.addData(ENCRYPTION_DATA_KEY, EncryptionData.getAndValidateEncryptionData(
-                initialProperties.getMetadata().get(ENCRYPTION_DATA_KEY),
+                caseInsensitiveMetadata.get(ENCRYPTION_DATA_KEY),
                 encryptedBlobAsyncClient.isEncryptionRequired()));
         }
 

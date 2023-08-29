@@ -54,6 +54,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
@@ -733,11 +734,16 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
 
                 requestConditionsFinal.setIfMatch(response.getValue().getETag());
                 Mono<T> result = downloadCall.get();
-                if (response.getValue().getMetadata().get(ENCRYPTION_DATA_KEY) != null) {
+
+                Map<String, String> caseInsensitiveMetadata = new HashMap<>();
+                for (Map.Entry<String, String> entry : response.getValue().getMetadata().entrySet()) {
+                    caseInsensitiveMetadata.put(entry.getKey().toLowerCase(Locale.ROOT), entry.getValue());
+                }
+                if (caseInsensitiveMetadata.get(ENCRYPTION_DATA_KEY) != null) {
                     result = result.contextWrite(context ->
                         context.put(ENCRYPTION_DATA_KEY,
                             EncryptionData.getAndValidateEncryptionData(
-                                response.getValue().getMetadata().get(ENCRYPTION_DATA_KEY), requiresEncryption))
+                                caseInsensitiveMetadata.get(ENCRYPTION_DATA_KEY), requiresEncryption))
                     );
                 }
                 return result;
