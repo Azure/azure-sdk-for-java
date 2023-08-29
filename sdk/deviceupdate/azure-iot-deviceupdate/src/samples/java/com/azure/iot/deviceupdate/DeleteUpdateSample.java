@@ -25,7 +25,7 @@ public class DeleteUpdateSample {
             String updateVersion = Configuration.getGlobalConfiguration().get("DEVICEUPDATE_UPDATE_VERSION");
 
             // BEGIN: com.azure.iot.deviceupdate.DeviceUpdateClient.DeleteUpdate
-            SyncPoller<BinaryData, BinaryData> response = client.beginDeleteUpdate(updateProvider, updateName, updateVersion, null);
+            SyncPoller<BinaryData, Void> response = client.beginDeleteUpdate(updateProvider, updateName, updateVersion, null);
             response.waitForCompletion();
             // END: com.azure.iot.deviceupdate.DeviceUpdateClient.DeleteUpdate
 
