@@ -17,6 +17,7 @@
     <module>sdk/alertsmanagement</module>
     <module>sdk/anomalydetector</module>
     <module>sdk/aot</module>
+    <module>sdk/apicenter</module>
     <module>sdk/apimanagement</module>
     <module>sdk/appcomplianceautomation</module>
     <module>sdk/appconfiguration</module>
@@ -63,6 +64,7 @@
     <module>sdk/datalakestore</module>
     <module>sdk/datamigration</module>
     <module>sdk/dataprotection</module>
+    <module>sdk/defendereasm</module>
     <module>sdk/delegatednetwork</module>
     <module>sdk/deploymentmanager</module>
     <module>sdk/desktopvirtualization</module>

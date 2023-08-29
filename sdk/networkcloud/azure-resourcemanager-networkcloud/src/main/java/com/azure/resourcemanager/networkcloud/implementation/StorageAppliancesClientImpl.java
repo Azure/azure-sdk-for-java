@@ -34,11 +34,11 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.networkcloud.fluent.StorageAppliancesClient;
+import com.azure.resourcemanager.networkcloud.fluent.models.OperationStatusResultInner;
 import com.azure.resourcemanager.networkcloud.fluent.models.StorageApplianceInner;
 import com.azure.resourcemanager.networkcloud.models.StorageApplianceEnableRemoteVendorManagementParameters;
 import com.azure.resourcemanager.networkcloud.models.StorageApplianceList;
 import com.azure.resourcemanager.networkcloud.models.StorageAppliancePatchParameters;
-import com.azure.resourcemanager.networkcloud.models.StorageApplianceRunReadCommandsParameters;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -154,7 +154,7 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
         @Headers({"Content-Type: application/json"})
         @Post(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/storageAppliances/{storageApplianceName}/disableRemoteVendorManagement")
-        @ExpectedResponses({202, 204})
+        @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> disableRemoteVendorManagement(
             @HostParam("$host") String endpoint,
@@ -168,7 +168,7 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
         @Headers({"Content-Type: application/json"})
         @Post(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/storageAppliances/{storageApplianceName}/enableRemoteVendorManagement")
-        @ExpectedResponses({202, 204})
+        @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> enableRemoteVendorManagement(
             @HostParam("$host") String endpoint,
@@ -179,22 +179,6 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
             @BodyParam("application/json")
                 StorageApplianceEnableRemoteVendorManagementParameters
                     storageApplianceEnableRemoteVendorManagementParameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/storageAppliances/{storageApplianceName}/runReadCommands")
-        @ExpectedResponses({202, 204})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> runReadCommands(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("storageApplianceName") String storageApplianceName,
-            @BodyParam("application/json")
-                StorageApplianceRunReadCommandsParameters storageApplianceRunReadCommandsParameters,
             @HeaderParam("Accept") String accept,
             Context context);
 
@@ -1697,7 +1681,8 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the current status of an async operation along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> disableRemoteVendorManagementWithResponseAsync(
@@ -1749,7 +1734,8 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the current status of an async operation along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> disableRemoteVendorManagementWithResponseAsync(
@@ -1797,17 +1783,21 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDisableRemoteVendorManagementAsync(
-        String resourceGroupName, String storageApplianceName) {
+    private PollerFlux<PollResult<OperationStatusResultInner>, OperationStatusResultInner>
+        beginDisableRemoteVendorManagementAsync(String resourceGroupName, String storageApplianceName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             disableRemoteVendorManagementWithResponseAsync(resourceGroupName, storageApplianceName);
         return this
             .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+            .<OperationStatusResultInner, OperationStatusResultInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                OperationStatusResultInner.class,
+                OperationStatusResultInner.class,
+                this.client.getContext());
     }
 
     /**
@@ -1821,17 +1811,23 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDisableRemoteVendorManagementAsync(
-        String resourceGroupName, String storageApplianceName, Context context) {
+    private PollerFlux<PollResult<OperationStatusResultInner>, OperationStatusResultInner>
+        beginDisableRemoteVendorManagementAsync(
+            String resourceGroupName, String storageApplianceName, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             disableRemoteVendorManagementWithResponseAsync(resourceGroupName, storageApplianceName, context);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+            .<OperationStatusResultInner, OperationStatusResultInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                OperationStatusResultInner.class,
+                OperationStatusResultInner.class,
+                context);
     }
 
     /**
@@ -1844,11 +1840,11 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDisableRemoteVendorManagement(
-        String resourceGroupName, String storageApplianceName) {
+    public SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner>
+        beginDisableRemoteVendorManagement(String resourceGroupName, String storageApplianceName) {
         return this.beginDisableRemoteVendorManagementAsync(resourceGroupName, storageApplianceName).getSyncPoller();
     }
 
@@ -1863,11 +1859,11 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDisableRemoteVendorManagement(
-        String resourceGroupName, String storageApplianceName, Context context) {
+    public SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner>
+        beginDisableRemoteVendorManagement(String resourceGroupName, String storageApplianceName, Context context) {
         return this
             .beginDisableRemoteVendorManagementAsync(resourceGroupName, storageApplianceName, context)
             .getSyncPoller();
@@ -1883,10 +1879,11 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the current status of an async operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> disableRemoteVendorManagementAsync(String resourceGroupName, String storageApplianceName) {
+    private Mono<OperationStatusResultInner> disableRemoteVendorManagementAsync(
+        String resourceGroupName, String storageApplianceName) {
         return beginDisableRemoteVendorManagementAsync(resourceGroupName, storageApplianceName)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -1903,10 +1900,10 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the current status of an async operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> disableRemoteVendorManagementAsync(
+    private Mono<OperationStatusResultInner> disableRemoteVendorManagementAsync(
         String resourceGroupName, String storageApplianceName, Context context) {
         return beginDisableRemoteVendorManagementAsync(resourceGroupName, storageApplianceName, context)
             .last()
@@ -1923,10 +1920,12 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void disableRemoteVendorManagement(String resourceGroupName, String storageApplianceName) {
-        disableRemoteVendorManagementAsync(resourceGroupName, storageApplianceName).block();
+    public OperationStatusResultInner disableRemoteVendorManagement(
+        String resourceGroupName, String storageApplianceName) {
+        return disableRemoteVendorManagementAsync(resourceGroupName, storageApplianceName).block();
     }
 
     /**
@@ -1940,10 +1939,12 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void disableRemoteVendorManagement(String resourceGroupName, String storageApplianceName, Context context) {
-        disableRemoteVendorManagementAsync(resourceGroupName, storageApplianceName, context).block();
+    public OperationStatusResultInner disableRemoteVendorManagement(
+        String resourceGroupName, String storageApplianceName, Context context) {
+        return disableRemoteVendorManagementAsync(resourceGroupName, storageApplianceName, context).block();
     }
 
     /**
@@ -1957,7 +1958,8 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the current status of an async operation along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> enableRemoteVendorManagementWithResponseAsync(
@@ -2016,7 +2018,8 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the current status of an async operation along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> enableRemoteVendorManagementWithResponseAsync(
@@ -2072,20 +2075,26 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginEnableRemoteVendorManagementAsync(
-        String resourceGroupName,
-        String storageApplianceName,
-        StorageApplianceEnableRemoteVendorManagementParameters storageApplianceEnableRemoteVendorManagementParameters) {
+    private PollerFlux<PollResult<OperationStatusResultInner>, OperationStatusResultInner>
+        beginEnableRemoteVendorManagementAsync(
+            String resourceGroupName,
+            String storageApplianceName,
+            StorageApplianceEnableRemoteVendorManagementParameters
+                storageApplianceEnableRemoteVendorManagementParameters) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             enableRemoteVendorManagementWithResponseAsync(
                 resourceGroupName, storageApplianceName, storageApplianceEnableRemoteVendorManagementParameters);
         return this
             .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+            .<OperationStatusResultInner, OperationStatusResultInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                OperationStatusResultInner.class,
+                OperationStatusResultInner.class,
+                this.client.getContext());
     }
 
     /**
@@ -2098,11 +2107,11 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginEnableRemoteVendorManagementAsync(
-        String resourceGroupName, String storageApplianceName) {
+    private PollerFlux<PollResult<OperationStatusResultInner>, OperationStatusResultInner>
+        beginEnableRemoteVendorManagementAsync(String resourceGroupName, String storageApplianceName) {
         final StorageApplianceEnableRemoteVendorManagementParameters
             storageApplianceEnableRemoteVendorManagementParameters = null;
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -2110,8 +2119,12 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
                 resourceGroupName, storageApplianceName, storageApplianceEnableRemoteVendorManagementParameters);
         return this
             .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+            .<OperationStatusResultInner, OperationStatusResultInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                OperationStatusResultInner.class,
+                OperationStatusResultInner.class,
+                this.client.getContext());
     }
 
     /**
@@ -2126,14 +2139,16 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginEnableRemoteVendorManagementAsync(
-        String resourceGroupName,
-        String storageApplianceName,
-        StorageApplianceEnableRemoteVendorManagementParameters storageApplianceEnableRemoteVendorManagementParameters,
-        Context context) {
+    private PollerFlux<PollResult<OperationStatusResultInner>, OperationStatusResultInner>
+        beginEnableRemoteVendorManagementAsync(
+            String resourceGroupName,
+            String storageApplianceName,
+            StorageApplianceEnableRemoteVendorManagementParameters
+                storageApplianceEnableRemoteVendorManagementParameters,
+            Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             enableRemoteVendorManagementWithResponseAsync(
@@ -2143,7 +2158,12 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
                 context);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+            .<OperationStatusResultInner, OperationStatusResultInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                OperationStatusResultInner.class,
+                OperationStatusResultInner.class,
+                context);
     }
 
     /**
@@ -2156,11 +2176,11 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginEnableRemoteVendorManagement(
-        String resourceGroupName, String storageApplianceName) {
+    public SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner>
+        beginEnableRemoteVendorManagement(String resourceGroupName, String storageApplianceName) {
         final StorageApplianceEnableRemoteVendorManagementParameters
             storageApplianceEnableRemoteVendorManagementParameters = null;
         return this
@@ -2181,14 +2201,16 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginEnableRemoteVendorManagement(
-        String resourceGroupName,
-        String storageApplianceName,
-        StorageApplianceEnableRemoteVendorManagementParameters storageApplianceEnableRemoteVendorManagementParameters,
-        Context context) {
+    public SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner>
+        beginEnableRemoteVendorManagement(
+            String resourceGroupName,
+            String storageApplianceName,
+            StorageApplianceEnableRemoteVendorManagementParameters
+                storageApplianceEnableRemoteVendorManagementParameters,
+            Context context) {
         return this
             .beginEnableRemoteVendorManagementAsync(
                 resourceGroupName,
@@ -2209,10 +2231,10 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the current status of an async operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> enableRemoteVendorManagementAsync(
+    private Mono<OperationStatusResultInner> enableRemoteVendorManagementAsync(
         String resourceGroupName,
         String storageApplianceName,
         StorageApplianceEnableRemoteVendorManagementParameters storageApplianceEnableRemoteVendorManagementParameters) {
@@ -2232,10 +2254,11 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the current status of an async operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> enableRemoteVendorManagementAsync(String resourceGroupName, String storageApplianceName) {
+    private Mono<OperationStatusResultInner> enableRemoteVendorManagementAsync(
+        String resourceGroupName, String storageApplianceName) {
         final StorageApplianceEnableRemoteVendorManagementParameters
             storageApplianceEnableRemoteVendorManagementParameters = null;
         return beginEnableRemoteVendorManagementAsync(
@@ -2256,10 +2279,10 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the current status of an async operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> enableRemoteVendorManagementAsync(
+    private Mono<OperationStatusResultInner> enableRemoteVendorManagementAsync(
         String resourceGroupName,
         String storageApplianceName,
         StorageApplianceEnableRemoteVendorManagementParameters storageApplianceEnableRemoteVendorManagementParameters,
@@ -2283,12 +2306,14 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void enableRemoteVendorManagement(String resourceGroupName, String storageApplianceName) {
+    public OperationStatusResultInner enableRemoteVendorManagement(
+        String resourceGroupName, String storageApplianceName) {
         final StorageApplianceEnableRemoteVendorManagementParameters
             storageApplianceEnableRemoteVendorManagementParameters = null;
-        enableRemoteVendorManagementAsync(
+        return enableRemoteVendorManagementAsync(
                 resourceGroupName, storageApplianceName, storageApplianceEnableRemoteVendorManagementParameters)
             .block();
     }
@@ -2305,344 +2330,19 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void enableRemoteVendorManagement(
+    public OperationStatusResultInner enableRemoteVendorManagement(
         String resourceGroupName,
         String storageApplianceName,
         StorageApplianceEnableRemoteVendorManagementParameters storageApplianceEnableRemoteVendorManagementParameters,
         Context context) {
-        enableRemoteVendorManagementAsync(
+        return enableRemoteVendorManagementAsync(
                 resourceGroupName,
                 storageApplianceName,
                 storageApplianceEnableRemoteVendorManagementParameters,
                 context)
-            .block();
-    }
-
-    /**
-     * Retrieve output from read-only commands exercised against a storage appliance.
-     *
-     * <p>Run and retrieve output from read only commands on the provided storage appliance.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageApplianceName The name of the storage appliance.
-     * @param storageApplianceRunReadCommandsParameters The request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> runReadCommandsWithResponseAsync(
-        String resourceGroupName,
-        String storageApplianceName,
-        StorageApplianceRunReadCommandsParameters storageApplianceRunReadCommandsParameters) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (storageApplianceName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter storageApplianceName is required and cannot be null."));
-        }
-        if (storageApplianceRunReadCommandsParameters == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter storageApplianceRunReadCommandsParameters is required and cannot be null."));
-        } else {
-            storageApplianceRunReadCommandsParameters.validate();
-        }
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .runReadCommands(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            storageApplianceName,
-                            storageApplianceRunReadCommandsParameters,
-                            accept,
-                            context))
-            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Retrieve output from read-only commands exercised against a storage appliance.
-     *
-     * <p>Run and retrieve output from read only commands on the provided storage appliance.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageApplianceName The name of the storage appliance.
-     * @param storageApplianceRunReadCommandsParameters The request body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> runReadCommandsWithResponseAsync(
-        String resourceGroupName,
-        String storageApplianceName,
-        StorageApplianceRunReadCommandsParameters storageApplianceRunReadCommandsParameters,
-        Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (storageApplianceName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter storageApplianceName is required and cannot be null."));
-        }
-        if (storageApplianceRunReadCommandsParameters == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter storageApplianceRunReadCommandsParameters is required and cannot be null."));
-        } else {
-            storageApplianceRunReadCommandsParameters.validate();
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .runReadCommands(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                storageApplianceName,
-                storageApplianceRunReadCommandsParameters,
-                accept,
-                context);
-    }
-
-    /**
-     * Retrieve output from read-only commands exercised against a storage appliance.
-     *
-     * <p>Run and retrieve output from read only commands on the provided storage appliance.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageApplianceName The name of the storage appliance.
-     * @param storageApplianceRunReadCommandsParameters The request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginRunReadCommandsAsync(
-        String resourceGroupName,
-        String storageApplianceName,
-        StorageApplianceRunReadCommandsParameters storageApplianceRunReadCommandsParameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            runReadCommandsWithResponseAsync(
-                resourceGroupName, storageApplianceName, storageApplianceRunReadCommandsParameters);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
-    }
-
-    /**
-     * Retrieve output from read-only commands exercised against a storage appliance.
-     *
-     * <p>Run and retrieve output from read only commands on the provided storage appliance.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageApplianceName The name of the storage appliance.
-     * @param storageApplianceRunReadCommandsParameters The request body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginRunReadCommandsAsync(
-        String resourceGroupName,
-        String storageApplianceName,
-        StorageApplianceRunReadCommandsParameters storageApplianceRunReadCommandsParameters,
-        Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            runReadCommandsWithResponseAsync(
-                resourceGroupName, storageApplianceName, storageApplianceRunReadCommandsParameters, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
-    }
-
-    /**
-     * Retrieve output from read-only commands exercised against a storage appliance.
-     *
-     * <p>Run and retrieve output from read only commands on the provided storage appliance.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageApplianceName The name of the storage appliance.
-     * @param storageApplianceRunReadCommandsParameters The request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginRunReadCommands(
-        String resourceGroupName,
-        String storageApplianceName,
-        StorageApplianceRunReadCommandsParameters storageApplianceRunReadCommandsParameters) {
-        return this
-            .beginRunReadCommandsAsync(
-                resourceGroupName, storageApplianceName, storageApplianceRunReadCommandsParameters)
-            .getSyncPoller();
-    }
-
-    /**
-     * Retrieve output from read-only commands exercised against a storage appliance.
-     *
-     * <p>Run and retrieve output from read only commands on the provided storage appliance.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageApplianceName The name of the storage appliance.
-     * @param storageApplianceRunReadCommandsParameters The request body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginRunReadCommands(
-        String resourceGroupName,
-        String storageApplianceName,
-        StorageApplianceRunReadCommandsParameters storageApplianceRunReadCommandsParameters,
-        Context context) {
-        return this
-            .beginRunReadCommandsAsync(
-                resourceGroupName, storageApplianceName, storageApplianceRunReadCommandsParameters, context)
-            .getSyncPoller();
-    }
-
-    /**
-     * Retrieve output from read-only commands exercised against a storage appliance.
-     *
-     * <p>Run and retrieve output from read only commands on the provided storage appliance.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageApplianceName The name of the storage appliance.
-     * @param storageApplianceRunReadCommandsParameters The request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> runReadCommandsAsync(
-        String resourceGroupName,
-        String storageApplianceName,
-        StorageApplianceRunReadCommandsParameters storageApplianceRunReadCommandsParameters) {
-        return beginRunReadCommandsAsync(
-                resourceGroupName, storageApplianceName, storageApplianceRunReadCommandsParameters)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Retrieve output from read-only commands exercised against a storage appliance.
-     *
-     * <p>Run and retrieve output from read only commands on the provided storage appliance.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageApplianceName The name of the storage appliance.
-     * @param storageApplianceRunReadCommandsParameters The request body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> runReadCommandsAsync(
-        String resourceGroupName,
-        String storageApplianceName,
-        StorageApplianceRunReadCommandsParameters storageApplianceRunReadCommandsParameters,
-        Context context) {
-        return beginRunReadCommandsAsync(
-                resourceGroupName, storageApplianceName, storageApplianceRunReadCommandsParameters, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Retrieve output from read-only commands exercised against a storage appliance.
-     *
-     * <p>Run and retrieve output from read only commands on the provided storage appliance.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageApplianceName The name of the storage appliance.
-     * @param storageApplianceRunReadCommandsParameters The request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void runReadCommands(
-        String resourceGroupName,
-        String storageApplianceName,
-        StorageApplianceRunReadCommandsParameters storageApplianceRunReadCommandsParameters) {
-        runReadCommandsAsync(resourceGroupName, storageApplianceName, storageApplianceRunReadCommandsParameters)
-            .block();
-    }
-
-    /**
-     * Retrieve output from read-only commands exercised against a storage appliance.
-     *
-     * <p>Run and retrieve output from read only commands on the provided storage appliance.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageApplianceName The name of the storage appliance.
-     * @param storageApplianceRunReadCommandsParameters The request body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void runReadCommands(
-        String resourceGroupName,
-        String storageApplianceName,
-        StorageApplianceRunReadCommandsParameters storageApplianceRunReadCommandsParameters,
-        Context context) {
-        runReadCommandsAsync(
-                resourceGroupName, storageApplianceName, storageApplianceRunReadCommandsParameters, context)
             .block();
     }
 

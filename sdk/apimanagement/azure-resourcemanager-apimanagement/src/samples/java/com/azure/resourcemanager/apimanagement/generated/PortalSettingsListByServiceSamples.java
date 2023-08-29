@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.apimanagement.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for PortalSettings ListByService. */
 public final class PortalSettingsListByServiceSamples {
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementListPortalSettings.json
+     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementListPortalSettings.json
      */
     /**
      * Sample code: ApiManagementListPortalSettings.
@@ -18,6 +16,6 @@ public final class PortalSettingsListByServiceSamples {
      */
     public static void apiManagementListPortalSettings(
         com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
-        manager.portalSettings().listByServiceWithResponse("rg1", "apimService1", Context.NONE);
+        manager.portalSettings().listByServiceWithResponse("rg1", "apimService1", com.azure.core.util.Context.NONE);
     }
 }

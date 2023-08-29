@@ -31,7 +31,7 @@ public final class WorkloadNetworksGetPublicIpWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"displayName\":\"bbelawumuaslzk\",\"numberOfPublicIPs\":2589313714101269318,\"publicIPBlock\":\"ycqucwyh\",\"provisioningState\":\"Deleting\"},\"id\":\"omd\",\"name\":\"kywuhpsvfuu\",\"type\":\"utlwexxwla\"}";
+            "{\"properties\":{\"displayName\":\"cuqudtcvclxy\",\"numberOfPublicIPs\":8353389332864775554,\"publicIPBlock\":\"gfabuiyjibuzphdu\",\"provisioningState\":\"Failed\"},\"id\":\"iknp\",\"name\":\"oxgjiuqhibt\",\"type\":\"z\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,10 +62,10 @@ public final class WorkloadNetworksGetPublicIpWithResponseMockTests {
         WorkloadNetworkPublicIp response =
             manager
                 .workloadNetworks()
-                .getPublicIpWithResponse("lvizb", "hfovvacqpbtu", "dxe", com.azure.core.util.Context.NONE)
+                .getPublicIpWithResponse("fotang", "fhnykzcugs", "vxwlmzqwmvtxnj", com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals("bbelawumuaslzk", response.displayName());
-        Assertions.assertEquals(2589313714101269318L, response.numberOfPublicIPs());
+        Assertions.assertEquals("cuqudtcvclxy", response.displayName());
+        Assertions.assertEquals(8353389332864775554L, response.numberOfPublicIPs());
     }
 }

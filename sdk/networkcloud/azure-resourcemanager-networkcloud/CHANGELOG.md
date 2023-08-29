@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.3 (Unreleased)
+## 1.1.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,148 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.0.0 (2023-08-25)
+
+- Azure Resource Manager NetworkCloud client library for Java. This package contains Microsoft Azure SDK for NetworkCloud Management SDK. The Network Cloud APIs provide management of the on-premises clusters and their resources, such as, racks, bare metal hosts, virtual machines, workload networks and more. Package tag package-2023-07-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+* `models.BareMetalMachineHardwareValidationCategory` was removed
+
+* `models.VirtualMachineVolumeParameters` was removed
+
+* `models.BareMetalMachineValidateHardwareParameters` was removed
+
+* `models.StorageApplianceRunReadCommandsParameters` was removed
+
+* `models.StorageApplianceCommandSpecification` was removed
+
+#### `models.BareMetalMachine` was modified
+
+* `void powerOff(models.BareMetalMachinePowerOffParameters,com.azure.core.util.Context)` -> `models.OperationStatusResult powerOff(models.BareMetalMachinePowerOffParameters,com.azure.core.util.Context)`
+* `void reimage(com.azure.core.util.Context)` -> `models.OperationStatusResult reimage(com.azure.core.util.Context)`
+* `void uncordon(com.azure.core.util.Context)` -> `models.OperationStatusResult uncordon(com.azure.core.util.Context)`
+* `void runReadCommands(models.BareMetalMachineRunReadCommandsParameters)` -> `models.OperationStatusResult runReadCommands(models.BareMetalMachineRunReadCommandsParameters)`
+* `void restart(com.azure.core.util.Context)` -> `models.OperationStatusResult restart(com.azure.core.util.Context)`
+* `void runDataExtracts(models.BareMetalMachineRunDataExtractsParameters,com.azure.core.util.Context)` -> `models.OperationStatusResult runDataExtracts(models.BareMetalMachineRunDataExtractsParameters,com.azure.core.util.Context)`
+* `void runCommand(models.BareMetalMachineRunCommandParameters)` -> `models.OperationStatusResult runCommand(models.BareMetalMachineRunCommandParameters)`
+* `void runCommand(models.BareMetalMachineRunCommandParameters,com.azure.core.util.Context)` -> `models.OperationStatusResult runCommand(models.BareMetalMachineRunCommandParameters,com.azure.core.util.Context)`
+* `void cordon(models.BareMetalMachineCordonParameters,com.azure.core.util.Context)` -> `models.OperationStatusResult cordon(models.BareMetalMachineCordonParameters,com.azure.core.util.Context)`
+* `void runReadCommands(models.BareMetalMachineRunReadCommandsParameters,com.azure.core.util.Context)` -> `models.OperationStatusResult runReadCommands(models.BareMetalMachineRunReadCommandsParameters,com.azure.core.util.Context)`
+* `void start()` -> `models.OperationStatusResult start()`
+* `void replace()` -> `models.OperationStatusResult replace()`
+* `void uncordon()` -> `models.OperationStatusResult uncordon()`
+* `void reimage()` -> `models.OperationStatusResult reimage()`
+* `validateHardware(models.BareMetalMachineValidateHardwareParameters,com.azure.core.util.Context)` was removed
+* `void replace(models.BareMetalMachineReplaceParameters,com.azure.core.util.Context)` -> `models.OperationStatusResult replace(models.BareMetalMachineReplaceParameters,com.azure.core.util.Context)`
+* `void start(com.azure.core.util.Context)` -> `models.OperationStatusResult start(com.azure.core.util.Context)`
+* `void cordon()` -> `models.OperationStatusResult cordon()`
+* `void runDataExtracts(models.BareMetalMachineRunDataExtractsParameters)` -> `models.OperationStatusResult runDataExtracts(models.BareMetalMachineRunDataExtractsParameters)`
+* `validateHardware(models.BareMetalMachineValidateHardwareParameters)` was removed
+* `void restart()` -> `models.OperationStatusResult restart()`
+* `void powerOff()` -> `models.OperationStatusResult powerOff()`
+
+#### `models.StorageAppliances` was modified
+
+* `runReadCommands(java.lang.String,java.lang.String,models.StorageApplianceRunReadCommandsParameters)` was removed
+* `void disableRemoteVendorManagement(java.lang.String,java.lang.String)` -> `models.OperationStatusResult disableRemoteVendorManagement(java.lang.String,java.lang.String)`
+* `void enableRemoteVendorManagement(java.lang.String,java.lang.String)` -> `models.OperationStatusResult enableRemoteVendorManagement(java.lang.String,java.lang.String)`
+* `void enableRemoteVendorManagement(java.lang.String,java.lang.String,models.StorageApplianceEnableRemoteVendorManagementParameters,com.azure.core.util.Context)` -> `models.OperationStatusResult enableRemoteVendorManagement(java.lang.String,java.lang.String,models.StorageApplianceEnableRemoteVendorManagementParameters,com.azure.core.util.Context)`
+* `void disableRemoteVendorManagement(java.lang.String,java.lang.String,com.azure.core.util.Context)` -> `models.OperationStatusResult disableRemoteVendorManagement(java.lang.String,java.lang.String,com.azure.core.util.Context)`
+* `runReadCommands(java.lang.String,java.lang.String,models.StorageApplianceRunReadCommandsParameters,com.azure.core.util.Context)` was removed
+
+#### `models.Cluster` was modified
+
+* `void updateVersion(models.ClusterUpdateVersionParameters)` -> `models.OperationStatusResult updateVersion(models.ClusterUpdateVersionParameters)`
+* `void deploy()` -> `models.OperationStatusResult deploy()`
+* `void deploy(models.ClusterDeployParameters,com.azure.core.util.Context)` -> `models.OperationStatusResult deploy(models.ClusterDeployParameters,com.azure.core.util.Context)`
+* `void updateVersion(models.ClusterUpdateVersionParameters,com.azure.core.util.Context)` -> `models.OperationStatusResult updateVersion(models.ClusterUpdateVersionParameters,com.azure.core.util.Context)`
+
+#### `models.Clusters` was modified
+
+* `void deploy(java.lang.String,java.lang.String,models.ClusterDeployParameters,com.azure.core.util.Context)` -> `models.OperationStatusResult deploy(java.lang.String,java.lang.String,models.ClusterDeployParameters,com.azure.core.util.Context)`
+* `void updateVersion(java.lang.String,java.lang.String,models.ClusterUpdateVersionParameters)` -> `models.OperationStatusResult updateVersion(java.lang.String,java.lang.String,models.ClusterUpdateVersionParameters)`
+* `void updateVersion(java.lang.String,java.lang.String,models.ClusterUpdateVersionParameters,com.azure.core.util.Context)` -> `models.OperationStatusResult updateVersion(java.lang.String,java.lang.String,models.ClusterUpdateVersionParameters,com.azure.core.util.Context)`
+* `void deploy(java.lang.String,java.lang.String)` -> `models.OperationStatusResult deploy(java.lang.String,java.lang.String)`
+
+#### `models.StorageAppliance` was modified
+
+* `void enableRemoteVendorManagement()` -> `models.OperationStatusResult enableRemoteVendorManagement()`
+* `runReadCommands(models.StorageApplianceRunReadCommandsParameters)` was removed
+* `void disableRemoteVendorManagement(com.azure.core.util.Context)` -> `models.OperationStatusResult disableRemoteVendorManagement(com.azure.core.util.Context)`
+* `runReadCommands(models.StorageApplianceRunReadCommandsParameters,com.azure.core.util.Context)` was removed
+* `void enableRemoteVendorManagement(models.StorageApplianceEnableRemoteVendorManagementParameters,com.azure.core.util.Context)` -> `models.OperationStatusResult enableRemoteVendorManagement(models.StorageApplianceEnableRemoteVendorManagementParameters,com.azure.core.util.Context)`
+* `void disableRemoteVendorManagement()` -> `models.OperationStatusResult disableRemoteVendorManagement()`
+
+#### `models.KubernetesClusters` was modified
+
+* `void restartNode(java.lang.String,java.lang.String,models.KubernetesClusterRestartNodeParameters)` -> `models.OperationStatusResult restartNode(java.lang.String,java.lang.String,models.KubernetesClusterRestartNodeParameters)`
+* `void restartNode(java.lang.String,java.lang.String,models.KubernetesClusterRestartNodeParameters,com.azure.core.util.Context)` -> `models.OperationStatusResult restartNode(java.lang.String,java.lang.String,models.KubernetesClusterRestartNodeParameters,com.azure.core.util.Context)`
+
+#### `models.VirtualMachine` was modified
+
+* `void powerOff(models.VirtualMachinePowerOffParameters,com.azure.core.util.Context)` -> `models.OperationStatusResult powerOff(models.VirtualMachinePowerOffParameters,com.azure.core.util.Context)`
+* `attachVolume(models.VirtualMachineVolumeParameters,com.azure.core.util.Context)` was removed
+* `void start(com.azure.core.util.Context)` -> `models.OperationStatusResult start(com.azure.core.util.Context)`
+* `void powerOff()` -> `models.OperationStatusResult powerOff()`
+* `void restart(com.azure.core.util.Context)` -> `models.OperationStatusResult restart(com.azure.core.util.Context)`
+* `void reimage()` -> `models.OperationStatusResult reimage()`
+* `detachVolume(models.VirtualMachineVolumeParameters,com.azure.core.util.Context)` was removed
+* `void reimage(com.azure.core.util.Context)` -> `models.OperationStatusResult reimage(com.azure.core.util.Context)`
+* `detachVolume(models.VirtualMachineVolumeParameters)` was removed
+* `void restart()` -> `models.OperationStatusResult restart()`
+* `void start()` -> `models.OperationStatusResult start()`
+* `attachVolume(models.VirtualMachineVolumeParameters)` was removed
+
+#### `models.BareMetalMachines` was modified
+
+* `void reimage(java.lang.String,java.lang.String)` -> `models.OperationStatusResult reimage(java.lang.String,java.lang.String)`
+* `void powerOff(java.lang.String,java.lang.String)` -> `models.OperationStatusResult powerOff(java.lang.String,java.lang.String)`
+* `void start(java.lang.String,java.lang.String)` -> `models.OperationStatusResult start(java.lang.String,java.lang.String)`
+* `validateHardware(java.lang.String,java.lang.String,models.BareMetalMachineValidateHardwareParameters,com.azure.core.util.Context)` was removed
+* `void replace(java.lang.String,java.lang.String)` -> `models.OperationStatusResult replace(java.lang.String,java.lang.String)`
+* `void runReadCommands(java.lang.String,java.lang.String,models.BareMetalMachineRunReadCommandsParameters,com.azure.core.util.Context)` -> `models.OperationStatusResult runReadCommands(java.lang.String,java.lang.String,models.BareMetalMachineRunReadCommandsParameters,com.azure.core.util.Context)`
+* `validateHardware(java.lang.String,java.lang.String,models.BareMetalMachineValidateHardwareParameters)` was removed
+* `void runCommand(java.lang.String,java.lang.String,models.BareMetalMachineRunCommandParameters,com.azure.core.util.Context)` -> `models.OperationStatusResult runCommand(java.lang.String,java.lang.String,models.BareMetalMachineRunCommandParameters,com.azure.core.util.Context)`
+* `void runDataExtracts(java.lang.String,java.lang.String,models.BareMetalMachineRunDataExtractsParameters,com.azure.core.util.Context)` -> `models.OperationStatusResult runDataExtracts(java.lang.String,java.lang.String,models.BareMetalMachineRunDataExtractsParameters,com.azure.core.util.Context)`
+* `void powerOff(java.lang.String,java.lang.String,models.BareMetalMachinePowerOffParameters,com.azure.core.util.Context)` -> `models.OperationStatusResult powerOff(java.lang.String,java.lang.String,models.BareMetalMachinePowerOffParameters,com.azure.core.util.Context)`
+* `void runCommand(java.lang.String,java.lang.String,models.BareMetalMachineRunCommandParameters)` -> `models.OperationStatusResult runCommand(java.lang.String,java.lang.String,models.BareMetalMachineRunCommandParameters)`
+* `void restart(java.lang.String,java.lang.String,com.azure.core.util.Context)` -> `models.OperationStatusResult restart(java.lang.String,java.lang.String,com.azure.core.util.Context)`
+* `void runReadCommands(java.lang.String,java.lang.String,models.BareMetalMachineRunReadCommandsParameters)` -> `models.OperationStatusResult runReadCommands(java.lang.String,java.lang.String,models.BareMetalMachineRunReadCommandsParameters)`
+* `void uncordon(java.lang.String,java.lang.String,com.azure.core.util.Context)` -> `models.OperationStatusResult uncordon(java.lang.String,java.lang.String,com.azure.core.util.Context)`
+* `void reimage(java.lang.String,java.lang.String,com.azure.core.util.Context)` -> `models.OperationStatusResult reimage(java.lang.String,java.lang.String,com.azure.core.util.Context)`
+* `void restart(java.lang.String,java.lang.String)` -> `models.OperationStatusResult restart(java.lang.String,java.lang.String)`
+* `void cordon(java.lang.String,java.lang.String,models.BareMetalMachineCordonParameters,com.azure.core.util.Context)` -> `models.OperationStatusResult cordon(java.lang.String,java.lang.String,models.BareMetalMachineCordonParameters,com.azure.core.util.Context)`
+* `void cordon(java.lang.String,java.lang.String)` -> `models.OperationStatusResult cordon(java.lang.String,java.lang.String)`
+* `void start(java.lang.String,java.lang.String,com.azure.core.util.Context)` -> `models.OperationStatusResult start(java.lang.String,java.lang.String,com.azure.core.util.Context)`
+* `void replace(java.lang.String,java.lang.String,models.BareMetalMachineReplaceParameters,com.azure.core.util.Context)` -> `models.OperationStatusResult replace(java.lang.String,java.lang.String,models.BareMetalMachineReplaceParameters,com.azure.core.util.Context)`
+* `void runDataExtracts(java.lang.String,java.lang.String,models.BareMetalMachineRunDataExtractsParameters)` -> `models.OperationStatusResult runDataExtracts(java.lang.String,java.lang.String,models.BareMetalMachineRunDataExtractsParameters)`
+* `void uncordon(java.lang.String,java.lang.String)` -> `models.OperationStatusResult uncordon(java.lang.String,java.lang.String)`
+
+#### `models.VirtualMachines` was modified
+
+* `attachVolume(java.lang.String,java.lang.String,models.VirtualMachineVolumeParameters)` was removed
+* `void reimage(java.lang.String,java.lang.String,com.azure.core.util.Context)` -> `models.OperationStatusResult reimage(java.lang.String,java.lang.String,com.azure.core.util.Context)`
+* `void start(java.lang.String,java.lang.String)` -> `models.OperationStatusResult start(java.lang.String,java.lang.String)`
+* `void powerOff(java.lang.String,java.lang.String)` -> `models.OperationStatusResult powerOff(java.lang.String,java.lang.String)`
+* `void reimage(java.lang.String,java.lang.String)` -> `models.OperationStatusResult reimage(java.lang.String,java.lang.String)`
+* `void restart(java.lang.String,java.lang.String)` -> `models.OperationStatusResult restart(java.lang.String,java.lang.String)`
+* `void restart(java.lang.String,java.lang.String,com.azure.core.util.Context)` -> `models.OperationStatusResult restart(java.lang.String,java.lang.String,com.azure.core.util.Context)`
+* `detachVolume(java.lang.String,java.lang.String,models.VirtualMachineVolumeParameters,com.azure.core.util.Context)` was removed
+* `detachVolume(java.lang.String,java.lang.String,models.VirtualMachineVolumeParameters)` was removed
+* `void powerOff(java.lang.String,java.lang.String,models.VirtualMachinePowerOffParameters,com.azure.core.util.Context)` -> `models.OperationStatusResult powerOff(java.lang.String,java.lang.String,models.VirtualMachinePowerOffParameters,com.azure.core.util.Context)`
+* `void start(java.lang.String,java.lang.String,com.azure.core.util.Context)` -> `models.OperationStatusResult start(java.lang.String,java.lang.String,com.azure.core.util.Context)`
+* `attachVolume(java.lang.String,java.lang.String,models.VirtualMachineVolumeParameters,com.azure.core.util.Context)` was removed
+
+#### `models.KubernetesCluster` was modified
+
+* `void restartNode(models.KubernetesClusterRestartNodeParameters)` -> `models.OperationStatusResult restartNode(models.KubernetesClusterRestartNodeParameters)`
+* `void restartNode(models.KubernetesClusterRestartNodeParameters,com.azure.core.util.Context)` -> `models.OperationStatusResult restartNode(models.KubernetesClusterRestartNodeParameters,com.azure.core.util.Context)`
+
+### Features Added
+
+* `models.OperationStatusResult` was added
 
 ## 1.0.0-beta.2 (2023-07-03)
 

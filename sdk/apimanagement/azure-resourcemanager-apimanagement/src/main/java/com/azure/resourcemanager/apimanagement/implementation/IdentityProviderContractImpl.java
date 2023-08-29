@@ -78,6 +78,14 @@ public final class IdentityProviderContractImpl
         return this.innerModel().passwordResetPolicyName();
     }
 
+    public String clientLibrary() {
+        return this.innerModel().clientLibrary();
+    }
+
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public IdentityProviderContractInner innerModel() {
         return this.innerObject;
     }
@@ -196,14 +204,14 @@ public final class IdentityProviderContractImpl
         return this;
     }
 
-    public ClientSecretContract listSecrets() {
-        return serviceManager.identityProviders().listSecrets(resourceGroupName, serviceName, identityProviderName);
-    }
-
     public Response<ClientSecretContract> listSecretsWithResponse(Context context) {
         return serviceManager
             .identityProviders()
             .listSecretsWithResponse(resourceGroupName, serviceName, identityProviderName, context);
+    }
+
+    public ClientSecretContract listSecrets() {
+        return serviceManager.identityProviders().listSecrets(resourceGroupName, serviceName, identityProviderName);
     }
 
     public IdentityProviderContractImpl withClientId(String clientId) {
@@ -297,6 +305,16 @@ public final class IdentityProviderContractImpl
             return this;
         } else {
             this.updateParameters.withPasswordResetPolicyName(passwordResetPolicyName);
+            return this;
+        }
+    }
+
+    public IdentityProviderContractImpl withClientLibrary(String clientLibrary) {
+        if (isInCreateMode()) {
+            this.createParameters.withClientLibrary(clientLibrary);
+            return this;
+        } else {
+            this.updateParameters.withClientLibrary(clientLibrary);
             return this;
         }
     }

@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ContentFormat. */
+/** Format of the Content in which the API is getting imported. */
 public final class ContentFormat extends ExpandableStringEnum<ContentFormat> {
     /** Static value wadl-xml for ContentFormat. */
     public static final ContentFormat WADL_XML = fromString("wadl-xml");
@@ -44,6 +44,15 @@ public final class ContentFormat extends ExpandableStringEnum<ContentFormat> {
     public static final ContentFormat GRAPHQL_LINK = fromString("graphql-link");
 
     /**
+     * Creates a new instance of ContentFormat value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ContentFormat() {
+    }
+
+    /**
      * Creates or finds a ContentFormat from its string representation.
      *
      * @param name a name to look for.
@@ -54,7 +63,11 @@ public final class ContentFormat extends ExpandableStringEnum<ContentFormat> {
         return fromString(name, ContentFormat.class);
     }
 
-    /** @return known ContentFormat values. */
+    /**
+     * Gets known ContentFormat values.
+     *
+     * @return known ContentFormat values.
+     */
     public static Collection<ContentFormat> values() {
         return values(ContentFormat.class);
     }

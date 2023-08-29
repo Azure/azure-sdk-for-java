@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.dynatrace.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Request for getting sso details for a user. */
@@ -13,8 +14,12 @@ public final class SsoDetailsRequest {
     /*
      * user principal id of the user
      */
-    @JsonProperty(value = "userPrincipal")
+    @JsonProperty(value = "userPrincipal", required = true)
     private String userPrincipal;
+
+    /** Creates an instance of SsoDetailsRequest class. */
+    public SsoDetailsRequest() {
+    }
 
     /**
      * Get the userPrincipal property: user principal id of the user.
@@ -42,5 +47,12 @@ public final class SsoDetailsRequest {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (userPrincipal() == null) {
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property userPrincipal in model SsoDetailsRequest"));
+        }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(SsoDetailsRequest.class);
 }

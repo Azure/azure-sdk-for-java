@@ -12,19 +12,21 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class SaveConfigurationParameterProperties {
     /*
-     * The name of the Git branch in which to commit the current configuration
-     * snapshot.
+     * The name of the Git branch in which to commit the current configuration snapshot.
      */
     @JsonProperty(value = "branch", required = true)
     private String branch;
 
     /*
-     * The value if true, the current configuration database is committed to
-     * the Git repository, even if the Git repository has newer changes that
-     * would be overwritten.
+     * The value if true, the current configuration database is committed to the Git repository, even if the Git
+     * repository has newer changes that would be overwritten.
      */
     @JsonProperty(value = "force")
     private Boolean force;
+
+    /** Creates an instance of SaveConfigurationParameterProperties class. */
+    public SaveConfigurationParameterProperties() {
+    }
 
     /**
      * Get the branch property: The name of the Git branch in which to commit the current configuration snapshot.

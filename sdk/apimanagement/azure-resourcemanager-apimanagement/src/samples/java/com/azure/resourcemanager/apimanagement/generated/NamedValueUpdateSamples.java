@@ -4,14 +4,13 @@
 
 package com.azure.resourcemanager.apimanagement.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.apimanagement.models.NamedValueContract;
 import java.util.Arrays;
 
 /** Samples for NamedValue Update. */
 public final class NamedValueUpdateSamples {
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementUpdateNamedValue.json
+     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementUpdateNamedValue.json
      */
     /**
      * Sample code: ApiManagementUpdateNamedValue.
@@ -21,7 +20,10 @@ public final class NamedValueUpdateSamples {
     public static void apiManagementUpdateNamedValue(
         com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
         NamedValueContract resource =
-            manager.namedValues().getWithResponse("rg1", "apimService1", "testprop2", Context.NONE).getValue();
+            manager
+                .namedValues()
+                .getWithResponse("rg1", "apimService1", "testprop2", com.azure.core.util.Context.NONE)
+                .getValue();
         resource
             .update()
             .withTags(Arrays.asList("foo", "bar2"))

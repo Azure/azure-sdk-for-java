@@ -66,6 +66,8 @@ final class FluxTrace extends FluxOperator<ServiceBusMessageContext, ServiceBusM
             } catch (Throwable t) {
                 tracer.endSpan(t, span, scope);
                 throw t;
+            } finally {
+                tracer.closeScope(scope);
             }
         }
 

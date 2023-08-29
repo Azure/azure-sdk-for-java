@@ -38,6 +38,15 @@ public final class ProvisioningState extends ExpandableStringEnum<ProvisioningSt
     public static final ProvisioningState NOT_SPECIFIED = fromString("NotSpecified");
 
     /**
+     * Creates a new instance of ProvisioningState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ProvisioningState() {
+    }
+
+    /**
      * Creates or finds a ProvisioningState from its string representation.
      *
      * @param name a name to look for.

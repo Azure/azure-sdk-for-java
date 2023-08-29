@@ -12,7 +12,7 @@ public final class EndpointsTests {
     public void testDeserialize() throws Exception {
         Endpoints model =
             BinaryData
-                .fromString("{\"nsxtManager\":\"qgtz\",\"vcsa\":\"pnqbqqwxrjfe\",\"hcxCloudManager\":\"lnwsubisn\"}")
+                .fromString("{\"nsxtManager\":\"rsyn\",\"vcsa\":\"idybyxczf\",\"hcxCloudManager\":\"haaxdbabphl\"}")
                 .toObject(Endpoints.class);
     }
 

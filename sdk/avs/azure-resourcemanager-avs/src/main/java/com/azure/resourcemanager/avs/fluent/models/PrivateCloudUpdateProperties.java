@@ -46,6 +46,14 @@ public class PrivateCloudUpdateProperties {
     @JsonProperty(value = "encryption")
     private Encryption encryption;
 
+    /*
+     * Array of additional networks noncontiguous with networkBlock. Networks must be unique and non-overlapping across
+     * VNet in your subscription, on-premise, and this privateCloud networkBlock attribute. Make sure the CIDR format
+     * conforms to (A.B.C.D/X).
+     */
+    @JsonProperty(value = "extendedNetworkBlocks")
+    private List<String> extendedNetworkBlocks;
+
     /** Creates an instance of PrivateCloudUpdateProperties class. */
     public PrivateCloudUpdateProperties() {
     }
@@ -147,6 +155,30 @@ public class PrivateCloudUpdateProperties {
      */
     public PrivateCloudUpdateProperties withEncryption(Encryption encryption) {
         this.encryption = encryption;
+        return this;
+    }
+
+    /**
+     * Get the extendedNetworkBlocks property: Array of additional networks noncontiguous with networkBlock. Networks
+     * must be unique and non-overlapping across VNet in your subscription, on-premise, and this privateCloud
+     * networkBlock attribute. Make sure the CIDR format conforms to (A.B.C.D/X).
+     *
+     * @return the extendedNetworkBlocks value.
+     */
+    public List<String> extendedNetworkBlocks() {
+        return this.extendedNetworkBlocks;
+    }
+
+    /**
+     * Set the extendedNetworkBlocks property: Array of additional networks noncontiguous with networkBlock. Networks
+     * must be unique and non-overlapping across VNet in your subscription, on-premise, and this privateCloud
+     * networkBlock attribute. Make sure the CIDR format conforms to (A.B.C.D/X).
+     *
+     * @param extendedNetworkBlocks the extendedNetworkBlocks value to set.
+     * @return the PrivateCloudUpdateProperties object itself.
+     */
+    public PrivateCloudUpdateProperties withExtendedNetworkBlocks(List<String> extendedNetworkBlocks) {
+        this.extendedNetworkBlocks = extendedNetworkBlocks;
         return this;
     }
 

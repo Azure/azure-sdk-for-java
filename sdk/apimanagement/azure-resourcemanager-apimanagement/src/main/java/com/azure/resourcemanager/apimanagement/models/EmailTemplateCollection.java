@@ -30,6 +30,10 @@ public final class EmailTemplateCollection {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of EmailTemplateCollection class. */
+    public EmailTemplateCollection() {
+    }
+
     /**
      * Get the value property: Page values.
      *

@@ -29,6 +29,10 @@ public class IssueContractBaseProperties {
     @JsonProperty(value = "apiId")
     private String apiId;
 
+    /** Creates an instance of IssueContractBaseProperties class. */
+    public IssueContractBaseProperties() {
+    }
+
     /**
      * Get the createdDate property: Date and time when the issue was created.
      *

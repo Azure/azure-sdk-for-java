@@ -13,7 +13,7 @@ public interface PortalRevisions {
     /**
      * Lists developer portal's revisions.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -25,7 +25,7 @@ public interface PortalRevisions {
     /**
      * Lists developer portal's revisions.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param filter | Field | Supported operators | Supported functions |
      *     |-------------|------------------------|-----------------------------------|
@@ -45,20 +45,7 @@ public interface PortalRevisions {
     /**
      * Gets the developer portal revision specified by its identifier.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param serviceName The name of the API Management service.
-     * @param portalRevisionId Portal revision identifier. Must be unique in the current API Management service
-     *     instance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void getEntityTag(String resourceGroupName, String serviceName, String portalRevisionId);
-
-    /**
-     * Gets the developer portal revision specified by its identifier.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param portalRevisionId Portal revision identifier. Must be unique in the current API Management service
      *     instance.
@@ -72,23 +59,22 @@ public interface PortalRevisions {
         String resourceGroupName, String serviceName, String portalRevisionId, Context context);
 
     /**
-     * Gets the developer portal's revision specified by its identifier.
+     * Gets the developer portal revision specified by its identifier.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param portalRevisionId Portal revision identifier. Must be unique in the current API Management service
      *     instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the developer portal's revision specified by its identifier.
      */
-    PortalRevisionContract get(String resourceGroupName, String serviceName, String portalRevisionId);
+    void getEntityTag(String resourceGroupName, String serviceName, String portalRevisionId);
 
     /**
      * Gets the developer portal's revision specified by its identifier.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param portalRevisionId Portal revision identifier. Must be unique in the current API Management service
      *     instance.
@@ -100,6 +86,20 @@ public interface PortalRevisions {
      */
     Response<PortalRevisionContract> getWithResponse(
         String resourceGroupName, String serviceName, String portalRevisionId, Context context);
+
+    /**
+     * Gets the developer portal's revision specified by its identifier.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serviceName The name of the API Management service.
+     * @param portalRevisionId Portal revision identifier. Must be unique in the current API Management service
+     *     instance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the developer portal's revision specified by its identifier.
+     */
+    PortalRevisionContract get(String resourceGroupName, String serviceName, String portalRevisionId);
 
     /**
      * Gets the developer portal's revision specified by its identifier.

@@ -17,6 +17,10 @@ public final class ApiVersionSetUpdateParameters {
     @JsonProperty(value = "properties")
     private ApiVersionSetUpdateParametersProperties innerProperties;
 
+    /** Creates an instance of ApiVersionSetUpdateParameters class. */
+    public ApiVersionSetUpdateParameters() {
+    }
+
     /**
      * Get the innerProperties property: Parameters to update or create an API Version Set Contract.
      *

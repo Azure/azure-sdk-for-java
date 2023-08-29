@@ -42,15 +42,6 @@ public final class TenantSettingsImpl implements TenantSettings {
         return Utils.mapPage(inner, inner1 -> new TenantSettingsContractImpl(inner1, this.manager()));
     }
 
-    public TenantSettingsContract get(String resourceGroupName, String serviceName, SettingsTypeName settingsType) {
-        TenantSettingsContractInner inner = this.serviceClient().get(resourceGroupName, serviceName, settingsType);
-        if (inner != null) {
-            return new TenantSettingsContractImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<TenantSettingsContract> getWithResponse(
         String resourceGroupName, String serviceName, SettingsTypeName settingsType, Context context) {
         TenantSettingsGetResponse inner =
@@ -61,6 +52,15 @@ public final class TenantSettingsImpl implements TenantSettings {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new TenantSettingsContractImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public TenantSettingsContract get(String resourceGroupName, String serviceName, SettingsTypeName settingsType) {
+        TenantSettingsContractInner inner = this.serviceClient().get(resourceGroupName, serviceName, settingsType);
+        if (inner != null) {
+            return new TenantSettingsContractImpl(inner, this.manager());
         } else {
             return null;
         }
