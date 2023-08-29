@@ -56,12 +56,10 @@ public abstract class ConfigurationClientTestBase extends TestProxyTestBase {
     public static final String FAKE_CONNECTION_STRING =
         "Endpoint=https://localhost:8080;Id=0000000000000;Secret=fakeSecrePlaceholder";
 
-    static final Duration DEFAULT_RETENTION_PERIOD = Duration.ofSeconds(2592000);
     static final Duration MINIMUM_RETENTION_PERIOD = Duration.ofHours(1);
 
     static String connectionString;
 
-    private final ClientLogger logger = new ClientLogger(ConfigurationClientTestBase.class);
     String keyPrefix;
     String labelPrefix;
 
@@ -557,6 +555,30 @@ public abstract class ConfigurationClientTestBase extends TestProxyTestBase {
         filters.add(new SnapshotSettingFilter(snapshotName + "-*"));
         testRunner.accept(snapshotName, filters);
     }
+
+    @Test
+    public abstract void getSnapshot(HttpClient httpClient, ConfigurationServiceVersion serviceVersion);
+
+    @Test
+    public abstract void getSnapshotConvenience(HttpClient httpClient, ConfigurationServiceVersion serviceVersion);
+
+    @Test
+    public abstract void archiveSnapshot(HttpClient httpClient, ConfigurationServiceVersion serviceVersion);
+
+    @Test
+    public abstract void archiveSnapshotConvenience(HttpClient httpClient, ConfigurationServiceVersion serviceVersion);
+
+    @Test
+    public abstract void recoverSnapshot(HttpClient httpClient, ConfigurationServiceVersion serviceVersion);
+
+    @Test
+    public abstract void recoverSnapshotConvenience(HttpClient httpClient, ConfigurationServiceVersion serviceVersion);
+
+    @Test
+    public abstract void listSnapshots(HttpClient httpClient, ConfigurationServiceVersion serviceVersion);
+
+    @Test
+    public abstract void listSettingFromSnapshot(HttpClient httpClient, ConfigurationServiceVersion serviceVersion);
 
     /**
      * Helper method to verify that the RestResponse matches what was expected. This method assumes a response status of 200.
