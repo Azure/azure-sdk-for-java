@@ -31,10 +31,6 @@ libraries.
 * [Get logs for a query with server timeout][get_servertimeout_logs]
 * [Get metrics][get_metrics]
 
-## Troubleshooting
-
-Troubleshooting steps can be found [here][SDK_README_TROUBLESHOOTING].
-
 ## Run large log queries using Log Analytics
 
 Due to Log Analytics [service limits][monitor_service_limits], sometimes it may
@@ -42,15 +38,21 @@ not be possible to retrieve all the expected data in a single query. For example
 data returned may exceed the stated limits. One approach for overcoming these limits is to split the queries into multiple smaller queries
 using different time ranges.
 
-This workaround allows you to avoid the cost of exporting data to a storage account (and potentially the cost of the storage account as well). 
+This workaround allows you to avoid the cost of exporting data to a storage account (and potentially the cost of the storage account as well).
 
 **Disclaimer:** This approach of splitting data retrieval into smaller queries is useful when dealing with a few GBs of data or a few millions records per hour. For larger data sets, [exporting][logs_data_export] is recommended.
 
-This sample shows how to parition a large query into smaller queries using the `LogsBatchQuery` class. The sample provides examples for 
-row-based partitioning and byte-size partitioning. The partitioning is based on the timestamp "TimeGenerated". 
+We've provided a sample that demonstrates how to split a large query into a batch query based on the number of rows. The sample can be found here.
+We've also provided a sample that demonstrates how to split a large query into a batch query based on the size of the data returned. The sample can be found here.
+
+These sample shows how to partition a large query into smaller queries using the `LogsBatchQuery` class. The partitioning is based on the timestamp "TimeGenerated".
 
 This sample is suitable for simple data retrieval queries that utilize a subset of KQL operators. The subset of KQL operators supported are can
 be found [here][kql_language_subset].
+
+## Troubleshooting
+
+Troubleshooting steps can be found [here][SDK_README_TROUBLESHOOTING].
 
 ## Next steps
 

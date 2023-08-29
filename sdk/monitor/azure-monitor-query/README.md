@@ -407,7 +407,7 @@ raw JSON response. For example:
 
 #### Overcome Log Analytics query size limitations
 
-If your query exceeds the service limits, see the large log query documentation to learn how to overcome them.
+If your query exceeds the [service limits][service_limits], see the large log query documentation to learn how to overcome them.
 
 ### Metrics query
 
@@ -528,6 +528,7 @@ comments.
 [samples]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/monitor/azure-monitor-query/src/samples/java/README.md
 [source]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/monitor/azure-monitor-query/src
 [performance_tuning]: https://github.com/Azure/azure-sdk-for-java/wiki/Performance-Tuning
+[service_limits]: https://learn.microsoft.com/azure/azure-monitor/service-limits#log-queries-and-language
 
 [cla]: https://cla.microsoft.com
 [coc]: https://opensource.microsoft.com/codeofconduct/
