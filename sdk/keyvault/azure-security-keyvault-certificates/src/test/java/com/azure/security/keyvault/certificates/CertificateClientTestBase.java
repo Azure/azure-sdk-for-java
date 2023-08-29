@@ -542,18 +542,6 @@ public abstract class CertificateClientTestBase extends TestProxyTestBase {
     protected PrivateKey loadPrivateKey(String filename)
         throws IOException, NoSuchAlgorithmException, InvalidKeySpecException {
 
-        /*String path = Objects.requireNonNull(getClass().getClassLoader().getResource(filename)).getPath();
-        StringBuilder key = new StringBuilder();
-
-        try (BufferedReader br = new BufferedReader(new FileReader(path))) {
-            String line;
-
-            while ((line = br.readLine()) != null && !line.startsWith("-----")) {
-                key.append(line);
-            }
-        }
-
-        byte[] keyBytes = key.toString().getBytes();*/
         byte[] keyBytes = Files.readAllBytes(Paths.get("src", "test", "resources", filename));
 
         PKCS8EncodedKeySpec spec = new PKCS8EncodedKeySpec(keyBytes);
