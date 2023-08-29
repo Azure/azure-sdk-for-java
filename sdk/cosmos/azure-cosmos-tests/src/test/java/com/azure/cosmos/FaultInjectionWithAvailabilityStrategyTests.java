@@ -179,6 +179,12 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 assertThat(subStatusCode).isEqualTo(HttpConstants.SubStatusCodes.READ_SESSION_NOT_AVAILABLE);
             };
 
+        BiConsumer<Integer, Integer> validateStatusCodeIsOperationCancelled =
+            (statusCode, subStatusCode) -> {
+                assertThat(statusCode).isEqualTo(HttpConstants.StatusCodes.REQUEST_TIMEOUT);
+                assertThat(subStatusCode).isEqualTo(HttpConstants.SubStatusCodes.CLIENT_OPERATION_TIMEOUT);
+            };
+
         BiConsumer<Integer, Integer> expectedStatusCode200Ok =
             (statusCode, subStatusCode) -> assertThat(statusCode).isEqualTo(HttpConstants.StatusCodes.OK);
 
@@ -234,6 +240,36 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 Duration.ofSeconds(1),
                 defaultAvailabilityStrategy,
                 CosmosRegionSwitchHint.REMOTE_REGION_PREFERRED,
+                sameDocumentIdJustCreated,
+                injectReadSessionNotAvailableIntoAllExceptFirstRegion,
+                expectedStatusCode200Ok,
+                validateDiagnosticsContextHasDiagnosticsForOnlyFirstRegion
+            },
+            new Object[] {
+                "404-1002_AllRegions_LocalPreferred",
+                Duration.ofSeconds(1),
+                eagerThresholdAvailabilityStrategy,
+                CosmosRegionSwitchHint.LOCAL_REGION_PREFERRED,
+                sameDocumentIdJustCreated,
+                injectReadSessionNotAvailableIntoAllRegions,
+                validateStatusCodeIsOperationCancelled,
+                validateDiagnosticsContextHasDiagnosticsForAllRegions
+            },
+            new Object[] {
+                "404-1002_OnlyFirstRegion_LocalPreferred",
+                Duration.ofSeconds(1),
+                eagerThresholdAvailabilityStrategy,
+                CosmosRegionSwitchHint.LOCAL_REGION_PREFERRED,
+                sameDocumentIdJustCreated,
+                injectReadSessionNotAvailableIntoFirstRegionOnly,
+                expectedStatusCode200Ok,
+                validateDiagnosticsContextHasDiagnosticsForAllRegions
+            },
+            new Object[] {
+                "404-1002_AllExceptFirstRegion_LocalPreferred",
+                Duration.ofSeconds(1),
+                defaultAvailabilityStrategy,
+                CosmosRegionSwitchHint.LOCAL_REGION_PREFERRED,
                 sameDocumentIdJustCreated,
                 injectReadSessionNotAvailableIntoAllExceptFirstRegion,
                 expectedStatusCode200Ok,
