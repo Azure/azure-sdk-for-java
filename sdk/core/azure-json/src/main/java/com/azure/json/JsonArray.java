@@ -262,7 +262,8 @@ public class JsonArray extends JsonDataStructure {
         while(reader.currentToken() != JsonToken.END_ARRAY) {
 
             JsonToken token = reader.nextToken();
-            System.out.printf("Token: %s%n", token);
+            //todo remove this debug line, and remove the comment out cases
+            //System.out.printf("Token: %s%n", token);
 
 
             switch (token) {

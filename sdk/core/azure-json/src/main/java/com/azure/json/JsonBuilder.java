@@ -58,7 +58,7 @@ public class JsonBuilder {
         JsonDataStructure output = null;
         while (token != END_DOCUMENT) {
             //todo remove this debug line, and remove the comment out cases
-            System.out.printf("Token: %s%n", token);
+            //System.out.printf("Token: %s%n", token);
             switch (token) {
                 // I'm leaving in all the options in this switch commented out to make sure I don't miss anything,
                 // but at this point anything other than opening a new object or array is an error.
