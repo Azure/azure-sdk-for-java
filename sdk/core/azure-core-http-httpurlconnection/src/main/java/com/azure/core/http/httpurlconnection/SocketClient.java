@@ -10,7 +10,8 @@ import javax.net.ssl.SSLSocketFactory;
 import java.io.*;
 import java.net.ProtocolException;
 import java.net.Socket;
-import java.util.Base64;
+import java.net.URL;
+import java.util.*;
 
 // A socket client to be used to handle PATCH requests
 
@@ -64,6 +65,20 @@ public class SocketClient {
         outputStreamWriter.flush();
 
         HttpUrlConnectionResponse response = buildResponse(httpRequest, in);
+
+        // If the location header is set in the response, follow the redirect
+        String redirectLocation = response.getHeaders().stream()
+            .filter(h -> h.getName().equals("Location"))
+            .map(HttpHeader::getValue)
+            .findFirst()
+            .orElse(null);
+
+        if (redirectLocation != null) {
+            httpRequest.setUrl(new URL(redirectLocation));
+            return new SocketClient(httpRequest.getUrl().getHost(),
+                httpRequest.getUrl().getPort() == -1 ? port : httpRequest.getUrl().getPort())
+                .sendPatchRequest(httpRequest);
+        }
 
         out.close();
         in.close();
@@ -121,7 +136,6 @@ public class SocketClient {
         while ((line = reader.readLine()) != null && !line.isEmpty()) {
             String k = line.split(": ")[0];
             String v = line.split(": ")[1];
-            // todo - may need to check that the HttpHeaderName is valid
             headers.set(HttpHeaderName.fromString(k), v);
         }
         // Read the newline through
