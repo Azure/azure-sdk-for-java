@@ -1032,9 +1032,10 @@ public class CertificateAsyncClientTest extends CertificateClientTestBase {
             })
             .flatMap(mergeCertificateOptions -> certificateAsyncClient.mergeCertificate(mergeCertificateOptions))
             .flatMap(mergedCertificate -> certificateAsyncClient.getCertificateOperation(mergedCertificate.getName()))
-            .last()
-        ).assertNext(pollResponse ->
-            assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, pollResponse.getStatus()));
+            .last())
+            .assertNext(pollResponse ->
+                assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, pollResponse.getStatus()))
+            .verifyComplete();
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
