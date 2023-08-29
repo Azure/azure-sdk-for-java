@@ -210,6 +210,15 @@ public final class ImplUtils {
         return result;
     }
 
+    public static boolean isAndroid() {
+        try {
+            Class.forName("android.os.Environment");
+            return true;
+        } catch (ClassNotFoundException e) {
+            return false;
+        }
+    }
+
     public static final class QueryParameterIterator implements Iterator<Map.Entry<String, String>> {
         private final String queryParameters;
         private final int queryParametersLength;
