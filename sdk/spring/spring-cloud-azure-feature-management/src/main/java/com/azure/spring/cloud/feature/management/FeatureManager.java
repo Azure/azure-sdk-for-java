@@ -18,7 +18,6 @@ import org.springframework.util.StringUtils;
 
 import com.azure.spring.cloud.feature.management.filters.ContextualFeatureFilter;
 import com.azure.spring.cloud.feature.management.filters.FeatureFilter;
-import com.azure.spring.cloud.feature.management.filters.VariantAssignment;
 import com.azure.spring.cloud.feature.management.implementation.FeatureManagementConfigProperties;
 import com.azure.spring.cloud.feature.management.implementation.FeatureManagementProperties;
 import com.azure.spring.cloud.feature.management.implementation.models.Feature;
@@ -78,6 +77,7 @@ public class FeatureManager {
      * isn't found it returns false.
      *
      * @param feature Feature being checked.
+     * @param featureContext The internal app context
      * @return state of the feature
      * @throws FilterNotFoundException file not found
      */
@@ -104,6 +104,7 @@ public class FeatureManager {
      * isn't found it returns false.
      *
      * @param feature Feature being checked.
+     * @param featureContext The internal app context
      * @return state of the feature
      * @throws FilterNotFoundException file not found
      */
@@ -112,18 +113,44 @@ public class FeatureManager {
 
     }
 
+    /**
+     * 
+     * @param <T> Type of Variant that is returned
+     * @param feature Feature being checked.
+     * @return Assigned Variant
+     */
     public <T> Variant<T> getVariant(String feature) {
         return this.<T>generateVariant(feature, null);
     }
 
+    /**
+     * 
+     * @param <T> Type of Variant that is returned
+     * @param feature Feature being checked.
+     * @param featureContext Local context
+     * @return Assigned Variant
+     */
     public <T> Variant<T> getVariant(String feature, Context featureContext) {
         return this.<T>generateVariant(feature, featureContext);
     }
 
+    /**
+     * 
+     * @param <T> Type of Variant that is returned
+     * @param feature Feature being checked.
+     * @return Assigned Variant
+     */
     public <T> Mono<Variant<T>> getVariantAsync(String feature) {
         return Mono.just(generateVariant(feature, null));
     }
 
+    /**
+     * 
+     * @param <T> Type of Variant that is returned
+     * @param feature Feature being checked.
+     * @param featureContext Local context
+     * @return Assigned Variant
+     */
     public <T> Mono<Variant<T>> getVariantAsync(String feature, Context featureContext) {
         return Mono.just(generateVariant(feature, featureContext));
     }
@@ -220,7 +247,7 @@ public class FeatureManager {
                 feature.getAllocation().getDefautlWhenDisabled());
         }
 
-        return variantAssignment.getVariant(feature.getVariants(), feature.getAllocation().getDefaultWhenEnabled());
+        return variantAssignment.assignVariant(feature.getAllocation(), feature.getVariants());
     }
 
     private void validateVariant(Feature feature, String featureName) {

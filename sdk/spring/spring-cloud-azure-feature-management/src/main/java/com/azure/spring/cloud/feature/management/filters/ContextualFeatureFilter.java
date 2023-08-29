@@ -17,6 +17,7 @@ public interface ContextualFeatureFilter {
      * Returning false results in the next Feature evaluation to continue.
      *
      * @param context The context for whether or not the filter is passed.
+     * @param appContext The internal app context
      * @return True if the feature is enabled, false otherwise.
      */
     boolean evaluate(FeatureFilterEvaluationContext context, Context appContext);

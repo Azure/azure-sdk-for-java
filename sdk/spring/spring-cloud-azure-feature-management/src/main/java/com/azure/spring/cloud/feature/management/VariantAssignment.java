@@ -1,6 +1,6 @@
-//Copyright (c) Microsoft Corporation. All rights reserved.
-//Licensed under the MIT License.
-package com.azure.spring.cloud.feature.management.filters;
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+package com.azure.spring.cloud.feature.management;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -17,8 +17,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.util.StringUtils;
 
-import com.azure.spring.cloud.feature.management.Variant;
-import com.azure.spring.cloud.feature.management.VariantProperties;
 import com.azure.spring.cloud.feature.management.implementation.models.Allocation;
 import com.azure.spring.cloud.feature.management.implementation.models.Percentile;
 import com.azure.spring.cloud.feature.management.implementation.models.VariantAssignmentGroups;
@@ -39,9 +37,9 @@ public final class VariantAssignment {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(VariantAssignment.class);
 
-    private TargetingContextAccessor contextAccessor;
+    private final TargetingContextAccessor contextAccessor;
 
-    private TargetingEvaluationOptions evaluationOptions;
+    private final TargetingEvaluationOptions evaluationOptions;
 
     private final ObjectProvider<VariantProperties> propertiesProvider;
 
@@ -49,8 +47,9 @@ public final class VariantAssignment {
      * `Microsoft.TargetingFilter` evaluates a user/group/overall rollout of a feature.
      * 
      * @param contextAccessor Context for evaluating the users/groups.
+     * @param propertiesProvider ObjectProvider of Feature Variants
      */
-    public VariantAssignment(TargetingContextAccessor contextAccessor,
+    VariantAssignment(TargetingContextAccessor contextAccessor,
         ObjectProvider<VariantProperties> propertiesProvider) {
         this(contextAccessor, new TargetingEvaluationOptions(), propertiesProvider);
     }
@@ -60,25 +59,32 @@ public final class VariantAssignment {
      * 
      * @param contextAccessor Context for evaluating the users/groups.
      * @param options enables customization of the filter.
+     * @param propertiesProvider ObjectProvider of Feature Variants
      */
-    public VariantAssignment(TargetingContextAccessor contextAccessor, TargetingEvaluationOptions options,
+    VariantAssignment(TargetingContextAccessor contextAccessor, TargetingEvaluationOptions options,
         ObjectProvider<VariantProperties> propertiesProvider) {
         this.contextAccessor = contextAccessor;
         this.evaluationOptions = options;
         this.propertiesProvider = propertiesProvider;
     }
 
-    
-    public <T> Variant<T> assignVariant(Allocation allocation, List<VariantReference> variants) {
+    /**
+     * Assigns a Variant based on the allocations
+     * @param <T> type of the variant
+     * @param allocation Allocation percentage of the variants
+     * @param variants List of the possible variants.
+     * @return Variant object containing an instance of the type
+     */
+    <T> Variant<T> assignVariant(Allocation allocation, List<VariantReference> variants) {
         TargetingFilterContext targetingContext = new TargetingFilterContext();
 
         contextAccessor.configureTargetingContext(targetingContext);
-        
+
         if (validateTargetingContext(targetingContext)) {
             LOGGER.warn("No targeting context available for targeting evaluation.");
             return null;
         }
-        
+
         for (VariantAssignmentUsers users : allocation.getUsers()) {
             for (String user : users.getUsers()) {
                 if (user.equals(targetingContext.getUserId())) {
@@ -86,35 +92,42 @@ public final class VariantAssignment {
                 }
             }
         }
-        
-        for (VariantAssignmentGroups groups: allocation.getGroups()) {
-            for (String group: groups.getGroups()) {
+
+        for (VariantAssignmentGroups groups : allocation.getGroups()) {
+            for (String group : groups.getGroups()) {
                 if (targetingContext.getGroups().contains(group)) {
                     return getVariant(variants, groups.getVariant());
                 }
             }
         }
-        
+
         String contextId = "";
         double value = isTargetedPercentage(contextId);
-        
-        for (Percentile percentile: allocation.getPercentile()) {
+
+        for (Percentile percentile : allocation.getPercentile()) {
             if (percentile.getFrom().doubleValue() <= value && percentile.getTo().doubleValue() > value) {
                 return getVariant(variants, percentile.getVariant());
             }
         }
-        
+
         return getVariant(variants, allocation.getDefaultWhenEnabled());
     }
 
-
-    public <T> Variant<T> getVariant(List<VariantReference> variants, String variantName) {
+    /**
+     * Returns a variant for the given name.
+     * @param <T> Type of the variant
+     * @param variants List of the Variant References which can be returned
+     * @param variantName Name of the assigned variant
+     * @return Variant object containing an instance of the type
+     */
+    <T> Variant<T> getVariant(List<VariantReference> variants, String variantName) {
         return Flux.fromStream(
             variants.stream().filter(variant -> variant.getName().equals(variantName))
                 .map(variant -> this.<T>assignVariant(variant)))
             .blockFirst();
     }
 
+    @SuppressWarnings("unchecked")
     private <T> Variant<T> assignVariant(VariantReference variant) {
         String reference = variant.getConfigurationReference();
 
@@ -159,7 +172,7 @@ public final class VariantAssignment {
 
         return new Variant<T>(variant.getName(), variantMap.get(parts[1]));
     }
-    
+
     private boolean validateTargetingContext(TargetingFilterContext targetingContext) {
         boolean hasUserDefined = StringUtils.hasText(targetingContext.getUserId());
         boolean hasGroupsDefined = targetingContext.getGroups() != null;
@@ -171,7 +184,7 @@ public final class VariantAssignment {
 
         return (!hasUserDefined && !(hasGroupsDefined && hasAtLeastOneGroup));
     }
-    
+
     /**
      * Computes the percentage that the contextId falls into.
      * 
