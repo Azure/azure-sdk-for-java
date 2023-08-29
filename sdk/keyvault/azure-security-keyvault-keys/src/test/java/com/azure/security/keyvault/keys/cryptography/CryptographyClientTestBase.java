@@ -30,9 +30,12 @@ import com.azure.security.keyvault.keys.cryptography.models.DecryptResult;
 import com.azure.security.keyvault.keys.cryptography.models.EncryptParameters;
 import com.azure.security.keyvault.keys.cryptography.models.EncryptResult;
 import com.azure.security.keyvault.keys.cryptography.models.EncryptionAlgorithm;
+import com.azure.security.keyvault.keys.cryptography.models.SignatureAlgorithm;
 import com.azure.security.keyvault.keys.implementation.KeyVaultCredentialPolicy;
 import com.azure.security.keyvault.keys.models.JsonWebKey;
+import com.azure.security.keyvault.keys.models.KeyCurveName;
 import com.azure.security.keyvault.keys.models.KeyOperation;
+import com.azure.security.keyvault.keys.models.KeyVaultKey;
 import org.junit.jupiter.api.Test;
 
 import javax.crypto.KeyGenerator;
@@ -41,14 +44,21 @@ import java.math.BigInteger;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.KeyFactory;
 import java.security.KeyPair;
+import java.security.KeyPairGenerator;
 import java.security.NoSuchAlgorithmException;
+import java.security.Provider;
+import java.security.Security;
+import java.security.spec.ECGenParameterSpec;
 import java.security.spec.KeySpec;
 import java.security.spec.RSAPrivateCrtKeySpec;
 import java.security.spec.RSAPublicKeySpec;
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.function.Consumer;
 
@@ -164,6 +174,119 @@ public abstract class CryptographyClientTestBase extends TestProxyTestBase {
 
     @Test
     public abstract void signDataVerifyEc(HttpClient httpClient, CryptographyServiceVersion serviceVersion) throws NoSuchAlgorithmException, InvalidAlgorithmParameterException;
+
+    void signVerifyEcRunner(HttpClient httpClient, CryptographyServiceVersion serviceVersion, Consumer<SignVerifyEcData> testRunner)
+        throws NoSuchAlgorithmException, InvalidAlgorithmParameterException {
+        Map<KeyCurveName, SignatureAlgorithm> curveToSignature = new HashMap<>();
+
+        curveToSignature.put(KeyCurveName.P_256, SignatureAlgorithm.ES256);
+        curveToSignature.put(KeyCurveName.P_384, SignatureAlgorithm.ES384);
+        curveToSignature.put(KeyCurveName.P_521, SignatureAlgorithm.ES512);
+
+        Map<KeyCurveName, String> curveToSpec = new HashMap<>();
+
+        curveToSpec.put(KeyCurveName.P_256, "secp256r1");
+        curveToSpec.put(KeyCurveName.P_384, "secp384r1");
+        curveToSpec.put(KeyCurveName.P_521, "secp521r1");
+
+        Map<KeyCurveName, String> messageDigestAlgorithm = new HashMap<>();
+
+        messageDigestAlgorithm.put(KeyCurveName.P_256, "SHA-256");
+        messageDigestAlgorithm.put(KeyCurveName.P_384, "SHA-384");
+        messageDigestAlgorithm.put(KeyCurveName.P_521, "SHA-512");
+
+        List<KeyCurveName> curveList = new ArrayList<>();
+
+        curveList.add(KeyCurveName.P_256);
+        curveList.add(KeyCurveName.P_384);
+        curveList.add(KeyCurveName.P_521);
+
+        String javaVersion = System.getProperty("java.version");
+
+        if (javaVersion.startsWith("1.")) {
+            javaVersion = javaVersion.substring(2, 3);
+        } else {
+            int dot = javaVersion.indexOf(".");
+
+            if(dot != -1) {
+                javaVersion = javaVersion.substring(0, dot);
+            }
+        }
+
+        // Elliptic curve secp256k1 is not supported on Java 16+
+        if (Integer.parseInt(javaVersion) < 16) {
+            curveToSignature.put(KeyCurveName.P_256K, SignatureAlgorithm.ES256K);
+            curveToSpec.put(KeyCurveName.P_256K, "secp256k1");
+            curveList.add(KeyCurveName.P_256K);
+            messageDigestAlgorithm.put(KeyCurveName.P_256K, "SHA-256");
+        }
+
+        String algorithmName = "EC";
+        Provider[] providers = Security.getProviders();
+        Provider provider = null;
+
+        for (Provider currentProvider : providers) {
+            if (currentProvider.containsValue(algorithmName)) {
+                provider = currentProvider;
+
+                break;
+            }
+        }
+
+        if (provider == null) {
+            for (Provider currentProvider : providers) {
+                System.out.println(currentProvider.getName());
+            }
+
+            fail(String.format("No suitable security provider for algorithm %s was found.", algorithmName));
+        }
+
+        for (KeyCurveName curve : curveList) {
+            final KeyPairGenerator generator = KeyPairGenerator.getInstance(algorithmName, provider);
+            ECGenParameterSpec spec = new ECGenParameterSpec(curveToSpec.get(curve));
+
+            generator.initialize(spec);
+
+            KeyPair keyPair = generator.generateKeyPair();
+
+            JsonWebKey jsonWebKey =
+                JsonWebKey.fromEc(keyPair, provider, Arrays.asList(KeyOperation.SIGN, KeyOperation.VERIFY));;
+
+            testRunner.accept(new SignVerifyEcData(jsonWebKey, curve, curveToSignature, messageDigestAlgorithm));
+        }
+    }
+
+    protected static class SignVerifyEcData {
+        private final JsonWebKey jsonWebKey;
+        private final KeyCurveName curve;
+        private final Map<KeyCurveName, SignatureAlgorithm> curveToSignature;
+        private final Map<KeyCurveName, String> messageDigestAlgorithm;
+
+        public SignVerifyEcData(JsonWebKey jsonWebKey, KeyCurveName curve,
+                                Map<KeyCurveName, SignatureAlgorithm> curveToSignature,
+                                Map<KeyCurveName, String> messageDigestAlgorithm) {
+            this.jsonWebKey = jsonWebKey;
+            this.curve = curve;
+            this.curveToSignature = curveToSignature;
+            this.messageDigestAlgorithm = messageDigestAlgorithm;
+        }
+
+        public JsonWebKey getJsonWebKey() {
+            return jsonWebKey;
+        }
+
+        public KeyCurveName getCurve() {
+            return curve;
+        }
+
+        public Map<KeyCurveName, SignatureAlgorithm> getCurveToSignature() {
+            return curveToSignature;
+        }
+
+        public Map<KeyCurveName, String> getMessageDigestAlgorithm() {
+            return messageDigestAlgorithm;
+        }
+    }
 
     @Test
     public abstract void signDataVerifyEcLocal() throws NoSuchAlgorithmException, InvalidAlgorithmParameterException;
