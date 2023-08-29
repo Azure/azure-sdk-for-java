@@ -5062,14 +5062,23 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 RequestOptions clonedOptions = new RequestOptions(nonNullRequestOptions);
 
                 if (monoList.isEmpty()) {
-                    monoList.add(
+                    // no special error handling for transient errors to suppress them here
+                    // because any cross-regional retries are expected to be processed
+                    // by the ClientRetryPolicy for the initial request - so, any outcome of the
+                    // initial Mono should be treated as non-transient error - even when
+                    // the error would otherwise be treated as transient
+                    Mono<NonTransientPointOperationResult> initialMonoAcrossAllRegions =
                         callback.apply(clonedOptions, endToEndPolicyConfig, diagnosticsFactory)
-                            .map(response -> new NonTransientPointOperationResult(response))
-                            .onErrorResume(
-                                t -> isCosmosException(t),
-                                t -> handleCosmosExceptionForHedging(t))
-                            .doOnSubscribe(c -> logger.info("STARTING to process {} operation in region '{}'", operationType, region))
-                    );
+                                .map(response -> new NonTransientPointOperationResult(response));
+
+                        if (logger.isDebugEnabled()) {
+                            monoList.add(initialMonoAcrossAllRegions.doOnSubscribe(c -> logger.debug(
+                                "STARTING to process {} operation in region '{}'",
+                                operationType,
+                                region)));
+                        } else {
+                            monoList.add(initialMonoAcrossAllRegions);
+                        }
                 } else {
                     clonedOptions.setExcludeRegions(
                         getEffectiveExcludedRegionsForHedging(
@@ -5077,20 +5086,33 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                             orderedApplicableRegionsForSpeculation,
                             region)
                     );
-                    monoList.add(
+
+                    // Non-Transient errors are mapped to a value - this ensures the firstWithValue
+                    // operator below will complete the composite Mono for both successful values
+                    // and non-transient errors
+                    Mono<NonTransientPointOperationResult> regionalCrossRegionRetryMono =
                         callback.apply(clonedOptions, endToEndPolicyConfig, diagnosticsFactory)
                                 .map(response -> new NonTransientPointOperationResult(response))
                                 .onErrorResume(
                                     t -> isCosmosException(t),
-                                    t -> handleCosmosExceptionForHedging(t))
+                                    t -> handleCosmosExceptionForHedging(t));
+
+                    Duration delayForCrossRegionalRetry = (availabilityStrategy)
+                        .getThreshold()
+                        .plus((availabilityStrategy)
+                            .getThresholdStep()
+                            .multipliedBy(monoList.size() - 1));
+
+                    if (logger.isDebugEnabled()) {
+                        monoList.add(
+                            regionalCrossRegionRetryMono
                                 .doOnSubscribe(c -> logger.info("STARTING to process {} operation in region '{}'", operationType, region))
-                                .delaySubscription((availabilityStrategy)
-                                    .getThreshold()
-                                    .plus((availabilityStrategy)
-                                        .getThresholdStep()
-                                        .multipliedBy(monoList.size() - 1))
-                                )
-                    );
+                                .delaySubscription(delayForCrossRegionalRetry));
+                    } else {
+                        monoList.add(
+                            regionalCrossRegionRetryMono
+                                .delaySubscription(delayForCrossRegionalRetry));
+                    }
                 }
             });
 
