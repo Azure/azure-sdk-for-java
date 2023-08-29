@@ -39,6 +39,7 @@ namespace: com.azure.security.keyvault.certificates
 models-subpackage: implementation.models
 custom-types-subpackage: models
 custom-types: AdministratorContact,CertificateContact,CertificateKeyCurveName,CertificateKeyType,CertificateKeyUsage,CertificateOperationError,CertificatePolicyAction,SubjectAlternativeNames
+customization-class: src/main/java/CertificatesCustomizations.java
 enable-sync-stack: true
 generate-client-interfaces: false
 generate-client-as-impl: true

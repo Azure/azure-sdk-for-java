@@ -15,16 +15,26 @@ import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
-import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.polling.LongRunningOperationStatus;
+import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.PollerFlux;
+import com.azure.core.util.polling.PollingContext;
 import com.azure.security.keyvault.certificates.implementation.CertificateClientImpl;
 import com.azure.security.keyvault.certificates.implementation.CertificateIssuerHelper;
+import com.azure.security.keyvault.certificates.implementation.CertificateOperationHelper;
 import com.azure.security.keyvault.certificates.implementation.CertificatePolicyHelper;
+import com.azure.security.keyvault.certificates.implementation.CertificatePropertiesHelper;
+import com.azure.security.keyvault.certificates.implementation.DeletedCertificateHelper;
+import com.azure.security.keyvault.certificates.implementation.KeyVaultCertificateWithPolicyHelper;
+import com.azure.security.keyvault.certificates.implementation.models.CertificateAttributes;
 import com.azure.security.keyvault.certificates.implementation.models.CertificateIssuerItem;
+import com.azure.security.keyvault.certificates.implementation.models.CertificateItem;
 import com.azure.security.keyvault.certificates.implementation.models.Contacts;
+import com.azure.security.keyvault.certificates.implementation.models.DeletedCertificateItem;
 import com.azure.security.keyvault.certificates.implementation.models.IssuerBundle;
+import com.azure.security.keyvault.certificates.implementation.models.KeyVaultErrorException;
 import com.azure.security.keyvault.certificates.models.CertificateContact;
 import com.azure.security.keyvault.certificates.models.CertificateContentType;
 import com.azure.security.keyvault.certificates.models.CertificateIssuer;
@@ -42,21 +52,25 @@ import com.azure.security.keyvault.certificates.models.MergeCertificateOptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.net.HttpURLConnection;
 import java.nio.charset.StandardCharsets;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
 import java.util.Map;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 
 import static com.azure.core.util.FluxUtil.monoError;
-import static com.azure.core.util.FluxUtil.withContext;
 import static com.azure.security.keyvault.certificates.implementation.CertificateIssuerHelper.createCertificateIssuer;
 import static com.azure.security.keyvault.certificates.implementation.CertificateIssuerHelper.getIssuerBundle;
 import static com.azure.security.keyvault.certificates.implementation.CertificateOperationHelper.createCertificateOperation;
 import static com.azure.security.keyvault.certificates.implementation.CertificatePolicyHelper.createCertificatePolicy;
 import static com.azure.security.keyvault.certificates.implementation.CertificatePolicyHelper.getImplCertificatePolicy;
+import static com.azure.security.keyvault.certificates.implementation.DeletedCertificateHelper.createDeletedCertificate;
 import static com.azure.security.keyvault.certificates.implementation.IssuerPropertiesHelper.createIssuerProperties;
+import static com.azure.security.keyvault.certificates.implementation.KeyVaultCertificateWithPolicyHelper.createCertificateWithPolicy;
 
 /**
  * The CertificateAsyncClient provides asynchronous methods to manage {@link KeyVaultCertificate certifcates} in the Azure Key Vault. The client
@@ -151,7 +165,103 @@ public final class CertificateAsyncClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<CertificateOperation, KeyVaultCertificateWithPolicy> beginCreateCertificate(
         String certificateName, CertificatePolicy policy, Boolean isEnabled, Map<String, String> tags) {
-        return implClient.beginCreateCertificateAsync(certificateName, policy, isEnabled, tags);
+        return new PollerFlux<>(Duration.ofSeconds(1),
+            createCertificateActivation(certificateName, policy, isEnabled, tags),
+            certificatePollOperation(certificateName), certificateCancellationOperation(certificateName),
+            fetchCertificateOperation(certificateName));
+    }
+
+    private Function<PollingContext<CertificateOperation>, Mono<CertificateOperation>> createCertificateActivation(
+        String certificateName, CertificatePolicy policy, Boolean isEnabled, Map<String, String> tags) {
+        com.azure.security.keyvault.certificates.implementation.models.CertificatePolicy implPolicy =
+            CertificatePolicyHelper.getImplCertificatePolicy(policy);
+        return pollingContext -> implClient.createCertificateAsync(vaultUrl, certificateName, implPolicy,
+                new CertificateAttributes().setEnabled(isEnabled), tags)
+            .onErrorMap(KeyVaultErrorException.class, CertificateAsyncClient::mapCreateCertificateException)
+            .map(CertificateOperationHelper::createCertificateOperation);
+    }
+
+    static HttpResponseException mapCreateCertificateException(KeyVaultErrorException ex) {
+        return ex.getResponse().getStatusCode() == 400
+            ? new ResourceModifiedException(ex.getMessage(), ex.getResponse(), ex.getValue())
+            : ex;
+    }
+
+    private Function<PollingContext<CertificateOperation>, Mono<PollResponse<CertificateOperation>>>
+    certificatePollOperation(String certificateName) {
+        return pollingContext -> implClient.getCertificateOperationAsync(vaultUrl, certificateName)
+            .onErrorMap(KeyVaultErrorException.class, CertificateAsyncClient::mapGetCertificateOperationException)
+            .map(CertificateAsyncClient::processCertificateOperationResponse);
+    }
+
+    static HttpResponseException mapGetCertificateOperationException(KeyVaultErrorException ex) {
+        if (ex.getResponse().getStatusCode() == 404) {
+            return new ResourceNotFoundException(ex.getMessage(), ex.getResponse(), ex.getValue());
+        } else if (ex.getResponse().getStatusCode() == 400) {
+            return new ResourceModifiedException(ex.getMessage(), ex.getResponse(), ex.getValue());
+        } else {
+            return ex;
+        }
+    }
+
+    static PollResponse<CertificateOperation> processCertificateOperationResponse(
+        com.azure.security.keyvault.certificates.implementation.models.CertificateOperation impl) {
+        LongRunningOperationStatus status;
+
+        switch (impl.getStatus()) {
+            case "inProgress":
+                status = LongRunningOperationStatus.IN_PROGRESS;
+                break;
+
+            case "completed":
+                status = LongRunningOperationStatus.SUCCESSFULLY_COMPLETED;
+                break;
+
+            case "failed":
+                status = LongRunningOperationStatus.FAILED;
+                break;
+
+            default:
+                //should not reach here
+                status = LongRunningOperationStatus.fromString(impl.getStatus(), true);
+                break;
+        }
+
+        return new PollResponse<>(status, CertificateOperationHelper.createCertificateOperation(impl));
+    }
+
+    private BiFunction<PollingContext<CertificateOperation>, PollResponse<CertificateOperation>, Mono<CertificateOperation>>
+    certificateCancellationOperation(String certificateName) {
+        return (context, firstResponse) -> implClient.updateCertificateOperationAsync(vaultUrl, certificateName, true)
+            .onErrorMap(KeyVaultErrorException.class, CertificateAsyncClient::mapUpdateCertificateOperationException)
+            .map(CertificateOperationHelper::createCertificateOperation);
+    }
+
+    static HttpResponseException mapUpdateCertificateOperationException(KeyVaultErrorException ex) {
+        if (ex.getResponse().getStatusCode() == 404) {
+            return new ResourceNotFoundException(ex.getMessage(), ex.getResponse(), ex.getValue());
+        } else if (ex.getResponse().getStatusCode() == 400) {
+            return new ResourceModifiedException(ex.getMessage(), ex.getResponse(), ex.getValue());
+        } else {
+            return ex;
+        }
+    }
+
+    private Function<PollingContext<CertificateOperation>, Mono<KeyVaultCertificateWithPolicy>>
+    fetchCertificateOperation(String certificateName) {
+        return context -> implClient.getCertificateAsync(vaultUrl, certificateName, null)
+            .onErrorMap(KeyVaultErrorException.class, CertificateAsyncClient::mapGetCertificateException)
+            .map(KeyVaultCertificateWithPolicyHelper::createCertificateWithPolicy);
+    }
+
+    static HttpResponseException mapGetCertificateException(KeyVaultErrorException ex) {
+        if (ex.getResponse().getStatusCode() == 404) {
+            return new ResourceNotFoundException(ex.getMessage(), ex.getResponse(), ex.getValue());
+        } else if (ex.getResponse().getStatusCode() == 403) {
+            return new ResourceModifiedException(ex.getMessage(), ex.getResponse(), ex.getValue());
+        } else {
+            return ex;
+        }
     }
 
     /**
@@ -181,10 +291,10 @@ public final class CertificateAsyncClient {
      * @return A {@link PollerFlux} polling on the create certificate operation status.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<CertificateOperation, KeyVaultCertificateWithPolicy> beginCreateCertificate(String certificateName, CertificatePolicy policy) {
+    public PollerFlux<CertificateOperation, KeyVaultCertificateWithPolicy> beginCreateCertificate(
+        String certificateName, CertificatePolicy policy) {
         return beginCreateCertificate(certificateName, policy, true, null);
     }
-
 
     /**
      * Gets a pending {@link CertificateOperation} from the key vault. This operation requires the certificates/get permission.
@@ -210,8 +320,11 @@ public final class CertificateAsyncClient {
      * @return A {@link PollerFlux} polling on the certificate operation status.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<CertificateOperation, KeyVaultCertificateWithPolicy> getCertificateOperation(String certificateName) {
-        return implClient.getCertificateOperationAsync(certificateName);
+    public PollerFlux<CertificateOperation, KeyVaultCertificateWithPolicy> getCertificateOperation(
+        String certificateName) {
+        return new PollerFlux<>(Duration.ofSeconds(1), pollingContext -> Mono.empty(),
+            certificatePollOperation(certificateName), certificateCancellationOperation(certificateName),
+            fetchCertificateOperation(certificateName));
     }
 
     /**
@@ -238,12 +351,7 @@ public final class CertificateAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<KeyVaultCertificateWithPolicy> getCertificate(String certificateName) {
-        try {
-            return withContext(context -> implClient.getCertificateWithResponseAsync(certificateName, "",
-                context)).flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(LOGGER, ex);
-        }
+        return getCertificateWithResponse(certificateName).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -272,7 +380,9 @@ public final class CertificateAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<KeyVaultCertificateWithPolicy>> getCertificateWithResponse(String certificateName) {
         try {
-            return withContext(context -> implClient.getCertificateWithResponseAsync(certificateName, "", context));
+            return implClient.getCertificateWithResponseAsync(vaultUrl, certificateName, null)
+                .onErrorMap(KeyVaultErrorException.class, CertificateAsyncClient::mapGetCertificateException)
+                .map(response -> new SimpleResponse<>(response, createCertificateWithPolicy(response.getValue())));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -306,8 +416,9 @@ public final class CertificateAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<KeyVaultCertificate>> getCertificateVersionWithResponse(String certificateName, String version) {
         try {
-            return withContext(context -> implClient.getCertificateVersionWithResponseAsync(certificateName, version == null ? "" : version,
-                context));
+            return implClient.getCertificateWithResponseAsync(vaultUrl, certificateName, version)
+                .onErrorMap(KeyVaultErrorException.class, CertificateAsyncClient::mapGetCertificateException)
+                .map(response -> new SimpleResponse<>(response, createCertificateWithPolicy(response.getValue())));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -338,12 +449,7 @@ public final class CertificateAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<KeyVaultCertificate> getCertificateVersion(String certificateName, String version) {
-        try {
-            return withContext(context -> implClient.getCertificateVersionWithResponseAsync(certificateName, version == null ? "" : version,
-                context)).flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(LOGGER, ex);
-        }
+        return getCertificateVersionWithResponse(certificateName, version).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -378,11 +484,7 @@ public final class CertificateAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<KeyVaultCertificate> updateCertificateProperties(CertificateProperties properties) {
-        try {
-            return withContext(context -> implClient.updateCertificatePropertiesWithResponseAsync(properties, context)).flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(LOGGER, ex);
-        }
+        return updateCertificatePropertiesWithResponse(properties).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -417,9 +519,23 @@ public final class CertificateAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<KeyVaultCertificate>> updateCertificatePropertiesWithResponse(CertificateProperties properties) {
+        if (properties == null) {
+            return monoError(LOGGER, new NullPointerException("'properties' cannot be null."));
+        }
+
         try {
-            return withContext(context -> implClient.updateCertificatePropertiesWithResponseAsync(properties,
-                context));
+            CertificateAttributes certificateAttributes = new CertificateAttributes()
+                .setEnabled(properties.isEnabled())
+                .setExpires(properties.getExpiresOn())
+                .setNotBefore(properties.getNotBefore());
+
+            com.azure.security.keyvault.certificates.implementation.models.CertificatePolicy implPolicy =
+                new com.azure.security.keyvault.certificates.implementation.models.CertificatePolicy()
+                    .setAttributes(certificateAttributes);
+
+            return implClient.updateCertificateWithResponseAsync(vaultUrl, properties.getName(),
+                    properties.getVersion(), implPolicy, certificateAttributes, properties.getTags())
+                .map(response -> new SimpleResponse<>(response, createCertificateWithPolicy(response.getValue())));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -452,7 +568,46 @@ public final class CertificateAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<DeletedCertificate, Void> beginDeleteCertificate(String certificateName) {
-        return implClient.beginDeleteCertificateAsync(certificateName);
+        return new PollerFlux<>(Duration.ofSeconds(1), deleteCertificateActivation(certificateName),
+            deleteCertificatePollOperation(certificateName), (pollingContext, firstResponse) -> Mono.empty(),
+            pollingContext -> Mono.empty());
+    }
+
+    private Function<PollingContext<DeletedCertificate>, Mono<DeletedCertificate>> deleteCertificateActivation(
+        String certificateName) {
+        return pollingContext -> implClient.deleteCertificateAsync(vaultUrl, certificateName)
+            .onErrorMap(KeyVaultErrorException.class, CertificateAsyncClient::mapDeleteCertificateException)
+            .map(DeletedCertificateHelper::createDeletedCertificate);
+    }
+
+    static HttpResponseException mapDeleteCertificateException(KeyVaultErrorException ex) {
+        return ex.getResponse().getStatusCode() == 404
+            ? new ResourceNotFoundException(ex.getMessage(), ex.getResponse(), ex.getValue())
+            : ex;
+    }
+
+    private Function<PollingContext<DeletedCertificate>, Mono<PollResponse<DeletedCertificate>>>
+    deleteCertificatePollOperation(String certificateName) {
+        return pollingContext -> implClient.getDeletedCertificateAsync(vaultUrl, certificateName)
+            .map(bundle -> new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,
+                createDeletedCertificate(bundle)))
+            .onErrorResume(KeyVaultErrorException.class, ex -> {
+                if (ex.getResponse().getStatusCode() == HttpURLConnection.HTTP_NOT_FOUND) {
+                    return Mono.just(new PollResponse<>(LongRunningOperationStatus.IN_PROGRESS,
+                        pollingContext.getLatestResponse().getValue()));
+                } else {
+                    // This means either vault has soft-delete disabled or permission is not granted for the get deleted
+                    // certificate operation. In both cases deletion operation was successful when activation operation
+                    // succeeded before reaching here.
+                    return Mono.just(new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,
+                        pollingContext.getLatestResponse().getValue()));
+                }
+            })
+            // This means either vault has soft-delete disabled or permission is not granted for the get deleted
+            // certificate operation. In both cases deletion operation was successful when activation operation
+            // succeeded before reaching here.
+            .onErrorReturn(new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,
+                pollingContext.getLatestResponse().getValue()));
     }
 
     /**
@@ -480,12 +635,7 @@ public final class CertificateAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DeletedCertificate> getDeletedCertificate(String certificateName) {
-        try {
-            return withContext(context -> implClient.getDeletedCertificateWithResponseAsync(certificateName, context))
-                .flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(LOGGER, ex);
-        }
+        return getDeletedCertificateWithResponse(certificateName).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -515,10 +665,18 @@ public final class CertificateAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DeletedCertificate>> getDeletedCertificateWithResponse(String certificateName) {
         try {
-            return withContext(context -> implClient.getDeletedCertificateWithResponseAsync(certificateName, context));
+            return implClient.getDeletedCertificateWithResponseAsync(vaultUrl, certificateName)
+                .onErrorMap(KeyVaultErrorException.class, CertificateAsyncClient::mapGetDeletedCertificateException)
+                .map(response -> new SimpleResponse<>(response, createDeletedCertificate(response.getValue())));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
+    }
+
+    static HttpResponseException mapGetDeletedCertificateException(KeyVaultErrorException ex) {
+        return ex.getResponse().getStatusCode() == 404
+            ? new ResourceNotFoundException(ex.getMessage(), ex.getResponse(), ex.getValue())
+            : ex;
     }
 
     /**
@@ -545,11 +703,7 @@ public final class CertificateAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> purgeDeletedCertificate(String certificateName) {
-        try {
-            return purgeDeletedCertificateWithResponse(certificateName).flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(LOGGER, ex);
-        }
+        return purgeDeletedCertificateWithResponse(certificateName).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -577,10 +731,17 @@ public final class CertificateAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> purgeDeletedCertificateWithResponse(String certificateName) {
         try {
-            return withContext(context -> implClient.purgeDeletedCertificateWithResponseAsync(certificateName, context));
+            return implClient.purgeDeletedCertificateWithResponseAsync(vaultUrl, certificateName)
+                .onErrorMap(KeyVaultErrorException.class, CertificateAsyncClient::mapPurgeDeletedCertificateException);
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
+    }
+
+    static HttpResponseException mapPurgeDeletedCertificateException(KeyVaultErrorException ex) {
+        return ex.getResponse().getStatusCode() == 404
+            ? new ResourceNotFoundException(ex.getMessage(), ex.getResponse(), ex.getValue())
+            : ex;
     }
 
     /**
@@ -610,7 +771,46 @@ public final class CertificateAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<KeyVaultCertificateWithPolicy, Void> beginRecoverDeletedCertificate(String certificateName) {
-        return implClient.beginRecoverDeletedCertificateAsync(certificateName);
+        return new PollerFlux<>(Duration.ofSeconds(1), recoverDeletedCertificateActivation(certificateName),
+            recoverDeletedCertificatePollOperation(certificateName), (pollingContext, firstResponse) -> Mono.empty(),
+            pollingContext -> Mono.empty());
+    }
+
+    private Function<PollingContext<KeyVaultCertificateWithPolicy>, Mono<KeyVaultCertificateWithPolicy>>
+    recoverDeletedCertificateActivation(String certificateName) {
+        return pollingContext -> implClient.recoverDeletedCertificateAsync(vaultUrl, certificateName)
+            .onErrorMap(KeyVaultErrorException.class, CertificateAsyncClient::mapRecoverDeletedCertificateException)
+            .map(KeyVaultCertificateWithPolicyHelper::createCertificateWithPolicy);
+    }
+
+    static HttpResponseException mapRecoverDeletedCertificateException(KeyVaultErrorException ex) {
+        return ex.getResponse().getStatusCode() == 404
+            ? new ResourceNotFoundException(ex.getMessage(), ex.getResponse(), ex.getValue())
+            : ex;
+    }
+
+    private Function<PollingContext<KeyVaultCertificateWithPolicy>, Mono<PollResponse<KeyVaultCertificateWithPolicy>>>
+    recoverDeletedCertificatePollOperation(String certificateName) {
+        return pollingContext -> implClient.getCertificateAsync(vaultUrl, certificateName, null)
+            .map(bundle -> new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,
+                createCertificateWithPolicy(bundle)))
+            .onErrorResume(KeyVaultErrorException.class, ex -> {
+                if (ex.getResponse().getStatusCode() == HttpURLConnection.HTTP_NOT_FOUND) {
+                    return Mono.just(new PollResponse<>(LongRunningOperationStatus.IN_PROGRESS,
+                        pollingContext.getLatestResponse().getValue()));
+                } else {
+                    // This means permission is not granted for the get deleted key operation.
+                    // In both cases deletion operation was successful when activation operation succeeded before
+                    // reaching here.
+                    return Mono.just(new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,
+                        pollingContext.getLatestResponse().getValue()));
+                }
+            })
+            // This means permission is not granted for the get deleted key operation.
+            // In both cases deletion operation was successful when activation operation succeeded before reaching
+            // here.
+            .onErrorReturn(new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,
+                pollingContext.getLatestResponse().getValue()));
     }
 
     /**
@@ -637,11 +837,7 @@ public final class CertificateAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<byte[]> backupCertificate(String certificateName) {
-        try {
-            return withContext(context -> implClient.backupCertificateWithResponseAsync(certificateName, context)).flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(LOGGER, ex);
-        }
+        return backupCertificateWithResponse(certificateName).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -670,10 +866,18 @@ public final class CertificateAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<byte[]>> backupCertificateWithResponse(String certificateName) {
         try {
-            return withContext(context -> implClient.backupCertificateWithResponseAsync(certificateName, context));
+            return implClient.backupCertificateWithResponseAsync(vaultUrl, certificateName)
+                .onErrorMap(KeyVaultErrorException.class, CertificateAsyncClient::mapBackupCertificateException)
+                .map(response -> new SimpleResponse<>(response, response.getValue().getValue()));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
+    }
+
+    static HttpResponseException mapBackupCertificateException(KeyVaultErrorException ex) {
+        return ex.getResponse().getStatusCode() == 404
+            ? new ResourceNotFoundException(ex.getMessage(), ex.getResponse(), ex.getValue())
+            : ex;
     }
 
     /**
@@ -700,11 +904,7 @@ public final class CertificateAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<KeyVaultCertificateWithPolicy> restoreCertificateBackup(byte[] backup) {
-        try {
-            return withContext(context -> implClient.restoreCertificateBackupWithResponseAsync(backup, context)).flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(LOGGER, ex);
-        }
+        return restoreCertificateBackupWithResponse(backup).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -732,14 +932,22 @@ public final class CertificateAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<KeyVaultCertificateWithPolicy>> restoreCertificateBackupWithResponse(byte[] backup) {
         try {
-            return withContext(context -> implClient.restoreCertificateBackupWithResponseAsync(backup, context));
+            return implClient.restoreCertificateWithResponseAsync(vaultUrl, backup)
+                .onErrorMap(KeyVaultErrorException.class, CertificateAsyncClient::mapRestoreCertificateException)
+                .map(response -> new SimpleResponse<>(response, createCertificateWithPolicy(response.getValue())));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
     }
 
+    static HttpResponseException mapRestoreCertificateException(KeyVaultErrorException ex) {
+        return ex.getResponse().getStatusCode() == 400
+            ? new ResourceModifiedException(ex.getMessage(), ex.getResponse(), ex.getValue())
+            : ex;
+    }
+
     /**
-     * List certificates in a the key vault. Retrieves the set of certificates resources in the key vault and the individual
+     * List certificates in the key vault. Retrieves the set of certificates resources in the key vault and the individual
      * certificate response in the flux is represented by {@link CertificateProperties} as only the certificate identifier, thumbprint,
      * attributes and tags are provided in the response. The policy and individual certificate versions are not listed in
      * the response. This operation requires the certificates/list permission.
@@ -763,11 +971,14 @@ public final class CertificateAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<CertificateProperties> listPropertiesOfCertificates(boolean includePending) {
-        return implClient.listPropertiesOfCertificatesAsync(includePending);
+        return new PagedFlux<>(maxResults -> implClient.getCertificatesSinglePageAsync(vaultUrl, maxResults,
+            includePending).map(CertificateAsyncClient::mapCertificateItemPage),
+            (continuationToken, maxResults) -> implClient.getCertificatesNextSinglePageAsync(continuationToken,
+                vaultUrl).map(CertificateAsyncClient::mapCertificateItemPage));
     }
 
     /**
-     * List certificates in a the key vault. Retrieves the set of certificates resources in the key vault and the individual
+     * List certificates in a key vault. Retrieves the set of certificates resources in the key vault and the individual
      * certificate response in the flux is represented by {@link CertificateProperties} as only the certificate identifier, thumbprint,
      * attributes and tags are provided in the response. The policy and individual certificate versions are not listed in
      * the response. This operation requires the certificates/list permission.
@@ -790,13 +1001,8 @@ public final class CertificateAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<CertificateProperties> listPropertiesOfCertificates() {
-        return implClient.listPropertiesOfCertificatesAsync();
+        return listPropertiesOfCertificates(false);
     }
-
-    PagedFlux<CertificateProperties> listPropertiesOfCertificates(boolean includePending, Context context) {
-        return implClient.listPropertiesOfCertificatesAsync(includePending, context);
-    }
-
 
     /**
      * Lists the {@link DeletedCertificate deleted certificates} in the key vault currently available for recovery. This
@@ -820,7 +1026,7 @@ public final class CertificateAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<DeletedCertificate> listDeletedCertificates() {
-        return implClient.listDeletedCertificatesAsync();
+        return listDeletedCertificates(false);
     }
 
     /**
@@ -846,11 +1052,14 @@ public final class CertificateAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<DeletedCertificate> listDeletedCertificates(boolean includePending) {
-        return implClient.listDeletedCertificatesAsync(includePending);
+        return new PagedFlux<>(maxResults -> implClient.getDeletedCertificatesSinglePageAsync(vaultUrl, maxResults,
+            includePending).map(CertificateAsyncClient::mapDeletedCertificateItemPage),
+            (continuationToken, maxResults) -> implClient.getDeletedCertificatesNextSinglePageAsync(continuationToken,
+                vaultUrl).map(CertificateAsyncClient::mapDeletedCertificateItemPage));
     }
 
-    PagedFlux<DeletedCertificate> listDeletedCertificates(Boolean includePending, Context context) {
-        return implClient.listDeletedCertificatesAsync(includePending, context);
+    static PagedResponse<DeletedCertificate> mapDeletedCertificateItemPage(PagedResponse<DeletedCertificateItem> page) {
+        return mapPagedResponse(page, DeletedCertificateHelper::createDeletedCertificate);
     }
 
     /**
@@ -880,11 +1089,24 @@ public final class CertificateAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<CertificateProperties> listPropertiesOfCertificateVersions(String certificateName) {
-        return implClient.listPropertiesOfCertificateVersionsAsync(certificateName);
+        return new PagedFlux<>(maxResults -> implClient.getCertificateVersionsSinglePageAsync(vaultUrl, certificateName,
+            maxResults).map(CertificateAsyncClient::mapCertificateItemPage),
+            (continuationToken, maxResults) -> implClient.getCertificateVersionsNextSinglePageAsync(continuationToken,
+                vaultUrl).map(CertificateAsyncClient::mapCertificateItemPage));
     }
 
-    PagedFlux<CertificateProperties> listPropertiesOfCertificateVersions(String certificateName, Context context) {
-        return implClient.listPropertiesOfCertificateVersionsAsync(certificateName, context);
+    static PagedResponse<CertificateProperties> mapCertificateItemPage(PagedResponse<CertificateItem> page) {
+        return mapPagedResponse(page, CertificatePropertiesHelper::createCertificateProperties);
+    }
+
+    private static <T, R> PagedResponse<R> mapPagedResponse(PagedResponse<T> page, Function<T, R> itemMapper) {
+        List<R> mappedValues = new ArrayList<>(page.getValue().size());
+        for (T item : page.getValue()) {
+            mappedValues.add(itemMapper.apply(item));
+        }
+
+        return new PagedResponseBase<>(page.getRequest(), page.getStatusCode(), page.getHeaders(), mappedValues,
+            page.getContinuationToken(), null);
     }
 
     /**
@@ -913,11 +1135,7 @@ public final class CertificateAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<KeyVaultCertificate> mergeCertificate(MergeCertificateOptions mergeCertificateOptions) {
-        try {
-            return withContext(context -> implClient.mergeCertificateWithResponseAsync(mergeCertificateOptions, context)).flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(LOGGER, ex);
-        }
+        return mergeCertificateWithResponse(mergeCertificateOptions).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -945,20 +1163,28 @@ public final class CertificateAsyncClient {
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the merged certificate.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<KeyVaultCertificateWithPolicy>> mergeCertificateWithResponse(MergeCertificateOptions mergeCertificateOptions) {
+    public Mono<Response<KeyVaultCertificateWithPolicy>> mergeCertificateWithResponse(
+        MergeCertificateOptions mergeCertificateOptions) {
+        if (mergeCertificateOptions == null) {
+            return monoError(LOGGER, new NullPointerException("'mergeCertificateOptions' cannot be null."));
+        }
+
         try {
-            return withContext(context -> implClient.mergeCertificateWithResponseAsync(mergeCertificateOptions, context));
+            return implClient.mergeCertificateWithResponseAsync(vaultUrl, mergeCertificateOptions.getName(),
+                mergeCertificateOptions.getX509Certificates(),
+                new CertificateAttributes().setEnabled(mergeCertificateOptions.isEnabled()),
+                mergeCertificateOptions.getTags())
+                .map(response -> new SimpleResponse<>(response, createCertificateWithPolicy(response.getValue())));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
     }
 
-
     /**
      * Retrieves the policy of the specified certificate in the key vault. This operation requires the {@code certificates/get} permission.
      *
      * <p><strong>Code Samples</strong></p>
-     * <p>Gets the policy of a certirifcate in the key vault. Prints out the
+     * <p>Gets the policy of a certificate in the key vault. Prints out the
      * returned certificate policy details when a response has been received.</p>
      *
      * <!-- src_embed com.azure.security.keyvault.certificates.CertificateAsyncClient.getCertificatePolicy#string -->
@@ -978,18 +1204,14 @@ public final class CertificateAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CertificatePolicy> getCertificatePolicy(String certificateName) {
-        try {
-            return withContext(context -> implClient.getCertificatePolicyWithResponseAsync(certificateName, context)).flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(LOGGER, ex);
-        }
+        return getCertificatePolicyWithResponse(certificateName).flatMap(FluxUtil::toMono);
     }
 
     /**
      * Retrieves the policy of the specified certificate in the key vault. This operation requires the {@code certificates/get} permission.
      *
      * <p><strong>Code Samples</strong></p>
-     * <p>Gets the policy of a certirifcate in the key vault. Prints out the
+     * <p>Gets the policy of a certificate in the key vault. Prints out the
      * returned certificate policy details when a response has been received.</p>
      *
      * <!-- src_embed com.azure.security.keyvault.certificates.CertificateAsyncClient.getCertificatePolicyWithResponse#string -->
@@ -1010,9 +1232,21 @@ public final class CertificateAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<CertificatePolicy>> getCertificatePolicyWithResponse(String certificateName) {
         try {
-            return withContext(context -> implClient.getCertificatePolicyWithResponseAsync(certificateName, context));
+            return implClient.getCertificatePolicyWithResponseAsync(vaultUrl, certificateName)
+                .onErrorMap(KeyVaultErrorException.class, CertificateAsyncClient::mapGetCertificatePolicyException)
+                .map(response -> new SimpleResponse<>(response, createCertificatePolicy(response.getValue())));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
+        }
+    }
+
+    static HttpResponseException mapGetCertificatePolicyException(KeyVaultErrorException ex) {
+        if (ex.getResponse().getStatusCode() == 404) {
+            return new ResourceNotFoundException(ex.getMessage(), ex.getResponse(), ex.getValue());
+        } else if (ex.getResponse().getStatusCode() == 403) {
+            return new ResourceModifiedException(ex.getMessage(), ex.getResponse(), ex.getValue());
+        } else {
+            return ex;
         }
     }
 
@@ -1082,10 +1316,12 @@ public final class CertificateAsyncClient {
      * @throws NullPointerException if {@code policy} is {@code null}.
      * @throws ResourceNotFoundException when a certificate with {@code certificateName} doesn't exist in the key vault.
      * @throws HttpResponseException if {@code name} is empty string or if {@code policy} is invalid.
-     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the updated {@link CertificatePolicy certificate policy}.
+     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the updated
+     * {@link CertificatePolicy certificate policy}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<CertificatePolicy>> updateCertificatePolicyWithResponse(String certificateName, CertificatePolicy policy) {
+    public Mono<Response<CertificatePolicy>> updateCertificatePolicyWithResponse(String certificateName,
+        CertificatePolicy policy) {
         if (policy == null) {
             return monoError(LOGGER, new NullPointerException("'policy' cannot be null."));
         }
@@ -1093,15 +1329,23 @@ public final class CertificateAsyncClient {
         try {
             return implClient.updateCertificatePolicyWithResponseAsync(vaultUrl, certificateName,
                     getImplCertificatePolicy(policy))
+                .onErrorMap(KeyVaultErrorException.class, CertificateAsyncClient::mapUpdateCertificatePolicyException)
                 .map(response -> new SimpleResponse<>(response, createCertificatePolicy(response.getValue())));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
     }
 
+    static HttpResponseException mapUpdateCertificatePolicyException(KeyVaultErrorException ex) {
+        return (ex.getResponse().getStatusCode() == 404)
+            ? new ResourceNotFoundException(ex.getMessage(), ex.getResponse(), ex.getValue())
+            : ex;
+    }
+
     /**
-     * Creates the specified certificate issuer. The SetCertificateIssuer operation updates the specified certificate issuer if it
-     * already exists or adds it if doesn't exist. This operation requires the certificates/setissuers permission.
+     * Creates the specified certificate issuer. The SetCertificateIssuer operation updates the specified certificate
+     * issuer if it already exists or adds it if it doesn't exist. This operation requires the certificates/setissuers
+     * permission.
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Creates a new certificate issuer in the key vault. Prints out the created certificate
@@ -1134,7 +1378,7 @@ public final class CertificateAsyncClient {
 
     /**
      * Creates the specified certificate issuer. The SetCertificateIssuer operation updates the specified certificate issuer if it
-     * already exists or adds it if doesn't exist. This operation requires the certificates/setissuers permission.
+     * already exists or adds it if it doesn't exist. This operation requires the certificates/setissuers permission.
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Creates a new certificate issuer in the key vault. Prints out the created certificate
@@ -1181,7 +1425,7 @@ public final class CertificateAsyncClient {
      * Retrieves the specified certificate issuer from the key vault. This operation requires the certificates/manageissuers/getissuers permission.
      *
      * <p><strong>Code Samples</strong></p>
-     * <p>Gets the specificed certifcate issuer in the key vault. Prints out the
+     * <p>Gets the specified certificate issuer in the key vault. Prints out the
      * returned certificate issuer details when a response has been received.</p>
      *
      * <!-- src_embed com.azure.security.keyvault.certificates.CertificateAsyncClient.getIssuerWithResponse#string -->
@@ -1264,10 +1508,17 @@ public final class CertificateAsyncClient {
     public Mono<Response<CertificateIssuer>> deleteIssuerWithResponse(String issuerName) {
         try {
             return implClient.deleteCertificateIssuerWithResponseAsync(vaultUrl, issuerName)
+                .onErrorMap(KeyVaultErrorException.class, CertificateAsyncClient::mapDeleteCertificateIssuerException)
                 .map(response -> new SimpleResponse<>(response, createCertificateIssuer(response.getValue())));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
+    }
+
+    static HttpResponseException mapDeleteCertificateIssuerException(KeyVaultErrorException ex) {
+        return (ex.getResponse().getStatusCode() == 404)
+            ? new ResourceNotFoundException(ex.getMessage(), ex.getResponse(), ex.getValue())
+            : ex;
     }
 
     /**
@@ -1551,9 +1802,20 @@ public final class CertificateAsyncClient {
     public Mono<Response<CertificateOperation>> deleteCertificateOperationWithResponse(String certificateName) {
         try {
             return implClient.deleteCertificateOperationWithResponseAsync(vaultUrl, certificateName)
+                .onErrorMap(KeyVaultErrorException.class, CertificateAsyncClient::mapDeleteCertificateOperationException)
                 .map(response -> new SimpleResponse<>(response, createCertificateOperation(response.getValue())));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
+        }
+    }
+
+    static HttpResponseException mapDeleteCertificateOperationException(KeyVaultErrorException ex) {
+        if (ex.getResponse().getStatusCode() == 400) {
+            return new ResourceModifiedException(ex.getMessage(), ex.getResponse(), ex.getValue());
+        } else if (ex.getResponse().getStatusCode() == 404) {
+            return new ResourceNotFoundException(ex.getMessage(), ex.getResponse(), ex.getValue());
+        } else {
+            return ex;
         }
     }
 
@@ -1606,6 +1868,7 @@ public final class CertificateAsyncClient {
     public Mono<Response<CertificateOperation>> cancelCertificateOperationWithResponse(String certificateName) {
         try {
             return implClient.updateCertificateOperationWithResponseAsync(vaultUrl, certificateName, true)
+                .onErrorMap(KeyVaultErrorException.class, CertificateAsyncClient::mapUpdateCertificateOperationException)
                 .map(response -> new SimpleResponse<>(response, createCertificateOperation(response.getValue())));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
@@ -1666,7 +1929,8 @@ public final class CertificateAsyncClient {
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the {@link KeyVaultCertificateWithPolicy imported certificate}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<KeyVaultCertificateWithPolicy>> importCertificateWithResponse(ImportCertificateOptions importCertificateOptions) {
+    public Mono<Response<KeyVaultCertificateWithPolicy>> importCertificateWithResponse(
+        ImportCertificateOptions importCertificateOptions) {
         if (importCertificateOptions == null) {
             return monoError(LOGGER, new NullPointerException("'importCertificateOptions' cannot be null."));
         }
@@ -1678,8 +1942,7 @@ public final class CertificateAsyncClient {
             return implClient.importCertificateWithResponseAsync(vaultUrl, importCertificateOptions.getName(),
                 transformCertificateForImport(importCertificateOptions), importCertificateOptions.getPassword(),
                 implPolicy, implPolicy == null ? null : implPolicy.getAttributes(), importCertificateOptions.getTags())
-                .map(response -> new SimpleResponse<>(response,
-                    createKeyVaultCertificateWithPolicy(response.getValue())));
+                .map(response -> new SimpleResponse<>(response, createCertificateWithPolicy(response.getValue())));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }

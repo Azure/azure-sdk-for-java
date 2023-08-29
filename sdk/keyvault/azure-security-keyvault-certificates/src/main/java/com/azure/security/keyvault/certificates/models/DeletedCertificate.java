@@ -3,9 +3,12 @@
 
 package com.azure.security.keyvault.certificates.models;
 
-
 import com.azure.security.keyvault.certificates.CertificateAsyncClient;
 import com.azure.security.keyvault.certificates.CertificateClient;
+import com.azure.security.keyvault.certificates.implementation.CertificatePropertiesHelper;
+import com.azure.security.keyvault.certificates.implementation.DeletedCertificateHelper;
+import com.azure.security.keyvault.certificates.implementation.models.DeletedCertificateBundle;
+import com.azure.security.keyvault.certificates.implementation.models.DeletedCertificateItem;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.time.Instant;
@@ -21,6 +24,45 @@ import java.time.ZoneOffset;
  * @see CertificateClient
  */
 public final class DeletedCertificate extends KeyVaultCertificateWithPolicy {
+    static {
+        DeletedCertificateHelper.setAccessor(new DeletedCertificateHelper.DeletedCertificateAccessor() {
+            @Override
+            public DeletedCertificate createDeletedCertificate(DeletedCertificateItem item) {
+                return new DeletedCertificate(item);
+            }
+
+            @Override
+            public DeletedCertificate createDeletedCertificate(DeletedCertificateBundle bundle) {
+                return new DeletedCertificate(bundle);
+            }
+        });
+    }
+
+    /**
+     * Creates an instance of {@link DeletedCertificate}.
+     */
+    public DeletedCertificate() {
+        super();
+    }
+
+    private DeletedCertificate(DeletedCertificateItem item) {
+        super();
+        unpackId(item.getId());
+
+        this.recoveryId = item.getRecoveryId();
+        this.deletedOn = item.getDeletedDate();
+        this.scheduledPurgeDate = item.getScheduledPurgeDate();
+
+        this.properties = CertificatePropertiesHelper.createCertificateProperties(item);
+    }
+
+    private DeletedCertificate(DeletedCertificateBundle bundle) {
+        super(bundle);
+
+        this.recoveryId = bundle.getRecoveryId();
+        this.deletedOn = bundle.getDeletedDate();
+        this.scheduledPurgeDate = bundle.getScheduledPurgeDate();
+    }
 
     /**
      * The url of the recovery object, used to identify and recover the deleted

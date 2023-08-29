@@ -3,11 +3,8 @@
 
 package com.azure.security.keyvault.certificates.models;
 
-import com.azure.core.util.Base64Url;
 import com.azure.core.util.CoreUtils;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
-import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -18,19 +15,16 @@ public class KeyVaultCertificate {
     /**
      * CER contents of x509 certificate.
      */
-    @JsonProperty(value = "cer")
     byte[] cer;
 
     /**
      * The key id.
      */
-    @JsonProperty(value = "kid", access = JsonProperty.Access.WRITE_ONLY)
     String keyId;
 
     /**
      * The secret id.
      */
-    @JsonProperty(value = "sid", access = JsonProperty.Access.WRITE_ONLY)
     String secretId;
 
     /**
@@ -97,7 +91,7 @@ public class KeyVaultCertificate {
 
     /**
      * Get the secret id of the certificate
-     * @return the key Id.
+     * @return the secret Id.
      */
     public String getSecretId() {
         return this.secretId;
@@ -111,24 +105,7 @@ public class KeyVaultCertificate {
         return CoreUtils.clone(cer);
     }
 
-    @JsonProperty("attributes")
-    @SuppressWarnings("unchecked")
-    void unpackBaseAttributes(Map<String, Object> attributes) {
-        properties.unpackBaseAttributes(attributes);
-    }
-
-    @JsonProperty(value = "id")
     void unpackId(String id) {
-        properties.unpackId(id);
-    }
-
-    @JsonProperty(value = "tags")
-    void unpackTags(Map<String, String> tags) {
-        properties.tags = tags;
-    }
-
-    @JsonProperty(value = "x5t")
-    void unpackX5t(Base64Url base64Url) {
-        properties.x509Thumbprint = base64Url;
+        CertificateProperties.unpackId(id, properties);
     }
 }

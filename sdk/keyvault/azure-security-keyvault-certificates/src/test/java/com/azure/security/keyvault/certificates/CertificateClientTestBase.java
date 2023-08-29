@@ -6,17 +6,9 @@ package com.azure.security.keyvault.certificates;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.HttpPipelineBuilder;
-import com.azure.core.http.policy.ExponentialBackoff;
-import com.azure.core.http.policy.HttpLogDetailLevel;
-import com.azure.core.http.policy.HttpLogOptions;
-import com.azure.core.http.policy.HttpLoggingPolicy;
-import com.azure.core.http.policy.HttpPipelinePolicy;
-import com.azure.core.http.policy.HttpPolicyProviders;
-import com.azure.core.http.policy.RetryPolicy;
-import com.azure.core.http.policy.RetryStrategy;
-import com.azure.core.http.policy.UserAgentPolicy;
+import com.azure.core.http.policy.ExponentialBackoffOptions;
+import com.azure.core.http.policy.FixedDelayOptions;
+import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.models.BodilessMatcher;
 import com.azure.core.test.models.CustomMatcher;
@@ -72,8 +64,6 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 public abstract class CertificateClientTestBase extends TestProxyTestBase {
     static final String DISPLAY_NAME_WITH_ARGUMENTS = "{displayName} with [{arguments}]";
-    private static final String SDK_NAME = "client_name";
-    private static final String SDK_VERSION = "client_version";
     private static final String AZURE_KEYVAULT_TEST_CERTIFICATE_SERVICE_VERSIONS =
         "AZURE_KEYVAULT_TEST_CERTIFICATE_SERVICE_VERSIONS";
     private static final String SERVICE_VERSION_FROM_ENV =
@@ -81,20 +71,21 @@ public abstract class CertificateClientTestBase extends TestProxyTestBase {
     private static final String AZURE_TEST_SERVICE_VERSIONS_VALUE_ALL = "ALL";
     private static final String TEST_CERTIFICATE_NAME = "testCert";
 
-    @Override
-    protected String getTestName() {
-        return "";
-    }
+    private static final int MAX_RETRIES = 5;
+    private static final RetryOptions LIVE_RETRY_OPTIONS = new RetryOptions(new ExponentialBackoffOptions()
+        .setMaxRetries(MAX_RETRIES)
+        .setBaseDelay(Duration.ofSeconds(2))
+        .setMaxDelay(Duration.ofSeconds(16)));
+
+    private static final RetryOptions PLAYBACK_RETRY_OPTIONS =
+        new RetryOptions(new FixedDelayOptions(MAX_RETRIES, Duration.ofMillis(1)));
 
     void beforeTestSetup() {
         KeyVaultCredentialPolicy.clearCache();
     }
 
-    HttpPipeline getHttpPipeline(HttpClient httpClient) {
-        return getHttpPipeline(httpClient, null);
-    }
-
-    HttpPipeline getHttpPipeline(HttpClient httpClient, String testTenantId) {
+    CertificateClientBuilder getCertificateClientBuilder(HttpClient httpClient, String testTenantId, String endpoint,
+        CertificateServiceVersion serviceVersion) {
         TokenCredential credential;
 
         if (!interceptorManager.isPlaybackMode()) {
@@ -104,14 +95,10 @@ public abstract class CertificateClientTestBase extends TestProxyTestBase {
                 ? Configuration.getGlobalConfiguration().get("AZURE_KEYVAULT_TENANT_ID")
                 : testTenantId;
 
-            Objects.requireNonNull(clientId, "The client id cannot be null");
-            Objects.requireNonNull(clientKey, "The client key cannot be null");
-            Objects.requireNonNull(tenantId, "The tenant id cannot be null");
-
             credential = new ClientSecretCredentialBuilder()
-                .clientSecret(clientKey)
-                .clientId(clientId)
-                .tenantId(tenantId)
+                .clientSecret(Objects.requireNonNull(clientKey, "The client key cannot be null"))
+                .clientId(Objects.requireNonNull(clientId, "The client id cannot be null"))
+                .tenantId(Objects.requireNonNull(tenantId, "The tenant id cannot be null"))
                 .additionallyAllowedTenants("*")
                 .build();
 
@@ -129,33 +116,21 @@ public abstract class CertificateClientTestBase extends TestProxyTestBase {
             interceptorManager.addMatchers(customMatchers);
         }
 
-        // Closest to API goes first, closest to wire goes last.
-        final List<HttpPipelinePolicy> policies = new ArrayList<>();
+        CertificateClientBuilder builder = new CertificateClientBuilder()
+            .vaultUrl(endpoint)
+            .serviceVersion(serviceVersion)
+            .credential(credential)
+            .httpClient(httpClient);
 
-        policies.add(
-            new UserAgentPolicy(null, SDK_NAME, SDK_VERSION, Configuration.getGlobalConfiguration().clone()));
-        HttpPolicyProviders.addBeforeRetryPolicies(policies);
+        if (interceptorManager.isPlaybackMode()) {
+            return builder.retryOptions(PLAYBACK_RETRY_OPTIONS);
+        } else {
+            builder.retryOptions(LIVE_RETRY_OPTIONS);
 
-        RetryStrategy strategy = new ExponentialBackoff(5, Duration.ofSeconds(2), Duration.ofSeconds(16));
-
-        policies.add(new RetryPolicy(strategy));
-
-        if (credential != null) {
-            // If in playback mode, disable the challenge resource verification.
-            policies.add(new KeyVaultCredentialPolicy(credential, interceptorManager.isPlaybackMode()));
+            return interceptorManager.isRecordMode()
+                ? builder.addPolicy(interceptorManager.getRecordPolicy())
+                : builder;
         }
-
-        HttpPolicyProviders.addAfterRetryPolicies(policies);
-        policies.add(new HttpLoggingPolicy(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS)));
-
-        if (interceptorManager.isRecordMode()) {
-            policies.add(interceptorManager.getRecordPolicy());
-        }
-
-        return new HttpPipelineBuilder()
-            .policies(policies.toArray(new HttpPipelinePolicy[0]))
-            .httpClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient)
-            .build();
     }
 
     @Test
@@ -181,7 +156,6 @@ public abstract class CertificateClientTestBase extends TestProxyTestBase {
 
     void updateCertificateRunner(BiConsumer<Map<String, String>, Map<String, String>> testRunner) {
         final Map<String, String> tags = new HashMap<>();
-
         tags.put("first tag", "first value");
 
         final Map<String, String> updatedTags = new HashMap<>();
@@ -545,7 +519,7 @@ public abstract class CertificateClientTestBase extends TestProxyTestBase {
             .setPassword("fakePasswordPlaceholder");
     }
 
-    String toHexString(byte[] x5t) {
+    static String toHexString(byte[] x5t) {
         if (x5t == null) {
             return "";
         }
@@ -580,26 +554,26 @@ public abstract class CertificateClientTestBase extends TestProxyTestBase {
     }
 
     boolean issuerCreatedCorrectly(CertificateIssuer expected, CertificateIssuer actual) {
-        return expected.getAccountId().equals(actual.getAccountId())
-            && expected.isEnabled().equals(actual.isEnabled())
-            && (actual.getCreatedOn() != null)
-            && (actual.getUpdatedOn() != null)
-            && (actual.getId() != null)
-            && (actual.getId().length() > 0)
-            && expected.getName().equals(actual.getName())
-            && expected.getOrganizationId().equals(actual.getOrganizationId())
-            && expected.getAdministratorContacts().size() == actual.getAdministratorContacts().size();
+        return Objects.equals(expected.getAccountId(), actual.getAccountId())
+               && Objects.equals(expected.isEnabled(), actual.isEnabled())
+               && (actual.getCreatedOn() != null)
+               && (actual.getUpdatedOn() != null)
+               && (actual.getId() != null)
+               && (actual.getId().length() > 0)
+               && expected.getName().equals(actual.getName())
+               && Objects.equals(expected.getOrganizationId(), actual.getOrganizationId())
+               && expected.getAdministratorContacts().size() == actual.getAdministratorContacts().size();
     }
 
     boolean issuerUpdatedCorrectly(CertificateIssuer expected, CertificateIssuer actual) {
-        return !expected.getAccountId().equals(actual.getAccountId())
-            && !expected.isEnabled().equals(actual.isEnabled())
+        return !Objects.equals(expected.getAccountId(), actual.getAccountId())
+            && !Objects.equals(expected.isEnabled(), actual.isEnabled())
             && (actual.getCreatedOn() != null)
             && (actual.getUpdatedOn() != null)
             && (actual.getId() != null)
             && (actual.getId().length() > 0)
             && expected.getName().equals(actual.getName())
-            && !expected.getOrganizationId().equals(actual.getOrganizationId())
+            && !Objects.equals(expected.getOrganizationId(), actual.getOrganizationId())
             && expected.getAdministratorContacts().size() == actual.getAdministratorContacts().size();
     }
 
@@ -618,18 +592,18 @@ public abstract class CertificateClientTestBase extends TestProxyTestBase {
     }
 
     boolean validatePolicy(CertificatePolicy expected, CertificatePolicy actual) {
-        return expected.getKeyType().equals(actual.getKeyType())
-            && expected.getContentType().equals(actual.getContentType())
-            && actual.getCreatedOn() != null
-            && expected.getIssuerName().equals(actual.getIssuerName())
-            && expected.getKeyCurveName().equals(actual.getKeyCurveName())
-            && expected.isExportable().equals(actual.isExportable())
-            && expected.isCertificateTransparent().equals(actual.isCertificateTransparent())
-            && expected.isEnabled().equals(actual.isEnabled())
-            && expected.isKeyReusable().equals(actual.isKeyReusable())
-            && expected.getValidityInMonths().equals(actual.getValidityInMonths())
-            && expected.getLifetimeActions().size() == actual.getLifetimeActions().size()
-            && expected.getKeyUsage().size() == actual.getKeyUsage().size();
+        return Objects.equals(expected.getKeyType(), actual.getKeyType())
+               && Objects.equals(expected.getContentType(), actual.getContentType())
+               && actual.getCreatedOn() != null
+               && expected.getIssuerName().equals(actual.getIssuerName())
+               && Objects.equals(expected.getKeyCurveName(), actual.getKeyCurveName())
+               && Objects.equals(expected.isExportable(), actual.isExportable())
+               && expected.isCertificateTransparent().equals(actual.isCertificateTransparent())
+               && Objects.equals(expected.isEnabled(), actual.isEnabled())
+               && Objects.equals(expected.isKeyReusable(), actual.isKeyReusable())
+               && expected.getValidityInMonths().equals(actual.getValidityInMonths())
+               && expected.getLifetimeActions().size() == actual.getLifetimeActions().size()
+               && expected.getKeyUsage().size() == actual.getKeyUsage().size();
     }
 
     boolean validateCertificate(KeyVaultCertificate expected, KeyVaultCertificate actual) {
@@ -645,17 +619,9 @@ public abstract class CertificateClientTestBase extends TestProxyTestBase {
             && expected.getCer().length == actual.getCer().length;
     }
 
-    public String getEndpoint() {
-        final String endpoint =
-            Configuration.getGlobalConfiguration().get("AZURE_KEYVAULT_ENDPOINT", "https://localhost:8080");
-
-        Objects.requireNonNull(endpoint);
-
-        return endpoint;
-    }
-
-    static void assertResponseException(Runnable exceptionThrower, int expectedStatusCode) {
-        assertResponseException(exceptionThrower, HttpResponseException.class, expectedStatusCode);
+    public static String getEndpoint() {
+        return Objects.requireNonNull(
+            Configuration.getGlobalConfiguration().get("AZURE_KEYVAULT_ENDPOINT", "https://localhost:8080"));
     }
 
     static void assertResponseException(Runnable exceptionThrower,
@@ -669,16 +635,6 @@ public abstract class CertificateClientTestBase extends TestProxyTestBase {
         }
     }
 
-    /**
-     * Helper method to verify the error was a HttpRequestException and it has a specific HTTP response code.
-     *
-     * @param exception Expected error thrown during the test.
-     * @param expectedStatusCode Expected HTTP status code contained in the error response.
-     */
-    static void assertResponseException(HttpResponseException exception, int expectedStatusCode) {
-        assertResponseException(exception, HttpResponseException.class, expectedStatusCode);
-    }
-
     static void assertResponseException(Throwable exception, Class<? extends HttpResponseException> expectedExceptionType, int expectedStatusCode) {
         assertEquals(expectedExceptionType, exception.getClass());
         assertEquals(expectedStatusCode, ((HttpResponseException) exception).getResponse().getStatusCode());
@@ -689,40 +645,6 @@ public abstract class CertificateClientTestBase extends TestProxyTestBase {
                                         int expectedStatusCode) {
         assertEquals(expectedExceptionType, exception.getClass());
         assertEquals(expectedStatusCode, exception.getResponse().getStatusCode());
-    }
-
-    /**
-     * Helper method to verify that a command throws an IllegalArgumentException.
-     *
-     * @param exceptionThrower Command that should throw the exception
-     */
-    static <T> void assertRunnableThrowsException(Runnable exceptionThrower, Class<T> exception) {
-        try {
-            exceptionThrower.run();
-            fail();
-        } catch (Exception e) {
-            assertEquals(exception, e.getClass());
-        }
-    }
-
-    public void sleepInRecordMode(long millis) {
-        if (interceptorManager.isPlaybackMode()) {
-            return;
-        }
-
-        try {
-            Thread.sleep(millis);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void sleep(long millis) {
-        try {
-            Thread.sleep(millis);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
     }
 
     /**
