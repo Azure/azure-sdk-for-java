@@ -24,7 +24,6 @@ import com.azure.storage.blob.BlobServiceClient;
 import com.azure.storage.blob.BlobServiceClientBuilder;
 import com.azure.storage.blob.BlobUrlParts;
 import com.azure.storage.blob.ProgressReceiver;
-import com.azure.storage.blob.models.BlobDownloadAsyncResponse;
 import com.azure.storage.blob.models.BlobDownloadHeaders;
 import com.azure.storage.blob.models.BlobDownloadResponse;
 import com.azure.storage.blob.models.BlobErrorCode;
@@ -96,6 +95,7 @@ import java.util.stream.Stream;
 
 import static com.azure.core.test.utils.TestUtils.assertArraysEqual;
 import static com.azure.core.test.utils.TestUtils.assertByteBuffersEqual;
+import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.ENCRYPTION_DATA_KEY;
 import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.GCM_ENCRYPTION_REGION_LENGTH;
 import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.NONCE_LENGTH;
 import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.TAG_LENGTH;
@@ -298,7 +298,7 @@ public class EncryptedBlockBlobApiTests extends BlobCryptographyTestBase {
         ByteArrayOutputStream plaintextOutputStream = new ByteArrayOutputStream();
 
         EncryptionData encryptionData = new ObjectMapper().readValue(
-            downloadResponse.getDeserializedHeaders().getMetadata().get(CryptographyConstants.ENCRYPTION_DATA_KEY),
+            downloadResponse.getDeserializedHeaders().getMetadata().get(ENCRYPTION_DATA_KEY),
             EncryptionData.class);
         byte[] cek = fakeKey.unwrapKey(encryptionData.getWrappedContentKey().getAlgorithm(),
             encryptionData.getWrappedContentKey().getEncryptedKey()).block();
@@ -600,9 +600,9 @@ public class EncryptedBlockBlobApiTests extends BlobCryptographyTestBase {
         bec.upload(DATA.getDefaultBinaryData());
 
         Map<String, String> metadata = bec.getProperties().getMetadata();
-        String encryptionDataStr = metadata.get(CryptographyConstants.ENCRYPTION_DATA_KEY);
+        String encryptionDataStr = metadata.get(ENCRYPTION_DATA_KEY);
         encryptionDataStr = encryptionDataStr.replace("2.0", "1.0");
-        metadata.put(CryptographyConstants.ENCRYPTION_DATA_KEY, encryptionDataStr);
+        metadata.put(ENCRYPTION_DATA_KEY, encryptionDataStr);
         bec.setMetadata(metadata);
 
         assertThrows(Exception.class, () -> bec.downloadStream(new ByteArrayOutputStream()));
@@ -1599,14 +1599,14 @@ public class EncryptedBlockBlobApiTests extends BlobCryptographyTestBase {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {"ENCRYPTIONDATA", "EncryptionData", "eNcRyPtIoNdAtA"})
-    public void encryptionDataCaseInsensitivity(String newKey) {
+    @MethodSource("encryptionDataCaseInsensitivitySupplier")
+    public void encryptionDataCaseInsensitivity(String newKey, EncryptionVersion version) {
         byte[] data = getRandomByteArray(Constants.KB);
-        bec = getEncryptionClient(EncryptionVersion.V2, generateBlobName());
+        bec = getEncryptionClient(version, generateBlobName());
         bec.upload(BinaryData.fromBytes(data));
         // change casing of encryption data key
         Map<String, String> metadata = bec.getProperties().getMetadata();
-        String encryptionData = metadata.get("encryptiondata");
+        String encryptionData = metadata.get(ENCRYPTION_DATA_KEY);
         Map<String, String> encryptionMetadata = new HashMap<>();
         encryptionMetadata.put(newKey, encryptionData);
         bec.setMetadata(encryptionMetadata);
@@ -1623,16 +1623,16 @@ public class EncryptedBlockBlobApiTests extends BlobCryptographyTestBase {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {"ENCRYPTIONDATA", "EncryptionData", "eNcRyPtIoNdAtA"})
-    public void encryptionDataCaseInsensitivityAsyncClient(String newKey) {
-        beac = getEncryptionAsyncClient(EncryptionVersion.V2);
+    @MethodSource("encryptionDataCaseInsensitivitySupplier")
+    public void encryptionDataCaseInsensitivityAsyncClient(String newKey, EncryptionVersion version) {
+        beac = getEncryptionAsyncClient(version);
         List<ByteBuffer> byteBufferList = new ArrayList<>();
         byteBufferList.add(getRandomData(Constants.KB));
         Flux<ByteBuffer> flux = Flux.fromIterable(byteBufferList);
         beac.upload(flux, null).block();
         // change casing of encryption data key
         Map<String, String> metadata = Objects.requireNonNull(beac.getProperties().block()).getMetadata();
-        String encryptionData = metadata.get("encryptiondata");
+        String encryptionData = metadata.get(ENCRYPTION_DATA_KEY);
         Map<String, String> encryptionMetadata = new HashMap<>();
         encryptionMetadata.put(newKey, encryptionData);
         beac.setMetadata(encryptionMetadata).block();
@@ -1648,6 +1648,17 @@ public class EncryptedBlockBlobApiTests extends BlobCryptographyTestBase {
                 .block()).getValue()).block();
 
         assertArrayEquals(byteBufferList.get(0).array(), downloadedData);
+    }
+
+    private static Stream<Arguments> encryptionDataCaseInsensitivitySupplier() {
+        return Stream.of(
+            Arguments.of("ENCRYPTIONDATA", EncryptionVersion.V1),
+            Arguments.of("EncryptionData", EncryptionVersion.V1),
+            Arguments.of("eNcRyPtIoNdAtA", EncryptionVersion.V1),
+            Arguments.of("ENCRYPTIONDATA", EncryptionVersion.V2),
+            Arguments.of("EncryptionData", EncryptionVersion.V2),
+            Arguments.of("eNcRyPtIoNdAtA", EncryptionVersion.V2)
+        );
     }
 
     private static void compareListToBuffer(List<ByteBuffer> buffers, ByteBuffer result) {
