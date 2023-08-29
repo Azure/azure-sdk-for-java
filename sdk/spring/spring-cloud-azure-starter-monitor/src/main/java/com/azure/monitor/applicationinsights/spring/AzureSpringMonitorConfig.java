@@ -101,7 +101,7 @@ public class AzureSpringMonitorConfig {
      * @return LogRecordExporter
      */
     @Bean
-    public LogRecordExporter azureSpringMonitorlogRecordExporter() {
+    public LogRecordExporter azureSpringMonitorLogRecordExporter() {
         if (!azureMonitorExporterBuilderOpt.isPresent()) {
             return null;
         }
