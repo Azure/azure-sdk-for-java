@@ -27,27 +27,29 @@ import com.azure.security.keyvault.certificates.models.IssuerProperties;
 import com.azure.security.keyvault.certificates.models.KeyVaultCertificate;
 import com.azure.security.keyvault.certificates.models.KeyVaultCertificateWithPolicy;
 import com.azure.security.keyvault.certificates.models.MergeCertificateOptions;
+import org.bouncycastle.asn1.x500.X500Name;
+import org.bouncycastle.asn1.x509.AlgorithmIdentifier;
+import org.bouncycastle.asn1.x509.Certificate;
+import org.bouncycastle.asn1.x509.SubjectPublicKeyInfo;
+import org.bouncycastle.cert.X509v3CertificateBuilder;
+import org.bouncycastle.crypto.params.AsymmetricKeyParameter;
+import org.bouncycastle.crypto.util.PrivateKeyFactory;
+import org.bouncycastle.operator.ContentSigner;
+import org.bouncycastle.operator.DefaultDigestAlgorithmIdentifierFinder;
+import org.bouncycastle.operator.DefaultSignatureAlgorithmIdentifierFinder;
+import org.bouncycastle.operator.OperatorCreationException;
+import org.bouncycastle.operator.bc.BcRSAContentSignerBuilder;
+import org.bouncycastle.pkcs.PKCS10CertificationRequest;
 import org.junit.jupiter.api.condition.DisabledForJreRange;
 import org.junit.jupiter.api.condition.JRE;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
-import sun.security.pkcs10.PKCS10;
-import sun.security.util.ObjectIdentifier;
-import sun.security.x509.AlgorithmId;
-import sun.security.x509.CertificateAlgorithmId;
-import sun.security.x509.CertificateSerialNumber;
-import sun.security.x509.CertificateValidity;
-import sun.security.x509.CertificateX509Key;
-import sun.security.x509.X509CertImpl;
-import sun.security.x509.X509CertInfo;
 
 import java.io.IOException;
+import java.math.BigInteger;
 import java.net.HttpURLConnection;
-import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
-import java.security.NoSuchProviderException;
 import java.security.PrivateKey;
-import java.security.SignatureException;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import java.security.spec.InvalidKeySpecException;
@@ -936,41 +938,42 @@ public class CertificateClientTest extends CertificateClientTestBase {
 
             CertificateOperation certificateOperation = createCertificatePoller.poll().getValue();
             byte[] certificateSignRequest = certificateOperation.getCsr();
-            PKCS10 pkcs10 = new PKCS10(certificateSignRequest);
+            PKCS10CertificationRequest pkcs10CertificationRequest =
+                new PKCS10CertificationRequest(certificateSignRequest);
             byte[] certificateToMerge = readCertificate("mergeCert.pem");
             X509Certificate x509ToMerge = loadCerToX509Certificate(certificateToMerge);
             PrivateKey privateKey = loadPrivateKey("priv8.der");
-            X509CertInfo certInfo = new X509CertInfo();
-            Date from = new Date();
-            Date to = new Date(from.getTime() + 60 * 86400000L);
-            CertificateValidity interval = new CertificateValidity(from, to);
-            AlgorithmId algorithmId = new AlgorithmId(new ObjectIdentifier("1.2.840.113549.1.1.11")); // algorithm = SHA256withRSA
+            Date notBefore = new Date();
+            Date notAfter = new Date(notBefore.getTime() + 60 * 86400000L);
 
-            certInfo.set(X509CertInfo.SERIAL_NUMBER, new CertificateSerialNumber(1));
-            certInfo.set(X509CertInfo.VALIDITY, interval);
-            certInfo.set(X509CertInfo.ISSUER, x509ToMerge.getSubjectDN());
-            certInfo.set(X509CertInfo.SUBJECT, pkcs10.getSubjectName());
-            certInfo.set(X509CertInfo.KEY, new CertificateX509Key(pkcs10.getSubjectPublicKeyInfo()));
-            certInfo.set(X509CertInfo.ALGORITHM_ID, new CertificateAlgorithmId(algorithmId));
+            X500Name mergeIssuer = new X500Name(x509ToMerge.getSubjectX500Principal().getName());
+            X500Name mergeSubject = pkcs10CertificationRequest.getSubject();
+            AlgorithmIdentifier signatureAlgorithmIdentifier =
+                new DefaultSignatureAlgorithmIdentifierFinder().find("SHA256withRSA");
+            AlgorithmIdentifier digestAlgorithmIdentifier =
+                new DefaultDigestAlgorithmIdentifierFinder().find(signatureAlgorithmIdentifier);
+            AsymmetricKeyParameter asymmetricKeyParameter = PrivateKeyFactory.createKey(privateKey.getEncoded());
+            SubjectPublicKeyInfo publicKeyInfo = pkcs10CertificationRequest.getSubjectPublicKeyInfo();
+            X509v3CertificateBuilder x509CertificateBuilder =
+                new X509v3CertificateBuilder(mergeIssuer, BigInteger.ONE, notBefore, notAfter, mergeSubject,
+                    publicKeyInfo);
 
-            // Sign the cert to identify the algorithm that's used.
-            X509CertImpl x509CertImpl = new X509CertImpl(certInfo);
+            ContentSigner contentSigner =
+                new BcRSAContentSignerBuilder(signatureAlgorithmIdentifier, digestAlgorithmIdentifier)
+                    .build(asymmetricKeyParameter);
 
-            x509CertImpl.sign(privateKey, "SHA256withRSA"); // algId =  1.2.840.113549.1.1.11
-
-            byte[] base64CertificateToMerge = x509CertImpl.getEncoded();
+            Certificate certificate = x509CertificateBuilder.build(contentSigner).toASN1Structure();
 
             MergeCertificateOptions mergeCertificateOptions =
-                new MergeCertificateOptions(certificateName, Collections.singletonList(base64CertificateToMerge));
+                new MergeCertificateOptions(certificateName, Collections.singletonList(certificate.getEncoded()));
 
-            KeyVaultCertificateWithPolicy mergedCertificate =
-                certificateClient.mergeCertificate(mergeCertificateOptions);
+            certificateClient.mergeCertificate(mergeCertificateOptions);
 
             PollResponse<CertificateOperation> pollResponse = createCertificatePoller.poll();
 
             assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, pollResponse.getStatus());
-        } catch (CertificateException | InvalidKeyException | InvalidKeySpecException | IOException
-                 | NoSuchAlgorithmException | NoSuchProviderException | SignatureException e) {
+        } catch (CertificateException | InvalidKeySpecException | IOException
+                 | NoSuchAlgorithmException| OperatorCreationException e) {
 
             fail(e);
         }
