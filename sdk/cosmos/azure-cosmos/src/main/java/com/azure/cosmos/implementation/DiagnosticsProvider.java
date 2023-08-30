@@ -706,7 +706,9 @@ public final class DiagnosticsProvider {
             clientAccessor.getConnectionMode(client),
             clientAccessor.getUserAgent(client));
 
-        requestOptions.setDiagnosticsContext(cosmosCtx);
+        if (requestOptions != null) {
+            requestOptions.setDiagnosticsContext(cosmosCtx);
+        }
 
         return diagnosticsEnabledPublisher(
             cosmosCtx,
