@@ -320,7 +320,7 @@ public final class ResourceDeleteCancelEventData {
      * @deprecated This method is no longer supported since v4.9.0.
      *     <p>Use {@link ResourceDeleteCancelEventData#getResourceClaims()} instead.
      */
-    @Deprecated()
+    @Deprecated
     public String getClaims() {
         final Map<String, String> resourceClaims = getResourceClaims();
         if (!resourceClaims.isEmpty()) {
@@ -341,7 +341,7 @@ public final class ResourceDeleteCancelEventData {
      * @deprecated This method is no longer supported since v4.9.0.
      *     <p>Use {@link ResourceDeleteCancelEventData#setResourceClaims(Map)} instead.
      */
-    @Deprecated()
+    @Deprecated
     public ResourceDeleteCancelEventData setClaims(String claims) {
         try {
             setResourceClaims(DEFAULT_SERIALIZER_ADAPTER.deserialize(claims, Map.class, SerializerEncoding.JSON));
@@ -358,7 +358,7 @@ public final class ResourceDeleteCancelEventData {
      * @deprecated This method is no longer supported since v4.9.0.
      *     <p>Use {@link ResourceDeleteCancelEventData#getResourceHttpRequest()} instead.
      */
-    @Deprecated()
+    @Deprecated
     public String getHttpRequest() {
         ResourceHttpRequest resourceHttpRequest = getResourceHttpRequest();
         try {
@@ -376,7 +376,7 @@ public final class ResourceDeleteCancelEventData {
      * @deprecated This method is no longer supported since v4.9.0.
      *     <p>Use {@link ResourceDeleteCancelEventData#setResourceHttpRequest(ResourceHttpRequest)} instead.
      */
-    @Deprecated()
+    @Deprecated
     public ResourceDeleteCancelEventData setHttpRequest(String httpRequest) {
         try {
             setResourceHttpRequest(
@@ -395,7 +395,7 @@ public final class ResourceDeleteCancelEventData {
      * @deprecated This method is no longer supported since v4.9.0.
      *     <p>Use {@link ResourceDeleteCancelEventData#getResourceAuthorization()} instead.
      */
-    @Deprecated()
+    @Deprecated
     public String getAuthorization() {
         final ResourceAuthorization resourceAuthorization = getResourceAuthorization();
         try {
@@ -413,7 +413,7 @@ public final class ResourceDeleteCancelEventData {
      * @deprecated This method is no longer supported since v4.9.0.
      *     <p>Use {@link ResourceDeleteCancelEventData#setResourceAuthorization(ResourceAuthorization)} instead.
      */
-    @Deprecated()
+    @Deprecated
     public ResourceDeleteCancelEventData setAuthorization(String authorization) {
         try {
             setResourceAuthorization(

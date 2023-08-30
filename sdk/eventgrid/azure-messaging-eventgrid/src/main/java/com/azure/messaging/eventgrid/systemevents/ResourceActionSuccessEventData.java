@@ -320,7 +320,7 @@ public final class ResourceActionSuccessEventData {
      * @deprecated This method is no longer supported since v4.9.0.
      *     <p>Use {@link ResourceActionSuccessEventData#getResourceClaims()} instead.
      */
-    @Deprecated()
+    @Deprecated
     public String getClaims() {
         final Map<String, String> resourceClaims = getResourceClaims();
         if (!resourceClaims.isEmpty()) {
@@ -341,7 +341,7 @@ public final class ResourceActionSuccessEventData {
      * @deprecated This method is no longer supported since v4.9.0.
      *     <p>Use {@link ResourceActionSuccessEventData#setResourceClaims(Map)} instead.
      */
-    @Deprecated()
+    @Deprecated
     public ResourceActionSuccessEventData setClaims(String claims) {
         try {
             setResourceClaims(DEFAULT_SERIALIZER_ADAPTER.deserialize(claims, Map.class, SerializerEncoding.JSON));
@@ -358,7 +358,7 @@ public final class ResourceActionSuccessEventData {
      * @deprecated This method is no longer supported since v4.9.0.
      *     <p>Use {@link ResourceActionSuccessEventData#getResourceHttpRequest()} instead.
      */
-    @Deprecated()
+    @Deprecated
     public String getHttpRequest() {
         ResourceHttpRequest resourceHttpRequest = getResourceHttpRequest();
         try {
@@ -376,7 +376,7 @@ public final class ResourceActionSuccessEventData {
      * @deprecated This method is no longer supported since v4.9.0.
      *     <p>Use {@link ResourceActionSuccessEventData#setResourceHttpRequest(ResourceHttpRequest)} instead.
      */
-    @Deprecated()
+    @Deprecated
     public ResourceActionSuccessEventData setHttpRequest(String httpRequest) {
         try {
             setResourceHttpRequest(
@@ -395,7 +395,7 @@ public final class ResourceActionSuccessEventData {
      * @deprecated This method is no longer supported since v4.9.0.
      *     <p>Use {@link ResourceActionSuccessEventData#getResourceAuthorization()} instead.
      */
-    @Deprecated()
+    @Deprecated
     public String getAuthorization() {
         final ResourceAuthorization resourceAuthorization = getResourceAuthorization();
         try {
@@ -413,7 +413,7 @@ public final class ResourceActionSuccessEventData {
      * @deprecated This method is no longer supported since v4.9.0.
      *     <p>Use {@link ResourceActionSuccessEventData#setResourceAuthorization(ResourceAuthorization)} instead.
      */
-    @Deprecated()
+    @Deprecated
     public ResourceActionSuccessEventData setAuthorization(String authorization) {
         try {
             setResourceAuthorization(

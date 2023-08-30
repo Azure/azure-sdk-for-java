@@ -5,6 +5,7 @@ import com.azure.autorest.customization.PackageCustomization;
 import com.azure.autorest.customization.PropertyCustomization;
 import com.github.javaparser.ast.Modifier.Keyword;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
+import com.github.javaparser.ast.expr.MarkerAnnotationExpr;
 import com.github.javaparser.javadoc.Javadoc;
 import com.github.javaparser.javadoc.description.JavadocDescription;
 import com.github.javaparser.javadoc.description.JavadocSnippet;
@@ -240,33 +241,34 @@ public class EventGridCustomization extends Customization {
 
                 classCustomization.customizeAst(compilationUnit -> {
 
-                    ClassOrInterfaceDeclaration classDec = compilationUnit.getClassByName(className).get();
+                    ClassOrInterfaceDeclaration clazz = compilationUnit.getClassByName(className).get();
                     compilationUnit.addImport("com.azure.core.util.logging.ClientLogger");
                     compilationUnit.addImport("com.azure.core.util.serializer.JacksonAdapter");
                     compilationUnit.addImport("com.azure.core.util.serializer.SerializerAdapter");
                     compilationUnit.addImport("com.azure.core.util.serializer.SerializerEncoding");
                     compilationUnit.addImport("java.io.IOException");
                     compilationUnit.addImport("java.io.UncheckedIOException");
-                    classDec.addFieldWithInitializer("ClientLogger", "LOGGER", parseExpression("new ClientLogger(" + className + ".class)"), Keyword.STATIC, Keyword.FINAL, Keyword.PRIVATE);
-                    classDec.addFieldWithInitializer("SerializerAdapter", "DEFAULT_SERIALIZER_ADAPTER", parseExpression("JacksonAdapter.createDefaultSerializerAdapter()"), Keyword.STATIC, Keyword.FINAL, Keyword.PRIVATE);
+                    clazz.addFieldWithInitializer("ClientLogger", "LOGGER", parseExpression("new ClientLogger(" + className + ".class)"), Keyword.STATIC, Keyword.FINAL, Keyword.PRIVATE);
+                    clazz.addFieldWithInitializer("SerializerAdapter", "DEFAULT_SERIALIZER_ADAPTER", parseExpression("JacksonAdapter.createDefaultSerializerAdapter()"), Keyword.STATIC, Keyword.FINAL, Keyword.PRIVATE);
 
 
                     Arrays.asList("Authorization", "Claims", "HttpRequest").forEach(method -> {
-                        classDec.getMethodsByName("get" + method).get(0).setName("getResource" + method);
-                        classDec.getMethodsByName("set" + method).get(0).setName("setResource" + method);
+                        clazz.getMethodsByName("get" + method).get(0).setName("getResource" + method);
+                        clazz.getMethodsByName("set" + method).get(0).setName("setResource" + method);
                     });
-                    classDec.addMethod("getClaims", Keyword.PUBLIC)
+
+                    clazz.addMethod("getClaims", Keyword.PUBLIC)
                         .setType("String")
-                        .addAnnotation("Deprecated")
+                        .addAnnotation(new MarkerAnnotationExpr("Deprecated"))
                         .setBody(parseBlock("{ final Map<String, String> resourceClaims = getResourceClaims(); if (!resourceClaims.isEmpty()) { try { return DEFAULT_SERIALIZER_ADAPTER.serialize(resourceClaims, SerializerEncoding.JSON); } catch (IOException ex) { throw LOGGER.logExceptionAsError(new UncheckedIOException(ex)); } } return null; }"))
                         .setJavadocComment(new Javadoc(new JavadocDescription(List.of(new JavadocSnippet("Get the claims property: The properties of the claims."))))
                             .addBlockTag("return", "the claims value.")
                             .addBlockTag("deprecated", "This method is no longer supported since v4.9.0. <p> Use {@link " + className + "#getResourceClaims()} instead.")
                         );
 
-                    classDec.addMethod("setClaims", Keyword.PUBLIC)
+                    clazz.addMethod("setClaims", Keyword.PUBLIC)
                         .setType(className)
-                        .addAnnotation("Deprecated")
+                        .addAnnotation(new MarkerAnnotationExpr("Deprecated"))
                         .addParameter("String", "claims")
                         .setBody(parseBlock("{ try { setResourceClaims(DEFAULT_SERIALIZER_ADAPTER.deserialize(claims, Map.class, SerializerEncoding.JSON)); } catch (IOException ex) { throw LOGGER.logExceptionAsError(new UncheckedIOException(ex)); } return this; }"))
                         .setJavadocComment(new Javadoc(new JavadocDescription(List.of(new JavadocSnippet("Set the claims property: The properties of the claims."))))
@@ -275,18 +277,18 @@ public class EventGridCustomization extends Customization {
                             .addBlockTag("deprecated", "This method is no longer supported since v4.9.0. <p> Use {@link " + className + "#setResourceClaims(Map)} instead.")
                         );
 
-                    classDec.addMethod("getHttpRequest", Keyword.PUBLIC)
+                    clazz.addMethod("getHttpRequest", Keyword.PUBLIC)
                         .setType("String")
-                        .addAnnotation("Deprecated")
+                        .addAnnotation(new MarkerAnnotationExpr("Deprecated"))
                         .setBody(parseBlock("{ ResourceHttpRequest resourceHttpRequest = getResourceHttpRequest(); try { return DEFAULT_SERIALIZER_ADAPTER.serialize(resourceHttpRequest, SerializerEncoding.JSON); } catch (IOException ex) { throw LOGGER.logExceptionAsError(new UncheckedIOException(ex)); } }"))
                         .setJavadocComment(new Javadoc(new JavadocDescription(List.of(new JavadocSnippet("Get the httpRequest property: The details of the operation."))))
                             .addBlockTag("return", "the httpRequest value.")
                             .addBlockTag("deprecated", "This method is no longer supported since v4.9.0. <p> Use {@link " + className + "#getResourceHttpRequest()} instead.")
                         );
 
-                    classDec.addMethod("setHttpRequest", Keyword.PUBLIC)
+                    clazz.addMethod("setHttpRequest", Keyword.PUBLIC)
                         .setType(className)
-                        .addAnnotation("Deprecated")
+                        .addAnnotation(new MarkerAnnotationExpr("Deprecated"))
                         .addParameter("String", "httpRequest")
                         .setBody(parseBlock("{ try { setResourceHttpRequest( DEFAULT_SERIALIZER_ADAPTER.deserialize(httpRequest, ResourceHttpRequest.class, SerializerEncoding.JSON)); } catch (IOException ex) { throw LOGGER.logExceptionAsError(new UncheckedIOException(ex)); } return this; }"))
                         .setJavadocComment(new Javadoc(new JavadocDescription(List.of(new JavadocSnippet("Set the httpRequest property: The details of the operation."))))
@@ -295,18 +297,18 @@ public class EventGridCustomization extends Customization {
                             .addBlockTag("deprecated", "This method is no longer supported since v4.9.0. <p> Use {@link " + className + "#setResourceHttpRequest(ResourceHttpRequest)} instead.")
                         );
 
-                    classDec.addMethod("getAuthorization", Keyword.PUBLIC)
+                    clazz.addMethod("getAuthorization", Keyword.PUBLIC)
                         .setType("String")
-                        .addAnnotation("Deprecated")
+                        .addAnnotation(new MarkerAnnotationExpr("Deprecated"))
                         .setBody(parseBlock("{ final ResourceAuthorization resourceAuthorization = getResourceAuthorization(); try { return DEFAULT_SERIALIZER_ADAPTER.serialize(resourceAuthorization, SerializerEncoding.JSON); } catch (IOException ex) { throw LOGGER.logExceptionAsError(new UncheckedIOException(ex)); } }"))
                         .setJavadocComment(new Javadoc(new JavadocDescription(List.of(new JavadocSnippet("Get the authorization property: The requested authorization for the operation."))))
                             .addBlockTag("return", "the authorization value.")
                             .addBlockTag("deprecated", "This method is no longer supported since v4.9.0. <p> Use {@link " + className + "#getResourceAuthorization()} instead.")
                         );
 
-                    classDec.addMethod("setAuthorization", Keyword.PUBLIC)
+                    clazz.addMethod("setAuthorization", Keyword.PUBLIC)
                         .setType(className)
-                        .addAnnotation("Deprecated")
+                        .addAnnotation(new MarkerAnnotationExpr("Deprecated"))
                         .addParameter("String", "authorization")
                         .setBody(parseBlock("{ try { setResourceAuthorization( DEFAULT_SERIALIZER_ADAPTER.deserialize(authorization, ResourceAuthorization.class, SerializerEncoding.JSON)); } catch (IOException ex) { throw LOGGER.logExceptionAsError(new UncheckedIOException(ex)); } return this; }"))
                         .setJavadocComment(new Javadoc(new JavadocDescription(List.of(new JavadocSnippet("Set the authorization property: The requested authorization for the operation."))))
