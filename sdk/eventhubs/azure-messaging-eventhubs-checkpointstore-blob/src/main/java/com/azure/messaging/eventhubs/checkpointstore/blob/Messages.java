@@ -40,6 +40,11 @@ enum Messages {
     static final String CHECKPOINT_INFO = getMessage("CHECKPOINT_INFO");
 
     /**
+     * Invalid blob path.
+     */
+    static final String INVALID_BLOB_NAME = getMessage("INVALID_BLOB_NAME");
+
+    /**
      * @param key the key of the message to retrieve
      * @return the message matching the given key
      */

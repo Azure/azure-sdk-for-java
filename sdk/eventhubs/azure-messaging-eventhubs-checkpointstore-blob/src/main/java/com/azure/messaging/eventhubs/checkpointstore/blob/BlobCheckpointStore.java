@@ -27,11 +27,12 @@ import java.nio.ByteBuffer;
 import java.time.Instant;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicReference;
-import java.util.function.Function;
+import java.util.function.BiFunction;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 
@@ -83,7 +84,6 @@ public class BlobCheckpointStore implements CheckpointStore {
         this(blobContainerAsyncClient, null);
     }
 
-
     /**
      * Creates an instance of BlobCheckpointStore.
      *
@@ -107,71 +107,89 @@ public class BlobCheckpointStore implements CheckpointStore {
     @Override
     public Flux<PartitionOwnership> listOwnership(String fullyQualifiedNamespace, String eventHubName,
         String consumerGroup) {
-        String prefix = getBlobPrefix(fullyQualifiedNamespace, eventHubName, consumerGroup, OWNERSHIP_PATH);
-        return listBlobs(prefix, this::convertToPartitionOwnership);
+
+        final String prefix = getBlobPrefix(fullyQualifiedNamespace, eventHubName, consumerGroup, OWNERSHIP_PATH,
+                true);
+
+        return listBlobs(prefix, (blobItem, parts) -> convertToPartitionOwnership(blobItem, parts))
+            .switchIfEmpty(Flux.defer(() -> {
+                final String legacyPrefix = getBlobPrefix(fullyQualifiedNamespace, eventHubName, consumerGroup,
+                        OWNERSHIP_PATH, false);
+
+                return listBlobs(legacyPrefix, (item, p) -> convertToPartitionOwnership(item, p));
+            }));
     }
 
     @Override
     public Flux<Checkpoint> listCheckpoints(String fullyQualifiedNamespace, String eventHubName,
         String consumerGroup) {
-        String prefix = getBlobPrefix(fullyQualifiedNamespace, eventHubName, consumerGroup, CHECKPOINT_PATH);
-        return listBlobs(prefix, this::convertToCheckpoint);
+        final String prefix = getBlobPrefix(fullyQualifiedNamespace, eventHubName, consumerGroup, CHECKPOINT_PATH,
+                true);
+
+        return listBlobs(prefix, (blobItem, names) -> convertToCheckpoint(blobItem, names))
+                .switchIfEmpty(Flux.defer(() -> {
+                    final String legacyPrefix = getBlobPrefix(fullyQualifiedNamespace, eventHubName, consumerGroup,
+                            OWNERSHIP_PATH, false);
+
+                    return listBlobs(legacyPrefix, (item, p) -> convertToCheckpoint(item, p));
+                }));
     }
 
-    private <T> Flux<T> listBlobs(String prefix, Function<BlobItem, Mono<T>> converter) {
+    private <T> Flux<T> listBlobs(String prefix, BiFunction<BlobItem, String[], T> converter) {
         BlobListDetails details = new BlobListDetails().setRetrieveMetadata(true);
         ListBlobsOptions options = new ListBlobsOptions().setPrefix(prefix).setDetails(details);
+
         return blobContainerAsyncClient.listBlobs(options)
-            .flatMap(converter)
-            .filter(Objects::nonNull);
+                .handle((blobItem, sink) -> {
+                    final String[] names = blobItem.getName().split(BLOB_PATH_SEPARATOR);
+
+                    if (names.length != 5) {
+                        LOGGER.atWarning()
+                                .addKeyValue(BLOB_NAME_LOG_KEY, blobItem.getName())
+                                .log(Messages.INVALID_BLOB_NAME);
+                        return;
+                    }
+
+                    // Blob names should be of the pattern
+                    // <fullyQualifiedNamespace>/<eventHubName>/<consumerGroup>/ownership/<partitionId>
+                    // or
+                    // <fullyQualifiedNamespace>/<eventHubName>/<consumerGroup>/checkpoint/<partitionId>
+                    if (CoreUtils.isNullOrEmpty(blobItem.getMetadata())) {
+                        LOGGER.atWarning()
+                                .addKeyValue(BLOB_NAME_LOG_KEY, blobItem.getName())
+                                .log(Messages.NO_METADATA_AVAILABLE_FOR_BLOB);
+                        return;
+                    }
+
+                    final T converted = converter.apply(blobItem, names);
+
+                    if (!Objects.isNull(converted)) {
+                        sink.next(converted);
+                    }
+                });
     }
 
-    private Mono<Checkpoint> convertToCheckpoint(BlobItem blobItem) {
-        String[] names = blobItem.getName().split(BLOB_PATH_SEPARATOR);
-        LOGGER.atVerbose()
-            .addKeyValue(BLOB_NAME_LOG_KEY, blobItem.getName())
-            .log(Messages.FOUND_BLOB_FOR_PARTITION);
-        if (names.length == 5) {
-            // Blob names should be of the pattern
-            // fullyqualifiednamespace/eventhub/consumergroup/checkpoints/<partitionId>
-            // While we can further check if the partition id is numeric, it may not necessarily be the case in future.
+    private static Checkpoint convertToCheckpoint(BlobItem blobItem, String[] names) {
+        final Map<String, String> metadata = blobItem.getMetadata();
 
-            if (CoreUtils.isNullOrEmpty(blobItem.getMetadata())) {
-                LOGGER.atWarning()
-                    .addKeyValue(BLOB_NAME_LOG_KEY, blobItem.getName())
-                    .log(Messages.NO_METADATA_AVAILABLE_FOR_BLOB);
-                return Mono.empty();
-            }
-
-            Map<String, String> metadata = blobItem.getMetadata();
-            LOGGER.atVerbose()
-                .addKeyValue(BLOB_NAME_LOG_KEY, blobItem.getName())
-                .addKeyValue(SEQUENCE_NUMBER_LOG_KEY, metadata.get(SEQUENCE_NUMBER))
-                .addKeyValue(OFFSET_LOG_KEY, metadata.get(OFFSET))
-                .log(Messages.CHECKPOINT_INFO);
-
-            Long sequenceNumber = null;
-            Long offset = null;
-            if (!CoreUtils.isNullOrEmpty(metadata.get(SEQUENCE_NUMBER))) {
-                sequenceNumber = Long.parseLong(metadata.get(SEQUENCE_NUMBER));
-            }
-
-            if (!CoreUtils.isNullOrEmpty(metadata.get(OFFSET))) {
-                offset = Long.parseLong(metadata.get(OFFSET));
-            }
-
-            Checkpoint checkpoint = new Checkpoint()
-                .setFullyQualifiedNamespace(names[0])
-                .setEventHubName(names[1])
-                .setConsumerGroup(names[2])
-                // names[3] is "checkpoint"
-                .setPartitionId(names[4])
-                .setSequenceNumber(sequenceNumber)
-                .setOffset(offset);
-
-            return Mono.just(checkpoint);
+        Long sequenceNumber = null;
+        Long offset = null;
+        if (!CoreUtils.isNullOrEmpty(metadata.get(SEQUENCE_NUMBER))) {
+            sequenceNumber = Long.parseLong(metadata.get(SEQUENCE_NUMBER));
         }
-        return Mono.empty();
+
+        if (!CoreUtils.isNullOrEmpty(metadata.get(OFFSET))) {
+            offset = Long.parseLong(metadata.get(OFFSET));
+        }
+
+        return new Checkpoint()
+            .setFullyQualifiedNamespace(names[0])
+            .setEventHubName(names[1])
+            .setConsumerGroup(names[2])
+            // names[3] is "checkpoint"
+            .setPartitionId(names[4])
+            .setSequenceNumber(sequenceNumber)
+            .setOffset(offset);
     }
 
     /**
@@ -187,15 +205,22 @@ public class BlobCheckpointStore implements CheckpointStore {
         return Flux.fromIterable(requestedPartitionOwnerships).flatMap(partitionOwnership -> {
             try {
                 String partitionId = partitionOwnership.getPartitionId();
-                String blobName = getBlobName(partitionOwnership.getFullyQualifiedNamespace(),
+                String legacyBlobName = getBlobName(partitionOwnership.getFullyQualifiedNamespace(),
                     partitionOwnership.getEventHubName(), partitionOwnership.getConsumerGroup(), partitionId,
                     OWNERSHIP_PATH);
 
-                if (!blobClients.containsKey(blobName)) {
-                    blobClients.put(blobName, blobContainerAsyncClient.getBlobAsyncClient(blobName));
+                String lowerCaseName = legacyBlobName.toLowerCase(Locale.ROOT);
+                if (!blobClients.containsKey(lowerCaseName)) {
+                    if (blobClients.containsKey(legacyBlobName)) {
+
+                    }
                 }
 
-                BlobAsyncClient blobAsyncClient = blobClients.get(blobName);
+                if (!blobClients.containsKey(legacyBlobName)) {
+                    blobClients.put(legacyBlobName, blobContainerAsyncClient.getBlobAsyncClient(legacyBlobName));
+                }
+
+                BlobAsyncClient blobAsyncClient = blobClients.get(legacyBlobName);
 
                 Map<String, String> metadata = new HashMap<>();
                 metadata.put(OWNER_ID, partitionOwnership.getOwnerId());
@@ -294,9 +319,12 @@ public class BlobCheckpointStore implements CheckpointStore {
     }
 
     private String getBlobPrefix(String fullyQualifiedNamespace, String eventHubName, String consumerGroupName,
-        String typeSuffix) {
-        return fullyQualifiedNamespace + BLOB_PATH_SEPARATOR + eventHubName + BLOB_PATH_SEPARATOR + consumerGroupName
-            + typeSuffix;
+        String typeSuffix, boolean isLowercase) {
+
+        final String prefix = fullyQualifiedNamespace + BLOB_PATH_SEPARATOR + eventHubName + BLOB_PATH_SEPARATOR
+            + consumerGroupName + typeSuffix;
+
+        return isLowercase ? prefix.toLowerCase(Locale.ROOT) : prefix;
     }
 
     private String getBlobName(String fullyQualifiedNamespace, String eventHubName, String consumerGroupName,
@@ -305,48 +333,22 @@ public class BlobCheckpointStore implements CheckpointStore {
             + typeSuffix + partitionId;
     }
 
-    private Mono<PartitionOwnership> convertToPartitionOwnership(BlobItem blobItem) {
-        LOGGER.atVerbose()
-            .addKeyValue(BLOB_NAME_LOG_KEY, blobItem.getName())
-            .log(Messages.FOUND_BLOB_FOR_PARTITION);
+    private static PartitionOwnership convertToPartitionOwnership(BlobItem blobItem, String[] names) {
+        BlobItemProperties blobProperties = blobItem.getProperties();
 
-        String[] names = blobItem.getName().split(BLOB_PATH_SEPARATOR);
-        if (names.length == 5) {
-            // Blob names should be of the pattern
-            // fullyqualifiednamespace/eventhub/consumergroup/ownership/<partitionId>
-            // While we can further check if the partition id is numeric, it may not necessarily be the case in future.
-            if (CoreUtils.isNullOrEmpty(blobItem.getMetadata())) {
-                LOGGER.atWarning()
-                    .addKeyValue(BLOB_NAME_LOG_KEY, blobItem.getName())
-                    .log(Messages.NO_METADATA_AVAILABLE_FOR_BLOB);
-                return Mono.empty();
-            }
-
-            BlobItemProperties blobProperties = blobItem.getProperties();
-
-            String ownerId = blobItem.getMetadata().getOrDefault(OWNER_ID, EMPTY_STRING);
-            if (ownerId == null) {
-                ownerId = EMPTY_STRING;
-            }
-
-            LOGGER.atVerbose()
-                .addKeyValue(BLOB_NAME_LOG_KEY, blobItem.getName())
-                .addKeyValue(OWNER_ID_LOG_KEY, ownerId)
-                .log(Messages.BLOB_OWNER_INFO);
-
-            PartitionOwnership partitionOwnership = new PartitionOwnership()
-                .setFullyQualifiedNamespace(names[0])
-                .setEventHubName(names[1])
-                .setConsumerGroup(names[2])
-                // names[3] is "ownership"
-                .setPartitionId(names[4])
-                .setOwnerId(ownerId)
-                .setLastModifiedTime(blobProperties.getLastModified().toInstant().toEpochMilli())
-                .setETag(blobProperties.getETag());
-            return Mono.just(partitionOwnership);
+        String ownerId = blobItem.getMetadata().getOrDefault(OWNER_ID, EMPTY_STRING);
+        if (ownerId == null) {
+            ownerId = EMPTY_STRING;
         }
 
-        return Mono.empty();
+        return new PartitionOwnership()
+            .setFullyQualifiedNamespace(names[0])
+            .setEventHubName(names[1])
+            .setConsumerGroup(names[2])
+            // names[3] is "ownership"
+            .setPartitionId(names[4])
+            .setOwnerId(ownerId)
+            .setLastModifiedTime(blobProperties.getLastModified().toInstant().toEpochMilli())
+            .setETag(blobProperties.getETag());
     }
-
 }
