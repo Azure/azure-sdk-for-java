@@ -15,33 +15,32 @@ public class KeyVaultCertificate {
     /**
      * CER contents of x509 certificate.
      */
-    byte[] cer;
+    private final byte[] cer;
 
     /**
      * The key id.
      */
-    String keyId;
+    private final String keyId;
 
     /**
      * The secret id.
      */
-    String secretId;
+    private final String secretId;
 
     /**
      * The certificate properties
      */
-    CertificateProperties properties;
-
-    /**
-     * Create the certificate
-     * @param name the name of the certificate.
-     */
-    KeyVaultCertificate(String name) {
-        properties = new CertificateProperties(name);
-    }
+    private CertificateProperties properties;
 
     KeyVaultCertificate() {
-        properties = new CertificateProperties();
+        this(null, null, null, new CertificateProperties());
+    }
+
+    KeyVaultCertificate(byte[] cer, String keyId, String secretId, CertificateProperties properties) {
+        this.cer = CoreUtils.clone(cer);
+        this.keyId = keyId;
+        this.secretId = secretId;
+        this.properties = properties;
     }
 
     /**
@@ -60,7 +59,7 @@ public class KeyVaultCertificate {
      */
     public KeyVaultCertificate setProperties(CertificateProperties properties) {
         Objects.requireNonNull(properties, "The certificate properties cannot be null");
-        properties.name = this.properties.name;
+        properties.setName(this.properties.getName());
         this.properties = properties;
         return this;
     }
@@ -103,9 +102,5 @@ public class KeyVaultCertificate {
      */
     public byte[] getCer() {
         return CoreUtils.clone(cer);
-    }
-
-    void unpackId(String id) {
-        CertificateProperties.unpackId(id, properties);
     }
 }

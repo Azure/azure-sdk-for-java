@@ -21,6 +21,7 @@ public final class CertificatePropertiesHelper {
             new DeletedCertificate();
         }
 
+        assert accessor != null;
         return accessor.createCertificateProperties(item);
     }
 

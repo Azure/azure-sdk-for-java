@@ -20,6 +20,7 @@ public final class CertificatePolicyHelper {
             new CertificatePolicy("", "");
         }
 
+        assert accessor != null;
         return accessor.createPolicy(impl);
     }
 

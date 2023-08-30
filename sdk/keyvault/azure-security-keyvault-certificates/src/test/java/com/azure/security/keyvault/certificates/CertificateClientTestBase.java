@@ -16,6 +16,7 @@ import com.azure.core.test.models.TestProxyRequestMatcher;
 import com.azure.core.test.models.TestProxySanitizer;
 import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.core.test.utils.MockTokenCredential;
+import com.azure.core.test.utils.TestUtils;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.identity.ClientSecretCredentialBuilder;
@@ -59,7 +60,9 @@ import java.util.stream.Stream;
 
 import static com.azure.security.keyvault.certificates.FakeCredentialInTest.FAKE_CERTIFICATE_CONTENT;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 public abstract class CertificateClientTestBase extends TestProxyTestBase {
@@ -136,7 +139,7 @@ public abstract class CertificateClientTestBase extends TestProxyTestBase {
     @Test
     public abstract void createCertificate(HttpClient httpClient, CertificateServiceVersion serviceVersion);
 
-    void createCertificateRunner(Consumer<CertificatePolicy> testRunner) {
+    static void createCertificateRunner(Consumer<CertificatePolicy> testRunner) {
         final CertificatePolicy certificatePolicy = CertificatePolicy.getDefault();
 
         testRunner.accept(certificatePolicy);
@@ -154,7 +157,7 @@ public abstract class CertificateClientTestBase extends TestProxyTestBase {
     @Test
     public abstract void updateCertificate(HttpClient httpClient, CertificateServiceVersion serviceVersion);
 
-    void updateCertificateRunner(BiConsumer<Map<String, String>, Map<String, String>> testRunner) {
+    static void updateCertificateRunner(BiConsumer<Map<String, String>, Map<String, String>> testRunner) {
         final Map<String, String> tags = new HashMap<>();
         tags.put("first tag", "first value");
 
@@ -169,7 +172,7 @@ public abstract class CertificateClientTestBase extends TestProxyTestBase {
     @Test
     public abstract void updateDisabledCertificate(HttpClient httpClient, CertificateServiceVersion serviceVersion);
 
-    void updateDisabledCertificateRunner(BiConsumer<Map<String, String>, Map<String, String>> testRunner) {
+    static void updateDisabledCertificateRunner(BiConsumer<Map<String, String>, Map<String, String>> testRunner) {
         final Map<String, String> tags = new HashMap<>();
 
         tags.put("first tag", "first value");
@@ -405,32 +408,21 @@ public abstract class CertificateClientTestBase extends TestProxyTestBase {
     @Test
     public abstract void getCertificatePolicyNotFound(HttpClient httpClient, CertificateServiceVersion serviceVersion);
 
-    CertificateContact setupContact() {
+    static CertificateContact setupContact() {
         return new CertificateContact()
             .setName("name")
             .setEmail("first.last@gmail.com")
             .setPhone("000-000-0000");
     }
 
-    Boolean validateContact(CertificateContact expected, CertificateContact actual) {
-        return expected.getEmail().equals(actual.getEmail())
-            && expected.getName().equals(actual.getName())
-            && expected.getPhone().equals(actual.getPhone());
+    static void validateContact(CertificateContact expected, CertificateContact actual) {
+        assertEquals(expected.getName(), actual.getName());
+        assertEquals(expected.getEmail(), actual.getEmail());
+        assertEquals(expected.getPhone(), actual.getPhone());
     }
 
     @Test
     public abstract void listCertificateVersions(HttpClient httpClient, CertificateServiceVersion serviceVersion);
-
-    void listCertificateVersionsRunner(Consumer<List<String>> testRunner) {
-        List<String> certificates = new ArrayList<>();
-        String certificateName = testResourceNamer.randomName("listCertVersion", 25);
-
-        for (int i = 1; i < 5; i++) {
-            certificates.add(certificateName);
-        }
-
-        testRunner.accept(certificates);
-    }
 
     @Test
     public abstract void listDeletedCertificates(HttpClient httpClient, CertificateServiceVersion serviceVersion);
@@ -505,10 +497,9 @@ public abstract class CertificateClientTestBase extends TestProxyTestBase {
         return pemCert.toString().getBytes();
     }
 
-    @SuppressWarnings("ArraysAsListWithZeroOrOneArgument")
-    CertificateIssuer setupIssuer(String issuerName) {
+    static CertificateIssuer setupIssuer(String issuerName) {
         return new CertificateIssuer(issuerName, "Test")
-            .setAdministratorContacts(Arrays.asList(new AdministratorContact()
+            .setAdministratorContacts(Collections.singletonList(new AdministratorContact()
                 .setFirstName("first")
                 .setLastName("last")
                 .setEmail("first.last@hotmail.com")
@@ -539,7 +530,7 @@ public abstract class CertificateClientTestBase extends TestProxyTestBase {
         return hexString.toString().replace("-", "");
     }
 
-    X509Certificate loadCerToX509Certificate(KeyVaultCertificateWithPolicy certificate)
+    static X509Certificate loadCerToX509Certificate(KeyVaultCertificateWithPolicy certificate)
         throws CertificateException, IOException {
 
         assertNotNull(certificate.getCer());
@@ -553,31 +544,31 @@ public abstract class CertificateClientTestBase extends TestProxyTestBase {
         return x509Certificate;
     }
 
-    boolean issuerCreatedCorrectly(CertificateIssuer expected, CertificateIssuer actual) {
-        return Objects.equals(expected.getAccountId(), actual.getAccountId())
-               && Objects.equals(expected.isEnabled(), actual.isEnabled())
-               && (actual.getCreatedOn() != null)
-               && (actual.getUpdatedOn() != null)
-               && (actual.getId() != null)
-               && (actual.getId().length() > 0)
-               && expected.getName().equals(actual.getName())
-               && Objects.equals(expected.getOrganizationId(), actual.getOrganizationId())
-               && expected.getAdministratorContacts().size() == actual.getAdministratorContacts().size();
+    static void assertIssuerCreatedCorrectly(CertificateIssuer expected, CertificateIssuer actual) {
+        assertEquals(expected.getAccountId(), actual.getAccountId());
+        assertEquals(expected.isEnabled(), actual.isEnabled());
+        assertNotNull(actual.getCreatedOn());
+        assertNotNull(actual.getUpdatedOn());
+        assertNotNull(actual.getId());
+        assertTrue(actual.getId().length() > 0);
+        assertEquals(expected.getName(), actual.getName());
+        assertEquals(expected.getOrganizationId(), actual.getOrganizationId());
+        assertEquals(expected.getAdministratorContacts().size(), actual.getAdministratorContacts().size());
     }
 
-    boolean issuerUpdatedCorrectly(CertificateIssuer expected, CertificateIssuer actual) {
-        return !Objects.equals(expected.getAccountId(), actual.getAccountId())
-            && !Objects.equals(expected.isEnabled(), actual.isEnabled())
-            && (actual.getCreatedOn() != null)
-            && (actual.getUpdatedOn() != null)
-            && (actual.getId() != null)
-            && (actual.getId().length() > 0)
-            && expected.getName().equals(actual.getName())
-            && !Objects.equals(expected.getOrganizationId(), actual.getOrganizationId())
-            && expected.getAdministratorContacts().size() == actual.getAdministratorContacts().size();
+    static void assertIssuerUpdatedCorrectly(CertificateIssuer expected, CertificateIssuer actual) {
+        assertNotEquals(expected.getAccountId(), actual.getAccountId());
+        assertNotEquals(expected.isEnabled(), actual.isEnabled());
+        assertNotNull(actual.getUpdatedOn());
+        assertNotNull(actual.getCreatedOn());
+        assertNotNull(actual.getId());
+        assertTrue(actual.getId().length() > 0);
+        assertEquals(expected.getName(), actual.getName());
+        assertNotEquals(expected.getOrganizationId(), actual.getOrganizationId());
+        assertEquals(expected.getAdministratorContacts().size(), actual.getAdministratorContacts().size());
     }
 
-    CertificatePolicy setupPolicy() {
+    static CertificatePolicy setupPolicy() {
         return new CertificatePolicy(WellKnownIssuerNames.SELF, "CN=default")
             .setKeyUsage(CertificateKeyUsage.KEY_CERT_SIGN, CertificateKeyUsage.KEY_AGREEMENT)
             .setContentType(CertificateContentType.PKCS12)
@@ -591,32 +582,33 @@ public abstract class CertificateClientTestBase extends TestProxyTestBase {
             .setLifetimeActions(new LifetimeAction(CertificatePolicyAction.AUTO_RENEW).setDaysBeforeExpiry(40));
     }
 
-    boolean validatePolicy(CertificatePolicy expected, CertificatePolicy actual) {
-        return Objects.equals(expected.getKeyType(), actual.getKeyType())
-               && Objects.equals(expected.getContentType(), actual.getContentType())
-               && actual.getCreatedOn() != null
-               && expected.getIssuerName().equals(actual.getIssuerName())
-               && Objects.equals(expected.getKeyCurveName(), actual.getKeyCurveName())
-               && Objects.equals(expected.isExportable(), actual.isExportable())
-               && expected.isCertificateTransparent().equals(actual.isCertificateTransparent())
-               && Objects.equals(expected.isEnabled(), actual.isEnabled())
-               && Objects.equals(expected.isKeyReusable(), actual.isKeyReusable())
-               && expected.getValidityInMonths().equals(actual.getValidityInMonths())
-               && expected.getLifetimeActions().size() == actual.getLifetimeActions().size()
-               && expected.getKeyUsage().size() == actual.getKeyUsage().size();
+    static void assertPolicy(CertificatePolicy expected, CertificatePolicy actual) {
+        assertEquals(expected.getKeyType(), actual.getKeyType());
+        assertEquals(expected.getContentType(), actual.getContentType());
+        assertNotNull(actual.getCreatedOn());
+        assertEquals(expected.getIssuerName(), actual.getIssuerName());
+        assertEquals(expected.getKeyCurveName(), actual.getKeyCurveName());
+        assertEquals(expected.isExportable(), actual.isExportable());
+        assertEquals(expected.isCertificateTransparent(), actual.isCertificateTransparent());
+        assertEquals(expected.isEnabled(), actual.isEnabled());
+        assertEquals(expected.isKeyReusable(), actual.isKeyReusable());
+        assertEquals(expected.getValidityInMonths(), actual.getValidityInMonths());
+        assertEquals(expected.getLifetimeActions().size(), actual.getLifetimeActions().size());
+        assertEquals(expected.getKeyUsage().size(), actual.getKeyUsage().size());
     }
 
-    boolean validateCertificate(KeyVaultCertificate expected, KeyVaultCertificate actual) {
-        return expected.getId().equals(actual.getId())
-            && expected.getKeyId().equals(actual.getKeyId())
-            && expected.getName().equals(actual.getName())
-            && expected.getSecretId().equals(actual.getSecretId())
-            && expected.getProperties().getVersion().equals(actual.getProperties().getVersion())
-            && expected.getProperties().getCreatedOn().equals(actual.getProperties().getCreatedOn())
-            && expected.getProperties().getExpiresOn().equals(actual.getProperties().getExpiresOn())
-            && expected.getProperties().getRecoveryLevel().equals(actual.getProperties().getRecoveryLevel())
-            && expected.getProperties().getX509Thumbprint().length == actual.getProperties().getX509Thumbprint().length
-            && expected.getCer().length == actual.getCer().length;
+    static void assertCertificate(KeyVaultCertificate expected, KeyVaultCertificate actual) {
+        assertEquals(expected.getId(), actual.getId());
+        assertEquals(expected.getKeyId(), actual.getKeyId());
+        assertEquals(expected.getName(), actual.getName());
+        assertEquals(expected.getSecretId(), actual.getSecretId());
+        assertEquals(expected.getProperties().getVersion(), actual.getProperties().getVersion());
+        assertEquals(expected.getProperties().getCreatedOn(), actual.getProperties().getCreatedOn());
+        assertEquals(expected.getProperties().getExpiresOn(), actual.getProperties().getExpiresOn());
+        assertEquals(expected.getProperties().getRecoveryLevel(), actual.getProperties().getRecoveryLevel());
+        TestUtils.assertArraysEqual(expected.getProperties().getX509Thumbprint(),
+            actual.getProperties().getX509Thumbprint());
+        TestUtils.assertArraysEqual(expected.getCer(), actual.getCer());
     }
 
     public static String getEndpoint() {
@@ -635,14 +627,14 @@ public abstract class CertificateClientTestBase extends TestProxyTestBase {
         }
     }
 
-    static void assertResponseException(Throwable exception, Class<? extends HttpResponseException> expectedExceptionType, int expectedStatusCode) {
+    static void assertResponseException(Throwable exception,
+        Class<? extends HttpResponseException> expectedExceptionType, int expectedStatusCode) {
         assertEquals(expectedExceptionType, exception.getClass());
         assertEquals(expectedStatusCode, ((HttpResponseException) exception).getResponse().getStatusCode());
     }
 
     static void assertResponseException(HttpResponseException exception,
-                                        Class<? extends HttpResponseException> expectedExceptionType,
-                                        int expectedStatusCode) {
+        Class<? extends HttpResponseException> expectedExceptionType, int expectedStatusCode) {
         assertEquals(expectedExceptionType, exception.getClass());
         assertEquals(expectedStatusCode, exception.getResponse().getStatusCode());
     }
@@ -694,11 +686,10 @@ public abstract class CertificateClientTestBase extends TestProxyTestBase {
         String[] configuredServiceVersionList = SERVICE_VERSION_FROM_ENV.split(",");
 
         return Arrays.stream(configuredServiceVersionList)
-            .anyMatch(configuredServiceVersion ->
-                serviceVersion.getVersion().equals(configuredServiceVersion.trim()));
+            .anyMatch(configuredServiceVersion -> serviceVersion.getVersion().equals(configuredServiceVersion.trim()));
     }
 
-    void validateMapResponse(Map<String, String> expected, Map<String, String> returned) {
+    static void validateMapResponse(Map<String, String> expected, Map<String, String> returned) {
         for (String key : expected.keySet()) {
             String val = returned.get(key);
             String expectedVal = expected.get(key);

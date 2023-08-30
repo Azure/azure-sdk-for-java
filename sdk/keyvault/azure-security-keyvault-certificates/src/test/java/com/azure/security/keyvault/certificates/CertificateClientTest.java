@@ -3,7 +3,6 @@
 
 package com.azure.security.keyvault.certificates;
 
-import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpClient;
@@ -13,6 +12,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.security.keyvault.certificates.implementation.KeyVaultCredentialPolicy;
+import com.azure.security.keyvault.certificates.implementation.models.KeyVaultErrorException;
 import com.azure.security.keyvault.certificates.models.CertificateContact;
 import com.azure.security.keyvault.certificates.models.CertificateContentType;
 import com.azure.security.keyvault.certificates.models.CertificateIssuer;
@@ -143,7 +143,7 @@ public class CertificateClientTest extends CertificateClientTestBase {
         createCertificateClient(httpClient, serviceVersion);
 
         assertResponseException(() -> certificateClient.beginCreateCertificate("", CertificatePolicy.getDefault()),
-            HttpResponseException.class, HttpURLConnection.HTTP_BAD_METHOD);
+            KeyVaultErrorException.class, HttpURLConnection.HTTP_BAD_METHOD);
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -160,7 +160,7 @@ public class CertificateClientTest extends CertificateClientTestBase {
     public void createCertificateNull(HttpClient httpClient, CertificateServiceVersion serviceVersion) {
         createCertificateClient(httpClient, serviceVersion);
 
-        assertThrows(NullPointerException.class, () -> certificateClient.beginCreateCertificate(null, null));
+        assertThrows(KeyVaultErrorException.class, () -> certificateClient.beginCreateCertificate(null, null));
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -222,7 +222,7 @@ public class CertificateClientTest extends CertificateClientTestBase {
             KeyVaultCertificateWithPolicy certificate = certPoller.getFinalResult();
             KeyVaultCertificateWithPolicy getCertificate = certificateClient.getCertificate(certificateName);
 
-            validatePolicy(certificate.getPolicy(), getCertificate.getPolicy());
+            assertPolicy(certificate.getPolicy(), getCertificate.getPolicy());
         });
     }
 
@@ -242,7 +242,7 @@ public class CertificateClientTest extends CertificateClientTestBase {
             KeyVaultCertificate getCertificate =
                 certificateClient.getCertificateVersion(certificateName, certificate.getProperties().getVersion());
 
-            validateCertificate(certificate, getCertificate);
+            assertCertificate(certificate, getCertificate);
         });
     }
 
@@ -348,7 +348,7 @@ public class CertificateClientTest extends CertificateClientTestBase {
 
             assertEquals(certificateName, recoveredCert.getName());
 
-            validateCertificate(createdCertificate, recoveredCert);
+            assertCertificate(createdCertificate, recoveredCert);
         });
     }
 
@@ -415,7 +415,7 @@ public class CertificateClientTest extends CertificateClientTestBase {
 
             assertEquals(certificateName, restoredCertificate.getName());
 
-            validatePolicy(restoredCertificate.getPolicy(), createdCert.getPolicy());
+            assertPolicy(restoredCertificate.getPolicy(), createdCert.getPolicy());
         });
     }
 
@@ -436,8 +436,8 @@ public class CertificateClientTest extends CertificateClientTestBase {
             KeyVaultCertificateWithPolicy retrievedCert = retrievePoller.getFinalResult();
             KeyVaultCertificateWithPolicy expectedCert = certPoller.getFinalResult();
 
-            validateCertificate(expectedCert, retrievedCert);
-            validatePolicy(expectedCert.getPolicy(), retrievedCert.getPolicy());
+            assertCertificate(expectedCert, retrievedCert);
+            assertPolicy(expectedCert.getPolicy(), retrievedCert.getPolicy());
         });
     }
 
@@ -503,7 +503,7 @@ public class CertificateClientTest extends CertificateClientTestBase {
 
             KeyVaultCertificateWithPolicy certificate = certPoller.getFinalResult();
 
-            validatePolicy(setupPolicy(), certificate.getPolicy());
+            assertPolicy(setupPolicy(), certificate.getPolicy());
         });
     }
 
@@ -525,7 +525,7 @@ public class CertificateClientTest extends CertificateClientTestBase {
             CertificatePolicy policy =
                 certificateClient.updateCertificatePolicy(certificateName, certificate.getPolicy());
 
-            validatePolicy(certificate.getPolicy(), policy);
+            assertPolicy(certificate.getPolicy(), policy);
         });
     }
 
@@ -600,7 +600,7 @@ public class CertificateClientTest extends CertificateClientTestBase {
         createIssuerRunner((issuer) -> {
             CertificateIssuer createdIssuer = certificateClient.createIssuer(issuer);
 
-            assertTrue(issuerCreatedCorrectly(issuer, createdIssuer));
+            assertIssuerCreatedCorrectly(issuer, createdIssuer);
         });
     }
 
@@ -610,7 +610,7 @@ public class CertificateClientTest extends CertificateClientTestBase {
         createCertificateClient(httpClient, serviceVersion);
 
         assertResponseException(() -> certificateClient.createIssuer(new CertificateIssuer("", "")),
-            HttpResponseException.class, HttpURLConnection.HTTP_BAD_METHOD);
+            KeyVaultErrorException.class, HttpURLConnection.HTTP_BAD_METHOD);
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -619,7 +619,7 @@ public class CertificateClientTest extends CertificateClientTestBase {
         createCertificateClient(httpClient, serviceVersion);
 
         assertResponseException(() -> certificateClient.createIssuer(new CertificateIssuer("", null)),
-            HttpResponseException.class, HttpURLConnection.HTTP_BAD_METHOD);
+            KeyVaultErrorException.class, HttpURLConnection.HTTP_BAD_METHOD);
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -639,7 +639,7 @@ public class CertificateClientTest extends CertificateClientTestBase {
             certificateClient.createIssuer(issuer);
             CertificateIssuer retrievedIssuer = certificateClient.getIssuer(issuer.getName());
 
-            assertTrue(issuerCreatedCorrectly(issuer, retrievedIssuer));
+            assertIssuerCreatedCorrectly(issuer, retrievedIssuer);
         });
     }
 
@@ -661,7 +661,7 @@ public class CertificateClientTest extends CertificateClientTestBase {
             certificateClient.createIssuer(issuer);
             CertificateIssuer deletedIssuer = certificateClient.deleteIssuer(issuer.getName());
 
-            assertTrue(issuerCreatedCorrectly(issuer, deletedIssuer));
+            assertIssuerCreatedCorrectly(issuer, deletedIssuer);
         });
     }
 
@@ -685,7 +685,7 @@ public class CertificateClientTest extends CertificateClientTestBase {
             for (CertificateIssuer issuer : certificateIssuersToList.values()) {
                 CertificateIssuer certificateIssuer = certificateClient.createIssuer(issuer);
 
-                assertTrue(issuerCreatedCorrectly(issuer, certificateIssuer));
+                assertIssuerCreatedCorrectly(issuer, certificateIssuer);
             }
 
             for (IssuerProperties issuerProperties : certificateClient.listPropertiesOfIssuers()) {
@@ -709,7 +709,7 @@ public class CertificateClientTest extends CertificateClientTestBase {
             certificateClient.createIssuer(issuerToCreate);
             CertificateIssuer updatedIssuer = certificateClient.updateIssuer(issuerToUpdate);
 
-            assertTrue(issuerUpdatedCorrectly(issuerToCreate, updatedIssuer));
+            assertIssuerUpdatedCorrectly(issuerToCreate, updatedIssuer);
         });
     }
 
@@ -879,11 +879,9 @@ public class CertificateClientTest extends CertificateClientTestBase {
     public void mergeCertificateNotFound(HttpClient httpClient, CertificateServiceVersion serviceVersion) {
         createCertificateClient(httpClient, serviceVersion);
 
-        assertResponseException(() ->
-                certificateClient.mergeCertificate(
-                    new MergeCertificateOptions(testResourceNamer.randomName("testCert", 20),
-                        Arrays.asList("test".getBytes()))),
-            HttpResponseException.class, HttpURLConnection.HTTP_NOT_FOUND);
+        assertResponseException(() -> certificateClient.mergeCertificate(new MergeCertificateOptions(
+            testResourceNamer.randomName("testCert", 20), Arrays.asList("test".getBytes()))),
+            KeyVaultErrorException.class, HttpURLConnection.HTTP_NOT_FOUND);
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)

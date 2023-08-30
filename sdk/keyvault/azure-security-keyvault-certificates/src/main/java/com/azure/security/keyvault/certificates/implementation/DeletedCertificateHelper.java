@@ -19,6 +19,7 @@ public final class DeletedCertificateHelper {
             new DeletedCertificate();
         }
 
+        assert accessor != null;
         return accessor.createDeletedCertificate(item);
     }
 
@@ -27,6 +28,7 @@ public final class DeletedCertificateHelper {
             new DeletedCertificate();
         }
 
+        assert accessor != null;
         return accessor.createDeletedCertificate(bundle);
     }
 

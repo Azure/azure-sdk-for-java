@@ -5,9 +5,9 @@ package com.azure.security.keyvault.certificates.models;
 
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.security.keyvault.certificates.implementation.CertificateOperationHelper;
+import com.azure.security.keyvault.certificates.implementation.IdMetadata;
 
-import java.net.MalformedURLException;
-import java.net.URL;
+import static com.azure.security.keyvault.certificates.implementation.CertificatesUtils.getIdMetadata;
 
 /**
  * A certificate operation is returned in case of long-running service requests.
@@ -25,24 +25,27 @@ public final class CertificateOperation {
      * Creates an instance of {@link CertificateOperation}.
      */
     public CertificateOperation() {
-        impl = new com.azure.security.keyvault.certificates.implementation.models.CertificateOperation();
+        this(new com.azure.security.keyvault.certificates.implementation.models.CertificateOperation());
     }
 
     private CertificateOperation(
         com.azure.security.keyvault.certificates.implementation.models.CertificateOperation impl) {
         this.impl = impl;
-        unpackId(impl.getId(), this);
+        IdMetadata idMetadata = getIdMetadata(impl.getId(), 1, 2, -1, LOGGER);
+
+        this.vaultUrl = idMetadata.getVaultUrl();
+        this.name = idMetadata.getName();
     }
 
     /**
      * URL for the Azure KeyVault service.
      */
-    private String vaultUrl;
+    private final String vaultUrl;
 
     /**
      * The Certificate name.
      */
-    private String name;
+    private final String name;
 
     /**
      * Get the identifier.
@@ -159,19 +162,5 @@ public final class CertificateOperation {
      */
     public String getName() {
         return this.name;
-    }
-
-    static void unpackId(String id, CertificateOperation operation) {
-        if (id != null && id.length() > 0) {
-            try {
-                URL url = new URL(id);
-                String[] tokens = url.getPath().split("/");
-                operation.vaultUrl = (tokens.length >= 2 ? tokens[1] : null);
-                operation.name = (tokens.length >= 3 ? tokens[2] : null);
-            } catch (MalformedURLException e) {
-                throw LOGGER.logExceptionAsError(
-                    new IllegalArgumentException("The Azure Key Vault endpoint url is malformed.", e));
-            }
-        }
     }
 }

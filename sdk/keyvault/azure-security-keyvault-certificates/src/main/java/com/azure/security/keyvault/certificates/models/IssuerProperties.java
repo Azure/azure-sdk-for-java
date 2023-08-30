@@ -3,34 +3,36 @@
 
 package com.azure.security.keyvault.certificates.models;
 
-import com.azure.core.util.CoreUtils;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.security.keyvault.certificates.implementation.models.CertificateIssuerItem;
 
-import java.net.MalformedURLException;
-import java.net.URL;
+import static com.azure.security.keyvault.certificates.implementation.CertificatesUtils.getIdMetadata;
 
 /**
  * Represents base properties of an {@link CertificateIssuer}.
  */
 public class IssuerProperties {
+    private static final ClientLogger LOGGER = new ClientLogger(IssuerProperties.class);
+
     private final CertificateIssuerItem impl;
-
-    /**
-     * Creates an instance of {@link IssuerProperties}.
-     */
-    public IssuerProperties() {
-        this.impl = new CertificateIssuerItem();
-    }
-
-    private IssuerProperties(CertificateIssuerItem impl) {
-        this.impl = impl;
-    }
 
     /**
      * Name of the referenced issuer object or reserved names; for example,
      * 'Self' or 'Unknown'.
      */
-    String name;
+    private final String name;
+
+    /**
+     * Creates an instance of {@link IssuerProperties}.
+     */
+    public IssuerProperties() {
+        this(new CertificateIssuerItem());
+    }
+
+    private IssuerProperties(CertificateIssuerItem impl) {
+        this.impl = impl;
+        this.name = getIdMetadata(impl.getId(), -1, 3, -1, LOGGER).getName();
+    }
 
     /**
      * Get the id of the issuer.
@@ -64,17 +66,5 @@ public class IssuerProperties {
     public IssuerProperties setProvider(String provider) {
         impl.setProvider(provider);
         return this;
-    }
-
-    static void unpackId(String id, IssuerProperties properties) {
-        if (CoreUtils.isNullOrEmpty(id)) {
-            try {
-                URL url = new URL(id);
-                String[] tokens = url.getPath().split("/");
-                properties.name = (tokens.length >= 4 ? tokens[3] : null);
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
-            }
-        }
     }
 }

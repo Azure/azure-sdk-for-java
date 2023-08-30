@@ -20,6 +20,7 @@ public final class KeyVaultCertificateWithPolicyHelper {
             new DeletedCertificate();
         }
 
+        assert accessor != null;
         return accessor.createCertificateWithPolicy(bundle);
     }
 

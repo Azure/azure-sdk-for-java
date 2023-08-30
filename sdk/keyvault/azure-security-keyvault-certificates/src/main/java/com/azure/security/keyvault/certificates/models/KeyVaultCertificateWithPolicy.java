@@ -3,13 +3,9 @@
 
 package com.azure.security.keyvault.certificates.models;
 
-import com.azure.core.util.Base64Url;
 import com.azure.security.keyvault.certificates.implementation.CertificatePolicyHelper;
 import com.azure.security.keyvault.certificates.implementation.KeyVaultCertificateWithPolicyHelper;
 import com.azure.security.keyvault.certificates.implementation.models.CertificateBundle;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
-import java.util.Objects;
 
 /**
  * Represents a certificate with all of its properties including {@link CertificatePolicy}.
@@ -22,41 +18,16 @@ public class KeyVaultCertificateWithPolicy extends KeyVaultCertificate {
     /**
      * The Certificate policy.
      */
-    @JsonProperty("policy")
-    CertificatePolicy policy;
-
-    /**
-     * Create the certificate
-     * @param name the name of the certificate.
-     */
-    KeyVaultCertificateWithPolicy(String name) {
-        super(name);
-    }
+    private CertificatePolicy policy;
 
     KeyVaultCertificateWithPolicy() {
         super();
     }
 
     KeyVaultCertificateWithPolicy(CertificateBundle bundle) {
-        super();
-        unpackId(bundle.getId());
+        super(bundle.getCer(), bundle.getKid(), bundle.getSid(), new CertificateProperties(bundle));
 
         this.policy = CertificatePolicyHelper.createCertificatePolicy(bundle.getPolicy());
-        this.cer = bundle.getCer();
-        this.keyId = bundle.getKid();
-        this.secretId = bundle.getSid();
-
-        this.properties.enabled = bundle.getAttributes().isEnabled();
-        this.properties.notBefore = bundle.getAttributes().getNotBefore();
-        this.properties.expiresOn = bundle.getAttributes().getExpires();
-        this.properties.createdOn = bundle.getAttributes().getCreated();
-        this.properties.updatedOn = bundle.getAttributes().getUpdated();
-        this.properties.recoveryLevel = Objects.toString(bundle.getAttributes().getRecoveryLevel(), null);
-        this.properties.id = bundle.getPolicy().getId();
-        this.properties.tags = bundle.getTags();
-        this.properties.x509Thumbprint = bundle.getX509Thumbprint() == null
-            ? null : new Base64Url(bundle.getX509Thumbprint());
-        this.properties.recoverableDays = bundle.getAttributes().getRecoverableDays();
     }
 
     /**

@@ -3,20 +3,24 @@
 
 package com.azure.security.keyvault.certificates.models;
 
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.security.keyvault.certificates.implementation.CertificateIssuerHelper;
 import com.azure.security.keyvault.certificates.implementation.models.IssuerAttributes;
 import com.azure.security.keyvault.certificates.implementation.models.IssuerBundle;
 import com.azure.security.keyvault.certificates.implementation.models.IssuerCredentials;
 import com.azure.security.keyvault.certificates.implementation.models.OrganizationDetails;
 
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.time.OffsetDateTime;
 import java.util.List;
+
+import static com.azure.security.keyvault.certificates.implementation.CertificatesUtils.getIdMetadata;
+
 /**
  * Represents certificate Issuer with all of its properties.
  */
 public final class CertificateIssuer {
+    private static final ClientLogger LOGGER = new ClientLogger(CertificateIssuer.class);
+
     static {
         CertificateIssuerHelper.setAccessor(new CertificateIssuerHelper.CertificateIssuerAccessor() {
             @Override
@@ -37,7 +41,7 @@ public final class CertificateIssuer {
      * Name of the referenced issuer object or reserved names; for example,
      * 'Self' or 'Unknown'.
      */
-    String name;
+    private final String name;
 
     /**
      * Creates an instance of the issuer.
@@ -61,7 +65,7 @@ public final class CertificateIssuer {
 
     private CertificateIssuer(IssuerBundle impl) {
         this.impl = impl;
-        unpackId(impl.getId(), this);
+        this.name = getIdMetadata(impl.getId(), -1, 3, -1, LOGGER).getName();
     }
 
     /**
@@ -212,17 +216,5 @@ public final class CertificateIssuer {
      */
     public OffsetDateTime getUpdatedOn() {
         return impl.getAttributes() == null ? null : impl.getAttributes().getUpdated();
-    }
-
-    static void unpackId(String id, CertificateIssuer issuer) {
-        if (id != null && id.length() > 0) {
-            try {
-                URL url = new URL(id);
-                String[] tokens = url.getPath().split("/");
-                issuer.name = (tokens.length >= 4 ? tokens[3] : null);
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
-            }
-        }
     }
 }

@@ -6,14 +6,16 @@ package com.azure.security.keyvault.certificates.models;
 import com.azure.core.util.Base64Url;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.security.keyvault.certificates.implementation.CertificatePropertiesHelper;
+import com.azure.security.keyvault.certificates.implementation.IdMetadata;
+import com.azure.security.keyvault.certificates.implementation.models.CertificateAttributes;
+import com.azure.security.keyvault.certificates.implementation.models.CertificateBundle;
 import com.azure.security.keyvault.certificates.implementation.models.CertificateItem;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.time.OffsetDateTime;
 import java.util.Map;
 import java.util.Objects;
+
+import static com.azure.security.keyvault.certificates.implementation.CertificatesUtils.getIdMetadata;
 
 /**
  * Represents base properties of a certificate.
@@ -28,42 +30,42 @@ public class CertificateProperties {
     /**
      * URL for the Azure KeyVault service.
      */
-    String vaultUrl;
+    private final String vaultUrl;
 
     /**
      * The certificate version.
      */
-    String version;
+    private final String version;
 
     /**
      * The Certificate name.
      */
-    String name;
+    private String name;
 
     /**
      * Determines whether the object is enabled.
      */
-    Boolean enabled;
+    private Boolean enabled;
 
     /**
      * Not before date in UTC.
      */
-    OffsetDateTime notBefore;
+    private final OffsetDateTime notBefore;
 
     /**
      * Expiry date in UTC.
      */
-    OffsetDateTime expiresOn;
+    private final OffsetDateTime expiresOn;
 
     /**
      * Creation time in UTC.
      */
-    OffsetDateTime createdOn;
+    private final OffsetDateTime createdOn;
 
     /**
      * Last updated time in UTC.
      */
-    OffsetDateTime updatedOn;
+    private final OffsetDateTime updatedOn;
 
     /**
      * Reflects the deletion recovery level currently in effect for certificates in
@@ -73,51 +75,64 @@ public class CertificateProperties {
      * include: 'Purgeable', 'Recoverable+Purgeable', 'Recoverable',
      * 'Recoverable+ProtectedSubscription'.
      */
-    String recoveryLevel;
+    private final String recoveryLevel;
 
     /**
      * The certificate id.
      */
-    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
-    String id;
+    private final String id;
 
     /**
      * Application specific metadata in the form of key-value pairs.
      */
-    @JsonProperty(value = "tags")
-    Map<String, String> tags;
+    private Map<String, String> tags;
 
     /**
      * Thumbprint of the certificate. Read Only
      */
-    @JsonProperty(value = "x5t", access = JsonProperty.Access.WRITE_ONLY)
-    Base64Url x509Thumbprint;
+    private final Base64Url x509Thumbprint;
 
     /**
      * The number of days a certificate is retained before being deleted for a soft delete-enabled Key Vault.
      */
-    @JsonProperty(value = "recoverableDays", access = JsonProperty.Access.WRITE_ONLY)
-    Integer recoverableDays;
+    private final Integer recoverableDays;
 
-    CertificateProperties(String name) {
-        this.name = name;
+    CertificateProperties() {
+        this(null, new CertificateAttributes(), null, null, null);
     }
 
-    CertificateProperties() { }
-
     CertificateProperties(CertificateItem item) {
-        unpackId(item.getId(), this);
-        this.enabled = item.getAttributes().isEnabled();
-        this.notBefore = item.getAttributes().getNotBefore();
-        this.expiresOn = item.getAttributes().getExpires();
-        this.createdOn = item.getAttributes().getCreated();
-        this.updatedOn = item.getAttributes().getUpdated();
-        this.recoveryLevel = Objects.toString(item.getAttributes().getRecoveryLevel(), null);
-        this.tags = item.getTags();
-        byte[] wireThumbprint = item.getX509Thumbprint();
+        this(item.getId(), item.getAttributes(), item.getTags(), item.getX509Thumbprint(),
+            item.getAttributes().getRecoverableDays());
+    }
+
+    CertificateProperties(CertificateBundle bundle) {
+        this(bundle.getId(), bundle.getAttributes(), bundle.getTags(), bundle.getX509Thumbprint(),
+            bundle.getAttributes().getRecoverableDays());
+    }
+
+    private CertificateProperties(String id, CertificateAttributes attributes, Map<String, String> tags,
+        byte[] wireThumbprint, Integer recoverableDays) {
+        IdMetadata idMetadata = getIdMetadata(id, 1, 2, 3, LOGGER);
+        this.id = idMetadata.getId();
+        this.vaultUrl = idMetadata.getVaultUrl();
+        this.name = idMetadata.getName();
+        this.version = idMetadata.getVersion();
+
+        this.enabled = attributes.isEnabled();
+        this.notBefore = attributes.getNotBefore();
+        this.expiresOn = attributes.getExpires();
+        this.createdOn = attributes.getCreated();
+        this.updatedOn = attributes.getUpdated();
+        this.recoveryLevel = Objects.toString(attributes.getRecoveryLevel(), null);
+        this.tags = tags;
         this.x509Thumbprint = (wireThumbprint == null || wireThumbprint.length == 0)
-            ? null : new Base64Url(item.getX509Thumbprint());
-        this.recoverableDays = item.getAttributes().getRecoverableDays();
+            ? null : Base64Url.encode(wireThumbprint);
+        this.recoverableDays = recoverableDays;
+    }
+
+    void setName(String name) {
+        this.name = name;
     }
 
     /**
@@ -156,7 +171,7 @@ public class CertificateProperties {
     }
 
     /**
-     * Get the the UTC time at which certificate was created.
+     * Get the UTC time at which certificate was created.
      *
      * @return the created UTC time.
      */
@@ -258,22 +273,6 @@ public class CertificateProperties {
             return this.x509Thumbprint.decodedBytes();
         }
         return null;
-    }
-
-    static void unpackId(String id, CertificateProperties properties) {
-        if (id != null && id.length() > 0) {
-            properties.id = id;
-            try {
-                URL url = new URL(id);
-                String[] tokens = url.getPath().split("/");
-                properties.vaultUrl = (tokens.length >= 2 ? tokens[1] : null);
-                properties.name = (tokens.length >= 3 ? tokens[2] : null);
-                properties.version = (tokens.length >= 4 ? tokens[3] : null);
-            } catch (MalformedURLException e) {
-                throw LOGGER.logExceptionAsError(
-                    new IllegalArgumentException("The Azure Key Vault endpoint url is malformed.", e));
-            }
-        }
     }
 }
 

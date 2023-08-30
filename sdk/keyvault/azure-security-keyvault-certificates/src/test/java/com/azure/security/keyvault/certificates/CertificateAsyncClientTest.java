@@ -3,7 +3,6 @@
 
 package com.azure.security.keyvault.certificates;
 
-import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpClient;
@@ -13,6 +12,7 @@ import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.security.keyvault.certificates.implementation.KeyVaultCredentialPolicy;
+import com.azure.security.keyvault.certificates.implementation.models.KeyVaultErrorException;
 import com.azure.security.keyvault.certificates.models.CertificateContact;
 import com.azure.security.keyvault.certificates.models.CertificateContentType;
 import com.azure.security.keyvault.certificates.models.CertificateIssuer;
@@ -129,7 +129,7 @@ public class CertificateAsyncClientTest extends CertificateClientTestBase {
 
         StepVerifier.create(certificateAsyncClient.beginCreateCertificate("", CertificatePolicy.getDefault()))
             .verifyErrorSatisfies(e ->
-                assertResponseException(e, HttpResponseException.class, HttpURLConnection.HTTP_BAD_METHOD));
+                assertResponseException(e, KeyVaultErrorException.class, HttpURLConnection.HTTP_BAD_METHOD));
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -175,12 +175,13 @@ public class CertificateAsyncClientTest extends CertificateClientTestBase {
 
         updateDisabledCertificateRunner((originalTags, updatedTags) -> {
             String certName = testResourceNamer.randomName("testCert", 20);
-            PollerFlux<CertificateOperation, KeyVaultCertificateWithPolicy> certPoller = setPlaybackPollerFluxPollInterval(
-                certificateAsyncClient.beginCreateCertificate(certName, CertificatePolicy.getDefault(), false, originalTags));
+            PollerFlux<CertificateOperation, KeyVaultCertificateWithPolicy> certPoller =
+                setPlaybackPollerFluxPollInterval(certificateAsyncClient.beginCreateCertificate(certName,
+                    CertificatePolicy.getDefault(), false, originalTags));
 
             StepVerifier.create(certPoller.last().flatMap(AsyncPollResponse::getFinalResult)
-                    .flatMap(cert -> certificateAsyncClient
-                        .updateCertificateProperties(cert.getProperties().setTags(updatedTags))))
+                    .flatMap(cert -> certificateAsyncClient.updateCertificateProperties(
+                        cert.getProperties().setTags(updatedTags))))
                 .assertNext(cert -> {
                     validateMapResponse(updatedTags, cert.getProperties().getTags());
                     assertFalse(cert.getProperties().isEnabled());
@@ -201,7 +202,7 @@ public class CertificateAsyncClientTest extends CertificateClientTestBase {
             StepVerifier.create(certPoller.last().flatMap(AsyncPollResponse::getFinalResult)
                     .flatMap(expectedCert -> certificateAsyncClient.getCertificate(certificateName)
                         .map(returnedCert -> Tuples.of(expectedCert, returnedCert))))
-                .assertNext(certTuple -> validatePolicy(certTuple.getT1().getPolicy(), certTuple.getT2().getPolicy()))
+                .assertNext(certTuple -> assertPolicy(certTuple.getT1().getPolicy(), certTuple.getT2().getPolicy()))
                 .verifyComplete();
         });
     }
@@ -220,7 +221,7 @@ public class CertificateAsyncClientTest extends CertificateClientTestBase {
                 .flatMap(expectedCert -> certificateAsyncClient.getCertificateVersion(certificateName,
                         expectedCert.getProperties().getVersion())
                     .map(returnedCert -> Tuples.of(expectedCert, returnedCert))))
-                .assertNext(certTuple -> validateCertificate(certTuple.getT1(), certTuple.getT2()))
+                .assertNext(certTuple -> assertCertificate(certTuple.getT1(), certTuple.getT2()))
                 .verifyComplete();
         });
     }
@@ -321,7 +322,7 @@ public class CertificateAsyncClientTest extends CertificateClientTestBase {
                         .last().map(AsyncPollResponse::getValue)))
                 .assertNext(recoveredCert -> {
                     assertEquals(certificateName, recoveredCert.getName());
-                    validateCertificate(createdCertificate.get(), recoveredCert);
+                    assertCertificate(createdCertificate.get(), recoveredCert);
                 }).verifyComplete();
         });
     }
@@ -401,7 +402,7 @@ public class CertificateAsyncClientTest extends CertificateClientTestBase {
             StepVerifier.create(certificateAsyncClient.restoreCertificateBackup(CoreUtils.clone(backup.get())))
                 .assertNext(restoredCertificate -> {
                     assertEquals(certificateName, restoredCertificate.getName());
-                    validatePolicy(restoredCertificate.getPolicy(), createdCertificate.get().getPolicy());
+                    assertPolicy(restoredCertificate.getPolicy(), createdCertificate.get().getPolicy());
                 })
                 .verifyComplete();
         });
@@ -425,8 +426,8 @@ public class CertificateAsyncClientTest extends CertificateClientTestBase {
                         .last().flatMap(AsyncPollResponse::getFinalResult);
                 }))
                 .assertNext(retrievedCert -> {
-                    validateCertificate(expectedCert.get(), retrievedCert);
-                    validatePolicy(expectedCert.get().getPolicy(), retrievedCert.getPolicy());
+                    assertCertificate(expectedCert.get(), retrievedCert);
+                    assertPolicy(expectedCert.get().getPolicy(), retrievedCert.getPolicy());
                 }).verifyComplete();
         });
     }
@@ -486,7 +487,7 @@ public class CertificateAsyncClientTest extends CertificateClientTestBase {
                 certificateAsyncClient.beginCreateCertificate(certificateName, setupPolicy()));
 
             StepVerifier.create(certPoller.last().flatMap(AsyncPollResponse::getFinalResult))
-                .assertNext(certificate -> validatePolicy(setupPolicy(), certificate.getPolicy()))
+                .assertNext(certificate -> assertPolicy(setupPolicy(), certificate.getPolicy()))
                 .verifyComplete();
         });
     }
@@ -507,7 +508,7 @@ public class CertificateAsyncClientTest extends CertificateClientTestBase {
                     createdCert.set(keyVaultCertificateWithPolicy);
                     return certificateAsyncClient.updateCertificatePolicy(certificateName, keyVaultCertificateWithPolicy.getPolicy());
                 }))
-                .assertNext(certificatePolicy -> validatePolicy(createdCert.get().getPolicy(), certificatePolicy))
+                .assertNext(certificatePolicy -> assertPolicy(createdCert.get().getPolicy(), certificatePolicy))
                 .verifyComplete();
         });
     }
@@ -580,7 +581,7 @@ public class CertificateAsyncClientTest extends CertificateClientTestBase {
         createCertificateAsyncClient(httpClient, serviceVersion);
 
         createIssuerRunner((issuer) -> StepVerifier.create(certificateAsyncClient.createIssuer(issuer))
-            .assertNext(createdIssuer -> assertTrue(issuerCreatedCorrectly(issuer, createdIssuer)))
+            .assertNext(createdIssuer -> assertIssuerCreatedCorrectly(issuer, createdIssuer))
             .verifyComplete());
     }
 
@@ -591,7 +592,7 @@ public class CertificateAsyncClientTest extends CertificateClientTestBase {
 
         StepVerifier.create(certificateAsyncClient.createIssuer(new CertificateIssuer("", "")))
             .verifyErrorSatisfies(e ->
-                assertResponseException(e, HttpResponseException.class, HttpURLConnection.HTTP_BAD_METHOD));
+                assertResponseException(e, KeyVaultErrorException.class, HttpURLConnection.HTTP_BAD_METHOD));
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -601,7 +602,7 @@ public class CertificateAsyncClientTest extends CertificateClientTestBase {
 
         StepVerifier.create(certificateAsyncClient.createIssuer(new CertificateIssuer("", null)))
             .verifyErrorSatisfies(e ->
-                assertResponseException(e, HttpResponseException.class, HttpURLConnection.HTTP_BAD_METHOD));
+                assertResponseException(e, KeyVaultErrorException.class, HttpURLConnection.HTTP_BAD_METHOD));
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -624,7 +625,7 @@ public class CertificateAsyncClientTest extends CertificateClientTestBase {
                         certificateIssuer.set(createdIssuer);
                         return certificateAsyncClient.getIssuer(issuer.getName());
                     }))
-                .assertNext(retrievedIssuer -> assertTrue(issuerCreatedCorrectly(certificateIssuer.get(), retrievedIssuer)))
+                .assertNext(retrievedIssuer -> assertIssuerCreatedCorrectly(certificateIssuer.get(), retrievedIssuer))
                 .verifyComplete();
         });
     }
@@ -651,7 +652,7 @@ public class CertificateAsyncClientTest extends CertificateClientTestBase {
                         createdIssuer.set(certificateIssuer);
                         return certificateAsyncClient.deleteIssuer(issuer.getName());
                     }))
-                .assertNext(deletedIssuer -> assertTrue(issuerCreatedCorrectly(createdIssuer.get(), deletedIssuer)))
+                .assertNext(deletedIssuer -> assertIssuerCreatedCorrectly(createdIssuer.get(), deletedIssuer))
                 .verifyComplete();
         });
     }
@@ -702,7 +703,7 @@ public class CertificateAsyncClientTest extends CertificateClientTestBase {
         updateIssuerRunner((issuerToCreate, issuerToUpdate) ->
             StepVerifier.create(certificateAsyncClient.createIssuer(issuerToCreate)
                 .flatMap(createdIssuer -> certificateAsyncClient.updateIssuer(issuerToUpdate)))
-            .assertNext(updatedIssuer -> assertTrue(issuerUpdatedCorrectly(issuerToCreate, updatedIssuer)))
+            .assertNext(updatedIssuer -> assertIssuerUpdatedCorrectly(issuerToCreate, updatedIssuer))
                 .verifyComplete());
     }
 
@@ -882,7 +883,7 @@ public class CertificateAsyncClientTest extends CertificateClientTestBase {
                 new MergeCertificateOptions(testResourceNamer.randomName("testCert", 20),
                     Arrays.asList("test".getBytes()))))
             .verifyErrorSatisfies(e ->
-                assertResponseException(e, HttpResponseException.class, HttpURLConnection.HTTP_NOT_FOUND));
+                assertResponseException(e, KeyVaultErrorException.class, HttpURLConnection.HTTP_NOT_FOUND));
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
