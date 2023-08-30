@@ -109,6 +109,7 @@ public class SpringMonitorTest {
   public void shouldMonitor() throws InterruptedException, MalformedURLException {
 
     // Only required with GraalVM native test execution
+    // we aren't sure why this is needed, seems to be a Logback issue with GraalVM native
     SpringMonitorTest.class.getResourceAsStream("/logback.xml");
 
     String response = restTemplate.getForObject(Controller.URL, String.class);
