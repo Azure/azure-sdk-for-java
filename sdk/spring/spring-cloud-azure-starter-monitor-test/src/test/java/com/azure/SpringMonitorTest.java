@@ -12,6 +12,8 @@ import com.azure.monitor.opentelemetry.exporter.implementation.models.*;
 import io.opentelemetry.sdk.logs.export.LogRecordExporter;
 import io.opentelemetry.sdk.metrics.export.MetricExporter;
 import io.opentelemetry.sdk.trace.export.SpanExporter;
+
+import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
@@ -105,6 +107,10 @@ public class SpringMonitorTest {
 
   @Test
   public void shouldMonitor() throws InterruptedException, MalformedURLException {
+
+    // Only required with GraalVM native test execution
+    SpringMonitorTest.class.getResourceAsStream("/logback.xml");
+
     String response = restTemplate.getForObject(Controller.URL, String.class);
     assertThat(response).isEqualTo("OK!");
 
