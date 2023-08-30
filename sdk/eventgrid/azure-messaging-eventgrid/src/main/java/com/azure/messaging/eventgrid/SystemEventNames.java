@@ -57,6 +57,8 @@ import com.azure.messaging.eventgrid.systemevents.ApiManagementUserDeletedEventD
 import com.azure.messaging.eventgrid.systemevents.ApiManagementUserUpdatedEventData;
 import com.azure.messaging.eventgrid.systemevents.AppConfigurationKeyValueDeletedEventData;
 import com.azure.messaging.eventgrid.systemevents.AppConfigurationKeyValueModifiedEventData;
+import com.azure.messaging.eventgrid.systemevents.AppConfigurationSnapshotCreatedEventData;
+import com.azure.messaging.eventgrid.systemevents.AppConfigurationSnapshotModifiedEventData;
 import com.azure.messaging.eventgrid.systemevents.ContainerRegistryChartDeletedEventData;
 import com.azure.messaging.eventgrid.systemevents.ContainerRegistryChartPushedEventData;
 import com.azure.messaging.eventgrid.systemevents.ContainerRegistryImageDeletedEventData;
@@ -70,6 +72,10 @@ import com.azure.messaging.eventgrid.systemevents.ContainerServiceNodePoolRollin
 import com.azure.messaging.eventgrid.systemevents.DataBoxCopyCompletedEventData;
 import com.azure.messaging.eventgrid.systemevents.DataBoxCopyStartedEventData;
 import com.azure.messaging.eventgrid.systemevents.DataBoxOrderCompletedEventData;
+import com.azure.messaging.eventgrid.systemevents.EventGridMqttClientCreatedOrUpdatedEventData;
+import com.azure.messaging.eventgrid.systemevents.EventGridMqttClientDeletedEventData;
+import com.azure.messaging.eventgrid.systemevents.EventGridMqttClientSessionConnectedEventData;
+import com.azure.messaging.eventgrid.systemevents.EventGridMqttClientSessionDisconnectedEventData;
 import com.azure.messaging.eventgrid.systemevents.EventHubCaptureFileCreatedEventData;
 import com.azure.messaging.eventgrid.systemevents.HealthcareDicomImageCreatedEventData;
 import com.azure.messaging.eventgrid.systemevents.HealthcareDicomImageDeletedEventData;
@@ -413,6 +419,12 @@ public final class SystemEventNames {
     /** Schema of the Data property of an EventGridEvent for a Microsoft.AppConfiguration.KeyValueModified event. */
     public static final String APP_CONFIGURATION_KEY_VALUE_MODIFIED = "Microsoft.AppConfiguration.KeyValueModified";
 
+    /** Schema of the Data property of an EventGridEvent for a Microsoft.AppConfiguration.SnapshotCreated event. */
+    public static final String APP_CONFIGURATION_SNAPSHOT_CREATED = "Microsoft.AppConfiguration.SnapshotCreated";
+
+    /** Schema of the Data property of an EventGridEvent for a Microsoft.AppConfiguration.SnapshotModified event. */
+    public static final String APP_CONFIGURATION_SNAPSHOT_MODIFIED = "Microsoft.AppConfiguration.SnapshotModified";
+
     /** Schema of the Data property of an EventGridEvent for a Microsoft.ContainerRegistry.ChartDeleted event. */
     public static final String CONTAINER_REGISTRY_CHART_DELETED = "Microsoft.ContainerRegistry.ChartDeleted";
 
@@ -466,6 +478,21 @@ public final class SystemEventNames {
 
     /** Schema of the Data property of an EventGridEvent for a Microsoft.DataBox.OrderCompleted event. */
     public static final String DATA_BOX_ORDER_COMPLETED = "Microsoft.DataBox.OrderCompleted";
+
+    /** Event data for Microsoft.EventGrid.MQTTClientCreatedOrUpdated event. */
+    public static final String EVENT_GRID_MQTT_CLIENT_CREATED_OR_UPDATED =
+            "Microsoft.EventGrid.MQTTClientCreatedOrUpdated";
+
+    /** Event data for Microsoft.EventGrid.MQTTClientDeleted event. */
+    public static final String EVENT_GRID_MQTT_CLIENT_DELETED = "Microsoft.EventGrid.MQTTClientDeleted";
+
+    /** Event data for Microsoft.EventGrid.MQTTClientSessionConnected event. */
+    public static final String EVENT_GRID_MQTT_CLIENT_SESSION_CONNECTED =
+            "Microsoft.EventGrid.MQTTClientSessionConnected";
+
+    /** Event data for Microsoft.EventGrid.MQTTClientSessionDisconnected event. */
+    public static final String EVENT_GRID_MQTT_CLIENT_SESSION_DISCONNECTED =
+            "Microsoft.EventGrid.MQTTClientSessionDisconnected";
 
     /** Schema of the Data property of an EventGridEvent for a Microsoft.EventHub.CaptureFileCreated event. */
     public static final String EVENT_HUB_CAPTURE_FILE_CREATED = "Microsoft.EventHub.CaptureFileCreated";
@@ -1008,6 +1035,8 @@ public final class SystemEventNames {
                     put(API_MANAGEMENT_USER_UPDATED, ApiManagementUserUpdatedEventData.class);
                     put(APP_CONFIGURATION_KEY_VALUE_DELETED, AppConfigurationKeyValueDeletedEventData.class);
                     put(APP_CONFIGURATION_KEY_VALUE_MODIFIED, AppConfigurationKeyValueModifiedEventData.class);
+                    put(APP_CONFIGURATION_SNAPSHOT_CREATED, AppConfigurationSnapshotCreatedEventData.class);
+                    put(APP_CONFIGURATION_SNAPSHOT_MODIFIED, AppConfigurationSnapshotModifiedEventData.class);
                     put(CONTAINER_REGISTRY_CHART_DELETED, ContainerRegistryChartDeletedEventData.class);
                     put(CONTAINER_REGISTRY_CHART_PUSHED, ContainerRegistryChartPushedEventData.class);
                     put(CONTAINER_REGISTRY_IMAGE_DELETED, ContainerRegistryImageDeletedEventData.class);
@@ -1029,6 +1058,12 @@ public final class SystemEventNames {
                     put(DATA_BOX_COPY_COMPLETED, DataBoxCopyCompletedEventData.class);
                     put(DATA_BOX_COPY_STARTED, DataBoxCopyStartedEventData.class);
                     put(DATA_BOX_ORDER_COMPLETED, DataBoxOrderCompletedEventData.class);
+                    put(EVENT_GRID_MQTT_CLIENT_CREATED_OR_UPDATED, EventGridMqttClientCreatedOrUpdatedEventData.class);
+                    put(EVENT_GRID_MQTT_CLIENT_DELETED, EventGridMqttClientDeletedEventData.class);
+                    put(EVENT_GRID_MQTT_CLIENT_SESSION_CONNECTED, EventGridMqttClientSessionConnectedEventData.class);
+                    put(
+                            EVENT_GRID_MQTT_CLIENT_SESSION_DISCONNECTED,
+                            EventGridMqttClientSessionDisconnectedEventData.class);
                     put(EVENT_HUB_CAPTURE_FILE_CREATED, EventHubCaptureFileCreatedEventData.class);
                     put(HEALTHCARE_DICOM_IMAGE_CREATED, HealthcareDicomImageCreatedEventData.class);
                     put(HEALTHCARE_DICOM_IMAGE_DELETED, HealthcareDicomImageDeletedEventData.class);
