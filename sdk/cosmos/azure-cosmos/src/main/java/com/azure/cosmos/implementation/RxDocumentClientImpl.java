@@ -5348,7 +5348,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
     private static class ScopedDiagnosticsFactory implements DiagnosticsClientContext {
 
-        private boolean isMerged = false;
+        private AtomicBoolean isMerged = new AtomicBoolean(false);
         private final DiagnosticsClientContext inner;
         private final ConcurrentLinkedQueue<CosmosDiagnostics> createdDiagnostics;
 
@@ -5365,7 +5365,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         @Override
         public CosmosDiagnostics createDiagnostics() {
-            assert !this.isMerged : "Not allowed to create new diagnostics after merging.";
+            assert !this.isMerged.get() : "Not allowed to create new diagnostics after merging.";
 
             CosmosDiagnostics diagnostics = inner.createDiagnostics();
             createdDiagnostics.add(diagnostics);
@@ -5378,19 +5378,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         }
 
         public void merge(RequestOptions requestOptions) {
-            if (isMerged) {
+            if (!isMerged.compareAndSet(false, true)) {
                 return;
             }
 
-            this.mergeCore(requestOptions);
-        }
-
-        private synchronized void mergeCore(RequestOptions requestOptions) {
-            if (isMerged) {
-                return;
-            }
-
-            this.isMerged = true;
             CosmosDiagnosticsContext ctx = null;
 
             if (requestOptions != null &&

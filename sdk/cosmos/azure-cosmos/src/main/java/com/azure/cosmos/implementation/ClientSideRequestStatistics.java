@@ -612,7 +612,6 @@ public class ClientSideRequestStatistics {
 
         public String getRegionName() { return regionName; }
 
-
         public String getRequestSessionToken() { return requestSessionToken; }
 
         @JsonIgnore

@@ -343,8 +343,7 @@ public class CosmosAsyncUser {
             .map(ModelBridgeInternal::createCosmosPermissionResponse)
             .single();
         CosmosAsyncClient client = database.getClient();
-        CosmosDiagnosticsThresholds requestDiagnosticThresholds =
-            ModelBridgeInternal.toRequestOptions(options).getDiagnosticsThresholds();
+
         return client.getDiagnosticsProvider().traceEnabledCosmosResponsePublisher(
             responseMono,
             context,
@@ -368,8 +367,7 @@ public class CosmosAsyncUser {
             .map(ModelBridgeInternal::createCosmosPermissionResponse)
             .single();
         CosmosAsyncClient client = database.getClient();
-        CosmosDiagnosticsThresholds requestDiagnosticThresholds =
-            ModelBridgeInternal.toRequestOptions(options).getDiagnosticsThresholds();
+
         return client.getDiagnosticsProvider().traceEnabledCosmosResponsePublisher(
             responseMono,
             context,
