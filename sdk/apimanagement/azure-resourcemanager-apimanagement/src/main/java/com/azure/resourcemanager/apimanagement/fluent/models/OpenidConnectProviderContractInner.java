@@ -17,6 +17,10 @@ public final class OpenidConnectProviderContractInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private OpenidConnectProviderContractProperties innerProperties;
 
+    /** Creates an instance of OpenidConnectProviderContractInner class. */
+    public OpenidConnectProviderContractInner() {
+    }
+
     /**
      * Get the innerProperties property: OpenId Connect Provider contract properties.
      *
@@ -138,6 +142,56 @@ public final class OpenidConnectProviderContractInner extends ProxyResource {
             this.innerProperties = new OpenidConnectProviderContractProperties();
         }
         this.innerProperties().withClientSecret(clientSecret);
+        return this;
+    }
+
+    /**
+     * Get the useInTestConsole property: If true, the Open ID Connect provider may be used in the developer portal test
+     * console. True by default if no value is provided.
+     *
+     * @return the useInTestConsole value.
+     */
+    public Boolean useInTestConsole() {
+        return this.innerProperties() == null ? null : this.innerProperties().useInTestConsole();
+    }
+
+    /**
+     * Set the useInTestConsole property: If true, the Open ID Connect provider may be used in the developer portal test
+     * console. True by default if no value is provided.
+     *
+     * @param useInTestConsole the useInTestConsole value to set.
+     * @return the OpenidConnectProviderContractInner object itself.
+     */
+    public OpenidConnectProviderContractInner withUseInTestConsole(Boolean useInTestConsole) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new OpenidConnectProviderContractProperties();
+        }
+        this.innerProperties().withUseInTestConsole(useInTestConsole);
+        return this;
+    }
+
+    /**
+     * Get the useInApiDocumentation property: If true, the Open ID Connect provider will be used in the API
+     * documentation in the developer portal. False by default if no value is provided.
+     *
+     * @return the useInApiDocumentation value.
+     */
+    public Boolean useInApiDocumentation() {
+        return this.innerProperties() == null ? null : this.innerProperties().useInApiDocumentation();
+    }
+
+    /**
+     * Set the useInApiDocumentation property: If true, the Open ID Connect provider will be used in the API
+     * documentation in the developer portal. False by default if no value is provided.
+     *
+     * @param useInApiDocumentation the useInApiDocumentation value to set.
+     * @return the OpenidConnectProviderContractInner object itself.
+     */
+    public OpenidConnectProviderContractInner withUseInApiDocumentation(Boolean useInApiDocumentation) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new OpenidConnectProviderContractProperties();
+        }
+        this.innerProperties().withUseInApiDocumentation(useInApiDocumentation);
         return this;
     }
 

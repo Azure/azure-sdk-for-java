@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.apimanagement.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for PrivateEndpointConnection GetByName. */
 public final class PrivateEndpointConnectionGetByNameSamples {
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementGetPrivateEndpointConnection.json
+     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementGetPrivateEndpointConnection.json
      */
     /**
      * Sample code: ApiManagementGetPrivateEndpointConnection.
@@ -20,6 +18,7 @@ public final class PrivateEndpointConnectionGetByNameSamples {
         com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
         manager
             .privateEndpointConnections()
-            .getByNameWithResponse("rg1", "apimService1", "privateEndpointConnectionName", Context.NONE);
+            .getByNameWithResponse(
+                "rg1", "apimService1", "privateEndpointConnectionName", com.azure.core.util.Context.NONE);
     }
 }

@@ -18,6 +18,10 @@ public final class GlobalSchemaContractInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private GlobalSchemaContractProperties innerProperties;
 
+    /** Creates an instance of GlobalSchemaContractInner class. */
+    public GlobalSchemaContractInner() {
+    }
+
     /**
      * Get the innerProperties property: Properties of the Global Schema.
      *

@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.apimanagement.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ApiSchema Delete. */
 public final class ApiSchemaDeleteSamples {
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementDeleteApiSchema.json
+     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementDeleteApiSchema.json
      */
     /**
      * Sample code: ApiManagementDeleteApiSchema.
@@ -21,6 +19,12 @@ public final class ApiSchemaDeleteSamples {
         manager
             .apiSchemas()
             .deleteWithResponse(
-                "rg1", "apimService1", "59d5b28d1f7fab116c282650", "59d5b28e1f7fab116402044e", "*", null, Context.NONE);
+                "rg1",
+                "apimService1",
+                "59d5b28d1f7fab116c282650",
+                "59d5b28e1f7fab116402044e",
+                "*",
+                null,
+                com.azure.core.util.Context.NONE);
     }
 }

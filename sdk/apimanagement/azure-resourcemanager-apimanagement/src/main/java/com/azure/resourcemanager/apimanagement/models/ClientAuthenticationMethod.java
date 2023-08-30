@@ -17,6 +17,15 @@ public final class ClientAuthenticationMethod extends ExpandableStringEnum<Clien
     public static final ClientAuthenticationMethod BODY = fromString("Body");
 
     /**
+     * Creates a new instance of ClientAuthenticationMethod value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ClientAuthenticationMethod() {
+    }
+
+    /**
      * Creates or finds a ClientAuthenticationMethod from its string representation.
      *
      * @param name a name to look for.
@@ -27,7 +36,11 @@ public final class ClientAuthenticationMethod extends ExpandableStringEnum<Clien
         return fromString(name, ClientAuthenticationMethod.class);
     }
 
-    /** @return known ClientAuthenticationMethod values. */
+    /**
+     * Gets known ClientAuthenticationMethod values.
+     *
+     * @return known ClientAuthenticationMethod values.
+     */
     public static Collection<ClientAuthenticationMethod> values() {
         return values(ClientAuthenticationMethod.class);
     }

@@ -14,6 +14,7 @@ import com.azure.resourcemanager.apimanagement.models.ApiVersionConstraint;
 import com.azure.resourcemanager.apimanagement.models.ApimResource;
 import com.azure.resourcemanager.apimanagement.models.CertificateConfiguration;
 import com.azure.resourcemanager.apimanagement.models.HostnameConfiguration;
+import com.azure.resourcemanager.apimanagement.models.NatGatewayState;
 import com.azure.resourcemanager.apimanagement.models.PlatformVersion;
 import com.azure.resourcemanager.apimanagement.models.PublicNetworkAccess;
 import com.azure.resourcemanager.apimanagement.models.RemotePrivateEndpointConnectionWrapper;
@@ -64,11 +65,14 @@ public final class ApiManagementServiceResourceInner extends ApimResource {
     private String etag;
 
     /*
-     * A list of availability zones denoting where the resource needs to come
-     * from.
+     * A list of availability zones denoting where the resource needs to come from.
      */
     @JsonProperty(value = "zones")
     private List<String> zones;
+
+    /** Creates an instance of ApiManagementServiceResourceInner class. */
+    public ApiManagementServiceResourceInner() {
+    }
 
     /**
      * Get the innerProperties property: Properties of the API Management service.
@@ -497,16 +501,16 @@ public final class ApiManagementServiceResourceInner extends ApimResource {
      * `Microsoft.WindowsAzure.ApiManagement.Gateway.Protocols.Server.Http2` can be used to enable HTTP2 protocol on an
      * API Management service.&lt;/br&gt;Not specifying any of these properties on PATCH operation will reset omitted
      * properties' values to their defaults. For all the settings except Http2 the default value is `True` if the
-     * service was created on or before April 1st 2018 and `False` otherwise. Http2 setting's default value is
-     * `False`.&lt;/br&gt;&lt;/br&gt;You can disable any of next ciphers by using settings
+     * service was created on or before April 1, 2018 and `False` otherwise. Http2 setting's default value is
+     * `False`.&lt;/br&gt;&lt;/br&gt;You can disable any of the following ciphers by using settings
      * `Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Ciphers.[cipher_name]`:
      * TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA, TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA, TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA,
      * TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA, TLS_RSA_WITH_AES_128_GCM_SHA256, TLS_RSA_WITH_AES_256_CBC_SHA256,
      * TLS_RSA_WITH_AES_128_CBC_SHA256, TLS_RSA_WITH_AES_256_CBC_SHA, TLS_RSA_WITH_AES_128_CBC_SHA. For example,
      * `Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Ciphers.TLS_RSA_WITH_AES_128_CBC_SHA256`:`false`. The
-     * default value is `true` for them. Note: next ciphers can't be disabled since they are required by Azure
-     * CloudService internal components:
-     * TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA384,TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256,TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384,TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256,TLS_RSA_WITH_AES_256_GCM_SHA384.
+     * default value is `true` for them.&lt;/br&gt; Note: The following ciphers can't be disabled since they are
+     * required by internal platform components:
+     * TLS_AES_256_GCM_SHA384,TLS_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA384,TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256,TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384,TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256.
      *
      * @return the customProperties value.
      */
@@ -528,16 +532,16 @@ public final class ApiManagementServiceResourceInner extends ApimResource {
      * `Microsoft.WindowsAzure.ApiManagement.Gateway.Protocols.Server.Http2` can be used to enable HTTP2 protocol on an
      * API Management service.&lt;/br&gt;Not specifying any of these properties on PATCH operation will reset omitted
      * properties' values to their defaults. For all the settings except Http2 the default value is `True` if the
-     * service was created on or before April 1st 2018 and `False` otherwise. Http2 setting's default value is
-     * `False`.&lt;/br&gt;&lt;/br&gt;You can disable any of next ciphers by using settings
+     * service was created on or before April 1, 2018 and `False` otherwise. Http2 setting's default value is
+     * `False`.&lt;/br&gt;&lt;/br&gt;You can disable any of the following ciphers by using settings
      * `Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Ciphers.[cipher_name]`:
      * TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA, TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA, TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA,
      * TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA, TLS_RSA_WITH_AES_128_GCM_SHA256, TLS_RSA_WITH_AES_256_CBC_SHA256,
      * TLS_RSA_WITH_AES_128_CBC_SHA256, TLS_RSA_WITH_AES_256_CBC_SHA, TLS_RSA_WITH_AES_128_CBC_SHA. For example,
      * `Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Ciphers.TLS_RSA_WITH_AES_128_CBC_SHA256`:`false`. The
-     * default value is `true` for them. Note: next ciphers can't be disabled since they are required by Azure
-     * CloudService internal components:
-     * TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA384,TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256,TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384,TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256,TLS_RSA_WITH_AES_256_GCM_SHA384.
+     * default value is `true` for them.&lt;/br&gt; Note: The following ciphers can't be disabled since they are
+     * required by internal platform components:
+     * TLS_AES_256_GCM_SHA384,TLS_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA384,TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256,TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384,TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256.
      *
      * @param customProperties the customProperties value to set.
      * @return the ApiManagementServiceResourceInner object itself.
@@ -600,6 +604,39 @@ public final class ApiManagementServiceResourceInner extends ApimResource {
         }
         this.innerProperties().withEnableClientCertificate(enableClientCertificate);
         return this;
+    }
+
+    /**
+     * Get the natGatewayState property: Property can be used to enable NAT Gateway for this API Management service.
+     *
+     * @return the natGatewayState value.
+     */
+    public NatGatewayState natGatewayState() {
+        return this.innerProperties() == null ? null : this.innerProperties().natGatewayState();
+    }
+
+    /**
+     * Set the natGatewayState property: Property can be used to enable NAT Gateway for this API Management service.
+     *
+     * @param natGatewayState the natGatewayState value to set.
+     * @return the ApiManagementServiceResourceInner object itself.
+     */
+    public ApiManagementServiceResourceInner withNatGatewayState(NatGatewayState natGatewayState) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApiManagementServiceProperties();
+        }
+        this.innerProperties().withNatGatewayState(natGatewayState);
+        return this;
+    }
+
+    /**
+     * Get the outboundPublicIpAddresses property: Outbound public IPV4 address prefixes associated with NAT Gateway
+     * deployed service. Available only for Premium SKU on stv2 platform.
+     *
+     * @return the outboundPublicIpAddresses value.
+     */
+    public List<String> outboundPublicIpAddresses() {
+        return this.innerProperties() == null ? null : this.innerProperties().outboundPublicIpAddresses();
     }
 
     /**

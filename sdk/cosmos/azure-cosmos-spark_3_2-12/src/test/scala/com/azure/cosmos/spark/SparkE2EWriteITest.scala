@@ -3,11 +3,14 @@
 package com.azure.cosmos.spark
 
 import com.azure.cosmos.implementation.TestConfigurations
+import com.azure.cosmos.models.ThroughputProperties
 import com.azure.cosmos.spark.CosmosPatchOperationTypes.CosmosPatchOperationTypes
 import com.azure.cosmos.spark.ItemWriteStrategy.ItemWriteStrategy
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
 import org.apache.spark.sql.functions.{col, from_json}
 import org.apache.spark.sql.types.{StringType, StructField, StructType}
+
+import java.util.UUID
 
 class SparkE2EWriteITest
   extends IntegrationSpec
@@ -660,6 +663,129 @@ class SparkE2EWriteITest
           quark.get("id").asText() shouldEqual "Quark"
           quark.get("car").get("carType").asText() shouldEqual "X5"
       }
+  }
+
+  patchBulkUpdateParameterTest = Seq(
+    PatchBulkUpdateParameterTest(bulkEnabled = true, ""),
+    PatchBulkUpdateParameterTest(bulkEnabled = false, "")
+  )
+
+  for (PatchBulkUpdateParameterTest(bulkEnabled, _) <- patchBulkUpdateParameterTest) {
+    it should s"support patch with pk != id with bulkEnabled = $bulkEnabled" in {
+        val cosmosEndpoint = TestConfigurations.HOST
+        val cosmosMasterKey = TestConfigurations.MASTER_KEY
+
+        // Create a container with pk different than id
+        val targetContainerName = s"containerPk-${UUID.randomUUID().toString}"
+        cosmosClient
+            .getDatabase(cosmosDatabase)
+            .createContainerIfNotExists(
+              targetContainerName,
+              "/pk",
+              ThroughputProperties.createManualThroughput(400))
+            .block()
+        val targetContainer = cosmosClient.getDatabase(cosmosDatabase).getContainer(targetContainerName)
+
+        val cfg = Map("spark.cosmos.accountEndpoint" -> cosmosEndpoint,
+            "spark.cosmos.accountKey" -> cosmosMasterKey,
+            "spark.cosmos.database" -> cosmosDatabase,
+            "spark.cosmos.container" -> targetContainerName,
+            "spark.cosmos.serialization.inclusionMode" -> "NonDefault"
+        )
+
+        val cfgPatch = Map("spark.cosmos.accountEndpoint" -> cosmosEndpoint,
+            "spark.cosmos.accountKey" -> cosmosMasterKey,
+            "spark.cosmos.database" -> cosmosDatabase,
+            "spark.cosmos.container" -> targetContainerName,
+            "spark.cosmos.write.strategy" -> ItemWriteStrategy.ItemBulkUpdate.toString,
+            "spark.cosmos.write.bulk.enabled" -> bulkEnabled.toString
+        )
+
+        val newSpark = getSpark
+
+        // scalastyle:off underscore.import
+        // scalastyle:off import.grouping
+        import spark.implicits._
+        val spark = newSpark
+        // scalastyle:on underscore.import
+        // scalastyle:on import.grouping
+
+        val df = Seq(
+            ("QuarkPk", "Quark", "Red", 1.0 / 2, ""),
+            ("QuarkPk", "Quark2", "Red", 1.0 / 2, "")
+        ).toDF("pk", "id", "color", "spin", "empty")
+
+        df.show(false)
+        df.write.format("cosmos.oltp").mode("Append").options(cfg).save()
+
+        // verify data is written
+        // wait for a second to allow replication is completed.
+        Thread.sleep(1000)
+
+        // the item with the same id/pk will be persisted based on the upsert config
+        var quarks = queryItems("SELECT * FROM r where r.id = 'Quark'", cosmosDatabase, targetContainerName).toArray
+        quarks should have size 1
+
+        var quark = quarks(0)
+        quark.get("pk").asText() shouldEqual "QuarkPk"
+        quark.get("id").asText() shouldEqual "Quark"
+        quark.get("color").asText() shouldEqual "Red"
+
+        var quarks2 = queryItems("SELECT * FROM r where r.id = 'Quark2'", cosmosDatabase, targetContainerName).toArray
+        quarks2 should have size 1
+
+        var quark2 = quarks2(0)
+        quark2.get("pk").asText() shouldEqual "QuarkPk"
+        quark2.get("id").asText() shouldEqual "Quark2"
+        quark2.get("color").asText() shouldEqual "Red"
+
+        // It will test few scenario:
+        // 1. Since item with id 'Quark', item with id 'Quark2' already exists, so they will be updated
+        // 2. Since item with id 'Quark3' does not exist, so it will be created
+        // 3. There are two rows targeting the same item with id 'Quark', SDK internally will handle properly to retry, so eventually
+        // the color of the item should be updated to be 'Purple'
+        val patchDf = Seq(
+            ("QuarkPk", "Quark", "Blue"),
+            ("QuarkPk", "Quark", "Purple"),
+            ("QuarkPk", "Quark2", "Blue"),
+            ("QuarkPk", "Quark3", "Green")
+        ).toDF("pk", "id", "color")
+
+        patchDf.write.format("cosmos.oltp").mode("Append").options(cfgPatch).save()
+
+        // verify data is written
+        // wait for a second to allow replication is completed.
+        Thread.sleep(1000)
+
+        // validate item 'Quark' is updated properly
+        quarks = queryItems("SELECT * FROM r where r.id = 'Quark'", cosmosDatabase, targetContainerName).toArray
+        quarks should have size 1
+
+        quark = quarks(0)
+        quark.get("pk").asText() shouldEqual "QuarkPk"
+        quark.get("id").asText() shouldEqual "Quark"
+        quark.get("color").asText() shouldEqual "Purple"
+
+        // Validate item 'Quark2' is updated properly
+        quarks2 = queryItems("SELECT * FROM r where r.id = 'Quark2'", cosmosDatabase, targetContainerName).toArray
+        quarks2 should have size 1
+
+        quark2 = quarks2(0)
+        quark2.get("pk").asText() shouldEqual "QuarkPk"
+        quark2.get("id").asText() shouldEqual "Quark2"
+        quark2.get("color").asText() shouldEqual "Blue"
+
+        // Validate item 'Quark3' is created properly
+        var quarks3 = queryItems("SELECT * FROM r where r.id = 'Quark3'", cosmosDatabase, targetContainerName).toArray
+        quarks3 should have size 1
+
+        var quark3 = quarks3(0)
+        quark3.get("pk").asText() shouldEqual "QuarkPk"
+        quark3.get("id").asText() shouldEqual "Quark3"
+        quark3.get("color").asText() shouldEqual "Green"
+
+        targetContainer.delete().block()
+    }
   }
   //scalastyle:on magic.number
   //scalastyle:on multiple.string.literals

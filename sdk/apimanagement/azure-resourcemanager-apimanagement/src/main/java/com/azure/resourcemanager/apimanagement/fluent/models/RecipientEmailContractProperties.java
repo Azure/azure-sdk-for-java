@@ -16,6 +16,10 @@ public final class RecipientEmailContractProperties {
     @JsonProperty(value = "email")
     private String email;
 
+    /** Creates an instance of RecipientEmailContractProperties class. */
+    public RecipientEmailContractProperties() {
+    }
+
     /**
      * Get the email property: User Email subscribed to notification.
      *

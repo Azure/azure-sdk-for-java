@@ -30,6 +30,10 @@ public final class GroupCollection {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of GroupCollection class. */
+    public GroupCollection() {
+    }
+
     /**
      * Get the value property: Page values.
      *

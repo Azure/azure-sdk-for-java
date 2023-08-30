@@ -14,6 +14,15 @@ public final class SettingsTypeName extends ExpandableStringEnum<SettingsTypeNam
     public static final SettingsTypeName PUBLIC = fromString("public");
 
     /**
+     * Creates a new instance of SettingsTypeName value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SettingsTypeName() {
+    }
+
+    /**
      * Creates or finds a SettingsTypeName from its string representation.
      *
      * @param name a name to look for.
@@ -24,7 +33,11 @@ public final class SettingsTypeName extends ExpandableStringEnum<SettingsTypeNam
         return fromString(name, SettingsTypeName.class);
     }
 
-    /** @return known SettingsTypeName values. */
+    /**
+     * Gets known SettingsTypeName values.
+     *
+     * @return known SettingsTypeName values.
+     */
     public static Collection<SettingsTypeName> values() {
         return values(SettingsTypeName.class);
     }

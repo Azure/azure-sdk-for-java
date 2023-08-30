@@ -12,8 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class CertificateCreateOrUpdateProperties {
     /*
-     * Base 64 encoded certificate using the application/x-pkcs12
-     * representation.
+     * Base 64 encoded certificate using the application/x-pkcs12 representation.
      */
     @JsonProperty(value = "data")
     private String data;
@@ -29,6 +28,10 @@ public final class CertificateCreateOrUpdateProperties {
      */
     @JsonProperty(value = "keyVault")
     private KeyVaultContractCreateProperties keyVault;
+
+    /** Creates an instance of CertificateCreateOrUpdateProperties class. */
+    public CertificateCreateOrUpdateProperties() {
+    }
 
     /**
      * Get the data property: Base 64 encoded certificate using the application/x-pkcs12 representation.

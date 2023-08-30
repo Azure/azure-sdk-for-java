@@ -29,7 +29,11 @@ public final class ContentItemsGetResponse extends ResponseBase<ContentItemsGetH
         super(request, statusCode, rawHeaders, value, headers);
     }
 
-    /** @return the deserialized response body. */
+    /**
+     * Gets the deserialized response body.
+     *
+     * @return the deserialized response body.
+     */
     @Override
     public ContentItemContractInner getValue() {
         return super.getValue();

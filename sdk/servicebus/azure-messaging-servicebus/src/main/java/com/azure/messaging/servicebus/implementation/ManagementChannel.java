@@ -592,9 +592,15 @@ public class ManagementChannel implements ServiceBusManagementNode {
 
                 sink.error(throwable);
             })
-            .switchIfEmpty(Mono.error(new AmqpException(true, "No response received from management channel.",
-                channel.getErrorContext())))
+            .switchIfEmpty(errorIfEmpty(channel))
             .onErrorMap(this::mapError);
+    }
+
+    private <T> Mono<T> errorIfEmpty(RequestResponseChannel channel) {
+        return Mono.error(() -> {
+            String error = String.format("entityPath[%s] No response received from management channel.", entityPath);
+            return logger.logExceptionAsError(new AmqpException(true, error, channel.getErrorContext()));
+        });
     }
 
     private Mono<Void> isAuthorized(String operation) {
