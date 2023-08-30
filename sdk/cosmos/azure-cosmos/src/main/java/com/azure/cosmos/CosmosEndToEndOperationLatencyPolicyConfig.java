@@ -68,7 +68,7 @@ public final class CosmosEndToEndOperationLatencyPolicyConfig {
         return this.toStringValue;
     }
 
-    public String createStringRepresentation() {
+    private String createStringRepresentation() {
 
         if (this.endToEndOperationTimeout == null) {
             return "";
