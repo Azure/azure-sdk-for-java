@@ -249,6 +249,11 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
             //    Status code/sub status code validation callback
             //    Diagnostics context validation callback
             // },
+
+            // This test injects 404/1002 across all regions for the read operation after the initial creation
+            // The region switch hint for 404/1002 is remote - meaning no local retries are happening
+            // It is expected to fail with a 404/1002 - the validation will make sure that cross regional
+            // execution via availability strategy was happening (but also failed)
             new Object[] {
                 "404-1002_AllRegions_RemotePreferred",
                 Duration.ofSeconds(1),
@@ -259,8 +264,30 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 validateStatusCodeIsReadSessionNotAvailableError,
                 validateDiagnosticsContextHasDiagnosticsForAllRegions
             },
+
+            // This test injects 404/1002 for the read operation after the initial creation into the local region only.
+            // The region switch hint for 404/1002 is remote - meaning no local retries are happening
+            // The availability strategy has a high threshold - so, it is expected that the successful response
+            // as a cross-regional retry triggered by the ClientRetryPolicy of the initial operation finishes the Mono
+            // successfully with 200 - OK>
             new Object[] {
-                "404-1002_OnlyFirstRegion_RemotePreferred",
+                "404-1002_OnlyFirstRegion_RemotePreferred_DefaultAvailabilityStrategy",
+                Duration.ofSeconds(1),
+                defaultAvailabilityStrategy,
+                CosmosRegionSwitchHint.REMOTE_REGION_PREFERRED,
+                sameDocumentIdJustCreated,
+                injectReadSessionNotAvailableIntoFirstRegionOnly,
+                validateStatusCodeIs200Ok,
+                validateDiagnosticsContextHasDiagnosticsForOnlyFirstRegionButWithRegionalFailover
+            },
+
+            // This test injects 404/1002 for the read operation after the initial creation into the local region only.
+            // The region switch hint for 404/1002 is remote - meaning no local retries are happening
+            // The availability strategy is very aggressive with a short threshold - so, it is expected that the
+            // successful response comes from the operation being executed against the second region after hitting
+            // threshold.
+            new Object[] {
+                "404-1002_OnlyFirstRegion_RemotePreferred_EagerAvailabilityStrategy",
                 Duration.ofSeconds(1),
                 eagerThresholdAvailabilityStrategy,
                 CosmosRegionSwitchHint.REMOTE_REGION_PREFERRED,
@@ -269,6 +296,9 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 validateStatusCodeIs200Ok,
                 validateDiagnosticsContextHasDiagnosticsForAllRegions
             },
+
+            // Only injects 404/1002 into secondary region - just ensure that no cross regional execution
+            // is even happening
             new Object[] {
                 "404-1002_AllExceptFirstRegion_RemotePreferred",
                 Duration.ofSeconds(1),
@@ -279,6 +309,13 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 validateStatusCodeIs200Ok,
                 validateDiagnosticsContextHasDiagnosticsForOnlyFirstRegion
             },
+
+            // This test simulates 404/1002 across all regions for the read operation after the initial creation
+            // The region switch hint for 404/1002 is local - meaning many local retries are happening which leads
+            // to the operations triggered by teh availability strategy against each region will all timeout because
+            // they haven't finished the "local retries" before hitting end-to-end timeout
+            // It is expected to fail with a 404/1002 - the validation will make sure that cross regional
+            // execution via availability strategy was happening (but also failed)
             new Object[] {
                 "404-1002_AllRegions_LocalPreferred",
                 Duration.ofSeconds(1),
@@ -289,6 +326,12 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 validateStatusCodeIsOperationCancelled,
                 validateDiagnosticsContextHasDiagnosticsForAllRegions
             },
+
+            // This test injects 404/1002 for the read operation after the initial creation into the local region only.
+            // The region switch hint for 404/1002 is local - meaning many local retries are happening which leads
+            // to the operation triggered against the local region timing out. So, it is expected that the
+            // successful response comes from the operation being executed against the second region after hitting
+            // threshold.
             new Object[] {
                 "404-1002_OnlyFirstRegion_LocalPreferred",
                 Duration.ofSeconds(1),
@@ -299,6 +342,9 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 validateStatusCodeIs200Ok,
                 validateDiagnosticsContextHasDiagnosticsForAllRegions
             },
+
+            // Only injects 404/1002 into secondary region - just ensure that no cross regional execution
+            // is even happening
             new Object[] {
                 "404-1002_AllExceptFirstRegion_LocalPreferred",
                 Duration.ofSeconds(1),
@@ -309,6 +355,12 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 validateStatusCodeIs200Ok,
                 validateDiagnosticsContextHasDiagnosticsForOnlyFirstRegion
             },
+
+            // This test injects 404/1002 for the read operation after the initial creation into the local region only.
+            // The region switch hint for 404/1002 is remote - meaning no local retries are happening
+            // No availability strategy so, it is expected that the successful response
+            // from a cross-regional retry triggered by the ClientRetryPolicy of the initial operation finishes the Mono
+            // successfully with 200 - OK>
             new Object[] {
                 "404-1002_OnlyFirstRegion_RemotePreferred_NoAvailabilityStrategy",
                 Duration.ofSeconds(1),
@@ -319,6 +371,13 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 validateStatusCodeIs200Ok, // First operation will failover from region 1 to region 2 quickly enough
                 validateDiagnosticsContextHasDiagnosticsForOnlyFirstRegionButWithRegionalFailover
             },
+
+            // This test injects 404/1002 for the read operation after the initial creation into the local region only.
+            // The region switch hint for 404/1002 is local -  meaning many local retries are happening which leads
+            // to the operation triggered against the local region timing out.
+            // No availability strategy - so, it is expected that we see a timeout (operation cancellation) after
+            // e2e timeout, because the local 404/1002 retries are still ongoing and no cross-regional retry
+            // is triggered yet.
             new Object[] {
                 "404-1002_OnlyFirstRegion_LocalPreferred_NoAvailabilityStrategy",
                 Duration.ofSeconds(1),
@@ -329,8 +388,16 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 validateStatusCodeIsOperationCancelled, // Too many local retries to allow cross regional failover within e2e timeout
                 validateDiagnosticsContextHasDiagnosticsForOnlyFirstRegion
             },
+
+            // This test injects 404/102 only in the local region. The actual read operation is intentionally for
+            // a document id that won't exist - so, expected result is a 404/0
+            // The region switch hint for 404/1002 is local - meaning many local retries are happening which leads
+            // to the operation triggered against the local region timing out.
+            // The goal of this test case is to ensure that non-transient errors (like the 404/0) retrieved from the
+            // hedging against the second region will complete the composite Mono (even when the initial operation
+            // against the local region is still ongoing).
             new Object[] {
-                "Legit404_OnlyFirstRegion_LocalPreferred",
+                "Legit404_404-1002_OnlyFirstRegion_LocalPreferred",
                 Duration.ofSeconds(1),
                 defaultAvailabilityStrategy,
                 CosmosRegionSwitchHint.LOCAL_REGION_PREFERRED,
@@ -341,8 +408,14 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 validateStatusCodeIsLegitNotFound,
                 validateDiagnosticsContextHasDiagnosticsForAllRegions
             },
+
+            // This test injects 404/102 only in the local region. The actual read operation is intentionally for
+            // a document id that won't exist - so, expected result is a 404/0
+            // The region switch hint for 404/1002 is remote - meaning no local retries are happening
+            // Which means the ClientRetryPolicy for the initial operation would failover to the second region and
+            // should result in the 404/0 being returned
             new Object[] {
-                "Legit404_OnlyFirstRegion_RemotePreferred_NoAvailabilityStrategy",
+                "Legit404_404-1002_OnlyFirstRegion_RemotePreferred_NoAvailabilityStrategy",
                 Duration.ofSeconds(50),
                 null,
                 CosmosRegionSwitchHint.REMOTE_REGION_PREFERRED,
@@ -351,6 +424,12 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 validateStatusCodeIsLegitNotFound, // Too many local retries to allow cross regional failover within e2e timeout
                 validateDiagnosticsContextHasDiagnosticsForOnlyFirstRegionButWithRegionalFailover
             },
+
+            // This test injects 404/102 only in the local region. The actual read operation is intentionally for
+            // a document id that won't exist - so, expected result is a 404/0
+            // The region switch hint for 404/1002 is remote - meaning no local retries are happening
+            // Which means the cross-regional retry initiated by the ClientRetryPolicy of the initial operation
+            // should result in returning 404/0
             new Object[] {
                 "Legit404_OnlyFirstRegion_RemotePreferred",
                 Duration.ofSeconds(50),
