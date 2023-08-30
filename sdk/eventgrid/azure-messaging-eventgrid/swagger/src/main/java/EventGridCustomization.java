@@ -253,8 +253,8 @@ public class EventGridCustomization extends Customization {
 
 
                     Arrays.asList("Authorization", "Claims", "HttpRequest").forEach(method -> {
-                        clazz.getMethodsByName("get" + method).get(0).setName("getResource" + method);
-                        clazz.getMethodsByName("set" + method).get(0).setName("setResource" + method);
+                        clazz.getMethodsByName("get" + method).forEach(methodDeclaration -> { methodDeclaration.setName("getResource" + method); });
+                        clazz.getMethodsByName("set" + method).forEach(methodDeclaration -> { methodDeclaration.setName("setResource" + method); });
                     });
 
                     clazz.addMethod("getClaims", Keyword.PUBLIC)
