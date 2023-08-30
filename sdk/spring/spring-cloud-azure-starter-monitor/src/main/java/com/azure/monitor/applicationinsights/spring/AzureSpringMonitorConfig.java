@@ -6,39 +6,35 @@ package com.azure.monitor.applicationinsights.spring;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.monitor.opentelemetry.exporter.AzureMonitorExporterBuilder;
-import io.opentelemetry.api.logs.GlobalLoggerProvider;
-import io.opentelemetry.sdk.logs.SdkLoggerProvider;
-import io.opentelemetry.sdk.logs.export.BatchLogRecordProcessor;
 import io.opentelemetry.sdk.logs.export.LogRecordExporter;
 import io.opentelemetry.sdk.metrics.export.MetricExporter;
 import io.opentelemetry.sdk.trace.export.SpanExporter;
+import java.util.Optional;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import java.util.Optional;
-
 /**
  * Config for Azure Telemetry
  */
 @Configuration(proxyBeanMethods = false)
-public class AzureTelemetryConfig {
+public class AzureSpringMonitorConfig {
 
-    private static final ClientLogger LOGGER = new ClientLogger(AzureTelemetryConfig.class);
+    private static final ClientLogger LOGGER = new ClientLogger(AzureSpringMonitorConfig.class);
 
     private static final String CONNECTION_STRING_ERROR_MESSAGE = "Unable to find the Application Insights connection string.";
 
     private final Optional<AzureMonitorExporterBuilder> azureMonitorExporterBuilderOpt;
 
     /**
-     * Create an instance of AzureTelemetryConfig
+     * Create an instance of AzureSpringMonitorConfig
      * @param connectionStringSysProp connection string system property
-     * @param azureTelemetryActivation a instance of AzureTelemetryActivation
+     * @param azureSpringMonitorActivation a instance of AzureTelemetryActivation
      * @param httpPipeline an instance of HttpPipeline
      */
-    public AzureTelemetryConfig(@Value("${applicationinsights.connection.string:}") String connectionStringSysProp, AzureTelemetryActivation azureTelemetryActivation, ObjectProvider<HttpPipeline> httpPipeline) {
-        if (azureTelemetryActivation.isTrue()) {
+    public AzureSpringMonitorConfig(@Value("${applicationinsights.connection.string:}") String connectionStringSysProp, AzureSpringMonitorActivation azureSpringMonitorActivation, ObjectProvider<HttpPipeline> httpPipeline) {
+        if (azureSpringMonitorActivation.isTrue()) {
             this.azureMonitorExporterBuilderOpt = createAzureMonitorExporterBuilder(connectionStringSysProp, httpPipeline);
             if (!isNativeRuntimeExecution()) {
                 LOGGER.warning("You are using Application Insights for Spring in a non-native GraalVM runtime environment. We recommend using the Application Insights Java agent.");
@@ -81,7 +77,7 @@ public class AzureTelemetryConfig {
      * @return MetricExporter
      */
     @Bean
-    public MetricExporter metricExporter() {
+    public MetricExporter azureSpringMonitorMetricExporter() {
         if (!azureMonitorExporterBuilderOpt.isPresent()) {
             return null;
         }
@@ -93,7 +89,7 @@ public class AzureTelemetryConfig {
      * @return SpanExporter
      */
     @Bean
-    public SpanExporter spanExporter() {
+    public SpanExporter azureSpringMonitorSpanExporter() {
         if (!azureMonitorExporterBuilderOpt.isPresent()) {
             return null;
         }
@@ -105,23 +101,12 @@ public class AzureTelemetryConfig {
      * @return LogRecordExporter
      */
     @Bean
-    public LogRecordExporter logRecordExporter() {
+    public LogRecordExporter azureSpringMonitorLogRecordExporter() {
         if (!azureMonitorExporterBuilderOpt.isPresent()) {
             return null;
         }
-        LogRecordExporter logRecordExporter = azureMonitorExporterBuilderOpt.get().buildLogRecordExporter();
-        initOTelLogger(logRecordExporter);
-        return logRecordExporter;
+        return azureMonitorExporterBuilderOpt.get().buildLogRecordExporter();
     }
 
-    private void initOTelLogger(LogRecordExporter logRecordExporter) {
-        if (azureMonitorExporterBuilderOpt.isPresent()) {
-            BatchLogRecordProcessor batchLogRecordProcessor = BatchLogRecordProcessor.builder(logRecordExporter).build();
-            SdkLoggerProvider loggerProvider =
-                SdkLoggerProvider.builder()
-                    .addLogRecordProcessor(batchLogRecordProcessor)
-                    .build();
-            GlobalLoggerProvider.set(loggerProvider);
-        }
-    }
+
 }
