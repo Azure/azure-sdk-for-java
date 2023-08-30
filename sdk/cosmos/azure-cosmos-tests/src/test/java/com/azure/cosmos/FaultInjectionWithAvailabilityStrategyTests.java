@@ -163,7 +163,9 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
         ThresholdBasedAvailabilityStrategy eagerThresholdAvailabilityStrategy = new ThresholdBasedAvailabilityStrategy(
             Duration.ofMillis(5), Duration.ofMillis(10)
         );
-
+        ThresholdBasedAvailabilityStrategy reluctantThresholdAvailabilityStrategy = new ThresholdBasedAvailabilityStrategy(
+            Duration.ofSeconds(10), Duration.ofSeconds(1)
+        );
 
         Consumer<CosmosAsyncContainer> injectReadSessionNotAvailableIntoAllRegions =
             (c) -> injectReadSessionNotAvailableError(c, this.writeableRegions);
@@ -184,6 +186,12 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
             (statusCode, subStatusCode) -> {
                 assertThat(statusCode).isEqualTo(HttpConstants.StatusCodes.REQUEST_TIMEOUT);
                 assertThat(subStatusCode).isEqualTo(HttpConstants.SubStatusCodes.CLIENT_OPERATION_TIMEOUT);
+            };
+
+        BiConsumer<Integer, Integer> validateStatusCodeIsLegitNotFound =
+            (statusCode, subStatusCode) -> {
+                assertThat(statusCode).isEqualTo(HttpConstants.StatusCodes.NOTFOUND);
+                assertThat(subStatusCode).isEqualTo(HttpConstants.SubStatusCodes.UNKNOWN);
             };
 
         BiConsumer<Integer, Integer> validateStatusCodeIs200Ok =
@@ -319,6 +327,38 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 validateStatusCodeIsOperationCancelled, // Too many local retries to allow cross regional failover within e2e timeout
                 validateDiagnosticsContextHasDiagnosticsForOnlyFirstRegion
             },
+            new Object[] {
+                "Legit404_OnlyFirstRegion_LocalPreferred",
+                Duration.ofSeconds(1),
+                defaultAvailabilityStrategy,
+                CosmosRegionSwitchHint.LOCAL_REGION_PREFERRED,
+                "SomeNonExistingId",
+                injectReadSessionNotAvailableIntoFirstRegionOnly,
+                // Too many local retries to allow cross regional failover within e2e timeout, but after
+                // threshold remote region returns 404/0
+                validateStatusCodeIsLegitNotFound,
+                validateDiagnosticsContextHasDiagnosticsForAllRegions
+            },
+            new Object[] {
+                "Legit404_OnlyFirstRegion_RemotePreferred_NoAvailabilityStrategy",
+                Duration.ofSeconds(50),
+                null,
+                CosmosRegionSwitchHint.REMOTE_REGION_PREFERRED,
+                "SomeNonExistingId",
+                injectReadSessionNotAvailableIntoFirstRegionOnly,
+                validateStatusCodeIsLegitNotFound, // Too many local retries to allow cross regional failover within e2e timeout
+                validateDiagnosticsContextHasDiagnosticsForOnlyFirstRegionButWithRegionalFailover
+            },
+            new Object[] {
+                "Legit404_OnlyFirstRegion_RemotePreferred",
+                Duration.ofSeconds(50),
+                reluctantThresholdAvailabilityStrategy,
+                CosmosRegionSwitchHint.REMOTE_REGION_PREFERRED,
+                "SomeNonExistingId",
+                injectReadSessionNotAvailableIntoFirstRegionOnly,
+                validateStatusCodeIsLegitNotFound, // Too many local retries to allow cross regional failover within e2e timeout
+                validateDiagnosticsContextHasDiagnosticsForOnlyFirstRegionButWithRegionalFailover
+            },
         };
     }
 
@@ -409,7 +449,6 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                     .getContainer(this.testContainerId);
 
             testContainer.createItem(createdItem).block();
-
             if (faultInjectionCallback != null) {
                 faultInjectionCallback.accept(testContainer);
             }

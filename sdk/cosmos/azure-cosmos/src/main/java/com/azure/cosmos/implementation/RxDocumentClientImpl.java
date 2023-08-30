@@ -5077,7 +5077,12 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                     // the error would otherwise be treated as transient
                     Mono<NonTransientPointOperationResult> initialMonoAcrossAllRegions =
                         callback.apply(clonedOptions, endToEndPolicyConfig, diagnosticsFactory)
-                                .map(response -> new NonTransientPointOperationResult(response));
+                                .map(response -> new NonTransientPointOperationResult(response))
+                                .onErrorResume(
+                                    t -> isCosmosException(t),
+                                    t -> Mono.just(
+                                        new NonTransientPointOperationResult(
+                                            Utils.as(Exceptions.unwrap(t), CosmosException.class))));
 
                         if (logger.isDebugEnabled()) {
                             monoList.add(initialMonoAcrossAllRegions.doOnSubscribe(c -> logger.debug(
@@ -5183,6 +5188,11 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 return exception;
             })
             .doOnCancel(() -> diagnosticsFactory.merge(nonNullRequestOptions));
+    }
+
+    private static boolean isCosmosException(Throwable t) {
+        final Throwable unwrappedException = Exceptions.unwrap(t);
+        return unwrappedException instanceof CosmosException;
     }
 
     private static boolean isNonTransientCosmosException(Throwable t) {
