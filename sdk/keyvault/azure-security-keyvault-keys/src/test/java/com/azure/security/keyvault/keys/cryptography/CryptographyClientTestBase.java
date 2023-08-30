@@ -35,7 +35,6 @@ import com.azure.security.keyvault.keys.implementation.KeyVaultCredentialPolicy;
 import com.azure.security.keyvault.keys.models.JsonWebKey;
 import com.azure.security.keyvault.keys.models.KeyCurveName;
 import com.azure.security.keyvault.keys.models.KeyOperation;
-import com.azure.security.keyvault.keys.models.KeyVaultKey;
 import org.junit.jupiter.api.Test;
 
 import javax.crypto.KeyGenerator;
@@ -206,10 +205,10 @@ public abstract class CryptographyClientTestBase extends TestProxyTestBase {
         if (javaVersion.startsWith("1.")) {
             javaVersion = javaVersion.substring(2, 3);
         } else {
-            int dot = javaVersion.indexOf(".");
+            int period = javaVersion.indexOf(".");
 
-            if(dot != -1) {
-                javaVersion = javaVersion.substring(0, dot);
+            if (period != -1) {
+                javaVersion = javaVersion.substring(0, period);
             }
         }
 
@@ -250,7 +249,7 @@ public abstract class CryptographyClientTestBase extends TestProxyTestBase {
             KeyPair keyPair = generator.generateKeyPair();
 
             JsonWebKey jsonWebKey =
-                JsonWebKey.fromEc(keyPair, provider, Arrays.asList(KeyOperation.SIGN, KeyOperation.VERIFY));;
+                JsonWebKey.fromEc(keyPair, provider, Arrays.asList(KeyOperation.SIGN, KeyOperation.VERIFY));
 
             testRunner.accept(new SignVerifyEcData(jsonWebKey, curve, curveToSignature, messageDigestAlgorithm));
         }
