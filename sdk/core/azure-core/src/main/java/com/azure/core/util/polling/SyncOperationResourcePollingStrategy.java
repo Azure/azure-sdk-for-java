@@ -219,7 +219,6 @@ public class SyncOperationResourcePollingStrategy<T, U> implements SyncPollingSt
         HttpRequest request = new HttpRequest(HttpMethod.GET, finalGetUrl);
         try (HttpResponse response = httpPipeline.sendSync(request, context)) {
             BinaryData responseBody = response.getBodyAsBinaryData();
-            responseBody.toString();
             return PollingUtils.deserializeResponseSync(responseBody, serializer, resultType);
         }
     }
