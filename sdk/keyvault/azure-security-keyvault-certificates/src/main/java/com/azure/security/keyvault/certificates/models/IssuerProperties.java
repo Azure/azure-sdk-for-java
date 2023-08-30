@@ -4,6 +4,7 @@
 package com.azure.security.keyvault.certificates.models;
 
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.security.keyvault.certificates.implementation.IssuerPropertiesHelper;
 import com.azure.security.keyvault.certificates.implementation.models.CertificateIssuerItem;
 
 import static com.azure.security.keyvault.certificates.implementation.CertificatesUtils.getIdMetadata;
@@ -13,6 +14,10 @@ import static com.azure.security.keyvault.certificates.implementation.Certificat
  */
 public class IssuerProperties {
     private static final ClientLogger LOGGER = new ClientLogger(IssuerProperties.class);
+
+    static {
+        IssuerPropertiesHelper.setAccessor(IssuerProperties::new);
+    }
 
     private final CertificateIssuerItem impl;
 

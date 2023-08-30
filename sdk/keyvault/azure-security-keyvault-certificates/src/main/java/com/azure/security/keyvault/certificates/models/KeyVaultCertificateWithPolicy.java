@@ -30,6 +30,10 @@ public class KeyVaultCertificateWithPolicy extends KeyVaultCertificate {
         this.policy = CertificatePolicyHelper.createCertificatePolicy(bundle.getPolicy());
     }
 
+    KeyVaultCertificateWithPolicy(byte[] cer, String kid, String sid, CertificateProperties properties) {
+        super(cer, kid, sid, properties);
+    }
+
     /**
      * Set the certificate properties
      * @param properties the certificate properties

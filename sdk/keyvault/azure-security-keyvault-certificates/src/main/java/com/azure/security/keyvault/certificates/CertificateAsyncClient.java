@@ -27,6 +27,7 @@ import com.azure.security.keyvault.certificates.implementation.CertificateOperat
 import com.azure.security.keyvault.certificates.implementation.CertificatePolicyHelper;
 import com.azure.security.keyvault.certificates.implementation.CertificatePropertiesHelper;
 import com.azure.security.keyvault.certificates.implementation.DeletedCertificateHelper;
+import com.azure.security.keyvault.certificates.implementation.IssuerPropertiesHelper;
 import com.azure.security.keyvault.certificates.implementation.KeyVaultCertificateWithPolicyHelper;
 import com.azure.security.keyvault.certificates.implementation.models.CertificateAttributes;
 import com.azure.security.keyvault.certificates.implementation.models.CertificateIssuerItem;
@@ -62,7 +63,6 @@ import java.util.Map;
 import java.util.function.Function;
 
 import static com.azure.core.util.FluxUtil.monoError;
-import static com.azure.core.util.FluxUtil.pagedFluxError;
 import static com.azure.security.keyvault.certificates.implementation.CertificateIssuerHelper.createCertificateIssuer;
 import static com.azure.security.keyvault.certificates.implementation.CertificateIssuerHelper.getIssuerBundle;
 import static com.azure.security.keyvault.certificates.implementation.CertificateOperationHelper.createCertificateOperation;
@@ -550,12 +550,8 @@ public final class CertificateAsyncClient {
                 .setExpires(properties.getExpiresOn())
                 .setNotBefore(properties.getNotBefore());
 
-            com.azure.security.keyvault.certificates.implementation.models.CertificatePolicy implPolicy =
-                new com.azure.security.keyvault.certificates.implementation.models.CertificatePolicy()
-                    .setAttributes(certificateAttributes);
-
             return implClient.updateCertificateWithResponseAsync(vaultUrl, properties.getName(),
-                    properties.getVersion(), implPolicy, certificateAttributes, properties.getTags())
+                    properties.getVersion(), null, certificateAttributes, properties.getTags())
                 .map(response -> new SimpleResponse<>(response, createCertificateWithPolicy(response.getValue())));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
@@ -1638,13 +1634,7 @@ public final class CertificateAsyncClient {
     }
 
     static PagedResponse<IssuerProperties> mapIssuersPagedResponse(PagedResponse<CertificateIssuerItem> page) {
-        List<IssuerProperties> properties = new ArrayList<>(page.getValue().size());
-        for (CertificateIssuerItem item : page.getValue()) {
-            properties.add(createIssuerProperties(item));
-        }
-
-        return new PagedResponseBase<>(page.getRequest(), page.getStatusCode(), page.getHeaders(),
-            properties, page.getContinuationToken(), null);
+        return mapPagedResponse(page, IssuerPropertiesHelper::createIssuerProperties);
     }
 
     /**

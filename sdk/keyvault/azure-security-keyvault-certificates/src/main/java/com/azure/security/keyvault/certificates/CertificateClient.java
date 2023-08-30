@@ -250,7 +250,8 @@ public final class CertificateClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<CertificateOperation, KeyVaultCertificateWithPolicy> getCertificateOperation(
         String certificateName) {
-        return SyncPoller.createPoller(Duration.ofSeconds(1), pollingContext -> null,
+        return SyncPoller.createPoller(Duration.ofSeconds(1),
+            ignored -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED, null),
             ignored -> certificatePollOperation(certificateName),
             (ignored1, ignored2) -> certificateCancellationOperation(certificateName),
             ignored -> fetchCertificateOperation(certificateName));
@@ -457,12 +458,8 @@ public final class CertificateClient {
             .setExpires(properties.getExpiresOn())
             .setNotBefore(properties.getNotBefore());
 
-        com.azure.security.keyvault.certificates.implementation.models.CertificatePolicy implPolicy =
-            new com.azure.security.keyvault.certificates.implementation.models.CertificatePolicy()
-                .setAttributes(certificateAttributes);
-
         Response<CertificateBundle> response = implClient.updateCertificateWithResponse(vaultUrl, properties.getName(),
-                properties.getVersion(), implPolicy, certificateAttributes, properties.getTags(), context);
+                properties.getVersion(), null, certificateAttributes, properties.getTags(), context);
 
         return new SimpleResponse<>(response, createCertificateWithPolicy(response.getValue()));
     }

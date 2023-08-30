@@ -30,21 +30,21 @@ import reactor.util.function.Tuples;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
-import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import java.time.Duration;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
 
 public class CertificateAsyncClientTest extends CertificateClientTestBase {
     private CertificateAsyncClient certificateAsyncClient;
@@ -675,22 +675,16 @@ public class CertificateAsyncClientTest extends CertificateClientTestBase {
         listCertificateIssuersRunner((certificateIssuers) -> {
             HashMap<String, CertificateIssuer> certificateIssuersToList = new HashMap<>(certificateIssuers);
 
-
-            AtomicInteger count = new AtomicInteger(0);
             for (CertificateIssuer issuer : certificateIssuers.values()) {
                 StepVerifier.create(certificateAsyncClient.createIssuer(issuer))
-                    .assertNext(certificateIssuer -> assertNotNull(certificateIssuer.getName()))
+                    .assertNext(certificateIssuer -> assertIssuerCreatedCorrectly(issuer, certificateIssuer))
                     .verifyComplete();
             }
 
             StepVerifier.create(certificateAsyncClient.listPropertiesOfIssuers()
-                    .map(issuerProperties -> {
-                        if (certificateIssuersToList.containsKey(issuerProperties.getName())) {
-                            count.incrementAndGet();
-                        }
-                        return Mono.empty();
-                    }).last())
-                .assertNext(ignore -> assertEquals(certificateIssuersToList.size(), count.get()))
+                    .doOnNext(issuerProperties -> certificateIssuersToList.remove(issuerProperties.getName()))
+                    .last())
+                .assertNext(ignore -> assertEquals(0, certificateIssuersToList.size()))
                 .verifyComplete();
         });
     }
@@ -833,13 +827,11 @@ public class CertificateAsyncClientTest extends CertificateClientTestBase {
                     .verifyComplete();
             }
 
-            sleepIfRunningAgainstService(4000);
+            sleepIfRunningAgainstService(30000);
 
             StepVerifier.create(certificateAsyncClient.listDeletedCertificates()
-                    .map(deletedCertificate -> {
-                        certificatesToDelete.remove(deletedCertificate.getName());
-                        return Mono.just("complete");
-                    }).last())
+                    .doOnNext(deletedCertificate -> certificatesToDelete.remove(deletedCertificate.getName()))
+                    .last())
                 .assertNext(ignored -> assertEquals(0, certificatesToDelete.size()))
                 .verifyComplete();
         });
@@ -858,14 +850,8 @@ public class CertificateAsyncClientTest extends CertificateClientTestBase {
                     assertEquals(importCertificateOptions.isEnabled(), importedCertificate.getProperties().isEnabled());
 
                     // Load the CER part into X509Certificate object
-                    X509Certificate x509Certificate = null;
-
-                    try {
-                        x509Certificate = loadCerToX509Certificate(importedCertificate);
-                    } catch (CertificateException | IOException e) {
-                        e.printStackTrace();
-                        fail();
-                    }
+                    X509Certificate x509Certificate = assertDoesNotThrow(
+                        () -> loadCerToX509Certificate(importedCertificate));
 
                     assertEquals("CN=KeyVaultTest", x509Certificate.getSubjectX500Principal().getName());
                     assertEquals("CN=KeyVaultTest", x509Certificate.getIssuerX500Principal().getName());
@@ -875,13 +861,12 @@ public class CertificateAsyncClientTest extends CertificateClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
-    @SuppressWarnings("ArraysAsListWithZeroOrOneArgument")
     public void mergeCertificateNotFound(HttpClient httpClient, CertificateServiceVersion serviceVersion) {
         createCertificateAsyncClient(httpClient, serviceVersion);
 
         StepVerifier.create(certificateAsyncClient.mergeCertificate(
                 new MergeCertificateOptions(testResourceNamer.randomName("testCert", 20),
-                    Arrays.asList("test".getBytes()))))
+                    Collections.singletonList("test".getBytes()))))
             .verifyErrorSatisfies(e ->
                 assertResponseException(e, KeyVaultErrorException.class, HttpURLConnection.HTTP_NOT_FOUND));
     }
