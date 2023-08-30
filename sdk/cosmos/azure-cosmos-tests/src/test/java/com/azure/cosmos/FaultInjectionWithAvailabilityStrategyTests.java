@@ -7,6 +7,7 @@ import com.azure.cosmos.implementation.DatabaseAccount;
 import com.azure.cosmos.implementation.DatabaseAccountLocation;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.RxDocumentClientImpl;
 import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.implementation.Utils;
@@ -185,6 +186,12 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
         Consumer<CosmosAsyncContainer> injectTransitTimeoutIntoAllRegions =
             (c) -> injectTransitTimeout(c, this.writeableRegions);
 
+        Consumer<CosmosAsyncContainer> injectServiceUnavailableIntoFirstRegionOnly =
+            (c) -> injectServiceUnavailable(c, this.getFirstRegion());
+
+        Consumer<CosmosAsyncContainer> injectServiceUnavailableIntoAllRegions =
+            (c) -> injectServiceUnavailable(c, this.writeableRegions);
+
         BiConsumer<Integer, Integer> validateStatusCodeIsReadSessionNotAvailableError =
             (statusCode, subStatusCode) -> {
                 assertThat(statusCode).isEqualTo(HttpConstants.StatusCodes.NOTFOUND);
@@ -241,6 +248,19 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 assertThat(ctx).isNotNull();
                 assertThat(ctx.getDiagnostics()).isNotNull();
                 assertThat(ctx.getDiagnostics().size()).isEqualTo (1);
+                assertThat(ctx.getContactedRegionNames().size()).isEqualTo(2);
+            };
+
+        Consumer<CosmosDiagnosticsContext> validateDiagnosticsContextHasDiagnosticsForOneOrTwoRegionsButTwoContactedRegions =
+            (ctx) -> {
+                logger.info(
+                    "Diagnostics Context to evaluate: {}",
+                    ctx != null ? ctx.toJson() : "NULL");
+
+                assertThat(ctx).isNotNull();
+                assertThat(ctx.getDiagnostics()).isNotNull();
+                assertThat(ctx.getDiagnostics().size()).isGreaterThanOrEqualTo (1);
+                assertThat(ctx.getDiagnostics().size()).isLessThanOrEqualTo(2);
                 assertThat(ctx.getContactedRegionNames().size()).isEqualTo(2);
             };
 
@@ -523,7 +543,55 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 validateDiagnosticsContextHasDiagnosticsForOnlyFirstRegion
             },
 
-            // 503 only first region
+            // NOTE - TODO @fabianm disabled this test for now
+            // Retries in local region are repeatedly happening - resulting in timing out
+            // without even retrying cross region
+            // This could be by design - but did not meet my intuition
+            // needs more investigation
+            //
+            // This test injects 503 (Service Unavailable) into the local region only.
+            // No availability strategy exists - expected outcome is a successful response from the cross-regional
+            // retry issued in the client retry policy
+            // new Object[] {
+            //    "503_FirstRegionOnly_NoAvailabilityStrategy",
+            //    Duration.ofSeconds(1),
+            //    noAvailabilityStrategy,
+            //    noRegionSwitchHint,
+            //    sameDocumentIdJustCreated,
+            //    injectServiceUnavailableIntoFirstRegionOnly,
+            //    validateStatusCodeIs200Ok,
+            //    validateDiagnosticsContextHasDiagnosticsForOnlyFirstRegionButWithRegionalFailover
+            //},
+
+            // This test injects 503 (Service Unavailable) into the local region only.
+            // Expected outcome is a successful retry either by the cross-regional retry triggered in the
+            // ClientRetryPolicy of the initial execution or the one triggered by the availability strategy
+            // whatever happens first
+            new Object[] {
+                "503_FirstRegionOnly",
+                Duration.ofSeconds(1),
+                eagerThresholdAvailabilityStrategy,
+                noRegionSwitchHint,
+                sameDocumentIdJustCreated,
+                injectServiceUnavailableIntoFirstRegionOnly,
+                validateStatusCodeIs200Ok,
+                validateDiagnosticsContextHasDiagnosticsForOneOrTwoRegionsButTwoContactedRegions
+            },
+
+            // This test injects 503 (Service Unavailable) into all regions.
+            // Expected outcome is a timeout due to ongoing retries in both operations triggered by
+            // availability strategy. Diagnostics should contain two operations.
+            new Object[] {
+                "503_AllRegions",
+                Duration.ofSeconds(1),
+                eagerThresholdAvailabilityStrategy,
+                noRegionSwitchHint,
+                sameDocumentIdJustCreated,
+                injectServiceUnavailableIntoAllRegions,
+                validateStatusCodeIsOperationCancelled,
+                validateDiagnosticsContextHasDiagnosticsForAllRegions
+            },
+
 
             // 500 only first region
 
@@ -553,12 +621,14 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
         return databaseWithSeveralWriteableRegions.getContainer(containerId);
     }
 
-    private static void injectReadSessionNotAvailableError(
+    private static void inject(
+        String ruleName,
         CosmosAsyncContainer containerWithSeveralWriteableRegions,
-        List<String> applicableRegions) {
+        List<String> applicableRegions,
+        FaultInjectionOperationType applicableOperationType,
+        FaultInjectionServerErrorResult toBeInjectedServerErrorResult) {
 
-        String ruleName = "serverErrorRule-read-session-unavailable-" + UUID.randomUUID();
-        FaultInjectionRuleBuilder badSessionTokenRuleBuilder = new FaultInjectionRuleBuilder(ruleName);
+        FaultInjectionRuleBuilder ruleBuilder = new FaultInjectionRuleBuilder(ruleName);
 
         List<FaultInjectionRule> faultInjectionRules = new ArrayList<>();
 
@@ -567,19 +637,15 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
         for (String region : applicableRegions) {
             FaultInjectionCondition faultInjectionConditionForReads =
                 new FaultInjectionConditionBuilder()
-                    .operationType(FaultInjectionOperationType.READ_ITEM)
+                    .operationType(applicableOperationType)
                     .connectionType(FaultInjectionConnectionType.DIRECT)
                     .region(region)
                     .build();
 
-            FaultInjectionServerErrorResult badSessionTokenServerErrorResult = FaultInjectionResultBuilders
-                .getResultBuilder(FaultInjectionServerErrorType.READ_SESSION_NOT_AVAILABLE)
-                .build();
-
             // sustained fault injection
-            FaultInjectionRule readSessionUnavailableRule = badSessionTokenRuleBuilder
+            FaultInjectionRule readSessionUnavailableRule = ruleBuilder
                 .condition(faultInjectionConditionForReads)
-                .result(badSessionTokenServerErrorResult)
+                .result(toBeInjectedServerErrorResult)
                 .duration(Duration.ofSeconds(120))
                 .build();
 
@@ -596,48 +662,59 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
             String.join(", ", applicableRegions));
     }
 
+    private static void injectReadSessionNotAvailableError(
+        CosmosAsyncContainer containerWithSeveralWriteableRegions,
+        List<String> applicableRegions) {
+
+        String ruleName = "serverErrorRule-read-session-unavailable-" + UUID.randomUUID();
+        FaultInjectionServerErrorResult badSessionTokenServerErrorResult = FaultInjectionResultBuilders
+            .getResultBuilder(FaultInjectionServerErrorType.READ_SESSION_NOT_AVAILABLE)
+            .build();
+
+        inject(
+            ruleName,
+            containerWithSeveralWriteableRegions,
+            applicableRegions,
+            FaultInjectionOperationType.READ_ITEM,
+            badSessionTokenServerErrorResult
+        );
+    }
+
     private static void injectTransitTimeout(
         CosmosAsyncContainer containerWithSeveralWriteableRegions,
         List<String> applicableRegions) {
 
         String ruleName = "serverErrorRule-transitTimeout-" + UUID.randomUUID();
-        FaultInjectionRuleBuilder badSessionTokenRuleBuilder = new FaultInjectionRuleBuilder(ruleName);
+        FaultInjectionServerErrorResult timeoutResult = FaultInjectionResultBuilders
+            .getResultBuilder(FaultInjectionServerErrorType.RESPONSE_DELAY)
+            .delay(Duration.ofSeconds(6))
+            .build();
 
-        List<FaultInjectionRule> faultInjectionRules = new ArrayList<>();
-
-        // inject 404/1002s in all regions
-        // configure in accordance with preferredRegions on the client
-        for (String region : applicableRegions) {
-            FaultInjectionCondition faultInjectionConditionForReads =
-                new FaultInjectionConditionBuilder()
-                    .operationType(FaultInjectionOperationType.READ_ITEM)
-                    .connectionType(FaultInjectionConnectionType.DIRECT)
-                    .region(region)
-                    .build();
-
-            FaultInjectionServerErrorResult timeoutResult = FaultInjectionResultBuilders
-                .getResultBuilder(FaultInjectionServerErrorType.RESPONSE_DELAY)
-                .delay(Duration.ofSeconds(6))
-                .build();
-
-            // sustained fault injection
-            FaultInjectionRule timeoutRule = badSessionTokenRuleBuilder
-                .condition(faultInjectionConditionForReads)
-                .result(timeoutResult)
-                .duration(Duration.ofSeconds(120))
-                .build();
-
-            faultInjectionRules.add(timeoutRule);
-        }
-
-        CosmosFaultInjectionHelper
-            .configureFaultInjectionRules(containerWithSeveralWriteableRegions, faultInjectionRules)
-            .block();
-
-        logger.info(
-            "FAULT INJECTION - Applied rule '{}' for regions '{}'.",
+        inject(
             ruleName,
-            String.join(", ", applicableRegions));
+            containerWithSeveralWriteableRegions,
+            applicableRegions,
+            FaultInjectionOperationType.READ_ITEM,
+            timeoutResult
+        );
+    }
+
+    private static void injectServiceUnavailable(
+        CosmosAsyncContainer containerWithSeveralWriteableRegions,
+        List<String> applicableRegions) {
+
+        String ruleName = "serverErrorRule-serviceUnavailable-" + UUID.randomUUID();
+        FaultInjectionServerErrorResult serviceUnavailableResult = FaultInjectionResultBuilders
+            .getResultBuilder(FaultInjectionServerErrorType.SERVICE_UNAVAILABLE)
+            .build();
+
+        inject(
+            ruleName,
+            containerWithSeveralWriteableRegions,
+            applicableRegions,
+            FaultInjectionOperationType.READ_ITEM,
+            serviceUnavailableResult
+        );
     }
 
     @Test(groups = {"multi-master"}, dataProvider = "testConfigs_readAfterCreation_with_readSessionNotAvailable")
