@@ -142,7 +142,9 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
     }
 
     private List<String> getFirstRegion() {
-        return List.of(this.writeableRegions.get(0));
+        ArrayList<String> regions = new ArrayList<>();
+        regions.add(this.writeableRegions.get(0));
+        return regions;
     }
 
     private List<String> getAllRegionsExceptFirst() {
