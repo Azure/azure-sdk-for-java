@@ -1051,7 +1051,6 @@ public class CosmosClientBuilder implements
         buildConnectionPolicy();
         CosmosAsyncClient cosmosAsyncClient = new CosmosAsyncClient(this);
         if (proactiveContainerInitConfig != null) {
-
             cosmosAsyncClient.recordOpenConnectionsAndInitCachesStarted(proactiveContainerInitConfig.getCosmosContainerIdentities());
 
             Duration aggressiveWarmupDuration = proactiveContainerInitConfig
