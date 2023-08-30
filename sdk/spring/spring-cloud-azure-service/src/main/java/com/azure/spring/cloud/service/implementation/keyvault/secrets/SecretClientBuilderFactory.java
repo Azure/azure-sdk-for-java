@@ -88,6 +88,12 @@ public class SecretClientBuilderFactory extends AbstractAzureHttpClientBuilderFa
         PropertyMapper map = new PropertyMapper();
         map.from(secretClientProperties.getEndpoint()).to(builder::vaultUrl);
         map.from(secretClientProperties.getServiceVersion()).to(builder::serviceVersion);
+        map.from(secretClientProperties.isDisableChallengeResourceVerification()).to(
+            disabled -> {
+                if (disabled) {
+                    builder.disableChallengeResourceVerification();
+                }
+            });
     }
 
     @Override

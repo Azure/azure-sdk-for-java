@@ -19,6 +19,8 @@ public class AzureKeyVaultProperties extends AbstractAzureHttpConfigurationPrope
      */
     private String endpoint;
 
+    private boolean disableChallengeResourceVerification = false;
+
     /**
      *
      * @return The Azure Key Vault endpoint.
@@ -33,5 +35,22 @@ public class AzureKeyVaultProperties extends AbstractAzureHttpConfigurationPrope
      */
     public void setEndpoint(String endpoint) {
         this.endpoint = endpoint;
+    }
+
+    /**
+     *
+     * @return The value of the disableChallengeResourceVerification property of the Azure Key Vault Client
+     */
+    public boolean isDisableChallengeResourceVerification() {
+        return disableChallengeResourceVerification;
+    }
+
+    /**
+     *
+     * @param disableChallengeResourceVerification The value of the disableChallengeResourceVerification property of the Azure Key Vault Client
+     */
+    public void setDisableChallengeResourceVerification(
+        boolean disableChallengeResourceVerification) {
+        this.disableChallengeResourceVerification = disableChallengeResourceVerification;
     }
 }

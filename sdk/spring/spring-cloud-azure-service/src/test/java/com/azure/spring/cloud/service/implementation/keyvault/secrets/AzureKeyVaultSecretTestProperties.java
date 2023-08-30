@@ -13,6 +13,7 @@ class AzureKeyVaultSecretTestProperties extends AzureHttpSdkProperties implement
 
     private String endpoint;
     private SecretServiceVersion serviceVersion;
+    private boolean disableChallengeResourceVerification;
 
     @Override
     public String getEndpoint() {
@@ -30,5 +31,14 @@ class AzureKeyVaultSecretTestProperties extends AzureHttpSdkProperties implement
 
     public void setServiceVersion(SecretServiceVersion serviceVersion) {
         this.serviceVersion = serviceVersion;
+    }
+
+    @Override
+    public boolean isDisableChallengeResourceVerification() {
+        return disableChallengeResourceVerification;
+    }
+
+    public void setDisableChallengeResourceVerification(boolean disableChallengeResourceVerification) {
+        this.disableChallengeResourceVerification = disableChallengeResourceVerification;
     }
 }

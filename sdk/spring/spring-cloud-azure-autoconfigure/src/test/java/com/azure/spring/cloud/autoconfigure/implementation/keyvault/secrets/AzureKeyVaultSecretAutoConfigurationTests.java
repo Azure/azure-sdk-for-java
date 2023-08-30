@@ -27,6 +27,7 @@ import java.util.Arrays;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class AzureKeyVaultSecretAutoConfigurationTests extends AbstractAzureServiceConfigurationTests<
     SecretClientBuilderFactory, AzureKeyVaultSecretProperties> {
@@ -145,6 +146,7 @@ class AzureKeyVaultSecretAutoConfigurationTests extends AbstractAzureServiceConf
             .withPropertyValues(
                 "spring.cloud.azure.keyvault.secret.endpoint=" + endpoint,
                 "spring.cloud.azure.keyvault.secret.service-version=V7_2",
+                "spring.cloud.azure.keyvault.secret.disable-challenge-resource-verification=true",
 
                 "spring.cloud.azure.keyvault.secret.property-source-enabled=false",
                 "spring.cloud.azure.keyvault.secret.property-sources[0].endpoint=" + endpoint + "-1",
@@ -161,6 +163,7 @@ class AzureKeyVaultSecretAutoConfigurationTests extends AbstractAzureServiceConf
                 assertEquals(endpoint, properties.getEndpoint());
                 assertFalse(properties.isPropertySourceEnabled());
                 assertEquals(SecretServiceVersion.V7_2, properties.getServiceVersion());
+                assertTrue(properties.isDisableChallengeResourceVerification());
 
                 AzureKeyVaultPropertySourceProperties propertySourceProperties = properties.getPropertySources().get(0);
                 assertEquals(endpoint + "-1", propertySourceProperties.getEndpoint());

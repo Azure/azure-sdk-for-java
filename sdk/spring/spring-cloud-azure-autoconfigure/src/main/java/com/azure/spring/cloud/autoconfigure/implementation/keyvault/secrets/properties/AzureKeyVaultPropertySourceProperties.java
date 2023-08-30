@@ -43,6 +43,8 @@ public class AzureKeyVaultPropertySourceProperties extends AbstractAzureHttpConf
      */
     private Duration refreshInterval = DEFAULT_REFRESH_INTERVAL;
 
+    private boolean disableChallengeResourceVerification = false;
+
     /**
      *
      * @return The name of this property source.
@@ -137,5 +139,22 @@ public class AzureKeyVaultPropertySourceProperties extends AbstractAzureHttpConf
      */
     public void setRefreshInterval(Duration refreshInterval) {
         this.refreshInterval = refreshInterval;
+    }
+
+    /**
+     *
+     * @return Whether we should disable the challenge resource verification
+     */
+    public boolean isDisableChallengeResourceVerification() {
+        return disableChallengeResourceVerification;
+    }
+
+    /**
+     *
+     * @param disableChallengeResourceVerification - Whether we should disable the challenge resource verification
+     */
+    public void setDisableChallengeResourceVerification(
+        boolean disableChallengeResourceVerification) {
+        this.disableChallengeResourceVerification = disableChallengeResourceVerification;
     }
 }
