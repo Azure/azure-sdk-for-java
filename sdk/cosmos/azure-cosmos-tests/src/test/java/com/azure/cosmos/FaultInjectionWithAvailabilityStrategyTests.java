@@ -41,6 +41,7 @@ import org.testng.annotations.Test;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
@@ -65,7 +66,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
 
     @Override
     public String resolveTestNameSuffix(Object[] row) {
-        if (row == null) {
+        if (row == null || row.length == 0) {
             return "";
         }
 
@@ -185,7 +186,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 assertThat(subStatusCode).isEqualTo(HttpConstants.SubStatusCodes.CLIENT_OPERATION_TIMEOUT);
             };
 
-        BiConsumer<Integer, Integer> expectedStatusCode200Ok =
+        BiConsumer<Integer, Integer> validateStatusCodeIs200Ok =
             (statusCode, subStatusCode) -> assertThat(statusCode).isEqualTo(HttpConstants.StatusCodes.OK);
 
         Consumer<CosmosDiagnosticsContext> validateDiagnosticsContextHasDiagnosticsForAllRegions =
@@ -214,7 +215,30 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                     .isEqualTo(this.writeableRegions.get(0).toLowerCase(Locale.ROOT));
             };
 
+        Consumer<CosmosDiagnosticsContext> validateDiagnosticsContextHasDiagnosticsForOnlyFirstRegionButWithRegionalFailover =
+            (ctx) -> {
+                logger.info(
+                    "Diagnostics Context to evaluate: {}",
+                    ctx != null ? ctx.toJson() : "NULL");
+
+                assertThat(ctx).isNotNull();
+                assertThat(ctx.getDiagnostics()).isNotNull();
+                assertThat(ctx.getDiagnostics().size()).isEqualTo (1);
+                assertThat(ctx.getContactedRegionNames().size()).isEqualTo(2);
+            };
+
         return new Object[][] {
+            // CONFIG description
+            // new Object[] {
+            //    TestId - name identifying the test case
+            //    End-to-end timeout
+            //    Availability Strategy used
+            //    Region switch hint (404/1002 prefer local or remote retries)
+            //    optional documentId used for reads (instead of the just created doc id) - this can be used to trigger 404/0
+            //    Failure injection callback
+            //    Status code/sub status code validation callback
+            //    Diagnostics context validation callback
+            // },
             new Object[] {
                 "404-1002_AllRegions_RemotePreferred",
                 Duration.ofSeconds(1),
@@ -232,7 +256,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 CosmosRegionSwitchHint.REMOTE_REGION_PREFERRED,
                 sameDocumentIdJustCreated,
                 injectReadSessionNotAvailableIntoFirstRegionOnly,
-                expectedStatusCode200Ok,
+                validateStatusCodeIs200Ok,
                 validateDiagnosticsContextHasDiagnosticsForAllRegions
             },
             new Object[] {
@@ -242,7 +266,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 CosmosRegionSwitchHint.REMOTE_REGION_PREFERRED,
                 sameDocumentIdJustCreated,
                 injectReadSessionNotAvailableIntoAllExceptFirstRegion,
-                expectedStatusCode200Ok,
+                validateStatusCodeIs200Ok,
                 validateDiagnosticsContextHasDiagnosticsForOnlyFirstRegion
             },
             new Object[] {
@@ -262,7 +286,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 CosmosRegionSwitchHint.LOCAL_REGION_PREFERRED,
                 sameDocumentIdJustCreated,
                 injectReadSessionNotAvailableIntoFirstRegionOnly,
-                expectedStatusCode200Ok,
+                validateStatusCodeIs200Ok,
                 validateDiagnosticsContextHasDiagnosticsForAllRegions
             },
             new Object[] {
@@ -272,7 +296,27 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 CosmosRegionSwitchHint.LOCAL_REGION_PREFERRED,
                 sameDocumentIdJustCreated,
                 injectReadSessionNotAvailableIntoAllExceptFirstRegion,
-                expectedStatusCode200Ok,
+                validateStatusCodeIs200Ok,
+                validateDiagnosticsContextHasDiagnosticsForOnlyFirstRegion
+            },
+            new Object[] {
+                "404-1002_OnlyFirstRegion_RemotePreferred_NoAvailabilityStrategy",
+                Duration.ofSeconds(1),
+                null,
+                CosmosRegionSwitchHint.REMOTE_REGION_PREFERRED,
+                sameDocumentIdJustCreated,
+                injectReadSessionNotAvailableIntoFirstRegionOnly,
+                validateStatusCodeIs200Ok, // First operation will failover from region 1 to region 2 quickly enough
+                validateDiagnosticsContextHasDiagnosticsForOnlyFirstRegionButWithRegionalFailover
+            },
+            new Object[] {
+                "404-1002_OnlyFirstRegion_LocalPreferred_NoAvailabilityStrategy",
+                Duration.ofSeconds(1),
+                null,
+                CosmosRegionSwitchHint.LOCAL_REGION_PREFERRED,
+                sameDocumentIdJustCreated,
+                injectReadSessionNotAvailableIntoFirstRegionOnly,
+                validateStatusCodeIsOperationCancelled, // Too many local retries to allow cross regional failover within e2e timeout
                 validateDiagnosticsContextHasDiagnosticsForOnlyFirstRegion
             },
         };
