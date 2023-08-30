@@ -160,6 +160,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
     public Object[][] testConfigs_readAfterCreation_with_readSessionNotAvailable() {
         final String sameDocumentIdJustCreated = null;
 
+        CosmosRegionSwitchHint noRegionSwitchHint = null;
         ThresholdBasedAvailabilityStrategy defaultAvailabilityStrategy = new ThresholdBasedAvailabilityStrategy();
         ThresholdBasedAvailabilityStrategy noAvailabilityStrategy = null;
         ThresholdBasedAvailabilityStrategy eagerThresholdAvailabilityStrategy = new ThresholdBasedAvailabilityStrategy(
@@ -177,6 +178,12 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
 
         Consumer<CosmosAsyncContainer> injectReadSessionNotAvailableIntoAllExceptFirstRegion =
             (c) -> injectReadSessionNotAvailableError(c, this.getAllRegionsExceptFirst());
+
+        Consumer<CosmosAsyncContainer> injectTransitTimeoutIntoFirstRegionOnly =
+            (c) -> injectTransitTimeout(c, this.getFirstRegion());
+
+        Consumer<CosmosAsyncContainer> injectTransitTimeoutIntoAllRegions =
+            (c) -> injectTransitTimeout(c, this.writeableRegions);
 
         BiConsumer<Integer, Integer> validateStatusCodeIsReadSessionNotAvailableError =
             (statusCode, subStatusCode) -> {
@@ -416,7 +423,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
             // should result in the 404/0 being returned
             new Object[] {
                 "Legit404_404-1002_OnlyFirstRegion_RemotePreferred_NoAvailabilityStrategy",
-                Duration.ofSeconds(50),
+                Duration.ofSeconds(1),
                 null,
                 CosmosRegionSwitchHint.REMOTE_REGION_PREFERRED,
                 "SomeNonExistingId",
@@ -432,7 +439,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
             // should result in returning 404/0
             new Object[] {
                 "Legit404_OnlyFirstRegion_RemotePreferred",
-                Duration.ofSeconds(50),
+                Duration.ofSeconds(5),
                 reluctantThresholdAvailabilityStrategy,
                 CosmosRegionSwitchHint.REMOTE_REGION_PREFERRED,
                 "SomeNonExistingId",
@@ -440,6 +447,89 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 validateStatusCodeIsLegitNotFound, // Too many local retries to allow cross regional failover within e2e timeout
                 validateDiagnosticsContextHasDiagnosticsForOnlyFirstRegionButWithRegionalFailover
             },
+
+
+            // This test injects 408 timeouts (as transit timeouts) into all regions.
+            // Expected outcome is a 408 after doing cross regional retries via availability strategy
+            // against all regions
+            new Object[] {
+                "408_AllRegions",
+                Duration.ofSeconds(1),
+                eagerThresholdAvailabilityStrategy,
+                noRegionSwitchHint,
+                sameDocumentIdJustCreated,
+                injectTransitTimeoutIntoAllRegions,
+                validateStatusCodeIsOperationCancelled,
+                validateDiagnosticsContextHasDiagnosticsForAllRegions
+            },
+
+            // This test injects 408 timeouts (as transit timeouts) into the local region only.
+            // Expected outcome is a successful response from the cross-regional retry from availability strategy
+            // against the secondary region.
+            new Object[] {
+                "408_FirstRegionOnly",
+                Duration.ofSeconds(1),
+                eagerThresholdAvailabilityStrategy,
+                noRegionSwitchHint,
+                sameDocumentIdJustCreated,
+                injectTransitTimeoutIntoFirstRegionOnly,
+                validateStatusCodeIs200Ok,
+                validateDiagnosticsContextHasDiagnosticsForAllRegions
+            },
+
+            // This test injects 408 timeouts (as transit timeouts) into all regions.
+            // There is no availability strategy - so, expected outcome is a timeout with diagnostics for just
+            // the local region
+            new Object[] {
+                "408_AllRegions_NoAvailabilityStrategy",
+                Duration.ofSeconds(1),
+                noAvailabilityStrategy,
+                noRegionSwitchHint,
+                sameDocumentIdJustCreated,
+                injectTransitTimeoutIntoAllRegions,
+                validateStatusCodeIsOperationCancelled,
+                validateDiagnosticsContextHasDiagnosticsForOnlyFirstRegion
+            },
+
+            // This test injects 408 timeouts (as transit timeouts) into the local region only.
+            // There is no availability strategy - the e2e timeouts is very high. This test evaluates whether
+            // cross regional retry would eventually kick-in for the 408s even without availability strategy.
+            //
+            // NOTE - local retries for 408 would basically retry forever in local region
+            // even within 30 seconds no cross-regional retry is happening
+            //
+            // new Object[] {
+            //    "408_FirstRegionOnly_NoAvailabilityStrategy_LongE2ETimeout",
+            //    Duration.ofSeconds(30),
+            //    noAvailabilityStrategy,
+            //    noRegionSwitchHint,
+            //    sameDocumentIdJustCreated,
+            //    injectTransitTimeoutIntoFirstRegionOnly,
+            //    validateStatusCodeIs200Ok,
+            //    validateDiagnosticsContextHasDiagnosticsForOnlyFirstRegionButWithRegionalFailover
+            //},
+
+            // This test injects 408 timeouts (as transit timeouts) into the local region only.
+            // There is no availability strategy - the e2e timeout is shorter than the NetworkRequestTimeout - so,
+            // a timeout is expected with diagnostics only for the local region
+            new Object[] {
+                "408_FirstRegionOnly_NoAvailabilityStrategy",
+                Duration.ofSeconds(1),
+                noAvailabilityStrategy,
+                noRegionSwitchHint,
+                sameDocumentIdJustCreated,
+                injectTransitTimeoutIntoFirstRegionOnly,
+                validateStatusCodeIsOperationCancelled,
+                validateDiagnosticsContextHasDiagnosticsForOnlyFirstRegion
+            },
+
+            // 503 only first region
+
+            // 500 only first region
+
+
+
+
         };
     }
 
@@ -474,12 +564,12 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
 
         // inject 404/1002s in all regions
         // configure in accordance with preferredRegions on the client
-        for (String writeableRegion : applicableRegions) {
+        for (String region : applicableRegions) {
             FaultInjectionCondition faultInjectionConditionForReads =
                 new FaultInjectionConditionBuilder()
                     .operationType(FaultInjectionOperationType.READ_ITEM)
                     .connectionType(FaultInjectionConnectionType.DIRECT)
-                    .region(writeableRegion)
+                    .region(region)
                     .build();
 
             FaultInjectionServerErrorResult badSessionTokenServerErrorResult = FaultInjectionResultBuilders
@@ -494,6 +584,50 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 .build();
 
             faultInjectionRules.add(readSessionUnavailableRule);
+        }
+
+        CosmosFaultInjectionHelper
+            .configureFaultInjectionRules(containerWithSeveralWriteableRegions, faultInjectionRules)
+            .block();
+
+        logger.info(
+            "FAULT INJECTION - Applied rule '{}' for regions '{}'.",
+            ruleName,
+            String.join(", ", applicableRegions));
+    }
+
+    private static void injectTransitTimeout(
+        CosmosAsyncContainer containerWithSeveralWriteableRegions,
+        List<String> applicableRegions) {
+
+        String ruleName = "serverErrorRule-transitTimeout-" + UUID.randomUUID();
+        FaultInjectionRuleBuilder badSessionTokenRuleBuilder = new FaultInjectionRuleBuilder(ruleName);
+
+        List<FaultInjectionRule> faultInjectionRules = new ArrayList<>();
+
+        // inject 404/1002s in all regions
+        // configure in accordance with preferredRegions on the client
+        for (String region : applicableRegions) {
+            FaultInjectionCondition faultInjectionConditionForReads =
+                new FaultInjectionConditionBuilder()
+                    .operationType(FaultInjectionOperationType.READ_ITEM)
+                    .connectionType(FaultInjectionConnectionType.DIRECT)
+                    .region(region)
+                    .build();
+
+            FaultInjectionServerErrorResult timeoutResult = FaultInjectionResultBuilders
+                .getResultBuilder(FaultInjectionServerErrorType.RESPONSE_DELAY)
+                .delay(Duration.ofSeconds(6))
+                .build();
+
+            // sustained fault injection
+            FaultInjectionRule timeoutRule = badSessionTokenRuleBuilder
+                .condition(faultInjectionConditionForReads)
+                .result(timeoutResult)
+                .duration(Duration.ofSeconds(120))
+                .build();
+
+            faultInjectionRules.add(timeoutRule);
         }
 
         CosmosFaultInjectionHelper
