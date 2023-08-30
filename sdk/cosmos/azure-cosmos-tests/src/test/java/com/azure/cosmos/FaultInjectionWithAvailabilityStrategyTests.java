@@ -7,7 +7,6 @@ import com.azure.cosmos.implementation.DatabaseAccount;
 import com.azure.cosmos.implementation.DatabaseAccountLocation;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.HttpConstants;
-import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.RxDocumentClientImpl;
 import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.implementation.Utils;
@@ -42,7 +41,6 @@ import org.testng.annotations.Test;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
@@ -192,6 +190,12 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
         Consumer<CosmosAsyncContainer> injectServiceUnavailableIntoAllRegions =
             (c) -> injectServiceUnavailable(c, this.writeableRegions);
 
+        Consumer<CosmosAsyncContainer> injectInternalServerErrorIntoFirstRegionOnly =
+            (c) -> injectInternalServerError(c, this.getFirstRegion());
+
+        Consumer<CosmosAsyncContainer> injectInternalServerErrorIntoAllRegions =
+            (c) -> injectInternalServerError(c, this.writeableRegions);
+
         BiConsumer<Integer, Integer> validateStatusCodeIsReadSessionNotAvailableError =
             (statusCode, subStatusCode) -> {
                 assertThat(statusCode).isEqualTo(HttpConstants.StatusCodes.NOTFOUND);
@@ -212,6 +216,18 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
 
         BiConsumer<Integer, Integer> validateStatusCodeIs200Ok =
             (statusCode, subStatusCode) -> assertThat(statusCode).isEqualTo(HttpConstants.StatusCodes.OK);
+
+        BiConsumer<Integer, Integer> validateStatusCodeIsInternalServerError =
+            (statusCode, subStatusCode) -> {
+                assertThat(statusCode).isEqualTo(HttpConstants.StatusCodes.INTERNAL_SERVER_ERROR);
+                assertThat(subStatusCode).isEqualTo(HttpConstants.SubStatusCodes.UNKNOWN);
+            };
+
+        BiConsumer<Integer, Integer> validateStatusCodeIsServiceUnavailable =
+            (statusCode, subStatusCode) -> {
+                assertThat(statusCode).isEqualTo(HttpConstants.StatusCodes.SERVICE_UNAVAILABLE);
+                assertThat(subStatusCode).isEqualTo(HttpConstants.SubStatusCodes.SERVER_GENERATED_503);
+            };
 
         Consumer<CosmosDiagnosticsContext> validateDiagnosticsContextHasDiagnosticsForAllRegions =
             (ctx) -> {
@@ -518,16 +534,16 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
             // NOTE - local retries for 408 would basically retry forever in local region
             // even within 30 seconds no cross-regional retry is happening
             //
-            // new Object[] {
-            //    "408_FirstRegionOnly_NoAvailabilityStrategy_LongE2ETimeout",
-            //    Duration.ofSeconds(30),
-            //    noAvailabilityStrategy,
-            //    noRegionSwitchHint,
-            //    sameDocumentIdJustCreated,
-            //    injectTransitTimeoutIntoFirstRegionOnly,
-            //    validateStatusCodeIs200Ok,
-            //    validateDiagnosticsContextHasDiagnosticsForOnlyFirstRegionButWithRegionalFailover
-            //},
+            new Object[] {
+               "408_FirstRegionOnly_NoAvailabilityStrategy_LongE2ETimeout",
+               Duration.ofSeconds(90),
+               noAvailabilityStrategy,
+               noRegionSwitchHint,
+               sameDocumentIdJustCreated,
+               injectTransitTimeoutIntoFirstRegionOnly,
+               validateStatusCodeIs200Ok,
+               validateDiagnosticsContextHasDiagnosticsForOnlyFirstRegionButWithRegionalFailover
+            },
 
             // This test injects 408 timeouts (as transit timeouts) into the local region only.
             // There is no availability strategy - the e2e timeout is shorter than the NetworkRequestTimeout - so,
@@ -543,25 +559,19 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 validateDiagnosticsContextHasDiagnosticsForOnlyFirstRegion
             },
 
-            // NOTE - TODO @fabianm disabled this test for now
-            // Retries in local region are repeatedly happening - resulting in timing out
-            // without even retrying cross region
-            // This could be by design - but did not meet my intuition
-            // needs more investigation
-            //
             // This test injects 503 (Service Unavailable) into the local region only.
             // No availability strategy exists - expected outcome is a successful response from the cross-regional
             // retry issued in the client retry policy
-            // new Object[] {
-            //    "503_FirstRegionOnly_NoAvailabilityStrategy",
-            //    Duration.ofSeconds(1),
-            //    noAvailabilityStrategy,
-            //    noRegionSwitchHint,
-            //    sameDocumentIdJustCreated,
-            //    injectServiceUnavailableIntoFirstRegionOnly,
-            //    validateStatusCodeIs200Ok,
-            //    validateDiagnosticsContextHasDiagnosticsForOnlyFirstRegionButWithRegionalFailover
-            //},
+            new Object[] {
+               "503_FirstRegionOnly_NoAvailabilityStrategy",
+               Duration.ofSeconds(90),
+               noAvailabilityStrategy,
+               noRegionSwitchHint,
+               sameDocumentIdJustCreated,
+               injectServiceUnavailableIntoFirstRegionOnly,
+               validateStatusCodeIs200Ok,
+               validateDiagnosticsContextHasDiagnosticsForOnlyFirstRegionButWithRegionalFailover
+            },
 
             // This test injects 503 (Service Unavailable) into the local region only.
             // Expected outcome is a successful retry either by the cross-regional retry triggered in the
@@ -588,16 +598,57 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 noRegionSwitchHint,
                 sameDocumentIdJustCreated,
                 injectServiceUnavailableIntoAllRegions,
-                validateStatusCodeIsOperationCancelled,
+                validateStatusCodeIsServiceUnavailable,
                 validateDiagnosticsContextHasDiagnosticsForAllRegions
             },
 
+            // This test injects 500 (Internal Server Error) into all regions.
+            //
+            // Currently, 500 (Internal Server error) is not ever retried. Neither in the Consistency Reader
+            // nor ClientRetryPolicy - so, a 500 will immediately fail the Mono and there will only
+            // be diagnostics for the first region
+            new Object[] {
+               "500_FirstRegionOnly_NoAvailabilityStrategy",
+               Duration.ofSeconds(90),
+               noAvailabilityStrategy,
+               noRegionSwitchHint,
+               sameDocumentIdJustCreated,
+               injectInternalServerErrorIntoFirstRegionOnly,
+               validateStatusCodeIsInternalServerError,
+               validateDiagnosticsContextHasDiagnosticsForOnlyFirstRegion
+            },
 
-            // 500 only first region
+            // This test injects 500 (Internal Server Error) into all regions.
+            //
+            // Currently, 500 (Internal Server error) is not ever retried. Neither in the Consistency Reader
+            // nor ClientRetryPolicy - so, a 500 will immediately fail the Mono and there will only
+            // be diagnostics for the first region
+            new Object[] {
+                "500_FirstRegionOnly_DefaultAvailabilityStrategy",
+                Duration.ofSeconds(1),
+                defaultAvailabilityStrategy,
+                noRegionSwitchHint,
+                sameDocumentIdJustCreated,
+                injectInternalServerErrorIntoFirstRegionOnly,
+                validateStatusCodeIsInternalServerError,
+                validateDiagnosticsContextHasDiagnosticsForOnlyFirstRegion
+            },
 
-
-
-
+            // This test injects 500 (Internal Server Error) into all regions.
+            //
+            // Currently, 500 (Internal Server error) is not ever retried. Neither in the Consistency Reader
+            // nor ClientRetryPolicy - so, a 500 will immediately fail the Mono and there will only
+            // be diagnostics for the first region
+            new Object[] {
+                "500_AllRegions_DefaultAvailabilityStrategy",
+                Duration.ofSeconds(1),
+                defaultAvailabilityStrategy,
+                noRegionSwitchHint,
+                sameDocumentIdJustCreated,
+                injectInternalServerErrorIntoAllRegions,
+                validateStatusCodeIsInternalServerError,
+                validateDiagnosticsContextHasDiagnosticsForOnlyFirstRegion
+            },
         };
     }
 
@@ -706,6 +757,24 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
         String ruleName = "serverErrorRule-serviceUnavailable-" + UUID.randomUUID();
         FaultInjectionServerErrorResult serviceUnavailableResult = FaultInjectionResultBuilders
             .getResultBuilder(FaultInjectionServerErrorType.SERVICE_UNAVAILABLE)
+            .build();
+
+        inject(
+            ruleName,
+            containerWithSeveralWriteableRegions,
+            applicableRegions,
+            FaultInjectionOperationType.READ_ITEM,
+            serviceUnavailableResult
+        );
+    }
+
+    private static void injectInternalServerError(
+        CosmosAsyncContainer containerWithSeveralWriteableRegions,
+        List<String> applicableRegions) {
+
+        String ruleName = "serverErrorRule-internalServerError-" + UUID.randomUUID();
+        FaultInjectionServerErrorResult serviceUnavailableResult = FaultInjectionResultBuilders
+            .getResultBuilder(FaultInjectionServerErrorType.INTERNAL_SERVER_ERROR)
             .build();
 
         inject(

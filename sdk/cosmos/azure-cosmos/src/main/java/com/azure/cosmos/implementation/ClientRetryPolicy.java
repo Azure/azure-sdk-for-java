@@ -132,10 +132,6 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
                 if(canFailoverOnTimeout) {
                     return shouldRetryOnEndpointFailureAsync(this.isReadRequest, true, true);
                 }
-            } else {
-                logger.warn("Backend endpoint not reachable. ", e);
-                return this.shouldRetryOnBackendServiceUnavailableAsync(this.isReadRequest, WebExceptionUtility
-                                                                                                .isWebExceptionRetriable(e));
             }
         }
 
@@ -150,6 +146,23 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
             Exceptions.isStatusCode(clientException, HttpConstants.StatusCodes.BADREQUEST) &&
             Exceptions.isSubStatusCode(clientException, HttpConstants.SubStatusCodes.INCORRECT_CONTAINER_RID_SUB_STATUS)) {
             return this.shouldRetryOnStaleContainer();
+        }
+
+        if (clientException != null &&
+            Exceptions.isStatusCode(clientException, HttpConstants.StatusCodes.SERVICE_UNAVAILABLE)) {
+
+            boolean isWebExceptionRetriable = WebExceptionUtility.isWebExceptionRetriable(e);
+            logger.warn(
+                "Service unavailable - IsReadRequest {}, IsWebExceptionRetriable {}, NonIdempotentWriteRetriesEnabled {}",
+                this.isReadRequest,
+                isWebExceptionRetriable,
+                this.request.getNonIdempotentWriteRetriesEnabled(),
+                e);
+
+            return this.shouldRetryOnBackendServiceUnavailableAsync(
+                this.isReadRequest,
+                isWebExceptionRetriable,
+                this.request.getNonIdempotentWriteRetriesEnabled());
         }
 
         return this.throttlingRetry.shouldRetry(e);
@@ -283,9 +296,15 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
         return this.globalEndpointManager.refreshLocationAsync(null, forceRefresh);
     }
 
-    private Mono<ShouldRetryResult> shouldRetryOnBackendServiceUnavailableAsync(boolean isReadRequest, boolean isWebExceptionRetriable) {
-        if (!isReadRequest && !isWebExceptionRetriable) {
-            logger.warn("shouldRetryOnBackendServiceUnavailableAsync() Not retrying on write with non retriable exception. Retry count = {}", this.serviceUnavailableRetryCount);
+    private Mono<ShouldRetryResult> shouldRetryOnBackendServiceUnavailableAsync(
+        boolean isReadRequest,
+        boolean isWebExceptionRetriable,
+        boolean nonIdempotentWriteRetriesEnabled) {
+
+        if (!isReadRequest && !nonIdempotentWriteRetriesEnabled && !isWebExceptionRetriable) {
+            logger.warn(
+                "shouldRetryOnBackendServiceUnavailableAsync() Not retrying on write with non retriable exception. Retry count = {}",
+                this.serviceUnavailableRetryCount);
             return Mono.just(ShouldRetryResult.noRetry());
         }
 
