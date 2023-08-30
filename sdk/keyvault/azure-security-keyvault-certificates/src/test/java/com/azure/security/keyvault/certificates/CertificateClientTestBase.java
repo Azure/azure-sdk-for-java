@@ -44,9 +44,7 @@ import com.azure.security.keyvault.certificates.models.WellKnownIssuerNames;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.provider.Arguments;
 
-import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
-import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -71,7 +69,8 @@ import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
 
-import static com.azure.security.keyvault.certificates.FakeCredentialInTest.FAKE_CERTIFICATE_CONTENT;
+import static com.azure.security.keyvault.certificates.FakeCredentialsForTests.FAKE_CERTIFICATE;
+import static com.azure.security.keyvault.certificates.FakeCredentialsForTests.FAKE_PEM_CERTIFICATE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -491,7 +490,7 @@ public abstract class CertificateClientTestBase extends TestProxyTestBase {
         tags.put("key", "val");
 
         ImportCertificateOptions importCertificateOptions =
-            new ImportCertificateOptions(certificateName, Base64.getDecoder().decode(FAKE_CERTIFICATE_CONTENT))
+            new ImportCertificateOptions(certificateName, Base64.getDecoder().decode(FAKE_CERTIFICATE))
                 .setPassword(certificatePassword)
                 .setEnabled(true)
                 .setTags(tags);
@@ -504,7 +503,7 @@ public abstract class CertificateClientTestBase extends TestProxyTestBase {
         throws IOException;
 
     void importPemCertificateRunner(Consumer<ImportCertificateOptions> testRunner) throws IOException {
-        byte[] certificateContent = readCertificate("pemCert.pem");
+        byte[] certificateContent = FAKE_PEM_CERTIFICATE.getBytes();
 
         String certificateName = testResourceNamer.randomName("importCertPem", 25);
         HashMap<String, String> tags = new HashMap<>();
@@ -523,22 +522,6 @@ public abstract class CertificateClientTestBase extends TestProxyTestBase {
 
     @Test
     public abstract void mergeCertificateNotFound(HttpClient httpClient, CertificateServiceVersion serviceVersion);
-
-    protected byte[] readCertificate(String filename) throws IOException {
-        String path = Objects.requireNonNull(getClass().getClassLoader().getResource(filename)).getPath();
-        StringBuilder certificate = new StringBuilder();
-
-        try (BufferedReader br = new BufferedReader(new FileReader(path))) {
-            String line;
-
-            while ((line = br.readLine()) != null) {
-                certificate.append(line).append("\n");
-            }
-        }
-
-        return certificate.toString().getBytes();
-    }
-
     protected PrivateKey loadPrivateKey(String filename)
         throws IOException, NoSuchAlgorithmException, InvalidKeySpecException {
 

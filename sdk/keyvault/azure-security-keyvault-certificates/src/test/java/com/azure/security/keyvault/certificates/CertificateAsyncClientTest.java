@@ -1000,7 +1000,7 @@ public class CertificateAsyncClientTest extends CertificateClientTestBase {
                     byte[] certificateSignRequest = certificateOperation.getCsr();
                     PKCS10CertificationRequest pkcs10CertificationRequest =
                         new PKCS10CertificationRequest(certificateSignRequest);
-                    byte[] certificateToMerge = readCertificate("mergeCert.pem");
+                    byte[] certificateToMerge = FakeCredentialsForTests.FAKE_PEM_CERTIFICATE_FOR_MERGE.getBytes();
                     X509Certificate x509ToMerge = loadCerToX509Certificate(certificateToMerge);
                     PrivateKey privateKey = loadPrivateKey("priv8.der");
                     Date notBefore = new Date();
