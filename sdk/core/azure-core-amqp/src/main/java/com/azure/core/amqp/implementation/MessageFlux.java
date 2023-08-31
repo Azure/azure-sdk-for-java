@@ -50,16 +50,16 @@ import static com.azure.core.util.FluxUtil.monoError;
  * Service Bus Queue, Topic) to downstream message subscriber.
  */
 public final class MessageFlux extends FluxOperator<AmqpReceiveLink, Message> {
+    /** An AmqpRetryPolicy const indicates that MessageFlux should terminate when the first receiver terminates
+     * (i.e., disables the retry action to obtain next receiver from the upstream).
+     **/
+    public static final AmqpRetryPolicy NULL_RETRY_POLICY = new FixedAmqpRetryPolicy(new AmqpRetryOptions());
     private static final String MESSAGE_FLUX_KEY = "messageFlux";
     private final ClientLogger logger;
     private final int prefetch;
     private final CreditFlowMode creditFlowMode;
     private final AmqpRetryPolicy retryPolicy;
     private volatile BiFunction<String, DeliveryState, Mono<Void>> updateDispositionFunc;
-    /** An AmqpRetryPolicy const indicates that MessageFlux should terminate when the first receiver terminates
-     * (i.e., disables the retry action to obtain next receiver from the upstream).
-     **/
-    public static final AmqpRetryPolicy NULL_RETRY_POLICY = new FixedAmqpRetryPolicy(new AmqpRetryOptions());
 
     /**
      * Create a message-flux to stream messages from a messaging entity to downstream subscriber.
