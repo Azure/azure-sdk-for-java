@@ -147,7 +147,7 @@ public class AzureKeyVaultPropertySourceProperties extends AbstractAzureHttpConf
 
     /**
      *
-     * @return Whether we should disable the challenge resource verification
+     * @return Whether we should keep Azure Key Vault challenge resource verification enabled
      */
     public boolean isChallengeResourceVerificationEnabled() {
         return challengeResourceVerificationEnabled;
