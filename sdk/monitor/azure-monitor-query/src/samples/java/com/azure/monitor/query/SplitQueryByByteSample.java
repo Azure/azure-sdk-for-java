@@ -52,7 +52,7 @@ public class SplitQueryByByteSample {
         List<LogsBatchQueryResult> byteLimitedResults = client.queryBatch(byteBasedBatchQuery).getBatchResults();
 
         // consolidate the results from the batch query
-        LogsQueryResult combineByteBasedQuery = simulateSingleQuery(byteLimitedResults);
+        LogsQueryResult combineByteBasedQuery = combineResults(byteLimitedResults);
     }
 
     /**
@@ -84,6 +84,13 @@ public class SplitQueryByByteSample {
      */
     static List<QueryTimeInterval> createQueryTimeIntervalsForBatchQueryByByteSize(String originalQuery,
                                                                                    int maxByteSizePerBatch) {
+        /*
+         * This query finds the start time of each batch extending the query with a batch_num column that determined
+         * using the estimate_data_size() function. The estimate_data_size() function returns the estimated byte size of
+         * each row. The batch_num is calculated by dividing the cumulative sum of the byte size of each row by the max
+         * amount of bytes per row. The batchStart is then calculated by finding the minimum time for each batch_num.
+         * The batchStart times are then sorted and projected as the result of the query.
+         */
         String findBatchEndpointsQuery = String.format(
             "%1$s | sort by TimeGenerated desc | extend batch_num = row_cumsum(estimate_data_size(*)) / %2$s | summarize batchStart=min(TimeGenerated) by batch_num | sort by batch_num desc | project batchStart",
             originalQuery,
@@ -119,7 +126,7 @@ public class SplitQueryByByteSample {
      * @param batchQueryResults The results (lists of log tables) from the split single query.
      * @return The result (log tables) in the form of a single query.
      */
-    static LogsQueryResult simulateSingleQuery(List<LogsBatchQueryResult> batchQueryResults) {
+    static LogsQueryResult combineResults(List<LogsBatchQueryResult> batchQueryResults) {
         List<LogsTableCell> logsTablesCells = new ArrayList<>();
         List<LogsTableRow> logsTablesRows = new ArrayList<>();
         List<LogsTableColumn> logsTablesColumns = new ArrayList<>();

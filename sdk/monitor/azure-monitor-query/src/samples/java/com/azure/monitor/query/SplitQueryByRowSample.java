@@ -47,7 +47,7 @@ public class SplitQueryByRowSample {
         List<LogsBatchQueryResult> rowLimitedResults = client.queryBatch(rowBasedBatchQuery).getBatchResults();
 
         // consolidate the results from the batch query
-        LogsQueryResult combineRowBasedQuery = simulateSingleQuery(rowLimitedResults);
+        LogsQueryResult combineRowBasedQuery = combineResults(rowLimitedResults);
     }
 
     /**
@@ -79,6 +79,11 @@ public class SplitQueryByRowSample {
     static List<QueryTimeInterval> createQueryTimeIntervalsForBatchQueryByRowCount(String originalQuery,
                                                                                    int maxRowPerBatch) {
 
+        /*
+         * This query finds the start time of each batch. The batch number is calculated by dividing the cumulative row
+         * count at each row by the max row count per batch. The batch start time is the minimum time generated for each
+         * batch number. The batch numbers are then sorted and projected as the result of the query.
+         */
         String findBatchEndpointsQuery = String.format(
             "%1$s | sort by TimeGenerated desc | extend batch_num = row_cumsum(1) / %2$s | summarize batchStart=min(TimeGenerated) by batch_num | sort by batch_num desc | project batchStart",
             originalQuery,
@@ -106,7 +111,7 @@ public class SplitQueryByRowSample {
         return queryTimeIntervals;
     }
 
-    static LogsQueryResult simulateSingleQuery(List<LogsBatchQueryResult> batchQueryResults) {
+    static LogsQueryResult combineResults(List<LogsBatchQueryResult> batchQueryResults) {
         List<LogsTableCell> logsTablesCells = new ArrayList<>();
         List<LogsTableRow> logsTablesRows = new ArrayList<>();
         List<LogsTableColumn> logsTablesColumns = new ArrayList<>();
