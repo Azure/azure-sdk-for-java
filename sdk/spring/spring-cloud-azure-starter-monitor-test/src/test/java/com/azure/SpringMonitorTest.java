@@ -4,16 +4,16 @@ package com.azure;
 
 import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.assertj.core.api.Assertions.*;
-import static org.assertj.core.api.Assertions.assertThat;
 
 import com.azure.core.http.*;
 import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.monitor.applicationinsights.spring.OpenTelemetryVersionCheckRunner;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.*;
 import io.opentelemetry.sdk.logs.export.LogRecordExporter;
 import io.opentelemetry.sdk.metrics.export.MetricExporter;
+import io.opentelemetry.sdk.resources.Resource;
 import io.opentelemetry.sdk.trace.export.SpanExporter;
-
-import java.io.InputStream;
+import io.opentelemetry.semconv.resource.attributes.ResourceAttributes;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
@@ -43,13 +43,15 @@ public class SpringMonitorTest {
   @Autowired private TestRestTemplate restTemplate;
 
   // See io.opentelemetry.instrumentation.spring.autoconfigure.OpenTelemetryAutoConfiguration
-  @Autowired ObjectProvider<List<SpanExporter>> otelSpanExportersProvider;
+  @Autowired private ObjectProvider<List<SpanExporter>> otelSpanExportersProvider;
 
   // See io.opentelemetry.instrumentation.spring.autoconfigure.OpenTelemetryAutoConfiguration
-  @Autowired ObjectProvider<List<LogRecordExporter>> otelLoggerExportersProvider;
+  @Autowired private ObjectProvider<List<LogRecordExporter>> otelLoggerExportersProvider;
 
   // See io.opentelemetry.instrumentation.spring.autoconfigure.OpenTelemetryAutoConfiguration
-  @Autowired ObjectProvider<List<MetricExporter>> otelMetricExportersProvider;
+  @Autowired private ObjectProvider<List<MetricExporter>> otelMetricExportersProvider;
+
+  @Autowired private Resource otelResource;
 
   @Configuration(proxyBeanMethods = false)
   static class TestConfiguration {
@@ -165,5 +167,16 @@ public class SpringMonitorTest {
     assertThat(requestData.isSuccess()).isTrue();
     assertThat(requestData.getResponseCode()).isEqualTo("200");
     assertThat(requestData.getName()).isEqualTo("GET /controller-url");
+  }
+
+  @Test
+  public void verifyOpenTelemetryVersion() {
+    String currentOTelVersion = otelResource.getAttribute(ResourceAttributes.TELEMETRY_SDK_VERSION);
+    assertThat(OpenTelemetryVersionCheckRunner.STARTER_OTEL_VERSION)
+        .as(
+            "Dear developer, You may have updated the OpenTelemetry dependencies of spring-cloud-azure-starter-monitor without updating the OTel starter version declared in "
+                + OpenTelemetryVersionCheckRunner.class
+                + ".")
+        .isEqualTo(currentOTelVersion);
   }
 }
