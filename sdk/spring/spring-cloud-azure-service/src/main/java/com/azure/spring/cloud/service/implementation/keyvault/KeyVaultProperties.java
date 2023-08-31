@@ -13,6 +13,6 @@ public interface KeyVaultProperties extends AzureProperties, RetryOptionsProvide
 
     String getEndpoint();
 
-    boolean isDisableChallengeResourceVerification();
+    boolean isChallengeResourceVerificationEnabled();
 
 }

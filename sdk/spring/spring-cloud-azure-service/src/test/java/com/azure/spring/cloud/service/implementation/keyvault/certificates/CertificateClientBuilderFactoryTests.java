@@ -52,7 +52,7 @@ class CertificateClientBuilderFactoryTests extends
         AzureKeyVaultCertificateTestProperties properties = new AzureKeyVaultCertificateTestProperties();
         properties.setServiceVersion(CertificateServiceVersion.V7_0);
         properties.setEndpoint(ENDPOINT);
-        properties.setDisableChallengeResourceVerification(true);
+        properties.setChallengeResourceVerificationEnabled(false);
 
         final CertificateClientBuilderFactoryExt factoryExt = new CertificateClientBuilderFactoryExt(properties);
         final CertificateClientBuilder builder = factoryExt.build();
