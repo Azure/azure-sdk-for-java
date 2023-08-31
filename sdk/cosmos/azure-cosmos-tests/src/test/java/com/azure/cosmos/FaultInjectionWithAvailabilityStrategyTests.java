@@ -17,6 +17,8 @@ import com.azure.cosmos.models.CosmosClientTelemetryConfig;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
+import com.azure.cosmos.models.CosmosPatchItemRequestOptions;
+import com.azure.cosmos.models.CosmosPatchOperations;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.PartitionKeyDefinition;
 import com.azure.cosmos.rx.TestSuiteBase;
@@ -30,6 +32,7 @@ import com.azure.cosmos.test.faultinjection.FaultInjectionRule;
 import com.azure.cosmos.test.faultinjection.FaultInjectionRuleBuilder;
 import com.azure.cosmos.test.faultinjection.FaultInjectionServerErrorResult;
 import com.azure.cosmos.test.faultinjection.FaultInjectionServerErrorType;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -49,19 +52,118 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
+import java.util.function.Function;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.fail;
 
 public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
-
+    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
     private final static Logger logger = LoggerFactory.getLogger(FaultInjectionWithAvailabilityStrategyTests.class);
+
+    private final static CosmosRegionSwitchHint noRegionSwitchHint = null;
+    private final static  ThresholdBasedAvailabilityStrategy defaultAvailabilityStrategy = new ThresholdBasedAvailabilityStrategy();
+    private final static ThresholdBasedAvailabilityStrategy noAvailabilityStrategy = null;
+    private final static ThresholdBasedAvailabilityStrategy eagerThresholdAvailabilityStrategy =
+        new ThresholdBasedAvailabilityStrategy(
+            Duration.ofMillis(1), Duration.ofMillis(10)
+        );
+    private final static ThresholdBasedAvailabilityStrategy reluctantThresholdAvailabilityStrategy =
+        new ThresholdBasedAvailabilityStrategy(
+            Duration.ofSeconds(10), Duration.ofSeconds(1)
+        );
+
+    private final static BiConsumer<Integer, Integer> validateStatusCodeIsReadSessionNotAvailableError =
+        (statusCode, subStatusCode) -> {
+            assertThat(statusCode).isEqualTo(HttpConstants.StatusCodes.NOTFOUND);
+            assertThat(subStatusCode).isEqualTo(HttpConstants.SubStatusCodes.READ_SESSION_NOT_AVAILABLE);
+        };
+
+    private final static BiConsumer<Integer, Integer> validateStatusCodeIsOperationCancelled =
+        (statusCode, subStatusCode) -> {
+            assertThat(statusCode).isEqualTo(HttpConstants.StatusCodes.REQUEST_TIMEOUT);
+            assertThat(subStatusCode).isEqualTo(HttpConstants.SubStatusCodes.CLIENT_OPERATION_TIMEOUT);
+        };
+
+    private final static BiConsumer<Integer, Integer> validateStatusCodeIsLegitNotFound =
+        (statusCode, subStatusCode) -> {
+            assertThat(statusCode).isEqualTo(HttpConstants.StatusCodes.NOTFOUND);
+            assertThat(subStatusCode).isEqualTo(HttpConstants.SubStatusCodes.UNKNOWN);
+        };
+
+    private final static BiConsumer<Integer, Integer> validateStatusCodeIs200Ok =
+        (statusCode, subStatusCode) -> assertThat(statusCode).isEqualTo(HttpConstants.StatusCodes.OK);
+
+    private final static BiConsumer<Integer, Integer> validateStatusCodeIs201Created =
+        (statusCode, subStatusCode) -> assertThat(statusCode).isEqualTo(HttpConstants.StatusCodes.CREATED);
+
+    private final static BiConsumer<Integer, Integer> validateStatusCodeIsInternalServerError =
+        (statusCode, subStatusCode) -> {
+            assertThat(statusCode).isEqualTo(HttpConstants.StatusCodes.INTERNAL_SERVER_ERROR);
+            assertThat(subStatusCode).isEqualTo(HttpConstants.SubStatusCodes.UNKNOWN);
+        };
+
+    private final static BiConsumer<Integer, Integer> validateStatusCodeIsServiceUnavailable =
+        (statusCode, subStatusCode) -> {
+            assertThat(statusCode).isEqualTo(HttpConstants.StatusCodes.SERVICE_UNAVAILABLE);
+            assertThat(subStatusCode).isEqualTo(HttpConstants.SubStatusCodes.SERVER_GENERATED_503);
+        };
+
+    private final static Consumer<CosmosDiagnosticsContext> validateDiagnosticsContextHasDiagnosticsForOnlyFirstRegionButWithRegionalFailover =
+        (ctx) -> {
+            logger.info(
+                "Diagnostics Context to evaluate: {}",
+                ctx != null ? ctx.toJson() : "NULL");
+
+            assertThat(ctx).isNotNull();
+            if (ctx != null) {
+                assertThat(ctx.getDiagnostics()).isNotNull();
+                assertThat(ctx.getDiagnostics().size()).isEqualTo(1);
+                assertThat(ctx.getContactedRegionNames().size()).isEqualTo(2);
+            }
+        };
+
+    private final static Consumer<CosmosDiagnosticsContext> validateDiagnosticsContextHasDiagnosticsForOneOrTwoRegionsButTwoContactedRegions =
+        (ctx) -> {
+            logger.info(
+                "Diagnostics Context to evaluate: {}",
+                ctx != null ? ctx.toJson() : "NULL");
+
+            assertThat(ctx).isNotNull();
+            if (ctx != null) {
+                assertThat(ctx.getDiagnostics()).isNotNull();
+                assertThat(ctx.getDiagnostics().size()).isGreaterThanOrEqualTo(1);
+                assertThat(ctx.getDiagnostics().size()).isLessThanOrEqualTo(2);
+                assertThat(ctx.getContactedRegionNames().size()).isEqualTo(2);
+            }
+        };
+
+    private BiConsumer<CosmosAsyncContainer, FaultInjectionOperationType> injectReadSessionNotAvailableIntoAllRegions = null;
+
+    private BiConsumer<CosmosAsyncContainer, FaultInjectionOperationType> injectReadSessionNotAvailableIntoFirstRegionOnly = null;
+
+    private BiConsumer<CosmosAsyncContainer, FaultInjectionOperationType> injectReadSessionNotAvailableIntoAllExceptFirstRegion = null;
+
+    private BiConsumer<CosmosAsyncContainer, FaultInjectionOperationType> injectTransitTimeoutIntoFirstRegionOnly = null;
+
+    private BiConsumer<CosmosAsyncContainer, FaultInjectionOperationType> injectTransitTimeoutIntoAllRegions = null;
+
+    private BiConsumer<CosmosAsyncContainer, FaultInjectionOperationType> injectServiceUnavailableIntoFirstRegionOnly = null;
+
+    private BiConsumer<CosmosAsyncContainer, FaultInjectionOperationType> injectServiceUnavailableIntoAllRegions = null;
+
+    private BiConsumer<CosmosAsyncContainer, FaultInjectionOperationType> injectInternalServerErrorIntoFirstRegionOnly = null;
+
+    private BiConsumer<CosmosAsyncContainer, FaultInjectionOperationType> injectInternalServerErrorIntoAllRegions = null;
+
+    private Consumer<CosmosDiagnosticsContext> validateDiagnosticsContextHasDiagnosticsForAllRegions = null;
+
+    private Consumer<CosmosDiagnosticsContext> validateDiagnosticsContextHasDiagnosticsForOnlyFirstRegion = null;
 
     private List<String> writeableRegions;
 
     private String testDatabaseId;
     private String testContainerId;
-
 
     @Override
     public String resolveTestNameSuffix(Object[] row) {
@@ -98,6 +200,63 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
             this.writeableRegions = new ArrayList<>(writeRegionMap.keySet());
             assertThat(this.writeableRegions).isNotNull();
             assertThat(this.writeableRegions.size()).isGreaterThanOrEqualTo(2);
+
+            this.validateDiagnosticsContextHasDiagnosticsForAllRegions =
+                (ctx) -> {
+                    logger.debug(
+                        "Diagnostics Context to evaluate: {}",
+                        ctx != null ? ctx.toJson() : "NULL");
+
+                    assertThat(ctx).isNotNull();
+                    if (ctx != null) {
+                        assertThat(ctx.getDiagnostics()).isNotNull();
+                        assertThat(ctx.getDiagnostics().size()).isEqualTo(this.writeableRegions.size());
+                        assertThat(ctx.getContactedRegionNames().size()).isEqualTo(this.writeableRegions.size());
+                    }
+                };
+
+            this.validateDiagnosticsContextHasDiagnosticsForOnlyFirstRegion =
+                (ctx) -> {
+                    logger.info(
+                        "Diagnostics Context to evaluate: {}",
+                        ctx != null ? ctx.toJson() : "NULL");
+
+                    assertThat(ctx).isNotNull();
+                    if (ctx != null) {
+                        assertThat(ctx.getDiagnostics()).isNotNull();
+                        assertThat(ctx.getDiagnostics().size()).isEqualTo(1);
+                        assertThat(ctx.getContactedRegionNames().size()).isEqualTo(1);
+                        assertThat(ctx.getContactedRegionNames().iterator().next())
+                            .isEqualTo(this.writeableRegions.get(0).toLowerCase(Locale.ROOT));
+                    }
+                };
+
+            this.injectReadSessionNotAvailableIntoAllRegions =
+                (c, operationType) -> injectReadSessionNotAvailableError(c, this.writeableRegions, operationType);
+
+            this.injectReadSessionNotAvailableIntoFirstRegionOnly =
+                (c, operationType) -> injectReadSessionNotAvailableError(c, this.getFirstRegion(), operationType);
+
+            this.injectReadSessionNotAvailableIntoAllExceptFirstRegion =
+                (c, operationType) -> injectReadSessionNotAvailableError(c, this.getAllRegionsExceptFirst(), operationType);
+
+            this.injectTransitTimeoutIntoFirstRegionOnly =
+                (c, operationType) -> injectTransitTimeout(c, this.getFirstRegion(), operationType);
+
+            this.injectTransitTimeoutIntoAllRegions =
+                (c, operationType) -> injectTransitTimeout(c, this.writeableRegions, operationType);
+
+            this.injectServiceUnavailableIntoFirstRegionOnly =
+                (c, operationType) -> injectServiceUnavailable(c, this.getFirstRegion(), operationType);
+
+            this.injectServiceUnavailableIntoAllRegions =
+                (c, operationType) -> injectServiceUnavailable(c, this.writeableRegions, operationType);
+
+            this.injectInternalServerErrorIntoFirstRegionOnly =
+                (c, operationType) -> injectInternalServerError(c, this.getFirstRegion(), operationType);
+
+            this.injectInternalServerErrorIntoAllRegions =
+                (c, operationType) -> injectInternalServerError(c, this.writeableRegions, operationType);
 
             CosmosAsyncContainer container = this.createTestContainer(dummyClient);
             this.testDatabaseId = container.getDatabase().getId();
@@ -155,130 +314,9 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
         return regions;
     }
 
-    @DataProvider(name = "testConfigs_readAfterCreation_with_readSessionNotAvailable")
-    public Object[][] testConfigs_readAfterCreation_with_readSessionNotAvailable() {
+    @DataProvider(name = "testConfigs_readAfterCreation")
+    public Object[][] testConfigs_readAfterCreation() {
         final String sameDocumentIdJustCreated = null;
-
-        CosmosRegionSwitchHint noRegionSwitchHint = null;
-        ThresholdBasedAvailabilityStrategy defaultAvailabilityStrategy = new ThresholdBasedAvailabilityStrategy();
-        ThresholdBasedAvailabilityStrategy noAvailabilityStrategy = null;
-        ThresholdBasedAvailabilityStrategy eagerThresholdAvailabilityStrategy = new ThresholdBasedAvailabilityStrategy(
-            Duration.ofMillis(5), Duration.ofMillis(10)
-        );
-        ThresholdBasedAvailabilityStrategy reluctantThresholdAvailabilityStrategy = new ThresholdBasedAvailabilityStrategy(
-            Duration.ofSeconds(10), Duration.ofSeconds(1)
-        );
-
-        Consumer<CosmosAsyncContainer> injectReadSessionNotAvailableIntoAllRegions =
-            (c) -> injectReadSessionNotAvailableError(c, this.writeableRegions);
-
-        Consumer<CosmosAsyncContainer> injectReadSessionNotAvailableIntoFirstRegionOnly =
-            (c) -> injectReadSessionNotAvailableError(c, this.getFirstRegion());
-
-        Consumer<CosmosAsyncContainer> injectReadSessionNotAvailableIntoAllExceptFirstRegion =
-            (c) -> injectReadSessionNotAvailableError(c, this.getAllRegionsExceptFirst());
-
-        Consumer<CosmosAsyncContainer> injectTransitTimeoutIntoFirstRegionOnly =
-            (c) -> injectTransitTimeout(c, this.getFirstRegion());
-
-        Consumer<CosmosAsyncContainer> injectTransitTimeoutIntoAllRegions =
-            (c) -> injectTransitTimeout(c, this.writeableRegions);
-
-        Consumer<CosmosAsyncContainer> injectServiceUnavailableIntoFirstRegionOnly =
-            (c) -> injectServiceUnavailable(c, this.getFirstRegion());
-
-        Consumer<CosmosAsyncContainer> injectServiceUnavailableIntoAllRegions =
-            (c) -> injectServiceUnavailable(c, this.writeableRegions);
-
-        Consumer<CosmosAsyncContainer> injectInternalServerErrorIntoFirstRegionOnly =
-            (c) -> injectInternalServerError(c, this.getFirstRegion());
-
-        Consumer<CosmosAsyncContainer> injectInternalServerErrorIntoAllRegions =
-            (c) -> injectInternalServerError(c, this.writeableRegions);
-
-        BiConsumer<Integer, Integer> validateStatusCodeIsReadSessionNotAvailableError =
-            (statusCode, subStatusCode) -> {
-                assertThat(statusCode).isEqualTo(HttpConstants.StatusCodes.NOTFOUND);
-                assertThat(subStatusCode).isEqualTo(HttpConstants.SubStatusCodes.READ_SESSION_NOT_AVAILABLE);
-            };
-
-        BiConsumer<Integer, Integer> validateStatusCodeIsOperationCancelled =
-            (statusCode, subStatusCode) -> {
-                assertThat(statusCode).isEqualTo(HttpConstants.StatusCodes.REQUEST_TIMEOUT);
-                assertThat(subStatusCode).isEqualTo(HttpConstants.SubStatusCodes.CLIENT_OPERATION_TIMEOUT);
-            };
-
-        BiConsumer<Integer, Integer> validateStatusCodeIsLegitNotFound =
-            (statusCode, subStatusCode) -> {
-                assertThat(statusCode).isEqualTo(HttpConstants.StatusCodes.NOTFOUND);
-                assertThat(subStatusCode).isEqualTo(HttpConstants.SubStatusCodes.UNKNOWN);
-            };
-
-        BiConsumer<Integer, Integer> validateStatusCodeIs200Ok =
-            (statusCode, subStatusCode) -> assertThat(statusCode).isEqualTo(HttpConstants.StatusCodes.OK);
-
-        BiConsumer<Integer, Integer> validateStatusCodeIsInternalServerError =
-            (statusCode, subStatusCode) -> {
-                assertThat(statusCode).isEqualTo(HttpConstants.StatusCodes.INTERNAL_SERVER_ERROR);
-                assertThat(subStatusCode).isEqualTo(HttpConstants.SubStatusCodes.UNKNOWN);
-            };
-
-        BiConsumer<Integer, Integer> validateStatusCodeIsServiceUnavailable =
-            (statusCode, subStatusCode) -> {
-                assertThat(statusCode).isEqualTo(HttpConstants.StatusCodes.SERVICE_UNAVAILABLE);
-                assertThat(subStatusCode).isEqualTo(HttpConstants.SubStatusCodes.SERVER_GENERATED_503);
-            };
-
-        Consumer<CosmosDiagnosticsContext> validateDiagnosticsContextHasDiagnosticsForAllRegions =
-            (ctx) -> {
-                logger.debug(
-                    "Diagnostics Context to evaluate: {}",
-                    ctx != null ? ctx.toJson() : "NULL");
-
-                assertThat(ctx).isNotNull();
-                assertThat(ctx.getDiagnostics()).isNotNull();
-                assertThat(ctx.getDiagnostics().size()).isEqualTo(this.writeableRegions.size());
-                assertThat(ctx.getContactedRegionNames().size()).isEqualTo(this.writeableRegions.size());
-            };
-
-        Consumer<CosmosDiagnosticsContext> validateDiagnosticsContextHasDiagnosticsForOnlyFirstRegion =
-            (ctx) -> {
-                logger.info(
-                    "Diagnostics Context to evaluate: {}",
-                    ctx != null ? ctx.toJson() : "NULL");
-
-                assertThat(ctx).isNotNull();
-                assertThat(ctx.getDiagnostics()).isNotNull();
-                assertThat(ctx.getDiagnostics().size()).isEqualTo (1);
-                assertThat(ctx.getContactedRegionNames().size()).isEqualTo(1);
-                assertThat(ctx.getContactedRegionNames().iterator().next())
-                    .isEqualTo(this.writeableRegions.get(0).toLowerCase(Locale.ROOT));
-            };
-
-        Consumer<CosmosDiagnosticsContext> validateDiagnosticsContextHasDiagnosticsForOnlyFirstRegionButWithRegionalFailover =
-            (ctx) -> {
-                logger.info(
-                    "Diagnostics Context to evaluate: {}",
-                    ctx != null ? ctx.toJson() : "NULL");
-
-                assertThat(ctx).isNotNull();
-                assertThat(ctx.getDiagnostics()).isNotNull();
-                assertThat(ctx.getDiagnostics().size()).isEqualTo (1);
-                assertThat(ctx.getContactedRegionNames().size()).isEqualTo(2);
-            };
-
-        Consumer<CosmosDiagnosticsContext> validateDiagnosticsContextHasDiagnosticsForOneOrTwoRegionsButTwoContactedRegions =
-            (ctx) -> {
-                logger.info(
-                    "Diagnostics Context to evaluate: {}",
-                    ctx != null ? ctx.toJson() : "NULL");
-
-                assertThat(ctx).isNotNull();
-                assertThat(ctx.getDiagnostics()).isNotNull();
-                assertThat(ctx.getDiagnostics().size()).isGreaterThanOrEqualTo (1);
-                assertThat(ctx.getDiagnostics().size()).isLessThanOrEqualTo(2);
-                assertThat(ctx.getContactedRegionNames().size()).isEqualTo(2);
-            };
 
         return new Object[][] {
             // CONFIG description
@@ -652,6 +690,315 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
         };
     }
 
+    @Test(groups = {"multi-master"}, dataProvider = "testConfigs_readAfterCreation")
+    public void readAfterCreation(
+        String testCaseId,
+        Duration endToEndTimeout,
+        ThresholdBasedAvailabilityStrategy availabilityStrategy,
+        CosmosRegionSwitchHint regionSwitchHint,
+        String readItemDocumentIdOverride,
+        BiConsumer<CosmosAsyncContainer, FaultInjectionOperationType> faultInjectionCallback,
+        BiConsumer<Integer, Integer> validateStatusCode,
+        Consumer<CosmosDiagnosticsContext> validateDiagnosticsContext) {
+
+        Function<ItemOperationInvocationParameters, CosmosItemResponse<?>> readItemCallback = (params) ->
+            params.container
+                .readItem(
+                    readItemDocumentIdOverride != null
+                        ? readItemDocumentIdOverride
+                        : params.idAndPkValuePair.getLeft(),
+                    new PartitionKey(params.idAndPkValuePair.getRight()),
+                    params.options,
+                    ObjectNode.class)
+                .block();
+
+        Boolean notSpecifiedWhetherIdempotentWriteRetriesAreEnabled = null;
+
+        execute(
+            testCaseId,
+            endToEndTimeout,
+            availabilityStrategy,
+            regionSwitchHint,
+            notSpecifiedWhetherIdempotentWriteRetriesAreEnabled,
+            FaultInjectionOperationType.READ_ITEM,
+            readItemCallback,
+            faultInjectionCallback,
+            validateStatusCode,
+            validateDiagnosticsContext);
+    }
+
+    @DataProvider(name = "testConfigs_writeAfterCreation")
+    public Object[][] testConfigs_writeAfterCreation() {
+        final Boolean nonIdempotentWriteRetriesEnabled = true;
+        final Boolean nonIdempotentWriteRetriesDisabled = false;
+
+        Function<ItemOperationInvocationParameters, CosmosItemResponse<?>> createAnotherItemCallback =
+            (params) -> {
+                String newDocumentId = UUID.randomUUID().toString();
+
+                return params.container
+                    .createItem(
+                        createTestItemAsJson(newDocumentId, params.idAndPkValuePair.getRight()),
+                        params.options)
+                    .block();
+            };
+
+        Function<ItemOperationInvocationParameters, CosmosItemResponse<?>> replaceItemCallback =
+            (params) -> {
+                ObjectNode newItem =
+                    createTestItemAsJson(params.idAndPkValuePair.getLeft(), params.idAndPkValuePair.getRight());
+                newItem.put("newField", UUID.randomUUID().toString());
+
+                return params.container
+                    .replaceItem(
+                        newItem,
+                        params.idAndPkValuePair.getLeft(),
+                        new PartitionKey(params.idAndPkValuePair.getRight()),
+                        params.options)
+                    .block();
+            };
+
+        Function<ItemOperationInvocationParameters, CosmosItemResponse<?>> deleteItemCallback =
+            (params) -> {
+                ObjectNode newItem =
+                    createTestItemAsJson(params.idAndPkValuePair.getLeft(), params.idAndPkValuePair.getRight());
+                newItem.put("newField", UUID.randomUUID().toString());
+
+                return params.container
+                    .deleteItem(
+                        params.idAndPkValuePair.getLeft(),
+                        new PartitionKey(params.idAndPkValuePair.getRight()),
+                        params.options)
+                    .block();
+            };
+
+        Function<ItemOperationInvocationParameters, CosmosItemResponse<?>> upsertExistingItemCallback =
+            (params) -> {
+                ObjectNode newItem =
+                    createTestItemAsJson(params.idAndPkValuePair.getLeft(), params.idAndPkValuePair.getRight());
+                newItem.put("newField", UUID.randomUUID().toString());
+
+                return params.container
+                    .upsertItem(
+                        newItem,
+                        new PartitionKey(params.idAndPkValuePair.getRight()),
+                        params.options)
+                    .block();
+            };
+
+        Function<ItemOperationInvocationParameters, CosmosItemResponse<?>> upsertAnotherItemCallback =
+            (params) -> {
+                String newDocumentId = UUID.randomUUID().toString();
+
+                return params.container
+                    .upsertItem(
+                        createTestItemAsJson(newDocumentId, params.idAndPkValuePair.getRight()),
+                        new PartitionKey(params.idAndPkValuePair.getRight()),
+                        params.options)
+                    .block();
+            };
+
+        Function<ItemOperationInvocationParameters, CosmosItemResponse<?>> patchItemCallback =
+            (params) -> {
+                CosmosPatchOperations patchOperations = CosmosPatchOperations.create();
+                patchOperations.add("/newField", UUID.randomUUID().toString());
+
+                return params.container
+                    .patchItem(
+                        params.idAndPkValuePair.getLeft(),
+                        new PartitionKey(params.idAndPkValuePair.getRight()),
+                        patchOperations,
+                        params.options,
+                        ObjectNode.class)
+                    .block();
+            };
+
+        return new Object[][] {
+            // CONFIG description
+            // new Object[] {
+            //    TestId - name identifying the test case
+            //    End-to-end timeout
+            //    Availability Strategy used
+            //    Region switch hint (404/1002 prefer local or remote retries)
+            //    nonIdempotentWriteRetriesEnabled?
+            //    FaultInjectionOperationType
+            //    write operation - action to be executed after initial document creation
+            //    Failure injection callback
+            //    Status code/sub status code validation callback
+            //    Diagnostics context validation callback
+            // },
+            // This test injects 503 (Service Unavailable) into the local region only.
+            // No availability strategy exists - expected outcome is a successful response from the cross-regional
+            // retry issued in the client retry policy
+            new Object[] {
+                "Create_503_FirstRegionOnly_NoAvailabilityStrategy_WithWriteRetries",
+                Duration.ofSeconds(1),
+                noAvailabilityStrategy,
+                noRegionSwitchHint,
+                nonIdempotentWriteRetriesEnabled,
+                FaultInjectionOperationType.CREATE_ITEM,
+                createAnotherItemCallback,
+                injectServiceUnavailableIntoFirstRegionOnly,
+                validateStatusCodeIs201Created,
+                validateDiagnosticsContextHasDiagnosticsForOnlyFirstRegionButWithRegionalFailover
+            },
+            new Object[] {
+                "Create_503_FirstRegionOnly_NoAvailabilityStrategy_NoWriteRetries",
+                Duration.ofSeconds(1),
+                noAvailabilityStrategy,
+                noRegionSwitchHint,
+                nonIdempotentWriteRetriesDisabled,
+                FaultInjectionOperationType.CREATE_ITEM,
+                createAnotherItemCallback,
+                injectServiceUnavailableIntoFirstRegionOnly,
+                validateStatusCodeIsServiceUnavailable,
+                validateDiagnosticsContextHasDiagnosticsForOnlyFirstRegion
+            },
+            new Object[] {
+                "Create_503_FirstRegionOnly_WithWriteRetries",
+                Duration.ofSeconds(1),
+                defaultAvailabilityStrategy,
+                noRegionSwitchHint,
+                nonIdempotentWriteRetriesEnabled,
+                FaultInjectionOperationType.CREATE_ITEM,
+                createAnotherItemCallback,
+                injectServiceUnavailableIntoFirstRegionOnly,
+                validateStatusCodeIs201Created,
+                validateDiagnosticsContextHasDiagnosticsForOneOrTwoRegionsButTwoContactedRegions
+            },
+            new Object[] {
+                "Create_503_FirstRegionOnly_NoWriteRetries",
+                Duration.ofSeconds(1),
+                defaultAvailabilityStrategy,
+                noRegionSwitchHint,
+                nonIdempotentWriteRetriesDisabled,
+                FaultInjectionOperationType.CREATE_ITEM,
+                createAnotherItemCallback,
+                injectServiceUnavailableIntoFirstRegionOnly,
+                validateStatusCodeIsServiceUnavailable,
+                validateDiagnosticsContextHasDiagnosticsForOnlyFirstRegion
+            },
+            new Object[] {
+                "Create_503_AllRegions_WithWriteRetries",
+                Duration.ofSeconds(1),
+                eagerThresholdAvailabilityStrategy,
+                noRegionSwitchHint,
+                nonIdempotentWriteRetriesEnabled,
+                FaultInjectionOperationType.CREATE_ITEM,
+                createAnotherItemCallback,
+                injectServiceUnavailableIntoAllRegions,
+                validateStatusCodeIsServiceUnavailable,
+                validateDiagnosticsContextHasDiagnosticsForAllRegions
+            },
+            new Object[] {
+                "Create_503_AllRegions_NoWriteRetries",
+                Duration.ofSeconds(1),
+                defaultAvailabilityStrategy,
+                noRegionSwitchHint,
+                nonIdempotentWriteRetriesDisabled,
+                FaultInjectionOperationType.CREATE_ITEM,
+                createAnotherItemCallback,
+                injectServiceUnavailableIntoAllRegions,
+                validateStatusCodeIsServiceUnavailable,
+                validateDiagnosticsContextHasDiagnosticsForOnlyFirstRegion
+            },
+            new Object[] {
+                "Replace_503_AllRegions_NoWriteRetries",
+                Duration.ofSeconds(1),
+                defaultAvailabilityStrategy,
+                noRegionSwitchHint,
+                nonIdempotentWriteRetriesDisabled,
+                FaultInjectionOperationType.REPLACE_ITEM,
+                replaceItemCallback,
+                injectServiceUnavailableIntoAllRegions,
+                validateStatusCodeIsServiceUnavailable,
+                validateDiagnosticsContextHasDiagnosticsForOnlyFirstRegion
+            },
+            new Object[] {
+                "Patch_503_AllRegions_NoWriteRetries",
+                Duration.ofSeconds(1),
+                defaultAvailabilityStrategy,
+                noRegionSwitchHint,
+                nonIdempotentWriteRetriesDisabled,
+                FaultInjectionOperationType.PATCH_ITEM,
+                patchItemCallback,
+                injectServiceUnavailableIntoAllRegions,
+                validateStatusCodeIsServiceUnavailable,
+                validateDiagnosticsContextHasDiagnosticsForOnlyFirstRegion
+            },
+            new Object[] {
+                "Delete_503_AllRegions_NoWriteRetries",
+                Duration.ofSeconds(1),
+                defaultAvailabilityStrategy,
+                noRegionSwitchHint,
+                nonIdempotentWriteRetriesDisabled,
+                FaultInjectionOperationType.DELETE_ITEM,
+                deleteItemCallback,
+                injectServiceUnavailableIntoAllRegions,
+                validateStatusCodeIsServiceUnavailable,
+                validateDiagnosticsContextHasDiagnosticsForOnlyFirstRegion
+            },
+            new Object[] {
+                "UpsertExisting_503_AllRegions_NoWriteRetries",
+                Duration.ofSeconds(1),
+                defaultAvailabilityStrategy,
+                noRegionSwitchHint,
+                nonIdempotentWriteRetriesDisabled,
+                FaultInjectionOperationType.UPSERT_ITEM,
+                upsertExistingItemCallback,
+                injectServiceUnavailableIntoAllRegions,
+                validateStatusCodeIsServiceUnavailable,
+                validateDiagnosticsContextHasDiagnosticsForOnlyFirstRegion
+            },
+            new Object[] {
+                "UpsertNew_503_AllRegions_NoWriteRetries",
+                Duration.ofSeconds(1),
+                defaultAvailabilityStrategy,
+                noRegionSwitchHint,
+                nonIdempotentWriteRetriesDisabled,
+                FaultInjectionOperationType.UPSERT_ITEM,
+                upsertAnotherItemCallback,
+                injectServiceUnavailableIntoAllRegions,
+                validateStatusCodeIsServiceUnavailable,
+                validateDiagnosticsContextHasDiagnosticsForOnlyFirstRegion
+            },
+
+        };
+    }
+
+    @Test(groups = {"multi-master"}, dataProvider = "testConfigs_writeAfterCreation")
+    public void writeAfterCreation(
+        String testCaseId,
+        Duration endToEndTimeout,
+        ThresholdBasedAvailabilityStrategy availabilityStrategy,
+        CosmosRegionSwitchHint regionSwitchHint,
+        Boolean nonIdempotentWriteRetriesEnabled,
+        FaultInjectionOperationType faultInjectionOperationType,
+        Function<ItemOperationInvocationParameters, CosmosItemResponse<?>> actionAfterInitialCreation,
+        BiConsumer<CosmosAsyncContainer, FaultInjectionOperationType> faultInjectionCallback,
+        BiConsumer<Integer, Integer> validateStatusCode,
+        Consumer<CosmosDiagnosticsContext> validateDiagnosticsContext) {
+
+        execute(
+            testCaseId,
+            endToEndTimeout,
+            availabilityStrategy,
+            regionSwitchHint,
+            nonIdempotentWriteRetriesEnabled,
+            faultInjectionOperationType,
+            actionAfterInitialCreation,
+            faultInjectionCallback,
+            validateStatusCode,
+            validateDiagnosticsContext);
+    }
+
+    private static ObjectNode createTestItemAsJson(String id, String pkValue) {
+        CosmosDiagnosticsTest.TestItem nextItemToBeCreated =
+            new CosmosDiagnosticsTest.TestItem(id, pkValue);
+
+        return OBJECT_MAPPER.valueToTree(nextItemToBeCreated);
+    }
+
     private CosmosAsyncContainer createTestContainer(CosmosAsyncClient clientWithPreferredRegions) {
         String dbId = UUID.randomUUID().toString();
         String containerId = UUID.randomUUID().toString();
@@ -715,7 +1062,8 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
 
     private static void injectReadSessionNotAvailableError(
         CosmosAsyncContainer containerWithSeveralWriteableRegions,
-        List<String> applicableRegions) {
+        List<String> applicableRegions,
+        FaultInjectionOperationType operationType) {
 
         String ruleName = "serverErrorRule-read-session-unavailable-" + UUID.randomUUID();
         FaultInjectionServerErrorResult badSessionTokenServerErrorResult = FaultInjectionResultBuilders
@@ -726,14 +1074,15 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
             ruleName,
             containerWithSeveralWriteableRegions,
             applicableRegions,
-            FaultInjectionOperationType.READ_ITEM,
+            operationType,
             badSessionTokenServerErrorResult
         );
     }
 
     private static void injectTransitTimeout(
         CosmosAsyncContainer containerWithSeveralWriteableRegions,
-        List<String> applicableRegions) {
+        List<String> applicableRegions,
+        FaultInjectionOperationType faultInjectionOperationType) {
 
         String ruleName = "serverErrorRule-transitTimeout-" + UUID.randomUUID();
         FaultInjectionServerErrorResult timeoutResult = FaultInjectionResultBuilders
@@ -745,32 +1094,35 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
             ruleName,
             containerWithSeveralWriteableRegions,
             applicableRegions,
-            FaultInjectionOperationType.READ_ITEM,
+            faultInjectionOperationType,
             timeoutResult
         );
     }
 
     private static void injectServiceUnavailable(
         CosmosAsyncContainer containerWithSeveralWriteableRegions,
-        List<String> applicableRegions) {
+        List<String> applicableRegions,
+        FaultInjectionOperationType faultInjectionOperationType) {
 
         String ruleName = "serverErrorRule-serviceUnavailable-" + UUID.randomUUID();
         FaultInjectionServerErrorResult serviceUnavailableResult = FaultInjectionResultBuilders
             .getResultBuilder(FaultInjectionServerErrorType.SERVICE_UNAVAILABLE)
+            .delay(Duration.ofMillis(5))
             .build();
 
         inject(
             ruleName,
             containerWithSeveralWriteableRegions,
             applicableRegions,
-            FaultInjectionOperationType.READ_ITEM,
+            faultInjectionOperationType,
             serviceUnavailableResult
         );
     }
 
     private static void injectInternalServerError(
         CosmosAsyncContainer containerWithSeveralWriteableRegions,
-        List<String> applicableRegions) {
+        List<String> applicableRegions,
+        FaultInjectionOperationType faultInjectionOperationType) {
 
         String ruleName = "serverErrorRule-internalServerError-" + UUID.randomUUID();
         FaultInjectionServerErrorResult serviceUnavailableResult = FaultInjectionResultBuilders
@@ -781,25 +1133,26 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
             ruleName,
             containerWithSeveralWriteableRegions,
             applicableRegions,
-            FaultInjectionOperationType.READ_ITEM,
+            faultInjectionOperationType,
             serviceUnavailableResult
         );
     }
 
-    @Test(groups = {"multi-master"}, dataProvider = "testConfigs_readAfterCreation_with_readSessionNotAvailable")
-    public void readItemAfterCreatingIt(
+    private void execute(
         String testCaseId,
         Duration endToEndTimeout,
         ThresholdBasedAvailabilityStrategy availabilityStrategy,
         CosmosRegionSwitchHint regionSwitchHint,
-        String readItemDocumentIdOverride,
-        Consumer<CosmosAsyncContainer> faultInjectionCallback,
+        Boolean nonIdempotentWriteRetriesEnabled,
+        FaultInjectionOperationType faultInjectionOperationType,
+        Function<ItemOperationInvocationParameters, CosmosItemResponse<?>> actionAfterInitialCreation,
+        BiConsumer<CosmosAsyncContainer, FaultInjectionOperationType> faultInjectionCallback,
         BiConsumer<Integer, Integer> validateStatusCode,
         Consumer<CosmosDiagnosticsContext> validateDiagnosticsContext) {
 
         logger.info("START {}", testCaseId);
 
-        CosmosAsyncClient clientWithPreferredRegions = buildCosmosClient(this.writeableRegions, regionSwitchHint);
+        CosmosAsyncClient clientWithPreferredRegions = buildCosmosClient(this.writeableRegions, regionSwitchHint, nonIdempotentWriteRetriesEnabled);
         try {
             String documentId = UUID.randomUUID().toString();
             Pair<String, String> idAndPkValPair = new ImmutablePair<>(documentId, documentId);
@@ -807,11 +1160,11 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
             CosmosDiagnosticsTest.TestItem createdItem = new CosmosDiagnosticsTest.TestItem(documentId, documentId);
             CosmosAsyncContainer testContainer = clientWithPreferredRegions
                 .getDatabase(this.testDatabaseId)
-                    .getContainer(this.testContainerId);
+                .getContainer(this.testContainerId);
 
             testContainer.createItem(createdItem).block();
             if (faultInjectionCallback != null) {
-                faultInjectionCallback.accept(testContainer);
+                faultInjectionCallback.accept(testContainer, faultInjectionOperationType);
             }
 
             CosmosEndToEndOperationLatencyPolicyConfigBuilder e2ePolicyBuilder =
@@ -822,22 +1175,20 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                     ? e2ePolicyBuilder.availabilityStrategy(availabilityStrategy).build()
                     : e2ePolicyBuilder.build();
 
-            CosmosItemRequestOptions itemRequestOptions = new CosmosItemRequestOptions();
+            CosmosPatchItemRequestOptions itemRequestOptions = new CosmosPatchItemRequestOptions();
 
             if (endToEndOperationLatencyPolicyConfig != null) {
                 itemRequestOptions.setCosmosEndToEndOperationLatencyPolicyConfig(endToEndOperationLatencyPolicyConfig);
             }
 
             try {
-                CosmosItemResponse<ObjectNode> response = testContainer
-                    .readItem(
-                        readItemDocumentIdOverride != null ? readItemDocumentIdOverride : idAndPkValPair.getLeft(),
-                        new PartitionKey(idAndPkValPair.getRight()),
-                        itemRequestOptions,
-                        ObjectNode.class)
-                    .block();
 
+                ItemOperationInvocationParameters params = new ItemOperationInvocationParameters();
+                params.container = testContainer;
+                params.options = itemRequestOptions;
+                params.idAndPkValuePair = idAndPkValPair;
 
+                CosmosItemResponse<?> response = actionAfterInitialCreation.apply(params);
 
                 CosmosDiagnosticsContext diagnosticsContext = null;
 
@@ -877,12 +1228,13 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
 
     private static CosmosAsyncClient buildCosmosClient(
         List<String> preferredRegions,
-        CosmosRegionSwitchHint regionSwitchHint) {
+        CosmosRegionSwitchHint regionSwitchHint,
+        Boolean nonIdempotentWriteRetriesEnabled) {
 
         CosmosClientTelemetryConfig telemetryConfig = new CosmosClientTelemetryConfig()
             .diagnosticsHandler(new CosmosDiagnosticsLogger());
 
-        return new CosmosClientBuilder()
+        CosmosClientBuilder builder = new CosmosClientBuilder()
             .endpoint(TestConfigurations.HOST)
             .key(TestConfigurations.MASTER_KEY)
             .consistencyLevel(ConsistencyLevel.SESSION)
@@ -890,8 +1242,14 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
             .sessionRetryOptions(new SessionRetryOptions(regionSwitchHint))
             .directMode()
             .multipleWriteRegionsEnabled(true)
-            .clientTelemetryConfig(telemetryConfig)
-            .buildAsyncClient();
+            .clientTelemetryConfig(telemetryConfig);
+
+        if (nonIdempotentWriteRetriesEnabled != null) {
+            builder.setNonIdempotentWriteRetryPolicy(
+                nonIdempotentWriteRetriesEnabled, true);
+        }
+
+        return builder.buildAsyncClient();
     }
 
     private Map<String, String> getRegionMap(DatabaseAccount databaseAccount, boolean writeOnly) {
@@ -905,5 +1263,11 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
         }
 
         return regionMap;
+    }
+
+    private static class ItemOperationInvocationParameters {
+        public CosmosPatchItemRequestOptions options;
+        public CosmosAsyncContainer container;
+        public Pair<String, String> idAndPkValuePair;
     }
 }
