@@ -362,7 +362,7 @@ public final class OpenAIClientImpl {
                 Context context);
 
         // @Multipart not supported by RestProxy
-        @Post("/deployments/{deploymentId}//deployments/{deployment-id}/audio/transcriptions")
+        @Post("/deployments/{deploymentId}/audio/transcriptions")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
                 value = ClientAuthenticationException.class,
@@ -374,7 +374,7 @@ public final class OpenAIClientImpl {
                 value = ResourceModifiedException.class,
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getAudioTranscriptions(
+        Mono<Response<BinaryData>> getAudioTranscription(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @PathParam("deploymentId") String deploymentOrModelName,
@@ -385,7 +385,7 @@ public final class OpenAIClientImpl {
                 Context context);
 
         // @Multipart not supported by RestProxy
-        @Post("/deployments/{deploymentId}//deployments/{deployment-id}/audio/transcriptions")
+        @Post("/deployments/{deploymentId}/audio/transcriptions")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
                 value = ClientAuthenticationException.class,
@@ -397,7 +397,7 @@ public final class OpenAIClientImpl {
                 value = ResourceModifiedException.class,
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getAudioTranscriptionsSync(
+        Response<BinaryData> getAudioTranscriptionSync(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @PathParam("deploymentId") String deploymentOrModelName,
@@ -408,7 +408,7 @@ public final class OpenAIClientImpl {
                 Context context);
 
         // @Multipart not supported by RestProxy
-        @Post("/deployments/{deploymentId}//deployments/{deployment-id}/audio/translations")
+        @Post("/deployments/{deploymentId}/audio/translations")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
                 value = ClientAuthenticationException.class,
@@ -420,7 +420,7 @@ public final class OpenAIClientImpl {
                 value = ResourceModifiedException.class,
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getAudioTranslations(
+        Mono<Response<BinaryData>> getAudioTranslation(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @PathParam("deploymentId") String deploymentOrModelName,
@@ -431,7 +431,7 @@ public final class OpenAIClientImpl {
                 Context context);
 
         // @Multipart not supported by RestProxy
-        @Post("/deployments/{deploymentId}//deployments/{deployment-id}/audio/translations")
+        @Post("/deployments/{deploymentId}/audio/translations")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
                 value = ClientAuthenticationException.class,
@@ -443,7 +443,7 @@ public final class OpenAIClientImpl {
                 value = ResourceModifiedException.class,
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getAudioTranslationsSync(
+        Response<BinaryData> getAudioTranslationSync(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @PathParam("deploymentId") String deploymentOrModelName,
@@ -1705,13 +1705,13 @@ public final class OpenAIClientImpl {
      * @return transcription response along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getAudioTranscriptionsWithResponseAsync(
+    public Mono<Response<BinaryData>> getAudioTranscriptionWithResponseAsync(
             String deploymentOrModelName, BinaryData audioTranscriptionOptions, RequestOptions requestOptions) {
         final String contentType = "multipart/form-data";
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
-                        service.getAudioTranscriptions(
+                        service.getAudioTranscription(
                                 this.getEndpoint(),
                                 this.getServiceVersion().getVersion(),
                                 deploymentOrModelName,
@@ -1776,11 +1776,11 @@ public final class OpenAIClientImpl {
      * @return transcription response along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getAudioTranscriptionsWithResponse(
+    public Response<BinaryData> getAudioTranscriptionWithResponse(
             String deploymentOrModelName, BinaryData audioTranscriptionOptions, RequestOptions requestOptions) {
         final String contentType = "multipart/form-data";
         final String accept = "application/json";
-        return service.getAudioTranscriptionsSync(
+        return service.getAudioTranscriptionSync(
                 this.getEndpoint(),
                 this.getServiceVersion().getVersion(),
                 deploymentOrModelName,
@@ -1844,13 +1844,13 @@ public final class OpenAIClientImpl {
      * @return transcription response along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getAudioTranslationsWithResponseAsync(
+    public Mono<Response<BinaryData>> getAudioTranslationWithResponseAsync(
             String deploymentOrModelName, BinaryData audioTranslationOptions, RequestOptions requestOptions) {
         final String contentType = "multipart/form-data";
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
-                        service.getAudioTranslations(
+                        service.getAudioTranslation(
                                 this.getEndpoint(),
                                 this.getServiceVersion().getVersion(),
                                 deploymentOrModelName,
@@ -1914,11 +1914,11 @@ public final class OpenAIClientImpl {
      * @return transcription response along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getAudioTranslationsWithResponse(
+    public Response<BinaryData> getAudioTranslationWithResponse(
             String deploymentOrModelName, BinaryData audioTranslationOptions, RequestOptions requestOptions) {
         final String contentType = "multipart/form-data";
         final String accept = "application/json";
-        return service.getAudioTranslationsSync(
+        return service.getAudioTranslationSync(
                 this.getEndpoint(),
                 this.getServiceVersion().getVersion(),
                 deploymentOrModelName,

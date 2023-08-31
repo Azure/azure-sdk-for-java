@@ -759,9 +759,9 @@ public final class OpenAIAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getAudioTranscriptionsWithResponse(
+    public Mono<Response<BinaryData>> getAudioTranscriptionWithResponse(
             String deploymentOrModelName, BinaryData audioTranscriptionOptions, RequestOptions requestOptions) {
-        return this.serviceClient.getAudioTranscriptionsWithResponseAsync(
+        return this.serviceClient.getAudioTranscriptionWithResponseAsync(
                 deploymentOrModelName, audioTranscriptionOptions, requestOptions);
     }
 
@@ -819,9 +819,9 @@ public final class OpenAIAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getAudioTranslationsWithResponse(
+    public Mono<Response<BinaryData>> getAudioTranslationWithResponse(
             String deploymentOrModelName, BinaryData audioTranslationOptions, RequestOptions requestOptions) {
-        return this.serviceClient.getAudioTranslationsWithResponseAsync(
+        return this.serviceClient.getAudioTranslationWithResponseAsync(
                 deploymentOrModelName, audioTranslationOptions, requestOptions);
     }
 
@@ -842,11 +842,11 @@ public final class OpenAIAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AudioTranscription> getAudioTranscriptions(
+    public Mono<AudioTranscription> getAudioTranscription(
             String deploymentOrModelName, AudioTranscriptionOptions audioTranscriptionOptions) {
-        // Generated convenience method for getAudioTranscriptionsWithResponse
+        // Generated convenience method for getAudioTranscriptionWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getAudioTranscriptionsWithResponse(
+        return getAudioTranscriptionWithResponse(
                         deploymentOrModelName, BinaryData.fromObject(audioTranscriptionOptions), requestOptions)
                 .flatMap(FluxUtil::toMono)
                 .map(protocolMethodData -> protocolMethodData.toObject(AudioTranscription.class));
@@ -869,11 +869,11 @@ public final class OpenAIAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AudioTranscription> getAudioTranslations(
+    public Mono<AudioTranscription> getAudioTranslation(
             String deploymentOrModelName, AudioTranslationOptions audioTranslationOptions) {
-        // Generated convenience method for getAudioTranslationsWithResponse
+        // Generated convenience method for getAudioTranslationWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getAudioTranslationsWithResponse(
+        return getAudioTranslationWithResponse(
                         deploymentOrModelName, BinaryData.fromObject(audioTranslationOptions), requestOptions)
                 .flatMap(FluxUtil::toMono)
                 .map(protocolMethodData -> protocolMethodData.toObject(AudioTranscription.class));

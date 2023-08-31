@@ -758,9 +758,9 @@ public final class OpenAIClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getAudioTranscriptionsWithResponse(
+    public Response<BinaryData> getAudioTranscriptionWithResponse(
             String deploymentOrModelName, BinaryData audioTranscriptionOptions, RequestOptions requestOptions) {
-        return this.serviceClient.getAudioTranscriptionsWithResponse(
+        return this.serviceClient.getAudioTranscriptionWithResponse(
                 deploymentOrModelName, audioTranscriptionOptions, requestOptions);
     }
 
@@ -818,9 +818,9 @@ public final class OpenAIClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getAudioTranslationsWithResponse(
+    public Response<BinaryData> getAudioTranslationWithResponse(
             String deploymentOrModelName, BinaryData audioTranslationOptions, RequestOptions requestOptions) {
-        return this.serviceClient.getAudioTranslationsWithResponse(
+        return this.serviceClient.getAudioTranslationWithResponse(
                 deploymentOrModelName, audioTranslationOptions, requestOptions);
     }
 
@@ -841,11 +841,11 @@ public final class OpenAIClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AudioTranscription getAudioTranscriptions(
+    public AudioTranscription getAudioTranscription(
             String deploymentOrModelName, AudioTranscriptionOptions audioTranscriptionOptions) {
-        // Generated convenience method for getAudioTranscriptionsWithResponse
+        // Generated convenience method for getAudioTranscriptionWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getAudioTranscriptionsWithResponse(
+        return getAudioTranscriptionWithResponse(
                         deploymentOrModelName, BinaryData.fromObject(audioTranscriptionOptions), requestOptions)
                 .getValue()
                 .toObject(AudioTranscription.class);
@@ -868,11 +868,11 @@ public final class OpenAIClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AudioTranscription getAudioTranslations(
+    public AudioTranscription getAudioTranslation(
             String deploymentOrModelName, AudioTranslationOptions audioTranslationOptions) {
-        // Generated convenience method for getAudioTranslationsWithResponse
+        // Generated convenience method for getAudioTranslationWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getAudioTranslationsWithResponse(
+        return getAudioTranslationWithResponse(
                         deploymentOrModelName, BinaryData.fromObject(audioTranslationOptions), requestOptions)
                 .getValue()
                 .toObject(AudioTranscription.class);
