@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class SplitQueryByRowSample {
+public class SplitQueryByRowCountSample {
 
     static String workspaceId;
     static LogsQueryClient client;
