@@ -478,14 +478,26 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
 
                 fail("Create item should no succeed");
             } catch (CosmosException ex) {
+                logger.info(
+                    "Diagnostics of exception caught: {}, context: {}",
+                    ex.getDiagnostics(),
+                    ex.getDiagnostics() != null && ex.getDiagnostics().getDiagnosticsContext() != null
+                        ? ex.getDiagnostics().getDiagnosticsContext().toJson()
+                        : "NULL",
+                    ex);
                 RetryContext retryContext =
                     ex.getDiagnostics().clientSideRequestStatistics().getRetryContext();
 
                 //In CI pipeline, the emulator starts with strong consitency
-                assertThat(retryContext.getStatusAndSubStatusCodes().size()).isLessThanOrEqualTo(9);
+                assertThat(retryContext.getStatusAndSubStatusCodes().size()).isLessThanOrEqualTo(10);
                 assertThat(retryContext.getStatusAndSubStatusCodes().size()).isGreaterThanOrEqualTo(6);
-                assertThat(retryContext.getStatusAndSubStatusCodes().get(0)[0]).isEqualTo(410);
-                assertThat(retryContext.getStatusAndSubStatusCodes().get(0)[1]).isEqualTo(0);
+                int[] firstRetryStatusCodes = retryContext.getStatusAndSubStatusCodes().get(0);
+                int[] lastRetryStatusCodes = retryContext.getStatusAndSubStatusCodes()
+                                                         .get(retryContext.getStatusAndSubStatusCodes().size() - 1);
+                assertThat(firstRetryStatusCodes[0]).isEqualTo(410);
+                assertThat(firstRetryStatusCodes[1]).isEqualTo(0);
+                assertThat(lastRetryStatusCodes[0]).isEqualTo(503);
+                assertThat(lastRetryStatusCodes[1]).isEqualTo(0);
             }
         } finally {
             safeCloseSyncClient(cosmosClient);

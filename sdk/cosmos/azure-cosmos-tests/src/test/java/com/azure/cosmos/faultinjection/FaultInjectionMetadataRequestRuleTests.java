@@ -72,6 +72,15 @@ public class FaultInjectionMetadataRequestRuleTests extends TestSuiteBase {
         Map<String, String> writeRegionMap = this.getRegionMap(databaseAccount, true);
 
         this.cosmosAsyncContainer = getSharedMultiPartitionCosmosContainerWithIdAsPartitionKey(this.client);
+
+        // This test runs against a real account
+        // Creating collections can take some time in the remote region
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+
         // create a client with preferred regions
         this.readPreferredLocations = readRegionMap.keySet().stream().collect(Collectors.toList());
         this.writePreferredLocations = writeRegionMap.keySet().stream().collect(Collectors.toList());
