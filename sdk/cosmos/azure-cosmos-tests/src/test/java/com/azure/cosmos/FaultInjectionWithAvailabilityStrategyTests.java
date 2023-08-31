@@ -398,7 +398,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
 
             // This test simulates 404/1002 across all regions for the read operation after the initial creation
             // The region switch hint for 404/1002 is local - meaning many local retries are happening which leads
-            // to the operations triggered by teh availability strategy against each region will all timeout because
+            // to the operations triggered by the availability strategy against each region will all timeout because
             // they haven't finished the "local retries" before hitting end-to-end timeout
             // It is expected to fail with a 404/1002 - the validation will make sure that cross regional
             // execution via availability strategy was happening (but also failed)
@@ -833,6 +833,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
             //    Status code/sub status code validation callback
             //    Diagnostics context validation callback
             // },
+
             // This test injects 503 (Service Unavailable) into the local region only.
             // No availability strategy exists - expected outcome is a successful response from the cross-regional
             // retry issued in the client retry policy
@@ -848,6 +849,10 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 validateStatusCodeIs201Created,
                 validateDiagnosticsContextHasDiagnosticsForOnlyFirstRegionButWithRegionalFailover
             },
+
+            // This test injects 503 (Service Unavailable) into the local region only.
+            // No availability strategy exists - expected outcome is a 503 because non-idempotent write retries
+            // are disabled - and no cross regional retry is happening
             new Object[] {
                 "Create_503_FirstRegionOnly_NoAvailabilityStrategy_NoWriteRetries",
                 Duration.ofSeconds(1),
@@ -860,6 +865,11 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 validateStatusCodeIsServiceUnavailable,
                 validateDiagnosticsContextHasDiagnosticsForOnlyFirstRegion
             },
+
+            // This test injects 503 (Service Unavailable) into the local region only.
+            // Default availability strategy exists - expected outcome is successful response from either the cross
+            // regional retry in client retry policy of operations against first region - or the hedging
+            // against the second region
             new Object[] {
                 "Create_503_FirstRegionOnly_WithWriteRetries",
                 Duration.ofSeconds(1),
@@ -872,6 +882,10 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 validateStatusCodeIs201Created,
                 validateDiagnosticsContextHasDiagnosticsForOneOrTwoRegionsButTwoContactedRegions
             },
+
+            // This test injects 503 (Service Unavailable) into the local region only.
+            // Default availability strategy exists - expected outcome is a 503 because non-idempotent write retries
+            // are disabled - which means no hedging for write operations nor cross regional retry
             new Object[] {
                 "Create_503_FirstRegionOnly_NoWriteRetries",
                 Duration.ofSeconds(1),
@@ -884,6 +898,10 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 validateStatusCodeIsServiceUnavailable,
                 validateDiagnosticsContextHasDiagnosticsForOnlyFirstRegion
             },
+
+            // This test injects 503 (Service Unavailable) into all regions.
+            // Eager availability strategy exists - expected outcome is a 503 - diagnostics should reflect the
+            // hedging against second region
             new Object[] {
                 "Create_503_AllRegions_WithWriteRetries",
                 Duration.ofSeconds(1),
@@ -896,6 +914,11 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 validateStatusCodeIsServiceUnavailable,
                 validateDiagnosticsContextHasDiagnosticsForAllRegions
             },
+
+            // This test injects 503 (Service Unavailable) into all regions.
+            // Default availability strategy exists - expected outcome is a 503 because non-idempotent write retries
+            // are disabled - which means no hedging for write operations nor cross regional retry
+            // Same expectation for all write operation types
             new Object[] {
                 "Create_503_AllRegions_NoWriteRetries",
                 Duration.ofSeconds(1),
@@ -980,6 +1003,11 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 validateStatusCodeIs200Ok,
                 validateDiagnosticsContextHasDiagnosticsForOneOrTwoRegionsButTwoContactedRegions
             },
+
+            // This test injects 503 (Service Unavailable) into the first region only.
+            // Default availability strategy exists - expected outcome is a successful response because non-idempotent
+            // write retries are enabled which would allow hedging (or cross regional fail-over) to succeed
+            // Same expectation for all write operation types
             new Object[] {
                 "Delete_503_FirstRegionOnly_WithWriteRetries",
                 Duration.ofSeconds(1),
@@ -1040,6 +1068,10 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 validateStatusCodeIsInternalServerError,
                 validateDiagnosticsContextHasDiagnosticsForOnlyFirstRegion
             },
+
+            // This test injects 500 (Internal Service Error) into the first region only.
+            // No availability strategy exists, non-idempotent write retries are disabled.
+            // No hedging, no cross regional retry in client retry policy --> 500 thrown
             new Object[] {
                 "Create_500_FirstRegionOnly_NoAvailabilityStrategy_NoRetries",
                 Duration.ofSeconds(1),
@@ -1052,10 +1084,16 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 validateStatusCodeIsInternalServerError,
                 validateDiagnosticsContextHasDiagnosticsForOnlyFirstRegion
             },
+
+            // This test injects 500 (Internal Service Error) into the first region only.
+            // Reluctant availability strategy exists, non-idempotent write retries are enabled.
+            // 500 is not applicable for cross regional retry in client retry policy --> so, 500 would be thrown from
+            // initial Mono against local region - hedging is not applicable because the 500 happens way before
+            // threshold is reached
             new Object[] {
-                "Delete_500_FirstRegionOnly_DefaultAvailabilityStrategy_WithRetries",
+                "Delete_500_FirstRegionOnly_ReluctantAvailabilityStrategy_WithRetries",
                 Duration.ofSeconds(1),
-                defaultAvailabilityStrategy,
+                reluctantThresholdAvailabilityStrategy,
                 noRegionSwitchHint,
                 nonIdempotentWriteRetriesEnabled,
                 FaultInjectionOperationType.DELETE_ITEM,
@@ -1064,6 +1102,10 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 validateStatusCodeIsInternalServerError,
                 validateDiagnosticsContextHasDiagnosticsForOnlyFirstRegion
             },
+
+            // This test injects 500 (Internal Service Error) into the first region only.
+            // Default availability strategy exists, non-idempotent write retries are disabled. No hedging
+            // (write retries disabled), no cross regional retry in client retry policy for 500 --> 500 thrown
             new Object[] {
                 "Delete_500_FirstRegionOnly_DefaultAvailabilityStrategy_NoRetries",
                 Duration.ofSeconds(1),
@@ -1076,10 +1118,14 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 validateStatusCodeIsInternalServerError,
                 validateDiagnosticsContextHasDiagnosticsForOnlyFirstRegion
             },
+
+            // This test injects 500 (Internal Service Error) into all regions.
+            // Default availability strategy exists, non-idempotent write retries are enabled. Hedging is enabled
+            // but the 500 from the initial operation execution is thrown before threshold is reached
             new Object[] {
                 "Patch_500_AllRegions_DefaultAvailabilityStrategy_WithRetries",
                 Duration.ofSeconds(1),
-                defaultAvailabilityStrategy,
+                reluctantThresholdAvailabilityStrategy,
                 noRegionSwitchHint,
                 nonIdempotentWriteRetriesEnabled,
                 FaultInjectionOperationType.PATCH_ITEM,
@@ -1088,6 +1134,10 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 validateStatusCodeIsInternalServerError,
                 validateDiagnosticsContextHasDiagnosticsForOnlyFirstRegion
             },
+
+            // This test injects 500 (Internal Service Error) into all regions.
+            // Default availability strategy exists, non-idempotent write retries are disabled. So, no hedging or cross
+            // regional retries in client retry policy --> 500 thrown
             new Object[] {
                 "Patch_500_AllRegions_DefaultAvailabilityStrategy_NoRetries",
                 Duration.ofSeconds(1),
@@ -1100,6 +1150,12 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 validateStatusCodeIsInternalServerError,
                 validateDiagnosticsContextHasDiagnosticsForOnlyFirstRegion
             },
+
+            // This test injects transit timeouts into all regions.
+            // Default availability strategy exists, non-idempotent write retries are disabled. So, no hedging or (cross
+            // regional) retries after transit timeouts --> Also the timeout (network request timeout) is higher than
+            // the e2e timeout --> operations gets cancelled when hitting e2e timeout. Diagnostics should only have
+            // data for initial region
             new Object[] {
                 "Replace_408_AllRegions_DefaultAvailabilityStrategy_NoRetries",
                 Duration.ofSeconds(1),
@@ -1112,6 +1168,11 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 validateStatusCodeIsOperationCancelled,
                 validateDiagnosticsContextHasDiagnosticsForOnlyFirstRegion
             },
+
+            // This test injects transit timeouts into all regions.
+            // Eager availability strategy exists, non-idempotent write retries are enabled. Hedging is enabled,
+            // but at e2e timeout operation against both regions have not finished yet -> 408
+            // Diagnostics should contain data for original and hedging operation
             new Object[] {
                 "Replace_408_AllRegions_DefaultAvailabilityStrategy_WithRetries",
                 Duration.ofSeconds(1),
@@ -1124,6 +1185,9 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 validateStatusCodeIsOperationCancelled,
                 validateDiagnosticsContextHasDiagnosticsForAllRegions
             },
+
+            // No Availability strategy (hedging), no write retries -> operation canceled
+            // Diagnostics only in first region due to no hedging
             new Object[] {
                 "Replace_408_AllRegions_NoAvailabilityStrategy_NoRetries",
                 Duration.ofSeconds(1),
@@ -1136,6 +1200,10 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 validateStatusCodeIsOperationCancelled,
                 validateDiagnosticsContextHasDiagnosticsForOnlyFirstRegion
             },
+
+            // No Availability strategy (hedging), operation not finished at e2e timeout - so, cross regional
+            // retry in client retry policy has not even been started yet -> 408
+            // Diagnostics only in first region due to no hedging or cross regional fail-over being started yet
             new Object[] {
                 "Replace_408_AllRegions_NoAvailabilityStrategy_WithRetries",
                 Duration.ofSeconds(1),
@@ -1148,6 +1216,10 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 validateStatusCodeIsOperationCancelled,
                 validateDiagnosticsContextHasDiagnosticsForOnlyFirstRegion
             },
+
+            // No hedging due to non-idempotent write retries being disabled. Operation not finished at e2e timeout -
+            // so, cross regional retry in client retry policy has not even been started yet -> 408
+            // Diagnostics only in first region due to no hedging or cross regional fail-over being started yet
             new Object[] {
                 "UpsertExisting_408_FirstRegionOnly_DefaultAvailabilityStrategy_NoRetries",
                 Duration.ofSeconds(1),
@@ -1160,6 +1232,11 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 validateStatusCodeIsOperationCancelled,
                 validateDiagnosticsContextHasDiagnosticsForOnlyFirstRegion
             },
+
+            // Hedging and non-idempotent write retries enabled. Operation against first region still pending, cross
+            // regional retry in client retry policy not yet started.
+            // So, successful response from hedging expected.
+            // Diagnostics should have data for both operations.
             new Object[] {
                 "UpsertExisting_408_FirstRegionOnly_DefaultAvailabilityStrategy_WithRetries",
                 Duration.ofSeconds(1),
@@ -1172,6 +1249,10 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 validateStatusCodeIs200Ok,
                 validateDiagnosticsContextHasDiagnosticsForAllRegions
             },
+
+            // No hedging because there is no availability strategy, No cross regional retries due to non-idempotent
+            // write retries being disabled. Operation not finished at e2e timeout -> 408
+            // Diagnostics only in first region
             new Object[] {
                 "UpsertNew_408_FirstRegionOnly_NoAvailabilityStrategy_NoRetries",
                 Duration.ofSeconds(1),
@@ -1184,6 +1265,8 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 validateStatusCodeIsOperationCancelled,
                 validateDiagnosticsContextHasDiagnosticsForOnlyFirstRegion
             },
+
+            // No hedging/availability strategy, cross regional retry not started yet -> 408,  single diagnostics
             new Object[] {
                 "UpsertNew_408_FirstRegionOnly_NoAvailabilityStrategy_WithRetries",
                 Duration.ofSeconds(90),
@@ -1196,6 +1279,13 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 validateStatusCodeIs201Created,
                 validateDiagnosticsContextHasDiagnosticsForOnlyFirstRegionButWithRegionalFailover
             },
+
+            // This test simulates 404/1002 across all regions for the operation after the initial creation
+            // The region switch hint for 404/1002 is local - meaning many local retries are happening which leads
+            // to the operations triggered by the availability strategy against each region will all timeout because
+            // they haven't finished the "local retries" before hitting end-to-end timeout
+            // The validation will make sure that cross regional
+            // execution via availability strategy was happening (but also failed)
             new Object[] {
                 "Create_404-1002_AllRegions_LocalPreferred_DefaultAvailabilityStrategy_WithRetries",
                 Duration.ofSeconds(1),
@@ -1208,6 +1298,13 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 validateStatusCodeIsOperationCancelled,
                 validateDiagnosticsContextHasDiagnosticsForAllRegions
             },
+
+            // This test simulates 404/1002 across all regions for the operation after the initial creation
+            // The region switch hint for 404/1002 is local - meaning many local retries are happening which leads
+            // to the operations triggered by the availability strategy against each region will all timeout because
+            // they haven't finished the "local retries" before hitting end-to-end timeout
+            // The validation will make sure that cross regional
+            // execution via availability strategy was happening (but also failed)
             new Object[] {
                 "Replace_404-1002_AllRegions_LocalPreferred_DefaultAvailabilityStrategy_WithRetries",
                 Duration.ofSeconds(1),
@@ -1220,6 +1317,13 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 validateStatusCodeIsOperationCancelled,
                 validateDiagnosticsContextHasDiagnosticsForAllRegions
             },
+
+            // This test simulates 404/1002 across all regions for the operation after the initial creation
+            // The region switch hint for 404/1002 is remote - meaning no local retries are happening.
+            // Hedging is enabled.
+            // Operations against all regions (initial and via hedging) are expected to fail with 404/1002.
+            // The validation will make sure that cross regional
+            // execution via availability strategy was happening (but also failed)
             new Object[] {
                 "Replace_404-1002_AllRegions_RemotePreferred_EagerAvailabilityStrategy_WithRetries",
                 Duration.ofSeconds(1),
@@ -1235,7 +1339,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
 
             // 404/1022 into all region
             // Availability strategy exists - but no hedging because NonIdempotentWriteRetries are disabled
-            // no regional fail-over seen, because local preferred region switch (retying too long locally to allow
+            // No regional fail-over seen, because local preferred region switch (retying too long locally to allow
             // cross regional retry)
             new Object[] {
                 "Replace_404-1002_AllRegions_LocalPreferred_EagerAvailabilityStrategy_NoRetries",
@@ -1267,6 +1371,10 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 validateDiagnosticsContextHasDiagnosticsForOnlyFirstRegionButWithRegionalFailover
             },
 
+            // 404/1022 into all region
+            // Availability strategy exists - but no hedging because NonIdempotentWriteRetries are disabled
+            // No regional fail-over seen, because local preferred region switch (retying too long locally to allow
+            // cross regional retry)
             new Object[] {
                 "Replace_404-1002_FirstRegionOnly_RemotePreferred_EagerAvailabilityStrategy_NoRetries",
                 Duration.ofSeconds(1),
@@ -1281,6 +1389,10 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 validateDiagnosticsContextHasDiagnosticsForOnlyFirstRegionButWithRegionalFailover
             },
 
+            // 404/1022 into all region
+            // Availability strategy exists - but no hedging because NonIdempotentWriteRetries are disabled
+            // Regional fail-over seen = remote preferred region switch allows cross-regional retry to happen in
+            // client retry policy within the e2e timeout.
             new Object[] {
                 "Replace_404-1002_FirstRegionOnly_LocalPreferred_EagerAvailabilityStrategy_NoRetries",
                 Duration.ofSeconds(1),
@@ -1295,6 +1407,9 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 validateDiagnosticsContextHasDiagnosticsForOnlyFirstRegion
             },
 
+            // 404/1022 into local region only
+            // Availability strategy exists - hedging or cross regional retry (remote regional preference) would
+            // result in successful response.
             new Object[] {
                 "Replace_404-1002_FirstRegionOnly_RemotePreferred_EagerAvailabilityStrategy_WithRetries",
                 Duration.ofSeconds(1),
@@ -1309,6 +1424,9 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 validateDiagnosticsContextHasDiagnosticsForOneOrTwoRegionsButTwoContactedRegions
             },
 
+            // 404/1022 into local region only
+            // Availability strategy exists - hedging is enabled - no cross regional retry expected (local regional
+            // preference results in too many local retries). Should result in successful response form hedging.
             new Object[] {
                 "Replace_404-1002_FirstRegionOnly_LocalPreferred_EagerAvailabilityStrategy_WithRetries",
                 Duration.ofSeconds(1),
@@ -1323,6 +1441,10 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 validateDiagnosticsContextHasDiagnosticsForAllRegions
             },
 
+            // 404/1022 into local region only
+            // Availability strategy exists, but threshold is very high. So, hedging is not applicable.
+            // Expected to get successful response from cross regional retry - region switch is remote allowing the
+            // cross regional retry to finish within e2e timeout.
             new Object[] {
                 "Create_404-1002_FirstRegionOnly_RemotePreferred_ReluctantAvailabilityStrategy_WithRetries",
                 Duration.ofSeconds(1),
@@ -1337,6 +1459,10 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 validateDiagnosticsContextHasDiagnosticsForOnlyFirstRegionButWithRegionalFailover
             },
 
+            // 404/1022 into local region only
+            // Availability strategy exists, hedging is enabled. Region switch is local - meaning the local retries
+            // will take so long, that the cross-regional retry in the client retry policy is not applicable.
+            // Successful response expected from hedging. Diagnostics should have data for both operations.
             new Object[] {
                 "Create_404-1002_FirstRegionOnly_LocalPreferred_EagerAvailabilityStrategy_WithRetries",
                 Duration.ofSeconds(1),
@@ -1351,6 +1477,11 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 validateDiagnosticsContextHasDiagnosticsForAllRegions
             },
 
+            // 404/1022 into local region only, attempt to delete a non-existing item
+            // Availability strategy exists, hedging is enabled. Region switch is local - meaning the local retries
+            // will take so long that the initial Mono will hit e2e timeout.
+            // Successful response expected from hedging - validating that non=transient errors like 404/0 are
+            // terminating the composite Mono. Diagnostics should have data for both operations.
             new Object[] {
                 "DeleteNonExistingItem_404-1002_FirstRegionOnly_LocalPreferred_EagerAvailabilityStrategy_WithRetries",
                 Duration.ofSeconds(1),
