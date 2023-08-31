@@ -235,7 +235,7 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
     private final Runnable onClientClose;
     private final String entityName;
     private final Mono<ServiceBusAmqpConnection> connectionProcessor;
-    private final String fqdn;
+    private final String fullyQualifiedNamespace;
     private final String viaEntityName;
     private final String identifier;
     private final ServiceBusSenderInstrumentation instrumentation;
@@ -254,7 +254,7 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
         this.entityName = Objects.requireNonNull(entityName, "'entityPath' cannot be null.");
         Objects.requireNonNull(connectionCacheWrapper, "'connectionCacheWrapper' cannot be null.");
         this.connectionProcessor = connectionCacheWrapper.getConnection();
-        this.fqdn = connectionCacheWrapper.getFullyQualifiedNamespace();
+        this.fullyQualifiedNamespace = connectionCacheWrapper.getFullyQualifiedNamespace();
         this.instrumentation = Objects.requireNonNull(instrumentation, "'instrumentation' cannot be null.");
         this.tracer = instrumentation.getTracer();
         this.retryPolicy = getRetryPolicy(retryOptions);
@@ -270,7 +270,7 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
      * @return The fully qualified namespace.
      */
     public String getFullyQualifiedNamespace() {
-        return fqdn;
+        return fullyQualifiedNamespace;
     }
 
     /**

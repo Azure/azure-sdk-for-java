@@ -36,7 +36,7 @@ public final class ServiceBusReceivedMessageContext {
         this.sessionReceivers = sessionReceivers;
         this.receiverClient = null;
         entityPath = sessionReceivers.getEntityPath();
-        fullyQualifiedNamespace = sessionReceivers.getFqdn();
+        fullyQualifiedNamespace = sessionReceivers.getFullyQualifiedNamespace();
     }
 
     /**

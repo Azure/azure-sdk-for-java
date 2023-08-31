@@ -175,18 +175,11 @@ final class AutoDispositionLockRenew extends FluxOperator<ServiceBusReceivedMess
             }
             try {
                 if (isComplete) {
-                    logger.atVerbose()
-                        .addKeyValue(SEQUENCE_NUMBER_KEY, seqNumber)
-                        .log("Attempting to Complete the message.");
                     client.complete(message).block();
                 } else {
-                    logger.atVerbose()
-                        .addKeyValue(SEQUENCE_NUMBER_KEY, seqNumber)
-                        .log("Attempting to Abandon the message.");
                     client.abandon(message).block();
                 }
             } catch (Exception e) {
-                e.printStackTrace();
                 logger.atWarning()
                     .addKeyValue(SEQUENCE_NUMBER_KEY, seqNumber)
                     .log("Unable to '{}' message, cancelling the message streaming.", isComplete ? "Complete" : "Abandon", e);

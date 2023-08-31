@@ -130,7 +130,7 @@ final class SessionsMessagePump {
     private final long  pumpId;
     private final ClientLogger logger;
     private final String identifier;
-    private final String fqdn;
+    private final String fullyQualifiedNamespace;
     private final String entityPath;
     private final ServiceBusReceiverInstrumentation instrumentation;
     private final ServiceBusSessionAcquirer sessionAcquirer;
@@ -149,7 +149,7 @@ final class SessionsMessagePump {
     private final SessionReceiversTracker receiversTracker;
     private final Mono<ServiceBusSessionAcquirer.Session> nextSession;
 
-    SessionsMessagePump(String identifier, String fqdn, String entityPath, ServiceBusReceiveMode receiveMode,
+    SessionsMessagePump(String identifier, String fullyQualifiedNamespace, String entityPath, ServiceBusReceiveMode receiveMode,
         ServiceBusReceiverInstrumentation instrumentation, ServiceBusSessionAcquirer sessionAcquirer,
         Duration maxSessionLockRenew, Duration sessionIdleTimeout, int maxConcurrentSessions, int concurrencyPerSession,
         int prefetch, boolean enableAutoDisposition, MessageSerializer serializer, AmqpRetryPolicy retryPolicy,
@@ -157,11 +157,11 @@ final class SessionsMessagePump {
         this.pumpId = COUNTER.incrementAndGet();
         final Map<String, Object> loggingContext = new HashMap<>(3);
         loggingContext.put(PUMP_ID_KEY, pumpId);
-        loggingContext.put(FULLY_QUALIFIED_NAMESPACE_KEY, fqdn);
+        loggingContext.put(FULLY_QUALIFIED_NAMESPACE_KEY, fullyQualifiedNamespace);
         loggingContext.put(ENTITY_PATH_KEY, entityPath);
         this.logger = new ClientLogger(SessionsMessagePump.class, loggingContext);
         this.identifier = identifier;
-        this.fqdn = Objects.requireNonNull(fqdn, "'fqdn' cannot be null.");
+        this.fullyQualifiedNamespace = Objects.requireNonNull(fullyQualifiedNamespace, "'fullyQualifiedNamespace' cannot be null.");
         this.entityPath = Objects.requireNonNull(entityPath, "'entityPath' cannot be null.");
         Objects.requireNonNull(receiveMode, "'receiveMode' cannot be null.");
         this.instrumentation = Objects.requireNonNull(instrumentation, "'instrumentation' cannot be null");
@@ -177,8 +177,8 @@ final class SessionsMessagePump {
         this.processMessage = Objects.requireNonNull(processMessage, "'processMessage' cannot be null.");
         this.processError = Objects.requireNonNull(processError, "'processError' cannot be null.");
         this.onTerminate = Objects.requireNonNull(onTerminate, "'onTerminate' cannot be null.");
-        this.receiversTracker = new SessionReceiversTracker(logger, maxConcurrentSessions, fqdn, entityPath, receiveMode);
-        this.nextSession = new NextSession(pumpId, fqdn, entityPath, sessionAcquirer).mono();
+        this.receiversTracker = new SessionReceiversTracker(logger, maxConcurrentSessions, fullyQualifiedNamespace, entityPath, receiveMode);
+        this.nextSession = new NextSession(pumpId, fullyQualifiedNamespace, entityPath, sessionAcquirer).mono();
     }
 
     String getIdentifier() {
@@ -228,9 +228,9 @@ final class SessionsMessagePump {
                     return e;
                 }
                 // 'e' here could be reactor.core.CompositeException, e.g, 2 RollingSessionReceiver errors concurrently.
-                return new MessagePumpTerminatedException(pumpId, fqdn, entityPath, "pumping#error-map", e);
+                return new MessagePumpTerminatedException(pumpId, fullyQualifiedNamespace, entityPath, "pumping#error-map", e);
             })
-            .then(Mono.error(() -> MessagePumpTerminatedException.forCompletion(pumpId, fqdn, entityPath)));
+            .then(Mono.error(() -> MessagePumpTerminatedException.forCompletion(pumpId, fullyQualifiedNamespace, entityPath)));
     }
 
     private Mono<Void> pollConnectionState() {
@@ -238,7 +238,7 @@ final class SessionsMessagePump {
             .handle((ignored, sink) -> {
                 if (sessionAcquirer.isConnectionClosed()) {
                     final RuntimeException e = logger.atInfo()
-                        .log(new MessagePumpTerminatedException(pumpId, fqdn, entityPath, "session#connection-state-poll"));
+                        .log(new MessagePumpTerminatedException(pumpId, fullyQualifiedNamespace, entityPath, "session#connection-state-poll"));
                     sink.error(e);
                 }
             }).then();
@@ -264,7 +264,7 @@ final class SessionsMessagePump {
         final ArrayList<RollingSessionReceiver> rollingReceivers = new ArrayList<>(maxConcurrentSessions);
         for (int rollerId = 1; rollerId <= maxConcurrentSessions; rollerId++) {
             final RollingSessionReceiver rollingReceiver = new RollingSessionReceiver(pumpId, rollerId, instrumentation,
-                fqdn, entityPath, nextSession, maxSessionLockRenew, sessionIdleTimeout, concurrencyPerSession,
+                fullyQualifiedNamespace, entityPath, nextSession, maxSessionLockRenew, sessionIdleTimeout, concurrencyPerSession,
                 prefetch, enableAutoDisposition, serializer, retryPolicy, processMessage, processError,
                 receiversTracker);
             rollingReceivers.add(rollingReceiver);
@@ -303,13 +303,13 @@ final class SessionsMessagePump {
         implements Supplier<Mono<ServiceBusSessionAcquirer.Session>> {
         private final AtomicReference<Boolean> isTerminated = new AtomicReference<>(false);
         private final long pumpId;
-        private final String fqdn;
+        private final String fullyQualifiedNamespace;
         private final String entityPath;
         private final ServiceBusSessionAcquirer sessionAcquirer;
 
-        NextSession(long pumpId, String fqdn, String entityPath, ServiceBusSessionAcquirer sessionAcquirer) {
+        NextSession(long pumpId, String fullyQualifiedNamespace, String entityPath, ServiceBusSessionAcquirer sessionAcquirer) {
             this.pumpId = pumpId;
-            this.fqdn = fqdn;
+            this.fullyQualifiedNamespace = fullyQualifiedNamespace;
             this.entityPath = entityPath;
             this.sessionAcquirer = sessionAcquirer;
         }
@@ -322,12 +322,12 @@ final class SessionsMessagePump {
         @Override
         public Mono<ServiceBusSessionAcquirer.Session> get() {
             if (isTerminated.get()) {
-                return Mono.error(new MessagePumpTerminatedException(pumpId, fqdn, entityPath, "session#acquire"));
+                return Mono.error(new MessagePumpTerminatedException(pumpId, fullyQualifiedNamespace, entityPath, "session#acquire"));
             }
             return sessionAcquirer.acquire()
                 .onErrorMap(e -> {
                     isTerminated.set(true);
-                    return new MessagePumpTerminatedException(pumpId, fqdn, entityPath, "session#acquire", e);
+                    return new MessagePumpTerminatedException(pumpId, fullyQualifiedNamespace, entityPath, "session#acquire", e);
                 });
             // The 'MessagePumpTerminatedException' is not logged here ^, since MessageFlux.onError will log it in WARN level.
         }
@@ -345,7 +345,7 @@ final class SessionsMessagePump {
         private final ClientLogger logger;
         private final long pumpId;
         private final int rollerId;
-        private final String fqdn;
+        private final String fullyQualifiedNamespace;
         private final String entityPath;
         private final int concurrency;
         private final Consumer<ServiceBusReceivedMessageContext> processMessage;
@@ -360,7 +360,7 @@ final class SessionsMessagePump {
         private final NextSessionStream nextSessionStream;
         private final  MessageFlux messageFlux;
 
-        RollingSessionReceiver(long pumpId, int rollerId, ServiceBusReceiverInstrumentation instrumentation, String fqdn,
+        RollingSessionReceiver(long pumpId, int rollerId, ServiceBusReceiverInstrumentation instrumentation, String fullyQualifiedNamespace,
             String entityPath, Mono<ServiceBusSessionAcquirer.Session> nextSession, Duration maxSessionLockRenew,
             Duration sessionIdleTimeout, int concurrency, int prefetch, boolean enableAutoDisposition,
             MessageSerializer serializer, AmqpRetryPolicy retryPolicy,
@@ -370,11 +370,11 @@ final class SessionsMessagePump {
             this.pumpId = pumpId;
             final Map<String, Object> loggingContext = new HashMap<>(3);
             loggingContext.put(ROLLER_ID_KEY, rollerId);
-            loggingContext.put(FULLY_QUALIFIED_NAMESPACE_KEY, fqdn);
+            loggingContext.put(FULLY_QUALIFIED_NAMESPACE_KEY, fullyQualifiedNamespace);
             loggingContext.put(ENTITY_PATH_KEY, entityPath);
             this.logger = new ClientLogger(RollingSessionReceiver.class, loggingContext);
             this.rollerId = rollerId;
-            this.fqdn = fqdn;
+            this.fullyQualifiedNamespace = fullyQualifiedNamespace;
             this.entityPath = entityPath;
             this.concurrency = concurrency;
             this.processError = processError;
@@ -386,7 +386,7 @@ final class SessionsMessagePump {
             this.instrumentation = instrumentation;
             this.tracer = instrumentation.getTracer();
             this.receiversTracker = receiversTracker;
-            this.nextSessionStream = new NextSessionStream(pumpId, rollerId, fqdn, entityPath, nextSession);
+            this.nextSessionStream = new NextSessionStream(pumpId, rollerId, fullyQualifiedNamespace, entityPath, nextSession);
             final Flux<ServiceBusSessionReactorReceiver> nextSessionReceiverStream = nextSessionStream.flux()
                 .map(this::nextSessionReceiver);
             this.messageFlux = new MessageFlux(nextSessionReceiverStream, prefetch, CreditFlowMode.RequestDriven, retryPolicy);
@@ -436,7 +436,7 @@ final class SessionsMessagePump {
             final State<ServiceBusSessionReactorReceiver> lastState = super.get();
             if (lastState == TERMINATED) {
                 nextSession.getLink().closeAsync().subscribe();
-                throw new MessagePumpTerminatedException(pumpId, fqdn, entityPath, "session#next-receiver roller_" + rollerId);
+                throw new MessagePumpTerminatedException(pumpId, fullyQualifiedNamespace, entityPath, "session#next-receiver roller_" + rollerId);
             }
             final ServiceBusSessionReactorReceiver nextSessionReceiver = new ServiceBusSessionReactorReceiver(logger, tracer,
                 nextSession, sessionIdleTimeout, maxSessionLockRenew);
@@ -451,7 +451,7 @@ final class SessionsMessagePump {
                 //      'compareAndSet' resulting in T1 not closing its ServiceBusSessionReactorReceiver.
                 //
                 nextSessionReceiver.closeAsync().subscribe();
-                throw new MessagePumpTerminatedException(pumpId, fqdn, entityPath, "session#next-receiver roller_" + rollerId);
+                throw new MessagePumpTerminatedException(pumpId, fullyQualifiedNamespace, entityPath, "session#next-receiver roller_" + rollerId);
             }
             if (lastState != INIT) {
                 final ServiceBusSessionReactorReceiver lastSessionReceiver = lastState.receiver;
@@ -497,7 +497,7 @@ final class SessionsMessagePump {
 
         private void notifyError(Throwable throwable) {
             try {
-                processError.accept(new ServiceBusErrorContext(throwable, fqdn, entityPath));
+                processError.accept(new ServiceBusErrorContext(throwable, fullyQualifiedNamespace, entityPath));
             } catch (Exception e) {
                 logger.atVerbose().log("Ignoring error from user processError handler.", e);
             }
@@ -530,20 +530,20 @@ final class SessionsMessagePump {
         private static final class NextSessionStream extends AtomicBoolean {
             private final long pumpId;
             private final int rollerId;
-            private final String fqdn;
+            private final String fullyQualifiedNamespace;
             private final String entityPath;
             private final Mono<ServiceBusSessionAcquirer.Session> newSession;
 
-            NextSessionStream(long pumpId, int rollerId, String fqdn, String entityPath, Mono<ServiceBusSessionAcquirer.Session> nextSession) {
+            NextSessionStream(long pumpId, int rollerId, String fullyQualifiedNamespace, String entityPath, Mono<ServiceBusSessionAcquirer.Session> nextSession) {
                 super(false);
                 this.pumpId = pumpId;
                 this.rollerId = rollerId;
-                this.fqdn = fqdn;
+                this.fullyQualifiedNamespace = fullyQualifiedNamespace;
                 this.entityPath = entityPath;
                 this.newSession = Mono.defer(() -> {
                     final boolean isTerminated = super.get();
                     if (isTerminated) {
-                        return Mono.error(new MessagePumpTerminatedException(this.pumpId, this.fqdn, this.entityPath,
+                        return Mono.error(new MessagePumpTerminatedException(this.pumpId, this.fullyQualifiedNamespace, this.entityPath,
                             "session#next-link roller_" + this.rollerId));
                     } else {
                         return nextSession;
@@ -552,7 +552,7 @@ final class SessionsMessagePump {
                     final boolean isTerminated = super.get();
                     if (isTerminated) {
                         session.getLink().closeAsync().subscribe();
-                        throw new MessagePumpTerminatedException(this.pumpId, this.fqdn, this.entityPath,
+                        throw new MessagePumpTerminatedException(this.pumpId, this.fullyQualifiedNamespace, this.entityPath,
                             "session#next-link roller_" + this.rollerId);
                     }
                     return session;
@@ -641,15 +641,15 @@ final class SessionsMessagePump {
      */
     static final class SessionReceiversTracker {
         private final ClientLogger logger;
-        private final String fqdn;
+        private final String fullyQualifiedNamespace;
         private final String entityPath;
         private final ServiceBusReceiveMode receiveMode;
         private final ConcurrentHashMap<String, ServiceBusSessionReactorReceiver> receivers;
 
-        private SessionReceiversTracker(ClientLogger logger, int size, String fqdn, String entityPath,
+        private SessionReceiversTracker(ClientLogger logger, int size, String fullyQualifiedNamespace, String entityPath,
             ServiceBusReceiveMode receiveMode) {
             this.logger = logger;
-            this.fqdn = fqdn;
+            this.fullyQualifiedNamespace = fullyQualifiedNamespace;
             this.entityPath = entityPath;
             this.receiveMode = receiveMode;
             this.receivers = new ConcurrentHashMap<>(size);
@@ -667,8 +667,8 @@ final class SessionsMessagePump {
             receivers.clear();
         }
 
-        String getFqdn() {
-            return fqdn;
+        String getFullyQualifiedNamespace() {
+            return fullyQualifiedNamespace;
         }
 
         String getEntityPath() {

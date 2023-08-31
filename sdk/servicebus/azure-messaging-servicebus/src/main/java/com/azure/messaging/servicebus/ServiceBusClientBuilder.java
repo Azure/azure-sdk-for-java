@@ -1331,12 +1331,12 @@ public final class ServiceBusClientBuilder implements
                     linkProvider, tokenManagerProvider, serializer, crossEntityTransactions, isV2);
             };
 
-            final String fqdn = connectionOptions.getFullyQualifiedNamespace();
+            final String fullyQualifiedNamespace = connectionOptions.getFullyQualifiedNamespace();
             final String entityPath = "N/A";
             final AmqpRetryPolicy retryPolicy = RetryUtil.getRetryPolicy(connectionOptions.getRetry());
             final Map<String, Object> loggingContext = Collections.singletonMap(ENTITY_PATH_KEY, entityPath);
 
-            return new ReactorConnectionCache<>(connectionSupplier, fqdn, entityPath, retryPolicy, loggingContext);
+            return new ReactorConnectionCache<>(connectionSupplier, fullyQualifiedNamespace, entityPath, retryPolicy, loggingContext);
         }
     }
 

@@ -17,21 +17,21 @@ import static com.azure.core.amqp.implementation.ClientConstants.PUMP_ID_KEY;
  */
 final class MessagePumpTerminatedException extends RuntimeException {
     private final long pumpId;
-    private final String fqdn;
+    private final String fullyQualifiedNamespace;
     private final String entityPath;
 
     /**
      * Instantiate {@link MessagePumpTerminatedException} representing termination of a MessagePump.
      *
      * @param pumpId The unique identifier of the MessagePump that terminated.
-     * @param fqdn The FQDN of the host from which the message was pumping.
-     * @param entityPath The path to the entity within the FQDN streaming message.
+     * @param fullyQualifiedNamespace The fully qualified Service Bus namespace hosting the messaging entity.
+     * @param entityPath The path to the messaging entity within the Service Bus namespace streaming message.
      * @param detectedAt debug-string indicating where in the async chain the termination occurred or identified.
      */
-    MessagePumpTerminatedException(long pumpId, String fqdn, String entityPath, String detectedAt) {
+    MessagePumpTerminatedException(long pumpId, String fullyQualifiedNamespace, String entityPath, String detectedAt) {
         super(detectedAt);
         this.pumpId = pumpId;
-        this.fqdn = fqdn;
+        this.fullyQualifiedNamespace = fullyQualifiedNamespace;
         this.entityPath = entityPath;
     }
 
@@ -39,15 +39,15 @@ final class MessagePumpTerminatedException extends RuntimeException {
      * Instantiate {@link MessagePumpTerminatedException} representing termination of a MessagePump.
      *
      * @param pumpId The unique identifier of the MessagePump that terminated.
-     * @param fqdn The FQDN of the host from which the message was pumping.
-     * @param entityPath The path to the entity within the FQDN streaming message.
+     * @param fullyQualifiedNamespace The fully qualified Service Bus namespace hosting the messaging entity.
+     * @param entityPath The path to the messaging entity within the Service Bus namespace streaming message.
      * @param detectedAt debug-string indicating where in the async chain the termination occurred or identified.
      * @param terminationCause The reason for the termination of the pump.
      */
-    MessagePumpTerminatedException(long pumpId, String fqdn, String entityPath, String detectedAt, Throwable terminationCause) {
+    MessagePumpTerminatedException(long pumpId, String fullyQualifiedNamespace, String entityPath, String detectedAt, Throwable terminationCause) {
         super(detectedAt, terminationCause);
         this.pumpId = pumpId;
-        this.fqdn = fqdn;
+        this.fullyQualifiedNamespace = fullyQualifiedNamespace;
         this.entityPath = entityPath;
     }
 
@@ -56,16 +56,16 @@ final class MessagePumpTerminatedException extends RuntimeException {
      * into the completion.
      *
      * @param pumpId The unique identifier of the pump that terminated.
-     * @param fqdn The FQDN of the host from which the message was pumping.
-     * @param entityPath The path to the entity within the FQDN streaming message.
+     * @param fullyQualifiedNamespace The fully qualified Service Bus namespace hosting the messaging entity.
+     * @param entityPath The path to the messaging entity within the Service Bus namespace streaming message.
      * @return the {@link MessagePumpTerminatedException}.
      */
-    static MessagePumpTerminatedException forCompletion(long pumpId, String fqdn, String entityPath) {
-        return new MessagePumpTerminatedException(pumpId, fqdn, entityPath, "pumping#reached-completion");
+    static MessagePumpTerminatedException forCompletion(long pumpId, String fullyQualifiedNamespace, String entityPath) {
+        return new MessagePumpTerminatedException(pumpId, fullyQualifiedNamespace, entityPath, "pumping#reached-completion");
     }
 
     /**
-     * Logs the given {@code message} along with pump identifier, FQDN and entity path.
+     * Logs the given {@code message} along with pump identifier, fully qualified Service Bus namespace and entity path.
      *
      * @param logger The logger.
      * @param message The message to log.
@@ -76,13 +76,13 @@ final class MessagePumpTerminatedException extends RuntimeException {
             final MessagePumpTerminatedException error = this;
             logger.atInfo()
                 .addKeyValue(PUMP_ID_KEY, pumpId)
-                .addKeyValue(FULLY_QUALIFIED_NAMESPACE_KEY, fqdn)
+                .addKeyValue(FULLY_QUALIFIED_NAMESPACE_KEY, fullyQualifiedNamespace)
                 .addKeyValue(ENTITY_PATH_KEY, entityPath)
                 .log(message, error);
         } else {
             logger.atInfo()
                 .addKeyValue(PUMP_ID_KEY, pumpId)
-                .addKeyValue(FULLY_QUALIFIED_NAMESPACE_KEY, fqdn)
+                .addKeyValue(FULLY_QUALIFIED_NAMESPACE_KEY, fullyQualifiedNamespace)
                 .addKeyValue(ENTITY_PATH_KEY, entityPath)
                 .log(message);
         }
