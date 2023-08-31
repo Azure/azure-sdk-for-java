@@ -99,8 +99,8 @@ public class ProactiveConnectionManagementTest extends TestSuiteBase {
         if (aggressiveWarmupDuration.compareTo(Duration.ZERO) <= 0) {
             try {
                 new CosmosContainerProactiveInitConfigBuilder(cosmosContainerIdentities)
-                    .setAggressiveWarmupDuration(aggressiveWarmupDuration)
-                    .build();
+                        .setAggressiveWarmupDuration(aggressiveWarmupDuration)
+                        .build();
                 fail("Should have thrown exception");
             } catch (IllegalArgumentException illegalArgEx) {}
         }
@@ -517,12 +517,12 @@ public class ProactiveConnectionManagementTest extends TestSuiteBase {
 
             for (int i = 0; i < containerCount; i++) {
                 proactiveContainerInitConfigBuilder = proactiveContainerInitConfigBuilder
-                    .setMinConnectionPoolSizePerEndpointForContainer(cosmosContainerIdentities.get(i), minConnectionPoolSizePerEndpoint);
+                        .setMinConnectionPoolSizePerEndpointForContainer(cosmosContainerIdentities.get(i), minConnectionPoolSizePerEndpoint);
             }
 
             CosmosContainerProactiveInitConfig proactiveContainerInitConfig = proactiveContainerInitConfigBuilder
-                .setAggressiveWarmupDuration(aggressiveWarmupDuration)
-                .build();
+                    .setAggressiveWarmupDuration(aggressiveWarmupDuration)
+                    .build();
 
             clientWithOpenConnections = new CosmosClientBuilder()
                     .endpoint(TestConfigurations.HOST)
@@ -547,12 +547,12 @@ public class ProactiveConnectionManagementTest extends TestSuiteBase {
             Set<String> endpoints = ConcurrentHashMap.newKeySet();
             UnmodifiableList<URI> readEndpoints = globalEndpointManager.getReadEndpoints();
             List<URI> proactiveConnectionEndpoints = readEndpoints.subList(
-                0,
-                Math.min(readEndpoints.size(), proactiveContainerInitConfig.getProactiveConnectionRegionsCount()));
+                    0,
+                    Math.min(readEndpoints.size(), proactiveContainerInitConfig.getProactiveConnectionRegionsCount()));
 
             Flux<CosmosAsyncContainer> asyncContainerFlux = Flux.fromIterable(asyncContainers);
             Flux<Utils.ValueHolder<List<PartitionKeyRange>>> partitionKeyRangeFlux =
-                buildPartitionKeyRangeRequestFromAsyncContainersAsFlux(asyncContainers, rxDocumentClient);
+                    buildPartitionKeyRangeRequestFromAsyncContainersAsFlux(asyncContainers, rxDocumentClient);
 
             // 1. Extract all preferred read regions to proactively connect to.
             // 2. Obtain partition addresses for a container for one read region, then mark that read region as unavailable.
@@ -662,69 +662,76 @@ public class ProactiveConnectionManagementTest extends TestSuiteBase {
                     Arrays.asList("R1", "R2", "R3", "R4", "R5", "R6")),
                 6,
                 1,
-                Duration.ofSeconds(2)
+                    Duration.ofSeconds(2)
             },
-            new Object[]{preferredLocations, preferredLocations.size() + 1, 1, Duration.ofSeconds(0)},
-            new Object[]{preferredLocations, preferredLocations.size() + 1, 1, Duration.ofSeconds(-1)},
+                new Object[]{preferredLocations, preferredLocations.size() + 1, 1, Duration.ofSeconds(0)},
+                new Object[]{preferredLocations, preferredLocations.size() + 1, 1, Duration.ofSeconds(-1)},
 
         };
     }
 
     private ConcurrentHashMap<String, ?> getCollectionInfoByNameMap(RxDocumentClientImpl rxDocumentClient) {
         RxClientCollectionCache collectionCache =
-            ReflectionUtils.getClientCollectionCache(rxDocumentClient);
+                ReflectionUtils.getClientCollectionCache(rxDocumentClient);
         AsyncCache<String, DocumentCollection> collectionInfoByNameCache =
-            ReflectionUtils.getCollectionInfoByNameCache(collectionCache);
+                ReflectionUtils.getCollectionInfoByNameCache(collectionCache);
 
         return ReflectionUtils.getValueMap(collectionInfoByNameCache);
     }
 
     private ConcurrentHashMap<String, ?> getRoutingMap(RxDocumentClientImpl rxDocumentClient) {
         RxPartitionKeyRangeCache partitionKeyRangeCache =
-            ReflectionUtils.getPartitionKeyRangeCache(rxDocumentClient);
+                ReflectionUtils.getPartitionKeyRangeCache(rxDocumentClient);
         AsyncCacheNonBlocking<String, CollectionRoutingMap> routingMapAsyncCache =
-            ReflectionUtils.getRoutingMapAsyncCacheNonBlocking(partitionKeyRangeCache);
+                ReflectionUtils.getRoutingMapAsyncCacheNonBlocking(partitionKeyRangeCache);
 
         return ReflectionUtils.getValueMapNonBlockingCache(routingMapAsyncCache);
     }
 
     private Flux<Utils.ValueHolder<List<PartitionKeyRange>>> buildPartitionKeyRangeRequestFromAsyncContainersAsFlux(
-        List<CosmosAsyncContainer> cosmosAsyncContainers, RxDocumentClientImpl rxDocumentClient) {
+            List<CosmosAsyncContainer> cosmosAsyncContainers, RxDocumentClientImpl rxDocumentClient) {
         return Flux.fromIterable(cosmosAsyncContainers)
-            .flatMap(CosmosAsyncContainer::read)
-            .flatMap(containerResponse -> rxDocumentClient
-                .getPartitionKeyRangeCache()
-                .tryGetOverlappingRangesAsync(
-                    null,
-                    containerResponse.getProperties().getResourceId(),
-                    PartitionKeyInternalHelper.FullRange,
-                    false,
-                    null));
+                .flatMap(CosmosAsyncContainer::read)
+                .flatMap(containerResponse -> rxDocumentClient
+                        .getPartitionKeyRangeCache()
+                        .tryGetOverlappingRangesAsync(
+                                null,
+                                containerResponse.getProperties().getResourceId(),
+                                PartitionKeyInternalHelper.FullRange,
+                                false,
+                                null));
     }
 
     private Mono<Utils.ValueHolder<List<PartitionKeyRange>>> buildPartitionKeyRangeRequestFromAsyncContainerAsMono(
-        CosmosAsyncContainer cosmosAsyncContainer, RxDocumentClientImpl rxDocumentClient) {
+            CosmosAsyncContainer cosmosAsyncContainer, RxDocumentClientImpl rxDocumentClient) {
         return Mono.just(cosmosAsyncContainer)
-            .flatMap(CosmosAsyncContainer::read)
-            .flatMap(containerResponse -> rxDocumentClient
-                .getPartitionKeyRangeCache()
-                .tryGetOverlappingRangesAsync(
-                    null,
-                    containerResponse.getProperties().getResourceId(),
-                    PartitionKeyInternalHelper.FullRange,
-                    false,
-                    null));
+                .flatMap(CosmosAsyncContainer::read)
+                .flatMap(containerResponse -> rxDocumentClient
+                        .getPartitionKeyRangeCache()
+                        .tryGetOverlappingRangesAsync(
+                                null,
+                                containerResponse.getProperties().getResourceId(),
+                                PartitionKeyInternalHelper.FullRange,
+                                false,
+                                null));
     }
 
     private class ProactiveConnectionManagementTestConfig {
-        private List<String> preferredRegions = new ArrayList<>();
-        private int proactiveConnectionRegionsCount = 0;
-        private int minConnectionPoolSizePerEndpoint = 0;
-        private int containerCount = 0;
-        private Duration aggressiveWarmupDuration = Duration.ofHours(24);
-        private boolean isSystemPropertySetBeforeDirectConnectionConfig = true;
+        private List<String> preferredRegions;
+        private int proactiveConnectionRegionsCount;
+        private int minConnectionPoolSizePerEndpoint;
+        private int containerCount;
+        private Duration aggressiveWarmupDuration;
+        private boolean isSystemPropertySetBeforeDirectConnectionConfig;
 
-        public ProactiveConnectionManagementTestConfig() {}
+        public ProactiveConnectionManagementTestConfig() {
+            this.preferredRegions = new ArrayList<>();
+            this.proactiveConnectionRegionsCount = 0;
+            this.minConnectionPoolSizePerEndpoint = 0;
+            this.containerCount = 0;
+            this.aggressiveWarmupDuration = Duration.ofHours(24);
+            this.isSystemPropertySetBeforeDirectConnectionConfig = false;
+        }
 
         public ProactiveConnectionManagementTestConfig withPreferredRegions(List<String> preferredRegions) {
             this.preferredRegions = preferredRegions;
