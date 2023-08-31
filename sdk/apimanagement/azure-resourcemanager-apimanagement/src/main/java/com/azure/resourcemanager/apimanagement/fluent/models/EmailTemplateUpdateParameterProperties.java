@@ -42,6 +42,10 @@ public final class EmailTemplateUpdateParameterProperties {
     @JsonProperty(value = "parameters")
     private List<EmailTemplateParametersContractProperties> parameters;
 
+    /** Creates an instance of EmailTemplateUpdateParameterProperties class. */
+    public EmailTemplateUpdateParameterProperties() {
+    }
+
     /**
      * Get the subject property: Subject of the Template.
      *

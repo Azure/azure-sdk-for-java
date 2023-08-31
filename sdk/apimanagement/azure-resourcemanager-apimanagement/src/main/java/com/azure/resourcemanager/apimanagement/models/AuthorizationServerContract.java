@@ -40,6 +40,22 @@ public interface AuthorizationServerContract {
     String displayName();
 
     /**
+     * Gets the useInTestConsole property: If true, the authorization server may be used in the developer portal test
+     * console. True by default if no value is provided.
+     *
+     * @return the useInTestConsole value.
+     */
+    Boolean useInTestConsole();
+
+    /**
+     * Gets the useInApiDocumentation property: If true, the authorization server will be used in the API documentation
+     * in the developer portal. False by default if no value is provided.
+     *
+     * @return the useInApiDocumentation value.
+     */
+    Boolean useInApiDocumentation();
+
+    /**
      * Gets the clientRegistrationEndpoint property: Optional reference to a page where client or app registration for
      * this authorization server is performed. Contains absolute URL to entity being referenced.
      *
@@ -157,6 +173,13 @@ public interface AuthorizationServerContract {
     String resourceOwnerPassword();
 
     /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
+
+    /**
      * Gets the inner com.azure.resourcemanager.apimanagement.fluent.models.AuthorizationServerContractInner object.
      *
      * @return the inner object.
@@ -167,28 +190,33 @@ public interface AuthorizationServerContract {
     interface Definition
         extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
+
     /** The AuthorizationServerContract definition stages. */
     interface DefinitionStages {
         /** The first stage of the AuthorizationServerContract definition. */
         interface Blank extends WithParentResource {
         }
+
         /** The stage of the AuthorizationServerContract definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
              * Specifies resourceGroupName, serviceName.
              *
-             * @param resourceGroupName The name of the resource group.
+             * @param resourceGroupName The name of the resource group. The name is case insensitive.
              * @param serviceName The name of the API Management service.
              * @return the next definition stage.
              */
             WithCreate withExistingService(String resourceGroupName, String serviceName);
         }
+
         /**
          * The stage of the AuthorizationServerContract definition which contains all the minimum required properties
          * for the resource to be created, but also allows for any other optional properties to be specified.
          */
         interface WithCreate
             extends DefinitionStages.WithDisplayName,
+                DefinitionStages.WithUseInTestConsole,
+                DefinitionStages.WithUseInApiDocumentation,
                 DefinitionStages.WithClientRegistrationEndpoint,
                 DefinitionStages.WithAuthorizationEndpoint,
                 DefinitionStages.WithGrantTypes,
@@ -220,6 +248,7 @@ public interface AuthorizationServerContract {
              */
             AuthorizationServerContract create(Context context);
         }
+
         /** The stage of the AuthorizationServerContract definition allowing to specify displayName. */
         interface WithDisplayName {
             /**
@@ -230,6 +259,33 @@ public interface AuthorizationServerContract {
              */
             WithCreate withDisplayName(String displayName);
         }
+
+        /** The stage of the AuthorizationServerContract definition allowing to specify useInTestConsole. */
+        interface WithUseInTestConsole {
+            /**
+             * Specifies the useInTestConsole property: If true, the authorization server may be used in the developer
+             * portal test console. True by default if no value is provided..
+             *
+             * @param useInTestConsole If true, the authorization server may be used in the developer portal test
+             *     console. True by default if no value is provided.
+             * @return the next definition stage.
+             */
+            WithCreate withUseInTestConsole(Boolean useInTestConsole);
+        }
+
+        /** The stage of the AuthorizationServerContract definition allowing to specify useInApiDocumentation. */
+        interface WithUseInApiDocumentation {
+            /**
+             * Specifies the useInApiDocumentation property: If true, the authorization server will be used in the API
+             * documentation in the developer portal. False by default if no value is provided..
+             *
+             * @param useInApiDocumentation If true, the authorization server will be used in the API documentation in
+             *     the developer portal. False by default if no value is provided.
+             * @return the next definition stage.
+             */
+            WithCreate withUseInApiDocumentation(Boolean useInApiDocumentation);
+        }
+
         /** The stage of the AuthorizationServerContract definition allowing to specify clientRegistrationEndpoint. */
         interface WithClientRegistrationEndpoint {
             /**
@@ -243,6 +299,7 @@ public interface AuthorizationServerContract {
              */
             WithCreate withClientRegistrationEndpoint(String clientRegistrationEndpoint);
         }
+
         /** The stage of the AuthorizationServerContract definition allowing to specify authorizationEndpoint. */
         interface WithAuthorizationEndpoint {
             /**
@@ -255,6 +312,7 @@ public interface AuthorizationServerContract {
              */
             WithCreate withAuthorizationEndpoint(String authorizationEndpoint);
         }
+
         /** The stage of the AuthorizationServerContract definition allowing to specify grantTypes. */
         interface WithGrantTypes {
             /**
@@ -266,6 +324,7 @@ public interface AuthorizationServerContract {
              */
             WithCreate withGrantTypes(List<GrantType> grantTypes);
         }
+
         /** The stage of the AuthorizationServerContract definition allowing to specify clientId. */
         interface WithClientId {
             /**
@@ -276,6 +335,7 @@ public interface AuthorizationServerContract {
              */
             WithCreate withClientId(String clientId);
         }
+
         /** The stage of the AuthorizationServerContract definition allowing to specify clientSecret. */
         interface WithClientSecret {
             /**
@@ -288,6 +348,7 @@ public interface AuthorizationServerContract {
              */
             WithCreate withClientSecret(String clientSecret);
         }
+
         /** The stage of the AuthorizationServerContract definition allowing to specify description. */
         interface WithDescription {
             /**
@@ -299,6 +360,7 @@ public interface AuthorizationServerContract {
              */
             WithCreate withDescription(String description);
         }
+
         /** The stage of the AuthorizationServerContract definition allowing to specify authorizationMethods. */
         interface WithAuthorizationMethods {
             /**
@@ -311,6 +373,7 @@ public interface AuthorizationServerContract {
              */
             WithCreate withAuthorizationMethods(List<AuthorizationMethod> authorizationMethods);
         }
+
         /** The stage of the AuthorizationServerContract definition allowing to specify clientAuthenticationMethod. */
         interface WithClientAuthenticationMethod {
             /**
@@ -327,6 +390,7 @@ public interface AuthorizationServerContract {
              */
             WithCreate withClientAuthenticationMethod(List<ClientAuthenticationMethod> clientAuthenticationMethod);
         }
+
         /** The stage of the AuthorizationServerContract definition allowing to specify tokenBodyParameters. */
         interface WithTokenBodyParameters {
             /**
@@ -341,6 +405,7 @@ public interface AuthorizationServerContract {
              */
             WithCreate withTokenBodyParameters(List<TokenBodyParameterContract> tokenBodyParameters);
         }
+
         /** The stage of the AuthorizationServerContract definition allowing to specify tokenEndpoint. */
         interface WithTokenEndpoint {
             /**
@@ -352,6 +417,7 @@ public interface AuthorizationServerContract {
              */
             WithCreate withTokenEndpoint(String tokenEndpoint);
         }
+
         /** The stage of the AuthorizationServerContract definition allowing to specify supportState. */
         interface WithSupportState {
             /**
@@ -364,6 +430,7 @@ public interface AuthorizationServerContract {
              */
             WithCreate withSupportState(Boolean supportState);
         }
+
         /** The stage of the AuthorizationServerContract definition allowing to specify defaultScope. */
         interface WithDefaultScope {
             /**
@@ -377,6 +444,7 @@ public interface AuthorizationServerContract {
              */
             WithCreate withDefaultScope(String defaultScope);
         }
+
         /** The stage of the AuthorizationServerContract definition allowing to specify bearerTokenSendingMethods. */
         interface WithBearerTokenSendingMethods {
             /**
@@ -388,6 +456,7 @@ public interface AuthorizationServerContract {
              */
             WithCreate withBearerTokenSendingMethods(List<BearerTokenSendingMethod> bearerTokenSendingMethods);
         }
+
         /** The stage of the AuthorizationServerContract definition allowing to specify resourceOwnerUsername. */
         interface WithResourceOwnerUsername {
             /**
@@ -400,6 +469,7 @@ public interface AuthorizationServerContract {
              */
             WithCreate withResourceOwnerUsername(String resourceOwnerUsername);
         }
+
         /** The stage of the AuthorizationServerContract definition allowing to specify resourceOwnerPassword. */
         interface WithResourceOwnerPassword {
             /**
@@ -412,6 +482,7 @@ public interface AuthorizationServerContract {
              */
             WithCreate withResourceOwnerPassword(String resourceOwnerPassword);
         }
+
         /** The stage of the AuthorizationServerContract definition allowing to specify ifMatch. */
         interface WithIfMatch {
             /**
@@ -425,6 +496,7 @@ public interface AuthorizationServerContract {
             WithCreate withIfMatch(String ifMatch);
         }
     }
+
     /**
      * Begins update for the AuthorizationServerContract resource.
      *
@@ -435,6 +507,8 @@ public interface AuthorizationServerContract {
     /** The template for AuthorizationServerContract update. */
     interface Update
         extends UpdateStages.WithDisplayName,
+            UpdateStages.WithUseInTestConsole,
+            UpdateStages.WithUseInApiDocumentation,
             UpdateStages.WithClientRegistrationEndpoint,
             UpdateStages.WithAuthorizationEndpoint,
             UpdateStages.WithGrantTypes,
@@ -466,6 +540,7 @@ public interface AuthorizationServerContract {
          */
         AuthorizationServerContract apply(Context context);
     }
+
     /** The AuthorizationServerContract update stages. */
     interface UpdateStages {
         /** The stage of the AuthorizationServerContract update allowing to specify displayName. */
@@ -478,6 +553,33 @@ public interface AuthorizationServerContract {
              */
             Update withDisplayName(String displayName);
         }
+
+        /** The stage of the AuthorizationServerContract update allowing to specify useInTestConsole. */
+        interface WithUseInTestConsole {
+            /**
+             * Specifies the useInTestConsole property: If true, the authorization server may be used in the developer
+             * portal test console. True by default if no value is provided..
+             *
+             * @param useInTestConsole If true, the authorization server may be used in the developer portal test
+             *     console. True by default if no value is provided.
+             * @return the next definition stage.
+             */
+            Update withUseInTestConsole(Boolean useInTestConsole);
+        }
+
+        /** The stage of the AuthorizationServerContract update allowing to specify useInApiDocumentation. */
+        interface WithUseInApiDocumentation {
+            /**
+             * Specifies the useInApiDocumentation property: If true, the authorization server will be used in the API
+             * documentation in the developer portal. False by default if no value is provided..
+             *
+             * @param useInApiDocumentation If true, the authorization server will be used in the API documentation in
+             *     the developer portal. False by default if no value is provided.
+             * @return the next definition stage.
+             */
+            Update withUseInApiDocumentation(Boolean useInApiDocumentation);
+        }
+
         /** The stage of the AuthorizationServerContract update allowing to specify clientRegistrationEndpoint. */
         interface WithClientRegistrationEndpoint {
             /**
@@ -491,6 +593,7 @@ public interface AuthorizationServerContract {
              */
             Update withClientRegistrationEndpoint(String clientRegistrationEndpoint);
         }
+
         /** The stage of the AuthorizationServerContract update allowing to specify authorizationEndpoint. */
         interface WithAuthorizationEndpoint {
             /**
@@ -503,6 +606,7 @@ public interface AuthorizationServerContract {
              */
             Update withAuthorizationEndpoint(String authorizationEndpoint);
         }
+
         /** The stage of the AuthorizationServerContract update allowing to specify grantTypes. */
         interface WithGrantTypes {
             /**
@@ -514,6 +618,7 @@ public interface AuthorizationServerContract {
              */
             Update withGrantTypes(List<GrantType> grantTypes);
         }
+
         /** The stage of the AuthorizationServerContract update allowing to specify clientId. */
         interface WithClientId {
             /**
@@ -524,6 +629,7 @@ public interface AuthorizationServerContract {
              */
             Update withClientId(String clientId);
         }
+
         /** The stage of the AuthorizationServerContract update allowing to specify clientSecret. */
         interface WithClientSecret {
             /**
@@ -536,6 +642,7 @@ public interface AuthorizationServerContract {
              */
             Update withClientSecret(String clientSecret);
         }
+
         /** The stage of the AuthorizationServerContract update allowing to specify description. */
         interface WithDescription {
             /**
@@ -547,6 +654,7 @@ public interface AuthorizationServerContract {
              */
             Update withDescription(String description);
         }
+
         /** The stage of the AuthorizationServerContract update allowing to specify authorizationMethods. */
         interface WithAuthorizationMethods {
             /**
@@ -559,6 +667,7 @@ public interface AuthorizationServerContract {
              */
             Update withAuthorizationMethods(List<AuthorizationMethod> authorizationMethods);
         }
+
         /** The stage of the AuthorizationServerContract update allowing to specify clientAuthenticationMethod. */
         interface WithClientAuthenticationMethod {
             /**
@@ -575,6 +684,7 @@ public interface AuthorizationServerContract {
              */
             Update withClientAuthenticationMethod(List<ClientAuthenticationMethod> clientAuthenticationMethod);
         }
+
         /** The stage of the AuthorizationServerContract update allowing to specify tokenBodyParameters. */
         interface WithTokenBodyParameters {
             /**
@@ -589,6 +699,7 @@ public interface AuthorizationServerContract {
              */
             Update withTokenBodyParameters(List<TokenBodyParameterContract> tokenBodyParameters);
         }
+
         /** The stage of the AuthorizationServerContract update allowing to specify tokenEndpoint. */
         interface WithTokenEndpoint {
             /**
@@ -600,6 +711,7 @@ public interface AuthorizationServerContract {
              */
             Update withTokenEndpoint(String tokenEndpoint);
         }
+
         /** The stage of the AuthorizationServerContract update allowing to specify supportState. */
         interface WithSupportState {
             /**
@@ -612,6 +724,7 @@ public interface AuthorizationServerContract {
              */
             Update withSupportState(Boolean supportState);
         }
+
         /** The stage of the AuthorizationServerContract update allowing to specify defaultScope. */
         interface WithDefaultScope {
             /**
@@ -625,6 +738,7 @@ public interface AuthorizationServerContract {
              */
             Update withDefaultScope(String defaultScope);
         }
+
         /** The stage of the AuthorizationServerContract update allowing to specify bearerTokenSendingMethods. */
         interface WithBearerTokenSendingMethods {
             /**
@@ -636,6 +750,7 @@ public interface AuthorizationServerContract {
              */
             Update withBearerTokenSendingMethods(List<BearerTokenSendingMethod> bearerTokenSendingMethods);
         }
+
         /** The stage of the AuthorizationServerContract update allowing to specify resourceOwnerUsername. */
         interface WithResourceOwnerUsername {
             /**
@@ -648,6 +763,7 @@ public interface AuthorizationServerContract {
              */
             Update withResourceOwnerUsername(String resourceOwnerUsername);
         }
+
         /** The stage of the AuthorizationServerContract update allowing to specify resourceOwnerPassword. */
         interface WithResourceOwnerPassword {
             /**
@@ -660,6 +776,7 @@ public interface AuthorizationServerContract {
              */
             Update withResourceOwnerPassword(String resourceOwnerPassword);
         }
+
         /** The stage of the AuthorizationServerContract update allowing to specify ifMatch. */
         interface WithIfMatch {
             /**
@@ -673,6 +790,7 @@ public interface AuthorizationServerContract {
             Update withIfMatch(String ifMatch);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *
@@ -691,15 +809,6 @@ public interface AuthorizationServerContract {
     /**
      * Gets the client secret details of the authorization server.
      *
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the client secret details of the authorization server.
-     */
-    AuthorizationServerSecretsContract listSecrets();
-
-    /**
-     * Gets the client secret details of the authorization server.
-     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -707,4 +816,13 @@ public interface AuthorizationServerContract {
      * @return the client secret details of the authorization server.
      */
     Response<AuthorizationServerSecretsContract> listSecretsWithResponse(Context context);
+
+    /**
+     * Gets the client secret details of the authorization server.
+     *
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the client secret details of the authorization server.
+     */
+    AuthorizationServerSecretsContract listSecrets();
 }

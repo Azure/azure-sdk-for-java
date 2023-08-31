@@ -90,6 +90,13 @@ public interface OperationContract {
     String policies();
 
     /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
+
+    /**
      * Gets the inner com.azure.resourcemanager.apimanagement.fluent.models.OperationContractInner object.
      *
      * @return the inner object.
@@ -100,17 +107,19 @@ public interface OperationContract {
     interface Definition
         extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
+
     /** The OperationContract definition stages. */
     interface DefinitionStages {
         /** The first stage of the OperationContract definition. */
         interface Blank extends WithParentResource {
         }
+
         /** The stage of the OperationContract definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
              * Specifies resourceGroupName, serviceName, apiId.
              *
-             * @param resourceGroupName The name of the resource group.
+             * @param resourceGroupName The name of the resource group. The name is case insensitive.
              * @param serviceName The name of the API Management service.
              * @param apiId API revision identifier. Must be unique in the current API Management service instance.
              *     Non-current revision has ;rev=n as a suffix where n is the revision number.
@@ -118,6 +127,7 @@ public interface OperationContract {
              */
             WithCreate withExistingApi(String resourceGroupName, String serviceName, String apiId);
         }
+
         /**
          * The stage of the OperationContract definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
@@ -147,6 +157,7 @@ public interface OperationContract {
              */
             OperationContract create(Context context);
         }
+
         /** The stage of the OperationContract definition allowing to specify displayName. */
         interface WithDisplayName {
             /**
@@ -157,6 +168,7 @@ public interface OperationContract {
              */
             WithCreate withDisplayName(String displayName);
         }
+
         /** The stage of the OperationContract definition allowing to specify method. */
         interface WithMethod {
             /**
@@ -169,6 +181,7 @@ public interface OperationContract {
              */
             WithCreate withMethod(String method);
         }
+
         /** The stage of the OperationContract definition allowing to specify urlTemplate. */
         interface WithUrlTemplate {
             /**
@@ -181,6 +194,7 @@ public interface OperationContract {
              */
             WithCreate withUrlTemplate(String urlTemplate);
         }
+
         /** The stage of the OperationContract definition allowing to specify templateParameters. */
         interface WithTemplateParameters {
             /**
@@ -191,6 +205,7 @@ public interface OperationContract {
              */
             WithCreate withTemplateParameters(List<ParameterContract> templateParameters);
         }
+
         /** The stage of the OperationContract definition allowing to specify description. */
         interface WithDescription {
             /**
@@ -201,6 +216,7 @@ public interface OperationContract {
              */
             WithCreate withDescription(String description);
         }
+
         /** The stage of the OperationContract definition allowing to specify request. */
         interface WithRequest {
             /**
@@ -211,6 +227,7 @@ public interface OperationContract {
              */
             WithCreate withRequest(RequestContract request);
         }
+
         /** The stage of the OperationContract definition allowing to specify responses. */
         interface WithResponses {
             /**
@@ -221,6 +238,7 @@ public interface OperationContract {
              */
             WithCreate withResponses(List<ResponseContract> responses);
         }
+
         /** The stage of the OperationContract definition allowing to specify policies. */
         interface WithPolicies {
             /**
@@ -231,6 +249,7 @@ public interface OperationContract {
              */
             WithCreate withPolicies(String policies);
         }
+
         /** The stage of the OperationContract definition allowing to specify ifMatch. */
         interface WithIfMatch {
             /**
@@ -244,6 +263,7 @@ public interface OperationContract {
             WithCreate withIfMatch(String ifMatch);
         }
     }
+
     /**
      * Begins update for the OperationContract resource.
      *
@@ -277,6 +297,7 @@ public interface OperationContract {
          */
         OperationContract apply(Context context);
     }
+
     /** The OperationContract update stages. */
     interface UpdateStages {
         /** The stage of the OperationContract update allowing to specify displayName. */
@@ -289,6 +310,7 @@ public interface OperationContract {
              */
             Update withDisplayName(String displayName);
         }
+
         /** The stage of the OperationContract update allowing to specify method. */
         interface WithMethod {
             /**
@@ -301,6 +323,7 @@ public interface OperationContract {
              */
             Update withMethod(String method);
         }
+
         /** The stage of the OperationContract update allowing to specify urlTemplate. */
         interface WithUrlTemplate {
             /**
@@ -313,6 +336,7 @@ public interface OperationContract {
              */
             Update withUrlTemplate(String urlTemplate);
         }
+
         /** The stage of the OperationContract update allowing to specify templateParameters. */
         interface WithTemplateParameters {
             /**
@@ -323,6 +347,7 @@ public interface OperationContract {
              */
             Update withTemplateParameters(List<ParameterContract> templateParameters);
         }
+
         /** The stage of the OperationContract update allowing to specify description. */
         interface WithDescription {
             /**
@@ -333,6 +358,7 @@ public interface OperationContract {
              */
             Update withDescription(String description);
         }
+
         /** The stage of the OperationContract update allowing to specify request. */
         interface WithRequest {
             /**
@@ -343,6 +369,7 @@ public interface OperationContract {
              */
             Update withRequest(RequestContract request);
         }
+
         /** The stage of the OperationContract update allowing to specify responses. */
         interface WithResponses {
             /**
@@ -353,6 +380,7 @@ public interface OperationContract {
              */
             Update withResponses(List<ResponseContract> responses);
         }
+
         /** The stage of the OperationContract update allowing to specify policies. */
         interface WithPolicies {
             /**
@@ -363,6 +391,7 @@ public interface OperationContract {
              */
             Update withPolicies(String policies);
         }
+
         /** The stage of the OperationContract update allowing to specify ifMatch. */
         interface WithIfMatch {
             /**
@@ -376,6 +405,7 @@ public interface OperationContract {
             Update withIfMatch(String ifMatch);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

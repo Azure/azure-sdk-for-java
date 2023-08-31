@@ -22,7 +22,7 @@ public class Uri {
     private final AtomicReference<HealthStatus> healthStatus;
     private volatile Instant lastUnknownTimestamp;
     private volatile Instant lastUnhealthyPendingTimestamp;
-    private volatile Instant lastUnhealthyTimestamp;
+    private volatile Instant lastTransitionToUnhealthyTimestamp;
     private volatile boolean isPrimary;
 
     public static Uri create(String uriAsString) {
@@ -42,7 +42,7 @@ public class Uri {
         this.healthStatus = new AtomicReference<>(HealthStatus.Unknown);
         this.lastUnknownTimestamp = Instant.now();
         this.lastUnhealthyPendingTimestamp = null;
-        this.lastUnhealthyTimestamp = null;
+        this.lastTransitionToUnhealthyTimestamp = null;
     }
 
     public URI getURI() {
@@ -106,7 +106,9 @@ public class Uri {
             HealthStatus newStatus = previousStatus;
             switch (status) {
                 case Unhealthy:
-                    this.lastUnhealthyTimestamp = Instant.now();
+                    if (previousStatus != HealthStatus.Unhealthy || this.lastTransitionToUnhealthyTimestamp == null) {
+                        this.lastTransitionToUnhealthyTimestamp = Instant.now();
+                    }
                     newStatus = status;
                     break;
 
@@ -119,7 +121,7 @@ public class Uri {
                 case Connected:
                     if (previousStatus != HealthStatus.Unhealthy
                         || (previousStatus == HealthStatus.Unhealthy &&
-                            Instant.now().compareTo(this.lastUnhealthyTimestamp.plusMillis(DEFAULT_NON_HEALTHY_RESET_TIME_IN_MILLISECONDS)) > 0)) {
+                            Instant.now().compareTo(this.lastTransitionToUnhealthyTimestamp.plusMillis(DEFAULT_NON_HEALTHY_RESET_TIME_IN_MILLISECONDS)) > 0)) {
                         newStatus = status;
                     }
                     break;
@@ -176,7 +178,7 @@ public class Uri {
 
     public boolean shouldRefreshHealthStatus() {
         return this.healthStatus.get() == HealthStatus.Unhealthy
-                && Instant.now().compareTo(this.lastUnhealthyTimestamp.plusMillis(DEFAULT_NON_HEALTHY_RESET_TIME_IN_MILLISECONDS)) >= 0;
+                && Instant.now().compareTo(this.lastTransitionToUnhealthyTimestamp.plusMillis(DEFAULT_NON_HEALTHY_RESET_TIME_IN_MILLISECONDS)) >= 0;
     }
 
     public String getHealthStatusDiagnosticString() {

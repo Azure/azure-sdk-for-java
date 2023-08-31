@@ -13,7 +13,7 @@ public final class CircuitTests {
         Circuit model =
             BinaryData
                 .fromString(
-                    "{\"primarySubnet\":\"jqabcypmivkwlzuv\",\"secondarySubnet\":\"fwnfnb\",\"expressRouteID\":\"fionl\",\"expressRoutePrivatePeeringID\":\"x\"}")
+                    "{\"primarySubnet\":\"runmp\",\"secondarySubnet\":\"tdbhrbnla\",\"expressRouteID\":\"xmyskp\",\"expressRoutePrivatePeeringID\":\"enbtkcxywny\"}")
                 .toObject(Circuit.class);
     }
 

@@ -15,7 +15,7 @@ import java.util.Map;
 /** Samples for BackupVaults Update. */
 public final class BackupVaultsUpdateSamples {
     /*
-     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-01-01/examples/VaultCRUD/PatchBackupVault.json
+     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-05-01/examples/VaultCRUD/PatchBackupVault.json
      */
     /**
      * Sample code: Patch BackupVault.
@@ -31,7 +31,7 @@ public final class BackupVaultsUpdateSamples {
                 .getValue();
         resource
             .update()
-            .withTags(mapOf("newKey", "newVal"))
+            .withTags(mapOf("newKey", "fakeTokenPlaceholder"))
             .withProperties(
                 new PatchBackupVaultInput()
                     .withMonitoringSettings(

@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.apimanagement.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ApiDiagnostic Delete. */
 public final class ApiDiagnosticDeleteSamples {
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementDeleteApiDiagnostic.json
+     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementDeleteApiDiagnostic.json
      */
     /**
      * Sample code: ApiManagementDeleteApiDiagnostic.
@@ -21,6 +19,11 @@ public final class ApiDiagnosticDeleteSamples {
         manager
             .apiDiagnostics()
             .deleteWithResponse(
-                "rg1", "apimService1", "57d1f7558aa04f15146d9d8a", "applicationinsights", "*", Context.NONE);
+                "rg1",
+                "apimService1",
+                "57d1f7558aa04f15146d9d8a",
+                "applicationinsights",
+                "*",
+                com.azure.core.util.Context.NONE);
     }
 }

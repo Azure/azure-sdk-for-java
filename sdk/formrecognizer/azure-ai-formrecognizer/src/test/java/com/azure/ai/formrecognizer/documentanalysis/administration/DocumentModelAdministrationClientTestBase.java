@@ -29,7 +29,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.time.Duration;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
@@ -92,11 +92,11 @@ public abstract class DocumentModelAdministrationClientTestBase extends TestProx
         return builder;
     }
     private void setMatchers() {
-        interceptorManager.addMatchers(Arrays.asList(new BodilessMatcher()));
+        interceptorManager.addMatchers(Collections.singletonList(new BodilessMatcher()));
     }
     static TokenCredential getCredentialByAuthority(String endpoint) {
         String authority = TestUtils.getAuthority(endpoint);
-        if (authority == AzureAuthorityHosts.AZURE_PUBLIC_CLOUD) {
+        if (AzureAuthorityHosts.AZURE_PUBLIC_CLOUD.equals(authority)) {
             return new DefaultAzureCredentialBuilder()
                 .authorityHost(TestUtils.getAuthority(endpoint))
                 .build();
@@ -133,7 +133,7 @@ public abstract class DocumentModelAdministrationClientTestBase extends TestProx
     void validateClassifierModelData(DocumentClassifierDetails documentClassifierDetails) {
         assertNotNull(documentClassifierDetails.getCreatedOn());
         assertNotNull(documentClassifierDetails.getClassifierId());
-        assertNotNull(documentClassifierDetails.getApiVersion());
+        assertNotNull(documentClassifierDetails.getServiceVersion());
     }
 
     void blankPdfDataRunner(BiConsumer<InputStream, Long> testRunner) {

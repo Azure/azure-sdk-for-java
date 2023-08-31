@@ -10,10 +10,11 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.networkcloud.fluent.VirtualMachinesClient;
+import com.azure.resourcemanager.networkcloud.fluent.models.OperationStatusResultInner;
 import com.azure.resourcemanager.networkcloud.fluent.models.VirtualMachineInner;
+import com.azure.resourcemanager.networkcloud.models.OperationStatusResult;
 import com.azure.resourcemanager.networkcloud.models.VirtualMachine;
 import com.azure.resourcemanager.networkcloud.models.VirtualMachinePowerOffParameters;
-import com.azure.resourcemanager.networkcloud.models.VirtualMachineVolumeParameters;
 import com.azure.resourcemanager.networkcloud.models.VirtualMachines;
 
 public final class VirtualMachinesImpl implements VirtualMachines {
@@ -81,74 +82,83 @@ public final class VirtualMachinesImpl implements VirtualMachines {
         this.serviceClient().delete(resourceGroupName, virtualMachineName, context);
     }
 
-    public void attachVolume(
-        String resourceGroupName,
-        String virtualMachineName,
-        VirtualMachineVolumeParameters virtualMachineAttachVolumeParameters) {
-        this.serviceClient().attachVolume(resourceGroupName, virtualMachineName, virtualMachineAttachVolumeParameters);
+    public OperationStatusResult powerOff(String resourceGroupName, String virtualMachineName) {
+        OperationStatusResultInner inner = this.serviceClient().powerOff(resourceGroupName, virtualMachineName);
+        if (inner != null) {
+            return new OperationStatusResultImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
-    public void attachVolume(
-        String resourceGroupName,
-        String virtualMachineName,
-        VirtualMachineVolumeParameters virtualMachineAttachVolumeParameters,
-        Context context) {
-        this
-            .serviceClient()
-            .attachVolume(resourceGroupName, virtualMachineName, virtualMachineAttachVolumeParameters, context);
-    }
-
-    public void detachVolume(
-        String resourceGroupName,
-        String virtualMachineName,
-        VirtualMachineVolumeParameters virtualMachineDetachVolumeParameters) {
-        this.serviceClient().detachVolume(resourceGroupName, virtualMachineName, virtualMachineDetachVolumeParameters);
-    }
-
-    public void detachVolume(
-        String resourceGroupName,
-        String virtualMachineName,
-        VirtualMachineVolumeParameters virtualMachineDetachVolumeParameters,
-        Context context) {
-        this
-            .serviceClient()
-            .detachVolume(resourceGroupName, virtualMachineName, virtualMachineDetachVolumeParameters, context);
-    }
-
-    public void powerOff(String resourceGroupName, String virtualMachineName) {
-        this.serviceClient().powerOff(resourceGroupName, virtualMachineName);
-    }
-
-    public void powerOff(
+    public OperationStatusResult powerOff(
         String resourceGroupName,
         String virtualMachineName,
         VirtualMachinePowerOffParameters virtualMachinePowerOffParameters,
         Context context) {
-        this.serviceClient().powerOff(resourceGroupName, virtualMachineName, virtualMachinePowerOffParameters, context);
+        OperationStatusResultInner inner =
+            this
+                .serviceClient()
+                .powerOff(resourceGroupName, virtualMachineName, virtualMachinePowerOffParameters, context);
+        if (inner != null) {
+            return new OperationStatusResultImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
-    public void reimage(String resourceGroupName, String virtualMachineName) {
-        this.serviceClient().reimage(resourceGroupName, virtualMachineName);
+    public OperationStatusResult reimage(String resourceGroupName, String virtualMachineName) {
+        OperationStatusResultInner inner = this.serviceClient().reimage(resourceGroupName, virtualMachineName);
+        if (inner != null) {
+            return new OperationStatusResultImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
-    public void reimage(String resourceGroupName, String virtualMachineName, Context context) {
-        this.serviceClient().reimage(resourceGroupName, virtualMachineName, context);
+    public OperationStatusResult reimage(String resourceGroupName, String virtualMachineName, Context context) {
+        OperationStatusResultInner inner = this.serviceClient().reimage(resourceGroupName, virtualMachineName, context);
+        if (inner != null) {
+            return new OperationStatusResultImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
-    public void restart(String resourceGroupName, String virtualMachineName) {
-        this.serviceClient().restart(resourceGroupName, virtualMachineName);
+    public OperationStatusResult restart(String resourceGroupName, String virtualMachineName) {
+        OperationStatusResultInner inner = this.serviceClient().restart(resourceGroupName, virtualMachineName);
+        if (inner != null) {
+            return new OperationStatusResultImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
-    public void restart(String resourceGroupName, String virtualMachineName, Context context) {
-        this.serviceClient().restart(resourceGroupName, virtualMachineName, context);
+    public OperationStatusResult restart(String resourceGroupName, String virtualMachineName, Context context) {
+        OperationStatusResultInner inner = this.serviceClient().restart(resourceGroupName, virtualMachineName, context);
+        if (inner != null) {
+            return new OperationStatusResultImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
-    public void start(String resourceGroupName, String virtualMachineName) {
-        this.serviceClient().start(resourceGroupName, virtualMachineName);
+    public OperationStatusResult start(String resourceGroupName, String virtualMachineName) {
+        OperationStatusResultInner inner = this.serviceClient().start(resourceGroupName, virtualMachineName);
+        if (inner != null) {
+            return new OperationStatusResultImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
-    public void start(String resourceGroupName, String virtualMachineName, Context context) {
-        this.serviceClient().start(resourceGroupName, virtualMachineName, context);
+    public OperationStatusResult start(String resourceGroupName, String virtualMachineName, Context context) {
+        OperationStatusResultInner inner = this.serviceClient().start(resourceGroupName, virtualMachineName, context);
+        if (inner != null) {
+            return new OperationStatusResultImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public VirtualMachine getById(String id) {

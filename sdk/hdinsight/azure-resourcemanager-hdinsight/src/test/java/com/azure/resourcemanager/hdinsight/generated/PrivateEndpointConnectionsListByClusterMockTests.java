@@ -12,7 +12,6 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.hdinsight.HDInsightManager;
 import com.azure.resourcemanager.hdinsight.models.PrivateEndpointConnection;
 import com.azure.resourcemanager.hdinsight.models.PrivateLinkServiceConnectionStatus;
@@ -34,7 +33,7 @@ public final class PrivateEndpointConnectionsListByClusterMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"privateEndpoint\":{\"id\":\"rksxwpndfc\"},\"privateLinkServiceConnectionState\":{\"status\":\"Rejected\",\"description\":\"znth\",\"actionsRequired\":\"wkjaos\"},\"linkIdentifier\":\"uzvoamktcqiosm\",\"provisioningState\":\"Updating\"},\"id\":\"hgxqdlyrt\",\"name\":\"tlaprltzkatb\",\"type\":\"jm\"}]}";
+            "{\"value\":[{\"properties\":{\"privateEndpoint\":{\"id\":\"guyxlyk\"},\"privateLinkServiceConnectionState\":{\"status\":\"Rejected\",\"description\":\"vx\",\"actionsRequired\":\"wxh\"},\"linkIdentifier\":\"ejtlk\",\"provisioningState\":\"Updating\"},\"id\":\"nwivkcqhrxh\",\"name\":\"knlccrmmkyup\",\"type\":\"jubyqjfkakfq\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -63,14 +62,14 @@ public final class PrivateEndpointConnectionsListByClusterMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<PrivateEndpointConnection> response =
-            manager.privateEndpointConnections().listByCluster("cy", "ilrmcaykggnox", Context.NONE);
+            manager.privateEndpointConnections().listByCluster("oakizvoai", "naqln", com.azure.core.util.Context.NONE);
 
         Assertions
             .assertEquals(
                 PrivateLinkServiceConnectionStatus.REJECTED,
                 response.iterator().next().privateLinkServiceConnectionState().status());
-        Assertions.assertEquals("znth", response.iterator().next().privateLinkServiceConnectionState().description());
+        Assertions.assertEquals("vx", response.iterator().next().privateLinkServiceConnectionState().description());
         Assertions
-            .assertEquals("wkjaos", response.iterator().next().privateLinkServiceConnectionState().actionsRequired());
+            .assertEquals("wxh", response.iterator().next().privateLinkServiceConnectionState().actionsRequired());
     }
 }

@@ -56,6 +56,6 @@ public final class AccountsRenewCredentialsMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.accounts().renewCredentials("sewgioilqukr", "dxtqmieoxo", com.azure.core.util.Context.NONE);
+        manager.accounts().renewCredentials("slordilmyww", "kgkxn", com.azure.core.util.Context.NONE);
     }
 }

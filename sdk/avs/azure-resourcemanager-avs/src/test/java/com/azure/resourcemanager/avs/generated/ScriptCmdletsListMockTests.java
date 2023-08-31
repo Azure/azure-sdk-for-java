@@ -31,7 +31,7 @@ public final class ScriptCmdletsListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"description\":\"wohqfzizvu\",\"timeout\":\"mk\",\"parameters\":[]},\"id\":\"thnwpzte\",\"name\":\"ovmribiattg\",\"type\":\"lu\"}]}";
+            "{\"value\":[{\"properties\":{\"description\":\"sxze\",\"timeout\":\"axwk\",\"parameters\":[{\"type\":\"Bool\",\"name\":\"uhxep\",\"description\":\"utznabaobns\",\"visibility\":\"Hidden\",\"optional\":\"Required\"}]},\"id\":\"ltymkmvguihywart\",\"name\":\"pphkixkykxds\",\"type\":\"j\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -60,8 +60,6 @@ public final class ScriptCmdletsListMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<ScriptCmdlet> response =
-            manager
-                .scriptCmdlets()
-                .list("qcbfrmbodths", "qgvriibakcla", "jfrnxousxauzlwv", com.azure.core.util.Context.NONE);
+            manager.scriptCmdlets().list("oewbid", "vteo", "xvgpiude", com.azure.core.util.Context.NONE);
     }
 }

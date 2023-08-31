@@ -148,11 +148,13 @@ public interface Job {
             DefinitionStages.WithResourceGroup,
             DefinitionStages.WithCreate {
     }
+
     /** The Job definition stages. */
     interface DefinitionStages {
         /** The first stage of the Job definition. */
         interface Blank extends WithLocation {
         }
+
         /** The stage of the Job definition allowing to specify location. */
         interface WithLocation {
             /**
@@ -171,6 +173,7 @@ public interface Job {
              */
             WithResourceGroup withRegion(String location);
         }
+
         /** The stage of the Job definition allowing to specify parent resource. */
         interface WithResourceGroup {
             /**
@@ -181,6 +184,7 @@ public interface Job {
              */
             WithCreate withExistingResourceGroup(String resourceGroupName);
         }
+
         /**
          * The stage of the Job definition which contains all the minimum required properties for the resource to be
          * created, but also allows for any other optional properties to be specified.
@@ -207,6 +211,7 @@ public interface Job {
              */
             Job create(Context context);
         }
+
         /** The stage of the Job definition allowing to specify tags. */
         interface WithTags {
             /**
@@ -217,6 +222,7 @@ public interface Job {
              */
             WithCreate withTags(Map<String, String> tags);
         }
+
         /** The stage of the Job definition allowing to specify identity. */
         interface WithIdentity {
             /**
@@ -229,6 +235,7 @@ public interface Job {
              */
             WithCreate withIdentity(ManagedServiceIdentity identity);
         }
+
         /** The stage of the Job definition allowing to specify environmentId. */
         interface WithEnvironmentId {
             /**
@@ -239,6 +246,7 @@ public interface Job {
              */
             WithCreate withEnvironmentId(String environmentId);
         }
+
         /** The stage of the Job definition allowing to specify workloadProfileName. */
         interface WithWorkloadProfileName {
             /**
@@ -250,6 +258,7 @@ public interface Job {
              */
             WithCreate withWorkloadProfileName(String workloadProfileName);
         }
+
         /** The stage of the Job definition allowing to specify configuration. */
         interface WithConfiguration {
             /**
@@ -260,6 +269,7 @@ public interface Job {
              */
             WithCreate withConfiguration(JobConfiguration configuration);
         }
+
         /** The stage of the Job definition allowing to specify template. */
         interface WithTemplate {
             /**
@@ -271,6 +281,7 @@ public interface Job {
             WithCreate withTemplate(JobTemplate template);
         }
     }
+
     /**
      * Begins update for the Job resource.
      *
@@ -295,6 +306,7 @@ public interface Job {
          */
         Job apply(Context context);
     }
+
     /** The Job update stages. */
     interface UpdateStages {
         /** The stage of the Job update allowing to specify tags. */
@@ -307,6 +319,7 @@ public interface Job {
              */
             Update withTags(Map<String, String> tags);
         }
+
         /** The stage of the Job update allowing to specify identity. */
         interface WithIdentity {
             /**
@@ -319,6 +332,7 @@ public interface Job {
              */
             Update withIdentity(ManagedServiceIdentity identity);
         }
+
         /** The stage of the Job update allowing to specify properties. */
         interface WithProperties {
             /**
@@ -330,6 +344,7 @@ public interface Job {
             Update withProperties(JobPatchPropertiesProperties properties);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *
@@ -348,19 +363,17 @@ public interface Job {
     /**
      * Start a Container Apps Job.
      *
-     * @param template Properties used to start a job instance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
      *     is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return container App's Job execution name.
      */
-    JobExecutionBase start(JobExecutionTemplate template);
+    JobExecutionBase start();
 
     /**
      * Start a Container Apps Job.
      *
-     * @param template Properties used to start a job instance.
+     * @param template Properties used to start a job execution.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
@@ -373,19 +386,16 @@ public interface Job {
     /**
      * Terminates execution of a running container apps job.
      *
-     * @param jobExecutionName List of all job executions that should be stopped.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
      *     is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return container App executions collection ARM resource.
      */
-    ContainerAppJobExecutions stopMultipleExecutions(JobExecutionNamesCollection jobExecutionName);
+    ContainerAppJobExecutions stopMultipleExecutions();
 
     /**
      * Terminates execution of a running container apps job.
      *
-     * @param jobExecutionName List of all job executions that should be stopped.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
@@ -393,7 +403,7 @@ public interface Job {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return container App executions collection ARM resource.
      */
-    ContainerAppJobExecutions stopMultipleExecutions(JobExecutionNamesCollection jobExecutionName, Context context);
+    ContainerAppJobExecutions stopMultipleExecutions(Context context);
 
     /**
      * List secrets for a container apps job.

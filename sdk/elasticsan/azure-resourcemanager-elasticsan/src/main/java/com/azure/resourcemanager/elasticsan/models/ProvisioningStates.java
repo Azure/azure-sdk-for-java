@@ -35,6 +35,15 @@ public final class ProvisioningStates extends ExpandableStringEnum<ProvisioningS
     public static final ProvisioningStates DELETING = fromString("Deleting");
 
     /**
+     * Creates a new instance of ProvisioningStates value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ProvisioningStates() {
+    }
+
+    /**
      * Creates or finds a ProvisioningStates from its string representation.
      *
      * @param name a name to look for.

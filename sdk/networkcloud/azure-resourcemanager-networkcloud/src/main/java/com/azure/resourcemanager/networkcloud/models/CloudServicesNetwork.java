@@ -187,11 +187,13 @@ public interface CloudServicesNetwork {
             DefinitionStages.WithExtendedLocation,
             DefinitionStages.WithCreate {
     }
+
     /** The CloudServicesNetwork definition stages. */
     interface DefinitionStages {
         /** The first stage of the CloudServicesNetwork definition. */
         interface Blank extends WithLocation {
         }
+
         /** The stage of the CloudServicesNetwork definition allowing to specify location. */
         interface WithLocation {
             /**
@@ -210,6 +212,7 @@ public interface CloudServicesNetwork {
              */
             WithResourceGroup withRegion(String location);
         }
+
         /** The stage of the CloudServicesNetwork definition allowing to specify parent resource. */
         interface WithResourceGroup {
             /**
@@ -220,6 +223,7 @@ public interface CloudServicesNetwork {
              */
             WithExtendedLocation withExistingResourceGroup(String resourceGroupName);
         }
+
         /** The stage of the CloudServicesNetwork definition allowing to specify extendedLocation. */
         interface WithExtendedLocation {
             /**
@@ -235,6 +239,7 @@ public interface CloudServicesNetwork {
              */
             WithCreate withExtendedLocation(ExtendedLocation extendedLocation);
         }
+
         /**
          * The stage of the CloudServicesNetwork definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
@@ -258,6 +263,7 @@ public interface CloudServicesNetwork {
              */
             CloudServicesNetwork create(Context context);
         }
+
         /** The stage of the CloudServicesNetwork definition allowing to specify tags. */
         interface WithTags {
             /**
@@ -268,6 +274,7 @@ public interface CloudServicesNetwork {
              */
             WithCreate withTags(Map<String, String> tags);
         }
+
         /** The stage of the CloudServicesNetwork definition allowing to specify additionalEgressEndpoints. */
         interface WithAdditionalEgressEndpoints {
             /**
@@ -280,6 +287,7 @@ public interface CloudServicesNetwork {
              */
             WithCreate withAdditionalEgressEndpoints(List<EgressEndpoint> additionalEgressEndpoints);
         }
+
         /** The stage of the CloudServicesNetwork definition allowing to specify enableDefaultEgressEndpoints. */
         interface WithEnableDefaultEgressEndpoints {
             /**
@@ -294,6 +302,7 @@ public interface CloudServicesNetwork {
                 CloudServicesNetworkEnableDefaultEgressEndpoints enableDefaultEgressEndpoints);
         }
     }
+
     /**
      * Begins update for the CloudServicesNetwork resource.
      *
@@ -321,6 +330,7 @@ public interface CloudServicesNetwork {
          */
         CloudServicesNetwork apply(Context context);
     }
+
     /** The CloudServicesNetwork update stages. */
     interface UpdateStages {
         /** The stage of the CloudServicesNetwork update allowing to specify tags. */
@@ -333,6 +343,7 @@ public interface CloudServicesNetwork {
              */
             Update withTags(Map<String, String> tags);
         }
+
         /** The stage of the CloudServicesNetwork update allowing to specify additionalEgressEndpoints. */
         interface WithAdditionalEgressEndpoints {
             /**
@@ -345,6 +356,7 @@ public interface CloudServicesNetwork {
              */
             Update withAdditionalEgressEndpoints(List<EgressEndpoint> additionalEgressEndpoints);
         }
+
         /** The stage of the CloudServicesNetwork update allowing to specify enableDefaultEgressEndpoints. */
         interface WithEnableDefaultEgressEndpoints {
             /**
@@ -359,6 +371,7 @@ public interface CloudServicesNetwork {
                 CloudServicesNetworkEnableDefaultEgressEndpoints enableDefaultEgressEndpoints);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

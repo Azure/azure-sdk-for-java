@@ -48,10 +48,6 @@ public final class ApiDiagnosticsImpl implements ApiDiagnostics {
         return Utils.mapPage(inner, inner1 -> new DiagnosticContractImpl(inner1, this.manager()));
     }
 
-    public void getEntityTag(String resourceGroupName, String serviceName, String apiId, String diagnosticId) {
-        this.serviceClient().getEntityTag(resourceGroupName, serviceName, apiId, diagnosticId);
-    }
-
     public ApiDiagnosticsGetEntityTagResponse getEntityTagWithResponse(
         String resourceGroupName, String serviceName, String apiId, String diagnosticId, Context context) {
         return this
@@ -59,13 +55,8 @@ public final class ApiDiagnosticsImpl implements ApiDiagnostics {
             .getEntityTagWithResponse(resourceGroupName, serviceName, apiId, diagnosticId, context);
     }
 
-    public DiagnosticContract get(String resourceGroupName, String serviceName, String apiId, String diagnosticId) {
-        DiagnosticContractInner inner = this.serviceClient().get(resourceGroupName, serviceName, apiId, diagnosticId);
-        if (inner != null) {
-            return new DiagnosticContractImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+    public void getEntityTag(String resourceGroupName, String serviceName, String apiId, String diagnosticId) {
+        this.serviceClient().getEntityTag(resourceGroupName, serviceName, apiId, diagnosticId);
     }
 
     public Response<DiagnosticContract> getWithResponse(
@@ -83,9 +74,13 @@ public final class ApiDiagnosticsImpl implements ApiDiagnostics {
         }
     }
 
-    public void delete(
-        String resourceGroupName, String serviceName, String apiId, String diagnosticId, String ifMatch) {
-        this.serviceClient().delete(resourceGroupName, serviceName, apiId, diagnosticId, ifMatch);
+    public DiagnosticContract get(String resourceGroupName, String serviceName, String apiId, String diagnosticId) {
+        DiagnosticContractInner inner = this.serviceClient().get(resourceGroupName, serviceName, apiId, diagnosticId);
+        if (inner != null) {
+            return new DiagnosticContractImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public Response<Void> deleteWithResponse(
@@ -98,6 +93,11 @@ public final class ApiDiagnosticsImpl implements ApiDiagnostics {
         return this
             .serviceClient()
             .deleteWithResponse(resourceGroupName, serviceName, apiId, diagnosticId, ifMatch, context);
+    }
+
+    public void delete(
+        String resourceGroupName, String serviceName, String apiId, String diagnosticId, String ifMatch) {
+        this.serviceClient().delete(resourceGroupName, serviceName, apiId, diagnosticId, ifMatch);
     }
 
     public DiagnosticContract getById(String id) {

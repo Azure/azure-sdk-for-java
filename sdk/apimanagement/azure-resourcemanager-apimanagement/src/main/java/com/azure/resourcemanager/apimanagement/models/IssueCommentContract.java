@@ -53,6 +53,13 @@ public interface IssueCommentContract {
     String userId();
 
     /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
+
+    /**
      * Gets the inner com.azure.resourcemanager.apimanagement.fluent.models.IssueCommentContractInner object.
      *
      * @return the inner object.
@@ -63,17 +70,19 @@ public interface IssueCommentContract {
     interface Definition
         extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
+
     /** The IssueCommentContract definition stages. */
     interface DefinitionStages {
         /** The first stage of the IssueCommentContract definition. */
         interface Blank extends WithParentResource {
         }
+
         /** The stage of the IssueCommentContract definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
              * Specifies resourceGroupName, serviceName, apiId, issueId.
              *
-             * @param resourceGroupName The name of the resource group.
+             * @param resourceGroupName The name of the resource group. The name is case insensitive.
              * @param serviceName The name of the API Management service.
              * @param apiId API identifier. Must be unique in the current API Management service instance.
              * @param issueId Issue identifier. Must be unique in the current API Management service instance.
@@ -81,6 +90,7 @@ public interface IssueCommentContract {
              */
             WithCreate withExistingIssue(String resourceGroupName, String serviceName, String apiId, String issueId);
         }
+
         /**
          * The stage of the IssueCommentContract definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
@@ -105,6 +115,7 @@ public interface IssueCommentContract {
              */
             IssueCommentContract create(Context context);
         }
+
         /** The stage of the IssueCommentContract definition allowing to specify text. */
         interface WithText {
             /**
@@ -115,6 +126,7 @@ public interface IssueCommentContract {
              */
             WithCreate withText(String text);
         }
+
         /** The stage of the IssueCommentContract definition allowing to specify createdDate. */
         interface WithCreatedDate {
             /**
@@ -125,6 +137,7 @@ public interface IssueCommentContract {
              */
             WithCreate withCreatedDate(OffsetDateTime createdDate);
         }
+
         /** The stage of the IssueCommentContract definition allowing to specify userId. */
         interface WithUserId {
             /**
@@ -135,6 +148,7 @@ public interface IssueCommentContract {
              */
             WithCreate withUserId(String userId);
         }
+
         /** The stage of the IssueCommentContract definition allowing to specify ifMatch. */
         interface WithIfMatch {
             /**
@@ -148,6 +162,7 @@ public interface IssueCommentContract {
             WithCreate withIfMatch(String ifMatch);
         }
     }
+
     /**
      * Begins update for the IssueCommentContract resource.
      *
@@ -173,6 +188,7 @@ public interface IssueCommentContract {
          */
         IssueCommentContract apply(Context context);
     }
+
     /** The IssueCommentContract update stages. */
     interface UpdateStages {
         /** The stage of the IssueCommentContract update allowing to specify text. */
@@ -185,6 +201,7 @@ public interface IssueCommentContract {
              */
             Update withText(String text);
         }
+
         /** The stage of the IssueCommentContract update allowing to specify createdDate. */
         interface WithCreatedDate {
             /**
@@ -195,6 +212,7 @@ public interface IssueCommentContract {
              */
             Update withCreatedDate(OffsetDateTime createdDate);
         }
+
         /** The stage of the IssueCommentContract update allowing to specify userId. */
         interface WithUserId {
             /**
@@ -205,6 +223,7 @@ public interface IssueCommentContract {
              */
             Update withUserId(String userId);
         }
+
         /** The stage of the IssueCommentContract update allowing to specify ifMatch. */
         interface WithIfMatch {
             /**
@@ -218,6 +237,7 @@ public interface IssueCommentContract {
             Update withIfMatch(String ifMatch);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

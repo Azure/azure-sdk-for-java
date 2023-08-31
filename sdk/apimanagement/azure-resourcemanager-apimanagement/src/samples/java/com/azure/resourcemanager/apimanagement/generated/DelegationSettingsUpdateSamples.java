@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.apimanagement.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.apimanagement.fluent.models.PortalDelegationSettingsInner;
 import com.azure.resourcemanager.apimanagement.models.RegistrationDelegationSettingsProperties;
 import com.azure.resourcemanager.apimanagement.models.SubscriptionsDelegationSettingsProperties;
@@ -12,7 +11,7 @@ import com.azure.resourcemanager.apimanagement.models.SubscriptionsDelegationSet
 /** Samples for DelegationSettings Update. */
 public final class DelegationSettingsUpdateSamples {
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementPortalSettingsUpdateDelegation.json
+     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementPortalSettingsUpdateDelegation.json
      */
     /**
      * Sample code: ApiManagementPortalSettingsUpdateDelegation.
@@ -29,9 +28,9 @@ public final class DelegationSettingsUpdateSamples {
                 "*",
                 new PortalDelegationSettingsInner()
                     .withUrl("http://contoso.com/delegation")
-                    .withValidationKey("<validationKey>")
+                    .withValidationKey("fakeTokenPlaceholder")
                     .withSubscriptions(new SubscriptionsDelegationSettingsProperties().withEnabled(true))
                     .withUserRegistration(new RegistrationDelegationSettingsProperties().withEnabled(true)),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

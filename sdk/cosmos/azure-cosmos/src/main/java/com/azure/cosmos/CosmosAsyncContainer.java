@@ -16,16 +16,17 @@ import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.implementation.ItemDeserializer;
 import com.azure.cosmos.implementation.Offer;
 import com.azure.cosmos.implementation.OperationType;
+import com.azure.cosmos.implementation.PartitionKeyHelper;
 import com.azure.cosmos.implementation.Paths;
 import com.azure.cosmos.implementation.RequestOptions;
 import com.azure.cosmos.implementation.ResourceResponse;
 import com.azure.cosmos.implementation.ResourceType;
-import com.azure.cosmos.implementation.RxDocumentClientImpl;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.WriteRetryPolicy;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.batch.BatchExecutor;
 import com.azure.cosmos.implementation.batch.BulkExecutor;
+import com.azure.cosmos.implementation.batch.BulkExecutorWithOrderingPreserved;
 import com.azure.cosmos.implementation.faultinjection.IFaultInjectorProvider;
 import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
 import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
@@ -462,7 +463,7 @@ public class CosmosAsyncContainer {
                             }
 
                             PartitionKeyDefinition pkDef = collection.getPartitionKey();
-                            PartitionKeyInternal partitionKeyInternal = RxDocumentClientImpl
+                            PartitionKeyInternal partitionKeyInternal = PartitionKeyHelper
                                 .extractPartitionKeyValueFromDocument(internalObjectNode, pkDef);
                             RequestOptions requestOptions = ModelBridgeInternal.toRequestOptions(readRequestOptions);
                             PartitionKey partitionKey = ImplementationBridgeHelpers
@@ -1305,9 +1306,16 @@ public class CosmosAsyncContainer {
         final CosmosBulkExecutionOptions cosmosBulkExecutionOptions = bulkOptions;
 
         return Flux.deferContextual(context -> {
-            final BulkExecutor<TContext> executor = new BulkExecutor<>(this, operations, cosmosBulkExecutionOptions);
-
-            return executor.execute().publishOn(CosmosSchedulers.BULK_EXECUTOR_BOUNDED_ELASTIC);
+             // revert easily back to original bulk executor
+             if (ImplementationBridgeHelpers.CosmosBulkExecutionOptionsHelper
+                .getCosmosBulkExecutionOptionsAccessor()
+                .isOrderingPreserved(cosmosBulkExecutionOptions)) {
+                 final BulkExecutorWithOrderingPreserved<TContext> executor = new BulkExecutorWithOrderingPreserved<>(this, operations, cosmosBulkExecutionOptions);
+                 return executor.execute().publishOn(CosmosSchedulers.BULK_EXECUTOR_BOUNDED_ELASTIC);
+             } else {
+                 final BulkExecutor<TContext> executor = new BulkExecutor<>(this, operations, cosmosBulkExecutionOptions);
+                 return executor.execute().publishOn(CosmosSchedulers.BULK_EXECUTOR_BOUNDED_ELASTIC);
+             }
         });
     }
 
@@ -1399,7 +1407,7 @@ public class CosmosAsyncContainer {
         List<CosmosItemIdentity> itemIdentityList,
         Class<T> classType) {
 
-        return this.readMany(itemIdentityList, null, classType);
+        return this.readMany(itemIdentityList, new CosmosQueryRequestOptions(), classType);
     }
 
     /**
@@ -1440,9 +1448,46 @@ public class CosmosAsyncContainer {
         }
 
         options.setMaxDegreeOfParallelism(-1);
+
+        return this.readMany(itemIdentityList, options, classType);
+    }
+
+    /**
+     * Reads many documents.
+     * Useful for reading many documents with a particular id and partition key in a single request.
+     * If any document from the list is missing, no exception will be thrown.
+     * <!-- src_embed com.azure.cosmos.CosmosAsyncContainer.readMany -->
+     * <pre>
+     * List&lt;CosmosItemIdentity&gt; itemIdentityList = new ArrayList&lt;&gt;&#40;&#41;;
+     * itemIdentityList.add&#40;new CosmosItemIdentity&#40;new PartitionKey&#40;passenger1Id&#41;, passenger1Id&#41;&#41;;
+     * itemIdentityList.add&#40;new CosmosItemIdentity&#40;new PartitionKey&#40;passenger2Id&#41;, passenger2Id&#41;&#41;;
+     *
+     * cosmosAsyncContainer.readMany&#40;itemIdentityList, Passenger.class&#41;
+     *     .flatMap&#40;passengerFeedResponse -&gt; &#123;
+     *         for &#40;Passenger passenger : passengerFeedResponse.getResults&#40;&#41;&#41; &#123;
+     *             System.out.println&#40;passenger&#41;;
+     *         &#125;
+     *         return Mono.empty&#40;&#41;;
+     *     &#125;&#41;
+     *     .subscribe&#40;&#41;;
+     * </pre>
+     * <!-- end com.azure.cosmos.CosmosAsyncContainer.readMany -->
+     * @param <T> the type parameter
+     * @param itemIdentityList CosmosItem id and partition key tuple of items that that needs to be read
+     * @param requestOptions the optional request option
+     * @param classType   class type
+     * @return a Mono with feed response of cosmos items or error
+     */
+    <T> Mono<FeedResponse<T>> readMany(
+        List<CosmosItemIdentity> itemIdentityList,
+        CosmosQueryRequestOptions requestOptions,
+        Class<T> classType) {
+
+        requestOptions.setMaxDegreeOfParallelism(-1);
+
         return CosmosBridgeInternal
             .getAsyncDocumentClient(this.getDatabase())
-            .readMany(itemIdentityList, BridgeInternal.getLink(this), options, classType);
+            .readMany(itemIdentityList, BridgeInternal.getLink(this), requestOptions, classType);
     }
 
     /**
@@ -2668,6 +2713,16 @@ public class CosmosAsyncContainer {
                     Callable<IFaultInjectorProvider> injectorProviderCallable) {
 
                     return cosmosAsyncContainer.getOrConfigureFaultInjectorProvider(injectorProviderCallable);
+                }
+
+                @Override
+                public <T> Mono<FeedResponse<T>> readMany(
+                    CosmosAsyncContainer cosmosAsyncContainer,
+                    List<CosmosItemIdentity> itemIdentityList,
+                    CosmosQueryRequestOptions requestOptions,
+                    Class<T> classType) {
+
+                    return cosmosAsyncContainer.readMany(itemIdentityList, requestOptions, classType);
                 }
             });
     }

@@ -33,15 +33,6 @@ public final class PoliciesImpl implements Policies {
         this.serviceManager = serviceManager;
     }
 
-    public PolicyCollection listByService(String resourceGroupName, String serviceName) {
-        PolicyCollectionInner inner = this.serviceClient().listByService(resourceGroupName, serviceName);
-        if (inner != null) {
-            return new PolicyCollectionImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<PolicyCollection> listByServiceWithResponse(
         String resourceGroupName, String serviceName, Context context) {
         Response<PolicyCollectionInner> inner =
@@ -57,8 +48,13 @@ public final class PoliciesImpl implements Policies {
         }
     }
 
-    public void getEntityTag(String resourceGroupName, String serviceName, PolicyIdName policyId) {
-        this.serviceClient().getEntityTag(resourceGroupName, serviceName, policyId);
+    public PolicyCollection listByService(String resourceGroupName, String serviceName) {
+        PolicyCollectionInner inner = this.serviceClient().listByService(resourceGroupName, serviceName);
+        if (inner != null) {
+            return new PolicyCollectionImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public PoliciesGetEntityTagResponse getEntityTagWithResponse(
@@ -66,13 +62,8 @@ public final class PoliciesImpl implements Policies {
         return this.serviceClient().getEntityTagWithResponse(resourceGroupName, serviceName, policyId, context);
     }
 
-    public PolicyContract get(String resourceGroupName, String serviceName, PolicyIdName policyId) {
-        PolicyContractInner inner = this.serviceClient().get(resourceGroupName, serviceName, policyId);
-        if (inner != null) {
-            return new PolicyContractImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+    public void getEntityTag(String resourceGroupName, String serviceName, PolicyIdName policyId) {
+        this.serviceClient().getEntityTag(resourceGroupName, serviceName, policyId);
     }
 
     public Response<PolicyContract> getWithResponse(
@@ -94,10 +85,8 @@ public final class PoliciesImpl implements Policies {
         }
     }
 
-    public PolicyContract createOrUpdate(
-        String resourceGroupName, String serviceName, PolicyIdName policyId, PolicyContractInner parameters) {
-        PolicyContractInner inner =
-            this.serviceClient().createOrUpdate(resourceGroupName, serviceName, policyId, parameters);
+    public PolicyContract get(String resourceGroupName, String serviceName, PolicyIdName policyId) {
+        PolicyContractInner inner = this.serviceClient().get(resourceGroupName, serviceName, policyId);
         if (inner != null) {
             return new PolicyContractImpl(inner, this.manager());
         } else {
@@ -127,13 +116,24 @@ public final class PoliciesImpl implements Policies {
         }
     }
 
-    public void delete(String resourceGroupName, String serviceName, PolicyIdName policyId, String ifMatch) {
-        this.serviceClient().delete(resourceGroupName, serviceName, policyId, ifMatch);
+    public PolicyContract createOrUpdate(
+        String resourceGroupName, String serviceName, PolicyIdName policyId, PolicyContractInner parameters) {
+        PolicyContractInner inner =
+            this.serviceClient().createOrUpdate(resourceGroupName, serviceName, policyId, parameters);
+        if (inner != null) {
+            return new PolicyContractImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public Response<Void> deleteWithResponse(
         String resourceGroupName, String serviceName, PolicyIdName policyId, String ifMatch, Context context) {
         return this.serviceClient().deleteWithResponse(resourceGroupName, serviceName, policyId, ifMatch, context);
+    }
+
+    public void delete(String resourceGroupName, String serviceName, PolicyIdName policyId, String ifMatch) {
+        this.serviceClient().delete(resourceGroupName, serviceName, policyId, ifMatch);
     }
 
     private PoliciesClient serviceClient() {

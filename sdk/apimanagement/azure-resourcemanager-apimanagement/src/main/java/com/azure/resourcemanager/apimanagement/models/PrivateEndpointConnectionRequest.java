@@ -22,6 +22,10 @@ public final class PrivateEndpointConnectionRequest {
     @JsonProperty(value = "properties")
     private PrivateEndpointConnectionRequestProperties properties;
 
+    /** Creates an instance of PrivateEndpointConnectionRequest class. */
+    public PrivateEndpointConnectionRequest() {
+    }
+
     /**
      * Get the id property: Private Endpoint Connection Resource Id.
      *

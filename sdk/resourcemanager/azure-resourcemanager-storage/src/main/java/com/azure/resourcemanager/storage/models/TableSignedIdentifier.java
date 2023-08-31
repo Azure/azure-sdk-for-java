@@ -23,6 +23,10 @@ public final class TableSignedIdentifier {
     @JsonProperty(value = "accessPolicy")
     private TableAccessPolicy accessPolicy;
 
+    /** Creates an instance of TableSignedIdentifier class. */
+    public TableSignedIdentifier() {
+    }
+
     /**
      * Get the id property: unique-64-character-value of the stored access policy.
      *

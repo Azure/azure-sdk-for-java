@@ -44,19 +44,6 @@ public interface DeletedServicesClient {
      *
      * @param serviceName The name of the API Management service.
      * @param location The location of the deleted API Management service.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return soft-deleted Api Management Service by name.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    DeletedServiceContractInner getByName(String serviceName, String location);
-
-    /**
-     * Get soft-deleted Api Management Service by name.
-     *
-     * @param serviceName The name of the API Management service.
-     * @param location The location of the deleted API Management service.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -65,6 +52,19 @@ public interface DeletedServicesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<DeletedServiceContractInner> getByNameWithResponse(String serviceName, String location, Context context);
+
+    /**
+     * Get soft-deleted Api Management Service by name.
+     *
+     * @param serviceName The name of the API Management service.
+     * @param location The location of the deleted API Management service.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return soft-deleted Api Management Service by name.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    DeletedServiceContractInner getByName(String serviceName, String location);
 
     /**
      * Purges Api Management Service (deletes it with no option to undelete).

@@ -15,13 +15,13 @@ public final class SkuTests {
         Sku model =
             BinaryData
                 .fromString(
-                    "{\"name\":\"Standard\",\"tier\":\"cglhslazjdyggdt\",\"family\":\"xhbkuofq\",\"size\":\"yk\",\"capacity\":\"enevfyexfwhybci\"}")
+                    "{\"name\":\"Standard\",\"tier\":\"cspkwlhzdobpxjmf\",\"family\":\"vvnchrkcc\",\"size\":\"wzjuqk\",\"capacity\":\"sa\"}")
                 .toObject(Sku.class);
         Assertions.assertEquals(SkuName.STANDARD, model.name());
-        Assertions.assertEquals("cglhslazjdyggdt", model.tier());
-        Assertions.assertEquals("xhbkuofq", model.family());
-        Assertions.assertEquals("yk", model.size());
-        Assertions.assertEquals("enevfyexfwhybci", model.capacity());
+        Assertions.assertEquals("cspkwlhzdobpxjmf", model.tier());
+        Assertions.assertEquals("vvnchrkcc", model.family());
+        Assertions.assertEquals("wzjuqk", model.size());
+        Assertions.assertEquals("sa", model.capacity());
     }
 
     @org.junit.jupiter.api.Test
@@ -29,15 +29,15 @@ public final class SkuTests {
         Sku model =
             new Sku()
                 .withName(SkuName.STANDARD)
-                .withTier("cglhslazjdyggdt")
-                .withFamily("xhbkuofq")
-                .withSize("yk")
-                .withCapacity("enevfyexfwhybci");
+                .withTier("cspkwlhzdobpxjmf")
+                .withFamily("vvnchrkcc")
+                .withSize("wzjuqk")
+                .withCapacity("sa");
         model = BinaryData.fromObject(model).toObject(Sku.class);
         Assertions.assertEquals(SkuName.STANDARD, model.name());
-        Assertions.assertEquals("cglhslazjdyggdt", model.tier());
-        Assertions.assertEquals("xhbkuofq", model.family());
-        Assertions.assertEquals("yk", model.size());
-        Assertions.assertEquals("enevfyexfwhybci", model.capacity());
+        Assertions.assertEquals("cspkwlhzdobpxjmf", model.tier());
+        Assertions.assertEquals("vvnchrkcc", model.family());
+        Assertions.assertEquals("wzjuqk", model.size());
+        Assertions.assertEquals("sa", model.capacity());
     }
 }

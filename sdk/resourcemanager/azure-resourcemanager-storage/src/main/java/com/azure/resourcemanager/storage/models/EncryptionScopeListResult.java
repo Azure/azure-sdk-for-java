@@ -25,6 +25,10 @@ public final class EncryptionScopeListResult {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
+    /** Creates an instance of EncryptionScopeListResult class. */
+    public EncryptionScopeListResult() {
+    }
+
     /**
      * Get the value property: List of encryption scopes requested.
      *

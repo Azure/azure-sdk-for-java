@@ -48,15 +48,6 @@ public final class UserSubscriptionsImpl implements UserSubscriptions {
         return Utils.mapPage(inner, inner1 -> new SubscriptionContractImpl(inner1, this.manager()));
     }
 
-    public SubscriptionContract get(String resourceGroupName, String serviceName, String userId, String sid) {
-        SubscriptionContractInner inner = this.serviceClient().get(resourceGroupName, serviceName, userId, sid);
-        if (inner != null) {
-            return new SubscriptionContractImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<SubscriptionContract> getWithResponse(
         String resourceGroupName, String serviceName, String userId, String sid, Context context) {
         UserSubscriptionsGetResponse inner =
@@ -67,6 +58,15 @@ public final class UserSubscriptionsImpl implements UserSubscriptions {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new SubscriptionContractImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public SubscriptionContract get(String resourceGroupName, String serviceName, String userId, String sid) {
+        SubscriptionContractInner inner = this.serviceClient().get(resourceGroupName, serviceName, userId, sid);
+        if (inner != null) {
+            return new SubscriptionContractImpl(inner, this.manager());
         } else {
             return null;
         }

@@ -8,22 +8,34 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;
+import java.util.Objects;
 
 /** Contains the weight percentage and worker selectors to be applied if selected for weighted distributions. */
 @Fluent
 public final class WorkerWeightedAllocation {
+    /**
+     * Creates an instance of WorkerWeightedAllocation class.
+     *
+     * @param weight The percentage of this weight, expressed as a fraction of 1.
+     * @param workerSelectors A collection of worker selectors that will be applied if this allocation is selected.
+     */
+    public WorkerWeightedAllocation(double weight, List<RouterWorkerSelector> workerSelectors) {
+        this.weight = weight;
+        this.workerSelectors = Objects.requireNonNull(workerSelectors, "'workerSelectors' cannot be null.");
+    }
+
     /*
      * The percentage of this weight, expressed as a fraction of 1.
      */
     @JsonProperty(value = "weight", required = true)
-    private double weight;
+    private final double weight;
 
     /*
      * A collection of worker selectors that will be applied if this allocation
      * is selected.
      */
     @JsonProperty(value = "workerSelectors", required = true)
-    private List<RouterWorkerSelector> workerSelectors;
+    private final List<RouterWorkerSelector> workerSelectors;
 
     /**
      * Get the weight property: The percentage of this weight, expressed as a fraction of 1.
@@ -35,17 +47,6 @@ public final class WorkerWeightedAllocation {
     }
 
     /**
-     * Set the weight property: The percentage of this weight, expressed as a fraction of 1.
-     *
-     * @param weight the weight value to set.
-     * @return the WorkerWeightedAllocation object itself.
-     */
-    public WorkerWeightedAllocation setWeight(double weight) {
-        this.weight = weight;
-        return this;
-    }
-
-    /**
      * Get the workerSelectors property: A collection of worker selectors that will be applied if this allocation is
      * selected.
      *
@@ -53,17 +54,5 @@ public final class WorkerWeightedAllocation {
      */
     public List<RouterWorkerSelector> getWorkerSelectors() {
         return this.workerSelectors;
-    }
-
-    /**
-     * Set the workerSelectors property: A collection of worker selectors that will be applied if this allocation is
-     * selected.
-     *
-     * @param workerSelectors the workerSelectors value to set.
-     * @return the WorkerWeightedAllocation object itself.
-     */
-    public WorkerWeightedAllocation setWorkerSelectors(List<RouterWorkerSelector> workerSelectors) {
-        this.workerSelectors = workerSelectors;
-        return this;
     }
 }

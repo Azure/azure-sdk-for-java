@@ -69,6 +69,10 @@ public final class BackendContractImpl implements BackendContract, BackendContra
         return this.innerModel().tls();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public BackendContractInner innerModel() {
         return this.innerObject;
     }
@@ -180,14 +184,14 @@ public final class BackendContractImpl implements BackendContract, BackendContra
         return this;
     }
 
-    public void reconnect() {
-        serviceManager.backends().reconnect(resourceGroupName, serviceName, backendId);
-    }
-
     public Response<Void> reconnectWithResponse(BackendReconnectContract parameters, Context context) {
         return serviceManager
             .backends()
             .reconnectWithResponse(resourceGroupName, serviceName, backendId, parameters, context);
+    }
+
+    public void reconnect() {
+        serviceManager.backends().reconnect(resourceGroupName, serviceName, backendId);
     }
 
     public BackendContractImpl withUrl(String url) {

@@ -7,6 +7,7 @@ package com.azure.resourcemanager.networkcloud.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.networkcloud.fluent.models.ClusterManagerInner;
 import com.azure.resourcemanager.networkcloud.models.ClusterManagerList;
+import com.azure.resourcemanager.networkcloud.models.ManagedResourceGroupConfiguration;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -18,49 +19,92 @@ public final class ClusterManagerListTests {
         ClusterManagerList model =
             BinaryData
                 .fromString(
-                    "{\"nextLink\":\"xim\",\"value\":[{\"properties\":{\"analyticsWorkspaceId\":\"cfsf\",\"availabilityZones\":[],\"clusterVersions\":[],\"detailedStatus\":\"Error\",\"detailedStatusMessage\":\"ys\",\"fabricControllerId\":\"kiiuxhqyudxor\",\"provisioningState\":\"Provisioning\",\"vmSize\":\"czvyifq\"},\"location\":\"kdvjsll\",\"tags\":{\"ulexxbczwtr\":\"vdfwatkpn\",\"acspkwl\":\"wiqzbqjvsovmyo\",\"kcciwwzjuqkhr\":\"zdobpxjmflbvvnch\",\"oskg\":\"ajiwkuo\"},\"id\":\"sauuimj\",\"name\":\"vxieduugidyj\",\"type\":\"rfbyaosvexcso\"}]}")
+                    "{\"nextLink\":\"ugw\",\"value\":[{\"properties\":{\"analyticsWorkspaceId\":\"lhslazjdyggdtj\",\"availabilityZones\":[\"b\",\"uofqwe\",\"kh\"],\"clusterVersions\":[{\"supportExpiryDate\":\"vfyexfw\",\"targetClusterVersion\":\"bcibvyvdcsitynn\"}],\"detailedStatus\":\"Error\",\"detailedStatusMessage\":\"ectehf\",\"fabricControllerId\":\"qsc\",\"managedResourceGroupConfiguration\":{\"location\":\"pvhez\",\"name\":\"gqhcjrefovg\"},\"managerExtendedLocation\":{\"name\":\"qsl\",\"type\":\"yyvxyqjpkcattpn\"},\"provisioningState\":\"Failed\",\"vmSize\":\"cczsq\"},\"location\":\"hvmdajvnysounq\",\"tags\":{\"pfhyhl\":\"noae\"},\"id\":\"rpmopjmc\",\"name\":\"atuokthfuiu\",\"type\":\"odsfcpkvxodpuozm\"},{\"properties\":{\"analyticsWorkspaceId\":\"ydagfuaxbe\",\"availabilityZones\":[\"uokktwhrdxwz\"],\"clusterVersions\":[{\"supportExpiryDate\":\"mbsureximo\",\"targetClusterVersion\":\"ocfs\"}],\"detailedStatus\":\"Updating\",\"detailedStatusMessage\":\"mddystkiiux\",\"fabricControllerId\":\"qyud\",\"managedResourceGroupConfiguration\":{\"location\":\"rq\",\"name\":\"poczvyifqrvkdvjs\"},\"managerExtendedLocation\":{\"name\":\"rm\",\"type\":\"vdfwatkpn\"},\"provisioningState\":\"Succeeded\",\"vmSize\":\"xxbczwtr\"},\"location\":\"iqzbq\",\"tags\":{\"okacspk\":\"ovm\",\"jmflbvvnch\":\"lhzdobp\",\"ajiwkuo\":\"kcciwwzjuqkhr\",\"sauuimj\":\"oskg\"},\"id\":\"vxieduugidyj\",\"name\":\"rfbyaosvexcso\",\"type\":\"pclhocohslk\"},{\"properties\":{\"analyticsWorkspaceId\":\"leggzfbu\",\"availabilityZones\":[\"vfaxkffeiith\",\"vmezy\",\"shxmzsbbzoggigrx\",\"burvjxxjnspy\"],\"clusterVersions\":[{\"supportExpiryDate\":\"oenkouknvudwti\",\"targetClusterVersion\":\"bldngkpoc\"}],\"detailedStatus\":\"Available\",\"detailedStatusMessage\":\"yxoegukgjnp\",\"fabricControllerId\":\"ucgygevqz\",\"managedResourceGroupConfiguration\":{\"location\":\"pmr\",\"name\":\"izcdrqjsd\"},\"managerExtendedLocation\":{\"name\":\"dnfyhxdeoejzicwi\",\"type\":\"sjttgzfbish\"},\"provisioningState\":\"Failed\",\"vmSize\":\"ajdeyeamdphaga\"},\"location\":\"buxwgip\",\"tags\":{\"nkixzbinj\":\"nowkgshw\",\"tmryw\":\"pu\"},\"id\":\"uzoqft\",\"name\":\"yqzrnkcqvyxlw\",\"type\":\"zlsico\"},{\"properties\":{\"analyticsWorkspaceId\":\"qqn\",\"availabilityZones\":[\"ryavwhheunmmqh\",\"yxzk\"],\"clusterVersions\":[{\"supportExpiryDate\":\"uko\",\"targetClusterVersion\":\"yaxuconuqszfkb\"},{\"supportExpiryDate\":\"pewr\",\"targetClusterVersion\":\"mwvvjektcxsenhw\"},{\"supportExpiryDate\":\"s\",\"targetClusterVersion\":\"rzpwvlqdqgbiq\"}],\"detailedStatus\":\"UpdateFailed\",\"detailedStatusMessage\":\"kaet\",\"fabricControllerId\":\"kt\",\"managedResourceGroupConfiguration\":{\"location\":\"ivfsnk\",\"name\":\"uctqhjfbe\"},\"managerExtendedLocation\":{\"name\":\"jcxerfuwu\",\"type\":\"ttxfvjr\"},\"provisioningState\":\"Accepted\",\"vmSize\":\"hxepcyvahfnlj\"},\"location\":\"qxj\",\"tags\":{\"gidokgjljyoxgvcl\":\"j\",\"jhtxfvgxbfsmxne\":\"bgsncghkjeszzhb\"},\"id\":\"mpvecxgodebfqk\",\"name\":\"rbmpukgri\",\"type\":\"flz\"}]}")
                 .toObject(ClusterManagerList.class);
-        Assertions.assertEquals("xim", model.nextLink());
-        Assertions.assertEquals("kdvjsll", model.value().get(0).location());
-        Assertions.assertEquals("vdfwatkpn", model.value().get(0).tags().get("ulexxbczwtr"));
-        Assertions.assertEquals("cfsf", model.value().get(0).analyticsWorkspaceId());
-        Assertions.assertEquals("kiiuxhqyudxor", model.value().get(0).fabricControllerId());
-        Assertions.assertEquals("czvyifq", model.value().get(0).vmSize());
+        Assertions.assertEquals("ugw", model.nextLink());
+        Assertions.assertEquals("hvmdajvnysounq", model.value().get(0).location());
+        Assertions.assertEquals("noae", model.value().get(0).tags().get("pfhyhl"));
+        Assertions.assertEquals("lhslazjdyggdtj", model.value().get(0).analyticsWorkspaceId());
+        Assertions.assertEquals("b", model.value().get(0).availabilityZones().get(0));
+        Assertions.assertEquals("qsc", model.value().get(0).fabricControllerId());
+        Assertions.assertEquals("pvhez", model.value().get(0).managedResourceGroupConfiguration().location());
+        Assertions.assertEquals("gqhcjrefovg", model.value().get(0).managedResourceGroupConfiguration().name());
+        Assertions.assertEquals("cczsq", model.value().get(0).vmSize());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ClusterManagerList model =
             new ClusterManagerList()
-                .withNextLink("xim")
+                .withNextLink("ugw")
                 .withValue(
                     Arrays
                         .asList(
                             new ClusterManagerInner()
-                                .withLocation("kdvjsll")
+                                .withLocation("hvmdajvnysounq")
+                                .withTags(mapOf("pfhyhl", "noae"))
+                                .withAnalyticsWorkspaceId("lhslazjdyggdtj")
+                                .withAvailabilityZones(Arrays.asList("b", "uofqwe", "kh"))
+                                .withFabricControllerId("qsc")
+                                .withManagedResourceGroupConfiguration(
+                                    new ManagedResourceGroupConfiguration()
+                                        .withLocation("pvhez")
+                                        .withName("gqhcjrefovg"))
+                                .withVmSize("cczsq"),
+                            new ClusterManagerInner()
+                                .withLocation("iqzbq")
                                 .withTags(
                                     mapOf(
-                                        "ulexxbczwtr",
-                                        "vdfwatkpn",
-                                        "acspkwl",
-                                        "wiqzbqjvsovmyo",
+                                        "okacspk",
+                                        "ovm",
+                                        "jmflbvvnch",
+                                        "lhzdobp",
+                                        "ajiwkuo",
                                         "kcciwwzjuqkhr",
-                                        "zdobpxjmflbvvnch",
-                                        "oskg",
-                                        "ajiwkuo"))
-                                .withAnalyticsWorkspaceId("cfsf")
-                                .withAvailabilityZones(Arrays.asList())
-                                .withFabricControllerId("kiiuxhqyudxor")
-                                .withVmSize("czvyifq")));
+                                        "sauuimj",
+                                        "oskg"))
+                                .withAnalyticsWorkspaceId("ydagfuaxbe")
+                                .withAvailabilityZones(Arrays.asList("uokktwhrdxwz"))
+                                .withFabricControllerId("qyud")
+                                .withManagedResourceGroupConfiguration(
+                                    new ManagedResourceGroupConfiguration()
+                                        .withLocation("rq")
+                                        .withName("poczvyifqrvkdvjs"))
+                                .withVmSize("xxbczwtr"),
+                            new ClusterManagerInner()
+                                .withLocation("buxwgip")
+                                .withTags(mapOf("nkixzbinj", "nowkgshw", "tmryw", "pu"))
+                                .withAnalyticsWorkspaceId("leggzfbu")
+                                .withAvailabilityZones(
+                                    Arrays.asList("vfaxkffeiith", "vmezy", "shxmzsbbzoggigrx", "burvjxxjnspy"))
+                                .withFabricControllerId("ucgygevqz")
+                                .withManagedResourceGroupConfiguration(
+                                    new ManagedResourceGroupConfiguration().withLocation("pmr").withName("izcdrqjsd"))
+                                .withVmSize("ajdeyeamdphaga"),
+                            new ClusterManagerInner()
+                                .withLocation("qxj")
+                                .withTags(mapOf("gidokgjljyoxgvcl", "j", "jhtxfvgxbfsmxne", "bgsncghkjeszzhb"))
+                                .withAnalyticsWorkspaceId("qqn")
+                                .withAvailabilityZones(Arrays.asList("ryavwhheunmmqh", "yxzk"))
+                                .withFabricControllerId("kt")
+                                .withManagedResourceGroupConfiguration(
+                                    new ManagedResourceGroupConfiguration()
+                                        .withLocation("ivfsnk")
+                                        .withName("uctqhjfbe"))
+                                .withVmSize("hxepcyvahfnlj")));
         model = BinaryData.fromObject(model).toObject(ClusterManagerList.class);
-        Assertions.assertEquals("xim", model.nextLink());
-        Assertions.assertEquals("kdvjsll", model.value().get(0).location());
-        Assertions.assertEquals("vdfwatkpn", model.value().get(0).tags().get("ulexxbczwtr"));
-        Assertions.assertEquals("cfsf", model.value().get(0).analyticsWorkspaceId());
-        Assertions.assertEquals("kiiuxhqyudxor", model.value().get(0).fabricControllerId());
-        Assertions.assertEquals("czvyifq", model.value().get(0).vmSize());
+        Assertions.assertEquals("ugw", model.nextLink());
+        Assertions.assertEquals("hvmdajvnysounq", model.value().get(0).location());
+        Assertions.assertEquals("noae", model.value().get(0).tags().get("pfhyhl"));
+        Assertions.assertEquals("lhslazjdyggdtj", model.value().get(0).analyticsWorkspaceId());
+        Assertions.assertEquals("b", model.value().get(0).availabilityZones().get(0));
+        Assertions.assertEquals("qsc", model.value().get(0).fabricControllerId());
+        Assertions.assertEquals("pvhez", model.value().get(0).managedResourceGroupConfiguration().location());
+        Assertions.assertEquals("gqhcjrefovg", model.value().get(0).managedResourceGroupConfiguration().name());
+        Assertions.assertEquals("cczsq", model.value().get(0).vmSize());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

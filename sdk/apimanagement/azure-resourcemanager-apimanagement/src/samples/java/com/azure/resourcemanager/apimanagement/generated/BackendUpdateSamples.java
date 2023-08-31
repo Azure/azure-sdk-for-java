@@ -4,14 +4,13 @@
 
 package com.azure.resourcemanager.apimanagement.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.apimanagement.models.BackendContract;
 import com.azure.resourcemanager.apimanagement.models.BackendTlsProperties;
 
 /** Samples for Backend Update. */
 public final class BackendUpdateSamples {
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementUpdateBackend.json
+     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementUpdateBackend.json
      */
     /**
      * Sample code: ApiManagementUpdateBackend.
@@ -21,7 +20,10 @@ public final class BackendUpdateSamples {
     public static void apiManagementUpdateBackend(
         com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
         BackendContract resource =
-            manager.backends().getWithResponse("rg1", "apimService1", "proxybackend", Context.NONE).getValue();
+            manager
+                .backends()
+                .getWithResponse("rg1", "apimService1", "proxybackend", com.azure.core.util.Context.NONE)
+                .getValue();
         resource
             .update()
             .withDescription("description5308")

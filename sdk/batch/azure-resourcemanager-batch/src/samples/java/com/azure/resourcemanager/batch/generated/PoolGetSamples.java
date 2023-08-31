@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.batch.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Pool Get. */
 public final class PoolGetSamples {
     /*
-     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2022-10-01/examples/PoolGet_VirtualMachineConfiguration_Extensions.json
+     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2023-05-01/examples/PoolGet_VirtualMachineConfiguration_Extensions.json
      */
     /**
      * Sample code: GetPool - VirtualMachineConfiguration Extensions.
@@ -18,11 +16,29 @@ public final class PoolGetSamples {
      */
     public static void getPoolVirtualMachineConfigurationExtensions(
         com.azure.resourcemanager.batch.BatchManager manager) {
-        manager.pools().getWithResponse("default-azurebatch-japaneast", "sampleacct", "testpool", Context.NONE);
+        manager
+            .pools()
+            .getWithResponse(
+                "default-azurebatch-japaneast", "sampleacct", "testpool", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2022-10-01/examples/PoolGet.json
+     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2023-05-01/examples/PoolGet_AcceleratedNetworking.json
+     */
+    /**
+     * Sample code: GetPool - AcceleratedNetworking.
+     *
+     * @param manager Entry point to BatchManager.
+     */
+    public static void getPoolAcceleratedNetworking(com.azure.resourcemanager.batch.BatchManager manager) {
+        manager
+            .pools()
+            .getWithResponse(
+                "default-azurebatch-japaneast", "sampleacct", "testpool", com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2023-05-01/examples/PoolGet.json
      */
     /**
      * Sample code: GetPool.
@@ -30,6 +46,9 @@ public final class PoolGetSamples {
      * @param manager Entry point to BatchManager.
      */
     public static void getPool(com.azure.resourcemanager.batch.BatchManager manager) {
-        manager.pools().getWithResponse("default-azurebatch-japaneast", "sampleacct", "testpool", Context.NONE);
+        manager
+            .pools()
+            .getWithResponse(
+                "default-azurebatch-japaneast", "sampleacct", "testpool", com.azure.core.util.Context.NONE);
     }
 }
