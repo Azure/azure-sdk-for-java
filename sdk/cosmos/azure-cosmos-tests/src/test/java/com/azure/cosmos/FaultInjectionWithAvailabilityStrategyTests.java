@@ -314,9 +314,9 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
             // as a cross-regional retry triggered by the ClientRetryPolicy of the initial operation finishes the Mono
             // successfully with 200 - OK>
             new Object[] {
-                "404-1002_OnlyFirstRegion_RemotePreferred_DefaultAvailabilityStrategy",
+                "404-1002_OnlyFirstRegion_RemotePreferred_ReluctantAvailabilityStrategy",
                 Duration.ofSeconds(1),
-                defaultAvailabilityStrategy,
+                reluctantThresholdAvailabilityStrategy,
                 CosmosRegionSwitchHint.REMOTE_REGION_PREFERRED,
                 sameDocumentIdJustCreated,
                 injectReadSessionNotAvailableIntoFirstRegionOnly,
