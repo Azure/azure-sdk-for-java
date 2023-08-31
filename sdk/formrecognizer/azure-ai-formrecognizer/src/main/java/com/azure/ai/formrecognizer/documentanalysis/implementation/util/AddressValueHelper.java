@@ -79,4 +79,28 @@ public final class AddressValueHelper {
     static void setStreetAddress(AddressValue addressValue, String streetAddress) {
         accessor.setStreetAddress(addressValue, streetAddress);
     }
+
+    static void setUnit(AddressValue addressValue, String unit) {
+        accessor.setUnit(addressValue, unit);
+    }
+
+    static void setCityDistrict(AddressValue addressValue, String cityDistrict) {
+        accessor.setCityDistrict(addressValue, cityDistrict);
+    }
+
+    static void setStateDistrict(AddressValue addressValue, String stateDistrict) {
+        accessor.setStateDistrict(addressValue, stateDistrict);
+    }
+
+    static void setSuburb(AddressValue addressValue, String suburb) {
+        accessor.setSuburb(addressValue, suburb);
+    }
+
+    static void setHouse(AddressValue addressValue, String house) {
+        accessor.setHouse(addressValue, house);
+    }
+
+    static void setLevel(AddressValue addressValue, String level) {
+        accessor.setLevel(addressValue, level);
+    }
 }

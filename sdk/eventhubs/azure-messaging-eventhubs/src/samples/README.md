@@ -44,9 +44,10 @@ string value can be obtained by:
 - [Publish events and consume events using a shared connection][sample_share_connection]
 - [Consume events from an Event Hub partition][sample_consume_event]
 - [Consume events from all partitions using EventProcessorClient][sample_event_processor]
-- [Consume events from all partitions and manage state of processed events][sample_event_processor_state_management]
+- [Consume events from all partitions and checkpoint after some number of events][sample_event_processor_checkpointing]
 - [Consume events from all partitions and manage state of events using
   EventProcessorClient][sample_event_processor_aggregate_state_management]
+- [Consume events from all partitions and provide an initial EventPosition][sample_event_processor_initial_event_position]
 - [Consume events starting from an event sequence number][sample_consume_sequence_number]
 
 ## Troubleshooting
@@ -64,8 +65,9 @@ Guidelines](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/eventhubs/
 [sample_consume_event]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/eventhubs/azure-messaging-eventhubs/src/samples/java/com/azure/messaging/eventhubs/ConsumeEvents.java
 [sample_consume_sequence_number]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/eventhubs/azure-messaging-eventhubs/src/samples/java/com/azure/messaging/eventhubs/ConsumeEventsFromKnownSequenceNumberPosition.java
 [sample_event_processor_aggregate_state_management]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/eventhubs/azure-messaging-eventhubs/src/samples/java/com/azure/messaging/eventhubs/EventProcessorClientAggregateEventsSample.java
-[sample_event_processor_state_management]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/eventhubs/azure-messaging-eventhubs/src/samples/java/com/azure/messaging/eventhubs/EventProcessorClientStateManagement.java
 [sample_event_processor]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/eventhubs/azure-messaging-eventhubs/src/samples/java/com/azure/messaging/eventhubs/EventProcessorClientSample.java
+[sample_event_processor_checkpointing]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/eventhubs/azure-messaging-eventhubs/src/samples/java/com/azure/messaging/eventhubs/EventProcessorClientCheckpointing.java
+[sample_event_processor_initial_event_position]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/eventhubs/azure-messaging-eventhubs/src/samples/java/com/azure/messaging/eventhubs/EventProcessorClientSetInitialEventPosition.java
 [sample_get_event_hubs_metadata]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/eventhubs/azure-messaging-eventhubs/src/samples/java/com/azure/messaging/eventhubs/GetEventHubMetadata.java
 [sample_intermediary_endpoint]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/eventhubs/azure-messaging-eventhubs/src/samples/java/com/azure/messaging/eventhubs/PublishEventsCustomEndpoint.java
 [sample_publish_buffered_producer]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/eventhubs/azure-messaging-eventhubs/src/samples/java/com/azure/messaging/eventhubs/PublishEventsBufferedProducer.java

@@ -48,6 +48,10 @@ public final class GroupContractImpl implements GroupContract, GroupContract.Def
         return this.innerModel().externalId();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public GroupContractInner innerModel() {
         return this.innerObject;
     }

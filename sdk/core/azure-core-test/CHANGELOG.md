@@ -1,14 +1,47 @@
 # Release History
 
-## 1.18.0-beta.1 (Unreleased)
+## 1.20.0-beta.1 (Unreleased)
 
 ### Features Added
+- Added `TestProxyRecordingOptions` model representing the transport layer options to send to the test proxy when recording.
 
 ### Breaking Changes
 
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.19.0 (2023-08-04)
+
+### Features Added
+- Add helper methods for adding sanitizers and matchers
+- Updated the list of headers to redact to include "subscription-key"
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.41.0` to `1.42.0`.
+
+## 1.18.1 (2023-07-06)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.40.0` to `1.41.0`.
+
+## 1.18.0 (2023-06-02)
+
+### Features Added
+
+- Enabled ability to use test playback records from the assets repo, removing the need to maintain them in `azure-sdk-for-java`.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.39.0` to `1.40.0`.
 
 ## 1.17.0 (2023-05-04)
 

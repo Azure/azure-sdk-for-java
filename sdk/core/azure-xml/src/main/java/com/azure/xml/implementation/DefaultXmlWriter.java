@@ -20,7 +20,7 @@ import static javax.xml.XMLConstants.DEFAULT_NS_PREFIX;
  * Default {@link XmlWriter} implementation based on {@link XMLStreamWriter}.
  */
 public final class DefaultXmlWriter extends XmlWriter {
-    private static final XMLOutputFactory XML_OUTPUT_FACTORY = XMLOutputFactory.newFactory();
+    private static final XMLOutputFactory XML_OUTPUT_FACTORY = XMLOutputFactory.newInstance();
 
     private final XMLStreamWriter writer;
 
@@ -89,6 +89,20 @@ public final class DefaultXmlWriter extends XmlWriter {
 
         writer.setDefaultNamespace(namespaceUri);
         writer.writeDefaultNamespace(namespaceUri);
+        return this;
+    }
+
+    @Override
+    public XmlWriter writeNamespace(String namespacePrefix, String namespaceUri) throws XMLStreamException {
+        if (namespacePrefix == null || "xmlns".equals(namespacePrefix)) {
+            return writeNamespace(namespacePrefix);
+        }
+
+        if (Objects.equals(writer.getNamespaceContext().getNamespaceURI(namespacePrefix), namespaceUri)) {
+            return this;
+        }
+
+        writer.writeNamespace(namespacePrefix, namespaceUri);
         return this;
     }
 

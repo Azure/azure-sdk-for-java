@@ -9,11 +9,10 @@ import com.azure.resourcemanager.batch.fluent.models.PrivateEndpointConnectionIn
 import com.azure.resourcemanager.batch.models.PrivateLinkServiceConnectionState;
 import com.azure.resourcemanager.batch.models.PrivateLinkServiceConnectionStatus;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class PrivateEndpointConnectionInnerTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         PrivateEndpointConnectionInner model =
             BinaryData
                 .fromString(
@@ -25,8 +24,8 @@ public final class PrivateEndpointConnectionInnerTests {
         Assertions.assertEquals("jdpvwryo", model.privateLinkServiceConnectionState().description());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         PrivateEndpointConnectionInner model =
             new PrivateEndpointConnectionInner()
                 .withPrivateLinkServiceConnectionState(

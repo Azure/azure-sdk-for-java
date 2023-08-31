@@ -48,6 +48,11 @@ public final class SearchResult {
     private List<CaptionResult> captions;
 
     /*
+     * Contains debugging information that can be used to further explore your search results.
+     */
+    private List<DocumentDebugInfo> documentDebugInfo;
+
+    /*
      * Contains a document found by a search query, plus associated metadata.
      */
     private Map<String, Object> additionalProperties;
@@ -79,6 +84,11 @@ public final class SearchResult {
             @Override
             public void setCaptions(SearchResult searchResult, List<CaptionResult> captions) {
                 searchResult.setCaptions(captions);
+            }
+
+            @Override
+            public void setDocumentDebugInfo(SearchResult searchResult, List<DocumentDebugInfo> documentDebugInfo) {
+                searchResult.setDocumentDebugInfo(documentDebugInfo);
             }
         });
     }
@@ -131,6 +141,16 @@ public final class SearchResult {
      */
     public List<CaptionResult> getCaptions() {
         return this.captions;
+    }
+
+    /**
+     * Get the documentDebugInfo property: Contains debugging information that can be used to further explore your
+     * search results.
+     *
+     * @return the documentDebugInfo value.
+     */
+    public List<DocumentDebugInfo> getDocumentDebugInfo() {
+        return this.documentDebugInfo;
     }
 
     /**
@@ -189,5 +209,14 @@ public final class SearchResult {
      */
     private void setCaptions(List<CaptionResult> captions) {
         this.captions = captions;
+    }
+
+    /**
+     * The private setter to set the documentDebugInfo property via {@code SearchResultHelper.setDocumentDebugInfo}.
+     * 
+     * @param documentDebugInfo The document debug info.
+     */
+    private void setDocumentDebugInfo(List<DocumentDebugInfo> documentDebugInfo) {
+        this.documentDebugInfo = documentDebugInfo;
     }
 }

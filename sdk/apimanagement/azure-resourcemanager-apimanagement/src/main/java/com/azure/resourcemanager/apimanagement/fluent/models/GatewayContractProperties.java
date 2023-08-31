@@ -23,6 +23,10 @@ public final class GatewayContractProperties {
     @JsonProperty(value = "description")
     private String description;
 
+    /** Creates an instance of GatewayContractProperties class. */
+    public GatewayContractProperties() {
+    }
+
     /**
      * Get the locationData property: Gateway location.
      *

@@ -30,7 +30,7 @@ public enum HostType {
     /**
      * Host is Container App
      */
-    CONTAINER_APP("ContainerApps");
+    CONTAINER_APP("ContainerApp");
 
     private final String text;
 

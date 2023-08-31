@@ -8,34 +8,33 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.sqlvirtualmachine.models.AutoPatchingSettings;
 import com.azure.resourcemanager.sqlvirtualmachine.models.DayOfWeek;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class AutoPatchingSettingsTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         AutoPatchingSettings model =
             BinaryData
                 .fromString(
-                    "{\"enable\":true,\"dayOfWeek\":\"Everyday\",\"maintenanceWindowStartingHour\":1859867828,\"maintenanceWindowDuration\":1616519742}")
+                    "{\"enable\":true,\"dayOfWeek\":\"Sunday\",\"maintenanceWindowStartingHour\":1833298254,\"maintenanceWindowDuration\":1813223927}")
                 .toObject(AutoPatchingSettings.class);
         Assertions.assertEquals(true, model.enable());
-        Assertions.assertEquals(DayOfWeek.EVERYDAY, model.dayOfWeek());
-        Assertions.assertEquals(1859867828, model.maintenanceWindowStartingHour());
-        Assertions.assertEquals(1616519742, model.maintenanceWindowDuration());
+        Assertions.assertEquals(DayOfWeek.SUNDAY, model.dayOfWeek());
+        Assertions.assertEquals(1833298254, model.maintenanceWindowStartingHour());
+        Assertions.assertEquals(1813223927, model.maintenanceWindowDuration());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         AutoPatchingSettings model =
             new AutoPatchingSettings()
                 .withEnable(true)
-                .withDayOfWeek(DayOfWeek.EVERYDAY)
-                .withMaintenanceWindowStartingHour(1859867828)
-                .withMaintenanceWindowDuration(1616519742);
+                .withDayOfWeek(DayOfWeek.SUNDAY)
+                .withMaintenanceWindowStartingHour(1833298254)
+                .withMaintenanceWindowDuration(1813223927);
         model = BinaryData.fromObject(model).toObject(AutoPatchingSettings.class);
         Assertions.assertEquals(true, model.enable());
-        Assertions.assertEquals(DayOfWeek.EVERYDAY, model.dayOfWeek());
-        Assertions.assertEquals(1859867828, model.maintenanceWindowStartingHour());
-        Assertions.assertEquals(1616519742, model.maintenanceWindowDuration());
+        Assertions.assertEquals(DayOfWeek.SUNDAY, model.dayOfWeek());
+        Assertions.assertEquals(1833298254, model.maintenanceWindowStartingHour());
+        Assertions.assertEquals(1813223927, model.maintenanceWindowDuration());
     }
 }

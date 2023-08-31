@@ -56,6 +56,6 @@ public final class ManagedEnvironmentsDeleteMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.managedEnvironments().delete("nqbnqb", "izxqltgrd", com.azure.core.util.Context.NONE);
+        manager.managedEnvironments().delete("bhtmeplvuk", "obrl", com.azure.core.util.Context.NONE);
     }
 }

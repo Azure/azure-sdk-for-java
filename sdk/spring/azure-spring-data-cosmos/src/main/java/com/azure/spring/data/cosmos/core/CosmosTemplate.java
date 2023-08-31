@@ -87,7 +87,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
     private final int maxBufferedItemCount;
     private final int responseContinuationTokenLimitInKb;
     private final DatabaseThroughputConfig databaseThroughputConfig;
-
+    private boolean pointReadWarningLogged = false;
     private ApplicationContext applicationContext;
 
     /**
@@ -368,6 +368,15 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
     public <T> T findById(String containerName, Object id, Class<T> domainType) {
         Assert.hasText(containerName, "containerName should not be null, empty or only whitespaces");
         Assert.notNull(domainType, "domainType should not be null");
+        CosmosEntityInformation<?, ?> cosmosEntityInformation = CosmosEntityInformation.getInstance(domainType);
+        String containerPartitionKey = cosmosEntityInformation.getPartitionKeyFieldName();
+        if ("id".equals(containerPartitionKey) && id != null) {
+            return findById(id, domainType, new PartitionKey(id));
+        }
+        if (!this.pointReadWarningLogged) {
+            LOGGER.warn("The partitionKey is not id!! Consider using findById(ID id, PartitionKey partitionKey) instead to avoid the need for using a cross partition query which results in higher latency and cost than necessary. See https://aka.ms/PointReadsInSpring for more info.");
+            this.pointReadWarningLogged = true;
+        }
         String finalContainerName = getContainerNameOverride(containerName);
         final String query = "select * from root where root.id = @ROOT_ID";
         final SqlParameter param = new SqlParameter("@ROOT_ID", CosmosUtils.getStringIDValue(id));

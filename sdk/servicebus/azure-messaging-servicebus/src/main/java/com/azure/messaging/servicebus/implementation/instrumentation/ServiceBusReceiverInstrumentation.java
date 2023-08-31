@@ -19,13 +19,12 @@ import java.time.Instant;
 public final class ServiceBusReceiverInstrumentation {
     private final ServiceBusMeter meter;
     private final ServiceBusTracer tracer;
+    private final ReceiverKind receiverKind;
 
-    private final boolean isSync;
-
-    public ServiceBusReceiverInstrumentation(Tracer tracer, Meter meter, String fullyQualifiedName, String entityPath, String subscriptionName, boolean isSync) {
+    public ServiceBusReceiverInstrumentation(Tracer tracer, Meter meter, String fullyQualifiedName, String entityPath, String subscriptionName, ReceiverKind receiverKind) {
         this.tracer = new ServiceBusTracer(tracer, fullyQualifiedName, entityPath);
         this.meter = new ServiceBusMeter(meter, fullyQualifiedName, entityPath, subscriptionName);
-        this.isSync = isSync;
+        this.receiverKind = receiverKind;
     }
 
     /**
@@ -37,17 +36,25 @@ public final class ServiceBusReceiverInstrumentation {
     }
 
     /**
+     * Checks if the instrumentation is created for processor client.
+     * @return
+     */
+    public boolean isProcessorInstrumentation() {
+        return receiverKind == ReceiverKind.PROCESSOR;
+    }
+
+    /**
      * Instruments even processing. For Processor traces processMessage callback, for async receiver
      * traces subscriber call. Does not trace anything for sync receiver - use {@link ServiceBusTracer#traceSyncReceive(String, Flux)}
      * for sync receiver.
      * Reports consumer lag metric.
      */
     public Context instrumentProcess(String name, ServiceBusReceivedMessage message, Context parent) {
-        if (!tracer.isEnabled() && !meter.isConsumerLagEnabled()) {
+        if (message == null || (!tracer.isEnabled() && !meter.isConsumerLagEnabled())) {
             return parent;
         }
 
-        Context span = (tracer.isEnabled() && !isSync) ? tracer.startProcessSpan(name, message, parent) : parent;
+        Context span = (tracer.isEnabled() && receiverKind != ReceiverKind.SYNC_RECEIVER) ? tracer.startProcessSpan(name, message, parent) : parent;
         meter.reportConsumerLag(message.getEnqueuedTime(), span);
 
         return span;

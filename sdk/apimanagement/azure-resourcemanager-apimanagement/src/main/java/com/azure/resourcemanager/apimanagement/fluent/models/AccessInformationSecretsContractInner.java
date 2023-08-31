@@ -23,15 +23,15 @@ public final class AccessInformationSecretsContractInner {
     private String principalId;
 
     /*
-     * Primary access key. This property will not be filled on 'GET'
-     * operations! Use '/listSecrets' POST request to get the value.
+     * Primary access key. This property will not be filled on 'GET' operations! Use '/listSecrets' POST request to get
+     * the value.
      */
     @JsonProperty(value = "primaryKey")
     private String primaryKey;
 
     /*
-     * Secondary access key. This property will not be filled on 'GET'
-     * operations! Use '/listSecrets' POST request to get the value.
+     * Secondary access key. This property will not be filled on 'GET' operations! Use '/listSecrets' POST request to
+     * get the value.
      */
     @JsonProperty(value = "secondaryKey")
     private String secondaryKey;
@@ -41,6 +41,10 @@ public final class AccessInformationSecretsContractInner {
      */
     @JsonProperty(value = "enabled")
     private Boolean enabled;
+
+    /** Creates an instance of AccessInformationSecretsContractInner class. */
+    public AccessInformationSecretsContractInner() {
+    }
 
     /**
      * Get the id property: Access Information type ('access' or 'gitAccess').

@@ -31,7 +31,7 @@ public class SummarizeTextSample {
         String summarizationPrompt = "Summarize the following text.%n" + "Text:%n" + textToSummarize + "%n Summary:%n";
 
         String deploymentOrModelId = "{azure-open-ai-deployment-model-id}";
-        System.out.printf("Input prompt: %d%n", summarizationPrompt);
+        System.out.printf("Input prompt: %s%n", summarizationPrompt);
 
         client.getCompletions(deploymentOrModelId, summarizationPrompt)
             .subscribe(

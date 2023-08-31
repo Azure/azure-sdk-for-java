@@ -10,6 +10,8 @@ import com.azure.xml.XmlWriter;
 
 import javax.xml.stream.XMLStreamException;
 
+import static com.azure.xml.AzureXmlTestUtils.getRootElementName;
+
 public class ListBlobsFlatSegmentResponse implements XmlSerializable<ListBlobsFlatSegmentResponse> {
     /*
      * The ServiceEndpoint property.
@@ -188,7 +190,12 @@ public class ListBlobsFlatSegmentResponse implements XmlSerializable<ListBlobsFl
 
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
-        xmlWriter.writeStartElement("EnumerationResults");
+        return toXml(xmlWriter, null);
+    }
+
+    @Override
+    public XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException {
+        xmlWriter.writeStartElement(getRootElementName(rootElementName, "EnumerationResults"));
         xmlWriter.writeStringAttribute("ServiceEndpoint", serviceEndpoint);
         xmlWriter.writeStringAttribute("ContainerName", containerName);
 
@@ -217,7 +224,12 @@ public class ListBlobsFlatSegmentResponse implements XmlSerializable<ListBlobsFl
     }
 
     public static ListBlobsFlatSegmentResponse fromXml(XmlReader xmlReader) throws XMLStreamException {
-        return xmlReader.readObject("EnumerationResults", reader -> {
+        return fromXml(xmlReader, null);
+    }
+
+    public static ListBlobsFlatSegmentResponse fromXml(XmlReader xmlReader, String rootElementName)
+        throws XMLStreamException {
+        return xmlReader.readObject(getRootElementName(rootElementName, "EnumerationResults"), reader -> {
             ListBlobsFlatSegmentResponse deserialized = new ListBlobsFlatSegmentResponse();
 
             deserialized.serviceEndpoint = reader.getStringAttribute(null, "ServiceEndpoint");

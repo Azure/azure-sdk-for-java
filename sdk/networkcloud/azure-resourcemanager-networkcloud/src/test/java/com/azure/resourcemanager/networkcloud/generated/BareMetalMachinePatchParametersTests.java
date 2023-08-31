@@ -16,10 +16,10 @@ public final class BareMetalMachinePatchParametersTests {
         BareMetalMachinePatchParameters model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"machineDetails\":\"tgdqohmcwsldriz\"},\"tags\":{\"zakakankjpdn\":\"wbralllibphbqzm\",\"xprimrsop\":\"zhajoylhjlmuo\",\"stvasylwxdzaumw\":\"eecjmeis\",\"fuzboyjathwtzolb\":\"oohgu\"}}")
+                    "{\"properties\":{\"machineDetails\":\"ieholewjwi\"},\"tags\":{\"wexjkmfxapjwogq\":\"wefqsfapaqtferr\",\"awbzasqb\":\"nobpudcdabtqwpw\",\"kyexaoguyaipi\":\"clj\",\"um\":\"sdaultxij\"}}")
                 .toObject(BareMetalMachinePatchParameters.class);
-        Assertions.assertEquals("wbralllibphbqzm", model.tags().get("zakakankjpdn"));
-        Assertions.assertEquals("tgdqohmcwsldriz", model.machineDetails());
+        Assertions.assertEquals("wefqsfapaqtferr", model.tags().get("wexjkmfxapjwogq"));
+        Assertions.assertEquals("ieholewjwi", model.machineDetails());
     }
 
     @org.junit.jupiter.api.Test
@@ -28,20 +28,21 @@ public final class BareMetalMachinePatchParametersTests {
             new BareMetalMachinePatchParameters()
                 .withTags(
                     mapOf(
-                        "zakakankjpdn",
-                        "wbralllibphbqzm",
-                        "xprimrsop",
-                        "zhajoylhjlmuo",
-                        "stvasylwxdzaumw",
-                        "eecjmeis",
-                        "fuzboyjathwtzolb",
-                        "oohgu"))
-                .withMachineDetails("tgdqohmcwsldriz");
+                        "wexjkmfxapjwogq",
+                        "wefqsfapaqtferr",
+                        "awbzasqb",
+                        "nobpudcdabtqwpw",
+                        "kyexaoguyaipi",
+                        "clj",
+                        "um",
+                        "sdaultxij"))
+                .withMachineDetails("ieholewjwi");
         model = BinaryData.fromObject(model).toObject(BareMetalMachinePatchParameters.class);
-        Assertions.assertEquals("wbralllibphbqzm", model.tags().get("zakakankjpdn"));
-        Assertions.assertEquals("tgdqohmcwsldriz", model.machineDetails());
+        Assertions.assertEquals("wefqsfapaqtferr", model.tags().get("wexjkmfxapjwogq"));
+        Assertions.assertEquals("ieholewjwi", model.machineDetails());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

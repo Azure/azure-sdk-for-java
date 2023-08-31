@@ -9,7 +9,7 @@ import com.azure.resourcemanager.appcontainers.models.CheckNameAvailabilityReque
 /** Samples for Namespaces CheckNameAvailability. */
 public final class NamespacesCheckNameAvailabilitySamples {
     /*
-     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/preview/2022-11-01-preview/examples/Certificates_CheckNameAvailability.json
+     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/stable/2023-05-01/examples/Certificates_CheckNameAvailability.json
      */
     /**
      * Sample code: Certificates_CheckNameAvailability.
@@ -30,7 +30,7 @@ public final class NamespacesCheckNameAvailabilitySamples {
     }
 
     /*
-     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/preview/2022-11-01-preview/examples/ContainerApps_CheckNameAvailability.json
+     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/stable/2023-05-01/examples/ContainerApps_CheckNameAvailability.json
      */
     /**
      * Sample code: ContainerApps_CheckNameAvailability.

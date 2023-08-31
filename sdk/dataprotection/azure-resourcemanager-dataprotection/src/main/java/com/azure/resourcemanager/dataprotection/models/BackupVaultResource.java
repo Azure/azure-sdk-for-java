@@ -115,11 +115,13 @@ public interface BackupVaultResource {
             DefinitionStages.WithProperties,
             DefinitionStages.WithCreate {
     }
+
     /** The BackupVaultResource definition stages. */
     interface DefinitionStages {
         /** The first stage of the BackupVaultResource definition. */
         interface Blank extends WithLocation {
         }
+
         /** The stage of the BackupVaultResource definition allowing to specify location. */
         interface WithLocation {
             /**
@@ -138,6 +140,7 @@ public interface BackupVaultResource {
              */
             WithResourceGroup withRegion(String location);
         }
+
         /** The stage of the BackupVaultResource definition allowing to specify parent resource. */
         interface WithResourceGroup {
             /**
@@ -148,6 +151,7 @@ public interface BackupVaultResource {
              */
             WithProperties withExistingResourceGroup(String resourceGroupName);
         }
+
         /** The stage of the BackupVaultResource definition allowing to specify properties. */
         interface WithProperties {
             /**
@@ -161,6 +165,7 @@ public interface BackupVaultResource {
              */
             WithCreate withProperties(BackupVault properties);
         }
+
         /**
          * The stage of the BackupVaultResource definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
@@ -182,6 +187,7 @@ public interface BackupVaultResource {
              */
             BackupVaultResource create(Context context);
         }
+
         /** The stage of the BackupVaultResource definition allowing to specify tags. */
         interface WithTags {
             /**
@@ -192,6 +198,7 @@ public interface BackupVaultResource {
              */
             WithCreate withTags(Map<String, String> tags);
         }
+
         /** The stage of the BackupVaultResource definition allowing to specify etag. */
         interface WithEtag {
             /**
@@ -202,6 +209,7 @@ public interface BackupVaultResource {
              */
             WithCreate withEtag(String etag);
         }
+
         /** The stage of the BackupVaultResource definition allowing to specify identity. */
         interface WithIdentity {
             /**
@@ -216,6 +224,7 @@ public interface BackupVaultResource {
             WithCreate withIdentity(DppIdentityDetails identity);
         }
     }
+
     /**
      * Begins update for the BackupVaultResource resource.
      *
@@ -240,6 +249,7 @@ public interface BackupVaultResource {
          */
         BackupVaultResource apply(Context context);
     }
+
     /** The BackupVaultResource update stages. */
     interface UpdateStages {
         /** The stage of the BackupVaultResource update allowing to specify tags. */
@@ -252,6 +262,7 @@ public interface BackupVaultResource {
              */
             Update withTags(Map<String, String> tags);
         }
+
         /** The stage of the BackupVaultResource update allowing to specify identity. */
         interface WithIdentity {
             /**
@@ -265,6 +276,7 @@ public interface BackupVaultResource {
              */
             Update withIdentity(DppIdentityDetails identity);
         }
+
         /** The stage of the BackupVaultResource update allowing to specify properties. */
         interface WithProperties {
             /**
@@ -276,6 +288,7 @@ public interface BackupVaultResource {
             Update withProperties(PatchBackupVaultInput properties);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

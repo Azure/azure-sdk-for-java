@@ -4,9 +4,11 @@
 package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
+import com.azure.cosmos.implementation.directconnectivity.ContainerDirectConnectionMetadata;
 import com.azure.cosmos.models.CosmosContainerIdentity;
 
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -21,19 +23,17 @@ public final class CosmosContainerProactiveInitConfig {
             .CosmosContainerIdentityHelper
             .getCosmosContainerIdentityAccessor();
     private final List<CosmosContainerIdentity> cosmosContainerIdentities;
-    private final Map<String, Integer> containerLinkToMinConnectionsMap;
+    private final Map<CosmosContainerIdentity, ContainerDirectConnectionMetadata> containerDirectConnectionMetadataMap;
     private final int numProactiveConnectionRegions;
     private final Duration aggressiveWarmupDuration;
 
     CosmosContainerProactiveInitConfig(
-        List<CosmosContainerIdentity> cosmosContainerIdentities,
         int numProactiveConnectionRegions,
-        Map<String, Integer> containerLinkToMinConnectionsMap,
-        Duration aggressiveWarmupDuration
-    ) {
-        this.cosmosContainerIdentities = Collections.unmodifiableList(cosmosContainerIdentities);
+        Map<CosmosContainerIdentity, ContainerDirectConnectionMetadata> containerDirectConnectionMetadataMap,
+        Duration aggressiveWarmupDuration) {
+        this.cosmosContainerIdentities = new ArrayList<>(containerDirectConnectionMetadataMap.keySet());
         this.numProactiveConnectionRegions = numProactiveConnectionRegions;
-        this.containerLinkToMinConnectionsMap = containerLinkToMinConnectionsMap;
+        this.containerDirectConnectionMetadataMap = containerDirectConnectionMetadataMap;
         this.aggressiveWarmupDuration = aggressiveWarmupDuration;
     }
 
@@ -43,7 +43,7 @@ public final class CosmosContainerProactiveInitConfig {
      * @return list of {@link CosmosContainerIdentity}
      * */
     public List<CosmosContainerIdentity> getCosmosContainerIdentities() {
-        return cosmosContainerIdentities;
+        return Collections.unmodifiableList(this.cosmosContainerIdentities);
     }
 
     /**
@@ -96,24 +96,26 @@ public final class CosmosContainerProactiveInitConfig {
             return "";
         }
 
-        return
-            String.format(
-                "%s(%d)",
+        // containers -> the containers part of the connection warm up
+        // pcrc -> the first k regions from the preferredRegions to which connections are warmed up
+        // awd -> duration within which aggressive connection warm up happens
+        return String.format(
+                "(containers:%s)(pcrc:%d)(awd:%s)",
                 cosmosContainerIdentities
                     .stream()
                     .map(ci -> String.join(
                         ".",
-                        containerIdAccessor.getDatabaseName(ci),
-                        containerIdAccessor.getContainerName(ci)))
-                    .collect(Collectors.joining(",")),
-                numProactiveConnectionRegions);
+                        containerIdAccessor.getContainerLink(ci)))
+                    .collect(Collectors.joining(";")),
+                numProactiveConnectionRegions,
+                aggressiveWarmupDuration);
     }
 
     static void initialize() {
         ImplementationBridgeHelpers.CosmosContainerProactiveInitConfigHelper.setCosmosContainerProactiveInitConfigAccessor(new ImplementationBridgeHelpers.CosmosContainerProactiveInitConfigHelper.CosmosContainerProactiveInitConfigAccessor() {
             @Override
-            public Map<String, Integer> getContainerLinkToMinConnectionsMap(CosmosContainerProactiveInitConfig cosmosContainerProactiveInitConfig) {
-                return cosmosContainerProactiveInitConfig.containerLinkToMinConnectionsMap;
+            public Map<CosmosContainerIdentity, ContainerDirectConnectionMetadata> getContainerPropertiesMap(CosmosContainerProactiveInitConfig cosmosContainerProactiveInitConfig) {
+                return cosmosContainerProactiveInitConfig.containerDirectConnectionMetadataMap;
             }
         });
     }

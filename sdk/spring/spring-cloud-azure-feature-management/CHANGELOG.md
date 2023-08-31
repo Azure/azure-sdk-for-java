@@ -1,39 +1,34 @@
 # Release History
 
-## 4.8.0-beta.1 (Unreleased)
+## 4.12.0-beta.1 (Unreleased)
 
 ### Features Added
-
-* Added Deny List for Targeting Filter.
-
-```yml
-feature-management:
-  TargetingTest:
-    enabled-for:
-      -
-        name: Microsoft.Targeting
-        parameters:
-          users:
-            - Jeff
-            - Alicia
-          groups:
-            -
-              name: Ring0
-              rolloutPercentage: 100
-            -
-              name: Ring1
-              rolloutPercentage: 100
-          defaultRolloutPercentage: 50
-          exclusion:
-            users:
-              - Ross
-```
 
 ### Breaking Changes
 
 ### Bugs Fixed
 
 ### Other Changes
+
+## 4.11.0 (2023-08-25)
+
+Please refer to [spring/CHANGELOG.md](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/CHANGELOG.md#4110-2023-08-25) for more details.
+
+## 4.10.0 (2023-08-01)
+
+Please refer to [spring/CHANGELOG.md](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/CHANGELOG.md#4100-2023-08-01) for more details.
+
+## 4.9.1 (2023-07-19)
+
+Fixes a bug where exclusions from the portal don't map correctly resulting in a `java.lang.ClassCastException` [#35823](https://github.com/Azure/azure-sdk-for-java/issues/35823)
+
+## 4.9.0 (2023-06-29)
+
+Please refer to [spring/CHANGELOG.md](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/CHANGELOG.md#490-2023-06-29) for more details.
+
+## 4.8.0 (2023-05-25)
+
+Please refer to [spring/CHANGELOG.md](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/CHANGELOG.md#480-2023-05-25) for more details.
 
 ## 4.7.0 (2023-03-23)
 

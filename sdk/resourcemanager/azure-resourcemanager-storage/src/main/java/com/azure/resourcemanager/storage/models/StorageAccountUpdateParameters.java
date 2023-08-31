@@ -47,6 +47,10 @@ public final class StorageAccountUpdateParameters {
     @JsonProperty(value = "kind")
     private Kind kind;
 
+    /** Creates an instance of StorageAccountUpdateParameters class. */
+    public StorageAccountUpdateParameters() {
+    }
+
     /**
      * Get the sku property: Gets or sets the SKU name. Note that the SKU name cannot be updated to Standard_ZRS,
      * Premium_LRS or Premium_ZRS, nor can accounts of those SKU names be updated to any other value.
@@ -441,7 +445,7 @@ public final class StorageAccountUpdateParameters {
 
     /**
      * Get the allowBlobPublicAccess property: Allow or disallow public access to all blobs or containers in the storage
-     * account. The default interpretation is true for this property.
+     * account. The default interpretation is false for this property.
      *
      * @return the allowBlobPublicAccess value.
      */
@@ -451,7 +455,7 @@ public final class StorageAccountUpdateParameters {
 
     /**
      * Set the allowBlobPublicAccess property: Allow or disallow public access to all blobs or containers in the storage
-     * account. The default interpretation is true for this property.
+     * account. The default interpretation is false for this property.
      *
      * @param allowBlobPublicAccess the allowBlobPublicAccess value to set.
      * @return the StorageAccountUpdateParameters object itself.
@@ -517,8 +521,10 @@ public final class StorageAccountUpdateParameters {
     }
 
     /**
-     * Get the allowCrossTenantReplication property: Allow or disallow cross AAD tenant object replication. The default
-     * interpretation is true for this property.
+     * Get the allowCrossTenantReplication property: Allow or disallow cross AAD tenant object replication. Set this
+     * property to true for new or existing accounts only if object replication policies will involve storage accounts
+     * in different AAD tenants. The default interpretation is false for new accounts to follow best security practices
+     * by default.
      *
      * @return the allowCrossTenantReplication value.
      */
@@ -527,8 +533,10 @@ public final class StorageAccountUpdateParameters {
     }
 
     /**
-     * Set the allowCrossTenantReplication property: Allow or disallow cross AAD tenant object replication. The default
-     * interpretation is true for this property.
+     * Set the allowCrossTenantReplication property: Allow or disallow cross AAD tenant object replication. Set this
+     * property to true for new or existing accounts only if object replication policies will involve storage accounts
+     * in different AAD tenants. The default interpretation is false for new accounts to follow best security practices
+     * by default.
      *
      * @param allowCrossTenantReplication the allowCrossTenantReplication value to set.
      * @return the StorageAccountUpdateParameters object itself.

@@ -3,6 +3,8 @@
 
 package com.azure.search.documents.implementation.util;
 
+import com.azure.search.documents.models.SemanticPartialResponseReason;
+import com.azure.search.documents.models.SemanticPartialResponseType;
 import com.azure.search.documents.models.AnswerResult;
 import com.azure.search.documents.models.FacetResult;
 import com.azure.search.documents.util.SearchPagedResponse;
@@ -61,6 +63,23 @@ public final class SearchPagedResponseAccessHelper {
          * @return The answer results if {@code answers} were supplied in the request, otherwise null.
          */
         List<AnswerResult> getAnswers(SearchPagedResponse response);
+
+        /**
+         * The reason that a partial response was returned for a semantic search request.
+         * 
+         * @param response The {@link SearchPagedResponse} being accessed.
+         * @return The reason that a partial response was returned for a semantic search request.
+         */
+        SemanticPartialResponseReason getSemanticPartialResponseReason(SearchPagedResponse response);
+
+        /**
+         * Get the semanticPartialResponseType property: Type of partial response that was returned for a semantic search
+         * request.
+         * 
+         * @param response The {@link SearchPagedResponse} being accessed.
+         * @return the semanticPartialResponseType value.
+         */
+        SemanticPartialResponseType getSemanticPartialResponseType(SearchPagedResponse response);
     }
 
     /**
@@ -111,6 +130,24 @@ public final class SearchPagedResponseAccessHelper {
      */
     public static List<AnswerResult> getAnswers(SearchPagedResponse response) {
         return accessor.getAnswers(response);
+    }
+
+    /**
+     * The reason that a partial response was returned for a semantic search request.
+     * @param response The {@link SearchPagedResponse} being accessed.
+     * @return The reason that a partial response was returned for a semantic search request.
+     */
+    public static SemanticPartialResponseReason getSemanticPartialResponseReason(SearchPagedResponse response) {
+        return accessor.getSemanticPartialResponseReason(response);
+    }
+
+    /**
+     * The type of partial response that was returned for a semantic search request.
+     * @param response The {@link SearchPagedResponse} being accessed.
+     * @return The type of partial response that was returned for a semantic search request.
+     */
+    public static SemanticPartialResponseType getSemanticPartialResponseType(SearchPagedResponse response) {
+        return accessor.getSemanticPartialResponseType(response);
     }
 
     public static void setAccessor(SearchPagedResponseAccessor searchPagedResponseAccessor) {

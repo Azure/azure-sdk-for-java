@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.apimanagement.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.apimanagement.fluent.models.PolicyContractInner;
 import com.azure.resourcemanager.apimanagement.models.PolicyContentFormat;
 import com.azure.resourcemanager.apimanagement.models.PolicyIdName;
@@ -12,7 +11,7 @@ import com.azure.resourcemanager.apimanagement.models.PolicyIdName;
 /** Samples for ApiPolicy CreateOrUpdate. */
 public final class ApiPolicyCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementCreateApiPolicyNonXmlEncoded.json
+     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementCreateApiPolicyNonXmlEncoded.json
      */
     /**
      * Sample code: ApiManagementCreateApiPolicyNonXmlEncoded.
@@ -40,11 +39,11 @@ public final class ApiPolicyCreateOrUpdateSamples {
                             + "      </policies>")
                     .withFormat(PolicyContentFormat.RAWXML),
                 "*",
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementCreateApiPolicy.json
+     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementCreateApiPolicy.json
      */
     /**
      * Sample code: ApiManagementCreateApiPolicy.
@@ -65,6 +64,6 @@ public final class ApiPolicyCreateOrUpdateSamples {
                         "<policies> <inbound /> <backend>    <forward-request />  </backend>  <outbound /></policies>")
                     .withFormat(PolicyContentFormat.XML),
                 "*",
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

@@ -15,20 +15,21 @@ public final class ClusterManagerPatchParametersTests {
     public void testDeserialize() throws Exception {
         ClusterManagerPatchParameters model =
             BinaryData
-                .fromString("{\"tags\":{\"uncuw\":\"ttexoqqpwcyyufmh\",\"unqndyfpchrqb\":\"qspkcdqzhlctd\"}}")
+                .fromString("{\"tags\":{\"uunfprnjletlxsm\":\"tczytqjtwh\",\"nlqwzdvpiwhx\":\"pddouifamowaziyn\"}}")
                 .toObject(ClusterManagerPatchParameters.class);
-        Assertions.assertEquals("ttexoqqpwcyyufmh", model.tags().get("uncuw"));
+        Assertions.assertEquals("tczytqjtwh", model.tags().get("uunfprnjletlxsm"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ClusterManagerPatchParameters model =
             new ClusterManagerPatchParameters()
-                .withTags(mapOf("uncuw", "ttexoqqpwcyyufmh", "unqndyfpchrqb", "qspkcdqzhlctd"));
+                .withTags(mapOf("uunfprnjletlxsm", "tczytqjtwh", "nlqwzdvpiwhx", "pddouifamowaziyn"));
         model = BinaryData.fromObject(model).toObject(ClusterManagerPatchParameters.class);
-        Assertions.assertEquals("ttexoqqpwcyyufmh", model.tags().get("uncuw"));
+        Assertions.assertEquals("tczytqjtwh", model.tags().get("uunfprnjletlxsm"));
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

@@ -110,3 +110,4 @@ stages:
         AZURE_CLIENT_SECRET: $(aad-azure-sdk-test-client-secret)
         VERSIONED_STORAGE_ACCOUNT_NAME: $(java-storage-versioned-account-name)
         VERSIONED_STORAGE_ACCOUNT_KEY: $(java-storage-versioned-account-key)
+      UseHttpFaultInjector: true

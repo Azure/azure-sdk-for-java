@@ -20,7 +20,6 @@ import com.azure.core.test.models.TestProxySanitizer;
 import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.core.test.utils.HttpURLConnectionHttpClient;
 import com.azure.core.test.utils.TestProxyUtils;
-import com.azure.core.test.utils.TestUtils;
 import com.azure.core.util.Context;
 import com.azure.core.util.UrlBuilder;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -35,7 +34,6 @@ import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
 import org.junit.jupiter.api.condition.DisabledIfSystemProperty;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.net.MalformedURLException;
@@ -235,15 +233,14 @@ public class TestProxyTests extends TestProxyTestBase {
     }
 
     @Test
-    @Tag("Record")
+    @Tag("Playback")
     public void testRecordWithRedaction() {
-        HttpURLConnectionHttpClient client = new HttpURLConnectionHttpClient();
 
         interceptorManager.addSanitizers(CUSTOM_SANITIZER);
+        HttpClient client = interceptorManager.getPlaybackClient();
 
         HttpPipeline pipeline = new HttpPipelineBuilder()
-            .httpClient(client)
-            .policies(interceptorManager.getRecordPolicy()).build();
+            .httpClient(client).build();
         URL url;
         try {
             url = new UrlBuilder()
@@ -312,15 +309,15 @@ public class TestProxyTests extends TestProxyTestBase {
     }
 
     @Test
-    @Tag("Record")
+    @Tag("Playback")
     public void testBodyRegexRedactRecord() {
-        HttpURLConnectionHttpClient client = new HttpURLConnectionHttpClient();
+        HttpClient client = interceptorManager.getPlaybackClient();
 
         interceptorManager.addSanitizers(CUSTOM_SANITIZER);
+        interceptorManager.addMatchers(new CustomMatcher().setHeadersKeyOnlyMatch(Arrays.asList("Accept")));
 
         HttpPipeline pipeline = new HttpPipelineBuilder()
-            .httpClient(client)
-            .policies(interceptorManager.getRecordPolicy()).build();
+            .httpClient(client).build();
         URL url;
         try {
             url = new UrlBuilder()
@@ -356,13 +353,13 @@ public class TestProxyTests extends TestProxyTestBase {
     @Test
     @Tag("Live")
     public void canGetTestProxyVersion() {
-        String version = TestProxyUtils.getTestProxyVersion();
+        String version = TestProxyUtils.getTestProxyVersion(this.getTestClassPath());
         assertNotNull(version);
     }
 
     @Test
     @Tag("Record")
-    public void testResetTestProxyData() throws MalformedURLException {
+    public void testResetTestProxyData() {
         HttpURLConnectionHttpClient client = new HttpURLConnectionHttpClient();
 
         final HttpPipeline pipeline = new HttpPipelineBuilder()
@@ -370,8 +367,8 @@ public class TestProxyTests extends TestProxyTestBase {
             .policies(interceptorManager.getRecordPolicy())
             .build();
 
-        try (HttpResponse response = pipeline.sendSync(
-            new HttpRequest(HttpMethod.GET, new URL("http://localhost:3000")), Context.NONE)) {
+        try (HttpResponse response = pipeline.sendSync(new HttpRequest(HttpMethod.GET, "http://localhost:3000"),
+            Context.NONE)) {
             assertEquals(200, response.getStatusCode());
             HttpHeaders headers = response.getRequest().getHeaders();
             assertNull(headers.get(HttpHeaderName.fromString("x-recording-upstream-base-uri")));
@@ -411,10 +408,8 @@ public class TestProxyTests extends TestProxyTestBase {
     }
 
     private RecordedTestProxyData readDataFromFile() {
-        String filePath = Paths.get(TestUtils.getRecordFolder().getPath(), this.testContextManager.getTestPlaybackRecordingName()) + ".json";
-
-        File recordFile = new File(filePath);
-        try (BufferedReader reader = Files.newBufferedReader(recordFile.toPath())) {
+        try {
+            BufferedReader reader = Files.newBufferedReader(Paths.get(interceptorManager.getRecordingFileLocation()));
             return RECORD_MAPPER.readValue(reader, RecordedTestProxyData.class);
         } catch (IOException ex) {
             throw new UncheckedIOException(ex);

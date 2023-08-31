@@ -30,7 +30,7 @@ public class EventProcessor extends EventHubsScenario {
             .buildAsyncClient();
 
         final String eventHubsConnStr = options.getEventhubsConnectionString();
-        final String eventHub = options.getEventhubsEventHubName();
+        final String eventHub = options.getEventHubsEventHubName();
 
         EventProcessorClient eventProcessorClient = new EventProcessorClientBuilder()
             .consumerGroup(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME)

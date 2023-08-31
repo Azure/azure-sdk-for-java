@@ -16,6 +16,7 @@ import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.core.util.UrlBuilder;
 import com.azure.core.util.logging.ClientLogger;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.net.MalformedURLException;
@@ -60,8 +61,8 @@ public class TestProxyUtils {
         "(?:<SecondaryKey>)(?<secret>.*)(?:</SecondaryKey>)"));
 
     private static final String URL_REGEX = "(?<=http://|https://)([^/?]+)";
-    private static final List<String>
-        HEADER_KEYS_TO_REDACT = new ArrayList<>(Arrays.asList("Ocp-Apim-Subscription-Key", "api-key", "x-api-key"));
+    private static final List<String> HEADER_KEYS_TO_REDACT =
+        new ArrayList<>(Arrays.asList("Ocp-Apim-Subscription-Key", "api-key", "x-api-key", "subscription-key"));
     private static final String REDACTED_VALUE = "REDACTED";
 
     private static final String DELEGATION_KEY_CLIENTID_REGEX = "(?:<SignedOid>)(?<secret>.*)(?:</SignedOid>)";
@@ -121,6 +122,26 @@ public class TestProxyUtils {
         } catch (MalformedURLException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    /**
+     * Get the assets json file path if it exists.
+     * @param recordFile the record/playback file
+     * @param testClassPath the test class path
+     * @return the assets json file path if it exists.
+     */
+    public static String getAssetJsonFile(File recordFile, Path testClassPath) {
+        if (assetJsonFileExists(testClassPath)) {
+            // subpath removes nodes "src/test/resources/session-records"
+            return Paths.get(recordFile.toPath().subpath(0, 3).toString(), "assets.json").toString();
+        } else {
+            return null;
+        }
+    }
+
+    private static boolean assetJsonFileExists(Path testClassPath) {
+        return Files.exists(Paths.get(String.valueOf(TestUtils.getRepoRootResolveUntil(testClassPath, "target")),
+            "assets.json"));
     }
 
     /**
@@ -194,12 +215,13 @@ public class TestProxyUtils {
 
     /**
      * Finds the test proxy version in the source tree.
+     * @param testClassPath the test class path
      * @return The version string to use.
      * @throws RuntimeException The eng folder could not be located in the repo.
      * @throws UncheckedIOException The version file could not be read properly.
      */
-    public static String getTestProxyVersion() {
-        Path rootPath = TestUtils.getRepoRoot();
+    public static String getTestProxyVersion(Path testClassPath) {
+        Path rootPath = TestUtils.getRepoRootResolveUntil(testClassPath, "eng");
         Path versionFile =  Paths.get("eng", "common", "testproxy", "target_version.txt");
         rootPath = rootPath.resolve(versionFile);
         try {

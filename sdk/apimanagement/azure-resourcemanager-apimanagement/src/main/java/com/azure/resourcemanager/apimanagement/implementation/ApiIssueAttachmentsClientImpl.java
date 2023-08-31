@@ -62,11 +62,10 @@ public final class ApiIssueAttachmentsClientImpl implements ApiIssueAttachmentsC
      */
     @Host("{$host}")
     @ServiceInterface(name = "ApiManagementClientA")
-    private interface ApiIssueAttachmentsService {
+    public interface ApiIssueAttachmentsService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement"
-                + "/service/{serviceName}/apis/{apiId}/issues/{issueId}/attachments")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/apis/{apiId}/issues/{issueId}/attachments")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<IssueAttachmentCollection>> listByService(
@@ -85,8 +84,7 @@ public final class ApiIssueAttachmentsClientImpl implements ApiIssueAttachmentsC
 
         @Headers({"Content-Type: application/json"})
         @Head(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement"
-                + "/service/{serviceName}/apis/{apiId}/issues/{issueId}/attachments/{attachmentId}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/apis/{apiId}/issues/{issueId}/attachments/{attachmentId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<ApiIssueAttachmentsGetEntityTagResponse> getEntityTag(
@@ -103,8 +101,7 @@ public final class ApiIssueAttachmentsClientImpl implements ApiIssueAttachmentsC
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement"
-                + "/service/{serviceName}/apis/{apiId}/issues/{issueId}/attachments/{attachmentId}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/apis/{apiId}/issues/{issueId}/attachments/{attachmentId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<ApiIssueAttachmentsGetResponse> get(
@@ -121,8 +118,7 @@ public final class ApiIssueAttachmentsClientImpl implements ApiIssueAttachmentsC
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement"
-                + "/service/{serviceName}/apis/{apiId}/issues/{issueId}/attachments/{attachmentId}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/apis/{apiId}/issues/{issueId}/attachments/{attachmentId}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<ApiIssueAttachmentsCreateOrUpdateResponse> createOrUpdate(
@@ -141,8 +137,7 @@ public final class ApiIssueAttachmentsClientImpl implements ApiIssueAttachmentsC
 
         @Headers({"Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement"
-                + "/service/{serviceName}/apis/{apiId}/issues/{issueId}/attachments/{attachmentId}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/apis/{apiId}/issues/{issueId}/attachments/{attachmentId}")
         @ExpectedResponses({200, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> delete(
@@ -172,7 +167,7 @@ public final class ApiIssueAttachmentsClientImpl implements ApiIssueAttachmentsC
     /**
      * Lists all attachments for the Issue associated with the specified API.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
      * @param issueId Issue identifier. Must be unique in the current API Management service instance.
@@ -255,7 +250,7 @@ public final class ApiIssueAttachmentsClientImpl implements ApiIssueAttachmentsC
     /**
      * Lists all attachments for the Issue associated with the specified API.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
      * @param issueId Issue identifier. Must be unique in the current API Management service instance.
@@ -337,7 +332,7 @@ public final class ApiIssueAttachmentsClientImpl implements ApiIssueAttachmentsC
     /**
      * Lists all attachments for the Issue associated with the specified API.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
      * @param issueId Issue identifier. Must be unique in the current API Management service instance.
@@ -369,7 +364,7 @@ public final class ApiIssueAttachmentsClientImpl implements ApiIssueAttachmentsC
     /**
      * Lists all attachments for the Issue associated with the specified API.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
      * @param issueId Issue identifier. Must be unique in the current API Management service instance.
@@ -392,7 +387,7 @@ public final class ApiIssueAttachmentsClientImpl implements ApiIssueAttachmentsC
     /**
      * Lists all attachments for the Issue associated with the specified API.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
      * @param issueId Issue identifier. Must be unique in the current API Management service instance.
@@ -428,7 +423,7 @@ public final class ApiIssueAttachmentsClientImpl implements ApiIssueAttachmentsC
     /**
      * Lists all attachments for the Issue associated with the specified API.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
      * @param issueId Issue identifier. Must be unique in the current API Management service instance.
@@ -450,7 +445,7 @@ public final class ApiIssueAttachmentsClientImpl implements ApiIssueAttachmentsC
     /**
      * Lists all attachments for the Issue associated with the specified API.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
      * @param issueId Issue identifier. Must be unique in the current API Management service instance.
@@ -483,7 +478,7 @@ public final class ApiIssueAttachmentsClientImpl implements ApiIssueAttachmentsC
     /**
      * Gets the entity state (Etag) version of the issue Attachment for an API specified by its identifier.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
      * @param issueId Issue identifier. Must be unique in the current API Management service instance.
@@ -547,7 +542,7 @@ public final class ApiIssueAttachmentsClientImpl implements ApiIssueAttachmentsC
     /**
      * Gets the entity state (Etag) version of the issue Attachment for an API specified by its identifier.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
      * @param issueId Issue identifier. Must be unique in the current API Management service instance.
@@ -614,7 +609,7 @@ public final class ApiIssueAttachmentsClientImpl implements ApiIssueAttachmentsC
     /**
      * Gets the entity state (Etag) version of the issue Attachment for an API specified by its identifier.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
      * @param issueId Issue identifier. Must be unique in the current API Management service instance.
@@ -629,31 +624,13 @@ public final class ApiIssueAttachmentsClientImpl implements ApiIssueAttachmentsC
     private Mono<Void> getEntityTagAsync(
         String resourceGroupName, String serviceName, String apiId, String issueId, String attachmentId) {
         return getEntityTagWithResponseAsync(resourceGroupName, serviceName, apiId, issueId, attachmentId)
-            .flatMap((ApiIssueAttachmentsGetEntityTagResponse res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
      * Gets the entity state (Etag) version of the issue Attachment for an API specified by its identifier.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param serviceName The name of the API Management service.
-     * @param apiId API identifier. Must be unique in the current API Management service instance.
-     * @param issueId Issue identifier. Must be unique in the current API Management service instance.
-     * @param attachmentId Attachment identifier within an Issue. Must be unique in the current Issue.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void getEntityTag(
-        String resourceGroupName, String serviceName, String apiId, String issueId, String attachmentId) {
-        getEntityTagAsync(resourceGroupName, serviceName, apiId, issueId, attachmentId).block();
-    }
-
-    /**
-     * Gets the entity state (Etag) version of the issue Attachment for an API specified by its identifier.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
      * @param issueId Issue identifier. Must be unique in the current API Management service instance.
@@ -677,9 +654,27 @@ public final class ApiIssueAttachmentsClientImpl implements ApiIssueAttachmentsC
     }
 
     /**
+     * Gets the entity state (Etag) version of the issue Attachment for an API specified by its identifier.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serviceName The name of the API Management service.
+     * @param apiId API identifier. Must be unique in the current API Management service instance.
+     * @param issueId Issue identifier. Must be unique in the current API Management service instance.
+     * @param attachmentId Attachment identifier within an Issue. Must be unique in the current Issue.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void getEntityTag(
+        String resourceGroupName, String serviceName, String apiId, String issueId, String attachmentId) {
+        getEntityTagWithResponse(resourceGroupName, serviceName, apiId, issueId, attachmentId, Context.NONE);
+    }
+
+    /**
      * Gets the details of the issue Attachment for an API specified by its identifier.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
      * @param issueId Issue identifier. Must be unique in the current API Management service instance.
@@ -743,7 +738,7 @@ public final class ApiIssueAttachmentsClientImpl implements ApiIssueAttachmentsC
     /**
      * Gets the details of the issue Attachment for an API specified by its identifier.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
      * @param issueId Issue identifier. Must be unique in the current API Management service instance.
@@ -810,7 +805,7 @@ public final class ApiIssueAttachmentsClientImpl implements ApiIssueAttachmentsC
     /**
      * Gets the details of the issue Attachment for an API specified by its identifier.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
      * @param issueId Issue identifier. Must be unique in the current API Management service instance.
@@ -825,39 +820,13 @@ public final class ApiIssueAttachmentsClientImpl implements ApiIssueAttachmentsC
     private Mono<IssueAttachmentContractInner> getAsync(
         String resourceGroupName, String serviceName, String apiId, String issueId, String attachmentId) {
         return getWithResponseAsync(resourceGroupName, serviceName, apiId, issueId, attachmentId)
-            .flatMap(
-                (ApiIssueAttachmentsGetResponse res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Gets the details of the issue Attachment for an API specified by its identifier.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param serviceName The name of the API Management service.
-     * @param apiId API identifier. Must be unique in the current API Management service instance.
-     * @param issueId Issue identifier. Must be unique in the current API Management service instance.
-     * @param attachmentId Attachment identifier within an Issue. Must be unique in the current Issue.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of the issue Attachment for an API specified by its identifier.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public IssueAttachmentContractInner get(
-        String resourceGroupName, String serviceName, String apiId, String issueId, String attachmentId) {
-        return getAsync(resourceGroupName, serviceName, apiId, issueId, attachmentId).block();
-    }
-
-    /**
-     * Gets the details of the issue Attachment for an API specified by its identifier.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
      * @param issueId Issue identifier. Must be unique in the current API Management service instance.
@@ -880,9 +849,28 @@ public final class ApiIssueAttachmentsClientImpl implements ApiIssueAttachmentsC
     }
 
     /**
+     * Gets the details of the issue Attachment for an API specified by its identifier.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serviceName The name of the API Management service.
+     * @param apiId API identifier. Must be unique in the current API Management service instance.
+     * @param issueId Issue identifier. Must be unique in the current API Management service instance.
+     * @param attachmentId Attachment identifier within an Issue. Must be unique in the current Issue.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the details of the issue Attachment for an API specified by its identifier.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public IssueAttachmentContractInner get(
+        String resourceGroupName, String serviceName, String apiId, String issueId, String attachmentId) {
+        return getWithResponse(resourceGroupName, serviceName, apiId, issueId, attachmentId, Context.NONE).getValue();
+    }
+
+    /**
      * Creates a new Attachment for the Issue in an API or updates an existing one.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
      * @param issueId Issue identifier. Must be unique in the current API Management service instance.
@@ -960,7 +948,7 @@ public final class ApiIssueAttachmentsClientImpl implements ApiIssueAttachmentsC
     /**
      * Creates a new Attachment for the Issue in an API or updates an existing one.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
      * @param issueId Issue identifier. Must be unique in the current API Management service instance.
@@ -1037,43 +1025,7 @@ public final class ApiIssueAttachmentsClientImpl implements ApiIssueAttachmentsC
     /**
      * Creates a new Attachment for the Issue in an API or updates an existing one.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param serviceName The name of the API Management service.
-     * @param apiId API identifier. Must be unique in the current API Management service instance.
-     * @param issueId Issue identifier. Must be unique in the current API Management service instance.
-     * @param attachmentId Attachment identifier within an Issue. Must be unique in the current Issue.
-     * @param parameters Create parameters.
-     * @param ifMatch ETag of the Entity. Not required when creating an entity, but required when updating an entity.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return issue Attachment Contract details on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<IssueAttachmentContractInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        String issueId,
-        String attachmentId,
-        IssueAttachmentContractInner parameters,
-        String ifMatch) {
-        return createOrUpdateWithResponseAsync(
-                resourceGroupName, serviceName, apiId, issueId, attachmentId, parameters, ifMatch)
-            .flatMap(
-                (ApiIssueAttachmentsCreateOrUpdateResponse res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Creates a new Attachment for the Issue in an API or updates an existing one.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
      * @param issueId Issue identifier. Must be unique in the current API Management service instance.
@@ -1095,47 +1047,13 @@ public final class ApiIssueAttachmentsClientImpl implements ApiIssueAttachmentsC
         final String ifMatch = null;
         return createOrUpdateWithResponseAsync(
                 resourceGroupName, serviceName, apiId, issueId, attachmentId, parameters, ifMatch)
-            .flatMap(
-                (ApiIssueAttachmentsCreateOrUpdateResponse res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Creates a new Attachment for the Issue in an API or updates an existing one.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param serviceName The name of the API Management service.
-     * @param apiId API identifier. Must be unique in the current API Management service instance.
-     * @param issueId Issue identifier. Must be unique in the current API Management service instance.
-     * @param attachmentId Attachment identifier within an Issue. Must be unique in the current Issue.
-     * @param parameters Create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return issue Attachment Contract details.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public IssueAttachmentContractInner createOrUpdate(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        String issueId,
-        String attachmentId,
-        IssueAttachmentContractInner parameters) {
-        final String ifMatch = null;
-        return createOrUpdateAsync(resourceGroupName, serviceName, apiId, issueId, attachmentId, parameters, ifMatch)
-            .block();
-    }
-
-    /**
-     * Creates a new Attachment for the Issue in an API or updates an existing one.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
      * @param issueId Issue identifier. Must be unique in the current API Management service instance.
@@ -1164,9 +1082,37 @@ public final class ApiIssueAttachmentsClientImpl implements ApiIssueAttachmentsC
     }
 
     /**
+     * Creates a new Attachment for the Issue in an API or updates an existing one.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serviceName The name of the API Management service.
+     * @param apiId API identifier. Must be unique in the current API Management service instance.
+     * @param issueId Issue identifier. Must be unique in the current API Management service instance.
+     * @param attachmentId Attachment identifier within an Issue. Must be unique in the current Issue.
+     * @param parameters Create parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return issue Attachment Contract details.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public IssueAttachmentContractInner createOrUpdate(
+        String resourceGroupName,
+        String serviceName,
+        String apiId,
+        String issueId,
+        String attachmentId,
+        IssueAttachmentContractInner parameters) {
+        final String ifMatch = null;
+        return createOrUpdateWithResponse(
+                resourceGroupName, serviceName, apiId, issueId, attachmentId, parameters, ifMatch, Context.NONE)
+            .getValue();
+    }
+
+    /**
      * Deletes the specified comment from an Issue.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
      * @param issueId Issue identifier. Must be unique in the current API Management service instance.
@@ -1240,7 +1186,7 @@ public final class ApiIssueAttachmentsClientImpl implements ApiIssueAttachmentsC
     /**
      * Deletes the specified comment from an Issue.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
      * @param issueId Issue identifier. Must be unique in the current API Management service instance.
@@ -1313,7 +1259,7 @@ public final class ApiIssueAttachmentsClientImpl implements ApiIssueAttachmentsC
     /**
      * Deletes the specified comment from an Issue.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
      * @param issueId Issue identifier. Must be unique in the current API Management service instance.
@@ -1334,38 +1280,13 @@ public final class ApiIssueAttachmentsClientImpl implements ApiIssueAttachmentsC
         String attachmentId,
         String ifMatch) {
         return deleteWithResponseAsync(resourceGroupName, serviceName, apiId, issueId, attachmentId, ifMatch)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
      * Deletes the specified comment from an Issue.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param serviceName The name of the API Management service.
-     * @param apiId API identifier. Must be unique in the current API Management service instance.
-     * @param issueId Issue identifier. Must be unique in the current API Management service instance.
-     * @param attachmentId Attachment identifier within an Issue. Must be unique in the current Issue.
-     * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        String issueId,
-        String attachmentId,
-        String ifMatch) {
-        deleteAsync(resourceGroupName, serviceName, apiId, issueId, attachmentId, ifMatch).block();
-    }
-
-    /**
-     * Deletes the specified comment from an Issue.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
      * @param issueId Issue identifier. Must be unique in the current API Management service instance.
@@ -1392,9 +1313,35 @@ public final class ApiIssueAttachmentsClientImpl implements ApiIssueAttachmentsC
     }
 
     /**
+     * Deletes the specified comment from an Issue.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serviceName The name of the API Management service.
+     * @param apiId API identifier. Must be unique in the current API Management service instance.
+     * @param issueId Issue identifier. Must be unique in the current API Management service instance.
+     * @param attachmentId Attachment identifier within an Issue. Must be unique in the current Issue.
+     * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
+     *     request or it should be * for unconditional update.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void delete(
+        String resourceGroupName,
+        String serviceName,
+        String apiId,
+        String issueId,
+        String attachmentId,
+        String ifMatch) {
+        deleteWithResponse(resourceGroupName, serviceName, apiId, issueId, attachmentId, ifMatch, Context.NONE);
+    }
+
+    /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1430,7 +1377,8 @@ public final class ApiIssueAttachmentsClientImpl implements ApiIssueAttachmentsC
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

@@ -10,7 +10,7 @@ import com.azure.resourcemanager.webpubsub.models.RegenerateKeyParameters;
 /** Samples for WebPubSub RegenerateKey. */
 public final class WebPubSubRegenerateKeySamples {
     /*
-     * x-ms-original-file: specification/webpubsub/resource-manager/Microsoft.SignalRService/stable/2023-02-01/examples/WebPubSub_RegenerateKey.json
+     * x-ms-original-file: specification/webpubsub/resource-manager/Microsoft.SignalRService/preview/2023-06-01-preview/examples/WebPubSub_RegenerateKey.json
      */
     /**
      * Sample code: WebPubSub_RegenerateKey.

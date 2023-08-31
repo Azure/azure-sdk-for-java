@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The type of the IP address allocation. */
+/** The type of the IP address allocation, defaulted to "DualStack". */
 public final class IpAllocationType extends ExpandableStringEnum<IpAllocationType> {
     /** Static value IPV4 for IpAllocationType. */
     public static final IpAllocationType IPV4 = fromString("IPV4");

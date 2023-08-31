@@ -75,7 +75,7 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
 
         @Headers({"Content-Type: application/json"})
         @Put("/{scope}/providers/Microsoft.Help/diagnostics/{diagnosticsResourceName}")
-        @ExpectedResponses({201})
+        @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> create(
             @HostParam("$host") String endpoint,

@@ -31,7 +31,7 @@ public final class MetricsConfigurationsGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"extendedLocation\":{\"name\":\"w\",\"type\":\"mtum\"},\"properties\":{\"collectionInterval\":1113768099050426759,\"detailedStatus\":\"Error\",\"detailedStatusMessage\":\"fua\",\"disabledMetrics\":[\"qvqpilrg\",\"ncanlduwzor\"],\"enabledMetrics\":[\"mxaqklxym\"],\"provisioningState\":\"Canceled\"},\"location\":\"fqep\",\"tags\":{\"vpjbowcpjqduq\":\"ltuubw\"},\"id\":\"ixexkydfbwljavhu\",\"name\":\"rkjd\",\"type\":\"vrg\"}";
+            "{\"extendedLocation\":{\"name\":\"mjqmv\",\"type\":\"tgkiqlarh\"},\"properties\":{\"collectionInterval\":2364228009961683427,\"detailedStatus\":\"Processing\",\"detailedStatusMessage\":\"zekdzdzffzj\",\"disabledMetrics\":[\"smpc\",\"ggr\"],\"enabledMetrics\":[\"gfyatig\"],\"provisioningState\":\"Failed\"},\"location\":\"r\",\"tags\":{\"vmd\":\"nczgorywnvoj\",\"pyhssrlvkpkpkoc\":\"vdlhqvbkar\",\"ebxxopyic\":\"ac\",\"cpumdd\":\"vspeslhwyykgvr\"},\"id\":\"gajkrdyddtpfcud\",\"name\":\"afnbfbqve\",\"type\":\"qnxhgk\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,14 +62,14 @@ public final class MetricsConfigurationsGetWithResponseMockTests {
         ClusterMetricsConfiguration response =
             manager
                 .metricsConfigurations()
-                .getWithResponse("adbuwqrgxfllmqiy", "ezoell", "kki", com.azure.core.util.Context.NONE)
+                .getWithResponse("xwbpwyykdig", "zlrz", "dasdni", com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals("fqep", response.location());
-        Assertions.assertEquals("ltuubw", response.tags().get("vpjbowcpjqduq"));
-        Assertions.assertEquals("w", response.extendedLocation().name());
-        Assertions.assertEquals("mtum", response.extendedLocation().type());
-        Assertions.assertEquals(1113768099050426759L, response.collectionInterval());
-        Assertions.assertEquals("mxaqklxym", response.enabledMetrics().get(0));
+        Assertions.assertEquals("r", response.location());
+        Assertions.assertEquals("nczgorywnvoj", response.tags().get("vmd"));
+        Assertions.assertEquals("mjqmv", response.extendedLocation().name());
+        Assertions.assertEquals("tgkiqlarh", response.extendedLocation().type());
+        Assertions.assertEquals(2364228009961683427L, response.collectionInterval());
+        Assertions.assertEquals("gfyatig", response.enabledMetrics().get(0));
     }
 }

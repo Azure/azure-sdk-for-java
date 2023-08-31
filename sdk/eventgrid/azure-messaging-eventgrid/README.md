@@ -10,6 +10,7 @@ Use the client library for Azure Event Grid to:
 - Publish events to the Event Grid service using the Event Grid Event, Cloud Event 1.0, or custom schemas
 - Consume events that have been delivered to event handlers
 - Generate SAS tokens to authenticate the client publishing events to Azure Event Grid topics
+
 [Sources][sources] |
 [API Reference Documentation][javadocs] |
 [Product Documentation][service_docs] | 
@@ -80,7 +81,7 @@ add the direct dependency to your project as follows.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-messaging-eventgrid</artifactId>
-    <version>4.16.0</version>
+    <version>4.17.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})

@@ -70,6 +70,13 @@ public final class AzureBackupRecoveryTimeBasedRestoreRequest extends AzureBacku
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public AzureBackupRecoveryTimeBasedRestoreRequest withIdentityDetails(IdentityDetails identityDetails) {
+        super.withIdentityDetails(identityDetails);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

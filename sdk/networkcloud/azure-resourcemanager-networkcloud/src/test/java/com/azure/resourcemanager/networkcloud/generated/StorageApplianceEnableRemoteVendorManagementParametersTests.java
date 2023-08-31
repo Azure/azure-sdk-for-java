@@ -14,17 +14,16 @@ public final class StorageApplianceEnableRemoteVendorManagementParametersTests {
     public void testDeserialize() throws Exception {
         StorageApplianceEnableRemoteVendorManagementParameters model =
             BinaryData
-                .fromString("{\"supportEndpoints\":[\"kczvvita\",\"gx\",\"fcsserxhtvsox\",\"lwntsjgqrs\"]}")
+                .fromString("{\"supportEndpoints\":[\"fb\"]}")
                 .toObject(StorageApplianceEnableRemoteVendorManagementParameters.class);
-        Assertions.assertEquals("kczvvita", model.supportEndpoints().get(0));
+        Assertions.assertEquals("fb", model.supportEndpoints().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         StorageApplianceEnableRemoteVendorManagementParameters model =
-            new StorageApplianceEnableRemoteVendorManagementParameters()
-                .withSupportEndpoints(Arrays.asList("kczvvita", "gx", "fcsserxhtvsox", "lwntsjgqrs"));
+            new StorageApplianceEnableRemoteVendorManagementParameters().withSupportEndpoints(Arrays.asList("fb"));
         model = BinaryData.fromObject(model).toObject(StorageApplianceEnableRemoteVendorManagementParameters.class);
-        Assertions.assertEquals("kczvvita", model.supportEndpoints().get(0));
+        Assertions.assertEquals("fb", model.supportEndpoints().get(0));
     }
 }

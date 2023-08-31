@@ -30,6 +30,10 @@ public final class GatewayCollection {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
+    /** Creates an instance of GatewayCollection class. */
+    public GatewayCollection() {
+    }
+
     /**
      * Get the value property: Page values.
      *

@@ -32,7 +32,7 @@ public final class CloudLinksListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"status\":\"Building\",\"linkedCloud\":\"ubggbqigkxkb\"},\"id\":\"azgakg\",\"name\":\"cyrcmjdmspo\",\"type\":\"apvu\"}]}";
+            "{\"value\":[{\"properties\":{\"status\":\"Building\",\"linkedCloud\":\"cudfbsfarfsiowl\"},\"id\":\"jxnqp\",\"name\":\"wgfstmhqykizm\",\"type\":\"ksaoafcluqvox\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -61,8 +61,8 @@ public final class CloudLinksListMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<CloudLink> response =
-            manager.cloudLinks().list("swbzuwfmdurage", "izvcjfe", com.azure.core.util.Context.NONE);
+            manager.cloudLinks().list("eolhbhlvbmx", "qi", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("ubggbqigkxkb", response.iterator().next().linkedCloud());
+        Assertions.assertEquals("cudfbsfarfsiowl", response.iterator().next().linkedCloud());
     }
 }

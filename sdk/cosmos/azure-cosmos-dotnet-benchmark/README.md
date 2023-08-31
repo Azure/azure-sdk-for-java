@@ -1,4 +1,4 @@
-# Azure CosmosDB client library for Java
+# Azure Cosmos DB client library for Java
 
 # Port of the Microsoft Azure Cosmos DB .NET Benchmark tool for Java
 

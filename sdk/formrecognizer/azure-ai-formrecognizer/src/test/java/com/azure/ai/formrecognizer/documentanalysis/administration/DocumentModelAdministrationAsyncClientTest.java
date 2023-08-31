@@ -6,8 +6,8 @@ package com.azure.ai.formrecognizer.documentanalysis.administration;
 import com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisAsyncClient;
 import com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisServiceVersion;
 import com.azure.ai.formrecognizer.documentanalysis.TestUtils;
-import com.azure.ai.formrecognizer.documentanalysis.administration.models.AzureBlobContentSource;
-import com.azure.ai.formrecognizer.documentanalysis.administration.models.AzureBlobFileListSource;
+import com.azure.ai.formrecognizer.documentanalysis.administration.models.BlobContentSource;
+import com.azure.ai.formrecognizer.documentanalysis.administration.models.BlobFileListContentSource;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.BuildDocumentClassifierOptions;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.BuildDocumentModelOptions;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.ClassifierDocumentTypeDetails;
@@ -26,6 +26,7 @@ import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.Response;
 import com.azure.core.models.ResponseError;
+import com.azure.core.test.annotation.RecordWithoutRequestBody;
 import com.azure.core.test.http.AssertingHttpClientBuilder;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.CoreUtils;
@@ -78,7 +79,7 @@ public class DocumentModelAdministrationAsyncClientTest extends DocumentModelAdm
             buildAsyncAssertingClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient()
                 : httpClient),
             serviceVersion,
-            false)
+            true)
             .buildAsyncClient();
     }
 
@@ -363,22 +364,6 @@ public class DocumentModelAdministrationAsyncClientTest extends DocumentModelAdm
         });
     }
 
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.formrecognizer.documentanalysis.TestUtils#getTestParameters")
-    public void beginBuildModelWithJsonLTrainingSet(HttpClient httpClient, DocumentAnalysisServiceVersion serviceVersion) {
-        client = getDocumentModelAdminAsyncClient(httpClient, serviceVersion);
-        selectionMarkTrainingRunner((trainingFilesUrl) -> {
-            SyncPoller<OperationResult, DocumentModelDetails> syncPoller1 =
-                client.beginBuildDocumentModel(trainingFilesUrl, DocumentModelBuildMode.TEMPLATE, "filelist.jsonl")
-                    .setPollInterval(durationTestMode).getSyncPoller();
-            syncPoller1.waitForCompletion();
-            DocumentModelDetails createdModel1 = syncPoller1.getFinalResult();
-
-            validateDocumentModelData(createdModel1);
-            client.deleteDocumentModel(createdModel1.getModelId()).block();
-        });
-    }
-
     /**
      * Verifies the result of the copy operation for valid parameters.
      */
@@ -474,16 +459,6 @@ public class DocumentModelAdministrationAsyncClientTest extends DocumentModelAdm
     }
 
     /**
-     * Verifies that an exception is thrown for null model ID parameter.
-     */
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.formrecognizer.documentanalysis.TestUtils#getTestParameters")
-    public void getModelNullModelId(HttpClient httpClient, DocumentAnalysisServiceVersion serviceVersion) {
-        client = getDocumentModelAdminAsyncClient(httpClient, serviceVersion);
-        StepVerifier.create(client.getDocumentModel(null)).verifyError();
-    }
-
-    /**
      * Verifies document model info returned with response for a valid model ID.
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -547,6 +522,7 @@ public class DocumentModelAdministrationAsyncClientTest extends DocumentModelAdm
         }
     }
 
+    @RecordWithoutRequestBody
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.documentanalysis.TestUtils#getTestParameters")
     public void beginBuildClassifier(HttpClient httpClient,
@@ -555,27 +531,38 @@ public class DocumentModelAdministrationAsyncClientTest extends DocumentModelAdm
         beginClassifierRunner((trainingFilesUrl) -> {
             Map<String, ClassifierDocumentTypeDetails> documentTypeDetailsMap
                 = new HashMap<String, ClassifierDocumentTypeDetails>();
-            documentTypeDetailsMap.put("IRS-1040-A", new ClassifierDocumentTypeDetails().setAzureBlobSource(new AzureBlobContentSource(trainingFilesUrl).setPrefix("IRS-1040-A/train")));
-            documentTypeDetailsMap.put("IRS-1040-B", new ClassifierDocumentTypeDetails().setAzureBlobSource(new AzureBlobContentSource(trainingFilesUrl).setPrefix("IRS-1040-B/train")));
-            documentTypeDetailsMap.put("IRS-1040-C", new ClassifierDocumentTypeDetails().setAzureBlobSource(new AzureBlobContentSource(trainingFilesUrl).setPrefix("IRS-1040-C/train")));
-            documentTypeDetailsMap.put("IRS-1040-D", new ClassifierDocumentTypeDetails().setAzureBlobSource(new AzureBlobContentSource(trainingFilesUrl).setPrefix("IRS-1040-D/train")));
-            documentTypeDetailsMap.put("IRS-1040-E", new ClassifierDocumentTypeDetails().setAzureBlobSource(new AzureBlobContentSource(trainingFilesUrl).setPrefix("IRS-1040-E/train")));
+            documentTypeDetailsMap.put("IRS-1040-A",
+                new ClassifierDocumentTypeDetails(new BlobContentSource(trainingFilesUrl).setPrefix("IRS-1040-A/train")
+                ));
+            documentTypeDetailsMap.put("IRS-1040-B",
+                new ClassifierDocumentTypeDetails(new BlobContentSource(trainingFilesUrl).setPrefix("IRS-1040-B/train")
+                ));
+            documentTypeDetailsMap.put("IRS-1040-C",
+                new ClassifierDocumentTypeDetails(new BlobContentSource(trainingFilesUrl).setPrefix("IRS-1040-C/train")
+                ));
+            documentTypeDetailsMap.put("IRS-1040-D",
+                new ClassifierDocumentTypeDetails(new BlobContentSource(trainingFilesUrl).setPrefix("IRS-1040-D/train")
+                ));
+            documentTypeDetailsMap.put("IRS-1040-E",
+                new ClassifierDocumentTypeDetails(new BlobContentSource(trainingFilesUrl).setPrefix("IRS-1040-E/train")
+                ));
             SyncPoller<OperationResult, DocumentClassifierDetails> buildModelPoller =
                 client.beginBuildDocumentClassifier(documentTypeDetailsMap)
                     .setPollInterval(durationTestMode).getSyncPoller();
 
             DocumentClassifierDetails documentClassifierDetails = buildModelPoller.getFinalResult();
             validateClassifierModelData(buildModelPoller.getFinalResult());
-            assertNotNull(documentClassifierDetails.getDocTypes());
-            // TODO (savaity) https://github.com/Azure/azure-sdk-for-java/issues/34472 Test proxy redaction issue
-            // documentClassifierDetails.getDocTypes().forEach((s, classifierDocumentTypeDetails)
-            //     -> assertTrue(classifierDocumentTypeDetails.getAzureBlobSource().getContainerUrl().contains("training-data-classifier")));
+            assertNotNull(documentClassifierDetails.getDocumentTypes());
+            documentClassifierDetails.getDocumentTypes().forEach((s, classifierDocumentTypeDetails)
+                -> assertTrue(((BlobContentSource) classifierDocumentTypeDetails.getContentSource())
+                .getContainerUrl().contains("training-data-classifier")));
         });
     }
 
     /**
      * Verifies the result of the training operation for a classifier with a valid training data set with jsonL files.
      */
+    @RecordWithoutRequestBody
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.documentanalysis.TestUtils#getTestParameters")
     public void beginBuildClassifierWithJsonL(HttpClient httpClient,
@@ -584,20 +571,30 @@ public class DocumentModelAdministrationAsyncClientTest extends DocumentModelAdm
         beginClassifierRunner((trainingFilesUrl) -> {
             Map<String, ClassifierDocumentTypeDetails> documentTypeDetailsMap
                 = new HashMap<String, ClassifierDocumentTypeDetails>();
-            documentTypeDetailsMap.put("IRS-1040-A", new ClassifierDocumentTypeDetails().setAzureBlobFileListSource(new AzureBlobFileListSource(trainingFilesUrl, "IRS-1040-A.jsonl")));
-            documentTypeDetailsMap.put("IRS-1040-B", new ClassifierDocumentTypeDetails().setAzureBlobFileListSource(new AzureBlobFileListSource(trainingFilesUrl, "IRS-1040-B.jsonl")));
-            documentTypeDetailsMap.put("IRS-1040-C", new ClassifierDocumentTypeDetails().setAzureBlobFileListSource(new AzureBlobFileListSource(trainingFilesUrl, "IRS-1040-C.jsonl")));
-            documentTypeDetailsMap.put("IRS-1040-D", new ClassifierDocumentTypeDetails().setAzureBlobFileListSource(new AzureBlobFileListSource(trainingFilesUrl, "IRS-1040-D.jsonl")));
-            documentTypeDetailsMap.put("IRS-1040-E", new ClassifierDocumentTypeDetails().setAzureBlobFileListSource(new AzureBlobFileListSource(trainingFilesUrl, "IRS-1040-E.jsonl")));
+            documentTypeDetailsMap.put("IRS-1040-A",
+                new ClassifierDocumentTypeDetails(new BlobFileListContentSource(trainingFilesUrl, "IRS-1040-A.jsonl")
+                ));
+            documentTypeDetailsMap.put("IRS-1040-B",
+                new ClassifierDocumentTypeDetails(new BlobFileListContentSource(trainingFilesUrl, "IRS-1040-B.jsonl")
+                ));
+            documentTypeDetailsMap.put("IRS-1040-C",
+                new ClassifierDocumentTypeDetails(new BlobFileListContentSource(trainingFilesUrl, "IRS-1040-C.jsonl")
+                ));
+            documentTypeDetailsMap.put("IRS-1040-D",
+                new ClassifierDocumentTypeDetails(new BlobFileListContentSource(trainingFilesUrl, "IRS-1040-D.jsonl")
+                ));
+            documentTypeDetailsMap.put("IRS-1040-E",
+                new ClassifierDocumentTypeDetails(new BlobFileListContentSource(trainingFilesUrl, "IRS-1040-E.jsonl")
+                ));
             SyncPoller<OperationResult, DocumentClassifierDetails> buildModelPoller =
                 client.beginBuildDocumentClassifier(documentTypeDetailsMap,
                         new BuildDocumentClassifierOptions().setDescription("Json L classifier model"))
                     .setPollInterval(durationTestMode).getSyncPoller();
             DocumentClassifierDetails documentClassifierDetails = buildModelPoller.getFinalResult();
-            assertNotNull(documentClassifierDetails.getDocTypes());
-            // TODO (savaity) https://github.com/Azure/azure-sdk-for-java/issues/34472 Test proxy redaction issue
-            // documentClassifierDetails.getDocTypes().forEach((s, classifierDocumentTypeDetails)
-            //     -> assertTrue(classifierDocumentTypeDetails.getAzureBlobFileListSource().getContainerUrl().contains("training-data-classifier")));
+            assertNotNull(documentClassifierDetails.getDocumentTypes());
+            documentClassifierDetails.getDocumentTypes().forEach((s, classifierDocumentTypeDetails)
+                -> assertTrue(((BlobFileListContentSource) classifierDocumentTypeDetails.getContentSource())
+                .getContainerUrl().contains("training-data-classifier")));
 
             validateClassifierModelData(buildModelPoller.getFinalResult());
         });

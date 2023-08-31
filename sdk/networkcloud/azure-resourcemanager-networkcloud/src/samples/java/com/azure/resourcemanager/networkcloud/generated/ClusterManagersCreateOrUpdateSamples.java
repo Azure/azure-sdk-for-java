@@ -11,7 +11,7 @@ import java.util.Map;
 /** Samples for ClusterManagers CreateOrUpdate. */
 public final class ClusterManagersCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2022-12-12-preview/examples/ClusterManagers_Create.json
+     * x-ms-original-file: specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2023-07-01/examples/ClusterManagers_Create.json
      */
     /**
      * Sample code: Create or update cluster manager.
@@ -26,15 +26,16 @@ public final class ClusterManagersCreateOrUpdateSamples {
             .withRegion("location")
             .withExistingResourceGroup("resourceGroupName")
             .withFabricControllerId(
-                "/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/networkFabricControllers/fabricControllerName")
-            .withTags(mapOf("key1", "myvalue1", "key2", "myvalue2"))
+                "/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/networkFabricControllers/fabricControllerName")
+            .withTags(mapOf("key1", "fakeTokenPlaceholder", "key2", "fakeTokenPlaceholder"))
             .withAnalyticsWorkspaceId(
-                "/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/microsoft.operationalInsights/workspaces/logAnalyticsWorkspaceName")
+                "/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/microsoft.operationalInsights/workspaces/logAnalyticsWorkspaceName")
             .withManagedResourceGroupConfiguration(
                 new ManagedResourceGroupConfiguration().withLocation("East US").withName("my-managed-rg"))
             .create();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

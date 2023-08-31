@@ -24,6 +24,10 @@ public final class TableProperties {
     @JsonProperty(value = "signedIdentifiers")
     private List<TableSignedIdentifier> signedIdentifiers;
 
+    /** Creates an instance of TableProperties class. */
+    public TableProperties() {
+    }
+
     /**
      * Get the tableName property: Table name under the specified account.
      *

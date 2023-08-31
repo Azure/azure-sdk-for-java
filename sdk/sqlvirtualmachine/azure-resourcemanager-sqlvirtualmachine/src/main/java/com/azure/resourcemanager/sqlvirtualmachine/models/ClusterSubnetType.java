@@ -17,6 +17,15 @@ public final class ClusterSubnetType extends ExpandableStringEnum<ClusterSubnetT
     public static final ClusterSubnetType MULTI_SUBNET = fromString("MultiSubnet");
 
     /**
+     * Creates a new instance of ClusterSubnetType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ClusterSubnetType() {
+    }
+
+    /**
      * Creates or finds a ClusterSubnetType from its string representation.
      *
      * @param name a name to look for.

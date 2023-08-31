@@ -8,12 +8,17 @@ import com.azure.resourcemanager.containerregistry.ContainerRegistryManager;
 import com.azure.resourcemanager.containerregistry.fluent.models.RegistryInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.GroupableResource;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.Resource;
+import com.azure.resourcemanager.resources.fluentcore.collection.SupportsListingPrivateEndpointConnection;
+import com.azure.resourcemanager.resources.fluentcore.collection.SupportsListingPrivateLinkResource;
+import com.azure.resourcemanager.resources.fluentcore.collection.SupportsUpdatingPrivateEndpointConnection;
 import com.azure.resourcemanager.resources.fluentcore.model.Appliable;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.model.Refreshable;
 import com.azure.resourcemanager.resources.fluentcore.model.Updatable;
 import java.time.OffsetDateTime;
 import java.util.Collection;
+import java.util.List;
+
 import reactor.core.publisher.Mono;
 
 /** An immutable client-side representation of an Azure registry. */
@@ -21,7 +26,10 @@ import reactor.core.publisher.Mono;
 public interface Registry
     extends GroupableResource<ContainerRegistryManager, RegistryInner>,
         Refreshable<Registry>,
-        Updatable<Registry.Update> {
+        Updatable<Registry.Update>,
+        SupportsListingPrivateLinkResource,
+        SupportsListingPrivateEndpointConnection,
+        SupportsUpdatingPrivateEndpointConnection {
 
     /** @return the SKU of the container registry. */
     Sku sku();
@@ -88,6 +96,18 @@ public interface Registry
      * @return the state of public network access for the container registry.
      */
     PublicNetworkAccess publicNetworkAccess();
+
+    /** @return whether the container registry can be access from trusted services */
+    boolean canAccessFromTrustedServices();
+
+    /** @return the network rule set for the container registry */
+    NetworkRuleSet networkRuleSet();
+
+    /** @return whether the container registries dedicated data endpoints can be accessed from public network */
+    boolean isDedicatedDataEndpointsEnabled();
+
+    /** @return list of host names that will serve data when isDedicatedDataEndpointsEnabled is true */
+    List<String> dedicatedDataEndpointsHostNames();
 
     /**
      * Begins the definition of the task run.
@@ -167,6 +187,56 @@ public interface Registry
              * @return the next stage of the definition
              */
             WithCreate disablePublicNetworkAccess();
+
+            /**
+             * Specifies that by default access to container registry should be denied from all networks except from those
+             * networks specified via {@link WithPublicNetworkAccess#withAccessFromIpAddress(String)} ()}
+             * {@link WithPublicNetworkAccess#withAccessFromIpAddressRange(String)}.
+             *
+             * @return the next stage of the definition
+             */
+            WithCreate withAccessFromSelectedNetworks();
+
+            /**
+             * Specifies that access to the container registry from the specific ip range should be allowed.
+             * @param ipAddressCidr the ip address range expressed in cidr format
+             *
+             * @return the next stage of the definition
+             */
+            WithCreate withAccessFromIpAddressRange(String ipAddressCidr);
+
+            /**
+             * Specifies that access to the container registry from the specific ip address should be allowed.
+             *
+             * @param ipAddress the ip address
+             * @return the next stage of the definition
+             */
+            WithCreate withAccessFromIpAddress(String ipAddress);
+
+            /**
+             * Specifies that access to the container registry from trusted services should be allowed.
+             *
+             * @return the next stage of the definition
+             * @see <a href="https://learn.microsoft.com/en-us/azure/container-registry/allow-access-trusted-services#trusted-services">
+             *     Trusted services
+             *     </a>
+             */
+            WithCreate withAccessFromTrustedServices();
+        }
+
+        /**
+         * The stage of the container registry definition allowing to configure dedicated data endpoints.
+         */
+        interface WithDedicatedDataEndpoints {
+            /**
+             * Enables dedicated data endpoints for the container registry.
+             *
+             * @return the next stage of the definition
+             * @see <a href="https://learn.microsoft.com/en-us/azure/container-registry/container-registry-firewall-access-rules#enable-dedicated-data-endpoints">
+             *      Enable dedicated data endpoints
+             *      </a>
+             */
+            WithCreate enableDedicatedDataEndpoints();
         }
 
         /**
@@ -178,6 +248,7 @@ public interface Registry
             WithAdminUserEnabled,
             WithWebhook,
             WithPublicNetworkAccess,
+            WithDedicatedDataEndpoints,
             Resource.DefinitionWithTags<WithCreate> {
         }
     }
@@ -189,6 +260,7 @@ public interface Registry
             UpdateStages.WithAdminUserEnabled,
             UpdateStages.WithSku,
             UpdateStages.WithWebhook,
+            UpdateStages.WithDedicatedDataEndpoints,
             UpdateStages.WithPublicNetworkAccess {
     }
 
@@ -277,6 +349,96 @@ public interface Registry
              * @return the next stage of the update
              */
             Update disablePublicNetworkAccess();
+
+            /**
+             * Specifies that by default access to container registry should be denied from all networks except from those
+             * networks specified via {@link DefinitionStages.WithPublicNetworkAccess#withAccessFromIpAddress(String)} ()}
+             * {@link WithPublicNetworkAccess#withAccessFromIpAddressRange(String)}.
+             *
+             * @return the next stage of the definition
+             */
+            Update withAccessFromSelectedNetworks();
+
+            /**
+             * Specifies that by default access to container registry should be allowed from all networks.
+             *
+             * @return the next stage of the definition
+             */
+            Update withAccessFromAllNetworks();
+
+            /**
+             * Specifies that access to the container registry from the specific ip range should be allowed.
+             * @param ipAddressCidr the ip address range expressed in cidr format
+             *
+             * @return the next stage of the definition
+             */
+            Update withAccessFromIpAddressRange(String ipAddressCidr);
+
+            /**
+             * Remove the allowed ip address range.
+             *
+             * @param ipAddressCidr the ip address range expressed in cidr format
+             * @return the next stage of the definition
+             */
+            Update withoutAccessFromIpAddressRange(String ipAddressCidr);
+
+            /**
+             * Specifies that access to the container registry from the specific ip address should be allowed.
+             *
+             * @param ipAddress the ip address
+             * @return the next stage of the definition
+             */
+            Update withAccessFromIpAddress(String ipAddress);
+
+            /**
+             * Remove the allowed ip address.
+             *
+             * @param ipAddress the ip address
+             * @return the next stage of the definition
+             */
+            Update withoutAccessFromIpAddress(String ipAddress);
+
+            /**
+             * Specifies that access to the container registry from trusted services should be allowed regardless of whether
+             * public network access is disabled.
+             *
+             * @return the next stage of the definition
+             * @see <a href="https://learn.microsoft.com/en-us/azure/container-registry/allow-access-trusted-services#trusted-services">
+             *     Trusted services
+             *     </a>
+             */
+            Update withAccessFromTrustedServices();
+
+            /**
+             * Specifies that access to the container registry from trusted services should be denied when public network access is disabled.
+             * When public network access is allowed, trusted services will still have access to the container registry
+             * regardless of this configuration.
+             *
+             * @return the next stage of the definition
+             */
+            Update withoutAccessFromTrustedServices();
+        }
+
+        /**
+         * The stage of the container registry definition allowing to configure dedicated data endpoints.
+         */
+        interface WithDedicatedDataEndpoints {
+            /**
+             * Enables dedicated data endpoints for the container registry.
+             *
+             * @return the next stage of the definition
+             * @see <a href="https://learn.microsoft.com/en-us/azure/container-registry/container-registry-firewall-access-rules#enable-dedicated-data-endpoints">
+             *      Enable dedicated data endpoints
+             *      </a>
+             */
+            Update enableDedicatedDataEndpoints();
+
+            /**
+             * Disables dedicated data endpoints for the container registry.
+             *
+             * @return the next stage of the definition
+             */
+            Update disableDedicatedDataEndpoints();
         }
     }
 }

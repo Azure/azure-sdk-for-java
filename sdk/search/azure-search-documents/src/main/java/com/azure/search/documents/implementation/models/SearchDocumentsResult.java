@@ -13,10 +13,13 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.search.documents.models.AnswerResult;
 import com.azure.search.documents.models.FacetResult;
+import com.azure.search.documents.models.SemanticPartialResponseReason;
+import com.azure.search.documents.models.SemanticPartialResponseType;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 /** Response containing search results from an index. */
 @Immutable
@@ -53,6 +56,16 @@ public final class SearchDocumentsResult implements JsonSerializable<SearchDocum
      * request to get the next part of the search response.
      */
     private SearchRequest nextPageParameters;
+
+    /*
+     * Reason that a partial response was returned for a semantic search request.
+     */
+    private SemanticPartialResponseReason semanticPartialResponseReason;
+
+    /*
+     * Type of partial response that was returned for a semantic search request.
+     */
+    private SemanticPartialResponseType semanticPartialResponseType;
 
     /*
      * The sequence of results returned by the query.
@@ -129,6 +142,26 @@ public final class SearchDocumentsResult implements JsonSerializable<SearchDocum
     }
 
     /**
+     * Get the semanticPartialResponseReason property: Reason that a partial response was returned for a semantic search
+     * request.
+     *
+     * @return the semanticPartialResponseReason value.
+     */
+    public SemanticPartialResponseReason getSemanticPartialResponseReason() {
+        return this.semanticPartialResponseReason;
+    }
+
+    /**
+     * Get the semanticPartialResponseType property: Type of partial response that was returned for a semantic search
+     * request.
+     *
+     * @return the semanticPartialResponseType value.
+     */
+    public SemanticPartialResponseType getSemanticPartialResponseType() {
+        return this.semanticPartialResponseType;
+    }
+
+    /**
      * Get the results property: The sequence of results returned by the query.
      *
      * @return the results value.
@@ -161,6 +194,10 @@ public final class SearchDocumentsResult implements JsonSerializable<SearchDocum
                 (writer, element) -> writer.writeArray(element, (writer1, element1) -> writer1.writeJson(element1)));
         jsonWriter.writeArrayField("@search.answers", this.answers, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeJsonField("@search.nextPageParameters", this.nextPageParameters);
+        jsonWriter.writeStringField(
+                "@search.semanticPartialResponseReason", Objects.toString(this.semanticPartialResponseReason, null));
+        jsonWriter.writeStringField(
+                "@search.semanticPartialResponseType", Objects.toString(this.semanticPartialResponseType, null));
         jsonWriter.writeStringField("@odata.nextLink", this.nextLink);
         return jsonWriter.writeEndObject();
     }
@@ -184,6 +221,8 @@ public final class SearchDocumentsResult implements JsonSerializable<SearchDocum
                     Map<String, List<FacetResult>> facets = null;
                     List<AnswerResult> answers = null;
                     SearchRequest nextPageParameters = null;
+                    SemanticPartialResponseReason semanticPartialResponseReason = null;
+                    SemanticPartialResponseType semanticPartialResponseType = null;
                     String nextLink = null;
                     while (reader.nextToken() != JsonToken.END_OBJECT) {
                         String fieldName = reader.getFieldName();
@@ -204,6 +243,11 @@ public final class SearchDocumentsResult implements JsonSerializable<SearchDocum
                             answers = reader.readArray(reader1 -> AnswerResult.fromJson(reader1));
                         } else if ("@search.nextPageParameters".equals(fieldName)) {
                             nextPageParameters = SearchRequest.fromJson(reader);
+                        } else if ("@search.semanticPartialResponseReason".equals(fieldName)) {
+                            semanticPartialResponseReason =
+                                    SemanticPartialResponseReason.fromString(reader.getString());
+                        } else if ("@search.semanticPartialResponseType".equals(fieldName)) {
+                            semanticPartialResponseType = SemanticPartialResponseType.fromString(reader.getString());
                         } else if ("@odata.nextLink".equals(fieldName)) {
                             nextLink = reader.getString();
                         } else {
@@ -217,6 +261,8 @@ public final class SearchDocumentsResult implements JsonSerializable<SearchDocum
                         deserializedSearchDocumentsResult.facets = facets;
                         deserializedSearchDocumentsResult.answers = answers;
                         deserializedSearchDocumentsResult.nextPageParameters = nextPageParameters;
+                        deserializedSearchDocumentsResult.semanticPartialResponseReason = semanticPartialResponseReason;
+                        deserializedSearchDocumentsResult.semanticPartialResponseType = semanticPartialResponseType;
                         deserializedSearchDocumentsResult.nextLink = nextLink;
 
                         return deserializedSearchDocumentsResult;

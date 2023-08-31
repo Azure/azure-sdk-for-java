@@ -10,7 +10,7 @@ import reactor.core.publisher.Mono;
 import java.time.OffsetDateTime;
 
 public class StaticTokenForTest implements TokenCredential {
-    private AccessToken token;
+    private final AccessToken token;
 
     StaticTokenForTest(String token) {
         this.token = new AccessToken(token, OffsetDateTime.MAX);

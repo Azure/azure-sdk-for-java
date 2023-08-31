@@ -36,28 +36,86 @@ import java.util.Objects;
 import java.util.function.Function;
 
 import static com.azure.ai.formrecognizer.documentanalysis.implementation.util.Constants.DEFAULT_POLL_INTERVAL;
-import static com.azure.ai.formrecognizer.documentanalysis.implementation.util.Transforms.toInnerDocAnalysisFeatures;
 import static com.azure.ai.formrecognizer.documentanalysis.implementation.util.Utility.activationOperation;
 import static com.azure.ai.formrecognizer.documentanalysis.implementation.util.Utility.getAnalyzeDocumentOptions;
 import static com.azure.core.util.FluxUtil.monoError;
 
 /**
- * This class provides an asynchronous client that contains the operations that apply to Azure Form Recognizer.
- * Operations allowed by the client are analyzing information from documents and images using custom-built document
- * analysis models, prebuilt models for invoices, receipts, identity documents and business cards, and the layout model.
+ * <p>This class provides an asynchronous client to connect to the Form Recognizer Azure Cognitive Service.</p>
+ * <p>This client provides asynchronous methods to perform:</p>
  *
- * <p><strong>Instantiating an asynchronous Document Analysis Client</strong></p>
+ * <ol>
+ *     <li>Custom Document Analysis: Classification, extraction and analysis of data from forms and documents specific
+ *     to distinct business data and use cases. Use the custom trained model by passing its modelId into the
+ *     {@link com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisAsyncClient#beginAnalyzeDocument(String, BinaryData)}
+ *     method.</li>
+ *     <li>General Document Analysis: Extract text, tables, structure, and key-value pairs. Use general document model
+ *     provided by the Form Recognizer service by passing modelId="rebuilt-document" into the
+ *     {@link com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisAsyncClient#beginAnalyzeDocument(String, BinaryData)}
+ *     method.</li>
+ *     <li>Prebuilt Model Analysis: Analyze receipts, business cards, invoices, ID's, W2's and other documents with
+ *     <a href="https://aka.ms/azsdk/formrecognizer/models">supported prebuilt models. Use the prebuilt receipt model
+ *     provided by passing modelId="prebuilt-receipt" into the
+ *     {@link com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisAsyncClient#beginAnalyzeDocument(String, BinaryData)}
+ *     method.</a></li>
+ *     <li>Layout Analysis: Extract text, selection marks, and tables structures, along with their bounding box
+ *     coordinates, from forms and documents. Use the layout analysis model provided the service by passing
+ *     modelId="prebuilt-layout" into the
+ *     {@link com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisAsyncClient#beginAnalyzeDocument(String, BinaryData)}
+ *     method.</li>
+ *     <li>Polling and Callbacks: It includes mechanisms for polling the service to check the status of an analysis
+ *     operation or registering callbacks to receive notifications when the analysis is complete.</li>
+ * </ol>
  *
- * <!-- src_embed com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisAsyncClient.instantiation -->
+ * <p>This client also provides different methods based on inputs from a URL and inputs from a stream.</p>
+ *
+ * <p><strong>Note: </strong>This client only supports
+ * {@link com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisServiceVersion#V2022_08_31} and newer.
+ * To use an older service version, {@link com.azure.ai.formrecognizer.FormRecognizerClient} and {@link com.azure.ai
+ * .formrecognizer.training.FormTrainingClient}.</p>
+ *
+ * <p>Service clients are the point of interaction for developers to use Azure Form Recognizer.
+ * {@link com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisClient} is the synchronous service client and
+ * {@link com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisAsyncClient} is the asynchronous service client.
+ * The examples shown in this document use a credential object named DefaultAzureCredential for authentication, which is
+ * appropriate for most scenarios, including local development and production environments. Additionally, we
+ * recommend using
+ * <a href="https://learn.microsoft.com/azure/active-directory/managed-identities-azure-resources/">managed identity</a>
+ * for authentication in production environments.
+ * You can find more information on different ways of authenticating and their corresponding credential types in the
+ * <a href="https://learn.microsoft.com/java/api/overview/azure/identity-readme">Azure Identity documentation"</a>.
+ * </p>
+ *
+ * <p><strong>Sample: Construct a DocumentAnalysisAsyncClient with DefaultAzureCredential</strong></p>
+ *
+ * <p>The following code sample demonstrates the creation of a
+ * {@link com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisAsyncClient}, using
+ * the `DefaultAzureCredentialBuilder` to configure it.</p>
+ *
+ * <!-- src_embed readme-sample-createDocumentAnalysisAsyncClientWithAAD -->
+ * <pre>
+ * DocumentAnalysisAsyncClient documentAnalysisAsyncClient = new DocumentAnalysisClientBuilder&#40;&#41;
+ *     .endpoint&#40;&quot;&#123;endpoint&#125;&quot;&#41;
+ *     .credential&#40;new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;&#41;
+ *     .buildAsyncClient&#40;&#41;;
+ * </pre>
+ * <!-- end readme-sample-createDocumentAnalysisAsyncClientWithAAD  -->
+ *
+ * <p>Further, see the code sample below to use
+ * {@link com.azure.core.credential.AzureKeyCredential AzureKeyCredential} for client creation.</p>
+ *
+ * <!-- src_embed readme-sample-asyncClient -->
  * <pre>
  * DocumentAnalysisAsyncClient documentAnalysisAsyncClient = new DocumentAnalysisClientBuilder&#40;&#41;
  *     .credential&#40;new AzureKeyCredential&#40;&quot;&#123;key&#125;&quot;&#41;&#41;
  *     .endpoint&#40;&quot;&#123;endpoint&#125;&quot;&#41;
  *     .buildAsyncClient&#40;&#41;;
  * </pre>
- * <!-- end com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisAsyncClient.instantiation -->
+ * <!-- end readme-sample-asyncClient  -->
  *
+ * @see com.azure.ai.formrecognizer.documentanalysis
  * @see DocumentAnalysisClientBuilder
+ * @see DocumentAnalysisClient
  */
 @ServiceClient(builder = DocumentAnalysisClientBuilder.class, isAsync = true)
 public final class DocumentAnalysisAsyncClient {
@@ -96,7 +154,6 @@ public final class DocumentAnalysisAsyncClient {
      *     .flatMap&#40;AsyncPollResponse::getFinalResult&#41;
      *     .subscribe&#40;analyzeResult -&gt;
      *         analyzeResult.getDocuments&#40;&#41;
-     *             .stream&#40;&#41;
      *             .forEach&#40;document -&gt;
      *                 document.getFields&#40;&#41;
      *                     .forEach&#40;&#40;key, documentField&#41; -&gt; &#123;
@@ -144,7 +201,6 @@ public final class DocumentAnalysisAsyncClient {
      *     .subscribe&#40;analyzeResult -&gt; &#123;
      *         System.out.println&#40;analyzeResult.getModelId&#40;&#41;&#41;;
      *         analyzeResult.getDocuments&#40;&#41;
-     *             .stream&#40;&#41;
      *             .forEach&#40;document -&gt;
      *                 document.getFields&#40;&#41;
      *                     .forEach&#40;&#40;key, documentField&#41; -&gt; &#123;
@@ -199,8 +255,7 @@ public final class DocumentAnalysisAsyncClient {
                                 finalAnalyzeDocumentOptions.getLocale() == null ? null
                                     : finalAnalyzeDocumentOptions.getLocale(),
                                 StringIndexType.UTF16CODE_UNIT,
-                                toInnerDocAnalysisFeatures(finalAnalyzeDocumentOptions.getDocumentAnalysisFeatures()),
-                                finalAnalyzeDocumentOptions.getQueryFields(),
+                                finalAnalyzeDocumentOptions.getDocumentAnalysisFeatures(),
                                 new AnalyzeDocumentRequest().setUrlSource(documentUrl),
                                 context)
                             .map(analyzeDocumentResponse ->
@@ -248,7 +303,6 @@ public final class DocumentAnalysisAsyncClient {
      *     .flatMap&#40;AsyncPollResponse::getFinalResult&#41;
      *     .subscribe&#40;analyzeResult -&gt;
      *         analyzeResult.getDocuments&#40;&#41;
-     *             .stream&#40;&#41;
      *             .forEach&#40;analyzedDocument -&gt;
      *                 analyzedDocument.getFields&#40;&#41;
      *                     .forEach&#40;&#40;key, documentField&#41; -&gt; &#123;
@@ -289,8 +343,9 @@ public final class DocumentAnalysisAsyncClient {
      * File document = new File&#40;&quot;&#123;local&#47;file_path&#47;fileName.jpg&#125;&quot;&#41;;
      * String modelId = &quot;&#123;model_id&#125;&quot;;
      * final AnalyzeDocumentOptions analyzeDocumentOptions =
-     *     new AnalyzeDocumentOptions&#40;&#41;.setPages&#40;Arrays.asList&#40;&quot;1&quot;, &quot;3&quot;&#41;&#41;.setDocumentAnalysisFeatures&#40;Arrays.asList&#40;
-     *         DocumentAnalysisFeature.QUERY_FIELDS_PREMIUM&#41;&#41;.setQueryFields&#40;Arrays.asList&#40;&quot;Charges&quot;, &quot;Tax&quot;&#41;&#41;;
+     *     new AnalyzeDocumentOptions&#40;&#41;.setPages&#40;Arrays.asList&#40;&quot;1&quot;, &quot;3&quot;&#41;&#41;.setDocumentAnalysisFeatures&#40;
+     *         Collections.singletonList&#40;
+     *             DocumentAnalysisFeature.FORMULAS&#41;&#41;;
      *
      * &#47;&#47; Utility method to convert input stream to Binary Data
      * BinaryData buffer = BinaryData.fromStream&#40;new ByteArrayInputStream&#40;Files.readAllBytes&#40;document.toPath&#40;&#41;&#41;&#41;&#41;;
@@ -301,7 +356,6 @@ public final class DocumentAnalysisAsyncClient {
      *     .subscribe&#40;analyzeResult -&gt; &#123;
      *         System.out.println&#40;analyzeResult.getModelId&#40;&#41;&#41;;
      *         analyzeResult.getDocuments&#40;&#41;
-     *             .stream&#40;&#41;
      *             .forEach&#40;analyzedDocument -&gt;
      *                 analyzedDocument.getFields&#40;&#41;
      *                     .forEach&#40;&#40;key, documentField&#41; -&gt; &#123;
@@ -361,8 +415,7 @@ public final class DocumentAnalysisAsyncClient {
                             finalAnalyzeDocumentOptions.getLocale() == null ? null
                                 : finalAnalyzeDocumentOptions.getLocale(),
                             StringIndexType.UTF16CODE_UNIT,
-                            toInnerDocAnalysisFeatures(finalAnalyzeDocumentOptions.getDocumentAnalysisFeatures()),
-                            finalAnalyzeDocumentOptions.getQueryFields(),
+                            finalAnalyzeDocumentOptions.getDocumentAnalysisFeatures(),
                             document,
                             document.getLength(),
                             context)
@@ -396,7 +449,6 @@ public final class DocumentAnalysisAsyncClient {
      * <!-- src_embed com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisAsyncClient.beginClassifyDocumentFromUrl#string-string -->
      * <pre>
      * String documentUrl = &quot;&#123;document_url&#125;&quot;;
-     * &#47;&#47; analyze a receipt using prebuilt model
      * String classifierId = &quot;custom-trained-classifier-id&quot;;
      *
      * documentAnalysisAsyncClient.beginClassifyDocumentFromUrl&#40;classifierId, documentUrl&#41;
@@ -480,26 +532,22 @@ public final class DocumentAnalysisAsyncClient {
      *
      * <p><strong>Code sample</strong></p>
      * <p> Analyze a document with configurable options.</p>
-     * <!-- src_embed com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisAsyncClient.beginAnalyzeDocument#string-BinaryData -->
+     * <!-- src_embed com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisAsyncClient.beginClassifyDocument#string-BinaryData -->
      * <pre>
      * File document = new File&#40;&quot;&#123;local&#47;file_path&#47;fileName.jpg&#125;&quot;&#41;;
-     * String modelId = &quot;&#123;model_id&#125;&quot;;
+     * String classifierId = &quot;&#123;model_id&#125;&quot;;
+     *
      * &#47;&#47; Utility method to convert input stream to Binary Data
      * BinaryData buffer = BinaryData.fromStream&#40;new ByteArrayInputStream&#40;Files.readAllBytes&#40;document.toPath&#40;&#41;&#41;&#41;&#41;;
      *
-     * documentAnalysisAsyncClient.beginAnalyzeDocument&#40;modelId, buffer&#41;
+     * documentAnalysisAsyncClient.beginClassifyDocument&#40;classifierId, buffer&#41;
      *     &#47;&#47; if polling operation completed, retrieve the final result.
      *     .flatMap&#40;AsyncPollResponse::getFinalResult&#41;
-     *     .subscribe&#40;analyzeResult -&gt;
+     *     .subscribe&#40;analyzeResult -&gt; &#123;
+     *         System.out.println&#40;analyzeResult.getModelId&#40;&#41;&#41;;
      *         analyzeResult.getDocuments&#40;&#41;
-     *             .stream&#40;&#41;
-     *             .forEach&#40;analyzedDocument -&gt;
-     *                 analyzedDocument.getFields&#40;&#41;
-     *                     .forEach&#40;&#40;key, documentField&#41; -&gt; &#123;
-     *                         System.out.printf&#40;&quot;Field text: %s%n&quot;, key&#41;;
-     *                         System.out.printf&#40;&quot;Field value data content: %s%n&quot;, documentField.getContent&#40;&#41;&#41;;
-     *                         System.out.printf&#40;&quot;Confidence score: %.2f%n&quot;, documentField.getConfidence&#40;&#41;&#41;;
-     *                     &#125;&#41;&#41;&#41;;
+     *             .forEach&#40;analyzedDocument -&gt; System.out.printf&#40;&quot;Doc Type: %s%n&quot;, analyzedDocument.getDocType&#40;&#41;&#41;&#41;;
+     *     &#125;&#41;;
      * </pre>
      * <!-- end com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisAsyncClient.beginClassifyDocument#string-BinaryData -->
      *

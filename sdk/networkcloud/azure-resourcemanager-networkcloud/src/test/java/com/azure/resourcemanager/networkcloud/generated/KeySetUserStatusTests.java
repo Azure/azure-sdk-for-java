@@ -13,7 +13,7 @@ public final class KeySetUserStatusTests {
         KeySetUserStatus model =
             BinaryData
                 .fromString(
-                    "{\"azureUserName\":\"ttzhra\",\"status\":\"Active\",\"statusMessage\":\"fhonqjujeickpzvc\"}")
+                    "{\"azureUserName\":\"edmurrxxge\",\"status\":\"Invalid\",\"statusMessage\":\"vqylkmqpzoyhl\"}")
                 .toObject(KeySetUserStatus.class);
     }
 

@@ -7,7 +7,7 @@ package com.azure.resourcemanager.apimanagement.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for ApiManagementSkuCapacityScaleType. */
+/** The scale type applicable to the sku. */
 public enum ApiManagementSkuCapacityScaleType {
     /** Enum value Automatic. */
     AUTOMATIC("Automatic"),
@@ -33,6 +33,9 @@ public enum ApiManagementSkuCapacityScaleType {
      */
     @JsonCreator
     public static ApiManagementSkuCapacityScaleType fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         ApiManagementSkuCapacityScaleType[] items = ApiManagementSkuCapacityScaleType.values();
         for (ApiManagementSkuCapacityScaleType item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -42,6 +45,7 @@ public enum ApiManagementSkuCapacityScaleType {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

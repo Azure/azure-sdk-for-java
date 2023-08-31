@@ -24,6 +24,10 @@ public final class MonitoredResourceListResponse {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of MonitoredResourceListResponse class. */
+    public MonitoredResourceListResponse() {
+    }
+
     /**
      * Get the value property: The items on this page.
      *

@@ -29,7 +29,11 @@ public final class BackendsGetResponse extends ResponseBase<BackendsGetHeaders, 
         super(request, statusCode, rawHeaders, value, headers);
     }
 
-    /** @return the deserialized response body. */
+    /**
+     * Gets the deserialized response body.
+     *
+     * @return the deserialized response body.
+     */
     @Override
     public BackendContractInner getValue() {
         return super.getValue();

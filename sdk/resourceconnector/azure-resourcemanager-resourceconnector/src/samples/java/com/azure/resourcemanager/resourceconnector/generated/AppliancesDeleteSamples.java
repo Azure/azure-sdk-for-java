@@ -12,9 +12,9 @@ public final class AppliancesDeleteSamples {
     /**
      * Sample code: Delete Appliance.
      *
-     * @param manager Entry point to AppliancesManager.
+     * @param manager Entry point to ResourceConnectorManager.
      */
-    public static void deleteAppliance(com.azure.resourcemanager.resourceconnector.AppliancesManager manager) {
+    public static void deleteAppliance(com.azure.resourcemanager.resourceconnector.ResourceConnectorManager manager) {
         manager.appliances().delete("testresourcegroup", "appliance01", com.azure.core.util.Context.NONE);
     }
 }

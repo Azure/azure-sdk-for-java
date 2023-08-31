@@ -20,6 +20,15 @@ public final class AsyncOperationState extends ExpandableStringEnum<AsyncOperati
     public static final AsyncOperationState FAILED = fromString("Failed");
 
     /**
+     * Creates a new instance of AsyncOperationState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public AsyncOperationState() {
+    }
+
+    /**
      * Creates or finds a AsyncOperationState from its string representation.
      *
      * @param name a name to look for.

@@ -14,8 +14,6 @@ public final class AnalyzeHealthcareEntitiesAction {
     private String actionName;
     private String modelVersion;
     private Boolean disableServiceLogs;
-    private FhirVersion fhirVersion;
-    private HealthcareDocumentType documentType;
 
     /**
      * Get the name of action.
@@ -82,50 +80,6 @@ public final class AnalyzeHealthcareEntitiesAction {
      */
     public AnalyzeHealthcareEntitiesAction setServiceLogsDisabled(boolean disableServiceLogs) {
         this.disableServiceLogs = disableServiceLogs;
-        return this;
-    }
-
-    /**
-     * Get the fhirVersion property: The FHIR Spec version that the result will use to format the fhirBundle. For
-     * additional information see https://www.hl7.org/fhir/overview.html.
-     *
-     * @return the fhirVersion value.
-     */
-    public FhirVersion getFhirVersion() {
-        return fhirVersion;
-    }
-
-    /**
-     * Set the fhirVersion property: The FHIR Spec version that the result will use to format the fhirBundle. For
-     * additional information see https://www.hl7.org/fhir/overview.html.
-     *
-     * @param fhirVersion the fhirVersion value to set.
-     * @return the AnalyzeHealthcareEntitiesAction object itself.
-     */
-    public AnalyzeHealthcareEntitiesAction setFhirVersion(FhirVersion fhirVersion) {
-        this.fhirVersion = fhirVersion;
-        return this;
-    }
-
-    /**
-     * Get the documentType property: Document type that can be provided as input for Fhir Documents. Expect to have
-     * fhirVersion provided when used. Behavior of using None enum is the same as not using the documentType parameter.
-     *
-     * @return the documentType value.
-     */
-    public HealthcareDocumentType getDocumentType() {
-        return this.documentType;
-    }
-
-    /**
-     * Set the documentType property: Document type that can be provided as input for Fhir Documents. Expect to have
-     * fhirVersion provided when used. Behavior of using None enum is the same as not using the documentType parameter.
-     *
-     * @param documentType the documentType value to set.
-     * @return the AnalyzeHealthcareEntitiesAction object itself.
-     */
-    public AnalyzeHealthcareEntitiesAction setDocumentType(HealthcareDocumentType documentType) {
-        this.documentType = documentType;
         return this;
     }
 }

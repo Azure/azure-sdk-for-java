@@ -9,18 +9,22 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.data.appconfiguration.implementation.ConfigurationClientCredentials;
 import com.azure.data.appconfiguration.implementation.ConfigurationSettingHelper;
+import com.azure.data.appconfiguration.models.CompositionType;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
+import com.azure.data.appconfiguration.models.ConfigurationSettingSnapshot;
 import com.azure.data.appconfiguration.models.FeatureFlagConfigurationSetting;
 import com.azure.data.appconfiguration.models.FeatureFlagFilter;
 import com.azure.data.appconfiguration.models.SecretReferenceConfigurationSetting;
 import com.azure.data.appconfiguration.models.SettingFields;
 import com.azure.data.appconfiguration.models.SettingSelector;
+import com.azure.data.appconfiguration.models.SnapshotSettingFilter;
+import com.azure.data.appconfiguration.models.SnapshotStatus;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -50,9 +54,11 @@ public abstract class ConfigurationClientTestBase extends TestProxyTestBase {
 
     public static final String FAKE_CONNECTION_STRING =
         "Endpoint=https://localhost:8080;Id=0000000000000;Secret=fakeSecrePlaceholder";
+
+    static final Duration MINIMUM_RETENTION_PERIOD = Duration.ofHours(1);
+
     static String connectionString;
 
-    private final ClientLogger logger = new ClientLogger(ConfigurationClientTestBase.class);
     String keyPrefix;
     String labelPrefix;
 
@@ -539,6 +545,40 @@ public abstract class ConfigurationClientTestBase extends TestProxyTestBase {
         testRunner.accept(newConfiguration);
     }
 
+    @Test
+    public abstract void createSnapshot(HttpClient httpClient, ConfigurationServiceVersion serviceVersion);
+
+    void createSnapshotRunner(BiConsumer<String, List<SnapshotSettingFilter>> testRunner) {
+        String snapshotName = getKey();
+        List<SnapshotSettingFilter> filters = new ArrayList<>();
+        filters.add(new SnapshotSettingFilter(snapshotName + "-*"));
+        testRunner.accept(snapshotName, filters);
+    }
+
+    @Test
+    public abstract void getSnapshot(HttpClient httpClient, ConfigurationServiceVersion serviceVersion);
+
+    @Test
+    public abstract void getSnapshotConvenience(HttpClient httpClient, ConfigurationServiceVersion serviceVersion);
+
+    @Test
+    public abstract void archiveSnapshot(HttpClient httpClient, ConfigurationServiceVersion serviceVersion);
+
+    @Test
+    public abstract void archiveSnapshotConvenience(HttpClient httpClient, ConfigurationServiceVersion serviceVersion);
+
+    @Test
+    public abstract void recoverSnapshot(HttpClient httpClient, ConfigurationServiceVersion serviceVersion);
+
+    @Test
+    public abstract void recoverSnapshotConvenience(HttpClient httpClient, ConfigurationServiceVersion serviceVersion);
+
+    @Test
+    public abstract void listSnapshots(HttpClient httpClient, ConfigurationServiceVersion serviceVersion);
+
+    @Test
+    public abstract void listSettingFromSnapshot(HttpClient httpClient, ConfigurationServiceVersion serviceVersion);
+
     /**
      * Helper method to verify that the RestResponse matches what was expected. This method assumes a response status of 200.
      *
@@ -776,5 +816,47 @@ public abstract class ConfigurationClientTestBase extends TestProxyTestBase {
                 .setDisplayName(displayName)
                 .setClientFilters(filters)
                 .setValue(getFeatureFlagConfigurationSettingValue(key));
+    }
+
+    void assertConfigurationSettingSnapshotWithResponse(int expectedStatusCode, String name,
+        SnapshotStatus snapshotStatus, List<SnapshotSettingFilter> filters, CompositionType compositionType,
+        Duration retentionPeriod, Long size, Long itemCount, Map<String, String> tags,
+        Response<ConfigurationSettingSnapshot> response) {
+        assertNotNull(response);
+        assertEquals(expectedStatusCode, response.getStatusCode());
+
+        assertEqualsConfigurationSettingSnapshot(name, snapshotStatus, filters, compositionType, retentionPeriod,
+            size, itemCount, tags, response.getValue());
+    }
+
+    void assertEqualsConfigurationSettingSnapshot(String name, SnapshotStatus snapshotStatus,
+        List<SnapshotSettingFilter> filters, CompositionType compositionType, Duration retentionPeriod, Long size,
+        Long itemCount, Map<String, String> tags, ConfigurationSettingSnapshot actualSnapshot) {
+        assertEquals(name, actualSnapshot.getName());
+        assertEquals(snapshotStatus, actualSnapshot.getStatus());
+        assertEqualsSnapshotFilters(filters, actualSnapshot.getFilters());
+        assertEquals(compositionType, actualSnapshot.getCompositionType());
+        assertEquals(retentionPeriod, actualSnapshot.getRetentionPeriod());
+        assertNotNull(actualSnapshot.getCreatedAt());
+        assertEquals(itemCount, actualSnapshot.getItemCount());
+        assertNotNull(actualSnapshot.getSize());
+        assertNotNull(actualSnapshot.getETag());
+
+        if (!CoreUtils.isNullOrEmpty(tags)) {
+            assertEquals(tags, actualSnapshot.getTags());
+        }
+    }
+
+    void assertEqualsSnapshotFilters(List<SnapshotSettingFilter> o1, List<SnapshotSettingFilter> o2) {
+        if (o1 == o2) {
+            return;
+        }
+        assertEquals(o1.size(), o2.size());
+        for (int i = 0; i < o1.size(); i++) {
+            SnapshotSettingFilter expectedFilter = o1.get(i);
+            SnapshotSettingFilter actualFilter = o2.get(i);
+            assertEquals(expectedFilter.getKey(), actualFilter.getKey());
+            assertEquals(expectedFilter.getLabel(), actualFilter.getLabel());
+        }
     }
 }

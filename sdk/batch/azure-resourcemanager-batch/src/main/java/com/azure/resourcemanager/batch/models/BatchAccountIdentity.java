@@ -15,7 +15,7 @@ import java.util.Map;
  * Batch account encryption configuration or when `ManagedIdentity` is selected as the auto-storage authentication mode.
  */
 @Fluent
-public class BatchAccountIdentity {
+public final class BatchAccountIdentity {
     /*
      * The principal id of the Batch account. This property will only be provided for a system assigned identity.
      */

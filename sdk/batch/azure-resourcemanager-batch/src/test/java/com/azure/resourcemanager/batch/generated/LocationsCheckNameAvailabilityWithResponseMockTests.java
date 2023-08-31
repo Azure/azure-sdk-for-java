@@ -11,7 +11,6 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.batch.BatchManager;
 import com.azure.resourcemanager.batch.models.CheckNameAvailabilityParameters;
 import com.azure.resourcemanager.batch.models.CheckNameAvailabilityResult;
@@ -31,7 +30,7 @@ public final class LocationsCheckNameAvailabilityWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr = "{\"nameAvailable\":false,\"reason\":\"AlreadyExists\",\"message\":\"ftnkhtj\"}";
+        String responseStr = "{\"nameAvailable\":false,\"reason\":\"AlreadyExists\",\"message\":\"zronasxift\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -63,7 +62,9 @@ public final class LocationsCheckNameAvailabilityWithResponseMockTests {
             manager
                 .locations()
                 .checkNameAvailabilityWithResponse(
-                    "njv", new CheckNameAvailabilityParameters().withName("dw"), Context.NONE)
+                    "jlpijnkrx",
+                    new CheckNameAvailabilityParameters().withName("rddh"),
+                    com.azure.core.util.Context.NONE)
                 .getValue();
     }
 }

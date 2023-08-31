@@ -16,7 +16,7 @@ import java.util.List;
  * Fluent credential builder for instantiating a {@link InteractiveBrowserCredential}.
  *
  * <p>Interactive browser authentication is a type of authentication flow offered by
- * <a href="https://learn.microsoft.com/en-us/azure/active-directory/fundamentals/">Azure Active Directory (Azure AD)
+ * <a href="https://learn.microsoft.com/azure/active-directory/fundamentals/">Azure Active Directory (Azure AD)
  * </a> that enables users to sign in to applications and services using a web browser. This authentication method is
  * commonly used for web applications, where users enter their credentials directly into a web page.
  * With interactive browser authentication, the user navigates to a web application and is prompted to enter their
@@ -194,6 +194,16 @@ public class InteractiveBrowserCredentialBuilder extends AadCredentialBuilderBas
     @Override
     public InteractiveBrowserCredentialBuilder additionallyAllowedTenants(List<String> additionallyAllowedTenants) {
         identityClientOptions.setAdditionallyAllowedTenants(IdentityUtil.resolveAdditionalTenants(additionallyAllowedTenants));
+        return this;
+    }
+
+    /**
+     * Configures the options for customizing the browser for interactive authentication.
+     * @param browserCustomizationOptions the browser customization options
+     * @return An updated instance of this builder with the browser customization options configured.
+     */
+    public InteractiveBrowserCredentialBuilder browserCustomizationOptions(BrowserCustomizationOptions browserCustomizationOptions) {
+        this.identityClientOptions.setBrowserCustomizationOptions(browserCustomizationOptions);
         return this;
     }
 

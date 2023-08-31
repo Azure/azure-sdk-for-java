@@ -34,6 +34,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.junit.jupiter.api.parallel.Isolated;
+import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 import reactor.test.StepVerifier;
 
@@ -276,35 +277,40 @@ public class TracingIntegrationTests extends IntegrationTestBase {
             .onSendBatchFailed(failed -> fail("Exception occurred while sending messages." + failed.getThrowable()))
             .maxEventBufferLengthPerPartition(2)
             .maxWaitTime(Duration.ofSeconds(5))
-            .onSendBatchSucceeded(b -> { })
+            .onSendBatchSucceeded(b -> {
+                logger.info("Batch published. partitionId[{}]", b.getPartitionId());
+            })
             .buildAsyncClient());
 
         Instant start = Instant.now();
         EventData event1 = new EventData("1");
         EventData event2 = new EventData("2");
 
-        AtomicReference<String> partitionIdRef = new AtomicReference<>();
-        StepVerifier.create(
-                bufferedProducer
-                    .getPartitionIds()
-                    .take(1)
-                    .flatMap(p ->  {
-                        partitionIdRef.compareAndSet(null, p);
-                        SendOptions sendOpts = new SendOptions().setPartitionId(p);
-                        return bufferedProducer.enqueueEvent(event1, sendOpts)
-                            .then(bufferedProducer.enqueueEvent(event2, sendOpts));
-                    })
-                    .doFinally(st -> logger.info("enqueued 2 events."))
-                    .then(bufferedProducer.flush()))
-            .verifyComplete();
+        // Using a specific partition in the case that an epoch receiver was created
+        // (i.e. EventHubConsumerAsyncClientIntegrationTest), which this scenario will fail when trying to create a
+        // receiver.
+        SendOptions sendOptions = new SendOptions().setPartitionId("3");
+        Boolean partitionIdExists = bufferedProducer.getPartitionIds()
+            .any(id -> id.equals(sendOptions.getPartitionId()))
+            .block(Duration.ofSeconds(30));
 
-        StepVerifier
-            .create(consumer
-                .receiveFromPartition(partitionIdRef.get(), EventPosition.fromEnqueuedTime(start))
-                .doOnNext(e -> logger.atInfo()
-                    .addKeyValue("event", e.getData().getBodyAsString())
-                    .addKeyValue("traceparent", e.getData().getProperties().get("traceparent"))
-                    .log("received event"))
+        assertNotNull(partitionIdExists, "Cannot be null. Partition id: " + sendOptions.getPartitionId());
+        assertTrue(partitionIdExists, "Event Hubs does not contain partition id: " + sendOptions.getPartitionId());
+
+        StepVerifier.create(Mono.when(
+            bufferedProducer.enqueueEvent(event1, sendOptions), bufferedProducer.enqueueEvent(event2, sendOptions)))
+            .expectComplete()
+            .verify();
+
+        StepVerifier.create(consumer
+                .receiveFromPartition(sendOptions.getPartitionId(), EventPosition.fromEnqueuedTime(start))
+                .map(e -> {
+                    logger.atInfo()
+                        .addKeyValue("event", e.getData().getBodyAsString())
+                        .addKeyValue("traceparent", e.getData().getProperties().get("traceparent"))
+                        .log("received event");
+                    return e;
+                })
                 .take(2)
                 .then())
             .expectComplete()

@@ -47,6 +47,7 @@ public final class OperationSummary {
      */
     private String resourceLocation;
     private Map<String, String> tags;
+    private String serviceVersion;
 
     /**
      * Get the operationId property: Operation ID.
@@ -191,6 +192,23 @@ public final class OperationSummary {
     private void setTags(Map<String, String> tags) {
         this.tags = tags;
     }
+    /**
+     * Get the Service version used to create this document classifier.
+     *
+     * @return the serviceVersion value.
+     */
+    public String getServiceVersion() {
+        return this.serviceVersion;
+    }
+
+    /**
+     * Set the API version used to create this document classifier.
+     *
+     * @param serviceVersion the service version value to set.
+     */
+    void setServiceVersion(String serviceVersion) {
+        this.serviceVersion = serviceVersion;
+    }
 
     static {
         OperationSummaryHelper.setAccessor(new OperationSummaryHelper.OperationSummaryAccessor() {
@@ -232,6 +250,11 @@ public final class OperationSummary {
             @Override
             public void setTags(OperationSummary operationSummary, Map<String, String> tags) {
                 operationSummary.setTags(tags);
+            }
+
+            @Override
+            public void setServiceVersion(OperationSummary operationSummary, String serviceVersion) {
+                operationSummary.setServiceVersion(serviceVersion);
             }
         });
     }

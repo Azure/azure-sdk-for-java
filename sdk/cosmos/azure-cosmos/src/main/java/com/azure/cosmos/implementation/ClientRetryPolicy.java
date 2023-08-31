@@ -34,8 +34,6 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
     final static int RetryIntervalInMS = 1000; //Once we detect failover wait for 1 second before retrying request.
     final static int MaxRetryCount = 120;
     private final static int MaxServiceUnavailableRetryCount = 1;
-    // Address Refresh will be re-tried 3 times, please check the if condition carefully :)
-    private final static int MAX_ADDRESS_REFRESH_RETRY_COUNT = 2;
 
     private final DocumentClientRetryPolicy throttlingRetry;
     private final GlobalEndpointManager globalEndpointManager;
@@ -51,7 +49,6 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
     private CosmosDiagnostics cosmosDiagnostics;
     private AtomicInteger cnt = new AtomicInteger(0);
     private int serviceUnavailableRetryCount;
-    private int addressRefreshCount;
     private RxDocumentServiceRequest request;
     private RxCollectionCache rxCollectionCache;
     private final FaultInjectionRequestContext faultInjectionRequestContext;
@@ -135,11 +132,6 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
                 if(canFailoverOnTimeout) {
                     return shouldRetryOnEndpointFailureAsync(this.isReadRequest, true, true);
                 }
-
-                // if operationType AddressRefresh then just retry
-                if (this.request.isAddressRefresh()) {
-                    return shouldRetryAddressRefresh();
-                }
             } else {
                 logger.warn("Backend endpoint not reachable. ", e);
                 return this.shouldRetryOnBackendServiceUnavailableAsync(this.isReadRequest, WebExceptionUtility
@@ -150,7 +142,7 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
         if (clientException != null &&
                 Exceptions.isStatusCode(clientException, HttpConstants.StatusCodes.NOTFOUND) &&
                 Exceptions.isSubStatusCode(clientException, HttpConstants.SubStatusCodes.READ_SESSION_NOT_AVAILABLE)) {
-            return Mono.just(this.shouldRetryOnSessionNotAvailable());
+            return Mono.just(this.shouldRetryOnSessionNotAvailable(this.request));
         }
 
         // This is for gateway mode, collection recreate scenario is not handled there
@@ -170,9 +162,7 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
         }
 
         //Meta data request check
-        boolean isMetaDataRequest = (request.getOperationType() != OperationType.ExecuteJavaScript
-            && request.getResourceType() == ResourceType.StoredProcedure)
-            || request.getResourceType() != ResourceType.Document;
+        boolean isMetaDataRequest = request.isMetadataRequest();
 
         //Meta Data Read
         if(isMetaDataRequest && request.isReadOnly()) {
@@ -189,31 +179,7 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
         return false;
     }
 
-    private Mono<ShouldRetryResult> shouldRetryAddressRefresh() {
-
-        if (this.addressRefreshCount++ > MAX_ADDRESS_REFRESH_RETRY_COUNT) {
-            logger
-                .warn(
-                    "shouldRetryAddressRefresh() No more retrying on endpoint {}, operationType = {}, count = {}, " +
-                        "isAddressRefresh = {}",
-                    this.locationEndpoint, this.request.getOperationType(), this.addressRefreshCount, this.request.isAddressRefresh());
-            return Mono.just(ShouldRetryResult.noRetry());
-        }
-
-        logger
-            .warn("shouldRetryAddressRefresh() Retrying on endpoint {}, operationType = {}, count = {}, " +
-                      "isAddressRefresh = {}, shouldForcedAddressRefresh = {}, " +
-                      "shouldForceCollectionRoutingMapRefresh = {}",
-                  this.locationEndpoint, this.request.getOperationType(), this.addressRefreshCount,
-                this.request.isAddressRefresh(),
-                this.request.shouldForceAddressRefresh(),
-                this.request.forceCollectionRoutingMapRefresh);
-
-        Duration retryDelay = Duration.ZERO;
-        return Mono.just(ShouldRetryResult.retryAfter(retryDelay));
-    }
-
-    private ShouldRetryResult shouldRetryOnSessionNotAvailable() {
+    private ShouldRetryResult shouldRetryOnSessionNotAvailable(RxDocumentServiceRequest request) {
         this.sessionTokenRetryCount++;
 
         if (!this.enableEndpointDiscovery) {
@@ -221,7 +187,9 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
             return ShouldRetryResult.noRetry();
         } else {
             if (this.canUseMultipleWriteLocations) {
-                UnmodifiableList<URI> endpoints = this.isReadRequest ? this.globalEndpointManager.getReadEndpoints() : this.globalEndpointManager.getWriteEndpoints();
+                UnmodifiableList<URI> endpoints =
+                    this.isReadRequest ?
+                        this.globalEndpointManager.getApplicableReadEndpoints(request) : this.globalEndpointManager.getApplicableWriteEndpoints(request);
 
                 if (this.sessionTokenRetryCount > endpoints.size()) {
                     // When use multiple write locations is true and the request has been tried

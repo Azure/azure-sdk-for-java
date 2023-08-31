@@ -25,7 +25,7 @@ public final class DefaultXmlReader extends XmlReader {
     private static final XMLInputFactory XML_INPUT_FACTORY;
 
     static {
-        XML_INPUT_FACTORY = XMLInputFactory.newFactory();
+        XML_INPUT_FACTORY = XMLInputFactory.newInstance();
         XML_INPUT_FACTORY.setProperty(XMLInputFactory.IS_SUPPORTING_EXTERNAL_ENTITIES, false);
         XML_INPUT_FACTORY.setProperty(XMLInputFactory.SUPPORT_DTD, false);
     }
@@ -174,8 +174,8 @@ public final class DefaultXmlReader extends XmlReader {
             return firstRead;
         } else {
             StringBuilder finalText = new StringBuilder(stringBufferSize);
-            for (String str : buffer) {
-                finalText.append(str);
+            for (int i = 0; i < readCount; i++) {
+                finalText.append(buffer[i]);
             }
 
             return finalText.toString();

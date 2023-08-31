@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.apimanagement.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for OpenIdConnectProvider Get. */
 public final class OpenIdConnectProviderGetSamples {
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementGetOpenIdConnectProvider.json
+     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementGetOpenIdConnectProvider.json
      */
     /**
      * Sample code: ApiManagementGetOpenIdConnectProvider.
@@ -18,6 +16,8 @@ public final class OpenIdConnectProviderGetSamples {
      */
     public static void apiManagementGetOpenIdConnectProvider(
         com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
-        manager.openIdConnectProviders().getWithResponse("rg1", "apimService1", "templateOpenIdConnect2", Context.NONE);
+        manager
+            .openIdConnectProviders()
+            .getWithResponse("rg1", "apimService1", "templateOpenIdConnect2", com.azure.core.util.Context.NONE);
     }
 }

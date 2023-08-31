@@ -13,7 +13,7 @@ public final class WorkloadNetworkVMGroupsListTests {
         WorkloadNetworkVMGroupsList model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"properties\":{\"displayName\":\"cgjbirxbp\",\"members\":[],\"status\":\"SUCCESS\",\"provisioningState\":\"Canceled\",\"revision\":2236269397517718606},\"id\":\"twss\",\"name\":\"t\",\"type\":\"tpvjzbexilzznfqq\"}],\"nextLink\":\"wpmqt\"}")
+                    "{\"value\":[{\"properties\":{\"displayName\":\"ca\",\"members\":[\"bvtvudutncormr\",\"xqtvcofu\"],\"status\":\"SUCCESS\",\"provisioningState\":\"Canceled\",\"revision\":2516318057912167047},\"id\":\"bgdknnqv\",\"name\":\"aznqntoru\",\"type\":\"sgsahmkycgr\"}],\"nextLink\":\"wjue\"}")
                 .toObject(WorkloadNetworkVMGroupsList.class);
     }
 

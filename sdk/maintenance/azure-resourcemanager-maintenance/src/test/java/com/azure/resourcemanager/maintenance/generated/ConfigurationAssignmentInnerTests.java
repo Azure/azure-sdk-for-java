@@ -6,6 +6,12 @@ package com.azure.resourcemanager.maintenance.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.maintenance.fluent.models.ConfigurationAssignmentInner;
+import com.azure.resourcemanager.maintenance.models.ConfigurationAssignmentFilterProperties;
+import com.azure.resourcemanager.maintenance.models.TagOperators;
+import com.azure.resourcemanager.maintenance.models.TagSettingsProperties;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 
 public final class ConfigurationAssignmentInnerTests {
@@ -14,23 +20,62 @@ public final class ConfigurationAssignmentInnerTests {
         ConfigurationAssignmentInner model =
             BinaryData
                 .fromString(
-                    "{\"location\":\"bvmgxsabkyqduuji\",\"properties\":{\"maintenanceConfigurationId\":\"czdzev\",\"resourceId\":\"hkr\"},\"id\":\"d\",\"name\":\"ppdsbdkvwrwj\",\"type\":\"eusnhutj\"}")
+                    "{\"location\":\"aamdect\",\"properties\":{\"maintenanceConfigurationId\":\"iqscjeypv\",\"resourceId\":\"zrkgqhcjrefovg\",\"filter\":{\"resourceTypes\":[\"leyyvx\"],\"resourceGroups\":[\"pkc\",\"t\",\"pngjcrcczsqpjhvm\"],\"osTypes\":[\"v\",\"ysou\",\"q\"],\"locations\":[\"noae\"],\"tagSettings\":{\"tags\":{\"twhrdxwzywqsm\":[\"hltrpmopjmcmatuo\",\"thfuiuaodsfcpkvx\",\"dpuozmyz\",\"dagfuaxbezyiuok\"]},\"filterOperator\":\"Any\"}}},\"id\":\"exim\",\"name\":\"ryocfsfksymdd\",\"type\":\"stkiiuxhqyud\"}")
                 .toObject(ConfigurationAssignmentInner.class);
-        Assertions.assertEquals("bvmgxsabkyqduuji", model.location());
-        Assertions.assertEquals("czdzev", model.maintenanceConfigurationId());
-        Assertions.assertEquals("hkr", model.resourceId());
+        Assertions.assertEquals("aamdect", model.location());
+        Assertions.assertEquals("iqscjeypv", model.maintenanceConfigurationId());
+        Assertions.assertEquals("zrkgqhcjrefovg", model.resourceId());
+        Assertions.assertEquals("leyyvx", model.filter().resourceTypes().get(0));
+        Assertions.assertEquals("pkc", model.filter().resourceGroups().get(0));
+        Assertions.assertEquals("v", model.filter().osTypes().get(0));
+        Assertions.assertEquals("noae", model.filter().locations().get(0));
+        Assertions.assertEquals("hltrpmopjmcmatuo", model.filter().tagSettings().tags().get("twhrdxwzywqsm").get(0));
+        Assertions.assertEquals(TagOperators.ANY, model.filter().tagSettings().filterOperator());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ConfigurationAssignmentInner model =
             new ConfigurationAssignmentInner()
-                .withLocation("bvmgxsabkyqduuji")
-                .withMaintenanceConfigurationId("czdzev")
-                .withResourceId("hkr");
+                .withLocation("aamdect")
+                .withMaintenanceConfigurationId("iqscjeypv")
+                .withResourceId("zrkgqhcjrefovg")
+                .withFilter(
+                    new ConfigurationAssignmentFilterProperties()
+                        .withResourceTypes(Arrays.asList("leyyvx"))
+                        .withResourceGroups(Arrays.asList("pkc", "t", "pngjcrcczsqpjhvm"))
+                        .withOsTypes(Arrays.asList("v", "ysou", "q"))
+                        .withLocations(Arrays.asList("noae"))
+                        .withTagSettings(
+                            new TagSettingsProperties()
+                                .withTags(
+                                    mapOf(
+                                        "twhrdxwzywqsm",
+                                        Arrays
+                                            .asList(
+                                                "hltrpmopjmcmatuo", "thfuiuaodsfcpkvx", "dpuozmyz", "dagfuaxbezyiuok")))
+                                .withFilterOperator(TagOperators.ANY)));
         model = BinaryData.fromObject(model).toObject(ConfigurationAssignmentInner.class);
-        Assertions.assertEquals("bvmgxsabkyqduuji", model.location());
-        Assertions.assertEquals("czdzev", model.maintenanceConfigurationId());
-        Assertions.assertEquals("hkr", model.resourceId());
+        Assertions.assertEquals("aamdect", model.location());
+        Assertions.assertEquals("iqscjeypv", model.maintenanceConfigurationId());
+        Assertions.assertEquals("zrkgqhcjrefovg", model.resourceId());
+        Assertions.assertEquals("leyyvx", model.filter().resourceTypes().get(0));
+        Assertions.assertEquals("pkc", model.filter().resourceGroups().get(0));
+        Assertions.assertEquals("v", model.filter().osTypes().get(0));
+        Assertions.assertEquals("noae", model.filter().locations().get(0));
+        Assertions.assertEquals("hltrpmopjmcmatuo", model.filter().tagSettings().tags().get("twhrdxwzywqsm").get(0));
+        Assertions.assertEquals(TagOperators.ANY, model.filter().tagSettings().filterOperator());
+    }
+
+    // Use "Map.of" if available
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
     }
 }

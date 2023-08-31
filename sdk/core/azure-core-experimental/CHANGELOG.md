@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.40 (Unreleased)
+## 1.0.0-beta.43 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,28 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.0.0-beta.42 (2023-08-04)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.41.0` to `1.42.0`.
+
+## 1.0.0-beta.41 (2023-07-06)
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.40.0` to `1.41.0`.
+
+## 1.0.0-beta.40 (2023-06-02)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.39.0` to `1.40.0`.
 
 ## 1.0.0-beta.39 (2023-05-04)
 

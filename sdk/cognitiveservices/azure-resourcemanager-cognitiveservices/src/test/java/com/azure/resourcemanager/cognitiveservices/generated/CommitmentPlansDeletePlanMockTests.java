@@ -56,6 +56,6 @@ public final class CommitmentPlansDeletePlanMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.commitmentPlans().deletePlan("oxfrkenxpmyyefr", "mpdnqqskawa", com.azure.core.util.Context.NONE);
+        manager.commitmentPlans().deletePlan("kqmhhaowjr", "zvuporqzdfuydz", com.azure.core.util.Context.NONE);
     }
 }

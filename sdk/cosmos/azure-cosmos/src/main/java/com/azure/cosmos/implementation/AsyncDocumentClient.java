@@ -7,6 +7,7 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosContainerProactiveInitConfig;
 import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfig;
+import com.azure.cosmos.SessionRetryOptions;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.batch.ServerBatchRequest;
 import com.azure.cosmos.implementation.caches.RxClientCollectionCache;
@@ -101,6 +102,8 @@ public interface AsyncDocumentClient {
         CosmosClientTelemetryConfig clientTelemetryConfig;
         private String clientCorrelationId = null;
         private CosmosEndToEndOperationLatencyPolicyConfig cosmosEndToEndOperationLatencyPolicyConfig;
+        private SessionRetryOptions sessionRetryOptions;
+        private CosmosContainerProactiveInitConfig containerProactiveInitConfig;
 
         public Builder withServiceEndpoint(String serviceEndpoint) {
             try {
@@ -242,6 +245,16 @@ public interface AsyncDocumentClient {
             return this;
         }
 
+        public Builder withSessionRetryOptions(SessionRetryOptions sessionRetryOptions) {
+            this.sessionRetryOptions = sessionRetryOptions;
+            return this;
+        }
+
+        public Builder withContainerProactiveInitConfig(CosmosContainerProactiveInitConfig containerProactiveInitConfig) {
+            this.containerProactiveInitConfig = containerProactiveInitConfig;
+            return this;
+        }
+
         private void ifThrowIllegalArgException(boolean value, String error) {
             if (value) {
                 throw new IllegalArgumentException(error);
@@ -275,8 +288,9 @@ public interface AsyncDocumentClient {
                     apiType,
                     clientTelemetryConfig,
                     clientCorrelationId,
-                cosmosEndToEndOperationLatencyPolicyConfig
-            );
+                    cosmosEndToEndOperationLatencyPolicyConfig,
+                    sessionRetryOptions,
+                    containerProactiveInitConfig);
 
             client.init(state, null);
             return client;

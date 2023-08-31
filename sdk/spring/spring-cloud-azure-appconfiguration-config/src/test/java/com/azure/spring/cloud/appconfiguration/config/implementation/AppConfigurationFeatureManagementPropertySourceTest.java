@@ -26,6 +26,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
@@ -121,6 +122,36 @@ public class AppConfigurationFeatureManagementPropertySourceTest {
         MockitoAnnotations.openMocks(this).close();
     }
 
+    @Test
+    public void overrideTest() {
+        String[] labels = {"test"};
+        AppConfigurationFeatureManagementPropertySource propertySourceOverride = new AppConfigurationFeatureManagementPropertySource(TEST_STORE_NAME, clientMock, "/test/",
+            labels);
+        when(featureListMock.iterator()).thenReturn(FEATURE_ITEMS.iterator());
+        when(clientMock.listSettings(Mockito.any()))
+            .thenReturn(featureListMock).thenReturn(featureListMock);
+        when(clientMock.getTracingInfo()).thenReturn(new TracingInfo(false, false, 0, Configuration.getGlobalConfiguration()));
+        featureFlagStore.setEnabled(true);
+
+        propertySourceOverride.initProperties();
+
+        Map<Integer, FeatureFlagFilter> filters = new HashMap<>();
+        FeatureFlagFilter ffec = new FeatureFlagFilter("TestFilter");
+        filters.put(0, ffec);
+        Feature gamma = new Feature();
+        gamma.setKey("Gamma");
+        filters = new HashMap<>();
+        ffec = new FeatureFlagFilter("TestFilter");
+        Map<String, Object> parameters = new LinkedHashMap<>();
+        parameters.put("key", "value");
+        ffec.setParameters(parameters);
+        filters.put(0, ffec);
+        gamma.setEnabledFor(filters);
+
+        assertEquals(gamma.getKey(),
+            ((Feature) propertySourceOverride.getProperty(FEATURE_MANAGEMENT_KEY + "Gamma")).getKey());
+    }
+    
     @Test
     public void testFeatureFlagCanBeInitedAndQueried() {
         when(featureListMock.iterator()).thenReturn(FEATURE_ITEMS.iterator());

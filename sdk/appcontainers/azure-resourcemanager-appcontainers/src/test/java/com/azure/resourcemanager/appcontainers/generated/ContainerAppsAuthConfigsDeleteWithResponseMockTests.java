@@ -58,6 +58,6 @@ public final class ContainerAppsAuthConfigsDeleteWithResponseMockTests {
 
         manager
             .containerAppsAuthConfigs()
-            .deleteWithResponse("zdix", "mqpnoda", "opqhewjptmc", com.azure.core.util.Context.NONE);
+            .deleteWithResponse("mfp", "hojeevy", "yhsgz", com.azure.core.util.Context.NONE);
     }
 }

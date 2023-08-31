@@ -4,21 +4,14 @@
 
 package com.azure.ai.formrecognizer.documentanalysis.implementation.models;
 
-import com.azure.ai.formrecognizer.documentanalysis.models.DocumentPageKind;
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Content and layout elements extracted from a page from the input. */
-@Fluent
+@Immutable
 public final class DocumentPage {
-    /*
-     * Kind of document page.
-     */
-    @JsonProperty(value = "kind", required = true)
-    private DocumentPageKind kind;
-
     /*
      * 1-based page number in the input document.
      */
@@ -75,12 +68,6 @@ public final class DocumentPage {
     private List<DocumentLine> lines;
 
     /*
-     * Extracted annotations from the page.
-     */
-    @JsonProperty(value = "annotations")
-    private List<DocumentAnnotation> annotations;
-
-    /*
      * Extracted barcodes from the page.
      */
     @JsonProperty(value = "barcodes")
@@ -92,36 +79,18 @@ public final class DocumentPage {
     @JsonProperty(value = "formulas")
     private List<DocumentFormula> formulas;
 
-    /*
-     * Extracted images from the page.
-     */
-    @JsonProperty(value = "images")
-    private List<DocumentImage> images;
-
     /**
      * Creates an instance of DocumentPage class.
      *
-     * @param kind the kind value to set.
      * @param pageNumber the pageNumber value to set.
      * @param spans the spans value to set.
      */
     @JsonCreator
-    public DocumentPage(
-            @JsonProperty(value = "kind", required = true) DocumentPageKind kind,
+    private DocumentPage(
             @JsonProperty(value = "pageNumber", required = true) int pageNumber,
             @JsonProperty(value = "spans", required = true) List<DocumentSpan> spans) {
-        this.kind = kind;
         this.pageNumber = pageNumber;
         this.spans = spans;
-    }
-
-    /**
-     * Get the kind property: Kind of document page.
-     *
-     * @return the kind value.
-     */
-    public DocumentPageKind getKind() {
-        return this.kind;
     }
 
     /**
@@ -144,35 +113,12 @@ public final class DocumentPage {
     }
 
     /**
-     * Set the angle property: The general orientation of the content in clockwise direction, measured in degrees
-     * between (-180, 180].
-     *
-     * @param angle the angle value to set.
-     * @return the DocumentPage object itself.
-     */
-    public DocumentPage setAngle(Float angle) {
-        this.angle = angle;
-        return this;
-    }
-
-    /**
      * Get the width property: The width of the image/PDF in pixels/inches, respectively.
      *
      * @return the width value.
      */
     public Float getWidth() {
         return this.width;
-    }
-
-    /**
-     * Set the width property: The width of the image/PDF in pixels/inches, respectively.
-     *
-     * @param width the width value to set.
-     * @return the DocumentPage object itself.
-     */
-    public DocumentPage setWidth(Float width) {
-        this.width = width;
-        return this;
     }
 
     /**
@@ -185,17 +131,6 @@ public final class DocumentPage {
     }
 
     /**
-     * Set the height property: The height of the image/PDF in pixels/inches, respectively.
-     *
-     * @param height the height value to set.
-     * @return the DocumentPage object itself.
-     */
-    public DocumentPage setHeight(Float height) {
-        this.height = height;
-        return this;
-    }
-
-    /**
      * Get the unit property: The unit used by the width, height, and polygon properties. For images, the unit is
      * "pixel". For PDF, the unit is "inch".
      *
@@ -203,18 +138,6 @@ public final class DocumentPage {
      */
     public LengthUnit getUnit() {
         return this.unit;
-    }
-
-    /**
-     * Set the unit property: The unit used by the width, height, and polygon properties. For images, the unit is
-     * "pixel". For PDF, the unit is "inch".
-     *
-     * @param unit the unit value to set.
-     * @return the DocumentPage object itself.
-     */
-    public DocumentPage setUnit(LengthUnit unit) {
-        this.unit = unit;
-        return this;
     }
 
     /**
@@ -236,34 +159,12 @@ public final class DocumentPage {
     }
 
     /**
-     * Set the words property: Extracted words from the page.
-     *
-     * @param words the words value to set.
-     * @return the DocumentPage object itself.
-     */
-    public DocumentPage setWords(List<DocumentWord> words) {
-        this.words = words;
-        return this;
-    }
-
-    /**
      * Get the selectionMarks property: Extracted selection marks from the page.
      *
      * @return the selectionMarks value.
      */
     public List<DocumentSelectionMark> getSelectionMarks() {
         return this.selectionMarks;
-    }
-
-    /**
-     * Set the selectionMarks property: Extracted selection marks from the page.
-     *
-     * @param selectionMarks the selectionMarks value to set.
-     * @return the DocumentPage object itself.
-     */
-    public DocumentPage setSelectionMarks(List<DocumentSelectionMark> selectionMarks) {
-        this.selectionMarks = selectionMarks;
-        return this;
     }
 
     /**
@@ -276,37 +177,6 @@ public final class DocumentPage {
     }
 
     /**
-     * Set the lines property: Extracted lines from the page, potentially containing both textual and visual elements.
-     *
-     * @param lines the lines value to set.
-     * @return the DocumentPage object itself.
-     */
-    public DocumentPage setLines(List<DocumentLine> lines) {
-        this.lines = lines;
-        return this;
-    }
-
-    /**
-     * Get the annotations property: Extracted annotations from the page.
-     *
-     * @return the annotations value.
-     */
-    public List<DocumentAnnotation> getAnnotations() {
-        return this.annotations;
-    }
-
-    /**
-     * Set the annotations property: Extracted annotations from the page.
-     *
-     * @param annotations the annotations value to set.
-     * @return the DocumentPage object itself.
-     */
-    public DocumentPage setAnnotations(List<DocumentAnnotation> annotations) {
-        this.annotations = annotations;
-        return this;
-    }
-
-    /**
      * Get the barcodes property: Extracted barcodes from the page.
      *
      * @return the barcodes value.
@@ -316,53 +186,11 @@ public final class DocumentPage {
     }
 
     /**
-     * Set the barcodes property: Extracted barcodes from the page.
-     *
-     * @param barcodes the barcodes value to set.
-     * @return the DocumentPage object itself.
-     */
-    public DocumentPage setBarcodes(List<DocumentBarcode> barcodes) {
-        this.barcodes = barcodes;
-        return this;
-    }
-
-    /**
      * Get the formulas property: Extracted formulas from the page.
      *
      * @return the formulas value.
      */
     public List<DocumentFormula> getFormulas() {
         return this.formulas;
-    }
-
-    /**
-     * Set the formulas property: Extracted formulas from the page.
-     *
-     * @param formulas the formulas value to set.
-     * @return the DocumentPage object itself.
-     */
-    public DocumentPage setFormulas(List<DocumentFormula> formulas) {
-        this.formulas = formulas;
-        return this;
-    }
-
-    /**
-     * Get the images property: Extracted images from the page.
-     *
-     * @return the images value.
-     */
-    public List<DocumentImage> getImages() {
-        return this.images;
-    }
-
-    /**
-     * Set the images property: Extracted images from the page.
-     *
-     * @param images the images value to set.
-     * @return the DocumentPage object itself.
-     */
-    public DocumentPage setImages(List<DocumentImage> images) {
-        this.images = images;
-        return this;
     }
 }

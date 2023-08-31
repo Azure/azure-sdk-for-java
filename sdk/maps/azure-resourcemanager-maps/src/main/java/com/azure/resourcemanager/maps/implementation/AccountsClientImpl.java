@@ -33,6 +33,8 @@ import com.azure.core.util.FluxUtil;
 import com.azure.resourcemanager.maps.fluent.AccountsClient;
 import com.azure.resourcemanager.maps.fluent.models.MapsAccountInner;
 import com.azure.resourcemanager.maps.fluent.models.MapsAccountKeysInner;
+import com.azure.resourcemanager.maps.fluent.models.MapsAccountSasTokenInner;
+import com.azure.resourcemanager.maps.models.AccountSasParameters;
 import com.azure.resourcemanager.maps.models.MapsAccountUpdateParameters;
 import com.azure.resourcemanager.maps.models.MapsAccounts;
 import com.azure.resourcemanager.maps.models.MapsKeySpecification;
@@ -65,8 +67,7 @@ public final class AccountsClientImpl implements AccountsClient {
     public interface AccountsService {
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Maps/accounts"
-                + "/{accountName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Maps/accounts/{accountName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<MapsAccountInner>> createOrUpdate(
@@ -81,8 +82,7 @@ public final class AccountsClientImpl implements AccountsClient {
 
         @Headers({"Content-Type: application/json"})
         @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Maps/accounts"
-                + "/{accountName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Maps/accounts/{accountName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<MapsAccountInner>> update(
@@ -97,8 +97,7 @@ public final class AccountsClientImpl implements AccountsClient {
 
         @Headers({"Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Maps/accounts"
-                + "/{accountName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Maps/accounts/{accountName}")
         @ExpectedResponses({200, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> delete(
@@ -112,8 +111,7 @@ public final class AccountsClientImpl implements AccountsClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Maps/accounts"
-                + "/{accountName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Maps/accounts/{accountName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<MapsAccountInner>> getByResourceGroup(
@@ -150,8 +148,22 @@ public final class AccountsClientImpl implements AccountsClient {
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Maps/accounts"
-                + "/{accountName}/listKeys")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Maps/accounts/{accountName}/listSas")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<MapsAccountSasTokenInner>> listSas(
+            @HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("accountName") String accountName,
+            @BodyParam("application/json") AccountSasParameters mapsAccountSasParameters,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({"Content-Type: application/json"})
+        @Post(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Maps/accounts/{accountName}/listKeys")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<MapsAccountKeysInner>> listKeys(
@@ -165,8 +177,7 @@ public final class AccountsClientImpl implements AccountsClient {
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Maps/accounts"
-                + "/{accountName}/regenerateKey")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Maps/accounts/{accountName}/regenerateKey")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<MapsAccountKeysInner>> regenerateKeys(
@@ -1130,6 +1141,203 @@ public final class AccountsClientImpl implements AccountsClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MapsAccountInner> list(Context context) {
         return new PagedIterable<>(listAsync(context));
+    }
+
+    /**
+     * Create and list an account shared access signature token. Use this SAS token for authentication to Azure Maps
+     * REST APIs through various Azure Maps SDKs. As prerequisite to create a SAS Token.
+     *
+     * <p>Prerequisites: 1. Create or have an existing User Assigned Managed Identity in the same Azure region as the
+     * account. 2. Create or update an Azure Map account with the same Azure region as the User Assigned Managed
+     * Identity is placed.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the Maps Account.
+     * @param mapsAccountSasParameters The updated parameters for the Maps Account.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a new Sas token which can be used to access the Maps REST APIs and is controlled by the specified Managed
+     *     identity permissions on Azure (IAM) Role Based Access Control along with {@link Response} on successful
+     *     completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<MapsAccountSasTokenInner>> listSasWithResponseAsync(
+        String resourceGroupName, String accountName, AccountSasParameters mapsAccountSasParameters) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (mapsAccountSasParameters == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException("Parameter mapsAccountSasParameters is required and cannot be null."));
+        } else {
+            mapsAccountSasParameters.validate();
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .listSas(
+                            this.client.getEndpoint(),
+                            this.client.getApiVersion(),
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            accountName,
+                            mapsAccountSasParameters,
+                            accept,
+                            context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Create and list an account shared access signature token. Use this SAS token for authentication to Azure Maps
+     * REST APIs through various Azure Maps SDKs. As prerequisite to create a SAS Token.
+     *
+     * <p>Prerequisites: 1. Create or have an existing User Assigned Managed Identity in the same Azure region as the
+     * account. 2. Create or update an Azure Map account with the same Azure region as the User Assigned Managed
+     * Identity is placed.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the Maps Account.
+     * @param mapsAccountSasParameters The updated parameters for the Maps Account.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a new Sas token which can be used to access the Maps REST APIs and is controlled by the specified Managed
+     *     identity permissions on Azure (IAM) Role Based Access Control along with {@link Response} on successful
+     *     completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<MapsAccountSasTokenInner>> listSasWithResponseAsync(
+        String resourceGroupName, String accountName, AccountSasParameters mapsAccountSasParameters, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (mapsAccountSasParameters == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException("Parameter mapsAccountSasParameters is required and cannot be null."));
+        } else {
+            mapsAccountSasParameters.validate();
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .listSas(
+                this.client.getEndpoint(),
+                this.client.getApiVersion(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                accountName,
+                mapsAccountSasParameters,
+                accept,
+                context);
+    }
+
+    /**
+     * Create and list an account shared access signature token. Use this SAS token for authentication to Azure Maps
+     * REST APIs through various Azure Maps SDKs. As prerequisite to create a SAS Token.
+     *
+     * <p>Prerequisites: 1. Create or have an existing User Assigned Managed Identity in the same Azure region as the
+     * account. 2. Create or update an Azure Map account with the same Azure region as the User Assigned Managed
+     * Identity is placed.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the Maps Account.
+     * @param mapsAccountSasParameters The updated parameters for the Maps Account.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a new Sas token which can be used to access the Maps REST APIs and is controlled by the specified Managed
+     *     identity permissions on Azure (IAM) Role Based Access Control on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<MapsAccountSasTokenInner> listSasAsync(
+        String resourceGroupName, String accountName, AccountSasParameters mapsAccountSasParameters) {
+        return listSasWithResponseAsync(resourceGroupName, accountName, mapsAccountSasParameters)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Create and list an account shared access signature token. Use this SAS token for authentication to Azure Maps
+     * REST APIs through various Azure Maps SDKs. As prerequisite to create a SAS Token.
+     *
+     * <p>Prerequisites: 1. Create or have an existing User Assigned Managed Identity in the same Azure region as the
+     * account. 2. Create or update an Azure Map account with the same Azure region as the User Assigned Managed
+     * Identity is placed.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the Maps Account.
+     * @param mapsAccountSasParameters The updated parameters for the Maps Account.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a new Sas token which can be used to access the Maps REST APIs and is controlled by the specified Managed
+     *     identity permissions on Azure (IAM) Role Based Access Control along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<MapsAccountSasTokenInner> listSasWithResponse(
+        String resourceGroupName, String accountName, AccountSasParameters mapsAccountSasParameters, Context context) {
+        return listSasWithResponseAsync(resourceGroupName, accountName, mapsAccountSasParameters, context).block();
+    }
+
+    /**
+     * Create and list an account shared access signature token. Use this SAS token for authentication to Azure Maps
+     * REST APIs through various Azure Maps SDKs. As prerequisite to create a SAS Token.
+     *
+     * <p>Prerequisites: 1. Create or have an existing User Assigned Managed Identity in the same Azure region as the
+     * account. 2. Create or update an Azure Map account with the same Azure region as the User Assigned Managed
+     * Identity is placed.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the Maps Account.
+     * @param mapsAccountSasParameters The updated parameters for the Maps Account.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a new Sas token which can be used to access the Maps REST APIs and is controlled by the specified Managed
+     *     identity permissions on Azure (IAM) Role Based Access Control.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public MapsAccountSasTokenInner listSas(
+        String resourceGroupName, String accountName, AccountSasParameters mapsAccountSasParameters) {
+        return listSasWithResponse(resourceGroupName, accountName, mapsAccountSasParameters, Context.NONE).getValue();
     }
 
     /**

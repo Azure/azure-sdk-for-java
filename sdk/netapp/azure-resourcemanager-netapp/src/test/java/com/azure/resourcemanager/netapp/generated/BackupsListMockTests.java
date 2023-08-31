@@ -32,7 +32,7 @@ public final class BackupsListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"location\":\"xgccknfnw\",\"properties\":{\"backupId\":\"tmvpdvjdhtt\",\"creationDate\":\"2021-07-31T02:44:44Z\",\"provisioningState\":\"edxihchrphkmcrj\",\"size\":3614573403784565190,\"label\":\"fzpbgtgkyl\",\"backupType\":\"Scheduled\",\"failureReason\":\"rjeuut\",\"volumeName\":\"xezw\",\"useExistingSnapshot\":true},\"id\":\"vbwnhhtq\",\"name\":\"gehgppi\",\"type\":\"ifhpf\"}]}";
+            "{\"value\":[{\"location\":\"nlj\",\"properties\":{\"backupId\":\"mgixhcmavmqfou\",\"creationDate\":\"2021-07-01T05:18:42Z\",\"provisioningState\":\"cgyypro\",\"size\":3489829190281732656,\"label\":\"ndm\",\"backupType\":\"Manual\",\"failureReason\":\"gcmjkavl\",\"volumeName\":\"rb\",\"useExistingSnapshot\":false},\"id\":\"pmdtz\",\"name\":\"jltfvnzcyjtotpv\",\"type\":\"pvpbdbzqgqqiheds\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -60,10 +60,13 @@ public final class BackupsListMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<Backup> response = manager.backups().list("r", "vyc", "t", "c", com.azure.core.util.Context.NONE);
+        PagedIterable<Backup> response =
+            manager
+                .backups()
+                .list("lqhykprlpyz", "uciqdsme", "iitdfuxt", "asiibmiybnnust", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("xgccknfnw", response.iterator().next().location());
-        Assertions.assertEquals("fzpbgtgkyl", response.iterator().next().label());
-        Assertions.assertEquals(true, response.iterator().next().useExistingSnapshot());
+        Assertions.assertEquals("nlj", response.iterator().next().location());
+        Assertions.assertEquals("ndm", response.iterator().next().label());
+        Assertions.assertEquals(false, response.iterator().next().useExistingSnapshot());
     }
 }

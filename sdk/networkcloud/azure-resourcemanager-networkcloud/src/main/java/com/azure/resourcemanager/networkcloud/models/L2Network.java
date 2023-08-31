@@ -66,6 +66,14 @@ public interface L2Network {
     SystemData systemData();
 
     /**
+     * Gets the associatedResourceIds property: The list of resource IDs for the other Microsoft.NetworkCloud resources
+     * that have attached this network.
+     *
+     * @return the associatedResourceIds value.
+     */
+    List<String> associatedResourceIds();
+
+    /**
      * Gets the clusterId property: The resource ID of the Network Cloud cluster this L2 network is associated with.
      *
      * @return the clusterId value.
@@ -87,15 +95,16 @@ public interface L2Network {
     String detailedStatusMessage();
 
     /**
-     * Gets the hybridAksClustersAssociatedIds property: The list of Hybrid AKS cluster resource ID(s) that are
-     * associated with this L2 network.
+     * Gets the hybridAksClustersAssociatedIds property: Field Deprecated. These fields will be empty/omitted. The list
+     * of Hybrid AKS cluster resource ID(s) that are associated with this L2 network.
      *
      * @return the hybridAksClustersAssociatedIds value.
      */
     List<String> hybridAksClustersAssociatedIds();
 
     /**
-     * Gets the hybridAksPluginType property: The network plugin type for Hybrid AKS.
+     * Gets the hybridAksPluginType property: Field Deprecated. The field was previously optional, now it will have no
+     * defined behavior and will be ignored. The network plugin type for Hybrid AKS.
      *
      * @return the hybridAksPluginType value.
      */
@@ -124,8 +133,9 @@ public interface L2Network {
     L2NetworkProvisioningState provisioningState();
 
     /**
-     * Gets the virtualMachinesAssociatedIds property: The list of virtual machine resource ID(s), excluding any Hybrid
-     * AKS virtual machines, that are currently using this L2 network.
+     * Gets the virtualMachinesAssociatedIds property: Field Deprecated. These fields will be empty/omitted. The list of
+     * virtual machine resource ID(s), excluding any Hybrid AKS virtual machines, that are currently using this L2
+     * network.
      *
      * @return the virtualMachinesAssociatedIds value.
      */
@@ -168,11 +178,13 @@ public interface L2Network {
             DefinitionStages.WithL2IsolationDomainId,
             DefinitionStages.WithCreate {
     }
+
     /** The L2Network definition stages. */
     interface DefinitionStages {
         /** The first stage of the L2Network definition. */
         interface Blank extends WithLocation {
         }
+
         /** The stage of the L2Network definition allowing to specify location. */
         interface WithLocation {
             /**
@@ -191,6 +203,7 @@ public interface L2Network {
              */
             WithResourceGroup withRegion(String location);
         }
+
         /** The stage of the L2Network definition allowing to specify parent resource. */
         interface WithResourceGroup {
             /**
@@ -201,6 +214,7 @@ public interface L2Network {
              */
             WithExtendedLocation withExistingResourceGroup(String resourceGroupName);
         }
+
         /** The stage of the L2Network definition allowing to specify extendedLocation. */
         interface WithExtendedLocation {
             /**
@@ -216,6 +230,7 @@ public interface L2Network {
              */
             WithL2IsolationDomainId withExtendedLocation(ExtendedLocation extendedLocation);
         }
+
         /** The stage of the L2Network definition allowing to specify l2IsolationDomainId. */
         interface WithL2IsolationDomainId {
             /**
@@ -226,6 +241,7 @@ public interface L2Network {
              */
             WithCreate withL2IsolationDomainId(String l2IsolationDomainId);
         }
+
         /**
          * The stage of the L2Network definition which contains all the minimum required properties for the resource to
          * be created, but also allows for any other optional properties to be specified.
@@ -249,6 +265,7 @@ public interface L2Network {
              */
             L2Network create(Context context);
         }
+
         /** The stage of the L2Network definition allowing to specify tags. */
         interface WithTags {
             /**
@@ -259,16 +276,20 @@ public interface L2Network {
              */
             WithCreate withTags(Map<String, String> tags);
         }
+
         /** The stage of the L2Network definition allowing to specify hybridAksPluginType. */
         interface WithHybridAksPluginType {
             /**
-             * Specifies the hybridAksPluginType property: The network plugin type for Hybrid AKS..
+             * Specifies the hybridAksPluginType property: Field Deprecated. The field was previously optional, now it
+             * will have no defined behavior and will be ignored. The network plugin type for Hybrid AKS..
              *
-             * @param hybridAksPluginType The network plugin type for Hybrid AKS.
+             * @param hybridAksPluginType Field Deprecated. The field was previously optional, now it will have no
+             *     defined behavior and will be ignored. The network plugin type for Hybrid AKS.
              * @return the next definition stage.
              */
             WithCreate withHybridAksPluginType(HybridAksPluginType hybridAksPluginType);
         }
+
         /** The stage of the L2Network definition allowing to specify interfaceName. */
         interface WithInterfaceName {
             /**
@@ -283,6 +304,7 @@ public interface L2Network {
             WithCreate withInterfaceName(String interfaceName);
         }
     }
+
     /**
      * Begins update for the L2Network resource.
      *
@@ -307,6 +329,7 @@ public interface L2Network {
          */
         L2Network apply(Context context);
     }
+
     /** The L2Network update stages. */
     interface UpdateStages {
         /** The stage of the L2Network update allowing to specify tags. */
@@ -320,6 +343,7 @@ public interface L2Network {
             Update withTags(Map<String, String> tags);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

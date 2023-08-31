@@ -22,6 +22,10 @@ public final class AccountInfo {
     @JsonProperty(value = "regionId")
     private String regionId;
 
+    /** Creates an instance of AccountInfo class. */
+    public AccountInfo() {
+    }
+
     /**
      * Get the accountId property: Account Id of the account this environment is linked to.
      *

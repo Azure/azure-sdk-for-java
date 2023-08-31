@@ -13,7 +13,7 @@ public final class ClusterAvailableUpgradeVersionTests {
         ClusterAvailableUpgradeVersion model =
             BinaryData
                 .fromString(
-                    "{\"controlImpact\":\"False\",\"expectedDuration\":\"rmcqiby\",\"impactDescription\":\"ojvknmefqsgzvaha\",\"supportExpiryDate\":\"y\",\"targetClusterVersion\":\"pvgqzcjrvxdjzlm\",\"workloadImpact\":\"False\"}")
+                    "{\"controlImpact\":\"True\",\"expectedDuration\":\"adm\",\"impactDescription\":\"rcrgvx\",\"supportExpiryDate\":\"gomz\",\"targetClusterVersion\":\"misgwbnb\",\"workloadImpact\":\"False\"}")
                 .toObject(ClusterAvailableUpgradeVersion.class);
     }
 

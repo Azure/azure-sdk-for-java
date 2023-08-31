@@ -111,6 +111,7 @@ public final class RoomsClientBuilder implements HttpTrait<RoomsClientBuilder>, 
      * supplied, the credential and httpClient fields must be set
      * @return RoomsClientBuilder
      */
+    @Override
     public RoomsClientBuilder pipeline(HttpPipeline pipeline) {
         this.pipeline = Objects.requireNonNull(pipeline, "'pipeline' cannot be null.");
         return this;
@@ -201,6 +202,7 @@ public final class RoomsClientBuilder implements HttpTrait<RoomsClientBuilder>, 
      * @param logOptions The logging configuration to use when sending and receiving HTTP requests/responses.
      * @return the updated RoomsClientBuilder object
      */
+    @Override
     public RoomsClientBuilder httpLogOptions(HttpLogOptions logOptions) {
         this.httpLogOptions = Objects.requireNonNull(logOptions, "'logOptions' cannot be null.");
         return this;
@@ -230,6 +232,7 @@ public final class RoomsClientBuilder implements HttpTrait<RoomsClientBuilder>, 
      * field.
      * @return RoomsClientBuilder
      */
+    @Override
     public RoomsClientBuilder httpClient(HttpClient httpClient) {
         this.httpClient = Objects.requireNonNull(httpClient, "'httpClient' cannot be null.");
         return this;
@@ -242,6 +245,7 @@ public final class RoomsClientBuilder implements HttpTrait<RoomsClientBuilder>, 
      *                       AzureKeyCredentialPolicy, UserAgentPolicy, RetryPolicy, and CookiePolicy
      * @return RoomsClientBuilder
      */
+    @Override
     public RoomsClientBuilder addPolicy(HttpPipelinePolicy customPolicy) {
         this.customPolicies.add(Objects.requireNonNull(customPolicy, "'customPolicy' cannot be null."));
         return this;
@@ -266,7 +270,7 @@ public final class RoomsClientBuilder implements HttpTrait<RoomsClientBuilder>, 
      * @return RoomsClient instance
      */
     public RoomsClient buildClient() {
-        return new RoomsClient(buildAsyncClient());
+        return new RoomsClient(createServiceImpl());
     }
 
     private AzureCommunicationRoomServiceImpl createServiceImpl() {
@@ -294,6 +298,7 @@ public final class RoomsClientBuilder implements HttpTrait<RoomsClientBuilder>, 
      * @param clientOptions object to be applied
      * @return RoomsClientBuilder
      */
+    @Override
     public RoomsClientBuilder clientOptions(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
         return this;

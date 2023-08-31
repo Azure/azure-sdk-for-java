@@ -16,6 +16,10 @@ public final class UserTokenResultInner {
     @JsonProperty(value = "value")
     private String value;
 
+    /** Creates an instance of UserTokenResultInner class. */
+    public UserTokenResultInner() {
+    }
+
     /**
      * Get the value property: Shared Access Authorization token for the User.
      *

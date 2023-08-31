@@ -7,7 +7,7 @@ package com.azure.resourcemanager.apimanagement.generated;
 /** Samples for Cache CreateOrUpdate. */
 public final class CacheCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementCreateCache.json
+     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementCreateCache.json
      */
     /**
      * Sample code: ApiManagementCreateCache.

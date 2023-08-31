@@ -16,29 +16,28 @@ public final class TrunkedNetworkPropertiesTests {
         TrunkedNetworkProperties model =
             BinaryData
                 .fromString(
-                    "{\"clusterId\":\"qlqhycavodg\",\"detailedStatus\":\"Available\",\"detailedStatusMessage\":\"ee\",\"hybridAksClustersAssociatedIds\":[\"eknlra\",\"iaa\"],\"hybridAksPluginType\":\"OSDevice\",\"interfaceName\":\"gy\",\"isolationDomainIds\":[\"qfby\",\"yr\",\"giagtcojo\",\"qwogfnzjvus\"],\"provisioningState\":\"Provisioning\",\"virtualMachinesAssociatedIds\":[\"ozuxylfsbtkadpys\",\"wn\",\"tgkbugrjqctojc\"],\"vlans\":[6466907609296419804,8984173730454648382,2258174854454729224,1906495664549456651]}")
+                    "{\"associatedResourceIds\":[\"es\"],\"clusterId\":\"dlpagzrcxfail\",\"detailedStatus\":\"Provisioning\",\"detailedStatusMessage\":\"m\",\"hybridAksClustersAssociatedIds\":[\"xdfgsftufqobr\",\"lnacgcc\",\"knh\"],\"hybridAksPluginType\":\"DPDK\",\"interfaceName\":\"v\",\"isolationDomainIds\":[\"nrzvuljraaer\",\"nok\",\"gukkjqnvbroy\"],\"provisioningState\":\"Canceled\",\"virtualMachinesAssociatedIds\":[\"lcdisd\",\"sfjbjsvg\",\"rwhryvycytd\"],\"vlans\":[87313434350967654,4919215833349894285,5408599149275050969,3545804393254840755]}")
                 .toObject(TrunkedNetworkProperties.class);
-        Assertions.assertEquals(HybridAksPluginType.OSDEVICE, model.hybridAksPluginType());
-        Assertions.assertEquals("gy", model.interfaceName());
-        Assertions.assertEquals("qfby", model.isolationDomainIds().get(0));
-        Assertions.assertEquals(6466907609296419804L, model.vlans().get(0));
+        Assertions.assertEquals(HybridAksPluginType.DPDK, model.hybridAksPluginType());
+        Assertions.assertEquals("v", model.interfaceName());
+        Assertions.assertEquals("nrzvuljraaer", model.isolationDomainIds().get(0));
+        Assertions.assertEquals(87313434350967654L, model.vlans().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         TrunkedNetworkProperties model =
             new TrunkedNetworkProperties()
-                .withHybridAksPluginType(HybridAksPluginType.OSDEVICE)
-                .withInterfaceName("gy")
-                .withIsolationDomainIds(Arrays.asList("qfby", "yr", "giagtcojo", "qwogfnzjvus"))
+                .withHybridAksPluginType(HybridAksPluginType.DPDK)
+                .withInterfaceName("v")
+                .withIsolationDomainIds(Arrays.asList("nrzvuljraaer", "nok", "gukkjqnvbroy"))
                 .withVlans(
                     Arrays
-                        .asList(
-                            6466907609296419804L, 8984173730454648382L, 2258174854454729224L, 1906495664549456651L));
+                        .asList(87313434350967654L, 4919215833349894285L, 5408599149275050969L, 3545804393254840755L));
         model = BinaryData.fromObject(model).toObject(TrunkedNetworkProperties.class);
-        Assertions.assertEquals(HybridAksPluginType.OSDEVICE, model.hybridAksPluginType());
-        Assertions.assertEquals("gy", model.interfaceName());
-        Assertions.assertEquals("qfby", model.isolationDomainIds().get(0));
-        Assertions.assertEquals(6466907609296419804L, model.vlans().get(0));
+        Assertions.assertEquals(HybridAksPluginType.DPDK, model.hybridAksPluginType());
+        Assertions.assertEquals("v", model.interfaceName());
+        Assertions.assertEquals("nrzvuljraaer", model.isolationDomainIds().get(0));
+        Assertions.assertEquals(87313434350967654L, model.vlans().get(0));
     }
 }

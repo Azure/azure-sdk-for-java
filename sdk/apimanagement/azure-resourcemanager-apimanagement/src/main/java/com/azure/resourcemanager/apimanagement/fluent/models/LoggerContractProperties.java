@@ -30,8 +30,7 @@ public final class LoggerContractProperties {
     private String description;
 
     /*
-     * The name and SendRule connection string of the event hub for
-     * azureEventHub logger.
+     * The name and SendRule connection string of the event hub for azureEventHub logger.
      * Instrumentation key for applicationInsights logger.
      */
     @JsonProperty(value = "credentials")
@@ -39,18 +38,20 @@ public final class LoggerContractProperties {
     private Map<String, String> credentials;
 
     /*
-     * Whether records are buffered in the logger before publishing. Default is
-     * assumed to be true.
+     * Whether records are buffered in the logger before publishing. Default is assumed to be true.
      */
     @JsonProperty(value = "isBuffered")
     private Boolean isBuffered;
 
     /*
-     * Azure Resource Id of a log target (either Azure Event Hub resource or
-     * Azure Application Insights resource).
+     * Azure Resource Id of a log target (either Azure Event Hub resource or Azure Application Insights resource).
      */
     @JsonProperty(value = "resourceId")
     private String resourceId;
+
+    /** Creates an instance of LoggerContractProperties class. */
+    public LoggerContractProperties() {
+    }
 
     /**
      * Get the loggerType property: Logger type.

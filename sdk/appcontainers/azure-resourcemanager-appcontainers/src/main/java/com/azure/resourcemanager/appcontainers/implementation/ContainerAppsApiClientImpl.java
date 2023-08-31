@@ -46,6 +46,7 @@ import com.azure.resourcemanager.appcontainers.fluent.ManagedEnvironmentsDiagnos
 import com.azure.resourcemanager.appcontainers.fluent.ManagedEnvironmentsStoragesClient;
 import com.azure.resourcemanager.appcontainers.fluent.NamespacesClient;
 import com.azure.resourcemanager.appcontainers.fluent.OperationsClient;
+import com.azure.resourcemanager.appcontainers.fluent.ResourceProvidersClient;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.nio.ByteBuffer;
@@ -226,30 +227,6 @@ public final class ContainerAppsApiClientImpl implements ContainerAppsApiClient 
         return this.containerApps;
     }
 
-    /** The JobsClient object to access its operations. */
-    private final JobsClient jobs;
-
-    /**
-     * Gets the JobsClient object to access its operations.
-     *
-     * @return the JobsClient object.
-     */
-    public JobsClient getJobs() {
-        return this.jobs;
-    }
-
-    /** The JobsExecutionsClient object to access its operations. */
-    private final JobsExecutionsClient jobsExecutions;
-
-    /**
-     * Gets the JobsExecutionsClient object to access its operations.
-     *
-     * @return the JobsExecutionsClient object.
-     */
-    public JobsExecutionsClient getJobsExecutions() {
-        return this.jobsExecutions;
-    }
-
     /** The ContainerAppsRevisionsClient object to access its operations. */
     private final ContainerAppsRevisionsClient containerAppsRevisions;
 
@@ -320,6 +297,42 @@ public final class ContainerAppsApiClientImpl implements ContainerAppsApiClient 
      */
     public OperationsClient getOperations() {
         return this.operations;
+    }
+
+    /** The JobsClient object to access its operations. */
+    private final JobsClient jobs;
+
+    /**
+     * Gets the JobsClient object to access its operations.
+     *
+     * @return the JobsClient object.
+     */
+    public JobsClient getJobs() {
+        return this.jobs;
+    }
+
+    /** The JobsExecutionsClient object to access its operations. */
+    private final JobsExecutionsClient jobsExecutions;
+
+    /**
+     * Gets the JobsExecutionsClient object to access its operations.
+     *
+     * @return the JobsExecutionsClient object.
+     */
+    public JobsExecutionsClient getJobsExecutions() {
+        return this.jobsExecutions;
+    }
+
+    /** The ResourceProvidersClient object to access its operations. */
+    private final ResourceProvidersClient resourceProviders;
+
+    /**
+     * Gets the ResourceProvidersClient object to access its operations.
+     *
+     * @return the ResourceProvidersClient object.
+     */
+    public ResourceProvidersClient getResourceProviders() {
+        return this.resourceProviders;
     }
 
     /** The ManagedEnvironmentsClient object to access its operations. */
@@ -428,7 +441,7 @@ public final class ContainerAppsApiClientImpl implements ContainerAppsApiClient 
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2022-11-01-preview";
+        this.apiVersion = "2023-05-01";
         this.containerAppsAuthConfigs = new ContainerAppsAuthConfigsClientImpl(this);
         this.availableWorkloadProfiles = new AvailableWorkloadProfilesClientImpl(this);
         this.billingMeters = new BillingMetersClientImpl(this);
@@ -437,14 +450,15 @@ public final class ContainerAppsApiClientImpl implements ContainerAppsApiClient 
         this.connectedEnvironmentsDaprComponents = new ConnectedEnvironmentsDaprComponentsClientImpl(this);
         this.connectedEnvironmentsStorages = new ConnectedEnvironmentsStoragesClientImpl(this);
         this.containerApps = new ContainerAppsClientImpl(this);
-        this.jobs = new JobsClientImpl(this);
-        this.jobsExecutions = new JobsExecutionsClientImpl(this);
         this.containerAppsRevisions = new ContainerAppsRevisionsClientImpl(this);
         this.containerAppsRevisionReplicas = new ContainerAppsRevisionReplicasClientImpl(this);
         this.containerAppsDiagnostics = new ContainerAppsDiagnosticsClientImpl(this);
         this.managedEnvironmentDiagnostics = new ManagedEnvironmentDiagnosticsClientImpl(this);
         this.managedEnvironmentsDiagnostics = new ManagedEnvironmentsDiagnosticsClientImpl(this);
         this.operations = new OperationsClientImpl(this);
+        this.jobs = new JobsClientImpl(this);
+        this.jobsExecutions = new JobsExecutionsClientImpl(this);
+        this.resourceProviders = new ResourceProvidersClientImpl(this);
         this.managedEnvironments = new ManagedEnvironmentsClientImpl(this);
         this.certificates = new CertificatesClientImpl(this);
         this.managedCertificates = new ManagedCertificatesClientImpl(this);

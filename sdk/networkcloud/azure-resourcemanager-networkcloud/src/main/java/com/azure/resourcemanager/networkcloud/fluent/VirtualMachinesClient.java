@@ -11,10 +11,10 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
+import com.azure.resourcemanager.networkcloud.fluent.models.OperationStatusResultInner;
 import com.azure.resourcemanager.networkcloud.fluent.models.VirtualMachineInner;
 import com.azure.resourcemanager.networkcloud.models.VirtualMachinePatchParameters;
 import com.azure.resourcemanager.networkcloud.models.VirtualMachinePowerOffParameters;
-import com.azure.resourcemanager.networkcloud.models.VirtualMachineVolumeParameters;
 
 /** An instance of this class provides access to all the operations defined in VirtualMachinesClient. */
 public interface VirtualMachinesClient {
@@ -326,162 +326,6 @@ public interface VirtualMachinesClient {
         Context context);
 
     /**
-     * Attach volume to the virtual machine.
-     *
-     * <p>Attach volume to the provided virtual machine.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualMachineName The name of the virtual machine.
-     * @param virtualMachineAttachVolumeParameters The request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginAttachVolume(
-        String resourceGroupName,
-        String virtualMachineName,
-        VirtualMachineVolumeParameters virtualMachineAttachVolumeParameters);
-
-    /**
-     * Attach volume to the virtual machine.
-     *
-     * <p>Attach volume to the provided virtual machine.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualMachineName The name of the virtual machine.
-     * @param virtualMachineAttachVolumeParameters The request body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginAttachVolume(
-        String resourceGroupName,
-        String virtualMachineName,
-        VirtualMachineVolumeParameters virtualMachineAttachVolumeParameters,
-        Context context);
-
-    /**
-     * Attach volume to the virtual machine.
-     *
-     * <p>Attach volume to the provided virtual machine.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualMachineName The name of the virtual machine.
-     * @param virtualMachineAttachVolumeParameters The request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void attachVolume(
-        String resourceGroupName,
-        String virtualMachineName,
-        VirtualMachineVolumeParameters virtualMachineAttachVolumeParameters);
-
-    /**
-     * Attach volume to the virtual machine.
-     *
-     * <p>Attach volume to the provided virtual machine.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualMachineName The name of the virtual machine.
-     * @param virtualMachineAttachVolumeParameters The request body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void attachVolume(
-        String resourceGroupName,
-        String virtualMachineName,
-        VirtualMachineVolumeParameters virtualMachineAttachVolumeParameters,
-        Context context);
-
-    /**
-     * Detach volume from the virtual machine.
-     *
-     * <p>Detach volume from the provided virtual machine.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualMachineName The name of the virtual machine.
-     * @param virtualMachineDetachVolumeParameters The request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDetachVolume(
-        String resourceGroupName,
-        String virtualMachineName,
-        VirtualMachineVolumeParameters virtualMachineDetachVolumeParameters);
-
-    /**
-     * Detach volume from the virtual machine.
-     *
-     * <p>Detach volume from the provided virtual machine.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualMachineName The name of the virtual machine.
-     * @param virtualMachineDetachVolumeParameters The request body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDetachVolume(
-        String resourceGroupName,
-        String virtualMachineName,
-        VirtualMachineVolumeParameters virtualMachineDetachVolumeParameters,
-        Context context);
-
-    /**
-     * Detach volume from the virtual machine.
-     *
-     * <p>Detach volume from the provided virtual machine.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualMachineName The name of the virtual machine.
-     * @param virtualMachineDetachVolumeParameters The request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void detachVolume(
-        String resourceGroupName,
-        String virtualMachineName,
-        VirtualMachineVolumeParameters virtualMachineDetachVolumeParameters);
-
-    /**
-     * Detach volume from the virtual machine.
-     *
-     * <p>Detach volume from the provided virtual machine.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualMachineName The name of the virtual machine.
-     * @param virtualMachineDetachVolumeParameters The request body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void detachVolume(
-        String resourceGroupName,
-        String virtualMachineName,
-        VirtualMachineVolumeParameters virtualMachineDetachVolumeParameters,
-        Context context);
-
-    /**
      * Power off the virtual machine.
      *
      * <p>Power off the provided virtual machine.
@@ -491,10 +335,11 @@ public interface VirtualMachinesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginPowerOff(String resourceGroupName, String virtualMachineName);
+    SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginPowerOff(
+        String resourceGroupName, String virtualMachineName);
 
     /**
      * Power off the virtual machine.
@@ -508,10 +353,10 @@ public interface VirtualMachinesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginPowerOff(
+    SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginPowerOff(
         String resourceGroupName,
         String virtualMachineName,
         VirtualMachinePowerOffParameters virtualMachinePowerOffParameters,
@@ -527,9 +372,10 @@ public interface VirtualMachinesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void powerOff(String resourceGroupName, String virtualMachineName);
+    OperationStatusResultInner powerOff(String resourceGroupName, String virtualMachineName);
 
     /**
      * Power off the virtual machine.
@@ -543,9 +389,10 @@ public interface VirtualMachinesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void powerOff(
+    OperationStatusResultInner powerOff(
         String resourceGroupName,
         String virtualMachineName,
         VirtualMachinePowerOffParameters virtualMachinePowerOffParameters,
@@ -561,10 +408,11 @@ public interface VirtualMachinesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginReimage(String resourceGroupName, String virtualMachineName);
+    SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginReimage(
+        String resourceGroupName, String virtualMachineName);
 
     /**
      * Reimage the virtual machine.
@@ -577,10 +425,10 @@ public interface VirtualMachinesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginReimage(
+    SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginReimage(
         String resourceGroupName, String virtualMachineName, Context context);
 
     /**
@@ -593,9 +441,10 @@ public interface VirtualMachinesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void reimage(String resourceGroupName, String virtualMachineName);
+    OperationStatusResultInner reimage(String resourceGroupName, String virtualMachineName);
 
     /**
      * Reimage the virtual machine.
@@ -608,9 +457,10 @@ public interface VirtualMachinesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void reimage(String resourceGroupName, String virtualMachineName, Context context);
+    OperationStatusResultInner reimage(String resourceGroupName, String virtualMachineName, Context context);
 
     /**
      * Restart the virtual machine.
@@ -622,10 +472,11 @@ public interface VirtualMachinesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginRestart(String resourceGroupName, String virtualMachineName);
+    SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginRestart(
+        String resourceGroupName, String virtualMachineName);
 
     /**
      * Restart the virtual machine.
@@ -638,10 +489,10 @@ public interface VirtualMachinesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginRestart(
+    SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginRestart(
         String resourceGroupName, String virtualMachineName, Context context);
 
     /**
@@ -654,9 +505,10 @@ public interface VirtualMachinesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void restart(String resourceGroupName, String virtualMachineName);
+    OperationStatusResultInner restart(String resourceGroupName, String virtualMachineName);
 
     /**
      * Restart the virtual machine.
@@ -669,9 +521,10 @@ public interface VirtualMachinesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void restart(String resourceGroupName, String virtualMachineName, Context context);
+    OperationStatusResultInner restart(String resourceGroupName, String virtualMachineName, Context context);
 
     /**
      * Start the virtual machine.
@@ -683,10 +536,11 @@ public interface VirtualMachinesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginStart(String resourceGroupName, String virtualMachineName);
+    SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginStart(
+        String resourceGroupName, String virtualMachineName);
 
     /**
      * Start the virtual machine.
@@ -699,10 +553,11 @@ public interface VirtualMachinesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginStart(String resourceGroupName, String virtualMachineName, Context context);
+    SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginStart(
+        String resourceGroupName, String virtualMachineName, Context context);
 
     /**
      * Start the virtual machine.
@@ -714,9 +569,10 @@ public interface VirtualMachinesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void start(String resourceGroupName, String virtualMachineName);
+    OperationStatusResultInner start(String resourceGroupName, String virtualMachineName);
 
     /**
      * Start the virtual machine.
@@ -729,7 +585,8 @@ public interface VirtualMachinesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void start(String resourceGroupName, String virtualMachineName, Context context);
+    OperationStatusResultInner start(String resourceGroupName, String virtualMachineName, Context context);
 }

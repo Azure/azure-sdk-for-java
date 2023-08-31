@@ -34,7 +34,7 @@ public final class VolumesCreateOrUpdateMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"extendedLocation\":{\"name\":\"toyrplixlajml\",\"type\":\"pq\"},\"properties\":{\"attachedTo\":[\"hamfowgwbtmk\"],\"detailedStatus\":\"Active\",\"detailedStatusMessage\":\"kzwaqxofq\",\"provisioningState\":\"Succeeded\",\"serialNumber\":\"iqbplvfidusz\",\"sizeMiB\":7345588349145165973},\"location\":\"byjgmsfepx\",\"tags\":{\"fowxwyovcxjsgbi\":\"pqadagrhrdicxdwy\",\"dveksbuhoduch\":\"cu\",\"yszekbhwlka\":\"lscrdpibfdyjduss\",\"n\":\"ggkrehbf\"},\"id\":\"ybff\",\"name\":\"jfiimreoa\",\"type\":\"sqtaadusrexxfa\"}";
+            "{\"extendedLocation\":{\"name\":\"kvbos\",\"type\":\"jfdizhrjqfya\"},\"properties\":{\"attachedTo\":[\"slyekcgn\",\"uarlcjiwgsxfaioc\",\"dgujjgnfgrzxbarc\",\"paefzqsy\"],\"detailedStatus\":\"Error\",\"detailedStatusMessage\":\"njcytesmfucrtfod\",\"provisioningState\":\"Succeeded\",\"serialNumber\":\"uzmzivrtrfzh\",\"sizeMiB\":4810474092378413108},\"location\":\"hjud\",\"tags\":{\"xbqssgfenffdxbvw\":\"yrudmahswtvd\"},\"id\":\"qjchivd\",\"name\":\"ija\",\"type\":\"xndmuvar\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -65,21 +65,22 @@ public final class VolumesCreateOrUpdateMockTests {
         Volume response =
             manager
                 .volumes()
-                .define("wljuxlkbectvt")
-                .withRegion("zeagmceituuge")
-                .withExistingResourceGroup("wakwseivmakxhys")
-                .withExtendedLocation(new ExtendedLocation().withName("j").withType("skdchmaiubavl"))
-                .withSizeMiB(3750355652175573402L)
-                .withTags(mapOf("tlzm", "pj", "eolctaebf", "lsyj", "jcustbvtq", "yrle"))
+                .define("zkgtzqn")
+                .withRegion("nrjdszdbu")
+                .withExistingResourceGroup("pkvegeatt")
+                .withExtendedLocation(new ExtendedLocation().withName("qsttewuvcysjeuf").withType("x"))
+                .withSizeMiB(2762545810950883647L)
+                .withTags(mapOf("fwjnoxuoxtfn", "iqppoqvgpnewuh", "gvsnv", "essfepgckncj", "mjymjnh", "tqdx"))
                 .create();
 
-        Assertions.assertEquals("byjgmsfepx", response.location());
-        Assertions.assertEquals("pqadagrhrdicxdwy", response.tags().get("fowxwyovcxjsgbi"));
-        Assertions.assertEquals("toyrplixlajml", response.extendedLocation().name());
-        Assertions.assertEquals("pq", response.extendedLocation().type());
-        Assertions.assertEquals(7345588349145165973L, response.sizeMiB());
+        Assertions.assertEquals("hjud", response.location());
+        Assertions.assertEquals("yrudmahswtvd", response.tags().get("xbqssgfenffdxbvw"));
+        Assertions.assertEquals("kvbos", response.extendedLocation().name());
+        Assertions.assertEquals("jfdizhrjqfya", response.extendedLocation().type());
+        Assertions.assertEquals(4810474092378413108L, response.sizeMiB());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

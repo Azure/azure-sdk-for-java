@@ -69,6 +69,10 @@ public final class AppServiceInfoInner {
     @JsonProperty(value = "hostName")
     private String hostname;
 
+    /** Creates an instance of AppServiceInfoInner class. */
+    public AppServiceInfoInner() {
+    }
+
     /**
      * Get the resourceId property: App service resource ID.
      *

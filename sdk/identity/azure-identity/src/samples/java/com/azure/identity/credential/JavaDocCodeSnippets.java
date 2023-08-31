@@ -268,6 +268,7 @@ public final class JavaDocCodeSnippets {
         TokenCredential onBehalfOfCredential = new OnBehalfOfCredentialBuilder()
             .clientId("<app-client-ID>")
             .clientSecret("<app-Client-Secret>")
+            .tenantId("<app-tenant-ID>")
             .userAssertion("<user-assertion>")
             .build();
         // END: com.azure.identity.credential.obocredential.construct
@@ -278,7 +279,7 @@ public final class JavaDocCodeSnippets {
      */
     public void workloadIdentityCredentialCodeSnippets() {
         // BEGIN: com.azure.identity.credential.workloadidentitycredential.construct
-        TokenCredential onBehalfOfCredential = new WorkloadIdentityCredentialBuilder()
+        TokenCredential workloadIdentityCredential = new WorkloadIdentityCredentialBuilder()
             .clientId("<clientID>")
             .tenantId("<tenantID>")
             .tokenFilePath("<token-file-path>")

@@ -39,6 +39,10 @@ public final class TagResourceContractInner {
     @JsonProperty(value = "product")
     private ProductTagResourceContractProperties product;
 
+    /** Creates an instance of TagResourceContractInner class. */
+    public TagResourceContractInner() {
+    }
+
     /**
      * Get the tag property: Tag associated with the resource.
      *

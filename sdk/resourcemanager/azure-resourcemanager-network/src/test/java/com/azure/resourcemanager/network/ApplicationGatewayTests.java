@@ -4,6 +4,7 @@
 package com.azure.resourcemanager.network;
 
 import com.azure.core.management.Region;
+import com.azure.core.management.exception.ManagementException;
 import com.azure.core.test.annotation.DoNotRecord;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
@@ -16,13 +17,21 @@ import com.azure.resourcemanager.network.models.ApplicationGatewayFirewallDisabl
 import com.azure.resourcemanager.network.models.ApplicationGatewayFirewallExclusion;
 import com.azure.resourcemanager.network.models.ApplicationGatewayFirewallMode;
 import com.azure.resourcemanager.network.models.ApplicationGatewaySkuName;
+import com.azure.resourcemanager.network.models.ApplicationGatewaySslCipherSuite;
+import com.azure.resourcemanager.network.models.ApplicationGatewaySslPolicy;
+import com.azure.resourcemanager.network.models.ApplicationGatewaySslPolicyName;
+import com.azure.resourcemanager.network.models.ApplicationGatewaySslPolicyType;
+import com.azure.resourcemanager.network.models.ApplicationGatewaySslProtocol;
 import com.azure.resourcemanager.network.models.ApplicationGatewayTier;
 import com.azure.resourcemanager.network.models.ApplicationGatewayWebApplicationFirewallConfiguration;
+import com.azure.resourcemanager.network.models.KnownWebApplicationGatewayManagedRuleSet;
 import com.azure.resourcemanager.network.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.network.models.ManagedServiceIdentityUserAssignedIdentities;
 import com.azure.resourcemanager.network.models.PublicIPSkuType;
 import com.azure.resourcemanager.network.models.PublicIpAddress;
 import com.azure.resourcemanager.network.models.ResourceIdentityType;
+import com.azure.resourcemanager.network.models.WebApplicationFirewallMode;
+import com.azure.resourcemanager.network.models.WebApplicationFirewallPolicy;
 import com.azure.security.keyvault.certificates.CertificateClient;
 import com.azure.security.keyvault.certificates.CertificateClientBuilder;
 import com.azure.security.keyvault.certificates.models.CertificatePolicy;
@@ -503,6 +512,214 @@ public class ApplicationGatewayTests extends NetworkManagementTest {
                     .withoutIPAddress(addr.ipAddress())
                     .parent()
                     .apply()));
+    }
+
+    @Test
+    public void canAssociateWafPolicy() {
+        String appGatewayName = generateRandomResourceName("agwaf", 15);
+        String appPublicIp = generateRandomResourceName("pip", 15);
+        String wafPolicyName = generateRandomResourceName("waf", 15);
+
+        PublicIpAddress pip =
+            networkManager
+                .publicIpAddresses()
+                .define(appPublicIp)
+                .withRegion(Region.US_EAST)
+                .withNewResourceGroup(rgName)
+                .withSku(PublicIPSkuType.STANDARD)
+                .withStaticIP()
+                .create();
+
+        WebApplicationFirewallPolicy wafPolicy =
+            networkManager
+                .webApplicationFirewallPolicies()
+                .define(wafPolicyName)
+                .withRegion(Region.US_EAST)
+                .withExistingResourceGroup(rgName)
+                .withManagedRuleSet(KnownWebApplicationGatewayManagedRuleSet.OWASP_3_2)
+                .create();
+
+        ApplicationGateway appGateway =
+            networkManager
+                .applicationGateways()
+                .define(appGatewayName)
+                .withRegion(Region.US_EAST)
+                .withExistingResourceGroup(rgName)
+                .defineRequestRoutingRule("rule1")
+                .fromPublicFrontend()
+                .fromFrontendHttpPort(80)
+                .toBackendHttpPort(8080)
+                .toBackendIPAddress("11.1.1.1")
+                .toBackendIPAddress("11.1.1.2")
+                .attach()
+                .withExistingPublicIpAddress(pip)
+                .withTier(ApplicationGatewayTier.WAF_V2)
+                .withSize(ApplicationGatewaySkuName.WAF_V2)
+                .withExistingWebApplicationFirewallPolicy(wafPolicy)
+                .create();
+
+        Assertions.assertNotNull(appGateway.getWebApplicationFirewallPolicy());
+        Assertions.assertNull(appGateway.webApplicationFirewallConfiguration());
+
+        wafPolicy.refresh();
+        // check association
+        Assertions.assertEquals(appGateway.id(), wafPolicy.getAssociatedApplicationGateways().iterator().next().id());
+        Assertions.assertEquals(wafPolicy.id(), appGateway.getWebApplicationFirewallPolicy().id());
+
+        appGateway.update()
+            .withNewWebApplicationFirewallPolicy(WebApplicationFirewallMode.PREVENTION)
+            .apply();
+
+        WebApplicationFirewallPolicy newPolicy = appGateway.getWebApplicationFirewallPolicy();
+
+        Assertions.assertNotNull(newPolicy);
+        Assertions.assertTrue(newPolicy.isEnabled());
+        Assertions.assertEquals(WebApplicationFirewallMode.PREVENTION, newPolicy.mode());
+        Assertions.assertNotEquals(newPolicy.id(), wafPolicy.id());
+        // check updated association
+        Assertions.assertEquals(appGateway.id(), newPolicy.getAssociatedApplicationGateways().iterator().next().id());
+        Assertions.assertEquals(newPolicy.id(), appGateway.getWebApplicationFirewallPolicy().id());
+
+        // invalid application gateway with mixed legacy WAF configuration and WAF policy
+        String invalidPolicyName = "invalid";
+
+        Assertions.assertThrows(IllegalStateException.class, () -> {
+            networkManager.applicationGateways()
+                .define("invalid")
+                .withRegion(Region.US_EAST)
+                .withExistingResourceGroup(rgName)
+                .defineRequestRoutingRule("rule1")
+                .fromPublicFrontend()
+                .fromFrontendHttpPort(80)
+                .toBackendHttpPort(8080)
+                .toBackendIPAddress("11.1.1.1")
+                .toBackendIPAddress("11.1.1.2")
+                .attach()
+                .withNewPublicIpAddress()
+                .withTier(ApplicationGatewayTier.WAF_V2)
+                .withSize(ApplicationGatewaySkuName.WAF_V2)
+                // mixed legacy WAF configuration and WAF policy
+                .withNewWebApplicationFirewallPolicy(
+                    networkManager
+                        .webApplicationFirewallPolicies()
+                        .define(invalidPolicyName)
+                        .withRegion(Region.US_EAST)
+                        .withExistingResourceGroup(rgName)
+                        .withManagedRuleSet(KnownWebApplicationGatewayManagedRuleSet.OWASP_3_2))
+                .withWebApplicationFirewall(true, ApplicationGatewayFirewallMode.PREVENTION)
+                .create();
+        });
+
+        // assert no policy is created
+        Assertions.assertTrue(
+            networkManager
+                .webApplicationFirewallPolicies()
+                .listByResourceGroup(rgName)
+                .stream()
+                .noneMatch(policy -> policy.name().equals(invalidPolicyName)));
+    }
+
+    @Test
+    public void canSetSslPolicy() {
+        String appGatewayName = generateRandomResourceName("agw", 15);
+        String appPublicIp = generateRandomResourceName("pip", 15);
+
+        PublicIpAddress pip =
+            networkManager
+                .publicIpAddresses()
+                .define(appPublicIp)
+                .withRegion(Region.US_EAST)
+                .withNewResourceGroup(rgName)
+                .withSku(PublicIPSkuType.STANDARD)
+                .withStaticIP()
+                .create();
+
+        // create with predefined ssl policy
+        ApplicationGateway appGateway =
+            networkManager
+                .applicationGateways()
+                .define(appGatewayName)
+                .withRegion(Region.US_EAST)
+                .withExistingResourceGroup(rgName)
+                // Request routing rules
+                .defineRequestRoutingRule("rule1")
+                    .fromPublicFrontend()
+                    .fromFrontendHttpPort(80)
+                    .toBackendHttpPort(8080)
+                    .toBackendIPAddress("11.1.1.1")
+                    .attach()
+                .withExistingPublicIpAddress(pip)
+                .withTier(ApplicationGatewayTier.WAF_V2)
+                .withSize(ApplicationGatewaySkuName.WAF_V2)
+                .withPredefinedSslPolicy(ApplicationGatewaySslPolicyName.APP_GW_SSL_POLICY20150501)
+                .create();
+
+        ApplicationGatewaySslPolicy sslPolicy = appGateway.sslPolicy();
+        Assertions.assertNotNull(sslPolicy);
+        Assertions.assertEquals(ApplicationGatewaySslPolicyType.PREDEFINED, sslPolicy.policyType());
+        Assertions.assertEquals(ApplicationGatewaySslPolicyName.APP_GW_SSL_POLICY20150501, sslPolicy.policyName());
+
+        // update with custom ssl policy
+        appGateway.update()
+            .withCustomV2SslPolicy(ApplicationGatewaySslProtocol.TLSV1_2, Collections.singletonList(ApplicationGatewaySslCipherSuite.TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256))
+            .apply();
+
+        sslPolicy = appGateway.sslPolicy();
+        Assertions.assertNotNull(sslPolicy);
+        Assertions.assertEquals(ApplicationGatewaySslPolicyType.CUSTOM_V2, sslPolicy.policyType());
+        Assertions.assertNull(sslPolicy.policyName());
+        Assertions.assertEquals(ApplicationGatewaySslProtocol.TLSV1_2, sslPolicy.minProtocolVersion());
+        Assertions.assertTrue(sslPolicy.cipherSuites().contains(ApplicationGatewaySslCipherSuite.TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256));
+
+        // predefined policy doesn't not support minProtocolVersion
+        Assertions.assertThrows(ManagementException.class, () -> {
+            appGateway.update()
+                .withSslPolicy(new ApplicationGatewaySslPolicy()
+                    .withPolicyType(ApplicationGatewaySslPolicyType.PREDEFINED)
+                    .withPolicyName(ApplicationGatewaySslPolicyName.APP_GW_SSL_POLICY20150501)
+                    .withMinProtocolVersion(ApplicationGatewaySslProtocol.TLSV1_1))
+                .apply();
+        });
+    }
+
+    @Test
+    public void canCreateApplicationGatewayWithDefaultSku() {
+        String appGatewayName = generateRandomResourceName("agw", 15);
+
+        String appPublicIp = generateRandomResourceName("pip", 15);
+
+        PublicIpAddress pip =
+            networkManager
+                .publicIpAddresses()
+                .define(appPublicIp)
+                .withRegion(Region.US_EAST)
+                .withNewResourceGroup(rgName)
+                .withSku(PublicIPSkuType.STANDARD)
+                .withStaticIP()
+                .create();
+
+        ApplicationGateway appGateway =
+            networkManager
+                .applicationGateways()
+                .define(appGatewayName)
+                .withRegion(Region.US_EAST)
+                .withNewResourceGroup(rgName)
+                // Request routing rules
+                .defineRequestRoutingRule("rule1")
+                // BASIC still needs a public frontend. With private only, it'll report error:
+                // "Application Gateway does not support Application Gateway without Public IP for the selected SKU tier Basic.
+                // Supported SKU tiers are Standard,WAF."
+                .fromPublicFrontend()
+                .fromFrontendHttpPort(80)
+                .toBackendHttpPort(8080)
+                .toBackendIPAddress("11.1.1.1")
+                .attach()
+                .withExistingPublicIpAddress(pip)
+                .create();
+
+        Assertions.assertEquals(ApplicationGatewayTier.BASIC, appGateway.tier());
+        // BASIC still supports request routing rule priority.
+        Assertions.assertNotNull(appGateway.requestRoutingRules().get("rule1").priority());
     }
 
     private String createKeyVaultCertificate(String servicePrincipal, String identityPrincipal) {

@@ -3,14 +3,14 @@
 
 package com.azure.ai.textanalytics;
 
-import com.azure.ai.textanalytics.implementation.AbstractSummaryActionResultPropertiesHelper;
+import com.azure.ai.textanalytics.implementation.AbstractiveSummaryActionResultPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.AnalyzeActionsOperationDetailPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.AnalyzeActionsResultPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.AnalyzeHealthcareEntitiesActionResultPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.AnalyzeSentimentActionResultPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.AnalyzeTextsImpl;
 import com.azure.ai.textanalytics.implementation.ExtractKeyPhrasesActionResultPropertiesHelper;
-import com.azure.ai.textanalytics.implementation.ExtractSummaryActionResultPropertiesHelper;
+import com.azure.ai.textanalytics.implementation.ExtractiveSummaryActionResultPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.MultiLabelClassifyActionResultPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.RecognizeCustomEntitiesActionResultPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.RecognizeEntitiesActionResultPropertiesHelper;
@@ -61,10 +61,7 @@ import com.azure.ai.textanalytics.implementation.models.ErrorResponseException;
 import com.azure.ai.textanalytics.implementation.models.ExtractiveSummarizationLROResult;
 import com.azure.ai.textanalytics.implementation.models.ExtractiveSummarizationLROTask;
 import com.azure.ai.textanalytics.implementation.models.ExtractiveSummarizationResult;
-import com.azure.ai.textanalytics.implementation.models.ExtractiveSummarizationSortingCriteria;
 import com.azure.ai.textanalytics.implementation.models.ExtractiveSummarizationTaskParameters;
-import com.azure.ai.textanalytics.implementation.models.FhirVersion;
-import com.azure.ai.textanalytics.implementation.models.HealthcareDocumentType;
 import com.azure.ai.textanalytics.implementation.models.HealthcareLROResult;
 import com.azure.ai.textanalytics.implementation.models.HealthcareLROTask;
 import com.azure.ai.textanalytics.implementation.models.HealthcareResult;
@@ -97,8 +94,8 @@ import com.azure.ai.textanalytics.implementation.models.TasksStateTasksEntityRec
 import com.azure.ai.textanalytics.implementation.models.TasksStateTasksKeyPhraseExtractionTasksItem;
 import com.azure.ai.textanalytics.implementation.models.TasksStateTasksOld;
 import com.azure.ai.textanalytics.implementation.models.TasksStateTasksSentimentAnalysisTasksItem;
-import com.azure.ai.textanalytics.models.AbstractSummaryAction;
-import com.azure.ai.textanalytics.models.AbstractSummaryActionResult;
+import com.azure.ai.textanalytics.models.AbstractiveSummaryAction;
+import com.azure.ai.textanalytics.models.AbstractiveSummaryActionResult;
 import com.azure.ai.textanalytics.models.AnalyzeActionsOperationDetail;
 import com.azure.ai.textanalytics.models.AnalyzeActionsOptions;
 import com.azure.ai.textanalytics.models.AnalyzeActionsResult;
@@ -108,8 +105,8 @@ import com.azure.ai.textanalytics.models.AnalyzeSentimentAction;
 import com.azure.ai.textanalytics.models.AnalyzeSentimentActionResult;
 import com.azure.ai.textanalytics.models.ExtractKeyPhrasesAction;
 import com.azure.ai.textanalytics.models.ExtractKeyPhrasesActionResult;
-import com.azure.ai.textanalytics.models.ExtractSummaryAction;
-import com.azure.ai.textanalytics.models.ExtractSummaryActionResult;
+import com.azure.ai.textanalytics.models.ExtractiveSummaryAction;
+import com.azure.ai.textanalytics.models.ExtractiveSummaryActionResult;
 import com.azure.ai.textanalytics.models.MultiLabelClassifyAction;
 import com.azure.ai.textanalytics.models.MultiLabelClassifyActionResult;
 import com.azure.ai.textanalytics.models.RecognizeCustomEntitiesAction;
@@ -122,7 +119,7 @@ import com.azure.ai.textanalytics.models.RecognizePiiEntitiesAction;
 import com.azure.ai.textanalytics.models.RecognizePiiEntitiesActionResult;
 import com.azure.ai.textanalytics.models.SingleLabelClassifyAction;
 import com.azure.ai.textanalytics.models.SingleLabelClassifyActionResult;
-import com.azure.ai.textanalytics.models.SummarySentencesOrder;
+import com.azure.ai.textanalytics.models.ExtractiveSummarySentencesOrder;
 import com.azure.ai.textanalytics.models.TextAnalyticsActionResult;
 import com.azure.ai.textanalytics.models.TextAnalyticsActions;
 import com.azure.ai.textanalytics.models.TextAnalyticsError;
@@ -172,7 +169,7 @@ import static com.azure.ai.textanalytics.implementation.Utility.toAnalyzeHealthc
 import static com.azure.ai.textanalytics.implementation.Utility.toAnalyzeSentimentResultCollection;
 import static com.azure.ai.textanalytics.implementation.Utility.toCategoriesFilter;
 import static com.azure.ai.textanalytics.implementation.Utility.toExtractKeyPhrasesResultCollection;
-import static com.azure.ai.textanalytics.implementation.Utility.toExtractSummaryResultCollection;
+import static com.azure.ai.textanalytics.implementation.Utility.toExtractiveSummaryResultCollection;
 import static com.azure.ai.textanalytics.implementation.Utility.toLabelClassificationResultCollection;
 import static com.azure.ai.textanalytics.implementation.Utility.toMultiLanguageInput;
 import static com.azure.ai.textanalytics.implementation.Utility.toRecognizeCustomEntitiesResultCollection;
@@ -399,9 +396,9 @@ class AnalyzeActionsUtilClient {
             actions.getSingleLabelClassifyActions();
         final Iterable<MultiLabelClassifyAction> multiCategoryClassifyActions =
             actions.getMultiLabelClassifyActions();
-        final Iterable<AbstractSummaryAction> abstractSummaryActions =
-            actions.getAbstractSummaryActions();
-        final Iterable<ExtractSummaryAction> extractSummaryActions = actions.getExtractSummaryActions();
+        final Iterable<AbstractiveSummaryAction> abstractiveSummaryActions =
+            actions.getAbstractiveSummaryActions();
+        final Iterable<ExtractiveSummaryAction> extractiveSummaryActions = actions.getExtractiveSummaryActions();
 
         if (recognizeEntitiesActions != null) {
             recognizeEntitiesActions.forEach(action -> tasks.add(toEntitiesLROTask(action)));
@@ -440,12 +437,12 @@ class AnalyzeActionsUtilClient {
             multiCategoryClassifyActions.forEach(action -> tasks.add(toCustomMultiLabelClassificationLROTask(action)));
         }
 
-        if (abstractSummaryActions != null) {
-            abstractSummaryActions.forEach(action -> tasks.add(toAbstractiveSummarizationLROTask(action)));
+        if (abstractiveSummaryActions != null) {
+            abstractiveSummaryActions.forEach(action -> tasks.add(toAbstractiveSummarizationLROTask(action)));
         }
 
-        if (extractSummaryActions != null) {
-            extractSummaryActions.forEach(action -> tasks.add(toExtractiveSummarizationLROTask(action)));
+        if (extractiveSummaryActions != null) {
+            extractiveSummaryActions.forEach(action -> tasks.add(toExtractiveSummarizationLROTask(action)));
         }
         return tasks;
     }
@@ -564,13 +561,7 @@ class AnalyzeActionsUtilClient {
     }
 
     private HealthcareTaskParameters getHealthcareTaskParameters(AnalyzeHealthcareEntitiesAction action) {
-        final com.azure.ai.textanalytics.models.FhirVersion fhirVersion = action.getFhirVersion();
-        final FhirVersion fhirVersionImpl = fhirVersion == null ? null : FhirVersion.fromString(fhirVersion.toString());
-        final HealthcareDocumentType documentTypeImpl = action.getDocumentType() == null ? null
-            : HealthcareDocumentType.fromString(action.getDocumentType().toString());
         return new HealthcareTaskParameters()
-            .setDocumentType(documentTypeImpl)
-            .setFhirVersion(fhirVersionImpl)
             .setStringIndexType(StringIndexType.UTF16CODE_UNIT)
             .setModelVersion(action.getModelVersion())
             .setLoggingOptOut(action.isServiceLogsDisabled());
@@ -734,7 +725,7 @@ class AnalyzeActionsUtilClient {
         return task;
     }
 
-    private ExtractiveSummarizationLROTask toExtractiveSummarizationLROTask(ExtractSummaryAction action) {
+    private ExtractiveSummarizationLROTask toExtractiveSummarizationLROTask(ExtractiveSummaryAction action) {
         if (action == null) {
             return null;
         }
@@ -765,17 +756,17 @@ class AnalyzeActionsUtilClient {
     }
 
     private ExtractiveSummarizationTaskParameters getExtractiveSummarizationTaskParameters(
-        ExtractSummaryAction action) {
-        SummarySentencesOrder orderBy = action.getOrderBy();
+        ExtractiveSummaryAction action) {
+        ExtractiveSummarySentencesOrder orderBy = action.getOrderBy();
         return new ExtractiveSummarizationTaskParameters()
             .setLoggingOptOut(action.isServiceLogsDisabled())
             .setModelVersion(action.getModelVersion())
             .setStringIndexType(StringIndexType.UTF16CODE_UNIT)
             .setSentenceCount(action.getMaxSentenceCount())
-            .setSortBy(orderBy == null ? null : ExtractiveSummarizationSortingCriteria.fromString(orderBy.toString()));
+            .setSortBy(orderBy == null ? null : ExtractiveSummarySentencesOrder.fromString(orderBy.toString()));
     }
 
-    private AbstractiveSummarizationLROTask toAbstractiveSummarizationLROTask(AbstractSummaryAction action) {
+    private AbstractiveSummarizationLROTask toAbstractiveSummarizationLROTask(AbstractiveSummaryAction action) {
         if (action == null) {
             return null;
         }
@@ -785,7 +776,7 @@ class AnalyzeActionsUtilClient {
     }
 
     private AbstractiveSummarizationTaskParameters getAbstractiveSummarizationTaskParameters(
-        AbstractSummaryAction action) {
+        AbstractiveSummaryAction action) {
         return new AbstractiveSummarizationTaskParameters()
             .setStringIndexType(StringIndexType.UTF16CODE_UNIT)
             .setSentenceCount(action.getSentenceCount())
@@ -1139,8 +1130,8 @@ class AnalyzeActionsUtilClient {
         final List<RecognizeCustomEntitiesActionResult> recognizeCustomEntitiesActionResults = new ArrayList<>();
         final List<SingleLabelClassifyActionResult> singleLabelClassifyActionResults = new ArrayList<>();
         final List<MultiLabelClassifyActionResult> multiLabelClassifyActionResults = new ArrayList<>();
-        final List<AbstractSummaryActionResult> abstractSummaryActionResults = new ArrayList<>();
-        final List<ExtractSummaryActionResult> extractSummaryActionResults = new ArrayList<>();
+        final List<AbstractiveSummaryActionResult> abstractiveSummaryActionResults = new ArrayList<>();
+        final List<ExtractiveSummaryActionResult> extractiveSummaryActionResults = new ArrayList<>();
 
         if (!CoreUtils.isNullOrEmpty(tasksResults)) {
             for (int i = 0; i < tasksResults.size(); i++) {
@@ -1275,31 +1266,31 @@ class AnalyzeActionsUtilClient {
                 } else if (taskResult instanceof ExtractiveSummarizationLROResult) {
                     final ExtractiveSummarizationLROResult extractiveSummarizationLROResult =
                         (ExtractiveSummarizationLROResult) taskResult;
-                    final ExtractSummaryActionResult actionResult = new ExtractSummaryActionResult();
+                    final ExtractiveSummaryActionResult actionResult = new ExtractiveSummaryActionResult();
                     final ExtractiveSummarizationResult results = extractiveSummarizationLROResult.getResults();
                     if (results != null) {
-                        ExtractSummaryActionResultPropertiesHelper.setDocumentsResults(actionResult,
-                            toExtractSummaryResultCollection(results));
+                        ExtractiveSummaryActionResultPropertiesHelper.setDocumentsResults(actionResult,
+                            toExtractiveSummaryResultCollection(results));
                     }
                     TextAnalyticsActionResultPropertiesHelper.setActionName(actionResult,
                         extractiveSummarizationLROResult.getTaskName());
                     TextAnalyticsActionResultPropertiesHelper.setCompletedAt(actionResult,
                         extractiveSummarizationLROResult.getLastUpdateDateTime());
-                    extractSummaryActionResults.add(actionResult);
+                    extractiveSummaryActionResults.add(actionResult);
                 } else if (taskResult instanceof AbstractiveSummarizationLROResult) {
                     final AbstractiveSummarizationLROResult abstractiveSummarizationLROResult =
                         (AbstractiveSummarizationLROResult) taskResult;
-                    final AbstractSummaryActionResult actionResult = new AbstractSummaryActionResult();
+                    final AbstractiveSummaryActionResult actionResult = new AbstractiveSummaryActionResult();
                     final AbstractiveSummarizationResult results = abstractiveSummarizationLROResult.getResults();
                     if (results != null) {
-                        AbstractSummaryActionResultPropertiesHelper.setDocumentsResults(actionResult,
+                        AbstractiveSummaryActionResultPropertiesHelper.setDocumentsResults(actionResult,
                             toAbstractiveSummaryResultCollection(results));
                     }
                     TextAnalyticsActionResultPropertiesHelper.setActionName(actionResult,
                         abstractiveSummarizationLROResult.getTaskName());
                     TextAnalyticsActionResultPropertiesHelper.setCompletedAt(actionResult,
                         abstractiveSummarizationLROResult.getLastUpdateDateTime());
-                    abstractSummaryActionResults.add(actionResult);
+                    abstractiveSummaryActionResults.add(actionResult);
                 } else {
                     throw LOGGER.logExceptionAsError(new RuntimeException(
                         "Invalid Long running operation task result: " + taskResult.getClass()));
@@ -1336,9 +1327,9 @@ class AnalyzeActionsUtilClient {
                     } else if (HEALTHCARE.equals(taskName)) {
                         actionResult = analyzeHealthcareEntitiesActionResults.get(taskIndex);
                     } else if (EXTRACTIVE_SUMMARIZATION.equals(taskName)) {
-                        actionResult = extractSummaryActionResults.get(taskIndex);
+                        actionResult = extractiveSummaryActionResults.get(taskIndex);
                     } else if (ABSTRACTIVE_SUMMARIZATION.equals(taskName)) {
-                        actionResult = abstractSummaryActionResults.get(taskIndex);
+                        actionResult = abstractiveSummaryActionResults.get(taskIndex);
                     } else {
                         throw LOGGER.logExceptionAsError(new RuntimeException(
                             "Invalid task name in target reference, " + taskName));
@@ -1374,9 +1365,9 @@ class AnalyzeActionsUtilClient {
         AnalyzeActionsResultPropertiesHelper.setClassifyMultiCategoryResults(analyzeActionsResult,
             IterableStream.of(multiLabelClassifyActionResults));
         AnalyzeActionsResultPropertiesHelper.setAbstractiveSummaryResults(analyzeActionsResult,
-            IterableStream.of(abstractSummaryActionResults));
-        AnalyzeActionsResultPropertiesHelper.setExtractSummaryResults(analyzeActionsResult,
-            IterableStream.of(extractSummaryActionResults));
+            IterableStream.of(abstractiveSummaryActionResults));
+        AnalyzeActionsResultPropertiesHelper.setExtractiveSummaryResults(analyzeActionsResult,
+            IterableStream.of(extractiveSummaryActionResults));
         return analyzeActionsResult;
     }
 

@@ -13,7 +13,7 @@ public final class WorkloadNetworkDnsZonesListTests {
         WorkloadNetworkDnsZonesList model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"properties\":{\"displayName\":\"tddckcb\",\"domain\":[],\"dnsServerIps\":[],\"sourceIp\":\"rjxgciqib\",\"dnsServices\":3019773513658765057,\"provisioningState\":\"Canceled\",\"revision\":7111560833429516673},\"id\":\"hzoymibmrqy\",\"name\":\"bahwfl\",\"type\":\"szdtmhrkwof\"}],\"nextLink\":\"voqacpiexpbt\"}")
+                    "{\"value\":[{\"properties\":{\"displayName\":\"abudurgk\",\"domain\":[\"o\",\"zhjjklffhmouwq\",\"gzrf\"],\"dnsServerIps\":[\"yebizikayuh\",\"lbjbsyb\",\"qwrvtldgmfp\",\"vm\"],\"sourceIp\":\"paslthaqfxssmwu\",\"dnsServices\":5857300583432232826,\"provisioningState\":\"Updating\",\"revision\":8587897237189545303},\"id\":\"drhneuyow\",\"name\":\"kdw\",\"type\":\"t\"}],\"nextLink\":\"ib\"}")
                 .toObject(WorkloadNetworkDnsZonesList.class);
     }
 

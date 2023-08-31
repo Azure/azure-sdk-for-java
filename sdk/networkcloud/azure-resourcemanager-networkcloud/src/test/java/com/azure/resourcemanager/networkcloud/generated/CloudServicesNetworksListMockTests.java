@@ -33,7 +33,7 @@ public final class CloudServicesNetworksListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"extendedLocation\":{\"name\":\"qotoihiqakydiwfb\",\"type\":\"kwpzdqtvh\"},\"properties\":{\"additionalEgressEndpoints\":[],\"clusterId\":\"aqa\",\"detailedStatus\":\"Provisioning\",\"detailedStatusMessage\":\"ietgbebjfu\",\"enableDefaultEgressEndpoints\":\"False\",\"enabledEgressEndpoints\":[],\"hybridAksClustersAssociatedIds\":[\"dlpnfpubn\"],\"interfaceName\":\"batzviqsows\",\"provisioningState\":\"Succeeded\",\"virtualMachinesAssociatedIds\":[\"attcju\"]},\"location\":\"lrvkmjc\",\"tags\":{\"vkyylizrzbjpsf\":\"vlgfgg\",\"gbwidqlvh\":\"sfuztlvtmv\",\"zrvjfnmjmvlwyzgi\":\"koveof\",\"jpu\":\"lkujrllfojui\"},\"id\":\"yjucejikzoeo\",\"name\":\"vtzejetjklnti\",\"type\":\"yjuzkdb\"}]}";
+            "{\"value\":[{\"extendedLocation\":{\"name\":\"kk\",\"type\":\"ji\"},\"properties\":{\"additionalEgressEndpoints\":[{\"category\":\"sik\",\"endpoints\":[{\"domainName\":\"bcufqbvntn\"}]}],\"associatedResourceIds\":[\"qsorh\"],\"clusterId\":\"kxgnlykmxcpwzvmd\",\"detailedStatus\":\"Error\",\"detailedStatusMessage\":\"dt\",\"enableDefaultEgressEndpoints\":\"False\",\"enabledEgressEndpoints\":[{\"category\":\"lboncqbazqicqc\",\"endpoints\":[{\"domainName\":\"gtvxbyj\"},{\"domainName\":\"nepubdpkxyqvgx\"},{\"domainName\":\"aodetv\"},{\"domainName\":\"hkxdxuwsaifmc\"}]},{\"category\":\"nosbz\",\"endpoints\":[{\"domainName\":\"hg\"},{\"domainName\":\"vkbcknjolgjyyxp\"},{\"domainName\":\"els\"}]}],\"hybridAksClustersAssociatedIds\":[\"qzevxoqeint\"],\"interfaceName\":\"aljglzobl\",\"provisioningState\":\"Accepted\",\"virtualMachinesAssociatedIds\":[\"r\",\"ulhmzyq\",\"hdvafjrqpjiyrqjc\",\"gaxwmzwdfkbnrzo\"]},\"location\":\"dltb\",\"tags\":{\"xxsaetgz\":\"qjf\",\"uwjoedxnguca\":\"gvpyigdaqqilzdc\",\"gilfjqqacdmkxw\":\"fpaurw\"},\"id\":\"dcvjwc\",\"name\":\"z\",\"type\":\"akeciqchx\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -64,10 +64,15 @@ public final class CloudServicesNetworksListMockTests {
         PagedIterable<CloudServicesNetwork> response =
             manager.cloudServicesNetworks().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("lrvkmjc", response.iterator().next().location());
-        Assertions.assertEquals("vlgfgg", response.iterator().next().tags().get("vkyylizrzbjpsf"));
-        Assertions.assertEquals("qotoihiqakydiwfb", response.iterator().next().extendedLocation().name());
-        Assertions.assertEquals("kwpzdqtvh", response.iterator().next().extendedLocation().type());
+        Assertions.assertEquals("dltb", response.iterator().next().location());
+        Assertions.assertEquals("qjf", response.iterator().next().tags().get("xxsaetgz"));
+        Assertions.assertEquals("kk", response.iterator().next().extendedLocation().name());
+        Assertions.assertEquals("ji", response.iterator().next().extendedLocation().type());
+        Assertions.assertEquals("sik", response.iterator().next().additionalEgressEndpoints().get(0).category());
+        Assertions
+            .assertEquals(
+                "bcufqbvntn",
+                response.iterator().next().additionalEgressEndpoints().get(0).endpoints().get(0).domainName());
         Assertions
             .assertEquals(
                 CloudServicesNetworkEnableDefaultEgressEndpoints.FALSE,

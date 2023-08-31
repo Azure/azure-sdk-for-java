@@ -3,7 +3,7 @@
 
 /**
  * <p>The Azure Identity library provides
- * <a href="https://learn.microsoft.com/en-us/azure/active-directory/fundamentals/">Azure Active Directory (Azure AD)
+ * <a href="https://learn.microsoft.com/azure/active-directory/fundamentals/">Azure Active Directory (Azure AD)
  * </a> token authentication support across the
  * <a href="https://learn.microsoft.com/azure/developer/java/sdk/">Azure SDK</a>. The library focuses on
  * OAuth authentication with Azure AD, and it offers various credential classes capable of acquiring an Azure AD token
@@ -49,11 +49,80 @@
  *
  * <hr/>
  *
+ * <h2>Authenticate in Developer Environment</h2>
+ *
+ * <p>Azure supports developer environment authentication via Azure CLI, Azure Powershell and Azure Tools for IntelliJ
+ * plugin in IntelliJ IDE. It involves interactively authenticating using user credentials locally on the developer
+ * machine. Once authenticated, the login information is persisted.</p>
+ *
+ * <p>The Azure Identity library supports authenticating in developer environment via
+ * {@link com.azure.identity.AzureCliCredential}, {@link com.azure.identity.AzurePowerShellCredential} and
+ * {@link com.azure.identity.IntelliJCredential}. These credentials offer a seamless authentication experience by
+ * utilizing the cached Azure Plugin login information from their respective IDE tool. For more information refer to the
+ * <a href="https://aka.ms/azsdk/java/identity/developerenvironment/docs">developer environment authentication
+ * documentation</a>.</p>
+ *
+ * <p><strong>Sample: Construct AzureCliCredential</strong></p>
+ *
+ * <p>The following code sample demonstrates the creation of a {@link com.azure.identity.AzureCliCredential},
+ * using the {@link com.azure.identity.AzureCliCredentialBuilder} to configure it .Once this credential
+ * is created, it may be passed into the builder of many of the Azure SDK for Java client builders as the
+ * 'credential' parameter.</p>
+ *
+ * <!-- src_embed com.azure.identity.credential.azureclicredential.construct -->
+ * <pre>
+ * TokenCredential azureCliCredential = new AzureCliCredentialBuilder&#40;&#41;
+ *     .build&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.identity.credential.azureclicredential.construct -->
+ *
+ * <p>Further, it is recommended to read
+ * {@link com.azure.identity.AzureCliCredential AzureCliCredential JavaDocs} for more detailed
+ * information about the credential usage.</p>
+ *
+ * <p>For other credentials that are compatible with developer tools authentication, refer to the table below.</p>
+ *
+ * <br/>
+ *
+ * <table border="1">
+ *   <caption><strong>Authenticate via development tools</strong></caption>
+ *   <thead>
+ *     <tr>
+ *       <th>Credential class</th>
+ *       <th>Usage</th>
+ *     </tr>
+ *   </thead>
+ *   <tbody>
+ *     <tr>
+ *       <td>{@link com.azure.identity.AzurePowerShellCredential}</td>
+ *       <td>This credential authenticates in a development environment with the logged in user or service principal
+ *       in Azure PowerShell. It utilizes the account of the already logged in user on Azure Powershell
+ *       to get an access token. If there's no user logged in locally on Azure Powershell, then it will not work.
+ *       Further, it is recommended to read
+ *       {@link com.azure.identity.AzurePowerShellCredential AzurePowerShellCredential JavaDocs} for more
+ *       information about the credential usage.</td>
+ *     </tr>
+ *     <tr>
+ *       <td>{@link com.azure.identity.IntelliJCredential}</td>
+ *       <td>This credential authenticates in a development environment with the logged in user or service principal
+ *       in Azure Toolkit for IntelliJ plugin on IntelliJ IDE. It utilizes the cached login information of the Azure
+ *       Toolkit for IntelliJ plugin to seamlessly authenticate the application. If there's no user logged in locally
+ *       on Azure Toolkit for IntelliJ in IntelliJ IDE, then it will not work. Further, it is recommended to read
+ *       {@link com.azure.identity.IntelliJCredential IntelliJCredential JavaDocs} for more
+ *       information about the credential usage.</td>
+ *     </tr>
+ *   </tbody>
+ * </table>
+ *
+ * <br/>
+ *
+ * <hr/>
+ *
  * <h2> Authenticating on Azure Hosted Platforms via Managed Identity</h2>
  *
- * <p><a href="https://learn.microsoft.com/en-us/azure/active-directory/managed-identities-azure-resources/">Azure
+ * <p><a href="https://learn.microsoft.com/azure/active-directory/managed-identities-azure-resources/">Azure
  * Managed Identity</a> is a feature in
- * <a href="https://learn.microsoft.com/en-us/azure/active-directory/fundamentals/">Azure Active Directory (Azure AD)
+ * <a href="https://learn.microsoft.com/azure/active-directory/fundamentals/">Azure Active Directory (Azure AD)
  * </a> that provides a way for applications running on Azure to authenticate themselves with Azure resources without
  * needing to manage or store any secrets like passwords or keys.</p>
  *
@@ -123,12 +192,12 @@
  * <h2>Authenticate with Service Principals</h2>
  *
  * <p>Service Principal authentication is a type of authentication in Azure that enables a non-interactive login to
- * <a href="https://learn.microsoft.com/en-us/azure/active-directory/fundamentals/">Azure Active Directory (Azure AD)
+ * <a href="https://learn.microsoft.com/azure/active-directory/fundamentals/">Azure Active Directory (Azure AD)
  * </a>, allowing an application or service to authenticate itself with Azure resources.
  * A Service Principal is essentially an identity created for an application in Azure AD that can be used to
  * authenticate with Azure resources. It's like a "user identity" for the application or service, and it provides
  * a way for the application to authenticate itself with Azure resources without needing to use a user's credentials.
- * <a href="https://learn.microsoft.com/en-us/azure/active-directory/fundamentals/">Azure Active Directory
+ * <a href="https://learn.microsoft.com/azure/active-directory/fundamentals/">Azure Active Directory
  * (Azure AD)</a> allows users to register service principals which can be used as an identity for authentication.
  * A client secret and/or a client certificate associated with the registered service principal is used as the password
  * when authenticating the service principal.</p>
@@ -200,7 +269,7 @@
  *
  * <p>User credential authentication is a type of authentication in Azure that involves a user providing their
  * username and password to authenticate with Azure resources. In Azure, user credential authentication can be used to
- * authenticate with <a href="https://learn.microsoft.com/en-us/azure/active-directory/fundamentals/">Azure Active
+ * authenticate with <a href="https://learn.microsoft.com/azure/active-directory/fundamentals/">Azure Active
  * Directory (Azure AD)</a>.</p>
  *
  * <p>The Azure Identity library supports user credentials based authentication via
@@ -266,75 +335,6 @@
  *       This credential can be used on developer environment for user principals which do not require
  *       2FA/MFA (multi-facotred) authentication. Further, it is recommended to read
  *       {@link com.azure.identity.UsernamePasswordCredential UsernamePasswordCredential JavaDocs} for more
- *       information about the credential usage.</td>
- *     </tr>
- *   </tbody>
- * </table>
- *
- * <br/>
- *
- * <hr/>
- *
- * <h2>Authenticate in Developer Environment</h2>
- *
- * <p>Azure supports developer environment authentication via Azure CLI, Azure Powershell and Azure Tools for IntelliJ
- * plugin in IntelliJ IDE. It involves interactively authenticating using user credentials locally on the developer
- * machine. Once authenticated, the login information is persisted.</p>
- *
- * <p>The Azure Identity library supports authenticating in developer environment via
- * {@link com.azure.identity.AzureCliCredential}, {@link com.azure.identity.AzurePowerShellCredential} and
- * {@link com.azure.identity.IntelliJCredential}. These credentials offer a seamless authentication experience by
- * utilizing the cached Azure Plugin login information from their respective IDE tool. For more information refer to the
- * <a href="https://aka.ms/azsdk/java/identity/developerenvironment/docs">developer environment authentication
- * documentation</a>.</p>
- *
- * <p><strong>Sample: Construct AzureCliCredential</strong></p>
- *
- * <p>The following code sample demonstrates the creation of a {@link com.azure.identity.AzureCliCredential},
- * using the {@link com.azure.identity.AzureCliCredentialBuilder} to configure it .Once this credential
- * is created, it may be passed into the builder of many of the Azure SDK for Java client builders as the
- * 'credential' parameter.</p>
- *
- * <!-- src_embed com.azure.identity.credential.azureclicredential.construct -->
- * <pre>
- * TokenCredential azureCliCredential = new AzureCliCredentialBuilder&#40;&#41;
- *     .build&#40;&#41;;
- * </pre>
- * <!-- end com.azure.identity.credential.azureclicredential.construct -->
- *
- * <p>Further, it is recommended to read
- * {@link com.azure.identity.AzureCliCredential AzureCliCredential JavaDocs} for more detailed
- * information about the credential usage.</p>
- *
- * <p>For other credentials that are compatible with developer tools authentication, refer to the table below.</p>
- *
- * <br/>
- *
- * <table border="1">
- *   <caption><strong>Authenticate via development tools</strong></caption>
- *   <thead>
- *     <tr>
- *       <th>Credential class</th>
- *       <th>Usage</th>
- *     </tr>
- *   </thead>
- *   <tbody>
- *     <tr>
- *       <td>{@link com.azure.identity.AzurePowerShellCredential}</td>
- *       <td>This credential authenticates in a development environment with the logged in user or service principal
- *       in Azure PowerShell. It utilizes the account of the already logged in user on Azure Powershell
- *       to get an access token. If there's no user logged in locally on Azure Powershell, then it will not work.
- *       Further, it is recommended to read
- *       {@link com.azure.identity.AzurePowerShellCredential AzurePowerShellCredential JavaDocs} for more
- *       information about the credential usage.</td>
- *     </tr>
- *     <tr>
- *       <td>{@link com.azure.identity.IntelliJCredential}</td>
- *       <td>This credential authenticates in a development environment with the logged in user or service principal
- *       in Azure Toolkit for IntelliJ plugin on IntelliJ IDE. It utilizes the cached login information of the Azure
- *       Toolkit for IntelliJ plugin to seamlessly authenticate the application. If there's no user logged in locally
- *       on Azure Toolkit for IntelliJ in IntelliJ IDE, then it will not work. Further, it is recommended to read
- *       {@link com.azure.identity.IntelliJCredential IntelliJCredential JavaDocs} for more
  *       information about the credential usage.</td>
  *     </tr>
  *   </tbody>

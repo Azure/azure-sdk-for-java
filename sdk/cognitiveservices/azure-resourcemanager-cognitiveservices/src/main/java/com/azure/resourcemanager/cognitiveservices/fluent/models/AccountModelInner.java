@@ -9,8 +9,10 @@ import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.cognitiveservices.models.DeploymentModel;
 import com.azure.resourcemanager.cognitiveservices.models.ModelDeprecationInfo;
 import com.azure.resourcemanager.cognitiveservices.models.ModelLifecycleStatus;
+import com.azure.resourcemanager.cognitiveservices.models.ModelSku;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 import java.util.Map;
 
 /** Cognitive Services account Model. */
@@ -21,6 +23,18 @@ public final class AccountModelInner extends DeploymentModel {
      */
     @JsonProperty(value = "baseModel")
     private DeploymentModel baseModel;
+
+    /*
+     * If the model is default version.
+     */
+    @JsonProperty(value = "isDefaultVersion")
+    private Boolean isDefaultVersion;
+
+    /*
+     * The list of Model Sku.
+     */
+    @JsonProperty(value = "skus")
+    private List<ModelSku> skus;
 
     /*
      * The max capacity.
@@ -81,6 +95,46 @@ public final class AccountModelInner extends DeploymentModel {
      */
     public AccountModelInner withBaseModel(DeploymentModel baseModel) {
         this.baseModel = baseModel;
+        return this;
+    }
+
+    /**
+     * Get the isDefaultVersion property: If the model is default version.
+     *
+     * @return the isDefaultVersion value.
+     */
+    public Boolean isDefaultVersion() {
+        return this.isDefaultVersion;
+    }
+
+    /**
+     * Set the isDefaultVersion property: If the model is default version.
+     *
+     * @param isDefaultVersion the isDefaultVersion value to set.
+     * @return the AccountModelInner object itself.
+     */
+    public AccountModelInner withIsDefaultVersion(Boolean isDefaultVersion) {
+        this.isDefaultVersion = isDefaultVersion;
+        return this;
+    }
+
+    /**
+     * Get the skus property: The list of Model Sku.
+     *
+     * @return the skus value.
+     */
+    public List<ModelSku> skus() {
+        return this.skus;
+    }
+
+    /**
+     * Set the skus property: The list of Model Sku.
+     *
+     * @param skus the skus value to set.
+     * @return the AccountModelInner object itself.
+     */
+    public AccountModelInner withSkus(List<ModelSku> skus) {
+        this.skus = skus;
         return this;
     }
 
@@ -214,6 +268,13 @@ public final class AccountModelInner extends DeploymentModel {
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public AccountModelInner withSource(String source) {
+        super.withSource(source);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *
@@ -224,6 +285,9 @@ public final class AccountModelInner extends DeploymentModel {
         super.validate();
         if (baseModel() != null) {
             baseModel().validate();
+        }
+        if (skus() != null) {
+            skus().forEach(e -> e.validate());
         }
         if (deprecation() != null) {
             deprecation().validate();

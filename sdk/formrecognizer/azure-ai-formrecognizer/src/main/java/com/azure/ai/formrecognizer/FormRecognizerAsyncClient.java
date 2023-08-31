@@ -54,21 +54,78 @@ import static com.azure.ai.formrecognizer.implementation.Utility.urlActivationOp
 import static com.azure.core.util.FluxUtil.monoError;
 
 /**
- * This class provides an asynchronous client that contains all the operations that apply to Azure Form Recognizer.
- * Operations allowed by the client are recognizing receipt, business card, invoice and identity document data from
- * input documents, extracting layout information, analyzing custom forms for predefined data.
+ * <p>This class provides an asynchronous client to connect to the Form Recognizer Azure Cognitive Service.</p>
+ * <p>This client provides asynchronous methods to perform:</p>
  *
- * <p><strong>Instantiating an asynchronous Form Recognizer Client</strong></p>
- * <!-- src_embed com.azure.ai.formrecognizer.v3.FormRecognizerAsyncClient.instantiation -->
+ * <ol>
+ *   <li>Custom Form Analysis: Extraction and analysis of data from forms and documents specific to distinct business
+ *   data and use cases. Use the custom trained model by passing its modelId into the
+ *   {@link com.azure.ai.formrecognizer.FormRecognizerAsyncClient#beginRecognizeCustomForms(String, Flux, long)
+ *   beginRecognizeCustomForms}
+ *   method.</li>
+ *   <li>Prebuilt Model Analysis: Analyze receipts, business cards, invoices and other documents with
+ *   <a href="https://aka.ms/form-recognizer-service-2.1.0">supported prebuilt models</a>
+ *   Use the {@link com.azure.ai.formrecognizer.FormRecognizerAsyncClient#beginRecognizeReceipts(Flux, long)
+ *   beginRecognizeReceipts}
+ *   method to recognize receipt information.</li>
+ *   <li>Layout Analysis: Extraction and analysis of text, selection marks, tables, and bounding box coordinates,
+ *   from forms and documents. Use
+ *   {@link com.azure.ai.formrecognizer.FormRecognizerAsyncClient#beginRecognizeContent(Flux, long) beginRecognizeContent}
+ *   method tpo perform layout analysis.</li>
+ *   <li>Polling and Callbacks: It includes mechanisms for polling the service to check the status of an analysis
+ *   operation or registering callbacks to receive notifications when the analysis is complete.</li>
+ * </ol>
+ *
+ * <p><strong>Note: </strong>This client only supports
+ * {@link com.azure.ai.formrecognizer.FormRecognizerServiceVersion#V2_1} and lower.
+ * Recommended to use a newer service version,
+ * {@link com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisClient} and
+ * {@link com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationClient}.</p>
+ *
+ * <p><strong>Refer to the
+ * <a href="https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/migration-guide.md">Migration guide</a> to use API versions 2022-08-31 and up.</strong></p>
+ *
+ * <p>Service clients are the point of interaction for developers to use Azure Form Recognizer.
+ * {@link com.azure.ai.formrecognizer.FormRecognizerClient} is the synchronous service client and
+ * {@link com.azure.ai.formrecognizer.FormRecognizerAsyncClient} is the asynchronous service client.  The examples
+ * shown in this document use a credential object named DefaultAzureCredential for authentication, which is appropriate
+ * for most scenarios, including local development and production environments. Additionally, we recommend using
+ * <a href="https://learn.microsoft.com/azure/active-directory/managed-identities-azure-resources/">managed identity</a>
+ * for authentication in production environments.
+ * You can find more information on different ways of authenticating and their corresponding credential types in the
+ * <a href="https://learn.microsoft.com/java/api/overview/azure/identity-readme">Azure Identity documentation"</a>.
+ * </p>
+ *
+ * <p><strong>Sample: Construct a FormRecognizerClient with DefaultAzureCredential</strong></p>
+ *
+ * <p>The following code sample demonstrates the creation of a
+ * {@link com.azure.ai.formrecognizer.FormRecognizerAsyncClient}, using
+ * the `DefaultAzureCredentialBuilder` to configure it.</p>
+ *
+ * <!-- src_embed readme-sample-createFormRecognizerAsyncClientWithAAD -->
+ * <pre>
+ * FormRecognizerAsyncClient formRecognizerAsyncClient = new FormRecognizerClientBuilder&#40;&#41;
+ *     .endpoint&#40;&quot;&#123;endpoint&#125;&quot;&#41;
+ *     .credential&#40;new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;&#41;
+ *     .buildAsyncClient&#40;&#41;;
+ * </pre>
+ * <!-- end readme-sample-createFormRecognizerAsyncClientWithAAD  -->
+ *
+ * <p>Further, see the code sample below to use
+ * {@link com.azure.core.credential.AzureKeyCredential AzureKeyCredential} for client creation.</p>
+ *
+ * <!-- src_embed readme-sample-createFormRecognizerAsyncClient -->
  * <pre>
  * FormRecognizerAsyncClient formRecognizerAsyncClient = new FormRecognizerClientBuilder&#40;&#41;
  *     .credential&#40;new AzureKeyCredential&#40;&quot;&#123;key&#125;&quot;&#41;&#41;
  *     .endpoint&#40;&quot;&#123;endpoint&#125;&quot;&#41;
  *     .buildAsyncClient&#40;&#41;;
  * </pre>
- * <!-- end com.azure.ai.formrecognizer.v3.FormRecognizerAsyncClient.instantiation -->
+ * <!-- end readme-sample-createFormRecognizerAsyncClient  -->
  *
+ * @see com.azure.ai.formrecognizer
  * @see FormRecognizerClientBuilder
+ * @see FormRecognizerClient
  */
 @ServiceClient(builder = FormRecognizerClientBuilder.class, isAsync = true)
 public final class FormRecognizerAsyncClient {
