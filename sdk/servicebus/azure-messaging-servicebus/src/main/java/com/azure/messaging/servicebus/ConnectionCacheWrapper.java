@@ -10,7 +10,11 @@ import com.azure.messaging.servicebus.implementation.ServiceBusConnectionProcess
 import com.azure.messaging.servicebus.implementation.ServiceBusReactorAmqpConnection;
 import reactor.core.publisher.Mono;
 
-// Temporary type to support connection cache either in v1 or v2 stack.
+/**
+ * Temporary type to support connection cache either in v1 or v2 stack.
+ * v2 underlying connection cache is {@link ReactorConnectionCache}
+ * v1 underlying connection cache is {@link ServiceBusConnectionProcessor}
+ */
 final class ConnectionCacheWrapper {
     private final boolean isV2;
     private final ReactorConnectionCache<ServiceBusReactorAmqpConnection> cache;

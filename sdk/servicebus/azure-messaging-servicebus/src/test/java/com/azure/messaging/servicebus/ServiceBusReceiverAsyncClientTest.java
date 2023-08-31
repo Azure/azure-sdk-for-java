@@ -211,7 +211,7 @@ class ServiceBusReceiverAsyncClientTest {
 
         sessionReceiver = new ServiceBusReceiverAsyncClient(NAMESPACE, ENTITY_PATH, MessagingEntityType.QUEUE,
             createNamedSessionOptions(ServiceBusReceiveMode.PEEK_LOCK, PREFETCH, null, false, SESSION_ID),
-            connectionProcessor, CLEANUP_INTERVAL, instrumentation, messageSerializer, onClientClose, mock(ServiceBusSessionManager.class));
+            connectionCacheWrapper, CLEANUP_INTERVAL, instrumentation, messageSerializer, onClientClose, mock(ServiceBusSessionManager.class));
     }
 
     @AfterEach
@@ -372,7 +372,7 @@ class ServiceBusReceiverAsyncClientTest {
         final ServiceBusSessionManager sessionManager = mock(ServiceBusSessionManager.class);
         ServiceBusReceiverAsyncClient mySessionReceiver = new ServiceBusReceiverAsyncClient(NAMESPACE, ENTITY_PATH, MessagingEntityType.QUEUE,
             createNamedSessionOptions(ServiceBusReceiveMode.PEEK_LOCK, PREFETCH, maxLockRenewDuration,
-                false, SESSION_ID), connectionProcessor,
+                false, SESSION_ID), connectionCacheWrapper,
             CLEANUP_INTERVAL, instrumentation, messageSerializer, onClientClose, sessionManager);
 
         // This needs to be used with "try with resource" : https://javadoc.io/static/org.mockito/mockito-core/3.9.0/org/mockito/Mockito.html#static_mocks
@@ -675,7 +675,7 @@ class ServiceBusReceiverAsyncClientTest {
 
         final ReceiverOptions receiverOptions = createNamedSessionOptions(ServiceBusReceiveMode.PEEK_LOCK, PREFETCH, null, true, SESSION_ID);
         final ServiceBusReceiverAsyncClient sessionReceiver2 = new ServiceBusReceiverAsyncClient(NAMESPACE, ENTITY_PATH, MessagingEntityType.QUEUE,
-            receiverOptions, connectionProcessor, CLEANUP_INTERVAL, instrumentation, messageSerializer, onClientClose, mock(ServiceBusSessionManager.class));
+            receiverOptions, connectionCacheWrapper, CLEANUP_INTERVAL, instrumentation, messageSerializer, onClientClose, mock(ServiceBusSessionManager.class));
 
         // Act & Assert
         StepVerifier.create(sessionReceiver2.renewSessionLock())
@@ -1182,7 +1182,7 @@ class ServiceBusReceiverAsyncClientTest {
         final byte[] bytes = new byte[]{95, 11, 54, 10};
         ServiceBusReceiverAsyncClient mySessionReceiver = new ServiceBusReceiverAsyncClient(NAMESPACE, ENTITY_PATH, MessagingEntityType.QUEUE,
             createNamedSessionOptions(ServiceBusReceiveMode.PEEK_LOCK, PREFETCH, CLEANUP_INTERVAL,
-                false, SESSION_ID), connectionProcessor,
+                false, SESSION_ID), connectionCacheWrapper,
             CLEANUP_INTERVAL, instrumentation, messageSerializer, onClientClose, mock(ServiceBusSessionManager.class));
 
         when(managementNode.getSessionState(SESSION_ID, null))
@@ -1429,7 +1429,7 @@ class ServiceBusReceiverAsyncClientTest {
         final ReceiverOptions receiverOptions = createNamedSessionOptions(ServiceBusReceiveMode.PEEK_LOCK, PREFETCH, null,
             true, SESSION_ID);
         final ServiceBusReceiverAsyncClient sessionReceiver2 = new ServiceBusReceiverAsyncClient(NAMESPACE, ENTITY_PATH,
-            MessagingEntityType.QUEUE, receiverOptions, connectionProcessor, CLEANUP_INTERVAL, instrumentation,
+            MessagingEntityType.QUEUE, receiverOptions, connectionCacheWrapper, CLEANUP_INTERVAL, instrumentation,
             messageSerializer, onClientClose, sessionManager);
 
         final ServiceBusReceivedMessage receivedMessage3 = mock(ServiceBusReceivedMessage.class);
