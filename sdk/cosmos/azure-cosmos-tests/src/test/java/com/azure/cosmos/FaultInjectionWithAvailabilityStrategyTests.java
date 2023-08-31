@@ -837,7 +837,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                         ObjectNode.class)
                     .block();
 
-                validateStatusCode.accept(response.getStatusCode(), null);
+
 
                 CosmosDiagnosticsContext diagnosticsContext = null;
 
@@ -845,6 +845,11 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                     diagnosticsContext = response.getDiagnostics().getDiagnosticsContext();
                 }
 
+                logger.info(
+                    "DIAGNOSTICS CONTEXT: {}",
+                    diagnosticsContext != null ? diagnosticsContext.toJson(): "NULL");
+
+                validateStatusCode.accept(response.getStatusCode(), null);
                 validateDiagnosticsContext.accept(diagnosticsContext);
             } catch (Exception e) {
                 if (e instanceof CosmosException) {
