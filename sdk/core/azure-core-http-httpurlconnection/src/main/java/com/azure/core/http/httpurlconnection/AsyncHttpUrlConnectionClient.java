@@ -11,6 +11,9 @@ import java.util.concurrent.CompletableFuture;
  * It wraps around the synchronous `HttpUrlConnectionClient` and returns a `CompletableFuture`.
  */
 public class AsyncHttpUrlConnectionClient {
+    private static final String AZURE_EAGERLY_READ_RESPONSE = "azure-eagerly-read-response";
+    private static final String AZURE_IGNORE_RESPONSE_BODY = "azure-ignore-response-body";
+    private static final String AZURE_EAGERLY_CONVERT_HEADERS = "azure-eagerly-convert-headers";
 
     // The synchronous HttpUrlConnection client that performs the actual HTTP calls.
     private final HttpUrlConnectionClient httpUrlConnectionClient;
@@ -27,12 +30,28 @@ public class AsyncHttpUrlConnectionClient {
      * @return A CompletableFuture that represents the HttpResponse. This allows the caller
      *         to work with the response once it's available without blocking the main thread.
      */
-    public CompletableFuture<HttpResponse> send(HttpRequest httpRequest) {
+    /* public CompletableFuture<HttpResponse> send(HttpRequest httpRequest) {
         // Convert the synchronous call to asynchronous using Reactor's Mono
         Mono<HttpResponse> responseMono = httpUrlConnectionClient.send(httpRequest);
 
         // Convert the Mono to CompletableFuture to provide standard Java async capabilities
         return responseMono.toFuture();
+    } */
+
+    public Mono<HttpResponse> send(HttpRequest request) {
+        return send(request, Context.NONE);
+    }
+
+    public Mono<HttpResponse> send(HttpRequest request, Context context) {
+        // boolean eagerlyReadResponse = (boolean) context.getData(AZURE_EAGERLY_READ_RESPONSE).orElse(false);
+        // boolean ignoreResponseBody = (boolean) context.getData(AZURE_IGNORE_RESPONSE_BODY).orElse(false);
+        // boolean eagerlyConvertHeaders = (boolean) context.getData(AZURE_EAGERLY_CONVERT_HEADERS).orElse(false);
+
+        // ProgressReporter progressReporter = Contexts.with(context).getHttpRequestProgressReporter();
+
+        CompletableFuture<HttpResponse> responseFuture
+            = CompletableFuture.supplyAsync(() -> httpUrlConnectionClient.sendSynchronous(request));
+        return Mono.fromFuture(responseFuture);
     }
 }
 
