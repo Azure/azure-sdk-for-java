@@ -2,6 +2,7 @@ package com.azure.core.http.httpurlconnection;
 
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
+import com.azure.core.util.Context;
 import reactor.core.publisher.Mono;
 
 import java.util.concurrent.CompletableFuture;
@@ -49,9 +50,10 @@ public class AsyncHttpUrlConnectionClient {
 
         // ProgressReporter progressReporter = Contexts.with(context).getHttpRequestProgressReporter();
 
-        CompletableFuture<HttpResponse> responseFuture
-            = CompletableFuture.supplyAsync(() -> httpUrlConnectionClient.sendSynchronous(request));
-        return Mono.fromFuture(responseFuture);
+        return Mono.create(sink -> sink.onRequest(value -> Mono.fromCallable(() -> httpUrlConnectionClient.send(request, context))
+            .flatMap(responseMono -> responseMono)
+            .subscribe(sink::success,
+                sink::error)));
     }
 }
 
