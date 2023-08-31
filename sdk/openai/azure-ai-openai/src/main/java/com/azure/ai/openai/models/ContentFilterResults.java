@@ -5,6 +5,7 @@ package com.azure.ai.openai.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
+import com.azure.core.models.ResponseError;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Information about the content filtering category, if it has been detected. */
@@ -98,4 +99,23 @@ public final class ContentFilterResults {
     /** Creates an instance of ContentFilterResults class. */
     @Generated
     private ContentFilterResults() {}
+
+    /*
+     * Describes an error returned if the content filtering system is
+     * down or otherwise unable to complete the operation in time.
+     */
+    @Generated
+    @JsonProperty(value = "error")
+    private ResponseError error;
+
+    /**
+     * Get the error property: Describes an error returned if the content filtering system is down or otherwise unable
+     * to complete the operation in time.
+     *
+     * @return the error value.
+     */
+    @Generated
+    public ResponseError getError() {
+        return this.error;
+    }
 }
