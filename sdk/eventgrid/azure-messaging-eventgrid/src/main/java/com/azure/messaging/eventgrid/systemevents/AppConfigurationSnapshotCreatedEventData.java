@@ -5,89 +5,31 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Schema of the Data property of an EventGridEvent for a Microsoft.AppConfiguration.SnapshotCreated event. */
 @Fluent
-public final class AppConfigurationSnapshotCreatedEventData {
-    /*
-     * The name of snapshot that was created.
-     */
-    @JsonProperty(value = "name")
-    private String name;
-
-    /*
-     * The etag representing the new state of the snapshot.
-     */
-    @JsonProperty(value = "etag")
-    private String etag;
-
-    /*
-     * The sync token representing the server state after the event.
-     */
-    @JsonProperty(value = "syncToken")
-    private String syncToken;
-
+public final class AppConfigurationSnapshotCreatedEventData extends AppConfigurationSnapshotEventData {
     /** Creates an instance of AppConfigurationSnapshotCreatedEventData class. */
     public AppConfigurationSnapshotCreatedEventData() {}
 
-    /**
-     * Get the name property: The name of snapshot that was created.
-     *
-     * @return the name value.
-     */
-    public String getName() {
-        return this.name;
-    }
-
-    /**
-     * Set the name property: The name of snapshot that was created.
-     *
-     * @param name the name value to set.
-     * @return the AppConfigurationSnapshotCreatedEventData object itself.
-     */
+    /** {@inheritDoc} */
+    @Override
     public AppConfigurationSnapshotCreatedEventData setName(String name) {
-        this.name = name;
+        super.setName(name);
         return this;
     }
 
-    /**
-     * Get the etag property: The etag representing the new state of the snapshot.
-     *
-     * @return the etag value.
-     */
-    public String getEtag() {
-        return this.etag;
-    }
-
-    /**
-     * Set the etag property: The etag representing the new state of the snapshot.
-     *
-     * @param etag the etag value to set.
-     * @return the AppConfigurationSnapshotCreatedEventData object itself.
-     */
+    /** {@inheritDoc} */
+    @Override
     public AppConfigurationSnapshotCreatedEventData setEtag(String etag) {
-        this.etag = etag;
+        super.setEtag(etag);
         return this;
     }
 
-    /**
-     * Get the syncToken property: The sync token representing the server state after the event.
-     *
-     * @return the syncToken value.
-     */
-    public String getSyncToken() {
-        return this.syncToken;
-    }
-
-    /**
-     * Set the syncToken property: The sync token representing the server state after the event.
-     *
-     * @param syncToken the syncToken value to set.
-     * @return the AppConfigurationSnapshotCreatedEventData object itself.
-     */
+    /** {@inheritDoc} */
+    @Override
     public AppConfigurationSnapshotCreatedEventData setSyncToken(String syncToken) {
-        this.syncToken = syncToken;
+        super.setSyncToken(syncToken);
         return this;
     }
 }
