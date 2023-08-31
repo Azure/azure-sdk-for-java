@@ -1031,6 +1031,78 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 validateStatusCodeIs200Ok,
                 validateDiagnosticsContextHasDiagnosticsForOneOrTwoRegionsButTwoContactedRegions
             },
+            new Object[] {
+                "Create_500_FirstRegionOnly_NoAvailabilityStrategy_WithRetries",
+                Duration.ofSeconds(1),
+                noAvailabilityStrategy,
+                noRegionSwitchHint,
+                nonIdempotentWriteRetriesEnabled,
+                FaultInjectionOperationType.CREATE_ITEM,
+                createAnotherItemCallback,
+                injectInternalServerErrorIntoFirstRegionOnly,
+                validateStatusCodeIsInternalServerError,
+                validateDiagnosticsContextHasDiagnosticsForOnlyFirstRegion
+            },
+            new Object[] {
+                "Create_500_FirstRegionOnly_NoAvailabilityStrategy_NoRetries",
+                Duration.ofSeconds(1),
+                noAvailabilityStrategy,
+                noRegionSwitchHint,
+                nonIdempotentWriteRetriesDisabled,
+                FaultInjectionOperationType.CREATE_ITEM,
+                createAnotherItemCallback,
+                injectInternalServerErrorIntoFirstRegionOnly,
+                validateStatusCodeIsInternalServerError,
+                validateDiagnosticsContextHasDiagnosticsForOnlyFirstRegion
+            },
+            new Object[] {
+                "Delete_500_FirstRegionOnly_DefaultAvailabilityStrategy_WithRetries",
+                Duration.ofSeconds(1),
+                defaultAvailabilityStrategy,
+                noRegionSwitchHint,
+                nonIdempotentWriteRetriesEnabled,
+                FaultInjectionOperationType.DELETE_ITEM,
+                deleteItemCallback,
+                injectInternalServerErrorIntoFirstRegionOnly,
+                validateStatusCodeIsInternalServerError,
+                validateDiagnosticsContextHasDiagnosticsForOnlyFirstRegion
+            },
+            new Object[] {
+                "Delete_500_FirstRegionOnly_DefaultAvailabilityStrategy_NoRetries",
+                Duration.ofSeconds(1),
+                defaultAvailabilityStrategy,
+                noRegionSwitchHint,
+                nonIdempotentWriteRetriesDisabled,
+                FaultInjectionOperationType.DELETE_ITEM,
+                deleteItemCallback,
+                injectInternalServerErrorIntoFirstRegionOnly,
+                validateStatusCodeIsInternalServerError,
+                validateDiagnosticsContextHasDiagnosticsForOnlyFirstRegion
+            },
+            new Object[] {
+                "Patch_500_AllRegions_DefaultAvailabilityStrategy_WithRetries",
+                Duration.ofSeconds(1),
+                defaultAvailabilityStrategy,
+                noRegionSwitchHint,
+                nonIdempotentWriteRetriesEnabled,
+                FaultInjectionOperationType.PATCH_ITEM,
+                patchItemCallback,
+                injectInternalServerErrorIntoAllRegions,
+                validateStatusCodeIsInternalServerError,
+                validateDiagnosticsContextHasDiagnosticsForOnlyFirstRegion
+            },
+            new Object[] {
+                "Patch_500_AllRegions_DefaultAvailabilityStrategy_NoRetries",
+                Duration.ofSeconds(1),
+                defaultAvailabilityStrategy,
+                noRegionSwitchHint,
+                nonIdempotentWriteRetriesDisabled,
+                FaultInjectionOperationType.PATCH_ITEM,
+                patchItemCallback,
+                injectInternalServerErrorIntoAllRegions,
+                validateStatusCodeIsInternalServerError,
+                validateDiagnosticsContextHasDiagnosticsForOnlyFirstRegion
+            },
         };
     }
 
