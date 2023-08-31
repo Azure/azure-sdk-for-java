@@ -128,16 +128,32 @@ public class HttpUrlConnectionClient implements HttpClient {
     private Mono<HttpResponse> readResponse(HttpURLConnection connection, HttpRequest httpRequest) {
         return Mono.fromCallable(() -> {
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-            try (InputStream is = connection.getInputStream()) {
+            InputStream is;
+            int responseCode = connection.getResponseCode();
+
+            if (responseCode >= 400) { // If it's an HTTP error status
+                is = connection.getErrorStream();
+                if (is == null) { // In rare cases, there might not be any error stream.
+                    throw new IOException("HTTP error without any response body.");
+                }
+            } else {
+                is = connection.getInputStream();
+            }
+
+            try {
                 byte[] chunk = new byte[4096];
                 int bytesRead;
                 while ((bytesRead = is.read(chunk)) > 0) {
                     outputStream.write(chunk, 0, bytesRead);
                 }
-                return new HttpUrlConnectionResponse(httpRequest, httpRequest.getHeaders(), connection.getResponseCode(), outputStream.toByteArray());
-            } catch (IOException e) {
-                throw new RuntimeException(e);
+                return new HttpUrlConnectionResponse(httpRequest, httpRequest.getHeaders(), responseCode, outputStream.toByteArray());
+
+            } finally {
+                if (is != null) {
+                    is.close();  // Make sure to close the InputStream
+                }
             }
         });
     }
+
 }
