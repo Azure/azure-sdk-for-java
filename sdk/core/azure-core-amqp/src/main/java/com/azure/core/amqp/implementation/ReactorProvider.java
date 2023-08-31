@@ -77,7 +77,7 @@ public class ReactorProvider {
      *
      * @param reactor The QPID Reactor.
      * @param connectionId The id of the amqp connection that the Reactor serves.
-     * @param fullyQualifiedNamespace The broker FQDN.
+     * @param fullyQualifiedNamespace The fully qualified namespace of the remote broker/resource.
      * @param reactorExceptionHandler The handler to notify any errors in executor.
      * @param retryOptions the retry options, used to compute the grace period to process pending events
      *                    before shutting down the Reactor.
