@@ -27,6 +27,7 @@ public class OpenTelemetryVersionCheckRunner implements CommandLineRunner {
 
     /**
      * Component to check the OpenTelemetry version.
+     *
      * @param otelResource OpenTelemetry resource
      */
     public OpenTelemetryVersionCheckRunner(Resource otelResource) {
@@ -41,9 +42,10 @@ public class OpenTelemetryVersionCheckRunner implements CommandLineRunner {
     @Override
     public void run(String... args) {
         try {
-            int starterOTelVersionAsInt = computeOTelVersionAsInt(STARTER_OTEL_VERSION);
-            int currentOTelVersionAsInt = findCurrentOTelVersion();
-            checkOpenTelemetryVersion(currentOTelVersionAsInt, starterOTelVersionAsInt);
+            String currentOTelVersionAsString = otelResource.getAttribute(ResourceAttributes.TELEMETRY_SDK_VERSION);
+            OTelVersion currentOtelVersion = new OTelVersion(currentOTelVersionAsString);
+            OTelVersion starterOTelVersion = new OTelVersion(STARTER_OTEL_VERSION);
+            checkOpenTelemetryVersion(currentOtelVersion, starterOTelVersion);
         } catch (Exception e) {
             LOG.warn(
                 "An unexpected issue has happened during the verification of the OpenTelemetry version.",
@@ -51,30 +53,17 @@ public class OpenTelemetryVersionCheckRunner implements CommandLineRunner {
         }
     }
 
-    private int findCurrentOTelVersion() {
-        String currentOTelVersion = otelResource.getAttribute(ResourceAttributes.TELEMETRY_SDK_VERSION);
-        return computeOTelVersionAsInt(currentOTelVersion);
-    }
-
-    private static int computeOTelVersionAsInt(String oTelVersion) {
-        String oTelVersionWithoutDots = oTelVersion.replace(".", "");
-        return Integer.parseInt(oTelVersionWithoutDots);
-    }
-
     private static void checkOpenTelemetryVersion(
-        int currentOTelVersionAsInt, int starterOTelVersionAsInt) {
-        String beginningOfWarnMessage =
-            "The OpenTelemetry version is not compatible with the spring-cloud-azure-starter-monitor dependency. The OpenTelemetry version should be "
-                + STARTER_OTEL_VERSION
-                + ". ";
-        if (currentOTelVersionAsInt < starterOTelVersionAsInt) {
+        OTelVersion currentOTelVersion, OTelVersion starterOTelVersion) {
+        if (currentOTelVersion.isLessThan(starterOTelVersion)) {
             LOG.warn(
-                beginningOfWarnMessage
+                "The OpenTelemetry version is not compatible with the spring-cloud-azure-starter-monitor dependency. The OpenTelemetry version should be "
+                    + STARTER_OTEL_VERSION
+                    + ". "
                     + "Please look at the spring-cloud-azure-starter-monitor documentation to fix this.");
-        } else if (currentOTelVersionAsInt > starterOTelVersionAsInt) {
-            LOG.warn(
-                beginningOfWarnMessage
-                    + "Please use the last version of spring-cloud-azure-starter-monitor and look at the spring-cloud-azure-starter-monitor documentation to fix the compatibility issue.");
+        } else if (currentOTelVersion.isGreaterThan(starterOTelVersion)) {
+            LOG.info(
+                "A new version of spring-cloud-azure-starter-monitor dependency may be available.");
         }
     }
 }
