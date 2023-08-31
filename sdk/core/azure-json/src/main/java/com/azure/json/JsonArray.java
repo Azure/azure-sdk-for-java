@@ -11,7 +11,7 @@ import java.util.Iterator;
 /**
  * Class representing the JSON array type
  */
-public class JsonArray extends JsonDataStructure {
+public class JsonArray extends JsonElement {
 
     public JsonArray() {
         super();
@@ -28,7 +28,7 @@ public class JsonArray extends JsonDataStructure {
      */
 
 
-    List<JsonElement> elements = new ArrayList<>();
+    private List<JsonElement> elements = new ArrayList<>();
 
 
     /**
@@ -126,7 +126,7 @@ public class JsonArray extends JsonDataStructure {
      * toWriter method and then returns the resulting String.
      * @return String representation of the JsonArray object
      */
-    @Override
+
     public String toJson() throws IOException {
 
         String s = null;
@@ -256,8 +256,7 @@ public class JsonArray extends JsonDataStructure {
      * @param reader the JsonReader to use
      * @throws IOException if the JsonReader throws an exception
      */
-    @Override
-    public void build(JsonReader reader) throws IOException {
+    private void build(JsonReader reader) throws IOException {
 
         while(reader.currentToken() != JsonToken.END_ARRAY) {
 
@@ -296,7 +295,7 @@ public class JsonArray extends JsonDataStructure {
                     // It shouldn't get here, the loop prevents it BUT just in case...
                     return;
                 case END_OBJECT:
-                    //this should be an error, it's not possible
+                    //this should be an error, it's not possible with valid JSON
                     break;
 
             }

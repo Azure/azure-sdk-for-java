@@ -4,16 +4,14 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.StringWriter;
 import java.io.Writer;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Iterator;
 
 /**
  * Class representing the JSON object type.
  */
-public class JsonObject extends JsonDataStructure {
+public class JsonObject extends JsonElement {
 
     public JsonObject() {
     }
@@ -320,8 +318,8 @@ public class JsonObject extends JsonDataStructure {
             return toJson();
     }
 
-    @Override
-    public void build(JsonReader reader) throws IOException {
+
+    private void build(JsonReader reader) throws IOException {
 
         String fieldName = null;
         JsonToken token = reader.nextToken();

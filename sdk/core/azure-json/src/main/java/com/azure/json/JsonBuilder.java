@@ -53,9 +53,9 @@ public class JsonBuilder {
      * @throws IOException if the JSON string is invalid
      */
 
-    private JsonDataStructure buildOutput(JsonReader reader) throws IOException {
+    private JsonElement buildOutput(JsonReader reader) throws IOException {
         JsonToken token = reader.nextToken();
-        JsonDataStructure output = null;
+        JsonElement output = null;
         while (token != END_DOCUMENT) {
             //todo remove this debug line, and remove the comment out cases
             //System.out.printf("Token: %s%n", token);

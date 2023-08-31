@@ -44,6 +44,7 @@ public class JsonBoolean extends JsonElement {
     @Override
     public boolean isBoolean() { return true; }
 
+
     /**
      * @return boolean of whether this JsonBoolean object is currently representing
      * true
