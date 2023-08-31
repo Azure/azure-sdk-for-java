@@ -47,8 +47,6 @@ import com.azure.messaging.servicebus.implementation.ServiceBusAmqpConnection;
 import com.azure.messaging.servicebus.implementation.ServiceBusAmqpLinkProvider;
 import com.azure.messaging.servicebus.implementation.ServiceBusConnectionProcessor;
 import com.azure.messaging.servicebus.implementation.ServiceBusConstants;
-import com.azure.messaging.servicebus.implementation.ServiceBusProcessorClientOptions;
-import com.azure.messaging.servicebus.implementation.ServiceBusManagementNode;
 import com.azure.messaging.servicebus.implementation.ServiceBusReactorAmqpConnection;
 import com.azure.messaging.servicebus.implementation.instrumentation.ReceiverKind;
 import com.azure.messaging.servicebus.implementation.instrumentation.ServiceBusReceiverInstrumentation;
@@ -1163,6 +1161,22 @@ public final class ServiceBusClientBuilder implements
             .build();
         private final AtomicReference<Boolean> sessionProcessorAsyncReceiveFlag = new AtomicReference<>();
 
+        private static final String SESSION_REACTOR_ASYNC_RECEIVE_KEY = "com.azure.messaging.servicebus.session.reactor.asyncReceive.v2";
+        private static final ConfigurationProperty<Boolean> SESSION_REACTOR_ASYNC_RECEIVE_PROPERTY = ConfigurationPropertyBuilder.ofBoolean(SESSION_REACTOR_ASYNC_RECEIVE_KEY)
+            .environmentVariableName(SESSION_REACTOR_ASYNC_RECEIVE_KEY)
+            .defaultValue(false) // 'Session' Async[Reactor]Receiver Client is not on the new v2 stack by default
+            .shared(true)
+            .build();
+        private final AtomicReference<Boolean> sessionReactorAsyncReceiveFlag = new AtomicReference<>();
+
+        private static final String SESSION_SYNC_RECEIVE_KEY = "com.azure.messaging.servicebus.session.syncReceive.v2";
+        private static final ConfigurationProperty<Boolean> SESSION_SYNC_RECEIVE_PROPERTY = ConfigurationPropertyBuilder.ofBoolean(SESSION_SYNC_RECEIVE_KEY)
+            .environmentVariableName(SESSION_SYNC_RECEIVE_KEY)
+            .defaultValue(false) // 'Session' Sync Receiver Client is not on the new v2 stack by default
+            .shared(true)
+            .build();
+        private final AtomicReference<Boolean> sessionSyncReceiveFlag = new AtomicReference<>();
+
         private final Object connectionLock = new Object();
         private ReactorConnectionCache<ServiceBusReactorAmqpConnection> sharedConnectionCache;
         private final AtomicInteger openClients = new AtomicInteger();
@@ -1171,7 +1185,7 @@ public final class ServiceBusClientBuilder implements
          * Non-Session Async[Reactor|Processor]Client is on the new v2 stack by default, but the application
          * may opt out.
          *
-          * @param configuration the client configuration.
+         * @param configuration the client configuration.
          * @return true if the Non-Session Async[Reactor|Processor] receive should use the v2 stack.
          */
         boolean isNonSessionAsyncReceiveEnabled(Configuration configuration) {
@@ -1199,13 +1213,33 @@ public final class ServiceBusClientBuilder implements
         }
 
         /**
-         * Session ProcessorClient is not on the v2 stack by default, but the application may opt into the v2 stack.
+         * Session Async ProcessorClient is not on the v2 stack by default, but the application may opt into the v2 stack.
          *
          * @param configuration the client configuration.
          * @return true if session processor receive should use the v2 stack.
          */
         boolean isSessionProcessorAsyncReceiveEnabled(Configuration configuration) {
             return isOptedIn(configuration, SESSION_PROCESSOR_ASYNC_RECEIVE_PROPERTY, sessionProcessorAsyncReceiveFlag);
+        }
+
+        /**
+         * Session Async ReactorClient is not on the v2 stack by default, but the application may opt into the v2 stack.
+         *
+         * @param configuration the client configuration.
+         * @return true if session reactor receive should use the v2 stack.
+         */
+        boolean isSessionReactorAsyncReceiveEnabled(Configuration configuration) {
+            return isOptedIn(configuration, SESSION_REACTOR_ASYNC_RECEIVE_PROPERTY, sessionReactorAsyncReceiveFlag);
+        }
+
+        /**
+         * Session SyncClient is not on the v2 stack by default, but the application may opt into the v2 stack.
+         *
+         * @param configuration the client configuration.
+         * @return true if session Sync receive should use the v2 stack.
+         */
+        boolean isSessionSyncReceiveEnabled(Configuration configuration) {
+            return isOptedIn(configuration, SESSION_SYNC_RECEIVE_PROPERTY, sessionSyncReceiveFlag);
         }
 
         // Obtain the shared connection-cache based on the V2-Stack.
@@ -1962,22 +1996,20 @@ public final class ServiceBusClientBuilder implements
             } else {
                 clientIdentifier = UUID.randomUUID().toString();
             }
-            final ReactorConnectionCache<ServiceBusReactorAmqpConnection> connectionCache = getOrCreateConnectionCache(messageSerializer);
-            final Mono<ServiceBusManagementNode> managementNode = connectionCache.get()
-                .flatMap(connection -> connection.getManagementNode(entityPath, entityType));
+            final ConnectionCacheWrapper connectionCacheWrapper = new ConnectionCacheWrapper(getOrCreateConnectionCache(messageSerializer));
 
             final ServiceBusSessionAcquirer sessionAcquirer = new ServiceBusSessionAcquirer(logger, clientIdentifier,
-                entityPath, entityType, receiveMode, retryOptions.getTryTimeout(), connectionCache);
+                entityPath, entityType, receiveMode, retryOptions.getTryTimeout(), connectionCacheWrapper);
 
             final ServiceBusReceiverInstrumentation instrumentation = new ServiceBusReceiverInstrumentation(
-                createTracer(), createMeter(), connectionCache.getFullyQualifiedNamespace(),
+                createTracer(), createMeter(), connectionCacheWrapper.getFullyQualifiedNamespace(),
                 entityPath, subscriptionName, ReceiverKind.PROCESSOR);
 
             final Runnable onTerminate = v2StackSupport::onClientClose;
 
-            return new SessionsMessagePump(clientIdentifier, connectionCache.getFullyQualifiedNamespace(), connectionCache.getEntityPath(),
+            return new SessionsMessagePump(clientIdentifier, connectionCacheWrapper.getFullyQualifiedNamespace(), entityPath,
                 receiveMode, instrumentation, sessionAcquirer, maxAutoLockRenewDuration, sessionIdleTimeout, maxConcurrentSessions,
-                concurrencyPerSession, prefetchCount, enableAutoComplete, managementNode, messageSerializer,
+                concurrencyPerSession, prefetchCount, enableAutoComplete, messageSerializer,
                 retryPolicy, processMessage, processError, onTerminate);
         }
 
@@ -1996,7 +2028,8 @@ public final class ServiceBusClientBuilder implements
          *     queueName()} or {@link #topicName(String) topicName()}, respectively.
          */
         public ServiceBusSessionReceiverAsyncClient buildAsyncClient() {
-            return buildAsyncClient(true, false);
+            final boolean isSessionReactorReceiveOnV2 = v2StackSupport.isSessionReactorAsyncReceiveEnabled(configuration);
+            return buildAsyncClient(true, false, isSessionReactorReceiveOnV2);
         }
 
         /**
@@ -2013,14 +2046,15 @@ public final class ServiceBusClientBuilder implements
          *     queueName()} or {@link #topicName(String) topicName()}, respectively.
          */
         public ServiceBusSessionReceiverClient buildClient() {
+            final boolean isSessionSyncReceiveOnV2 = v2StackSupport.isSessionSyncReceiveEnabled(configuration);
             final boolean isPrefetchDisabled = prefetchCount == 0;
-            return new ServiceBusSessionReceiverClient(buildAsyncClient(false, true),
+            return new ServiceBusSessionReceiverClient(buildAsyncClient(false, true, isSessionSyncReceiveOnV2),
                 isPrefetchDisabled,
                 MessageUtils.getTotalTimeout(retryOptions));
         }
 
         // Common function to build Session-Enabled Receiver-Client - For Async[Reactor]Client Or to back SyncClient.
-        private ServiceBusSessionReceiverAsyncClient buildAsyncClient(boolean isAutoCompleteAllowed, boolean syncConsumer) {
+        private ServiceBusSessionReceiverAsyncClient buildAsyncClient(boolean isAutoCompleteAllowed, boolean syncConsumer, boolean isV2) {
             final MessagingEntityType entityType = validateEntityPaths(connectionStringEntityName, topicName,
                 queueName);
             final String entityPath = getEntityPath(entityType, queueName, topicName, subscriptionName,
@@ -2039,9 +2073,15 @@ public final class ServiceBusClientBuilder implements
                 maxAutoLockRenewDuration = Duration.ZERO;
             }
 
-            // Note: Support for Session-Enabled Clients on the V2-Stack is not in the first phase, using ServiceBusConnectionProcessor from the V1 stack.
-            final ConnectionCacheWrapper connectionCacheWrapper = new ConnectionCacheWrapper(getOrCreateConnectionProcessor(messageSerializer));
-            final Runnable onClientClose = ServiceBusClientBuilder.this::onClientClose;
+            final ConnectionCacheWrapper connectionCacheWrapper;
+            final Runnable onClientClose;
+            if (isV2) {
+                connectionCacheWrapper = new ConnectionCacheWrapper(getOrCreateConnectionCache(messageSerializer));
+                onClientClose = ServiceBusClientBuilder.this.v2StackSupport::onClientClose;
+            } else {
+                connectionCacheWrapper = new ConnectionCacheWrapper(getOrCreateConnectionProcessor(messageSerializer));
+                onClientClose = ServiceBusClientBuilder.this::onClientClose;
+            }
             final ReceiverOptions receiverOptions = createUnnamedSessionOptions(receiveMode, prefetchCount,
                 maxAutoLockRenewDuration, enableAutoComplete, maxConcurrentSessions, sessionIdleTimeout);
 

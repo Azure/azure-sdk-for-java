@@ -11,10 +11,6 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.logging.LoggingEventBuilder;
 import com.azure.messaging.servicebus.implementation.DispositionStatus;
 import com.azure.messaging.servicebus.implementation.MessageUtils;
-import com.azure.messaging.servicebus.implementation.ServiceBusManagementNode;
-import com.azure.messaging.servicebus.implementation.ServiceBusReceiveLink;
-import com.azure.messaging.servicebus.implementation.ServiceBusReceiveLink.SessionProperties;
-import com.azure.messaging.servicebus.implementation.instrumentation.ServiceBusTracer;
 import org.apache.qpid.proton.amqp.transport.DeliveryState;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.FluxSink;
@@ -35,27 +31,20 @@ import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.
 final class ServiceBusSingleSessionManager implements IServiceBusSessionManager {
     private final ClientLogger logger;
     private final String identifier;
-    private final String sessionId;
     private final MessageSerializer serializer;
     private final Duration operationTimeout;
     private final ServiceBusSessionReactorReceiver sessionReceiver;
     private final MessageFlux messageFlux;
 
-    ServiceBusSingleSessionManager(ClientLogger logger, ServiceBusTracer tracer, String identifier,
-        SessionProperties sessionProperties, ServiceBusReceiveLink sessionLink, Duration maxSessionLockRenew, int prefetch,
-        Mono<ServiceBusManagementNode> managementNode, MessageSerializer serializer, AmqpRetryOptions retryOptions) {
+    ServiceBusSingleSessionManager(ClientLogger logger, String identifier,
+        ServiceBusSessionReactorReceiver sessionReceiver, int prefetch,
+        MessageSerializer serializer, AmqpRetryOptions retryOptions) {
         this.logger = Objects.requireNonNull(logger, "logger cannot be null.");
-        Objects.requireNonNull(tracer,  "tracer cannot be null.");
         this.identifier = identifier;
-        Objects.requireNonNull(sessionProperties, "sessionProperties cannot be null.");
-        this.sessionId = sessionProperties.getSessionId();
-        Objects.requireNonNull(sessionLink, "sessionLink cannot be null.");
-        Objects.requireNonNull(maxSessionLockRenew, "maxSessionLockRenew cannot be null.");
-        Objects.requireNonNull(managementNode, "managementNode cannot be null.");
+        this.sessionReceiver = Objects.requireNonNull(sessionReceiver, "sessionReceiver cannot be null.");
         this.serializer = Objects.requireNonNull(serializer, "serializer cannot be null.");
         Objects.requireNonNull(retryOptions, "retryOptions cannot be null.");
         this.operationTimeout = retryOptions.getTryTimeout();
-        this.sessionReceiver = new ServiceBusSessionReactorReceiver(logger, tracer, managementNode, sessionProperties, sessionLink, maxSessionLockRenew, null);
         final Flux<ServiceBusSessionReactorReceiver> messageFluxUpstream = new SessionReceiverStream(sessionReceiver).flux();
         this.messageFlux = new MessageFlux(messageFluxUpstream, prefetch, CreditFlowMode.RequestDriven, NULL_RETRY_POLICY);
     }
@@ -67,14 +56,14 @@ final class ServiceBusSingleSessionManager implements IServiceBusSessionManager 
 
     @Override
     public String getLinkName(String sessionId) {
-        return this.sessionId.equals(sessionId) ? sessionReceiver.getLinkName() : null;
+        return sessionReceiver.getSessionId().equals(sessionId) ? sessionReceiver.getLinkName() : null;
     }
 
     @Override
     public Flux<ServiceBusMessageContext> receive() {
         return receiveMessages()
             .map(m -> new ServiceBusMessageContext(m))
-            .onErrorResume(e -> Mono.just(new ServiceBusMessageContext(sessionId, e)));
+            .onErrorResume(e -> Mono.just(new ServiceBusMessageContext(sessionReceiver.getSessionId(), e)));
     }
 
     @Override
@@ -83,7 +72,7 @@ final class ServiceBusSingleSessionManager implements IServiceBusSessionManager 
         ServiceBusTransactionContext transactionContext) {
         final DeliveryState deliveryState = MessageUtils.getDeliveryState(dispositionStatus, deadLetterReason,
             deadLetterDescription, propertiesToModify, transactionContext);
-        if (this.sessionId.equals(sessionId)) {
+        if (sessionReceiver.getSessionId().equals(sessionId)) {
             return sessionReceiver.updateDisposition(lockToken, deliveryState).thenReturn(true);
             // Once the side-by-side support for V1 is no longer needed, as part of deleting V1 ServiceBusSessionManager,
             // Update this method to return Mono<Void> and remove the thenReturn(true).
@@ -105,7 +94,7 @@ final class ServiceBusSingleSessionManager implements IServiceBusSessionManager 
             .map(qpidMessage -> {
                 final ServiceBusReceivedMessage m = serializer.deserialize(qpidMessage, ServiceBusReceivedMessage.class);
                 logger.atVerbose()
-                    .addKeyValue(SESSION_ID_KEY, sessionId)
+                    .addKeyValue(SESSION_ID_KEY, sessionReceiver.getSessionId())
                     .addKeyValue(MESSAGE_ID_LOGGING_KEY, m.getMessageId())
                     .log("Received message.");
                 return m;
@@ -116,7 +105,7 @@ final class ServiceBusSingleSessionManager implements IServiceBusSessionManager 
     }
 
     private LoggingEventBuilder withLinkInfo(LoggingEventBuilder builder) {
-        return builder.addKeyValue(SESSION_ID_KEY, sessionId)
+        return builder.addKeyValue(SESSION_ID_KEY, sessionReceiver.getSessionId())
             .addKeyValue(ENTITY_PATH_KEY, sessionReceiver.getEntityPath())
             .addKeyValue(LINK_NAME_KEY, sessionReceiver.getLinkName());
     }
