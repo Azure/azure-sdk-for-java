@@ -97,6 +97,9 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
     private final static BiConsumer<Integer, Integer> validateStatusCodeIs201Created =
         (statusCode, subStatusCode) -> assertThat(statusCode).isEqualTo(HttpConstants.StatusCodes.CREATED);
 
+    private final static BiConsumer<Integer, Integer> validateStatusCodeIs204NoContent =
+        (statusCode, subStatusCode) -> assertThat(statusCode).isEqualTo(HttpConstants.StatusCodes.NO_CONTENT);
+
     private final static BiConsumer<Integer, Integer> validateStatusCodeIsInternalServerError =
         (statusCode, subStatusCode) -> {
             assertThat(statusCode).isEqualTo(HttpConstants.StatusCodes.INTERNAL_SERVER_ERROR);
@@ -803,6 +806,12 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 CosmosPatchOperations patchOperations = CosmosPatchOperations.create();
                 patchOperations.add("/newField", UUID.randomUUID().toString());
 
+                if (params.nonIdempotentWriteRetriesEnabled) {
+                    params.options.setNonIdempotentWriteRetryPolicy(
+                        true, true
+                    );
+                }
+
                 return params.container
                     .patchItem(
                         params.idAndPkValuePair.getLeft(),
@@ -962,7 +971,66 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 validateStatusCodeIsServiceUnavailable,
                 validateDiagnosticsContextHasDiagnosticsForOnlyFirstRegion
             },
-
+            new Object[] {
+                "Patch_503_FirstRegionOnly_WithWriteRetries",
+                Duration.ofSeconds(1),
+                defaultAvailabilityStrategy,
+                noRegionSwitchHint,
+                nonIdempotentWriteRetriesEnabled,
+                FaultInjectionOperationType.PATCH_ITEM,
+                patchItemCallback,
+                injectServiceUnavailableIntoFirstRegionOnly,
+                validateStatusCodeIs200Ok,
+                validateDiagnosticsContextHasDiagnosticsForOneOrTwoRegionsButTwoContactedRegions
+            },
+            new Object[] {
+                "Delete_503_FirstRegionOnly_WithWriteRetries",
+                Duration.ofSeconds(1),
+                defaultAvailabilityStrategy,
+                noRegionSwitchHint,
+                nonIdempotentWriteRetriesEnabled,
+                FaultInjectionOperationType.DELETE_ITEM,
+                deleteItemCallback,
+                injectServiceUnavailableIntoFirstRegionOnly,
+                validateStatusCodeIs204NoContent,
+                validateDiagnosticsContextHasDiagnosticsForOneOrTwoRegionsButTwoContactedRegions
+            },
+            new Object[] {
+                "Replace_503_FirstRegionOnly_WithWriteRetries",
+                Duration.ofSeconds(1),
+                defaultAvailabilityStrategy,
+                noRegionSwitchHint,
+                nonIdempotentWriteRetriesEnabled,
+                FaultInjectionOperationType.REPLACE_ITEM,
+                replaceItemCallback,
+                injectServiceUnavailableIntoFirstRegionOnly,
+                validateStatusCodeIs200Ok,
+                validateDiagnosticsContextHasDiagnosticsForOneOrTwoRegionsButTwoContactedRegions
+            },
+            new Object[] {
+                "UpsertNew_503_FirstRegionOnly_WithWriteRetries",
+                Duration.ofSeconds(1),
+                defaultAvailabilityStrategy,
+                noRegionSwitchHint,
+                nonIdempotentWriteRetriesEnabled,
+                FaultInjectionOperationType.UPSERT_ITEM,
+                upsertAnotherItemCallback,
+                injectServiceUnavailableIntoFirstRegionOnly,
+                validateStatusCodeIs201Created,
+                validateDiagnosticsContextHasDiagnosticsForOneOrTwoRegionsButTwoContactedRegions
+            },
+            new Object[] {
+                "UpsertExisting_503_FirstRegionOnly_WithWriteRetries",
+                Duration.ofSeconds(1),
+                defaultAvailabilityStrategy,
+                noRegionSwitchHint,
+                nonIdempotentWriteRetriesEnabled,
+                FaultInjectionOperationType.UPSERT_ITEM,
+                upsertExistingItemCallback,
+                injectServiceUnavailableIntoFirstRegionOnly,
+                validateStatusCodeIs200Ok,
+                validateDiagnosticsContextHasDiagnosticsForOneOrTwoRegionsButTwoContactedRegions
+            },
         };
     }
 
@@ -1187,6 +1255,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 params.container = testContainer;
                 params.options = itemRequestOptions;
                 params.idAndPkValuePair = idAndPkValPair;
+                params.nonIdempotentWriteRetriesEnabled = nonIdempotentWriteRetriesEnabled;
 
                 CosmosItemResponse<?> response = actionAfterInitialCreation.apply(params);
 
@@ -1269,5 +1338,6 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
         public CosmosPatchItemRequestOptions options;
         public CosmosAsyncContainer container;
         public Pair<String, String> idAndPkValuePair;
+        public Boolean nonIdempotentWriteRetriesEnabled;
     }
 }
