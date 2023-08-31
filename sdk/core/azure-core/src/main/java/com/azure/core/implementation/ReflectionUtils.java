@@ -3,13 +3,9 @@
 
 package com.azure.core.implementation;
 
-import com.azure.core.implementation.reflection.ReflectionUtilsApi;
-import com.azure.core.implementation.reflection.ReflectionUtilsClassic;
-import com.azure.core.implementation.reflection.ReflectionUtilsMethodHandle;
 import com.azure.core.util.logging.ClientLogger;
 
 import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
 /**
@@ -54,15 +50,6 @@ public abstract class ReflectionUtils {
         return INSTANCE.getConstructorInvoker(targetClass, constructor, scopeToAzureCore);
     }
 
-    public static Invoker getSetterFieldInvoker(Class<?> targetClass, Field field) throws Exception {
-        return getSetterFieldInvoker(targetClass, field, true);
-    }
-
-    public static Invoker getSetterFieldInvoker(Class<?> targetClass, Field field, boolean scopeToAzureCore)
-        throws Exception {
-        return INSTANCE.getSetterFieldInvoker(targetClass, field, scopeToAzureCore);
-    }
-
     public static boolean isModuleBased() {
         return INSTANCE.isModuleBased();
     }
@@ -73,17 +60,12 @@ public abstract class ReflectionUtils {
 
     private static final class NoOpInvoker implements Invoker {
         @Override
-        public Object invoke(Object target, Object... args) throws Throwable {
+        public Object invokeStatic(Object... args) {
             return null;
         }
 
         @Override
-        public Object invokeWithArguments(Object target, Object... args) throws Throwable {
-            return null;
-        }
-
-        @Override
-        public Object invokeExact(Object target, Object... args) throws Throwable {
+        public Object invokeWithArguments(Object target, Object... args) {
             return null;
         }
 

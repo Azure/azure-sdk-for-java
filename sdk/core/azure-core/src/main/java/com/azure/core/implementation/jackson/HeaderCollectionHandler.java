@@ -94,11 +94,7 @@ final class HeaderCollectionHandler {
             logger.verbose("Set header collection {} on class {} using reflection.", fieldName, clazzSimpleName);
 
             return true;
-        } catch (Throwable ex) {
-            if (ex instanceof Error) {
-                throw (Error) ex;
-            }
-
+        } catch (Exception ex) {
             logger.verbose("Failed to set header {} collection on class {} using reflection.", fieldName,
                 clazzSimpleName, ex);
             return false;

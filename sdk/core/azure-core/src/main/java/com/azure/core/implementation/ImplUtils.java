@@ -356,12 +356,12 @@ public final class ImplUtils {
 
     @SuppressWarnings("unchecked")
     public static <T> Class<? extends T> getClassByName(String className) {
-        Objects.requireNonNull("'className' cannot be null");
+        Objects.requireNonNull(className, "'className' cannot be null");
         try {
             return (Class<? extends T>) Class.forName(className, false, ImplUtils.class.getClassLoader());
         } catch (ClassNotFoundException e) {
-            String message = String.format("Class `%s` is not found on the classpath.", className);
-            throw LOGGER.logExceptionAsError(new RuntimeException(message, e));
+            throw LOGGER.logExceptionAsError(new RuntimeException(
+                "Class '" + className + "' is not found on the classpath.", e));
         }
     }
 

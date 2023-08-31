@@ -1,8 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.core.implementation.reflection;
-
-import com.azure.core.implementation.Invoker;
+package com.azure.core.implementation;
 
 import java.lang.reflect.Method;
 
@@ -17,17 +15,12 @@ final class MethodInvoker implements Invoker {
     }
 
     @Override
-    public Object invoke(Object target, Object... args) throws Throwable {
-        return method.invoke(target, args);
+    public Object invokeStatic(Object... args) throws Exception {
+        return method.invoke(null, args);
     }
 
     @Override
-    public Object invokeWithArguments(Object target, Object... args) throws Throwable {
-        return method.invoke(target, args);
-    }
-
-    @Override
-    public Object invokeExact(Object target, Object... args) throws Throwable {
+    public Object invokeWithArguments(Object target, Object... args) throws Exception {
         return method.invoke(target, args);
     }
 

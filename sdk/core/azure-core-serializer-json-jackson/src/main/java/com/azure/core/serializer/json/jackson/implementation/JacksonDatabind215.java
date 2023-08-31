@@ -77,18 +77,18 @@ final class JacksonDatabind215 {
         }
 
         try {
-            Object streamReadConstraintsBuilder = CREATE_STREAM_READ_CONSTRAINTS_BUILDER.invoke(null);
+            Object streamReadConstraintsBuilder = CREATE_STREAM_READ_CONSTRAINTS_BUILDER.invokeStatic();
 
-            SET_MAX_STRING_LENGTH.invoke(streamReadConstraintsBuilder, 50 * 1024 * 1024);
-            SET_STREAM_READ_CONSTRAINTS.invoke(objectMapper.tokenStreamFactory(),
-                BUILD_STREAM_READ_CONSTRAINTS.invoke(streamReadConstraintsBuilder));
+            SET_MAX_STRING_LENGTH.invokeWithArguments(streamReadConstraintsBuilder, 50 * 1024 * 1024);
+            SET_STREAM_READ_CONSTRAINTS.invokeWithArguments(objectMapper.tokenStreamFactory(),
+                BUILD_STREAM_READ_CONSTRAINTS.invokeWithArguments(streamReadConstraintsBuilder));
 
             return objectMapper;
-        } catch (Throwable throwable) {
-            if (throwable instanceof Error) {
-                throw (Error) throwable;
+        } catch (Exception exception) {
+            if (exception instanceof RuntimeException) {
+                throw LOGGER.logExceptionAsError((RuntimeException) exception);
             } else {
-                throw LOGGER.logExceptionAsError(new IllegalStateException(throwable));
+                throw LOGGER.logExceptionAsError(new IllegalStateException(exception));
             }
         }
     }

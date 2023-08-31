@@ -128,17 +128,13 @@ public final class ResponseConstructorsCache {
 
     private static Response<?> constructResponse(Invoker invoker, String exceptionMessage, Object... params) {
         try {
-            return (Response<?>) invoker.invokeWithArguments(params);
-        } catch (Throwable throwable) {
-            if (throwable instanceof Error) {
-                throw (Error) throwable;
+            return (Response<?>) invoker.invokeStatic(params);
+        } catch (Exception exception) {
+            if (exception instanceof RuntimeException) {
+                throw LOGGER.logExceptionAsError((RuntimeException) exception);
             }
 
-            if (throwable instanceof RuntimeException) {
-                throw LOGGER.logExceptionAsError((RuntimeException) throwable);
-            }
-
-            throw LOGGER.logExceptionAsError(new IllegalStateException(exceptionMessage, throwable));
+            throw LOGGER.logExceptionAsError(new IllegalStateException(exceptionMessage, exception));
         }
     }
 }

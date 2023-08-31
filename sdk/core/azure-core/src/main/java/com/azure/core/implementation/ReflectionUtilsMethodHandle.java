@@ -1,9 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.core.implementation.reflection;
+package com.azure.core.implementation;
 
-import com.azure.core.implementation.Invoker;
-import com.azure.core.implementation.ReflectionUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.logging.LogLevel;
 
@@ -11,14 +9,14 @@ import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodType;
 import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.security.PrivilegedExceptionAction;
 
 /**
  * Implementation for {@link ReflectionUtilsApi} using {@code java.lang.invoke} to handle reflectively invoking APIs.
  */
-public final class ReflectionUtilsMethodHandle implements ReflectionUtilsApi {
+@SuppressWarnings("deprecation")
+final class ReflectionUtilsMethodHandle implements ReflectionUtilsApi {
     private static final ClientLogger LOGGER = new ClientLogger(ReflectionUtilsMethodHandle.class);
     private static final boolean MODULE_BASED;
 
@@ -112,14 +110,6 @@ public final class ReflectionUtilsMethodHandle implements ReflectionUtilsApi {
         MethodHandles.Lookup lookup = getLookupToUse(targetClass, scopeToAzureCore);
 
         return new MethodHandleInvoker(lookup.unreflectConstructor(constructor));
-    }
-
-    @Override
-    public Invoker getSetterFieldInvoker(Class<?> targetClass, Field setter, boolean scopeToAzureCore)
-        throws Exception {
-        MethodHandles.Lookup lookup = getLookupToUse(targetClass, scopeToAzureCore);
-
-        return new MethodHandleInvoker(lookup.unreflectSetter(setter));
     }
 
     @Override

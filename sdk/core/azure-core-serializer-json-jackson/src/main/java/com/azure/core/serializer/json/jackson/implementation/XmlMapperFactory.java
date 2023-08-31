@@ -83,7 +83,7 @@ public final class XmlMapperFactory {
         ObjectMapper xmlMapper;
         try {
             MapperBuilder<?, ?> xmlMapperBuilder = ObjectMapperFactory
-                .initializeMapperBuilder((MapperBuilder<?, ?>) createXmlMapperBuilder.invoke(null));
+                .initializeMapperBuilder((MapperBuilder<?, ?>) createXmlMapperBuilder.invokeStatic());
 
             defaultUseWrapper.invokeWithArguments(xmlMapperBuilder, false);
             enableWriteXmlDeclaration.invokeWithArguments(xmlMapperBuilder, writeXmlDeclaration);
@@ -95,12 +95,8 @@ public final class XmlMapperFactory {
             enableEmptyElementAsNull.invokeWithArguments(xmlMapperBuilder, emptyElementAsNull);
 
             xmlMapper = xmlMapperBuilder.build();
-        }  catch (Throwable e) {
-            if (e instanceof Error) {
-                throw (Error) e;
-            }
-
-            throw LOGGER.logExceptionAsError(new IllegalStateException("Unable to create XmlMapper instance.", e));
+        }  catch (Exception ex) {
+            throw LOGGER.logExceptionAsError(new IllegalStateException("Unable to create XmlMapper instance.", ex));
         }
 
         if (useJackson212 && jackson212IsSafe) {

@@ -1,8 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.core.implementation.reflection;
-
-import com.azure.core.implementation.Invoker;
+package com.azure.core.implementation;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
@@ -37,18 +35,6 @@ public interface ReflectionUtilsApi {
      */
     Invoker getConstructorInvoker(Class<?> targetClass, Constructor<?> constructor, boolean scopeToAzureCore)
         throws Exception;
-
-    /**
-     * Creates an {@link Invoker} instance that will invoke a {@link Field} setter.
-     *
-     * @param targetClass The class that contains the setter.
-     * @param setter The setter to invoke.
-     * @param scopeToAzureCore If Java 9+ modules is being used this will scope MethodHandle-based reflection to using
-     * {@code azure-core} as the scoped module, otherwise this is ignored.
-     * @return An {@link Invoker} instance that will invoke the setter.
-     * @throws Exception If the {@link Invoker} cannot be created.
-     */
-    Invoker getSetterFieldInvoker(Class<?> targetClass, Field setter, boolean scopeToAzureCore) throws Exception;
 
     /**
      * Indicates whether the {@link ReflectionUtilsApi} instance uses Java 9+ modules.

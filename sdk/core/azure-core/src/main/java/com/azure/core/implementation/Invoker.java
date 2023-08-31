@@ -7,58 +7,25 @@ package com.azure.core.implementation;
  */
 public interface Invoker {
     /**
-     * Invokes the API on the target object with the provided arguments.
+     * Invokes an API that doesn't have a target.
      * <p>
-     * If the implementation is MethodHandle-based {@code target} is ignored as the MethodHandle already knows the
-     * target object.
-     * <p>
-     * For static APIs {@code target} must be null.
-     * <p>
-     * For MethodHandle-based implementations this is equivalent to MethodHandle.invoke, for reflection-based
-     * implementations all APIs are equivalent.
+     * APIs with a target are constructors and static methods.
      *
-     * @param target The target object to invoke the API on.
-     * @param args The arguments to pass to the API.
      * @return The result of invoking the API.
-     * @throws Throwable If the API invocation fails.
+     * @param args The arguments to pass to the API.
+     * @throws Exception If the API invocation fails.
      */
-    Object invoke(Object target, Object... args) throws Throwable;
+    Object invokeStatic(Object... args) throws Exception;
 
     /**
      * Invokes the API on the target object with the provided arguments.
-     * <p>
-     * If the implementation is MethodHandle-based {@code target} is ignored as the MethodHandle already knows the
-     * target object.
-     * <p>
-     * For static APIs {@code target} must be null.
-     * <p>
-     * For MethodHandle-based implementations this is equivalent to MethodHandle.invoke, for reflection-based
-     * implementations all APIs are equivalent.
      *
      * @param target The target object to invoke the API on.
      * @param args The arguments to pass to the API.
      * @return The result of invoking the API.
-     * @throws Throwable If the API invocation fails.
+     * @throws Exception If the API invocation fails.
      */
-    Object invokeWithArguments(Object target, Object... args) throws Throwable;
-
-    /**
-     * Invokes the API on the target object with the provided arguments.
-     * <p>
-     * If the implementation is MethodHandle-based {@code target} is ignored as the MethodHandle already knows the
-     * target object.
-     * <p>
-     * For static APIs {@code target} must be null.
-     * <p>
-     * For MethodHandle-based implementations this is equivalent to MethodHandle.invoke, for reflection-based
-     * implementations all APIs are equivalent.
-     *
-     * @param target The target object to invoke the API on.
-     * @param args The arguments to pass to the API.
-     * @return The result of invoking the API.
-     * @throws Throwable If the API invocation fails.
-     */
-    Object invokeExact(Object target, Object... args) throws Throwable;
+    Object invokeWithArguments(Object target, Object... args) throws Exception;
 
     /**
      * Gets the number of parameters the API takes.

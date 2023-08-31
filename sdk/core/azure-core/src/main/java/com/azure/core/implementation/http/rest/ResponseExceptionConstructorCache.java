@@ -49,16 +49,12 @@ public final class ResponseExceptionConstructorCache {
         HttpResponse httpResponse, Object exceptionBody) {
         try {
             return (T) invoker.invokeWithArguments(exceptionMessage, httpResponse, exceptionBody);
-        } catch (Throwable throwable) {
-            if (throwable instanceof Error) {
-                throw (Error) throwable;
+        } catch (Exception exception) {
+            if (exception instanceof RuntimeException) {
+                throw LOGGER.logExceptionAsError((RuntimeException) exception);
             }
 
-            if (throwable instanceof RuntimeException) {
-                throw LOGGER.logExceptionAsError((RuntimeException) throwable);
-            }
-
-            throw LOGGER.logExceptionAsError(new IllegalStateException(exceptionMessage, throwable));
+            throw LOGGER.logExceptionAsError(new IllegalStateException(exceptionMessage, exception));
         }
     }
 }

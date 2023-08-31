@@ -93,14 +93,12 @@ public final class ReferenceManagerImpl implements ReferenceManager {
             new CleanableReference<>(object, cleanupAction, this);
         } else {
             try {
-                CLEANER_REGISTER.invoke(CLEANER, object, cleanupAction);
-            } catch (Throwable throwable) {
-                if (throwable instanceof Error) {
-                    throw (Error) throwable;
-                } else if (throwable instanceof RuntimeException) {
-                    throw LOGGER.logExceptionAsError((RuntimeException) throwable);
+                CLEANER_REGISTER.invokeWithArguments(CLEANER, object, cleanupAction);
+            } catch (Exception exception) {
+                if (exception instanceof RuntimeException) {
+                    throw LOGGER.logExceptionAsError((RuntimeException) exception);
                 } else {
-                    throw LOGGER.logExceptionAsError(new RuntimeException(throwable));
+                    throw LOGGER.logExceptionAsError(new RuntimeException(exception));
                 }
             }
         }

@@ -40,13 +40,11 @@ public class JsonSerializableDeserializer extends JsonDeserializer<JsonSerializa
         try {
             return jsonSerializableType.cast(readJson.invokeWithArguments(
                 new JacksonJsonReader(p, null, null, false, null)));
-        } catch (Throwable e) {
-            if (e instanceof IOException) {
-                throw (IOException) e;
-            } else if (e instanceof Exception) {
-                throw new IOException(e);
+        } catch (Exception exception) {
+            if (exception instanceof IOException) {
+                throw (IOException) exception;
             } else {
-                throw (Error) e;
+                throw new IOException(exception);
             }
         }
     }

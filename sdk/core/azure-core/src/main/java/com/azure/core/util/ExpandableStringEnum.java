@@ -70,8 +70,8 @@ public abstract class ExpandableStringEnum<T extends ExpandableStringEnum<T>> {
             }
 
             try {
-                value = (T) ctor.invoke(null);
-            } catch (Throwable e) {
+                value = (T) ctor.invokeWithArguments(null);
+            } catch (Exception e) {
                 LOGGER.warning("Failed to create {}, default constructor threw exception", clazz.getName(), e);
                 return null;
             }

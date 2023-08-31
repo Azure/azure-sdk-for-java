@@ -302,14 +302,10 @@ public final class ObjectMapperShim {
             if (constructor != NO_CONSTRUCTOR_INVOKER) {
                 return (T) constructor.invokeWithArguments(headers);
             }
-        } catch (Throwable throwable) {
-            if (throwable instanceof Error) {
-                throw (Error) throwable;
-            }
-
+        } catch (Exception exception) {
             // invokeWithArguments will fail with a non-RuntimeException if the reflective call was invalid.
-            if (throwable instanceof RuntimeException) {
-                throw (RuntimeException) throwable;
+            if (exception instanceof RuntimeException) {
+                throw (RuntimeException) exception;
             }
 
             LOGGER.verbose("Failed to find or use invoker Constructor that accepts HttpHeaders for "

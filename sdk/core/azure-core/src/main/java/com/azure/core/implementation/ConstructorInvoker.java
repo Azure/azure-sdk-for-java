@@ -1,8 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.core.implementation.reflection;
-
-import com.azure.core.implementation.Invoker;
+package com.azure.core.implementation;
 
 import java.lang.reflect.Constructor;
 
@@ -17,17 +15,12 @@ final class ConstructorInvoker implements Invoker {
     }
 
     @Override
-    public Object invoke(Object obj, Object... args) throws Throwable {
+    public Object invokeStatic(Object... args) throws Exception {
         return constructor.newInstance(args);
     }
 
     @Override
-    public Object invokeWithArguments(Object obj, Object... args) throws Throwable {
-        return constructor.newInstance(args);
-    }
-
-    @Override
-    public Object invokeExact(Object obj, Object... args) throws Throwable {
+    public Object invokeWithArguments(Object target, Object... args) throws Exception {
         return constructor.newInstance(args);
     }
 
