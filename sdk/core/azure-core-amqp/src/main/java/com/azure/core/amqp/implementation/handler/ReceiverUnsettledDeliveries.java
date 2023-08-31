@@ -56,7 +56,7 @@ public final class ReceiverUnsettledDeliveries implements AutoCloseable {
     // (TODO: anuchan; consider parametrizing the value of deliveryTag?).
     private static final String DELIVERY_TAG_KEY = "lockToken";
     private final AtomicBoolean isTerminated = new AtomicBoolean();
-    private final String hostName;
+    private final String hostname;
     private final String entityPath;
     private final String receiveLinkName;
     private final ReactorDispatcher dispatcher;
@@ -80,7 +80,7 @@ public final class ReceiverUnsettledDeliveries implements AutoCloseable {
     /**
      * Creates ReceiverUnsettledDeliveries.
      *
-     * @param hostName         the name of the host hosting the messaging entity identified by {@code entityPath}.
+     * @param hostname         the name of the host hosting the messaging entity identified by {@code entityPath}.
      * @param entityPath       the relative path identifying the messaging entity from which the deliveries are
      *                         received from, the application can later disposition these deliveries by sending
      *                         disposition frames to the broker.
@@ -92,9 +92,9 @@ public final class ReceiverUnsettledDeliveries implements AutoCloseable {
      * @param logger           the logger.
      * Note: This Ctr and settleOnClose will be removed once the v1 receiver is removed.
      */
-    public ReceiverUnsettledDeliveries(String hostName, String entityPath, String receiveLinkName, ReactorDispatcher dispatcher,
+    public ReceiverUnsettledDeliveries(String hostname, String entityPath, String receiveLinkName, ReactorDispatcher dispatcher,
         AmqpRetryOptions retryOptions, UUID deliveryEmptyTag, ClientLogger logger) {
-        this.hostName = hostName;
+        this.hostname = hostname;
         this.entityPath = entityPath;
         this.receiveLinkName = receiveLinkName;
         this.dispatcher = dispatcher;
@@ -109,7 +109,7 @@ public final class ReceiverUnsettledDeliveries implements AutoCloseable {
     /**
      * Creates ReceiverUnsettledDeliveries.
      *
-     * @param hostName        the name of the host hosting the messaging entity identified by {@code entityPath}.
+     * @param hostname        the name of the host hosting the messaging entity identified by {@code entityPath}.
      * @param entityPath      the relative path identifying the messaging entity from which the deliveries are
      *                        received from, the application can later disposition these deliveries by sending
      *                        disposition frames to the broker.
@@ -119,9 +119,9 @@ public final class ReceiverUnsettledDeliveries implements AutoCloseable {
      * @param retryOptions    the retry configuration to use when resending a disposition frame that the broker 'Rejected'.
      * @param logger          the logger.
      */
-    ReceiverUnsettledDeliveries(String hostName, String entityPath, String receiveLinkName, ReactorDispatcher dispatcher,
+    ReceiverUnsettledDeliveries(String hostname, String entityPath, String receiveLinkName, ReactorDispatcher dispatcher,
         AmqpRetryOptions retryOptions, ClientLogger logger) {
-        this.hostName = hostName;
+        this.hostname = hostname;
         this.entityPath = entityPath;
         this.receiveLinkName = receiveLinkName;
         this.dispatcher = dispatcher;
@@ -339,7 +339,7 @@ public final class ReceiverUnsettledDeliveries implements AutoCloseable {
                 try {
                     dispatcher.invoke(localSettlement);
                 } catch (IOException e) {
-                    logger.warning("IO sink was closed when scheduling local settlement. Manually settling.", e);
+                    logger.info("IO sink was closed when scheduling local settlement. Manually settling.", e);
                     localSettlement.run();
                 } catch (RejectedExecutionException e) {
                     logger.info("RejectedExecutionException when scheduling local settlement. Manually settling.", e);
@@ -612,7 +612,7 @@ public final class ReceiverUnsettledDeliveries implements AutoCloseable {
         if (delivery == null || delivery.getLink() == null) {
             return null;
         }
-        return LinkHandler.getErrorContext(hostName, entityPath, delivery.getLink());
+        return LinkHandler.getErrorContext(hostname, entityPath, delivery.getLink());
     }
 
     /**
