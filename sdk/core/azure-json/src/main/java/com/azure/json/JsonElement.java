@@ -75,7 +75,7 @@ public abstract class JsonElement extends StringWriter {
      *
      * @param element
      * @return
-     * @throws InvalidJsonDataTypeException
+     * @throws
      */
     public JsonArray addElement(JsonElement element) throws InvalidJsonDataTypeException {
         // Case:
