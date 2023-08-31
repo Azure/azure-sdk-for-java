@@ -7,6 +7,7 @@ import com.azure.cosmos.implementation.DatabaseAccount;
 import com.azure.cosmos.implementation.DatabaseAccountLocation;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.RxDocumentClientImpl;
 import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.implementation.Utils;
@@ -18,6 +19,8 @@ import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosPatchItemRequestOptions;
 import com.azure.cosmos.models.CosmosPatchOperations;
+import com.azure.cosmos.models.CosmosQueryRequestOptions;
+import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.PartitionKeyDefinition;
 import com.azure.cosmos.rx.TestSuiteBase;
@@ -31,6 +34,7 @@ import com.azure.cosmos.test.faultinjection.FaultInjectionRule;
 import com.azure.cosmos.test.faultinjection.FaultInjectionRuleBuilder;
 import com.azure.cosmos.test.faultinjection.FaultInjectionServerErrorResult;
 import com.azure.cosmos.test.faultinjection.FaultInjectionServerErrorType;
+import com.azure.cosmos.util.CosmosPagedFlux;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.slf4j.Logger;
@@ -50,6 +54,7 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.BiConsumer;
+import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
@@ -60,6 +65,8 @@ import static org.assertj.core.api.AssertionsForClassTypes.fail;
 public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
     private final static Logger logger = LoggerFactory.getLogger(FaultInjectionWithAvailabilityStrategyTests.class);
+
+    private final static Integer NO_QUERY_PAGE_SUB_STATUS_CODE = 9999;
 
     private final static String sameDocumentIdJustCreated = null;
 
@@ -144,6 +151,9 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 assertThat(ctx.getContactedRegionNames().size()).isEqualTo(2);
             }
         };
+
+    private final static BiConsumer<CosmosAsyncContainer, FaultInjectionOperationType> noFailureInjection =
+        (container, operationType) -> {};
 
     private BiConsumer<CosmosAsyncContainer, FaultInjectionOperationType> injectReadSessionNotAvailableIntoAllRegions = null;
 
@@ -706,8 +716,8 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
         BiConsumer<Integer, Integer> validateStatusCode,
         Consumer<CosmosDiagnosticsContext> validateDiagnosticsContext) {
 
-        Function<ItemOperationInvocationParameters, CosmosItemResponse<?>> readItemCallback = (params) ->
-            params.container
+        Function<ItemOperationInvocationParameters, CosmosResponseWrapper> readItemCallback = (params) ->
+            new CosmosResponseWrapper(params.container
                 .readItem(
                     readItemDocumentIdOverride != null
                         ? readItemDocumentIdOverride
@@ -715,7 +725,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                     new PartitionKey(params.idAndPkValuePair.getRight()),
                     params.options,
                     ObjectNode.class)
-                .block();
+                .block());
 
         execute(
             testCaseId,
@@ -735,39 +745,39 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
         final boolean nonIdempotentWriteRetriesEnabled = true;
         final boolean nonIdempotentWriteRetriesDisabled = false;
 
-        Function<ItemOperationInvocationParameters, CosmosItemResponse<?>> createAnotherItemCallback =
+        Function<ItemOperationInvocationParameters, CosmosResponseWrapper> createAnotherItemCallback =
             (params) -> {
                 String newDocumentId = UUID.randomUUID().toString();
 
-                return params.container
+                return new CosmosResponseWrapper(params.container
                     .createItem(
                         createTestItemAsJson(newDocumentId, params.idAndPkValuePair.getRight()),
                         params.options)
-                    .block();
+                    .block());
             };
 
-        Function<ItemOperationInvocationParameters, CosmosItemResponse<?>> replaceItemCallback =
+        Function<ItemOperationInvocationParameters, CosmosResponseWrapper> replaceItemCallback =
             (params) -> {
                 ObjectNode newItem =
                     createTestItemAsJson(params.idAndPkValuePair.getLeft(), params.idAndPkValuePair.getRight());
                 newItem.put("newField", UUID.randomUUID().toString());
 
-                return params.container
+                return new CosmosResponseWrapper(params.container
                     .replaceItem(
                         newItem,
                         params.idAndPkValuePair.getLeft(),
                         new PartitionKey(params.idAndPkValuePair.getRight()),
                         params.options)
-                    .block();
+                    .block());
             };
 
-        Function<ItemOperationInvocationParameters, CosmosItemResponse<?>> deleteItemCallback =
-            (params) -> params.container
+        Function<ItemOperationInvocationParameters, CosmosResponseWrapper> deleteItemCallback =
+            (params) -> new CosmosResponseWrapper(params.container
                     .deleteItem(
                         params.idAndPkValuePair.getLeft(),
                         new PartitionKey(params.idAndPkValuePair.getRight()),
                         params.options)
-                    .block();
+                    .block());
         Function<ItemOperationInvocationParameters, CosmosItemResponse<?>> deleteNonExistingItemCallback =
             (params) -> params.container
                     .deleteItem(
@@ -776,29 +786,29 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                         params.options)
                     .block();
 
-        Function<ItemOperationInvocationParameters, CosmosItemResponse<?>> upsertExistingItemCallback =
+        Function<ItemOperationInvocationParameters, CosmosResponseWrapper> upsertExistingItemCallback =
             (params) -> {
                 ObjectNode newItem =
                     createTestItemAsJson(params.idAndPkValuePair.getLeft(), params.idAndPkValuePair.getRight());
                 newItem.put("newField", UUID.randomUUID().toString());
 
-                return params.container
+                return new CosmosResponseWrapper(params.container
                     .upsertItem(
                         newItem,
                         new PartitionKey(params.idAndPkValuePair.getRight()),
                         params.options)
-                    .block();
+                    .block());
             };
 
-        Function<ItemOperationInvocationParameters, CosmosItemResponse<?>> upsertAnotherItemCallback =
-            (params) -> params.container
+        Function<ItemOperationInvocationParameters, CosmosResponseWrapper> upsertAnotherItemCallback =
+            (params) -> new CosmosResponseWrapper(params.container
                     .upsertItem(
                         createTestItemAsJson(UUID.randomUUID().toString(), params.idAndPkValuePair.getRight()),
                         new PartitionKey(params.idAndPkValuePair.getRight()),
                         params.options)
-                    .block();
+                    .block());
 
-        Function<ItemOperationInvocationParameters, CosmosItemResponse<?>> patchItemCallback =
+        Function<ItemOperationInvocationParameters, CosmosResponseWrapper> patchItemCallback =
             (params) -> {
                 CosmosPatchOperations patchOperations = CosmosPatchOperations.create();
                 patchOperations.add("/newField", UUID.randomUUID().toString());
@@ -809,14 +819,14 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                     );
                 }
 
-                return params.container
+                return new CosmosResponseWrapper(params.container
                     .patchItem(
                         params.idAndPkValuePair.getLeft(),
                         new PartitionKey(params.idAndPkValuePair.getRight()),
                         patchOperations,
                         params.options,
                         ObjectNode.class)
-                    .block();
+                    .block());
             };
 
         return new Object[][] {
@@ -1506,7 +1516,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
         CosmosRegionSwitchHint regionSwitchHint,
         Boolean nonIdempotentWriteRetriesEnabled,
         FaultInjectionOperationType faultInjectionOperationType,
-        Function<ItemOperationInvocationParameters, CosmosItemResponse<?>> actionAfterInitialCreation,
+        Function<ItemOperationInvocationParameters, CosmosResponseWrapper> actionAfterInitialCreation,
         BiConsumer<CosmosAsyncContainer, FaultInjectionOperationType> faultInjectionCallback,
         BiConsumer<Integer, Integer> validateStatusCode,
         Consumer<CosmosDiagnosticsContext> validateDiagnosticsContext) {
@@ -1519,6 +1529,97 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
             nonIdempotentWriteRetriesEnabled,
             faultInjectionOperationType,
             actionAfterInitialCreation,
+            faultInjectionCallback,
+            validateStatusCode,
+            validateDiagnosticsContext);
+    }
+
+    @DataProvider(name = "testConfigs_queryAfterCreation")
+    public Object[][] testConfigs_queryAfterCreation() {
+        BiFunction<String, ItemOperationInvocationParameters, CosmosResponseWrapper> queryReturnsFirstNonEmptyPage = (query, params) -> {
+
+            CosmosQueryRequestOptions queryOptions = new CosmosQueryRequestOptions();
+            CosmosEndToEndOperationLatencyPolicyConfig e2ePolicy = ImplementationBridgeHelpers
+                .CosmosItemRequestOptionsHelper
+                .getCosmosItemRequestOptionsAccessor()
+                .getEndToEndOperationLatencyPolicyConfig(params.options);
+            queryOptions.setCosmosEndToEndOperationLatencyPolicyConfig(e2ePolicy);
+
+            CosmosPagedFlux<ObjectNode> queryPagedFlux = params.container.queryItems(
+                query,
+                queryOptions,
+                ObjectNode.class
+            );
+
+            List<FeedResponse<ObjectNode>> returnedPages =
+                queryPagedFlux.byPage(100).collectList().block();
+
+            for (FeedResponse<ObjectNode> page: returnedPages) {
+                if (page.getResults() != null && page.getResults().size() > 0) {
+                    return new CosmosResponseWrapper(page);
+                }
+            }
+
+            return new CosmosResponseWrapper(
+                null,
+                HttpConstants.StatusCodes.NOTFOUND,
+                NO_QUERY_PAGE_SUB_STATUS_CODE);
+        };
+
+        Function<ItemOperationInvocationParameters, String> singlePartitionQueryGenerator = (params) ->
+            "SELECT * FROM c WHERE c.id = '"
+                + params.idAndPkValuePair.getLeft()
+                + "' AND c.mypk = '"
+                +  params.idAndPkValuePair.getRight()
+                + "'";
+
+        return new Object[][] {
+            // CONFIG description
+            // new Object[] {
+            //    TestId - name identifying the test case
+            //    End-to-end timeout
+            //    Availability Strategy used
+            //    Region switch hint (404/1002 prefer local or remote retries)
+            //    Function<ItemOperationInvocationParameters, String> queryGenerator
+            //    BiFunction<String, ItemOperationInvocationParameters, CosmosResponseWrapper> queryExecution
+            //    Failure injection callback
+            //    Status code/sub status code validation callback
+            //    Diagnostics context validation callback
+            // },
+            new Object[] {
+                "FirstNonEmptyPage_AllGood_NoAvailabilityStrategy",
+                Duration.ofSeconds(1),
+                noAvailabilityStrategy,
+                noRegionSwitchHint,
+                singlePartitionQueryGenerator,
+                queryReturnsFirstNonEmptyPage,
+                noFailureInjection,
+                validateStatusCodeIs200Ok,
+                validateDiagnosticsContextHasDiagnosticsForOnlyFirstRegion
+            },
+        };
+    }
+
+    @Test(groups = {"multi-master"}, dataProvider = "testConfigs_queryAfterCreation")
+    public void queryAfterCreation(
+        String testCaseId,
+        Duration endToEndTimeout,
+        ThresholdBasedAvailabilityStrategy availabilityStrategy,
+        CosmosRegionSwitchHint regionSwitchHint,
+        Function<ItemOperationInvocationParameters, String> queryGenerator,
+        BiFunction<String, ItemOperationInvocationParameters, CosmosResponseWrapper> queryExecution,
+        BiConsumer<CosmosAsyncContainer, FaultInjectionOperationType> faultInjectionCallback,
+        BiConsumer<Integer, Integer> validateStatusCode,
+        Consumer<CosmosDiagnosticsContext> validateDiagnosticsContext) {
+
+        execute(
+            testCaseId,
+            endToEndTimeout,
+            availabilityStrategy,
+            regionSwitchHint,
+            notSpecifiedWhetherIdempotentWriteRetriesAreEnabled,
+            FaultInjectionOperationType.QUERY_ITEM,
+            (params) -> queryExecution.apply(queryGenerator.apply(params), params),
             faultInjectionCallback,
             validateStatusCode,
             validateDiagnosticsContext);
@@ -1677,7 +1778,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
         CosmosRegionSwitchHint regionSwitchHint,
         Boolean nonIdempotentWriteRetriesEnabled,
         FaultInjectionOperationType faultInjectionOperationType,
-        Function<ItemOperationInvocationParameters, CosmosItemResponse<?>> actionAfterInitialCreation,
+        Function<ItemOperationInvocationParameters, CosmosResponseWrapper> actionAfterInitialCreation,
         BiConsumer<CosmosAsyncContainer, FaultInjectionOperationType> faultInjectionCallback,
         BiConsumer<Integer, Integer> validateStatusCode,
         Consumer<CosmosDiagnosticsContext> validateDiagnosticsContext) {
@@ -1721,13 +1822,9 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 params.idAndPkValuePair = idAndPkValPair;
                 params.nonIdempotentWriteRetriesEnabled = nonIdempotentWriteRetriesEnabled;
 
-                CosmosItemResponse<?> response = actionAfterInitialCreation.apply(params);
+                CosmosResponseWrapper response = actionAfterInitialCreation.apply(params);
 
-                CosmosDiagnosticsContext diagnosticsContext = null;
-
-                if (response != null && response.getDiagnostics() != null) {
-                    diagnosticsContext = response.getDiagnostics().getDiagnosticsContext();
-                }
+                CosmosDiagnosticsContext diagnosticsContext = response.getDiagnosticsContext();
 
                 logger.info(
                     "DIAGNOSTICS CONTEXT: {}",
@@ -1800,6 +1897,70 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
         }
 
         return regionMap;
+    }
+
+    private static class CosmosResponseWrapper {
+        private final CosmosDiagnosticsContext diagnosticsContext;
+        private final Integer statusCode;
+        private final Integer subStatusCode;
+
+        public CosmosResponseWrapper(CosmosItemResponse itemResponse) {
+            if (itemResponse.getDiagnostics() != null &&
+                itemResponse.getDiagnostics().getDiagnosticsContext() != null) {
+
+                this.diagnosticsContext = itemResponse.getDiagnostics().getDiagnosticsContext();
+            } else {
+                this.diagnosticsContext = null;
+            }
+
+            this.statusCode = itemResponse.getStatusCode();
+            this.subStatusCode = null;
+        }
+
+        public CosmosResponseWrapper(CosmosException exception) {
+            if (exception.getDiagnostics() != null &&
+                exception.getDiagnostics().getDiagnosticsContext() != null) {
+
+                this.diagnosticsContext = exception.getDiagnostics().getDiagnosticsContext();
+            } else {
+                this.diagnosticsContext = null;
+            }
+
+            this.statusCode = exception.getStatusCode();
+            this.subStatusCode = exception.getSubStatusCode();
+        }
+
+        public CosmosResponseWrapper(FeedResponse<ObjectNode> feedResponse) {
+            if (feedResponse.getCosmosDiagnostics() != null &&
+                feedResponse.getCosmosDiagnostics().getDiagnosticsContext() != null) {
+
+                this.diagnosticsContext = feedResponse.getCosmosDiagnostics().getDiagnosticsContext();
+            } else {
+                this.diagnosticsContext = null;
+            }
+
+            this.statusCode = 200;
+            this.subStatusCode = 0;
+        }
+
+        public CosmosResponseWrapper(CosmosDiagnosticsContext ctx, int statusCode, Integer subStatusCode) {
+            this.diagnosticsContext = ctx;
+            this.statusCode = statusCode;
+            this.subStatusCode = subStatusCode;
+        }
+
+        public CosmosDiagnosticsContext getDiagnosticsContext() {
+            return this.diagnosticsContext;
+        }
+
+        public Integer getStatusCode() {
+            return this.statusCode;
+        }
+
+        public Integer getSubStatusCode() {
+            return this.subStatusCode;
+        }
+
     }
 
     private static class ItemOperationInvocationParameters {
