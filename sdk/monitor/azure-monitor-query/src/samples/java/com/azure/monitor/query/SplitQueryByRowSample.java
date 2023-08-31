@@ -9,11 +9,14 @@ import com.azure.monitor.query.models.LogsBatchQuery;
 import com.azure.monitor.query.models.LogsBatchQueryResult;
 import com.azure.monitor.query.models.LogsQueryResult;
 import com.azure.monitor.query.models.LogsTable;
+import com.azure.monitor.query.models.LogsTableCell;
+import com.azure.monitor.query.models.LogsTableColumn;
 import com.azure.monitor.query.models.LogsTableRow;
 import com.azure.monitor.query.models.QueryTimeInterval;
 
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class SplitQueryByRowSample {
@@ -104,10 +107,16 @@ public class SplitQueryByRowSample {
     }
 
     static LogsQueryResult simulateSingleQuery(List<LogsBatchQueryResult> batchQueryResults) {
-        List<LogsTable> logsTables = new ArrayList<>();
+        List<LogsTableCell> logsTablesCells = new ArrayList<>();
+        List<LogsTableRow> logsTablesRows = new ArrayList<>();
+        List<LogsTableColumn> logsTablesColumns = new ArrayList<>();
         for (LogsBatchQueryResult batchQueryResult : batchQueryResults) {
-            logsTables.addAll(batchQueryResult.getAllTables());
+            for(LogsTable logsTable: batchQueryResult.getAllTables()) {
+                logsTablesCells.addAll(logsTable.getAllTableCells());
+                logsTablesRows.addAll(logsTable.getRows());
+                logsTablesColumns.addAll(logsTable.getColumns());
+            }
         }
-        return new LogsQueryResult(logsTables, null, null, null);
+        return new LogsQueryResult(Collections.singletonList(new LogsTable(logsTablesCells, logsTablesRows, logsTablesColumns)), null, null, null);
     }
 }
