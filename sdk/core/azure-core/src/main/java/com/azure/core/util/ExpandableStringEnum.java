@@ -3,19 +3,16 @@
 
 package com.azure.core.util;
 
+import com.azure.core.implementation.Invoker;
 import com.azure.core.implementation.ReflectionUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-import java.lang.invoke.MethodHandle;
-import java.lang.invoke.MethodHandles;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
-
-import static java.lang.invoke.MethodType.methodType;
 
 /**
  * Base implementation for expandable, single string enums.
@@ -23,7 +20,7 @@ import static java.lang.invoke.MethodType.methodType;
  * @param <T> a specific expandable enum type
  */
 public abstract class ExpandableStringEnum<T extends ExpandableStringEnum<T>> {
-    private static final Map<Class<?>, MethodHandle> CONSTRUCTORS = new ConcurrentHashMap<>();
+    private static final Map<Class<?>, Invoker> CONSTRUCTORS = new ConcurrentHashMap<>();
     private static final Map<Class<?>, ConcurrentHashMap<String, ? extends ExpandableStringEnum<?>>> VALUES
         = new ConcurrentHashMap<>();
 
@@ -65,7 +62,7 @@ public abstract class ExpandableStringEnum<T extends ExpandableStringEnum<T>> {
         if (value != null) {
             return value;
         } else {
-            MethodHandle ctor = CONSTRUCTORS.computeIfAbsent(clazz, ExpandableStringEnum::getDefaultConstructor);
+            Invoker ctor = CONSTRUCTORS.computeIfAbsent(clazz, ExpandableStringEnum::getDefaultConstructor);
 
             if (ctor == null) {
                 // logged in ExpandableStringEnum::getDefaultConstructor
@@ -73,7 +70,7 @@ public abstract class ExpandableStringEnum<T extends ExpandableStringEnum<T>> {
             }
 
             try {
-                value = (T) ctor.invoke();
+                value = (T) ctor.invoke(null);
             } catch (Throwable e) {
                 LOGGER.warning("Failed to create {}, default constructor threw exception", clazz.getName(), e);
                 return null;
@@ -83,12 +80,12 @@ public abstract class ExpandableStringEnum<T extends ExpandableStringEnum<T>> {
         }
     }
 
-    private static <T> MethodHandle getDefaultConstructor(Class<T> clazz) {
+    private static <T> Invoker getDefaultConstructor(Class<T> clazz) {
         try {
-            MethodHandles.Lookup lookup = ReflectionUtils.getLookupToUse(clazz);
-            return lookup.findConstructor(clazz, methodType(void.class));
+            return ReflectionUtils.getConstructorInvoker(clazz, clazz.getDeclaredConstructor());
         } catch (NoSuchMethodException | IllegalAccessException e) {
-            LOGGER.verbose("Can't find or access default constructor for {}, make sure corresponding package is open to azure-core", clazz.getName(), e);
+            LOGGER.verbose("Can't find or access default constructor for {}, make sure corresponding package is open "
+                           + "to azure-core", clazz.getName(), e);
         } catch (Exception e) {
             LOGGER.verbose("Failed to get lookup for {}", clazz.getName(), e);
         }

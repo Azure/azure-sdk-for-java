@@ -13,8 +13,6 @@ import com.azure.json.JsonWriter;
 import javax.xml.stream.XMLStreamException;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.lang.invoke.MethodHandle;
-import java.lang.invoke.MethodHandles;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
@@ -30,7 +28,7 @@ import java.util.function.Function;
  */
 public final class ReflectionSerializable {
     private static final ClientLogger LOGGER = new ClientLogger(ReflectionSerializable.class);
-    private static final Map<Class<?>, MethodHandle> FROM_JSON_CACHE;
+    private static final Map<Class<?>, Invoker> FROM_JSON_CACHE;
 
     private static final Class<?> XML_SERIALIZABLE;
     private static final Class<?> XML_READER;
@@ -41,7 +39,7 @@ public final class ReflectionSerializable {
     private static final XmlStreamExceptionCallable<Object> XML_WRITER_WRITE_XML_SERIALIZABLE;
     private static final XmlStreamExceptionCallable<Object> XML_WRITER_FLUSH;
     static final boolean XML_SERIALIZABLE_SUPPORTED;
-    private static final Map<Class<?>, MethodHandle> FROM_XML_CACHE;
+    private static final Map<Class<?>, Invoker> FROM_XML_CACHE;
 
     static {
         FROM_JSON_CACHE = new ConcurrentHashMap<>();
@@ -59,24 +57,26 @@ public final class ReflectionSerializable {
             xmlReader = Class.forName("com.azure.xml.XmlReader");
 
             Class<?> xmlProviders = Class.forName("com.azure.xml.XmlProviders");
-            MethodHandles.Lookup lookup = ReflectionUtils.getLookupToUse(xmlProviders);
 
-            MethodHandle handle = lookup.unreflect(xmlProviders.getDeclaredMethod("createReader", byte[].class));
-            xmlReaderCreator = createXmlCallable(AutoCloseable.class, handle);
+            Invoker invoker = ReflectionUtils.getMethodInvoker(xmlProviders,
+                xmlProviders.getDeclaredMethod("createReader", byte[].class));
+            xmlReaderCreator = createXmlCallable(AutoCloseable.class, invoker);
 
-            handle = lookup.unreflect(xmlProviders.getDeclaredMethod("createWriter", OutputStream.class));
-            xmlWriterCreator = createXmlCallable(AutoCloseable.class, handle);
+            invoker = ReflectionUtils.getMethodInvoker(xmlProviders,
+                xmlProviders.getDeclaredMethod("createWriter", OutputStream.class));
+            xmlWriterCreator = createXmlCallable(AutoCloseable.class, invoker);
 
             Class<?> xmlWriter = Class.forName("com.azure.xml.XmlWriter");
 
-            handle = lookup.unreflect(xmlWriter.getDeclaredMethod("writeStartDocument"));
-            xmlWriterWriteStartDocument = createXmlCallable(Object.class, handle);
+            invoker = ReflectionUtils.getMethodInvoker(xmlWriter, xmlWriter.getDeclaredMethod("writeStartDocument"));
+            xmlWriterWriteStartDocument = createXmlCallable(Object.class, invoker);
 
-            handle = lookup.unreflect(xmlWriter.getDeclaredMethod("writeXml", xmlSerializable));
-            xmlWriterWriteXmlSerializable = createXmlCallable(Object.class, handle);
+            invoker = ReflectionUtils.getMethodInvoker(xmlWriter,
+                xmlWriter.getDeclaredMethod("writeXml", xmlSerializable));
+            xmlWriterWriteXmlSerializable = createXmlCallable(Object.class, invoker);
 
-            handle = lookup.unreflect(xmlWriter.getDeclaredMethod("flush"));
-            xmlWriterFlush = createXmlCallable(Object.class, handle);
+            invoker = ReflectionUtils.getMethodInvoker(xmlWriter, xmlWriter.getDeclaredMethod("flush"));
+            xmlWriterFlush = createXmlCallable(Object.class, invoker);
 
             xmlSerializableSupported = true;
         } catch (Throwable e) {
@@ -182,10 +182,10 @@ public final class ReflectionSerializable {
             FROM_JSON_CACHE.clear();
         }
 
-        MethodHandle readJson = FROM_JSON_CACHE.computeIfAbsent(jsonSerializable, clazz -> {
+        Invoker readJson = FROM_JSON_CACHE.computeIfAbsent(jsonSerializable, clazz -> {
             try {
-                MethodHandles.Lookup lookup = ReflectionUtils.getLookupToUse(clazz);
-                return lookup.unreflect(jsonSerializable.getDeclaredMethod("fromJson", JsonReader.class));
+                return ReflectionUtils.getMethodInvoker(clazz,
+                    jsonSerializable.getDeclaredMethod("fromJson", JsonReader.class));
             } catch (Exception e) {
                 throw LOGGER.logExceptionAsError(new IllegalStateException(e));
             }
@@ -300,10 +300,10 @@ public final class ReflectionSerializable {
             FROM_XML_CACHE.clear();
         }
 
-        MethodHandle readXml = FROM_XML_CACHE.computeIfAbsent(xmlSerializable, clazz -> {
+        Invoker readXml = FROM_XML_CACHE.computeIfAbsent(xmlSerializable, clazz -> {
             try {
-                MethodHandles.Lookup lookup = ReflectionUtils.getLookupToUse(clazz);
-                return lookup.unreflect(xmlSerializable.getMethod("fromXml", XML_READER));
+                return ReflectionUtils.getMethodInvoker(xmlSerializable,
+                    xmlSerializable.getDeclaredMethod("fromXml", XML_READER));
             } catch (Exception e) {
                 throw LOGGER.logExceptionAsError(new IllegalStateException(e));
             }
@@ -339,10 +339,10 @@ public final class ReflectionSerializable {
         T call(Object... parameters) throws XMLStreamException;
     }
 
-    private static <T> XmlStreamExceptionCallable<T> createXmlCallable(Class<T> returnType, MethodHandle methodHandle) {
+    private static <T> XmlStreamExceptionCallable<T> createXmlCallable(Class<T> returnType, Invoker invoker) {
         return parameters -> {
             try {
-                return returnType.cast(methodHandle.invokeWithArguments(parameters));
+                return returnType.cast(invoker.invokeWithArguments(parameters));
             } catch (Throwable throwable) {
                 if (throwable instanceof Error) {
                     throw (Error) throwable;

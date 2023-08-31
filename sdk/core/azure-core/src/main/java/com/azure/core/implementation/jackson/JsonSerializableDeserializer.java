@@ -3,6 +3,7 @@
 
 package com.azure.core.implementation.jackson;
 
+import com.azure.core.implementation.Invoker;
 import com.azure.core.implementation.ReflectionUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
@@ -17,8 +18,6 @@ import com.fasterxml.jackson.databind.deser.BeanDeserializerModifier;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 
 import java.io.IOException;
-import java.lang.invoke.MethodHandle;
-import java.lang.invoke.MethodHandles;
 
 final class JsonSerializableDeserializer extends JsonDeserializer<JsonSerializable<?>> {
     private static final ClientLogger LOGGER = new ClientLogger(JsonSerializableDeserializer.class);
@@ -36,7 +35,7 @@ final class JsonSerializableDeserializer extends JsonDeserializer<JsonSerializab
         });
 
     private final Class<? extends JsonSerializable<?>> jsonSerializableType;
-    private final MethodHandle readJson;
+    private final Invoker readJson;
 
     /**
      * Gets a module wrapping this deserializer as an adapter for the Jackson ObjectMapper.
@@ -55,8 +54,8 @@ final class JsonSerializableDeserializer extends JsonDeserializer<JsonSerializab
     JsonSerializableDeserializer(Class<? extends JsonSerializable<?>> jsonSerializableType) {
         this.jsonSerializableType = jsonSerializableType;
         try {
-            MethodHandles.Lookup lookup = ReflectionUtils.getLookupToUse(jsonSerializableType);
-            this.readJson = lookup.unreflect(jsonSerializableType.getDeclaredMethod("fromJson", JsonReader.class));
+            this.readJson = ReflectionUtils.getMethodInvoker(jsonSerializableType, jsonSerializableType
+                .getDeclaredMethod("fromJson", JsonReader.class));
         } catch (Exception e) {
             throw LOGGER.logExceptionAsError(new IllegalStateException(e));
         }
