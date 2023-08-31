@@ -309,7 +309,11 @@ public abstract class JsonElement extends StringWriter {
      */
     public JsonString asString() { return new JsonString(); }
 
+
     public abstract JsonWriter serialize(JsonWriter jsonWriter) throws IOException;
 
+    public String toJson() throws IOException {
+        return null;
+    }
 }
 

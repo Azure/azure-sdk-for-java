@@ -17,7 +17,7 @@ public class JsonBuilderTests {
 
     @Test
     public void createObject() {
-        JsonArray result = builder.createArray();
+        JsonObject result = builder.createObject();
         assertNotNull(result);
     }
 
@@ -26,7 +26,7 @@ public class JsonBuilderTests {
 
     @Test
     public void parseJson() throws IOException {
-        JsonDataStructure result = (JsonDataStructure) builder.deserialize(complexExampleJson);
+        JsonElement result = (JsonElement) builder.deserialize(complexExampleJson);
         assertNotNull(result);
         String resultString = result.toJson();
         // This currently fails because of issues with number parsing (it's turning ints into floats as I haven't implemented any checking)
