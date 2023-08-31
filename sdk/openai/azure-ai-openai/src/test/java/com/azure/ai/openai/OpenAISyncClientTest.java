@@ -416,7 +416,7 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
             byte[] file = BinaryData.fromFile(Path.of("src/test/resources/batman.wav")).toBytes();
             AudioTranscriptionOptions transcriptionOptions = new AudioTranscriptionOptions(file);
 
-            AudioTranscription transcription = client.getAudioTranscriptions(deploymentName, transcriptionOptions);
+            AudioTranscription transcription = client.getAudioTranscription(deploymentName, transcriptionOptions);
             assertNotNull(transcription);
         });
     }
