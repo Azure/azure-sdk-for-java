@@ -42,13 +42,6 @@
 
 # PRLabel: %App Configuration
 /sdk/appconfiguration/                               @mssfang @alzimmermsft
-# PRLabel: %azure-spring
-/sdk/spring/spring-cloud-azure-appconfiguration-config*/ @mrm9084 @backwind1233 @chenrujun @hui1110 @netyyyy @saragluna @stliu @yiliuTo @moarychan @fangjian0423
-/sdk/spring/spring-cloud-azure-feature-management*/   @mrm9084 @backwind1233 @chenrujun @hui1110 @netyyyy @saragluna @stliu @yiliuTo @moarychan @fangjian0423
-/sdk/spring/spring-cloud-azure-starter-appconfiguration-config/ @mrm9084 @backwind1233 @chenrujun @hui1110 @netyyyy @saragluna @stliu @yiliuTo @moarychan @fangjian0423
-# PRLabel: %azure-spring
-/sdk/spring/azure-spring-data-cosmos/                @kushagraThapar @FabianMeiswinkel @backwind1233 @chenrujun @hui1110 @netyyyy @saragluna @stliu @yiliuTo @xinlian12 @moarychan @aayush3011 @simorenoh @fangjian0423 @jeet1995 @Pilchie
-
 
 # PRLabel: %Attestation
 /sdk/attestation/                                    @azure-sdk-write-attestation @anilba06 @gkostal @larryosterman
@@ -205,6 +198,14 @@
 # PRLabel:  %Monitor - Spring
 /sdk/spring/spring-cloud-azure-starter-monitor       @jeanbisutti @trask @ramthi @heyams
 /sdk/spring/spring-cloud-azure-starter-monitor-test  @jeanbisutti @trask @ramthi @heyams
+
+# PRLabel: %azure-spring
+/sdk/spring/spring-cloud-azure-appconfiguration-config*/ @mrm9084 @backwind1233 @chenrujun @hui1110 @netyyyy @saragluna @stliu @yiliuTo @moarychan @fangjian0423
+/sdk/spring/spring-cloud-azure-feature-management*/   @mrm9084 @backwind1233 @chenrujun @hui1110 @netyyyy @saragluna @stliu @yiliuTo @moarychan @fangjian0423
+/sdk/spring/spring-cloud-azure-starter-appconfiguration-config/ @mrm9084 @backwind1233 @chenrujun @hui1110 @netyyyy @saragluna @stliu @yiliuTo @moarychan @fangjian0423
+# PRLabel: %azure-spring
+/sdk/spring/azure-spring-data-cosmos/                @kushagraThapar @FabianMeiswinkel @backwind1233 @chenrujun @hui1110 @netyyyy @saragluna @stliu @yiliuTo @xinlian12 @moarychan @aayush3011 @simorenoh @fangjian0423 @jeet1995 @Pilchie
+
 
 # PRLabel: %DevCenter
 /sdk/devcenter/                                      @sebrenna @mharlan
