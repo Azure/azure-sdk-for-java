@@ -18,10 +18,17 @@ public class OpenTelemetryVersionCheckRunner implements CommandLineRunner {
     private static final Logger LOG = LoggerFactory.getLogger(OpenTelemetryVersionCheckRunner.class);
 
     // If this version is not up-to-date, a test will fail.
+    /**
+     * OpenTelemetry version of the starter
+     */
     public static final String STARTER_OTEL_VERSION = "1.28.0";
 
     private final Resource otelResource;
 
+    /**
+     * Component to check the OpenTelemetry version.
+     * @param otelResource OpenTelemetry resource
+     */
     public OpenTelemetryVersionCheckRunner(Resource otelResource) {
         this.otelResource = otelResource;
     }
