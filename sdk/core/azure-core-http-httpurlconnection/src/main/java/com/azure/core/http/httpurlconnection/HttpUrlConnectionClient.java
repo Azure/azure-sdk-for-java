@@ -26,27 +26,47 @@ public class HttpUrlConnectionClient implements HttpClient {
         this.request = request;
     }
 
-    // Method to send using the stored request
+    // Asynchronous send method returning a Mono of HttpResponse
     public Mono<HttpResponse> send() {
-        return Mono.fromCallable(() -> sendSync(this.request, Context.NONE));
+        return sendAsync(this.request, Context.NONE);
     }
 
     // Asynchronous send method returning a Mono of HttpResponse
     @Override
     public Mono<HttpResponse> send(HttpRequest httpRequest) {
-        return Mono.fromCallable(() -> sendSync(httpRequest, Context.NONE));
+        return sendAsync(httpRequest, Context.NONE);
     }
 
-    // Override the send method with additional context for interface compliance
+    // Asynchronous send method returning a Mono of HttpResponse
     @Override
     public Mono<HttpResponse> send(HttpRequest request, Context context) {
-        return Mono.fromCallable(() -> sendSync(request, context));
+        return sendAsync(request, context);
     }
 
     // Synchronous send method with additional context, primarily for interface compliance
     @Override
     public HttpResponse sendSync(HttpRequest httpRequest, Context context) {
-        HttpMethod httpMethod = httpRequest.getHttpMethod();
+        return sendAsync(httpRequest, context).block();
+    }
+
+    // Asynchronous send method with additional context
+    public Mono<HttpResponse> sendAsync(HttpRequest httpRequest, Context context) {
+        return openConnection(httpRequest)
+            .flatMap(connection -> {
+                HttpMethod httpMethod = httpRequest.getHttpMethod();
+
+                if (httpMethod == HttpMethod.PATCH) {
+                    return sendPatchViaSocket(httpRequest);
+                }
+
+                return setConnectionRequest(connection, httpRequest)
+                    .then(writeRequestBody(connection, httpRequest))
+                    .then(readResponse(connection, httpRequest))
+                    .onErrorResume(e -> Mono.error(new RuntimeException(e)));
+            });
+    }
+
+    
 
         // Check if the HTTP method is PATCH, if so, use the SocketClient to handle it
         if (httpMethod == HttpMethod.PATCH) {
