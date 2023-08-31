@@ -18,23 +18,23 @@ class OTelVersion {
     }
 
     boolean isLessThan(OTelVersion oTelVersion) {
-        if(this.oTelVersionAsString.equals(oTelVersion.oTelVersionAsString)) {
+        if (this.oTelVersionAsString.equals(oTelVersion.oTelVersionAsString)) {
             return false;
         }
         return !isGreaterThan(oTelVersion);
     }
 
     boolean isGreaterThan(OTelVersion oTelVersion) {
-        if(this.oTelVersionAsString.equals(oTelVersion.oTelVersionAsString)) {
+        if (this.oTelVersionAsString.equals(oTelVersion.oTelVersionAsString)) {
             return false;
         }
-        if(this.majorVersion > oTelVersion.majorVersion) {
+        if (this.majorVersion > oTelVersion.majorVersion) {
             return true;
         }
-        if(this.minorVersionVersion > oTelVersion.minorVersionVersion) {
+        if (this.minorVersionVersion > oTelVersion.minorVersionVersion) {
             return true;
         }
-        if(this.subMinorVersion > oTelVersion.subMinorVersion) {
+        if (this.subMinorVersion > oTelVersion.subMinorVersion) {
             return true;
         }
         return false;
