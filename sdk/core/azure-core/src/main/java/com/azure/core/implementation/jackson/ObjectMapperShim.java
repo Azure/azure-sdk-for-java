@@ -312,7 +312,7 @@ public final class ObjectMapperShim {
                 throw (RuntimeException) throwable;
             }
 
-            LOGGER.verbose("Failed to find or use MethodHandle Constructor that accepts HttpHeaders for "
+            LOGGER.verbose("Failed to find or use invoker Constructor that accepts HttpHeaders for "
                 + deserializedHeadersType + ".");
         }
 

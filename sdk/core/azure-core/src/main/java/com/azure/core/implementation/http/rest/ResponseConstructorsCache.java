@@ -61,11 +61,6 @@ public final class ResponseConstructorsCache {
      * found.
      */
     private static Invoker locateResponseConstructor(Class<?> responseClass) {
-        /*
-         * Now that the MethodHandles.Lookup has been found to create the MethodHandle instance begin searching for
-         * the most specific MethodHandle that can be used to create the response class (as mentioned in the method
-         * Javadocs).
-         */
         Constructor<?>[] constructors = responseClass.getDeclaredConstructors();
         // Sort constructors in the "descending order" of parameter count.
         Arrays.sort(constructors, Comparator.comparing(Constructor::getParameterCount, (a, b) -> b - a));

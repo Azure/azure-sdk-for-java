@@ -48,7 +48,7 @@ final class JacksonDatabind215 {
             useJackson215 = true;
         } catch (Throwable ex) {
             if (ex instanceof LinkageError) {
-                LOGGER.info("Attempted to create MethodHandles for Jackson 2.15 features but failed. It's possible "
+                LOGGER.info("Attempted to create invoker for Jackson 2.15 features but failed. It's possible "
                     + "that your application will run without error even with this failure. The Azure SDKs only set "
                     + "updated StreamReadConstraints to allow for larger payloads to be handled.");
             } else if (ex instanceof Error) {

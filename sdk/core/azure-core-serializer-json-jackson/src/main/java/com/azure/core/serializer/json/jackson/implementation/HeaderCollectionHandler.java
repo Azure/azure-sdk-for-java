@@ -3,14 +3,11 @@
 
 package com.azure.core.serializer.json.jackson.implementation;
 
+import com.azure.core.implementation.Invoker;
 import com.azure.core.implementation.ReflectionUtils;
 import com.azure.core.util.logging.ClientLogger;
 
-import java.lang.invoke.MethodHandle;
-import java.lang.invoke.MethodHandles;
-import java.lang.invoke.MethodType;
 import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.security.PrivilegedAction;
 import java.util.HashMap;
 import java.util.Locale;
@@ -22,10 +19,10 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 final class HeaderCollectionHandler {
     private static final int CACHE_SIZE_LIMIT = 10000;
-    private static final Map<Field, MethodHandle> FIELD_TO_SETTER_CACHE = new ConcurrentHashMap<>();
+    private static final Map<Field, Invoker> FIELD_TO_SETTER_CACHE = new ConcurrentHashMap<>();
 
     // Dummy constant that indicates no setter was found for the Field.
-    private static final MethodHandle NO_SETTER_HANDLE = MethodHandles.identity(HeaderCollectionHandler.class);
+    private static final Invoker NO_SETTER_INVOKER = ReflectionUtils.createNoOpInvoker();
 
     private final String prefix;
     private final int prefixLength;
@@ -86,15 +83,15 @@ final class HeaderCollectionHandler {
         final String clazzSimpleName = clazz.getSimpleName();
         final String fieldName = declaringField.getName();
 
-        MethodHandle setterHandler = getFromCache(declaringField, clazz, clazzSimpleName, fieldName, logger);
+        Invoker setterInvoker = getFromCache(declaringField, clazz, clazzSimpleName, fieldName, logger);
 
-        if (setterHandler == NO_SETTER_HANDLE) {
+        if (setterInvoker == NO_SETTER_INVOKER) {
             return false;
         }
 
         try {
-            setterHandler.invokeWithArguments(deserializedHeaders, values);
-            logger.verbose("Set header collection {} on class {} using MethodHandle.", fieldName, clazzSimpleName);
+            setterInvoker.invokeWithArguments(deserializedHeaders, values);
+            logger.verbose("Set header collection {} on class {} using reflection.", fieldName, clazzSimpleName);
 
             return true;
         } catch (Throwable ex) {
@@ -102,7 +99,7 @@ final class HeaderCollectionHandler {
                 throw (Error) ex;
             }
 
-            logger.verbose("Failed to set header {} collection on class {} using MethodHandle.", fieldName,
+            logger.verbose("Failed to set header {} collection on class {} using reflection.", fieldName,
                 clazzSimpleName, ex);
             return false;
         }
@@ -112,58 +109,25 @@ final class HeaderCollectionHandler {
         return "set" + fieldName.substring(0, 1).toUpperCase(Locale.ROOT) + fieldName.substring(1);
     }
 
-    private static MethodHandle getFromCache(Field key, Class<?> clazz, String clazzSimpleName,
+    private static Invoker getFromCache(Field key, Class<?> clazz, String clazzSimpleName,
         String fieldName, ClientLogger logger) {
         if (FIELD_TO_SETTER_CACHE.size() >= CACHE_SIZE_LIMIT) {
             FIELD_TO_SETTER_CACHE.clear();
         }
 
         return FIELD_TO_SETTER_CACHE.computeIfAbsent(key, field -> {
-            MethodHandles.Lookup lookupToUse;
-            try {
-                lookupToUse = ReflectionUtils.getLookupToUse(clazz);
-            } catch (Exception ex) {
-                logger.verbose("Failed to retrieve MethodHandles.Lookup for field {}. Will attempt to make field accessible.", field, ex);
-
-                // In a previous implementation compute returned null here in an attempt to indicate that there is no
-                // setter for the field. Unfortunately, null isn't a valid indicator to computeIfAbsent that a
-                // computation has been performed and this cache would never effectively be a cache as compute would
-                // always be performed when there was no setter for the field.
-                //
-                // Now the implementation returns a dummy constant when there is no setter for the field. This now
-                // results in this case properly inserting into the cache and only running when a new type is seen or
-                // the cache is cleared due to reaching capacity.
-                return NO_SETTER_HANDLE;
-            }
-
             String setterName = getPotentialSetterName(fieldName);
 
             try {
-                MethodHandle handle = lookupToUse.findVirtual(clazz, setterName,
-                    MethodType.methodType(clazz, Map.class));
+                Invoker invoker = ReflectionUtils.getMethodInvoker(clazz, clazz.getDeclaredMethod(setterName,
+                    Map.class));
 
-                logger.verbose("Using MethodHandle for setter {} on class {}.", setterName, clazzSimpleName);
+                logger.verbose("Using invoker for setter {} on class {}.", setterName, clazzSimpleName);
 
-                return handle;
-            } catch (ReflectiveOperationException ex) {
-                logger.verbose("Failed to retrieve MethodHandle for setter {} on class {}. "
-                    + "Will attempt to make field accessible. "
-                    + "Please consider adding public setter.", setterName,
-                    clazzSimpleName, ex);
-            }
-
-            try {
-                Method setterMethod = clazz.getDeclaredMethod(setterName, Map.class);
-                MethodHandle handle = lookupToUse.unreflect(setterMethod);
-
-                logger.verbose("Using unreflected MethodHandle for setter {} on class {}.", setterName,
-                    clazzSimpleName);
-
-                return handle;
-            } catch (ReflectiveOperationException ex) {
-                logger.verbose("Failed to unreflect MethodHandle for setter {} on class {}."
-                        + "Will attempt to make field accessible. "
-                        + "Please consider adding public setter.", setterName, clazzSimpleName, ex);
+                return invoker;
+            } catch (Exception ex) {
+                logger.verbose("Failed to retrieve invoker for setter {} on class {}. Will attempt to make field "
+                               + "accessible. Please consider adding public setter.", setterName, clazzSimpleName, ex);
             }
 
             // In a previous implementation compute returned null here in an attempt to indicate that there is no setter
@@ -174,7 +138,7 @@ final class HeaderCollectionHandler {
             // Now the implementation returns a dummy constant when there is no setter for the field. This now results
             // in this case properly inserting into the cache and only running when a new type is seen or the cache is
             // cleared due to reaching capacity.
-            return NO_SETTER_HANDLE;
+            return NO_SETTER_INVOKER;
         });
     }
 }

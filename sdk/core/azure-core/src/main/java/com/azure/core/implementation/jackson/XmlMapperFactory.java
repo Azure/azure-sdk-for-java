@@ -65,7 +65,7 @@ public final class XmlMapperFactory {
                 throw (Error) ex;
             }
 
-            throw LOGGER.logExceptionAsError(new IllegalStateException("Failed to retrieve MethodHandles used to "
+            throw LOGGER.logExceptionAsError(new IllegalStateException("Failed to retrieve invoker used to "
                 + "create XmlMapper. XML serialization won't be supported until "
                 + "'com.fasterxml.jackson.dataformat:jackson-dataformat-xml' is added to the classpath or updated to a "
                 + "supported version. " + JacksonVersion.getHelpInfo(), ex));
