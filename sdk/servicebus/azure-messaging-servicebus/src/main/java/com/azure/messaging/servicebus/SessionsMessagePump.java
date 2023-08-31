@@ -11,7 +11,6 @@ import com.azure.core.util.AsyncCloseable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.implementation.DispositionStatus;
 import com.azure.messaging.servicebus.implementation.MessageUtils;
-import com.azure.messaging.servicebus.implementation.ServiceBusManagementNode;
 import com.azure.messaging.servicebus.implementation.instrumentation.ReceiverKind;
 import com.azure.messaging.servicebus.implementation.instrumentation.ServiceBusReceiverInstrumentation;
 import com.azure.messaging.servicebus.implementation.instrumentation.ServiceBusTracer;
@@ -141,7 +140,6 @@ final class SessionsMessagePump {
     private final int concurrencyPerSession;
     private final int prefetch;
     private final boolean enableAutoDisposition;
-    private final Mono<ServiceBusManagementNode> managementNode;
     private final MessageSerializer serializer;
     private final AmqpRetryPolicy retryPolicy;
     private final Consumer<ServiceBusReceivedMessageContext> processMessage;
@@ -154,8 +152,7 @@ final class SessionsMessagePump {
     SessionsMessagePump(String identifier, String fqdn, String entityPath, ServiceBusReceiveMode receiveMode,
         ServiceBusReceiverInstrumentation instrumentation, ServiceBusSessionAcquirer sessionAcquirer,
         Duration maxSessionLockRenew, Duration sessionIdleTimeout, int maxConcurrentSessions, int concurrencyPerSession,
-        int prefetch, boolean enableAutoDisposition, Mono<ServiceBusManagementNode> managementNode,
-        MessageSerializer serializer, AmqpRetryPolicy retryPolicy,
+        int prefetch, boolean enableAutoDisposition, MessageSerializer serializer, AmqpRetryPolicy retryPolicy,
         Consumer<ServiceBusReceivedMessageContext> processMessage, Consumer<ServiceBusErrorContext> processError, Runnable onTerminate) {
         this.pumpId = COUNTER.incrementAndGet();
         final Map<String, Object> loggingContext = new HashMap<>(3);
@@ -175,7 +172,6 @@ final class SessionsMessagePump {
         this.concurrencyPerSession = concurrencyPerSession;
         this.prefetch = prefetch;
         this.enableAutoDisposition = enableAutoDisposition;
-        this.managementNode = Objects.requireNonNull(managementNode, "'managementNode' cannot be null.");
         this.serializer = Objects.requireNonNull(serializer, "'serializer' cannot be null.");
         this.retryPolicy = Objects.requireNonNull(retryPolicy, "'retryPolicy' cannot be null.");
         this.processMessage = Objects.requireNonNull(processMessage, "'processMessage' cannot be null.");
@@ -269,7 +265,7 @@ final class SessionsMessagePump {
         for (int rollerId = 1; rollerId <= maxConcurrentSessions; rollerId++) {
             final RollingSessionReceiver rollingReceiver = new RollingSessionReceiver(pumpId, rollerId, instrumentation,
                 fqdn, entityPath, nextSession, maxSessionLockRenew, sessionIdleTimeout, concurrencyPerSession,
-                prefetch, enableAutoDisposition, managementNode, serializer, retryPolicy, processMessage, processError,
+                prefetch, enableAutoDisposition, serializer, retryPolicy, processMessage, processError,
                 receiversTracker);
             rollingReceivers.add(rollingReceiver);
         }
@@ -357,7 +353,6 @@ final class SessionsMessagePump {
         private final boolean enableAutoDisposition;
         private final Duration maxSessionLockRenew;
         private final Duration sessionIdleTimeout;
-        private final Mono<ServiceBusManagementNode> managementNode;
         private final MessageSerializer serializer;
         private final ServiceBusReceiverInstrumentation instrumentation;
         private final ServiceBusTracer tracer;
@@ -368,7 +363,7 @@ final class SessionsMessagePump {
         RollingSessionReceiver(long pumpId, int rollerId, ServiceBusReceiverInstrumentation instrumentation, String fqdn,
             String entityPath, Mono<ServiceBusSessionAcquirer.Session> nextSession, Duration maxSessionLockRenew,
             Duration sessionIdleTimeout, int concurrency, int prefetch, boolean enableAutoDisposition,
-            Mono<ServiceBusManagementNode> managementNode, MessageSerializer serializer, AmqpRetryPolicy retryPolicy,
+            MessageSerializer serializer, AmqpRetryPolicy retryPolicy,
             Consumer<ServiceBusReceivedMessageContext> processMessage, Consumer<ServiceBusErrorContext> processError,
             SessionReceiversTracker receiversTracker) {
             super(INIT);
@@ -387,7 +382,6 @@ final class SessionsMessagePump {
             this.enableAutoDisposition = enableAutoDisposition;
             this.maxSessionLockRenew = maxSessionLockRenew;
             this.sessionIdleTimeout = sessionIdleTimeout;
-            this.managementNode = managementNode;
             this.serializer = serializer;
             this.instrumentation = instrumentation;
             this.tracer = instrumentation.getTracer();
@@ -441,12 +435,12 @@ final class SessionsMessagePump {
         private ServiceBusSessionReactorReceiver nextSessionReceiver(ServiceBusSessionAcquirer.Session nextSession) {
             final State<ServiceBusSessionReactorReceiver> lastState = super.get();
             if (lastState == TERMINATED) {
-                nextSession.closeAsync().subscribe();
+                nextSession.getLink().closeAsync().subscribe();
                 throw new MessagePumpTerminatedException(pumpId, fqdn, entityPath, "session#next-receiver roller_" + rollerId);
             }
-            final ServiceBusSessionReactorReceiver nextReceiver = new ServiceBusSessionReactorReceiver(
-                logger, tracer, managementNode, nextSession.properties, nextSession.link, maxSessionLockRenew, sessionIdleTimeout);
-            if (!super.compareAndSet(lastState, new State<>(nextReceiver))) {
+            final ServiceBusSessionReactorReceiver nextSessionReceiver = new ServiceBusSessionReactorReceiver(logger, tracer,
+                nextSession, sessionIdleTimeout, maxSessionLockRenew);
+            if (!super.compareAndSet(lastState, new State<>(nextSessionReceiver))) {
                 // 1. The 'super.getAndSet(DISPOSED)' in the terminate(,) won the race with the above 'super.compareAndSet'.
                 // 2. Multiple 'super.compareAndSet' will never race each other since -
                 //      2.1 There will be only one Subscription from 'MessageFlux' throughout RollingSessionReceiver lifetime.
@@ -456,16 +450,16 @@ final class SessionsMessagePump {
                 //      each creating ServiceBusSessionReactorReceiver and 'compareAndSet' of T1 winning the race with T’s
                 //      'compareAndSet' resulting in T1 not closing its ServiceBusSessionReactorReceiver.
                 //
-                nextReceiver.closeAsync().subscribe();
+                nextSessionReceiver.closeAsync().subscribe();
                 throw new MessagePumpTerminatedException(pumpId, fqdn, entityPath, "session#next-receiver roller_" + rollerId);
             }
             if (lastState != INIT) {
-                final ServiceBusSessionReactorReceiver lastReceiver = lastState.receiver;
+                final ServiceBusSessionReactorReceiver lastSessionReceiver = lastState.receiver;
                 // The lastReceiver ^ is already closed; otherwise MessageFlux wouldn't have requested for nextReceiver.
-                receiversTracker.untrack(lastReceiver);
+                receiversTracker.untrack(lastSessionReceiver);
             }
-            receiversTracker.track(nextReceiver);
-            return nextReceiver;
+            receiversTracker.track(nextSessionReceiver);
+            return nextSessionReceiver;
         }
 
         private void handleMessage(Message qpidMessage) {
@@ -557,7 +551,7 @@ final class SessionsMessagePump {
                 }).map(session -> {
                     final boolean isTerminated = super.get();
                     if (isTerminated) {
-                        session.closeAsync().subscribe();
+                        session.getLink().closeAsync().subscribe();
                         throw new MessagePumpTerminatedException(this.pumpId, this.fqdn, this.entityPath,
                             "session#next-link roller_" + this.rollerId);
                     }
@@ -586,9 +580,9 @@ final class SessionsMessagePump {
                 // Solution: This shortcoming can be alleviated by sandwiching 'repeat' between 'cacheInvalidateIf' and 'filter'.
                 //
                 return source
-                    .cacheInvalidateIf(cachedSession -> cachedSession.isDisposed())
+                    .cacheInvalidateIf(cachedSession -> cachedSession.getLink().isDisposed())
                     .repeat()
-                    .filter(session -> !session.isDisposed());
+                    .filter(session -> !session.getLink().isDisposed());
                 //
                 // Solution details: With the sandwiching, the undesired re-subscription from the 'repeat' will be served by
                 // the 'cacheInvalidateIf' by "re-emitting" the last emitted link. The 'repeat' operator internally stores this
