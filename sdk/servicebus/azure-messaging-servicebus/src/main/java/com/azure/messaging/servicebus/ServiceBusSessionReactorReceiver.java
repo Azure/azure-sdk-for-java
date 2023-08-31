@@ -6,9 +6,6 @@ import com.azure.core.amqp.AmqpEndpointState;
 import com.azure.core.amqp.implementation.AmqpReceiveLink;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.logging.LoggingEventBuilder;
-import com.azure.messaging.servicebus.implementation.ServiceBusManagementNode;
-import com.azure.messaging.servicebus.implementation.ServiceBusReceiveLink;
-import com.azure.messaging.servicebus.implementation.ServiceBusReceiveLink.SessionProperties;
 import com.azure.messaging.servicebus.implementation.instrumentation.ServiceBusTracer;
 import org.apache.qpid.proton.amqp.transport.DeliveryState;
 import org.apache.qpid.proton.message.Message;
@@ -21,8 +18,6 @@ import reactor.core.publisher.Mono;
 import reactor.core.publisher.Sinks;
 
 import java.time.Duration;
-import java.time.OffsetDateTime;
-import java.util.function.Function;
 import java.util.function.Supplier;
 
 import static com.azure.core.amqp.implementation.ClientConstants.LINK_NAME_KEY;
@@ -41,11 +36,10 @@ final class ServiceBusSessionReactorReceiver implements AmqpReceiveLink {
     private final Disposable.Composite disposables = Disposables.composite();
 
     ServiceBusSessionReactorReceiver(ClientLogger logger, ServiceBusTracer tracer,
-        Mono<ServiceBusManagementNode> managementNode, SessionProperties sessionProperties,
-        ServiceBusReceiveLink sessionLink, Duration maxSessionLockRenew, Duration sessionIdleTimeout) {
+        ServiceBusSessionAcquirer.Session session, Duration sessionIdleTimeout, Duration maxSessionLockRenew) {
         this.logger = logger;
-        this.sessionId = sessionProperties.getSessionId();
-        this.sessionLink = sessionLink;
+        this.sessionId = session.getId();
+        this.sessionLink = session.getLink();
         this.hasIdleTimeout = sessionIdleTimeout != null;
         if (hasIdleTimeout) {
             this.disposables.add(Flux.switchOnNext(idleTimerProcessor.map(__ -> Mono.delay(sessionIdleTimeout)))
@@ -56,20 +50,7 @@ final class ServiceBusSessionReactorReceiver implements AmqpReceiveLink {
                     idleTimeoutSink.emitEmpty(Sinks.EmitFailureHandler.FAIL_FAST);
                 }));
         }
-        final OffsetDateTime lockedUntil = sessionProperties.getSessionLockedUntil();
-        if (lockedUntil != null) {
-            // Function, when invoked, renews the session lock once.
-            final Function<String, Mono<OffsetDateTime>> lockRenewFunc = __ -> {
-                return managementNode.flatMap(mgmt -> {
-                    final Mono<OffsetDateTime> renewLock = mgmt.renewSessionLock(sessionId, sessionLink.getLinkName());
-                    return tracer.traceMono("ServiceBus.renewSessionLock", renewLock);
-                });
-            };
-            // The operation that recurs renewal using the above 'lockRenewFunc' Function.
-            final LockRenewalOperation recurringLockRenew = new LockRenewalOperation(sessionId, maxSessionLockRenew,
-                true, lockRenewFunc, lockedUntil);
-            this.disposables.add(recurringLockRenew);
-        }
+        this.disposables.add(session.beginLockRenew(tracer, maxSessionLockRenew));
     }
 
     public String getSessionId() {

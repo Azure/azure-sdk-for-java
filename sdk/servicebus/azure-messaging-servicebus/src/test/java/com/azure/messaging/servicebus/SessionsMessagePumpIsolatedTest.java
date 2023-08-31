@@ -28,6 +28,7 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import reactor.core.Disposables;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 import reactor.test.publisher.TestPublisher;
@@ -106,7 +107,7 @@ public class SessionsMessagePumpIsolatedTest {
                 .thenCancel()
                 .verify();
         }
-        verify(session1.link, times(1)).closeAsync();
+        verify(session1.getLink(), times(1)).closeAsync();
         verify(onTerminate, times(1)).run();
     }
 
@@ -143,7 +144,7 @@ public class SessionsMessagePumpIsolatedTest {
         }
         Assertions.assertTrue(unseenMessages.isEmpty());
         // closeAsync() invocation upon RollingSessionReceiver.MessageFlux cancellation.
-        verify(session1.link, times(1)).closeAsync();
+        verify(session1.getLink(), times(1)).closeAsync();
         verify(onTerminate, times(1)).run();
     }
 
@@ -184,8 +185,8 @@ public class SessionsMessagePumpIsolatedTest {
                 .verify();
         }
         Assertions.assertTrue(unseenMessages.isEmpty());
-        verify(session1.link, times(1)).closeAsync();
-        verify(session2.link, times(1)).closeAsync();
+        verify(session1.getLink(), times(1)).closeAsync();
+        verify(session2.getLink(), times(1)).closeAsync();
         verify(onTerminate, times(1)).run();
     }
 
@@ -249,7 +250,7 @@ public class SessionsMessagePumpIsolatedTest {
                     Assertions.assertEquals("session#connection-state-poll", e.getMessage());
                 });
         }
-        verify(session1.link, times(1)).closeAsync();
+        verify(session1.getLink(), times(1)).closeAsync();
         verify(onTerminate, times(1)).run();
     }
 
@@ -298,9 +299,9 @@ public class SessionsMessagePumpIsolatedTest {
                 .verify();
         }
         Assertions.assertTrue(unseenMessages.isEmpty());
-        verify(session1.link, times(1)).closeAsync();
-        verify(session2.link, times(1)).closeAsync();
-        verify(session3.link, times(1)).closeAsync();
+        verify(session1.getLink(), times(1)).closeAsync();
+        verify(session2.getLink(), times(1)).closeAsync();
+        verify(session3.getLink(), times(1)).closeAsync();
         verify(onTerminate, times(1)).run();
     }
 
@@ -348,9 +349,9 @@ public class SessionsMessagePumpIsolatedTest {
                 .verify();
         }
         Assertions.assertTrue(unseenMessages.isEmpty());
-        verify(session1.link, times(1)).closeAsync();
-        verify(session2.link, times(1)).closeAsync();
-        verify(session3.link, times(1)).closeAsync();
+        verify(session1.getLink(), times(1)).closeAsync();
+        verify(session2.getLink(), times(1)).closeAsync();
+        verify(session3.getLink(), times(1)).closeAsync();
         verify(onTerminate, times(1)).run();
     }
 
@@ -364,7 +365,7 @@ public class SessionsMessagePumpIsolatedTest {
         final TestPublisher<AmqpEndpointState> session1EpStates = TestPublisher.createCold();
         session1EpStates.next(AmqpEndpointState.ACTIVE);
         final Session session1 = createMockSession(session1Id, session1Messages, session1EpStates);
-        when(session1.link.updateDisposition(any(), any())).thenReturn(Mono.empty());
+        when(session1.getLink().updateDisposition(any(), any())).thenReturn(Mono.empty());
         final MessageSerializer serializer = createMockmessageSerializer(session1Messages);
         final ServiceBusSessionAcquirer sessionAcquirer = createMockSessionAcquirer(session1);
         final Runnable onTerminate = createMockOnTerminate();
@@ -390,12 +391,12 @@ public class SessionsMessagePumpIsolatedTest {
         }
 
         Assertions.assertTrue(unseenMessages.isEmpty());
-        verify(session1.link).updateDisposition(lockTokenCaptor.capture(), deliveryStateCaptor.capture());
+        verify(session1.getLink()).updateDisposition(lockTokenCaptor.capture(), deliveryStateCaptor.capture());
         final String lockToken = lockTokenCaptor.getValue();
         final DeliveryState deliveryState = deliveryStateCaptor.getValue();
         Assertions.assertEquals(processedMessage.getLockToken(), lockToken);
         Assertions.assertEquals(Accepted.getInstance(), deliveryState);
-        verify(session1.link, times(1)).closeAsync();
+        verify(session1.getLink(), times(1)).closeAsync();
         verify(onTerminate, times(1)).run();
     }
 
@@ -409,7 +410,7 @@ public class SessionsMessagePumpIsolatedTest {
         final TestPublisher<AmqpEndpointState> session1EpStates = TestPublisher.createCold();
         session1EpStates.next(AmqpEndpointState.ACTIVE);
         final Session session1 = createMockSession(session1Id, session1Messages, session1EpStates);
-        when(session1.link.updateDisposition(any(), any())).thenReturn(Mono.empty());
+        when(session1.getLink().updateDisposition(any(), any())).thenReturn(Mono.empty());
         final MessageSerializer serializer = createMockmessageSerializer(session1Messages);
         final ServiceBusSessionAcquirer sessionAcquirer = createMockSessionAcquirer(session1);
         final Runnable onTerminate = createMockOnTerminate();
@@ -437,12 +438,12 @@ public class SessionsMessagePumpIsolatedTest {
 
 
         Assertions.assertTrue(unseenMessages.isEmpty());
-        verify(session1.link).updateDisposition(lockTokenCaptor.capture(), deliveryStateCaptor.capture());
+        verify(session1.getLink()).updateDisposition(lockTokenCaptor.capture(), deliveryStateCaptor.capture());
         final String lockToken = lockTokenCaptor.getValue();
         final DeliveryState deliveryState = deliveryStateCaptor.getValue();
         Assertions.assertEquals(processedMessage.getLockToken(), lockToken);
         Assertions.assertTrue(deliveryState instanceof Modified);
-        verify(session1.link, times(1)).closeAsync();
+        verify(session1.getLink(), times(1)).closeAsync();
         verify(onTerminate, times(1)).run();
     }
 
@@ -522,7 +523,6 @@ public class SessionsMessagePumpIsolatedTest {
         final ArrayList<Message> messages = new ArrayList<>(messagesMap.keySet());
 
         final ServiceBusReceiveLink sessionLink = mock(ServiceBusReceiveLink.class);
-        when(sessionLink.getSessionProperties()).thenReturn(Mono.just(new ServiceBusReceiveLink.SessionProperties(sessionId, null)));
         final AtomicBoolean isClosed = new AtomicBoolean(false);
         when(sessionLink.closeAsync()).thenAnswer(__ -> {
             isClosed.set(true);
@@ -542,7 +542,12 @@ public class SessionsMessagePumpIsolatedTest {
         when(sessionLink.receive()).thenReturn(messagesPublisher.flux());
         when(sessionLink.getEndpointStates()).thenReturn(endpointStates.flux());
 
-        return new Session(sessionLink, new ServiceBusReceiveLink.SessionProperties(sessionId, null));
+        final Session session = mock(Session.class);
+        when(session.getLink()).thenReturn(sessionLink);
+        when(session.getId()).thenReturn(sessionId);
+        when(session.beginLockRenew(any(), any())).thenReturn(Disposables.disposed());
+
+        return session;
     }
 
     private static ServiceBusSessionAcquirer createMockSessionAcquirer(Session... sessionsArray) {
@@ -585,7 +590,7 @@ public class SessionsMessagePumpIsolatedTest {
         final boolean enableAutoDisposition = !autoDispositionDisabled;
         return new SessionsMessagePump("identifier-1", "FQDN", "Orders", ServiceBusReceiveMode.PEEK_LOCK,
             instrumentation, sessionAcquirer, Duration.ZERO, sessionIdleTimeout, maxConcurrentSessions, concurrencyPerSession,
-            0, enableAutoDisposition, Mono.empty(), serializer, retryPolicy, processMessage, processError, onTerminate);
+            0, enableAutoDisposition, serializer, retryPolicy, processMessage, processError, onTerminate);
     }
 
     private static final class VirtualTimeStepVerifier implements AutoCloseable {

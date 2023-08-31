@@ -9,6 +9,7 @@ import org.apache.qpid.proton.amqp.transport.DeliveryState;
 import reactor.core.publisher.Mono;
 
 import java.time.OffsetDateTime;
+import java.util.Objects;
 
 /**
  * Represents an AMQP receive link.
@@ -53,20 +54,30 @@ public interface ServiceBusReceiveLink extends AmqpReceiveLink, AsyncCloseable {
     Mono<Void> updateDisposition(String lockToken, DeliveryState deliveryState);
 
     class SessionProperties {
-        private final String sessionId;
-        private final OffsetDateTime sessionLockedUntil;
+        private final String id;
+        private final OffsetDateTime lockedUntil;
 
         public SessionProperties(String sessionId, OffsetDateTime sessionLockedUntil) {
-            this.sessionId = sessionId;
-            this.sessionLockedUntil = sessionLockedUntil;
+            this.id = Objects.requireNonNull(sessionId, "sessionId cannot be null.");
+            this.lockedUntil = Objects.requireNonNull(sessionLockedUntil, "sessionLockedUntil cannot be null");
         }
 
-        public String getSessionId() {
-            return sessionId;
+        /**
+         * Gets the session id.
+         *
+         * @return the session id.
+         */
+        public String getId() {
+            return id;
         }
 
-        public OffsetDateTime getSessionLockedUntil() {
-            return sessionLockedUntil;
+        /**
+         * Gets the UTC time until which the session is initially locked.
+         *
+         * @return the UTC time at which the initial session lock expires.
+         */
+        public OffsetDateTime getLockedUntil() {
+            return lockedUntil;
         }
     }
 }
