@@ -43,7 +43,7 @@ final class NonSessionMessagePump {
     private static final Duration CONNECTION_STATE_POLL_INTERVAL = Duration.ofSeconds(20);
     private final long  pumpId;
     private final ServiceBusReceiverAsyncClient client;
-    private final String fqdn;
+    private final String fullyQualifiedNamespace;
     private final String entityPath;
     private final ClientLogger logger;
     private final Consumer<ServiceBusReceivedMessageContext> processMessage;
@@ -68,12 +68,12 @@ final class NonSessionMessagePump {
         Consumer<ServiceBusErrorContext> processError, int concurrency, boolean enableAutoDisposition) {
         this.pumpId = COUNTER.incrementAndGet();
         this.client = client;
-        this.fqdn = this.client.getFullyQualifiedNamespace();
+        this.fullyQualifiedNamespace = this.client.getFullyQualifiedNamespace();
         this.entityPath = this.client.getEntityPath();
 
         final Map<String, Object> loggingContext = new HashMap<>(3);
         loggingContext.put(PUMP_ID_KEY, this.pumpId);
-        loggingContext.put(FULLY_QUALIFIED_NAMESPACE_KEY, this.fqdn);
+        loggingContext.put(FULLY_QUALIFIED_NAMESPACE_KEY, this.fullyQualifiedNamespace);
         loggingContext.put(ENTITY_PATH_KEY, this.entityPath);
         this.logger = new ClientLogger(NonSessionMessagePump.class, loggingContext);
 
@@ -115,9 +115,9 @@ final class NonSessionMessagePump {
                     return e;
                 }
                 // 'e' propagated from client.nonSessionProcessorReceiveV2.
-                return new MessagePumpTerminatedException(pumpId, fqdn, entityPath, "pumping#error-map", e);
+                return new MessagePumpTerminatedException(pumpId, fullyQualifiedNamespace, entityPath, "pumping#error-map", e);
             })
-            .then(Mono.error(() -> MessagePumpTerminatedException.forCompletion(pumpId, fqdn, entityPath)));
+            .then(Mono.error(() -> MessagePumpTerminatedException.forCompletion(pumpId, fullyQualifiedNamespace, entityPath)));
     }
 
     private Mono<Void> pollConnectionState() {
@@ -125,7 +125,7 @@ final class NonSessionMessagePump {
             .handle((ignored, sink) -> {
                 if (client.isConnectionClosed()) {
                     final RuntimeException e = logger.atInfo()
-                        .log(new MessagePumpTerminatedException(pumpId, fqdn, entityPath, "non-session#connection-state-poll"));
+                        .log(new MessagePumpTerminatedException(pumpId, fullyQualifiedNamespace, entityPath, "non-session#connection-state-poll"));
                     sink.error(e);
                 }
             }).then();
@@ -165,7 +165,7 @@ final class NonSessionMessagePump {
 
     private void notifyError(Throwable throwable) {
         try {
-            processError.accept(new ServiceBusErrorContext(throwable, fqdn, entityPath));
+            processError.accept(new ServiceBusErrorContext(throwable, fullyQualifiedNamespace, entityPath));
         } catch (Exception e) {
             logger.atVerbose().log("Ignoring error from user processError handler.", e);
         }
