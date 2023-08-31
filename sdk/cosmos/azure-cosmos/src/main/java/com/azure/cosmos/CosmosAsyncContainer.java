@@ -362,11 +362,11 @@ public class CosmosAsyncContainer {
     private <T> Mono<CosmosItemResponse<T>> replaceItemWithTrackingId(Class<T> itemType,
                                                                       String itemId,
                                                                       Document doc,
-                                                                      CosmosItemRequestOptions options,
+                                                                      RequestOptions requestOptions,
                                                                       String trackingId) {
 
         checkNotNull(trackingId, "Argument 'trackingId' must not be null.");
-        return replaceItemInternalCore(itemType, itemId, doc, options, trackingId)
+        return replaceItemInternalCore(itemType, itemId, doc, requestOptions, trackingId)
             .onErrorResume(throwable -> {
                 Throwable error = throwable instanceof CompletionException ? throwable.getCause() : throwable;
 
@@ -383,8 +383,6 @@ public class CosmosAsyncContainer {
                 if (cosmosException.getStatusCode() != HttpConstants.StatusCodes.PRECONDITION_FAILED) {
                     return Mono.error(cosmosException);
                 }
-
-                RequestOptions requestOptions = ModelBridgeInternal.toRequestOptions(options);
 
                 Mono<CosmosItemResponse<T>> readMono =
                     this.getDatabase().getDocClientWrapper()
@@ -2130,10 +2128,9 @@ public class CosmosAsyncContainer {
         Class<T> itemType,
         String itemId,
         Document doc,
-        CosmosItemRequestOptions options,
+        RequestOptions requestOptions,
         String trackingId) {
 
-        RequestOptions requestOptions = ModelBridgeInternal.toRequestOptions(options);
         requestOptions.setTrackingId(trackingId);
 
         return this.getDatabase()
@@ -2182,17 +2179,16 @@ public class CosmosAsyncContainer {
                 true);
 
         CosmosItemRequestOptions effectiveOptions = getEffectiveOptions(nonIdempotentWriteRetryPolicy, options);
+        RequestOptions requestOptions = ModelBridgeInternal.toRequestOptions(effectiveOptions);
 
         Mono<CosmosItemResponse<T>> responseMono;
         String trackingId = null;
         if (nonIdempotentWriteRetryPolicy.isEnabled() && nonIdempotentWriteRetryPolicy.useTrackingIdProperty()) {
             trackingId = UUID.randomUUID().toString();
-            responseMono = this.replaceItemWithTrackingId(itemType, itemId, doc, effectiveOptions, trackingId);
+            responseMono = this.replaceItemWithTrackingId(itemType, itemId, doc, requestOptions, trackingId);
         } else {
-            responseMono = this.replaceItemInternalCore(itemType, itemId, doc, effectiveOptions, null);
+            responseMono = this.replaceItemInternalCore(itemType, itemId, doc, requestOptions, null);
         }
-
-        RequestOptions requestOptions = ModelBridgeInternal.toRequestOptions(effectiveOptions);
 
         CosmosAsyncClient client = database
             .getClient();

@@ -15,7 +15,6 @@ import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
 import com.azure.cosmos.models.CosmosClientTelemetryConfig;
 import com.azure.cosmos.models.CosmosContainerProperties;
-import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosPatchItemRequestOptions;
 import com.azure.cosmos.models.CosmosPatchOperations;
@@ -106,10 +105,16 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
             assertThat(subStatusCode).isEqualTo(HttpConstants.SubStatusCodes.UNKNOWN);
         };
 
-    private final static BiConsumer<Integer, Integer> validateStatusCodeIsServiceUnavailable =
+    private final static BiConsumer<Integer, Integer> validateStatusCodeIsServerGeneratedServiceUnavailable =
         (statusCode, subStatusCode) -> {
             assertThat(statusCode).isEqualTo(HttpConstants.StatusCodes.SERVICE_UNAVAILABLE);
             assertThat(subStatusCode).isEqualTo(HttpConstants.SubStatusCodes.SERVER_GENERATED_503);
+        };
+
+    private final static BiConsumer<Integer, Integer> validateStatusCodeIsClientTransportGeneratedServiceUnavailable =
+        (statusCode, subStatusCode) -> {
+            assertThat(statusCode).isEqualTo(HttpConstants.StatusCodes.SERVICE_UNAVAILABLE);
+            assertThat(subStatusCode).isEqualTo(HttpConstants.SubStatusCodes.TRANSPORT_GENERATED_410);
         };
 
     private final static Consumer<CosmosDiagnosticsContext> validateDiagnosticsContextHasDiagnosticsForOnlyFirstRegionButWithRegionalFailover =
@@ -639,7 +644,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 noRegionSwitchHint,
                 sameDocumentIdJustCreated,
                 injectServiceUnavailableIntoAllRegions,
-                validateStatusCodeIsServiceUnavailable,
+                validateStatusCodeIsServerGeneratedServiceUnavailable,
                 validateDiagnosticsContextHasDiagnosticsForAllRegions
             },
 
@@ -860,7 +865,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 FaultInjectionOperationType.CREATE_ITEM,
                 createAnotherItemCallback,
                 injectServiceUnavailableIntoFirstRegionOnly,
-                validateStatusCodeIsServiceUnavailable,
+                validateStatusCodeIsServerGeneratedServiceUnavailable,
                 validateDiagnosticsContextHasDiagnosticsForOnlyFirstRegion
             },
             new Object[] {
@@ -884,7 +889,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 FaultInjectionOperationType.CREATE_ITEM,
                 createAnotherItemCallback,
                 injectServiceUnavailableIntoFirstRegionOnly,
-                validateStatusCodeIsServiceUnavailable,
+                validateStatusCodeIsServerGeneratedServiceUnavailable,
                 validateDiagnosticsContextHasDiagnosticsForOnlyFirstRegion
             },
             new Object[] {
@@ -896,7 +901,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 FaultInjectionOperationType.CREATE_ITEM,
                 createAnotherItemCallback,
                 injectServiceUnavailableIntoAllRegions,
-                validateStatusCodeIsServiceUnavailable,
+                validateStatusCodeIsServerGeneratedServiceUnavailable,
                 validateDiagnosticsContextHasDiagnosticsForAllRegions
             },
             new Object[] {
@@ -908,7 +913,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 FaultInjectionOperationType.CREATE_ITEM,
                 createAnotherItemCallback,
                 injectServiceUnavailableIntoAllRegions,
-                validateStatusCodeIsServiceUnavailable,
+                validateStatusCodeIsServerGeneratedServiceUnavailable,
                 validateDiagnosticsContextHasDiagnosticsForOnlyFirstRegion
             },
             new Object[] {
@@ -920,7 +925,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 FaultInjectionOperationType.REPLACE_ITEM,
                 replaceItemCallback,
                 injectServiceUnavailableIntoAllRegions,
-                validateStatusCodeIsServiceUnavailable,
+                validateStatusCodeIsServerGeneratedServiceUnavailable,
                 validateDiagnosticsContextHasDiagnosticsForOnlyFirstRegion
             },
             new Object[] {
@@ -932,7 +937,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 FaultInjectionOperationType.PATCH_ITEM,
                 patchItemCallback,
                 injectServiceUnavailableIntoAllRegions,
-                validateStatusCodeIsServiceUnavailable,
+                validateStatusCodeIsServerGeneratedServiceUnavailable,
                 validateDiagnosticsContextHasDiagnosticsForOnlyFirstRegion
             },
             new Object[] {
@@ -944,7 +949,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 FaultInjectionOperationType.DELETE_ITEM,
                 deleteItemCallback,
                 injectServiceUnavailableIntoAllRegions,
-                validateStatusCodeIsServiceUnavailable,
+                validateStatusCodeIsServerGeneratedServiceUnavailable,
                 validateDiagnosticsContextHasDiagnosticsForOnlyFirstRegion
             },
             new Object[] {
@@ -956,7 +961,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 FaultInjectionOperationType.UPSERT_ITEM,
                 upsertExistingItemCallback,
                 injectServiceUnavailableIntoAllRegions,
-                validateStatusCodeIsServiceUnavailable,
+                validateStatusCodeIsServerGeneratedServiceUnavailable,
                 validateDiagnosticsContextHasDiagnosticsForOnlyFirstRegion
             },
             new Object[] {
@@ -968,7 +973,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 FaultInjectionOperationType.UPSERT_ITEM,
                 upsertAnotherItemCallback,
                 injectServiceUnavailableIntoAllRegions,
-                validateStatusCodeIsServiceUnavailable,
+                validateStatusCodeIsServerGeneratedServiceUnavailable,
                 validateDiagnosticsContextHasDiagnosticsForOnlyFirstRegion
             },
             new Object[] {
@@ -1102,6 +1107,102 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 injectInternalServerErrorIntoAllRegions,
                 validateStatusCodeIsInternalServerError,
                 validateDiagnosticsContextHasDiagnosticsForOnlyFirstRegion
+            },
+            new Object[] {
+                "Replace_408_AllRegions_DefaultAvailabilityStrategy_NoRetries",
+                Duration.ofSeconds(1),
+                defaultAvailabilityStrategy,
+                noRegionSwitchHint,
+                nonIdempotentWriteRetriesDisabled,
+                FaultInjectionOperationType.REPLACE_ITEM,
+                replaceItemCallback,
+                injectTransitTimeoutIntoAllRegions,
+                validateStatusCodeIsOperationCancelled,
+                validateDiagnosticsContextHasDiagnosticsForOnlyFirstRegion
+            },
+            new Object[] {
+                "Replace_408_AllRegions_DefaultAvailabilityStrategy_WithRetries",
+                Duration.ofSeconds(1),
+                eagerThresholdAvailabilityStrategy,
+                noRegionSwitchHint,
+                nonIdempotentWriteRetriesEnabled,
+                FaultInjectionOperationType.REPLACE_ITEM,
+                replaceItemCallback,
+                injectTransitTimeoutIntoAllRegions,
+                validateStatusCodeIsOperationCancelled,
+                validateDiagnosticsContextHasDiagnosticsForAllRegions
+            },
+            new Object[] {
+                "Replace_408_AllRegions_NoAvailabilityStrategy_NoRetries",
+                Duration.ofSeconds(1),
+                defaultAvailabilityStrategy,
+                noRegionSwitchHint,
+                nonIdempotentWriteRetriesDisabled,
+                FaultInjectionOperationType.REPLACE_ITEM,
+                replaceItemCallback,
+                injectTransitTimeoutIntoAllRegions,
+                validateStatusCodeIsOperationCancelled,
+                validateDiagnosticsContextHasDiagnosticsForOnlyFirstRegion
+            },
+            new Object[] {
+                "Replace_408_AllRegions_NoAvailabilityStrategy_WithRetries",
+                Duration.ofSeconds(1),
+                noAvailabilityStrategy,
+                noRegionSwitchHint,
+                nonIdempotentWriteRetriesEnabled,
+                FaultInjectionOperationType.REPLACE_ITEM,
+                replaceItemCallback,
+                injectTransitTimeoutIntoAllRegions,
+                validateStatusCodeIsOperationCancelled,
+                validateDiagnosticsContextHasDiagnosticsForOnlyFirstRegion
+            },
+            new Object[] {
+                "UpsertExisting_408_FirstRegionOnly_DefaultAvailabilityStrategy_NoRetries",
+                Duration.ofSeconds(1),
+                defaultAvailabilityStrategy,
+                noRegionSwitchHint,
+                nonIdempotentWriteRetriesDisabled,
+                FaultInjectionOperationType.UPSERT_ITEM,
+                upsertExistingItemCallback,
+                injectTransitTimeoutIntoFirstRegionOnly,
+                validateStatusCodeIsOperationCancelled,
+                validateDiagnosticsContextHasDiagnosticsForOnlyFirstRegion
+            },
+            new Object[] {
+                "UpsertExisting_408_FirstRegionOnly_DefaultAvailabilityStrategy_WithRetries",
+                Duration.ofSeconds(1),
+                defaultAvailabilityStrategy,
+                noRegionSwitchHint,
+                nonIdempotentWriteRetriesEnabled,
+                FaultInjectionOperationType.UPSERT_ITEM,
+                upsertExistingItemCallback,
+                injectTransitTimeoutIntoFirstRegionOnly,
+                validateStatusCodeIs200Ok,
+                validateDiagnosticsContextHasDiagnosticsForAllRegions
+            },
+            new Object[] {
+                "UpsertNew_408_FirstRegionOnly_NoAvailabilityStrategy_NoRetries",
+                Duration.ofSeconds(1),
+                noAvailabilityStrategy,
+                noRegionSwitchHint,
+                nonIdempotentWriteRetriesDisabled,
+                FaultInjectionOperationType.UPSERT_ITEM,
+                upsertAnotherItemCallback,
+                injectTransitTimeoutIntoFirstRegionOnly,
+                validateStatusCodeIsOperationCancelled,
+                validateDiagnosticsContextHasDiagnosticsForOnlyFirstRegion
+            },
+            new Object[] {
+                "UpsertNew_408_FirstRegionOnly_NoAvailabilityStrategy_WithRetries",
+                Duration.ofSeconds(90),
+                noAvailabilityStrategy,
+                noRegionSwitchHint,
+                nonIdempotentWriteRetriesEnabled,
+                FaultInjectionOperationType.UPSERT_ITEM,
+                upsertAnotherItemCallback,
+                injectTransitTimeoutIntoFirstRegionOnly,
+                validateStatusCodeIs201Created,
+                validateDiagnosticsContextHasDiagnosticsForOnlyFirstRegionButWithRegionalFailover
             },
         };
     }
