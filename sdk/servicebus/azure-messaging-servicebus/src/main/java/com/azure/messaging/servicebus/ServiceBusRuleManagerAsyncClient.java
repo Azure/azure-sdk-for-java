@@ -97,7 +97,7 @@ public class ServiceBusRuleManagerAsyncClient implements AutoCloseable {
     private final String entityPath;
     private final MessagingEntityType entityType;
     private final Mono<ServiceBusAmqpConnection> connectionProcessor;
-    private final String fqdn;
+    private final String fullyQualifiedNamespace;
     private final Runnable onClientClose;
     private final AtomicBoolean isDisposed = new AtomicBoolean();
 
@@ -116,7 +116,7 @@ public class ServiceBusRuleManagerAsyncClient implements AutoCloseable {
         Objects.requireNonNull(connectionCacheWrapper,
             "'connectionSupport' cannot be null.");
         this.connectionProcessor = connectionCacheWrapper.getConnection();
-        this.fqdn = connectionCacheWrapper.getFullyQualifiedNamespace();
+        this.fullyQualifiedNamespace = connectionCacheWrapper.getFullyQualifiedNamespace();
         this.onClientClose = onClientClose;
     }
 
@@ -126,7 +126,7 @@ public class ServiceBusRuleManagerAsyncClient implements AutoCloseable {
      * @return The fully qualified namespace.
      */
     public String getFullyQualifiedNamespace() {
-        return fqdn;
+        return fullyQualifiedNamespace;
     }
 
     /**
