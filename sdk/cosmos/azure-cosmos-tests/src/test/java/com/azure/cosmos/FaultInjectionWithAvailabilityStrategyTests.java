@@ -56,9 +56,14 @@ import java.util.function.Function;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.fail;
 
+@SuppressWarnings("SameParameterValue")
 public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
     private final static Logger logger = LoggerFactory.getLogger(FaultInjectionWithAvailabilityStrategyTests.class);
+
+    private final static String sameDocumentIdJustCreated = null;
+
+    private final static Boolean notSpecifiedWhetherIdempotentWriteRetriesAreEnabled = null;
 
     private final static CosmosRegionSwitchHint noRegionSwitchHint = null;
     private final static  ThresholdBasedAvailabilityStrategy defaultAvailabilityStrategy = new ThresholdBasedAvailabilityStrategy();
@@ -105,16 +110,10 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
             assertThat(subStatusCode).isEqualTo(HttpConstants.SubStatusCodes.UNKNOWN);
         };
 
-    private final static BiConsumer<Integer, Integer> validateStatusCodeIsServerGeneratedServiceUnavailable =
+    private final static BiConsumer<Integer, Integer> validateStatusCodeIsServiceUnavailable =
         (statusCode, subStatusCode) -> {
             assertThat(statusCode).isEqualTo(HttpConstants.StatusCodes.SERVICE_UNAVAILABLE);
             assertThat(subStatusCode).isEqualTo(HttpConstants.SubStatusCodes.SERVER_GENERATED_503);
-        };
-
-    private final static BiConsumer<Integer, Integer> validateStatusCodeIsClientTransportGeneratedServiceUnavailable =
-        (statusCode, subStatusCode) -> {
-            assertThat(statusCode).isEqualTo(HttpConstants.StatusCodes.SERVICE_UNAVAILABLE);
-            assertThat(subStatusCode).isEqualTo(HttpConstants.SubStatusCodes.TRANSPORT_GENERATED_410);
         };
 
     private final static Consumer<CosmosDiagnosticsContext> validateDiagnosticsContextHasDiagnosticsForOnlyFirstRegionButWithRegionalFailover =
@@ -324,8 +323,6 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
 
     @DataProvider(name = "testConfigs_readAfterCreation")
     public Object[][] testConfigs_readAfterCreation() {
-        final String sameDocumentIdJustCreated = null;
-
         return new Object[][] {
             // CONFIG description
             // new Object[] {
@@ -644,7 +641,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 noRegionSwitchHint,
                 sameDocumentIdJustCreated,
                 injectServiceUnavailableIntoAllRegions,
-                validateStatusCodeIsServerGeneratedServiceUnavailable,
+                validateStatusCodeIsServiceUnavailable,
                 validateDiagnosticsContextHasDiagnosticsForAllRegions
             },
 
@@ -720,8 +717,6 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                     ObjectNode.class)
                 .block();
 
-        Boolean notSpecifiedWhetherIdempotentWriteRetriesAreEnabled = null;
-
         execute(
             testCaseId,
             endToEndTimeout,
@@ -737,8 +732,8 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
 
     @DataProvider(name = "testConfigs_writeAfterCreation")
     public Object[][] testConfigs_writeAfterCreation() {
-        final Boolean nonIdempotentWriteRetriesEnabled = true;
-        final Boolean nonIdempotentWriteRetriesDisabled = false;
+        final boolean nonIdempotentWriteRetriesEnabled = true;
+        final boolean nonIdempotentWriteRetriesDisabled = false;
 
         Function<ItemOperationInvocationParameters, CosmosItemResponse<?>> createAnotherItemCallback =
             (params) -> {
@@ -767,18 +762,19 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
             };
 
         Function<ItemOperationInvocationParameters, CosmosItemResponse<?>> deleteItemCallback =
-            (params) -> {
-                ObjectNode newItem =
-                    createTestItemAsJson(params.idAndPkValuePair.getLeft(), params.idAndPkValuePair.getRight());
-                newItem.put("newField", UUID.randomUUID().toString());
-
-                return params.container
+            (params) -> params.container
                     .deleteItem(
                         params.idAndPkValuePair.getLeft(),
                         new PartitionKey(params.idAndPkValuePair.getRight()),
                         params.options)
                     .block();
-            };
+        Function<ItemOperationInvocationParameters, CosmosItemResponse<?>> deleteNonExistingItemCallback =
+            (params) -> params.container
+                    .deleteItem(
+                        UUID.randomUUID().toString(),
+                        new PartitionKey(params.idAndPkValuePair.getRight()),
+                        params.options)
+                    .block();
 
         Function<ItemOperationInvocationParameters, CosmosItemResponse<?>> upsertExistingItemCallback =
             (params) -> {
@@ -795,16 +791,12 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
             };
 
         Function<ItemOperationInvocationParameters, CosmosItemResponse<?>> upsertAnotherItemCallback =
-            (params) -> {
-                String newDocumentId = UUID.randomUUID().toString();
-
-                return params.container
+            (params) -> params.container
                     .upsertItem(
-                        createTestItemAsJson(newDocumentId, params.idAndPkValuePair.getRight()),
+                        createTestItemAsJson(UUID.randomUUID().toString(), params.idAndPkValuePair.getRight()),
                         new PartitionKey(params.idAndPkValuePair.getRight()),
                         params.options)
                     .block();
-            };
 
         Function<ItemOperationInvocationParameters, CosmosItemResponse<?>> patchItemCallback =
             (params) -> {
@@ -846,7 +838,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
             // retry issued in the client retry policy
             new Object[] {
                 "Create_503_FirstRegionOnly_NoAvailabilityStrategy_WithWriteRetries",
-                Duration.ofSeconds(1),
+                Duration.ofSeconds(3),
                 noAvailabilityStrategy,
                 noRegionSwitchHint,
                 nonIdempotentWriteRetriesEnabled,
@@ -865,7 +857,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 FaultInjectionOperationType.CREATE_ITEM,
                 createAnotherItemCallback,
                 injectServiceUnavailableIntoFirstRegionOnly,
-                validateStatusCodeIsServerGeneratedServiceUnavailable,
+                validateStatusCodeIsServiceUnavailable,
                 validateDiagnosticsContextHasDiagnosticsForOnlyFirstRegion
             },
             new Object[] {
@@ -889,7 +881,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 FaultInjectionOperationType.CREATE_ITEM,
                 createAnotherItemCallback,
                 injectServiceUnavailableIntoFirstRegionOnly,
-                validateStatusCodeIsServerGeneratedServiceUnavailable,
+                validateStatusCodeIsServiceUnavailable,
                 validateDiagnosticsContextHasDiagnosticsForOnlyFirstRegion
             },
             new Object[] {
@@ -901,7 +893,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 FaultInjectionOperationType.CREATE_ITEM,
                 createAnotherItemCallback,
                 injectServiceUnavailableIntoAllRegions,
-                validateStatusCodeIsServerGeneratedServiceUnavailable,
+                validateStatusCodeIsServiceUnavailable,
                 validateDiagnosticsContextHasDiagnosticsForAllRegions
             },
             new Object[] {
@@ -913,7 +905,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 FaultInjectionOperationType.CREATE_ITEM,
                 createAnotherItemCallback,
                 injectServiceUnavailableIntoAllRegions,
-                validateStatusCodeIsServerGeneratedServiceUnavailable,
+                validateStatusCodeIsServiceUnavailable,
                 validateDiagnosticsContextHasDiagnosticsForOnlyFirstRegion
             },
             new Object[] {
@@ -925,7 +917,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 FaultInjectionOperationType.REPLACE_ITEM,
                 replaceItemCallback,
                 injectServiceUnavailableIntoAllRegions,
-                validateStatusCodeIsServerGeneratedServiceUnavailable,
+                validateStatusCodeIsServiceUnavailable,
                 validateDiagnosticsContextHasDiagnosticsForOnlyFirstRegion
             },
             new Object[] {
@@ -937,7 +929,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 FaultInjectionOperationType.PATCH_ITEM,
                 patchItemCallback,
                 injectServiceUnavailableIntoAllRegions,
-                validateStatusCodeIsServerGeneratedServiceUnavailable,
+                validateStatusCodeIsServiceUnavailable,
                 validateDiagnosticsContextHasDiagnosticsForOnlyFirstRegion
             },
             new Object[] {
@@ -949,7 +941,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 FaultInjectionOperationType.DELETE_ITEM,
                 deleteItemCallback,
                 injectServiceUnavailableIntoAllRegions,
-                validateStatusCodeIsServerGeneratedServiceUnavailable,
+                validateStatusCodeIsServiceUnavailable,
                 validateDiagnosticsContextHasDiagnosticsForOnlyFirstRegion
             },
             new Object[] {
@@ -961,7 +953,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 FaultInjectionOperationType.UPSERT_ITEM,
                 upsertExistingItemCallback,
                 injectServiceUnavailableIntoAllRegions,
-                validateStatusCodeIsServerGeneratedServiceUnavailable,
+                validateStatusCodeIsServiceUnavailable,
                 validateDiagnosticsContextHasDiagnosticsForOnlyFirstRegion
             },
             new Object[] {
@@ -973,7 +965,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 FaultInjectionOperationType.UPSERT_ITEM,
                 upsertAnotherItemCallback,
                 injectServiceUnavailableIntoAllRegions,
-                validateStatusCodeIsServerGeneratedServiceUnavailable,
+                validateStatusCodeIsServiceUnavailable,
                 validateDiagnosticsContextHasDiagnosticsForOnlyFirstRegion
             },
             new Object[] {
@@ -1203,6 +1195,174 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 injectTransitTimeoutIntoFirstRegionOnly,
                 validateStatusCodeIs201Created,
                 validateDiagnosticsContextHasDiagnosticsForOnlyFirstRegionButWithRegionalFailover
+            },
+            new Object[] {
+                "Create_404-1002_AllRegions_LocalPreferred_DefaultAvailabilityStrategy_WithRetries",
+                Duration.ofSeconds(1),
+                defaultAvailabilityStrategy,
+                CosmosRegionSwitchHint.LOCAL_REGION_PREFERRED,
+                nonIdempotentWriteRetriesEnabled,
+                FaultInjectionOperationType.CREATE_ITEM,
+                createAnotherItemCallback,
+                injectReadSessionNotAvailableIntoAllRegions,
+                validateStatusCodeIsOperationCancelled,
+                validateDiagnosticsContextHasDiagnosticsForAllRegions
+            },
+            new Object[] {
+                "Replace_404-1002_AllRegions_LocalPreferred_DefaultAvailabilityStrategy_WithRetries",
+                Duration.ofSeconds(1),
+                defaultAvailabilityStrategy,
+                CosmosRegionSwitchHint.LOCAL_REGION_PREFERRED,
+                nonIdempotentWriteRetriesEnabled,
+                FaultInjectionOperationType.REPLACE_ITEM,
+                replaceItemCallback,
+                injectReadSessionNotAvailableIntoAllRegions,
+                validateStatusCodeIsOperationCancelled,
+                validateDiagnosticsContextHasDiagnosticsForAllRegions
+            },
+            new Object[] {
+                "Replace_404-1002_AllRegions_RemotePreferred_EagerAvailabilityStrategy_WithRetries",
+                Duration.ofSeconds(1),
+                eagerThresholdAvailabilityStrategy,
+                CosmosRegionSwitchHint.REMOTE_REGION_PREFERRED,
+                nonIdempotentWriteRetriesEnabled,
+                FaultInjectionOperationType.REPLACE_ITEM,
+                replaceItemCallback,
+                injectReadSessionNotAvailableIntoAllRegions,
+                validateStatusCodeIsReadSessionNotAvailableError,
+                validateDiagnosticsContextHasDiagnosticsForAllRegions
+            },
+
+            // 404/1022 into all region
+            // Availability strategy exists - but no hedging because NonIdempotentWriteRetries are disabled
+            // no regional fail-over seen, because local preferred region switch (retying too long locally to allow
+            // cross regional retry)
+            new Object[] {
+                "Replace_404-1002_AllRegions_LocalPreferred_EagerAvailabilityStrategy_NoRetries",
+                Duration.ofSeconds(1),
+                eagerThresholdAvailabilityStrategy,
+                CosmosRegionSwitchHint.LOCAL_REGION_PREFERRED,
+                nonIdempotentWriteRetriesDisabled,
+                FaultInjectionOperationType.REPLACE_ITEM,
+                replaceItemCallback,
+                injectReadSessionNotAvailableIntoAllRegions,
+                validateStatusCodeIsOperationCancelled,
+                // no hedging even with availability strategy because nonIdempotentWrites are disabled
+                validateDiagnosticsContextHasDiagnosticsForOnlyFirstRegion
+            },
+
+            // Availability strategy exists - but no hedging because NonIdempotentWriteRetries are disabled
+            // Regional fail-over seen, because preferred region switch is remote
+            new Object[] {
+                "Replace_404-1002_AllRegions_RemotePreferred_EagerAvailabilityStrategy_NoRetries",
+                Duration.ofSeconds(1),
+                eagerThresholdAvailabilityStrategy,
+                CosmosRegionSwitchHint.REMOTE_REGION_PREFERRED,
+                nonIdempotentWriteRetriesDisabled,
+                FaultInjectionOperationType.REPLACE_ITEM,
+                replaceItemCallback,
+                injectReadSessionNotAvailableIntoAllRegions,
+                validateStatusCodeIsReadSessionNotAvailableError,
+                // no hedging even with availability strategy because nonIdempotentWrites are disabled
+                validateDiagnosticsContextHasDiagnosticsForOnlyFirstRegionButWithRegionalFailover
+            },
+
+            new Object[] {
+                "Replace_404-1002_FirstRegionOnly_RemotePreferred_EagerAvailabilityStrategy_NoRetries",
+                Duration.ofSeconds(1),
+                eagerThresholdAvailabilityStrategy,
+                CosmosRegionSwitchHint.REMOTE_REGION_PREFERRED,
+                nonIdempotentWriteRetriesDisabled,
+                FaultInjectionOperationType.REPLACE_ITEM,
+                replaceItemCallback,
+                injectReadSessionNotAvailableIntoFirstRegionOnly,
+                validateStatusCodeIs200Ok,
+                // no hedging even with availability strategy because nonIdempotentWrites are disabled
+                validateDiagnosticsContextHasDiagnosticsForOnlyFirstRegionButWithRegionalFailover
+            },
+
+            new Object[] {
+                "Replace_404-1002_FirstRegionOnly_LocalPreferred_EagerAvailabilityStrategy_NoRetries",
+                Duration.ofSeconds(1),
+                eagerThresholdAvailabilityStrategy,
+                CosmosRegionSwitchHint.LOCAL_REGION_PREFERRED,
+                nonIdempotentWriteRetriesDisabled,
+                FaultInjectionOperationType.REPLACE_ITEM,
+                replaceItemCallback,
+                injectReadSessionNotAvailableIntoFirstRegionOnly,
+                validateStatusCodeIsOperationCancelled,
+                // no hedging even with availability strategy because nonIdempotentWrites are disabled
+                validateDiagnosticsContextHasDiagnosticsForOnlyFirstRegion
+            },
+
+            new Object[] {
+                "Replace_404-1002_FirstRegionOnly_RemotePreferred_EagerAvailabilityStrategy_WithRetries",
+                Duration.ofSeconds(1),
+                eagerThresholdAvailabilityStrategy,
+                CosmosRegionSwitchHint.REMOTE_REGION_PREFERRED,
+                nonIdempotentWriteRetriesEnabled,
+                FaultInjectionOperationType.REPLACE_ITEM,
+                replaceItemCallback,
+                injectReadSessionNotAvailableIntoFirstRegionOnly,
+                validateStatusCodeIs200Ok,
+                // no hedging even with availability strategy because nonIdempotentWrites are disabled
+                validateDiagnosticsContextHasDiagnosticsForOneOrTwoRegionsButTwoContactedRegions
+            },
+
+            new Object[] {
+                "Replace_404-1002_FirstRegionOnly_LocalPreferred_EagerAvailabilityStrategy_WithRetries",
+                Duration.ofSeconds(1),
+                eagerThresholdAvailabilityStrategy,
+                CosmosRegionSwitchHint.LOCAL_REGION_PREFERRED,
+                nonIdempotentWriteRetriesEnabled,
+                FaultInjectionOperationType.REPLACE_ITEM,
+                replaceItemCallback,
+                injectReadSessionNotAvailableIntoFirstRegionOnly,
+                validateStatusCodeIs200Ok,
+                // no hedging even with availability strategy because nonIdempotentWrites are disabled
+                validateDiagnosticsContextHasDiagnosticsForAllRegions
+            },
+
+            new Object[] {
+                "Create_404-1002_FirstRegionOnly_RemotePreferred_ReluctantAvailabilityStrategy_WithRetries",
+                Duration.ofSeconds(1),
+                reluctantThresholdAvailabilityStrategy,
+                CosmosRegionSwitchHint.REMOTE_REGION_PREFERRED,
+                nonIdempotentWriteRetriesEnabled,
+                FaultInjectionOperationType.CREATE_ITEM,
+                createAnotherItemCallback,
+                injectReadSessionNotAvailableIntoFirstRegionOnly,
+                validateStatusCodeIs201Created,
+                // no hedging even with availability strategy because nonIdempotentWrites are disabled
+                validateDiagnosticsContextHasDiagnosticsForOnlyFirstRegionButWithRegionalFailover
+            },
+
+            new Object[] {
+                "Create_404-1002_FirstRegionOnly_LocalPreferred_EagerAvailabilityStrategy_WithRetries",
+                Duration.ofSeconds(1),
+                eagerThresholdAvailabilityStrategy,
+                CosmosRegionSwitchHint.LOCAL_REGION_PREFERRED,
+                nonIdempotentWriteRetriesEnabled,
+                FaultInjectionOperationType.CREATE_ITEM,
+                createAnotherItemCallback,
+                injectReadSessionNotAvailableIntoFirstRegionOnly,
+                validateStatusCodeIs201Created,
+                // no hedging even with availability strategy because nonIdempotentWrites are disabled
+                validateDiagnosticsContextHasDiagnosticsForAllRegions
+            },
+
+            new Object[] {
+                "DeleteNonExistingItem_404-1002_FirstRegionOnly_LocalPreferred_EagerAvailabilityStrategy_WithRetries",
+                Duration.ofSeconds(1),
+                eagerThresholdAvailabilityStrategy,
+                CosmosRegionSwitchHint.LOCAL_REGION_PREFERRED,
+                nonIdempotentWriteRetriesEnabled,
+                FaultInjectionOperationType.DELETE_ITEM,
+                deleteNonExistingItemCallback,
+                injectReadSessionNotAvailableIntoFirstRegionOnly,
+                validateStatusCodeIsLegitNotFound,
+                // no hedging even with availability strategy because nonIdempotentWrites are disabled
+                validateDiagnosticsContextHasDiagnosticsForAllRegions
             },
         };
     }
@@ -1442,7 +1602,11 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                     "DIAGNOSTICS CONTEXT: {}",
                     diagnosticsContext != null ? diagnosticsContext.toJson(): "NULL");
 
-                validateStatusCode.accept(response.getStatusCode(), null);
+                if (response == null) {
+                    fail("Response is null");
+                } else {
+                    validateStatusCode.accept(response.getStatusCode(), null);
+                }
                 validateDiagnosticsContext.accept(diagnosticsContext);
             } catch (Exception e) {
                 if (e instanceof CosmosException) {
