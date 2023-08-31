@@ -48,8 +48,8 @@ public final class ReactorConnectionCache<T extends ReactorConnection> implement
      *
      * @param connectionSupplier the supplier that provides a new connection object, which is not yet
      *                          connected to the host or active.
-     * @param fullyQualifiedNamespace The connection FQDN of the remote broker/resource.
-     * @param entityPath The relative path to the entity under the FQDN to which the connection established to.
+     * @param fullyQualifiedNamespace The fully qualified namespace of the remote broker/resource.
+     * @param entityPath The relative path to the entity under the fully qualified namespace to which the connection established to.
      * @param retryPolicy the retry configuration to use to obtain a new active connection.
      * @param loggingContext the logger context.
      */
@@ -59,9 +59,9 @@ public final class ReactorConnectionCache<T extends ReactorConnection> implement
         AmqpRetryPolicy retryPolicy,
         Map<String, Object> loggingContext) {
         this.fullyQualifiedNamespace = Objects.requireNonNull(fullyQualifiedNamespace, "'fullyQualifiedNamespace' cannot be null.");
-        // Note: FQDN, (to an extent) entity-path are generic enough, but if we find more connection description
-        // parameters that are non-generic, i.e., specific to individual messaging services, then consider creating
-        // dedicated POJO types to pass around connection description parameters in corresponding libraries rather
+        // Note: fullyQualifiedNamespace, (to an extent) entity-path are generic enough, but if we find more connection
+        // description parameters that are non-generic, i.e., specific to individual messaging services, then consider
+        // creating dedicated POJO types to pass around connection description parameters in corresponding libraries rather
         // than polluting shared 'ReactorConnectionCache' type.
         this.entityPath = entityPath;
         Objects.requireNonNull(retryPolicy, "'retryPolicy' cannot be null.");
@@ -133,16 +133,16 @@ public final class ReactorConnectionCache<T extends ReactorConnection> implement
     }
 
     /**
-     * Get the connection FQDN of the remote broker/resource.
+     * Get the connection fully qualified namespace of the remote broker/resource.
      *
-     * @return the connection FQDN.
+     * @return the connection fully qualified namespace.
      */
     public String getFullyQualifiedNamespace() {
         return fullyQualifiedNamespace;
     }
 
     /**
-     * Get the relative path to the entity under the FQDN to which the connection established to.
+     * Get the relative path to the entity under the fully qualified namespace to which the connection established to.
      *
      * @return the entity path.
      */
