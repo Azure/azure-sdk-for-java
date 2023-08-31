@@ -3,6 +3,9 @@
 package com.azure.ai.openai;
 
 import com.azure.ai.openai.functions.MyFunctionCallArguments;
+import com.azure.ai.openai.models.AudioTranscription;
+import com.azure.ai.openai.models.AudioTranscriptionFormat;
+import com.azure.ai.openai.models.AudioTranscriptionOptions;
 import com.azure.ai.openai.models.AzureChatExtensionConfiguration;
 import com.azure.ai.openai.models.AzureChatExtensionType;
 import com.azure.ai.openai.models.AzureCognitiveSearchChatExtensionConfiguration;
@@ -28,6 +31,7 @@ import com.azure.core.util.IterableStream;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.Iterator;
 
@@ -400,6 +404,20 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
             IterableStream<ChatCompletions> resultChatCompletions = client.getChatCompletionsStream(deploymentName, chatCompletionsOptions);
 
             assertChatCompletionsStreamingCognitiveSearch(resultChatCompletions.stream());
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    public void testGetAudioTranscription(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        client = getOpenAIClient(httpClient, serviceVersion);
+
+        getAudioTranscriptionRunner((deploymentName, fileName) -> {
+            byte[] file = BinaryData.fromFile(Path.of("src/test/resources/batman.wav")).toBytes();
+            AudioTranscriptionOptions transcriptionOptions = new AudioTranscriptionOptions(file);
+
+            AudioTranscription transcription = client.getAudioTranscriptions(deploymentName, transcriptionOptions);
+            assertNotNull(transcription);
         });
     }
 }

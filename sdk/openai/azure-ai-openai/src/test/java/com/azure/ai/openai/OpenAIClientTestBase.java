@@ -206,6 +206,10 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
         testRunner.accept("text-davinci-002", "What is 3 times 4?");
     }
 
+    void getAudioTranscriptionRunner(BiConsumer<String, String> testRunner) {
+        testRunner.accept("whisper-deployment", "batman.wav");
+    }
+
     private List<ChatMessage> getChatMessages() {
         List<ChatMessage> chatMessages = new ArrayList<>();
         chatMessages.add(new ChatMessage(ChatRole.SYSTEM, "You are a helpful assistant. You will talk like a pirate."));
