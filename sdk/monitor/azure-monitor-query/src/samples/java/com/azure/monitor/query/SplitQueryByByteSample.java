@@ -22,7 +22,7 @@ import com.azure.monitor.query.models.QueryTimeInterval;
 /**
  * A sample to demonstrate using a batch logs query to overcome the service limits for a large query.
  */
-public class SplitQueryByByteSample {
+public class SplitQueryByByteSizeSample {
 
 
     static String workspaceId;
