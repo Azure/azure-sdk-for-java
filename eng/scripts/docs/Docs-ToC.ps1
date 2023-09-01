@@ -15,12 +15,11 @@ function Get-java-OnboardedDocsMsPackagesForMoniker ($DocRepoLocation, $moniker)
     $onboardingSpec = ConvertFrom-Json (Get-Content $packageOnboardingFiles -Raw)
     if ("preview" -eq $moniker) {
         $onboardingSpec = $onboardingSpec | Where-Object { $_.output_path -eq "preview/docs-ref-autogen" }
-    }
-    elseif("latest" -eq $moniker) {
+    } elseif("latest" -eq $moniker) {
         $onboardingSpec = $onboardingSpec | Where-Object { $_.output_path -eq "docs-ref-autogen" }
+    } elseif ("legacy" -eq $moniker) { 
+        $onboardingSpec = $onboardingSpec | Where-Object { $_.output_path -eq "legacy/docs-ref-autogen" }
     }
-
-    # TODO: Add support for "legacy" moniker
 
     $onboardedPackages = @{}
     foreach ($spec in $onboardingSpec.packages) {

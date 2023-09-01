@@ -1,12 +1,5 @@
 #$SetDocsPackageOnboarding = "Set-${Language}-DocsPackageOnboarding"
 function Set-java-DocsPackageOnboarding($moniker, $metadata, $docRepoLocation, $packageSourceOverride) { 
-    
-    # # Do not write onboarding information for legacy moniker
-    # # TODO: remove this once legacy moniker is properly configured
-    # if ($moniker -eq 'legacy') { 
-    #     return 
-    # }
-
     $packageJsonPath = Join-Path $docRepoLocation "package.json"
     $onboardingInfo = Get-Content $packageJsonPath | ConvertFrom-Json
 
