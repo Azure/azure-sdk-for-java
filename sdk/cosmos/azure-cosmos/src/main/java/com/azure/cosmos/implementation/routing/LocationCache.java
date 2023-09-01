@@ -216,7 +216,7 @@ public class LocationCache {
             return writeEndpoints;
         }
 
-        List<String> effectiveExcludedRegions = connectionPolicy.getExcludedRegions();
+        List<String> effectiveExcludedRegions = connectionPolicy.getExcludeRegions();
 
         if (request.requestContext.getExcludeRegions() != null && !request.requestContext.getExcludeRegions().isEmpty()) {
             effectiveExcludedRegions = request.requestContext.getExcludeRegions();
@@ -237,7 +237,7 @@ public class LocationCache {
             return readEndpoints;
         }
 
-        List<String> effectiveExcludeRegions = connectionPolicy.getExcludedRegions();
+        List<String> effectiveExcludeRegions = connectionPolicy.getExcludeRegions();
 
         if (request.requestContext.getExcludeRegions() != null && !request.requestContext.getExcludeRegions().isEmpty()) {
             effectiveExcludeRegions = request.requestContext.getExcludeRegions();
@@ -277,7 +277,7 @@ public class LocationCache {
     private boolean isExcludeRegionsConfigured(RxDocumentServiceRequest request) {
 
         List<String> excludedRegionsOnRequest = request.requestContext.getExcludeRegions();
-        List<String> excludedRegionsOnClient = connectionPolicy.getExcludedRegions();
+        List<String> excludedRegionsOnClient = connectionPolicy.getExcludeRegions();
 
         boolean isExcludedRegionsConfiguredOnRequest = !(excludedRegionsOnRequest == null || excludedRegionsOnRequest.isEmpty());
         boolean isExcludedRegionsConfiguredOnClient = !(excludedRegionsOnClient == null || excludedRegionsOnClient.isEmpty());

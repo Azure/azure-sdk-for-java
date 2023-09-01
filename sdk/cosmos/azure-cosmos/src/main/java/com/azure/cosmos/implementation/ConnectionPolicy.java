@@ -473,12 +473,12 @@ public final class ConnectionPolicy {
         return this;
     }
 
-    public ConnectionPolicy setExcludedRegions(List<String> excludeRegions) {
+    public ConnectionPolicy setExcludeRegions(List<String> excludeRegions) {
         this.excludeRegions = excludeRegions;
         return this;
     }
 
-    public List<String> getExcludedRegions() {
+    public List<String> getExcludeRegions() {
         return this.excludeRegions;
     }
 

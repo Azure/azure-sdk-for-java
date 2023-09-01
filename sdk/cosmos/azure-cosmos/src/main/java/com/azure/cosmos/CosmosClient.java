@@ -5,7 +5,6 @@ package com.azure.cosmos;
 
 import com.azure.core.annotation.ServiceClient;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
-import com.azure.cosmos.implementation.OpenConnectionResponse;
 import com.azure.cosmos.models.CosmosDatabaseProperties;
 import com.azure.cosmos.models.CosmosDatabaseRequestOptions;
 import com.azure.cosmos.models.CosmosDatabaseResponse;
@@ -18,7 +17,6 @@ import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
 
 import java.io.Closeable;
-import java.io.IOException;
 import java.time.Duration;
 import java.util.List;
 
@@ -330,8 +328,8 @@ public final class CosmosClient implements Closeable {
         return new GlobalThroughputControlConfigBuilder(this.asyncClientWrapper, databaseId, containerId);
     }
 
-    public void setExcludedRegions(List<String> excludedRegions) {
-        this.asyncClientWrapper.setExcludedRegions(excludedRegions);
+    public void setExcludedRegions(List<String> excludeRegions) {
+        this.asyncClientWrapper.setExcludeRegions(excludeRegions);
     }
 
     static void initialize() {

@@ -129,7 +129,7 @@ public class CosmosClientBuilder implements
     private String userAgentSuffix;
     private ThrottlingRetryOptions throttlingRetryOptions;
     private List<String> preferredRegions;
-    private List<String> excludedRegions;
+    private List<String> excludeRegions;
     private boolean endpointDiscoveryEnabled = true;
     private boolean multipleWriteRegionsEnabled = true;
     private boolean readRequestsFallbackEnabled = true;
@@ -885,15 +885,15 @@ public class CosmosClientBuilder implements
      * for the workload executed through this instance of {@link CosmosClient} / {@link CosmosAsyncClient}.
      * */
     public CosmosClientBuilder excludeRegions(List<String> excludeRegions) {
-        this.excludedRegions = excludeRegions;
+        this.excludeRegions = excludeRegions;
         return this;
     }
 
-    public List<String> getExcludedRegions() {
-        if (this.excludedRegions == null) {
+    public List<String> getExcludeRegions() {
+        if (this.excludeRegions == null) {
             return null;
         }
-        return UnmodifiableList.unmodifiableList(this.excludedRegions);
+        return UnmodifiableList.unmodifiableList(this.excludeRegions);
     }
 
     SessionRetryOptions getSessionRetryOptions() {
@@ -1129,7 +1129,7 @@ public class CosmosClientBuilder implements
             this.connectionPolicy = new ConnectionPolicy(gatewayConnectionConfig);
         }
         this.connectionPolicy.setPreferredRegions(this.preferredRegions);
-        this.connectionPolicy.setExcludedRegions(this.excludedRegions);
+        this.connectionPolicy.setExcludeRegions(this.excludeRegions);
         this.connectionPolicy.setUserAgentSuffix(this.userAgentSuffix);
         this.connectionPolicy.setThrottlingRetryOptions(this.throttlingRetryOptions);
         this.connectionPolicy.setEndpointDiscoveryEnabled(this.endpointDiscoveryEnabled);
