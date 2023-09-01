@@ -64,3 +64,9 @@ function Get-java-DocsPackagesAlreadyOnboarded($docRepoLocation, $moniker) {
 function Get-java-PackageIdentity($package) { 
     return "$($package['Group']):$($package['Name'])"
 }
+
+# Declared in common.ps1 as 
+# $GetPackageIdentityFromCsvMetadata = "Get-${Language}-PackageIdentityFromCsvMetadata"
+function Get-java-PackageIdentityFromCsvMetadata($package) { 
+    return "$($package.GroupId):$($Package.Package)"
+}
