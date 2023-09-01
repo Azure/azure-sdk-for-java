@@ -30,6 +30,7 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollResponse;
@@ -532,6 +533,10 @@ public class SecretClientImpl {
     }
 
     public Response<KeyVaultSecret> getSecretWithResponse(String name, String version, Context context) {
+        if (CoreUtils.isNullOrEmpty(name)) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'name' cannot be null or empty."));
+        }
+
         context = context == null ? Context.NONE : context;
         context = enableSyncRestProxy(context);
 
