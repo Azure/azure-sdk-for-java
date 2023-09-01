@@ -10,6 +10,7 @@ import com.azure.core.cryptography.AsyncKeyEncryptionKey;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobAsyncClient;
@@ -54,7 +55,6 @@ import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
@@ -735,19 +735,27 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
                 requestConditionsFinal.setIfMatch(response.getValue().getETag());
                 Mono<T> result = downloadCall.get();
 
-                Map<String, String> caseInsensitiveMetadata = new HashMap<>();
-                for (Map.Entry<String, String> entry : response.getValue().getMetadata().entrySet()) {
-                    caseInsensitiveMetadata.put(entry.getKey().toLowerCase(Locale.ROOT), entry.getValue());
-                }
-                if (caseInsensitiveMetadata.get(ENCRYPTION_DATA_KEY) != null) {
-                    result = result.contextWrite(context ->
-                        context.put(ENCRYPTION_DATA_KEY,
-                            EncryptionData.getAndValidateEncryptionData(
-                                caseInsensitiveMetadata.get(ENCRYPTION_DATA_KEY), requiresEncryption))
-                    );
+                String encryptionDataKey = getEncryptionDataKey(response.getValue().getMetadata());
+                if (encryptionDataKey != null) {
+                    result = result.contextWrite(context -> context.put(ENCRYPTION_DATA_KEY,
+                        EncryptionData.getAndValidateEncryptionData(encryptionDataKey, requiresEncryption)));
                 }
                 return result;
             });
+    }
+
+    private static String getEncryptionDataKey(Map<String, String> metadata) {
+        if (CoreUtils.isNullOrEmpty(metadata)) {
+            return null;
+        }
+        for (Map.Entry<String, String> entry : metadata.entrySet()) {
+            if (entry.getKey().length() != ENCRYPTION_DATA_KEY.length()) {
+                continue;
+            } if (ENCRYPTION_DATA_KEY.regionMatches(true, 0, entry.getKey(), 0, ENCRYPTION_DATA_KEY.length())) {
+                return entry.getValue();
+            }
+        }
+        return null;
     }
 
     @ServiceMethod(returns = ReturnType.SINGLE)

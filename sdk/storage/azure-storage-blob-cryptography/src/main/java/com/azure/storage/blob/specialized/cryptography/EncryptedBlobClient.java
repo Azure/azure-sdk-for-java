@@ -9,6 +9,7 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobClient;
@@ -47,9 +48,7 @@ import java.io.UncheckedIOException;
 import java.nio.file.OpenOption;
 import java.nio.file.StandardOpenOption;
 import java.time.Duration;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
@@ -488,18 +487,27 @@ public class EncryptedBlobClient extends BlobClient {
             this.getPropertiesWithResponse(requestConditions, timeout, context).getValue();
 
         requestConditions.setIfMatch(initialProperties.getETag());
-        Map<String, String> caseInsensitiveMetadata = new HashMap<>();
-        for (Map.Entry<String, String> entry : initialProperties.getMetadata().entrySet()) {
-            caseInsensitiveMetadata.put(entry.getKey().toLowerCase(Locale.ROOT), entry.getValue());
-        }
 
-        if (caseInsensitiveMetadata.get(ENCRYPTION_DATA_KEY) != null) {
+        String encryptionDataKey = getEncryptionDataKey(initialProperties.getMetadata());
+        if (encryptionDataKey != null) {
             context = context.addData(ENCRYPTION_DATA_KEY, EncryptionData.getAndValidateEncryptionData(
-                caseInsensitiveMetadata.get(ENCRYPTION_DATA_KEY),
-                encryptedBlobAsyncClient.isEncryptionRequired()));
+                encryptionDataKey, encryptedBlobAsyncClient.isEncryptionRequired()));
         }
-
         return context;
+    }
+
+    private static String getEncryptionDataKey(Map<String, String> metadata) {
+        if (CoreUtils.isNullOrEmpty(metadata)) {
+            return null;
+        }
+        for (Map.Entry<String, String> entry : metadata.entrySet()) {
+            if (entry.getKey().length() != ENCRYPTION_DATA_KEY.length()) {
+                continue;
+            } if (ENCRYPTION_DATA_KEY.regionMatches(true, 0, entry.getKey(), 0, ENCRYPTION_DATA_KEY.length())) {
+                return entry.getValue();
+            }
+        }
+        return null;
     }
 
     @ServiceMethod(returns = ReturnType.SINGLE)
