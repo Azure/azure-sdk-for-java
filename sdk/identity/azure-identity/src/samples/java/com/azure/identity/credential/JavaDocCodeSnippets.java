@@ -268,6 +268,7 @@ public final class JavaDocCodeSnippets {
         TokenCredential onBehalfOfCredential = new OnBehalfOfCredentialBuilder()
             .clientId("<app-client-ID>")
             .clientSecret("<app-Client-Secret>")
+            .tenantId("<app-tenant-ID>")
             .userAssertion("<user-assertion>")
             .build();
         // END: com.azure.identity.credential.obocredential.construct

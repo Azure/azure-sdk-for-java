@@ -97,10 +97,10 @@ com.azure:azure-cosmos;4.49.0;4.50.0-beta.1
 com.azure:azure-cosmos-benchmark;4.0.1-beta.1;4.0.1-beta.1
 com.azure:azure-cosmos-dotnet-benchmark;4.0.1-beta.1;4.0.1-beta.1
 com.azure.cosmos.spark:azure-cosmos-spark_3_2-12;1.0.0-beta.1;1.0.0-beta.1
-com.azure.cosmos.spark:azure-cosmos-spark_3-1_2-12;4.21.0;4.21.1
-com.azure.cosmos.spark:azure-cosmos-spark_3-2_2-12;4.21.0;4.21.1
-com.azure.cosmos.spark:azure-cosmos-spark_3-3_2-12;4.21.0;4.21.1
-com.azure.cosmos.spark:azure-cosmos-spark_3-4_2-12;4.21.0;4.21.1
+com.azure.cosmos.spark:azure-cosmos-spark_3-1_2-12;4.21.1;4.22.0-beta.1
+com.azure.cosmos.spark:azure-cosmos-spark_3-2_2-12;4.21.1;4.22.0-beta.1
+com.azure.cosmos.spark:azure-cosmos-spark_3-3_2-12;4.21.1;4.22.0-beta.1
+com.azure.cosmos.spark:azure-cosmos-spark_3-4_2-12;4.21.1;4.22.0-beta.1
 com.azure:azure-cosmos-encryption;2.4.0;2.5.0-beta.1
 com.azure:azure-cosmos-test;1.0.0-beta.5;1.0.0-beta.6
 com.azure:azure-cosmos-tests;1.0.0-beta.1;1.0.0-beta.1
@@ -428,6 +428,7 @@ com.azure.resourcemanager:azure-resourcemanager-chaos;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-defendereasm;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-hdinsight-containers;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-apicenter;1.0.0-beta.1;1.0.0-beta.2
+com.azure.resourcemanager:azure-resourcemanager-hybridconnectivity;1.0.0-beta.1;1.0.0-beta.2
 com.azure.tools:azure-sdk-archetype;1.0.0;1.2.0-beta.1
 com.azure.tools:azure-sdk-build-tool;1.0.0;1.1.0-beta.1
 
