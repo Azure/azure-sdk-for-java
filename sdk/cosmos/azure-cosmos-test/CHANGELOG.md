@@ -7,6 +7,7 @@
 #### Breaking Changes
 
 #### Bugs Fixed
+* Fixed an issue where `SERVICE_UNAVAILABLE` being injected incorrectly - See [PR 36601](https://github.com/Azure/azure-sdk-for-java/pull/36601)
 
 #### Other Changes
 
