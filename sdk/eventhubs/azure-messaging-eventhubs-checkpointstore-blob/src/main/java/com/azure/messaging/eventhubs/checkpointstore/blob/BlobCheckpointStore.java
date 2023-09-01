@@ -3,6 +3,7 @@
 
 package com.azure.messaging.eventhubs.checkpointstore.blob;
 
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.CoreUtils;
@@ -14,10 +15,12 @@ import com.azure.messaging.eventhubs.models.Checkpoint;
 import com.azure.messaging.eventhubs.models.PartitionOwnership;
 import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.BlobContainerAsyncClient;
+import com.azure.storage.blob.models.BlobErrorCode;
 import com.azure.storage.blob.models.BlobItem;
 import com.azure.storage.blob.models.BlobItemProperties;
 import com.azure.storage.blob.models.BlobListDetails;
 import com.azure.storage.blob.models.BlobRequestConditions;
+import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.models.ListBlobsOptions;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
@@ -111,6 +114,7 @@ public class BlobCheckpointStore implements CheckpointStore {
         final String prefix = getBlobPrefix(fullyQualifiedNamespace, eventHubName, consumerGroup, OWNERSHIP_PATH,
                 true);
 
+        // If there are no existing blobs in the all-lower case format, try legacy format.
         return listBlobs(prefix, (blobItem, parts) -> convertToPartitionOwnership(blobItem, parts))
             .switchIfEmpty(Flux.defer(() -> {
                 final String legacyPrefix = getBlobPrefix(fullyQualifiedNamespace, eventHubName, consumerGroup,
@@ -126,6 +130,7 @@ public class BlobCheckpointStore implements CheckpointStore {
         final String prefix = getBlobPrefix(fullyQualifiedNamespace, eventHubName, consumerGroup, CHECKPOINT_PATH,
                 true);
 
+        // If there are no existing blobs in the all-lower case format, try legacy format.
         return listBlobs(prefix, (blobItem, names) -> convertToCheckpoint(blobItem, names))
                 .switchIfEmpty(Flux.defer(() -> {
                     final String legacyPrefix = getBlobPrefix(fullyQualifiedNamespace, eventHubName, consumerGroup,
@@ -204,51 +209,82 @@ public class BlobCheckpointStore implements CheckpointStore {
 
         return Flux.fromIterable(requestedPartitionOwnerships).flatMap(partitionOwnership -> {
             try {
-                String partitionId = partitionOwnership.getPartitionId();
-                String legacyBlobName = getBlobName(partitionOwnership.getFullyQualifiedNamespace(),
-                    partitionOwnership.getEventHubName(), partitionOwnership.getConsumerGroup(), partitionId,
-                    OWNERSHIP_PATH);
+                final String partitionId = partitionOwnership.getPartitionId();
+                final String blobName = getBlobName(partitionOwnership.getFullyQualifiedNamespace(),
+                        partitionOwnership.getEventHubName(), partitionOwnership.getConsumerGroup(), partitionId,
+                        OWNERSHIP_PATH, true);
+                final BlobRequestConditions blobRequestConditions = new BlobRequestConditions();
 
-                String lowerCaseName = legacyBlobName.toLowerCase(Locale.ROOT);
-                if (!blobClients.containsKey(lowerCaseName)) {
-                    if (blobClients.containsKey(legacyBlobName)) {
-
-                    }
-                }
-
-                if (!blobClients.containsKey(legacyBlobName)) {
-                    blobClients.put(legacyBlobName, blobContainerAsyncClient.getBlobAsyncClient(legacyBlobName));
-                }
-
-                BlobAsyncClient blobAsyncClient = blobClients.get(legacyBlobName);
-
-                Map<String, String> metadata = new HashMap<>();
+                final Map<String, String> metadata = new HashMap<>();
                 metadata.put(OWNER_ID, partitionOwnership.getOwnerId());
 
-                BlobRequestConditions blobRequestConditions = new BlobRequestConditions();
+                // Blob clients are only added to the map when they have been used to create/update a blob.  So, we
+                // always update in this case.
+                if (blobClients.containsKey(blobName)) {
+                    final BlobAsyncClient blobAsyncClient = blobClients.get(blobName);
+
+                    blobRequestConditions.setIfMatch(partitionOwnership.getETag());
+                    return updateBlob(blobAsyncClient, metadata, blobRequestConditions, partitionOwnership);
+                }
+
+                // New blob should be created.  It was not in the existing blobClients map, so we have to create it.
                 if (CoreUtils.isNullOrEmpty(partitionOwnership.getETag())) {
-                    // New blob should be created
+                    final BlobAsyncClient client = blobClients.compute(blobName, (key, existing) -> {
+                        if (existing != null) {
+                            return existing;
+                        }
+
+                        return blobContainerAsyncClient.getBlobAsyncClient(blobName);
+                    });
+
                     blobRequestConditions.setIfNoneMatch("*");
-                    return blobAsyncClient.getBlockBlobAsyncClient()
+
+                    return client.getBlockBlobAsyncClient()
                         .uploadWithResponse(Flux.just(UPLOAD_DATA), 0, null, metadata, null, null,
                             blobRequestConditions)
-                        .flatMapMany(response -> updateOwnershipETag(response, partitionOwnership), error -> {
+                        .map(response -> updateOwnershipETag(response, partitionOwnership))
+                        .onErrorResume(error -> {
                             LOGGER.atVerbose()
-                                .addKeyValue(PARTITION_ID_LOG_KEY, partitionId)
-                                .log(Messages.CLAIM_ERROR, error);
-                            return Mono.empty();
-                        }, Mono::empty);
-                } else {
-                    // update existing blob
-                    blobRequestConditions.setIfMatch(partitionOwnership.getETag());
-                    return blobAsyncClient.setMetadataWithResponse(metadata, blobRequestConditions)
-                        .flatMapMany(response -> updateOwnershipETag(response, partitionOwnership), error -> {
-                            LOGGER.atVerbose()
-                                .addKeyValue(PARTITION_ID_LOG_KEY, partitionId)
-                                .log(Messages.CLAIM_ERROR, error);
-                            return Mono.empty();
-                        }, Mono::empty);
+                                    .addKeyValue(PARTITION_ID_LOG_KEY, partitionId)
+                                    .log(Messages.CLAIM_ERROR, error);
+                            return Mono.<PartitionOwnership>empty();
+                        });
                 }
+
+                // Update existing blob.  Try to update with the new blob name (lowercase), and if that does not exist,
+                // then try updating with legacy blob name.  If neither work, then log a warning and return normally.
+                blobRequestConditions.setIfMatch(partitionOwnership.getETag());
+
+                final BlobAsyncClient blobClient = blobContainerAsyncClient.getBlobAsyncClient(blobName);
+
+                return blobClient.exists().flatMap(exists -> {
+                    if (exists) {
+                        blobClients.put(blobName, blobClient);
+                        return Mono.just(blobClient);
+                    }
+
+                    final String legacyBlobName = getBlobName(partitionOwnership.getFullyQualifiedNamespace(),
+                            partitionOwnership.getEventHubName(), partitionOwnership.getConsumerGroup(), partitionId,
+                            OWNERSHIP_PATH, false);
+                    final BlobAsyncClient legacyBlobClient =
+                            blobContainerAsyncClient.getBlobAsyncClient(legacyBlobName);
+
+                    return legacyBlobClient.exists().handle((doesExist, sink) -> {
+                        if (doesExist) {
+                            blobClients.put(blobName, legacyBlobClient);
+                            sink.next(legacyBlobClient);
+                        } else {
+                            LOGGER.atWarning()
+                                    .addKeyValue(BLOB_NAME_LOG_KEY, blobName)
+                                    .addKeyValue(PARTITION_ID_LOG_KEY, partitionOwnership.getPartitionId())
+                                    .log(Messages.CLAIM_ERROR
+                                            + ".  No existing blob with current or legacy blob name.");
+                            sink.complete();
+                        }
+                    });
+                }).flatMap(client -> {
+                    return updateBlob(client, metadata, blobRequestConditions, partitionOwnership);
+                });
             } catch (Exception ex) {
                 LOGGER.atWarning()
                     .addKeyValue(PARTITION_ID_LOG_KEY, partitionOwnership.getPartitionId())
@@ -258,8 +294,8 @@ public class BlobCheckpointStore implements CheckpointStore {
         });
     }
 
-    private Mono<PartitionOwnership> updateOwnershipETag(Response<?> response, PartitionOwnership ownership) {
-        return Mono.just(ownership.setETag(response.getHeaders().get(ETAG).getValue()));
+    private static PartitionOwnership updateOwnershipETag(Response<?> response, PartitionOwnership ownership) {
+        return ownership.setETag(response.getHeaders().get(HttpHeaderName.ETAG).getValue());
     }
 
     /**
@@ -276,31 +312,90 @@ public class BlobCheckpointStore implements CheckpointStore {
                     "Both sequence number and offset cannot be null when updating a checkpoint")));
         }
 
-        String partitionId = checkpoint.getPartitionId();
-        String blobName = getBlobName(checkpoint.getFullyQualifiedNamespace(), checkpoint.getEventHubName(),
-            checkpoint.getConsumerGroup(), partitionId, CHECKPOINT_PATH);
-        if (!blobClients.containsKey(blobName)) {
-            blobClients.put(blobName, blobContainerAsyncClient.getBlobAsyncClient(blobName));
-        }
+        final String sequenceNumber = checkpoint.getSequenceNumber() == null
+                ? null
+                : String.valueOf(checkpoint.getSequenceNumber());
+        final String offset = checkpoint.getOffset() == null
+                ? null
+                : String.valueOf(checkpoint.getOffset());
 
-        Map<String, String> metadata = new HashMap<>();
-        String sequenceNumber = checkpoint.getSequenceNumber() == null ? null
-            : String.valueOf(checkpoint.getSequenceNumber());
-
-        String offset = checkpoint.getOffset() == null ? null : String.valueOf(checkpoint.getOffset());
+        final Map<String, String> metadata = new HashMap<>();
         metadata.put(SEQUENCE_NUMBER, sequenceNumber);
         metadata.put(OFFSET, offset);
-        BlobAsyncClient blobAsyncClient = blobClients.get(blobName);
 
-        Mono<Void> response = blobAsyncClient.exists().flatMap(exists -> {
+        final String partitionId = checkpoint.getPartitionId();
+        final String blobName = getBlobName(checkpoint.getFullyQualifiedNamespace(), checkpoint.getEventHubName(),
+            checkpoint.getConsumerGroup(), partitionId, CHECKPOINT_PATH, true);
+
+        // Blob clients are only added to map when we create an entry for them.
+        if (blobClients.containsKey(blobName)) {
+            final BlobAsyncClient blobAsyncClient = blobClients.get(blobName);
+            final Mono<Void> response = updateBlob(blobAsyncClient, metadata, true);
+
+            return reportMetrics(response, checkpoint, blobName);
+        }
+
+        // The checkpoint either:
+        // 1. Legacy format (keeps existing casing)
+        // 2. Does not exist.
+        final String legacyBlobName = getBlobName(checkpoint.getFullyQualifiedNamespace(),
+                checkpoint.getEventHubName(), checkpoint.getConsumerGroup(), partitionId, CHECKPOINT_PATH, false);
+        final BlobAsyncClient legacyBlobClient = blobContainerAsyncClient.getBlobAsyncClient(legacyBlobName);
+
+        final Mono<Void> response = legacyBlobClient.exists().flatMap(exists -> {
+            // The checkpoint is in legacy format.
             if (exists) {
-                return blobAsyncClient.setMetadata(metadata);
+                // Store it as the correct (all-lowercase) blob name, but the blob client will update the legacy
+                // checkpoint.  This way we do not have to do check for existence of both legacy and new one every
+                // iteration.
+                blobClients.put(blobName, legacyBlobClient);
+
+                return updateBlob(legacyBlobClient, metadata, false);
             } else {
-                return blobAsyncClient.getBlockBlobAsyncClient().uploadWithResponse(Flux.just(UPLOAD_DATA), 0, null,
-                    metadata, null, null, null).then();
+                // Does not exist at all.  Create a new client and update the checkpoint.
+                final BlobAsyncClient blobAsyncClient = blobContainerAsyncClient.getBlobAsyncClient(blobName);
+
+                blobClients.put(blobName, blobAsyncClient);
+
+                return blobAsyncClient.getBlockBlobAsyncClient()
+                        .uploadWithResponse(Flux.just(UPLOAD_DATA), 0, null, metadata, null,
+                                null, null)
+                        .then();
             }
         });
+
         return reportMetrics(response, checkpoint, blobName);
+    }
+
+    private static Mono<Void> updateBlob(BlobAsyncClient client, Map<String, String> metadata,
+            boolean createIfNotExists) {
+        return client.setMetadata(metadata).onErrorResume(error -> {
+            if (!(error instanceof BlobStorageException)) {
+                return false;
+            }
+
+            return ((BlobStorageException) error).getErrorCode() == BlobErrorCode.BLOB_NOT_FOUND
+                    && createIfNotExists;
+        }, error -> {
+            return client.getBlockBlobAsyncClient()
+                    .uploadWithResponse(Flux.just(UPLOAD_DATA), 0, null, metadata, null,
+                            null, null)
+                    .then();
+        });
+    }
+
+    private static Mono<PartitionOwnership> updateBlob(BlobAsyncClient client, Map<String, String> metadata,
+            BlobRequestConditions blobRequestConditions, PartitionOwnership partitionOwnership) {
+
+        return client.setMetadataWithResponse(metadata, blobRequestConditions)
+                .map(response -> {
+                    return updateOwnershipETag(response, partitionOwnership);
+                }).onErrorResume(error -> {
+                    LOGGER.atVerbose()
+                            .addKeyValue(PARTITION_ID_LOG_KEY, partitionOwnership.getPartitionId())
+                            .log(Messages.CLAIM_ERROR, error);
+                    return Mono.empty();
+                });
     }
 
     private Mono<Void> reportMetrics(Mono<Void> checkpointMono, Checkpoint checkpoint, String blobName) {
@@ -308,7 +403,10 @@ public class BlobCheckpointStore implements CheckpointStore {
         return checkpointMono
             .doOnEach(signal ->  {
                 if (signal.isOnComplete() || signal.isOnError()) {
-                    metricsHelper.reportCheckpoint(checkpoint, blobName, !signal.hasError(), startTime != null ? startTime.get() : null);
+                    metricsHelper.reportCheckpoint(checkpoint,
+                            blobName,
+                            !signal.hasError(),
+                            startTime != null ? startTime.get() : null);
                 }
             })
             .doOnSubscribe(ignored -> {
@@ -318,7 +416,7 @@ public class BlobCheckpointStore implements CheckpointStore {
             });
     }
 
-    private String getBlobPrefix(String fullyQualifiedNamespace, String eventHubName, String consumerGroupName,
+    private static String getBlobPrefix(String fullyQualifiedNamespace, String eventHubName, String consumerGroupName,
         String typeSuffix, boolean isLowercase) {
 
         final String prefix = fullyQualifiedNamespace + BLOB_PATH_SEPARATOR + eventHubName + BLOB_PATH_SEPARATOR
@@ -327,10 +425,12 @@ public class BlobCheckpointStore implements CheckpointStore {
         return isLowercase ? prefix.toLowerCase(Locale.ROOT) : prefix;
     }
 
-    private String getBlobName(String fullyQualifiedNamespace, String eventHubName, String consumerGroupName,
-        String partitionId, String typeSuffix) {
-        return fullyQualifiedNamespace + BLOB_PATH_SEPARATOR + eventHubName + BLOB_PATH_SEPARATOR + consumerGroupName
-            + typeSuffix + partitionId;
+    private static String getBlobName(String fullyQualifiedNamespace, String eventHubName, String consumerGroupName,
+        String partitionId, String typeSuffix, boolean isLowercase) {
+        final String name = fullyQualifiedNamespace + BLOB_PATH_SEPARATOR + eventHubName + BLOB_PATH_SEPARATOR
+                + consumerGroupName + typeSuffix + partitionId;
+
+        return isLowercase ? name.toLowerCase(Locale.ROOT) : name;
     }
 
     private static PartitionOwnership convertToPartitionOwnership(BlobItem blobItem, String[] names) {
