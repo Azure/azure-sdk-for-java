@@ -40,6 +40,10 @@ public final class DeletedAccountProperties {
     @JsonProperty(value = "deletionTime", access = JsonProperty.Access.WRITE_ONLY)
     private String deletionTime;
 
+    /** Creates an instance of DeletedAccountProperties class. */
+    public DeletedAccountProperties() {
+    }
+
     /**
      * Get the storageAccountResourceId property: Full resource id of the original storage account.
      *

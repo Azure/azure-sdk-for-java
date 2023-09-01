@@ -4,13 +4,12 @@
 
 package com.azure.resourcemanager.storage.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.storage.fluent.models.EncryptionScopeInner;
 
 /** Samples for EncryptionScopes Put. */
 public final class EncryptionScopesPutSamples {
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2022-09-01/examples/StorageAccountPutEncryptionScopeWithInfrastructureEncryption.json
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-01-01/examples/StorageAccountPutEncryptionScopeWithInfrastructureEncryption.json
      */
     /**
      * Sample code: StorageAccountPutEncryptionScopeWithInfrastructureEncryption.
@@ -26,14 +25,14 @@ public final class EncryptionScopesPutSamples {
             .getEncryptionScopes()
             .putWithResponse(
                 "resource-group-name",
-                "{storage-account-name}",
+                "accountname",
                 "{encryption-scope-name}",
                 new EncryptionScopeInner().withRequireInfrastructureEncryption(true),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2022-09-01/examples/StorageAccountPutEncryptionScope.json
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-01-01/examples/StorageAccountPutEncryptionScope.json
      */
     /**
      * Sample code: StorageAccountPutEncryptionScope.
@@ -48,9 +47,9 @@ public final class EncryptionScopesPutSamples {
             .getEncryptionScopes()
             .putWithResponse(
                 "resource-group-name",
-                "{storage-account-name}",
+                "accountname",
                 "{encryption-scope-name}",
                 new EncryptionScopeInner(),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

@@ -7,7 +7,7 @@ package com.azure.resourcemanager.network.generated;
 /** Samples for VirtualNetworks ListByResourceGroup. */
 public final class VirtualNetworksListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-02-01/examples/VirtualNetworkList.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-04-01/examples/VirtualNetworkList.json
      */
     /**
      * Sample code: List virtual networks in resource group.

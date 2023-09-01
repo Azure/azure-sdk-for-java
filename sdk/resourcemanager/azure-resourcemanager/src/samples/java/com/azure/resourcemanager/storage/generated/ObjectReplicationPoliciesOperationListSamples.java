@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.storage.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ObjectReplicationPoliciesOperation List. */
 public final class ObjectReplicationPoliciesOperationListSamples {
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2022-09-01/examples/StorageAccountListObjectReplicationPolicies.json
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-01-01/examples/StorageAccountListObjectReplicationPolicies.json
      */
     /**
      * Sample code: StorageAccountListObjectReplicationPolicies.
@@ -23,6 +21,6 @@ public final class ObjectReplicationPoliciesOperationListSamples {
             .manager()
             .serviceClient()
             .getObjectReplicationPoliciesOperations()
-            .list("res6977", "sto2527", Context.NONE);
+            .list("res6977", "sto2527", com.azure.core.util.Context.NONE);
     }
 }

@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.apimanagement.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for SignInSettings Get. */
 public final class SignInSettingsGetSamples {
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementPortalSettingsGetSignIn.json
+     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementPortalSettingsGetSignIn.json
      */
     /**
      * Sample code: ApiManagementPortalSettingsGetSignIn.
@@ -18,6 +16,6 @@ public final class SignInSettingsGetSamples {
      */
     public static void apiManagementPortalSettingsGetSignIn(
         com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
-        manager.signInSettings().getWithResponse("rg1", "apimService1", Context.NONE);
+        manager.signInSettings().getWithResponse("rg1", "apimService1", com.azure.core.util.Context.NONE);
     }
 }

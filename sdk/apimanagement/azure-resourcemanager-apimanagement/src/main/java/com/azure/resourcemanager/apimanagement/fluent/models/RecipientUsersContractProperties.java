@@ -16,6 +16,10 @@ public final class RecipientUsersContractProperties {
     @JsonProperty(value = "userId")
     private String userId;
 
+    /** Creates an instance of RecipientUsersContractProperties class. */
+    public RecipientUsersContractProperties() {
+    }
+
     /**
      * Get the userId property: API Management UserId subscribed to notification.
      *

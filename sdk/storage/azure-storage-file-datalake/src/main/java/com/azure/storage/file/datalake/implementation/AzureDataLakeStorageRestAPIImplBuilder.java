@@ -290,7 +290,7 @@ public final class AzureDataLakeStorageRestAPIImplBuilder
     public AzureDataLakeStorageRestAPIImpl buildClient() {
         HttpPipeline localPipeline = (pipeline != null) ? pipeline : createHttpPipeline();
         String localResource = (resource != null) ? resource : "filesystem";
-        String localVersion = (version != null) ? version : "2021-06-08";
+        String localVersion = (version != null) ? version : "2023-05-03";
         SerializerAdapter localSerializerAdapter =
                 (serializerAdapter != null) ? serializerAdapter : JacksonAdapter.createDefaultSerializerAdapter();
         AzureDataLakeStorageRestAPIImpl client =

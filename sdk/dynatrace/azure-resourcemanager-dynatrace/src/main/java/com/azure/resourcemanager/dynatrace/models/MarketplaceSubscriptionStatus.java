@@ -20,6 +20,15 @@ public final class MarketplaceSubscriptionStatus extends ExpandableStringEnum<Ma
     public static final MarketplaceSubscriptionStatus SUSPENDED = fromString("Suspended");
 
     /**
+     * Creates a new instance of MarketplaceSubscriptionStatus value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public MarketplaceSubscriptionStatus() {
+    }
+
+    /**
      * Creates or finds a MarketplaceSubscriptionStatus from its string representation.
      *
      * @param name a name to look for.

@@ -25,6 +25,15 @@ public final class GeoReplicationStatus extends ExpandableStringEnum<GeoReplicat
     public static final GeoReplicationStatus UNAVAILABLE = fromString("Unavailable");
 
     /**
+     * Creates a new instance of GeoReplicationStatus value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public GeoReplicationStatus() {
+    }
+
+    /**
      * Creates or finds a GeoReplicationStatus from its string representation.
      *
      * @param name a name to look for.

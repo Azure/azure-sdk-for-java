@@ -19,8 +19,7 @@ import java.util.Map;
 /**
  * Sample for recognizing commonly found receipt fields from a file source URL. For a suggested approach to
  * extracting information from receipts, see StronglyTypedRecognizedForm.java.
- * See fields found on a receipt here:
- * https://aka.ms/formrecognizer/receiptfields
+ * See fields found on a receipt <a href="https://aka.ms/formrecognizer/receiptfields">here</a>
  */
 public class RecognizeReceiptsFromUrl {
 

@@ -9,7 +9,7 @@ import com.azure.resourcemanager.apimanagement.models.ResourceLocationDataContra
 /** Samples for Gateway CreateOrUpdate. */
 public final class GatewayCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementCreateGateway.json
+     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementCreateGateway.json
      */
     /**
      * Sample code: ApiManagementCreateGateway.

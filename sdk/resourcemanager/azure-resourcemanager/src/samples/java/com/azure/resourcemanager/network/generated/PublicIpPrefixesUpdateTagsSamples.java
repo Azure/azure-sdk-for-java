@@ -11,7 +11,7 @@ import java.util.Map;
 /** Samples for PublicIpPrefixes UpdateTags. */
 public final class PublicIpPrefixesUpdateTagsSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-02-01/examples/PublicIpPrefixUpdateTags.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-04-01/examples/PublicIpPrefixUpdateTags.json
      */
     /**
      * Sample code: Update public IP prefix tags.
@@ -31,6 +31,7 @@ public final class PublicIpPrefixesUpdateTagsSamples {
                 com.azure.core.util.Context.NONE);
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

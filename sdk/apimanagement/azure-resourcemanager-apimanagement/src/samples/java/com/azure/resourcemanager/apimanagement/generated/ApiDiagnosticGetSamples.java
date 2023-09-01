@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.apimanagement.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ApiDiagnostic Get. */
 public final class ApiDiagnosticGetSamples {
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementGetApiDiagnostic.json
+     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementGetApiDiagnostic.json
      */
     /**
      * Sample code: ApiManagementGetApiDiagnostic.
@@ -20,6 +18,11 @@ public final class ApiDiagnosticGetSamples {
         com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
         manager
             .apiDiagnostics()
-            .getWithResponse("rg1", "apimService1", "57d1f7558aa04f15146d9d8a", "applicationinsights", Context.NONE);
+            .getWithResponse(
+                "rg1",
+                "apimService1",
+                "57d1f7558aa04f15146d9d8a",
+                "applicationinsights",
+                com.azure.core.util.Context.NONE);
     }
 }

@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.apimanagement.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Reports ListBySubscription. */
 public final class ReportsListBySubscriptionSamples {
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementGetReportsBySubscription.json
+     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementGetReportsBySubscription.json
      */
     /**
      * Sample code: ApiManagementGetReportsBySubscription.
@@ -27,6 +25,6 @@ public final class ReportsListBySubscriptionSamples {
                 null,
                 null,
                 null,
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

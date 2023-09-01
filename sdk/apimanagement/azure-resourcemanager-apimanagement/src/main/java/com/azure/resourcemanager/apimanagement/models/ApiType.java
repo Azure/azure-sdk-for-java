@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ApiType. */
+/** Type of API. */
 public final class ApiType extends ExpandableStringEnum<ApiType> {
     /** Static value http for ApiType. */
     public static final ApiType HTTP = fromString("http");
@@ -23,6 +23,15 @@ public final class ApiType extends ExpandableStringEnum<ApiType> {
     public static final ApiType GRAPHQL = fromString("graphql");
 
     /**
+     * Creates a new instance of ApiType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ApiType() {
+    }
+
+    /**
      * Creates or finds a ApiType from its string representation.
      *
      * @param name a name to look for.
@@ -33,7 +42,11 @@ public final class ApiType extends ExpandableStringEnum<ApiType> {
         return fromString(name, ApiType.class);
     }
 
-    /** @return known ApiType values. */
+    /**
+     * Gets known ApiType values.
+     *
+     * @return known ApiType values.
+     */
     public static Collection<ApiType> values() {
         return values(ApiType.class);
     }

@@ -7,7 +7,7 @@ package com.azure.resourcemanager.network.generated;
 /** Samples for NatGateways GetByResourceGroup. */
 public final class NatGatewaysGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-02-01/examples/NatGatewayGet.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-04-01/examples/NatGatewayGet.json
      */
     /**
      * Sample code: Get nat gateway.

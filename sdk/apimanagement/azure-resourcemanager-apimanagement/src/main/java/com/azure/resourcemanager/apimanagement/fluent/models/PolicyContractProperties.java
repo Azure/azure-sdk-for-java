@@ -24,6 +24,10 @@ public final class PolicyContractProperties {
     @JsonProperty(value = "format")
     private PolicyContentFormat format;
 
+    /** Creates an instance of PolicyContractProperties class. */
+    public PolicyContractProperties() {
+    }
+
     /**
      * Get the value property: Contents of the Policy as defined by the format.
      *

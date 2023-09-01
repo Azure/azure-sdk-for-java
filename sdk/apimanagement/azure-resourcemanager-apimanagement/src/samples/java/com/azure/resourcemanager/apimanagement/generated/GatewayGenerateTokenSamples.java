@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.apimanagement.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.apimanagement.models.GatewayTokenRequestContract;
 import com.azure.resourcemanager.apimanagement.models.KeyType;
 import java.time.OffsetDateTime;
@@ -12,7 +11,7 @@ import java.time.OffsetDateTime;
 /** Samples for Gateway GenerateToken. */
 public final class GatewayGenerateTokenSamples {
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementGatewayGenerateToken.json
+     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementGatewayGenerateToken.json
      */
     /**
      * Sample code: ApiManagementGatewayGenerateToken.
@@ -30,6 +29,6 @@ public final class GatewayGenerateTokenSamples {
                 new GatewayTokenRequestContract()
                     .withKeyType(KeyType.PRIMARY)
                     .withExpiry(OffsetDateTime.parse("2020-04-21T00:44:24.2845269Z")),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

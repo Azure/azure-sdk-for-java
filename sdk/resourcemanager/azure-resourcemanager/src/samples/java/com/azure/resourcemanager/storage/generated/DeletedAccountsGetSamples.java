@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.storage.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for DeletedAccounts Get. */
 public final class DeletedAccountsGetSamples {
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2022-09-01/examples/DeletedAccountGet.json
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-01-01/examples/DeletedAccountGet.json
      */
     /**
      * Sample code: DeletedAccountGet.
@@ -22,6 +20,6 @@ public final class DeletedAccountsGetSamples {
             .manager()
             .serviceClient()
             .getDeletedAccounts()
-            .getWithResponse("sto1125", "eastus", Context.NONE);
+            .getWithResponse("sto1125", "eastus", com.azure.core.util.Context.NONE);
     }
 }

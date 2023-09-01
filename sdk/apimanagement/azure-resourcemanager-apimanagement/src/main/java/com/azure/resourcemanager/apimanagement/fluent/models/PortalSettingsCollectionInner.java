@@ -9,11 +9,11 @@ import com.azure.resourcemanager.apimanagement.models.PortalSettingsContract;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Descriptions of APIM policies. */
+/** Descriptions of API Management policies. */
 @Fluent
 public final class PortalSettingsCollectionInner {
     /*
-     * Descriptions of APIM policies.
+     * Descriptions of API Management policies.
      */
     @JsonProperty(value = "value")
     private List<PortalSettingsContract> value;
@@ -24,8 +24,12 @@ public final class PortalSettingsCollectionInner {
     @JsonProperty(value = "count")
     private Long count;
 
+    /** Creates an instance of PortalSettingsCollectionInner class. */
+    public PortalSettingsCollectionInner() {
+    }
+
     /**
-     * Get the value property: Descriptions of APIM policies.
+     * Get the value property: Descriptions of API Management policies.
      *
      * @return the value value.
      */
@@ -34,7 +38,7 @@ public final class PortalSettingsCollectionInner {
     }
 
     /**
-     * Set the value property: Descriptions of APIM policies.
+     * Set the value property: Descriptions of API Management policies.
      *
      * @param value the value value to set.
      * @return the PortalSettingsCollectionInner object itself.

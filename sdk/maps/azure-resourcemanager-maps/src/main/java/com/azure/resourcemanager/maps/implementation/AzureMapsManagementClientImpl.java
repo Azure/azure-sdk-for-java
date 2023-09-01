@@ -168,7 +168,7 @@ public final class AzureMapsManagementClientImpl implements AzureMapsManagementC
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2021-02-01";
+        this.apiVersion = "2023-06-01";
         this.accounts = new AccountsClientImpl(this);
         this.maps = new MapsClientImpl(this);
         this.creators = new CreatorsClientImpl(this);

@@ -14,6 +14,15 @@ public final class InventoryRuleType extends ExpandableStringEnum<InventoryRuleT
     public static final InventoryRuleType INVENTORY = fromString("Inventory");
 
     /**
+     * Creates a new instance of InventoryRuleType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public InventoryRuleType() {
+    }
+
+    /**
      * Creates or finds a InventoryRuleType from its string representation.
      *
      * @param name a name to look for.

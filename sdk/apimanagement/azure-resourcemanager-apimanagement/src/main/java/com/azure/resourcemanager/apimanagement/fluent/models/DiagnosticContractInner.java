@@ -23,6 +23,10 @@ public final class DiagnosticContractInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private DiagnosticContractProperties innerProperties;
 
+    /** Creates an instance of DiagnosticContractInner class. */
+    public DiagnosticContractInner() {
+    }
+
     /**
      * Get the innerProperties property: Diagnostic entity contract properties.
      *
@@ -238,6 +242,31 @@ public final class DiagnosticContractInner extends ProxyResource {
             this.innerProperties = new DiagnosticContractProperties();
         }
         this.innerProperties().withOperationNameFormat(operationNameFormat);
+        return this;
+    }
+
+    /**
+     * Get the metrics property: Emit custom metrics via emit-metric policy. Applicable only to Application Insights
+     * diagnostic settings.
+     *
+     * @return the metrics value.
+     */
+    public Boolean metrics() {
+        return this.innerProperties() == null ? null : this.innerProperties().metrics();
+    }
+
+    /**
+     * Set the metrics property: Emit custom metrics via emit-metric policy. Applicable only to Application Insights
+     * diagnostic settings.
+     *
+     * @param metrics the metrics value to set.
+     * @return the DiagnosticContractInner object itself.
+     */
+    public DiagnosticContractInner withMetrics(Boolean metrics) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DiagnosticContractProperties();
+        }
+        this.innerProperties().withMetrics(metrics);
         return this;
     }
 

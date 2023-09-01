@@ -31,7 +31,7 @@ public final class AddonsListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"addonType\":\"AddonProperties\",\"provisioningState\":\"Canceled\"},\"id\":\"onsts\",\"name\":\"i\",\"type\":\"xgvelfclduccbird\"}]}";
+            "{\"value\":[{\"properties\":{\"addonType\":\"AddonProperties\",\"provisioningState\":\"Deleting\"},\"id\":\"oihiqak\",\"name\":\"diw\",\"type\":\"brkwpzdqt\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -59,6 +59,6 @@ public final class AddonsListMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<Addon> response = manager.addons().list("ffqyinlj", "epqw", com.azure.core.util.Context.NONE);
+        PagedIterable<Addon> response = manager.addons().list("wlpxuzzjg", "refqy", com.azure.core.util.Context.NONE);
     }
 }

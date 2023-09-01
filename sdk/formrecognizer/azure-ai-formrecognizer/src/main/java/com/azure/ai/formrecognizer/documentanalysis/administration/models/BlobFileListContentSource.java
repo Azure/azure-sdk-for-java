@@ -3,12 +3,11 @@
 
 package com.azure.ai.formrecognizer.documentanalysis.administration.models;
 
-import com.azure.ai.formrecognizer.documentanalysis.models.TrainingDataContentSource;
 import com.azure.core.annotation.Immutable;
 
 /** File list in Azure Blob Storage. */
 @Immutable
-public final class BlobFileListContentSource extends TrainingDataContentSource {
+public final class BlobFileListContentSource extends ContentSource {
     /*
      * Azure Blob Storage container URL.
      */
@@ -26,6 +25,7 @@ public final class BlobFileListContentSource extends TrainingDataContentSource {
      * @param fileList the fileList value to set.
      */
     public BlobFileListContentSource(String containerUrl, String fileList) {
+        super(ContentSourceKind.AZURE_BLOB_FILE_LIST);
         this.containerUrl = containerUrl;
         this.fileList = fileList;
     }
@@ -47,5 +47,10 @@ public final class BlobFileListContentSource extends TrainingDataContentSource {
      */
     public String getFileList() {
         return this.fileList;
+    }
+
+    @Override
+    public ContentSourceKind getKind() {
+        return ContentSourceKind.AZURE_BLOB_FILE_LIST;
     }
 }

@@ -17,6 +17,7 @@ import com.azure.cosmos.implementation.directconnectivity.WFConstants;
 import com.azure.cosmos.implementation.routing.CollectionRoutingMap;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.azure.cosmos.models.CosmosBatchOperationResult;
+import com.azure.cosmos.models.CosmosItemIdentity;
 import com.azure.cosmos.models.CosmosItemOperation;
 import com.azure.cosmos.models.CosmosItemOperationType;
 import com.azure.cosmos.models.ModelBridgeInternal;
@@ -43,6 +44,44 @@ final class BulkExecutorUtil {
             operations,
             maxMicroBatchPayloadSizeInBytes,
             BatchRequestResponseConstants.MAX_OPERATIONS_IN_DIRECT_MODE_BATCH_REQUEST);
+    }
+
+    static ServerOperationBatchRequest createBatchRequest(List<CosmosItemOperation> operations, String partitionKeyRangeId, int maxMicroBatchPayloadSizeInBytes, PartitionBasedGoneNotifier partitionBasedGoneNotifier) {
+
+        return PartitionKeyRangeServerBatchRequest.createBatchRequest(
+            partitionKeyRangeId,
+            operations,
+            maxMicroBatchPayloadSizeInBytes,
+            BatchRequestResponseConstants.MAX_OPERATIONS_IN_DIRECT_MODE_BATCH_REQUEST, partitionBasedGoneNotifier);
+    }
+
+    static boolean isTransientFailure(int statusCode, int substatusCode) {
+        return statusCode == HttpConstants.StatusCodes.GONE
+            || statusCode == HttpConstants.StatusCodes.SERVICE_UNAVAILABLE
+            || statusCode == HttpConstants.StatusCodes.INTERNAL_SERVER_ERROR
+            || statusCode == HttpConstants.StatusCodes.REQUEST_TIMEOUT
+            || (statusCode == HttpConstants.StatusCodes.NOTFOUND && substatusCode == HttpConstants.SubStatusCodes.READ_SESSION_NOT_AVAILABLE)
+            || (statusCode == HttpConstants.StatusCodes.TOO_MANY_REQUESTS);
+
+    }
+
+    static boolean isTransientFailure(Exception e) {
+        CosmosException cosmosException = Utils.as(e, CosmosException.class);
+        if (cosmosException != null) {
+            return isTransientFailure(cosmosException.getStatusCode(), cosmosException.getSubStatusCode());
+        }
+        return false;
+    }
+
+    static CosmosItemIdentity createCosmosItemIdentity(CosmosItemOperation itemOperation) {
+        CosmosItemIdentity cosmosItemIdentity;
+        if (itemOperation.getId() != null) {
+            cosmosItemIdentity = new CosmosItemIdentity(itemOperation.getPartitionKeyValue(), itemOperation.getId());
+        } else {
+            String id = Utils.getSimpleObjectMapper().valueToTree(itemOperation.getItem()).get("id").toString().replace("\"", "");
+            cosmosItemIdentity = new CosmosItemIdentity(itemOperation.getPartitionKeyValue(), id);
+        }
+        return cosmosItemIdentity;
     }
 
     static void setRetryPolicyForBulk(

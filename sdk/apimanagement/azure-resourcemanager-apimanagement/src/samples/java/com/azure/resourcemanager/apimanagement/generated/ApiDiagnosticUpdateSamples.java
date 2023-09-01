@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.apimanagement.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.apimanagement.models.AlwaysLog;
 import com.azure.resourcemanager.apimanagement.models.BodyDiagnosticSettings;
 import com.azure.resourcemanager.apimanagement.models.DiagnosticContract;
@@ -17,7 +16,7 @@ import java.util.Arrays;
 /** Samples for ApiDiagnostic Update. */
 public final class ApiDiagnosticUpdateSamples {
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementUpdateApiDiagnostic.json
+     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementUpdateApiDiagnostic.json
      */
     /**
      * Sample code: ApiManagementUpdateApiDiagnostic.
@@ -29,13 +28,14 @@ public final class ApiDiagnosticUpdateSamples {
         DiagnosticContract resource =
             manager
                 .apiDiagnostics()
-                .getWithResponse("rg1", "apimService1", "echo-api", "applicationinsights", Context.NONE)
+                .getWithResponse(
+                    "rg1", "apimService1", "echo-api", "applicationinsights", com.azure.core.util.Context.NONE)
                 .getValue();
         resource
             .update()
             .withAlwaysLog(AlwaysLog.ALL_ERRORS)
             .withLoggerId("/loggers/applicationinsights")
-            .withSampling(new SamplingSettings().withSamplingType(SamplingType.FIXED).withPercentage(50.0))
+            .withSampling(new SamplingSettings().withSamplingType(SamplingType.FIXED).withPercentage(50.0D))
             .withFrontend(
                 new PipelineDiagnosticSettings()
                     .withRequest(

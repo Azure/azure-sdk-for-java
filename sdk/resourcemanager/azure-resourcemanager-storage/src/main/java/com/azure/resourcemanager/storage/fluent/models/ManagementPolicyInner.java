@@ -19,6 +19,10 @@ public final class ManagementPolicyInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private ManagementPolicyProperties innerProperties;
 
+    /** Creates an instance of ManagementPolicyInner class. */
+    public ManagementPolicyInner() {
+    }
+
     /**
      * Get the innerProperties property: Returns the Storage Account Data Policies Rules.
      *

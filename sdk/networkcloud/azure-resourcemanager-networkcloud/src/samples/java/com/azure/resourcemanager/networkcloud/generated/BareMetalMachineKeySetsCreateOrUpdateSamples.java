@@ -16,7 +16,7 @@ import java.util.Map;
 /** Samples for BareMetalMachineKeySets CreateOrUpdate. */
 public final class BareMetalMachineKeySetsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2023-05-01-preview/examples/BareMetalMachineKeySets_Create.json
+     * x-ms-original-file: specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2023-07-01/examples/BareMetalMachineKeySets_Create.json
      */
     /**
      * Sample code: Create or update bare metal machine key set of cluster.
@@ -50,11 +50,12 @@ public final class BareMetalMachineKeySetsCreateOrUpdateSamples {
                             .withAzureUsername("userXYZ")
                             .withDescription("Needs access for troubleshooting as a part of the support team")
                             .withSshPublicKey(new SshPublicKey().withKeyData("fakeTokenPlaceholder"))))
-            .withTags(mapOf("key1", "myvalue1", "key2", "myvalue2"))
+            .withTags(mapOf("key1", "fakeTokenPlaceholder", "key2", "fakeTokenPlaceholder"))
             .withOsGroupName("standardAccessGroup")
             .create();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

@@ -16,6 +16,10 @@ public final class ApiManagementServiceGetSsoTokenResultInner {
     @JsonProperty(value = "redirectUri")
     private String redirectUri;
 
+    /** Creates an instance of ApiManagementServiceGetSsoTokenResultInner class. */
+    public ApiManagementServiceGetSsoTokenResultInner() {
+    }
+
     /**
      * Get the redirectUri property: Redirect URL to the Publisher Portal containing the SSO token.
      *

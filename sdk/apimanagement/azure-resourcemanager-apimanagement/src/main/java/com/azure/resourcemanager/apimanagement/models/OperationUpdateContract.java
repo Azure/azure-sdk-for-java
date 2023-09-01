@@ -18,6 +18,10 @@ public final class OperationUpdateContract {
     @JsonProperty(value = "properties")
     private OperationUpdateContractProperties innerProperties;
 
+    /** Creates an instance of OperationUpdateContract class. */
+    public OperationUpdateContract() {
+    }
+
     /**
      * Get the innerProperties property: Properties of the API Operation entity that can be updated.
      *

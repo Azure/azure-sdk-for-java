@@ -20,13 +20,16 @@ public final class UserTokenParameterProperties {
     private KeyType keyType;
 
     /*
-     * The Expiry time of the Token. Maximum token expiry time is set to 30
-     * days. The date conforms to the following format: `yyyy-MM-ddTHH:mm:ssZ`
-     * as specified by the ISO 8601 standard.
+     * The Expiry time of the Token. Maximum token expiry time is set to 30 days. The date conforms to the following
+     * format: `yyyy-MM-ddTHH:mm:ssZ` as specified by the ISO 8601 standard.
      *
      */
     @JsonProperty(value = "expiry", required = true)
     private OffsetDateTime expiry;
+
+    /** Creates an instance of UserTokenParameterProperties class. */
+    public UserTokenParameterProperties() {
+    }
 
     /**
      * Get the keyType property: The Key to be used to generate token for user.

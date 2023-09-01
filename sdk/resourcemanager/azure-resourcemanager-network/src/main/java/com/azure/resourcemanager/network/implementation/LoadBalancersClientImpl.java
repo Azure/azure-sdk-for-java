@@ -36,8 +36,10 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.network.fluent.LoadBalancersClient;
 import com.azure.resourcemanager.network.fluent.models.BackendAddressInboundNatRulePortMappingsInner;
 import com.azure.resourcemanager.network.fluent.models.LoadBalancerInner;
+import com.azure.resourcemanager.network.fluent.models.MigratedPoolsInner;
 import com.azure.resourcemanager.network.models.LoadBalancerListResult;
 import com.azure.resourcemanager.network.models.LoadBalancerVipSwapRequest;
+import com.azure.resourcemanager.network.models.MigrateLoadBalancerToIpBasedRequest;
 import com.azure.resourcemanager.network.models.QueryInboundNatRulePortMappingRequest;
 import com.azure.resourcemanager.network.models.TagsObject;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
@@ -191,6 +193,21 @@ public final class LoadBalancersClientImpl
             Context context);
 
         @Headers({"Content-Type: application/json"})
+        @Post(
+            "/subscriptions/{subscriptionId}/resourceGroups/{groupName}/providers/Microsoft.Network/loadBalancers/{loadBalancerName}/migrateToIpBased")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<MigratedPoolsInner>> migrateToIpBased(
+            @HostParam("$host") String endpoint,
+            @PathParam("groupName") String groupName,
+            @PathParam("loadBalancerName") String loadBalancerName,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @BodyParam("application/json") MigrateLoadBalancerToIpBasedRequest parameters,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -243,7 +260,7 @@ public final class LoadBalancersClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-02-01";
+        final String apiVersion = "2023-04-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -294,7 +311,7 @@ public final class LoadBalancersClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-02-01";
+        final String apiVersion = "2023-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -478,7 +495,7 @@ public final class LoadBalancersClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-02-01";
+        final String apiVersion = "2023-04-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -531,7 +548,7 @@ public final class LoadBalancersClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-02-01";
+        final String apiVersion = "2023-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -636,7 +653,7 @@ public final class LoadBalancersClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2023-02-01";
+        final String apiVersion = "2023-04-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -694,7 +711,7 @@ public final class LoadBalancersClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2023-02-01";
+        final String apiVersion = "2023-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -907,7 +924,7 @@ public final class LoadBalancersClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2023-02-01";
+        final String apiVersion = "2023-04-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -965,7 +982,7 @@ public final class LoadBalancersClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2023-02-01";
+        final String apiVersion = "2023-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1054,7 +1071,7 @@ public final class LoadBalancersClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-02-01";
+        final String apiVersion = "2023-04-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1097,7 +1114,7 @@ public final class LoadBalancersClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-02-01";
+        final String apiVersion = "2023-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1194,7 +1211,7 @@ public final class LoadBalancersClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-02-01";
+        final String apiVersion = "2023-04-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1249,7 +1266,7 @@ public final class LoadBalancersClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-02-01";
+        final String apiVersion = "2023-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1365,7 +1382,7 @@ public final class LoadBalancersClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2023-02-01";
+        final String apiVersion = "2023-04-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1416,7 +1433,7 @@ public final class LoadBalancersClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2023-02-01";
+        final String apiVersion = "2023-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1616,7 +1633,7 @@ public final class LoadBalancersClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2023-02-01";
+        final String apiVersion = "2023-04-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1684,7 +1701,7 @@ public final class LoadBalancersClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2023-02-01";
+        final String apiVersion = "2023-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1912,6 +1929,165 @@ public final class LoadBalancersClientImpl
         Context context) {
         return listInboundNatRulePortMappingsAsync(groupName, loadBalancerName, backendPoolName, parameters, context)
             .block();
+    }
+
+    /**
+     * Migrate load balancer to IP Based.
+     *
+     * @param groupName The name of the resource group.
+     * @param loadBalancerName The name of the load balancer.
+     * @param parameters Parameters supplied to the migrateToIpBased Api.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response for a migrateToIpBased API along with {@link Response} on successful completion of {@link
+     *     Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<MigratedPoolsInner>> migrateToIpBasedWithResponseAsync(
+        String groupName, String loadBalancerName, MigrateLoadBalancerToIpBasedRequest parameters) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (groupName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter groupName is required and cannot be null."));
+        }
+        if (loadBalancerName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter loadBalancerName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (parameters != null) {
+            parameters.validate();
+        }
+        final String apiVersion = "2023-04-01";
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .migrateToIpBased(
+                            this.client.getEndpoint(),
+                            groupName,
+                            loadBalancerName,
+                            apiVersion,
+                            this.client.getSubscriptionId(),
+                            parameters,
+                            accept,
+                            context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Migrate load balancer to IP Based.
+     *
+     * @param groupName The name of the resource group.
+     * @param loadBalancerName The name of the load balancer.
+     * @param parameters Parameters supplied to the migrateToIpBased Api.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response for a migrateToIpBased API along with {@link Response} on successful completion of {@link
+     *     Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<MigratedPoolsInner>> migrateToIpBasedWithResponseAsync(
+        String groupName, String loadBalancerName, MigrateLoadBalancerToIpBasedRequest parameters, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (groupName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter groupName is required and cannot be null."));
+        }
+        if (loadBalancerName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter loadBalancerName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (parameters != null) {
+            parameters.validate();
+        }
+        final String apiVersion = "2023-04-01";
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .migrateToIpBased(
+                this.client.getEndpoint(),
+                groupName,
+                loadBalancerName,
+                apiVersion,
+                this.client.getSubscriptionId(),
+                parameters,
+                accept,
+                context);
+    }
+
+    /**
+     * Migrate load balancer to IP Based.
+     *
+     * @param groupName The name of the resource group.
+     * @param loadBalancerName The name of the load balancer.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response for a migrateToIpBased API on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<MigratedPoolsInner> migrateToIpBasedAsync(String groupName, String loadBalancerName) {
+        final MigrateLoadBalancerToIpBasedRequest parameters = null;
+        return migrateToIpBasedWithResponseAsync(groupName, loadBalancerName, parameters)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Migrate load balancer to IP Based.
+     *
+     * @param groupName The name of the resource group.
+     * @param loadBalancerName The name of the load balancer.
+     * @param parameters Parameters supplied to the migrateToIpBased Api.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response for a migrateToIpBased API along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<MigratedPoolsInner> migrateToIpBasedWithResponse(
+        String groupName, String loadBalancerName, MigrateLoadBalancerToIpBasedRequest parameters, Context context) {
+        return migrateToIpBasedWithResponseAsync(groupName, loadBalancerName, parameters, context).block();
+    }
+
+    /**
+     * Migrate load balancer to IP Based.
+     *
+     * @param groupName The name of the resource group.
+     * @param loadBalancerName The name of the load balancer.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response for a migrateToIpBased API.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public MigratedPoolsInner migrateToIpBased(String groupName, String loadBalancerName) {
+        final MigrateLoadBalancerToIpBasedRequest parameters = null;
+        return migrateToIpBasedWithResponse(groupName, loadBalancerName, parameters, Context.NONE).getValue();
     }
 
     /**

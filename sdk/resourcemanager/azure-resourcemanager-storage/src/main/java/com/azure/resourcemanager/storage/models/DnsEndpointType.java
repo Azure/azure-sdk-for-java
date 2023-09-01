@@ -21,6 +21,15 @@ public final class DnsEndpointType extends ExpandableStringEnum<DnsEndpointType>
     public static final DnsEndpointType AZURE_DNS_ZONE = fromString("AzureDnsZone");
 
     /**
+     * Creates a new instance of DnsEndpointType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public DnsEndpointType() {
+    }
+
+    /**
      * Creates or finds a DnsEndpointType from its string representation.
      *
      * @param name a name to look for.

@@ -55,7 +55,7 @@ public final class DeletedAccountsClientImpl implements DeletedAccountsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "StorageManagementCli")
-    private interface DeletedAccountsService {
+    public interface DeletedAccountsService {
         @Headers({"Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Storage/deletedAccounts")
         @ExpectedResponses({200})
@@ -69,8 +69,7 @@ public final class DeletedAccountsClientImpl implements DeletedAccountsClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.Storage/locations/{location}/deletedAccounts"
-                + "/{deletedAccountName}")
+            "/subscriptions/{subscriptionId}/providers/Microsoft.Storage/locations/{location}/deletedAccounts/{deletedAccountName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<DeletedAccountInner>> get(
@@ -350,21 +349,6 @@ public final class DeletedAccountsClientImpl implements DeletedAccountsClient {
      *
      * @param deletedAccountName Name of the deleted storage account.
      * @param location The location of the deleted storage account.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of specified deleted account resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public DeletedAccountInner get(String deletedAccountName, String location) {
-        return getAsync(deletedAccountName, location).block();
-    }
-
-    /**
-     * Get properties of specified deleted account resource.
-     *
-     * @param deletedAccountName Name of the deleted storage account.
-     * @param location The location of the deleted storage account.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -374,6 +358,21 @@ public final class DeletedAccountsClientImpl implements DeletedAccountsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DeletedAccountInner> getWithResponse(String deletedAccountName, String location, Context context) {
         return getWithResponseAsync(deletedAccountName, location, context).block();
+    }
+
+    /**
+     * Get properties of specified deleted account resource.
+     *
+     * @param deletedAccountName Name of the deleted storage account.
+     * @param location The location of the deleted storage account.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return properties of specified deleted account resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public DeletedAccountInner get(String deletedAccountName, String location) {
+        return getWithResponse(deletedAccountName, location, Context.NONE).getValue();
     }
 
     /**

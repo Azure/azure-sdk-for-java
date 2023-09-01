@@ -4,14 +4,13 @@
 
 package com.azure.resourcemanager.apimanagement.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.apimanagement.models.AssociationContract;
 import com.azure.resourcemanager.apimanagement.models.ProvisioningState;
 
 /** Samples for GatewayApi CreateOrUpdate. */
 public final class GatewayApiCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementCreateGatewayApi.json
+     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementCreateGatewayApi.json
      */
     /**
      * Sample code: ApiManagementCreateGatewayApi.
@@ -28,6 +27,6 @@ public final class GatewayApiCreateOrUpdateSamples {
                 "gw1",
                 "echo-api",
                 new AssociationContract().withProvisioningState(ProvisioningState.CREATED),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

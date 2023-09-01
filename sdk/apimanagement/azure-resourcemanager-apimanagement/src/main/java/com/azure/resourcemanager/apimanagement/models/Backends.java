@@ -13,7 +13,7 @@ public interface Backends {
     /**
      * Lists a collection of backends in the specified service instance.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -25,7 +25,7 @@ public interface Backends {
     /**
      * Lists a collection of backends in the specified service instance.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param filter | Field | Usage | Supported operators | Supported functions
      *     |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| name | filter | ge, le, eq,
@@ -46,19 +46,7 @@ public interface Backends {
     /**
      * Gets the entity state (Etag) version of the backend specified by its identifier.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param serviceName The name of the API Management service.
-     * @param backendId Identifier of the Backend entity. Must be unique in the current API Management service instance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void getEntityTag(String resourceGroupName, String serviceName, String backendId);
-
-    /**
-     * Gets the entity state (Etag) version of the backend specified by its identifier.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param backendId Identifier of the Backend entity. Must be unique in the current API Management service instance.
      * @param context The context to associate with this operation.
@@ -71,22 +59,21 @@ public interface Backends {
         String resourceGroupName, String serviceName, String backendId, Context context);
 
     /**
-     * Gets the details of the backend specified by its identifier.
+     * Gets the entity state (Etag) version of the backend specified by its identifier.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param backendId Identifier of the Backend entity. Must be unique in the current API Management service instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of the backend specified by its identifier.
      */
-    BackendContract get(String resourceGroupName, String serviceName, String backendId);
+    void getEntityTag(String resourceGroupName, String serviceName, String backendId);
 
     /**
      * Gets the details of the backend specified by its identifier.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param backendId Identifier of the Backend entity. Must be unique in the current API Management service instance.
      * @param context The context to associate with this operation.
@@ -99,23 +86,22 @@ public interface Backends {
         String resourceGroupName, String serviceName, String backendId, Context context);
 
     /**
-     * Deletes the specified backend.
+     * Gets the details of the backend specified by its identifier.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param backendId Identifier of the Backend entity. Must be unique in the current API Management service instance.
-     * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the details of the backend specified by its identifier.
      */
-    void delete(String resourceGroupName, String serviceName, String backendId, String ifMatch);
+    BackendContract get(String resourceGroupName, String serviceName, String backendId);
 
     /**
      * Deletes the specified backend.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param backendId Identifier of the Backend entity. Must be unique in the current API Management service instance.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
@@ -130,23 +116,24 @@ public interface Backends {
         String resourceGroupName, String serviceName, String backendId, String ifMatch, Context context);
 
     /**
-     * Notifies the APIM proxy to create a new connection to the backend after the specified timeout. If no timeout was
-     * specified, timeout of 2 minutes is used.
+     * Deletes the specified backend.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param backendId Identifier of the Backend entity. Must be unique in the current API Management service instance.
+     * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
+     *     request or it should be * for unconditional update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void reconnect(String resourceGroupName, String serviceName, String backendId);
+    void delete(String resourceGroupName, String serviceName, String backendId, String ifMatch);
 
     /**
-     * Notifies the APIM proxy to create a new connection to the backend after the specified timeout. If no timeout was
-     * specified, timeout of 2 minutes is used.
+     * Notifies the API Management gateway to create a new connection to the backend after the specified timeout. If no
+     * timeout was specified, timeout of 2 minutes is used.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param backendId Identifier of the Backend entity. Must be unique in the current API Management service instance.
      * @param parameters Reconnect request parameters.
@@ -162,6 +149,19 @@ public interface Backends {
         String backendId,
         BackendReconnectContract parameters,
         Context context);
+
+    /**
+     * Notifies the API Management gateway to create a new connection to the backend after the specified timeout. If no
+     * timeout was specified, timeout of 2 minutes is used.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serviceName The name of the API Management service.
+     * @param backendId Identifier of the Backend entity. Must be unique in the current API Management service instance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void reconnect(String resourceGroupName, String serviceName, String backendId);
 
     /**
      * Gets the details of the backend specified by its identifier.

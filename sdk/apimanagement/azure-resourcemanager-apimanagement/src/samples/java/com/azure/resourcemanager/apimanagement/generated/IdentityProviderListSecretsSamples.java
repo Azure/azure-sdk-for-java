@@ -4,13 +4,12 @@
 
 package com.azure.resourcemanager.apimanagement.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.apimanagement.models.IdentityProviderType;
 
 /** Samples for IdentityProvider ListSecrets. */
 public final class IdentityProviderListSecretsSamples {
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementIdentityProviderListSecrets.json
+     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementIdentityProviderListSecrets.json
      */
     /**
      * Sample code: ApiManagementIdentityProviderListSecrets.
@@ -21,6 +20,7 @@ public final class IdentityProviderListSecretsSamples {
         com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
         manager
             .identityProviders()
-            .listSecretsWithResponse("rg1", "apimService1", IdentityProviderType.AAD_B2C, Context.NONE);
+            .listSecretsWithResponse(
+                "rg1", "apimService1", IdentityProviderType.AAD_B2C, com.azure.core.util.Context.NONE);
     }
 }

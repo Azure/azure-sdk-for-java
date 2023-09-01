@@ -24,6 +24,10 @@ public final class ContentTypeCollection {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
+    /** Creates an instance of ContentTypeCollection class. */
+    public ContentTypeCollection() {
+    }
+
     /**
      * Get the value property: Collection of content types.
      *
