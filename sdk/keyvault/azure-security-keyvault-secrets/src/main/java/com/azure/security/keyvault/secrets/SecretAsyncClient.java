@@ -215,7 +215,7 @@ public final class SecretAsyncClient {
      * @param name The name of the secret.
      * @return A {@link Mono} containing the requested {@link KeyVaultSecret secret}.
      * @throws ResourceNotFoundException when a secret with {@code name} doesn't exist in the key vault.
-     * @throws HttpResponseException if {@code name} is empty string.
+     * @throws IllegalArgumentException If {@code name} is either {@code null} or empty.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<KeyVaultSecret> getSecret(String name) {
@@ -254,7 +254,7 @@ public final class SecretAsyncClient {
      * requested {@link KeyVaultSecret secret}.
      * @throws ResourceNotFoundException when a secret with {@code name} and {@code version} doesn't exist in the key
      * vault.
-     * @throws HttpResponseException if {@code name}  name} or {@code version} is empty string.
+     * @throws IllegalArgumentException If {@code name} is either {@code null} or empty.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<KeyVaultSecret> getSecret(String name, String version) {
@@ -292,7 +292,7 @@ public final class SecretAsyncClient {
      * requested {@link KeyVaultSecret secret}.
      * @throws ResourceNotFoundException when a secret with {@code name} and {@code version} doesn't exist in the key
      * vault.
-     * @throws HttpResponseException if {@code name}  name} or {@code version} is empty string.
+     * @throws IllegalArgumentException If {@code name} is either {@code null} or empty.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<KeyVaultSecret>> getSecretWithResponse(String name, String version) {
