@@ -10,6 +10,7 @@ import com.azure.resourcemanager.network.models.AddressSpace;
 import com.azure.resourcemanager.network.models.AdminState;
 import com.azure.resourcemanager.network.models.BgpSettings;
 import com.azure.resourcemanager.network.models.ProvisioningState;
+import com.azure.resourcemanager.network.models.VirtualNetworkGatewayAutoScaleConfiguration;
 import com.azure.resourcemanager.network.models.VirtualNetworkGatewayPolicyGroup;
 import com.azure.resourcemanager.network.models.VirtualNetworkGatewaySku;
 import com.azure.resourcemanager.network.models.VirtualNetworkGatewayType;
@@ -22,6 +23,12 @@ import java.util.List;
 /** VirtualNetworkGateway properties. */
 @Fluent
 public final class VirtualNetworkGatewayPropertiesFormat {
+    /*
+     * Autoscale configuration for virutal network gateway
+     */
+    @JsonProperty(value = "autoScaleConfiguration")
+    private VirtualNetworkGatewayAutoScaleConfiguration autoScaleConfiguration;
+
     /*
      * IP configurations for virtual network gateway.
      */
@@ -174,6 +181,27 @@ public final class VirtualNetworkGatewayPropertiesFormat {
 
     /** Creates an instance of VirtualNetworkGatewayPropertiesFormat class. */
     public VirtualNetworkGatewayPropertiesFormat() {
+    }
+
+    /**
+     * Get the autoScaleConfiguration property: Autoscale configuration for virutal network gateway.
+     *
+     * @return the autoScaleConfiguration value.
+     */
+    public VirtualNetworkGatewayAutoScaleConfiguration autoScaleConfiguration() {
+        return this.autoScaleConfiguration;
+    }
+
+    /**
+     * Set the autoScaleConfiguration property: Autoscale configuration for virutal network gateway.
+     *
+     * @param autoScaleConfiguration the autoScaleConfiguration value to set.
+     * @return the VirtualNetworkGatewayPropertiesFormat object itself.
+     */
+    public VirtualNetworkGatewayPropertiesFormat withAutoScaleConfiguration(
+        VirtualNetworkGatewayAutoScaleConfiguration autoScaleConfiguration) {
+        this.autoScaleConfiguration = autoScaleConfiguration;
+        return this;
     }
 
     /**
@@ -658,6 +686,9 @@ public final class VirtualNetworkGatewayPropertiesFormat {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (autoScaleConfiguration() != null) {
+            autoScaleConfiguration().validate();
+        }
         if (ipConfigurations() != null) {
             ipConfigurations().forEach(e -> e.validate());
         }

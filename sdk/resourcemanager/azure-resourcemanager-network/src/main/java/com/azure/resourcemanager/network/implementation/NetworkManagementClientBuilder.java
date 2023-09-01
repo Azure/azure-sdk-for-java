@@ -139,7 +139,7 @@ public final class NetworkManagementClientBuilder {
                 localSerializerAdapter,
                 localDefaultPollInterval,
                 localEnvironment,
-                this.subscriptionId,
+                subscriptionId,
                 localEndpoint);
         return client;
     }

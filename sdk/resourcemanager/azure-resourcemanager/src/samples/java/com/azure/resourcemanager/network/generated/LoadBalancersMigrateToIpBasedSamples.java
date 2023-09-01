@@ -10,7 +10,7 @@ import java.util.Arrays;
 /** Samples for LoadBalancers MigrateToIpBased. */
 public final class LoadBalancersMigrateToIpBasedSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-04-01/examples/MigrateLoadBalancerToIPBased.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-05-01/examples/MigrateLoadBalancerToIPBased.json
      */
     /**
      * Sample code: Migrate load balancer to IP Based.
