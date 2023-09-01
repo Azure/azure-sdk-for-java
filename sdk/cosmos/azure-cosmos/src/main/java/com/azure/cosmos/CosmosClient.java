@@ -328,7 +328,7 @@ public final class CosmosClient implements Closeable {
         return new GlobalThroughputControlConfigBuilder(this.asyncClientWrapper, databaseId, containerId);
     }
 
-    public void setExcludedRegions(List<String> excludeRegions) {
+    public void setExcludeRegions(List<String> excludeRegions) {
         this.asyncClientWrapper.setExcludeRegions(excludeRegions);
     }
 
