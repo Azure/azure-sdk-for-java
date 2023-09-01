@@ -900,7 +900,7 @@ public final class CosmosAsyncClient implements Closeable {
                 }
 
                 @Override
-                public List<String> getExcludedRegions(CosmosAsyncClient client) {
+                public List<String> getExcludeRegions(CosmosAsyncClient client) {
                     return client.connectionPolicy.getExcludeRegions();
                 }
             }
