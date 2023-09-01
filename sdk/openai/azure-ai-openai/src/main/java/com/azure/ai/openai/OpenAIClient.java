@@ -4,6 +4,7 @@
 package com.azure.ai.openai;
 
 import com.azure.ai.openai.implementation.CompletionsUtils;
+import com.azure.ai.openai.implementation.MultipartDataHelper;
 import com.azure.ai.openai.implementation.NonAzureOpenAIClientImpl;
 import com.azure.ai.openai.implementation.OpenAIClientImpl;
 import com.azure.ai.openai.implementation.OpenAIServerSentEvents;
@@ -824,6 +825,14 @@ public final class OpenAIClient {
                 deploymentOrModelName, audioTranslationOptions, requestOptions);
     }
 
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> getAudioTranslationWithResponse(
+        String deploymentOrModelName, BinaryData audioTranslationOptions, RequestOptions requestOptions, String boundary, String contentLength) {
+        return this.serviceClient.getAudioTranslationWithResponse(
+            deploymentOrModelName, audioTranslationOptions, requestOptions, boundary, contentLength);
+    }
+
     /**
      * Transcribes audio into the input language.
      *
@@ -876,5 +885,22 @@ public final class OpenAIClient {
                         deploymentOrModelName, BinaryData.fromObject(audioTranslationOptions), requestOptions)
                 .getValue()
                 .toObject(AudioTranscription.class);
+    }
+
+    public AudioTranscription getAudioTranscription(
+        String deploymentOrModelName, AudioTranslationOptions audioTranslationOptions, String fileName
+    ) {
+        RequestOptions requestOptions = new RequestOptions();
+        MultipartDataHelper helper = new MultipartDataHelper();
+        MultipartDataHelper.SerializationResult result =  helper.serializeAudioTranscriptionOption(audioTranslationOptions, fileName);
+        return getAudioTranslationWithResponse(
+            deploymentOrModelName,
+            result.getData(),
+            requestOptions,
+            helper.getBoundary(),
+            String.valueOf(result.getDataLength())
+        )
+            .getValue()
+            .toObject(AudioTranscription.class);//
     }
 }
