@@ -27,8 +27,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
-import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
@@ -52,6 +54,7 @@ import static com.azure.search.documents.implementation.batching.SearchBatchingU
  */
 public final class SearchIndexingPublisher<T> {
     private static final ClientLogger LOGGER = new ClientLogger(SearchIndexingPublisher.class);
+    private static final ExecutorService EXECUTOR =  getThreadPoolWithShutdownHook();
 
     private final SearchIndexClientImpl restClient;
     private final JsonSerializer serializer;
@@ -150,45 +153,52 @@ public final class SearchIndexingPublisher<T> {
     }
 
     private void flushLoop(boolean isClosed, Duration timeout, Context context) {
-        final AtomicReference<List<TryTrackingIndexAction<T>>> batchActions = new AtomicReference<>();
-        CompletableFuture<Void> future = CompletableFuture.runAsync(() -> {
-            List<TryTrackingIndexAction<T>> batch = documentManager.createBatch(batchActionCount);
-            batchActions.set(batch);
+        if (timeout != null && !timeout.isNegative() && !timeout.isZero()) {
+            final AtomicReference<List<TryTrackingIndexAction<T>>> batchActions = new AtomicReference<>();
+            Future<?> future = EXECUTOR.submit(() -> flushLoopHelper(isClosed, context, batchActions));
 
-            // Process the current batch.
-            IndexBatchResponse response = processBatch(batch, context);
-
-            // Then while a batch has been processed and there are still documents to index, keep processing batches.
-            while (response != null && (documentManager.batchAvailableForProcessing(batchActionCount) || isClosed)) {
-                batch = documentManager.createBatch(batchActionCount);
-                batchActions.set(batch);
-
-                response = processBatch(batch, context);
-            }
-        });
-
-        try {
-            if (timeout != null && !timeout.isNegative() && !timeout.isZero()) {
+            try {
                 future.get(timeout.toMillis(), TimeUnit.MILLISECONDS);
-            } else {
-                future.get();
+            } catch (ExecutionException e) {
+                Throwable realCause = e.getCause();
+                if (realCause instanceof Error) {
+                    throw (Error) realCause;
+                } else if (realCause instanceof RuntimeException) {
+                    throw LOGGER.logExceptionAsError((RuntimeException) realCause);
+                } else {
+                    throw LOGGER.logExceptionAsError(new RuntimeException(realCause));
+                }
+            } catch (InterruptedException | TimeoutException e) {
+                if (e instanceof TimeoutException) {
+                    future.cancel(true);
+                    documentManager.reinsertCancelledActions(batchActions.get());
+                }
+
+                throw LOGGER.logExceptionAsError(new RuntimeException(e));
             }
-        } catch (ExecutionException e) {
-            Throwable realCause = e.getCause();
-            if (realCause instanceof Error) {
-                throw (Error) realCause;
-            } else if (realCause instanceof RuntimeException) {
-                throw LOGGER.logExceptionAsError((RuntimeException) realCause);
-            } else {
-                throw LOGGER.logExceptionAsError(new RuntimeException(realCause));
-            }
-        } catch (InterruptedException | TimeoutException e) {
-            if (e instanceof TimeoutException) {
-                future.cancel(true);
-                documentManager.reinsertCancelledActions(batchActions.get());
+        } else {
+            flushLoopHelper(isClosed, context, null);
+        }
+    }
+
+    private void flushLoopHelper(boolean isClosed, Context context,
+        AtomicReference<List<TryTrackingIndexAction<T>>> batchActions) {
+        List<TryTrackingIndexAction<T>> batch = documentManager.createBatch(batchActionCount);
+        if (batchActions != null) {
+            batchActions.set(batch);
+        }
+
+        // Process the current batch.
+        IndexBatchResponse response = processBatch(batch, context);
+
+        // Then while a batch has been processed and there are still documents to index, keep processing batches.
+        while (response != null && (documentManager.batchAvailableForProcessing(batchActionCount) || isClosed)) {
+            batch = documentManager.createBatch(batchActionCount);
+            if (batchActions != null) {
+                batchActions.set(batch);
             }
 
-            throw LOGGER.logExceptionAsError(new RuntimeException(e));
+            response = processBatch(batch, context);
         }
     }
 
@@ -352,6 +362,28 @@ public final class SearchIndexingPublisher<T> {
         try {
             Thread.sleep(millis);
         } catch (InterruptedException ignored) {
+            Thread.currentThread().interrupt();
         }
+    }
+
+    private static ExecutorService getThreadPoolWithShutdownHook() {
+        ExecutorService threadPool = Executors.newCachedThreadPool();
+
+        long halfTimeout = TimeUnit.SECONDS.toNanos(5) / 2;
+        Thread hook = new Thread(() -> {
+            try {
+                threadPool.shutdown();
+                if (!threadPool.awaitTermination(halfTimeout, TimeUnit.NANOSECONDS)) {
+                    threadPool.shutdownNow();
+                    threadPool.awaitTermination(halfTimeout, TimeUnit.NANOSECONDS);
+                }
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                threadPool.shutdown();
+            }
+        });
+        Runtime.getRuntime().addShutdownHook(hook);
+
+        return threadPool;
     }
 }

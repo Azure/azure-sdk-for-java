@@ -561,8 +561,10 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
     @Test
     public void flushTimesOut() {
         SearchIndexingBufferedSender<Map<String, Object>> batchingClient = getSearchClientBuilder("index", false)
-            .httpClient(request -> Mono.<HttpResponse>just(new MockHttpResponse(request, 207, new HttpHeaders(),
-                createMockResponseData(0, 200))).delayElement(Duration.ofSeconds(5)))
+            .httpClient(request -> {
+                sleep(5000);
+                return Mono.just(new MockHttpResponse(request, 207, new HttpHeaders(), createMockResponseData(0, 200)));
+            })
             .bufferedSender(HOTEL_DOCUMENT_TYPE)
             .documentKeyRetriever(HOTEL_ID_KEY_RETRIEVER)
             .autoFlush(false)
@@ -579,8 +581,10 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
     @Test
     public void flushTimesOutAsync() {
         SearchIndexingBufferedAsyncSender<Map<String, Object>> batchingClient = getSearchClientBuilder("index", false)
-            .httpClient(request -> Mono.<HttpResponse>just(new MockHttpResponse(request, 207, new HttpHeaders(),
-                createMockResponseData(0, 200))).delayElement(Duration.ofSeconds(5)))
+            .httpClient(request -> {
+                sleep(5000);
+                return Mono.just(new MockHttpResponse(request, 207, new HttpHeaders(), createMockResponseData(0, 200)));
+            })
             .bufferedSender(HOTEL_DOCUMENT_TYPE)
             .documentKeyRetriever(HOTEL_ID_KEY_RETRIEVER)
             .autoFlush(false)
@@ -1486,9 +1490,8 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
             .httpClient(request -> {
                 int count = callCount.getAndIncrement();
                 if (count == 0) {
-                    return createMockBatchSplittingResponse(request, 0, 5)
-                        .delayElement(Duration.ofSeconds(2))
-                        .map(Function.identity());
+                    sleep(2000);
+                    return createMockBatchSplittingResponse(request, 0, 5);
                 } else if (count == 1) {
                     return createMockBatchSplittingResponse(request, 5, 5);
                 } else {
@@ -1539,9 +1542,7 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
             .httpClient(request -> {
                 int count = callCount.getAndIncrement();
                 if (count == 0) {
-                    return createMockBatchSplittingResponse(request, 0, 5)
-                        .delayElement(Duration.ofSeconds(2))
-                        .map(Function.identity());
+                    return createMockBatchSplittingResponse(request, 0, 5).delayElement(Duration.ofSeconds(2));
                 } else if (count == 1) {
                     return createMockBatchSplittingResponse(request, 5, 5);
                 } else {
@@ -1589,9 +1590,7 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
             .httpClient(request -> {
                 int count = callCount.getAndIncrement();
                 if (count == 0) {
-                    return createMockBatchSplittingResponse(request, 0, 5)
-                        .delayElement(Duration.ofSeconds(2))
-                        .map(Function.identity());
+                    return createMockBatchSplittingResponse(request, 0, 5).delayElement(Duration.ofSeconds(2));
                 } else if (count == 1) {
                     return createMockBatchSplittingResponse(request, 5, 5);
                 } else {
@@ -1640,9 +1639,8 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
             .httpClient(request -> {
                 int count = callCount.getAndIncrement();
                 if (count == 0) {
-                    return createMockBatchSplittingResponse(request, 0, 5)
-                        .delayElement(Duration.ofSeconds(2))
-                        .map(Function.identity());
+                    sleep(2000);
+                    return createMockBatchSplittingResponse(request, 0, 5);
                 } else if (count == 1) {
                     return createMockBatchSplittingResponse(request, 5, 5);
                 } else {
@@ -1950,5 +1948,13 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
                     return Mono.error(ex);
                 }
             });
+    }
+
+    private static void sleep(long millis) {
+        try {
+            Thread.sleep(millis);
+        } catch (InterruptedException ex) {
+            throw new RuntimeException(ex);
+        }
     }
 }
