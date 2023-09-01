@@ -24,6 +24,12 @@ import java.util.List;
 @Fluent
 public final class FirewallPolicyPropertiesFormat {
     /*
+     * A read-only string that represents the size of the FirewallPolicyPropertiesFormat in MB. (ex 0.5MB)
+     */
+    @JsonProperty(value = "size", access = JsonProperty.Access.WRITE_ONLY)
+    private String size;
+
+    /*
      * List of references to FirewallPolicyRuleCollectionGroups.
      */
     @JsonProperty(value = "ruleCollectionGroups", access = JsonProperty.Access.WRITE_ONLY)
@@ -115,6 +121,16 @@ public final class FirewallPolicyPropertiesFormat {
 
     /** Creates an instance of FirewallPolicyPropertiesFormat class. */
     public FirewallPolicyPropertiesFormat() {
+    }
+
+    /**
+     * Get the size property: A read-only string that represents the size of the FirewallPolicyPropertiesFormat in MB.
+     * (ex 0.5MB).
+     *
+     * @return the size value.
+     */
+    public String size() {
+        return this.size;
     }
 
     /**
