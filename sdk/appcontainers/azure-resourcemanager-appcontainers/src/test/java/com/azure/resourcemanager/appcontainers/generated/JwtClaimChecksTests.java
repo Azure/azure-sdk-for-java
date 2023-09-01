@@ -15,21 +15,20 @@ public final class JwtClaimChecksTests {
         JwtClaimChecks model =
             BinaryData
                 .fromString(
-                    "{\"allowedGroups\":[\"gxsabkyq\",\"uujitcjc\"],\"allowedClientApplications\":[\"evndh\",\"rwpdappdsbdkvwrw\",\"feusnhut\",\"eltmrldhugjzzdat\"]}")
+                    "{\"allowedGroups\":[\"htymw\"],\"allowedClientApplications\":[\"kfthwxmntei\",\"aop\",\"km\"]}")
                 .toObject(JwtClaimChecks.class);
-        Assertions.assertEquals("gxsabkyq", model.allowedGroups().get(0));
-        Assertions.assertEquals("evndh", model.allowedClientApplications().get(0));
+        Assertions.assertEquals("htymw", model.allowedGroups().get(0));
+        Assertions.assertEquals("kfthwxmntei", model.allowedClientApplications().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         JwtClaimChecks model =
             new JwtClaimChecks()
-                .withAllowedGroups(Arrays.asList("gxsabkyq", "uujitcjc"))
-                .withAllowedClientApplications(
-                    Arrays.asList("evndh", "rwpdappdsbdkvwrw", "feusnhut", "eltmrldhugjzzdat"));
+                .withAllowedGroups(Arrays.asList("htymw"))
+                .withAllowedClientApplications(Arrays.asList("kfthwxmntei", "aop", "km"));
         model = BinaryData.fromObject(model).toObject(JwtClaimChecks.class);
-        Assertions.assertEquals("gxsabkyq", model.allowedGroups().get(0));
-        Assertions.assertEquals("evndh", model.allowedClientApplications().get(0));
+        Assertions.assertEquals("htymw", model.allowedGroups().get(0));
+        Assertions.assertEquals("kfthwxmntei", model.allowedClientApplications().get(0));
     }
 }

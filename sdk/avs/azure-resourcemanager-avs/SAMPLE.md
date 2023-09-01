@@ -158,7 +158,7 @@ import com.azure.resourcemanager.avs.models.AddonVrProperties;
 /** Samples for Addons CreateOrUpdate. */
 public final class AddonsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2022-05-01/examples/Addons_CreateOrUpdate_HCX.json
+     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/Addons_CreateOrUpdate_HCX.json
      */
     /**
      * Sample code: Addons_CreateOrUpdate_HCX.
@@ -175,7 +175,7 @@ public final class AddonsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2022-05-01/examples/Addons_CreateOrUpdate_SRM.json
+     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/Addons_CreateOrUpdate_SRM.json
      */
     /**
      * Sample code: Addons_CreateOrUpdate_SRM.
@@ -192,7 +192,7 @@ public final class AddonsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2022-05-01/examples/Addons_CreateOrUpdate_ArcReg.json
+     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/Addons_CreateOrUpdate_ArcReg.json
      */
     /**
      * Sample code: Addons_CreateOrUpdate_Arc.
@@ -212,7 +212,7 @@ public final class AddonsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2022-05-01/examples/Addons_CreateOrUpdate_VR.json
+     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/Addons_CreateOrUpdate_VR.json
      */
     /**
      * Sample code: Addons_CreateOrUpdate_VR.
@@ -236,7 +236,7 @@ public final class AddonsCreateOrUpdateSamples {
 /** Samples for Addons Delete. */
 public final class AddonsDeleteSamples {
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2022-05-01/examples/Addons_Delete.json
+     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/Addons_Delete.json
      */
     /**
      * Sample code: Addons_Delete.
@@ -255,7 +255,7 @@ public final class AddonsDeleteSamples {
 /** Samples for Addons Get. */
 public final class AddonsGetSamples {
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2022-05-01/examples/Addons_Get_SRM.json
+     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/Addons_Get_SRM.json
      */
     /**
      * Sample code: Addons_Get_SRM.
@@ -267,7 +267,7 @@ public final class AddonsGetSamples {
     }
 
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2022-05-01/examples/Addons_Get_VR.json
+     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/Addons_Get_VR.json
      */
     /**
      * Sample code: Addons_Get_VR.
@@ -279,7 +279,7 @@ public final class AddonsGetSamples {
     }
 
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2022-05-01/examples/Addons_Get_HCX.json
+     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/Addons_Get_HCX.json
      */
     /**
      * Sample code: Addons_Get_HCX.
@@ -291,7 +291,7 @@ public final class AddonsGetSamples {
     }
 
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2022-05-01/examples/Addons_Get_ArcReg.json
+     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/Addons_Get_ArcReg.json
      */
     /**
      * Sample code: Addons_Get_ArcReg.
@@ -310,7 +310,7 @@ public final class AddonsGetSamples {
 /** Samples for Addons List. */
 public final class AddonsListSamples {
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2022-05-01/examples/Addons_List.json
+     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/Addons_List.json
      */
     /**
      * Sample code: Addons_List.
@@ -329,7 +329,7 @@ public final class AddonsListSamples {
 /** Samples for Authorizations CreateOrUpdate. */
 public final class AuthorizationsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2022-05-01/examples/Authorizations_CreateOrUpdate.json
+     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/Authorizations_CreateOrUpdate.json
      */
     /**
      * Sample code: Authorizations_CreateOrUpdate.
@@ -348,7 +348,7 @@ public final class AuthorizationsCreateOrUpdateSamples {
 /** Samples for Authorizations Delete. */
 public final class AuthorizationsDeleteSamples {
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2022-05-01/examples/Authorizations_Delete.json
+     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/Authorizations_Delete.json
      */
     /**
      * Sample code: Authorizations_Delete.
@@ -367,7 +367,7 @@ public final class AuthorizationsDeleteSamples {
 /** Samples for Authorizations Get. */
 public final class AuthorizationsGetSamples {
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2022-05-01/examples/Authorizations_Get.json
+     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/Authorizations_Get.json
      */
     /**
      * Sample code: Authorizations_Get.
@@ -388,7 +388,7 @@ public final class AuthorizationsGetSamples {
 /** Samples for Authorizations List. */
 public final class AuthorizationsListSamples {
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2022-05-01/examples/Authorizations_List.json
+     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/Authorizations_List.json
      */
     /**
      * Sample code: Authorizations_List.
@@ -407,7 +407,7 @@ public final class AuthorizationsListSamples {
 /** Samples for CloudLinks CreateOrUpdate. */
 public final class CloudLinksCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2022-05-01/examples/CloudLinks_CreateOrUpdate.json
+     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/CloudLinks_CreateOrUpdate.json
      */
     /**
      * Sample code: CloudLinks_CreateOrUpdate.
@@ -432,7 +432,7 @@ public final class CloudLinksCreateOrUpdateSamples {
 /** Samples for CloudLinks Delete. */
 public final class CloudLinksDeleteSamples {
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2022-05-01/examples/CloudLinks_Delete.json
+     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/CloudLinks_Delete.json
      */
     /**
      * Sample code: CloudLinks_Delete.
@@ -451,7 +451,7 @@ public final class CloudLinksDeleteSamples {
 /** Samples for CloudLinks Get. */
 public final class CloudLinksGetSamples {
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2022-05-01/examples/CloudLinks_Get.json
+     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/CloudLinks_Get.json
      */
     /**
      * Sample code: CloudLinks_Get.
@@ -470,7 +470,7 @@ public final class CloudLinksGetSamples {
 /** Samples for CloudLinks List. */
 public final class CloudLinksListSamples {
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2022-05-01/examples/CloudLinks_List.json
+     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/CloudLinks_List.json
      */
     /**
      * Sample code: CloudLinks_List.
@@ -491,7 +491,7 @@ import com.azure.resourcemanager.avs.models.Sku;
 /** Samples for Clusters CreateOrUpdate. */
 public final class ClustersCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2022-05-01/examples/Clusters_CreateOrUpdate.json
+     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/Clusters_CreateOrUpdate.json
      */
     /**
      * Sample code: Clusters_CreateOrUpdate.
@@ -516,7 +516,7 @@ public final class ClustersCreateOrUpdateSamples {
 /** Samples for Clusters Delete. */
 public final class ClustersDeleteSamples {
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2022-05-01/examples/Clusters_Delete.json
+     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/Clusters_Delete.json
      */
     /**
      * Sample code: Clusters_Delete.
@@ -535,7 +535,7 @@ public final class ClustersDeleteSamples {
 /** Samples for Clusters Get. */
 public final class ClustersGetSamples {
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2022-05-01/examples/Clusters_Get.json
+     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/Clusters_Get.json
      */
     /**
      * Sample code: Clusters_Get.
@@ -554,7 +554,7 @@ public final class ClustersGetSamples {
 /** Samples for Clusters List. */
 public final class ClustersListSamples {
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2022-05-01/examples/Clusters_List.json
+     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/Clusters_List.json
      */
     /**
      * Sample code: Clusters_List.
@@ -573,7 +573,7 @@ public final class ClustersListSamples {
 /** Samples for Clusters ListZones. */
 public final class ClustersListZonesSamples {
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2022-05-01/examples/Clusters_ListZones_Stretched.json
+     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/Clusters_ListZones_Stretched.json
      */
     /**
      * Sample code: Clusters_ListZoneData_Stretched.
@@ -585,7 +585,7 @@ public final class ClustersListZonesSamples {
     }
 
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2022-05-01/examples/Clusters_ListZones.json
+     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/Clusters_ListZones.json
      */
     /**
      * Sample code: Clusters_ListZoneData.
@@ -606,7 +606,7 @@ import com.azure.resourcemanager.avs.models.Cluster;
 /** Samples for Clusters Update. */
 public final class ClustersUpdateSamples {
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2022-05-01/examples/Clusters_Update.json
+     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/Clusters_Update.json
      */
     /**
      * Sample code: Clusters_Update.
@@ -632,7 +632,7 @@ import com.azure.resourcemanager.avs.models.NetAppVolume;
 /** Samples for Datastores CreateOrUpdate. */
 public final class DatastoresCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2022-05-01/examples/Datastores_CreateOrUpdate.json
+     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/Datastores_CreateOrUpdate.json
      */
     /**
      * Sample code: Datastores_CreateOrUpdate.
@@ -659,7 +659,7 @@ public final class DatastoresCreateOrUpdateSamples {
 /** Samples for Datastores Delete. */
 public final class DatastoresDeleteSamples {
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2022-05-01/examples/Datastores_Delete.json
+     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/Datastores_Delete.json
      */
     /**
      * Sample code: Datastores_Delete.
@@ -678,7 +678,7 @@ public final class DatastoresDeleteSamples {
 /** Samples for Datastores Get. */
 public final class DatastoresGetSamples {
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2022-05-01/examples/Datastores_Get.json
+     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/Datastores_Get.json
      */
     /**
      * Sample code: Datastores_Get.
@@ -699,7 +699,7 @@ public final class DatastoresGetSamples {
 /** Samples for Datastores List. */
 public final class DatastoresListSamples {
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2022-05-01/examples/Datastores_List.json
+     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/Datastores_List.json
      */
     /**
      * Sample code: Datastores_List.
@@ -718,7 +718,7 @@ public final class DatastoresListSamples {
 /** Samples for GlobalReachConnections CreateOrUpdate. */
 public final class GlobalReachConnectionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2022-05-01/examples/GlobalReachConnections_CreateOrUpdate.json
+     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/GlobalReachConnections_CreateOrUpdate.json
      */
     /**
      * Sample code: GlobalReachConnections_CreateOrUpdate.
@@ -744,7 +744,7 @@ public final class GlobalReachConnectionsCreateOrUpdateSamples {
 /** Samples for GlobalReachConnections Delete. */
 public final class GlobalReachConnectionsDeleteSamples {
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2022-05-01/examples/GlobalReachConnections_Delete.json
+     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/GlobalReachConnections_Delete.json
      */
     /**
      * Sample code: GlobalReachConnections_Delete.
@@ -763,7 +763,7 @@ public final class GlobalReachConnectionsDeleteSamples {
 /** Samples for GlobalReachConnections Get. */
 public final class GlobalReachConnectionsGetSamples {
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2022-05-01/examples/GlobalReachConnections_Get.json
+     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/GlobalReachConnections_Get.json
      */
     /**
      * Sample code: GlobalReachConnections_Get.
@@ -784,7 +784,7 @@ public final class GlobalReachConnectionsGetSamples {
 /** Samples for GlobalReachConnections List. */
 public final class GlobalReachConnectionsListSamples {
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2022-05-01/examples/GlobalReachConnections_List.json
+     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/GlobalReachConnections_List.json
      */
     /**
      * Sample code: GlobalReachConnections_List.
@@ -803,7 +803,7 @@ public final class GlobalReachConnectionsListSamples {
 /** Samples for HcxEnterpriseSites CreateOrUpdate. */
 public final class HcxEnterpriseSitesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2022-05-01/examples/HcxEnterpriseSites_CreateOrUpdate.json
+     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/HcxEnterpriseSites_CreateOrUpdate.json
      */
     /**
      * Sample code: HcxEnterpriseSites_CreateOrUpdate.
@@ -822,7 +822,7 @@ public final class HcxEnterpriseSitesCreateOrUpdateSamples {
 /** Samples for HcxEnterpriseSites Delete. */
 public final class HcxEnterpriseSitesDeleteSamples {
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2022-05-01/examples/HcxEnterpriseSites_Delete.json
+     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/HcxEnterpriseSites_Delete.json
      */
     /**
      * Sample code: HcxEnterpriseSites_Delete.
@@ -841,7 +841,7 @@ public final class HcxEnterpriseSitesDeleteSamples {
 /** Samples for HcxEnterpriseSites Get. */
 public final class HcxEnterpriseSitesGetSamples {
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2022-05-01/examples/HcxEnterpriseSites_Get.json
+     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/HcxEnterpriseSites_Get.json
      */
     /**
      * Sample code: HcxEnterpriseSites_Get.
@@ -860,7 +860,7 @@ public final class HcxEnterpriseSitesGetSamples {
 /** Samples for HcxEnterpriseSites List. */
 public final class HcxEnterpriseSitesListSamples {
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2022-05-01/examples/HcxEnterpriseSites_List.json
+     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/HcxEnterpriseSites_List.json
      */
     /**
      * Sample code: HcxEnterpriseSites_List.
@@ -879,7 +879,7 @@ public final class HcxEnterpriseSitesListSamples {
 /** Samples for Locations CheckQuotaAvailability. */
 public final class LocationsCheckQuotaAvailabilitySamples {
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2022-05-01/examples/Locations_CheckQuotaAvailability.json
+     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/Locations_CheckQuotaAvailability.json
      */
     /**
      * Sample code: Locations_CheckQuotaAvailability.
@@ -900,7 +900,7 @@ import com.azure.resourcemanager.avs.models.Sku;
 /** Samples for Locations CheckTrialAvailability. */
 public final class LocationsCheckTrialAvailabilitySamples {
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2022-05-01/examples/Locations_CheckTrialAvailability.json
+     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/Locations_CheckTrialAvailability.json
      */
     /**
      * Sample code: Locations_CheckTrialAvailability.
@@ -912,7 +912,7 @@ public final class LocationsCheckTrialAvailabilitySamples {
     }
 
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2022-05-01/examples/Locations_CheckTrialAvailabilityWithSku.json
+     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/Locations_CheckTrialAvailabilityWithSku.json
      */
     /**
      * Sample code: Locations_CheckTrialAvailabilityWithSku.
@@ -934,7 +934,7 @@ public final class LocationsCheckTrialAvailabilitySamples {
 /** Samples for Operations List. */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2022-05-01/examples/Operations_List.json
+     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/Operations_List.json
      */
     /**
      * Sample code: Operations_List.
@@ -959,7 +959,7 @@ import java.util.Arrays;
 /** Samples for PlacementPolicies CreateOrUpdate. */
 public final class PlacementPoliciesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2022-05-01/examples/PlacementPolicies_CreateOrUpdate.json
+     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/PlacementPolicies_CreateOrUpdate.json
      */
     /**
      * Sample code: PlacementPolicies_CreateOrUpdate.
@@ -998,7 +998,7 @@ public final class PlacementPoliciesCreateOrUpdateSamples {
 /** Samples for PlacementPolicies Delete. */
 public final class PlacementPoliciesDeleteSamples {
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2022-05-01/examples/PlacementPolicies_Delete.json
+     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/PlacementPolicies_Delete.json
      */
     /**
      * Sample code: PlacementPolicies_Delete.
@@ -1017,7 +1017,7 @@ public final class PlacementPoliciesDeleteSamples {
 /** Samples for PlacementPolicies Get. */
 public final class PlacementPoliciesGetSamples {
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2022-05-01/examples/PlacementPolicies_Get.json
+     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/PlacementPolicies_Get.json
      */
     /**
      * Sample code: PlacementPolicies_Get.
@@ -1038,7 +1038,7 @@ public final class PlacementPoliciesGetSamples {
 /** Samples for PlacementPolicies List. */
 public final class PlacementPoliciesListSamples {
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2022-05-01/examples/PlacementPolicies_List.json
+     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/PlacementPolicies_List.json
      */
     /**
      * Sample code: PlacementPolicies_List.
@@ -1063,7 +1063,7 @@ import java.util.Arrays;
 /** Samples for PlacementPolicies Update. */
 public final class PlacementPoliciesUpdateSamples {
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2022-05-01/examples/PlacementPolicies_Update.json
+     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/PlacementPolicies_Update.json
      */
     /**
      * Sample code: PlacementPolicies_Update.
@@ -1112,7 +1112,7 @@ import java.util.Map;
 /** Samples for PrivateClouds CreateOrUpdate. */
 public final class PrivateCloudsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2022-05-01/examples/PrivateClouds_CreateOrUpdate.json
+     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/PrivateClouds_CreateOrUpdate.json
      */
     /**
      * Sample code: PrivateClouds_CreateOrUpdate.
@@ -1134,7 +1134,7 @@ public final class PrivateCloudsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2022-05-01/examples/PrivateClouds_CreateOrUpdate_Stretched.json
+     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/PrivateClouds_CreateOrUpdate_Stretched.json
      */
     /**
      * Sample code: PrivateClouds_CreateOrUpdate_Stretched.
@@ -1159,6 +1159,7 @@ public final class PrivateCloudsCreateOrUpdateSamples {
             .create();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();
@@ -1178,7 +1179,7 @@ public final class PrivateCloudsCreateOrUpdateSamples {
 /** Samples for PrivateClouds Delete. */
 public final class PrivateCloudsDeleteSamples {
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2022-05-01/examples/PrivateClouds_Delete.json
+     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/PrivateClouds_Delete.json
      */
     /**
      * Sample code: PrivateClouds_Delete.
@@ -1197,7 +1198,7 @@ public final class PrivateCloudsDeleteSamples {
 /** Samples for PrivateClouds GetByResourceGroup. */
 public final class PrivateCloudsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2022-05-01/examples/PrivateClouds_Get.json
+     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/PrivateClouds_Get.json
      */
     /**
      * Sample code: PrivateClouds_Get.
@@ -1209,7 +1210,7 @@ public final class PrivateCloudsGetByResourceGroupSamples {
     }
 
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2022-05-01/examples/PrivateClouds_Get_Stretched.json
+     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/PrivateClouds_Get_Stretched.json
      */
     /**
      * Sample code: PrivateClouds_Get_Stretched.
@@ -1228,7 +1229,7 @@ public final class PrivateCloudsGetByResourceGroupSamples {
 /** Samples for PrivateClouds List. */
 public final class PrivateCloudsListSamples {
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2022-05-01/examples/PrivateClouds_ListInSubscription.json
+     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/PrivateClouds_ListInSubscription.json
      */
     /**
      * Sample code: PrivateClouds_ListInSubscription.
@@ -1240,7 +1241,7 @@ public final class PrivateCloudsListSamples {
     }
 
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2022-05-01/examples/PrivateClouds_ListInSubscription_Stretched.json
+     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/PrivateClouds_ListInSubscription_Stretched.json
      */
     /**
      * Sample code: PrivateClouds_ListInSubscription_Stretched.
@@ -1259,7 +1260,7 @@ public final class PrivateCloudsListSamples {
 /** Samples for PrivateClouds ListAdminCredentials. */
 public final class PrivateCloudsListAdminCredentialsSamples {
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2022-05-01/examples/PrivateClouds_ListAdminCredentials.json
+     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/PrivateClouds_ListAdminCredentials.json
      */
     /**
      * Sample code: PrivateClouds_ListAdminCredentials.
@@ -1278,7 +1279,7 @@ public final class PrivateCloudsListAdminCredentialsSamples {
 /** Samples for PrivateClouds ListByResourceGroup. */
 public final class PrivateCloudsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2022-05-01/examples/PrivateClouds_List.json
+     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/PrivateClouds_List.json
      */
     /**
      * Sample code: PrivateClouds_List.
@@ -1290,7 +1291,7 @@ public final class PrivateCloudsListByResourceGroupSamples {
     }
 
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2022-05-01/examples/PrivateClouds_List_Stretched.json
+     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/PrivateClouds_List_Stretched.json
      */
     /**
      * Sample code: PrivateClouds_List_Stretched.
@@ -1309,7 +1310,7 @@ public final class PrivateCloudsListByResourceGroupSamples {
 /** Samples for PrivateClouds RotateNsxtPassword. */
 public final class PrivateCloudsRotateNsxtPasswordSamples {
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2022-05-01/examples/PrivateClouds_RotateNsxtPassword.json
+     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/PrivateClouds_RotateNsxtPassword.json
      */
     /**
      * Sample code: PrivateClouds_RotateNsxtPassword.
@@ -1328,7 +1329,7 @@ public final class PrivateCloudsRotateNsxtPasswordSamples {
 /** Samples for PrivateClouds RotateVcenterPassword. */
 public final class PrivateCloudsRotateVcenterPasswordSamples {
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2022-05-01/examples/PrivateClouds_RotateVcenterPassword.json
+     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/PrivateClouds_RotateVcenterPassword.json
      */
     /**
      * Sample code: PrivateClouds_RotateVcenterPassword.
@@ -1355,7 +1356,7 @@ import com.azure.resourcemanager.avs.models.ResourceIdentityType;
 /** Samples for PrivateClouds Update. */
 public final class PrivateCloudsUpdateSamples {
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2022-05-01/examples/PrivateClouds_Update.json
+     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/PrivateClouds_Update.json
      */
     /**
      * Sample code: PrivateClouds_Update.
@@ -1384,7 +1385,7 @@ public final class PrivateCloudsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2022-05-01/examples/PrivateClouds_Update_Stretched.json
+     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/PrivateClouds_Update_Stretched.json
      */
     /**
      * Sample code: PrivateClouds_Update_Stretched.
@@ -1408,7 +1409,7 @@ public final class PrivateCloudsUpdateSamples {
 /** Samples for ScriptCmdlets Get. */
 public final class ScriptCmdletsGetSamples {
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2022-05-01/examples/ScriptCmdlets_Get.json
+     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/ScriptCmdlets_Get.json
      */
     /**
      * Sample code: ScriptCmdlets_Get.
@@ -1419,11 +1420,7 @@ public final class ScriptCmdletsGetSamples {
         manager
             .scriptCmdlets()
             .getWithResponse(
-                "group1",
-                "{privateCloudName}",
-                "{scriptPackageName}",
-                "New-ExternalSsoDomain",
-                com.azure.core.util.Context.NONE);
+                "group1", "cloud1", "package@1.0.2", "New-ExternalSsoDomain", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1434,7 +1431,7 @@ public final class ScriptCmdletsGetSamples {
 /** Samples for ScriptCmdlets List. */
 public final class ScriptCmdletsListSamples {
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2022-05-01/examples/ScriptCmdlets_List.json
+     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/ScriptCmdlets_List.json
      */
     /**
      * Sample code: ScriptCmdlets_List.
@@ -1442,9 +1439,7 @@ public final class ScriptCmdletsListSamples {
      * @param manager Entry point to AvsManager.
      */
     public static void scriptCmdletsList(com.azure.resourcemanager.avs.AvsManager manager) {
-        manager
-            .scriptCmdlets()
-            .list("group1", "{privateCloudName}", "{scriptPackageName}", com.azure.core.util.Context.NONE);
+        manager.scriptCmdlets().list("group1", "cloud1", "package@1.0.2", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1459,7 +1454,7 @@ import java.util.Arrays;
 /** Samples for ScriptExecutions CreateOrUpdate. */
 public final class ScriptExecutionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2022-05-01/examples/ScriptExecutions_CreateOrUpdate.json
+     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/ScriptExecutions_CreateOrUpdate.json
      */
     /**
      * Sample code: ScriptExecutions_CreateOrUpdate.
@@ -1501,7 +1496,7 @@ public final class ScriptExecutionsCreateOrUpdateSamples {
 /** Samples for ScriptExecutions Delete. */
 public final class ScriptExecutionsDeleteSamples {
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2022-05-01/examples/ScriptExecutions_Delete.json
+     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/ScriptExecutions_Delete.json
      */
     /**
      * Sample code: ScriptExecutions_Delete.
@@ -1509,9 +1504,7 @@ public final class ScriptExecutionsDeleteSamples {
      * @param manager Entry point to AvsManager.
      */
     public static void scriptExecutionsDelete(com.azure.resourcemanager.avs.AvsManager manager) {
-        manager
-            .scriptExecutions()
-            .delete("group1", "cloud1", "{scriptExecutionName}", com.azure.core.util.Context.NONE);
+        manager.scriptExecutions().delete("group1", "cloud1", "addSsoServer", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1522,7 +1515,7 @@ public final class ScriptExecutionsDeleteSamples {
 /** Samples for ScriptExecutions Get. */
 public final class ScriptExecutionsGetSamples {
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2022-05-01/examples/ScriptExecutions_Get.json
+     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/ScriptExecutions_Get.json
      */
     /**
      * Sample code: ScriptExecutions_Get.
@@ -1546,7 +1539,7 @@ import java.util.Arrays;
 /** Samples for ScriptExecutions GetExecutionLogs. */
 public final class ScriptExecutionsGetExecutionLogsSamples {
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2022-05-01/examples/ScriptExecutions_GetExecutionLogs.json
+     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/ScriptExecutions_GetExecutionLogs.json
      */
     /**
      * Sample code: ScriptExecutions_GetExecutionLogs.
@@ -1577,7 +1570,7 @@ public final class ScriptExecutionsGetExecutionLogsSamples {
 /** Samples for ScriptExecutions List. */
 public final class ScriptExecutionsListSamples {
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2022-05-01/examples/ScriptExecutions_List.json
+     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/ScriptExecutions_List.json
      */
     /**
      * Sample code: ScriptExecutions_List.
@@ -1585,7 +1578,7 @@ public final class ScriptExecutionsListSamples {
      * @param manager Entry point to AvsManager.
      */
     public static void scriptExecutionsList(com.azure.resourcemanager.avs.AvsManager manager) {
-        manager.scriptExecutions().list("group1", "{privateCloudName}", com.azure.core.util.Context.NONE);
+        manager.scriptExecutions().list("group1", "cloud1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1596,7 +1589,7 @@ public final class ScriptExecutionsListSamples {
 /** Samples for ScriptPackages Get. */
 public final class ScriptPackagesGetSamples {
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2022-05-01/examples/ScriptPackages_Get.json
+     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/ScriptPackages_Get.json
      */
     /**
      * Sample code: ScriptPackages_Get.
@@ -1606,7 +1599,7 @@ public final class ScriptPackagesGetSamples {
     public static void scriptPackagesGet(com.azure.resourcemanager.avs.AvsManager manager) {
         manager
             .scriptPackages()
-            .getWithResponse("group1", "{privateCloudName}", "{scriptPackageName}", com.azure.core.util.Context.NONE);
+            .getWithResponse("group1", "cloud1", "Microsoft.AVS.Management@3.0.48", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1617,7 +1610,7 @@ public final class ScriptPackagesGetSamples {
 /** Samples for ScriptPackages List. */
 public final class ScriptPackagesListSamples {
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2022-05-01/examples/ScriptPackages_List.json
+     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/ScriptPackages_List.json
      */
     /**
      * Sample code: ScriptPackages_List.
@@ -1625,7 +1618,7 @@ public final class ScriptPackagesListSamples {
      * @param manager Entry point to AvsManager.
      */
     public static void scriptPackagesList(com.azure.resourcemanager.avs.AvsManager manager) {
-        manager.scriptPackages().list("group1", "{privateCloudName}", com.azure.core.util.Context.NONE);
+        manager.scriptPackages().list("group1", "cloud1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1636,7 +1629,7 @@ public final class ScriptPackagesListSamples {
 /** Samples for VirtualMachines Get. */
 public final class VirtualMachinesGetSamples {
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2022-05-01/examples/VirtualMachines_Get.json
+     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/VirtualMachines_Get.json
      */
     /**
      * Sample code: GetVirtualMachine.
@@ -1657,7 +1650,7 @@ public final class VirtualMachinesGetSamples {
 /** Samples for VirtualMachines List. */
 public final class VirtualMachinesListSamples {
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2022-05-01/examples/VirtualMachines_List.json
+     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/VirtualMachines_List.json
      */
     /**
      * Sample code: ListClusterVirtualMachines.
@@ -1679,7 +1672,7 @@ import com.azure.resourcemanager.avs.models.VirtualMachineRestrictMovementState;
 /** Samples for VirtualMachines RestrictMovement. */
 public final class VirtualMachinesRestrictMovementSamples {
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2022-05-01/examples/VirtualMachines_RestrictMovement.json
+     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/VirtualMachines_RestrictMovement.json
      */
     /**
      * Sample code: VirtualMachine_RestrictMovement.
@@ -1708,7 +1701,7 @@ import com.azure.resourcemanager.avs.models.WorkloadNetworkDhcpServer;
 /** Samples for WorkloadNetworks CreateDhcp. */
 public final class WorkloadNetworksCreateDhcpSamples {
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2022-05-01/examples/WorkloadNetworks_CreateDhcpConfigurations.json
+     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/WorkloadNetworks_CreateDhcpConfigurations.json
      */
     /**
      * Sample code: WorkloadNetworks_CreateDhcp.
@@ -1740,7 +1733,7 @@ import java.util.Arrays;
 /** Samples for WorkloadNetworks CreateDnsService. */
 public final class WorkloadNetworksCreateDnsServiceSamples {
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2022-05-01/examples/WorkloadNetworks_CreateDnsServices.json
+     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/WorkloadNetworks_CreateDnsServices.json
      */
     /**
      * Sample code: WorkloadNetworks_CreateDnsService.
@@ -1771,7 +1764,7 @@ import java.util.Arrays;
 /** Samples for WorkloadNetworks CreateDnsZone. */
 public final class WorkloadNetworksCreateDnsZoneSamples {
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2022-05-01/examples/WorkloadNetworks_CreateDnsZones.json
+     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/WorkloadNetworks_CreateDnsZones.json
      */
     /**
      * Sample code: WorkloadNetworks_CreateDnsZone.
@@ -1801,7 +1794,7 @@ import com.azure.resourcemanager.avs.models.PortMirroringDirectionEnum;
 /** Samples for WorkloadNetworks CreatePortMirroring. */
 public final class WorkloadNetworksCreatePortMirroringSamples {
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2022-05-01/examples/WorkloadNetworks_CreatePortMirroringProfiles.json
+     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/WorkloadNetworks_CreatePortMirroringProfiles.json
      */
     /**
      * Sample code: WorkloadNetworks_CreatePortMirroring.
@@ -1829,7 +1822,7 @@ public final class WorkloadNetworksCreatePortMirroringSamples {
 /** Samples for WorkloadNetworks CreatePublicIp. */
 public final class WorkloadNetworksCreatePublicIpSamples {
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2022-05-01/examples/WorkloadNetworks_CreatePublicIPs.json
+     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/WorkloadNetworks_CreatePublicIPs.json
      */
     /**
      * Sample code: WorkloadNetworks_CreatePublicIP.
@@ -1857,7 +1850,7 @@ import java.util.Arrays;
 /** Samples for WorkloadNetworks CreateSegments. */
 public final class WorkloadNetworksCreateSegmentsSamples {
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2022-05-01/examples/WorkloadNetworks_CreateSegments.json
+     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/WorkloadNetworks_CreateSegments.json
      */
     /**
      * Sample code: WorkloadNetworks_CreateSegments.
@@ -1889,7 +1882,7 @@ import java.util.Arrays;
 /** Samples for WorkloadNetworks CreateVMGroup. */
 public final class WorkloadNetworksCreateVMGroupSamples {
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2022-05-01/examples/WorkloadNetworks_CreateVMGroups.json
+     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/WorkloadNetworks_CreateVMGroups.json
      */
     /**
      * Sample code: WorkloadNetworks_CreateVMGroup.
@@ -1915,7 +1908,7 @@ public final class WorkloadNetworksCreateVMGroupSamples {
 /** Samples for WorkloadNetworks DeleteDhcp. */
 public final class WorkloadNetworksDeleteDhcpSamples {
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2022-05-01/examples/WorkloadNetworks_DeleteDhcpConfigurations.json
+     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/WorkloadNetworks_DeleteDhcpConfigurations.json
      */
     /**
      * Sample code: WorkloadNetworks_DeleteDhcp.
@@ -1934,7 +1927,7 @@ public final class WorkloadNetworksDeleteDhcpSamples {
 /** Samples for WorkloadNetworks DeleteDnsService. */
 public final class WorkloadNetworksDeleteDnsServiceSamples {
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2022-05-01/examples/WorkloadNetworks_DeleteDnsServices.json
+     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/WorkloadNetworks_DeleteDnsServices.json
      */
     /**
      * Sample code: WorkloadNetworks_DeleteDnsService.
@@ -1955,7 +1948,7 @@ public final class WorkloadNetworksDeleteDnsServiceSamples {
 /** Samples for WorkloadNetworks DeleteDnsZone. */
 public final class WorkloadNetworksDeleteDnsZoneSamples {
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2022-05-01/examples/WorkloadNetworks_DeleteDnsZones.json
+     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/WorkloadNetworks_DeleteDnsZones.json
      */
     /**
      * Sample code: WorkloadNetworks_DeleteDnsZone.
@@ -1974,7 +1967,7 @@ public final class WorkloadNetworksDeleteDnsZoneSamples {
 /** Samples for WorkloadNetworks DeletePortMirroring. */
 public final class WorkloadNetworksDeletePortMirroringSamples {
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2022-05-01/examples/WorkloadNetworks_DeletePortMirroringProfiles.json
+     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/WorkloadNetworks_DeletePortMirroringProfiles.json
      */
     /**
      * Sample code: WorkloadNetworks_DeletePortMirroring.
@@ -1995,7 +1988,7 @@ public final class WorkloadNetworksDeletePortMirroringSamples {
 /** Samples for WorkloadNetworks DeletePublicIp. */
 public final class WorkloadNetworksDeletePublicIpSamples {
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2022-05-01/examples/WorkloadNetworks_DeletePublicIPs.json
+     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/WorkloadNetworks_DeletePublicIPs.json
      */
     /**
      * Sample code: WorkloadNetworks_DeletePublicIP.
@@ -2014,7 +2007,7 @@ public final class WorkloadNetworksDeletePublicIpSamples {
 /** Samples for WorkloadNetworks DeleteSegment. */
 public final class WorkloadNetworksDeleteSegmentSamples {
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2022-05-01/examples/WorkloadNetworks_DeleteSegments.json
+     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/WorkloadNetworks_DeleteSegments.json
      */
     /**
      * Sample code: WorkloadNetworks_DeleteSegment.
@@ -2033,7 +2026,7 @@ public final class WorkloadNetworksDeleteSegmentSamples {
 /** Samples for WorkloadNetworks DeleteVMGroup. */
 public final class WorkloadNetworksDeleteVMGroupSamples {
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2022-05-01/examples/WorkloadNetworks_DeleteVMGroups.json
+     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/WorkloadNetworks_DeleteVMGroups.json
      */
     /**
      * Sample code: WorkloadNetworks_DeleteVMGroup.
@@ -2054,7 +2047,7 @@ import com.azure.resourcemanager.avs.models.WorkloadNetworkName;
 /** Samples for WorkloadNetworks Get. */
 public final class WorkloadNetworksGetSamples {
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2022-05-01/examples/WorkloadNetworks_Get.json
+     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/WorkloadNetworks_Get.json
      */
     /**
      * Sample code: WorkloadNetworks_Get.
@@ -2075,7 +2068,7 @@ public final class WorkloadNetworksGetSamples {
 /** Samples for WorkloadNetworks GetDhcp. */
 public final class WorkloadNetworksGetDhcpSamples {
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2022-05-01/examples/WorkloadNetworks_GetDhcpConfigurations.json
+     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/WorkloadNetworks_GetDhcpConfigurations.json
      */
     /**
      * Sample code: WorkloadNetworks_GetDhcp.
@@ -2094,7 +2087,7 @@ public final class WorkloadNetworksGetDhcpSamples {
 /** Samples for WorkloadNetworks GetDnsService. */
 public final class WorkloadNetworksGetDnsServiceSamples {
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2022-05-01/examples/WorkloadNetworks_GetDnsServices.json
+     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/WorkloadNetworks_GetDnsServices.json
      */
     /**
      * Sample code: WorkloadNetworks_GetDnsService.
@@ -2115,7 +2108,7 @@ public final class WorkloadNetworksGetDnsServiceSamples {
 /** Samples for WorkloadNetworks GetDnsZone. */
 public final class WorkloadNetworksGetDnsZoneSamples {
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2022-05-01/examples/WorkloadNetworks_GetDnsZones.json
+     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/WorkloadNetworks_GetDnsZones.json
      */
     /**
      * Sample code: WorkloadNetworks_GetDnsZone.
@@ -2136,7 +2129,7 @@ public final class WorkloadNetworksGetDnsZoneSamples {
 /** Samples for WorkloadNetworks GetGateway. */
 public final class WorkloadNetworksGetGatewaySamples {
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2022-05-01/examples/WorkloadNetworks_GetGateway.json
+     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/WorkloadNetworks_GetGateway.json
      */
     /**
      * Sample code: WorkloadNetworks_GetGateway.
@@ -2157,7 +2150,7 @@ public final class WorkloadNetworksGetGatewaySamples {
 /** Samples for WorkloadNetworks GetPortMirroring. */
 public final class WorkloadNetworksGetPortMirroringSamples {
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2022-05-01/examples/WorkloadNetworks_GetPortMirroringProfiles.json
+     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/WorkloadNetworks_GetPortMirroringProfiles.json
      */
     /**
      * Sample code: WorkloadNetworks_GetPortMirroring.
@@ -2178,7 +2171,7 @@ public final class WorkloadNetworksGetPortMirroringSamples {
 /** Samples for WorkloadNetworks GetPublicIp. */
 public final class WorkloadNetworksGetPublicIpSamples {
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2022-05-01/examples/WorkloadNetworks_GetPublicIPs.json
+     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/WorkloadNetworks_GetPublicIPs.json
      */
     /**
      * Sample code: WorkloadNetworks_GetPublicIP.
@@ -2199,7 +2192,7 @@ public final class WorkloadNetworksGetPublicIpSamples {
 /** Samples for WorkloadNetworks GetSegment. */
 public final class WorkloadNetworksGetSegmentSamples {
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2022-05-01/examples/WorkloadNetworks_GetSegments.json
+     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/WorkloadNetworks_GetSegments.json
      */
     /**
      * Sample code: WorkloadNetworks_GetSegment.
@@ -2220,7 +2213,7 @@ public final class WorkloadNetworksGetSegmentSamples {
 /** Samples for WorkloadNetworks GetVMGroup. */
 public final class WorkloadNetworksGetVMGroupSamples {
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2022-05-01/examples/WorkloadNetworks_GetVMGroups.json
+     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/WorkloadNetworks_GetVMGroups.json
      */
     /**
      * Sample code: WorkloadNetworks_GetVMGroup.
@@ -2241,7 +2234,7 @@ public final class WorkloadNetworksGetVMGroupSamples {
 /** Samples for WorkloadNetworks GetVirtualMachine. */
 public final class WorkloadNetworksGetVirtualMachineSamples {
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2022-05-01/examples/WorkloadNetworks_GetVirtualMachine.json
+     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/WorkloadNetworks_GetVirtualMachine.json
      */
     /**
      * Sample code: WorkloadNetworks_GetVirtualMachine.
@@ -2262,7 +2255,7 @@ public final class WorkloadNetworksGetVirtualMachineSamples {
 /** Samples for WorkloadNetworks List. */
 public final class WorkloadNetworksListSamples {
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2022-05-01/examples/WorkloadNetworks_List.json
+     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/WorkloadNetworks_List.json
      */
     /**
      * Sample code: WorkloadNetworks_List.
@@ -2281,7 +2274,7 @@ public final class WorkloadNetworksListSamples {
 /** Samples for WorkloadNetworks ListDhcp. */
 public final class WorkloadNetworksListDhcpSamples {
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2022-05-01/examples/WorkloadNetworks_ListDhcpConfigurations.json
+     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/WorkloadNetworks_ListDhcpConfigurations.json
      */
     /**
      * Sample code: WorkloadNetworks_ListDhcp.
@@ -2300,7 +2293,7 @@ public final class WorkloadNetworksListDhcpSamples {
 /** Samples for WorkloadNetworks ListDnsServices. */
 public final class WorkloadNetworksListDnsServicesSamples {
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2022-05-01/examples/WorkloadNetworks_ListDnsServices.json
+     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/WorkloadNetworks_ListDnsServices.json
      */
     /**
      * Sample code: WorkloadNetworks_ListDnsServices.
@@ -2319,7 +2312,7 @@ public final class WorkloadNetworksListDnsServicesSamples {
 /** Samples for WorkloadNetworks ListDnsZones. */
 public final class WorkloadNetworksListDnsZonesSamples {
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2022-05-01/examples/WorkloadNetworks_ListDnsZones.json
+     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/WorkloadNetworks_ListDnsZones.json
      */
     /**
      * Sample code: WorkloadNetworks_ListDnsZones.
@@ -2338,7 +2331,7 @@ public final class WorkloadNetworksListDnsZonesSamples {
 /** Samples for WorkloadNetworks ListGateways. */
 public final class WorkloadNetworksListGatewaysSamples {
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2022-05-01/examples/WorkloadNetworks_ListGateways.json
+     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/WorkloadNetworks_ListGateways.json
      */
     /**
      * Sample code: WorkloadNetworks_ListGateways.
@@ -2357,7 +2350,7 @@ public final class WorkloadNetworksListGatewaysSamples {
 /** Samples for WorkloadNetworks ListPortMirroring. */
 public final class WorkloadNetworksListPortMirroringSamples {
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2022-05-01/examples/WorkloadNetworks_ListPortMirroringProfiles.json
+     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/WorkloadNetworks_ListPortMirroringProfiles.json
      */
     /**
      * Sample code: WorkloadNetworks_ListPortMirroring.
@@ -2376,7 +2369,7 @@ public final class WorkloadNetworksListPortMirroringSamples {
 /** Samples for WorkloadNetworks ListPublicIPs. */
 public final class WorkloadNetworksListPublicIPsSamples {
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2022-05-01/examples/WorkloadNetworks_ListPublicIPs.json
+     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/WorkloadNetworks_ListPublicIPs.json
      */
     /**
      * Sample code: WorkloadNetworks_ListPublicIPs.
@@ -2395,7 +2388,7 @@ public final class WorkloadNetworksListPublicIPsSamples {
 /** Samples for WorkloadNetworks ListSegments. */
 public final class WorkloadNetworksListSegmentsSamples {
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2022-05-01/examples/WorkloadNetworks_ListSegments.json
+     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/WorkloadNetworks_ListSegments.json
      */
     /**
      * Sample code: WorkloadNetworks_ListSegments.
@@ -2414,7 +2407,7 @@ public final class WorkloadNetworksListSegmentsSamples {
 /** Samples for WorkloadNetworks ListVMGroups. */
 public final class WorkloadNetworksListVMGroupsSamples {
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2022-05-01/examples/WorkloadNetworks_ListVMGroups.json
+     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/WorkloadNetworks_ListVMGroups.json
      */
     /**
      * Sample code: WorkloadNetworks_ListVMGroups.
@@ -2433,7 +2426,7 @@ public final class WorkloadNetworksListVMGroupsSamples {
 /** Samples for WorkloadNetworks ListVirtualMachines. */
 public final class WorkloadNetworksListVirtualMachinesSamples {
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2022-05-01/examples/WorkloadNetworks_ListVirtualMachines.json
+     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/WorkloadNetworks_ListVirtualMachines.json
      */
     /**
      * Sample code: WorkloadNetworks_ListVirtualMachines.
@@ -2455,7 +2448,7 @@ import com.azure.resourcemanager.avs.models.WorkloadNetworkDhcpServer;
 /** Samples for WorkloadNetworks UpdateDhcp. */
 public final class WorkloadNetworksUpdateDhcpSamples {
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2022-05-01/examples/WorkloadNetworks_UpdateDhcpConfigurations.json
+     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/WorkloadNetworks_UpdateDhcpConfigurations.json
      */
     /**
      * Sample code: WorkloadNetworks_UpdateDhcp.
@@ -2487,7 +2480,7 @@ import java.util.Arrays;
 /** Samples for WorkloadNetworks UpdateDnsService. */
 public final class WorkloadNetworksUpdateDnsServiceSamples {
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2022-05-01/examples/WorkloadNetworks_UpdateDnsServices.json
+     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/WorkloadNetworks_UpdateDnsServices.json
      */
     /**
      * Sample code: WorkloadNetworks_UpdateDnsService.
@@ -2522,7 +2515,7 @@ import java.util.Arrays;
 /** Samples for WorkloadNetworks UpdateDnsZone. */
 public final class WorkloadNetworksUpdateDnsZoneSamples {
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2022-05-01/examples/WorkloadNetworks_UpdateDnsZones.json
+     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/WorkloadNetworks_UpdateDnsZones.json
      */
     /**
      * Sample code: WorkloadNetworks_UpdateDnsZone.
@@ -2556,7 +2549,7 @@ import com.azure.resourcemanager.avs.models.WorkloadNetworkPortMirroring;
 /** Samples for WorkloadNetworks UpdatePortMirroring. */
 public final class WorkloadNetworksUpdatePortMirroringSamples {
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2022-05-01/examples/WorkloadNetworks_UpdatePortMirroringProfiles.json
+     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/WorkloadNetworks_UpdatePortMirroringProfiles.json
      */
     /**
      * Sample code: WorkloadNetworks_UpdatePortMirroring.
@@ -2590,7 +2583,7 @@ import java.util.Arrays;
 /** Samples for WorkloadNetworks UpdateSegments. */
 public final class WorkloadNetworksUpdateSegmentsSamples {
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2022-05-01/examples/WorkloadNetworks_UpdateSegments.json
+     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/WorkloadNetworks_UpdateSegments.json
      */
     /**
      * Sample code: WorkloadNetworks_UpdateSegments.
@@ -2625,7 +2618,7 @@ import java.util.Arrays;
 /** Samples for WorkloadNetworks UpdateVMGroup. */
 public final class WorkloadNetworksUpdateVMGroupSamples {
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2022-05-01/examples/WorkloadNetworks_UpdateVMGroups.json
+     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/WorkloadNetworks_UpdateVMGroups.json
      */
     /**
      * Sample code: WorkloadNetworks_UpdateVMGroup.

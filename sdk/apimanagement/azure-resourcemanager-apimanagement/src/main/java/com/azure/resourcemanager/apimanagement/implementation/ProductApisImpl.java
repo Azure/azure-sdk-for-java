@@ -46,10 +46,6 @@ public final class ProductApisImpl implements ProductApis {
         return Utils.mapPage(inner, inner1 -> new ApiContractImpl(inner1, this.manager()));
     }
 
-    public void checkEntityExists(String resourceGroupName, String serviceName, String productId, String apiId) {
-        this.serviceClient().checkEntityExists(resourceGroupName, serviceName, productId, apiId);
-    }
-
     public Response<Void> checkEntityExistsWithResponse(
         String resourceGroupName, String serviceName, String productId, String apiId, Context context) {
         return this
@@ -57,13 +53,8 @@ public final class ProductApisImpl implements ProductApis {
             .checkEntityExistsWithResponse(resourceGroupName, serviceName, productId, apiId, context);
     }
 
-    public ApiContract createOrUpdate(String resourceGroupName, String serviceName, String productId, String apiId) {
-        ApiContractInner inner = this.serviceClient().createOrUpdate(resourceGroupName, serviceName, productId, apiId);
-        if (inner != null) {
-            return new ApiContractImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+    public void checkEntityExists(String resourceGroupName, String serviceName, String productId, String apiId) {
+        this.serviceClient().checkEntityExists(resourceGroupName, serviceName, productId, apiId);
     }
 
     public Response<ApiContract> createOrUpdateWithResponse(
@@ -81,13 +72,22 @@ public final class ProductApisImpl implements ProductApis {
         }
     }
 
-    public void delete(String resourceGroupName, String serviceName, String productId, String apiId) {
-        this.serviceClient().delete(resourceGroupName, serviceName, productId, apiId);
+    public ApiContract createOrUpdate(String resourceGroupName, String serviceName, String productId, String apiId) {
+        ApiContractInner inner = this.serviceClient().createOrUpdate(resourceGroupName, serviceName, productId, apiId);
+        if (inner != null) {
+            return new ApiContractImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public Response<Void> deleteWithResponse(
         String resourceGroupName, String serviceName, String productId, String apiId, Context context) {
         return this.serviceClient().deleteWithResponse(resourceGroupName, serviceName, productId, apiId, context);
+    }
+
+    public void delete(String resourceGroupName, String serviceName, String productId, String apiId) {
+        this.serviceClient().delete(resourceGroupName, serviceName, productId, apiId);
     }
 
     private ProductApisClient serviceClient() {

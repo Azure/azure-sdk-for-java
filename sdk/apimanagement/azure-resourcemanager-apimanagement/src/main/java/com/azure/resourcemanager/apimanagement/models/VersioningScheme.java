@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for VersioningScheme. */
+/** An value that determines where the API Version identifier will be located in a HTTP request. */
 public final class VersioningScheme extends ExpandableStringEnum<VersioningScheme> {
     /** Static value Segment for VersioningScheme. */
     public static final VersioningScheme SEGMENT = fromString("Segment");
@@ -18,6 +18,15 @@ public final class VersioningScheme extends ExpandableStringEnum<VersioningSchem
 
     /** Static value Header for VersioningScheme. */
     public static final VersioningScheme HEADER = fromString("Header");
+
+    /**
+     * Creates a new instance of VersioningScheme value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public VersioningScheme() {
+    }
 
     /**
      * Creates or finds a VersioningScheme from its string representation.
@@ -30,7 +39,11 @@ public final class VersioningScheme extends ExpandableStringEnum<VersioningSchem
         return fromString(name, VersioningScheme.class);
     }
 
-    /** @return known VersioningScheme values. */
+    /**
+     * Gets known VersioningScheme values.
+     *
+     * @return known VersioningScheme values.
+     */
     public static Collection<VersioningScheme> values() {
         return values(VersioningScheme.class);
     }

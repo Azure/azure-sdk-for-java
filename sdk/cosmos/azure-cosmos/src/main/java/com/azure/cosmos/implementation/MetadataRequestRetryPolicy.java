@@ -50,6 +50,8 @@ public class MetadataRequestRetryPolicy implements IRetryPolicy {
             return Mono.just(ShouldRetryResult.error(e));
         }
 
+        webExceptionRetryPolicy.onBeforeSendRequest(request);
+
         return webExceptionRetryPolicy.shouldRetry(e).flatMap(shouldRetryResult -> {
 
             if (!shouldRetryResult.shouldRetry) {
@@ -70,8 +72,10 @@ public class MetadataRequestRetryPolicy implements IRetryPolicy {
                     URI locationEndpointToRoute = request.requestContext.locationEndpointToRoute;
 
                     if (request.isReadOnlyRequest()) {
+                        logger.warn("Marking the endpoint : {} as unavailable for read.", locationEndpointToRoute);
                         this.globalEndpointManager.markEndpointUnavailableForRead(locationEndpointToRoute);
                     } else {
+                        logger.warn("Marking the endpoint : {} as unavailable for write.", locationEndpointToRoute);
                         this.globalEndpointManager.markEndpointUnavailableForWrite(locationEndpointToRoute);
                     }
                 }

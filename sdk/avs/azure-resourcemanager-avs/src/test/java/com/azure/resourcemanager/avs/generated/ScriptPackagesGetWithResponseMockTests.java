@@ -30,7 +30,7 @@ public final class ScriptPackagesGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"description\":\"psw\",\"version\":\"mvkhlggd\",\"company\":\"em\",\"uri\":\"kzsz\"},\"id\":\"wiwtglxxhl\",\"name\":\"fpgpicrmnzhrgm\",\"type\":\"gjsxv\"}";
+            "{\"properties\":{\"description\":\"tgjcsgguxheml\",\"version\":\"waeeczgfb\",\"company\":\"klelssxb\",\"uri\":\"c\"},\"id\":\"xzujksrlsm\",\"name\":\"esqplp\",\"type\":\"mjc\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -61,7 +61,7 @@ public final class ScriptPackagesGetWithResponseMockTests {
         ScriptPackage response =
             manager
                 .scriptPackages()
-                .getWithResponse("kqmhhaowjr", "zvuporqzdfuydz", "kfvxcnq", com.azure.core.util.Context.NONE)
+                .getWithResponse("ehnmnaoyankco", "qswankltytmhdr", "znnhd", com.azure.core.util.Context.NONE)
                 .getValue();
     }
 }

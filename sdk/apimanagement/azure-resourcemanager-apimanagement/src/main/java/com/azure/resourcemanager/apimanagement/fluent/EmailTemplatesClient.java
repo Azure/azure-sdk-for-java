@@ -21,7 +21,7 @@ public interface EmailTemplatesClient {
     /**
      * Gets all email templates.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -34,7 +34,7 @@ public interface EmailTemplatesClient {
     /**
      * Gets all email templates.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param filter | Field | Usage | Supported operators | Supported functions
      *     |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| name | filter | ge, le, eq,
@@ -54,20 +54,7 @@ public interface EmailTemplatesClient {
     /**
      * Gets the entity state (Etag) version of the email template specified by its identifier.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param serviceName The name of the API Management service.
-     * @param templateName Email Template Name Identifier.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void getEntityTag(String resourceGroupName, String serviceName, TemplateName templateName);
-
-    /**
-     * Gets the entity state (Etag) version of the email template specified by its identifier.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param templateName Email Template Name Identifier.
      * @param context The context to associate with this operation.
@@ -81,23 +68,22 @@ public interface EmailTemplatesClient {
         String resourceGroupName, String serviceName, TemplateName templateName, Context context);
 
     /**
-     * Gets the details of the email template specified by its identifier.
+     * Gets the entity state (Etag) version of the email template specified by its identifier.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param templateName Email Template Name Identifier.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of the email template specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    EmailTemplateContractInner get(String resourceGroupName, String serviceName, TemplateName templateName);
+    void getEntityTag(String resourceGroupName, String serviceName, TemplateName templateName);
 
     /**
      * Gets the details of the email template specified by its identifier.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param templateName Email Template Name Identifier.
      * @param context The context to associate with this operation.
@@ -111,28 +97,23 @@ public interface EmailTemplatesClient {
         String resourceGroupName, String serviceName, TemplateName templateName, Context context);
 
     /**
-     * Updates an Email Template.
+     * Gets the details of the email template specified by its identifier.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param templateName Email Template Name Identifier.
-     * @param parameters Email Template update parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return email Template details.
+     * @return the details of the email template specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    EmailTemplateContractInner createOrUpdate(
-        String resourceGroupName,
-        String serviceName,
-        TemplateName templateName,
-        EmailTemplateUpdateParameters parameters);
+    EmailTemplateContractInner get(String resourceGroupName, String serviceName, TemplateName templateName);
 
     /**
      * Updates an Email Template.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param templateName Email Template Name Identifier.
      * @param parameters Email Template update parameters.
@@ -153,31 +134,28 @@ public interface EmailTemplatesClient {
         Context context);
 
     /**
-     * Updates API Management email template.
+     * Updates an Email Template.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param templateName Email Template Name Identifier.
-     * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
-     * @param parameters Update parameters.
+     * @param parameters Email Template update parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return email Template details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    EmailTemplateContractInner update(
+    EmailTemplateContractInner createOrUpdate(
         String resourceGroupName,
         String serviceName,
         TemplateName templateName,
-        String ifMatch,
         EmailTemplateUpdateParameters parameters);
 
     /**
      * Updates API Management email template.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param templateName Email Template Name Identifier.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
@@ -199,24 +177,31 @@ public interface EmailTemplatesClient {
         Context context);
 
     /**
-     * Reset the Email Template to default template provided by the API Management service instance.
+     * Updates API Management email template.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param templateName Email Template Name Identifier.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
      *     request or it should be * for unconditional update.
+     * @param parameters Update parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return email Template details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String resourceGroupName, String serviceName, TemplateName templateName, String ifMatch);
+    EmailTemplateContractInner update(
+        String resourceGroupName,
+        String serviceName,
+        TemplateName templateName,
+        String ifMatch,
+        EmailTemplateUpdateParameters parameters);
 
     /**
      * Reset the Email Template to default template provided by the API Management service instance.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param templateName Email Template Name Identifier.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
@@ -230,4 +215,19 @@ public interface EmailTemplatesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<Void> deleteWithResponse(
         String resourceGroupName, String serviceName, TemplateName templateName, String ifMatch, Context context);
+
+    /**
+     * Reset the Email Template to default template provided by the API Management service instance.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serviceName The name of the API Management service.
+     * @param templateName Email Template Name Identifier.
+     * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
+     *     request or it should be * for unconditional update.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void delete(String resourceGroupName, String serviceName, TemplateName templateName, String ifMatch);
 }

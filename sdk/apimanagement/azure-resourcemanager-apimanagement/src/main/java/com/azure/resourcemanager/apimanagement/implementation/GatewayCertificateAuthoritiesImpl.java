@@ -50,10 +50,6 @@ public final class GatewayCertificateAuthoritiesImpl implements GatewayCertifica
         return Utils.mapPage(inner, inner1 -> new GatewayCertificateAuthorityContractImpl(inner1, this.manager()));
     }
 
-    public void getEntityTag(String resourceGroupName, String serviceName, String gatewayId, String certificateId) {
-        this.serviceClient().getEntityTag(resourceGroupName, serviceName, gatewayId, certificateId);
-    }
-
     public GatewayCertificateAuthoritiesGetEntityTagResponse getEntityTagWithResponse(
         String resourceGroupName, String serviceName, String gatewayId, String certificateId, Context context) {
         return this
@@ -61,15 +57,8 @@ public final class GatewayCertificateAuthoritiesImpl implements GatewayCertifica
             .getEntityTagWithResponse(resourceGroupName, serviceName, gatewayId, certificateId, context);
     }
 
-    public GatewayCertificateAuthorityContract get(
-        String resourceGroupName, String serviceName, String gatewayId, String certificateId) {
-        GatewayCertificateAuthorityContractInner inner =
-            this.serviceClient().get(resourceGroupName, serviceName, gatewayId, certificateId);
-        if (inner != null) {
-            return new GatewayCertificateAuthorityContractImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+    public void getEntityTag(String resourceGroupName, String serviceName, String gatewayId, String certificateId) {
+        this.serviceClient().getEntityTag(resourceGroupName, serviceName, gatewayId, certificateId);
     }
 
     public Response<GatewayCertificateAuthorityContract> getWithResponse(
@@ -87,9 +76,15 @@ public final class GatewayCertificateAuthoritiesImpl implements GatewayCertifica
         }
     }
 
-    public void delete(
-        String resourceGroupName, String serviceName, String gatewayId, String certificateId, String ifMatch) {
-        this.serviceClient().delete(resourceGroupName, serviceName, gatewayId, certificateId, ifMatch);
+    public GatewayCertificateAuthorityContract get(
+        String resourceGroupName, String serviceName, String gatewayId, String certificateId) {
+        GatewayCertificateAuthorityContractInner inner =
+            this.serviceClient().get(resourceGroupName, serviceName, gatewayId, certificateId);
+        if (inner != null) {
+            return new GatewayCertificateAuthorityContractImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public Response<Void> deleteWithResponse(
@@ -102,6 +97,11 @@ public final class GatewayCertificateAuthoritiesImpl implements GatewayCertifica
         return this
             .serviceClient()
             .deleteWithResponse(resourceGroupName, serviceName, gatewayId, certificateId, ifMatch, context);
+    }
+
+    public void delete(
+        String resourceGroupName, String serviceName, String gatewayId, String certificateId, String ifMatch) {
+        this.serviceClient().delete(resourceGroupName, serviceName, gatewayId, certificateId, ifMatch);
     }
 
     public GatewayCertificateAuthorityContract getById(String id) {

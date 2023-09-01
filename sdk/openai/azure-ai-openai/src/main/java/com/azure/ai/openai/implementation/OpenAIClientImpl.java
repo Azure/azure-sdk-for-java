@@ -279,6 +279,48 @@ public final class OpenAIClientImpl {
                 RequestOptions requestOptions,
                 Context context);
 
+        @Post("/deployments/{deploymentId}/extensions/chat/completions")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> getChatCompletionsWithAzureExtensions(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @PathParam("deploymentId") String deploymentOrModelName,
+                @HeaderParam("accept") String accept,
+                @BodyParam("application/json") BinaryData chatCompletionsOptions,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Post("/deployments/{deploymentId}/extensions/chat/completions")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> getChatCompletionsWithAzureExtensionsSync(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @PathParam("deploymentId") String deploymentOrModelName,
+                @HeaderParam("accept") String accept,
+                @BodyParam("application/json") BinaryData chatCompletionsOptions,
+                RequestOptions requestOptions,
+                Context context);
+
         @Post("/images/generations:submit")
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(
@@ -679,12 +721,17 @@ public final class OpenAIClientImpl {
      * {
      *     messages (Required): [
      *          (Required){
-     *             role: String(system/assistant/user/function) (Required)
+     *             role: String(system/assistant/user/function/tool) (Required)
      *             content: String (Required)
      *             name: String (Optional)
      *             function_call (Optional): {
      *                 name: String (Required)
      *                 arguments: String (Required)
+     *             }
+     *             context (Optional): {
+     *                 messages (Optional): [
+     *                     (recursive schema, see above)
+     *                 ]
      *             }
      *         }
      *     ]
@@ -711,6 +758,12 @@ public final class OpenAIClientImpl {
      *     frequency_penalty: Double (Optional)
      *     stream: Boolean (Optional)
      *     model: String (Optional)
+     *     dataSources (Optional): [
+     *          (Optional){
+     *             type: String(AzureCognitiveSearch) (Required)
+     *             parameters: Object (Required)
+     *         }
+     *     ]
      * }
      * }</pre>
      *
@@ -723,12 +776,17 @@ public final class OpenAIClientImpl {
      *     choices (Required): [
      *          (Required){
      *             message (Optional): {
-     *                 role: String(system/assistant/user/function) (Required)
+     *                 role: String(system/assistant/user/function/tool) (Required)
      *                 content: String (Required)
      *                 name: String (Optional)
      *                 function_call (Optional): {
      *                     name: String (Required)
      *                     arguments: String (Required)
+     *                 }
+     *                 context (Optional): {
+     *                     messages (Optional): [
+     *                         (recursive schema, see above)
+     *                     ]
      *                 }
      *             }
      *             index: int (Required)
@@ -798,12 +856,17 @@ public final class OpenAIClientImpl {
      * {
      *     messages (Required): [
      *          (Required){
-     *             role: String(system/assistant/user/function) (Required)
+     *             role: String(system/assistant/user/function/tool) (Required)
      *             content: String (Required)
      *             name: String (Optional)
      *             function_call (Optional): {
      *                 name: String (Required)
      *                 arguments: String (Required)
+     *             }
+     *             context (Optional): {
+     *                 messages (Optional): [
+     *                     (recursive schema, see above)
+     *                 ]
      *             }
      *         }
      *     ]
@@ -830,6 +893,12 @@ public final class OpenAIClientImpl {
      *     frequency_penalty: Double (Optional)
      *     stream: Boolean (Optional)
      *     model: String (Optional)
+     *     dataSources (Optional): [
+     *          (Optional){
+     *             type: String(AzureCognitiveSearch) (Required)
+     *             parameters: Object (Required)
+     *         }
+     *     ]
      * }
      * }</pre>
      *
@@ -842,12 +911,17 @@ public final class OpenAIClientImpl {
      *     choices (Required): [
      *          (Required){
      *             message (Optional): {
-     *                 role: String(system/assistant/user/function) (Required)
+     *                 role: String(system/assistant/user/function/tool) (Required)
      *                 content: String (Required)
      *                 name: String (Optional)
      *                 function_call (Optional): {
      *                     name: String (Required)
      *                     arguments: String (Required)
+     *                 }
+     *                 context (Optional): {
+     *                     messages (Optional): [
+     *                         (recursive schema, see above)
+     *                     ]
      *                 }
      *             }
      *             index: int (Required)
@@ -895,6 +969,276 @@ public final class OpenAIClientImpl {
             String deploymentOrModelName, BinaryData chatCompletionsOptions, RequestOptions requestOptions) {
         final String accept = "application/json";
         return service.getChatCompletionsSync(
+                this.getEndpoint(),
+                this.getServiceVersion().getVersion(),
+                deploymentOrModelName,
+                accept,
+                chatCompletionsOptions,
+                requestOptions,
+                Context.NONE);
+    }
+
+    /**
+     * Gets chat completions for the provided chat messages. This is an Azure-specific version of chat completions that
+     * supports integration with configured data sources and other augmentations to the base chat completions
+     * capabilities.
+     *
+     * <p><strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     messages (Required): [
+     *          (Required){
+     *             role: String(system/assistant/user/function/tool) (Required)
+     *             content: String (Required)
+     *             name: String (Optional)
+     *             function_call (Optional): {
+     *                 name: String (Required)
+     *                 arguments: String (Required)
+     *             }
+     *             context (Optional): {
+     *                 messages (Optional): [
+     *                     (recursive schema, see above)
+     *                 ]
+     *             }
+     *         }
+     *     ]
+     *     functions (Optional): [
+     *          (Optional){
+     *             name: String (Required)
+     *             description: String (Optional)
+     *             parameters: Object (Optional)
+     *         }
+     *     ]
+     *     function_call: FunctionCallModelBase (Optional)
+     *     max_tokens: Integer (Optional)
+     *     temperature: Double (Optional)
+     *     top_p: Double (Optional)
+     *     logit_bias (Optional): {
+     *         String: int (Optional)
+     *     }
+     *     user: String (Optional)
+     *     n: Integer (Optional)
+     *     stop (Optional): [
+     *         String (Optional)
+     *     ]
+     *     presence_penalty: Double (Optional)
+     *     frequency_penalty: Double (Optional)
+     *     stream: Boolean (Optional)
+     *     model: String (Optional)
+     *     dataSources (Optional): [
+     *          (Optional){
+     *             type: String(AzureCognitiveSearch) (Required)
+     *             parameters: Object (Required)
+     *         }
+     *     ]
+     * }
+     * }</pre>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     id: String (Required)
+     *     created: long (Required)
+     *     choices (Required): [
+     *          (Required){
+     *             message (Optional): {
+     *                 role: String(system/assistant/user/function/tool) (Required)
+     *                 content: String (Required)
+     *                 name: String (Optional)
+     *                 function_call (Optional): {
+     *                     name: String (Required)
+     *                     arguments: String (Required)
+     *                 }
+     *                 context (Optional): {
+     *                     messages (Optional): [
+     *                         (recursive schema, see above)
+     *                     ]
+     *                 }
+     *             }
+     *             index: int (Required)
+     *             finish_reason: String(stop/length/content_filter/function_call) (Required)
+     *             delta (Optional): (recursive schema, see delta above)
+     *             content_filter_results (Optional): {
+     *                 sexual (Optional): {
+     *                     severity: String(safe/low/medium/high) (Required)
+     *                     filtered: boolean (Required)
+     *                 }
+     *                 violence (Optional): (recursive schema, see violence above)
+     *                 hate (Optional): (recursive schema, see hate above)
+     *                 self_harm (Optional): (recursive schema, see self_harm above)
+     *             }
+     *         }
+     *     ]
+     *     prompt_annotations (Optional): [
+     *          (Optional){
+     *             prompt_index: int (Required)
+     *             content_filter_results (Optional): (recursive schema, see content_filter_results above)
+     *         }
+     *     ]
+     *     usage (Required): {
+     *         completion_tokens: int (Required)
+     *         prompt_tokens: int (Required)
+     *         total_tokens: int (Required)
+     *     }
+     * }
+     * }</pre>
+     *
+     * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
+     *     (when using non-Azure OpenAI) to use for this request.
+     * @param chatCompletionsOptions The configuration information for a chat completions request. Completions support a
+     *     wide variety of tasks and generate text that continues from or "completes" provided prompt data.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return chat completions for the provided chat messages. This is an Azure-specific version of chat completions
+     *     that supports integration with configured data sources and other augmentations to the base chat completions
+     *     capabilities along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> getChatCompletionsWithAzureExtensionsWithResponseAsync(
+            String deploymentOrModelName, BinaryData chatCompletionsOptions, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(
+                context ->
+                        service.getChatCompletionsWithAzureExtensions(
+                                this.getEndpoint(),
+                                this.getServiceVersion().getVersion(),
+                                deploymentOrModelName,
+                                accept,
+                                chatCompletionsOptions,
+                                requestOptions,
+                                context));
+    }
+
+    /**
+     * Gets chat completions for the provided chat messages. This is an Azure-specific version of chat completions that
+     * supports integration with configured data sources and other augmentations to the base chat completions
+     * capabilities.
+     *
+     * <p><strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     messages (Required): [
+     *          (Required){
+     *             role: String(system/assistant/user/function/tool) (Required)
+     *             content: String (Required)
+     *             name: String (Optional)
+     *             function_call (Optional): {
+     *                 name: String (Required)
+     *                 arguments: String (Required)
+     *             }
+     *             context (Optional): {
+     *                 messages (Optional): [
+     *                     (recursive schema, see above)
+     *                 ]
+     *             }
+     *         }
+     *     ]
+     *     functions (Optional): [
+     *          (Optional){
+     *             name: String (Required)
+     *             description: String (Optional)
+     *             parameters: Object (Optional)
+     *         }
+     *     ]
+     *     function_call: FunctionCallModelBase (Optional)
+     *     max_tokens: Integer (Optional)
+     *     temperature: Double (Optional)
+     *     top_p: Double (Optional)
+     *     logit_bias (Optional): {
+     *         String: int (Optional)
+     *     }
+     *     user: String (Optional)
+     *     n: Integer (Optional)
+     *     stop (Optional): [
+     *         String (Optional)
+     *     ]
+     *     presence_penalty: Double (Optional)
+     *     frequency_penalty: Double (Optional)
+     *     stream: Boolean (Optional)
+     *     model: String (Optional)
+     *     dataSources (Optional): [
+     *          (Optional){
+     *             type: String(AzureCognitiveSearch) (Required)
+     *             parameters: Object (Required)
+     *         }
+     *     ]
+     * }
+     * }</pre>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     id: String (Required)
+     *     created: long (Required)
+     *     choices (Required): [
+     *          (Required){
+     *             message (Optional): {
+     *                 role: String(system/assistant/user/function/tool) (Required)
+     *                 content: String (Required)
+     *                 name: String (Optional)
+     *                 function_call (Optional): {
+     *                     name: String (Required)
+     *                     arguments: String (Required)
+     *                 }
+     *                 context (Optional): {
+     *                     messages (Optional): [
+     *                         (recursive schema, see above)
+     *                     ]
+     *                 }
+     *             }
+     *             index: int (Required)
+     *             finish_reason: String(stop/length/content_filter/function_call) (Required)
+     *             delta (Optional): (recursive schema, see delta above)
+     *             content_filter_results (Optional): {
+     *                 sexual (Optional): {
+     *                     severity: String(safe/low/medium/high) (Required)
+     *                     filtered: boolean (Required)
+     *                 }
+     *                 violence (Optional): (recursive schema, see violence above)
+     *                 hate (Optional): (recursive schema, see hate above)
+     *                 self_harm (Optional): (recursive schema, see self_harm above)
+     *             }
+     *         }
+     *     ]
+     *     prompt_annotations (Optional): [
+     *          (Optional){
+     *             prompt_index: int (Required)
+     *             content_filter_results (Optional): (recursive schema, see content_filter_results above)
+     *         }
+     *     ]
+     *     usage (Required): {
+     *         completion_tokens: int (Required)
+     *         prompt_tokens: int (Required)
+     *         total_tokens: int (Required)
+     *     }
+     * }
+     * }</pre>
+     *
+     * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
+     *     (when using non-Azure OpenAI) to use for this request.
+     * @param chatCompletionsOptions The configuration information for a chat completions request. Completions support a
+     *     wide variety of tasks and generate text that continues from or "completes" provided prompt data.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return chat completions for the provided chat messages. This is an Azure-specific version of chat completions
+     *     that supports integration with configured data sources and other augmentations to the base chat completions
+     *     capabilities along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> getChatCompletionsWithAzureExtensionsWithResponse(
+            String deploymentOrModelName, BinaryData chatCompletionsOptions, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return service.getChatCompletionsWithAzureExtensionsSync(
                 this.getEndpoint(),
                 this.getServiceVersion().getVersion(),
                 deploymentOrModelName,

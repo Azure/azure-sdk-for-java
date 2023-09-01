@@ -56,6 +56,6 @@ public final class RacksDeleteMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.racks().delete("oum", "znv", com.azure.core.util.Context.NONE);
+        manager.racks().delete("mwt", "g", com.azure.core.util.Context.NONE);
     }
 }

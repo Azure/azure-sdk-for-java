@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.apimanagement.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Tag GetEntityStateByProduct. */
 public final class TagGetEntityStateByProductSamples {
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementHeadProductTag.json
+     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementHeadProductTag.json
      */
     /**
      * Sample code: ApiManagementHeadProductTag.
@@ -21,6 +19,10 @@ public final class TagGetEntityStateByProductSamples {
         manager
             .tags()
             .getEntityStateByProductWithResponse(
-                "rg1", "apimService1", "59306a29e4bbd510dc24e5f8", "59306a29e4bbd510dc24e5f9", Context.NONE);
+                "rg1",
+                "apimService1",
+                "59306a29e4bbd510dc24e5f8",
+                "59306a29e4bbd510dc24e5f9",
+                com.azure.core.util.Context.NONE);
     }
 }

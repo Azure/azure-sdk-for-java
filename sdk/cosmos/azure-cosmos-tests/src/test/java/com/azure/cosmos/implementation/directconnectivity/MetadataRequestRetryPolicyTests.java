@@ -374,6 +374,7 @@ public class MetadataRequestRetryPolicyTests extends TestSuiteBase {
                 .block();
 
             CosmosFaultInjectionHelper.configureFaultInjectionRules(faultInjectedContainer, Arrays.asList(connectionDelayFault)).block();
+
             httpClientUnderTestWrapper.capturedRequests.clear();
 
             // allow enough time for connections to be deemed unhealthy and their closure
@@ -469,7 +470,7 @@ public class MetadataRequestRetryPolicyTests extends TestSuiteBase {
                 .block();
 
             CosmosFaultInjectionHelper.configureFaultInjectionRules(faultInjectedContainer, Arrays.asList(connectionDelayFault)).block();
-            
+
             httpClientUnderTestWrapper.capturedRequests.clear();
             Thread.sleep(idleTimeInMillis);
 

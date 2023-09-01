@@ -76,11 +76,13 @@ public interface Datastore {
     interface Definition
         extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
+
     /** The Datastore definition stages. */
     interface DefinitionStages {
         /** The first stage of the Datastore definition. */
         interface Blank extends WithParentResource {
         }
+
         /** The stage of the Datastore definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
@@ -93,6 +95,7 @@ public interface Datastore {
              */
             WithCreate withExistingCluster(String resourceGroupName, String privateCloudName, String clusterName);
         }
+
         /**
          * The stage of the Datastore definition which contains all the minimum required properties for the resource to
          * be created, but also allows for any other optional properties to be specified.
@@ -113,6 +116,7 @@ public interface Datastore {
              */
             Datastore create(Context context);
         }
+
         /** The stage of the Datastore definition allowing to specify netAppVolume. */
         interface WithNetAppVolume {
             /**
@@ -123,6 +127,7 @@ public interface Datastore {
              */
             WithCreate withNetAppVolume(NetAppVolume netAppVolume);
         }
+
         /** The stage of the Datastore definition allowing to specify diskPoolVolume. */
         interface WithDiskPoolVolume {
             /**
@@ -134,6 +139,7 @@ public interface Datastore {
             WithCreate withDiskPoolVolume(DiskPoolVolume diskPoolVolume);
         }
     }
+
     /**
      * Begins update for the Datastore resource.
      *
@@ -158,6 +164,7 @@ public interface Datastore {
          */
         Datastore apply(Context context);
     }
+
     /** The Datastore update stages. */
     interface UpdateStages {
         /** The stage of the Datastore update allowing to specify netAppVolume. */
@@ -170,6 +177,7 @@ public interface Datastore {
              */
             Update withNetAppVolume(NetAppVolume netAppVolume);
         }
+
         /** The stage of the Datastore update allowing to specify diskPoolVolume. */
         interface WithDiskPoolVolume {
             /**
@@ -181,6 +189,7 @@ public interface Datastore {
             Update withDiskPoolVolume(DiskPoolVolume diskPoolVolume);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

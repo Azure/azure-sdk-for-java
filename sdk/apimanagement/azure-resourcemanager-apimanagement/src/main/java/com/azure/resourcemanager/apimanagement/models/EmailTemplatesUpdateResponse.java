@@ -30,7 +30,11 @@ public final class EmailTemplatesUpdateResponse
         super(request, statusCode, rawHeaders, value, headers);
     }
 
-    /** @return the deserialized response body. */
+    /**
+     * Gets the deserialized response body.
+     *
+     * @return the deserialized response body.
+     */
     @Override
     public EmailTemplateContractInner getValue() {
         return super.getValue();

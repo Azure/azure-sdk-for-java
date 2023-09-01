@@ -108,9 +108,9 @@ public class FaultInjectionMetadataRequestRuleTests extends TestSuiteBase {
                     FaultInjectionResultBuilders
                         .getResultBuilder(FaultInjectionServerErrorType.CONNECTION_DELAY)
                         .delay(Duration.ofSeconds(50)) // to simulate http connection timeout
-                        // increasing from 2 to 4 - the WebExceptionRetryPolicy introduces two additional retries
-                        // which have to be failed
-                        .times(4)
+                        // changed from 2 to 8
+                        // 6 more address refresh request retries have been introduced by WebExceptionRetryPolicy
+                        .times(8)
                         .build()
                 )
                 .duration(Duration.ofMinutes(10))
@@ -146,7 +146,7 @@ public class FaultInjectionMetadataRequestRuleTests extends TestSuiteBase {
                         .block()
                         .getDiagnostics();
                 assertThat(cosmosDiagnostics.getContactedRegionNames().size()).isEqualTo(2);
-                validateFaultInjectionRuleAppliedForAddressResolution(cosmosDiagnostics, addressRefreshConnectionDelay, 4);
+                validateFaultInjectionRuleAppliedForAddressResolution(cosmosDiagnostics, addressRefreshConnectionDelay, 2);
             } catch (CosmosException e) {
                 fail("Request should be able to succeed by retrying in another region. " + e.getDiagnostics());
             }
@@ -527,7 +527,7 @@ public class FaultInjectionMetadataRequestRuleTests extends TestSuiteBase {
         }
     }
 
-    @AfterClass(groups = {"multi-region", "multi-master"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
+    @AfterClass(groups = {"multi-region"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
         safeClose(this.client);
     }

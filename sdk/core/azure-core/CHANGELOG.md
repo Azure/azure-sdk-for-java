@@ -1,5 +1,16 @@
 # Release History
 
+## 1.43.0-beta.1 (Unreleased)
+
+### Features Added
+- Added `KeyCredentialTrait` interface. Client builders that implement this interface will support key-based authentication.
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
 ## 1.42.0 (2023-08-04)
 
 ### Features Added

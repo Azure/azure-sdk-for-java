@@ -30,6 +30,10 @@ public final class VirtualNetworkRule {
     @JsonProperty(value = "state")
     private State state;
 
+    /** Creates an instance of VirtualNetworkRule class. */
+    public VirtualNetworkRule() {
+    }
+
     /**
      * Get the virtualNetworkResourceId property: Resource ID of a subnet, for example:
      * /subscriptions/{subscriptionId}/resourceGroups/{groupName}/providers/Microsoft.Network/virtualNetworks/{vnetName}/subnets/{subnetName}.

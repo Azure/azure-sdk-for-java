@@ -13,7 +13,7 @@ public final class VirtualMachinePropertiesTests {
         VirtualMachineProperties model =
             BinaryData
                 .fromString(
-                    "{\"displayName\":\"dtjinfw\",\"moRefId\":\"fltkacjv\",\"folderPath\":\"kdlfoa\",\"restrictMovement\":\"Enabled\"}")
+                    "{\"displayName\":\"lbfpncurd\",\"moRefId\":\"wiithtywub\",\"folderPath\":\"bihwqknfdnt\",\"restrictMovement\":\"Disabled\"}")
                 .toObject(VirtualMachineProperties.class);
     }
 

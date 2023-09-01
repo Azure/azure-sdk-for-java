@@ -32,7 +32,7 @@ public final class CreatorsListByAccountMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"uknvudwti\",\"storageUnits\":1340454664},\"location\":\"bldngkpoc\",\"tags\":{\"xoegukgjnpiucgy\":\"z\",\"zcdrqjsdpydnfyhx\":\"evqzntypmrbp\",\"ifsjttgzfbishcb\":\"eoejzic\"},\"id\":\"hajdeyeamdpha\",\"name\":\"alpbuxwgipwhon\",\"type\":\"wkgshwa\"}]}";
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"y\",\"storageUnits\":427983093},\"location\":\"gjltdtbnnhado\",\"tags\":{\"hnvpamqgxq\":\"kvci\",\"zikywgg\":\"u\",\"uipiccjzk\":\"kallatmel\"},\"id\":\"ivgvvcna\",\"name\":\"rhyrnxxmueed\",\"type\":\"drd\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -60,11 +60,10 @@ public final class CreatorsListByAccountMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<Creator> response =
-            manager.creators().listByAccount("jnspydp", "koen", com.azure.core.util.Context.NONE);
+        PagedIterable<Creator> response = manager.creators().listByAccount("d", "h", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("bldngkpoc", response.iterator().next().location());
-        Assertions.assertEquals("z", response.iterator().next().tags().get("xoegukgjnpiucgy"));
-        Assertions.assertEquals(1340454664, response.iterator().next().properties().storageUnits());
+        Assertions.assertEquals("gjltdtbnnhado", response.iterator().next().location());
+        Assertions.assertEquals("kvci", response.iterator().next().tags().get("hnvpamqgxq"));
+        Assertions.assertEquals(427983093, response.iterator().next().properties().storageUnits());
     }
 }

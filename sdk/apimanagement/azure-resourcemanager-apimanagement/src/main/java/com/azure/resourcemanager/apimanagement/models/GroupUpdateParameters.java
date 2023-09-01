@@ -17,6 +17,10 @@ public final class GroupUpdateParameters {
     @JsonProperty(value = "properties")
     private GroupUpdateParametersProperties innerProperties;
 
+    /** Creates an instance of GroupUpdateParameters class. */
+    public GroupUpdateParameters() {
+    }
+
     /**
      * Get the innerProperties property: Group entity update contract properties.
      *

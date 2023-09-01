@@ -31,7 +31,7 @@ public final class WorkloadNetworksGetVirtualMachineWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"displayName\":\"gsftufqobrjlnacg\",\"vmType\":\"REGULAR\"},\"id\":\"knh\",\"name\":\"kizvytn\",\"type\":\"zvulj\"}";
+            "{\"properties\":{\"displayName\":\"katbhjm\",\"vmType\":\"EDGE\"},\"id\":\"bsoqeqala\",\"name\":\"vlagun\",\"type\":\"tgfebwln\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,9 +62,9 @@ public final class WorkloadNetworksGetVirtualMachineWithResponseMockTests {
         WorkloadNetworkVirtualMachine response =
             manager
                 .workloadNetworks()
-                .getVirtualMachineWithResponse("mes", "kdlpa", "zrcxfailcfxwmdbo", com.azure.core.util.Context.NONE)
+                .getVirtualMachineWithResponse("tcqiosmg", "zah", "xqdlyrtltlapr", com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals("gsftufqobrjlnacg", response.displayName());
+        Assertions.assertEquals("katbhjm", response.displayName());
     }
 }

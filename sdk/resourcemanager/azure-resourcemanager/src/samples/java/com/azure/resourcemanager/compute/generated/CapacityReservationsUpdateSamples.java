@@ -12,7 +12,7 @@ import java.util.Map;
 /** Samples for CapacityReservations Update. */
 public final class CapacityReservationsUpdateSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/capacityReservationExamples/CapacityReservation_Update_MinimumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-07-01/examples/capacityReservationExamples/CapacityReservation_Update_MinimumSet_Gen.json
      */
     /**
      * Sample code: CapacityReservation_Update_MinimumSet_Gen.
@@ -34,7 +34,7 @@ public final class CapacityReservationsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/capacityReservationExamples/CapacityReservation_Update_MaximumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-07-01/examples/capacityReservationExamples/CapacityReservation_Update_MaximumSet_Gen.json
      */
     /**
      * Sample code: CapacityReservation_Update_MaximumSet_Gen.

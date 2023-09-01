@@ -58,6 +58,16 @@ public final class BlobInventoryPolicyFilter {
     @JsonProperty(value = "includeDeleted")
     private Boolean includeDeleted;
 
+    /*
+     * This property is used to filter objects based on the object creation time
+     */
+    @JsonProperty(value = "creationTime")
+    private BlobInventoryCreationTime creationTime;
+
+    /** Creates an instance of BlobInventoryPolicyFilter class. */
+    public BlobInventoryPolicyFilter() {
+    }
+
     /**
      * Get the prefixMatch property: An array of strings with maximum 10 blob prefixes to be included in the inventory.
      *
@@ -199,10 +209,33 @@ public final class BlobInventoryPolicyFilter {
     }
 
     /**
+     * Get the creationTime property: This property is used to filter objects based on the object creation time.
+     *
+     * @return the creationTime value.
+     */
+    public BlobInventoryCreationTime creationTime() {
+        return this.creationTime;
+    }
+
+    /**
+     * Set the creationTime property: This property is used to filter objects based on the object creation time.
+     *
+     * @param creationTime the creationTime value to set.
+     * @return the BlobInventoryPolicyFilter object itself.
+     */
+    public BlobInventoryPolicyFilter withCreationTime(BlobInventoryCreationTime creationTime) {
+        this.creationTime = creationTime;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (creationTime() != null) {
+            creationTime().validate();
+        }
     }
 }

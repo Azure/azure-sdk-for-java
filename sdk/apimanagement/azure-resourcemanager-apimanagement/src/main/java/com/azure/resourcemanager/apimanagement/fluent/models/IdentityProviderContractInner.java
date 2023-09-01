@@ -19,6 +19,10 @@ public final class IdentityProviderContractInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private IdentityProviderContractProperties innerProperties;
 
+    /** Creates an instance of IdentityProviderContractInner class. */
+    public IdentityProviderContractInner() {
+    }
+
     /**
      * Get the innerProperties property: Identity Provider contract properties.
      *
@@ -265,6 +269,31 @@ public final class IdentityProviderContractInner extends ProxyResource {
             this.innerProperties = new IdentityProviderContractProperties();
         }
         this.innerProperties().withPasswordResetPolicyName(passwordResetPolicyName);
+        return this;
+    }
+
+    /**
+     * Get the clientLibrary property: The client library to be used in the developer portal. Only applies to AAD and
+     * AAD B2C Identity Provider.
+     *
+     * @return the clientLibrary value.
+     */
+    public String clientLibrary() {
+        return this.innerProperties() == null ? null : this.innerProperties().clientLibrary();
+    }
+
+    /**
+     * Set the clientLibrary property: The client library to be used in the developer portal. Only applies to AAD and
+     * AAD B2C Identity Provider.
+     *
+     * @param clientLibrary the clientLibrary value to set.
+     * @return the IdentityProviderContractInner object itself.
+     */
+    public IdentityProviderContractInner withClientLibrary(String clientLibrary) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new IdentityProviderContractProperties();
+        }
+        this.innerProperties().withClientLibrary(clientLibrary);
         return this;
     }
 

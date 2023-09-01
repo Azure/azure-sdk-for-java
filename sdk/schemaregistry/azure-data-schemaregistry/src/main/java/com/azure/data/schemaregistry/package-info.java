@@ -56,7 +56,6 @@
  *     .buildClient&#40;&#41;;
  * </pre>
  * <!-- end com.azure.data.schemaregistry.schemaregistryclient.construct -->
- * <hr/>
  *
  * <h2>Using the Client</h2>
  *

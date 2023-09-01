@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.apimanagement.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for OpenIdConnectProvider ListByService. */
 public final class OpenIdConnectProviderListByServiceSamples {
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementListOpenIdConnectProviders.json
+     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementListOpenIdConnectProviders.json
      */
     /**
      * Sample code: ApiManagementListOpenIdConnectProviders.
@@ -18,6 +16,8 @@ public final class OpenIdConnectProviderListByServiceSamples {
      */
     public static void apiManagementListOpenIdConnectProviders(
         com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
-        manager.openIdConnectProviders().listByService("rg1", "apimService1", null, null, null, Context.NONE);
+        manager
+            .openIdConnectProviders()
+            .listByService("rg1", "apimService1", null, null, null, com.azure.core.util.Context.NONE);
     }
 }

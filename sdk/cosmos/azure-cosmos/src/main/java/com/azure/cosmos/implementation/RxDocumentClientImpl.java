@@ -224,7 +224,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                 CosmosClientTelemetryConfig clientTelemetryConfig,
                                 String clientCorrelationId,
                                 CosmosEndToEndOperationLatencyPolicyConfig cosmosEndToEndOperationLatencyPolicyConfig,
-                                SessionRetryOptions sessionRetryOptions) {
+                                SessionRetryOptions sessionRetryOptions,
+                                CosmosContainerProactiveInitConfig containerProactiveInitConfig) {
         this(
                 serviceEndpoint,
                 masterKeyOrResourceToken,
@@ -242,7 +243,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 clientTelemetryConfig,
                 clientCorrelationId,
                 cosmosEndToEndOperationLatencyPolicyConfig,
-                sessionRetryOptions);
+                sessionRetryOptions,
+                containerProactiveInitConfig);
         this.cosmosAuthorizationTokenResolver = cosmosAuthorizationTokenResolver;
     }
 
@@ -263,7 +265,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                 CosmosClientTelemetryConfig clientTelemetryConfig,
                                 String clientCorrelationId,
                                 CosmosEndToEndOperationLatencyPolicyConfig cosmosEndToEndOperationLatencyPolicyConfig,
-                                SessionRetryOptions sessionRetryOptions) {
+                                SessionRetryOptions sessionRetryOptions,
+                                CosmosContainerProactiveInitConfig containerProactiveInitConfig) {
         this(
                 serviceEndpoint,
                 masterKeyOrResourceToken,
@@ -281,7 +284,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 clientTelemetryConfig,
                 clientCorrelationId,
                 cosmosEndToEndOperationLatencyPolicyConfig,
-                sessionRetryOptions);
+                sessionRetryOptions,
+                containerProactiveInitConfig);
         this.cosmosAuthorizationTokenResolver = cosmosAuthorizationTokenResolver;
     }
 
@@ -301,7 +305,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                 CosmosClientTelemetryConfig clientTelemetryConfig,
                                 String clientCorrelationId,
                                 CosmosEndToEndOperationLatencyPolicyConfig cosmosEndToEndOperationLatencyPolicyConfig,
-                                SessionRetryOptions sessionRetryOptions) {
+                                SessionRetryOptions sessionRetryOptions,
+                                CosmosContainerProactiveInitConfig containerProactiveInitConfig) {
         this(
                 serviceEndpoint,
                 masterKeyOrResourceToken,
@@ -318,7 +323,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 clientTelemetryConfig,
                 clientCorrelationId,
                 cosmosEndToEndOperationLatencyPolicyConfig,
-                sessionRetryOptions);
+                sessionRetryOptions,
+                containerProactiveInitConfig);
 
         if (permissionFeed != null && permissionFeed.size() > 0) {
             this.resourceTokensMap = new HashMap<>();
@@ -377,7 +383,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                          CosmosClientTelemetryConfig clientTelemetryConfig,
                          String clientCorrelationId,
                          CosmosEndToEndOperationLatencyPolicyConfig cosmosEndToEndOperationLatencyPolicyConfig,
-                         SessionRetryOptions sessionRetryOptions) {
+                         SessionRetryOptions sessionRetryOptions,
+                         CosmosContainerProactiveInitConfig containerProactiveInitConfig) {
 
         assert(clientTelemetryConfig != null);
         Boolean clientTelemetryEnabled = ImplementationBridgeHelpers
@@ -454,6 +461,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             this.diagnosticsClientConfig.withEndpointDiscoveryEnabled(this.connectionPolicy.isEndpointDiscoveryEnabled());
             this.diagnosticsClientConfig.withPreferredRegions(this.connectionPolicy.getPreferredRegions());
             this.diagnosticsClientConfig.withMachineId(tempMachineId);
+            this.diagnosticsClientConfig.withProactiveContainerInitConfig(containerProactiveInitConfig);
 
             boolean disableSessionCapturing = (ConsistencyLevel.SESSION != consistencyLevel && !sessionCapturingOverrideEnabled);
 
@@ -1422,10 +1430,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         }
 
         if (options.getIfMatchETag() != null) {
-                headers.put(HttpConstants.HttpHeaders.IF_MATCH, options.getIfMatchETag());
+            headers.put(HttpConstants.HttpHeaders.IF_MATCH, options.getIfMatchETag());
         }
 
-        if(options.getIfNoneMatchETag() != null) {
+        if (options.getIfNoneMatchETag() != null) {
             headers.put(HttpConstants.HttpHeaders.IF_NONE_MATCH, options.getIfNoneMatchETag());
         }
 
@@ -1453,7 +1461,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         if (options.getResourceTokenExpirySeconds() != null) {
             headers.put(HttpConstants.HttpHeaders.RESOURCE_TOKEN_EXPIRY,
-                    String.valueOf(options.getResourceTokenExpirySeconds()));
+                String.valueOf(options.getResourceTokenExpirySeconds()));
         }
 
         if (options.getOfferThroughput() != null && options.getOfferThroughput() >= 0) {
@@ -1468,24 +1476,24 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 final OfferAutoscaleSettings offerAutoscaleSettings = offer.getOfferAutoScaleSettings();
                 OfferAutoscaleAutoUpgradeProperties autoscaleAutoUpgradeProperties = null;
                 if (offerAutoscaleSettings != null) {
-                     autoscaleAutoUpgradeProperties
+                    autoscaleAutoUpgradeProperties
                         = offer.getOfferAutoScaleSettings().getAutoscaleAutoUpgradeProperties();
                 }
                 if (offer.hasOfferThroughput() &&
-                        (offerAutoscaleSettings != null && offerAutoscaleSettings.getMaxThroughput() >= 0 ||
-                             autoscaleAutoUpgradeProperties != null &&
-                                 autoscaleAutoUpgradeProperties
-                                     .getAutoscaleThroughputProperties()
-                                     .getIncrementPercent() >= 0)) {
+                    (offerAutoscaleSettings != null && offerAutoscaleSettings.getMaxThroughput() >= 0 ||
+                        autoscaleAutoUpgradeProperties != null &&
+                            autoscaleAutoUpgradeProperties
+                                .getAutoscaleThroughputProperties()
+                                .getIncrementPercent() >= 0)) {
                     throw new IllegalArgumentException("Autoscale provisioned throughput can not be configured with "
-                                                           + "fixed offer");
+                        + "fixed offer");
                 }
 
                 if (offer.hasOfferThroughput()) {
                     headers.put(HttpConstants.HttpHeaders.OFFER_THROUGHPUT, String.valueOf(offer.getThroughput()));
                 } else if (offer.getOfferAutoScaleSettings() != null) {
                     headers.put(HttpConstants.HttpHeaders.OFFER_AUTOPILOT_SETTINGS,
-                                ModelBridgeInternal.toJsonFromJsonSerializable(offer.getOfferAutoScaleSettings()));
+                        ModelBridgeInternal.toJsonFromJsonSerializable(offer.getOfferAutoScaleSettings()));
                 }
             }
         }
@@ -1498,10 +1506,15 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             headers.put(HttpConstants.HttpHeaders.SCRIPT_ENABLE_LOGGING, String.valueOf(true));
         }
 
-        if (options.getDedicatedGatewayRequestOptions() != null &&
-            options.getDedicatedGatewayRequestOptions().getMaxIntegratedCacheStaleness() != null) {
-            headers.put(HttpConstants.HttpHeaders.DEDICATED_GATEWAY_PER_REQUEST_CACHE_STALENESS,
-                String.valueOf(Utils.getMaxIntegratedCacheStalenessInMillis(options.getDedicatedGatewayRequestOptions())));
+        if (options.getDedicatedGatewayRequestOptions() != null) {
+            if (options.getDedicatedGatewayRequestOptions().getMaxIntegratedCacheStaleness() != null) {
+                headers.put(HttpConstants.HttpHeaders.DEDICATED_GATEWAY_PER_REQUEST_CACHE_STALENESS,
+                    String.valueOf(Utils.getMaxIntegratedCacheStalenessInMillis(options.getDedicatedGatewayRequestOptions())));
+            }
+            if (options.getDedicatedGatewayRequestOptions().isIntegratedCacheBypassed()) {
+                headers.put(HttpConstants.HttpHeaders.DEDICATED_GATEWAY_PER_REQUEST_BYPASS_CACHE,
+                    String.valueOf(options.getDedicatedGatewayRequestOptions().isIntegratedCacheBypassed()));
+            }
         }
 
         return headers;
@@ -1567,7 +1580,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             }
 
             Instant serializationStartTime = Instant.now();
-            partitionKeyInternal =  extractPartitionKeyValueFromDocument(internalObjectNode, partitionKeyDefinition);
+            partitionKeyInternal =  PartitionKeyHelper.extractPartitionKeyValueFromDocument(internalObjectNode, partitionKeyDefinition);
             Instant serializationEndTime = Instant.now();
             SerializationDiagnosticsContext.SerializationDiagnostics serializationDiagnostics = new SerializationDiagnosticsContext.SerializationDiagnostics(
                 serializationStartTime,
@@ -1585,44 +1598,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         request.setPartitionKeyInternal(partitionKeyInternal);
         request.getHeaders().put(HttpConstants.HttpHeaders.PARTITION_KEY, Utils.escapeNonAscii(partitionKeyInternal.toJson()));
-    }
-
-    public static PartitionKeyInternal extractPartitionKeyValueFromDocument(
-            JsonSerializable document,
-            PartitionKeyDefinition partitionKeyDefinition) {
-        if (partitionKeyDefinition != null) {
-            switch (partitionKeyDefinition.getKind()) {
-                case HASH:
-                    String path = partitionKeyDefinition.getPaths().iterator().next();
-                    List<String> parts = PathParser.getPathParts(path);
-                    if (parts.size() >= 1) {
-                        Object value = ModelBridgeInternal.getObjectByPathFromJsonSerializable(document, parts);
-                        if (value == null || value.getClass() == ObjectNode.class) {
-                            value = ModelBridgeInternal.getNonePartitionKey(partitionKeyDefinition);
-                        }
-
-                        if (value instanceof PartitionKeyInternal) {
-                            return (PartitionKeyInternal) value;
-                        } else {
-                            return PartitionKeyInternal.fromObjectArray(Collections.singletonList(value), false);
-                        }
-                    }
-                    break;
-                case MULTI_HASH:
-                    Object[] partitionKeyValues = new Object[partitionKeyDefinition.getPaths().size()];
-                    for(int pathIter = 0 ; pathIter < partitionKeyDefinition.getPaths().size(); pathIter++){
-                        String partitionPath = partitionKeyDefinition.getPaths().get(pathIter);
-                        List<String> partitionPathParts = PathParser.getPathParts(partitionPath);
-                        partitionKeyValues[pathIter] = ModelBridgeInternal.getObjectByPathFromJsonSerializable(document, partitionPathParts);
-                    }
-                    return PartitionKeyInternal.fromObjectArray(partitionKeyValues, false);
-
-                default:
-                    throw new IllegalArgumentException("Unrecognized Partition kind: " + partitionKeyDefinition.getKind());
-                }
-        }
-
-        return null;
     }
 
     private Mono<RxDocumentServiceRequest> getCreateDocumentRequest(DocumentClientRetryPolicy requestRetryPolicy,
@@ -1708,6 +1683,11 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             requestHeaders,
             options,
             content);
+
+        if (serverBatchRequest instanceof PartitionKeyRangeServerBatchRequest) {
+            PartitionKeyRangeServerBatchRequest partitionKeyRangeServerBatchRequest = (PartitionKeyRangeServerBatchRequest) serverBatchRequest;
+            request.setPartitionBasedGoneNotifier(partitionKeyRangeServerBatchRequest.getPartitionBasedGoneNotifier());
+        }
 
         if (options != null) {
             request.requestContext.setExcludeRegions(options.getExcludeRegions());

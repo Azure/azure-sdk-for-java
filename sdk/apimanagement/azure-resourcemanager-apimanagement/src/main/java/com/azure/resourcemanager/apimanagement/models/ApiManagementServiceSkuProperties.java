@@ -18,11 +18,14 @@ public final class ApiManagementServiceSkuProperties {
     private SkuType name;
 
     /*
-     * Capacity of the SKU (number of deployed units of the SKU). For
-     * Consumption SKU capacity must be specified as 0.
+     * Capacity of the SKU (number of deployed units of the SKU). For Consumption SKU capacity must be specified as 0.
      */
     @JsonProperty(value = "capacity", required = true)
     private int capacity;
+
+    /** Creates an instance of ApiManagementServiceSkuProperties class. */
+    public ApiManagementServiceSkuProperties() {
+    }
 
     /**
      * Get the name property: Name of the Sku.

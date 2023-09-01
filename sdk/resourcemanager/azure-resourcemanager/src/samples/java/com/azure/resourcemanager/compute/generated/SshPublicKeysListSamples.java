@@ -7,7 +7,7 @@ package com.azure.resourcemanager.compute.generated;
 /** Samples for SshPublicKeys List. */
 public final class SshPublicKeysListSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/sshPublicKeyExamples/SshPublicKey_ListBySubscription_MinimumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-07-01/examples/sshPublicKeyExamples/SshPublicKey_ListBySubscription_MinimumSet_Gen.json
      */
     /**
      * Sample code: SshPublicKey_ListBySubscription_MinimumSet_Gen.
@@ -20,7 +20,7 @@ public final class SshPublicKeysListSamples {
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/sshPublicKeyExamples/SshPublicKey_ListBySubscription_MaximumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-07-01/examples/sshPublicKeyExamples/SshPublicKey_ListBySubscription_MaximumSet_Gen.json
      */
     /**
      * Sample code: SshPublicKey_ListBySubscription_MaximumSet_Gen.
