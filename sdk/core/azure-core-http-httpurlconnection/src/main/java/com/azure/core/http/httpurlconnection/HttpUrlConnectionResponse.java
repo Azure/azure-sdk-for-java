@@ -46,6 +46,9 @@ public class HttpUrlConnectionResponse extends HttpResponse {
 
     @Override
     public Flux<ByteBuffer> getBody() {
+        if (this.body.length == 0) {
+            return Flux.empty();
+        }
         return Flux.just(ByteBuffer.wrap(this.body));
     }
 
