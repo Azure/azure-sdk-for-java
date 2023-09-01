@@ -11,6 +11,7 @@ import com.azure.cosmos.GatewayConnectionConfig;
 import com.azure.cosmos.ThrottlingRetryOptions;
 
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -473,8 +474,9 @@ public final class ConnectionPolicy {
         return this;
     }
 
-    public ConnectionPolicy setExcludeRegions(List<String> excludeRegions) {
-        this.excludeRegions = excludeRegions;
+    public synchronized ConnectionPolicy setExcludeRegions(List<String> excludeRegions) {
+        this.excludeRegions = new ArrayList<>();
+        this.excludeRegions.addAll(excludeRegions);
         return this;
     }
 

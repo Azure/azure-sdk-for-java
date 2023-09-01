@@ -885,7 +885,8 @@ public class CosmosClientBuilder implements
      * for the workload executed through this instance of {@link CosmosClient} / {@link CosmosAsyncClient}.
      * */
     public CosmosClientBuilder excludeRegions(List<String> excludeRegions) {
-        this.excludeRegions = excludeRegions;
+        this.excludeRegions = new ArrayList<>();
+        this.excludeRegions.addAll(excludeRegions);
         return this;
     }
 
