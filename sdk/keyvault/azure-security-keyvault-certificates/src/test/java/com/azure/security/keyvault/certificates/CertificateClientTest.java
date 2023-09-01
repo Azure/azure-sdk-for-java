@@ -973,7 +973,7 @@ public class CertificateClientTest extends CertificateClientTestBase {
 
             assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, pollResponse.getStatus());
         } catch (CertificateException | InvalidKeySpecException | IOException
-                 | NoSuchAlgorithmException| OperatorCreationException e) {
+                 | NoSuchAlgorithmException | OperatorCreationException e) {
 
             fail(e);
         }
