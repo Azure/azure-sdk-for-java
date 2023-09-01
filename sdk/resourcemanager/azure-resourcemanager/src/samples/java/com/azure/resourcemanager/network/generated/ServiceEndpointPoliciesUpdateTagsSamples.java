@@ -11,7 +11,7 @@ import java.util.Map;
 /** Samples for ServiceEndpointPolicies UpdateTags. */
 public final class ServiceEndpointPoliciesUpdateTagsSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-04-01/examples/ServiceEndpointPolicyUpdateTags.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-05-01/examples/ServiceEndpointPolicyUpdateTags.json
      */
     /**
      * Sample code: Update service endpoint policy tags.
@@ -31,7 +31,6 @@ public final class ServiceEndpointPoliciesUpdateTagsSamples {
                 com.azure.core.util.Context.NONE);
     }
 
-    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();
