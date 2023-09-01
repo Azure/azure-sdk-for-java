@@ -4,6 +4,7 @@
 package com.azure.storage.blob.specialized.cryptography;
 
 import com.azure.core.cryptography.AsyncKeyEncryptionKey;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
@@ -1563,6 +1564,41 @@ public class EncryptedBlockBlobApiTests extends BlobCryptographyTestBase {
         ebc.downloadStream(os);
 
         assertArraysEqual(randomData, os.toByteArray());
+    }
+
+    @ParameterizedTest
+    @MethodSource("modifyUserAgentSupplier")
+    public void modifyUserAgent(EncryptionVersion encryptionVersion) {
+        EncryptedBlobClient ebc = new EncryptedBlobClient(mockAesKey(getEncryptedClientBuilder(fakeKey, null,
+            ENV.getPrimaryAccount().getCredential(), cc.getBlobContainerUrl(), encryptionVersion)
+            .blobName(generateBlobName())
+            .addPolicy(getUserAgentHeaderPolicy(encryptionVersion))
+            .buildEncryptedBlobAsyncClient()));
+
+        // the getUserAgentHeaderPolicy will check that the user agent is set correctly
+        ebc.uploadWithResponse(new BlobParallelUploadOptions(DATA.getDefaultInputStream()), null, null);
+    }
+
+    private static Stream<Arguments> modifyUserAgentSupplier() {
+        return Stream.of(Arguments.of(EncryptionVersion.V1), Arguments.of(EncryptionVersion.V2));
+    }
+
+    private static HttpPipelinePolicy getUserAgentHeaderPolicy(EncryptionVersion version) {
+        return new HttpPipelinePolicy() {
+            @Override
+            public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
+                String userAgent = context.getHttpRequest().getHeaders().getValue(HttpHeaderName.USER_AGENT);
+                String expectedUserAgent = "azstorage-clientsideencryption/"
+                    + (version == EncryptionVersion.V2 ? "2.0" : "1.0");
+                assertTrue(userAgent.startsWith(expectedUserAgent));
+                return next.process();
+            }
+
+            @Override
+            public HttpPipelinePosition getPipelinePosition() {
+                return HttpPipelinePosition.PER_CALL;
+            }
+        };
     }
 
     private static HttpPipelinePolicy getPerCallVersionPolicy() {
