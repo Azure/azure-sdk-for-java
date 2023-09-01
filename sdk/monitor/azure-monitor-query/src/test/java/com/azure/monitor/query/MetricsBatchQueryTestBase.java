@@ -28,7 +28,10 @@ public class MetricsBatchQueryTestBase extends TestProxyTestBase {
         MetricsBatchQueryClientBuilder clientBuilder = new MetricsBatchQueryClientBuilder();
         ConfigurationClientBuilder configClientBuilder = new ConfigurationClientBuilder();
         if (getTestMode() == TestMode.PLAYBACK) {
-            interceptorManager.addMatchers(new CustomMatcher().setIgnoredQueryParameters(Arrays.asList("starttime", "endtime")).setComparingBodies(false));
+            interceptorManager.addMatchers(new CustomMatcher()
+                .setIgnoredQueryParameters(Arrays.asList("starttime", "endtime"))
+                .setComparingBodies(false)
+                .setExcludedHeaders(Arrays.asList("x-ms-content-sha256")));
             clientBuilder
                 .credential(new MockTokenCredential())
                 .httpClient(interceptorManager.getPlaybackClient());
@@ -38,7 +41,10 @@ public class MetricsBatchQueryTestBase extends TestProxyTestBase {
                 .endpoint("https://fake.azconfig.io")
                 .httpClient(interceptorManager.getPlaybackClient());
         } else if (getTestMode() == TestMode.RECORD) {
-            interceptorManager.addMatchers(new CustomMatcher().setIgnoredQueryParameters(Arrays.asList("starttime", "endtime")).setComparingBodies(false));
+            interceptorManager.addMatchers(new CustomMatcher()
+                .setIgnoredQueryParameters(Arrays.asList("starttime", "endtime"))
+                .setComparingBodies(false)
+                .setExcludedHeaders(Arrays.asList("x-ms-content-sha256")));
             clientBuilder
                 .addPolicy(interceptorManager.getRecordPolicy())
                 .credential(new DefaultAzureCredentialBuilder().build());
