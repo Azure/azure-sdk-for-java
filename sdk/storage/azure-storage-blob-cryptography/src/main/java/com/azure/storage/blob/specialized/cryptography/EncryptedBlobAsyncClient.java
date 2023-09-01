@@ -751,7 +751,8 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
         for (Map.Entry<String, String> entry : metadata.entrySet()) {
             if (entry.getKey().length() != ENCRYPTION_DATA_KEY.length()) {
                 continue;
-            } if (ENCRYPTION_DATA_KEY.regionMatches(true, 0, entry.getKey(), 0, ENCRYPTION_DATA_KEY.length())) {
+            }
+            if (ENCRYPTION_DATA_KEY.regionMatches(true, 0, entry.getKey(), 0, ENCRYPTION_DATA_KEY.length())) {
                 return entry.getValue();
             }
         }
