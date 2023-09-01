@@ -28,7 +28,6 @@ import com.azure.security.keyvault.secrets.models.KeyVaultSecret;
 import com.azure.security.keyvault.secrets.models.SecretProperties;
 
 import java.time.Duration;
-import java.util.Objects;
 import java.util.function.Function;
 import java.util.function.Supplier;
 

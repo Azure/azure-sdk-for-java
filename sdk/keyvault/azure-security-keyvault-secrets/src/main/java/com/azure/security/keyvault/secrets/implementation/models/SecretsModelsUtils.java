@@ -4,14 +4,19 @@ package com.azure.security.keyvault.secrets.implementation.models;
 
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
 import com.azure.security.keyvault.secrets.implementation.DeletedSecretHelper;
 import com.azure.security.keyvault.secrets.implementation.SecretPropertiesHelper;
 import com.azure.security.keyvault.secrets.models.DeletedSecret;
 import com.azure.security.keyvault.secrets.models.KeyVaultSecret;
 import com.azure.security.keyvault.secrets.models.SecretProperties;
 
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.time.Instant;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.function.Consumer;
 
 /**
@@ -141,7 +146,7 @@ public final class SecretsModelsUtils {
         return deletedSecret;
     }
 
-    private static void unpackId(String id, Consumer<String> nameConsumer, Consumer<String> versionConsumer) {
+    public static void unpackId(String id, Consumer<String> nameConsumer, Consumer<String> versionConsumer) {
         if (CoreUtils.isNullOrEmpty(id)) {
             return;
         }
@@ -161,6 +166,11 @@ public final class SecretsModelsUtils {
             // Should never come here.
             LOGGER.error("Received Malformed Secret Id URL from KV Service");
         }
+    }
+
+    public static OffsetDateTime epochToOffsetDateTime(JsonReader epochReader) throws IOException {
+        Instant instant = Instant.ofEpochMilli(epochReader.getLong() * 1000L);
+        return OffsetDateTime.ofInstant(instant, ZoneOffset.UTC);
     }
 
     private SecretsModelsUtils() {

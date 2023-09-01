@@ -105,15 +105,17 @@ public final class SecretAttributes extends Attributes {
                         if ("enabled".equals(fieldName)) {
                             deserializedSecretAttributes.setEnabled(reader.getNullable(JsonReader::getBoolean));
                         } else if ("nbf".equals(fieldName)) {
-                            deserializedSecretAttributes.setNotBefore(
-                                    OffsetDateTime.ofInstant(
-                                            Instant.ofEpochSecond(reader.getNullable(JsonReader::getLong)),
-                                            ZoneOffset.UTC));
+                            Long notBefore = reader.getNullable(JsonReader::getLong);
+                            if (notBefore != null) {
+                                deserializedSecretAttributes.setNotBefore(
+                                        OffsetDateTime.ofInstant(Instant.ofEpochSecond(notBefore), ZoneOffset.UTC));
+                            }
                         } else if ("exp".equals(fieldName)) {
-                            deserializedSecretAttributes.setExpires(
-                                    OffsetDateTime.ofInstant(
-                                            Instant.ofEpochSecond(reader.getNullable(JsonReader::getLong)),
-                                            ZoneOffset.UTC));
+                            Long expires = reader.getNullable(JsonReader::getLong);
+                            if (expires != null) {
+                                deserializedSecretAttributes.setExpires(
+                                        OffsetDateTime.ofInstant(Instant.ofEpochSecond(expires), ZoneOffset.UTC));
+                            }
                         } else if ("created".equals(fieldName)) {
                             deserializedSecretAttributes.setCreated(reader.getNullable(JsonReader::getLong));
                         } else if ("updated".equals(fieldName)) {

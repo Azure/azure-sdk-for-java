@@ -4,10 +4,16 @@
 package com.azure.security.keyvault.secrets.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.security.keyvault.secrets.SecretAsyncClient;
 import com.azure.security.keyvault.secrets.SecretClient;
 import com.azure.security.keyvault.secrets.implementation.SecretPropertiesHelper;
+import com.azure.security.keyvault.secrets.implementation.models.SecretsModelsUtils;
 
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.Map;
 import java.util.Objects;
@@ -20,7 +26,7 @@ import java.util.Objects;
  *  @see SecretAsyncClient
  */
 @Fluent
-public class SecretProperties {
+public class SecretProperties implements JsonSerializable<SecretProperties> {
     static {
         SecretPropertiesHelper.setAccessor(new SecretPropertiesHelper.SecretPropertiesAccessor() {
             @Override
@@ -339,5 +345,95 @@ public class SecretProperties {
      */
     public Integer getRecoverableDays() {
         return recoverableDays;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        return jsonWriter.writeStartObject()
+            .writeStringField("contentType", contentType)
+            .writeMapField("tags", tags, JsonWriter::writeString)
+            .writeEndObject();
+    }
+
+    /**
+     * Reads a JSON stream into a {@link SecretProperties}.
+     *
+     * @param jsonReader The {@link JsonReader} being read.
+     * @return An instance of {@link SecretProperties} that the JSON stream represented, may return null.
+     * @throws IOException If a {@link SecretProperties} fails to be read from the {@code jsonReader}.
+     */
+    public static SecretProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SecretProperties secretProperties = new SecretProperties();
+
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("contentType".equals(fieldName)) {
+                    secretProperties.contentType = reader.getString();
+                } else if ("tags".equals(fieldName)) {
+                    secretProperties.tags = reader.readMap(JsonReader::getString);
+                } else if ("kid".equals(fieldName)) {
+                    secretProperties.keyId = reader.getString();
+                } else if ("managed".equals(fieldName)) {
+                    secretProperties.managed = reader.getNullable(JsonReader::getBoolean);
+                } else if ("recoverableDays".equals(fieldName)) {
+                    secretProperties.recoverableDays = reader.getNullable(JsonReader::getInt);
+                } else if ("attributes".equals(fieldName) && reader.currentToken() == JsonToken.START_OBJECT) {
+                    deserializeAttributes(reader, secretProperties);
+                } else if ("id".equals(fieldName)) {
+                    secretProperties.id = reader.getString();
+                    SecretsModelsUtils.unpackId(secretProperties.id, name -> secretProperties.name = name,
+                        version -> secretProperties.version = version);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return secretProperties;
+        });
+    }
+
+    static void deserializeAttributes(JsonReader reader, SecretProperties secretProperties) throws IOException {
+        while (reader.nextToken() != JsonToken.END_OBJECT) {
+            String fieldName = reader.getFieldName();
+            reader.nextToken();
+
+            if ("enabled".equals(fieldName)) {
+                secretProperties.enabled = reader.getNullable(JsonReader::getBoolean);
+            } else if ("nbf".equals(fieldName)) {
+                secretProperties.notBefore = reader.getNullable(SecretsModelsUtils::epochToOffsetDateTime);
+            } else if ("exp".equals(fieldName)) {
+                secretProperties.expiresOn = reader.getNullable(SecretsModelsUtils::epochToOffsetDateTime);
+            } else if ("created".equals(fieldName)) {
+                secretProperties.createdOn = reader.getNullable(SecretsModelsUtils::epochToOffsetDateTime);
+            } else if ("updated".equals(fieldName)) {
+                secretProperties.updatedOn = reader.getNullable(SecretsModelsUtils::epochToOffsetDateTime);
+            } else if ("recoveryLevel".equals(fieldName)) {
+                secretProperties.recoveryLevel = reader.getString();
+            } else if ("contentType".equals(fieldName)) {
+                String contentType = reader.getString();
+                secretProperties.contentType = contentType == null
+                    ? secretProperties.contentType : contentType;
+            } else if ("keyId".equals(fieldName)) {
+                String keyId = reader.getString();
+                secretProperties.keyId = keyId == null ? secretProperties.keyId : keyId;
+            } else if ("tags".equals(fieldName)) {
+                Map<String, String> tags = reader.readMap(JsonReader::getString);
+                secretProperties.tags = tags == null ? secretProperties.tags : tags;
+            } else if ("managed".equals(fieldName)) {
+                Boolean managed = reader.getNullable(JsonReader::getBoolean);
+                secretProperties.managed = managed == null ? secretProperties.managed : managed;
+            } else if ("recoverableDays".equals(fieldName)) {
+                secretProperties.recoverableDays = reader.getNullable(JsonReader::getInt);
+            } else if ("id".equals(fieldName)) {
+                secretProperties.id = reader.getString();
+                SecretsModelsUtils.unpackId(secretProperties.id, name -> secretProperties.name = name,
+                    version -> secretProperties.version = version);
+            } else {
+                reader.skipChildren();
+            }
+        }
     }
 }
