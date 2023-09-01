@@ -25,7 +25,7 @@ import com.azure.spring.cloud.appconfiguration.config.implementation.http.policy
  * i.e. If connecting to 2 stores and have 2 labels set 4 AppConfigurationPropertySources need to be created.
  * </p>
  */
-final class AppConfigurationFeatureManagementPropertySource extends AppConfigurationPropertySource {
+class AppConfigurationFeatureManagementPropertySource extends AppConfigurationPropertySource {
 
     private final String keyFilter;
 
@@ -50,7 +50,8 @@ final class AppConfigurationFeatureManagementPropertySource extends AppConfigura
      * </p>
      *
      */
-    public void initProperties() {
+    @Override
+    public void initProperties(List<String> trim) {
         SettingSelector settingSelector = new SettingSelector();
 
         String keyFilter = SELECT_ALL_FEATURE_FLAGS;
