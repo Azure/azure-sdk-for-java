@@ -1513,6 +1513,8 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
             }
         });
 
+        Thread.sleep(10); // Give the first operation a chance to start
+
         AtomicLong secondFlushCompletionTime = new AtomicLong();
         ForkJoinPool.commonPool().execute(() -> {
             try {
@@ -1524,7 +1526,9 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
         });
 
         countDownLatch.await();
-        assertTrue(firstFlushCompletionTime.get() > secondFlushCompletionTime.get());
+        assertTrue(firstFlushCompletionTime.get() > secondFlushCompletionTime.get(),
+            () -> "Expected first flush to complete before the second flush but was " + firstFlushCompletionTime.get()
+                  + " and " + secondFlushCompletionTime.get() + ".");
     }
 
     @Test
@@ -1560,6 +1564,8 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
             })
             .subscribe();
 
+        Thread.sleep(10); // Give the first operation a chance to start
+
         AtomicLong secondFlushCompletionTime = new AtomicLong();
         batchingClient.flush()
             .doFinally(ignored -> {
@@ -1569,7 +1575,9 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
             .subscribe();
 
         countDownLatch.await();
-        assertTrue(firstFlushCompletionTime.get() > secondFlushCompletionTime.get());
+        assertTrue(firstFlushCompletionTime.get() > secondFlushCompletionTime.get(),
+            () -> "Expected first flush to complete before the second flush but was " + firstFlushCompletionTime.get()
+                  + " and " + secondFlushCompletionTime.get() + ".");
     }
 
     //@RepeatedTest(1000)

@@ -245,24 +245,28 @@ public class CustomAnalyzerTests extends SearchTestBase {
         searchIndexClient.createIndex(index);
         indexesToCleanup.add(index.getName());
 
-        LEXICAL_ANALYZER_NAMES.parallelStream()
+        // Since the tests in this class are ran in parallel the lists could be modified while iterating over them.
+        List<LexicalAnalyzerName> threadSafeLexicalAnalyzerNames = new ArrayList<>(LEXICAL_ANALYZER_NAMES);
+        List<LexicalTokenizerName> threadSafeLexicalTokenizerNames = new ArrayList<>(LEXICAL_TOKENIZER_NAMES);
+
+        threadSafeLexicalAnalyzerNames.parallelStream()
             .map(an -> new AnalyzeTextOptions("One two", an))
             .forEach(r -> searchIndexClient.analyzeText(index.getName(), r).forEach(ignored -> {
             }));
 
-        Flux.fromIterable(LEXICAL_ANALYZER_NAMES)
+        Flux.fromIterable(threadSafeLexicalAnalyzerNames)
             .parallel()
             .runOn(Schedulers.boundedElastic())
             .flatMap(an -> searchIndexAsyncClient.analyzeText(index.getName(), new AnalyzeTextOptions("One two", an)))
             .then()
             .block();
 
-        LEXICAL_TOKENIZER_NAMES.parallelStream()
+        threadSafeLexicalTokenizerNames.parallelStream()
             .map(tn -> new AnalyzeTextOptions("One two", tn))
             .forEach(r -> searchIndexClient.analyzeText(index.getName(), r).forEach(ignored -> {
             }));
 
-        Flux.fromIterable(LEXICAL_TOKENIZER_NAMES)
+        Flux.fromIterable(threadSafeLexicalTokenizerNames)
             .parallel()
             .runOn(Schedulers.boundedElastic())
             .flatMap(tn -> searchIndexAsyncClient.analyzeText(index.getName(), new AnalyzeTextOptions("One two", tn)))
