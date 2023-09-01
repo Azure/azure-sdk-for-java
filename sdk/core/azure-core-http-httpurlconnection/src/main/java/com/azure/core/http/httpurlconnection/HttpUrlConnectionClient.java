@@ -62,6 +62,7 @@ public class HttpUrlConnectionClient implements HttpClient {
                 return setConnectionRequest(connection, httpRequest)
                     .then(writeRequestBody(connection, httpRequest))
                     .then(readResponse(connection, httpRequest))
+                    .doFinally(signalType -> connection.disconnect()) // Disconnect connection after processing
                     .onErrorResume(e -> Mono.error(new RuntimeException(e)));
             });
     }
