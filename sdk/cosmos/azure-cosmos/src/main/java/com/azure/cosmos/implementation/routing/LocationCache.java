@@ -4,13 +4,7 @@
 package com.azure.cosmos.implementation.routing;
 
 import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.implementation.Configs;
-import com.azure.cosmos.implementation.DatabaseAccount;
-import com.azure.cosmos.implementation.DatabaseAccountLocation;
-import com.azure.cosmos.implementation.ResourceType;
-import com.azure.cosmos.implementation.RxDocumentServiceRequest;
-import com.azure.cosmos.implementation.Strings;
-import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.implementation.*;
 import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
 import com.azure.cosmos.implementation.apachecommons.collections.map.CaseInsensitiveMap;
 import com.azure.cosmos.implementation.apachecommons.collections.map.UnmodifiableMap;
@@ -43,6 +37,7 @@ public class LocationCache {
     private final Object lockObject;
     private final Duration unavailableLocationsExpirationTime;
     private final ConcurrentHashMap<URI, LocationUnavailabilityInfo> locationUnavailabilityInfoByEndpoint;
+    private final ConnectionPolicy connectionPolicy;
 
     private DatabaseAccountLocationsInfo locationInfo;
 
@@ -50,24 +45,28 @@ public class LocationCache {
     private boolean enableMultipleWriteLocations;
 
     public LocationCache(
-            List<String> preferredLocations,
+            ConnectionPolicy connectionPolicy,
             URI defaultEndpoint,
-            boolean enableEndpointDiscovery,
-            boolean useMultipleWriteLocations,
             Configs configs) {
+
+        List<String> preferredLocations = new ArrayList<>(connectionPolicy.getPreferredRegions() != null ?
+            connectionPolicy.getPreferredRegions() :
+            Collections.emptyList()
+        );
+
         this.locationInfo = new DatabaseAccountLocationsInfo(preferredLocations, defaultEndpoint);
         this.defaultEndpoint = defaultEndpoint;
-        this.enableEndpointDiscovery = enableEndpointDiscovery;
-        this.useMultipleWriteLocations = useMultipleWriteLocations;
+        this.enableEndpointDiscovery = connectionPolicy.isEndpointDiscoveryEnabled();
+        this.useMultipleWriteLocations = connectionPolicy.isMultipleWriteRegionsEnabled();
 
         this.lockObject = new Object();
-
 
         this.locationUnavailabilityInfoByEndpoint = new ConcurrentHashMap<>();
 
         this.lastCacheUpdateTimestamp = Instant.MIN;
         this.enableMultipleWriteLocations = false;
         this.unavailableLocationsExpirationTime = Duration.ofSeconds(configs.getUnavailableLocationsExpirationTimeInSeconds());
+        this.connectionPolicy = connectionPolicy;
     }
 
     /**
@@ -206,9 +205,14 @@ public class LocationCache {
     public UnmodifiableList<URI> getApplicableWriteEndpoints(RxDocumentServiceRequest request) {
         UnmodifiableList<URI> writeEndpoints = this.getWriteEndpoints();
 
-        if (request.requestContext.getExcludeRegions() == null ||
-            request.requestContext.getExcludeRegions().isEmpty()) {
+        if (!isExcludeRegionsConfigured(request)) {
             return writeEndpoints;
+        }
+
+        List<String> effectiveExcludedRegions = connectionPolicy.getExcludedRegions();
+
+        if (request.requestContext.getExcludeRegions() != null && !request.requestContext.getExcludeRegions().isEmpty()) {
+            effectiveExcludedRegions = request.requestContext.getExcludeRegions();
         }
 
         // filter regions based on the exclude region config
@@ -216,15 +220,20 @@ public class LocationCache {
             writeEndpoints,
             this.locationInfo.regionNameByWriteEndpoint,
             this.defaultEndpoint,
-            request.requestContext.getExcludeRegions());
+            effectiveExcludedRegions);
     }
 
     public UnmodifiableList<URI> getApplicableReadEndpoints(RxDocumentServiceRequest request) {
         UnmodifiableList<URI> readEndpoints = this.getReadEndpoints();
 
-        if (request.requestContext.getExcludeRegions() == null ||
-            request.requestContext.getExcludeRegions().isEmpty()) {
+        if (!isExcludeRegionsConfigured(request)) {
             return readEndpoints;
+        }
+
+        List<String> effectiveExcludeRegions = connectionPolicy.getExcludedRegions();
+
+        if (request.requestContext.getExcludeRegions() != null && !request.requestContext.getExcludeRegions().isEmpty()) {
+            effectiveExcludeRegions = request.requestContext.getExcludeRegions();
         }
 
         // filter regions based on the exclude region config
@@ -232,7 +241,7 @@ public class LocationCache {
             readEndpoints,
             this.locationInfo.regionNameByReadEndpoint,
             this.locationInfo.writeEndpoints.get(0), // match the fallback region used in getPreferredAvailableEndpoints
-            request.requestContext.getExcludeRegions());
+            effectiveExcludeRegions);
     }
 
     private UnmodifiableList<URI> getApplicableEndpoints(
@@ -256,6 +265,17 @@ public class LocationCache {
         }
 
         return new UnmodifiableList<>(applicableEndpoints);
+    }
+
+    private boolean isExcludeRegionsConfigured(RxDocumentServiceRequest request) {
+
+        List<String> excludedRegionsOnRequest = request.requestContext.getExcludeRegions();
+        List<String> excludedRegionsOnClient = connectionPolicy.getExcludedRegions();
+
+        boolean isExcludedRegionsConfiguredOnRequest = !(excludedRegionsOnRequest == null || excludedRegionsOnRequest.isEmpty());
+        boolean isExcludedRegionsConfiguredOnClient = !(excludedRegionsOnClient == null || excludedRegionsOnClient.isEmpty());
+
+        return isExcludedRegionsConfiguredOnRequest || isExcludedRegionsConfiguredOnClient;
     }
 
     public URI resolveFaultInjectionEndpoint(String region, boolean writeOnly) {

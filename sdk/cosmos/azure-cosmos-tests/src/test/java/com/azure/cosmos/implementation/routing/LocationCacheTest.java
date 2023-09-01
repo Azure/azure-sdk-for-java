@@ -135,6 +135,11 @@ public class LocationCacheTest {
             boolean enableEndpointDiscovery,
             boolean isPreferredLocationsListEmpty) throws Exception {
 
+        ConnectionPolicy connectionPolicy = new ConnectionPolicy(DirectConnectionConfig.getDefaultConfig());
+        connectionPolicy.setEndpointDiscoveryEnabled(enableEndpointDiscovery);
+        connectionPolicy.setMultipleWriteRegionsEnabled(useMultipleWriteLocations);
+        connectionPolicy.setPreferredRegions(this.preferredLocations);
+
         this.mockedClient = new DatabaseAccountManagerInternalMock();
         this.databaseAccount = LocationCacheTest.createDatabaseAccount(useMultipleWriteLocations);
 
@@ -143,18 +148,11 @@ public class LocationCacheTest {
                 new UnmodifiableList<>(ImmutableList.of("location1", "location2", "location3"));
 
         this.cache = new LocationCache(
-                this.preferredLocations,
+                connectionPolicy,
                 LocationCacheTest.DefaultEndpoint,
-                enableEndpointDiscovery,
-                useMultipleWriteLocations,
                 configs);
 
         this.cache.onDatabaseAccountRead(this.databaseAccount);
-
-        ConnectionPolicy connectionPolicy = new ConnectionPolicy(DirectConnectionConfig.getDefaultConfig());
-        connectionPolicy.setEndpointDiscoveryEnabled(enableEndpointDiscovery);
-        connectionPolicy.setMultipleWriteRegionsEnabled(useMultipleWriteLocations);
-        connectionPolicy.setPreferredRegions(this.preferredLocations);
 
         this.endpointManager = new GlobalEndpointManager(mockedClient, connectionPolicy, configs);
     }

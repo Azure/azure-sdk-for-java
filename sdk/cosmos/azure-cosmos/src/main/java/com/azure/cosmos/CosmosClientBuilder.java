@@ -15,6 +15,7 @@ import com.azure.cosmos.implementation.CosmosClientMetadataCachesSnapshot;
 import com.azure.cosmos.implementation.DiagnosticsProvider;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.WriteRetryPolicy;
+import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.apachecommons.lang.time.StopWatch;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
@@ -128,6 +129,7 @@ public class CosmosClientBuilder implements
     private String userAgentSuffix;
     private ThrottlingRetryOptions throttlingRetryOptions;
     private List<String> preferredRegions;
+    private List<String> excludedRegions;
     private boolean endpointDiscoveryEnabled = true;
     private boolean multipleWriteRegionsEnabled = true;
     private boolean readRequestsFallbackEnabled = true;
@@ -877,6 +879,23 @@ public class CosmosClientBuilder implements
         return this;
     }
 
+    /**
+     * Sets the regions to exclude from the list of preferred regions. This means the request will not be
+     * routed to these excluded regions for non-retry and retry scenarios
+     * for the workload executed through this instance of {@link CosmosClient} / {@link CosmosAsyncClient}.
+     * */
+    public CosmosClientBuilder excludeRegions(List<String> excludeRegions) {
+        this.excludedRegions = excludeRegions;
+        return this;
+    }
+
+    public List<String> getExcludedRegions() {
+        if (this.excludedRegions == null) {
+            return null;
+        }
+        return UnmodifiableList.unmodifiableList(this.excludedRegions);
+    }
+
     SessionRetryOptions getSessionRetryOptions() {
         return this.sessionRetryOptions;
     }
@@ -1110,6 +1129,7 @@ public class CosmosClientBuilder implements
             this.connectionPolicy = new ConnectionPolicy(gatewayConnectionConfig);
         }
         this.connectionPolicy.setPreferredRegions(this.preferredRegions);
+        this.connectionPolicy.setExcludedRegions(this.excludedRegions);
         this.connectionPolicy.setUserAgentSuffix(this.userAgentSuffix);
         this.connectionPolicy.setThrottlingRetryOptions(this.throttlingRetryOptions);
         this.connectionPolicy.setEndpointDiscoveryEnabled(this.endpointDiscoveryEnabled);

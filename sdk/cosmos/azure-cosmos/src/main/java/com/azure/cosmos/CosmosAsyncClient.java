@@ -595,6 +595,10 @@ public final class CosmosAsyncClient implements Closeable {
         return new GlobalThroughputControlConfigBuilder(this, databaseId, containerId);
     }
 
+    public void setExcludedRegions(List<String> excludedRegions) {
+        this.connectionPolicy.setExcludedRegions(excludedRegions);
+    }
+
     WriteRetryPolicy getNonIdempotentWriteRetryPolicy() {
         return this.nonIdempotentWriteRetryPolicy;
     }
@@ -893,6 +897,11 @@ public final class CosmosAsyncClient implements Closeable {
                 @Override
                 public DiagnosticsProvider getDiagnosticsProvider(CosmosAsyncClient client) {
                     return client.getDiagnosticsProvider();
+                }
+
+                @Override
+                public List<String> getExcludedRegions(CosmosAsyncClient client) {
+                    return client.connectionPolicy.getExcludedRegions();
                 }
             }
         );

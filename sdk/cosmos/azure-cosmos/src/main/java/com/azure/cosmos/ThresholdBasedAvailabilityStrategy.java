@@ -13,8 +13,8 @@ import java.util.stream.Collectors;
 public final class ThresholdBasedAvailabilityStrategy extends AvailabilityStrategy {
     private static final Duration DEFAULT_THRESHOLD = Duration.ofMillis(500);
     private static final Duration DEFAULT_THRESHOLD_STEP = Duration.ofMillis(100);
-    private final Duration threshold;
-    private final Duration thresholdStep;
+    private Duration threshold;
+    private Duration thresholdStep;
 
     /**
      * Instantiates a new Threshold based retry availability strategy.
@@ -62,4 +62,11 @@ public final class ThresholdBasedAvailabilityStrategy extends AvailabilityStrate
         return this.thresholdStep;
     }
 
+    public void setThreshold(Duration threshold) {
+        this.threshold = threshold;
+    }
+
+    public void setThresholdStep(Duration thresholdStep) {
+        this.thresholdStep = thresholdStep;
+    }
 }

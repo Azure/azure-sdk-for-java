@@ -26,6 +26,7 @@ public final class ConnectionPolicy {
     private boolean endpointDiscoveryEnabled;
     private boolean multipleWriteRegionsEnabled;
     private List<String> preferredRegions;
+    private volatile List<String> excludeRegions;
     private boolean readRequestsFallbackEnabled;
     private ThrottlingRetryOptions throttlingRetryOptions;
     private String userAgentSuffix;
@@ -470,6 +471,15 @@ public final class ConnectionPolicy {
     public ConnectionPolicy setPreferredRegions(List<String> preferredRegions) {
         this.preferredRegions = preferredRegions;
         return this;
+    }
+
+    public ConnectionPolicy setExcludedRegions(List<String> excludeRegions) {
+        this.excludeRegions = excludeRegions;
+        return this;
+    }
+
+    public List<String> getExcludedRegions() {
+        return this.excludeRegions;
     }
 
     /**

@@ -11,8 +11,7 @@ import java.time.Duration;
  */
 public final class CosmosEndToEndOperationLatencyPolicyConfig {
     private final boolean isEnabled;
-    private final Duration endToEndOperationTimeout;
-
+    private Duration endToEndOperationTimeout;
     private final AvailabilityStrategy availabilityStrategy;
 
     /**
@@ -60,4 +59,7 @@ public final class CosmosEndToEndOperationLatencyPolicyConfig {
         return availabilityStrategy;
     }
 
+    public void setEndToEndOperationTimeout(Duration endToEndOperationTimeout) {
+        this.endToEndOperationTimeout = endToEndOperationTimeout;
+    }
 }
