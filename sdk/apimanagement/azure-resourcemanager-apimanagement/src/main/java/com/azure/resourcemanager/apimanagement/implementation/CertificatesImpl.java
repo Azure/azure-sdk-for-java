@@ -51,22 +51,13 @@ public final class CertificatesImpl implements Certificates {
         return Utils.mapPage(inner, inner1 -> new CertificateContractImpl(inner1, this.manager()));
     }
 
-    public void getEntityTag(String resourceGroupName, String serviceName, String certificateId) {
-        this.serviceClient().getEntityTag(resourceGroupName, serviceName, certificateId);
-    }
-
     public CertificatesGetEntityTagResponse getEntityTagWithResponse(
         String resourceGroupName, String serviceName, String certificateId, Context context) {
         return this.serviceClient().getEntityTagWithResponse(resourceGroupName, serviceName, certificateId, context);
     }
 
-    public CertificateContract get(String resourceGroupName, String serviceName, String certificateId) {
-        CertificateContractInner inner = this.serviceClient().get(resourceGroupName, serviceName, certificateId);
-        if (inner != null) {
-            return new CertificateContractImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+    public void getEntityTag(String resourceGroupName, String serviceName, String certificateId) {
+        this.serviceClient().getEntityTag(resourceGroupName, serviceName, certificateId);
     }
 
     public Response<CertificateContract> getWithResponse(
@@ -84,8 +75,13 @@ public final class CertificatesImpl implements Certificates {
         }
     }
 
-    public void delete(String resourceGroupName, String serviceName, String certificateId, String ifMatch) {
-        this.serviceClient().delete(resourceGroupName, serviceName, certificateId, ifMatch);
+    public CertificateContract get(String resourceGroupName, String serviceName, String certificateId) {
+        CertificateContractInner inner = this.serviceClient().get(resourceGroupName, serviceName, certificateId);
+        if (inner != null) {
+            return new CertificateContractImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public Response<Void> deleteWithResponse(
@@ -93,14 +89,8 @@ public final class CertificatesImpl implements Certificates {
         return this.serviceClient().deleteWithResponse(resourceGroupName, serviceName, certificateId, ifMatch, context);
     }
 
-    public CertificateContract refreshSecret(String resourceGroupName, String serviceName, String certificateId) {
-        CertificateContractInner inner =
-            this.serviceClient().refreshSecret(resourceGroupName, serviceName, certificateId);
-        if (inner != null) {
-            return new CertificateContractImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+    public void delete(String resourceGroupName, String serviceName, String certificateId, String ifMatch) {
+        this.serviceClient().delete(resourceGroupName, serviceName, certificateId, ifMatch);
     }
 
     public Response<CertificateContract> refreshSecretWithResponse(
@@ -113,6 +103,16 @@ public final class CertificatesImpl implements Certificates {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new CertificateContractImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public CertificateContract refreshSecret(String resourceGroupName, String serviceName, String certificateId) {
+        CertificateContractInner inner =
+            this.serviceClient().refreshSecret(resourceGroupName, serviceName, certificateId);
+        if (inner != null) {
+            return new CertificateContractImpl(inner, this.manager());
         } else {
             return null;
         }

@@ -18,8 +18,8 @@ public final class ApiManagementSkuRestrictions {
     private ApiManagementSkuRestrictionsType type;
 
     /*
-     * The value of restrictions. If the restriction type is set to location.
-     * This would be different locations where the SKU is restricted.
+     * The value of restrictions. If the restriction type is set to location. This would be different locations where
+     * the SKU is restricted.
      */
     @JsonProperty(value = "values", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> values;
@@ -35,6 +35,10 @@ public final class ApiManagementSkuRestrictions {
      */
     @JsonProperty(value = "reasonCode", access = JsonProperty.Access.WRITE_ONLY)
     private ApiManagementSkuRestrictionsReasonCode reasonCode;
+
+    /** Creates an instance of ApiManagementSkuRestrictions class. */
+    public ApiManagementSkuRestrictions() {
+    }
 
     /**
      * Get the type property: The type of restrictions.

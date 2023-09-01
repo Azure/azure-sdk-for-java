@@ -6,7 +6,9 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
+import com.azure.core.management.SubResource;
 import com.azure.resourcemanager.network.models.BastionHostIpConfiguration;
+import com.azure.resourcemanager.network.models.BastionHostPropertiesFormatNetworkAcls;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.Sku;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -159,6 +161,54 @@ public final class BastionHostInner extends Resource {
             this.innerProperties = new BastionHostPropertiesFormat();
         }
         this.innerProperties().withDnsName(dnsName);
+        return this;
+    }
+
+    /**
+     * Get the virtualNetwork property: Reference to an existing virtual network required for Developer Bastion Host
+     * only.
+     *
+     * @return the virtualNetwork value.
+     */
+    public SubResource virtualNetwork() {
+        return this.innerProperties() == null ? null : this.innerProperties().virtualNetwork();
+    }
+
+    /**
+     * Set the virtualNetwork property: Reference to an existing virtual network required for Developer Bastion Host
+     * only.
+     *
+     * @param virtualNetwork the virtualNetwork value to set.
+     * @return the BastionHostInner object itself.
+     */
+    public BastionHostInner withVirtualNetwork(SubResource virtualNetwork) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new BastionHostPropertiesFormat();
+        }
+        this.innerProperties().withVirtualNetwork(virtualNetwork);
+        return this;
+    }
+
+    /**
+     * Get the networkAcls property: The networkAcls property.
+     *
+     * @return the networkAcls value.
+     */
+    public BastionHostPropertiesFormatNetworkAcls networkAcls() {
+        return this.innerProperties() == null ? null : this.innerProperties().networkAcls();
+    }
+
+    /**
+     * Set the networkAcls property: The networkAcls property.
+     *
+     * @param networkAcls the networkAcls value to set.
+     * @return the BastionHostInner object itself.
+     */
+    public BastionHostInner withNetworkAcls(BastionHostPropertiesFormatNetworkAcls networkAcls) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new BastionHostPropertiesFormat();
+        }
+        this.innerProperties().withNetworkAcls(networkAcls);
         return this;
     }
 

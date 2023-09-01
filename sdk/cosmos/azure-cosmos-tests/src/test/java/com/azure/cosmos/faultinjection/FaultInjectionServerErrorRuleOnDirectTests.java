@@ -128,7 +128,8 @@ public class FaultInjectionServerErrorRuleOnDirectTests extends TestSuiteBase {
             { FaultInjectionServerErrorType.READ_SESSION_NOT_AVAILABLE, true, 404, 1002 },
             { FaultInjectionServerErrorType.TIMEOUT, true, 410, HttpConstants.SubStatusCodes.SERVER_GENERATED_408 }, // for server return 408, SDK will wrap into 410/21010
             { FaultInjectionServerErrorType.PARTITION_IS_MIGRATING, true, 410, 1008 },
-            { FaultInjectionServerErrorType.PARTITION_IS_SPLITTING, true, 410, 1007 }
+            { FaultInjectionServerErrorType.PARTITION_IS_SPLITTING, true, 410, 1007 },
+            { FaultInjectionServerErrorType.SERVICE_UNAVAILABLE, false, 503, 21008 }
         };
     }
 
@@ -558,7 +559,7 @@ public class FaultInjectionServerErrorRuleOnDirectTests extends TestSuiteBase {
     }
 
     @Test(groups = {"multi-region", "long"}, timeOut = TIMEOUT)
-    public void faultInjectionServerErrorRuleTests_ServerConnectionDelay() throws JsonProcessingException {
+    public void faultInjectionServerErrorRuleTests_ServerConnectionTimeout() throws JsonProcessingException {
         CosmosAsyncClient newClient = null; // creating new client to force creating new connections
         // simulate high channel acquisition/connectionTimeout
         String ruleId = "serverErrorRule-serverConnectionDelay-" + UUID.randomUUID();
@@ -610,6 +611,60 @@ public class FaultInjectionServerErrorRuleOnDirectTests extends TestSuiteBase {
                 true
             );
 
+        } finally {
+            serverConnectionDelayRule.disable();
+            safeClose(newClient);
+        }
+    }
+
+    @Test(groups = {"multi-region", "long"}, timeOut = TIMEOUT)
+    public void faultInjectionServerErrorRuleTests_ServerConnectionDelay() throws JsonProcessingException {
+        CosmosAsyncClient newClient = null; // creating new client to force creating new connections
+        // simulate high channel acquisition/connectionTimeout
+        String ruleId = "serverErrorRule-serverConnectionDelay-" + UUID.randomUUID();
+        FaultInjectionRule serverConnectionDelayRule =
+            new FaultInjectionRuleBuilder(ruleId)
+                .condition(
+                    new FaultInjectionConditionBuilder()
+                        .operationType(FaultInjectionOperationType.CREATE_ITEM)
+                        .build()
+                )
+                .result(
+                    FaultInjectionResultBuilders
+                        .getResultBuilder(FaultInjectionServerErrorType.CONNECTION_DELAY)
+                        .delay(Duration.ofMillis(100))
+                        .times(1)
+                        .build()
+                )
+                .duration(Duration.ofMinutes(5))
+                .build();
+
+        try {
+            newClient = new CosmosClientBuilder()
+                .endpoint(TestConfigurations.HOST)
+                .key(TestConfigurations.MASTER_KEY)
+                .contentResponseOnWriteEnabled(true)
+                .consistencyLevel(BridgeInternal.getContextClient(this.client).getConsistencyLevel())
+                .buildAsyncClient();
+
+            CosmosAsyncContainer container =
+                newClient
+                    .getDatabase(cosmosAsyncContainer.getDatabase().getId())
+                    .getContainer(cosmosAsyncContainer.getId());
+
+            CosmosFaultInjectionHelper.configureFaultInjectionRules(container, Arrays.asList(serverConnectionDelayRule)).block();
+            CosmosDiagnostics cosmosDiagnostics = container.createItem(TestItem.createNewItem()).block().getDiagnostics();
+
+            // verify the request succeeded and the rule has applied
+            List<ObjectNode> diagnosticsNode = new ArrayList<>();
+            diagnosticsNode.add((ObjectNode) Utils.getSimpleObjectMapper().readTree(cosmosDiagnostics.toString()));
+            assertThat(diagnosticsNode.size()).isEqualTo(1);
+            JsonNode responseStatisticsList = diagnosticsNode.get(0).get("responseStatisticsList");
+            assertThat(responseStatisticsList.isArray()).isTrue();
+            assertThat(responseStatisticsList.size()).isEqualTo(1);
+            JsonNode storeResult = responseStatisticsList.get(0).get("storeResult");
+            assertThat(storeResult.get("faultInjectionRuleId").asText()).isEqualTo(ruleId);
+            assertThat(storeResult.get("statusCode").asInt()).isEqualTo(201);
         } finally {
             serverConnectionDelayRule.disable();
             safeClose(newClient);

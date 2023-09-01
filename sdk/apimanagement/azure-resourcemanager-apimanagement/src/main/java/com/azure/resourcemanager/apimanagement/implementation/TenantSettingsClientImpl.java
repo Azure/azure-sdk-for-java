@@ -57,11 +57,10 @@ public final class TenantSettingsClientImpl implements TenantSettingsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "ApiManagementClientT")
-    private interface TenantSettingsService {
+    public interface TenantSettingsService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement"
-                + "/service/{serviceName}/settings")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/settings")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<TenantSettingsCollection>> listByService(
@@ -76,8 +75,7 @@ public final class TenantSettingsClientImpl implements TenantSettingsClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement"
-                + "/service/{serviceName}/settings/{settingsType}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/settings/{settingsType}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<TenantSettingsGetResponse> get(
@@ -104,7 +102,7 @@ public final class TenantSettingsClientImpl implements TenantSettingsClient {
     /**
      * Public settings.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param filter Not used.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -164,7 +162,7 @@ public final class TenantSettingsClientImpl implements TenantSettingsClient {
     /**
      * Public settings.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param filter Not used.
      * @param context The context to associate with this operation.
@@ -222,7 +220,7 @@ public final class TenantSettingsClientImpl implements TenantSettingsClient {
     /**
      * Public settings.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param filter Not used.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -241,7 +239,7 @@ public final class TenantSettingsClientImpl implements TenantSettingsClient {
     /**
      * Public settings.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -259,7 +257,7 @@ public final class TenantSettingsClientImpl implements TenantSettingsClient {
     /**
      * Public settings.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param filter Not used.
      * @param context The context to associate with this operation.
@@ -279,7 +277,7 @@ public final class TenantSettingsClientImpl implements TenantSettingsClient {
     /**
      * Public settings.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -295,7 +293,7 @@ public final class TenantSettingsClientImpl implements TenantSettingsClient {
     /**
      * Public settings.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param filter Not used.
      * @param context The context to associate with this operation.
@@ -313,7 +311,7 @@ public final class TenantSettingsClientImpl implements TenantSettingsClient {
     /**
      * Get tenant settings.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param settingsType The identifier of the settings.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -366,7 +364,7 @@ public final class TenantSettingsClientImpl implements TenantSettingsClient {
     /**
      * Get tenant settings.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param settingsType The identifier of the settings.
      * @param context The context to associate with this operation.
@@ -417,7 +415,7 @@ public final class TenantSettingsClientImpl implements TenantSettingsClient {
     /**
      * Get tenant settings.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param settingsType The identifier of the settings.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -429,37 +427,13 @@ public final class TenantSettingsClientImpl implements TenantSettingsClient {
     private Mono<TenantSettingsContractInner> getAsync(
         String resourceGroupName, String serviceName, SettingsTypeName settingsType) {
         return getWithResponseAsync(resourceGroupName, serviceName, settingsType)
-            .flatMap(
-                (TenantSettingsGetResponse res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Get tenant settings.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param serviceName The name of the API Management service.
-     * @param settingsType The identifier of the settings.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return tenant settings.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public TenantSettingsContractInner get(
-        String resourceGroupName, String serviceName, SettingsTypeName settingsType) {
-        return getAsync(resourceGroupName, serviceName, settingsType).block();
-    }
-
-    /**
-     * Get tenant settings.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param settingsType The identifier of the settings.
      * @param context The context to associate with this operation.
@@ -475,9 +449,27 @@ public final class TenantSettingsClientImpl implements TenantSettingsClient {
     }
 
     /**
+     * Get tenant settings.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serviceName The name of the API Management service.
+     * @param settingsType The identifier of the settings.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return tenant settings.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public TenantSettingsContractInner get(
+        String resourceGroupName, String serviceName, SettingsTypeName settingsType) {
+        return getWithResponse(resourceGroupName, serviceName, settingsType, Context.NONE).getValue();
+    }
+
+    /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -513,7 +505,8 @@ public final class TenantSettingsClientImpl implements TenantSettingsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

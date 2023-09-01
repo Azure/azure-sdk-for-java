@@ -7,7 +7,13 @@ package com.azure.resourcemanager.apimanagement.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for SubscriptionState. */
+/**
+ * Subscription state. Possible states are * active – the subscription is active, * suspended – the subscription is
+ * blocked, and the subscriber cannot call any APIs of the product, * submitted – the subscription request has been made
+ * by the developer, but has not yet been approved or rejected, * rejected – the subscription request has been denied by
+ * an administrator, * cancelled – the subscription has been cancelled by the developer or administrator, * expired –
+ * the subscription reached its expiration date and was deactivated.
+ */
 public enum SubscriptionState {
     /** Enum value suspended. */
     SUSPENDED("suspended"),
@@ -42,6 +48,9 @@ public enum SubscriptionState {
      */
     @JsonCreator
     public static SubscriptionState fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         SubscriptionState[] items = SubscriptionState.values();
         for (SubscriptionState item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -51,6 +60,7 @@ public enum SubscriptionState {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

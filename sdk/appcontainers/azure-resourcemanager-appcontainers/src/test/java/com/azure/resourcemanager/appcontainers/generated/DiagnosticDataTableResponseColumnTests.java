@@ -13,23 +13,23 @@ public final class DiagnosticDataTableResponseColumnTests {
     public void testDeserialize() throws Exception {
         DiagnosticDataTableResponseColumn model =
             BinaryData
-                .fromString("{\"columnName\":\"na\",\"dataType\":\"ybbjjidjksyx\",\"columnType\":\"xvxevblbjednljla\"}")
+                .fromString("{\"columnName\":\"ubdyhgk\",\"dataType\":\"in\",\"columnType\":\"owzfttsttkt\"}")
                 .toObject(DiagnosticDataTableResponseColumn.class);
-        Assertions.assertEquals("na", model.columnName());
-        Assertions.assertEquals("ybbjjidjksyx", model.dataType());
-        Assertions.assertEquals("xvxevblbjednljla", model.columnType());
+        Assertions.assertEquals("ubdyhgk", model.columnName());
+        Assertions.assertEquals("in", model.dataType());
+        Assertions.assertEquals("owzfttsttkt", model.columnType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DiagnosticDataTableResponseColumn model =
             new DiagnosticDataTableResponseColumn()
-                .withColumnName("na")
-                .withDataType("ybbjjidjksyx")
-                .withColumnType("xvxevblbjednljla");
+                .withColumnName("ubdyhgk")
+                .withDataType("in")
+                .withColumnType("owzfttsttkt");
         model = BinaryData.fromObject(model).toObject(DiagnosticDataTableResponseColumn.class);
-        Assertions.assertEquals("na", model.columnName());
-        Assertions.assertEquals("ybbjjidjksyx", model.dataType());
-        Assertions.assertEquals("xvxevblbjednljla", model.columnType());
+        Assertions.assertEquals("ubdyhgk", model.columnName());
+        Assertions.assertEquals("in", model.dataType());
+        Assertions.assertEquals("owzfttsttkt", model.columnType());
     }
 }

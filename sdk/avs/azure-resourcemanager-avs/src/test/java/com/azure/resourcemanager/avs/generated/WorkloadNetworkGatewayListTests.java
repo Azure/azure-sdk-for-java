@@ -13,7 +13,7 @@ public final class WorkloadNetworkGatewayListTests {
         WorkloadNetworkGatewayList model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"properties\":{\"displayName\":\"vxdjzlmwlxkvugf\",\"path\":\"ovawjvzunlu\"},\"id\":\"hnnpr\",\"name\":\"xipeilpjzuaejx\",\"type\":\"ultskzbbtdz\"},{\"properties\":{\"displayName\":\"e\",\"path\":\"gpw\"},\"id\":\"zuhkfpbsjyof\",\"name\":\"xl\",\"type\":\"us\"},{\"properties\":{\"displayName\":\"ouwaboekqvkeln\",\"path\":\"vbxwyjsflhh\"},\"id\":\"aalnjixi\",\"name\":\"xyawj\",\"type\":\"yaqcslyjpkiidz\"},{\"properties\":{\"displayName\":\"znelixhnrztfolh\",\"path\":\"xknalaulppg\"},\"id\":\"dtpnapnyiropuhp\",\"name\":\"gvpgy\",\"type\":\"gqgitxmedjvcsl\"}],\"nextLink\":\"qwwncw\"}")
+                    "{\"value\":[{\"properties\":{\"displayName\":\"tcs\",\"path\":\"cktqumiekkezzi\"},\"id\":\"hlyfjhdgqgg\",\"name\":\"bdunygaeqid\",\"type\":\"qfatpxllrxcyjm\"}],\"nextLink\":\"dsuvarmywdmjsjqb\"}")
                 .toObject(WorkloadNetworkGatewayList.class);
     }
 

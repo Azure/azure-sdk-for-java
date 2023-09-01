@@ -32,7 +32,7 @@ public final class WorkloadNetworksGetPortMirroringWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"displayName\":\"yefrpmpdnqqska\",\"direction\":\"EGRESS\",\"source\":\"vmm\",\"destination\":\"pqfrtqlkz\",\"status\":\"FAILURE\",\"provisioningState\":\"Canceled\",\"revision\":3840225965423705629},\"id\":\"kxlzyqdrfeg\",\"name\":\"ealzxwhcansymoyq\",\"type\":\"lwigdivbkbx\"}";
+            "{\"properties\":{\"displayName\":\"tf\",\"direction\":\"EGRESS\",\"source\":\"cg\",\"destination\":\"o\",\"status\":\"FAILURE\",\"provisioningState\":\"Canceled\",\"revision\":101208691571516004},\"id\":\"dewemxswv\",\"name\":\"uun\",\"type\":\"zjgehkfkim\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -63,13 +63,13 @@ public final class WorkloadNetworksGetPortMirroringWithResponseMockTests {
         WorkloadNetworkPortMirroring response =
             manager
                 .workloadNetworks()
-                .getPortMirroringWithResponse("vcpwpgclrc", "vtsoxf", "kenx", com.azure.core.util.Context.NONE)
+                .getPortMirroringWithResponse("ffmbmxzjrg", "wwp", "jx", com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals("yefrpmpdnqqska", response.displayName());
+        Assertions.assertEquals("tf", response.displayName());
         Assertions.assertEquals(PortMirroringDirectionEnum.EGRESS, response.direction());
-        Assertions.assertEquals("vmm", response.source());
-        Assertions.assertEquals("pqfrtqlkz", response.destination());
-        Assertions.assertEquals(3840225965423705629L, response.revision());
+        Assertions.assertEquals("cg", response.source());
+        Assertions.assertEquals("o", response.destination());
+        Assertions.assertEquals(101208691571516004L, response.revision());
     }
 }

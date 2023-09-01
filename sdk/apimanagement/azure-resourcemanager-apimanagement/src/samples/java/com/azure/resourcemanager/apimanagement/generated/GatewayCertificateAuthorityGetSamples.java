@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.apimanagement.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for GatewayCertificateAuthority Get. */
 public final class GatewayCertificateAuthorityGetSamples {
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementGetGatewayCertificateAuthority.json
+     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementGetGatewayCertificateAuthority.json
      */
     /**
      * Sample code: ApiManagementGetGatewayCertificateAuthority.
@@ -18,6 +16,8 @@ public final class GatewayCertificateAuthorityGetSamples {
      */
     public static void apiManagementGetGatewayCertificateAuthority(
         com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
-        manager.gatewayCertificateAuthorities().getWithResponse("rg1", "apimService1", "gw1", "cert1", Context.NONE);
+        manager
+            .gatewayCertificateAuthorities()
+            .getWithResponse("rg1", "apimService1", "gw1", "cert1", com.azure.core.util.Context.NONE);
     }
 }

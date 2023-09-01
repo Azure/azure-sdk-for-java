@@ -4,13 +4,12 @@
 
 package com.azure.resourcemanager.apimanagement.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.apimanagement.models.PolicyScopeContract;
 
 /** Samples for PolicyDescription ListByService. */
 public final class PolicyDescriptionListByServiceSamples {
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementListPolicyDescriptions.json
+     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementListPolicyDescriptions.json
      */
     /**
      * Sample code: ApiManagementListPolicyDescriptions.
@@ -21,6 +20,7 @@ public final class PolicyDescriptionListByServiceSamples {
         com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
         manager
             .policyDescriptions()
-            .listByServiceWithResponse("rg1", "apimService1", PolicyScopeContract.API, Context.NONE);
+            .listByServiceWithResponse(
+                "rg1", "apimService1", PolicyScopeContract.API, com.azure.core.util.Context.NONE);
     }
 }

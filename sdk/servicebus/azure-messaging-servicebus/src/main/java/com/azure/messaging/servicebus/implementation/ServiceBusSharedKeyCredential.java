@@ -195,8 +195,9 @@ public class ServiceBusSharedKeyCredential implements TokenCredential {
                     long epochSeconds = Long.parseLong(expirationTimeStr);
                     return Instant.ofEpochSecond(epochSeconds).atOffset(ZoneOffset.UTC);
                 } catch (NumberFormatException exception) {
-                    LOGGER.verbose("Invalid expiration time format in the SAS token: {}. Falling back to max "
-                        + "expiration time.", expirationTimeStr);
+                    LOGGER.atVerbose()
+                        .addKeyValue("expirationTime", expirationTimeStr)
+                        .log("Invalid expiration time format in the SAS token. Falling back to max expiration time.");
                     return OffsetDateTime.MAX;
                 }
             })

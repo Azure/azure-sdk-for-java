@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.apimanagement.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for GroupUser CheckEntityExists. */
 public final class GroupUserCheckEntityExistsSamples {
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementHeadGroupUser.json
+     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementHeadGroupUser.json
      */
     /**
      * Sample code: ApiManagementHeadGroupUser.
@@ -21,6 +19,10 @@ public final class GroupUserCheckEntityExistsSamples {
         manager
             .groupUsers()
             .checkEntityExistsWithResponse(
-                "rg1", "apimService1", "59306a29e4bbd510dc24e5f9", "5931a75ae4bbd512a88c680b", Context.NONE);
+                "rg1",
+                "apimService1",
+                "59306a29e4bbd510dc24e5f9",
+                "5931a75ae4bbd512a88c680b",
+                com.azure.core.util.Context.NONE);
     }
 }

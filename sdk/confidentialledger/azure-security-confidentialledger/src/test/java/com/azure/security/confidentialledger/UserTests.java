@@ -16,7 +16,7 @@ import java.io.IOException;
 
 public final class UserTests extends ConfidentialLedgerClientTestBase {
     @Test
-    public void testGetUserTests() throws Exception {
+    public void testGetUserTests() {
         String userAad = ConfidentialLedgerEnvironment.getConfidentialLedgerAdminOid();
         RequestOptions requestOptions = new RequestOptions();
 
@@ -37,6 +37,5 @@ public final class UserTests extends ConfidentialLedgerClientTestBase {
         }
 
         Assertions.assertEquals(responseBodyJson.get("assignedRole").asText(), "Administrator");
-        Assertions.assertEquals(responseBodyJson.get("userId").asText(), userAad);
     }
 }

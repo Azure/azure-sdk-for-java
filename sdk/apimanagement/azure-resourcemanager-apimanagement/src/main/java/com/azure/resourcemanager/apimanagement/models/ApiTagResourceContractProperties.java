@@ -30,10 +30,9 @@ public final class ApiTagResourceContractProperties extends ApiEntityBaseContrac
     private String serviceUrl;
 
     /*
-     * Relative URL uniquely identifying this API and all of its resource paths
-     * within the API Management service instance. It is appended to the API
-     * endpoint base URL specified during the service instance creation to form
-     * a public URL for this API.
+     * Relative URL uniquely identifying this API and all of its resource paths within the API Management service
+     * instance. It is appended to the API endpoint base URL specified during the service instance creation to form a
+     * public URL for this API.
      */
     @JsonProperty(value = "path")
     private String path;
@@ -43,6 +42,10 @@ public final class ApiTagResourceContractProperties extends ApiEntityBaseContrac
      */
     @JsonProperty(value = "protocols")
     private List<Protocol> protocols;
+
+    /** Creates an instance of ApiTagResourceContractProperties class. */
+    public ApiTagResourceContractProperties() {
+    }
 
     /**
      * Get the id property: API identifier in the form /apis/{apiId}.

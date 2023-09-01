@@ -3,6 +3,7 @@
 ## 1.43.0-beta.1 (Unreleased)
 
 ### Features Added
+- Added `KeyCredentialTrait` interface. Client builders that implement this interface will support key-based authentication.
 
 ### Breaking Changes
 

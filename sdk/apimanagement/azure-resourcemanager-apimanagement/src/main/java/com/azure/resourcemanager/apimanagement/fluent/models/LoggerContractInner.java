@@ -19,6 +19,10 @@ public final class LoggerContractInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private LoggerContractProperties innerProperties;
 
+    /** Creates an instance of LoggerContractInner class. */
+    public LoggerContractInner() {
+    }
+
     /**
      * Get the innerProperties property: Logger entity contract properties.
      *

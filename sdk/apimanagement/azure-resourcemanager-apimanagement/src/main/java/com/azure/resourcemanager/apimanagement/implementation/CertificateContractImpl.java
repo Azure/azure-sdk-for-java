@@ -47,6 +47,10 @@ public final class CertificateContractImpl
         return this.innerModel().keyVault();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public CertificateContractInner innerModel() {
         return this.innerObject;
     }
@@ -163,14 +167,14 @@ public final class CertificateContractImpl
         return this;
     }
 
-    public CertificateContract refreshSecret() {
-        return serviceManager.certificates().refreshSecret(resourceGroupName, serviceName, certificateId);
-    }
-
     public Response<CertificateContract> refreshSecretWithResponse(Context context) {
         return serviceManager
             .certificates()
             .refreshSecretWithResponse(resourceGroupName, serviceName, certificateId, context);
+    }
+
+    public CertificateContract refreshSecret() {
+        return serviceManager.certificates().refreshSecret(resourceGroupName, serviceName, certificateId);
     }
 
     public CertificateContractImpl withData(String data) {

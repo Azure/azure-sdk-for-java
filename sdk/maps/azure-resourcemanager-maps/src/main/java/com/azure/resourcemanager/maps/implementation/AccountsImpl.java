@@ -12,9 +12,12 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.maps.fluent.AccountsClient;
 import com.azure.resourcemanager.maps.fluent.models.MapsAccountInner;
 import com.azure.resourcemanager.maps.fluent.models.MapsAccountKeysInner;
+import com.azure.resourcemanager.maps.fluent.models.MapsAccountSasTokenInner;
+import com.azure.resourcemanager.maps.models.AccountSasParameters;
 import com.azure.resourcemanager.maps.models.Accounts;
 import com.azure.resourcemanager.maps.models.MapsAccount;
 import com.azure.resourcemanager.maps.models.MapsAccountKeys;
+import com.azure.resourcemanager.maps.models.MapsAccountSasToken;
 import com.azure.resourcemanager.maps.models.MapsKeySpecification;
 
 public final class AccountsImpl implements Accounts {
@@ -80,6 +83,32 @@ public final class AccountsImpl implements Accounts {
     public PagedIterable<MapsAccount> list(Context context) {
         PagedIterable<MapsAccountInner> inner = this.serviceClient().list(context);
         return Utils.mapPage(inner, inner1 -> new MapsAccountImpl(inner1, this.manager()));
+    }
+
+    public Response<MapsAccountSasToken> listSasWithResponse(
+        String resourceGroupName, String accountName, AccountSasParameters mapsAccountSasParameters, Context context) {
+        Response<MapsAccountSasTokenInner> inner =
+            this.serviceClient().listSasWithResponse(resourceGroupName, accountName, mapsAccountSasParameters, context);
+        if (inner != null) {
+            return new SimpleResponse<>(
+                inner.getRequest(),
+                inner.getStatusCode(),
+                inner.getHeaders(),
+                new MapsAccountSasTokenImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public MapsAccountSasToken listSas(
+        String resourceGroupName, String accountName, AccountSasParameters mapsAccountSasParameters) {
+        MapsAccountSasTokenInner inner =
+            this.serviceClient().listSas(resourceGroupName, accountName, mapsAccountSasParameters);
+        if (inner != null) {
+            return new MapsAccountSasTokenImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public Response<MapsAccountKeys> listKeysWithResponse(
