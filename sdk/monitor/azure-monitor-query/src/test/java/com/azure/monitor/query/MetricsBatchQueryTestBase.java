@@ -29,7 +29,7 @@ public class MetricsBatchQueryTestBase extends TestProxyTestBase {
         ConfigurationClientBuilder configClientBuilder = new ConfigurationClientBuilder();
         if (getTestMode() == TestMode.PLAYBACK) {
             interceptorManager.addMatchers(new CustomMatcher()
-                .setIgnoredQueryParameters(Arrays.asList("starttime", "endtime"))
+                .setIgnoredQueryParameters(Arrays.asList("starttime", "endtime", "api-version"))
                 .setComparingBodies(false)
                 .setExcludedHeaders(Arrays.asList("x-ms-content-sha256")));
             clientBuilder
@@ -42,7 +42,7 @@ public class MetricsBatchQueryTestBase extends TestProxyTestBase {
                 .httpClient(interceptorManager.getPlaybackClient());
         } else if (getTestMode() == TestMode.RECORD) {
             interceptorManager.addMatchers(new CustomMatcher()
-                .setIgnoredQueryParameters(Arrays.asList("starttime", "endtime"))
+                .setIgnoredQueryParameters(Arrays.asList("starttime", "endtime", "api-version"))
                 .setComparingBodies(false)
                 .setExcludedHeaders(Arrays.asList("x-ms-content-sha256")));
             clientBuilder
