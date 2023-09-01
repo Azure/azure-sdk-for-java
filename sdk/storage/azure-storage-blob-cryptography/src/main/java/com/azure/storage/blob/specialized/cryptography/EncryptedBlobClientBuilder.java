@@ -272,10 +272,10 @@ public final class EncryptedBlobClientBuilder implements
     }
 
     private String modifyUserAgentString(String applicationId, Configuration userAgentConfiguration) {
-        Pattern PATTERN = Pattern.compile(USER_AGENT_MODIFICATION_REGEX);
+        Pattern pattern = Pattern.compile(USER_AGENT_MODIFICATION_REGEX);
         String userAgent = UserAgentUtil.toUserAgentString(applicationId, BLOB_CLIENT_NAME, BLOB_CLIENT_VERSION,
             userAgentConfiguration);
-        Matcher matcher = PATTERN.matcher(userAgent);
+        Matcher matcher = pattern.matcher(userAgent);
         String version = encryptionVersion == EncryptionVersion.V2 ? "2.0" : "1.0";
         String stringToAppend = "azstorage-clientsideencryption/" + version;
         if (matcher.matches()) {
