@@ -35,6 +35,7 @@ public class MetricsBatchQueryTestBase extends TestProxyTestBase {
 
             configClientBuilder
                 .credential(new MockTokenCredential())
+                .endpoint("https://fake.azconfig.io")
                 .httpClient(interceptorManager.getPlaybackClient());
         } else if (getTestMode() == TestMode.RECORD) {
             interceptorManager.addMatchers(new CustomMatcher().setIgnoredQueryParameters(Arrays.asList("starttime", "endtime")).setComparingBodies(false));
