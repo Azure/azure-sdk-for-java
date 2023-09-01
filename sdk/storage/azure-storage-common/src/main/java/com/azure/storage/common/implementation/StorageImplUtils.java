@@ -97,6 +97,7 @@ public class StorageImplUtils {
 
     public static final ExecutorService THREAD_POOL = getThreadPoolWithShutdownHook();
     private static final long THREADPOOL_SHUTDOWN_HOOK_TIMEOUT_SECONDS = 30;
+    private static final String ENCRYPTION_DATA_KEY = "encryptiondata";
 
 
     /**
@@ -486,5 +487,20 @@ public class StorageImplUtils {
             }
         });
         Runtime.getRuntime().addShutdownHook(hook);
+    }
+
+    public static String getEncryptionDataKey(Map<String, String> metadata) {
+        if (CoreUtils.isNullOrEmpty(metadata)) {
+            return null;
+        }
+        for (Map.Entry<String, String> entry : metadata.entrySet()) {
+            if (entry.getKey().length() != ENCRYPTION_DATA_KEY.length()) {
+                continue;
+            }
+            if (ENCRYPTION_DATA_KEY.regionMatches(true, 0, entry.getKey(), 0, ENCRYPTION_DATA_KEY.length())) {
+                return entry.getValue();
+            }
+        }
+        return null;
     }
 }

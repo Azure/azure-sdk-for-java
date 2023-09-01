@@ -735,28 +735,13 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
                 requestConditionsFinal.setIfMatch(response.getValue().getETag());
                 Mono<T> result = downloadCall.get();
 
-                String encryptionDataKey = getEncryptionDataKey(response.getValue().getMetadata());
+                String encryptionDataKey = StorageImplUtils.getEncryptionDataKey(response.getValue().getMetadata());
                 if (encryptionDataKey != null) {
                     result = result.contextWrite(context -> context.put(ENCRYPTION_DATA_KEY,
                         EncryptionData.getAndValidateEncryptionData(encryptionDataKey, requiresEncryption)));
                 }
                 return result;
             });
-    }
-
-    private static String getEncryptionDataKey(Map<String, String> metadata) {
-        if (CoreUtils.isNullOrEmpty(metadata)) {
-            return null;
-        }
-        for (Map.Entry<String, String> entry : metadata.entrySet()) {
-            if (entry.getKey().length() != ENCRYPTION_DATA_KEY.length()) {
-                continue;
-            }
-            if (ENCRYPTION_DATA_KEY.regionMatches(true, 0, entry.getKey(), 0, ENCRYPTION_DATA_KEY.length())) {
-                return entry.getValue();
-            }
-        }
-        return null;
     }
 
     @ServiceMethod(returns = ReturnType.SINGLE)

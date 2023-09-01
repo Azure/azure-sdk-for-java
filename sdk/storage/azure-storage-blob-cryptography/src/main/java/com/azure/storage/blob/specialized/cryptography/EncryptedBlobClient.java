@@ -488,27 +488,12 @@ public class EncryptedBlobClient extends BlobClient {
 
         requestConditions.setIfMatch(initialProperties.getETag());
 
-        String encryptionDataKey = getEncryptionDataKey(initialProperties.getMetadata());
+        String encryptionDataKey = StorageImplUtils.getEncryptionDataKey(initialProperties.getMetadata());
         if (encryptionDataKey != null) {
             context = context.addData(ENCRYPTION_DATA_KEY, EncryptionData.getAndValidateEncryptionData(
                 encryptionDataKey, encryptedBlobAsyncClient.isEncryptionRequired()));
         }
         return context;
-    }
-
-    private static String getEncryptionDataKey(Map<String, String> metadata) {
-        if (CoreUtils.isNullOrEmpty(metadata)) {
-            return null;
-        }
-        for (Map.Entry<String, String> entry : metadata.entrySet()) {
-            if (entry.getKey().length() != ENCRYPTION_DATA_KEY.length()) {
-                continue;
-            }
-            if (ENCRYPTION_DATA_KEY.regionMatches(true, 0, entry.getKey(), 0, ENCRYPTION_DATA_KEY.length())) {
-                return entry.getValue();
-            }
-        }
-        return null;
     }
 
     @ServiceMethod(returns = ReturnType.SINGLE)
