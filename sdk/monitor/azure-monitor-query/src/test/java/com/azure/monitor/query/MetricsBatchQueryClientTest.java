@@ -38,10 +38,6 @@ public class MetricsBatchQueryClientTest extends MetricsBatchQueryTestBase {
         String resourceId = Configuration.getGlobalConfiguration().get("AZURE_MONITOR_METRICS_RESOURCE_URI_2", FAKE_RESOURCE_ID);
         resourceId = resourceId.substring(resourceId.indexOf("/subscriptions"));
 
-        ConfigurationClient configClient = new ConfigurationClientBuilder()
-            .connectionString(Configuration.getGlobalConfiguration().get("AZURE_APPCONFIG_CONNECTION_STRING"))
-            .buildClient();
-
         try {
             configClient.getConfigurationSetting("foo", "bar");
         } catch (HttpResponseException exception) {
