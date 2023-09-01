@@ -63,7 +63,7 @@ public final class PollingUtils {
     public static <T> Mono<T> deserializeResponse(BinaryData binaryData, ObjectSerializer serializer,
                                                   TypeReference<T> typeReference) {
         if (TypeUtil.isTypeOrSubTypeOf(BinaryData.class, typeReference.getJavaType())) {
-            return Mono.just((T) binaryData);
+            return (Mono<T>) binaryData.toReplayableBinaryDataAsync();
         } else {
             return binaryData.toObjectAsync(typeReference, serializer);
         }
@@ -83,7 +83,7 @@ public final class PollingUtils {
     public static <T> T deserializeResponseSync(BinaryData binaryData, ObjectSerializer serializer,
         TypeReference<T> typeReference) {
         if (TypeUtil.isTypeOrSubTypeOf(BinaryData.class, typeReference.getJavaType())) {
-            return (T) binaryData;
+            return (T) binaryData.toReplayableBinaryData();
         } else {
             return binaryData.toObject(typeReference, serializer);
         }

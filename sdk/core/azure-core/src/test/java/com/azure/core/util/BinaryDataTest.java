@@ -68,6 +68,7 @@ import static com.azure.core.CoreTestUtils.assertArraysEqual;
 import static com.azure.core.CoreTestUtils.fillArray;
 import static com.azure.core.CoreTestUtils.readStream;
 import static com.azure.core.implementation.util.BinaryDataContent.STREAM_READ_SIZE;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
@@ -1047,6 +1048,22 @@ public class BinaryDataTest {
             BinaryDataAsProperty.class, SerializerEncoding.JSON);
 
         assertEquals(expected.getProperty().toString(), actual.getProperty().toString());
+    }
+
+    @Test
+    public void emptyFluxByteBufferToReplayable() {
+        BinaryData binaryData = BinaryData.fromFlux(Flux.empty()).block();
+
+        BinaryData replayable = assertDoesNotThrow(() -> binaryData.toReplayableBinaryData());
+        assertEquals("", replayable.toString());
+    }
+
+    @Test
+    public void emptyFluxByteBufferToReplayableAsync() {
+        StepVerifier.create(BinaryData.fromFlux(Flux.empty())
+            .flatMap(BinaryData::toReplayableBinaryDataAsync))
+            .assertNext(replayable -> assertEquals("", replayable.toString()))
+            .verifyComplete();
     }
 
     public static final class BinaryDataAsProperty {
