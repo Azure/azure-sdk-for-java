@@ -9,8 +9,6 @@ import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
-import com.azure.data.appconfiguration.ConfigurationClient;
-import com.azure.data.appconfiguration.ConfigurationClientBuilder;
 import com.azure.monitor.query.models.MetricResult;
 import com.azure.monitor.query.models.MetricsBatchResult;
 import com.azure.monitor.query.models.MetricsQueryOptions;
