@@ -10,6 +10,7 @@ import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.http.HttpResponse;
+import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.BinaryData;
@@ -1569,10 +1570,31 @@ public class EncryptedBlockBlobApiTests extends BlobCryptographyTestBase {
     @ParameterizedTest
     @MethodSource("modifyUserAgentSupplier")
     public void modifyUserAgent(EncryptionVersion encryptionVersion) {
+        String expectedUserAgentString = "azstorage-clientsideencryption/"
+            + (encryptionVersion == EncryptionVersion.V2 ? "2.0" : "1.0");
+
         EncryptedBlobClient ebc = new EncryptedBlobClient(mockAesKey(getEncryptedClientBuilder(fakeKey, null,
             ENV.getPrimaryAccount().getCredential(), cc.getBlobContainerUrl(), encryptionVersion)
             .blobName(generateBlobName())
-            .addPolicy(getUserAgentHeaderPolicy(encryptionVersion))
+            .addPolicy(getUserAgentHeaderPolicy(expectedUserAgentString))
+            .buildEncryptedBlobAsyncClient()));
+
+        // the getUserAgentHeaderPolicy will check that the user agent is set correctly
+        ebc.uploadWithResponse(new BlobParallelUploadOptions(DATA.getDefaultInputStream()), null, null);
+    }
+
+    @ParameterizedTest
+    @MethodSource("modifyUserAgentSupplier")
+    public void modifyUserAgentWithApplicationId(EncryptionVersion encryptionVersion) {
+        String applicationId = "log-options-id";
+        String expectedUserAgentString = applicationId + " azstorage-clientsideencryption/"
+            + (encryptionVersion == EncryptionVersion.V2 ? "2.0" : "1.0");
+
+        EncryptedBlobClient ebc = new EncryptedBlobClient(mockAesKey(getEncryptedClientBuilder(fakeKey, null,
+            ENV.getPrimaryAccount().getCredential(), cc.getBlobContainerUrl(), encryptionVersion)
+            .blobName(generateBlobName())
+            .addPolicy(getUserAgentHeaderPolicy(expectedUserAgentString))
+            .httpLogOptions(new HttpLogOptions().setApplicationId(applicationId))
             .buildEncryptedBlobAsyncClient()));
 
         // the getUserAgentHeaderPolicy will check that the user agent is set correctly
@@ -1583,14 +1605,12 @@ public class EncryptedBlockBlobApiTests extends BlobCryptographyTestBase {
         return Stream.of(Arguments.of(EncryptionVersion.V1), Arguments.of(EncryptionVersion.V2));
     }
 
-    private static HttpPipelinePolicy getUserAgentHeaderPolicy(EncryptionVersion version) {
+    private static HttpPipelinePolicy getUserAgentHeaderPolicy(String expectedUserAgentString) {
         return new HttpPipelinePolicy() {
             @Override
             public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
                 String userAgent = context.getHttpRequest().getHeaders().getValue(HttpHeaderName.USER_AGENT);
-                String expectedUserAgent = "azstorage-clientsideencryption/"
-                    + (version == EncryptionVersion.V2 ? "2.0" : "1.0");
-                assertTrue(userAgent.startsWith(expectedUserAgent));
+                assertTrue(userAgent.startsWith(expectedUserAgentString));
                 return next.process();
             }
 
