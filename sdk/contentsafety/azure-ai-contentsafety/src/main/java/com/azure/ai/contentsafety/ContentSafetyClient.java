@@ -212,6 +212,8 @@ public final class ContentSafetyClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> createOrUpdateTextBlocklistWithResponse(
             String blocklistName, BinaryData resource, RequestOptions requestOptions) {
+        // Convenience API is not generated, as operation 'createOrUpdateTextBlocklist' is
+        // 'application/merge-patch+json'
         return this.serviceClient.createOrUpdateTextBlocklistWithResponse(blocklistName, resource, requestOptions);
     }
 
@@ -608,7 +610,6 @@ public final class ContentSafetyClient {
      * @param blocklistName Text blocklist name.
      * @param top The number of result items to return.
      * @param skip The number of result items to skip.
-     * @param maxPageSize The maximum number of result items per page.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -619,8 +620,7 @@ public final class ContentSafetyClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<TextBlockItem> listTextBlocklistItems(
-            String blocklistName, Integer top, Integer skip, Integer maxPageSize) {
+    public PagedIterable<TextBlockItem> listTextBlocklistItems(String blocklistName, Integer top, Integer skip) {
         // Generated convenience method for listTextBlocklistItems
         RequestOptions requestOptions = new RequestOptions();
         if (top != null) {
@@ -628,9 +628,6 @@ public final class ContentSafetyClient {
         }
         if (skip != null) {
             requestOptions.addQueryParam("skip", String.valueOf(skip), false);
-        }
-        if (maxPageSize != null) {
-            requestOptions.addQueryParam("maxpagesize", String.valueOf(maxPageSize), false);
         }
         return serviceClient
                 .listTextBlocklistItems(blocklistName, requestOptions)

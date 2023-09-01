@@ -224,7 +224,10 @@ public final class ContentSafetyClientBuilder
                 (serviceVersion != null) ? serviceVersion : ContentSafetyServiceVersion.getLatest();
         ContentSafetyClientImpl client =
                 new ContentSafetyClientImpl(
-                        localPipeline, JacksonAdapter.createDefaultSerializerAdapter(), endpoint, localServiceVersion);
+                        localPipeline,
+                        JacksonAdapter.createDefaultSerializerAdapter(),
+                        this.endpoint,
+                        localServiceVersion);
         return client;
     }
 

@@ -20,5 +20,9 @@ public final class CreateOrUpdateTextBlocklistTests extends ContentSafetyClientT
         Response<BinaryData> response =
                 contentSafetyClient.createOrUpdateTextBlocklistWithResponse("TestBlocklist", resource, requestOptions);
         Assertions.assertEquals(200, response.getStatusCode());
+        Assertions.assertEquals(
+                BinaryData.fromString("{\"blocklistName\":\"TestBlocklist\",\"description\":\"Test Blocklist\"}")
+                        .toObject(Object.class),
+                response.getValue().toObject(Object.class));
     }
 }

@@ -19,8 +19,7 @@ public class GetAllBlockItemsByBlocklistName {
                         .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
                         .buildClient();
         // BEGIN:com.azure.ai.contentsafety.generated.listtextblocklistitems.getallblockitemsbyblocklistname
-        PagedIterable<TextBlockItem> response =
-                contentSafetyClient.listTextBlocklistItems("TestBlocklist", null, null, null);
+        PagedIterable<TextBlockItem> response = contentSafetyClient.listTextBlocklistItems("TestBlocklist", null, null);
         // END:com.azure.ai.contentsafety.generated.listtextblocklistitems.getallblockitemsbyblocklistname
     }
 }
