@@ -5,9 +5,12 @@ package com.azure.monitor.query;
 
 import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
+import com.azure.core.test.models.CustomMatcher;
 import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+
+import java.util.Arrays;
 
 public class MetricsBatchQueryTestBase extends TestProxyTestBase {
 
@@ -21,10 +24,12 @@ public class MetricsBatchQueryTestBase extends TestProxyTestBase {
 
         MetricsBatchQueryClientBuilder clientBuilder = new MetricsBatchQueryClientBuilder();
         if (getTestMode() == TestMode.PLAYBACK) {
+            interceptorManager.addMatchers(new CustomMatcher().setIgnoredQueryParameters(Arrays.asList("starttime", "endtime")).setComparingBodies(false));
             clientBuilder
                 .credential(new MockTokenCredential())
                 .httpClient(interceptorManager.getPlaybackClient());
         } else if (getTestMode() == TestMode.RECORD) {
+            interceptorManager.addMatchers(new CustomMatcher().setIgnoredQueryParameters(Arrays.asList("starttime", "endtime")).setComparingBodies(false));
             clientBuilder
                 .addPolicy(interceptorManager.getRecordPolicy())
                 .credential(new DefaultAzureCredentialBuilder().build());
