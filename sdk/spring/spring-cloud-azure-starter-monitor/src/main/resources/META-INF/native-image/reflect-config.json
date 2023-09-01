@@ -1,29 +1,5 @@
 [
   {
-    "name": "io.opentelemetry.internal.shaded.jctools.queues.MpscArrayQueueConsumerIndexField",
-    "fields": [
-      {
-        "name": "consumerIndex"
-      }
-    ]
-  },
-  {
-    "name": "io.opentelemetry.internal.shaded.jctools.queues.MpscArrayQueueProducerIndexField",
-    "fields": [
-      {
-        "name": "producerIndex"
-      }
-    ]
-  },
-  {
-    "name": "io.opentelemetry.internal.shaded.jctools.queues.MpscArrayQueueProducerLimitField",
-    "fields": [
-      {
-        "name": "producerLimit"
-      }
-    ]
-  },
-  {
     "name": "io.opentelemetry.instrumentation.logback.appender.v1_0.OpenTelemetryAppender",
     "allDeclaredMethods": true,
     "allDeclaredConstructors": true
