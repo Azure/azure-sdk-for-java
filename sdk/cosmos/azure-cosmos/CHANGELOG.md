@@ -27,7 +27,7 @@
 
 ### 4.48.2 (2023-08-25)
 > [!IMPORTANT]
-> We strongly recommend our customers to use version 4.48.1 and above.
+> We strongly recommend our customers to use version 4.48.2 and above.
 #### Bugs Fixed
 * Fixed possible `NullPointerException` issue if health-check flow kicks in before RNTBD context negotiation for a given channel - See [PR 36397](https://github.com/Azure/azure-sdk-for-java/pull/36397).
 
