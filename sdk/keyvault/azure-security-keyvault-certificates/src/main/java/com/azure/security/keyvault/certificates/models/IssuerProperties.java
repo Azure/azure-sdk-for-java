@@ -4,15 +4,20 @@
 package com.azure.security.keyvault.certificates.models;
 
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonWriter;
 import com.azure.security.keyvault.certificates.implementation.IssuerPropertiesHelper;
 import com.azure.security.keyvault.certificates.implementation.models.CertificateIssuerItem;
+
+import java.io.IOException;
 
 import static com.azure.security.keyvault.certificates.implementation.CertificatesUtils.getIdMetadata;
 
 /**
  * Represents base properties of an {@link CertificateIssuer}.
  */
-public class IssuerProperties {
+public class IssuerProperties implements JsonSerializable<IssuerProperties> {
     private static final ClientLogger LOGGER = new ClientLogger(IssuerProperties.class);
 
     static {
@@ -71,5 +76,21 @@ public class IssuerProperties {
     public IssuerProperties setProvider(String provider) {
         impl.setProvider(provider);
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        return impl.toJson(jsonWriter);
+    }
+
+    /**
+     * Reads a JSON stream into a {@link IssuerProperties}.
+     *
+     * @param jsonReader The {@link JsonReader} being read.
+     * @return The {@link IssuerProperties} that the JSON stream represented, may return null.
+     * @throws IOException If a {@link IssuerProperties} fails to be read from the {@code jsonReader}.
+     */
+    public static IssuerProperties fromJson(JsonReader jsonReader) throws IOException {
+        return new IssuerProperties(CertificateIssuerItem.fromJson(jsonReader));
     }
 }

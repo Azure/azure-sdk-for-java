@@ -4,12 +4,16 @@
 package com.azure.security.keyvault.certificates.models;
 
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonWriter;
 import com.azure.security.keyvault.certificates.implementation.CertificateIssuerHelper;
 import com.azure.security.keyvault.certificates.implementation.models.IssuerAttributes;
 import com.azure.security.keyvault.certificates.implementation.models.IssuerBundle;
 import com.azure.security.keyvault.certificates.implementation.models.IssuerCredentials;
 import com.azure.security.keyvault.certificates.implementation.models.OrganizationDetails;
 
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 
@@ -18,7 +22,7 @@ import static com.azure.security.keyvault.certificates.implementation.Certificat
 /**
  * Represents certificate Issuer with all of its properties.
  */
-public final class CertificateIssuer {
+public final class CertificateIssuer implements JsonSerializable<CertificateIssuer> {
     private static final ClientLogger LOGGER = new ClientLogger(CertificateIssuer.class);
 
     static {
@@ -216,5 +220,21 @@ public final class CertificateIssuer {
      */
     public OffsetDateTime getUpdatedOn() {
         return impl.getAttributes() == null ? null : impl.getAttributes().getUpdated();
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        return impl.toJson(jsonWriter);
+    }
+
+    /**
+     * Reads a JSON stream into a {@link CertificateIssuer}.
+     *
+     * @param jsonReader The {@link JsonReader} being read.
+     * @return The {@link CertificateIssuer} that the JSON stream represented, may return null.
+     * @throws IOException If a {@link CertificateIssuer} fails to be read from the {@code jsonReader}.
+     */
+    public static CertificateIssuer fromJson(JsonReader jsonReader) throws IOException {
+        return new CertificateIssuer(IssuerBundle.fromJson(jsonReader));
     }
 }

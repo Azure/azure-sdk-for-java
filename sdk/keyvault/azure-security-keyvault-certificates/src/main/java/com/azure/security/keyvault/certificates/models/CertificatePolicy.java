@@ -3,6 +3,9 @@
 
 package com.azure.security.keyvault.certificates.models;
 
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonWriter;
 import com.azure.security.keyvault.certificates.implementation.CertificatePolicyHelper;
 import com.azure.security.keyvault.certificates.implementation.models.CertificateAttributes;
 import com.azure.security.keyvault.certificates.implementation.models.IssuerParameters;
@@ -10,6 +13,7 @@ import com.azure.security.keyvault.certificates.implementation.models.KeyPropert
 import com.azure.security.keyvault.certificates.implementation.models.SecretProperties;
 import com.azure.security.keyvault.certificates.implementation.models.X509CertificateProperties;
 
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -19,7 +23,7 @@ import java.util.Objects;
 /**
  * The Certificate Management policy for the {@link KeyVaultCertificate certificate}.
  */
-public final class CertificatePolicy {
+public final class CertificatePolicy implements JsonSerializable<CertificatePolicy> {
     static {
         CertificatePolicyHelper.setAccessor(new CertificatePolicyHelper.CertificatePolicyAccessor() {
             @Override
@@ -467,5 +471,22 @@ public final class CertificatePolicy {
      */
     public static CertificatePolicy getDefault() {
         return new CertificatePolicy("Self", "CN=DefaultPolicy");
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        return impl.toJson(jsonWriter);
+    }
+
+    /**
+     * Reads a JSON stream into a {@link CertificatePolicy}.
+     *
+     * @param jsonReader The {@link JsonReader} being read.
+     * @return The {@link CertificatePolicy} that the JSON stream represented, may return null.
+     * @throws IOException If a {@link CertificatePolicy} fails to be read from the {@code jsonReader}.
+     */
+    public static CertificatePolicy fromJson(JsonReader jsonReader) throws IOException {
+        return new CertificatePolicy(
+            com.azure.security.keyvault.certificates.implementation.models.CertificatePolicy.fromJson(jsonReader));
     }
 }

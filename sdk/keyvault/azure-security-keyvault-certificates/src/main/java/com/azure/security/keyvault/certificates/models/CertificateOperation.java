@@ -4,15 +4,21 @@
 package com.azure.security.keyvault.certificates.models;
 
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonWriter;
 import com.azure.security.keyvault.certificates.implementation.CertificateOperationHelper;
 import com.azure.security.keyvault.certificates.implementation.IdMetadata;
+import com.azure.security.keyvault.certificates.implementation.models.IssuerBundle;
+
+import java.io.IOException;
 
 import static com.azure.security.keyvault.certificates.implementation.CertificatesUtils.getIdMetadata;
 
 /**
  * A certificate operation is returned in case of long-running service requests.
  */
-public final class CertificateOperation {
+public final class CertificateOperation implements JsonSerializable<CertificateOperation> {
     private static final ClientLogger LOGGER = new ClientLogger(CertificateOperation.class);
 
     static {
@@ -162,5 +168,22 @@ public final class CertificateOperation {
      */
     public String getName() {
         return this.name;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        return impl.toJson(jsonWriter);
+    }
+
+    /**
+     * Reads a JSON stream into a {@link CertificateOperation}.
+     *
+     * @param jsonReader The {@link JsonReader} being read.
+     * @return The {@link CertificateOperation} that the JSON stream represented, may return null.
+     * @throws IOException If a {@link CertificateOperation} fails to be read from the {@code jsonReader}.
+     */
+    public static CertificateOperation fromJson(JsonReader jsonReader) throws IOException {
+        return new CertificateOperation(
+            com.azure.security.keyvault.certificates.implementation.models.CertificateOperation.fromJson(jsonReader));
     }
 }
