@@ -33,7 +33,7 @@ class AppConfigurationFeatureManagementPropertySource extends AppConfigurationPr
 
     AppConfigurationFeatureManagementPropertySource(String originEndpoint, AppConfigurationReplicaClient replicaClient,
         String keyFilter, String[] labelFilter) {
-        super("FM_" + originEndpoint + "/" + getLabelName(labelFilter), replicaClient, 0);
+        super("FM_" + originEndpoint + "/" + getLabelName(labelFilter), replicaClient);
         this.keyFilter = keyFilter;
         this.labelFilter = labelFilter;
     }

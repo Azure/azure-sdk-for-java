@@ -56,14 +56,11 @@ abstract class AppConfigurationPropertySource extends EnumerablePropertySource<C
 
     protected final AppConfigurationReplicaClient replicaClient;
 
-    protected int maxRetryTime;
-
-    AppConfigurationPropertySource(String name, AppConfigurationReplicaClient replicaClient, int maxRetryTime) {
+    AppConfigurationPropertySource(String name, AppConfigurationReplicaClient replicaClient) {
         // The context alone does not uniquely define a PropertySource, append storeName
         // and label to uniquely define a PropertySource
         super(name);
         this.replicaClient = replicaClient;
-        this.maxRetryTime = maxRetryTime;
     }
 
     @Override

@@ -24,12 +24,12 @@ final class AppConfigurationSnapshotPropertySource extends AppConfigurationAppli
 
     private final String snapshotName;
 
-    AppConfigurationSnapshotPropertySource(String originEndpoint, AppConfigurationReplicaClient replicaClient,
-        AppConfigurationKeyVaultClientFactory keyVaultClientFactory, String snapshotName, int maxRetryTime) {
+    AppConfigurationSnapshotPropertySource(String name, AppConfigurationReplicaClient replicaClient,
+        AppConfigurationKeyVaultClientFactory keyVaultClientFactory, String snapshotName) {
         // The context alone does not uniquely define a PropertySource, append storeName
         // and label to uniquely define a PropertySource
         // super(snapshotName + originEndpoint + "/", replicaClient, maxRetryTime);
-        super(originEndpoint, replicaClient, keyVaultClientFactory, null, null, maxRetryTime);
+        super(name, replicaClient, keyVaultClientFactory, null, null);
         this.keyVaultClientFactory = keyVaultClientFactory;
         this.snapshotName = snapshotName;
     }

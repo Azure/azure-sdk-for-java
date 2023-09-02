@@ -44,12 +44,11 @@ class AppConfigurationApplicationSettingPropertySource extends AppConfigurationP
 
     private final String[] labelFilter;
 
-    AppConfigurationApplicationSettingPropertySource(String originEndpoint, AppConfigurationReplicaClient replicaClient,
-        AppConfigurationKeyVaultClientFactory keyVaultClientFactory, String keyFilter, String[] labelFilter,
-        int maxRetryTime) {
+    AppConfigurationApplicationSettingPropertySource(String name, AppConfigurationReplicaClient replicaClient,
+        AppConfigurationKeyVaultClientFactory keyVaultClientFactory, String keyFilter, String[] labelFilter) {
         // The context alone does not uniquely define a PropertySource, append storeName
         // and label to uniquely define a PropertySource
-        super(keyFilter + originEndpoint + "/" + getLabelName(labelFilter), replicaClient, maxRetryTime);
+        super(name + getLabelName(labelFilter), replicaClient);
         this.keyVaultClientFactory = keyVaultClientFactory;
         this.keyFilter = keyFilter;
         this.labelFilter = labelFilter;
@@ -141,7 +140,7 @@ class AppConfigurationApplicationSettingPropertySource extends AppConfigurationP
             // Parsing Key Vault Reference for URI
             try {
                 uri = new URI(secretReference.getSecretId());
-                secret = keyVaultClientFactory.getClient("https://" + uri.getHost()).getSecret(uri, this.maxRetryTime);
+                secret = keyVaultClientFactory.getClient("https://" + uri.getHost()).getSecret(uri);
             } catch (URISyntaxException e) {
                 LOGGER.error("Error Processing Key Vault Entry URI.");
                 ReflectionUtils.rethrowRuntimeException(e);
