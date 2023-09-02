@@ -42,7 +42,7 @@ public final class CosmosEndToEndOperationLatencyPolicyConfig {
     }
 
     /**
-     * Gets the defined end to end operatoin timeout
+     * Gets the defined end to end operation timeout
      *
      * @return the end to end operation timeout
      */
@@ -59,6 +59,11 @@ public final class CosmosEndToEndOperationLatencyPolicyConfig {
         return availabilityStrategy;
     }
 
+    /**
+     * Sets the end to end operation timeout
+     *
+     * @param endToEndOperationTimeout the end to end operation timeout
+     */
     public void setEndToEndOperationTimeout(Duration endToEndOperationTimeout) {
         this.endToEndOperationTimeout = endToEndOperationTimeout;
     }
