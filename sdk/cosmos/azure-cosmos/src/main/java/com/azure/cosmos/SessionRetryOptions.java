@@ -23,6 +23,8 @@ public final class SessionRetryOptions {
 
     /**
      * Sets the {@link CosmosRegionSwitchHint} instance to use.
+     *
+     * @param regionSwitchHint the region switch hint to use.
      * */
     public void setRegionSwitchHint(CosmosRegionSwitchHint regionSwitchHint) {
         this.regionSwitchHint = regionSwitchHint;

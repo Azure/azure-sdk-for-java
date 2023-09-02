@@ -62,10 +62,20 @@ public final class ThresholdBasedAvailabilityStrategy extends AvailabilityStrate
         return this.thresholdStep;
     }
 
+    /**
+     * Sets the threshold at which the request will be retried on the next region.
+     *
+     * @param threshold the threshold to be set.
+     * */
     public void setThreshold(Duration threshold) {
         this.threshold = threshold;
     }
 
+    /**
+     * Sets the threshold step at which the request will be retried on subsequent regions.
+     *
+     * @param thresholdStep the threshold step to be set.
+     * */
     public void setThresholdStep(Duration thresholdStep) {
         this.thresholdStep = thresholdStep;
     }
