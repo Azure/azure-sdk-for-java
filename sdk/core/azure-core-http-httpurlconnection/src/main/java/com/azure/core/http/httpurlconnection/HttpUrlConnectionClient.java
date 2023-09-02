@@ -26,148 +26,135 @@ public class HttpUrlConnectionClient implements HttpClient {
         this.request = request;
     }
 
-    // Method to send using the stored request
+    // Asynchronous send method returning a Mono of HttpResponse
     public Mono<HttpResponse> send() {
-        return Mono.fromCallable(() -> sendSync(this.request, Context.NONE));
+        return sendAsync(this.request, Context.NONE);
     }
 
     // Asynchronous send method returning a Mono of HttpResponse
     @Override
     public Mono<HttpResponse> send(HttpRequest httpRequest) {
-        return Mono.fromCallable(() -> sendSync(httpRequest, Context.NONE));
+        return sendAsync(httpRequest, Context.NONE);
     }
 
-    // Override the send method with additional context for interface compliance
+    // Asynchronous send method returning a Mono of HttpResponse
     @Override
     public Mono<HttpResponse> send(HttpRequest request, Context context) {
-        return Mono.fromCallable(() -> sendSync(request, context));
+        return sendAsync(request, context);
     }
 
     // Synchronous send method with additional context, primarily for interface compliance
     @Override
     public HttpResponse sendSync(HttpRequest httpRequest, Context context) {
-        HttpMethod httpMethod = httpRequest.getHttpMethod();
+        return sendAsync(httpRequest, context).block();
+    }
 
-        // Check if the HTTP method is PATCH, if so, use the SocketClient to handle it
-        if (httpMethod == HttpMethod.PATCH) {
+    // Asynchronous send method with additional context
+    public Mono<HttpResponse> sendAsync(HttpRequest httpRequest, Context context) {
+        return openConnection(httpRequest)
+            .flatMap(connection -> {
+                HttpMethod httpMethod = httpRequest.getHttpMethod();
+
+                if (httpMethod == HttpMethod.PATCH) {
+                    return sendPatchViaSocket(httpRequest);
+                }
+
+                return setConnectionRequest(connection, httpRequest)
+                    .then(writeRequestBody(connection, httpRequest))
+                    .then(readResponse(connection, httpRequest))
+                    .doFinally(signalType -> connection.disconnect()) // Disconnect connection after processing
+                    .onErrorResume(e -> Mono.error(new RuntimeException(e)));
+            });
+    }
+
+    // Send a PATCH request via a SocketClient
+    private Mono<HttpResponse> sendPatchViaSocket(HttpRequest httpRequest) {
+        return Mono.fromRunnable(() -> {
             try {
                 new SocketClient(httpRequest.getUrl().toString()).sendPatchRequest(httpRequest);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
-        }
-
-        // Convert the given URL string into a URL object
-        URL url;
-        try {
-            url = new URL(httpRequest.getUrl().toString());
-        } catch (MalformedURLException e) {
-            throw new RuntimeException(e);
-        }
-
-        // Initialize the HttpURLConnection object
-        try {
-            this.connection = (HttpURLConnection) url.openConnection();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
-        // Set the request method for the HttpURLConnection
-        try {
-            this.connection.setRequestMethod(httpMethod.toString());
-        } catch (ProtocolException e) {
-            throw new RuntimeException(e);
-        }
-
-        // Set request properties (headers) from the provided HttpRequest
-        for (HttpHeader header : httpRequest.getHeaders()) {
-            this.connection.setRequestProperty(header.getName(), header.getValue());
-        }
-
-        // If the method is other than GET, enable output for the connection
-        if (httpMethod != HttpMethod.GET)
-            this.connection.setDoOutput(true);
-
-        // For POST, PUT, and PATCH methods, write the request body
-        if (httpMethod == HttpMethod.POST || httpMethod == HttpMethod.PUT || httpMethod == HttpMethod.PATCH)
-            writeStream(httpRequest);
-
-        // Construct and return the HttpResponse
-        return new HttpUrlConnectionResponse(
-            httpRequest,
-            httpRequest.getHeaders(),
-            getResponseCode(),
-            readStream().toByteArray()
-        );
+        }).then(Mono.empty());
     }
 
-    // Utility method to read the response stream
-    private ByteArrayOutputStream readStream() {
-        // Stream to hold our received bytes
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        // Declare the inputstream we're about to use
-        InputStream is;
+    // Open a connection based on the HttpRequest URL
+    private Mono<HttpURLConnection> openConnection(HttpRequest httpRequest) {
+        return Mono.fromCallable(() -> {
+            URL url = new URL(httpRequest.getUrl().toString());
+            return (HttpURLConnection) url.openConnection();
+        });
+    }
 
-        try {
-            // Get the connection's input stream
-            is = this.connection.getInputStream();
-            // Chunk to read bytes to. 4MB is both large and small enough, it seems.
-            byte[] chunk = new byte[4096];
-            // Count how many bytes we just read
-            int bytesRead;
+    // Set properties and headers on the HttpURLConnection
+    private Mono<Void> setConnectionRequest(HttpURLConnection connection, HttpRequest httpRequest) {
+        return Mono.fromRunnable(() -> {
+            try {
+                connection.setRequestMethod(httpRequest.getHttpMethod().toString());
+            } catch (ProtocolException e) {
+                throw new RuntimeException(e);
+            }
+            for (HttpHeader header : httpRequest.getHeaders()) {
+                connection.setRequestProperty(header.getName(), header.getValue());
+            }
+            if (httpRequest.getHttpMethod() != HttpMethod.GET)
+                connection.setDoOutput(true);
+        });
+    }
 
-            // Loop through the inputstream while we're still receiving bytes from it
-            while((bytesRead = is.read(chunk)) > 0) {
-                // Write the bytes to the output stream
-                outputStream.write(chunk, 0, bytesRead);
+    // Write the body of the request if necessary
+    private Mono<Void> writeRequestBody(HttpURLConnection connection, HttpRequest httpRequest) {
+        if (httpRequest.getHttpMethod() == HttpMethod.POST || httpRequest.getHttpMethod() == HttpMethod.PUT || httpRequest.getHttpMethod() == HttpMethod.PATCH) {
+            return Mono.fromRunnable(() -> {
+                try (OutputStream os = connection.getOutputStream();
+                     OutputStreamWriter out = new OutputStreamWriter(os)) {
+                    httpRequest.getBody()
+                        .map(buffer -> StandardCharsets.UTF_8.decode(buffer).toString())
+                        .doOnNext(bodyString -> {
+                            try {
+                                out.write(bodyString);
+                            } catch (IOException e) {
+                                throw new RuntimeException(e);
+                            }
+                        }).blockLast();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            });
+        }
+        return Mono.empty();
+    }
+
+    // Read the response and construct the HttpResponse object
+    private Mono<HttpResponse> readResponse(HttpURLConnection connection, HttpRequest httpRequest) {
+        return Mono.fromCallable(() -> {
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            InputStream is;
+            int responseCode = connection.getResponseCode();
+
+            if (responseCode >= 400) { // If it's an HTTP error status
+                is = connection.getErrorStream();
+                if (is == null) { // In rare cases, there might not be any error stream.
+                    throw new IOException("HTTP error without any response body.");
+                }
+            } else {
+                is = connection.getInputStream();
             }
 
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        // Once we're done with the above try{} block, attempt to close the inputstream
-        // As long as it actually exists
-        try {
-            is.close();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        return outputStream;
+            try {
+                byte[] chunk = new byte[4096];
+                int bytesRead;
+                while ((bytesRead = is.read(chunk)) > 0) {
+                    outputStream.write(chunk, 0, bytesRead);
+                }
+                return new HttpUrlConnectionResponse(httpRequest, httpRequest.getHeaders(), responseCode, outputStream.toByteArray());
+
+            } finally {
+                if (is != null) {
+                    is.close();  // Make sure to close the InputStream
+                }
+            }
+        });
     }
 
-    // Utility method to write the request body
-    private void writeStream(HttpRequest httpRequest) {
-        try {
-            // Get the output stream of the connection
-            OutputStream os = this.connection.getOutputStream();
-            // Create writer we can use to send info across the stream
-            OutputStreamWriter out = new OutputStreamWriter(os);
-            // Write the whole body to the writer
-            // Body comes as a Flux<ByteBuffer>, so process it down to the out.write command
-            httpRequest
-                .getBody()
-                .map(s -> StandardCharsets.UTF_8.decode(s).toString())
-                .subscribe(i -> {
-                    try {
-                        out.write(i);
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
-                    }
-                });
-
-            // And close it
-            out.close();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    // Utility method to get the response code
-    private int getResponseCode() {
-        try {
-            return this.connection.getResponseCode();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
 }

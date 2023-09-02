@@ -37,7 +37,7 @@ import java.util.concurrent.TimeUnit;
 import static org.junit.jupiter.api.Assertions.*;
 
 @Execution(ExecutionMode.SAME_THREAD)
-public class HttpUrlConnectionAsyncClientTest {
+public class HttpUrlConnectionClientTest {
     static final String RETURN_HEADERS_AS_IS_PATH = "/returnHeadersAsIs";
     private static final byte[] SHORT_BODY = "hi there".getBytes(StandardCharsets.UTF_8);
     private static final byte[] LONG_BODY = createLongBody();

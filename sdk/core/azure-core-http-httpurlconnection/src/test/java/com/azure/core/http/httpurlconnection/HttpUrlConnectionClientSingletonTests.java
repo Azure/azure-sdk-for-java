@@ -3,13 +3,6 @@
 
 package com.azure.core.http.httpurlconnection;
 
-import com.azure.core.http.HttpClient;
-import com.azure.core.test.utils.TestConfigurationSource;
-import com.azure.core.util.Configuration;
-import com.azure.core.util.ConfigurationBuilder;
-import com.azure.core.util.ConfigurationSource;
-import com.azure.core.util.HttpClientOptions;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
 
@@ -17,7 +10,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 @Execution(ExecutionMode.SAME_THREAD) // because singleton http client, it can avoid race condition.
-public class HttpUrlConnectionAsyncClientSingletonTests {
+public class HttpUrlConnectionClientSingletonTests {
     // ** To be implemented once configurations such as client sharing are implemented ** //
 //    @Test
 //    public void testSingletonClientInstanceCreation() {
