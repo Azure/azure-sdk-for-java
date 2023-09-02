@@ -883,6 +883,9 @@ public class CosmosClientBuilder implements
      * Sets the regions to exclude from the list of preferred regions. This means the request will not be
      * routed to these excluded regions for non-retry and retry scenarios
      * for the workload executed through this instance of {@link CosmosClient} / {@link CosmosAsyncClient}.
+     *
+     * @param excludeRegions The list of regions to exclude.
+     * @return current CosmosClientBuilder.
      * */
     public CosmosClientBuilder excludeRegions(List<String> excludeRegions) {
         this.excludeRegions = new ArrayList<>();
@@ -890,6 +893,13 @@ public class CosmosClientBuilder implements
         return this;
     }
 
+    /**
+     * Sets the regions to exclude from the list of preferred regions. This means the request will not be
+     * routed to these excluded regions for non-retry and retry scenarios
+     * for the workload executed through this instance of {@link CosmosClient} / {@link CosmosAsyncClient}.
+     *
+     * @return the list of regions to exclude.
+     * */
     public List<String> getExcludeRegions() {
         if (this.excludeRegions == null) {
             return null;
