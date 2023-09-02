@@ -5,6 +5,7 @@ package com.azure.cosmos.models;
 
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosDiagnostics;
+import com.azure.cosmos.CosmosDiagnosticsContext;
 import com.azure.cosmos.CosmosDiagnosticsThresholds;
 import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfig;
 import com.azure.cosmos.implementation.Configs;
@@ -61,6 +62,7 @@ public class CosmosQueryRequestOptions {
     private CosmosEndToEndOperationLatencyPolicyConfig cosmosEndToEndOperationLatencyPolicyConfig;
     private List<CosmosDiagnostics> cancelledRequestDiagnosticsTracker = new ArrayList<>();
     private List<String> excludeRegions;
+    private CosmosDiagnosticsContext ctx;
 
     /**
      * Instantiates a new query request options.
@@ -106,6 +108,7 @@ public class CosmosQueryRequestOptions {
         this.cosmosEndToEndOperationLatencyPolicyConfig = options.cosmosEndToEndOperationLatencyPolicyConfig;
         this.excludeRegions = options.excludeRegions;
         this.cancelledRequestDiagnosticsTracker = options.cancelledRequestDiagnosticsTracker;
+        this.ctx = options.ctx;
     }
 
     void setOperationContextAndListenerTuple(OperationContextAndListenerTuple operationContextAndListenerTuple) {
@@ -718,6 +721,14 @@ public class CosmosQueryRequestOptions {
         this.cancelledRequestDiagnosticsTracker = cancelledRequestDiagnosticsTracker;
     }
 
+    CosmosDiagnosticsContext getDiagnosticsContext() {
+        return this.ctx;
+    }
+
+    void setDiagnosticsContext(CosmosDiagnosticsContext ctx) {
+        this.ctx = ctx;
+    }
+
     ///////////////////////////////////////////////////////////////////////////////////////////
     // the following helper/accessor only helps to access this class outside of this package.//
     ///////////////////////////////////////////////////////////////////////////////////////////
@@ -838,6 +849,10 @@ public class CosmosQueryRequestOptions {
                         }
                     }
 
+                    if (queryRequestOptions.getDiagnosticsContext() != null) {
+                        requestOptions.setDiagnosticsContext(queryRequestOptions.getDiagnosticsContext());
+                    }
+
                     return requestOptions;
                 }
 
@@ -877,6 +892,16 @@ public class CosmosQueryRequestOptions {
                     List<CosmosDiagnostics> cancelledRequestDiagnosticsTracker) {
 
                     options.setCancelledRequestDiagnosticsTracker(cancelledRequestDiagnosticsTracker);
+                }
+
+                @Override
+                public CosmosDiagnosticsContext getDiagnosticsContext(CosmosQueryRequestOptions options) {
+                    return options.getDiagnosticsContext();
+                }
+
+                @Override
+                public void setDiagnosticsContext(CosmosQueryRequestOptions options, CosmosDiagnosticsContext ctx) {
+                    options.setDiagnosticsContext(ctx);
                 }
 
                 @Override

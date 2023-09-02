@@ -958,6 +958,9 @@ public class CosmosAsyncContainer {
             String spanName = this.queryItemsSpanName;
 
             queryOptionsAccessor.applyMaxItemCount(options, pagedFluxOptions);
+            if (pagedFluxOptions.getDiagnosticsContext() != null) {
+                queryOptionsAccessor.setDiagnosticsContext(options, pagedFluxOptions.getDiagnosticsContext());
+            }
 
             pagedFluxOptions.setTracerAndTelemetryInformation(
                 spanName,

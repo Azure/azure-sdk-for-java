@@ -254,44 +254,39 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
 
 
         final DiagnosticsProvider tracerProvider = pagedFluxOptions.getDiagnosticsProvider();
-        if (isTracerEnabled(tracerProvider)) {
+        final CosmosDiagnosticsContext cosmosCtx = ctxAccessor.create(
+            pagedFluxOptions.getSpanName(),
+            pagedFluxOptions.getAccountTag(),
+            BridgeInternal.getServiceEndpoint(pagedFluxOptions.getCosmosAsyncClient()),
+            pagedFluxOptions.getDatabaseId(),
+            pagedFluxOptions.getContainerId(),
+            pagedFluxOptions.getResourceType(),
+            pagedFluxOptions.getOperationType(),
+            pagedFluxOptions.getOperationId(),
+            pagedFluxOptions.getEffectiveConsistencyLevel(),
+            pagedFluxOptions.getMaxItemCount(),
+            pagedFluxOptions.getDiagnosticsThresholds(),
+            null,
+            pagedFluxOptions.getConnectionMode(),
+            pagedFluxOptions.getUserAgent());
+        ctxAccessor.setSamplingRateSnapshot(cosmosCtx, pagedFluxOptions.getSamplingRateSnapshot());
+        pagedFluxOptions.setDiagnosticsContext(cosmosCtx);
 
-            final CosmosDiagnosticsContext cosmosCtx = ctxAccessor.create(
-                pagedFluxOptions.getSpanName(),
-                pagedFluxOptions.getAccountTag(),
-                BridgeInternal.getServiceEndpoint(pagedFluxOptions.getCosmosAsyncClient()),
-                pagedFluxOptions.getDatabaseId(),
-                pagedFluxOptions.getContainerId(),
-                pagedFluxOptions.getResourceType(),
-                pagedFluxOptions.getOperationType(),
-                pagedFluxOptions.getOperationId(),
-                pagedFluxOptions.getEffectiveConsistencyLevel(),
-                pagedFluxOptions.getMaxItemCount(),
-                pagedFluxOptions.getDiagnosticsThresholds(),
-                null,
-                pagedFluxOptions.getConnectionMode(),
-                pagedFluxOptions.getUserAgent());
-            ctxAccessor.setSamplingRateSnapshot(cosmosCtx, pagedFluxOptions.getSamplingRateSnapshot());
-
-            return Flux
-                .deferContextual(reactorCtx -> result
-                    .doOnCancel(() -> {
-                        Context traceCtx = DiagnosticsProvider.getContextFromReactorOrNull(reactorCtx);
-                        tracerProvider.endSpan(traceCtx);
-                    })
-                    .doOnComplete(() -> {
-                        Context traceCtx = DiagnosticsProvider.getContextFromReactorOrNull(reactorCtx);
-                        tracerProvider.endSpan(traceCtx);
-                    }))
-                .contextWrite(DiagnosticsProvider.setContextInReactor(
-                    pagedFluxOptions.getDiagnosticsProvider().startSpan(
-                        pagedFluxOptions.getSpanName(),
-                        cosmosCtx,
-                        context)));
-
-        }
-
-        return result;
+        return Flux
+            .deferContextual(reactorCtx -> result
+                .doOnCancel(() -> {
+                    Context traceCtx = DiagnosticsProvider.getContextFromReactorOrNull(reactorCtx);
+                    tracerProvider.endSpan(traceCtx);
+                })
+                .doOnComplete(() -> {
+                    Context traceCtx = DiagnosticsProvider.getContextFromReactorOrNull(reactorCtx);
+                    tracerProvider.endSpan(traceCtx);
+                }))
+            .contextWrite(DiagnosticsProvider.setContextInReactor(
+                pagedFluxOptions.getDiagnosticsProvider().startSpan(
+                    pagedFluxOptions.getSpanName(),
+                    cosmosCtx,
+                    context)));
     }
 
     private boolean isTracerEnabled(DiagnosticsProvider tracerProvider) {

@@ -132,6 +132,7 @@ class DocumentProducer<T> {
         this.fetchSchedulingMetrics.ready();
         this.fetchExecutionRangeAccumulator = new FetchExecutionRangeAccumulator(feedRange.getRange().toString());
         this.operationContextTextProvider = operationContextTextProvider;
+        // TODO @fabianm wire up clientContext - hedging needs to be applied here
         this.executeRequestFuncWithRetries = request -> {
             retries = -1;
             this.fetchSchedulingMetrics.start();

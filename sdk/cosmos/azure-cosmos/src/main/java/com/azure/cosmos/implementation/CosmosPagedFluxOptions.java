@@ -5,6 +5,7 @@ package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosAsyncClient;
+import com.azure.cosmos.CosmosDiagnosticsContext;
 import com.azure.cosmos.CosmosDiagnosticsThresholds;
 import com.azure.cosmos.util.CosmosPagedFlux;
 
@@ -30,6 +31,8 @@ public class CosmosPagedFluxOptions {
     private CosmosAsyncClient cosmosAsyncClient;
     private CosmosDiagnosticsThresholds thresholds;
     private String operationId;
+
+    private CosmosDiagnosticsContext ctx;
 
     private String userAgent;
     private String connectionMode;
@@ -159,6 +162,13 @@ public class CosmosPagedFluxOptions {
 
     public String getConnectionMode() { return this.connectionMode; }
 
+    public CosmosDiagnosticsContext getDiagnosticsContext() {
+        return this.ctx;
+    }
+
+    public void setDiagnosticsContext(CosmosDiagnosticsContext ctx) {
+        this.ctx = ctx;
+    }
 
     public void setTracerInformation(
         String tracerSpanName,
@@ -201,7 +211,8 @@ public class CosmosPagedFluxOptions {
                                                  CosmosAsyncClient cosmosAsyncClient,
                                                  String operationId,
                                                  ConsistencyLevel consistencyLevel,
-                                                 CosmosDiagnosticsThresholds thresholds
+                                                 CosmosDiagnosticsThresholds thresholds,
+
     ) {
         checkNotNull(tracerSpanName, "Argument 'tracerSpanName' must not be NULL.");
         checkNotNull(databaseId, "Argument 'databaseId' must not be NULL.");

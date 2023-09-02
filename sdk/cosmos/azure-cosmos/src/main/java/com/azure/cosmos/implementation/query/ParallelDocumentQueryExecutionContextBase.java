@@ -103,8 +103,7 @@ public abstract class ParallelDocumentQueryExecutionContextBase<T>
                     commonRequestHeaders,
                     createRequestFunc,
                     executeFunc,
-                    // TODO @fabianm wire up clientContext
-                    () -> client.getResetSessionTokenRetryPolicy().getRequestPolicy(null),
+                    () -> client.getResetSessionTokenRetryPolicy().getRequestPolicy(this.diagnosticsClientContext),
                     targetRange);
 
             documentProducers.add(dp);
@@ -163,7 +162,6 @@ public abstract class ParallelDocumentQueryExecutionContextBase<T>
                     this.factoryMethod,
                     request);
 
-            // TODO: Review pagesize -1
             DocumentProducer<T> dp =
                 createDocumentProducer(
                     collectionRid,
@@ -174,8 +172,7 @@ public abstract class ParallelDocumentQueryExecutionContextBase<T>
                     commonRequestHeaders,
                     createRequestFunc,
                     executeFunc,
-                    // TODO @fabianm wire up clientContext
-                    () -> client.getResetSessionTokenRetryPolicy().getRequestPolicy(null),
+                    () -> client.getResetSessionTokenRetryPolicy().getRequestPolicy(this.diagnosticsClientContext),
                     feedRangeEpk);
 
             documentProducers.add(dp);

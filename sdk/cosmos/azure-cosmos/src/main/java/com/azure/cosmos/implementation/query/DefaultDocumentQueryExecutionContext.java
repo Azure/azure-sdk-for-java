@@ -149,8 +149,9 @@ public class DefaultDocumentQueryExecutionContext<T> extends DocumentQueryExecut
     protected Function<RxDocumentServiceRequest, Mono<FeedResponse<T>>> executeInternalAsyncFunc() {
         RxCollectionCache collectionCache = this.client.getCollectionCache();
         IPartitionKeyRangeCache partitionKeyRangeCache =  this.client.getPartitionKeyRangeCache();
-        // TODO @fabianm wire up clientContext
-        DocumentClientRetryPolicy retryPolicyInstance = this.client.getResetSessionTokenRetryPolicy().getRequestPolicy(null);
+        DocumentClientRetryPolicy retryPolicyInstance = this.client.getResetSessionTokenRetryPolicy().getRequestPolicy(this.diagnosticsClientContext);
+
+        // TODO @fabianm wire up clientContext - hedging needs to be applied here
 
         retryPolicyInstance = new InvalidPartitionExceptionRetryPolicy(
             collectionCache,
@@ -167,6 +168,7 @@ public class DefaultDocumentQueryExecutionContext<T> extends DocumentQueryExecut
         }
 
         final DocumentClientRetryPolicy finalRetryPolicyInstance = retryPolicyInstance;
+
 
         return req -> {
             finalRetryPolicyInstance.onBeforeSendRequest(req);

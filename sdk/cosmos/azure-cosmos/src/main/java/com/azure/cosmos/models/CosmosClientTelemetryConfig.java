@@ -146,7 +146,6 @@ public final class CosmosClientTelemetryConfig {
         checkNotNull(clientMetricsOptions, "expected non-null clientMetricsOptions");
 
         if (! (clientMetricsOptions instanceof CosmosMicrometerMetricsOptions)) {
-            // TODO @fabianm -  extend this to OpenTelemetry etc. eventually
             throw new IllegalArgumentException(
                 "Currently only MetricsOptions of type CosmosMicrometerMetricsOptions are supported");
         }

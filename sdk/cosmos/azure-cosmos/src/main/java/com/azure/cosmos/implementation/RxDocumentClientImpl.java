@@ -148,6 +148,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     private final static
     ImplementationBridgeHelpers.CosmosDiagnosticsContextHelper.CosmosDiagnosticsContextAccessor ctxAccessor =
         ImplementationBridgeHelpers.CosmosDiagnosticsContextHelper.getCosmosDiagnosticsContextAccessor();
+
+    private final static
+    ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.CosmosQueryRequestOptionsAccessor qryOptAccessor =
+        ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.getCosmosQueryRequestOptionsAccessor();
     private static final String tempMachineId = "uuid:" + UUID.randomUUID();
     private static final AtomicInteger activeClientsCnt = new AtomicInteger(0);
     private static final Map<String, Integer> clientMap = new ConcurrentHashMap<>();
@@ -933,9 +937,20 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         String resourceLink = parentResourceLinkToQueryLink(parentResourceLink, resourceTypeEnum);
 
-        UUID correlationActivityIdOfRequestOptions = ImplementationBridgeHelpers
-            .CosmosQueryRequestOptionsHelper
-            .getCosmosQueryRequestOptionsAccessor()
+        CosmosQueryRequestOptions nonNullQueryOptions = options != null ? options : new CosmosQueryRequestOptions();
+        RequestOptions nonNullRequestOptions = qryOptAccessor.toRequestOptions(nonNullQueryOptions);
+
+        CosmosEndToEndOperationLatencyPolicyConfig endToEndPolicyConfig =
+            nonNullRequestOptions.getCosmosEndToEndLatencyPolicyConfig();
+
+        List<String> orderedApplicableRegionsForSpeculation = getApplicableRegionsForSpeculation(
+            endToEndPolicyConfig,
+            resourceTypeEnum,
+            OperationType.Query,
+            false,
+            nonNullRequestOptions);
+
+        UUID correlationActivityIdOfRequestOptions = qryOptAccessor
             .getCorrelationActivityId(options);
         UUID correlationActivityId = correlationActivityIdOfRequestOptions != null ?
             correlationActivityIdOfRequestOptions : randomUuid();
@@ -953,13 +968,34 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             resourceLink,
             ModelBridgeInternal.getPropertiesFromQueryRequestOptions(options));
 
-        return ObservableHelper.fluxInlineIfPossibleAsObs(
-            () -> createQueryInternal(
-                resourceLink, sqlQuery, options, klass, resourceTypeEnum, queryClient, correlationActivityId, isQueryCancelledOnTimeout),
-            invalidPartitionExceptionRetryPolicy);
+        if (orderedApplicableRegionsForSpeculation.size() < 2) {
+            // no hedging
+            return ObservableHelper.fluxInlineIfPossibleAsObs(
+                () -> createQueryInternal(
+                    this, resourceLink, sqlQuery, options, klass, resourceTypeEnum, queryClient, correlationActivityId, isQueryCancelledOnTimeout),
+                invalidPartitionExceptionRetryPolicy);
+        } else {
+            final ScopedDiagnosticsFactory diagnosticsFactory = new ScopedDiagnosticsFactory(this);
+            return
+                ObservableHelper.fluxInlineIfPossibleAsObs(
+                    () -> createQueryInternal(
+                        diagnosticsFactory, resourceLink, sqlQuery, options, klass, resourceTypeEnum, queryClient, correlationActivityId, isQueryCancelledOnTimeout),
+                    invalidPartitionExceptionRetryPolicy
+                )
+                .flatMap(result -> {
+                    diagnosticsFactory.merge(nonNullRequestOptions);
+                    return Mono.just(result);
+                })
+                .onErrorMap(throwable -> {
+                    diagnosticsFactory.merge(nonNullRequestOptions);
+                    return throwable;
+                })
+                .doOnCancel(() -> diagnosticsFactory.merge(nonNullRequestOptions));
+        }
     }
 
     private <T> Flux<FeedResponse<T>> createQueryInternal(
+            DiagnosticsClientContext diagnosticsClientContext,
             String resourceLink,
             SqlQuerySpec sqlQuery,
             CosmosQueryRequestOptions options,
@@ -971,7 +1007,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         Flux<? extends IDocumentQueryExecutionContext<T>> executionContext =
             DocumentQueryExecutionContextFactory
-                .createDocumentQueryExecutionContextAsync(this, queryClient, resourceTypeEnum, klass, sqlQuery,
+                .createDocumentQueryExecutionContextAsync(diagnosticsClientContext, queryClient, resourceTypeEnum, klass, sqlQuery,
                                                           options, resourceLink, false, activityId,
                                                           Configs.isQueryPlanCachingEnabled(), queryPlanCache, isQueryCancelledOnTimeout);
 
@@ -1023,9 +1059,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         CosmosException exception) {
 
         List<CosmosDiagnostics> cancelledRequestDiagnostics =
-            ImplementationBridgeHelpers
-                .CosmosQueryRequestOptionsHelper
-                .getCosmosQueryRequestOptionsAccessor()
+            qryOptAccessor
                 .getCancelledRequestDiagnosticsTracker(requestOptions);
 
         // if there is any cancelled requests, collect cosmos diagnostics
@@ -3231,7 +3265,33 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             throw new IllegalArgumentException("partitionKey");
         }
 
-        RxDocumentServiceRequest request = RxDocumentServiceRequest.create(this,
+        final CosmosQueryRequestOptions effectiveOptions =
+            ModelBridgeInternal.createQueryRequestOptions(options);
+
+        RequestOptions nonNullRequestOptions = qryOptAccessor.toRequestOptions(effectiveOptions);
+
+        CosmosEndToEndOperationLatencyPolicyConfig endToEndPolicyConfig =
+            nonNullRequestOptions.getCosmosEndToEndLatencyPolicyConfig();
+
+        List<String> orderedApplicableRegionsForSpeculation = getApplicableRegionsForSpeculation(
+            endToEndPolicyConfig,
+            ResourceType.Document,
+            OperationType.Query,
+            false,
+            nonNullRequestOptions);
+
+        DiagnosticsClientContext effectiveClientContext;
+        ScopedDiagnosticsFactory diagnosticsFactory;
+        if (orderedApplicableRegionsForSpeculation.size() < 2) {
+            effectiveClientContext = this;
+            diagnosticsFactory = null;
+        } else {
+            diagnosticsFactory = new ScopedDiagnosticsFactory(this);
+            effectiveClientContext = diagnosticsFactory;
+        }
+
+        RxDocumentServiceRequest request = RxDocumentServiceRequest.create(
+            effectiveClientContext,
             OperationType.Query,
             ResourceType.Document,
             collectionLink,
@@ -3260,9 +3320,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
             IDocumentQueryClient queryClient = documentQueryClientImpl(RxDocumentClientImpl.this, getOperationContextAndListenerTuple(options));
 
-            final CosmosQueryRequestOptions effectiveOptions =
-                ModelBridgeInternal.createQueryRequestOptions(options);
-
             // Trying to put this logic as low as the query pipeline
             // Since for parallelQuery, each partition will have its own request, so at this point, there will be no request associate with this retry policy.
             // For default document context, it already wired up InvalidPartitionExceptionRetry, but there is no harm to wire it again here
@@ -3272,7 +3329,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 resourceLink,
                 ModelBridgeInternal.getPropertiesFromQueryRequestOptions(effectiveOptions));
 
-            return ObservableHelper.fluxInlineIfPossibleAsObs(
+            Flux<FeedResponse<T>> innerFlux = ObservableHelper.fluxInlineIfPossibleAsObs(
                 () -> {
                     Flux<Utils.ValueHolder<CollectionRoutingMap>> valueHolderMono = this.partitionKeyRangeCache
                         .tryLookupAsync(
@@ -3280,6 +3337,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                             collection.getResourceId(),
                             null,
                             null).flux();
+
                     return valueHolderMono.flatMap(collectionRoutingMapValueHolder -> {
 
                         CollectionRoutingMap routingMap = collectionRoutingMapValueHolder.v;
@@ -3298,6 +3356,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                             routingMap.getRangeByEffectivePartitionKey(effectivePartitionKeyString);
 
                         return createQueryInternal(
+                            effectiveClientContext,
                             resourceLink,
                             querySpec,
                             ModelBridgeInternal.setPartitionKeyRangeIdInternal(effectiveOptions, range.getId()),
@@ -3309,6 +3368,21 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                     });
                 },
                 invalidPartitionExceptionRetryPolicy);
+
+            if (orderedApplicableRegionsForSpeculation.size() < 2) {
+                return innerFlux;
+            }
+
+            return innerFlux
+                .flatMap(result -> {
+                    diagnosticsFactory.merge(nonNullRequestOptions);
+                    return Mono.just(result);
+                })
+                .onErrorMap(throwable -> {
+                    diagnosticsFactory.merge(nonNullRequestOptions);
+                    return throwable;
+                })
+                .doOnCancel(() -> diagnosticsFactory.merge(nonNullRequestOptions));
         });
     }
 
@@ -4609,7 +4683,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         Integer maxItemCount = ModelBridgeInternal.getMaxItemCountFromQueryRequestOptions(options);
         int maxPageSize = maxItemCount != null ? maxItemCount : -1;
         final CosmosQueryRequestOptions finalCosmosQueryRequestOptions = options;
-        // TODO @fabianm wire up clientContext
+        // readFeed is only used for non-document operations - no need to wire up hedging
         DocumentClientRetryPolicy retryPolicy = this.resetSessionTokenRetryPolicy.getRequestPolicy(null);
         BiFunction<String, Integer, RxDocumentServiceRequest> createRequestFunc = (continuationToken, pageSize) -> {
             Map<String, String> requestHeaders = new HashMap<>();

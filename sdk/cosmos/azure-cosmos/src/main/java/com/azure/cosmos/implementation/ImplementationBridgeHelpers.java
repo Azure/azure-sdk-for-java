@@ -280,6 +280,10 @@ public class ImplementationBridgeHelpers {
             void setCancelledRequestDiagnosticsTracker(
                 CosmosQueryRequestOptions options,
                 List<CosmosDiagnostics> cancelledRequestDiagnosticsTracker);
+            CosmosDiagnosticsContext getDiagnosticsContext(CosmosQueryRequestOptions options);
+            void setDiagnosticsContext(
+                CosmosQueryRequestOptions options,
+                CosmosDiagnosticsContext ctx);
         }
     }
 
