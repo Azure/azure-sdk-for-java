@@ -11,6 +11,8 @@ class AzureKeyVaultCertificateTestProperties extends AzureHttpSdkProperties impl
     private String endpoint;
     private CertificateServiceVersion serviceVersion;
 
+    private boolean challengeResourceVerificationEnabled = true;
+
     @Override
     public String getEndpoint() {
         return endpoint;
@@ -27,5 +29,14 @@ class AzureKeyVaultCertificateTestProperties extends AzureHttpSdkProperties impl
 
     public void setServiceVersion(CertificateServiceVersion serviceVersion) {
         this.serviceVersion = serviceVersion;
+    }
+
+    @Override
+    public boolean isChallengeResourceVerificationEnabled() {
+        return challengeResourceVerificationEnabled;
+    }
+
+    public void setChallengeResourceVerificationEnabled(boolean challengeResourceVerificationEnabled) {
+        this.challengeResourceVerificationEnabled = challengeResourceVerificationEnabled;
     }
 }
