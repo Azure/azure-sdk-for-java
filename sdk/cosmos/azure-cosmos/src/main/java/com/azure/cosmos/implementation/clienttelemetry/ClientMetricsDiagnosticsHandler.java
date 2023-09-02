@@ -52,11 +52,10 @@ public final class ClientMetricsDiagnosticsHandler implements CosmosDiagnosticsH
                     if (!executor.isShutdown()) {
                         Runnable task = executor.getQueue().poll();
                         executor.execute(r);
-                        if (logger.isDebugEnabled()) {
-                            logger.debug(
-                                "ClientMetricsRecordingQueue is full, dropping metrics reporting for operation {}",
-                                task.toString());
-                        }
+                        // TODO: maybe use debug log level
+                        logger.warn(
+                            "ClientMetricsRecordingQueue is full, dropping metrics reporting for operation {}",
+                            task.toString());
                     }
                 }
             }); // if the task queue being full, then discard the oldest task
@@ -69,9 +68,8 @@ public final class ClientMetricsDiagnosticsHandler implements CosmosDiagnosticsH
         try {
             this.executorService.submit(new ClientMetricsOperationRecordingTask(this.client, diagnosticsContext));
         } catch (Exception e) {
-            if (logger.isDebugEnabled()) {
-                logger.debug("Record metrics failed for operation {} with exception {}", diagnosticsContext.toString(), e);
-            }
+            // TODO: maybe use debug log level
+            logger.warn("Record metrics failed for operation {} with exception {}", diagnosticsContext.toString(), e);
         }
     }
 
