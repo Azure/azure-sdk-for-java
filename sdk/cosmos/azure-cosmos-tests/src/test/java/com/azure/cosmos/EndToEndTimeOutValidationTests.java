@@ -264,6 +264,63 @@ public class EndToEndTimeOutValidationTests extends TestSuiteBase {
 
     }
 
+    @Test(groups = {"simple"}, timeOut = 10000L)
+    public void clientLevelEndToEndTimeoutMutationForPointRead() {
+
+        if (getClientBuilder().buildConnectionPolicy().getConnectionMode() != ConnectionMode.DIRECT) {
+            throw new SkipException("Injecting fault relevant to the direct connectivity mode.");
+        }
+
+        CosmosEndToEndOperationLatencyPolicyConfig cosmosEndToEndOperationLatencyPolicyConfig = new CosmosEndToEndOperationLatencyPolicyConfigBuilder(Duration.ofSeconds(1)).build();
+
+        CosmosClientBuilder builder = new CosmosClientBuilder()
+            .endpoint(TestConfigurations.HOST)
+            .endToEndOperationLatencyPolicyConfig(cosmosEndToEndOperationLatencyPolicyConfig)
+            .credential(credential);
+
+        try (CosmosAsyncClient cosmosAsyncClient = builder.buildAsyncClient()) {
+            String dbname = "db_" + UUID.randomUUID();
+            String containerName = "container_" + UUID.randomUUID();
+            CosmosContainerProperties properties = new CosmosContainerProperties(containerName, "/mypk");
+            cosmosAsyncClient.createDatabaseIfNotExists(dbname).block();
+            cosmosAsyncClient.getDatabase(dbname)
+                             .createContainerIfNotExists(properties).block();
+            CosmosAsyncContainer container = cosmosAsyncClient.getDatabase(dbname)
+                                                              .getContainer(containerName);
+
+            TestObject obj = new TestObject(UUID.randomUUID().toString(),
+                "name123",
+                2,
+                UUID.randomUUID().toString());
+            CosmosItemResponse response = container.createItem(obj).block();
+
+            Mono<CosmosItemResponse<TestObject>> cosmosItemResponseMono =
+                container.readItem(obj.id, new PartitionKey(obj.mypk), TestObject.class);
+
+            // Should read item properly before injecting failure
+            StepVerifier.create(cosmosItemResponseMono)
+                        .expectNextCount(1)
+                        .expectComplete()
+                        .verify();
+
+            injectFailure(container, FaultInjectionOperationType.READ_ITEM, null);
+
+            verifyExpectError(cosmosItemResponseMono);
+
+            cosmosEndToEndOperationLatencyPolicyConfig.setEndToEndOperationTimeout(Duration.ofSeconds(5));
+
+            // with increased endToEndOperationTimeout, we shouldn't see
+            // an end-to-end timeout
+            StepVerifier.create(cosmosItemResponseMono)
+                        .expectNextCount(1)
+                        .expectComplete()
+                        .verify();
+
+            // delete the database
+            cosmosAsyncClient.getDatabase(dbname).delete().block();
+        }
+    }
+
 
     private FaultInjectionRule injectFailure(
         CosmosAsyncContainer container,
