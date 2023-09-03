@@ -475,8 +475,12 @@ public final class ConnectionPolicy {
     }
 
     public synchronized ConnectionPolicy setExcludeRegions(List<String> excludeRegions) {
-        this.excludeRegions = new ArrayList<>();
-        this.excludeRegions.addAll(excludeRegions);
+
+        if (excludeRegions != null) {
+            this.excludeRegions = new ArrayList<>();
+            this.excludeRegions.addAll(excludeRegions);
+        }
+
         return this;
     }
 
