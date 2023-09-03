@@ -480,7 +480,7 @@ public final class ConnectionPolicy {
         return this;
     }
 
-    public List<String> getExcludeRegions() {
+    public synchronized List<String> getExcludeRegions() {
         return this.excludeRegions;
     }
 
