@@ -128,14 +128,10 @@ public class JsonArray extends JsonElement {
      */
 
     public String toJson() throws IOException {
-
-        String s = null;
         try (StringWriter stringOutput = new StringWriter()) {
             toWriter(stringOutput);
-            s = stringOutput.toString();
+            return stringOutput.toString();
         }
-        return s;
-
     }
 
     /**
