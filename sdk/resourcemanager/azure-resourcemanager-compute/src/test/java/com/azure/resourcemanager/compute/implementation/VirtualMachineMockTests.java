@@ -24,6 +24,7 @@ import com.azure.resourcemanager.compute.models.OSDisk;
 import com.azure.resourcemanager.compute.models.OSProfile;
 import com.azure.resourcemanager.compute.models.StorageAccountTypes;
 import com.azure.resourcemanager.compute.models.StorageProfile;
+import com.azure.resourcemanager.compute.models.VirtualMachine;
 import com.azure.resourcemanager.compute.models.VirtualMachineSizeTypes;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.github.tomakehurst.wiremock.WireMockServer;
@@ -44,9 +45,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-public class VirtualMachineListByVmssIdMockTests  {
+public class VirtualMachineMockTests {
     private static final String NEXT_LINK_PATH = "/nextLink";
-    private static final String QUERY = "'virtualMachineScaleSet/id'eq'id'";
+    // query contains unescaped space
+    private static final String QUERY = "'virtualMachineScaleSet/id' eq 'id'";
     private static final SerializerAdapter SERIALIZER = SerializerFactory.createDefaultManagementSerializerAdapter();
     private final StateHolder stateHolder = new StateHolder();
 
@@ -57,8 +59,8 @@ public class VirtualMachineListByVmssIdMockTests  {
         try {
             ComputeManager computeManager = mockComputeManager(mockServer);
 
-            PagedIterable<VirtualMachineInner> virtualMachines = computeManager.serviceClient().getVirtualMachines().listByResourceGroup("rg", QUERY, null, Context.NONE);
-            // 1 element per page, 2 pages total
+            PagedIterable<VirtualMachine> virtualMachines = computeManager.virtualMachines().listByVirtualMachineScaleSetId("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg97796/providers/Microsoft.Compute/virtualMachineScaleSets/vmss035803b7");
+            // 1 element per page, 2 pages in total
             Assertions.assertEquals(2, virtualMachines.stream().count());
             Assertions.assertTrue(stateHolder.firstPageRequested);
             Assertions.assertTrue(stateHolder.secondPageRequested);
@@ -75,7 +77,6 @@ public class VirtualMachineListByVmssIdMockTests  {
         // just to mitigate npe, no actual use here
         environment.put("microsoftGraphResourceId", mockServer.baseUrl());
         AzureProfile mockProfile = new AzureProfile(UUID.randomUUID().toString(), UUID.randomUUID().toString(), new AzureEnvironment(environment));
-        stateHolder.nextLinkUrl = String.format("%s%s?filter=%s", mockServer.baseUrl(), NEXT_LINK_PATH, QUERY);
         ComputeManager computeManager = ComputeManager.authenticate(new HttpPipelineBuilder().build(), mockProfile);
         return computeManager;
     }
@@ -127,6 +128,7 @@ public class VirtualMachineListByVmssIdMockTests  {
             .disableRequestJournal());
         mockServer.stubFor(WireMock.any(WireMock.anyUrl()).willReturn(WireMock.aResponse()));
         mockServer.start();
+        stateHolder.nextLinkUrl = String.format("%s%s?filter=%s", mockServer.baseUrl(), NEXT_LINK_PATH, QUERY);
         return mockServer;
     }
 

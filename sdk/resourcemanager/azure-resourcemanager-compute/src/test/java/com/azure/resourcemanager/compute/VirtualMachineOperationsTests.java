@@ -64,6 +64,7 @@ import com.azure.resourcemanager.storage.models.StorageAccount;
 import com.azure.resourcemanager.storage.models.StorageAccountSkuType;
 import com.azure.security.keyvault.keys.models.KeyType;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
@@ -1711,6 +1712,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
     public void testListVmByVmssId() {
         String vmssName = generateRandomResourceName("vmss", 15);
         String vmName = generateRandomResourceName("vm", 15);
+        String vmName2 = generateRandomResourceName("vm", 15);
 
         VirtualMachineScaleSet vmss = computeManager.virtualMachineScaleSets()
             .define(vmssName)
@@ -1736,22 +1738,53 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
 
         Assertions.assertNotNull(vm.virtualMachineScaleSetId());
 
+        VirtualMachine vm2 = computeManager.virtualMachines()
+            .define(vmName2)
+            .withRegion(region)
+            .withExistingResourceGroup(rgName)
+            .withNewPrimaryNetwork("10.0.0.16/28")
+            .withPrimaryPrivateIPAddressDynamic()
+            .withoutPrimaryPublicIPAddress()
+            .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
+            .withRootUsername("jvuser")
+            .withSsh(sshPublicKey())
+            .create();
+
+        Assertions.assertNull(vm2.virtualMachineScaleSetId());
+
         Assertions.assertEquals(1, computeManager.virtualMachines().listByVirtualMachineScaleSetId(vmss.id()).stream().count());
+        Assertions.assertEquals(2, computeManager.virtualMachines().listByResourceGroup(rgName).stream().count());
     }
 
     @Test
     @DoNotRecord(skipInPlayback = true)
-    public void testListByVmssIdNextLink() {
+    @Disabled("This test is for listByVirtualMachineScaleSetId nextLink encoding. Backend pageSize may change, so we don't want to assert that.")
+    public void testListByVmssIdNextLink() throws Exception {
         String vmssName = generateRandomResourceName("vmss", 15);
         String vnetName = generateRandomResourceName("vnet", 15);
+        String vmName = generateRandomResourceName("vm", 15);
+        int vmssCapacity = 70;
+
+        // vm that's not in VMSS
+        computeManager.virtualMachines()
+            .define(vmName)
+            .withRegion(region)
+            .withNewResourceGroup(rgName)
+            .withNewPrimaryNetwork("10.0.1.0/24")
+            .withPrimaryPrivateIPAddressDynamic()
+            .withoutPrimaryPublicIPAddress()
+            .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
+            .withRootUsername("jvuser")
+            .withSsh(sshPublicKey())
+            .create();
 
         Network network = networkManager.networks().define(vnetName)
             .withRegion(region)
-            .withNewResourceGroup(rgName)
+            .withExistingResourceGroup(rgName)
             .withAddressSpace("10.0.0.0/24")
-            .withSubnet("subnet1", "10.0.0.0/28")
+            .withSubnet("subnet1", "10.0.0.0/24")
             .create();
-
+        LoadBalancer publicLoadBalancer = createHttpLoadBalancers(region, this.resourceManager.resourceGroups().getByName(rgName), "1", LoadBalancerSkuType.STANDARD, PublicIPSkuType.STANDARD, true);
         VirtualMachineScaleSet vmss = computeManager.virtualMachineScaleSets()
             .define(vmssName)
             .withRegion(region)
@@ -1759,12 +1792,12 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
             .withFlexibleOrchestrationMode()
             .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_A0)
             .withExistingPrimaryNetworkSubnet(network, "subnet1")
-            .withoutPrimaryInternetFacingLoadBalancer()
+            .withExistingPrimaryInternetFacingLoadBalancer(publicLoadBalancer)
             .withoutPrimaryInternalLoadBalancer()
             .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
             .withRootUsername("jvuser")
             .withSsh(sshPublicKey())
-            .withCapacity(101)
+            .withCapacity(vmssCapacity)
             .create();
 
         PagedIterable<VirtualMachine> vmPaged = computeManager.virtualMachines().listByVirtualMachineScaleSetId(vmss.id());
@@ -1775,7 +1808,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
             Assertions.assertEquals(200, response.getStatusCode());
         }
 
-        Assertions.assertEquals(101, vmPaged.stream().count());
+        Assertions.assertEquals(vmssCapacity, vmPaged.stream().count());
         Assertions.assertEquals(2, pageCount);
     }
 
