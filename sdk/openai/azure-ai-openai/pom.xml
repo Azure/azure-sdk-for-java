@@ -52,7 +52,6 @@
       --add-opens com.azure.ai.openai/com.azure.ai.openai.implementation=com.fasterxml.jackson.databind
       --add-opens com.azure.ai.openai/com.azure.ai.openai.functions=com.fasterxml.jackson.databind
     </javaModulesSurefireArgLine>
-    <jacoco.skip>true</jacoco.skip>
   </properties>
 
   <dependencies>
