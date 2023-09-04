@@ -14,12 +14,14 @@ import java.net.Socket;
 import java.net.URL;
 import java.util.*;
 
-// A socket client to be used to handle PATCH requests
+/**
+ * A socket client used for making PATCH requests
+ */
 
-public class SocketClient {
+class SocketClient {
 
     private final String host;
-    private int port;
+    private final int port;
     private final String username;
     private final String password;
 
@@ -35,9 +37,16 @@ public class SocketClient {
     }
 
     public SocketClient(String host) {
-        this(host, 443, null, null);
+        this(host, 80, null, null);
     }
 
+    /**
+     * Opens a socket connection, then writes the PATCH request across the
+     * connection and reads the response
+     *
+     * @param httpRequest {@link com.azure.core.http.HttpRequest} instance
+     * @return an instance of HttpUrlConnectionResponse
+     */
     public HttpUrlConnectionResponse sendPatchRequest(HttpRequest httpRequest) throws IOException {
         if (httpRequest.getUrl().getProtocol().equals("https")) {
             SSLSocketFactory sslSocketFactory = (SSLSocketFactory) SSLSocketFactory.getDefault();
@@ -45,9 +54,6 @@ public class SocketClient {
                 return doInputOutput(httpRequest, socket);
             }
         } else if (httpRequest.getUrl().getProtocol().equals("http")) {
-            // Client is using HTTP, change port number 80
-            // Use a regular socket
-            this.port = 80;
             try (Socket socket = new Socket(host, port)) {
                 return doInputOutput(httpRequest, socket);
             }
@@ -56,6 +62,15 @@ public class SocketClient {
         throw new ProtocolException("Only HTTP and HTTPS are supported by this client.");
     }
 
+    /**
+     * Gets a String representation of the request and writes it to the output stream,
+     * then calls buildResponse to get an instance of HttpUrlConnectionResponse from the
+     * input stream
+     *
+     * @param httpRequest {@link com.azure.core.http.HttpRequest} instance
+     * @param socket {@link java.net.Socket} instance
+     * @return an instance of HttpUrlConnectionResponse
+     */
     private HttpUrlConnectionResponse doInputOutput(HttpRequest httpRequest, Socket socket) throws IOException {
         String request = buildPatchRequest(httpRequest);
 
@@ -86,6 +101,13 @@ public class SocketClient {
         return response;
     }
 
+    /**
+     * Converts an instance of HttpRequest to a String representation for sending
+     * over the output stream
+     *
+     * @param httpRequest {@link com.azure.core.http.HttpRequest} instance
+     * @return the String representation of the HttpRequest
+     */
     private String buildPatchRequest(HttpRequest httpRequest) {
         final StringBuilder request = new StringBuilder();
         // Add the status line
@@ -94,8 +116,7 @@ public class SocketClient {
             .append(httpRequest.getUrl().getPath())
             .append(" HTTP/1.1")
             .append("\r\n");
-        // Add the headers
-        // First check if there are any headers to add
+        // Add the headers if there are headers to add
         if (httpRequest.getHeaders().getSize() > 0) {
             for (HttpHeader headerLine : httpRequest.getHeaders()) {
                 request.append(headerLine.getName())
@@ -123,15 +144,22 @@ public class SocketClient {
         return request.toString();
     }
 
-    // This method reads the response line by line and constructs an HttpResponse object
-    private HttpUrlConnectionResponse buildResponse(HttpRequest request, BufferedReader reader) throws IOException {
+    /**
+     * Reads the response from the input stream and extracts the information
+     * needed to construct an instance of HttpUrlConnectionResponse
+     *
+     * @param httpRequest {@link com.azure.core.http.HttpRequest} instance
+     * @param reader {@link java.io.BufferedReader} instance
+     * @return an instance of HttpUrlConnectionResponse
+     */
+    private HttpUrlConnectionResponse buildResponse(HttpRequest httpRequest, BufferedReader reader) throws IOException {
         // Read the first line as the status line
         String statusLine = reader.readLine();
         // Extract the status code from the status line
         int dotIndex = statusLine.indexOf('.');
         int statusCode = Integer.parseInt(statusLine.substring(dotIndex+3, dotIndex+6));
         // Read the headers until reaching a newline
-        // Extract the key and value, add to headers
+        // Extract each key/value pair, add to headers
         HttpHeaders headers = new HttpHeaders();
         String line;
         while ((line = reader.readLine()) != null && !line.isEmpty()) {
@@ -149,6 +177,6 @@ public class SocketClient {
         // Convert the body String to a byte array needed for the HttpResponse
         byte[] body = bodyString.toString().getBytes();
 
-        return new HttpUrlConnectionResponse(request, headers, statusCode, body);
+        return new HttpUrlConnectionResponse(httpRequest, headers, statusCode, body);
     }
 }
