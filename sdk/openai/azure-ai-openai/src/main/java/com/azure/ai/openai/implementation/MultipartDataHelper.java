@@ -33,19 +33,19 @@ public class MultipartDataHelper {
             + fileName + "\""
             + "\nContent-Type: application/octet-stream\n\n";
         try {
-            byteArrayOutputStream.write(fileFieldPreamble.getBytes(StandardCharsets.UTF_8));
+            byteArrayOutputStream.write(fileFieldPreamble.getBytes(StandardCharsets.US_ASCII));
             byteArrayOutputStream.write(audioTranscriptionOptions.getFile());
             for (MultipartField field : fields) {
                 byteArrayOutputStream.write(serializeField(field));
             }
-            byteArrayOutputStream.write(("\n" + endBoundary).getBytes(StandardCharsets.UTF_8));
+            byteArrayOutputStream.write(("\n" + endBoundary).getBytes(StandardCharsets.US_ASCII));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
 
         byte[] totalData = byteArrayOutputStream.toByteArray();
         // Uncomment to verify as string. Seems to check out with structure observed in the curl traces
-//        System.out.println(new String(totalData, StandardCharsets.UTF_8));
+        System.out.println(new String(totalData, StandardCharsets.US_ASCII));
         return new SerializationResult(BinaryData.fromBytes(totalData), totalData.length);
     }
 
@@ -59,7 +59,7 @@ public class MultipartDataHelper {
             + field.getWireName() + "\"\n\n"
             + field.getValue();
 
-        return toSerizalise.getBytes(StandardCharsets.UTF_8);
+        return toSerizalise.getBytes(StandardCharsets.US_ASCII);
     }
 
     public class SerializationResult {
