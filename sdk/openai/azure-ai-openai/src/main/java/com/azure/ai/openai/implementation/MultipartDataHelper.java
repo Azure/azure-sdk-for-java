@@ -23,15 +23,13 @@ public class MultipartDataHelper {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         // File
         String fileFieldPreamble = boundary
-            + "Content-Disposition: form-data; name=\"file\"; filename=\""
-            + fileName + "\" "
-            + "Content-Type: application/octet-stream ";
+            + "\nContent-Disposition: form-data; name=\"file\"; filename=\""
+            + fileName + "\""
+            + "\nContent-Type: application/octet-stream\n\n";
         try {
             byteArrayOutputStream.write(fileFieldPreamble.getBytes(StandardCharsets.UTF_8));
             byteArrayOutputStream.write(audioTranscriptionOptions.getFile());
-            byteArrayOutputStream.write(endBoundary.getBytes(StandardCharsets.UTF_8));
-
-            int a =  byteArrayOutputStream.toByteArray().length;
+            byteArrayOutputStream.write(("\n" + endBoundary).getBytes(StandardCharsets.UTF_8));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
