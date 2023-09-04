@@ -429,10 +429,12 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
 
         getAudioTranscriptionRunner((deploymentName, fileName) -> {
             byte[] file = BinaryData.fromFile(Path.of("src/test/resources/JP_it_is_rainy_today.wav")).toBytes();
-            AudioTranslationOptions transcriptionOptions = new AudioTranslationOptions(file);
+            AudioTranslationOptions translationOptions = new AudioTranslationOptions(file);
+            // TODO verify why default value of "json" is not emitted as such
+            translationOptions.setResponseFormat(AudioTranscriptionFormat.JSON);
 
             AudioTranscription transcription = client.getAudioTranscription(
-                deploymentName, transcriptionOptions, "JP_it_is_rainy_today.wav");
+                deploymentName, translationOptions, "JP_it_is_rainy_today.wav");
             assertNotNull(transcription);
         });
     }
