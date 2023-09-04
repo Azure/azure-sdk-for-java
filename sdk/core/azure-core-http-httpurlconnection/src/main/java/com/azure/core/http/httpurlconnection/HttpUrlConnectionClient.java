@@ -94,8 +94,9 @@ public class HttpUrlConnectionClient implements HttpClient {
             for (HttpHeader header : httpRequest.getHeaders()) {
                 connection.setRequestProperty(header.getName(), header.getValue());
             }
-            if (httpRequest.getHttpMethod() != HttpMethod.GET)
+            if (httpRequest.getHttpMethod() != HttpMethod.GET) {
                 connection.setDoOutput(true);
+            }
         });
     }
 
