@@ -1706,6 +1706,69 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
         Assertions.assertTrue(vm.dataDisks().values().stream().allMatch(disk -> DeleteOptions.DELETE.equals(disk.deleteOptions())));
     }
 
+    @Test
+    public void testListVmByVmssId() {
+        String vmssName = generateRandomResourceName("vmss", 15);
+        String vmName = generateRandomResourceName("vm", 15);
+
+        VirtualMachineScaleSet vmss = computeManager.virtualMachineScaleSets()
+            .define(vmssName)
+            .withRegion(region)
+            .withNewResourceGroup(rgName)
+            .withFlexibleOrchestrationMode()
+            .create();
+
+        Assertions.assertEquals(0, computeManager.virtualMachines().listByVmssId(vmss.id()).stream().count());
+
+        VirtualMachine vm = computeManager.virtualMachines()
+            .define(vmName)
+            .withRegion(region)
+            .withExistingResourceGroup(rgName)
+            .withNewPrimaryNetwork("10.0.0.0/28")
+            .withPrimaryPrivateIPAddressDynamic()
+            .withoutPrimaryPublicIPAddress()
+            .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
+            .withRootUsername("jvuser")
+            .withSsh(sshPublicKey())
+            .withExistingVirtualMachineScaleSet(vmss)
+            .create();
+
+        Assertions.assertNotNull(vm.virtualMachineScaleSetId());
+
+        Assertions.assertEquals(1, computeManager.virtualMachines().listByVmssId(vmss.id()).stream().count());
+    }
+
+    @Test
+    @DoNotRecord(skipInPlayback = true)
+    public void testListByVmssIdNextLink() {
+        String vmssName = generateRandomResourceName("vmss", 15);
+        String vnetName = generateRandomResourceName("vnet", 15);
+
+        Network network = networkManager.networks().define(vnetName)
+            .withRegion(region)
+            .withNewResourceGroup(rgName)
+            .withAddressSpace("10.0.0.0/24")
+            .withSubnet("subnet1", "10.0.0.0/28")
+            .create();
+
+        VirtualMachineScaleSet vmss = computeManager.virtualMachineScaleSets()
+            .define(vmssName)
+            .withRegion(region)
+            .withExistingResourceGroup(rgName)
+            .withFlexibleOrchestrationMode()
+            .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_A0)
+            .withExistingPrimaryNetworkSubnet(network, "subnet1")
+            .withoutPrimaryInternetFacingLoadBalancer()
+            .withoutPrimaryInternalLoadBalancer()
+            .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
+            .withRootUsername("jvuser")
+            .withSsh(sshPublicKey())
+            .withCapacity(101)
+            .create();
+
+        Assertions.assertEquals(101, computeManager.virtualMachines().listByVmssId(vmss.id()).stream().count());
+    }
+
     // *********************************** helper methods ***********************************
 
     private CreatablesInfo prepareCreatableVirtualMachines(

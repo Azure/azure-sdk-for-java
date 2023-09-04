@@ -46,7 +46,7 @@ import java.util.UUID;
 
 public class VirtualMachineListByVmssIdMockTests  {
     private static final String NEXT_LINK_PATH = "/nextLink";
-    private static final String QUERY = "'virtualMachineScaleSet/id' eq 'id'";
+    private static final String QUERY = "'virtualMachineScaleSet/id'eq'id'";
     private static final SerializerAdapter SERIALIZER = SerializerFactory.createDefaultManagementSerializerAdapter();
     private final StateHolder stateHolder = new StateHolder();
 
