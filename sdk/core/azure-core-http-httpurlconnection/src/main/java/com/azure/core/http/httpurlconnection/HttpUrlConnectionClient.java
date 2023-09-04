@@ -80,10 +80,7 @@ public class HttpUrlConnectionClient implements HttpClient {
 
     // Open a connection based on the HttpRequest URL
     private Mono<HttpURLConnection> openConnection(HttpRequest httpRequest) {
-        return Mono.fromCallable(() -> {
-            URL url = new URL(httpRequest.getUrl().toString());
-            return (HttpURLConnection) url.openConnection();
-        });
+        return Mono.fromCallable(() -> (HttpURLConnection) httpRequest.getUrl().openConnection());
     }
 
     // Set properties and headers on the HttpURLConnection
