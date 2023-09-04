@@ -11,9 +11,4 @@ public class HttpUrlConnectionClientBuilder {
         HttpUrlConnectionClient client = new HttpUrlConnectionClient();
         return client;
     }
-
-    public HttpClient build(HttpRequest request) {
-        HttpUrlConnectionClient client = new HttpUrlConnectionClient(request);
-        return client;
-    }
 }

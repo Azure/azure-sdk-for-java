@@ -10,27 +10,6 @@ import java.nio.charset.StandardCharsets;
 
 public class HttpUrlConnectionClient implements HttpClient {
 
-    private HttpRequest request;
-    private HttpURLConnection connection;
-
-    // Default constructor
-    public HttpUrlConnectionClient(){}
-
-    // Constructor initializing with a specific request
-    public HttpUrlConnectionClient(HttpRequest request) {
-        this.setRequest(request);
-    }
-
-    // Setter for HttpRequest
-    public void setRequest(HttpRequest request) {
-        this.request = request;
-    }
-
-    // Asynchronous send method returning a Mono of HttpResponse
-    public Mono<HttpResponse> send() {
-        return sendAsync(this.request, Context.NONE);
-    }
-
     // Asynchronous send method returning a Mono of HttpResponse
     @Override
     public Mono<HttpResponse> send(HttpRequest httpRequest) {
