@@ -5,6 +5,7 @@ package com.azure.resourcemanager.compute;
 
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.management.Region;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.profile.AzureProfile;
@@ -1718,7 +1719,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
             .withFlexibleOrchestrationMode()
             .create();
 
-        Assertions.assertEquals(0, computeManager.virtualMachines().listByVmssId(vmss.id()).stream().count());
+        Assertions.assertEquals(0, computeManager.virtualMachines().listByVirtualMachineScaleSetId(vmss.id()).stream().count());
 
         VirtualMachine vm = computeManager.virtualMachines()
             .define(vmName)
@@ -1735,7 +1736,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
 
         Assertions.assertNotNull(vm.virtualMachineScaleSetId());
 
-        Assertions.assertEquals(1, computeManager.virtualMachines().listByVmssId(vmss.id()).stream().count());
+        Assertions.assertEquals(1, computeManager.virtualMachines().listByVirtualMachineScaleSetId(vmss.id()).stream().count());
     }
 
     @Test
@@ -1766,7 +1767,16 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
             .withCapacity(101)
             .create();
 
-        Assertions.assertEquals(101, computeManager.virtualMachines().listByVmssId(vmss.id()).stream().count());
+        PagedIterable<VirtualMachine> vmPaged = computeManager.virtualMachines().listByVirtualMachineScaleSetId(vmss.id());
+        Iterable<PagedResponse<VirtualMachine>> vmIterable = vmPaged.iterableByPage();
+        int pageCount = 0;
+        for (PagedResponse<VirtualMachine> response : vmIterable) {
+            pageCount++;
+            Assertions.assertEquals(200, response.getStatusCode());
+        }
+
+        Assertions.assertEquals(101, vmPaged.stream().count());
+        Assertions.assertEquals(2, pageCount);
     }
 
     // *********************************** helper methods ***********************************
