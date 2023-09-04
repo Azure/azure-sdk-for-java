@@ -1,4 +1,4 @@
-package com.azure.core.http.httpurlconnection;
+package com.azure.core.http.httpurlconnection.implementation;
 
 import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaders;
@@ -11,13 +11,13 @@ import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 
-public class HttpUrlConnectionResponse extends HttpResponse {
+public final class HttpUrlConnectionResponse extends HttpResponse {
 
     private final HttpHeaders headers;
     private final int responseCode;
     private final byte[] body;
 
-    protected HttpUrlConnectionResponse(HttpRequest request, HttpHeaders headers, int responseCode, byte[] body) {
+    public HttpUrlConnectionResponse(HttpRequest request, HttpHeaders headers, int responseCode, byte[] body) {
         super(request);
         this.headers = headers;
         this.responseCode = responseCode;
@@ -30,7 +30,6 @@ public class HttpUrlConnectionResponse extends HttpResponse {
     }
 
     /**
-     * @param s
      * @deprecated
      */
     @Override

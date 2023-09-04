@@ -1,6 +1,7 @@
 package com.azure.core.http.httpurlconnection;
 
 import com.azure.core.http.*;
+import com.azure.core.http.httpurlconnection.implementation.HttpUrlConnectionResponse;
 import com.azure.core.util.Context;
 import reactor.core.publisher.Mono;
 
