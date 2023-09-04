@@ -103,25 +103,25 @@ public class HttpUrlConnectionClient implements HttpClient {
     // Write the body of the request if necessary
     private Mono<Void> writeRequestBody(HttpURLConnection connection, HttpRequest httpRequest) {
         switch(httpRequest.getHttpMethod()) {
-        case POST:
-        case PUT:
-        case PATCH:
-            return Mono.fromRunnable(() -> {
-                try (OutputStream os = connection.getOutputStream();
-                     OutputStreamWriter out = new OutputStreamWriter(os)) {
-                    httpRequest.getBody()
-                        .map(buffer -> StandardCharsets.UTF_8.decode(buffer).toString())
-                        .doOnNext(bodyString -> {
-                            try {
-                                out.write(bodyString);
-                            } catch (IOException e) {
-                                throw new RuntimeException(e);
-                            }
-                        }).blockLast();
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-            });
+            case POST:
+            case PUT:
+            case PATCH:
+                return Mono.fromRunnable(() -> {
+                    try (OutputStream os = connection.getOutputStream();
+                         OutputStreamWriter out = new OutputStreamWriter(os)) {
+                        httpRequest.getBody()
+                            .map(buffer -> StandardCharsets.UTF_8.decode(buffer).toString())
+                            .doOnNext(bodyString -> {
+                                try {
+                                    out.write(bodyString);
+                                } catch (IOException e) {
+                                    throw new RuntimeException(e);
+                                }
+                            }).blockLast();
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                });
             default:
                 return Mono.empty();
         }
