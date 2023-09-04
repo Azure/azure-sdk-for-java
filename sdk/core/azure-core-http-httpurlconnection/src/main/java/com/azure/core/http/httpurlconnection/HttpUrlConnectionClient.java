@@ -102,7 +102,10 @@ public class HttpUrlConnectionClient implements HttpClient {
 
     // Write the body of the request if necessary
     private Mono<Void> writeRequestBody(HttpURLConnection connection, HttpRequest httpRequest) {
-        if (httpRequest.getHttpMethod() == HttpMethod.POST || httpRequest.getHttpMethod() == HttpMethod.PUT || httpRequest.getHttpMethod() == HttpMethod.PATCH) {
+        switch(httpRequest.getHttpMethod()) {
+        case POST:
+        case PUT:
+        case PATCH:
             return Mono.fromRunnable(() -> {
                 try (OutputStream os = connection.getOutputStream();
                      OutputStreamWriter out = new OutputStreamWriter(os)) {
@@ -119,8 +122,9 @@ public class HttpUrlConnectionClient implements HttpClient {
                     throw new RuntimeException(e);
                 }
             });
+            default:
+                return Mono.empty();
         }
-        return Mono.empty();
     }
 
     // Read the response and construct the HttpResponse object
