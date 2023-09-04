@@ -26,12 +26,12 @@
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-context</artifactId>
-      <version>6.0.11</version> <!-- {x-version-update;org.springframework:spring-context;external_dependency} -->
+      <version>6.1.0-M4</version> <!-- {x-version-update;org.springframework:spring-context;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter</artifactId>
-      <version>3.1.2</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter;external_dependency} -->
+      <version>3.2.0-M2</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter;external_dependency} -->
       <exclusions>
         <exclusion>
           <groupId>org.springframework.boot</groupId>
@@ -46,7 +46,7 @@
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-log4j2</artifactId>
-      <version>3.1.2</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-log4j2;external_dependency} -->
+      <version>3.2.0-M2</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-log4j2;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
@@ -66,7 +66,7 @@
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-test</artifactId>
-      <version>3.1.2</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-test;external_dependency} -->
+      <version>3.2.0-M2</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -126,7 +126,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-enforcer-plugin</artifactId>
-        <version>3.3.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
+        <version>3.4.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
         <configuration>
           <rules>
             <bannedDependencies>
@@ -134,9 +134,9 @@
                 <include>com.fasterxml.jackson.core:jackson-annotations:[2.15.2]</include> <!-- {x-include-update;com.fasterxml.jackson.core:jackson-annotations;external_dependency} -->
                 <include>com.fasterxml.jackson.core:jackson-databind:[2.15.2]</include> <!-- {x-include-update;com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
                 <include>io.projectreactor.netty:reactor-netty:[1.1.9]</include> <!-- {x-include-update;io.projectreactor.netty:reactor-netty;external_dependency} -->
-                <include>org.springframework.boot:spring-boot-starter:[3.1.2]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-starter;external_dependency} -->
-                <include>org.springframework.boot:spring-boot-starter-log4j2:[3.1.2]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-starter-log4j2;external_dependency} -->
-                <include>org.springframework:spring-context:[6.0.11]</include> <!-- {x-include-update;org.springframework:spring-context;external_dependency} -->
+                <include>org.springframework.boot:spring-boot-starter:[3.2.0-M2]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-starter;external_dependency} -->
+                <include>org.springframework.boot:spring-boot-starter-log4j2:[3.2.0-M2]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-starter-log4j2;external_dependency} -->
+                <include>org.springframework:spring-context:[6.1.0-M4]</include> <!-- {x-include-update;org.springframework:spring-context;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>

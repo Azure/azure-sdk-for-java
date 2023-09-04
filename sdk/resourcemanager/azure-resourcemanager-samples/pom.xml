@@ -105,7 +105,7 @@
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-simple</artifactId>
-      <version>1.7.36</version> <!-- {x-version-update;org.slf4j:slf4j-simple;external_dependency} -->
+      <version>2.0.7</version> <!-- {x-version-update;org.slf4j:slf4j-simple;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>com.google.guava</groupId>
@@ -135,23 +135,23 @@
     <dependency>
       <groupId>io.fabric8</groupId>
       <artifactId>kubernetes-client</artifactId>
-      <version>6.2.0</version> <!-- {x-version-update;io.fabric8:kubernetes-client;external_dependency} -->
+      <version>6.7.2</version> <!-- {x-version-update;io.fabric8:kubernetes-client;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>com.microsoft.sqlserver</groupId>
       <artifactId>mssql-jdbc</artifactId>
-      <version>11.2.3.jre17</version> <!-- {x-version-update;com.microsoft.sqlserver:mssql-jdbc;external_dependency} -->
+      <version>12.4.0.jre11</version> <!-- {x-version-update;com.microsoft.sqlserver:mssql-jdbc;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-engine</artifactId>
-      <version>5.9.3</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-engine;external_dependency} -->
+      <version>5.10.0</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-engine;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-api</artifactId>
-      <version>5.9.3</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-api;external_dependency} -->
+      <version>5.10.0</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-api;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -195,18 +195,18 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-enforcer-plugin</artifactId>
-        <version>3.3.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
+        <version>3.4.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
         <configuration>
           <rules>
             <bannedDependencies>
               <includes>
                 <include>org.apache.httpcomponents:httpclient:[4.5.14]</include> <!-- {x-include-update;org.apache.httpcomponents:httpclient;external_dependency} -->
-                <include>io.fabric8:kubernetes-client:[6.2.0]</include> <!-- {x-include-update;io.fabric8:kubernetes-client;external_dependency} -->
+                <include>io.fabric8:kubernetes-client:[6.7.2]</include> <!-- {x-include-update;io.fabric8:kubernetes-client;external_dependency} -->
                 <include>com.jcraft:jsch:[0.1.55]</include> <!-- {x-include-update;resourcemanager_com.jcraft:jsch;external_dependency} -->
-                <include>org.slf4j:slf4j-simple:[1.7.36]</include> <!-- {x-include-update;org.slf4j:slf4j-simple;external_dependency} -->
+                <include>org.slf4j:slf4j-simple:[2.0.7]</include> <!-- {x-include-update;org.slf4j:slf4j-simple;external_dependency} -->
                 <include>com.google.guava:guava:[32.0.1-jre]</include> <!-- {x-include-update;com.google.guava:guava;external_dependency} -->
                 <include>com.github.docker-java:docker-java:[3.2.1]</include> <!-- {x-include-update;com.github.docker-java:docker-java;external_dependency} -->
-                <include>com.microsoft.sqlserver:mssql-jdbc:[11.2.3.jre17]</include> <!-- {x-include-update;com.microsoft.sqlserver:mssql-jdbc;external_dependency} -->
+                <include>com.microsoft.sqlserver:mssql-jdbc:[12.4.0.jre11]</include> <!-- {x-include-update;com.microsoft.sqlserver:mssql-jdbc;external_dependency} -->
                 <include>org.eclipse.jgit:org.eclipse.jgit:[4.5.7.201904151645-r]</include> <!-- {x-include-update;org.eclipse.jgit:org.eclipse.jgit;external_dependency} -->
                 <include>commons-net:commons-net:[3.9.0]</include> <!-- {x-include-update;commons-net:commons-net;external_dependency} -->
                 <include>com.github.spotbugs:spotbugs-annotations:[4.2.2]</include> <!-- {x-include-update;com.github.spotbugs:spotbugs-annotations;external_dependency} -->

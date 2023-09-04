@@ -33,7 +33,7 @@
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter</artifactId>
-      <version>3.1.2</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter;external_dependency} -->
+      <version>3.2.0-M2</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter;external_dependency} -->
     </dependency>
 
     <dependency>
@@ -62,7 +62,7 @@
       <plugin>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-maven-plugin</artifactId>
-        <version>3.1.2</version> <!-- {x-version-update;org.springframework.boot:spring-boot-maven-plugin;external_dependency} -->
+        <version>3.2.0-M2</version> <!-- {x-version-update;org.springframework.boot:spring-boot-maven-plugin;external_dependency} -->
         <executions>
           <execution>
             <goals>
@@ -74,12 +74,12 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-enforcer-plugin</artifactId>
-        <version>3.3.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
+        <version>3.4.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
         <configuration>
           <rules>
             <bannedDependencies>
               <includes>
-                <include>org.springframework.boot:spring-boot-starter:[3.1.2]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-starter;external_dependency} -->
+                <include>org.springframework.boot:spring-boot-starter:[3.2.0-M2]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-starter;external_dependency} -->
                 <include>org.codehaus.janino:janino:[3.1.10]</include> <!-- {x-include-update;org.codehaus.janino:janino;external_dependency} -->
               </includes>
             </bannedDependencies>
