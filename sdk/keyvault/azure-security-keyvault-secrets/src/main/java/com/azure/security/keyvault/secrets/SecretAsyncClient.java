@@ -16,6 +16,7 @@ import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.LongRunningOperationStatus;
@@ -249,8 +250,9 @@ public final class SecretAsyncClient {
      *
      * @param name The name of the secret.
      * @return A {@link Mono} containing the requested {@link KeyVaultSecret secret}.
-     * @throws ResourceNotFoundException when a secret with {@code name} doesn't exist in the key vault.
-     * @throws HttpResponseException if {@code name} is empty string.
+     * @throws IllegalArgumentException If {@code name} is either {@code null} or empty.
+     * @throws ResourceNotFoundException When a secret with the given {@code name} doesn't exist in the vault.
+     * @throws HttpResponseException If the server reports an error when executing the request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<KeyVaultSecret> getSecret(String name) {
@@ -283,9 +285,10 @@ public final class SecretAsyncClient {
      * call is equivalent to calling {@link #getSecret(String)}, with the latest version being retrieved.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the
      * requested {@link KeyVaultSecret secret}.
-     * @throws ResourceNotFoundException when a secret with {@code name} and {@code version} doesn't exist in the key
-     * vault.
-     * @throws HttpResponseException if {@code name} and {@code version} is empty string.
+     * @throws ResourceNotFoundException When a secret with the given {@code name} and {@code version} doesn't exist in
+     * the vault.
+     * @throws IllegalArgumentException If {@code name} is either {@code null} or empty.
+     * @throws HttpResponseException If the server reports an error when executing the request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<KeyVaultSecret> getSecret(String name, String version) {
@@ -317,12 +320,17 @@ public final class SecretAsyncClient {
      * to calling {@link #getSecret(String)}, with the latest version being retrieved.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the
      * requested {@link KeyVaultSecret secret}.
-     * @throws ResourceNotFoundException when a secret with {@code name} and {@code version} doesn't exist in the key
-     * vault.
-     * @throws HttpResponseException if {@code name} and {@code version} is empty string.
+     * @throws ResourceNotFoundException When a secret with the given {@code name} and {@code version} doesn't exist in
+     * the vault.
+     * @throws IllegalArgumentException If {@code name} is either {@code null} or empty.
+     * @throws HttpResponseException If the server reports an error when executing the request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<KeyVaultSecret>> getSecretWithResponse(String name, String version) {
+        if (CoreUtils.isNullOrEmpty(name)) {
+            return monoError(LOGGER, new IllegalArgumentException("'name' cannot be null or empty."));
+        }
+
         try {
             return implClient.getSecretWithResponseAsync(vaultUrl, name, version)
                 .onErrorMap(KeyVaultErrorException.class, SecretAsyncClient::mapGetSecretException)

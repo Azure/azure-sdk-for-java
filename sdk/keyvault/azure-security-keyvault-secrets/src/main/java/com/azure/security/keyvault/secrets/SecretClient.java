@@ -14,6 +14,8 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
+import com.azure.core.util.CoreUtils;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.PollingContext;
@@ -60,6 +62,7 @@ import static com.azure.security.keyvault.secrets.implementation.models.SecretsM
  */
 @ServiceClient(builder = SecretClientBuilder.class, serviceInterfaces = SecretClientImpl.SecretClientService.class)
 public final class SecretClient {
+    private static final ClientLogger LOGGER = new ClientLogger(SecretClient.class);
     private final SecretClientImpl implClient;
     private final String vaultUrl;
 
@@ -198,8 +201,9 @@ public final class SecretClient {
      *
      * @param name The name of the secret.
      * @return The requested {@link KeyVaultSecret}.
-     * @throws ResourceNotFoundException when a secret with {@code name} doesn't exist in the key vault.
-     * @throws HttpResponseException if {@code name} is empty string.
+     * @throws ResourceNotFoundException When a secret with the given  {@code name} doesn't exist in the vault.
+     * @throws IllegalArgumentException If {@code name} is either {@code null} or empty.
+     * @throws HttpResponseException If the server reports an error when executing the request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public KeyVaultSecret getSecret(String name) {
@@ -225,9 +229,10 @@ public final class SecretClient {
      * @param version The version of the secret to retrieve. If this is an empty string or null, this call is
      * equivalent to calling {@link #getSecret(String)}, with the latest version being retrieved.
      * @return The requested {@link KeyVaultSecret secret}.
-     * @throws ResourceNotFoundException when a secret with {@code name} and {@code version} doesn't exist in the key
-     * vault.
-     * @throws HttpResponseException if {@code name} and {@code version} is empty string.
+     * @throws ResourceNotFoundException When a secret with the given {@code name} and {@code version} doesn't exist in
+     * the vault.
+     * @throws IllegalArgumentException If {@code name} is either {@code null} or empty.
+     * @throws HttpResponseException If the server reports an error when executing the request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public KeyVaultSecret getSecret(String name, String version) {
@@ -255,12 +260,16 @@ public final class SecretClient {
      * to calling {@link #getSecret(String)}, with the latest version being retrieved.
      * @param context Additional context that is passed through the HTTP pipeline during the service call.
      * @return A {@link Response} whose {@link Response#getValue() value} contains the requested {@link KeyVaultSecret}.
-     * @throws ResourceNotFoundException when a secret with {@code name} and {@code version} doesn't exist in the key
-     * vault.
-     * @throws HttpResponseException if {@code name} and {@code version} is empty string.
+     * @throws ResourceNotFoundException When a secret with the given {@code name} and {@code version} doesn't exist in
+     * the vault.
+     * @throws IllegalArgumentException If {@code name} is either {@code null} or empty.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<KeyVaultSecret> getSecretWithResponse(String name, String version, Context context) {
+        if (CoreUtils.isNullOrEmpty(name)) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'name' cannot be null or empty."));
+        }
+
         return callWithMappedException(() -> {
             Response<SecretBundle> response = implClient.getSecretWithResponse(vaultUrl, name, version, context);
             return new SimpleResponse<>(response, createKeyVaultSecret(response.getValue()));

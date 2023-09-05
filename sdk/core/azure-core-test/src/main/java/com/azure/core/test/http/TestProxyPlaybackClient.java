@@ -113,7 +113,7 @@ public class TestProxyPlaybackClient implements HttpClient {
                 toSort = new ArrayList<>();
             } else {
                 toSort = new ArrayList<>(variables.entrySet());
-                toSort.sort(Comparator.comparingInt(e -> Integer.parseInt(e.getKey())));
+                toSort.sort(Comparator.comparingInt(e -> Integener.parseInt(e.getKey())));
             }
 
             LinkedList<String> strings = new LinkedList<>();
