@@ -13,6 +13,13 @@ import java.util.Iterator;
  */
 public class JsonArray extends JsonElement {
 
+    /**
+     * Stores the JsonElements nested in this JsonArray object.
+     * Each of these elements should be one of the following valid JSON types:
+     * object, array, string, number, boolean, and null.
+     */
+    private List<JsonElement> elements = new ArrayList<>(0);
+
     public JsonArray() {
         super();
     }
@@ -21,15 +28,6 @@ public class JsonArray extends JsonElement {
         super();
         this.build(reader);
     }
-    /**
-     * Stores the JsonElements nested in this JsonArray object.
-     * Each of these elements should be one of the following valid JSON types:
-     * object, array, string, number, boolean, and null.
-     */
-
-
-    private List<JsonElement> elements = new ArrayList<>();
-
 
     /**
      * Adds a JsonElement object as a nested element within the JsonArray object,
@@ -40,8 +38,13 @@ public class JsonArray extends JsonElement {
      * @return JsonArray object representing the new state of the JsonArray object
      * after the addition of the new JsonElement object appended.
      */
-    public JsonArray addElement(JsonElement element) {
+    public JsonArray addElement(JsonElement element) throws IllegalArgumentException {
+        if(element == null) { 
+            throw new IllegalArgumentException("Cannot add a null JsonElement to the JsonArray. Use a JsonNull object to represent a valid JSON null value."); 
+        }
+
         this.elements.add(element);
+
         return this;
     }
 
@@ -59,9 +62,14 @@ public class JsonArray extends JsonElement {
      * TODO: throws error(s) relating to the index in respect to the current state
      * of the elements ArrayList
      */
-    public JsonArray addElement(int index, JsonElement element) {
+    public JsonArray addElement(int index, JsonElement element) throws IllegalArgumentException {
+        if(element == null) { 
+            throw new IllegalArgumentException("Cannot add a null JsonElement to the JsonArray. Use a JsonNull object to represent a valid JSON null value."); 
+        }
+
         // TODO: check for out of bounds
         this.elements.add(index, element);
+
         return this;
     }
 
@@ -81,9 +89,14 @@ public class JsonArray extends JsonElement {
      * TODO: throws error(s) relating to the index in respect to the current state
      * of the elements ArrayList
      */
-    public JsonArray setElement(int index, JsonElement element) {
+    public JsonArray setElement(int index, JsonElement element) throws IllegalArgumentException {
+        if(element == null) { 
+            throw new IllegalArgumentException("Cannot set a null JsonElement in the JsonArray. Use a JsonNull object to represent a valid JSON null value."); 
+        }
+
         // TODO: check for out of bounds
         this.elements.set(index, element);
+
         return this;
     }
 
@@ -180,7 +193,7 @@ public class JsonArray extends JsonElement {
         jsonWriter.writeStartArray();
 
         for (JsonElement element : elements) {
-                element.serialize(jsonWriter);
+            element.serialize(jsonWriter);
         }
 
         jsonWriter.writeEndArray();
@@ -296,12 +309,6 @@ public class JsonArray extends JsonElement {
                     break;
 
             }
-
         }
-
-
-
     }
-
-
 }

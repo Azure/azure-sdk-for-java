@@ -77,7 +77,7 @@ public abstract class JsonElement extends StringWriter {
      * @return
      * @throws
      */
-    public JsonArray addElement(JsonElement element) throws InvalidJsonDataTypeException {
+    public JsonArray addElement(JsonElement element) throws IllegalArgumentException  {
         // Case:
         if(this.isArray()) { return (this.asArray()).addElement(element); }
         // Case:
@@ -91,7 +91,7 @@ public abstract class JsonElement extends StringWriter {
      * @return
      * @throws InvalidJsonDataTypeException
      */
-    public JsonArray addElement(int index, JsonElement element) throws InvalidJsonDataTypeException {
+    public JsonArray addElement(int index, JsonElement element) throws IllegalArgumentException {
         // Case:
         if(this.isArray()) { return (this.asArray()).addElement(index, element); }
         // Case:
@@ -105,7 +105,7 @@ public abstract class JsonElement extends StringWriter {
      * @return
      * @throws InvalidJsonDataTypeException
      */
-    public JsonArray setElement(int index, JsonElement element) throws InvalidJsonDataTypeException {
+    public JsonArray setElement(int index, JsonElement element) throws IllegalArgumentException {
         // Case:
         if(this.isArray()) { return (this.asArray()).setElement(index, element); }
         // Case:
