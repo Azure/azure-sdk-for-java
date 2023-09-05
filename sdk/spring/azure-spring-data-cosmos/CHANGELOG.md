@@ -4,7 +4,11 @@
 
 #### Features Added
 
+- Allow in the Cosmos Factory to pass the Original Container name when the override container name process happens 
+
 #### Breaking Changes
+
+- Change in the contract of function `overrideContainerName` in the `CosmosFactory` class
 
 #### Bugs Fixed
 
