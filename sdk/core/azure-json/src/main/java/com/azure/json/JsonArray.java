@@ -263,9 +263,10 @@ public class JsonArray extends JsonElement {
 
             switch (token) {
 
+                // Case: the currently read token is a JsonToken.FIELD_NAME token. 
+                // No field names should be present within a valid JSON array.  
                 case FIELD_NAME:
-                    //fieldName = reader.getFieldName();
-                    break;
+                    throw new IOException("Invalid JsonToken.FIELD_NAME token read from deserialised JSON array. This is not a valid JSON array. Deserialisation aborted."); 
                 case START_OBJECT:
                     this.addElement(new JsonObject(reader));
                     break;
