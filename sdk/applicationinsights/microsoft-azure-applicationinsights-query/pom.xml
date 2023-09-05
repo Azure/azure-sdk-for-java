@@ -80,7 +80,7 @@
         <dependency>
             <groupId>com.squareup.okhttp3</groupId>
             <artifactId>mockwebserver</artifactId>
-            <version>4.11.0</version> <!-- {x-version-update;com.squareup.okhttp3:mockwebserver;external_dependency} -->
+            <version>4.10.0</version> <!-- {x-version-update;com.squareup.okhttp3:mockwebserver;external_dependency} -->
             <scope>test</scope>
         </dependency>
     </dependencies>
