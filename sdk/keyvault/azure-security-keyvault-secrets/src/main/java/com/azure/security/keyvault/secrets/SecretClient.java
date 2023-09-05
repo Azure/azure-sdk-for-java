@@ -163,8 +163,9 @@ public final class SecretClient {
      *
      * @param name The name of the secret.
      * @return The requested {@link KeyVaultSecret}.
-     * @throws ResourceNotFoundException when a secret with {@code name} doesn't exist in the key vault.
-     * @throws HttpResponseException if {@code name} is empty string.
+     * @throws ResourceNotFoundException When a secret with the given  {@code name} doesn't exist in the vault.
+     * @throws IllegalArgumentException If {@code name} is either {@code null} or empty.
+     * @throws HttpResponseException If the server reports an error when executing the request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public KeyVaultSecret getSecret(String name) {
@@ -190,9 +191,10 @@ public final class SecretClient {
      * @param version The version of the secret to retrieve. If this is an empty string or null, this call is
      * equivalent to calling {@link #getSecret(String)}, with the latest version being retrieved.
      * @return The requested {@link KeyVaultSecret secret}.
-     * @throws ResourceNotFoundException when a secret with {@code name} and {@code version} doesn't exist in the key
-     * vault.
-     * @throws HttpResponseException if {@code name} or {@code version} is empty string.
+     * @throws ResourceNotFoundException When a secret with the given {@code name} and {@code version} doesn't exist in
+     * the vault.
+     * @throws IllegalArgumentException If {@code name} is either {@code null} or empty.
+     * @throws HttpResponseException If the server reports an error when executing the request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public KeyVaultSecret getSecret(String name, String version) {
@@ -220,9 +222,9 @@ public final class SecretClient {
      * to calling {@link #getSecret(String)}, with the latest version being retrieved.
      * @param context Additional context that is passed through the HTTP pipeline during the service call.
      * @return A {@link Response} whose {@link Response#getValue() value} contains the requested {@link KeyVaultSecret}.
-     * @throws ResourceNotFoundException when a secret with {@code name} and {@code version} doesn't exist in the key
-     * vault.
-     * @throws HttpResponseException if {@code name} or {@code version} is empty string.
+     * @throws ResourceNotFoundException When a secret with the given {@code name} and {@code version} doesn't exist in
+     * the vault.
+     * @throws IllegalArgumentException If {@code name} is either {@code null} or empty.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<KeyVaultSecret> getSecretWithResponse(String name, String version, Context context) {

@@ -2,9 +2,17 @@
 // Licensed under the MIT License.
 package com.azure.resourcemanager.compute.implementation;
 
+import com.azure.core.http.rest.PagedFlux;
+import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.util.Context;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.authorization.AuthorizationManager;
 import com.azure.resourcemanager.compute.ComputeManager;
+import com.azure.resourcemanager.compute.fluent.VirtualMachinesClient;
+import com.azure.resourcemanager.compute.fluent.models.VirtualMachineInner;
+import com.azure.resourcemanager.compute.models.ExpandTypeForListVMs;
 import com.azure.resourcemanager.compute.models.HardwareProfile;
 import com.azure.resourcemanager.compute.models.NetworkProfile;
 import com.azure.resourcemanager.compute.models.OSDisk;
@@ -15,11 +23,9 @@ import com.azure.resourcemanager.compute.models.RunCommandResult;
 import com.azure.resourcemanager.compute.models.StorageProfile;
 import com.azure.resourcemanager.compute.models.VirtualMachine;
 import com.azure.resourcemanager.compute.models.VirtualMachineCaptureParameters;
+import com.azure.resourcemanager.compute.models.VirtualMachineScaleSet;
 import com.azure.resourcemanager.compute.models.VirtualMachineSizes;
 import com.azure.resourcemanager.compute.models.VirtualMachines;
-import com.azure.resourcemanager.compute.fluent.models.VirtualMachineInner;
-import com.azure.resourcemanager.compute.fluent.VirtualMachinesClient;
-import com.azure.resourcemanager.authorization.AuthorizationManager;
 import com.azure.resourcemanager.network.NetworkManager;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
@@ -28,13 +34,15 @@ import com.azure.resourcemanager.resources.fluentcore.model.implementation.Accep
 import com.azure.resourcemanager.storage.StorageManager;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import reactor.core.Exceptions;
+import reactor.core.publisher.Mono;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.security.PrivilegedAction;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
-
-import reactor.core.Exceptions;
-import reactor.core.publisher.Mono;
 
 /** The implementation for VirtualMachines. */
 public class VirtualMachinesImpl
@@ -272,6 +280,72 @@ public class VirtualMachinesImpl
                 Void.class,
                 null,
                 Context.NONE);
+    }
+
+    @Override
+    public PagedIterable<VirtualMachine> listByVirtualMachineScaleSetId(String vmssId) {
+        return new PagedIterable<>(this.listByVirtualMachineScaleSetIdAsync(vmssId));
+    }
+
+    @Override
+    @SuppressWarnings({"unchecked", "removal"})
+    public PagedFlux<VirtualMachine> listByVirtualMachineScaleSetIdAsync(String vmssId) {
+        if (CoreUtils.isNullOrEmpty(vmssId)) {
+            return new PagedFlux<>(() -> Mono.error(
+                new IllegalArgumentException("Parameter 'vmssId' is required and cannot be null.")));
+        }
+        // Hack in nextLink encoding by using reflection.
+        // Replace below hack with "listAsync()" once backend fix "nextLink" encoding issue:
+        // https://github.com/Azure/azure-rest-api-specs/issues/25640
+        Method listSinglePageAsync;
+        try {
+            listSinglePageAsync = inner().getClass().getDeclaredMethod("listByResourceGroupSinglePageAsync", String.class, String.class, ExpandTypeForListVMs.class);
+        } catch (NoSuchMethodException e) {
+            throw new RuntimeException(e);
+        }
+        Method listNextSinglePageAsync;
+        try {
+            listNextSinglePageAsync = inner().getClass().getDeclaredMethod("listNextSinglePageAsync", String.class, Context.class);
+        } catch (NoSuchMethodException e) {
+            throw new RuntimeException(e);
+        }
+        java.security.AccessController.doPrivileged((PrivilegedAction<Object>) () -> {
+            listSinglePageAsync.setAccessible(true);
+            listNextSinglePageAsync.setAccessible(true);
+            return null;
+        });
+        return new PagedFlux<>(
+            () -> {
+                try {
+                    return (Mono<PagedResponse<VirtualMachine>>)
+                        listSinglePageAsync.invoke(inner(), ResourceUtils.groupFromResourceId(vmssId), String.format("'virtualMachineScaleSet/id' eq '%s'", vmssId), null);
+                } catch (IllegalAccessException | InvocationTargetException e) {
+                    throw new RuntimeException(e);
+                }
+            },
+            nextLink -> {
+                try {
+                    return (Mono<PagedResponse<VirtualMachine>>)
+                        // encode nextLink
+                        listNextSinglePageAsync.invoke(inner(), ResourceUtils.encodeResourceId(nextLink), Context.NONE);
+                } catch (IllegalAccessException | InvocationTargetException e) {
+                    throw new RuntimeException(e);
+                }
+            });
+    }
+
+    @Override
+    public PagedIterable<VirtualMachine> listByVirtualMachineScaleSet(VirtualMachineScaleSet vmss) {
+        return new PagedIterable<>(listByVirtualMachineScaleSetAsync(vmss));
+    }
+
+    @Override
+    public PagedFlux<VirtualMachine> listByVirtualMachineScaleSetAsync(VirtualMachineScaleSet vmss) {
+        if (vmss == null) {
+            return new PagedFlux<>(() -> Mono.error(
+                new IllegalArgumentException("Parameter 'vmss' is required and cannot be null.")));
+        }
+        return listByVirtualMachineScaleSetIdAsync(vmss.id());
     }
 
     // Getters
