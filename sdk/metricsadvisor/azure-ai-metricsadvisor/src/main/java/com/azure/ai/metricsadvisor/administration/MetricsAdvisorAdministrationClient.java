@@ -358,8 +358,8 @@ public final class MetricsAdvisorAdministrationClient {
      * <p><strong>Code sample</strong></p>
      * <!-- src_embed com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.updateDataFeed#DataFeed -->
      * <pre>
-     *
-     * DataFeed existingDataFeed = new DataFeed&#40;&#41;;
+     * final String dataFeedId = &quot;r47053f1-9080-09lo-bacf-8dccf2e86f&quot;;
+     * DataFeed existingDataFeed = metricsAdvisorAdminClient.getDataFeed&#40;dataFeedId&#41;;
      * final DataFeed updatedDataFeed = metricsAdvisorAdminClient.updateDataFeed&#40;
      *     existingDataFeed.setOptions&#40;new DataFeedOptions&#40;&#41;.setDescription&#40;&quot;set updated description&quot;&#41;&#41;&#41;;
      *

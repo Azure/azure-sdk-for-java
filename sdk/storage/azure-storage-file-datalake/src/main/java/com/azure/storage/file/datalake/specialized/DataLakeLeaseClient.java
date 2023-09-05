@@ -165,7 +165,7 @@ public final class DataLakeLeaseClient {
      * <!-- src_embed com.azure.storage.file.datalake.specialized.DataLakeLeaseClient.renewLeaseWithResponse#RequestConditions-Duration-Context -->
      * <pre>
      * RequestConditions modifiedRequestConditions = new RequestConditions&#40;&#41;
-     *     .setIfUnmodifiedSince&#40;OffsetDateTime.now&#40;&#41;.minusDays&#40;3&#41;&#41;;
+     *     .setIfModifiedSince&#40;OffsetDateTime.now&#40;&#41;.minusDays&#40;3&#41;&#41;;
      *
      * System.out.printf&#40;&quot;Renewed lease ID is %s%n&quot;,
      *     client.renewLeaseWithResponse&#40;modifiedRequestConditions, timeout, new Context&#40;key, value&#41;&#41;
@@ -212,7 +212,7 @@ public final class DataLakeLeaseClient {
      * <!-- src_embed com.azure.storage.file.datalake.specialized.DataLakeLeaseClient.releaseLeaseWithResponse#RequestConditions-Duration-Context -->
      * <pre>
      * RequestConditions modifiedRequestConditions = new RequestConditions&#40;&#41;
-     *     .setIfUnmodifiedSince&#40;OffsetDateTime.now&#40;&#41;.minusDays&#40;3&#41;&#41;;
+     *     .setIfModifiedSince&#40;OffsetDateTime.now&#40;&#41;.minusDays&#40;3&#41;&#41;;
      *
      * System.out.printf&#40;&quot;Release lease completed with status %d%n&quot;,
      *     client.releaseLeaseWithResponse&#40;modifiedRequestConditions, timeout, new Context&#40;key, value&#41;&#41;
@@ -264,7 +264,7 @@ public final class DataLakeLeaseClient {
      * <pre>
      * Integer retainLeaseInSeconds = 5;
      * RequestConditions modifiedRequestConditions = new RequestConditions&#40;&#41;
-     *     .setIfUnmodifiedSince&#40;OffsetDateTime.now&#40;&#41;.minusDays&#40;3&#41;&#41;;
+     *     .setIfModifiedSince&#40;OffsetDateTime.now&#40;&#41;.minusDays&#40;3&#41;&#41;;
      *
      * System.out.printf&#40;&quot;The broken lease has %d seconds remaining on the lease&quot;, client
      *     .breakLeaseWithResponse&#40;retainLeaseInSeconds, modifiedRequestConditions, timeout, new Context&#40;key, value&#41;&#41;

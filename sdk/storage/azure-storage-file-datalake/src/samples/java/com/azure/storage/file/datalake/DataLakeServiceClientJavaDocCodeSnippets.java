@@ -146,12 +146,17 @@ public class DataLakeServiceClientJavaDocCodeSnippets {
             .setLogging(new DataLakeAnalyticsLogging()
                 .setWrite(true)
                 .setDelete(true)
+                .setVersion("1.0")
                 .setRetentionPolicy(loggingRetentionPolicy))
             .setHourMetrics(new DataLakeMetrics()
                 .setEnabled(true)
+                .setVersion("1.0")
+                .setIncludeApis(true)
                 .setRetentionPolicy(metricsRetentionPolicy))
             .setMinuteMetrics(new DataLakeMetrics()
                 .setEnabled(true)
+                .setVersion("1.0")
+                .setIncludeApis(true)
                 .setRetentionPolicy(metricsRetentionPolicy));
 
         try {
@@ -170,12 +175,17 @@ public class DataLakeServiceClientJavaDocCodeSnippets {
             .setLogging(new DataLakeAnalyticsLogging()
                 .setWrite(true)
                 .setDelete(true)
+                .setVersion("1.0")
                 .setRetentionPolicy(loggingRetentionPolicy))
             .setHourMetrics(new DataLakeMetrics()
                 .setEnabled(true)
+                .setVersion("1.0")
+                .setIncludeApis(true)
                 .setRetentionPolicy(metricsRetentionPolicy))
             .setMinuteMetrics(new DataLakeMetrics()
                 .setEnabled(true)
+                .setVersion("1.0")
+                .setIncludeApis(true)
                 .setRetentionPolicy(metricsRetentionPolicy));
 
         Context context = new Context("Key", "Value");

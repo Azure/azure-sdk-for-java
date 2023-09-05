@@ -162,7 +162,7 @@ public final class DataLakeLeaseAsyncClient {
      * <!-- src_embed com.azure.storage.file.datalake.specialized.DataLakeLeaseAsyncClient.renewLeaseWithResponse#RequestConditions -->
      * <pre>
      * RequestConditions modifiedRequestConditions = new RequestConditions&#40;&#41;
-     *     .setIfUnmodifiedSince&#40;OffsetDateTime.now&#40;&#41;.minusDays&#40;3&#41;&#41;;
+     *     .setIfModifiedSince&#40;OffsetDateTime.now&#40;&#41;.minusDays&#40;3&#41;&#41;;
      *
      * client.renewLeaseWithResponse&#40;modifiedRequestConditions&#41;.subscribe&#40;response -&gt;
      *     System.out.printf&#40;&quot;Renewed lease ID is %s%n&quot;, response.getValue&#40;&#41;&#41;&#41;;
@@ -206,7 +206,7 @@ public final class DataLakeLeaseAsyncClient {
      * <!-- src_embed com.azure.storage.file.datalake.specialized.DataLakeLeaseAsyncClient.releaseLeaseWithResponse#RequestConditions -->
      * <pre>
      * RequestConditions modifiedRequestConditions = new RequestConditions&#40;&#41;
-     *     .setIfUnmodifiedSince&#40;OffsetDateTime.now&#40;&#41;.minusDays&#40;3&#41;&#41;;
+     *     .setIfModifiedSince&#40;OffsetDateTime.now&#40;&#41;.minusDays&#40;3&#41;&#41;;
      *
      * client.releaseLeaseWithResponse&#40;modifiedRequestConditions&#41;.subscribe&#40;response -&gt;
      *     System.out.printf&#40;&quot;Release lease completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;&#41;;
@@ -255,7 +255,7 @@ public final class DataLakeLeaseAsyncClient {
      * <pre>
      * Integer retainLeaseInSeconds = 5;
      * RequestConditions modifiedRequestConditions = new RequestConditions&#40;&#41;
-     *     .setIfUnmodifiedSince&#40;OffsetDateTime.now&#40;&#41;.minusDays&#40;3&#41;&#41;;
+     *     .setIfModifiedSince&#40;OffsetDateTime.now&#40;&#41;.minusDays&#40;3&#41;&#41;;
      *
      * client.breakLeaseWithResponse&#40;retainLeaseInSeconds, modifiedRequestConditions&#41;.subscribe&#40;response -&gt;
      *     System.out.printf&#40;&quot;The broken lease has %d seconds remaining on the lease&quot;, response.getValue&#40;&#41;&#41;&#41;;
@@ -305,7 +305,7 @@ public final class DataLakeLeaseAsyncClient {
      * <!-- src_embed com.azure.storage.file.datalake.specialized.DataLakeLeaseAsyncClient.changeLeaseWithResponse#String-RequestConditions -->
      * <pre>
      * RequestConditions modifiedRequestConditions = new RequestConditions&#40;&#41;
-     *     .setIfUnmodifiedSince&#40;OffsetDateTime.now&#40;&#41;.minusDays&#40;3&#41;&#41;;
+     *     .setIfModifiedSince&#40;OffsetDateTime.now&#40;&#41;.minusDays&#40;3&#41;&#41;;
      *
      * client.changeLeaseWithResponse&#40;&quot;proposedId&quot;, modifiedRequestConditions&#41;.subscribe&#40;response -&gt;
      *     System.out.printf&#40;&quot;Changed lease ID is %s%n&quot;, response.getValue&#40;&#41;&#41;&#41;;
