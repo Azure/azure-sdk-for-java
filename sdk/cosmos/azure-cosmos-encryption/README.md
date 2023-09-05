@@ -214,7 +214,7 @@ or contact [opencode@microsoft.com][coc_contact] with any additional questions o
 [cosmos_docs]: https://docs.microsoft.com/azure/cosmos-db/introduction
 [jdk]: https://docs.microsoft.com/java/azure/jdk/
 [maven]: https://maven.apache.org/
-[cosmos_encryption_maven]: https://search.maven.org/artifact/com.azure/azure-cosmos-encryption
+[cosmos_encryption_maven]: https://central.sonatype.com/search?namespace=com.azure&name=azure-cosmos-encryption
 [cla]: https://cla.microsoft.com
 [coc]: https://opensource.microsoft.com/codeofconduct/
 [coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/

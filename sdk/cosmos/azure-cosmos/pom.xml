@@ -61,7 +61,6 @@ Licensed under the MIT License.
       <scope>provided</scope>
     </dependency>
 
-    <!-- https://mvnrepository.com/artifact/com.microsoft.azure/azure-core -->
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>

@@ -166,7 +166,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 [product_documentation]: https://aka.ms/FarmBeatsProductDocumentationPaaS
 [azure_portal]: https://portal.azure.com
 [jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
-[package]: https://mvnrepository.com/artifact/com.azure/azure-verticals-agrifood-farming
+[package]: https://central.sonatype.com/search?namespace=com.azure&name=azure-verticals-agrifood-farming
 [samples_readme]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/agrifood/azure-verticals-agrifood-farming/src/samples/README.md
 [farm_hierarchy]: https://aka.ms/FarmBeatsFarmHierarchyDocs
 [farm_operations_docs]: https://aka.ms/FarmBeatsFarmOperationsDocumentation

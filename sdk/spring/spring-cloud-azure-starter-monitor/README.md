@@ -112,7 +112,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 
 <!-- LINKS -->
 [source_code]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/spring-cloud-azure-starter-monitor/src
-[package_mvn]: https://mvnrepository.com/artifact/com.azure/applicationinsights-spring-native
+[package_mvn]: https://central.sonatype.com/search?namespace=com.azure&name=applicationinsights-spring-native
 [api_reference_doc]: https://docs.microsoft.com/azure/azure-monitor/overview
 [product_documentation]: https://docs.microsoft.com/azure/azure-monitor/overview
 [azure_subscription]: https://azure.microsoft.com/free/

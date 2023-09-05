@@ -129,8 +129,8 @@ import static com.azure.core.util.FluxUtil.monoError;
  * final Person data = new Person&#40;&#41;.setName&#40;&quot;John&quot;&#41;;
  *
  * &#47;&#47; Provide your custom serializer or use Azure provided serializers.
- * &#47;&#47; https:&#47;&#47;mvnrepository.com&#47;artifact&#47;com.azure&#47;azure-core-serializer-json-jackson or
- * &#47;&#47; https:&#47;&#47;mvnrepository.com&#47;artifact&#47;com.azure&#47;azure-core-serializer-json-gson
+ * &#47;&#47; https:&#47;&#47;central.sonatype.com&#47;search?namespace=com.azure&amp;name=azure-core-serializer-json-jackson or
+ * &#47;&#47; https:&#47;&#47;central.sonatype.com&#47;search?namespace=com.azure&amp;name=azure-core-serializer-json-gson
  * BinaryData binaryData = BinaryData.fromObject&#40;data&#41;;
  *
  * System.out.println&#40;binaryData.toString&#40;&#41;&#41;;
@@ -611,8 +611,8 @@ public final class BinaryData {
      * final Person data = new Person&#40;&#41;.setName&#40;&quot;John&quot;&#41;;
      *
      * &#47;&#47; Provide your custom serializer or use Azure provided serializers.
-     * &#47;&#47; https:&#47;&#47;mvnrepository.com&#47;artifact&#47;com.azure&#47;azure-core-serializer-json-jackson or
-     * &#47;&#47; https:&#47;&#47;mvnrepository.com&#47;artifact&#47;com.azure&#47;azure-core-serializer-json-gson
+     * &#47;&#47; https:&#47;&#47;central.sonatype.com&#47;search?namespace=com.azure&amp;name=azure-core-serializer-json-jackson or
+     * &#47;&#47; https:&#47;&#47;central.sonatype.com&#47;search?namespace=com.azure&amp;name=azure-core-serializer-json-gson
      * BinaryData binaryData = BinaryData.fromObject&#40;data&#41;;
      *
      * System.out.println&#40;binaryData.toString&#40;&#41;&#41;;
@@ -658,8 +658,8 @@ public final class BinaryData {
      * final Person data = new Person&#40;&#41;.setName&#40;&quot;John&quot;&#41;;
      *
      * &#47;&#47; Provide your custom serializer or use Azure provided serializers.
-     * &#47;&#47; https:&#47;&#47;mvnrepository.com&#47;artifact&#47;com.azure&#47;azure-core-serializer-json-jackson or
-     * &#47;&#47; https:&#47;&#47;mvnrepository.com&#47;artifact&#47;com.azure&#47;azure-core-serializer-json-gson
+     * &#47;&#47; https:&#47;&#47;central.sonatype.com&#47;search?namespace=com.azure&amp;name=azure-core-serializer-json-jackson or
+     * &#47;&#47; https:&#47;&#47;central.sonatype.com&#47;search?namespace=com.azure&amp;name=azure-core-serializer-json-gson
      * Disposable subscriber = BinaryData.fromObjectAsync&#40;data&#41;
      *     .subscribe&#40;binaryData -&gt; System.out.println&#40;binaryData.toString&#40;&#41;&#41;&#41;;
      *
@@ -713,8 +713,8 @@ public final class BinaryData {
      * final Person data = new Person&#40;&#41;.setName&#40;&quot;John&quot;&#41;;
      *
      * &#47;&#47; Provide your custom serializer or use Azure provided serializers.
-     * &#47;&#47; https:&#47;&#47;mvnrepository.com&#47;artifact&#47;com.azure&#47;azure-core-serializer-json-jackson or
-     * &#47;&#47; https:&#47;&#47;mvnrepository.com&#47;artifact&#47;com.azure&#47;azure-core-serializer-json-gson
+     * &#47;&#47; https:&#47;&#47;central.sonatype.com&#47;search?namespace=com.azure&amp;name=azure-core-serializer-json-jackson or
+     * &#47;&#47; https:&#47;&#47;central.sonatype.com&#47;search?namespace=com.azure&amp;name=azure-core-serializer-json-gson
      * final ObjectSerializer serializer =
      *     new MyJsonSerializer&#40;&#41;; &#47;&#47; Replace this with your Serializer
      * BinaryData binaryData = BinaryData.fromObject&#40;data, serializer&#41;;
@@ -773,8 +773,8 @@ public final class BinaryData {
      * final Person data = new Person&#40;&#41;.setName&#40;&quot;John&quot;&#41;;
      *
      * &#47;&#47; Provide your custom serializer or use Azure provided serializers.
-     * &#47;&#47; https:&#47;&#47;mvnrepository.com&#47;artifact&#47;com.azure&#47;azure-core-serializer-json-jackson or
-     * &#47;&#47; https:&#47;&#47;mvnrepository.com&#47;artifact&#47;com.azure&#47;azure-core-serializer-json-gson
+     * &#47;&#47; https:&#47;&#47;central.sonatype.com&#47;search?namespace=com.azure&amp;name=azure-core-serializer-json-jackson or
+     * &#47;&#47; https:&#47;&#47;central.sonatype.com&#47;search?namespace=com.azure&amp;name=azure-core-serializer-json-gson
      * final ObjectSerializer serializer =
      *     new MyJsonSerializer&#40;&#41;; &#47;&#47; Replace this with your Serializer
      * Disposable subscriber = BinaryData.fromObjectAsync&#40;data, serializer&#41;
@@ -983,8 +983,8 @@ public final class BinaryData {
      * &#47;&#47; Ensure your classpath have the Serializer to serialize the object which implement implement
      * &#47;&#47; com.azure.core.util.serializer.JsonSerializer interface.
      * &#47;&#47; Or use Azure provided libraries for this.
-     * &#47;&#47; https:&#47;&#47;mvnrepository.com&#47;artifact&#47;com.azure&#47;azure-core-serializer-json-jackson or
-     * &#47;&#47; https:&#47;&#47;mvnrepository.com&#47;artifact&#47;com.azure&#47;azure-core-serializer-json-gson
+     * &#47;&#47; https:&#47;&#47;central.sonatype.com&#47;search?namespace=com.azure&amp;name=azure-core-serializer-json-jackson or
+     * &#47;&#47; https:&#47;&#47;central.sonatype.com&#47;search?namespace=com.azure&amp;name=azure-core-serializer-json-gson
      *
      * BinaryData binaryData = BinaryData.fromObject&#40;data&#41;;
      *
@@ -1040,8 +1040,8 @@ public final class BinaryData {
      * &#47;&#47; Ensure your classpath have the Serializer to serialize the object which implement implement
      * &#47;&#47; com.azure.core.util.serializer.JsonSerializer interface.
      * &#47;&#47; Or use Azure provided libraries for this.
-     * &#47;&#47; https:&#47;&#47;mvnrepository.com&#47;artifact&#47;com.azure&#47;azure-core-serializer-json-jackson or
-     * &#47;&#47; https:&#47;&#47;mvnrepository.com&#47;artifact&#47;com.azure&#47;azure-core-serializer-json-gson
+     * &#47;&#47; https:&#47;&#47;central.sonatype.com&#47;search?namespace=com.azure&amp;name=azure-core-serializer-json-jackson or
+     * &#47;&#47; https:&#47;&#47;central.sonatype.com&#47;search?namespace=com.azure&amp;name=azure-core-serializer-json-gson
      *
      * BinaryData binaryData = BinaryData.fromObject&#40;data&#41;;
      *
@@ -1064,8 +1064,8 @@ public final class BinaryData {
      * &#47;&#47; Ensure your classpath have the Serializer to serialize the object which implement implement
      * &#47;&#47; com.azure.core.util.serializer.JsonSerializer interface.
      * &#47;&#47; Or use Azure provided libraries for this.
-     * &#47;&#47; https:&#47;&#47;mvnrepository.com&#47;artifact&#47;com.azure&#47;azure-core-serializer-json-jackson or
-     * &#47;&#47; https:&#47;&#47;mvnrepository.com&#47;artifact&#47;com.azure&#47;azure-core-serializer-json-gson
+     * &#47;&#47; https:&#47;&#47;central.sonatype.com&#47;search?namespace=com.azure&amp;name=azure-core-serializer-json-jackson or
+     * &#47;&#47; https:&#47;&#47;central.sonatype.com&#47;search?namespace=com.azure&amp;name=azure-core-serializer-json-gson
      *
      *
      * BinaryData binaryData = BinaryData.fromObject&#40;personList&#41;;
@@ -1125,8 +1125,8 @@ public final class BinaryData {
      * final Person data = new Person&#40;&#41;.setName&#40;&quot;John&quot;&#41;;
      *
      * &#47;&#47; Provide your custom serializer or use Azure provided serializers.
-     * &#47;&#47; https:&#47;&#47;mvnrepository.com&#47;artifact&#47;com.azure&#47;azure-core-serializer-json-jackson or
-     * &#47;&#47; https:&#47;&#47;mvnrepository.com&#47;artifact&#47;com.azure&#47;azure-core-serializer-json-gson
+     * &#47;&#47; https:&#47;&#47;central.sonatype.com&#47;search?namespace=com.azure&amp;name=azure-core-serializer-json-jackson or
+     * &#47;&#47; https:&#47;&#47;central.sonatype.com&#47;search?namespace=com.azure&amp;name=azure-core-serializer-json-gson
      *
      * final ObjectSerializer serializer =
      *     new MyJsonSerializer&#40;&#41;; &#47;&#47; Replace this with your Serializer
@@ -1191,8 +1191,8 @@ public final class BinaryData {
      * final Person data = new Person&#40;&#41;.setName&#40;&quot;John&quot;&#41;;
      *
      * &#47;&#47; Provide your custom serializer or use Azure provided serializers.
-     * &#47;&#47; https:&#47;&#47;mvnrepository.com&#47;artifact&#47;com.azure&#47;azure-core-serializer-json-jackson or
-     * &#47;&#47; https:&#47;&#47;mvnrepository.com&#47;artifact&#47;com.azure&#47;azure-core-serializer-json-gson
+     * &#47;&#47; https:&#47;&#47;central.sonatype.com&#47;search?namespace=com.azure&amp;name=azure-core-serializer-json-jackson or
+     * &#47;&#47; https:&#47;&#47;central.sonatype.com&#47;search?namespace=com.azure&amp;name=azure-core-serializer-json-gson
      *
      * final ObjectSerializer serializer =
      *     new MyJsonSerializer&#40;&#41;; &#47;&#47; Replace this with your Serializer
@@ -1277,8 +1277,8 @@ public final class BinaryData {
      * &#47;&#47; Ensure your classpath have the Serializer to serialize the object which implement implement
      * &#47;&#47; com.azure.core.util.serializer.JsonSerializer interface.
      * &#47;&#47; Or use Azure provided libraries for this.
-     * &#47;&#47; https:&#47;&#47;mvnrepository.com&#47;artifact&#47;com.azure&#47;azure-core-serializer-json-jackson or
-     * &#47;&#47; https:&#47;&#47;mvnrepository.com&#47;artifact&#47;com.azure&#47;azure-core-serializer-json-gson
+     * &#47;&#47; https:&#47;&#47;central.sonatype.com&#47;search?namespace=com.azure&amp;name=azure-core-serializer-json-jackson or
+     * &#47;&#47; https:&#47;&#47;central.sonatype.com&#47;search?namespace=com.azure&amp;name=azure-core-serializer-json-gson
      *
      * BinaryData binaryData = BinaryData.fromObject&#40;data&#41;;
      *
@@ -1338,8 +1338,8 @@ public final class BinaryData {
      * &#47;&#47; Ensure your classpath have the Serializer to serialize the object which implement implement
      * &#47;&#47; com.azure.core.util.serializer.JsonSerializer interface.
      * &#47;&#47; Or use Azure provided libraries for this.
-     * &#47;&#47; https:&#47;&#47;mvnrepository.com&#47;artifact&#47;com.azure&#47;azure-core-serializer-json-jackson or
-     * &#47;&#47; https:&#47;&#47;mvnrepository.com&#47;artifact&#47;com.azure&#47;azure-core-serializer-json-gson
+     * &#47;&#47; https:&#47;&#47;central.sonatype.com&#47;search?namespace=com.azure&amp;name=azure-core-serializer-json-jackson or
+     * &#47;&#47; https:&#47;&#47;central.sonatype.com&#47;search?namespace=com.azure&amp;name=azure-core-serializer-json-gson
      *
      * BinaryData binaryData = BinaryData.fromObject&#40;data&#41;;
      *
@@ -1424,8 +1424,8 @@ public final class BinaryData {
      * final Person data = new Person&#40;&#41;.setName&#40;&quot;John&quot;&#41;;
      *
      * &#47;&#47; Provide your custom serializer or use Azure provided serializers.
-     * &#47;&#47; https:&#47;&#47;mvnrepository.com&#47;artifact&#47;com.azure&#47;azure-core-serializer-json-jackson or
-     * &#47;&#47; https:&#47;&#47;mvnrepository.com&#47;artifact&#47;com.azure&#47;azure-core-serializer-json-gson
+     * &#47;&#47; https:&#47;&#47;central.sonatype.com&#47;search?namespace=com.azure&amp;name=azure-core-serializer-json-jackson or
+     * &#47;&#47; https:&#47;&#47;central.sonatype.com&#47;search?namespace=com.azure&amp;name=azure-core-serializer-json-gson
      *
      * final ObjectSerializer serializer =
      *     new MyJsonSerializer&#40;&#41;; &#47;&#47; Replace this with your Serializer
@@ -1494,8 +1494,8 @@ public final class BinaryData {
      * final Person data = new Person&#40;&#41;.setName&#40;&quot;John&quot;&#41;;
      *
      * &#47;&#47; Provide your custom serializer or use Azure provided serializers.
-     * &#47;&#47; https:&#47;&#47;mvnrepository.com&#47;artifact&#47;com.azure&#47;azure-core-serializer-json-jackson or
-     * &#47;&#47; https:&#47;&#47;mvnrepository.com&#47;artifact&#47;com.azure&#47;azure-core-serializer-json-gson
+     * &#47;&#47; https:&#47;&#47;central.sonatype.com&#47;search?namespace=com.azure&amp;name=azure-core-serializer-json-jackson or
+     * &#47;&#47; https:&#47;&#47;central.sonatype.com&#47;search?namespace=com.azure&amp;name=azure-core-serializer-json-gson
      *
      * final ObjectSerializer serializer =
      *     new MyJsonSerializer&#40;&#41;; &#47;&#47; Replace this with your Serializer

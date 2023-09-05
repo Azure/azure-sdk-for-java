@@ -596,7 +596,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [default_cred_ref]: https://azuresdkdocs.blob.core.windows.net/$web/java/azure-identity/1.0.1/com/azure/identity/DefaultAzureCredential.html
 [jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
 [maven]: https://maven.apache.org/
-[package]: https://search.maven.org/artifact/com.azure/azure-data-appconfiguration
+[package]: https://central.sonatype.com/search?namespace=com.azure&name=azure-data-appconfiguration
 [performance_tuning]: https://github.com/Azure/azure-sdk-for-java/wiki/Performance-Tuning
 [rest_api]: https://github.com/Azure/AppConfiguration#rest-api-reference
 [samples]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/appconfiguration/azure-data-appconfiguration/src/samples/java/com/azure/data/appconfiguration
