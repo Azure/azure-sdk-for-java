@@ -101,7 +101,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [azure_identity]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/identity/azure-identity
 [DefaultAzureCredential]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/identity/azure-identity/README.md#defaultazurecredential
 [jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
-[package]: https://central.sonatype.com/search?namespace=com.azure&name=azure-analytics-purview-administration
+[package]: https://central.sonatype.com/artifact/com.azure/azure-analytics-purview-administration
 [protocol_method]: https://github.com/Azure/azure-sdk-for-java/wiki/Protocol-Methods
 [cla]: https://cla.microsoft.com
 [coc]: https://opensource.microsoft.com/codeofconduct/

@@ -15,7 +15,7 @@
           links:
             github: https://github.com/Azure/azure-sdk-for-java/tree/spring-cloud-azure_4.11.0/sdk/boms/spring-cloud-azure-dependencies
             msdocs: https://docs.microsoft.com/azure/developer/java/spring-framework/spring-cloud-azure#bill-of-material-bom
-            repopath: https://central.sonatype.com/search?namespace=com.azure.spring&name=spring-cloud-azure-dependencies
+            repopath: https://central.sonatype.com/artifact/com.azure.spring/spring-cloud-azure-dependencies
           dependencyPattern:
             gradle: |
               dependencyManagement {
@@ -76,7 +76,7 @@
           links:
             github: https://github.com/Azure/azure-sdk-for-java/tree/spring-cloud-azure_4.11.0/sdk/spring/spring-cloud-azure-starter-active-directory
             msdocs: https://docs.microsoft.com/azure/developer/java/spring-framework/configure-spring-boot-starter-java-app-with-azure-active-directory
-            repopath: https://central.sonatype.com/search?namespace=com.azure.spring&name=spring-cloud-azure-starter-active-directory
+            repopath: https://central.sonatype.com/artifact/com.azure.spring/spring-cloud-azure-starter-active-directory
             sample: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/spring-cloud-azure_4.11.0/aad/spring-cloud-azure-starter-active-directory/
           springProperties:
             starter: true
@@ -116,7 +116,7 @@
           links:
             github: https://github.com/Azure/azure-sdk-for-java/tree/spring-cloud-azure_4.11.0/sdk/spring/spring-cloud-azure-starter-active-directory-b2c
             msdocs: https://docs.microsoft.com/azure/developer/java/spring-framework/configure-spring-boot-starter-java-app-with-azure-active-directory-b2c-oidc
-            repopath: https://central.sonatype.com/search?namespace=com.azure.spring&name=spring-cloud-azure-starter-active-directory-b2c
+            repopath: https://central.sonatype.com/artifact/com.azure.spring/spring-cloud-azure-starter-active-directory-b2c
             sample: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/spring-cloud-azure_4.11.0/aad/spring-cloud-azure-starter-active-directory-b2c/
           springProperties:
             starter: true
@@ -162,7 +162,7 @@
           links:
             github: https://github.com/Azure/azure-sdk-for-java/tree/spring-cloud-azure_4.11.0/sdk/spring/spring-cloud-azure-starter-appconfiguration
             msdocs: https://docs.microsoft.com/azure/developer/java/spring-framework/spring-cloud-azure#auto-configure-azure-sdk-clients
-            repopath: https://central.sonatype.com/search?namespace=com.azure.spring&name=spring-cloud-azure-starter-appconfiguration
+            repopath: https://central.sonatype.com/artifact/com.azure.spring/spring-cloud-azure-starter-appconfiguration
             sample: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/spring-cloud-azure_4.11.0/appconfiguration/spring-cloud-azure-starter-appconfiguration/
           springProperties:
             starter: true
@@ -194,7 +194,7 @@
           type: spring
           links:
             github: https://github.com/Azure/azure-sdk-for-java/tree/spring-cloud-azure_4.11.0/sdk/spring/spring-cloud-azure-starter-appconfiguration-config
-            repopath: https://central.sonatype.com/search?namespace=com.azure.spring&name=spring-cloud-azure-starter-appconfiguration-config
+            repopath: https://central.sonatype.com/artifact/com.azure.spring/spring-cloud-azure-starter-appconfiguration-config
             sample: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/spring-cloud-azure_4.11.0/appconfiguration/spring-cloud-azure-starter-appconfiguration-config/
           springProperties:
             starter: true
@@ -242,7 +242,7 @@
           links:
             github: https://github.com/Azure/azure-sdk-for-java/tree/spring-cloud-azure_4.11.0/sdk/spring/spring-cloud-azure-starter-data-cosmos
             msdocs: https://docs.microsoft.com/azure/developer/java/spring-framework/configure-spring-boot-starter-java-app-with-cosmos-db
-            repopath: https://central.sonatype.com/search?namespace=com.azure.spring&name=spring-cloud-azure-starter-data-cosmos
+            repopath: https://central.sonatype.com/artifact/com.azure.spring/spring-cloud-azure-starter-data-cosmos
             sample: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/spring-cloud-azure_4.11.0/cosmos/spring-cloud-azure-starter-data-cosmos/
           springProperties:
             starter: true
@@ -284,7 +284,7 @@
           links:
             github: https://github.com/Azure/azure-sdk-for-java/tree/spring-cloud-azure_4.11.0/sdk/spring/spring-cloud-azure-starter-cosmos
             msdocs: https://docs.microsoft.com/azure/developer/java/spring-framework/spring-cloud-azure#auto-configure-azure-sdk-clients
-            repopath: https://central.sonatype.com/search?namespace=com.azure.spring&name=spring-cloud-azure-starter-cosmos
+            repopath: https://central.sonatype.com/artifact/com.azure.spring/spring-cloud-azure-starter-cosmos
             sample: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/spring-cloud-azure_4.11.0/cosmos/spring-cloud-azure-starter-cosmos/
           springProperties:
             starter: true
@@ -325,7 +325,7 @@
           links:
             github: https://github.com/Azure/azure-sdk-for-java/tree/spring-cloud-azure_4.11.0/sdk/spring/spring-cloud-azure-starter-keyvault
             msdocs: https://learn.microsoft.com/azure/key-vault/
-            repopath: https://central.sonatype.com/search?namespace=com.azure.spring&name=spring-cloud-azure-starter-keyvault
+            repopath: https://central.sonatype.com/artifact/com.azure.spring/spring-cloud-azure-starter-keyvault
             sample: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/spring-cloud-azure_4.11.0/keyvault/spring-cloud-azure-starter-keyvault/
           springProperties:
             starter: true
@@ -368,7 +368,7 @@
           links:
             github: https://github.com/Azure/azure-sdk-for-java/tree/spring-cloud-azure_4.11.0/sdk/spring/spring-cloud-azure-starter-keyvault-certificates
             msdocs: https://docs.microsoft.com/azure/developer/java/spring-framework/configure-spring-boot-starter-java-app-with-azure-key-vault-certificates
-            repopath: https://central.sonatype.com/search?namespace=com.azure.spring&name=spring-cloud-azure-starter-keyvault-certificates
+            repopath: https://central.sonatype.com/artifact/com.azure.spring/spring-cloud-azure-starter-keyvault-certificates
           springProperties:
             starter: true
             bom: spring-cloud-azure-dependencies
@@ -398,7 +398,7 @@
             javadoc: https://azuresdkdocs.blob.core.windows.net/$web/java/azure-security-keyvault-jca/2.7.1/index.html
             github: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/keyvault/azure-security-keyvault-jca
             msdocs: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/keyvault/azure-security-keyvault-jca/README.md
-            repopath: https://central.sonatype.com/search?namespace=com.azure&name=azure-security-keyvault-jca
+            repopath: https://central.sonatype.com/artifact/com.azure/azure-security-keyvault-jca
             sample: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/main/keyvault/azure-securtiy-keyvault-jca
     - name: Key Vault - Secrets
       description: |-
@@ -424,7 +424,7 @@
           links:
             github: https://github.com/Azure/azure-sdk-for-java/tree/spring-cloud-azure_4.11.0/sdk/spring/spring-cloud-azure-starter-keyvault-secrets
             msdocs: https://docs.microsoft.com/azure/developer/java/spring-framework/configure-spring-boot-starter-java-app-with-azure-key-vault
-            repopath: https://central.sonatype.com/search?namespace=com.azure.spring&name=spring-cloud-azure-starter-keyvault-secrets
+            repopath: https://central.sonatype.com/artifact/com.azure.spring/spring-cloud-azure-starter-keyvault-secrets
             sample: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/spring-cloud-azure_4.11.0/keyvault/spring-cloud-azure-starter-keyvault-secrets/
           springProperties:
             starter: true
@@ -465,7 +465,7 @@
           links:
             github: https://github.com/Azure/azure-sdk-for-java/tree/spring-cloud-azure_4.11.0/sdk/spring/spring-cloud-azure-starter-storage
             msdocs: https://docs.microsoft.com/azure/storage/
-            repopath: https://central.sonatype.com/search?namespace=com.azure.spring&name=spring-cloud-azure-starter-storage
+            repopath: https://central.sonatype.com/artifact/com.azure.spring/spring-cloud-azure-starter-storage
             sample: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/spring-cloud-azure_4.11.0/storage/spring-cloud-azure-starter-storage/
           springProperties:
             starter: true
@@ -511,7 +511,7 @@
           links:
             github: https://github.com/Azure/azure-sdk-for-java/tree/spring-cloud-azure_4.11.0/sdk/spring/spring-cloud-azure-starter-storage-blob
             msdocs: https://docs.microsoft.com/azure/developer/java/spring-framework/configure-spring-boot-starter-java-app-with-azure-storage
-            repopath: https://central.sonatype.com/search?namespace=com.azure.spring&name=spring-cloud-azure-starter-storage-blob
+            repopath: https://central.sonatype.com/artifact/com.azure.spring/spring-cloud-azure-starter-storage-blob
             sample: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/spring-cloud-azure_4.11.0/storage/spring-cloud-azure-starter-storage-blob/
           springProperties:
             starter: true
@@ -558,7 +558,7 @@
           links:
             github: https://github.com/Azure/azure-sdk-for-java/tree/spring-cloud-azure_4.11.0/sdk/spring/spring-cloud-azure-starter-storage-file-share
             msdocs: https://docs.microsoft.com/azure/developer/java/spring-framework/spring-cloud-azure#resource-handling
-            repopath: https://central.sonatype.com/search?namespace=com.azure.spring&name=spring-cloud-azure-starter-storage-file-share
+            repopath: https://central.sonatype.com/artifact/com.azure.spring/spring-cloud-azure-starter-storage-file-share
             sample: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/spring-cloud-azure_4.11.0/storage/spring-cloud-azure-starter-storage-file-share/
           springProperties:
             starter: true
@@ -604,7 +604,7 @@
           links:
             github: https://github.com/Azure/azure-sdk-for-java/tree/spring-cloud-azure_4.11.0/sdk/spring/spring-cloud-azure-starter-storage-queue
             msdocs: https://docs.microsoft.com/azure/developer/java/spring-framework/spring-cloud-azure#auto-configure-azure-sdk-clients
-            repopath: https://central.sonatype.com/search?namespace=com.azure.spring&name=spring-cloud-azure-starter-storage-queue
+            repopath: https://central.sonatype.com/artifact/com.azure.spring/spring-cloud-azure-starter-storage-queue
             sample: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/spring-cloud-azure_4.11.0/storage/spring-cloud-azure-starter-storage-queue/
           springProperties:
             starter: true
@@ -638,7 +638,7 @@
           links:
             github: https://github.com/Azure/azure-sdk-for-java/tree/spring-cloud-azure_4.11.0/sdk/spring/spring-cloud-azure-starter-integration-storage-queue
             msdocs: https://docs.microsoft.com/azure/developer/java/spring-framework/configure-spring-boot-starter-java-app-with-azure-service-bus
-            repopath: https://central.sonatype.com/search?namespace=com.azure.spring&name=spring-cloud-azure-starter-integration-storage-queue
+            repopath: https://central.sonatype.com/artifact/com.azure.spring/spring-cloud-azure-starter-integration-storage-queue
             sample: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/spring-cloud-azure_4.11.0/storage/spring-cloud-azure-starter-integration-storage-queue/
           springProperties:
             starter: true
@@ -673,7 +673,7 @@
             javadoc: https://azuresdkdocs.blob.core.windows.net/$web/java/spring-integration-azure-storage-queue/4.11.0/index.html
             github: https://github.com/Azure/azure-sdk-for-java/tree/spring-cloud-azure_4.11.0/sdk/spring/spring-integration-azure-storage-queue
             msdocs: https://docs.microsoft.com/azure/developer/java/spring-framework/spring-cloud-azure#spring-integration-support
-            repopath: https://central.sonatype.com/search?namespace=com.azure.spring&name=spring-integration-azure-storage-queue
+            repopath: https://central.sonatype.com/artifact/com.azure.spring/spring-integration-azure-storage-queue
             sample: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/spring-cloud-azure_4.11.0/storage/spring-integration-azure-storage-queue/
           springProperties:
             starter: true
@@ -720,7 +720,7 @@
           links:
             github: https://github.com/Azure/azure-sdk-for-java/tree/spring-cloud-azure_4.11.0/sdk/spring/spring-cloud-azure-starter-servicebus
             msdocs: https://docs.microsoft.com/azure/developer/java/spring-framework/spring-cloud-azure#auto-configure-azure-sdk-clients
-            repopath: https://central.sonatype.com/search?namespace=com.azure.spring&name=spring-cloud-azure-starter-servicebus
+            repopath: https://central.sonatype.com/artifact/com.azure.spring/spring-cloud-azure-starter-servicebus
             sample: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/spring-cloud-azure_4.11.0/servicebus/spring-cloud-azure-starter-servicebus/
           springProperties:
             starter: true
@@ -754,7 +754,7 @@
           links:
             github: https://github.com/Azure/azure-sdk-for-java/tree/spring-cloud-azure_4.11.0/sdk/spring/spring-cloud-azure-starter-integration-servicebus
             msdocs: https://docs.microsoft.com/azure/developer/java/spring-framework/configure-spring-boot-starter-java-app-with-azure-service-bus
-            repopath: https://central.sonatype.com/search?namespace=com.azure.spring&name=spring-cloud-azure-starter-integration-servicebus
+            repopath: https://central.sonatype.com/artifact/com.azure.spring/spring-cloud-azure-starter-integration-servicebus
             sample: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/spring-cloud-azure_4.11.0/servicebus/spring-cloud-azure-starter-integration-servicebus/
           springProperties:
             starter: true
@@ -789,7 +789,7 @@
             javadoc: https://azuresdkdocs.blob.core.windows.net/$web/java/spring-integration-azure-servicebus/4.11.0/index.html
             github: https://github.com/Azure/azure-sdk-for-java/tree/spring-cloud-azure_4.11.0/sdk/spring/spring-integration-azure-servicebus
             msdocs: https://docs.microsoft.com/azure/developer/java/spring-framework/spring-cloud-azure#spring-integration-support
-            repopath: https://central.sonatype.com/search?namespace=com.azure.spring&name=spring-integration-azure-servicebus
+            repopath: https://central.sonatype.com/artifact/com.azure.spring/spring-integration-azure-servicebus
             sample: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/spring-cloud-azure_4.11.0/servicebus/spring-integration-azure-servicebus/
           springProperties:
             starter: true
@@ -825,7 +825,7 @@
             javadoc: https://azuresdkdocs.blob.core.windows.net/$web/java/spring-cloud-azure-stream-binder-servicebus/4.11.0/index.html
             github: https://github.com/Azure/azure-sdk-for-java/tree/spring-cloud-azure_4.11.0/sdk/spring/spring-cloud-azure-stream-binder-servicebus
             msdocs: https://docs.microsoft.com/azure/developer/java/spring-framework/configure-spring-cloud-stream-binder-java-app-with-service-bus
-            repopath: https://central.sonatype.com/search?namespace=com.azure.spring&name=spring-cloud-azure-stream-binder-servicebus
+            repopath: https://central.sonatype.com/artifact/com.azure.spring/spring-cloud-azure-stream-binder-servicebus
             sample: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/spring-cloud-azure_4.11.0/servicebus/spring-cloud-azure-stream-binder-servicebus/
           springProperties:
             starter: true
@@ -867,7 +867,7 @@
           links:
             github: https://github.com/Azure/azure-sdk-for-java/tree/spring-cloud-azure_4.11.0/sdk/spring/spring-cloud-azure-starter-servicebus-jms
             msdocs: https://docs.microsoft.com/azure/developer/java/spring-framework/configure-spring-boot-starter-java-app-with-azure-service-bus
-            repopath: https://central.sonatype.com/search?namespace=com.azure.spring&name=spring-cloud-azure-starter-servicebus-jms
+            repopath: https://central.sonatype.com/artifact/com.azure.spring/spring-cloud-azure-starter-servicebus-jms
             sample: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/spring-cloud-azure_4.11.0/servicebus/spring-cloud-azure-starter-servicebus-jms/
           springProperties:
             starter: true
@@ -919,7 +919,7 @@
           type: spring
           links:
             github: https://github.com/Azure/azure-sdk-for-java/tree/spring-cloud-azure_4.11.0/sdk/spring/spring-cloud-azure-starter-eventgrid
-            repopath: https://central.sonatype.com/search?namespace=com.azure.spring&name=spring-cloud-azure-starter-eventgrid
+            repopath: https://central.sonatype.com/artifact/com.azure.spring/spring-cloud-azure-starter-eventgrid
             sample: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/spring-cloud-azure_4.11.0/eventgrid/spring-cloud-azure-starter-eventgrid/
           springProperties:
             starter: true
@@ -966,7 +966,7 @@
           links:
             github: https://github.com/Azure/azure-sdk-for-java/tree/spring-cloud-azure_4.11.0/sdk/spring/spring-cloud-azure-starter-eventhubs
             msdocs: https://docs.microsoft.com/azure/developer/java/spring-framework/spring-cloud-azure#auto-configure-azure-sdk-clients
-            repopath: https://central.sonatype.com/search?namespace=com.azure.spring&name=spring-cloud-azure-starter-eventhubs
+            repopath: https://central.sonatype.com/artifact/com.azure.spring/spring-cloud-azure-starter-eventhubs
             sample: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/spring-cloud-azure_4.11.0/eventhubs/spring-cloud-azure-starter-eventhubs/
           springProperties:
             starter: true
@@ -1000,7 +1000,7 @@
           links:
             github: https://github.com/Azure/azure-sdk-for-java/tree/spring-cloud-azure_4.11.0/sdk/spring/spring-cloud-azure-starter-integration-eventhubs
             msdocs: https://docs.microsoft.com/azure/developer/java/spring-framework/configure-spring-boot-starter-java-app-with-azure-service-bus
-            repopath: https://central.sonatype.com/search?namespace=com.azure.spring&name=spring-cloud-azure-starter-integration-eventhubs
+            repopath: https://central.sonatype.com/artifact/com.azure.spring/spring-cloud-azure-starter-integration-eventhubs
             sample: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/spring-cloud-azure_4.11.0/eventhubs/spring-cloud-azure-starter-integration-eventhubs/
           springProperties:
             starter: true
@@ -1035,7 +1035,7 @@
             javadoc: https://azuresdkdocs.blob.core.windows.net/$web/java/spring-integration-azure-eventhubs/4.11.0/index.html
             github: https://github.com/Azure/azure-sdk-for-java/tree/spring-cloud-azure_4.11.0/sdk/spring/spring-integration-azure-eventhubs
             msdocs: https://docs.microsoft.com/azure/developer/java/spring-framework/spring-cloud-azure#spring-integration-support
-            repopath: https://central.sonatype.com/search?namespace=com.azure.spring&name=spring-integration-azure-eventhubs
+            repopath: https://central.sonatype.com/artifact/com.azure.spring/spring-integration-azure-eventhubs
             sample: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/spring-cloud-azure_4.11.0/eventhubs/spring-integration-azure-eventhubs/
           springProperties:
             starter: true
@@ -1071,7 +1071,7 @@
             javadoc: https://azuresdkdocs.blob.core.windows.net/$web/java/spring-cloud-azure-stream-binder-eventhubs/4.11.0/index.html
             github: https://github.com/Azure/azure-sdk-for-java/tree/spring-cloud-azure_4.11.0/sdk/spring/spring-cloud-azure-stream-binder-eventhubs
             msdocs: https://docs.microsoft.com/azure/developer/java/spring-framework/spring-cloud-azure#spring-cloud-stream-binder-for-azure-event-hubs
-            repopath: https://central.sonatype.com/search?namespace=com.azure.spring&name=spring-cloud-azure-stream-binder-eventhubs
+            repopath: https://central.sonatype.com/artifact/com.azure.spring/spring-cloud-azure-stream-binder-eventhubs
             sample: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/spring-cloud-azure_4.11.0/eventhubs/spring-cloud-azure-stream-binder-eventhubs/
           springProperties:
             starter: true
@@ -1114,7 +1114,7 @@
           links:
             github: https://github.com/Azure/azure-sdk-for-java/tree/spring-cloud-azure_4.11.0/sdk/spring/spring-cloud-azure-starter-jdbc-mysql
             msdocs: https://docs.microsoft.com/azure/developer/java/spring-framework/spring-cloud-azure#auto-configure-azure-sdk-clients
-            repopath: https://central.sonatype.com/search?namespace=com.azure.spring&name=spring-cloud-azure-starter-jdbc-mysql
+            repopath: https://central.sonatype.com/artifact/com.azure.spring/spring-cloud-azure-starter-jdbc-mysql
             sample: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/spring-cloud-azure_4.11.0/mysql/spring-cloud-azure-starter-jdbc-mysql/
           springProperties:
             starter: true
@@ -1157,7 +1157,7 @@
           links:
             github: https://github.com/Azure/azure-sdk-for-java/tree/spring-cloud-azure_4.11.0/sdk/spring/spring-cloud-azure-starter-jdbc-postgresql
             msdocs: https://docs.microsoft.com/azure/developer/java/spring-framework/spring-cloud-azure#auto-configure-azure-sdk-clients
-            repopath: https://central.sonatype.com/search?namespace=com.azure.spring&name=spring-cloud-azure-starter-jdbc-postgresql
+            repopath: https://central.sonatype.com/artifact/com.azure.spring/spring-cloud-azure-starter-jdbc-postgresql
             sample: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/spring-cloud-azure_4.11.0/postgresql/spring-cloud-azure-starter-jdbc-postgresql/
           springProperties:
             starter: true

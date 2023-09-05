@@ -205,7 +205,7 @@ additional questions or comments.
 [doc_direct_methods]: https://go.microsoft.com/fwlink/?linkid=2162396
 [doc_pipelines]: https://go.microsoft.com/fwlink/?linkid=2162396
 [doc_product]: https://go.microsoft.com/fwlink/?linkid=2162396
-[iot-device-sdk]: https://central.sonatype.com/search?namespace=com.microsoft.azure.sdk.iot&name=iot-service-client
+[iot-device-sdk]: https://central.sonatype.com/artifact/com.microsoft.azure.sdk.iot/iot-service-client
 [iot-hub-sdk]: https://github.com/Azure/azure-iot-sdk-java
 [github-page-issues]: https://github.com/Azure/azure-sdk-for-java/issues
 [applied-ai-service]: https://azure.microsoft.com/product-categories/applied-ai-services/#services

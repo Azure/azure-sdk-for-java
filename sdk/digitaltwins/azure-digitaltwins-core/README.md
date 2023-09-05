@@ -2,7 +2,7 @@
 
 This library provides access to the Azure Digital Twins service for managing twins, models, relationships, etc.
 
-  [Source code][source] | [Package](https://central.sonatype.com/search?namespace=com.azure&name=azure-digitaltwins-core)
+  [Source code][source] | [Package](https://central.sonatype.com/artifact/com.azure/azure-digitaltwins-core)
 
 ## Getting started
 

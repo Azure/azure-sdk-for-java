@@ -361,7 +361,7 @@ additional questions or comments.
 [source_code]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/containerregistry/azure-containers-containerregistry/src
 [jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
 [azure_subscription]: https://azure.microsoft.com/free
-[package]: https://central.sonatype.com/search?namespace=com.azure&name=azure-containers-containerregisty
+[package]: https://central.sonatype.com/artifact/com.azure/azure-containers-containerregisty
 [api_documentation]: https://aka.ms/java-docs
 [rest_docs]: https://docs.microsoft.com/rest/api/containerregistry/
 [product_docs]:  https://docs.microsoft.com/azure/container-registry

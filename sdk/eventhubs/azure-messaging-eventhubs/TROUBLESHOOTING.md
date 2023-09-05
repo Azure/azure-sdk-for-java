@@ -321,8 +321,8 @@ When filing GitHub issues, the following details are requested:
 
 <!-- external links -->
 [AuthenticationAndTheAzureSDK]: https://devblogs.microsoft.com/azure-sdk/authentication-and-the-azure-sdk
-[MavenAzureEventHubs]: https://central.sonatype.com/search?namespace=com.microsoft.azure&name=azure-eventhubs
-[MavenAzureEventHubsEPH]: https://central.sonatype.com/search?namespace=com.microsoft.azure&name=azure-eventhubs-eph
+[MavenAzureEventHubs]: https://central.sonatype.com/artifact/com.microsoft.azure/azure-eventhubs
+[MavenAzureEventHubsEPH]: https://central.sonatype.com/artifact/com.microsoft.azure/azure-eventhubs-eph
 [java_8_sdk_javadocs]: https://docs.oracle.com/javase/8/docs/api/java/util/logging/package-summary.html
 [AmqpSpec]: https://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-types-v1.0-os.html
 [qpid_proton_j_apache]: https://qpid.apache.org/proton/

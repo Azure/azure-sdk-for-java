@@ -110,7 +110,7 @@ public class SchemaRegistryAsyncClientPlaybackTests {
 
     /**
      * Verifies that the new serializer works with 1.0.0 schema registry client.
-     * https://contral.sonatype.com/search?namespace=com.azure&name=azure-data-schemaregistry
+     * https://contral.sonatype.com/artifact/com.azure/azure-data-schemaregistry/1.0.0
      */
     @Test
     public void getSchemaBackCompatibility() {
