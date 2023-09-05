@@ -1533,6 +1533,13 @@
       "sourceType": "com.azure.spring.cloud.autoconfigure.implementation.keyvault.secrets.properties.AzureKeyVaultPropertySourceProperties"
     },
     {
+      "name": "spring.cloud.azure.keyvault.secret.property-sources[0].challenge-resource-verification-enabled",
+      "type": "java.lang.Boolean",
+      "description": "Whether to enable the Azure Key Vault challenge resource verification, default: true. Calls the disableChallengeResourceVerification method of the Azure Key Vault Client Builder when set to false.",
+      "sourceType": "com.azure.spring.cloud.autoconfigure.implementation.keyvault.secrets.properties.AzureKeyVaultPropertySourceProperties",
+      "defaultValue": true
+    },
+    {
       "name": "spring.datasource.azure.credential.client-id",
       "type": "java.lang.String",
       "description": "Client ID to use when performing service principal authentication with Azure.",
