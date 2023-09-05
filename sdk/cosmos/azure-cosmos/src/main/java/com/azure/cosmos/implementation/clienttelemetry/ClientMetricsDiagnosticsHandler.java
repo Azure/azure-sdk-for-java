@@ -26,6 +26,7 @@ public final class ClientMetricsDiagnosticsHandler implements CosmosDiagnosticsH
     private static final int OPERATION_RECORDING_EXECUTOR_THREAD_MIN_COUNT = 1;
     private static final int OPERATION_RECORDING_EXECUTOR_THREAD_MAX_COUNT = Configs.getCPUCnt();
     private static final int OPERATION_RECORDING_EXECUTOR_THREAD_KEEP_ALIVE_TIME_IN_MINUTES = 5;
+    private static final int OPERATION_RECORDING_QUEUE_SIZE = 50000;
 
     private static final ImplementationBridgeHelpers.CosmosClientTelemetryConfigHelper.CosmosClientTelemetryConfigAccessor clientTelemetryConfigAccessor =
         ImplementationBridgeHelpers.CosmosClientTelemetryConfigHelper.getCosmosClientTelemetryConfigAccessor();
@@ -45,7 +46,7 @@ public final class ClientMetricsDiagnosticsHandler implements CosmosDiagnosticsH
             OPERATION_RECORDING_EXECUTOR_THREAD_MAX_COUNT,
             OPERATION_RECORDING_EXECUTOR_THREAD_KEEP_ALIVE_TIME_IN_MINUTES,
             TimeUnit.MINUTES,
-            new LinkedBlockingQueue<>(this.getOperationRecordingExecutorQueueSize(connectionPolicy)),
+            new LinkedBlockingQueue<>(OPERATION_RECORDING_QUEUE_SIZE),
             (r, executor) -> {
                 if (!executor.isShutdown()) {
                     Runnable task = executor.getQueue().poll();
@@ -67,11 +68,6 @@ public final class ClientMetricsDiagnosticsHandler implements CosmosDiagnosticsH
         } catch (Exception e) {
             logger.error("Record metrics failed for operation {} with exception {}", diagnosticsContext.toString(), e);
         }
-    }
-
-    private int getOperationRecordingExecutorQueueSize(ConnectionPolicy connectionPolicy) {
-        // roughly equal to maxConcurrentRequest for 1000 physical partitions
-        return connectionPolicy.getMaxRequestsPerConnection() * connectionPolicy.getMaxRequestsPerConnection() * 4 * 1000;
     }
 
     private static class ClientMetricsOperationRecordingTask implements Runnable {
