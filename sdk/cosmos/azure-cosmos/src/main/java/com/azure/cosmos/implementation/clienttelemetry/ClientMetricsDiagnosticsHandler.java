@@ -46,17 +46,14 @@ public final class ClientMetricsDiagnosticsHandler implements CosmosDiagnosticsH
             OPERATION_RECORDING_EXECUTOR_THREAD_KEEP_ALIVE_TIME_IN_MINUTES,
             TimeUnit.MINUTES,
             new LinkedBlockingQueue<>(this.getOperationRecordingExecutorQueueSize(connectionPolicy)),
-            new RejectedExecutionHandler() {
-                @Override
-                public void rejectedExecution(Runnable r, ThreadPoolExecutor executor) {
-                    if (!executor.isShutdown()) {
-                        Runnable task = executor.getQueue().poll();
-                        executor.execute(r);
-                        // TODO: maybe use debug log level
-                        logger.warn(
-                            "ClientMetricsRecordingQueue is full, dropping metrics reporting for operation {}",
-                            task.toString());
-                    }
+            (r, executor) -> {
+                if (!executor.isShutdown()) {
+                    Runnable task = executor.getQueue().poll();
+                    executor.execute(r);
+                    // TODO: maybe use debug log level
+                    logger.warn(
+                        "ClientMetricsRecordingQueue is full, dropping metrics reporting for operation {}",
+                        task.toString());
                 }
             }); // if the task queue being full, then discard the oldest task
     }
@@ -68,8 +65,7 @@ public final class ClientMetricsDiagnosticsHandler implements CosmosDiagnosticsH
         try {
             this.executorService.submit(new ClientMetricsOperationRecordingTask(this.client, diagnosticsContext));
         } catch (Exception e) {
-            // TODO: maybe use debug log level
-            logger.warn("Record metrics failed for operation {} with exception {}", diagnosticsContext.toString(), e);
+            logger.error("Record metrics failed for operation {} with exception {}", diagnosticsContext.toString(), e);
         }
     }
 
