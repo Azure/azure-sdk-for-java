@@ -39,6 +39,7 @@ import reactor.core.publisher.Mono;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.security.PrivilegedAction;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
@@ -287,7 +288,7 @@ public class VirtualMachinesImpl
     }
 
     @Override
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({"unchecked", "removal"})
     public PagedFlux<VirtualMachine> listByVirtualMachineScaleSetIdAsync(String vmssId) {
         if (CoreUtils.isNullOrEmpty(vmssId)) {
             return new PagedFlux<>(() -> Mono.error(
@@ -308,8 +309,11 @@ public class VirtualMachinesImpl
         } catch (NoSuchMethodException e) {
             throw new RuntimeException(e);
         }
-        listSinglePageAsync.setAccessible(true);
-        listNextSinglePageAsync.setAccessible(true);
+        java.security.AccessController.doPrivileged((PrivilegedAction<Object>) () -> {
+            listSinglePageAsync.setAccessible(true);
+            listNextSinglePageAsync.setAccessible(true);
+            return null;
+        });
         return new PagedFlux<>(
             () -> {
                 try {

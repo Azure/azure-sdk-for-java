@@ -25,7 +25,6 @@ import com.azure.resourcemanager.compute.models.StorageAccountTypes;
 import com.azure.resourcemanager.compute.models.StorageProfile;
 import com.azure.resourcemanager.compute.models.VirtualMachine;
 import com.azure.resourcemanager.compute.models.VirtualMachineSizeTypes;
-import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import com.github.tomakehurst.wiremock.client.WireMock;
 import com.github.tomakehurst.wiremock.common.FileSource;
@@ -38,6 +37,8 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
@@ -102,11 +103,12 @@ public class VirtualMachineMockTests {
                 } else if (request.getUrl().contains(NEXT_LINK_PATH)) {
                     // next link page
                     stateHolder.secondPageRequested = true;
-                    // check the nextLink is actually encoded
-                    if (ResourceUtils.encodeResourceId(request.getUrl()).equals(request.getUrl())) {
+                    // check the nextLink is actually encoded and is valid URI
+                    try {
+                        new URI(request.getUrl());
                         responseBody.put("value", Collections.singletonList(vm));
                         return successResponse(responseBody);
-                    } else {
+                    } catch (URISyntaxException e) {
                         return failedResponse("Next link not encoded: " + request.getUrl());
                     }
                 } else {
@@ -133,7 +135,7 @@ public class VirtualMachineMockTests {
 
     private Response failedResponse(String errorMessage) {
         return new Response.Builder()
-            .status(500)
+            .status(400)
             .body(errorMessage)
             .build();
     }
@@ -180,7 +182,7 @@ public class VirtualMachineMockTests {
                 .build();
         } catch (IOException e) {
             return new Response.Builder()
-                .status(500)
+                .status(400)
                 .body("Mock server error: " + e.getMessage())
                 .build();
         }
