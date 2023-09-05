@@ -843,9 +843,11 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
      * @return containerName
      */
     public String getContainerNameOverride(String containerName) {
-        if (this.cosmosFactory.overrideContainerName() != null) {
-            return this.cosmosFactory.overrideContainerName();
+        String overriddenContainerName = this.cosmosFactory.overrideContainerName(containerName);
+        if (overriddenContainerName != null) {
+            return overriddenContainerName;
         }
+
         Assert.notNull(containerName, "containerName should not be null");
         return containerName;
     }

@@ -551,6 +551,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
         Assert.notNull(domainType, "domainType should not be null");
         return getContainerNameOverride(CosmosEntityInformation.getInstance(domainType).getContainerName());
     }
+
     /**
      * Check if an overridden version of containerName is present, and if so, return it
      *
@@ -558,9 +559,11 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
      * @return containerName
      */
     public String getContainerNameOverride(String containerName) {
-        if (this.cosmosFactory.overrideContainerName() != null) {
-            return this.cosmosFactory.overrideContainerName();
+        String overriddenContainerName = this.cosmosFactory.overrideContainerName(containerName);
+        if (overriddenContainerName != null) {
+            return overriddenContainerName;
         }
+
         Assert.notNull(containerName, "containerName should not be null");
         return containerName;
     }

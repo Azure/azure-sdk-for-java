@@ -71,9 +71,10 @@ public class CosmosFactory {
      * By default, container name will be derived from entity definition.
      * NOTE: Using this API will override container name defined on entity definition.
      *
-     * @return container name
+     * @param originalContainerName the original name of the container
+     * @return overridden container name
      */
-    public String overrideContainerName() {
+    public String overrideContainerName(String originalContainerName) {
         return null;
     }
 
