@@ -1092,7 +1092,7 @@ public final class ConfigurationAsyncClient {
      * <!-- src_embed com.azure.data.appconfiguration.configurationasyncclient.listConfigurationSettingsForSnapshotMaxOverload -->
      * <pre>
      * String snapshotName = &quot;&#123;snapshotName&#125;&quot;;
-     * SettingFields[] fields = new SettingFields[] &#123; SettingFields.KEY &#125;;
+     * List&lt;SettingFields&gt; fields = Arrays.asList&#40;SettingFields.KEY&#41;;
      *
      * client.listConfigurationSettingsForSnapshot&#40;snapshotName, fields&#41;
      *     .subscribe&#40;setting -&gt;
@@ -1110,7 +1110,7 @@ public final class ConfigurationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ConfigurationSetting> listConfigurationSettingsForSnapshot(String snapshotName,
-                                                                                SettingFields[] fields) {
+                                                                                List<SettingFields> fields) {
         return new PagedFlux<>(
             () -> withContext(
                 context -> serviceClient.getKeyValuesSinglePageAsync(
@@ -1118,7 +1118,7 @@ public final class ConfigurationAsyncClient {
                         null,
                         null,
                         null,
-                        fields == null ? null : toSettingFieldsList(fields),
+                        fields,
                         snapshotName,
                         addTracingNamespace(context))
                     .map(pagedResponse -> toConfigurationSettingWithPagedResponse(pagedResponse))),

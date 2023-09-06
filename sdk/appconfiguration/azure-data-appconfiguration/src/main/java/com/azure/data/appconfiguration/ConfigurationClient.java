@@ -37,6 +37,7 @@ import com.azure.data.appconfiguration.models.SnapshotSelector;
 import com.azure.data.appconfiguration.models.SnapshotStatus;
 
 import java.time.OffsetDateTime;
+import java.util.List;
 
 import static com.azure.data.appconfiguration.implementation.ConfigurationSettingDeserializationHelper.toConfigurationSettingWithPagedResponse;
 import static com.azure.data.appconfiguration.implementation.ConfigurationSettingDeserializationHelper.toConfigurationSettingWithResponse;
@@ -1107,7 +1108,7 @@ public final class ConfigurationClient {
      * <pre>
      * String snapshotName = &quot;&#123;snapshotName&#125;&quot;;
      * Context ctx = new Context&#40;key2, value2&#41;;
-     * SettingFields[] fields = new SettingFields[] &#123; SettingFields.KEY &#125;;
+     * List&lt;SettingFields&gt; fields = Arrays.asList&#40;SettingFields.KEY&#41;;
      *
      * configurationClient.listConfigurationSettingsForSnapshot&#40;snapshotName, fields, ctx&#41;.forEach&#40;setting -&gt; &#123;
      *     System.out.printf&#40;&quot;Key: %s, Value: %s&quot;, setting.getKey&#40;&#41;, setting.getValue&#40;&#41;&#41;;
@@ -1126,7 +1127,7 @@ public final class ConfigurationClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ConfigurationSetting> listConfigurationSettingsForSnapshot(String snapshotName,
-        SettingFields[] fields, Context context) {
+        List<SettingFields> fields, Context context) {
         return new PagedIterable<>(
             () -> {
                 final PagedResponse<KeyValue> pagedResponse = serviceClient.getKeyValuesSinglePage(
@@ -1134,7 +1135,7 @@ public final class ConfigurationClient {
                     null,
                     null,
                     null,
-                    fields == null ? null : toSettingFieldsList(fields),
+                    fields,
                     snapshotName,
                     enableSyncRestProxy(addTracingNamespace(context)));
                 return toConfigurationSettingWithPagedResponse(pagedResponse);

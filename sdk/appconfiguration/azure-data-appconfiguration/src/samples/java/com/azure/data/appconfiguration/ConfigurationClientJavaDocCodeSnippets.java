@@ -19,6 +19,7 @@ import com.azure.data.appconfiguration.models.SnapshotSettingFilter;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -367,14 +368,14 @@ public final class ConfigurationClientJavaDocCodeSnippets {
     }
 
     /**
-     * Generates code sample for using {@link ConfigurationClient#listConfigurationSettingsForSnapshot(String, SettingFields[], Context)}
+     * Generates code sample for using {@link ConfigurationClient#listConfigurationSettingsForSnapshot(String, List, Context)}
      */
     public void listConfigurationSettingsForSnapshotMaxOverload() {
         ConfigurationClient configurationClient = createSyncConfigurationClient();
         // BEGIN: com.azure.data.applicationconfig.configurationclient.listConfigurationSettingsForSnapshotMaxOverload
         String snapshotName = "{snapshotName}";
         Context ctx = new Context(key2, value2);
-        SettingFields[] fields = new SettingFields[] { SettingFields.KEY };
+        List<SettingFields> fields = Arrays.asList(SettingFields.KEY);
 
         configurationClient.listConfigurationSettingsForSnapshot(snapshotName, fields, ctx).forEach(setting -> {
             System.out.printf("Key: %s, Value: %s", setting.getKey(), setting.getValue());
