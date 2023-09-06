@@ -58,7 +58,7 @@ public final class IOUtils {
      * @throws NullPointerException When {@code source} or {@code destination} is null.
      */
     public static void transfer(ReadableByteChannel source, WritableByteChannel destination) throws IOException {
-        transferInternal(source, destination, getBufferSize(source));
+        transfer(source, destination, null);
     }
 
     /**
@@ -73,13 +73,6 @@ public final class IOUtils {
      */
     public static void transfer(ReadableByteChannel source, WritableByteChannel destination, Long estimatedSourceSize)
         throws IOException {
-        int bufferSize = (estimatedSourceSize == null) ? getBufferSize(source) : getBufferSize(estimatedSourceSize);
-
-        transferInternal(source, destination, bufferSize);
-    }
-
-    private static void transferInternal(ReadableByteChannel source, WritableByteChannel destination,
-        int bufferSize) throws IOException {
         if (source == null && destination == null) {
             throw new NullPointerException("'source' and 'destination' cannot be null.");
         } else if (source == null) {
@@ -88,6 +81,7 @@ public final class IOUtils {
             throw new NullPointerException("'destination' cannot be null.");
         }
 
+        int bufferSize = (estimatedSourceSize == null) ? getBufferSize(source) : getBufferSize(estimatedSourceSize);
         ByteBuffer buffer = ByteBuffer.allocate(bufferSize);
         int read;
         do {
@@ -109,7 +103,7 @@ public final class IOUtils {
      * @throws NullPointerException When {@code source} or {@code destination} is null.
      */
     public static Mono<Void> transferAsync(ReadableByteChannel source, AsynchronousByteChannel destination) {
-        return transferAsyncInternal(source, destination, getBufferSize(source));
+        return transferAsync(source, destination, null);
     }
 
     /**
@@ -124,13 +118,6 @@ public final class IOUtils {
      */
     public static Mono<Void> transferAsync(ReadableByteChannel source, AsynchronousByteChannel destination,
         Long estimatedSourceSize) {
-        int bufferSize = (estimatedSourceSize == null) ? getBufferSize(source) : getBufferSize(estimatedSourceSize);
-
-        return transferAsyncInternal(source, destination, bufferSize);
-    }
-
-    private static Mono<Void> transferAsyncInternal(ReadableByteChannel source, AsynchronousByteChannel destination,
-        int bufferSize) {
         if (source == null && destination == null) {
             return Mono.error(new NullPointerException("'source' and 'destination' cannot be null."));
         } else if (source == null) {
@@ -139,6 +126,7 @@ public final class IOUtils {
             return Mono.error(new NullPointerException("'destination' cannot be null."));
         }
 
+        int bufferSize = (estimatedSourceSize == null) ? getBufferSize(source) : getBufferSize(estimatedSourceSize);
         return Mono.create(sink -> sink.onRequest(value -> {
             ByteBuffer buffer = ByteBuffer.allocate(bufferSize);
             try {

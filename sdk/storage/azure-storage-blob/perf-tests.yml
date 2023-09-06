@@ -38,6 +38,8 @@ Tests:
   Arguments: &file-sizes
   - --size 10240 --parallel 64
   - --size 10485760 --parallel 32
+  - --size 10240 --parallel 64 --http-client OKHTTP
+  - --size 10485760 --parallel 32 --http-client OKHTTP
 
 - Test: upload
   Class: uploadblob
