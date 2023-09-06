@@ -15,7 +15,7 @@ public class AzureMonitorSpanExporterProvider implements ConfigurableSpanExporte
         if (configProperties.getBoolean(AzureMonitorExporterProviderKeys.INTERNAL_USING_BUILDER, false)) {
             return MarkerSpanExporter.INSTANCE;
         }
-        return new AzureMonitorExporterBuilder().buildTraceExporter();
+        throw new IllegalStateException(getName() + " currently only supports usage via " + AzureMonitorExporterBuilder.class.getName());
     }
 
     @Override

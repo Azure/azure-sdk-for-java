@@ -10,6 +10,8 @@ import io.opentelemetry.api.OpenTelemetry;
 import io.opentelemetry.api.trace.Span;
 import io.opentelemetry.api.trace.Tracer;
 import io.opentelemetry.context.Scope;
+import io.opentelemetry.sdk.autoconfigure.AutoConfiguredOpenTelemetrySdk;
+import io.opentelemetry.sdk.autoconfigure.AutoConfiguredOpenTelemetrySdkBuilder;
 import io.opentelemetry.sdk.trace.data.SpanData;
 
 import java.util.Collection;
@@ -41,11 +43,13 @@ public class ReadmeSamples {
         // BEGIN: readme-sample-setupExporter
         // Create Azure Monitor exporter and initialize OpenTelemetry SDK
         // This should be done just once when application starts up
-        OpenTelemetry openTelemetry = new AzureMonitorExporterBuilder()
+        AutoConfiguredOpenTelemetrySdkBuilder sdkBuilder = AutoConfiguredOpenTelemetrySdk.builder();
+
+        new AzureMonitorExporterBuilder()
             .connectionString("{connection-string}")
-            .getOpenTelemetrySdkBuilder()
-            .build()
-            .getOpenTelemetrySdk();
+            .configure(sdkBuilder);
+
+        OpenTelemetry openTelemetry = sdkBuilder.build().getOpenTelemetrySdk();
 
         Tracer tracer = openTelemetry.getTracer("Sample");
         // END: readme-sample-setupExporter

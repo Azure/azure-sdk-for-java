@@ -9,6 +9,8 @@ import io.opentelemetry.api.OpenTelemetry;
 import io.opentelemetry.api.trace.Span;
 import io.opentelemetry.api.trace.Tracer;
 import io.opentelemetry.context.Scope;
+import io.opentelemetry.sdk.autoconfigure.AutoConfiguredOpenTelemetrySdk;
+import io.opentelemetry.sdk.autoconfigure.AutoConfiguredOpenTelemetrySdkBuilder;
 import io.opentelemetry.sdk.trace.export.SpanExporter;
 
 /**
@@ -35,11 +37,13 @@ public class AppConfigurationAzureMonitorExporterSample {
      * @return The OpenTelemetry {@link Tracer} instance.
      */
     private static Tracer configureAzureMonitorExporter() {
-        OpenTelemetry openTelemetry = new AzureMonitorExporterBuilder()
+        AutoConfiguredOpenTelemetrySdkBuilder sdkBuilder = AutoConfiguredOpenTelemetrySdk.builder();
+
+        new AzureMonitorExporterBuilder()
             .connectionString("{connection-string}")
-            .getOpenTelemetrySdkBuilder()
-            .build()
-            .getOpenTelemetrySdk();
+            .configure(sdkBuilder);
+
+        OpenTelemetry openTelemetry = sdkBuilder.build().getOpenTelemetrySdk();
 
         return openTelemetry.getTracer("Sample");
     }

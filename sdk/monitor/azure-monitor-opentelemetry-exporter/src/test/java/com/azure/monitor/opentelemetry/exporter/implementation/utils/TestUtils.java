@@ -11,8 +11,9 @@ import com.azure.monitor.opentelemetry.exporter.implementation.models.MetricsDat
 import com.azure.monitor.opentelemetry.exporter.implementation.models.MonitorBase;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.TelemetryItem;
 import io.opentelemetry.api.OpenTelemetry;
-import io.opentelemetry.api.trace.Tracer;
 import io.opentelemetry.sdk.OpenTelemetrySdk;
+import io.opentelemetry.sdk.autoconfigure.AutoConfiguredOpenTelemetrySdk;
+import io.opentelemetry.sdk.autoconfigure.AutoConfiguredOpenTelemetrySdkBuilder;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -68,13 +69,15 @@ public final class TestUtils {
     public static OpenTelemetrySdk createOpenTelemetrySdk(
         HttpPipeline httpPipeline, Configuration configuration) {
 
-        return new AzureMonitorExporterBuilder()
+        AutoConfiguredOpenTelemetrySdkBuilder sdkBuilder = AutoConfiguredOpenTelemetrySdk.builder();
+
+        new AzureMonitorExporterBuilder()
             .configuration(configuration)
             .connectionString(TRACE_CONNECTION_STRING)
             .httpPipeline(httpPipeline)
-            .getOpenTelemetrySdkBuilder()
-            .build()
-            .getOpenTelemetrySdk();
+            .configure(sdkBuilder);
+
+        return sdkBuilder.build().getOpenTelemetrySdk();
     }
 
     private TestUtils() {

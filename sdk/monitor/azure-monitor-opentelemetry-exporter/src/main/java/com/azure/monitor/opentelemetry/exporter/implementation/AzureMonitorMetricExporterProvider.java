@@ -17,7 +17,7 @@ public class AzureMonitorMetricExporterProvider implements ConfigurableMetricExp
         if (configProperties.getBoolean(AzureMonitorExporterProviderKeys.INTERNAL_USING_BUILDER, false)) {
             return AzureMonitorMetricExporterProvider.MarkerMetricExporter.INSTANCE;
         }
-        return new AzureMonitorExporterBuilder().buildMetricExporter();
+        throw new IllegalStateException(getName() + " currently only supports usage via " + AzureMonitorExporterBuilder.class.getName());
     }
 
     @Override

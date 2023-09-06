@@ -15,7 +15,7 @@ public class AzureMonitorLogRecordExporterProvider implements ConfigurableLogRec
         if (configProperties.getBoolean(AzureMonitorExporterProviderKeys.INTERNAL_USING_BUILDER, false)) {
             return AzureMonitorLogRecordExporterProvider.MarkerLogRecordExporter.INSTANCE;
         }
-        return new AzureMonitorExporterBuilder().buildLogRecordExporter();
+        throw new IllegalStateException(getName() + " currently only supports usage via " + AzureMonitorExporterBuilder.class.getName());
     }
 
     @Override

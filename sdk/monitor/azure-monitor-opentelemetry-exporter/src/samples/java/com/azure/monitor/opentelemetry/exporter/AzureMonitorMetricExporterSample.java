@@ -9,6 +9,8 @@ import io.opentelemetry.api.common.Attributes;
 import io.opentelemetry.api.metrics.DoubleHistogram;
 import io.opentelemetry.api.metrics.LongCounter;
 import io.opentelemetry.api.metrics.Meter;
+import io.opentelemetry.sdk.autoconfigure.AutoConfiguredOpenTelemetrySdk;
+import io.opentelemetry.sdk.autoconfigure.AutoConfiguredOpenTelemetrySdkBuilder;
 
 import static java.util.concurrent.TimeUnit.MINUTES;
 
@@ -22,14 +24,16 @@ public class AzureMonitorMetricExporterSample {
 
     private static void sendDoubleHistogram() {
         try {
-            OpenTelemetry openTelemetry = new AzureMonitorExporterBuilder()
+            AutoConfiguredOpenTelemetrySdkBuilder sdkBuilder = AutoConfiguredOpenTelemetrySdk.builder();
+
+            new AzureMonitorExporterBuilder()
                 .connectionString(APPINSIGHTS_CONNECTION_STRING)
-                .getOpenTelemetrySdkBuilder()
-                .build()
-                .getOpenTelemetrySdk();
-            Meter meter = openTelemetry.meterBuilder("OTEL.AzureMonitor.Demo")
-                .build();
+                .configure(sdkBuilder);
+
+            OpenTelemetry openTelemetry = sdkBuilder.build().getOpenTelemetrySdk();
+            Meter meter = openTelemetry.meterBuilder("OTEL.AzureMonitor.Demo").build();
             DoubleHistogram histogram = meter.histogramBuilder("histogram").build();
+
             histogram.record(1.0);
             histogram.record(100.0);
             histogram.record(30.0);
@@ -43,17 +47,15 @@ public class AzureMonitorMetricExporterSample {
 
     private static void sendLongCounter() {
         try {
-            OpenTelemetry openTelemetry = new AzureMonitorExporterBuilder()
-                .connectionString(APPINSIGHTS_CONNECTION_STRING)
-                .getOpenTelemetrySdkBuilder()
-                .build()
-                .getOpenTelemetrySdk();
-            Meter meter = openTelemetry.meterBuilder("OTEL.AzureMonitor.Demo")
-                .build();
+            AutoConfiguredOpenTelemetrySdkBuilder sdkBuilder = AutoConfiguredOpenTelemetrySdk.builder();
 
-            LongCounter myFruitCounter = meter
-                .counterBuilder("MyFruitCounter")
-                .build();
+            new AzureMonitorExporterBuilder()
+                .connectionString(APPINSIGHTS_CONNECTION_STRING)
+                .configure(sdkBuilder);
+
+            OpenTelemetry openTelemetry = sdkBuilder.build().getOpenTelemetrySdk();
+            Meter meter = openTelemetry.meterBuilder("OTEL.AzureMonitor.Demo").build();
+            LongCounter myFruitCounter = meter.counterBuilder("MyFruitCounter").build();
 
             myFruitCounter.add(1, Attributes.of(AttributeKey.stringKey("name"), "apple", AttributeKey.stringKey("color"), "red"));
             myFruitCounter.add(2, Attributes.of(AttributeKey.stringKey("name"), "lemon", AttributeKey.stringKey("color"), "yellow"));
@@ -71,11 +73,13 @@ public class AzureMonitorMetricExporterSample {
 
     private static void sendGaugeMetric() {
         try {
-            OpenTelemetry openTelemetry = new AzureMonitorExporterBuilder()
+            AutoConfiguredOpenTelemetrySdkBuilder sdkBuilder = AutoConfiguredOpenTelemetrySdk.builder();
+
+            new AzureMonitorExporterBuilder()
                 .connectionString(APPINSIGHTS_CONNECTION_STRING)
-                .getOpenTelemetrySdkBuilder()
-                .build()
-                .getOpenTelemetrySdk();
+                .configure(sdkBuilder);
+
+            OpenTelemetry openTelemetry = sdkBuilder.build().getOpenTelemetrySdk();
             Meter meter = openTelemetry.getMeter("OTEL.AzureMonitor.Demo");
 
             meter.gaugeBuilder("gauge")

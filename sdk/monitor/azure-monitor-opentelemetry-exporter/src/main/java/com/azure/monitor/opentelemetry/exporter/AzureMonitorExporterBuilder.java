@@ -38,7 +38,6 @@ import com.azure.monitor.opentelemetry.exporter.implementation.pipeline.Telemetr
 import com.azure.monitor.opentelemetry.exporter.implementation.utils.ResourceParser;
 import com.azure.monitor.opentelemetry.exporter.implementation.utils.TempDirs;
 import com.azure.monitor.opentelemetry.exporter.implementation.utils.VersionGenerator;
-import io.opentelemetry.sdk.autoconfigure.AutoConfiguredOpenTelemetrySdk;
 import io.opentelemetry.sdk.autoconfigure.AutoConfiguredOpenTelemetrySdkBuilder;
 import io.opentelemetry.sdk.autoconfigure.ResourceConfiguration;
 import io.opentelemetry.sdk.autoconfigure.spi.ConfigProperties;
@@ -236,7 +235,7 @@ public final class AzureMonitorExporterBuilder {
      * environment variable "APPLICATIONINSIGHTS_CONNECTION_STRING" is not set.
      */
     // TODO (trask) deprecate in favor of getOpenTelemetrySdkBuilder()?
-    public SpanExporter buildTraceExporter() {
+    SpanExporter buildTraceExporter() {
         return buildTraceExporter(DefaultConfigProperties.create(emptyMap()));
     }
 
@@ -251,41 +250,12 @@ public final class AzureMonitorExporterBuilder {
         return new AzureMonitorTraceExporter(mapper, initExporterBuilder(configProperties));
     }
 
-    /**
-     * Creates an {@link AzureMonitorMetricExporter} based on the options set in the builder. This
-     * exporter is an implementation of OpenTelemetry {@link MetricExporter}.
-     *
-     * <p>When a new {@link MetricExporter} is created, it will automatically start {@link
-     * HeartbeatExporter}.
-     *
-     * @return An instance of {@link AzureMonitorMetricExporter}.
-     * @throws NullPointerException if the connection string is not set on this builder or if the
-     * environment variable "APPLICATIONINSIGHTS_CONNECTION_STRING" is not set.
-     */
-    // TODO (trask) deprecate in favor of getOpenTelemetrySdkBuilder()?
-    public MetricExporter buildMetricExporter() {
-        return buildMetricExporter(DefaultConfigProperties.create(emptyMap()));
-    }
-
     private MetricExporter buildMetricExporter(ConfigProperties configProperties) {
         TelemetryItemExporter telemetryItemExporter = initExporterBuilder(configProperties);
         HeartbeatExporter.start(
             MINUTES.toSeconds(15), this::populateDefaults, telemetryItemExporter::send);
         return new AzureMonitorMetricExporter(
             new MetricDataMapper(this::populateDefaults, true), telemetryItemExporter);
-    }
-
-    /**
-     * Creates an {@link AzureMonitorLogRecordExporter} based on the options set in the builder. This
-     * exporter is an implementation of OpenTelemetry {@link LogRecordExporter}.
-     *
-     * @return An instance of {@link AzureMonitorLogRecordExporter}.
-     * @throws NullPointerException if the connection string is not set on this builder or if the
-     * environment variable "APPLICATIONINSIGHTS_CONNECTION_STRING" is not set.
-     */
-    // TODO (trask) deprecate in favor of getOpenTelemetrySdkBuilder()?
-    public LogRecordExporter buildLogRecordExporter() {
-        return buildLogRecordExporter(DefaultConfigProperties.create(emptyMap()));
     }
 
     private LogRecordExporter buildLogRecordExporter(ConfigProperties config) {
@@ -379,12 +349,10 @@ public final class AzureMonitorExporterBuilder {
     }
 
     /**
-     * Creates an {@link AutoConfiguredOpenTelemetrySdkBuilder} based on the options set in the builder.
-     *
-     * @return An instance of {@link AutoConfiguredOpenTelemetrySdkBuilder}.
+     * Configures an {@link AutoConfiguredOpenTelemetrySdkBuilder} based on the options set in the builder.
      */
-    public AutoConfiguredOpenTelemetrySdkBuilder getOpenTelemetrySdkBuilder() {
-        return AutoConfiguredOpenTelemetrySdk.builder()
+    public void configure(AutoConfiguredOpenTelemetrySdkBuilder sdkBuilder) {
+        sdkBuilder
             .addPropertiesSupplier(() -> {
                 Map<String, String> props = new HashMap<>();
                 props.put("otel.traces.exporter", AzureMonitorExporterProviderKeys.EXPORTER_NAME);
