@@ -23,8 +23,9 @@ import java.nio.channels.WritableByteChannel;
  * Default HTTP response for OkHttp.
  */
 public final class OkHttpAsyncResponse extends OkHttpAsyncResponseBase {
-    // using 4K as default buffer size: https://stackoverflow.com/a/237495/1473510
-    private static final int BYTE_BUFFER_CHUNK_SIZE = 4096;
+    // Previously, this was 4096, but it is being changed to 8192 as that more closely aligns to what Netty uses as a
+    // default and will reduce the number of small allocations we'll need to make.
+    private static final int BYTE_BUFFER_CHUNK_SIZE = 8192;
 
     private static final ByteBuffer EMPTY_BYTE_BUFFER = ByteBuffer.allocate(0);
 
@@ -108,14 +109,19 @@ public final class OkHttpAsyncResponse extends OkHttpAsyncResponseBase {
     @Override
     public void writeBodyTo(WritableByteChannel channel) throws IOException {
         if (responseBody != null) {
-            IOUtils.transfer(responseBody.source(), channel);
+            try {
+                IOUtils.transfer(responseBody.source(), channel, responseBody.contentLength());
+            } finally {
+                close();
+            }
         }
     }
 
     @Override
     public Mono<Void> writeBodyToAsync(AsynchronousByteChannel channel) {
         if (responseBody != null) {
-            return IOUtils.transferAsync(responseBody.source(), channel);
+            return IOUtils.transferAsync(responseBody.source(), channel, responseBody.contentLength())
+                .doFinally(ignored -> close());
         } else {
             return Mono.empty();
         }
