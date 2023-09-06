@@ -184,14 +184,14 @@ public class CryptographyClientTest extends CryptographyClientTestBase {
 
         initializeKeyClient(httpClient);
 
-        signVerifyEcRunner(httpClient, serviceVersion, signVerifyEcData -> {
+        signVerifyEcRunner(signVerifyEcData -> {
             KeyCurveName curve = signVerifyEcData.getCurve();
             Map<KeyCurveName, SignatureAlgorithm> curveToSignature = signVerifyEcData.getCurveToSignature();
             Map<KeyCurveName, String> messageDigestAlgorithm = signVerifyEcData.getMessageDigestAlgorithm();
             String keyName = testResourceNamer.randomName("testEcKey" + curve.toString(), 20);
-            KeyVaultKey imported = client.importKey(keyName, signVerifyEcData.getJsonWebKey());
+            KeyVaultKey keyVaultKey = client.importKey(keyName, signVerifyEcData.getJsonWebKey());
             CryptographyClient cryptographyClient =
-                initializeCryptographyClient(imported.getId(), httpClient, serviceVersion);
+                initializeCryptographyClient(keyVaultKey.getId(), httpClient, serviceVersion);
 
             try {
                 byte[] data = new byte[100];
@@ -223,13 +223,13 @@ public class CryptographyClientTest extends CryptographyClientTestBase {
 
         initializeKeyClient(httpClient);
 
-        signVerifyEcRunner(httpClient, serviceVersion, signVerifyEcData -> {
+        signVerifyEcRunner(signVerifyEcData -> {
             KeyCurveName curve = signVerifyEcData.getCurve();
             Map<KeyCurveName, SignatureAlgorithm> curveToSignature = signVerifyEcData.getCurveToSignature();
             String keyName = testResourceNamer.randomName("testEcKey" + curve.toString(), 20);
-            KeyVaultKey imported = client.importKey(keyName, signVerifyEcData.getJsonWebKey());
+            KeyVaultKey keyVaultKey = client.importKey(keyName, signVerifyEcData.getJsonWebKey());
             CryptographyClient cryptographyClient =
-                initializeCryptographyClient(imported.getId(), httpClient, serviceVersion);
+                initializeCryptographyClient(keyVaultKey.getId(), httpClient, serviceVersion);
 
             byte[] plaintext = new byte[100];
 
@@ -316,7 +316,7 @@ public class CryptographyClientTest extends CryptographyClientTestBase {
 
     @Test
     public void signDataVerifyEcLocal() throws NoSuchAlgorithmException, InvalidAlgorithmParameterException {
-        signVerifyEcRunner(null, null, signVerifyEcData -> {
+        signVerifyEcRunner(signVerifyEcData -> {
             JsonWebKey jsonWebKey = signVerifyEcData.getJsonWebKey();
             KeyCurveName curve = signVerifyEcData.getCurve();
             Map<KeyCurveName, SignatureAlgorithm> curveToSignature = signVerifyEcData.getCurveToSignature();

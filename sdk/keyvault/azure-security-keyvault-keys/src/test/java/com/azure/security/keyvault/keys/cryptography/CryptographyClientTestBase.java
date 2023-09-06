@@ -174,7 +174,7 @@ public abstract class CryptographyClientTestBase extends TestProxyTestBase {
     @Test
     public abstract void signDataVerifyEc(HttpClient httpClient, CryptographyServiceVersion serviceVersion) throws NoSuchAlgorithmException, InvalidAlgorithmParameterException;
 
-    void signVerifyEcRunner(HttpClient httpClient, CryptographyServiceVersion serviceVersion, Consumer<SignVerifyEcData> testRunner)
+    void signVerifyEcRunner(Consumer<SignVerifyEcData> testRunner)
         throws NoSuchAlgorithmException, InvalidAlgorithmParameterException {
         Map<KeyCurveName, SignatureAlgorithm> curveToSignature = new HashMap<>();
 
