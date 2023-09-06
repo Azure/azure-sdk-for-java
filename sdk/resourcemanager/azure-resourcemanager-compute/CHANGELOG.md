@@ -4,6 +4,8 @@
 
 ### Features Added
 
+- Supported `listByVirtualMachineScaleSet` for `VirtualMachines`.
+
 ### Breaking Changes
 
 ### Bugs Fixed

@@ -78,12 +78,14 @@ class SecretClientBuilderFactoryTests extends
         AzureKeyVaultSecretTestProperties properties = new AzureKeyVaultSecretTestProperties();
         properties.setServiceVersion(SecretServiceVersion.V7_0);
         properties.setEndpoint(ENDPOINT);
+        properties.setChallengeResourceVerificationEnabled(false);
 
         final SecretClientBuilderFactoryExt factoryExt = new SecretClientBuilderFactoryExt(properties);
         final SecretClientBuilder builder = factoryExt.build();
 
         verify(builder, times(1)).vaultUrl(ENDPOINT);
         verify(builder, times(1)).serviceVersion(SecretServiceVersion.V7_0);
+        verify(builder, times(1)).disableChallengeResourceVerification();
     }
 
     static class SecretClientBuilderFactoryExt extends SecretClientBuilderFactory {
