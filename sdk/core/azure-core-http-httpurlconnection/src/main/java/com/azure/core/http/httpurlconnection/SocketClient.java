@@ -32,13 +32,11 @@ class SocketClient {
         this.password = password;
     }
 
-    public SocketClient(String host, int port) {
-        this(host, port, null, null);
-    }
+    public SocketClient(String host) {this(host, 80, null, null);}
 
-    public SocketClient(String host) {
-        this(host, 80, null, null);
-    }
+    public SocketClient(String host, int port) {this(host, port, null, null);}
+
+    public SocketClient(URL url) {this(url.getHost(), url.getPort());}
 
     /**
      * Opens a socket connection, then writes the PATCH request across the

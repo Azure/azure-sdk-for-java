@@ -31,27 +31,32 @@ public class HttpUrlConnectionClient implements HttpClient {
 
     // Asynchronous send method with additional context
     public Mono<HttpResponse> sendAsync(HttpRequest httpRequest, Context context) {
-        HttpMethod httpMethod = httpRequest.getHttpMethod();
-        if (httpMethod == HttpMethod.PATCH) {
-            return sendPatchViaSocket(httpRequest);
-        }
         return openConnection(httpRequest)
-            .flatMap(connection -> setConnectionRequest(connection, httpRequest)
-                .then(writeRequestBody(connection, httpRequest))
-                .then(readResponse(connection, httpRequest))
-                .doFinally(signalType -> connection.disconnect()) // Disconnect connection after processing
-                .onErrorResume(e -> Mono.error(new RuntimeException(e))));
+            .flatMap(connection -> {
+                HttpMethod httpMethod = httpRequest.getHttpMethod();
+
+                if (httpMethod == HttpMethod.PATCH) {
+                    return sendPatchViaSocket(httpRequest);
+                }
+
+                return setConnectionRequest(connection, httpRequest)
+                    .then(writeRequestBody(connection, httpRequest))
+                    .then(readResponse(connection, httpRequest))
+                    .doFinally(signalType -> connection.disconnect()) // Disconnect connection after processing
+                    .onErrorResume(e -> Mono.error(new RuntimeException(e)));
+            });
     }
 
     // Send a PATCH request via a SocketClient
     private Mono<HttpResponse> sendPatchViaSocket(HttpRequest httpRequest) {
-        return Mono.fromRunnable(() -> {
+        return Mono.create(sink -> {
             try {
-                new SocketClient(httpRequest.getUrl().toString()).sendPatchRequest(httpRequest);
+                HttpResponse response = new SocketClient(httpRequest.getUrl()).sendPatchRequest(httpRequest);
+                sink.success(response);
             } catch (IOException e) {
-                throw new RuntimeException(e);
+                sink.error(e);
             }
-        }).then(Mono.empty());
+        });
     }
 
     // Open a connection based on the HttpRequest URL
@@ -134,5 +139,4 @@ public class HttpUrlConnectionClient implements HttpClient {
             }
         });
     }
-
 }
