@@ -25,6 +25,7 @@ import com.azure.security.keyvault.keys.cryptography.models.UnwrapResult;
 import com.azure.security.keyvault.keys.cryptography.models.VerifyResult;
 import com.azure.security.keyvault.keys.cryptography.models.WrapResult;
 import com.azure.security.keyvault.keys.models.JsonWebKey;
+import com.azure.security.keyvault.keys.models.KeyCurveName;
 import com.azure.security.keyvault.keys.models.KeyOperation;
 import com.azure.security.keyvault.keys.models.KeyVaultKey;
 import reactor.core.publisher.Mono;
@@ -111,6 +112,25 @@ public class CryptographyAsyncClient {
 
         if (jsonWebKey.getKeyType() == null) {
             throw new IllegalArgumentException("The JSON Web Key's key type property is not configured.");
+        }
+
+        if (!isCurveSupportedByRuntimeJavaVersion(jsonWebKey.getCurveName())) {
+            String javaVersion = System.getProperty("java.version");
+
+            if (javaVersion.startsWith("1.")) {
+                javaVersion = javaVersion.substring(2, 3);
+            } else {
+                int period = javaVersion.indexOf(".");
+
+                if (period != -1) {
+                    javaVersion = javaVersion.substring(0, period);
+                }
+            }
+
+            String errorMessage = String.format("This JSON Web Key's curve (%s) is not supported by the runtime Java"
+                + " version (%s).", jsonWebKey.getCurveName(), javaVersion);
+
+            throw new IllegalArgumentException(errorMessage);
         }
 
         this.keyCollection = null;
@@ -331,7 +351,7 @@ public class CryptographyAsyncClient {
     }
 
     Mono<EncryptResult> encrypt(EncryptionAlgorithm algorithm, byte[] plaintext, Context context) {
-        return ensureValidKeyAvailable().flatMap(available -> {
+        return isValidKeyAvailable().flatMap(available -> {
             if (!available) {
                 return implClient.encryptAsync(algorithm, plaintext, context);
             }
@@ -346,7 +366,7 @@ public class CryptographyAsyncClient {
     }
 
     Mono<EncryptResult> encrypt(EncryptParameters encryptParameters, Context context) {
-        return ensureValidKeyAvailable().flatMap(available -> {
+        return isValidKeyAvailable().flatMap(available -> {
             if (!available) {
                 return implClient.encryptAsync(encryptParameters, context);
             }
@@ -477,7 +497,7 @@ public class CryptographyAsyncClient {
     }
 
     Mono<DecryptResult> decrypt(EncryptionAlgorithm algorithm, byte[] ciphertext, Context context) {
-        return ensureValidKeyAvailable().flatMap(available -> {
+        return isValidKeyAvailable().flatMap(available -> {
             if (!available) {
                 return implClient.decryptAsync(algorithm, ciphertext, context);
             }
@@ -492,7 +512,7 @@ public class CryptographyAsyncClient {
     }
 
     Mono<DecryptResult> decrypt(DecryptParameters decryptParameters, Context context) {
-        return ensureValidKeyAvailable().flatMap(available -> {
+        return isValidKeyAvailable().flatMap(available -> {
             if (!available) {
                 return implClient.decryptAsync(decryptParameters, context);
             }
@@ -559,7 +579,7 @@ public class CryptographyAsyncClient {
     }
 
     Mono<SignResult> sign(SignatureAlgorithm algorithm, byte[] digest, Context context) {
-        return ensureValidKeyAvailable().flatMap(available -> {
+        return isValidKeyAvailable().flatMap(available -> {
             if (!available) {
                 return implClient.signAsync(algorithm, digest, context);
             }
@@ -629,7 +649,7 @@ public class CryptographyAsyncClient {
     }
 
     Mono<VerifyResult> verify(SignatureAlgorithm algorithm, byte[] digest, byte[] signature, Context context) {
-        return ensureValidKeyAvailable().flatMap(available -> {
+        return isValidKeyAvailable().flatMap(available -> {
             if (!available) {
                 return implClient.verifyAsync(algorithm, digest, signature, context);
             }
@@ -694,7 +714,7 @@ public class CryptographyAsyncClient {
     }
 
     Mono<WrapResult> wrapKey(KeyWrapAlgorithm algorithm, byte[] key, Context context) {
-        return ensureValidKeyAvailable().flatMap(available -> {
+        return isValidKeyAvailable().flatMap(available -> {
             if (!available) {
                 return implClient.wrapKeyAsync(algorithm, key, context);
             }
@@ -762,7 +782,7 @@ public class CryptographyAsyncClient {
     }
 
     Mono<UnwrapResult> unwrapKey(KeyWrapAlgorithm algorithm, byte[] encryptedKey, Context context) {
-        return ensureValidKeyAvailable().flatMap(available -> {
+        return isValidKeyAvailable().flatMap(available -> {
             if (!available) {
                 return implClient.unwrapKeyAsync(algorithm, encryptedKey, context);
             }
@@ -827,7 +847,7 @@ public class CryptographyAsyncClient {
     }
 
     Mono<SignResult> signData(SignatureAlgorithm algorithm, byte[] data, Context context) {
-        return ensureValidKeyAvailable().flatMap(available -> {
+        return isValidKeyAvailable().flatMap(available -> {
             if (!available) {
                 return implClient.signDataAsync(algorithm, data, context);
             }
@@ -896,7 +916,7 @@ public class CryptographyAsyncClient {
     }
 
     Mono<VerifyResult> verifyData(SignatureAlgorithm algorithm, byte[] data, byte[] signature, Context context) {
-        return ensureValidKeyAvailable().flatMap(available -> {
+        return isValidKeyAvailable().flatMap(available -> {
             if (!available) {
                 return implClient.verifyDataAsync(algorithm, data, signature, context);
             }
@@ -910,16 +930,15 @@ public class CryptographyAsyncClient {
         });
     }
 
-    private Mono<Boolean> ensureValidKeyAvailable() {
+    private Mono<Boolean> isValidKeyAvailable() {
         boolean keyNotAvailable = (key == null && keyCollection != null);
-        boolean keyNotValid = (key != null && !key.isValid());
 
-        if (keyNotAvailable || keyNotValid) {
+        if (keyNotAvailable) {
             if (keyCollection.equals(CryptographyClientImpl.SECRETS_COLLECTION)) {
                 return getSecretKey().map(jsonWebKey -> {
-                    key = (jsonWebKey);
+                    key = jsonWebKey;
 
-                    if (key.isValid()) {
+                    if (key.isValid() && isCurveSupportedByRuntimeJavaVersion(key.getCurveName())) {
                         if (localKeyCryptographyClient == null) {
                             localKeyCryptographyClient = initializeCryptoClient(key, implClient);
                         }
@@ -931,9 +950,9 @@ public class CryptographyAsyncClient {
                 });
             } else {
                 return getKey().map(keyVaultKey -> {
-                    key = (keyVaultKey.getKey());
+                    key = keyVaultKey.getKey();
 
-                    if (key.isValid()) {
+                    if (key.isValid() && isCurveSupportedByRuntimeJavaVersion(key.getCurveName())) {
                         if (localKeyCryptographyClient == null) {
                             localKeyCryptographyClient = initializeCryptoClient(key, implClient);
                         }
@@ -947,6 +966,23 @@ public class CryptographyAsyncClient {
         } else {
             return Mono.defer(() -> Mono.just(true));
         }
+    }
+
+    protected static boolean isCurveSupportedByRuntimeJavaVersion(KeyCurveName keyCurveName) {
+        String javaVersion = System.getProperty("java.version");
+
+        if (javaVersion.startsWith("1.")) {
+            javaVersion = javaVersion.substring(2, 3);
+        } else {
+            int period = javaVersion.indexOf(".");
+
+            if (period != -1) {
+                javaVersion = javaVersion.substring(0, period);
+            }
+        }
+
+        // The SECP256K1 curve is not supported on Java 16+.
+        return !(Integer.parseInt(javaVersion) >= 16 && keyCurveName == KeyCurveName.P_256K);
     }
 
     CryptographyClientImpl getImplClient() {

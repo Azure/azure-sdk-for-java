@@ -30,6 +30,7 @@ import reactor.core.publisher.Mono;
 
 import java.util.Objects;
 
+import static com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.isCurveSupportedByRuntimeJavaVersion;
 import static com.azure.security.keyvault.keys.cryptography.CryptographyClientImpl.checkKeyPermissions;
 import static com.azure.security.keyvault.keys.cryptography.CryptographyClientImpl.initializeCryptoClient;
 import static com.azure.security.keyvault.keys.cryptography.CryptographyClientImpl.unpackAndValidateId;
@@ -109,6 +110,25 @@ public class CryptographyClient {
 
         if (jsonWebKey.getKeyType() == null) {
             throw new IllegalArgumentException("The JSON Web Key's key type property is not configured.");
+        }
+
+        if (!isCurveSupportedByRuntimeJavaVersion(jsonWebKey.getCurveName())) {
+            String javaVersion = System.getProperty("java.version");
+
+            if (javaVersion.startsWith("1.")) {
+                javaVersion = javaVersion.substring(2, 3);
+            } else {
+                int period = javaVersion.indexOf(".");
+
+                if (period != -1) {
+                    javaVersion = javaVersion.substring(0, period);
+                }
+            }
+
+            String errorMessage = String.format("This JSON Web Key's curve (%s) is not supported by the runtime Java"
+                + " version (%s).", jsonWebKey.getCurveName(), javaVersion);
+
+            throw new IllegalArgumentException(errorMessage);
         }
 
         this.keyCollection = null;
@@ -290,7 +310,7 @@ public class CryptographyClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public EncryptResult encrypt(EncryptionAlgorithm algorithm, byte[] plaintext, Context context) {
-        if (!ensureValidKeyAvailable()) {
+        if (!isValidKeyAvailable()) {
             return implClient.encrypt(algorithm, plaintext, context);
         }
 
@@ -359,7 +379,7 @@ public class CryptographyClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public EncryptResult encrypt(EncryptParameters encryptParameters, Context context) {
-        if (!ensureValidKeyAvailable()) {
+        if (!isValidKeyAvailable()) {
             return implClient.encrypt(encryptParameters, context);
         }
 
@@ -481,7 +501,7 @@ public class CryptographyClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DecryptResult decrypt(EncryptionAlgorithm algorithm, byte[] ciphertext, Context context) {
-        if (!ensureValidKeyAvailable()) {
+        if (!isValidKeyAvailable()) {
             return implClient.decrypt(algorithm, ciphertext, context);
         }
 
@@ -551,7 +571,7 @@ public class CryptographyClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DecryptResult decrypt(DecryptParameters decryptParameters, Context context) {
-        if (!ensureValidKeyAvailable()) {
+        if (!isValidKeyAvailable()) {
             return implClient.decrypt(decryptParameters, context);
         }
 
@@ -653,7 +673,7 @@ public class CryptographyClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SignResult sign(SignatureAlgorithm algorithm, byte[] digest, Context context) {
-        if (!ensureValidKeyAvailable()) {
+        if (!isValidKeyAvailable()) {
             return implClient.sign(algorithm, digest, context);
         }
 
@@ -763,7 +783,7 @@ public class CryptographyClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VerifyResult verify(SignatureAlgorithm algorithm, byte[] digest, byte[] signature, Context context) {
-        if (!ensureValidKeyAvailable()) {
+        if (!isValidKeyAvailable()) {
             return implClient.verify(algorithm, digest, signature, context);
         }
 
@@ -863,7 +883,7 @@ public class CryptographyClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WrapResult wrapKey(KeyWrapAlgorithm algorithm, byte[] key, Context context) {
-        if (!ensureValidKeyAvailable()) {
+        if (!isValidKeyAvailable()) {
             return implClient.wrapKey(algorithm, key, context);
         }
 
@@ -971,7 +991,7 @@ public class CryptographyClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public UnwrapResult unwrapKey(KeyWrapAlgorithm algorithm, byte[] encryptedKey, Context context) {
-        if (!ensureValidKeyAvailable()) {
+        if (!isValidKeyAvailable()) {
             return implClient.unwrapKey(algorithm, encryptedKey, context);
         }
 
@@ -1067,7 +1087,7 @@ public class CryptographyClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SignResult signData(SignatureAlgorithm algorithm, byte[] data, Context context) {
-        if (!ensureValidKeyAvailable()) {
+        if (!isValidKeyAvailable()) {
             return implClient.signData(algorithm, data, context);
         }
 
@@ -1174,7 +1194,7 @@ public class CryptographyClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VerifyResult verifyData(SignatureAlgorithm algorithm, byte[] data, byte[] signature, Context context) {
-        if (!ensureValidKeyAvailable()) {
+        if (!isValidKeyAvailable()) {
             return implClient.verifyData(algorithm, data, signature, context);
         }
 
@@ -1187,28 +1207,29 @@ public class CryptographyClient {
         return localKeyCryptographyClient.verifyData(algorithm, data, signature, key, context);
     }
 
-    private boolean ensureValidKeyAvailable() {
+    private boolean isValidKeyAvailable() {
         boolean keyNotAvailable = (key == null && keyCollection != null);
-        boolean keyNotValid = (key != null && !key.isValid());
 
-        if (keyNotAvailable || keyNotValid) {
+        if (keyNotAvailable) {
             if (keyCollection.equals(CryptographyClientImpl.SECRETS_COLLECTION)) {
                 key = getSecretKey();
             } else {
                 key = getKey().getKey();
             }
+        }
 
-            if (key.isValid()) {
-                if (localKeyCryptographyClient == null) {
-                    localKeyCryptographyClient = initializeCryptoClient(key, implClient);
-                }
+        if (key == null) {
+            return false;
+        }
 
-                return true;
-            } else {
-                return false;
+        if (key.isValid() && isCurveSupportedByRuntimeJavaVersion(key.getCurveName())) {
+            if (localKeyCryptographyClient == null) {
+                localKeyCryptographyClient = initializeCryptoClient(key, implClient);
             }
-        } else {
+
             return true;
+        } else {
+            return false;
         }
     }
 
