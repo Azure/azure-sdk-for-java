@@ -202,9 +202,9 @@ additional questions or comments.
 [package]: https://aka.ms/ava/sdk/client/java
 [samples]: https://aka.ms/video-analyzer-sample
 [source]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/videoanalyzer
-[doc_direct_methods]: https://go.microsoft.com/fwlink/?linkid=2162396
-[doc_pipelines]: https://go.microsoft.com/fwlink/?linkid=2162396
-[doc_product]: https://go.microsoft.com/fwlink/?linkid=2162396
+[doc_direct_methods]: https://learn.microsoft.com/previous-versions/azure/azure-video-analyzer/video-analyzer-docs/articles/azure-video-analyzer/video-analyzer-docs/edge/direct-methods
+[doc_pipelines]: https://learn.microsoft.com/previous-versions/azure/azure-video-analyzer/video-analyzer-docs/articles/azure-video-analyzer/video-analyzer-docs/pipeline
+[doc_product]: https://learn.microsoft.com/azure/azure-video-analyzer/video-analyzer-docs/
 [iot-device-sdk]: https://central.sonatype.com/artifact/com.microsoft.azure.sdk.iot/iot-service-client
 [iot-hub-sdk]: https://github.com/Azure/azure-iot-sdk-java
 [github-page-issues]: https://github.com/Azure/azure-sdk-for-java/issues
