@@ -10,7 +10,6 @@ import com.azure.monitor.opentelemetry.exporter.implementation.models.MetricData
 import com.azure.monitor.opentelemetry.exporter.implementation.models.MetricsData;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.MonitorBase;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.TelemetryItem;
-import io.opentelemetry.api.OpenTelemetry;
 import io.opentelemetry.sdk.OpenTelemetrySdk;
 import io.opentelemetry.sdk.autoconfigure.AutoConfiguredOpenTelemetrySdk;
 import io.opentelemetry.sdk.autoconfigure.AutoConfiguredOpenTelemetrySdkBuilder;
@@ -75,7 +74,7 @@ public final class TestUtils {
             .configuration(configuration)
             .connectionString(TRACE_CONNECTION_STRING)
             .httpPipeline(httpPipeline)
-            .configure(sdkBuilder);
+            .build(sdkBuilder);
 
         return sdkBuilder.build().getOpenTelemetrySdk();
     }

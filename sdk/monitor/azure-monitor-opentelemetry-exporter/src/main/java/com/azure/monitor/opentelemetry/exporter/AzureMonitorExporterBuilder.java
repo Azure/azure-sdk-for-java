@@ -351,7 +351,7 @@ public final class AzureMonitorExporterBuilder {
     /**
      * Configures an {@link AutoConfiguredOpenTelemetrySdkBuilder} based on the options set in the builder.
      */
-    public void configure(AutoConfiguredOpenTelemetrySdkBuilder sdkBuilder) {
+    public void build(AutoConfiguredOpenTelemetrySdkBuilder sdkBuilder) {
         sdkBuilder
             .addPropertiesSupplier(() -> {
                 Map<String, String> props = new HashMap<>();
