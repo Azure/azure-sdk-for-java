@@ -4,7 +4,7 @@
 package com.azure.data.appconfiguration;
 
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
-import com.azure.data.appconfiguration.models.ConfigurationSettingSnapshot;
+import com.azure.data.appconfiguration.models.ConfigurationSettingsSnapshot;
 import com.azure.data.appconfiguration.models.SnapshotSelector;
 import com.azure.data.appconfiguration.models.SnapshotSettingFilter;
 
@@ -60,7 +60,7 @@ public class ListSnapshotsAsync {
         String snapshotNameTest = "{snapshotNameInTest}";
 
         // 1. Create first snapshot
-        client.beginCreateSnapshot(snapshotNameTest, new ConfigurationSettingSnapshot(filters))
+        client.beginCreateSnapshot(snapshotNameTest, new ConfigurationSettingsSnapshot(filters))
             .flatMap(result -> result.getFinalResult())
             .subscribe(
                 snapshot -> {
@@ -98,7 +98,7 @@ public class ListSnapshotsAsync {
         String snapshotNameProduct = "{snapshotNameInProduct}";
 
         // 2. Create first snapshot
-        client.beginCreateSnapshot(snapshotNameTest, new ConfigurationSettingSnapshot(filters))
+        client.beginCreateSnapshot(snapshotNameTest, new ConfigurationSettingsSnapshot(filters))
             .flatMap(result -> result.getFinalResult())
             .subscribe(
                 snapshot -> {

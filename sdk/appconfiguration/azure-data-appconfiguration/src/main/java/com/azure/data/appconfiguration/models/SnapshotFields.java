@@ -34,7 +34,7 @@ public final class SnapshotFields extends ExpandableStringEnum<SnapshotFields> {
     public static final SnapshotFields ITEM_COUNT = fromString("items_count");
 
     /** Populates the snapshot `size` from the service. */
-    public static final SnapshotFields SIZE = fromString("size");
+    public static final SnapshotFields SIZE_IN_BYTES = fromString("size");
 
     /** Populates the snapshot `etag` from the service. */
     public static final SnapshotFields ETAG = fromString("etag");

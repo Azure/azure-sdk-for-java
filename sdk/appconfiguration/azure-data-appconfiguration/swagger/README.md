@@ -33,7 +33,7 @@ input-file:
 - https://raw.githubusercontent.com/Azure/azure-rest-api-specs/2f7a3cbda00c6ae4199940d500e5212b6481d9ea/specification/appconfiguration/data-plane/Microsoft.AppConfiguration/preview/2022-11-01-preview/appconfiguration.json
 models-subpackage: implementation.models
 custom-types-subpackage: models
-custom-types: KeyValueFields,KeyValueFilter,SettingFields,SnapshotSettingFilter,CompositionType,Snapshot,ConfigurationSettingSnapshot,SnapshotStatus,SnapshotFields,SnapshotFields
+custom-types: KeyValueFields,KeyValueFilter,SettingFields,SnapshotSettingFilter,CompositionType,Snapshot,ConfigurationSettingsSnapshot,SnapshotStatus,SnapshotFields,SnapshotFields
 customization-class: src/main/java/AppConfigCustomization.java
 ```
 
@@ -65,6 +65,7 @@ directive:
       $["items_count"]["x-ms-client-name"] = "item_count";
       $["created"]["x-ms-client-name"] = "createdAt"; 
       $["expires"]["x-ms-client-name"] = "expiresAt";
+      $["size"]["x-ms-client-name"] = "sizeInBytes";
       $["etag"]["x-ms-client-name"] = "eTag";
 ```
 
@@ -76,7 +77,7 @@ directive:
       to: SnapshotSettingFilter
   - rename-model:
       from: Snapshot
-      to: ConfigurationSettingSnapshot
+      to: ConfigurationSettingsSnapshot
   - from: swagger-document
     where: $.parameters.KeyValueFields
     transform: >
@@ -181,9 +182,9 @@ directive:
           "description": "Populates the snapshot `items_count` from the service."
         },
         {
-            "value": "size",
-            "name": "size ",
-            "description": "Populates the snapshot `size` from the service."
+          "value": "size",
+          "name": "sizeInBytes ",
+          "description": "Populates the snapshot `size` from the service."
         },
         {
           "value": "etag",

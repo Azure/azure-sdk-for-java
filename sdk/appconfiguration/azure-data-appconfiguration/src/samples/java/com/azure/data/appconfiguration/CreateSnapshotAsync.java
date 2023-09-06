@@ -4,7 +4,7 @@
 package com.azure.data.appconfiguration;
 
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
-import com.azure.data.appconfiguration.models.ConfigurationSettingSnapshot;
+import com.azure.data.appconfiguration.models.ConfigurationSettingsSnapshot;
 import com.azure.data.appconfiguration.models.SnapshotSettingFilter;
 
 import java.util.ArrayList;
@@ -60,7 +60,7 @@ public class CreateSnapshotAsync {
         filters.add(new SnapshotSettingFilter("Test*"));
         String snapshotName = "{snapshotName}";
 
-        client.beginCreateSnapshot(snapshotName, new ConfigurationSettingSnapshot(filters))
+        client.beginCreateSnapshot(snapshotName, new ConfigurationSettingsSnapshot(filters))
             .flatMap(result -> result.getFinalResult())
             .subscribe(
                 snapshot -> {

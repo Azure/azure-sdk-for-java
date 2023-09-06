@@ -16,7 +16,7 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.data.appconfiguration.implementation.models.CreateSnapshotHeaders;
 import com.azure.data.appconfiguration.implementation.models.OperationDetails;
 import com.azure.data.appconfiguration.implementation.models.State;
-import com.azure.data.appconfiguration.models.ConfigurationSettingSnapshot;
+import com.azure.data.appconfiguration.models.ConfigurationSettingsSnapshot;
 import com.azure.data.appconfiguration.models.CreateSnapshotOperationDetail;
 import reactor.core.publisher.Mono;
 
@@ -41,8 +41,8 @@ public class CreateSnapshotUtilClient {
         this.service = service;
     }
 
-    public PollerFlux<CreateSnapshotOperationDetail, ConfigurationSettingSnapshot> beginCreateSnapshot(String name,
-        ConfigurationSettingSnapshot snapshot) {
+    public PollerFlux<CreateSnapshotOperationDetail, ConfigurationSettingsSnapshot> beginCreateSnapshot(String name,
+        ConfigurationSettingsSnapshot snapshot) {
         try {
             return new PollerFlux<>(
                 DEFAULT_POLL_INTERVAL,
@@ -68,8 +68,8 @@ public class CreateSnapshotUtilClient {
         }
     }
 
-    public SyncPoller<CreateSnapshotOperationDetail, ConfigurationSettingSnapshot> beginCreateSnapshot(String name,
-        ConfigurationSettingSnapshot snapshot, Context context) {
+    public SyncPoller<CreateSnapshotOperationDetail, ConfigurationSettingsSnapshot> beginCreateSnapshot(String name,
+        ConfigurationSettingsSnapshot snapshot, Context context) {
         try {
             final Context finalContext = getNotNullContext(context);
             return SyncPoller.createPoller(
@@ -103,11 +103,11 @@ public class CreateSnapshotUtilClient {
     }
 
     private Function<PollingContext<CreateSnapshotOperationDetail>, CreateSnapshotOperationDetail>
-        activationOperationSync(String name, ConfigurationSettingSnapshot snapshot, Context context) {
+        activationOperationSync(String name, ConfigurationSettingsSnapshot snapshot, Context context) {
         return pollingContext -> {
             try {
                 final Context finalContext = getNotNullContext(context);
-                final ResponseBase<CreateSnapshotHeaders, ConfigurationSettingSnapshot> snapshotWithResponse =
+                final ResponseBase<CreateSnapshotHeaders, ConfigurationSettingsSnapshot> snapshotWithResponse =
                     service.createSnapshotWithResponse(name, snapshot, finalContext);
                 CreateSnapshotOperationDetail operationDetail =
                     new CreateSnapshotOperationDetail();
@@ -152,8 +152,8 @@ public class CreateSnapshotUtilClient {
 
     // Fetching operation
     private Function<PollingContext<CreateSnapshotOperationDetail>,
-                        Mono<ConfigurationSettingSnapshot>> fetchingOperation(
-        Function<String, Mono<ConfigurationSettingSnapshot>> fetchingFunction) {
+                        Mono<ConfigurationSettingsSnapshot>> fetchingOperation(
+        Function<String, Mono<ConfigurationSettingsSnapshot>> fetchingFunction) {
         return pollingContext -> {
             try {
                 String operationId = pollingContext.getLatestResponse().getValue().getOperationId();
@@ -164,8 +164,8 @@ public class CreateSnapshotUtilClient {
         };
     }
 
-    private Function<PollingContext<CreateSnapshotOperationDetail>, ConfigurationSettingSnapshot> fetchingOperationSync(
-        Function<String, ConfigurationSettingSnapshot> fetchingFunction) {
+    private Function<PollingContext<CreateSnapshotOperationDetail>, ConfigurationSettingsSnapshot> fetchingOperationSync(
+        Function<String, ConfigurationSettingsSnapshot> fetchingFunction) {
         return pollingContext -> {
             try {
                 String operationId = pollingContext.getLatestResponse().getValue().getOperationId();

@@ -8,7 +8,9 @@
 
 ### Breaking Changes
 
-- Change `listConfigurationSettingsForSnapshot` method's `fields` parameter type to `List`.
+- Changed `listConfigurationSettingsForSnapshot` method's `fields` parameter type to `List`.
+- Renamed `ConfigurationSettingSnapshot` to `ConfigurationSettingsSnapshot`.
+- Renamed `ConfigurationSettingSnapshot`'s property name, `size` to `sizeInBytes`.
 
 ### Bugs Fixed
 

@@ -25,7 +25,7 @@ public class AppConfigCustomization extends Customization {
 
         customizeKeyValueFilter(models.getClass("SnapshotSettingFilter"));
         customizeKeyValueFields(models.getClass("SettingFields"));
-        customizeSnapshot(models.getClass("ConfigurationSettingSnapshot"));
+        customizeSnapshot(models.getClass("ConfigurationSettingsSnapshot"));
     }
 
     private void customizeSnapshot(ClassCustomization classCustomization) {
