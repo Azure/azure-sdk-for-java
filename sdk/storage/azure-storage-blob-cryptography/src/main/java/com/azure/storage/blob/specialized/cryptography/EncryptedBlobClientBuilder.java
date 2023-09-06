@@ -278,7 +278,7 @@ public final class EncryptedBlobClientBuilder implements
         Matcher matcher = pattern.matcher(userAgent);
         String version = encryptionVersion == EncryptionVersion.V2 ? "2.0" : "1.0";
         String stringToAppend = "azstorage-clientsideencryption/" + version;
-        if (matcher.matches()) {
+        if (matcher.matches() && !userAgent.contains(stringToAppend)) {
             String segment1 = matcher.group(1) == null ? "" : matcher.group(1);
             String segment2 = matcher.group(2) == null ? "" : matcher.group(2);
             String segment3 = matcher.group(3) == null ? "" : matcher.group(3);
