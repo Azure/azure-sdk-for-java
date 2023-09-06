@@ -32,6 +32,10 @@ public final class Restriction {
     @JsonProperty(value = "reasonCode")
     private ReasonCode reasonCode;
 
+    /** Creates an instance of Restriction class. */
+    public Restriction() {
+    }
+
     /**
      * Get the type property: The type of restrictions. As of now only possible value for this is location.
      *

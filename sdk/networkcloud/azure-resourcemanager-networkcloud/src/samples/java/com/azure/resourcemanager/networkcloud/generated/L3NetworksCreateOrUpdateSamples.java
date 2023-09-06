@@ -12,7 +12,7 @@ import java.util.Map;
 /** Samples for L3Networks CreateOrUpdate. */
 public final class L3NetworksCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2023-05-01-preview/examples/L3Networks_Create.json
+     * x-ms-original-file: specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2023-07-01/examples/L3Networks_Create.json
      */
     /**
      * Sample code: Create or update L3 network.
@@ -33,7 +33,7 @@ public final class L3NetworksCreateOrUpdateSamples {
             .withL3IsolationDomainId(
                 "/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/l3IsolationDomains/l3IsolationDomainName")
             .withVlan(12L)
-            .withTags(mapOf("key1", "myvalue1", "key2", "myvalue2"))
+            .withTags(mapOf("key1", "fakeTokenPlaceholder", "key2", "fakeTokenPlaceholder"))
             .withInterfaceName("eth0")
             .withIpAllocationType(IpAllocationType.DUAL_STACK)
             .withIpv4ConnectedPrefix("198.51.100.0/24")
@@ -41,6 +41,7 @@ public final class L3NetworksCreateOrUpdateSamples {
             .create();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

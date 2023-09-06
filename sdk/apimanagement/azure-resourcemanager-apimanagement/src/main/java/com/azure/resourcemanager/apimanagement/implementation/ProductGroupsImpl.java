@@ -46,10 +46,6 @@ public final class ProductGroupsImpl implements ProductGroups {
         return Utils.mapPage(inner, inner1 -> new GroupContractImpl(inner1, this.manager()));
     }
 
-    public void checkEntityExists(String resourceGroupName, String serviceName, String productId, String groupId) {
-        this.serviceClient().checkEntityExists(resourceGroupName, serviceName, productId, groupId);
-    }
-
     public Response<Void> checkEntityExistsWithResponse(
         String resourceGroupName, String serviceName, String productId, String groupId, Context context) {
         return this
@@ -57,15 +53,8 @@ public final class ProductGroupsImpl implements ProductGroups {
             .checkEntityExistsWithResponse(resourceGroupName, serviceName, productId, groupId, context);
     }
 
-    public GroupContract createOrUpdate(
-        String resourceGroupName, String serviceName, String productId, String groupId) {
-        GroupContractInner inner =
-            this.serviceClient().createOrUpdate(resourceGroupName, serviceName, productId, groupId);
-        if (inner != null) {
-            return new GroupContractImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+    public void checkEntityExists(String resourceGroupName, String serviceName, String productId, String groupId) {
+        this.serviceClient().checkEntityExists(resourceGroupName, serviceName, productId, groupId);
     }
 
     public Response<GroupContract> createOrUpdateWithResponse(
@@ -85,13 +74,24 @@ public final class ProductGroupsImpl implements ProductGroups {
         }
     }
 
-    public void delete(String resourceGroupName, String serviceName, String productId, String groupId) {
-        this.serviceClient().delete(resourceGroupName, serviceName, productId, groupId);
+    public GroupContract createOrUpdate(
+        String resourceGroupName, String serviceName, String productId, String groupId) {
+        GroupContractInner inner =
+            this.serviceClient().createOrUpdate(resourceGroupName, serviceName, productId, groupId);
+        if (inner != null) {
+            return new GroupContractImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public Response<Void> deleteWithResponse(
         String resourceGroupName, String serviceName, String productId, String groupId, Context context) {
         return this.serviceClient().deleteWithResponse(resourceGroupName, serviceName, productId, groupId, context);
+    }
+
+    public void delete(String resourceGroupName, String serviceName, String productId, String groupId) {
+        this.serviceClient().delete(resourceGroupName, serviceName, productId, groupId);
     }
 
     private ProductGroupsClient serviceClient() {

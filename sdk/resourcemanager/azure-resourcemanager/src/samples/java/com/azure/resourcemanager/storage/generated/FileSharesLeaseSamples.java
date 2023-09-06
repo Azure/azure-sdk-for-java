@@ -4,14 +4,13 @@
 
 package com.azure.resourcemanager.storage.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.storage.models.LeaseShareAction;
 import com.azure.resourcemanager.storage.models.LeaseShareRequest;
 
 /** Samples for FileShares Lease. */
 public final class FileSharesLeaseSamples {
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2022-09-01/examples/FileSharesLease_Break.json
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-01-01/examples/FileSharesLease_Break.json
      */
     /**
      * Sample code: Break a lease on a share.
@@ -32,11 +31,11 @@ public final class FileSharesLeaseSamples {
                 new LeaseShareRequest()
                     .withAction(LeaseShareAction.BREAK)
                     .withLeaseId("8698f513-fa75-44a1-b8eb-30ba336af27d"),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2022-09-01/examples/FileSharesLease_Acquire.json
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-01-01/examples/FileSharesLease_Acquire.json
      */
     /**
      * Sample code: Acquire a lease on a share.
@@ -55,6 +54,6 @@ public final class FileSharesLeaseSamples {
                 "share124",
                 null,
                 new LeaseShareRequest().withAction(LeaseShareAction.ACQUIRE).withLeaseDuration(-1),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

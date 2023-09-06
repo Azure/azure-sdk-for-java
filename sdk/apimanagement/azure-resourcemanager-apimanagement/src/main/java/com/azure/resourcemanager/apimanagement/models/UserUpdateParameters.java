@@ -19,6 +19,10 @@ public final class UserUpdateParameters {
     @JsonProperty(value = "properties")
     private UserUpdateParametersProperties innerProperties;
 
+    /** Creates an instance of UserUpdateParameters class. */
+    public UserUpdateParameters() {
+    }
+
     /**
      * Get the innerProperties property: User entity update contract properties.
      *

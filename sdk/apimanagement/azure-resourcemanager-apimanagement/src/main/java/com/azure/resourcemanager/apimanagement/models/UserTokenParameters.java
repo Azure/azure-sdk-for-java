@@ -18,6 +18,10 @@ public final class UserTokenParameters {
     @JsonProperty(value = "properties")
     private UserTokenParameterProperties innerProperties;
 
+    /** Creates an instance of UserTokenParameters class. */
+    public UserTokenParameters() {
+    }
+
     /**
      * Get the innerProperties property: User Token Parameter contract properties.
      *

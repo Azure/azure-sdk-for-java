@@ -35,6 +35,15 @@ public final class AvailabilityState extends ExpandableStringEnum<AvailabilitySt
     public static final AvailabilityState UNMONITORED = fromString("UNMONITORED");
 
     /**
+     * Creates a new instance of AvailabilityState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public AvailabilityState() {
+    }
+
+    /**
      * Creates or finds a AvailabilityState from its string representation.
      *
      * @param name a name to look for.

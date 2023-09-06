@@ -1216,6 +1216,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
      * Verifies that, given a ton of existing settings, we can list the ConfigurationSettings using pagination
      * (ie. where 'nextLink' has a URL pointing to the next page of results.
      */
+    @Disabled("Error code 403 TOO_MANY_REQUESTS https://github.com/Azure/azure-sdk-for-java/issues/36602")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
     public void listConfigurationSettingsWithPagination(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
@@ -1609,7 +1610,6 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
                 .verifyComplete();
         });
 
-
         for (ConfigurationSettingSnapshot snapshot : actualSnapshots) {
             // List only the snapshot with a specific name
             StepVerifier.create(client.listSnapshots(
@@ -1631,8 +1631,8 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
 
         // Create a snapshot
         createSnapshotRunner((name, filters) -> {
-            // Prepare 50 settings before creating a snapshot
-            final int numberExpected = 50;
+            // Prepare 5 settings before creating a snapshot
+            final int numberExpected = 5;
             List<ConfigurationSetting> settings = new ArrayList<>(numberExpected);
             for (int value = 0; value < numberExpected; value++) {
                 settings.add(new ConfigurationSetting().setKey(name + "-" + value));
@@ -1655,8 +1655,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
             ConfigurationSettingSnapshot snapshotResult = poller.getFinalResult();
 
             assertEqualsConfigurationSettingSnapshot(name, SnapshotStatus.READY, filters, CompositionType.KEY,
-                MINIMUM_RETENTION_PERIOD, Long.valueOf(15000), Long.valueOf(50), null, snapshotResult);
-
+                MINIMUM_RETENTION_PERIOD, Long.valueOf(15000), Long.valueOf(numberExpected), null, snapshotResult);
 
             StepVerifier.create(client.listConfigurationSettingsForSnapshot(name))
                 .expectNextCount(numberExpected)

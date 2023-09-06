@@ -48,6 +48,10 @@ public final class PortalRevisionContractProperties {
     @JsonProperty(value = "updatedDateTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime updatedDateTime;
 
+    /** Creates an instance of PortalRevisionContractProperties class. */
+    public PortalRevisionContractProperties() {
+    }
+
     /**
      * Get the description property: Portal revision description.
      *

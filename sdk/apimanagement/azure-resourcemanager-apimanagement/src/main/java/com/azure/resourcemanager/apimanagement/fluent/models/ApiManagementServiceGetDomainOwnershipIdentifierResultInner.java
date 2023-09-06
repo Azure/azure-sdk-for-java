@@ -16,6 +16,10 @@ public final class ApiManagementServiceGetDomainOwnershipIdentifierResultInner {
     @JsonProperty(value = "domainOwnershipIdentifier", access = JsonProperty.Access.WRITE_ONLY)
     private String domainOwnershipIdentifier;
 
+    /** Creates an instance of ApiManagementServiceGetDomainOwnershipIdentifierResultInner class. */
+    public ApiManagementServiceGetDomainOwnershipIdentifierResultInner() {
+    }
+
     /**
      * Get the domainOwnershipIdentifier property: The domain ownership identifier value.
      *

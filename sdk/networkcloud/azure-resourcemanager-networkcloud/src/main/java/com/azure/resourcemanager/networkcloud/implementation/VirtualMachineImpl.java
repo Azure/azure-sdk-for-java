@@ -11,6 +11,7 @@ import com.azure.resourcemanager.networkcloud.fluent.models.VirtualMachineInner;
 import com.azure.resourcemanager.networkcloud.models.ExtendedLocation;
 import com.azure.resourcemanager.networkcloud.models.ImageRepositoryCredentials;
 import com.azure.resourcemanager.networkcloud.models.NetworkAttachment;
+import com.azure.resourcemanager.networkcloud.models.OperationStatusResult;
 import com.azure.resourcemanager.networkcloud.models.SshPublicKey;
 import com.azure.resourcemanager.networkcloud.models.StorageProfile;
 import com.azure.resourcemanager.networkcloud.models.VirtualMachine;
@@ -24,7 +25,6 @@ import com.azure.resourcemanager.networkcloud.models.VirtualMachinePowerOffParam
 import com.azure.resourcemanager.networkcloud.models.VirtualMachinePowerState;
 import com.azure.resourcemanager.networkcloud.models.VirtualMachineProvisioningState;
 import com.azure.resourcemanager.networkcloud.models.VirtualMachineVirtioInterfaceType;
-import com.azure.resourcemanager.networkcloud.models.VirtualMachineVolumeParameters;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -289,62 +289,39 @@ public final class VirtualMachineImpl implements VirtualMachine, VirtualMachine.
         return this;
     }
 
-    public void attachVolume(VirtualMachineVolumeParameters virtualMachineAttachVolumeParameters) {
-        serviceManager
-            .virtualMachines()
-            .attachVolume(resourceGroupName, virtualMachineName, virtualMachineAttachVolumeParameters);
+    public OperationStatusResult powerOff() {
+        return serviceManager.virtualMachines().powerOff(resourceGroupName, virtualMachineName);
     }
 
-    public void attachVolume(VirtualMachineVolumeParameters virtualMachineAttachVolumeParameters, Context context) {
-        serviceManager
-            .virtualMachines()
-            .attachVolume(resourceGroupName, virtualMachineName, virtualMachineAttachVolumeParameters, context);
-    }
-
-    public void detachVolume(VirtualMachineVolumeParameters virtualMachineDetachVolumeParameters) {
-        serviceManager
-            .virtualMachines()
-            .detachVolume(resourceGroupName, virtualMachineName, virtualMachineDetachVolumeParameters);
-    }
-
-    public void detachVolume(VirtualMachineVolumeParameters virtualMachineDetachVolumeParameters, Context context) {
-        serviceManager
-            .virtualMachines()
-            .detachVolume(resourceGroupName, virtualMachineName, virtualMachineDetachVolumeParameters, context);
-    }
-
-    public void powerOff() {
-        serviceManager.virtualMachines().powerOff(resourceGroupName, virtualMachineName);
-    }
-
-    public void powerOff(VirtualMachinePowerOffParameters virtualMachinePowerOffParameters, Context context) {
-        serviceManager
+    public OperationStatusResult powerOff(
+        VirtualMachinePowerOffParameters virtualMachinePowerOffParameters, Context context) {
+        return serviceManager
             .virtualMachines()
             .powerOff(resourceGroupName, virtualMachineName, virtualMachinePowerOffParameters, context);
     }
 
-    public void reimage() {
-        serviceManager.virtualMachines().reimage(resourceGroupName, virtualMachineName);
+    public OperationStatusResult reimage() {
+        return serviceManager.virtualMachines().reimage(resourceGroupName, virtualMachineName);
     }
 
-    public void reimage(Context context) {
-        serviceManager.virtualMachines().reimage(resourceGroupName, virtualMachineName, context);
+    public OperationStatusResult reimage(Context context) {
+        return serviceManager.virtualMachines().reimage(resourceGroupName, virtualMachineName, context);
     }
 
-    public void restart() {
-        serviceManager.virtualMachines().restart(resourceGroupName, virtualMachineName);
+    public OperationStatusResult restart() {
+        return serviceManager.virtualMachines().restart(resourceGroupName, virtualMachineName);
     }
 
-    public void restart(Context context) {
-        serviceManager.virtualMachines().restart(resourceGroupName, virtualMachineName, context);
+    public OperationStatusResult restart(Context context) {
+        return serviceManager.virtualMachines().restart(resourceGroupName, virtualMachineName, context);
     }
 
-    public void start() {
-        serviceManager.virtualMachines().start(resourceGroupName, virtualMachineName);
+    public OperationStatusResult start() {
+        return serviceManager.virtualMachines().start(resourceGroupName, virtualMachineName);
     }
 
-    public void start(Context context) {
-        serviceManager.virtualMachines().start(resourceGroupName, virtualMachineName, context);
+    public OperationStatusResult start(Context context) {
+        return serviceManager.virtualMachines().start(resourceGroupName, virtualMachineName, context);
     }
 
     public VirtualMachineImpl withRegion(Region location) {

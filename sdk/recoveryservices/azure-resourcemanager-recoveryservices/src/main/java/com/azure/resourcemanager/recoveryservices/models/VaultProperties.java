@@ -95,6 +95,12 @@ public final class VaultProperties {
     @JsonProperty(value = "securitySettings")
     private SecuritySettings securitySettings;
 
+    /*
+     * Secure Score of Recovery Services Vault
+     */
+    @JsonProperty(value = "secureScore", access = JsonProperty.Access.WRITE_ONLY)
+    private SecureScoreLevel secureScore;
+
     /** Creates an instance of VaultProperties class. */
     public VaultProperties() {
     }
@@ -313,6 +319,15 @@ public final class VaultProperties {
     public VaultProperties withSecuritySettings(SecuritySettings securitySettings) {
         this.securitySettings = securitySettings;
         return this;
+    }
+
+    /**
+     * Get the secureScore property: Secure Score of Recovery Services Vault.
+     *
+     * @return the secureScore value.
+     */
+    public SecureScoreLevel secureScore() {
+        return this.secureScore;
     }
 
     /**

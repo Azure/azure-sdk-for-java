@@ -148,6 +148,7 @@
     "sdk/eventhubs/azure-messaging-eventhubs-stress/Dockerfile",
     "sdk/eventgrid/azure-messaging-eventgrid/**",
     "sdk/cosmos/azure-cosmos/**",
+    "sdk/cosmos/azure-cosmos-test/**",
     "sdk/identity/azure-identity/**",
     "sdk/keyvault/azure-security-keyvault-administration/**",
     "sdk/keyvault/azure-security-keyvault-certificates/**",
@@ -164,6 +165,7 @@
     "sdk/maps/azure-maps-search/**",
     "sdk/monitor/azure-monitor-query/**",
     "sdk/monitor/azure-monitor-opentelemetry-exporter/**",
+    "sdk/monitor/test-resources.json",
     "sdk/modelsrepository/azure-iot-modelsrepository/**",
     "sdk/parents/azure-client-sdk-parent/**",
     "sdk/parents/azure-sdk-parent/**",
@@ -226,6 +228,7 @@
     "azurestackhci",
     "backoff",
     "boringssl",
+    "BYOD",
     "Dgpg",
     "Dskip",
     "mvnw",
@@ -677,7 +680,9 @@
       "words": [
         "Pfast",
         "Pdirect",
-	"Pmulti"
+	      "Pmulti",
+        "Psplit",
+        "Pquery"
       ]
     },
     {
@@ -1002,6 +1007,9 @@
         "Oidc",
         "oidc",
         "OIDC",
+        "otel",
+        "Otel",
+        "otlp",
         "qpid",
         "reqoest",
         "signin",

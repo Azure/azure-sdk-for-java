@@ -48,4 +48,5 @@ public final class BatchRequestResponseConstants {
 
     public static final int MAX_COLLECTION_RECREATION_RETRY_COUNT = 10;
     public static final int MAX_COLLECTION_RECREATION_REFRESH_INTERVAL_IN_SECONDS = 1;
+    public static final String PRESERVE_ORDERING_EXCEPTION_MESSAGE = "Failed due to a previous operation failing with an exception that should not be retried with the same id and partition key. This is unique to the preserve ordering flag.";
 }

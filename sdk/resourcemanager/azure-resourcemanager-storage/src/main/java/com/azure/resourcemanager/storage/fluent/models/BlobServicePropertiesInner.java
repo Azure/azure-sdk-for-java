@@ -29,6 +29,10 @@ public final class BlobServicePropertiesInner extends ProxyResource {
     @JsonProperty(value = "sku", access = JsonProperty.Access.WRITE_ONLY)
     private Sku sku;
 
+    /** Creates an instance of BlobServicePropertiesInner class. */
+    public BlobServicePropertiesInner() {
+    }
+
     /**
      * Get the innerBlobServiceProperties property: The properties of a storage account’s Blob service.
      *

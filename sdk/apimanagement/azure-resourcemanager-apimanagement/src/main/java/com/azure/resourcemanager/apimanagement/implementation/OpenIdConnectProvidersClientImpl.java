@@ -69,11 +69,10 @@ public final class OpenIdConnectProvidersClientImpl implements OpenIdConnectProv
      */
     @Host("{$host}")
     @ServiceInterface(name = "ApiManagementClientO")
-    private interface OpenIdConnectProvidersService {
+    public interface OpenIdConnectProvidersService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement"
-                + "/service/{serviceName}/openidConnectProviders")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/openidConnectProviders")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<OpenIdConnectProviderCollection>> listByService(
@@ -90,8 +89,7 @@ public final class OpenIdConnectProvidersClientImpl implements OpenIdConnectProv
 
         @Headers({"Content-Type: application/json"})
         @Head(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement"
-                + "/service/{serviceName}/openidConnectProviders/{opid}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/openidConnectProviders/{opid}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<OpenIdConnectProvidersGetEntityTagResponse> getEntityTag(
@@ -106,8 +104,7 @@ public final class OpenIdConnectProvidersClientImpl implements OpenIdConnectProv
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement"
-                + "/service/{serviceName}/openidConnectProviders/{opid}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/openidConnectProviders/{opid}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<OpenIdConnectProvidersGetResponse> get(
@@ -122,8 +119,7 @@ public final class OpenIdConnectProvidersClientImpl implements OpenIdConnectProv
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement"
-                + "/service/{serviceName}/openidConnectProviders/{opid}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/openidConnectProviders/{opid}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<OpenIdConnectProvidersCreateOrUpdateResponse> createOrUpdate(
@@ -140,8 +136,7 @@ public final class OpenIdConnectProvidersClientImpl implements OpenIdConnectProv
 
         @Headers({"Content-Type: application/json"})
         @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement"
-                + "/service/{serviceName}/openidConnectProviders/{opid}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/openidConnectProviders/{opid}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<OpenIdConnectProvidersUpdateResponse> update(
@@ -158,8 +153,7 @@ public final class OpenIdConnectProvidersClientImpl implements OpenIdConnectProv
 
         @Headers({"Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement"
-                + "/service/{serviceName}/openidConnectProviders/{opid}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/openidConnectProviders/{opid}")
         @ExpectedResponses({200, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> delete(
@@ -175,8 +169,7 @@ public final class OpenIdConnectProvidersClientImpl implements OpenIdConnectProv
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement"
-                + "/service/{serviceName}/openidConnectProviders/{opid}/listSecrets")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/openidConnectProviders/{opid}/listSecrets")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<OpenIdConnectProvidersListSecretsResponse> listSecrets(
@@ -203,7 +196,7 @@ public final class OpenIdConnectProvidersClientImpl implements OpenIdConnectProv
     /**
      * Lists of all the OpenId Connect Providers.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param filter | Field | Usage | Supported operators | Supported functions
      *     |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| name | filter | ge, le, eq,
@@ -270,7 +263,7 @@ public final class OpenIdConnectProvidersClientImpl implements OpenIdConnectProv
     /**
      * Lists of all the OpenId Connect Providers.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param filter | Field | Usage | Supported operators | Supported functions
      *     |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| name | filter | ge, le, eq,
@@ -335,7 +328,7 @@ public final class OpenIdConnectProvidersClientImpl implements OpenIdConnectProv
     /**
      * Lists of all the OpenId Connect Providers.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param filter | Field | Usage | Supported operators | Supported functions
      *     |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| name | filter | ge, le, eq,
@@ -359,7 +352,7 @@ public final class OpenIdConnectProvidersClientImpl implements OpenIdConnectProv
     /**
      * Lists of all the OpenId Connect Providers.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -380,7 +373,7 @@ public final class OpenIdConnectProvidersClientImpl implements OpenIdConnectProv
     /**
      * Lists of all the OpenId Connect Providers.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param filter | Field | Usage | Supported operators | Supported functions
      *     |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| name | filter | ge, le, eq,
@@ -405,7 +398,7 @@ public final class OpenIdConnectProvidersClientImpl implements OpenIdConnectProv
     /**
      * Lists of all the OpenId Connect Providers.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -424,7 +417,7 @@ public final class OpenIdConnectProvidersClientImpl implements OpenIdConnectProv
     /**
      * Lists of all the OpenId Connect Providers.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param filter | Field | Usage | Supported operators | Supported functions
      *     |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| name | filter | ge, le, eq,
@@ -447,7 +440,7 @@ public final class OpenIdConnectProvidersClientImpl implements OpenIdConnectProv
     /**
      * Gets the entity state (Etag) version of the openIdConnectProvider specified by its identifier.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param opid Identifier of the OpenID Connect Provider.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -501,7 +494,7 @@ public final class OpenIdConnectProvidersClientImpl implements OpenIdConnectProv
     /**
      * Gets the entity state (Etag) version of the openIdConnectProvider specified by its identifier.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param opid Identifier of the OpenID Connect Provider.
      * @param context The context to associate with this operation.
@@ -553,7 +546,7 @@ public final class OpenIdConnectProvidersClientImpl implements OpenIdConnectProv
     /**
      * Gets the entity state (Etag) version of the openIdConnectProvider specified by its identifier.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param opid Identifier of the OpenID Connect Provider.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -564,29 +557,13 @@ public final class OpenIdConnectProvidersClientImpl implements OpenIdConnectProv
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> getEntityTagAsync(String resourceGroupName, String serviceName, String opid) {
-        return getEntityTagWithResponseAsync(resourceGroupName, serviceName, opid)
-            .flatMap((OpenIdConnectProvidersGetEntityTagResponse res) -> Mono.empty());
+        return getEntityTagWithResponseAsync(resourceGroupName, serviceName, opid).flatMap(ignored -> Mono.empty());
     }
 
     /**
      * Gets the entity state (Etag) version of the openIdConnectProvider specified by its identifier.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param serviceName The name of the API Management service.
-     * @param opid Identifier of the OpenID Connect Provider.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void getEntityTag(String resourceGroupName, String serviceName, String opid) {
-        getEntityTagAsync(resourceGroupName, serviceName, opid).block();
-    }
-
-    /**
-     * Gets the entity state (Etag) version of the openIdConnectProvider specified by its identifier.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param opid Identifier of the OpenID Connect Provider.
      * @param context The context to associate with this operation.
@@ -602,9 +579,24 @@ public final class OpenIdConnectProvidersClientImpl implements OpenIdConnectProv
     }
 
     /**
+     * Gets the entity state (Etag) version of the openIdConnectProvider specified by its identifier.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serviceName The name of the API Management service.
+     * @param opid Identifier of the OpenID Connect Provider.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void getEntityTag(String resourceGroupName, String serviceName, String opid) {
+        getEntityTagWithResponse(resourceGroupName, serviceName, opid, Context.NONE);
+    }
+
+    /**
      * Gets specific OpenID Connect Provider without secrets.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param opid Identifier of the OpenID Connect Provider.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -657,7 +649,7 @@ public final class OpenIdConnectProvidersClientImpl implements OpenIdConnectProv
     /**
      * Gets specific OpenID Connect Provider without secrets.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param opid Identifier of the OpenID Connect Provider.
      * @param context The context to associate with this operation.
@@ -708,7 +700,7 @@ public final class OpenIdConnectProvidersClientImpl implements OpenIdConnectProv
     /**
      * Gets specific OpenID Connect Provider without secrets.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param opid Identifier of the OpenID Connect Provider.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -720,36 +712,13 @@ public final class OpenIdConnectProvidersClientImpl implements OpenIdConnectProv
     private Mono<OpenidConnectProviderContractInner> getAsync(
         String resourceGroupName, String serviceName, String opid) {
         return getWithResponseAsync(resourceGroupName, serviceName, opid)
-            .flatMap(
-                (OpenIdConnectProvidersGetResponse res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Gets specific OpenID Connect Provider without secrets.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param serviceName The name of the API Management service.
-     * @param opid Identifier of the OpenID Connect Provider.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specific OpenID Connect Provider without secrets.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public OpenidConnectProviderContractInner get(String resourceGroupName, String serviceName, String opid) {
-        return getAsync(resourceGroupName, serviceName, opid).block();
-    }
-
-    /**
-     * Gets specific OpenID Connect Provider without secrets.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param opid Identifier of the OpenID Connect Provider.
      * @param context The context to associate with this operation.
@@ -765,9 +734,25 @@ public final class OpenIdConnectProvidersClientImpl implements OpenIdConnectProv
     }
 
     /**
+     * Gets specific OpenID Connect Provider without secrets.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serviceName The name of the API Management service.
+     * @param opid Identifier of the OpenID Connect Provider.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return specific OpenID Connect Provider without secrets.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public OpenidConnectProviderContractInner get(String resourceGroupName, String serviceName, String opid) {
+        return getWithResponse(resourceGroupName, serviceName, opid, Context.NONE).getValue();
+    }
+
+    /**
      * Creates or updates the OpenID Connect Provider.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param opid Identifier of the OpenID Connect Provider.
      * @param parameters Create parameters.
@@ -833,7 +818,7 @@ public final class OpenIdConnectProvidersClientImpl implements OpenIdConnectProv
     /**
      * Creates or updates the OpenID Connect Provider.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param opid Identifier of the OpenID Connect Provider.
      * @param parameters Create parameters.
@@ -898,38 +883,7 @@ public final class OpenIdConnectProvidersClientImpl implements OpenIdConnectProv
     /**
      * Creates or updates the OpenID Connect Provider.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param serviceName The name of the API Management service.
-     * @param opid Identifier of the OpenID Connect Provider.
-     * @param parameters Create parameters.
-     * @param ifMatch ETag of the Entity. Not required when creating an entity, but required when updating an entity.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return openId Connect Provider details on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<OpenidConnectProviderContractInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String serviceName,
-        String opid,
-        OpenidConnectProviderContractInner parameters,
-        String ifMatch) {
-        return createOrUpdateWithResponseAsync(resourceGroupName, serviceName, opid, parameters, ifMatch)
-            .flatMap(
-                (OpenIdConnectProvidersCreateOrUpdateResponse res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Creates or updates the OpenID Connect Provider.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param opid Identifier of the OpenID Connect Provider.
      * @param parameters Create parameters.
@@ -943,39 +897,13 @@ public final class OpenIdConnectProvidersClientImpl implements OpenIdConnectProv
         String resourceGroupName, String serviceName, String opid, OpenidConnectProviderContractInner parameters) {
         final String ifMatch = null;
         return createOrUpdateWithResponseAsync(resourceGroupName, serviceName, opid, parameters, ifMatch)
-            .flatMap(
-                (OpenIdConnectProvidersCreateOrUpdateResponse res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Creates or updates the OpenID Connect Provider.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param serviceName The name of the API Management service.
-     * @param opid Identifier of the OpenID Connect Provider.
-     * @param parameters Create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return openId Connect Provider details.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public OpenidConnectProviderContractInner createOrUpdate(
-        String resourceGroupName, String serviceName, String opid, OpenidConnectProviderContractInner parameters) {
-        final String ifMatch = null;
-        return createOrUpdateAsync(resourceGroupName, serviceName, opid, parameters, ifMatch).block();
-    }
-
-    /**
-     * Creates or updates the OpenID Connect Provider.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param opid Identifier of the OpenID Connect Provider.
      * @param parameters Create parameters.
@@ -999,9 +927,29 @@ public final class OpenIdConnectProvidersClientImpl implements OpenIdConnectProv
     }
 
     /**
+     * Creates or updates the OpenID Connect Provider.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serviceName The name of the API Management service.
+     * @param opid Identifier of the OpenID Connect Provider.
+     * @param parameters Create parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return openId Connect Provider details.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public OpenidConnectProviderContractInner createOrUpdate(
+        String resourceGroupName, String serviceName, String opid, OpenidConnectProviderContractInner parameters) {
+        final String ifMatch = null;
+        return createOrUpdateWithResponse(resourceGroupName, serviceName, opid, parameters, ifMatch, Context.NONE)
+            .getValue();
+    }
+
+    /**
      * Updates the specific OpenID Connect Provider.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param opid Identifier of the OpenID Connect Provider.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
@@ -1071,7 +1019,7 @@ public final class OpenIdConnectProvidersClientImpl implements OpenIdConnectProv
     /**
      * Updates the specific OpenID Connect Provider.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param opid Identifier of the OpenID Connect Provider.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
@@ -1140,7 +1088,7 @@ public final class OpenIdConnectProvidersClientImpl implements OpenIdConnectProv
     /**
      * Updates the specific OpenID Connect Provider.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param opid Identifier of the OpenID Connect Provider.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
@@ -1159,44 +1107,13 @@ public final class OpenIdConnectProvidersClientImpl implements OpenIdConnectProv
         String ifMatch,
         OpenidConnectProviderUpdateContract parameters) {
         return updateWithResponseAsync(resourceGroupName, serviceName, opid, ifMatch, parameters)
-            .flatMap(
-                (OpenIdConnectProvidersUpdateResponse res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Updates the specific OpenID Connect Provider.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param serviceName The name of the API Management service.
-     * @param opid Identifier of the OpenID Connect Provider.
-     * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
-     * @param parameters Update parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return openId Connect Provider details.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public OpenidConnectProviderContractInner update(
-        String resourceGroupName,
-        String serviceName,
-        String opid,
-        String ifMatch,
-        OpenidConnectProviderUpdateContract parameters) {
-        return updateAsync(resourceGroupName, serviceName, opid, ifMatch, parameters).block();
-    }
-
-    /**
-     * Updates the specific OpenID Connect Provider.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param opid Identifier of the OpenID Connect Provider.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
@@ -1220,9 +1137,33 @@ public final class OpenIdConnectProvidersClientImpl implements OpenIdConnectProv
     }
 
     /**
+     * Updates the specific OpenID Connect Provider.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serviceName The name of the API Management service.
+     * @param opid Identifier of the OpenID Connect Provider.
+     * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
+     *     request or it should be * for unconditional update.
+     * @param parameters Update parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return openId Connect Provider details.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public OpenidConnectProviderContractInner update(
+        String resourceGroupName,
+        String serviceName,
+        String opid,
+        String ifMatch,
+        OpenidConnectProviderUpdateContract parameters) {
+        return updateWithResponse(resourceGroupName, serviceName, opid, ifMatch, parameters, Context.NONE).getValue();
+    }
+
+    /**
      * Deletes specific OpenID Connect Provider of the API Management service instance.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param opid Identifier of the OpenID Connect Provider.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
@@ -1281,7 +1222,7 @@ public final class OpenIdConnectProvidersClientImpl implements OpenIdConnectProv
     /**
      * Deletes specific OpenID Connect Provider of the API Management service instance.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param opid Identifier of the OpenID Connect Provider.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
@@ -1338,7 +1279,7 @@ public final class OpenIdConnectProvidersClientImpl implements OpenIdConnectProv
     /**
      * Deletes specific OpenID Connect Provider of the API Management service instance.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param opid Identifier of the OpenID Connect Provider.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
@@ -1350,31 +1291,13 @@ public final class OpenIdConnectProvidersClientImpl implements OpenIdConnectProv
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String serviceName, String opid, String ifMatch) {
-        return deleteWithResponseAsync(resourceGroupName, serviceName, opid, ifMatch)
-            .flatMap((Response<Void> res) -> Mono.empty());
+        return deleteWithResponseAsync(resourceGroupName, serviceName, opid, ifMatch).flatMap(ignored -> Mono.empty());
     }
 
     /**
      * Deletes specific OpenID Connect Provider of the API Management service instance.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param serviceName The name of the API Management service.
-     * @param opid Identifier of the OpenID Connect Provider.
-     * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String serviceName, String opid, String ifMatch) {
-        deleteAsync(resourceGroupName, serviceName, opid, ifMatch).block();
-    }
-
-    /**
-     * Deletes specific OpenID Connect Provider of the API Management service instance.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param opid Identifier of the OpenID Connect Provider.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
@@ -1392,9 +1315,26 @@ public final class OpenIdConnectProvidersClientImpl implements OpenIdConnectProv
     }
 
     /**
+     * Deletes specific OpenID Connect Provider of the API Management service instance.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serviceName The name of the API Management service.
+     * @param opid Identifier of the OpenID Connect Provider.
+     * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
+     *     request or it should be * for unconditional update.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void delete(String resourceGroupName, String serviceName, String opid, String ifMatch) {
+        deleteWithResponse(resourceGroupName, serviceName, opid, ifMatch, Context.NONE);
+    }
+
+    /**
      * Gets the client secret details of the OpenID Connect Provider.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param opid Identifier of the OpenID Connect Provider.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1447,7 +1387,7 @@ public final class OpenIdConnectProvidersClientImpl implements OpenIdConnectProv
     /**
      * Gets the client secret details of the OpenID Connect Provider.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param opid Identifier of the OpenID Connect Provider.
      * @param context The context to associate with this operation.
@@ -1498,7 +1438,7 @@ public final class OpenIdConnectProvidersClientImpl implements OpenIdConnectProv
     /**
      * Gets the client secret details of the OpenID Connect Provider.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param opid Identifier of the OpenID Connect Provider.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1510,36 +1450,13 @@ public final class OpenIdConnectProvidersClientImpl implements OpenIdConnectProv
     private Mono<ClientSecretContractInner> listSecretsAsync(
         String resourceGroupName, String serviceName, String opid) {
         return listSecretsWithResponseAsync(resourceGroupName, serviceName, opid)
-            .flatMap(
-                (OpenIdConnectProvidersListSecretsResponse res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Gets the client secret details of the OpenID Connect Provider.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param serviceName The name of the API Management service.
-     * @param opid Identifier of the OpenID Connect Provider.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the client secret details of the OpenID Connect Provider.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ClientSecretContractInner listSecrets(String resourceGroupName, String serviceName, String opid) {
-        return listSecretsAsync(resourceGroupName, serviceName, opid).block();
-    }
-
-    /**
-     * Gets the client secret details of the OpenID Connect Provider.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param opid Identifier of the OpenID Connect Provider.
      * @param context The context to associate with this operation.
@@ -1555,9 +1472,26 @@ public final class OpenIdConnectProvidersClientImpl implements OpenIdConnectProv
     }
 
     /**
+     * Gets the client secret details of the OpenID Connect Provider.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serviceName The name of the API Management service.
+     * @param opid Identifier of the OpenID Connect Provider.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the client secret details of the OpenID Connect Provider.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ClientSecretContractInner listSecrets(String resourceGroupName, String serviceName, String opid) {
+        return listSecretsWithResponse(resourceGroupName, serviceName, opid, Context.NONE).getValue();
+    }
+
+    /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1593,7 +1527,8 @@ public final class OpenIdConnectProvidersClientImpl implements OpenIdConnectProv
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

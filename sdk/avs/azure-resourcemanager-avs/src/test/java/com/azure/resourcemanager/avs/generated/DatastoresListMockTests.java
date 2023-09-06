@@ -33,7 +33,7 @@ public final class DatastoresListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"Failed\",\"netAppVolume\":{\"id\":\"zuruocbgo\"},\"diskPoolVolume\":{\"targetId\":\"bteoybf\",\"lunName\":\"jxakv\",\"mountOption\":\"ATTACH\",\"path\":\"lordilmywwtkgkxn\"},\"status\":\"Inaccessible\"},\"id\":\"abgyvudt\",\"name\":\"uewbc\",\"type\":\"hxuuwhcjyxccybvp\"}]}";
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Updating\",\"netAppVolume\":{\"id\":\"aqh\"},\"diskPoolVolume\":{\"targetId\":\"eufuqyrxpdlcgql\",\"lunName\":\"ismjqfrddgamqu\",\"mountOption\":\"MOUNT\",\"path\":\"rsjuivfcdisyir\"},\"status\":\"DeadOrError\"},\"id\":\"hcz\",\"name\":\"xrxzbujrtr\",\"type\":\"qvwre\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,11 +62,11 @@ public final class DatastoresListMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<Datastore> response =
-            manager.datastores().list("kqqfk", "vscx", "dmligovibrxk", com.azure.core.util.Context.NONE);
+            manager.datastores().list("igpibud", "wyxebeybpmzz", "rtffyaqitmh", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("zuruocbgo", response.iterator().next().netAppVolume().id());
-        Assertions.assertEquals("bteoybf", response.iterator().next().diskPoolVolume().targetId());
-        Assertions.assertEquals("jxakv", response.iterator().next().diskPoolVolume().lunName());
-        Assertions.assertEquals(MountOptionEnum.ATTACH, response.iterator().next().diskPoolVolume().mountOption());
+        Assertions.assertEquals("aqh", response.iterator().next().netAppVolume().id());
+        Assertions.assertEquals("eufuqyrxpdlcgql", response.iterator().next().diskPoolVolume().targetId());
+        Assertions.assertEquals("ismjqfrddgamqu", response.iterator().next().diskPoolVolume().lunName());
+        Assertions.assertEquals(MountOptionEnum.MOUNT, response.iterator().next().diskPoolVolume().mountOption());
     }
 }

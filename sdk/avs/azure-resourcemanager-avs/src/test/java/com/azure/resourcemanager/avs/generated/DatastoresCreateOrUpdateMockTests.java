@@ -34,7 +34,7 @@ public final class DatastoresCreateOrUpdateMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"provisioningState\":\"Succeeded\",\"netAppVolume\":{\"id\":\"jlyjtlvofq\"},\"diskPoolVolume\":{\"targetId\":\"vfcibyfmowux\",\"lunName\":\"kjpvdwxf\",\"mountOption\":\"ATTACH\",\"path\":\"vwzjbhyz\"},\"status\":\"Inaccessible\"},\"id\":\"rkambt\",\"name\":\"negvmnvuqe\",\"type\":\"vldspa\"}";
+            "{\"properties\":{\"provisioningState\":\"Succeeded\",\"netAppVolume\":{\"id\":\"xmysuxswqrntv\"},\"diskPoolVolume\":{\"targetId\":\"ijpstte\",\"lunName\":\"oqq\",\"mountOption\":\"MOUNT\",\"path\":\"yufmhruncuwmq\"},\"status\":\"DeadOrError\"},\"id\":\"cdqzhlctddu\",\"name\":\"qn\",\"type\":\"yfp\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -65,19 +65,19 @@ public final class DatastoresCreateOrUpdateMockTests {
         Datastore response =
             manager
                 .datastores()
-                .define("l")
-                .withExistingCluster("g", "ddrihpf", "oqcaaewdaomdj")
-                .withNetAppVolume(new NetAppVolume().withId("zb"))
+                .define("bbelawumuaslzk")
+                .withExistingCluster("boldforobwj", "vizbfhfo", "vacqpbtuodxesz")
+                .withNetAppVolume(new NetAppVolume().withId("ycqucwyh"))
                 .withDiskPoolVolume(
                     new DiskPoolVolume()
-                        .withTargetId("sgeivsiy")
-                        .withLunName("zkdnc")
+                        .withTargetId("nomdrkywuhpsv")
+                        .withLunName("uurutlwexxwlalni")
                         .withMountOption(MountOptionEnum.ATTACH))
                 .create();
 
-        Assertions.assertEquals("jlyjtlvofq", response.netAppVolume().id());
-        Assertions.assertEquals("vfcibyfmowux", response.diskPoolVolume().targetId());
-        Assertions.assertEquals("kjpvdwxf", response.diskPoolVolume().lunName());
-        Assertions.assertEquals(MountOptionEnum.ATTACH, response.diskPoolVolume().mountOption());
+        Assertions.assertEquals("xmysuxswqrntv", response.netAppVolume().id());
+        Assertions.assertEquals("ijpstte", response.diskPoolVolume().targetId());
+        Assertions.assertEquals("oqq", response.diskPoolVolume().lunName());
+        Assertions.assertEquals(MountOptionEnum.MOUNT, response.diskPoolVolume().mountOption());
     }
 }

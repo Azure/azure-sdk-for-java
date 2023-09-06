@@ -56,11 +56,10 @@ public final class ApiManagementServiceSkusClientImpl implements ApiManagementSe
      */
     @Host("{$host}")
     @ServiceInterface(name = "ApiManagementClientA")
-    private interface ApiManagementServiceSkusService {
+    public interface ApiManagementServiceSkusService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement"
-                + "/service/{serviceName}/skus")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/skus")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ResourceSkuResults>> listAvailableServiceSkus(
@@ -84,9 +83,11 @@ public final class ApiManagementServiceSkusClientImpl implements ApiManagementSe
     }
 
     /**
-     * Gets all available SKU for a given API Management service.
+     * Gets available SKUs for API Management service
      *
-     * @param resourceGroupName The name of the resource group.
+     * <p>Gets all available SKU for a given API Management service.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -142,9 +143,11 @@ public final class ApiManagementServiceSkusClientImpl implements ApiManagementSe
     }
 
     /**
-     * Gets all available SKU for a given API Management service.
+     * Gets available SKUs for API Management service
      *
-     * @param resourceGroupName The name of the resource group.
+     * <p>Gets all available SKU for a given API Management service.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -198,9 +201,11 @@ public final class ApiManagementServiceSkusClientImpl implements ApiManagementSe
     }
 
     /**
-     * Gets all available SKU for a given API Management service.
+     * Gets available SKUs for API Management service
      *
-     * @param resourceGroupName The name of the resource group.
+     * <p>Gets all available SKU for a given API Management service.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -216,9 +221,11 @@ public final class ApiManagementServiceSkusClientImpl implements ApiManagementSe
     }
 
     /**
-     * Gets all available SKU for a given API Management service.
+     * Gets available SKUs for API Management service
      *
-     * @param resourceGroupName The name of the resource group.
+     * <p>Gets all available SKU for a given API Management service.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -235,9 +242,11 @@ public final class ApiManagementServiceSkusClientImpl implements ApiManagementSe
     }
 
     /**
-     * Gets all available SKU for a given API Management service.
+     * Gets available SKUs for API Management service
      *
-     * @param resourceGroupName The name of the resource group.
+     * <p>Gets all available SKU for a given API Management service.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -251,9 +260,11 @@ public final class ApiManagementServiceSkusClientImpl implements ApiManagementSe
     }
 
     /**
-     * Gets all available SKU for a given API Management service.
+     * Gets available SKUs for API Management service
      *
-     * @param resourceGroupName The name of the resource group.
+     * <p>Gets all available SKU for a given API Management service.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -270,7 +281,8 @@ public final class ApiManagementServiceSkusClientImpl implements ApiManagementSe
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -307,7 +319,8 @@ public final class ApiManagementServiceSkusClientImpl implements ApiManagementSe
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

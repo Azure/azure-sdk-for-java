@@ -19,12 +19,6 @@ public final class Provider extends ExpandableStringEnum<Provider> {
     /** Static value SCVMM for Provider. */
     public static final Provider SCVMM = fromString("SCVMM");
 
-    /** Static value KubeVirt for Provider. */
-    public static final Provider KUBE_VIRT = fromString("KubeVirt");
-
-    /** Static value OpenStack for Provider. */
-    public static final Provider OPEN_STACK = fromString("OpenStack");
-
     /**
      * Creates a new instance of Provider value.
      *

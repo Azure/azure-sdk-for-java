@@ -4,7 +4,7 @@
 package com.azure.ai.formrecognizer.documentanalysis;
 
 import com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationClient;
-import com.azure.ai.formrecognizer.documentanalysis.administration.models.AzureBlobContentSource;
+import com.azure.ai.formrecognizer.documentanalysis.administration.models.BlobContentSource;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.ClassifierDocumentTypeDetails;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentClassifierDetails;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentModelBuildMode;
@@ -58,7 +58,6 @@ import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.INVOICE_NO_
 import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.INVOICE_PDF;
 import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.IRS_1040;
 import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.LICENSE_PNG;
-import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.MODEL_ID_IS_REQUIRED_EXCEPTION_MESSAGE;
 import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.MULTIPAGE_BUSINESS_CARD_PDF;
 import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.MULTIPAGE_INVOICE_PDF;
 import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.MULTIPAGE_RECEIPT_PDF;
@@ -128,18 +127,6 @@ public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
             syncPoller.waitForCompletion();
             validateJpegReceiptData(syncPoller.getFinalResult());
         }, RECEIPT_CONTOSO_JPG);
-    }
-
-    /**
-     * Verifies an exception thrown for a document using null data value.
-     */
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.formrecognizer.documentanalysis.TestUtils#getTestParameters")
-    public void analyzeReceiptDataNullData(HttpClient httpClient,
-                                           DocumentAnalysisServiceVersion serviceVersion) {
-        client = getDocumentAnalysisClient(httpClient, serviceVersion);
-        Assertions.assertThrows(NullPointerException.class,
-            () -> client.beginAnalyzeDocument(null, null));
     }
 
     /**
@@ -328,19 +315,6 @@ public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
             syncPoller.waitForCompletion();
             validateContentData(syncPoller.getFinalResult());
         }, CONTENT_FORM_JPG);
-    }
-
-    /**
-     * Verifies an exception thrown for a document using null data value.
-     */
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.formrecognizer.documentanalysis.TestUtils#getTestParameters")
-    public void analyzeContentResultWithNullData(HttpClient httpClient,
-                                                 DocumentAnalysisServiceVersion serviceVersion) {
-        client = getDocumentAnalysisClient(httpClient, serviceVersion);
-        Assertions.assertThrows(NullPointerException.class,
-            () -> client.beginAnalyzeDocument("prebuilt-layout", null)
-                .setPollInterval(durationTestMode));
     }
 
     /**
@@ -631,51 +605,6 @@ public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
     }
 
     /**
-     * Verifies an exception thrown for a document using null form data value.
-     */
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.formrecognizer.documentanalysis.TestUtils#getTestParameters")
-    public void analyzeCustomDocumentWithNullData(HttpClient httpClient,
-                                                  DocumentAnalysisServiceVersion serviceVersion) {
-
-        client = getDocumentAnalysisClient(httpClient, serviceVersion);
-        DocumentModelAdministrationClient adminClient = getDocumentModelAdminClient(httpClient, serviceVersion);
-        dataRunner((data, dataLength) ->
-            buildModelRunner((trainingFilesUrl) -> {
-                SyncPoller<OperationResult, DocumentModelDetails> buildModelPoller =
-                    adminClient
-                        .beginBuildDocumentModel(trainingFilesUrl, DocumentModelBuildMode.TEMPLATE)
-                        .setPollInterval(durationTestMode);
-                buildModelPoller.waitForCompletion();
-
-                String modelId = buildModelPoller.getFinalResult().getModelId();
-
-                Assertions.assertThrows(RuntimeException.class,
-                    () -> client.beginAnalyzeDocument(modelId, null)
-                        .setPollInterval(durationTestMode));
-                adminClient.deleteDocumentModel(modelId);
-
-            }), INVOICE_6_PDF);
-    }
-
-    /**
-     * Verifies an exception thrown for a document using null model id.
-     */
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.formrecognizer.documentanalysis.TestUtils#getTestParameters")
-    public void analyzeCustomDocumentWithNullModelId(HttpClient httpClient,
-                                                     DocumentAnalysisServiceVersion serviceVersion) {
-        client = getDocumentAnalysisClient(httpClient, serviceVersion);
-        dataRunner((data, dataLength) -> {
-            Exception ex = Assertions.assertThrows(RuntimeException.class, () -> client.beginAnalyzeDocument(
-                    null,
-                    BinaryData.fromStream(data, dataLength))
-                .setPollInterval(durationTestMode));
-            Assertions.assertEquals(MODEL_ID_IS_REQUIRED_EXCEPTION_MESSAGE, ex.getMessage());
-        }, INVOICE_6_PDF);
-    }
-
-    /**
      * Verifies content type will be auto-detected when using custom form API with input stream data overload.
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -961,18 +890,6 @@ public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
             syncPoller.waitForCompletion();
             validateBusinessCardData(syncPoller.getFinalResult());
         }, BUSINESS_CARD_JPG);
-    }
-
-    /**
-     * Verifies an exception thrown for a document using null data value.
-     */
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.formrecognizer.documentanalysis.TestUtils#getTestParameters")
-    public void analyzeBusinessCardDataNullData(HttpClient httpClient,
-                                                DocumentAnalysisServiceVersion serviceVersion) {
-        client = getDocumentAnalysisClient(httpClient, serviceVersion);
-        Assertions.assertThrows(NullPointerException.class,
-            () -> client.beginAnalyzeDocument("prebuilt-businessCard", null));
     }
 
     /**
@@ -1363,18 +1280,6 @@ public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
     }
 
     /**
-     * Verifies an exception thrown for a document using null data value.
-     */
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.formrecognizer.documentanalysis.TestUtils#getTestParameters")
-    public void analyzeIDDocumentDataNullData(HttpClient httpClient,
-                                              DocumentAnalysisServiceVersion serviceVersion) {
-        client = getDocumentAnalysisClient(httpClient, serviceVersion);
-        Assertions.assertThrows(NullPointerException.class,
-            () -> client.beginAnalyzeDocument("prebuilt-idDocument", null));
-    }
-
-    /**
      * Verifies content type will be auto-detected when using custom form API with input stream data overload.
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -1584,19 +1489,19 @@ public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
             Map<String, ClassifierDocumentTypeDetails> documentTypeDetailsMap
                 = new HashMap<String, ClassifierDocumentTypeDetails>();
             documentTypeDetailsMap.put("IRS-1040-A",
-                new ClassifierDocumentTypeDetails(new AzureBlobContentSource(trainingFilesUrl)
+                new ClassifierDocumentTypeDetails(new BlobContentSource(trainingFilesUrl)
                     .setPrefix("IRS-1040-A/train")));
             documentTypeDetailsMap.put("IRS-1040-B",
-                new ClassifierDocumentTypeDetails(new AzureBlobContentSource(trainingFilesUrl)
+                new ClassifierDocumentTypeDetails(new BlobContentSource(trainingFilesUrl)
                     .setPrefix("IRS-1040-B/train")));
             documentTypeDetailsMap.put("IRS-1040-C",
-                new ClassifierDocumentTypeDetails(new AzureBlobContentSource(trainingFilesUrl)
+                new ClassifierDocumentTypeDetails(new BlobContentSource(trainingFilesUrl)
                     .setPrefix("IRS-1040-C/train")));
             documentTypeDetailsMap.put("IRS-1040-D",
-                new ClassifierDocumentTypeDetails(new AzureBlobContentSource(trainingFilesUrl)
+                new ClassifierDocumentTypeDetails(new BlobContentSource(trainingFilesUrl)
                     .setPrefix("IRS-1040-D/train")));
             documentTypeDetailsMap.put("IRS-1040-E",
-                new ClassifierDocumentTypeDetails(new AzureBlobContentSource(trainingFilesUrl)
+                new ClassifierDocumentTypeDetails(new BlobContentSource(trainingFilesUrl)
                     .setPrefix("IRS-1040-E/train")));
             SyncPoller<OperationResult, DocumentClassifierDetails> buildModelPoller =
                 adminClient.beginBuildDocumentClassifier(documentTypeDetailsMap)
@@ -1634,19 +1539,19 @@ public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
             Map<String, ClassifierDocumentTypeDetails> documentTypeDetailsMap
                 = new HashMap<String, ClassifierDocumentTypeDetails>();
             documentTypeDetailsMap.put("IRS-1040-A",
-                new ClassifierDocumentTypeDetails(new AzureBlobContentSource(trainingFilesUrl)
+                new ClassifierDocumentTypeDetails(new BlobContentSource(trainingFilesUrl)
                     .setPrefix("IRS-1040-A/train")));
             documentTypeDetailsMap.put("IRS-1040-B",
-                new ClassifierDocumentTypeDetails(new AzureBlobContentSource(trainingFilesUrl)
+                new ClassifierDocumentTypeDetails(new BlobContentSource(trainingFilesUrl)
                     .setPrefix("IRS-1040-B/train")));
             documentTypeDetailsMap.put("IRS-1040-C",
-                new ClassifierDocumentTypeDetails(new AzureBlobContentSource(trainingFilesUrl)
+                new ClassifierDocumentTypeDetails(new BlobContentSource(trainingFilesUrl)
                     .setPrefix("IRS-1040-C/train")));
             documentTypeDetailsMap.put("IRS-1040-D",
-                new ClassifierDocumentTypeDetails(new AzureBlobContentSource(trainingFilesUrl)
+                new ClassifierDocumentTypeDetails(new BlobContentSource(trainingFilesUrl)
                     .setPrefix("IRS-1040-D/train")));
             documentTypeDetailsMap.put("IRS-1040-E",
-                new ClassifierDocumentTypeDetails(new AzureBlobContentSource(trainingFilesUrl)
+                new ClassifierDocumentTypeDetails(new BlobContentSource(trainingFilesUrl)
                     .setPrefix("IRS-1040-E/train")));
             SyncPoller<OperationResult, DocumentClassifierDetails> buildModelPoller =
                 adminClient.beginBuildDocumentClassifier(documentTypeDetailsMap)

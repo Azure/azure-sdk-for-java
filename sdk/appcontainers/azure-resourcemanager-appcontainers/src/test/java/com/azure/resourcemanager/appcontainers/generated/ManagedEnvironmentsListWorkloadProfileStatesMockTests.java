@@ -32,7 +32,7 @@ public final class ManagedEnvironmentsListWorkloadProfileStatesMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"minimumCount\":620018681,\"maximumCount\":622507993,\"currentCount\":465336840},\"id\":\"xaomzisglrrc\",\"name\":\"ezkhhltnjadhqo\",\"type\":\"wjqo\"}]}";
+            "{\"value\":[{\"properties\":{\"minimumCount\":1521065056,\"maximumCount\":1869442572,\"currentCount\":1373287799},\"id\":\"ycnlbvgjcodk\",\"name\":\"gjiiytssiki\",\"type\":\"bcufqbvntn\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -63,10 +63,10 @@ public final class ManagedEnvironmentsListWorkloadProfileStatesMockTests {
         PagedIterable<WorkloadProfileStates> response =
             manager
                 .managedEnvironments()
-                .listWorkloadProfileStates("wqagnepzwa", "lsbs", com.azure.core.util.Context.NONE);
+                .listWorkloadProfileStates("cgqtag", "rclsso", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(620018681, response.iterator().next().properties().minimumCount());
-        Assertions.assertEquals(622507993, response.iterator().next().properties().maximumCount());
-        Assertions.assertEquals(465336840, response.iterator().next().properties().currentCount());
+        Assertions.assertEquals(1521065056, response.iterator().next().properties().minimumCount());
+        Assertions.assertEquals(1869442572, response.iterator().next().properties().maximumCount());
+        Assertions.assertEquals(1373287799, response.iterator().next().properties().currentCount());
     }
 }

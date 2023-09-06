@@ -39,7 +39,6 @@ public class KubernetesEncryptionTests extends DiskEncryptionTestBase {
             .withNewResourceGroup(rgName)
             .withDefaultVersion()
             .withSystemAssignedManagedServiceIdentity()
-            .disableLocalAccounts()
             .withDiskEncryptionSet(diskEncryptionSet.id())
             .defineAgentPool(agentPoolName)
                 .withVirtualMachineSize(ContainerServiceVMSizeTypes.STANDARD_D2_V3)

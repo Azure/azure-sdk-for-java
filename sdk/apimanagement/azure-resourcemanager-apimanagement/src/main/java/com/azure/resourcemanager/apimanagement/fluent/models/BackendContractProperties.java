@@ -29,6 +29,10 @@ public final class BackendContractProperties extends BackendBaseParameters {
     @JsonProperty(value = "protocol", required = true)
     private BackendProtocol protocol;
 
+    /** Creates an instance of BackendContractProperties class. */
+    public BackendContractProperties() {
+    }
+
     /**
      * Get the url property: Runtime Url of the Backend.
      *

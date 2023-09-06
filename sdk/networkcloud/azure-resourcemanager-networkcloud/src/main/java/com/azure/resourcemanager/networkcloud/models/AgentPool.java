@@ -216,11 +216,13 @@ public interface AgentPool {
             DefinitionStages.WithVmSkuName,
             DefinitionStages.WithCreate {
     }
+
     /** The AgentPool definition stages. */
     interface DefinitionStages {
         /** The first stage of the AgentPool definition. */
         interface Blank extends WithLocation {
         }
+
         /** The stage of the AgentPool definition allowing to specify location. */
         interface WithLocation {
             /**
@@ -239,6 +241,7 @@ public interface AgentPool {
              */
             WithParentResource withRegion(String location);
         }
+
         /** The stage of the AgentPool definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
@@ -250,6 +253,7 @@ public interface AgentPool {
              */
             WithCount withExistingKubernetesCluster(String resourceGroupName, String kubernetesClusterName);
         }
+
         /** The stage of the AgentPool definition allowing to specify count. */
         interface WithCount {
             /**
@@ -260,6 +264,7 @@ public interface AgentPool {
              */
             WithMode withCount(long count);
         }
+
         /** The stage of the AgentPool definition allowing to specify mode. */
         interface WithMode {
             /**
@@ -276,6 +281,7 @@ public interface AgentPool {
              */
             WithVmSkuName withMode(AgentPoolMode mode);
         }
+
         /** The stage of the AgentPool definition allowing to specify vmSkuName. */
         interface WithVmSkuName {
             /**
@@ -287,6 +293,7 @@ public interface AgentPool {
              */
             WithCreate withVmSkuName(String vmSkuName);
         }
+
         /**
          * The stage of the AgentPool definition which contains all the minimum required properties for the resource to
          * be created, but also allows for any other optional properties to be specified.
@@ -316,6 +323,7 @@ public interface AgentPool {
              */
             AgentPool create(Context context);
         }
+
         /** The stage of the AgentPool definition allowing to specify tags. */
         interface WithTags {
             /**
@@ -326,6 +334,7 @@ public interface AgentPool {
              */
             WithCreate withTags(Map<String, String> tags);
         }
+
         /** The stage of the AgentPool definition allowing to specify extendedLocation. */
         interface WithExtendedLocation {
             /**
@@ -341,6 +350,7 @@ public interface AgentPool {
              */
             WithCreate withExtendedLocation(ExtendedLocation extendedLocation);
         }
+
         /** The stage of the AgentPool definition allowing to specify administratorConfiguration. */
         interface WithAdministratorConfiguration {
             /**
@@ -357,6 +367,7 @@ public interface AgentPool {
              */
             WithCreate withAdministratorConfiguration(AdministratorConfiguration administratorConfiguration);
         }
+
         /** The stage of the AgentPool definition allowing to specify agentOptions. */
         interface WithAgentOptions {
             /**
@@ -371,6 +382,7 @@ public interface AgentPool {
              */
             WithCreate withAgentOptions(AgentOptions agentOptions);
         }
+
         /** The stage of the AgentPool definition allowing to specify attachedNetworkConfiguration. */
         interface WithAttachedNetworkConfiguration {
             /**
@@ -388,6 +400,7 @@ public interface AgentPool {
              */
             WithCreate withAttachedNetworkConfiguration(AttachedNetworkConfiguration attachedNetworkConfiguration);
         }
+
         /** The stage of the AgentPool definition allowing to specify availabilityZones. */
         interface WithAvailabilityZones {
             /**
@@ -401,6 +414,7 @@ public interface AgentPool {
              */
             WithCreate withAvailabilityZones(List<String> availabilityZones);
         }
+
         /** The stage of the AgentPool definition allowing to specify labels. */
         interface WithLabels {
             /**
@@ -411,6 +425,7 @@ public interface AgentPool {
              */
             WithCreate withLabels(List<KubernetesLabel> labels);
         }
+
         /** The stage of the AgentPool definition allowing to specify taints. */
         interface WithTaints {
             /**
@@ -421,6 +436,7 @@ public interface AgentPool {
              */
             WithCreate withTaints(List<KubernetesLabel> taints);
         }
+
         /** The stage of the AgentPool definition allowing to specify upgradeSettings. */
         interface WithUpgradeSettings {
             /**
@@ -436,6 +452,7 @@ public interface AgentPool {
             WithCreate withUpgradeSettings(AgentPoolUpgradeSettings upgradeSettings);
         }
     }
+
     /**
      * Begins update for the AgentPool resource.
      *
@@ -460,6 +477,7 @@ public interface AgentPool {
          */
         AgentPool apply(Context context);
     }
+
     /** The AgentPool update stages. */
     interface UpdateStages {
         /** The stage of the AgentPool update allowing to specify tags. */
@@ -472,6 +490,7 @@ public interface AgentPool {
              */
             Update withTags(Map<String, String> tags);
         }
+
         /** The stage of the AgentPool update allowing to specify count. */
         interface WithCount {
             /**
@@ -482,6 +501,7 @@ public interface AgentPool {
              */
             Update withCount(Long count);
         }
+
         /** The stage of the AgentPool update allowing to specify upgradeSettings. */
         interface WithUpgradeSettings {
             /**
@@ -497,6 +517,7 @@ public interface AgentPool {
             Update withUpgradeSettings(AgentPoolUpgradeSettings upgradeSettings);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

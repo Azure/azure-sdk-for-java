@@ -59,6 +59,10 @@ public final class NamedValueContractImpl
         return this.innerModel().secret();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public NamedValueContractInner innerModel() {
         return this.innerObject;
     }
@@ -168,14 +172,14 @@ public final class NamedValueContractImpl
         return this;
     }
 
-    public NamedValueSecretContract listValue() {
-        return serviceManager.namedValues().listValue(resourceGroupName, serviceName, namedValueId);
-    }
-
     public Response<NamedValueSecretContract> listValueWithResponse(Context context) {
         return serviceManager
             .namedValues()
             .listValueWithResponse(resourceGroupName, serviceName, namedValueId, context);
+    }
+
+    public NamedValueSecretContract listValue() {
+        return serviceManager.namedValues().listValue(resourceGroupName, serviceName, namedValueId);
     }
 
     public NamedValueContract refreshSecret() {

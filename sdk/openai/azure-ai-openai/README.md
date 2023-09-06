@@ -40,7 +40,7 @@ If you want to see the full code for these snippets check out our [samples folde
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-ai-openai</artifactId>
-    <version>1.0.0-beta.2</version>
+    <version>1.0.0-beta.4</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -77,14 +77,14 @@ The SDK also supports operating against the public non-Azure OpenAI. The respons
 
 ```java readme-sample-createNonAzureOpenAISyncClientApiKey
 OpenAIClient client = new OpenAIClientBuilder()
-    .credential(new NonAzureOpenAIKeyCredential("{openai-secret-key}"))
+    .credential(new KeyCredential("{openai-secret-key}"))
     .buildClient();
 ```
 or 
 
 ```java readme-sample-createNonAzureOpenAIAsyncClientApiKey
 OpenAIAsyncClient client = new OpenAIClientBuilder()
-    .credential(new NonAzureOpenAIKeyCredential("{openai-secret-key}"))
+    .credential(new KeyCredential("{openai-secret-key}"))
     .buildAsyncClient();
 ```
 
@@ -100,7 +100,7 @@ Authentication with AAD requires some initial setup:
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.9.1</version>
+    <version>1.9.2</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -176,12 +176,13 @@ prompt.add("How to bake a cake?");
 IterableStream<Completions> completionsStream = client
     .getCompletionsStream("{deploymentOrModelId}", new CompletionsOptions(prompt));
 
-completionsStream.forEach(completions -> {
-    System.out.printf("Model ID=%s is created at %s.%n", completions.getId(), completions.getCreatedAt());
-    for (Choice choice : completions.getChoices()) {
-        System.out.printf("Index: %d, Text: %s.%n", choice.getIndex(), choice.getText());
-    }
-});
+completionsStream
+    .stream()
+    // Remove .skip(1) when using Non-Azure OpenAI API
+    // Note: the first chat completions can be ignored when using Azure OpenAI service which is a known service bug.
+    // TODO: remove .skip(1) when service fix the issue.
+    .skip(1)
+    .forEach(completions -> System.out.print(completions.getChoices().get(0).getText()));
 ```
 
 For a complete sample example, see sample [Streaming Text Completions][sample_get_completions_streaming].
@@ -208,7 +209,9 @@ for (ChatChoice choice : chatCompletions.getChoices()) {
 ```
 For a complete sample example, see sample [Chat Completions][sample_get_chat_completions].
 
-For `function call` sample, see sample [function call][sample_chat_completion_function_call].
+For `function call` sample, see [function call][sample_chat_completion_function_call].
+
+For `Bring Your Own Data` sample, see [Bring Your Own Data][sample_chat_completion_function_call].
 
 Please refer to the service documentation for a conceptual discussion of [text completion][microsoft_docs_openai_completion].
 
@@ -224,24 +227,21 @@ chatMessages.add(new ChatMessage(ChatRole.USER, "What's the best way to train a 
 IterableStream<ChatCompletions> chatCompletionsStream = client.getChatCompletionsStream("{deploymentOrModelId}",
     new ChatCompletionsOptions(chatMessages));
 
-chatCompletionsStream.forEach(chatCompletions -> {
-    System.out.printf("Model ID=%s is created at %s.%n", chatCompletions.getId(), chatCompletions.getCreatedAt());
-    for (ChatChoice choice : chatCompletions.getChoices()) {
-        ChatMessage message = choice.getDelta();
-        if (message != null) {
-            System.out.printf("Index: %d, Chat Role: %s.%n", choice.getIndex(), message.getRole());
-            System.out.println("Message:");
-            System.out.println(message.getContent());
+chatCompletionsStream
+    .stream()
+    // Remove .skip(1) when using Non-Azure OpenAI API
+    // Note: the first chat completions can be ignored when using Azure OpenAI service which is a known service bug.
+    // TODO: remove .skip(1) when service fix the issue.
+    .skip(1)
+    .forEach(chatCompletions -> {
+        ChatMessage delta = chatCompletions.getChoices().get(0).getDelta();
+        if (delta.getRole() != null) {
+            System.out.println("Role = " + delta.getRole());
         }
-    }
-
-    CompletionsUsage usage = chatCompletions.getUsage();
-    if (usage != null) {
-        System.out.printf("Usage: number of prompt token is %d, "
-                + "number of completion token is %d, and number of total tokens in request and response is %d.%n",
-            usage.getPromptTokens(), usage.getCompletionTokens(), usage.getTotalTokens());
-    }
-});
+        if (delta.getContent() != null) {
+            System.out.print(delta.getContent());
+        }
+    });
 ```
 For a complete sample example, see sample [Streaming Chat Completions][sample_get_chat_completions_streaming].
 
@@ -335,6 +335,7 @@ For details on contributing to this repository, see the [contributing guide](htt
 [samples_folder]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai
 [samples_readme]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/openai/azure-ai-openai/src/samples
 [sample_chat_completion_function_call]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai/FunctionCallSample.java
+[sample_chat_completion_BYOD]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai/ChatCompletionsWithYourData.java
 [sample_get_chat_completions]: https://Dgithub.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai/usage/GetChatCompletionsSample.java
 [sample_get_chat_completions_streaming]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai/usage/GetChatCompletionsStreamSample.java
 [sample_get_completions]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai/usage/GetCompletionsSample.java

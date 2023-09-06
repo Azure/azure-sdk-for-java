@@ -88,11 +88,13 @@ public interface Cluster {
             DefinitionStages.WithSku,
             DefinitionStages.WithCreate {
     }
+
     /** The Cluster definition stages. */
     interface DefinitionStages {
         /** The first stage of the Cluster definition. */
         interface Blank extends WithParentResource {
         }
+
         /** The stage of the Cluster definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
@@ -104,6 +106,7 @@ public interface Cluster {
              */
             WithSku withExistingPrivateCloud(String resourceGroupName, String privateCloudName);
         }
+
         /** The stage of the Cluster definition allowing to specify sku. */
         interface WithSku {
             /**
@@ -114,6 +117,7 @@ public interface Cluster {
              */
             WithCreate withSku(Sku sku);
         }
+
         /**
          * The stage of the Cluster definition which contains all the minimum required properties for the resource to be
          * created, but also allows for any other optional properties to be specified.
@@ -134,6 +138,7 @@ public interface Cluster {
              */
             Cluster create(Context context);
         }
+
         /** The stage of the Cluster definition allowing to specify clusterSize. */
         interface WithClusterSize {
             /**
@@ -144,6 +149,7 @@ public interface Cluster {
              */
             WithCreate withClusterSize(Integer clusterSize);
         }
+
         /** The stage of the Cluster definition allowing to specify hosts. */
         interface WithHosts {
             /**
@@ -155,6 +161,7 @@ public interface Cluster {
             WithCreate withHosts(List<String> hosts);
         }
     }
+
     /**
      * Begins update for the Cluster resource.
      *
@@ -179,6 +186,7 @@ public interface Cluster {
          */
         Cluster apply(Context context);
     }
+
     /** The Cluster update stages. */
     interface UpdateStages {
         /** The stage of the Cluster update allowing to specify clusterSize. */
@@ -191,6 +199,7 @@ public interface Cluster {
              */
             Update withClusterSize(Integer clusterSize);
         }
+
         /** The stage of the Cluster update allowing to specify hosts. */
         interface WithHosts {
             /**
@@ -202,6 +211,7 @@ public interface Cluster {
             Update withHosts(List<String> hosts);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

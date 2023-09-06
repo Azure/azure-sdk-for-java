@@ -7,7 +7,7 @@ package com.azure.resourcemanager.network.generated;
 /** Samples for VirtualNetworkGateways GetByResourceGroup. */
 public final class VirtualNetworkGatewaysGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-02-01/examples/VirtualNetworkGatewayGet.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-05-01/examples/VirtualNetworkGatewayGet.json
      */
     /**
      * Sample code: GetVirtualNetworkGateway.
@@ -21,5 +21,22 @@ public final class VirtualNetworkGatewaysGetByResourceGroupSamples {
             .serviceClient()
             .getVirtualNetworkGateways()
             .getByResourceGroupWithResponse("rg1", "vpngw", com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-05-01/examples/VirtualNetworkScalableGatewayGet.json
+     */
+    /**
+     * Sample code: GetVirtualNetworkScalableGateway.
+     *
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void getVirtualNetworkScalableGateway(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure
+            .networks()
+            .manager()
+            .serviceClient()
+            .getVirtualNetworkGateways()
+            .getByResourceGroupWithResponse("rg1", "ergw", com.azure.core.util.Context.NONE);
     }
 }

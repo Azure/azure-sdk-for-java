@@ -16,6 +16,10 @@ public final class GatewayTokenContractInner {
     @JsonProperty(value = "value")
     private String value;
 
+    /** Creates an instance of GatewayTokenContractInner class. */
+    public GatewayTokenContractInner() {
+    }
+
     /**
      * Get the value property: Shared Access Authentication token value for the Gateway.
      *

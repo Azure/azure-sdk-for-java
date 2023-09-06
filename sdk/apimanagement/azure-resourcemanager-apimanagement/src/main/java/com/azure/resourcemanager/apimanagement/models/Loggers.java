@@ -13,7 +13,7 @@ public interface Loggers {
     /**
      * Lists a collection of loggers in the specified service instance.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -25,7 +25,7 @@ public interface Loggers {
     /**
      * Lists a collection of loggers in the specified service instance.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param filter | Field | Usage | Supported operators | Supported functions
      *     |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| name | filter | ge, le, eq,
@@ -46,19 +46,7 @@ public interface Loggers {
     /**
      * Gets the entity state (Etag) version of the logger specified by its identifier.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param serviceName The name of the API Management service.
-     * @param loggerId Logger identifier. Must be unique in the API Management service instance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void getEntityTag(String resourceGroupName, String serviceName, String loggerId);
-
-    /**
-     * Gets the entity state (Etag) version of the logger specified by its identifier.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param loggerId Logger identifier. Must be unique in the API Management service instance.
      * @param context The context to associate with this operation.
@@ -71,22 +59,21 @@ public interface Loggers {
         String resourceGroupName, String serviceName, String loggerId, Context context);
 
     /**
-     * Gets the details of the logger specified by its identifier.
+     * Gets the entity state (Etag) version of the logger specified by its identifier.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param loggerId Logger identifier. Must be unique in the API Management service instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of the logger specified by its identifier.
      */
-    LoggerContract get(String resourceGroupName, String serviceName, String loggerId);
+    void getEntityTag(String resourceGroupName, String serviceName, String loggerId);
 
     /**
      * Gets the details of the logger specified by its identifier.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param loggerId Logger identifier. Must be unique in the API Management service instance.
      * @param context The context to associate with this operation.
@@ -99,23 +86,22 @@ public interface Loggers {
         String resourceGroupName, String serviceName, String loggerId, Context context);
 
     /**
-     * Deletes the specified logger.
+     * Gets the details of the logger specified by its identifier.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param loggerId Logger identifier. Must be unique in the API Management service instance.
-     * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the details of the logger specified by its identifier.
      */
-    void delete(String resourceGroupName, String serviceName, String loggerId, String ifMatch);
+    LoggerContract get(String resourceGroupName, String serviceName, String loggerId);
 
     /**
      * Deletes the specified logger.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param loggerId Logger identifier. Must be unique in the API Management service instance.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
@@ -128,6 +114,20 @@ public interface Loggers {
      */
     Response<Void> deleteWithResponse(
         String resourceGroupName, String serviceName, String loggerId, String ifMatch, Context context);
+
+    /**
+     * Deletes the specified logger.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serviceName The name of the API Management service.
+     * @param loggerId Logger identifier. Must be unique in the API Management service instance.
+     * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
+     *     request or it should be * for unconditional update.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void delete(String resourceGroupName, String serviceName, String loggerId, String ifMatch);
 
     /**
      * Gets the details of the logger specified by its identifier.

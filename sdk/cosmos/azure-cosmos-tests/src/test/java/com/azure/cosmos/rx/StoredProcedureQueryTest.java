@@ -36,7 +36,7 @@ public class StoredProcedureQueryTest extends TestSuiteBase {
         super(clientBuilder);
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    @Test(groups = { "query" }, timeOut = TIMEOUT)
     public void queryWithFilter() throws Exception {
 
         String filterId = createdStoredProcs.get(0).getId();
@@ -64,7 +64,7 @@ public class StoredProcedureQueryTest extends TestSuiteBase {
         validateQuerySuccess(queryObservable.byPage(maxItemCount), validator, 10000);
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    @Test(groups = { "query" }, timeOut = TIMEOUT)
     public void query_NoResults() throws Exception {
 
         String query = "SELECT * from root r where r.id = '2'";
@@ -81,7 +81,7 @@ public class StoredProcedureQueryTest extends TestSuiteBase {
         validateQuerySuccess(queryObservable.byPage(), validator);
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    @Test(groups = { "query" }, timeOut = TIMEOUT)
     public void queryAll() throws Exception {
 
         String query = "SELECT * from root";
@@ -105,7 +105,7 @@ public class StoredProcedureQueryTest extends TestSuiteBase {
         validateQuerySuccess(queryObservable.byPage(maxItemCount), validator);
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    @Test(groups = { "query" }, timeOut = TIMEOUT)
     public void invalidQuerySytax() throws Exception {
         String query = "I am an invalid query";
         CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
@@ -123,7 +123,7 @@ public class StoredProcedureQueryTest extends TestSuiteBase {
         return cosmosContainer.getScripts().createStoredProcedure(storedProcedure).block().getProperties();
     }
 
-    @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
+    @BeforeClass(groups = { "query" }, timeOut = SETUP_TIMEOUT)
     public void before_StoredProcedureQueryTest() throws Exception {
         client = getClientBuilder().buildAsyncClient();
         createdCollection = getSharedMultiPartitionCosmosContainer(client);
@@ -136,7 +136,7 @@ public class StoredProcedureQueryTest extends TestSuiteBase {
         waitIfNeededForReplicasToCatchUp(getClientBuilder());
     }
 
-    @AfterClass(groups = { "simple" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
+    @AfterClass(groups = { "query" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
         safeClose(client);
     }

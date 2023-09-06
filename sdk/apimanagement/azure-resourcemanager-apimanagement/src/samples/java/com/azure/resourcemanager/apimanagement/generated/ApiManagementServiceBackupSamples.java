@@ -4,14 +4,13 @@
 
 package com.azure.resourcemanager.apimanagement.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.apimanagement.models.AccessType;
 import com.azure.resourcemanager.apimanagement.models.ApiManagementServiceBackupRestoreParameters;
 
 /** Samples for ApiManagementService Backup. */
 public final class ApiManagementServiceBackupSamples {
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementBackupWithAccessKey.json
+     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementBackupWithAccessKey.json
      */
     /**
      * Sample code: ApiManagementBackupWithAccessKey.
@@ -30,12 +29,12 @@ public final class ApiManagementServiceBackupSamples {
                     .withContainerName("backupContainer")
                     .withBackupName("apimService1backup_2017_03_19")
                     .withAccessType(AccessType.ACCESS_KEY)
-                    .withAccessKey("**************************************************"),
-                Context.NONE);
+                    .withAccessKey("fakeTokenPlaceholder"),
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementBackupWithUserAssignedManagedIdentity.json
+     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementBackupWithUserAssignedManagedIdentity.json
      */
     /**
      * Sample code: ApiManagementBackupWithUserAssignedManagedIdentity.
@@ -55,11 +54,11 @@ public final class ApiManagementServiceBackupSamples {
                     .withBackupName("backup5")
                     .withAccessType(AccessType.USER_ASSIGNED_MANAGED_IDENTITY)
                     .withClientId("XXXXX-a154-4830-XXXX-46a12da1a1e2"),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementBackupWithSystemManagedIdentity.json
+     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementBackupWithSystemManagedIdentity.json
      */
     /**
      * Sample code: ApiManagementBackupWithSystemManagedIdentity.
@@ -78,6 +77,6 @@ public final class ApiManagementServiceBackupSamples {
                     .withContainerName("apim-backups")
                     .withBackupName("backup5")
                     .withAccessType(AccessType.SYSTEM_ASSIGNED_MANAGED_IDENTITY),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

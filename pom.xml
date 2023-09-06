@@ -17,6 +17,7 @@
     <module>sdk/alertsmanagement</module>
     <module>sdk/anomalydetector</module>
     <module>sdk/aot</module>
+    <module>sdk/apicenter</module>
     <module>sdk/apimanagement</module>
     <module>sdk/appcomplianceautomation</module>
     <module>sdk/appconfiguration</module>
@@ -38,6 +39,7 @@
     <module>sdk/boms</module>
     <module>sdk/botservice</module>
     <module>sdk/changeanalysis</module>
+    <module>sdk/chaos</module>
     <module>sdk/cognitiveservices</module>
     <module>sdk/commerce</module>
     <module>sdk/communication</module>
@@ -62,6 +64,7 @@
     <module>sdk/datalakestore</module>
     <module>sdk/datamigration</module>
     <module>sdk/dataprotection</module>
+    <module>sdk/defendereasm</module>
     <module>sdk/delegatednetwork</module>
     <module>sdk/deploymentmanager</module>
     <module>sdk/desktopvirtualization</module>
@@ -92,6 +95,7 @@
     <module>sdk/healthcareapis</module>
     <module>sdk/healthinsights</module>
     <module>sdk/hybridcompute</module>
+    <module>sdk/hybridconnectivity</module>
     <module>sdk/hybridcontainerservice</module>
     <module>sdk/hybridkubernetes</module>
     <module>sdk/hybridnetwork</module>

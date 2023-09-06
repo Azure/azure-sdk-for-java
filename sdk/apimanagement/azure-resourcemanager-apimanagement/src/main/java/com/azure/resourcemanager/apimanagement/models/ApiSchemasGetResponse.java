@@ -29,7 +29,11 @@ public final class ApiSchemasGetResponse extends ResponseBase<ApiSchemasGetHeade
         super(request, statusCode, rawHeaders, value, headers);
     }
 
-    /** @return the deserialized response body. */
+    /**
+     * Gets the deserialized response body.
+     *
+     * @return the deserialized response body.
+     */
     @Override
     public SchemaContractInner getValue() {
         return super.getValue();

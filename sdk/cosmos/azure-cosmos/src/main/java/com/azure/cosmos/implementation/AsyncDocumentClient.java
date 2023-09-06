@@ -103,6 +103,7 @@ public interface AsyncDocumentClient {
         private String clientCorrelationId = null;
         private CosmosEndToEndOperationLatencyPolicyConfig cosmosEndToEndOperationLatencyPolicyConfig;
         private SessionRetryOptions sessionRetryOptions;
+        private CosmosContainerProactiveInitConfig containerProactiveInitConfig;
 
         public Builder withServiceEndpoint(String serviceEndpoint) {
             try {
@@ -249,6 +250,11 @@ public interface AsyncDocumentClient {
             return this;
         }
 
+        public Builder withContainerProactiveInitConfig(CosmosContainerProactiveInitConfig containerProactiveInitConfig) {
+            this.containerProactiveInitConfig = containerProactiveInitConfig;
+            return this;
+        }
+
         private void ifThrowIllegalArgException(boolean value, String error) {
             if (value) {
                 throw new IllegalArgumentException(error);
@@ -283,7 +289,8 @@ public interface AsyncDocumentClient {
                     clientTelemetryConfig,
                     clientCorrelationId,
                     cosmosEndToEndOperationLatencyPolicyConfig,
-                sessionRetryOptions);
+                    sessionRetryOptions,
+                    containerProactiveInitConfig);
 
             client.init(state, null);
             return client;
