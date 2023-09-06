@@ -1,6 +1,14 @@
 {
   "main": "dist/src/index.js",
   "dependencies": {
-    "@azure-tools/typespec-java": "0.8.11"
+    "@azure-tools/typespec-java": "c:/github/autorest.java/typespec-extension/azure-tools-typespec-java-0.8.11.tgz"
+  },
+  "overrides": {
+    "@typespec/compiler": ">=0.45.0 <1.0.0",
+    "@typespec/http": ">=0.45.0 <1.0.0",
+    "@typespec/rest": ">=0.45.0 <1.0.0",
+    "@typespec/versioning": ">=0.45.0 <1.0.0",
+    "@azure-tools/typespec-azure-core": ">=0.31.0 <1.0.0",
+    "@azure-tools/typespec-client-generator-core": "0.34.0-dev.6"
   }
 }
