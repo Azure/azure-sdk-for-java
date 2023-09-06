@@ -5,6 +5,7 @@ package com.azure.cosmos;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.OperationCancelledException;
 import com.azure.cosmos.implementation.TestConfigurations;
+import com.azure.cosmos.implementation.guava25.base.Function;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
@@ -26,6 +27,7 @@ import com.azure.cosmos.test.implementation.faultinjection.FaultInjectorProvider
 import com.azure.cosmos.util.CosmosPagedFlux;
 import org.testng.SkipException;
 import org.testng.annotations.BeforeClass;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Mono;
@@ -37,6 +39,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 import java.util.UUID;
+
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 public class EndToEndTimeOutValidationTests extends TestSuiteBase {
     private static final int DEFAULT_NUM_DOCUMENTS = 100;
@@ -62,6 +66,23 @@ public class EndToEndTimeOutValidationTests extends TestSuiteBase {
         truncateCollection(createdContainer);
 
         createdDocuments.addAll(this.insertDocuments(DEFAULT_NUM_DOCUMENTS, null, createdContainer));
+    }
+
+    @DataProvider(name = "endToEndOperationTimeoutMutationConfigs")
+    public Object[][] endToEndOperationTimeoutMutationConfigs() {
+
+        Function<CosmosOperationWrapper, Mono<CosmosItemResponse<TestObject>>> readOperationExecutor
+            = (opWrapper) -> executeReadOperation(opWrapper);
+        Function<CosmosOperationWrapper, Mono<CosmosItemResponse<TestObject>>> createOperationExecutor
+            = (opWrapper) -> executeCreateOperation(opWrapper);
+        Function<CosmosOperationWrapper, Mono<CosmosItemResponse<Object>>> deleteOperationExecutor
+            = (opWrapper) -> executeDeleteOperation(opWrapper);
+
+        return new Object[][] {
+            {readOperationExecutor, FaultInjectionOperationType.READ_ITEM},
+            {createOperationExecutor, FaultInjectionOperationType.CREATE_ITEM},
+            {deleteOperationExecutor, FaultInjectionOperationType.DELETE_ITEM}
+        };
     }
 
     @Test(groups = {"simple"}, timeOut = 10000L)
@@ -261,66 +282,97 @@ public class EndToEndTimeOutValidationTests extends TestSuiteBase {
             // delete the database
             cosmosAsyncClient.getDatabase(dbname).delete().block();
         }
-
     }
 
-    @Test(groups = {"simple"}, timeOut = 10000L)
-    public void clientLevelEndToEndTimeoutMutationForPointRead() {
+    @Test(groups = { "simple" }, dataProvider = "endToEndOperationTimeoutMutationConfigs")
+    public void clientLevelEndToEndTimeoutMutationForPointOperation(
+        Function<CosmosOperationWrapper, Mono<CosmosItemResponse<TestObject>>> operationExecutor,
+        FaultInjectionOperationType faultInjectionOperationType) {
 
         if (getClientBuilder().buildConnectionPolicy().getConnectionMode() != ConnectionMode.DIRECT) {
             throw new SkipException("Injecting fault relevant to the direct connectivity mode.");
         }
 
-        CosmosEndToEndOperationLatencyPolicyConfig cosmosEndToEndOperationLatencyPolicyConfig = new CosmosEndToEndOperationLatencyPolicyConfigBuilder(Duration.ofSeconds(1)).build();
+        CosmosEndToEndOperationLatencyPolicyConfig cosmosEndToEndOperationLatencyPolicyConfig =
+            new CosmosEndToEndOperationLatencyPolicyConfigBuilder(Duration.ofSeconds(1)).build();
 
         CosmosClientBuilder builder = new CosmosClientBuilder()
             .endpoint(TestConfigurations.HOST)
             .endToEndOperationLatencyPolicyConfig(cosmosEndToEndOperationLatencyPolicyConfig)
             .credential(credential);
 
-        try (CosmosAsyncClient cosmosAsyncClient = builder.buildAsyncClient()) {
-            String dbname = "db_" + UUID.randomUUID();
-            String containerName = "container_" + UUID.randomUUID();
+        CosmosAsyncClient cosmosAsyncClient = builder.buildAsyncClient();
+
+        String dbname = "db_" + UUID.randomUUID();
+        String containerName = "container_" + UUID.randomUUID();
+
+        try {
             CosmosContainerProperties properties = new CosmosContainerProperties(containerName, "/mypk");
             cosmosAsyncClient.createDatabaseIfNotExists(dbname).block();
             cosmosAsyncClient.getDatabase(dbname)
                              .createContainerIfNotExists(properties).block();
-            CosmosAsyncContainer container = cosmosAsyncClient.getDatabase(dbname)
-                                                              .getContainer(containerName);
+            CosmosAsyncContainer cosmosAsyncContainer = cosmosAsyncClient.getDatabase(dbname)
+                                                                         .getContainer(containerName);
 
-            TestObject obj = new TestObject(UUID.randomUUID().toString(),
-                "name123",
-                2,
-                UUID.randomUUID().toString());
-            CosmosItemResponse response = container.createItem(obj).block();
+            Mono<CosmosItemResponse<TestObject>> cosmosItemResponseMonoWithLowerE2ETimeout =
+                operationExecutor.apply(new CosmosOperationWrapper(new TestObject(
+                    UUID.randomUUID().toString(),
+                    "name123",
+                    1,
+                    UUID.randomUUID().toString()
+                ), cosmosAsyncContainer));
 
-            Mono<CosmosItemResponse<TestObject>> cosmosItemResponseMono =
-                container.readItem(obj.id, new PartitionKey(obj.mypk), TestObject.class);
+            injectFailure(cosmosAsyncContainer, faultInjectionOperationType, true);
 
-            // Should read item properly before injecting failure
-            StepVerifier.create(cosmosItemResponseMono)
-                        .expectNextCount(1)
-                        .expectComplete()
-                        .verify();
-
-            injectFailure(container, FaultInjectionOperationType.READ_ITEM, null);
-
-            verifyExpectError(cosmosItemResponseMono);
+            verifyExpectError(cosmosItemResponseMonoWithLowerE2ETimeout);
 
             cosmosEndToEndOperationLatencyPolicyConfig.setEndToEndOperationTimeout(Duration.ofSeconds(5));
 
+            Mono<CosmosItemResponse<TestObject>> cosmosItemResponseMonoWithHigherE2ETimeout =
+                operationExecutor.apply(new CosmosOperationWrapper(new TestObject(
+                    UUID.randomUUID().toString(),
+                    "name123",
+                    1,
+                    UUID.randomUUID().toString()
+                ), cosmosAsyncContainer));
+
             // with increased endToEndOperationTimeout, we shouldn't see
             // an end-to-end timeout
-            StepVerifier.create(cosmosItemResponseMono)
+            StepVerifier.create(cosmosItemResponseMonoWithHigherE2ETimeout)
                         .expectNextCount(1)
                         .expectComplete()
                         .verify();
 
+        } finally {
             // delete the database
             cosmosAsyncClient.getDatabase(dbname).delete().block();
         }
     }
 
+    private static Mono<CosmosItemResponse<TestObject>> executeReadOperation(CosmosOperationWrapper operationWrapper) {
+        TestObject testObject = operationWrapper.testObject;
+        CosmosAsyncContainer cosmosAsyncContainer = operationWrapper.cosmosAsyncContainer;
+
+        cosmosAsyncContainer.createItem(testObject).block();
+
+        return cosmosAsyncContainer.readItem(testObject.getId(), new PartitionKey(testObject.getMypk()), TestObject.class);
+    }
+
+    private static Mono<CosmosItemResponse<TestObject>> executeCreateOperation(CosmosOperationWrapper operationWrapper) {
+        CosmosAsyncContainer cosmosAsyncContainer = operationWrapper.cosmosAsyncContainer;
+        TestObject testObject = operationWrapper.testObject;
+
+        return cosmosAsyncContainer.createItem(testObject);
+    }
+
+    private static Mono<CosmosItemResponse<Object>> executeDeleteOperation(CosmosOperationWrapper operationWrapper) {
+        CosmosAsyncContainer cosmosAsyncContainer = operationWrapper.cosmosAsyncContainer;
+        TestObject testObject = operationWrapper.testObject;
+
+        cosmosAsyncContainer.createItem(testObject).block();
+
+        return cosmosAsyncContainer.deleteItem(testObject.getId(), new PartitionKey(testObject.getMypk()));
+    }
 
     private FaultInjectionRule injectFailure(
         CosmosAsyncContainer container,
@@ -432,6 +484,18 @@ public class EndToEndTimeOutValidationTests extends TestSuiteBase {
 
         public String getConstantProp() {
             return constantProp;
+        }
+    }
+
+    private static class CosmosOperationWrapper {
+        private TestObject testObject;
+        private CosmosAsyncContainer cosmosAsyncContainer;
+        CosmosOperationWrapper(
+            TestObject testObject,
+            CosmosAsyncContainer cosmosAsyncContainer) {
+
+            this.testObject = testObject;
+            this.cosmosAsyncContainer = cosmosAsyncContainer;
         }
     }
 }
