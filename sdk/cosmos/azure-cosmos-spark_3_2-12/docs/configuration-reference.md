@@ -8,17 +8,17 @@
 | `spark.cosmos.accountKey`        | None    | Cosmos DB Account Key                                                                                      |
 | `spark.cosmos.database`          | None    | Cosmos DB database name                                                                                    |
 | `spark.cosmos.container`         | None    | Cosmos DB container name                                                                                   |
-| `spark.cosmos.account.subscriptionId`    | None    | The subscriptionId of the Cosmos DB account. Required for `ServicePrinciple` authentication.                |
-| `spark.cosmos.account.tenantId`          | None    | The tenantId of the Cosmos DB account. Required for `ServicePrinciple` authentication.                      |
-| `spark.cosmos.account.resourceGroupName` | None    | The resource group of the Cosmos DB account. Required for `ServicePrinciple` authentication.                |
+| `spark.cosmos.account.subscriptionId`    | None    | The subscriptionId of the Cosmos DB account. Required for `ServicePrincipal` authentication.                |
+| `spark.cosmos.account.tenantId`          | None    | The tenantId of the Cosmos DB account. Required for `ServicePrincipal` authentication.                      |
+| `spark.cosmos.account.resourceGroupName` | None    | The resource group of the Cosmos DB account. Required for `ServicePrincipal` authentication.                |
 | `spark.cosmos.account.azureEnvironment`    | `Azure`    | The azure environment of the Cosmos DB account: `Azure`, `AzureChina`, `AzureUsGovernment`, `AzureGermany`. |
 
 ### AAD Auth Config
 | Config Property Name                 | Default | Description                                                                                                                                                             |
 |:-------------------------------------|    :----   |:------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `spark.cosmos.auth.type`             | `MasterKey`    | There are two auth types are supported currently: `MasterKey`(PrimaryReadWriteKeys, SecondReadWriteKeys, PrimaryReadOnlyKeys, SecondReadWriteKeys), `ServicePrinciple`. |
-| `spark.cosmos.auth.aad.clientId`     | None    | The clientId/ApplicationId of the service principle. Required for `ServicePrinciple` authentication.                                                                                                                                                   |
-| `spark.cosmos.auth.aad.clientSecret` | None    | The client secret/password of the service principle. Required for `ServicePrinciple` authentication.                                                                                                                                                 |
+| `spark.cosmos.auth.type`             | `MasterKey`    | There are two auth types are supported currently: `MasterKey`(PrimaryReadWriteKeys, SecondReadWriteKeys, PrimaryReadOnlyKeys, SecondReadWriteKeys), `ServicePrincipal`. |
+| `spark.cosmos.auth.aad.clientId`     | None    | The clientId/ApplicationId of the service principle. Required for `ServicePrincipal` authentication.                                                                                                                                                   |
+| `spark.cosmos.auth.aad.clientSecret` | None    | The client secret/password of the service principle. Required for `ServicePrincipal` authentication.                                                                                                                                                 |
 
 ### Additional Tuning
 | Config Property Name      | Default | Description |
