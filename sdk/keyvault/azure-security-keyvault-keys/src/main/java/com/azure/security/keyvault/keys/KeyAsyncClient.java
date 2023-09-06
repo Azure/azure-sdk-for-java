@@ -129,8 +129,8 @@ import static com.azure.core.util.FluxUtil.withContext;
  * The {@link KeyAsyncClient} can be used to delete a key from the key vault.
  *
  * <p><strong>Code Sample:</strong></p>
- * <p>The following code sample demonstrates how to asynchronously delete a key from the Azure
- * Key Vault, using the {@link KeyAsyncClient#beginDeleteKey(String)} API.</p>
+ * <p>The following code sample demonstrates how to asynchronously delete a key from the
+ * key vault, using the {@link KeyAsyncClient#beginDeleteKey(String)} API.</p>
  *
  * <!-- src_embed com.azure.security.keyvault.keys.KeyAsyncClient.deleteKey#String -->
  * <pre>
