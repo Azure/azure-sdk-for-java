@@ -12,7 +12,7 @@ import java.io.IOException;
 /** Samples for VirtualMachineScaleSetVMExtensions Update. */
 public final class VirtualMachineScaleSetVMExtensionsUpdateSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSetVMExtension_Update.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-07-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSetVMExtension_Update.json
      */
     /**
      * Sample code: Update VirtualMachineScaleSet VM extension.

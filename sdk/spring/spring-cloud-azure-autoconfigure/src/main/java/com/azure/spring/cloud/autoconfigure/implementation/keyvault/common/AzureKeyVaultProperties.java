@@ -20,6 +20,12 @@ public class AzureKeyVaultProperties extends AbstractAzureHttpConfigurationPrope
     private String endpoint;
 
     /**
+     * Whether to enable the Azure Key Vault challenge resource verification, default: true.
+     * Calls the disableChallengeResourceVerification method of the Azure Key Vault Client Builder when set to false.
+     */
+    private boolean challengeResourceVerificationEnabled = true;
+
+    /**
      *
      * @return The Azure Key Vault endpoint.
      */
@@ -33,5 +39,22 @@ public class AzureKeyVaultProperties extends AbstractAzureHttpConfigurationPrope
      */
     public void setEndpoint(String endpoint) {
         this.endpoint = endpoint;
+    }
+
+    /**
+     *
+     * @return Whether we should keep the challenge resource verification for the Azure Key Vault Client
+     */
+    public boolean isChallengeResourceVerificationEnabled() {
+        return challengeResourceVerificationEnabled;
+    }
+
+    /**
+     *
+     * @param challengeResourceVerificationEnabled Whether we should keep Azure Key Vault challenge resource verification enabled
+     */
+    public void setChallengeResourceVerificationEnabled(
+        boolean challengeResourceVerificationEnabled) {
+        this.challengeResourceVerificationEnabled = challengeResourceVerificationEnabled;
     }
 }

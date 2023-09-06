@@ -149,7 +149,7 @@ public final class SecretClientBuilder implements
      * and {@link #retryPolicy(RetryPolicy)} have been set.
      */
     public SecretClient buildClient() {
-        return new SecretClient(buildInnerClient());
+        return new SecretClient(buildInnerClient(), vaultUrl);
     }
 
     /**
@@ -171,7 +171,7 @@ public final class SecretClientBuilder implements
      * and {@link #retryPolicy(RetryPolicy)} have been set.
      */
     public SecretAsyncClient buildAsyncClient() {
-        return new SecretAsyncClient(buildInnerClient());
+        return new SecretAsyncClient(buildInnerClient(), vaultUrl);
     }
 
 
@@ -182,20 +182,17 @@ public final class SecretClientBuilder implements
 
         if (buildEndpoint == null) {
             throw LOGGER.logExceptionAsError(
-                new IllegalStateException(
-                    KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.VAULT_END_POINT_REQUIRED)));
+                new IllegalStateException(KeyVaultErrorCodeStrings.VAULT_END_POINT_REQUIRED));
         }
 
         SecretServiceVersion serviceVersion = version != null ? version : SecretServiceVersion.getLatest();
 
         if (pipeline != null) {
-            return new SecretClientImpl(vaultUrl, pipeline, serviceVersion);
+            return new SecretClientImpl(pipeline, serviceVersion.getVersion());
         }
 
         if (credential == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalStateException(
-                    KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.CREDENTIAL_REQUIRED)));
+            throw LOGGER.logExceptionAsError(new IllegalStateException(KeyVaultErrorCodeStrings.CREDENTIALS_REQUIRED));
         }
 
         // Closest to API goes first, closest to wire goes last.
@@ -241,7 +238,7 @@ public final class SecretClientBuilder implements
             .tracer(tracer)
             .build();
 
-        return new SecretClientImpl(vaultUrl, pipeline, serviceVersion);
+        return new SecretClientImpl(pipeline, serviceVersion.getVersion());
     }
 
     /**

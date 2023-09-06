@@ -199,11 +199,13 @@ public interface ContainerApp {
             DefinitionStages.WithResourceGroup,
             DefinitionStages.WithCreate {
     }
+
     /** The ContainerApp definition stages. */
     interface DefinitionStages {
         /** The first stage of the ContainerApp definition. */
         interface Blank extends WithLocation {
         }
+
         /** The stage of the ContainerApp definition allowing to specify location. */
         interface WithLocation {
             /**
@@ -222,6 +224,7 @@ public interface ContainerApp {
              */
             WithResourceGroup withRegion(String location);
         }
+
         /** The stage of the ContainerApp definition allowing to specify parent resource. */
         interface WithResourceGroup {
             /**
@@ -232,6 +235,7 @@ public interface ContainerApp {
              */
             WithCreate withExistingResourceGroup(String resourceGroupName);
         }
+
         /**
          * The stage of the ContainerApp definition which contains all the minimum required properties for the resource
          * to be created, but also allows for any other optional properties to be specified.
@@ -261,6 +265,7 @@ public interface ContainerApp {
              */
             ContainerApp create(Context context);
         }
+
         /** The stage of the ContainerApp definition allowing to specify tags. */
         interface WithTags {
             /**
@@ -271,6 +276,7 @@ public interface ContainerApp {
              */
             WithCreate withTags(Map<String, String> tags);
         }
+
         /** The stage of the ContainerApp definition allowing to specify extendedLocation. */
         interface WithExtendedLocation {
             /**
@@ -281,6 +287,7 @@ public interface ContainerApp {
              */
             WithCreate withExtendedLocation(ExtendedLocation extendedLocation);
         }
+
         /** The stage of the ContainerApp definition allowing to specify identity. */
         interface WithIdentity {
             /**
@@ -293,6 +300,7 @@ public interface ContainerApp {
              */
             WithCreate withIdentity(ManagedServiceIdentity identity);
         }
+
         /** The stage of the ContainerApp definition allowing to specify managedBy. */
         interface WithManagedBy {
             /**
@@ -308,6 +316,7 @@ public interface ContainerApp {
              */
             WithCreate withManagedBy(String managedBy);
         }
+
         /** The stage of the ContainerApp definition allowing to specify managedEnvironmentId. */
         interface WithManagedEnvironmentId {
             /**
@@ -318,6 +327,7 @@ public interface ContainerApp {
              */
             WithCreate withManagedEnvironmentId(String managedEnvironmentId);
         }
+
         /** The stage of the ContainerApp definition allowing to specify environmentId. */
         interface WithEnvironmentId {
             /**
@@ -328,6 +338,7 @@ public interface ContainerApp {
              */
             WithCreate withEnvironmentId(String environmentId);
         }
+
         /** The stage of the ContainerApp definition allowing to specify workloadProfileName. */
         interface WithWorkloadProfileName {
             /**
@@ -338,6 +349,7 @@ public interface ContainerApp {
              */
             WithCreate withWorkloadProfileName(String workloadProfileName);
         }
+
         /** The stage of the ContainerApp definition allowing to specify configuration. */
         interface WithConfiguration {
             /**
@@ -348,6 +360,7 @@ public interface ContainerApp {
              */
             WithCreate withConfiguration(Configuration configuration);
         }
+
         /** The stage of the ContainerApp definition allowing to specify template. */
         interface WithTemplate {
             /**
@@ -359,6 +372,7 @@ public interface ContainerApp {
             WithCreate withTemplate(Template template);
         }
     }
+
     /**
      * Begins update for the ContainerApp resource.
      *
@@ -390,6 +404,7 @@ public interface ContainerApp {
          */
         ContainerApp apply(Context context);
     }
+
     /** The ContainerApp update stages. */
     interface UpdateStages {
         /** The stage of the ContainerApp update allowing to specify tags. */
@@ -402,6 +417,7 @@ public interface ContainerApp {
              */
             Update withTags(Map<String, String> tags);
         }
+
         /** The stage of the ContainerApp update allowing to specify extendedLocation. */
         interface WithExtendedLocation {
             /**
@@ -412,6 +428,7 @@ public interface ContainerApp {
              */
             Update withExtendedLocation(ExtendedLocation extendedLocation);
         }
+
         /** The stage of the ContainerApp update allowing to specify identity. */
         interface WithIdentity {
             /**
@@ -424,6 +441,7 @@ public interface ContainerApp {
              */
             Update withIdentity(ManagedServiceIdentity identity);
         }
+
         /** The stage of the ContainerApp update allowing to specify managedBy. */
         interface WithManagedBy {
             /**
@@ -439,6 +457,7 @@ public interface ContainerApp {
              */
             Update withManagedBy(String managedBy);
         }
+
         /** The stage of the ContainerApp update allowing to specify workloadProfileName. */
         interface WithWorkloadProfileName {
             /**
@@ -449,6 +468,7 @@ public interface ContainerApp {
              */
             Update withWorkloadProfileName(String workloadProfileName);
         }
+
         /** The stage of the ContainerApp update allowing to specify configuration. */
         interface WithConfiguration {
             /**
@@ -459,6 +479,7 @@ public interface ContainerApp {
              */
             Update withConfiguration(Configuration configuration);
         }
+
         /** The stage of the ContainerApp update allowing to specify template. */
         interface WithTemplate {
             /**
@@ -470,6 +491,7 @@ public interface ContainerApp {
             Update withTemplate(Template template);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *
@@ -556,4 +578,48 @@ public interface ContainerApp {
      * @return auth token for a container app.
      */
     ContainerAppAuthToken getAuthToken();
+
+    /**
+     * Start a container app.
+     *
+     * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
+     *     is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return container App.
+     */
+    ContainerApp start();
+
+    /**
+     * Start a container app.
+     *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
+     *     is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return container App.
+     */
+    ContainerApp start(Context context);
+
+    /**
+     * Stop a container app.
+     *
+     * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
+     *     is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return container App.
+     */
+    ContainerApp stop();
+
+    /**
+     * Stop a container app.
+     *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
+     *     is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return container App.
+     */
+    ContainerApp stop(Context context);
 }

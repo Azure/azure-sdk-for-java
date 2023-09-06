@@ -43,6 +43,8 @@ import com.azure.messaging.servicebus.administration.models.TopicRuntimeProperti
 import com.azure.messaging.servicebus.administration.models.TrueRuleFilter;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.mockito.Mockito;
 import reactor.core.publisher.Mono;
 
@@ -77,6 +79,7 @@ import static org.mockito.Mockito.mock;
  * Tests {@link ServiceBusAdministrationClient}.
  */
 @Tag("integration")
+@Execution(ExecutionMode.SAME_THREAD)
 public class ServiceBusAdministrationClientIntegrationTest extends TestProxyTestBase {
     private static final Duration TIMEOUT = Duration.ofSeconds(20);
 

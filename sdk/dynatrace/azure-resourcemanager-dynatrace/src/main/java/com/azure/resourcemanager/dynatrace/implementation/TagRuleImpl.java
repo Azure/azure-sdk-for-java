@@ -11,7 +11,6 @@ import com.azure.resourcemanager.dynatrace.models.LogRules;
 import com.azure.resourcemanager.dynatrace.models.MetricRules;
 import com.azure.resourcemanager.dynatrace.models.ProvisioningState;
 import com.azure.resourcemanager.dynatrace.models.TagRule;
-import com.azure.resourcemanager.dynatrace.models.TagRuleUpdate;
 
 public final class TagRuleImpl implements TagRule, TagRule.Definition, TagRule.Update {
     private TagRuleInner innerObject;
@@ -64,8 +63,6 @@ public final class TagRuleImpl implements TagRule, TagRule.Definition, TagRule.U
 
     private String ruleSetName;
 
-    private TagRuleUpdate updateResource;
-
     public TagRuleImpl withExistingMonitor(String resourceGroupName, String monitorName) {
         this.resourceGroupName = resourceGroupName;
         this.monitorName = monitorName;
@@ -97,7 +94,6 @@ public final class TagRuleImpl implements TagRule, TagRule.Definition, TagRule.U
     }
 
     public TagRuleImpl update() {
-        this.updateResource = new TagRuleUpdate();
         return this;
     }
 
@@ -106,8 +102,7 @@ public final class TagRuleImpl implements TagRule, TagRule.Definition, TagRule.U
             serviceManager
                 .serviceClient()
                 .getTagRules()
-                .updateWithResponse(resourceGroupName, monitorName, ruleSetName, updateResource, Context.NONE)
-                .getValue();
+                .createOrUpdate(resourceGroupName, monitorName, ruleSetName, this.innerModel(), Context.NONE);
         return this;
     }
 
@@ -116,8 +111,7 @@ public final class TagRuleImpl implements TagRule, TagRule.Definition, TagRule.U
             serviceManager
                 .serviceClient()
                 .getTagRules()
-                .updateWithResponse(resourceGroupName, monitorName, ruleSetName, updateResource, context)
-                .getValue();
+                .createOrUpdate(resourceGroupName, monitorName, ruleSetName, this.innerModel(), context);
         return this;
     }
 
@@ -150,26 +144,12 @@ public final class TagRuleImpl implements TagRule, TagRule.Definition, TagRule.U
     }
 
     public TagRuleImpl withLogRules(LogRules logRules) {
-        if (isInCreateMode()) {
-            this.innerModel().withLogRules(logRules);
-            return this;
-        } else {
-            this.updateResource.withLogRules(logRules);
-            return this;
-        }
+        this.innerModel().withLogRules(logRules);
+        return this;
     }
 
     public TagRuleImpl withMetricRules(MetricRules metricRules) {
-        if (isInCreateMode()) {
-            this.innerModel().withMetricRules(metricRules);
-            return this;
-        } else {
-            this.updateResource.withMetricRules(metricRules);
-            return this;
-        }
-    }
-
-    private boolean isInCreateMode() {
-        return this.innerModel().id() == null;
+        this.innerModel().withMetricRules(metricRules);
+        return this;
     }
 }

@@ -36,6 +36,10 @@ public final class PolicyContractImpl implements PolicyContract, PolicyContract.
         return this.innerModel().format();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public PolicyContractInner innerModel() {
         return this.innerObject;
     }

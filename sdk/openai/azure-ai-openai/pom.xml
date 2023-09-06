@@ -14,7 +14,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-ai-openai</artifactId>
-  <version>1.0.0-beta.4</version> <!-- {x-version-update;com.azure:azure-ai-openai;current} -->
+  <version>1.0.0-beta.5</version> <!-- {x-version-update;com.azure:azure-ai-openai;current} -->
   <packaging>jar</packaging>
 
   <name>Microsoft Azure Client Library For OpenAI</name>
@@ -52,7 +52,6 @@
       --add-opens com.azure.ai.openai/com.azure.ai.openai.implementation=com.fasterxml.jackson.databind
       --add-opens com.azure.ai.openai/com.azure.ai.openai.functions=com.fasterxml.jackson.databind
     </javaModulesSurefireArgLine>
-    <jacoco.skip>true</jacoco.skip>
   </properties>
 
   <dependencies>
@@ -92,7 +91,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.9.2</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.10.0</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>

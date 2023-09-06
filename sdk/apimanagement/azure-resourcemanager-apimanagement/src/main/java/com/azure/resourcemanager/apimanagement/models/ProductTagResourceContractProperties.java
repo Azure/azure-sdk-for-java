@@ -23,6 +23,10 @@ public final class ProductTagResourceContractProperties extends ProductEntityBas
     @JsonProperty(value = "name", required = true)
     private String name;
 
+    /** Creates an instance of ProductTagResourceContractProperties class. */
+    public ProductTagResourceContractProperties() {
+    }
+
     /**
      * Get the id property: Identifier of the product in the form of /products/{productId}.
      *

@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.apimanagement.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for AuthorizationServer Get. */
 public final class AuthorizationServerGetSamples {
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementGetAuthorizationServer.json
+     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementGetAuthorizationServer.json
      */
     /**
      * Sample code: ApiManagementGetAuthorizationServer.
@@ -18,6 +16,8 @@ public final class AuthorizationServerGetSamples {
      */
     public static void apiManagementGetAuthorizationServer(
         com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
-        manager.authorizationServers().getWithResponse("rg1", "apimService1", "newauthServer2", Context.NONE);
+        manager
+            .authorizationServers()
+            .getWithResponse("rg1", "apimService1", "newauthServer2", com.azure.core.util.Context.NONE);
     }
 }

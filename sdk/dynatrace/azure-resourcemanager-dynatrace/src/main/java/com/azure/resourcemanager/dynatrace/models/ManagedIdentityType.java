@@ -20,6 +20,15 @@ public final class ManagedIdentityType extends ExpandableStringEnum<ManagedIdent
     public static final ManagedIdentityType SYSTEM_AND_USER_ASSIGNED = fromString("SystemAndUserAssigned");
 
     /**
+     * Creates a new instance of ManagedIdentityType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ManagedIdentityType() {
+    }
+
+    /**
      * Creates or finds a ManagedIdentityType from its string representation.
      *
      * @param name a name to look for.

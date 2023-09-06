@@ -218,11 +218,13 @@ public interface L3Network {
             DefinitionStages.WithVlan,
             DefinitionStages.WithCreate {
     }
+
     /** The L3Network definition stages. */
     interface DefinitionStages {
         /** The first stage of the L3Network definition. */
         interface Blank extends WithLocation {
         }
+
         /** The stage of the L3Network definition allowing to specify location. */
         interface WithLocation {
             /**
@@ -241,6 +243,7 @@ public interface L3Network {
              */
             WithResourceGroup withRegion(String location);
         }
+
         /** The stage of the L3Network definition allowing to specify parent resource. */
         interface WithResourceGroup {
             /**
@@ -251,6 +254,7 @@ public interface L3Network {
              */
             WithExtendedLocation withExistingResourceGroup(String resourceGroupName);
         }
+
         /** The stage of the L3Network definition allowing to specify extendedLocation. */
         interface WithExtendedLocation {
             /**
@@ -266,6 +270,7 @@ public interface L3Network {
              */
             WithL3IsolationDomainId withExtendedLocation(ExtendedLocation extendedLocation);
         }
+
         /** The stage of the L3Network definition allowing to specify l3IsolationDomainId. */
         interface WithL3IsolationDomainId {
             /**
@@ -276,6 +281,7 @@ public interface L3Network {
              */
             WithVlan withL3IsolationDomainId(String l3IsolationDomainId);
         }
+
         /** The stage of the L3Network definition allowing to specify vlan. */
         interface WithVlan {
             /**
@@ -286,6 +292,7 @@ public interface L3Network {
              */
             WithCreate withVlan(long vlan);
         }
+
         /**
          * The stage of the L3Network definition which contains all the minimum required properties for the resource to
          * be created, but also allows for any other optional properties to be specified.
@@ -313,6 +320,7 @@ public interface L3Network {
              */
             L3Network create(Context context);
         }
+
         /** The stage of the L3Network definition allowing to specify tags. */
         interface WithTags {
             /**
@@ -323,6 +331,7 @@ public interface L3Network {
              */
             WithCreate withTags(Map<String, String> tags);
         }
+
         /** The stage of the L3Network definition allowing to specify hybridAksIpamEnabled. */
         interface WithHybridAksIpamEnabled {
             /**
@@ -337,6 +346,7 @@ public interface L3Network {
              */
             WithCreate withHybridAksIpamEnabled(HybridAksIpamEnabled hybridAksIpamEnabled);
         }
+
         /** The stage of the L3Network definition allowing to specify hybridAksPluginType. */
         interface WithHybridAksPluginType {
             /**
@@ -349,6 +359,7 @@ public interface L3Network {
              */
             WithCreate withHybridAksPluginType(HybridAksPluginType hybridAksPluginType);
         }
+
         /** The stage of the L3Network definition allowing to specify interfaceName. */
         interface WithInterfaceName {
             /**
@@ -362,6 +373,7 @@ public interface L3Network {
              */
             WithCreate withInterfaceName(String interfaceName);
         }
+
         /** The stage of the L3Network definition allowing to specify ipAllocationType. */
         interface WithIpAllocationType {
             /**
@@ -373,6 +385,7 @@ public interface L3Network {
              */
             WithCreate withIpAllocationType(IpAllocationType ipAllocationType);
         }
+
         /** The stage of the L3Network definition allowing to specify ipv4ConnectedPrefix. */
         interface WithIpv4ConnectedPrefix {
             /**
@@ -385,6 +398,7 @@ public interface L3Network {
              */
             WithCreate withIpv4ConnectedPrefix(String ipv4ConnectedPrefix);
         }
+
         /** The stage of the L3Network definition allowing to specify ipv6ConnectedPrefix. */
         interface WithIpv6ConnectedPrefix {
             /**
@@ -398,6 +412,7 @@ public interface L3Network {
             WithCreate withIpv6ConnectedPrefix(String ipv6ConnectedPrefix);
         }
     }
+
     /**
      * Begins update for the L3Network resource.
      *
@@ -422,6 +437,7 @@ public interface L3Network {
          */
         L3Network apply(Context context);
     }
+
     /** The L3Network update stages. */
     interface UpdateStages {
         /** The stage of the L3Network update allowing to specify tags. */
@@ -435,6 +451,7 @@ public interface L3Network {
             Update withTags(Map<String, String> tags);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

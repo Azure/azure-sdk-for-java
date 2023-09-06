@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.apimanagement.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.apimanagement.models.AdditionalLocation;
 import com.azure.resourcemanager.apimanagement.models.ApiManagementServiceResource;
 import com.azure.resourcemanager.apimanagement.models.ApiManagementServiceSkuProperties;
@@ -18,7 +17,7 @@ import java.util.Map;
 /** Samples for ApiManagementService Update. */
 public final class ApiManagementServiceUpdateSamples {
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementUpdateServiceDisableTls10.json
+     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementUpdateServiceDisableTls10.json
      */
     /**
      * Sample code: ApiManagementUpdateServiceDisableTls10.
@@ -30,7 +29,7 @@ public final class ApiManagementServiceUpdateSamples {
         ApiManagementServiceResource resource =
             manager
                 .apiManagementServices()
-                .getByResourceGroupWithResponse("rg1", "apimService1", Context.NONE)
+                .getByResourceGroupWithResponse("rg1", "apimService1", com.azure.core.util.Context.NONE)
                 .getValue();
         resource
             .update()
@@ -40,7 +39,7 @@ public final class ApiManagementServiceUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementUpdateServiceToNewVnetAndAZs.json
+     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementUpdateServiceToNewVnetAndAZs.json
      */
     /**
      * Sample code: ApiManagementUpdateServiceToNewVnetAndAvailabilityZones.
@@ -52,7 +51,7 @@ public final class ApiManagementServiceUpdateSamples {
         ApiManagementServiceResource resource =
             manager
                 .apiManagementServices()
-                .getByResourceGroupWithResponse("rg1", "apimService1", Context.NONE)
+                .getByResourceGroupWithResponse("rg1", "apimService1", com.azure.core.util.Context.NONE)
                 .getValue();
         resource
             .update()
@@ -82,7 +81,7 @@ public final class ApiManagementServiceUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementUpdateServicePublisherDetails.json
+     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementUpdateServicePublisherDetails.json
      */
     /**
      * Sample code: ApiManagementUpdateServicePublisherDetails.
@@ -94,11 +93,12 @@ public final class ApiManagementServiceUpdateSamples {
         ApiManagementServiceResource resource =
             manager
                 .apiManagementServices()
-                .getByResourceGroupWithResponse("rg1", "apimService1", Context.NONE)
+                .getByResourceGroupWithResponse("rg1", "apimService1", com.azure.core.util.Context.NONE)
                 .getValue();
         resource.update().withPublisherEmail("foobar@live.com").withPublisherName("Contoso Vnext").apply();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

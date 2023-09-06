@@ -3,12 +3,16 @@
 
 package com.azure.security.keyvault.secrets.models;
 
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.security.keyvault.secrets.SecretAsyncClient;
 import com.azure.security.keyvault.secrets.SecretClient;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.time.Instant;
+import com.azure.security.keyvault.secrets.implementation.DeletedSecretHelper;
+import com.azure.security.keyvault.secrets.implementation.models.SecretsModelsUtils;
+
+import java.io.IOException;
 import java.time.OffsetDateTime;
-import java.time.ZoneOffset;
 
 /**
  * Deleted Secret is the resource consisting of name, recovery id, deleted date, scheduled purge date and its attributes
@@ -20,10 +24,28 @@ import java.time.ZoneOffset;
  */
 public final class DeletedSecret extends KeyVaultSecret {
 
+    static {
+        DeletedSecretHelper.setAccessor(new DeletedSecretHelper.DeletedSecretAccessor() {
+            @Override
+            public void setRecoveryId(DeletedSecret deletedSecret, String recoveryId) {
+                deletedSecret.recoveryId = recoveryId;
+            }
+
+            @Override
+            public void setScheduledPurgeDate(DeletedSecret deletedSecret, OffsetDateTime scheduledPurgeDate) {
+                deletedSecret.scheduledPurgeDate = scheduledPurgeDate;
+            }
+
+            @Override
+            public void setDeletedOn(DeletedSecret deletedSecret, OffsetDateTime deletedOn) {
+                deletedSecret.deletedOn = deletedOn;
+            }
+        });
+    }
+
     /**
      * The url of the recovery object, used to identify and recover the deleted secret.
      */
-    @JsonProperty(value = "recoveryId")
     private String recoveryId;
 
     /**
@@ -63,23 +85,59 @@ public final class DeletedSecret extends KeyVaultSecret {
         return this.deletedOn;
     }
 
-    /**
-     * Unpacks the scheduledPurageDate json response. Converts the {@link Long scheduledPurgeDate} epoch second value to
-     * OffsetDateTime and updates the value of class variable scheduledPurgeDate.
-     */
-    @JsonProperty("scheduledPurgeDate")
-    private void unpackScheduledPurgeDate(Long scheduledPurgeDate) {
-        this.scheduledPurgeDate =
-            OffsetDateTime.ofInstant(Instant.ofEpochMilli(scheduledPurgeDate * 1000L), ZoneOffset.UTC);
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        return jsonWriter.writeStartObject()
+            .writeStringField("value", getValue())
+            .writeStringField("recoveryId", recoveryId)
+            .writeEndObject();
     }
 
     /**
-     * Unpacks the deletedDate json response. Converts the {@link Long deletedDate} epoch second value to OffsetDateTime
-     * and updates the value of class variable deletedDate.
+     * Reads an instance of {@link DeletedSecret} from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of {@link DeletedSecret} if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the {@link DeletedSecret}.
      */
-    @JsonProperty("deletedDate")
-    private void setDeletedOn(Long deletedOn) {
-        this.deletedOn = OffsetDateTime.ofInstant(Instant.ofEpochMilli(deletedOn * 1000L), ZoneOffset.UTC);
-    }
+    public static DeletedSecret fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DeletedSecret deletedSecret = new DeletedSecret();
 
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    deletedSecret.value = reader.getString();
+                } else if ("id".equals(fieldName)) {
+                    deletedSecret.properties.id = reader.getString();
+                    SecretsModelsUtils.unpackId(deletedSecret.properties.id,
+                        name -> deletedSecret.properties.name = name,
+                        version -> deletedSecret.properties.version = version);
+                } else if ("attributes".equals(fieldName) && reader.currentToken() == JsonToken.START_OBJECT) {
+                    SecretProperties.deserializeAttributes(reader, deletedSecret.properties);
+                } else if ("managed".equals(fieldName)) {
+                    deletedSecret.properties.managed = reader.getNullable(JsonReader::getBoolean);
+                } else if ("kid".equals(fieldName)) {
+                    deletedSecret.properties.keyId = reader.getString();
+                } else if ("contentType".equals(fieldName)) {
+                    deletedSecret.properties.contentType = reader.getString();
+                } else if ("tags".equals(fieldName)) {
+                    deletedSecret.properties.tags = reader.readMap(JsonReader::getString);
+                } else if ("recoveryId".equals(fieldName)) {
+                    deletedSecret.recoveryId = reader.getString();
+                } else if ("scheduledPurgeDate".equals(fieldName)) {
+                    deletedSecret.scheduledPurgeDate = reader.getNullable(SecretsModelsUtils::epochToOffsetDateTime);
+                } else if ("deletedDate".equals(fieldName)) {
+                    deletedSecret.deletedOn = reader.getNullable(SecretsModelsUtils::epochToOffsetDateTime);
+                } else  {
+                    reader.skipChildren();
+                }
+            }
+
+            return deletedSecret;
+        });
+    }
 }

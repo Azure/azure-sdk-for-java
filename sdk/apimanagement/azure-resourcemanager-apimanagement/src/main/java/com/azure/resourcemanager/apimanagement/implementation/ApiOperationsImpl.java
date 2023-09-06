@@ -49,10 +49,6 @@ public final class ApiOperationsImpl implements ApiOperations {
         return Utils.mapPage(inner, inner1 -> new OperationContractImpl(inner1, this.manager()));
     }
 
-    public void getEntityTag(String resourceGroupName, String serviceName, String apiId, String operationId) {
-        this.serviceClient().getEntityTag(resourceGroupName, serviceName, apiId, operationId);
-    }
-
     public ApiOperationsGetEntityTagResponse getEntityTagWithResponse(
         String resourceGroupName, String serviceName, String apiId, String operationId, Context context) {
         return this
@@ -60,13 +56,8 @@ public final class ApiOperationsImpl implements ApiOperations {
             .getEntityTagWithResponse(resourceGroupName, serviceName, apiId, operationId, context);
     }
 
-    public OperationContract get(String resourceGroupName, String serviceName, String apiId, String operationId) {
-        OperationContractInner inner = this.serviceClient().get(resourceGroupName, serviceName, apiId, operationId);
-        if (inner != null) {
-            return new OperationContractImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+    public void getEntityTag(String resourceGroupName, String serviceName, String apiId, String operationId) {
+        this.serviceClient().getEntityTag(resourceGroupName, serviceName, apiId, operationId);
     }
 
     public Response<OperationContract> getWithResponse(
@@ -84,8 +75,13 @@ public final class ApiOperationsImpl implements ApiOperations {
         }
     }
 
-    public void delete(String resourceGroupName, String serviceName, String apiId, String operationId, String ifMatch) {
-        this.serviceClient().delete(resourceGroupName, serviceName, apiId, operationId, ifMatch);
+    public OperationContract get(String resourceGroupName, String serviceName, String apiId, String operationId) {
+        OperationContractInner inner = this.serviceClient().get(resourceGroupName, serviceName, apiId, operationId);
+        if (inner != null) {
+            return new OperationContractImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public Response<Void> deleteWithResponse(
@@ -98,6 +94,10 @@ public final class ApiOperationsImpl implements ApiOperations {
         return this
             .serviceClient()
             .deleteWithResponse(resourceGroupName, serviceName, apiId, operationId, ifMatch, context);
+    }
+
+    public void delete(String resourceGroupName, String serviceName, String apiId, String operationId, String ifMatch) {
+        this.serviceClient().delete(resourceGroupName, serviceName, apiId, operationId, ifMatch);
     }
 
     public OperationContract getById(String id) {

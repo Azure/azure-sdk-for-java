@@ -119,13 +119,13 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.9.2</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.10.0</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.bouncycastle</groupId>
-      <artifactId>bcprov-jdk15on</artifactId>
-      <version>1.70</version> <!-- {x-version-update;org.bouncycastle:bcprov-jdk15on;external_dependency} -->
+      <artifactId>bcprov-jdk18on</artifactId>
+      <version>1.76</version> <!-- {x-version-update;org.bouncycastle:bcprov-jdk18on;external_dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>

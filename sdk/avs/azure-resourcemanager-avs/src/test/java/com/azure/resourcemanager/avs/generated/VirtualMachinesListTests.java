@@ -13,7 +13,7 @@ public final class VirtualMachinesListTests {
         VirtualMachinesList model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"properties\":{\"displayName\":\"ud\",\"moRefId\":\"rx\",\"folderPath\":\"thzvaytdwkqbrqu\",\"restrictMovement\":\"Disabled\"},\"id\":\"xhexiilivpdti\",\"name\":\"r\",\"type\":\"tdqoaxoruzfgsq\"}],\"nextLink\":\"fxrxxle\"}")
+                    "{\"value\":[{\"properties\":{\"displayName\":\"wuenvr\",\"moRefId\":\"yo\",\"folderPath\":\"ibreb\",\"restrictMovement\":\"Disabled\"},\"id\":\"ysjkixqtnqttez\",\"name\":\"wfff\",\"type\":\"akpjpqqmtedlt\"}],\"nextLink\":\"jihy\"}")
                 .toObject(VirtualMachinesList.class);
     }
 

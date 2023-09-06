@@ -4,14 +4,13 @@
 
 package com.azure.resourcemanager.apimanagement.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.apimanagement.fluent.models.PortalSignupSettingsInner;
 import com.azure.resourcemanager.apimanagement.models.TermsOfServiceProperties;
 
 /** Samples for SignUpSettings CreateOrUpdate. */
 public final class SignUpSettingsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementPortalSettingsPutSignUp.json
+     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementPortalSettingsPutSignUp.json
      */
     /**
      * Sample code: ApiManagementPortalSettingsUpdateSignUp.
@@ -33,6 +32,6 @@ public final class SignUpSettingsCreateOrUpdateSamples {
                             .withEnabled(true)
                             .withConsentRequired(true)),
                 "*",
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

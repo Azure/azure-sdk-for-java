@@ -40,6 +40,24 @@ public final class OpenidConnectProviderUpdateContractProperties {
     @JsonProperty(value = "clientSecret")
     private String clientSecret;
 
+    /*
+     * If true, the Open ID Connect provider may be used in the developer portal test console. True by default if no
+     * value is provided.
+     */
+    @JsonProperty(value = "useInTestConsole")
+    private Boolean useInTestConsole;
+
+    /*
+     * If true, the Open ID Connect provider will be used in the API documentation in the developer portal. False by
+     * default if no value is provided.
+     */
+    @JsonProperty(value = "useInApiDocumentation")
+    private Boolean useInApiDocumentation;
+
+    /** Creates an instance of OpenidConnectProviderUpdateContractProperties class. */
+    public OpenidConnectProviderUpdateContractProperties() {
+    }
+
     /**
      * Get the displayName property: User-friendly OpenID Connect Provider name.
      *
@@ -137,6 +155,50 @@ public final class OpenidConnectProviderUpdateContractProperties {
      */
     public OpenidConnectProviderUpdateContractProperties withClientSecret(String clientSecret) {
         this.clientSecret = clientSecret;
+        return this;
+    }
+
+    /**
+     * Get the useInTestConsole property: If true, the Open ID Connect provider may be used in the developer portal test
+     * console. True by default if no value is provided.
+     *
+     * @return the useInTestConsole value.
+     */
+    public Boolean useInTestConsole() {
+        return this.useInTestConsole;
+    }
+
+    /**
+     * Set the useInTestConsole property: If true, the Open ID Connect provider may be used in the developer portal test
+     * console. True by default if no value is provided.
+     *
+     * @param useInTestConsole the useInTestConsole value to set.
+     * @return the OpenidConnectProviderUpdateContractProperties object itself.
+     */
+    public OpenidConnectProviderUpdateContractProperties withUseInTestConsole(Boolean useInTestConsole) {
+        this.useInTestConsole = useInTestConsole;
+        return this;
+    }
+
+    /**
+     * Get the useInApiDocumentation property: If true, the Open ID Connect provider will be used in the API
+     * documentation in the developer portal. False by default if no value is provided.
+     *
+     * @return the useInApiDocumentation value.
+     */
+    public Boolean useInApiDocumentation() {
+        return this.useInApiDocumentation;
+    }
+
+    /**
+     * Set the useInApiDocumentation property: If true, the Open ID Connect provider will be used in the API
+     * documentation in the developer portal. False by default if no value is provided.
+     *
+     * @param useInApiDocumentation the useInApiDocumentation value to set.
+     * @return the OpenidConnectProviderUpdateContractProperties object itself.
+     */
+    public OpenidConnectProviderUpdateContractProperties withUseInApiDocumentation(Boolean useInApiDocumentation) {
+        this.useInApiDocumentation = useInApiDocumentation;
         return this;
     }
 

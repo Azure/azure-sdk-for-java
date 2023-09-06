@@ -22,6 +22,10 @@ public final class NetworkStatusContractByLocationInner {
     @JsonProperty(value = "networkStatus")
     private NetworkStatusContractInner networkStatus;
 
+    /** Creates an instance of NetworkStatusContractByLocationInner class. */
+    public NetworkStatusContractByLocationInner() {
+    }
+
     /**
      * Get the location property: Location of service.
      *

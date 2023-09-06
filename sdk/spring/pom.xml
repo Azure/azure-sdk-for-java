@@ -132,5 +132,45 @@
         <module>azure-spring-data-cosmos</module>
       </modules>
     </profile>
+
+    <profile>
+      <id>coverage</id>
+      <modules>
+        <module>spring-messaging-azure</module>
+        <module>spring-messaging-azure-eventhubs</module>
+        <module>spring-messaging-azure-servicebus</module>
+        <module>spring-messaging-azure-storage-queue</module>
+        <module>spring-integration-azure-core</module>
+        <module>spring-integration-azure-eventhubs</module>
+        <module>spring-integration-azure-servicebus</module>
+        <module>spring-integration-azure-storage-queue</module>
+        <module>spring-cloud-azure-core</module>
+        <module>spring-cloud-azure-service</module>
+        <module>spring-cloud-azure-resourcemanager</module>
+        <module>spring-cloud-azure-actuator</module>
+        <module>spring-cloud-azure-actuator-autoconfigure</module>
+        <module>spring-cloud-azure-autoconfigure</module>
+        <module>spring-cloud-azure-stream-binder-eventhubs-core</module>
+        <module>spring-cloud-azure-stream-binder-eventhubs</module>
+        <module>spring-cloud-azure-stream-binder-servicebus-core</module>
+        <module>spring-cloud-azure-stream-binder-servicebus</module>
+        <module>spring-cloud-azure-trace-sleuth</module>
+        <module>spring-cloud-azure-integration-test-appconfiguration-config</module>
+        <module>spring-cloud-azure-appconfiguration-config</module>
+        <module>spring-cloud-azure-appconfiguration-config-web</module>
+        <module>spring-cloud-azure-feature-management</module>
+        <module>spring-cloud-azure-feature-management-web</module>
+        <module>azure-spring-data-cosmos</module>
+      </modules>
+    </profile>
+
+    <profile>
+      <id>monitor</id>
+      <modules>
+        <module>../../eng/code-quality-reports</module>
+        <module>spring-cloud-azure-starter-monitor</module>
+        <module>spring-cloud-azure-starter-monitor-test</module>
+      </modules>
+    </profile>
   </profiles>
 </project>

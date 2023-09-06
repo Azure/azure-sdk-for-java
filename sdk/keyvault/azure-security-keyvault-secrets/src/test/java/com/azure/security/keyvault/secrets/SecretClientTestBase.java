@@ -6,18 +6,9 @@ package com.azure.security.keyvault.secrets;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.HttpPipelineBuilder;
-import com.azure.core.http.policy.ExponentialBackoff;
-import com.azure.core.http.policy.HttpLogDetailLevel;
-import com.azure.core.http.policy.HttpLogOptions;
-import com.azure.core.http.policy.HttpLoggingPolicy;
-import com.azure.core.http.policy.HttpPipelinePolicy;
-import com.azure.core.http.policy.HttpPolicyProviders;
-import com.azure.core.http.policy.RetryPolicy;
-import com.azure.core.http.policy.RetryStrategy;
-import com.azure.core.http.policy.UserAgentPolicy;
-import com.azure.core.http.rest.Response;
+import com.azure.core.http.policy.ExponentialBackoffOptions;
+import com.azure.core.http.policy.FixedDelayOptions;
+import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.models.BodilessMatcher;
 import com.azure.core.test.models.CustomMatcher;
@@ -47,8 +38,7 @@ import java.util.function.Consumer;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public abstract class SecretClientTestBase extends TestProxyTestBase {
     static final String DISPLAY_NAME_WITH_ARGUMENTS = "{displayName} with [{arguments}]";
@@ -60,23 +50,21 @@ public abstract class SecretClientTestBase extends TestProxyTestBase {
     private static final String SECRET_NAME = "javaSecretTemp";
     private static final String SECRET_VALUE = "Chocolate is hidden in the toothpaste cabinet";
 
-    private static final String SDK_NAME = "client_name";
-    private static final String SDK_VERSION = "client_version";
+    private static final int MAX_RETRIES = 5;
+    private static final RetryOptions LIVE_RETRY_OPTIONS = new RetryOptions(new ExponentialBackoffOptions()
+        .setMaxRetries(MAX_RETRIES)
+        .setBaseDelay(Duration.ofSeconds(2))
+        .setMaxDelay(Duration.ofSeconds(16)));
 
-    @Override
-    protected String getTestName() {
-        return "";
-    }
+    private static final RetryOptions PLAYBACK_RETRY_OPTIONS =
+        new RetryOptions(new FixedDelayOptions(MAX_RETRIES, Duration.ofMillis(1)));
 
     void beforeTestSetup() {
         KeyVaultCredentialPolicy.clearCache();
     }
 
-    HttpPipeline getHttpPipeline(HttpClient httpClient) {
-        return getHttpPipeline(httpClient, null);
-    }
-
-    HttpPipeline getHttpPipeline(HttpClient httpClient, String testTenantId) {
+    SecretClientBuilder getClientBuilder(HttpClient httpClient, String testTenantId, String endpoint,
+        SecretServiceVersion serviceVersion) {
         TokenCredential credential;
 
         if (!interceptorManager.isPlaybackMode()) {
@@ -105,42 +93,28 @@ public abstract class SecretClientTestBase extends TestProxyTestBase {
             interceptorManager.addMatchers(customMatchers);
         }
 
-        // Closest to API goes first, closest to wire goes last.
-        final List<HttpPipelinePolicy> policies = new ArrayList<>();
+        SecretClientBuilder builder = new SecretClientBuilder()
+            .vaultUrl(endpoint)
+            .serviceVersion(serviceVersion)
+            .credential(credential)
+            .httpClient(httpClient);
 
-        policies.add(
-            new UserAgentPolicy(null, SDK_NAME, SDK_VERSION, Configuration.getGlobalConfiguration().clone()));
-        HttpPolicyProviders.addBeforeRetryPolicies(policies);
+        if (interceptorManager.isPlaybackMode()) {
+            return builder.retryOptions(PLAYBACK_RETRY_OPTIONS);
+        } else {
+            builder.retryOptions(LIVE_RETRY_OPTIONS);
 
-        RetryStrategy strategy = new ExponentialBackoff(5, Duration.ofSeconds(2), Duration.ofSeconds(16));
-
-        policies.add(new RetryPolicy(strategy));
-
-        if (credential != null) {
-            // If in playback mode, disable the challenge resource verification.
-            policies.add(new KeyVaultCredentialPolicy(credential, interceptorManager.isPlaybackMode()));
+            return interceptorManager.isRecordMode()
+                ? builder.addPolicy(interceptorManager.getRecordPolicy())
+                : builder;
         }
-
-        HttpPolicyProviders.addAfterRetryPolicies(policies);
-        policies.add(new HttpLoggingPolicy(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS)));
-
-        if (interceptorManager.isRecordMode()) {
-            policies.add(interceptorManager.getRecordPolicy());
-        }
-
-        return new HttpPipelineBuilder()
-            .policies(policies.toArray(new HttpPipelinePolicy[0]))
-            .httpClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient)
-            .build();
     }
 
     @Test
     public abstract void setSecret(HttpClient httpClient, SecretServiceVersion serviceVersion);
 
     void setSecretRunner(Consumer<KeyVaultSecret> testRunner) {
-        final Map<String, String> tags = new HashMap<>();
-
-        tags.put("foo", "baz");
+        final Map<String, String> tags = Collections.singletonMap("foo", "baz");
 
         String resourceId = testResourceNamer.randomName(SECRET_NAME, 20);
 
@@ -322,12 +296,10 @@ public abstract class SecretClientTestBase extends TestProxyTestBase {
 
     void listSecretsRunner(Consumer<HashMap<String, KeyVaultSecret>> testRunner) {
         HashMap<String, KeyVaultSecret> secretsToSetAndList = new HashMap<>();
-        String secretName;
-        String secretVal;
 
         for (int i = 0; i < 2; i++) {
-            secretName = testResourceNamer.randomName("listSecret", 20);
-            secretVal = "listSecretVal" + i;
+            String secretName = testResourceNamer.randomName("listSecret", 20);
+            String secretVal = "listSecretVal" + i;
             KeyVaultSecret secret = new KeyVaultSecret(secretName, secretVal)
                 .setProperties(new SecretProperties()
                     .setExpiresOn(OffsetDateTime.of(2050, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC)));
@@ -342,20 +314,18 @@ public abstract class SecretClientTestBase extends TestProxyTestBase {
     public abstract void listDeletedSecrets(HttpClient httpClient, SecretServiceVersion serviceVersion);
 
     void listDeletedSecretsRunner(Consumer<HashMap<String, KeyVaultSecret>> testRunner) {
-        HashMap<String, KeyVaultSecret> secretsecretsToSetAndDelete = new HashMap<>();
-        String secretName;
-        String secretVal;
+        HashMap<String, KeyVaultSecret> secretSecretsToSetAndDelete = new HashMap<>();
 
         for (int i = 0; i < 3; i++) {
-            secretName = testResourceNamer.randomName("listDeletedSecretsTest", 20);
-            secretVal = "listDeletedSecretVal" + i;
+            String secretName = testResourceNamer.randomName("listDeletedSecretsTest", 20);
+            String secretVal = "listDeletedSecretVal" + i;
 
-            secretsecretsToSetAndDelete.put(secretName, new KeyVaultSecret(secretName, secretVal)
+            secretSecretsToSetAndDelete.put(secretName, new KeyVaultSecret(secretName, secretVal)
                 .setProperties(new SecretProperties()
                     .setExpiresOn(OffsetDateTime.of(2090, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC))));
         }
 
-        testRunner.accept(secretsecretsToSetAndDelete);
+        testRunner.accept(secretSecretsToSetAndDelete);
     }
 
     @Test
@@ -375,30 +345,6 @@ public abstract class SecretClientTestBase extends TestProxyTestBase {
         }
 
         testRunner.accept(secretsToSetAndList);
-    }
-
-    /**
-     * Helper method to verify that the Response matches what was expected. This method assumes a response status of
-     * 200.
-     *
-     * @param expected Secret expected to be returned by the service.
-     * @param response Response returned by the service, the body should contain a Secret.
-     */
-    static void assertSecretEquals(KeyVaultSecret expected, Response<KeyVaultSecret> response) {
-        assertSecretEquals(expected, response, 200);
-    }
-
-    /**
-     * Helper method to verify that the RestResponse matches what was expected.
-     *
-     * @param expected ConfigurationSetting expected to be returned by the service.
-     * @param response RestResponse returned from the service, the body should contain a ConfigurationSetting.
-     * @param expectedStatusCode Expected HTTP status code returned by the service.
-     */
-    static void assertSecretEquals(KeyVaultSecret expected, Response<KeyVaultSecret> response, final int expectedStatusCode) {
-        assertNotNull(response);
-        assertEquals(expectedStatusCode, response.getStatusCode());
-        assertSecretEquals(expected, response.getValue());
     }
 
     /**
@@ -423,66 +369,16 @@ public abstract class SecretClientTestBase extends TestProxyTestBase {
         return endpoint;
     }
 
-    static void assertRestException(Runnable exceptionThrower, int expectedStatusCode) {
-        assertRestException(exceptionThrower, HttpResponseException.class, expectedStatusCode);
+    static void assertRestException(Runnable exceptionThrower,
+        Class<? extends HttpResponseException> expectedExceptionType, int expectedStatusCode) {
+        assertRestException(assertThrows(expectedExceptionType, exceptionThrower::run), expectedExceptionType,
+            expectedStatusCode);
     }
 
-    static void assertRestException(Runnable exceptionThrower, Class<? extends HttpResponseException> expectedExceptionType, int expectedStatusCode) {
-        try {
-            exceptionThrower.run();
-            fail();
-        } catch (Throwable e) {
-            assertRestException(e, expectedExceptionType, expectedStatusCode);
-        }
-    }
-
-    /**
-     * Helper method to verify the error was a HttpRequestException and it has a specific HTTP response code.
-     *
-     * @param exception Expected error thrown during the test
-     * @param expectedStatusCode Expected HTTP status code contained in the error response
-     */
-    static void assertRestException(Throwable exception, int expectedStatusCode) {
-        assertRestException(exception, HttpResponseException.class, expectedStatusCode);
-    }
-
-    static void assertRestException(Throwable exception, Class<? extends HttpResponseException> expectedExceptionType, int expectedStatusCode) {
+    static void assertRestException(Throwable exception, Class<? extends HttpResponseException> expectedExceptionType,
+        int expectedStatusCode) {
         assertEquals(expectedExceptionType, exception.getClass());
         assertEquals(expectedStatusCode, ((HttpResponseException) exception).getResponse().getStatusCode());
-    }
-
-    /**
-     * Helper method to verify that a command throws an IllegalArgumentException.
-     *
-     * @param exceptionThrower Command that should throw the exception
-     */
-    static <T> void assertRunnableThrowsException(Runnable exceptionThrower, Class<T> exception) {
-        try {
-            exceptionThrower.run();
-            fail();
-        } catch (Exception e) {
-            assertEquals(exception, e.getClass());
-        }
-    }
-
-    public void sleepInRecordMode(long millis) {
-        if (interceptorManager.isPlaybackMode()) {
-            return;
-        }
-
-        try {
-            Thread.sleep(millis);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void sleep(long millis) {
-        try {
-            Thread.sleep(millis);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
     }
 
     /**

@@ -4,19 +4,23 @@
 
 package com.azure.resourcemanager.apimanagement.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.management.ProxyResource;
 import com.azure.resourcemanager.apimanagement.fluent.models.PolicyDescriptionContractProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Policy description details. */
-@Fluent
+@Immutable
 public final class PolicyDescriptionContract extends ProxyResource {
     /*
      * Policy description contract properties.
      */
     @JsonProperty(value = "properties")
     private PolicyDescriptionContractProperties innerProperties;
+
+    /** Creates an instance of PolicyDescriptionContract class. */
+    public PolicyDescriptionContract() {
+    }
 
     /**
      * Get the innerProperties property: Policy description contract properties.

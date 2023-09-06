@@ -18,8 +18,8 @@ public final class ApiReleaseContractProperties {
     private String apiId;
 
     /*
-     * The time the API was released. The date conforms to the following
-     * format: yyyy-MM-ddTHH:mm:ssZ as specified by the ISO 8601 standard.
+     * The time the API was released. The date conforms to the following format: yyyy-MM-ddTHH:mm:ssZ as specified by
+     * the ISO 8601 standard.
      */
     @JsonProperty(value = "createdDateTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime createdDateTime;
@@ -35,6 +35,10 @@ public final class ApiReleaseContractProperties {
      */
     @JsonProperty(value = "notes")
     private String notes;
+
+    /** Creates an instance of ApiReleaseContractProperties class. */
+    public ApiReleaseContractProperties() {
+    }
 
     /**
      * Get the apiId property: Identifier of the API the release belongs to.

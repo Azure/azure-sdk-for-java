@@ -17,6 +17,10 @@ public final class ContentTypeContractInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private ContentTypeContractProperties innerProperties;
 
+    /** Creates an instance of ContentTypeContractInner class. */
+    public ContentTypeContractInner() {
+    }
+
     /**
      * Get the innerProperties property: Properties of the content type.
      *

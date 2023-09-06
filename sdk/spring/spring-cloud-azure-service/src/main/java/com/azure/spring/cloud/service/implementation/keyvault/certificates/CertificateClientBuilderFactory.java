@@ -88,6 +88,8 @@ public class CertificateClientBuilderFactory extends AbstractAzureHttpClientBuil
         PropertyMapper map = new PropertyMapper();
         map.from(certificateClientProperties.getEndpoint()).to(builder::vaultUrl);
         map.from(certificateClientProperties.getServiceVersion()).to(builder::serviceVersion);
+        map.from(certificateClientProperties.isChallengeResourceVerificationEnabled())
+           .whenFalse().to(enabled -> builder.disableChallengeResourceVerification());
     }
 
     @Override

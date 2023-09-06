@@ -18,6 +18,10 @@ public final class ApiCreateOrUpdateParameter {
     @JsonProperty(value = "properties")
     private ApiCreateOrUpdateProperties innerProperties;
 
+    /** Creates an instance of ApiCreateOrUpdateParameter class. */
+    public ApiCreateOrUpdateParameter() {
+    }
+
     /**
      * Get the innerProperties property: API entity create of update properties.
      *
@@ -118,6 +122,32 @@ public final class ApiCreateOrUpdateParameter {
             this.innerProperties = new ApiCreateOrUpdateProperties();
         }
         this.innerProperties().withSoapApiType(soapApiType);
+        return this;
+    }
+
+    /**
+     * Get the translateRequiredQueryParametersConduct property: Strategy of translating required query parameters to
+     * template ones. By default has value 'template'. Possible values: 'template', 'query'.
+     *
+     * @return the translateRequiredQueryParametersConduct value.
+     */
+    public TranslateRequiredQueryParametersConduct translateRequiredQueryParametersConduct() {
+        return this.innerProperties() == null ? null : this.innerProperties().translateRequiredQueryParametersConduct();
+    }
+
+    /**
+     * Set the translateRequiredQueryParametersConduct property: Strategy of translating required query parameters to
+     * template ones. By default has value 'template'. Possible values: 'template', 'query'.
+     *
+     * @param translateRequiredQueryParametersConduct the translateRequiredQueryParametersConduct value to set.
+     * @return the ApiCreateOrUpdateParameter object itself.
+     */
+    public ApiCreateOrUpdateParameter withTranslateRequiredQueryParametersConduct(
+        TranslateRequiredQueryParametersConduct translateRequiredQueryParametersConduct) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApiCreateOrUpdateProperties();
+        }
+        this.innerProperties().withTranslateRequiredQueryParametersConduct(translateRequiredQueryParametersConduct);
         return this;
     }
 

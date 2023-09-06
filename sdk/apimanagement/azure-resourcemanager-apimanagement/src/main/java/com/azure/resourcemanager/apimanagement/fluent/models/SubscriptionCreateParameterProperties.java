@@ -13,8 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class SubscriptionCreateParameterProperties {
     /*
-     * User (user id path) for whom subscription is being created in form
-     * /users/{userId}
+     * User (user id path) for whom subscription is being created in form /users/{userId}
      */
     @JsonProperty(value = "ownerId")
     private String ownerId;
@@ -32,29 +31,24 @@ public final class SubscriptionCreateParameterProperties {
     private String displayName;
 
     /*
-     * Primary subscription key. If not specified during request key will be
-     * generated automatically.
+     * Primary subscription key. If not specified during request key will be generated automatically.
      */
     @JsonProperty(value = "primaryKey")
     private String primaryKey;
 
     /*
-     * Secondary subscription key. If not specified during request key will be
-     * generated automatically.
+     * Secondary subscription key. If not specified during request key will be generated automatically.
      */
     @JsonProperty(value = "secondaryKey")
     private String secondaryKey;
 
     /*
-     * Initial subscription state. If no value is specified, subscription is
-     * created with Submitted state. Possible states are * active – the
-     * subscription is active, * suspended – the subscription is blocked, and
-     * the subscriber cannot call any APIs of the product, * submitted – the
-     * subscription request has been made by the developer, but has not yet
-     * been approved or rejected, * rejected – the subscription request has
-     * been denied by an administrator, * cancelled – the subscription has been
-     * cancelled by the developer or administrator, * expired – the
-     * subscription reached its expiration date and was deactivated.
+     * Initial subscription state. If no value is specified, subscription is created with Submitted state. Possible
+     * states are * active – the subscription is active, * suspended – the subscription is blocked, and the subscriber
+     * cannot call any APIs of the product, * submitted – the subscription request has been made by the developer, but
+     * has not yet been approved or rejected, * rejected – the subscription request has been denied by an
+     * administrator, * cancelled – the subscription has been cancelled by the developer or administrator, * expired –
+     * the subscription reached its expiration date and was deactivated.
      */
     @JsonProperty(value = "state")
     private SubscriptionState state;
@@ -64,6 +58,10 @@ public final class SubscriptionCreateParameterProperties {
      */
     @JsonProperty(value = "allowTracing")
     private Boolean allowTracing;
+
+    /** Creates an instance of SubscriptionCreateParameterProperties class. */
+    public SubscriptionCreateParameterProperties() {
+    }
 
     /**
      * Get the ownerId property: User (user id path) for whom subscription is being created in form /users/{userId}.

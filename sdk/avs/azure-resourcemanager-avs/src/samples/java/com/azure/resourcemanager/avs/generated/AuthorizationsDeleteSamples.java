@@ -7,7 +7,7 @@ package com.azure.resourcemanager.avs.generated;
 /** Samples for Authorizations Delete. */
 public final class AuthorizationsDeleteSamples {
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2022-05-01/examples/Authorizations_Delete.json
+     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/Authorizations_Delete.json
      */
     /**
      * Sample code: Authorizations_Delete.

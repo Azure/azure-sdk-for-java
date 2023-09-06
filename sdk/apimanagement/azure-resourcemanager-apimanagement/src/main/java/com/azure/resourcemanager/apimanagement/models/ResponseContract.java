@@ -35,6 +35,10 @@ public final class ResponseContract {
     @JsonProperty(value = "headers")
     private List<ParameterContract> headers;
 
+    /** Creates an instance of ResponseContract class. */
+    public ResponseContract() {
+    }
+
     /**
      * Get the statusCode property: Operation response HTTP status code.
      *

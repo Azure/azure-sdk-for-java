@@ -13,15 +13,15 @@ public final class VirtualMachinePowerOffParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         VirtualMachinePowerOffParameters model =
-            BinaryData.fromString("{\"skipShutdown\":\"False\"}").toObject(VirtualMachinePowerOffParameters.class);
-        Assertions.assertEquals(SkipShutdown.FALSE, model.skipShutdown());
+            BinaryData.fromString("{\"skipShutdown\":\"True\"}").toObject(VirtualMachinePowerOffParameters.class);
+        Assertions.assertEquals(SkipShutdown.TRUE, model.skipShutdown());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         VirtualMachinePowerOffParameters model =
-            new VirtualMachinePowerOffParameters().withSkipShutdown(SkipShutdown.FALSE);
+            new VirtualMachinePowerOffParameters().withSkipShutdown(SkipShutdown.TRUE);
         model = BinaryData.fromObject(model).toObject(VirtualMachinePowerOffParameters.class);
-        Assertions.assertEquals(SkipShutdown.FALSE, model.skipShutdown());
+        Assertions.assertEquals(SkipShutdown.TRUE, model.skipShutdown());
     }
 }

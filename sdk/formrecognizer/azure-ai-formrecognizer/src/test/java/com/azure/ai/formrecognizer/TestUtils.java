@@ -39,7 +39,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  */
 final class TestUtils {
     private static final String REDACTED_VALUE = "REDACTED";
-    private static final String URL_REGEX = "(?<=http://|https://)([^/?]+)";
     // Duration
     static final Duration ONE_NANO_DURATION = Duration.ofMillis(1);
     // Local test files

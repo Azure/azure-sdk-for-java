@@ -12,6 +12,7 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.networkcloud.fluent.models.ClusterInner;
+import com.azure.resourcemanager.networkcloud.fluent.models.OperationStatusResultInner;
 import com.azure.resourcemanager.networkcloud.models.ClusterDeployParameters;
 import com.azure.resourcemanager.networkcloud.models.ClusterPatchParameters;
 import com.azure.resourcemanager.networkcloud.models.ClusterUpdateVersionParameters;
@@ -314,10 +315,11 @@ public interface ClustersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDeploy(String resourceGroupName, String clusterName);
+    SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginDeploy(
+        String resourceGroupName, String clusterName);
 
     /**
      * Deploy the cluster to the rack.
@@ -331,10 +333,10 @@ public interface ClustersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDeploy(
+    SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginDeploy(
         String resourceGroupName, String clusterName, ClusterDeployParameters clusterDeployParameters, Context context);
 
     /**
@@ -347,9 +349,10 @@ public interface ClustersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void deploy(String resourceGroupName, String clusterName);
+    OperationStatusResultInner deploy(String resourceGroupName, String clusterName);
 
     /**
      * Deploy the cluster to the rack.
@@ -363,9 +366,10 @@ public interface ClustersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void deploy(
+    OperationStatusResultInner deploy(
         String resourceGroupName, String clusterName, ClusterDeployParameters clusterDeployParameters, Context context);
 
     /**
@@ -379,10 +383,10 @@ public interface ClustersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginUpdateVersion(
+    SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginUpdateVersion(
         String resourceGroupName, String clusterName, ClusterUpdateVersionParameters clusterUpdateVersionParameters);
 
     /**
@@ -397,10 +401,10 @@ public interface ClustersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginUpdateVersion(
+    SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginUpdateVersion(
         String resourceGroupName,
         String clusterName,
         ClusterUpdateVersionParameters clusterUpdateVersionParameters,
@@ -417,9 +421,10 @@ public interface ClustersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void updateVersion(
+    OperationStatusResultInner updateVersion(
         String resourceGroupName, String clusterName, ClusterUpdateVersionParameters clusterUpdateVersionParameters);
 
     /**
@@ -434,9 +439,10 @@ public interface ClustersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void updateVersion(
+    OperationStatusResultInner updateVersion(
         String resourceGroupName,
         String clusterName,
         ClusterUpdateVersionParameters clusterUpdateVersionParameters,

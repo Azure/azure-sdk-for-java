@@ -55,22 +55,13 @@ public final class UsersImpl implements Users {
         return Utils.mapPage(inner, inner1 -> new UserContractImpl(inner1, this.manager()));
     }
 
-    public void getEntityTag(String resourceGroupName, String serviceName, String userId) {
-        this.serviceClient().getEntityTag(resourceGroupName, serviceName, userId);
-    }
-
     public UsersGetEntityTagResponse getEntityTagWithResponse(
         String resourceGroupName, String serviceName, String userId, Context context) {
         return this.serviceClient().getEntityTagWithResponse(resourceGroupName, serviceName, userId, context);
     }
 
-    public UserContract get(String resourceGroupName, String serviceName, String userId) {
-        UserContractInner inner = this.serviceClient().get(resourceGroupName, serviceName, userId);
-        if (inner != null) {
-            return new UserContractImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+    public void getEntityTag(String resourceGroupName, String serviceName, String userId) {
+        this.serviceClient().getEntityTag(resourceGroupName, serviceName, userId);
     }
 
     public Response<UserContract> getWithResponse(
@@ -87,8 +78,13 @@ public final class UsersImpl implements Users {
         }
     }
 
-    public void delete(String resourceGroupName, String serviceName, String userId, String ifMatch) {
-        this.serviceClient().delete(resourceGroupName, serviceName, userId, ifMatch);
+    public UserContract get(String resourceGroupName, String serviceName, String userId) {
+        UserContractInner inner = this.serviceClient().get(resourceGroupName, serviceName, userId);
+        if (inner != null) {
+            return new UserContractImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public Response<Void> deleteWithResponse(
@@ -106,13 +102,8 @@ public final class UsersImpl implements Users {
                 resourceGroupName, serviceName, userId, ifMatch, deleteSubscriptions, notify, appType, context);
     }
 
-    public GenerateSsoUrlResult generateSsoUrl(String resourceGroupName, String serviceName, String userId) {
-        GenerateSsoUrlResultInner inner = this.serviceClient().generateSsoUrl(resourceGroupName, serviceName, userId);
-        if (inner != null) {
-            return new GenerateSsoUrlResultImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+    public void delete(String resourceGroupName, String serviceName, String userId, String ifMatch) {
+        this.serviceClient().delete(resourceGroupName, serviceName, userId, ifMatch);
     }
 
     public Response<GenerateSsoUrlResult> generateSsoUrlWithResponse(
@@ -130,12 +121,10 @@ public final class UsersImpl implements Users {
         }
     }
 
-    public UserTokenResult getSharedAccessToken(
-        String resourceGroupName, String serviceName, String userId, UserTokenParameters parameters) {
-        UserTokenResultInner inner =
-            this.serviceClient().getSharedAccessToken(resourceGroupName, serviceName, userId, parameters);
+    public GenerateSsoUrlResult generateSsoUrl(String resourceGroupName, String serviceName, String userId) {
+        GenerateSsoUrlResultInner inner = this.serviceClient().generateSsoUrl(resourceGroupName, serviceName, userId);
         if (inner != null) {
-            return new UserTokenResultImpl(inner, this.manager());
+            return new GenerateSsoUrlResultImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -153,6 +142,17 @@ public final class UsersImpl implements Users {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new UserTokenResultImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public UserTokenResult getSharedAccessToken(
+        String resourceGroupName, String serviceName, String userId, UserTokenParameters parameters) {
+        UserTokenResultInner inner =
+            this.serviceClient().getSharedAccessToken(resourceGroupName, serviceName, userId, parameters);
+        if (inner != null) {
+            return new UserTokenResultImpl(inner, this.manager());
         } else {
             return null;
         }

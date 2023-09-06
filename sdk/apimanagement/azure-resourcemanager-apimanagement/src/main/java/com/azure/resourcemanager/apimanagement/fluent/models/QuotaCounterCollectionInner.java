@@ -29,6 +29,10 @@ public final class QuotaCounterCollectionInner {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of QuotaCounterCollectionInner class. */
+    public QuotaCounterCollectionInner() {
+    }
+
     /**
      * Get the value property: Quota counter values.
      *
