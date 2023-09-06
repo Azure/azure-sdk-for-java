@@ -375,13 +375,13 @@ public class ConfigurationAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippets for {@link ConfigurationAsyncClient#getSnapshotWithResponse(String)} (}
+     * Code snippets for {@link ConfigurationAsyncClient#getSnapshotWithResponse(String, List)}
      */
     public void getSnapshotByNameMaxOverload() {
         ConfigurationAsyncClient client = getAsyncClient();
         // BEGIN: com.azure.data.appconfiguration.configurationasyncclient.getSnapshotByNameMaxOverload
         String snapshotName = "{snapshotName}";
-        client.getSnapshotWithResponse(snapshotName).subscribe(
+        client.getSnapshotWithResponse(snapshotName, null).subscribe(
             response -> {
                 ConfigurationSettingSnapshot getSnapshot = response.getValue();
                 System.out.printf("Snapshot name=%s is created at %s, snapshot status is %s.%n",

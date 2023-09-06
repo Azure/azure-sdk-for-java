@@ -33,6 +33,7 @@ import com.azure.data.appconfiguration.models.FeatureFlagConfigurationSetting;
 import com.azure.data.appconfiguration.models.SecretReferenceConfigurationSetting;
 import com.azure.data.appconfiguration.models.SettingFields;
 import com.azure.data.appconfiguration.models.SettingSelector;
+import com.azure.data.appconfiguration.models.SnapshotFields;
 import com.azure.data.appconfiguration.models.SnapshotSelector;
 import com.azure.data.appconfiguration.models.SnapshotStatus;
 
@@ -1290,7 +1291,7 @@ public final class ConfigurationClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ConfigurationSettingSnapshot getSnapshot(String name) {
-        return getSnapshotWithResponse(name, Context.NONE).getValue();
+        return getSnapshotWithResponse(name, null, Context.NONE).getValue();
     }
 
     /**
@@ -1302,20 +1303,22 @@ public final class ConfigurationClient {
      * <pre>
      * String snapshotName = &quot;&#123;snapshotName&#125;&quot;;
      * Context ctx = new Context&#40;key2, value2&#41;;
-     * ConfigurationSettingSnapshot getSnapshot = client.getSnapshotWithResponse&#40;snapshotName, ctx&#41;.getValue&#40;&#41;;
+     * ConfigurationSettingSnapshot getSnapshot = client.getSnapshotWithResponse&#40;snapshotName, null, ctx&#41;.getValue&#40;&#41;;
      * System.out.printf&#40;&quot;Snapshot name=%s is created at %s, snapshot status is %s.%n&quot;,
      *     getSnapshot.getName&#40;&#41;, getSnapshot.getCreatedAt&#40;&#41;, getSnapshot.getStatus&#40;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.data.appconfiguration.configurationclient.getSnapshotByNameMaxOverload -->
      *
-     * @param name the snapshot name.
+     * @param name The snapshot name.
+     * @param fields Used to select what fields are present in the returned resource(s).
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A {@link Response} of {@link ConfigurationSettingSnapshot}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ConfigurationSettingSnapshot> getSnapshotWithResponse(String name, Context context) {
+    public Response<ConfigurationSettingSnapshot> getSnapshotWithResponse(String name, List<SnapshotFields> fields,
+                                                                          Context context) {
         final ResponseBase<GetSnapshotHeaders, ConfigurationSettingSnapshot> response =
-            serviceClient.getSnapshotWithResponse(name, null, null, null, context);
+            serviceClient.getSnapshotWithResponse(name, null, null, fields, context);
         return new SimpleResponse<>(response, response.getValue());
     }
 

@@ -4,8 +4,12 @@
 
 ### Features Added
 
+- Added `SnapshotFields` enum to support fields selection for snapshot.
+
 ### Breaking Changes
+
 - Change `listConfigurationSettingsForSnapshot` method's `fields` parameter type to `List`.
+
 ### Bugs Fixed
 
 ### Other Changes

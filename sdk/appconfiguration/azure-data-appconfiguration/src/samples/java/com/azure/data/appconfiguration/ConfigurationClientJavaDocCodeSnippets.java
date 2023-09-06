@@ -451,14 +451,14 @@ public final class ConfigurationClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippets for {@link ConfigurationClient#getSnapshotWithResponse(String, Context)}
+     * Code snippets for {@link ConfigurationClient#getSnapshotWithResponse(String, List, Context)}
      */
     public void getSnapshotByNameMaxOverload() {
         ConfigurationClient client = createSyncConfigurationClient();
         // BEGIN: com.azure.data.appconfiguration.configurationclient.getSnapshotByNameMaxOverload
         String snapshotName = "{snapshotName}";
         Context ctx = new Context(key2, value2);
-        ConfigurationSettingSnapshot getSnapshot = client.getSnapshotWithResponse(snapshotName, ctx).getValue();
+        ConfigurationSettingSnapshot getSnapshot = client.getSnapshotWithResponse(snapshotName, null, ctx).getValue();
         System.out.printf("Snapshot name=%s is created at %s, snapshot status is %s.%n",
             getSnapshot.getName(), getSnapshot.getCreatedAt(), getSnapshot.getStatus());
         // END: com.azure.data.appconfiguration.configurationclient.getSnapshotByNameMaxOverload

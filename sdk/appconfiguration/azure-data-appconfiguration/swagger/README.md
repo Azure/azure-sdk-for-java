@@ -33,7 +33,7 @@ input-file:
 - https://raw.githubusercontent.com/Azure/azure-rest-api-specs/2f7a3cbda00c6ae4199940d500e5212b6481d9ea/specification/appconfiguration/data-plane/Microsoft.AppConfiguration/preview/2022-11-01-preview/appconfiguration.json
 models-subpackage: implementation.models
 custom-types-subpackage: models
-custom-types: KeyValueFields,KeyValueFilter,SettingFields,SnapshotSettingFilter,CompositionType,Snapshot,ConfigurationSettingSnapshot,SnapshotStatus
+custom-types: KeyValueFields,KeyValueFilter,SettingFields,SnapshotSettingFilter,CompositionType,Snapshot,ConfigurationSettingSnapshot,SnapshotStatus,SnapshotFields,SnapshotFields
 customization-class: src/main/java/AppConfigCustomization.java
 ```
 
@@ -59,13 +59,13 @@ stream-style-serialization: true
 ### Renames properties
 ```yaml
 directive:
-- from: swagger-document
-  where: $.definitions.Snapshot.properties
-  transform: >
-    $["items_count"]["x-ms-client-name"] = "item_count";
-    $["created"]["x-ms-client-name"] = "createdAt"; 
-    $["expires"]["x-ms-client-name"] = "expiresAt";
-    $["etag"]["x-ms-client-name"] = "eTag";
+  - from: swagger-document
+    where: $.definitions.Snapshot.properties
+    transform: >
+      $["items_count"]["x-ms-client-name"] = "item_count";
+      $["created"]["x-ms-client-name"] = "createdAt"; 
+      $["expires"]["x-ms-client-name"] = "expiresAt";
+      $["etag"]["x-ms-client-name"] = "eTag";
 ```
 
 ### Renames
@@ -129,6 +129,71 @@ directive:
           "value": "tags",
           "name": "tags",
           "description": "Populates the `tags` from the service."
+        }
+      ];
+```
+
+### Modify SnapshotField enums
+```yaml
+directive:
+  - from: swagger-document
+    where: $.parameters.SnapshotFields
+    transform: >
+      $.items["x-ms-enum"].values = [
+        {
+          "value": "name",
+          "name": "name",
+          "description": "Populates the snapshot `name` from the service."
+        },
+        {
+          "value": "status",
+          "name": "status",
+          "description": "Populates the snapshot `status` from the service."
+        },
+        {
+          "value": "filters",
+          "name": "filters",
+          "description": "Populates the snapshot `filters` from the service."
+        },
+        {
+          "value": "composition_type",
+          "name": "composition_type",
+          "description": "Populates the snapshot `composition_type` from the service."
+        },
+        {
+          "value": "created",
+          "name": "createdAt",
+          "description": "Populates the snapshot `created` from the service."
+        },
+        {
+          "value": "expires",
+          "name": "expiresAt",
+          "description": "Populates the snapshot `expires` from the service."
+        },
+        {
+          "value": "retention_period",
+          "name": "retention_period",
+          "description": "Populates the snapshot `retention_period` from the service."
+        },
+        {
+          "value": "items_count",
+          "name": "item_count ",
+          "description": "Populates the snapshot `items_count` from the service."
+        },
+        {
+            "value": "size",
+            "name": "size ",
+            "description": "Populates the snapshot `size` from the service."
+        },
+        {
+          "value": "etag",
+          "name": "etag ",
+          "description": "Populates the snapshot `etag` from the service."
+        },
+        {
+          "value": "tags",
+          "name": "tags",
+          "description": "Populates the snapshot `tags` from the service."
         }
       ];
 ```

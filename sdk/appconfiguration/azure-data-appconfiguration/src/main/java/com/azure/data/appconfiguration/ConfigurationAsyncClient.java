@@ -29,6 +29,7 @@ import com.azure.data.appconfiguration.models.FeatureFlagConfigurationSetting;
 import com.azure.data.appconfiguration.models.SecretReferenceConfigurationSetting;
 import com.azure.data.appconfiguration.models.SettingFields;
 import com.azure.data.appconfiguration.models.SettingSelector;
+import com.azure.data.appconfiguration.models.SnapshotFields;
 import com.azure.data.appconfiguration.models.SnapshotSelector;
 import com.azure.data.appconfiguration.models.SnapshotStatus;
 import reactor.core.publisher.Mono;
@@ -1237,7 +1238,7 @@ public final class ConfigurationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ConfigurationSettingSnapshot> getSnapshot(String name) {
-        return getSnapshotWithResponse(name).map(Response::getValue);
+        return getSnapshotWithResponse(name, null).map(Response::getValue);
     }
 
     /**
@@ -1248,7 +1249,7 @@ public final class ConfigurationAsyncClient {
      * <!-- src_embed com.azure.data.appconfiguration.configurationasyncclient.getSnapshotByNameMaxOverload -->
      * <pre>
      * String snapshotName = &quot;&#123;snapshotName&#125;&quot;;
-     * client.getSnapshotWithResponse&#40;snapshotName&#41;.subscribe&#40;
+     * client.getSnapshotWithResponse&#40;snapshotName, null&#41;.subscribe&#40;
      *     response -&gt; &#123;
      *         ConfigurationSettingSnapshot getSnapshot = response.getValue&#40;&#41;;
      *         System.out.printf&#40;&quot;Snapshot name=%s is created at %s, snapshot status is %s.%n&quot;,
@@ -1259,11 +1260,13 @@ public final class ConfigurationAsyncClient {
      * <!-- end com.azure.data.appconfiguration.configurationasyncclient.getSnapshotByNameMaxOverload -->
      *
      * @param name The snapshot name.
+     * @param fields Used to select what fields are present in the returned resource(s).
      * @return A {@link Mono} of {@link Response} of {@link ConfigurationSettingSnapshot}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ConfigurationSettingSnapshot>> getSnapshotWithResponse(String name) {
-        return serviceClient.getSnapshotWithResponseAsync(name, null, null, null, Context.NONE)
+    public Mono<Response<ConfigurationSettingSnapshot>> getSnapshotWithResponse(String name,
+                                                                                List<SnapshotFields> fields) {
+        return serviceClient.getSnapshotWithResponseAsync(name, null, null, fields, Context.NONE)
             .map(response -> new SimpleResponse<>(response, response.getValue()));
     }
 

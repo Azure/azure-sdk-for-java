@@ -1350,7 +1350,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
                 MINIMUM_RETENTION_PERIOD, Long.valueOf(1000), Long.valueOf(0), null, snapshotResult);
 
             // Retrieve a snapshot after creation
-            StepVerifier.create(client.getSnapshotWithResponse(name))
+            StepVerifier.create(client.getSnapshotWithResponse(name, null))
                 .assertNext(getSnapshot -> assertConfigurationSettingSnapshotWithResponse(200, name,
                     SnapshotStatus.READY, filters, CompositionType.KEY,
                     MINIMUM_RETENTION_PERIOD, Long.valueOf(1000), Long.valueOf(0), null,

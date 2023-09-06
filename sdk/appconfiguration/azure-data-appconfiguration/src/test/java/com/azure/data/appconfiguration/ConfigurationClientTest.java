@@ -1045,7 +1045,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
                 MINIMUM_RETENTION_PERIOD, Long.valueOf(1000), Long.valueOf(0), null, snapshotResult);
 
             // Retrieve a snapshot after creation
-            Response<ConfigurationSettingSnapshot> getSnapshot = client.getSnapshotWithResponse(name, Context.NONE);
+            Response<ConfigurationSettingSnapshot> getSnapshot = client.getSnapshotWithResponse(name, null, Context.NONE);
             assertConfigurationSettingSnapshotWithResponse(200, name,
                 SnapshotStatus.READY, filters, CompositionType.KEY,
                 MINIMUM_RETENTION_PERIOD, Long.valueOf(1000), Long.valueOf(0), null, getSnapshot);
