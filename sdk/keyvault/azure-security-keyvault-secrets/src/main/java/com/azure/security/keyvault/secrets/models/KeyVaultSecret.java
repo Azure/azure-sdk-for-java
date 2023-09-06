@@ -4,11 +4,15 @@
 package com.azure.security.keyvault.secrets.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.security.keyvault.secrets.SecretAsyncClient;
 import com.azure.security.keyvault.secrets.SecretClient;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.security.keyvault.secrets.implementation.models.SecretsModelsUtils;
 
-import java.util.Map;
+import java.io.IOException;
 import java.util.Objects;
 
 /**
@@ -19,18 +23,17 @@ import java.util.Objects;
  *  @see SecretAsyncClient
  */
 @Fluent
-public class KeyVaultSecret {
+public class KeyVaultSecret implements JsonSerializable<KeyVaultSecret> {
 
     /**
      * The value of the secret.
      */
-    @JsonProperty(value = "value")
-    private String value;
+    String value;
 
     /**
      * The secret properties.
      */
-    private SecretProperties properties;
+    SecretProperties properties;
 
     /**
      * Creates an empty instance of the Secret.
@@ -98,41 +101,53 @@ public class KeyVaultSecret {
         return this;
     }
 
-    @JsonProperty(value = "id")
-    private void unpackId(String id) {
-        properties.unpackId(id);
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        return jsonWriter.writeStartObject()
+            .writeStringField("value", value)
+            .writeEndObject();
     }
 
     /**
-     * Unpacks the attributes json response and updates the variables in the Secret Attributes object.
-     * Uses Lazy Update to set values for variables id, tags, contentType, managed and keyId as these variables are
-     * part of main json body and not attributes json body when the secret response comes from list Secrets operations.
-     * @param attributes The key value mapping of the Secret attributes
+     * Reads an instance of {@link KeyVaultSecret} from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of {@link KeyVaultSecret} if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the {@link KeyVaultSecret}.
      */
-    @JsonProperty("attributes")
-    @SuppressWarnings("unchecked")
-    private void unpackAttributes(Map<String, Object> attributes) {
-        properties.unpackAttributes(attributes);
-    }
+    public static KeyVaultSecret fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            KeyVaultSecret keyVaultSecret = new KeyVaultSecret();
 
-    @JsonProperty("managed")
-    private void unpackManaged(Boolean managed) {
-        properties.managed = managed;
-    }
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-    @JsonProperty("kid")
-    private void unpackKid(String kid) {
-        properties.keyId = kid;
-    }
+                if ("value".equals(fieldName)) {
+                    keyVaultSecret.value = reader.getString();
+                } else if ("id".equals(fieldName)) {
+                    keyVaultSecret.properties.id = reader.getString();
+                    SecretsModelsUtils.unpackId(keyVaultSecret.properties.id,
+                        name -> keyVaultSecret.properties.name = name,
+                        version -> keyVaultSecret.properties.version = version);
+                } else if ("attributes".equals(fieldName) && reader.currentToken() == JsonToken.START_OBJECT) {
+                    SecretProperties.deserializeAttributes(reader, keyVaultSecret.properties);
+                } else if ("managed".equals(fieldName)) {
+                    keyVaultSecret.properties.managed = reader.getNullable(JsonReader::getBoolean);
+                } else if ("kid".equals(fieldName)) {
+                    keyVaultSecret.properties.keyId = reader.getString();
+                } else if ("contentType".equals(fieldName)) {
+                    keyVaultSecret.properties.contentType = reader.getString();
+                } else if ("tags".equals(fieldName)) {
+                    keyVaultSecret.properties.tags = reader.readMap(JsonReader::getString);
+                } else  {
+                    reader.skipChildren();
+                }
+            }
 
-    @JsonProperty("contentType")
-    private void unpackContentType(String contentType) {
-        properties.contentType = contentType;
-    }
-
-    @JsonProperty("tags")
-    private void unpackTags(Map<String, String> tags) {
-        properties.tags = tags;
+            return keyVaultSecret;
+        });
     }
 }
 

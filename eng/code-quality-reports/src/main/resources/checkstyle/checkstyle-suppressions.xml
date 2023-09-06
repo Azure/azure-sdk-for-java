@@ -46,6 +46,9 @@
   <!-- Remove this after fixing: https://github.com/Azure/azure-sdk-for-java/issues/5021 -->
   <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.storage.blob.specialized.BlobOutputStream.java"/>
 
+  <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.security.keyvault.secrets.models.KeyVaultSecret"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.security.keyvault.secrets.models.SecretProperties"/>
+
   <!-- Do not worry about leaking implementation API out of azure-core-test -->
   <suppress checks="com.azure.tools.checkstyle.checks.NoImplInPublicAPI" files="com.azure.core.test.*"/>
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientBuilderCheck" files="com.azure.core.test.*"/>
