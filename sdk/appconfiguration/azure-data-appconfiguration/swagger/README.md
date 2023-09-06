@@ -94,42 +94,42 @@ directive:
         {
           "value": "key",
           "name": "key",
-          "description": "Populates the `key` from the service."
+          "description": "Populates the 'key' from the service."
         },
         {
           "value": "label",
           "name": "label",
-          "description": "Populates the `label` from the service."
+          "description": "Populates the 'label' from the service."
         },
         {
           "value": "value",
           "name": "value",
-          "description": "Populates the `value` from the service."
+          "description": "Populates the 'value' from the service."
         },
         {
           "value": "content_type",
           "name": "content_type",
-          "description": "Populates the `content_type` from the service."
+          "description": "Populates the 'content_type' from the service."
         },
         {
           "value": "etag",
           "name": "etag ",
-          "description": "Populates the `etag` from the service."
+          "description": "Populates the 'etag' from the service."
         },
         {
           "value": "last_modified",
           "name": "last_modified",
-          "description": "Populates the `last_modified` from the service."
+          "description": "Populates the 'last_modified' from the service."
         },
         {
           "value": "locked",
           "name": "is_read_only ",
-          "description": "Populates the `locked` from the service."
+          "description": "Populates the 'locked' from the service."
         },
         {
           "value": "tags",
           "name": "tags",
-          "description": "Populates the `tags` from the service."
+          "description": "Populates the 'tags' from the service."
         }
       ];
 ```
@@ -144,47 +144,47 @@ directive:
         {
           "value": "name",
           "name": "name",
-          "description": "Populates the snapshot `name` from the service."
+          "description": "Populates the snapshot 'name' from the service."
         },
         {
           "value": "status",
           "name": "status",
-          "description": "Populates the snapshot `status` from the service."
+          "description": "Populates the snapshot 'status' from the service."
         },
         {
           "value": "filters",
           "name": "filters",
-          "description": "Populates the snapshot `filters` from the service."
+          "description": "Populates the snapshot 'filters' from the service."
         },
         {
           "value": "composition_type",
           "name": "composition_type",
-          "description": "Populates the snapshot `composition_type` from the service."
+          "description": "Populates the snapshot 'composition_type' from the service."
         },
         {
           "value": "created",
           "name": "createdAt",
-          "description": "Populates the snapshot `created` from the service."
+          "description": "Populates the snapshot 'created' from the service."
         },
         {
           "value": "expires",
           "name": "expiresAt",
-          "description": "Populates the snapshot `expires` from the service."
+          "description": "Populates the snapshot 'expires' from the service."
         },
         {
           "value": "retention_period",
           "name": "retention_period",
-          "description": "Populates the snapshot `retention_period` from the service."
+          "description": "Populates the snapshot 'retention_period' from the service."
         },
         {
           "value": "items_count",
           "name": "item_count ",
-          "description": "Populates the snapshot `items_count` from the service."
+          "description": "Populates the snapshot 'items_count' from the service."
         },
         {
           "value": "size",
           "name": "sizeInBytes ",
-          "description": "Populates the snapshot `size` from the service."
+          "description": "Populates the snapshot 'size' from the service."
         },
         {
           "value": "etag",

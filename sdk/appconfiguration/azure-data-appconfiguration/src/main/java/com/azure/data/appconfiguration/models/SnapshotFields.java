@@ -9,31 +9,31 @@ import java.util.Collection;
 
 /** Defines values for SnapshotFields. */
 public final class SnapshotFields extends ExpandableStringEnum<SnapshotFields> {
-    /** Populates the snapshot `name` from the service. */
+    /** Populates the snapshot 'name' from the service. */
     public static final SnapshotFields NAME = fromString("name");
 
-    /** Populates the snapshot `status` from the service. */
+    /** Populates the snapshot 'status' from the service. */
     public static final SnapshotFields STATUS = fromString("status");
 
-    /** Populates the snapshot `filters` from the service. */
+    /** Populates the snapshot 'filters' from the service. */
     public static final SnapshotFields FILTERS = fromString("filters");
 
-    /** Populates the snapshot `composition_type` from the service. */
+    /** Populates the snapshot 'composition_type' from the service. */
     public static final SnapshotFields COMPOSITION_TYPE = fromString("composition_type");
 
-    /** Populates the snapshot `created` from the service. */
+    /** Populates the snapshot 'created' from the service. */
     public static final SnapshotFields CREATED_AT = fromString("created");
 
-    /** Populates the snapshot `expires` from the service. */
+    /** Populates the snapshot 'expires' from the service. */
     public static final SnapshotFields EXPIRES_AT = fromString("expires");
 
-    /** Populates the snapshot `retention_period` from the service. */
+    /** Populates the snapshot 'retention_period' from the service. */
     public static final SnapshotFields RETENTION_PERIOD = fromString("retention_period");
 
-    /** Populates the snapshot `items_count` from the service. */
+    /** Populates the snapshot 'items_count' from the service. */
     public static final SnapshotFields ITEM_COUNT = fromString("items_count");
 
-    /** Populates the snapshot `size` from the service. */
+    /** Populates the snapshot 'size' from the service. */
     public static final SnapshotFields SIZE_IN_BYTES = fromString("size");
 
     /** Populates the snapshot `etag` from the service. */
