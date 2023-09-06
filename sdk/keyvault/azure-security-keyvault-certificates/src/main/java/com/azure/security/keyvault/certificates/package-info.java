@@ -37,7 +37,7 @@
  * <p>The certificate client performs the interactions with the Azure Key Vault service for getting, setting, updating,
  * deleting, and listing certificates and its versions. Asynchronous (CertificateAsyncClient) and synchronous (CertificateClient) clients
  * exist in the SDK allowing for the selection of a client based on an application's use case. Once you have
- * initialized a certificate, you can interact with the primary resource types in the Azure Key Vault.</p>
+ * initialized a certificate, you can interact with the primary resource types in Azure Key Vault.</p>
  *
  * <p>What is an Azure Key Vault Certificate ?</p>
  *

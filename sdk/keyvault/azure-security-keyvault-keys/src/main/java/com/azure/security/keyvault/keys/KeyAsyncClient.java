@@ -134,7 +134,7 @@ import static com.azure.core.util.FluxUtil.withContext;
  *
  * <!-- src_embed com.azure.security.keyvault.keys.KeyAsyncClient.deleteKey#String -->
  * <pre>
- * keyAsyncClient.beginDelCeteKey&#40;&quot;keyName&quot;&#41;
+ * keyAsyncClient.beginDeleteKey&#40;&quot;keyName&quot;&#41;
  *     .subscribe&#40;pollResponse -&gt; &#123;
  *         System.out.printf&#40;&quot;Deletion status: %s%n&quot;, pollResponse.getStatus&#40;&#41;&#41;;
  *         System.out.printf&#40;&quot;Key name: %s%n&quot;, pollResponse.getValue&#40;&#41;.getName&#40;&#41;&#41;;
