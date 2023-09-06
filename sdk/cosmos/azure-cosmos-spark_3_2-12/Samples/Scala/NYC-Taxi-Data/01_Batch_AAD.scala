@@ -11,7 +11,7 @@
 
 // COMMAND ----------
 
-val authType = "ServicePrinciple"
+val authType = "ServicePrincipal"
 val cosmosEndpoint = spark.conf.get("spark.cosmos.accountEndpoint")
 val subscriptionId = spark.conf.get("spark.cosmos.subscriptionId")
 val tenantId = spark.conf.get("spark.cosmos.tenantId")
