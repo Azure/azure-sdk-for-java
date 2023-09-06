@@ -55,6 +55,11 @@ public class HttpUrlConnectionClientBuilder {
         return this;
     }
 
+    public HttpClient build() {
+        HttpUrlConnectionClient client = new HttpUrlConnectionClient();
+        return client;
+    }
+
     public HttpUrlConnectionClientBuilder proxy(ProxyOptions proxyOptions) {
         this.proxyOptions = proxyOptions;
         return this;
