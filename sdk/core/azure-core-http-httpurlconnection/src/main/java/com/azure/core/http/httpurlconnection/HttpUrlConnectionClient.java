@@ -31,20 +31,16 @@ public class HttpUrlConnectionClient implements HttpClient {
 
     // Asynchronous send method with additional context
     public Mono<HttpResponse> sendAsync(HttpRequest httpRequest, Context context) {
+        HttpMethod httpMethod = httpRequest.getHttpMethod();
+        if (httpMethod == HttpMethod.PATCH) {
+            return sendPatchViaSocket(httpRequest);
+        }
         return openConnection(httpRequest)
-            .flatMap(connection -> {
-                HttpMethod httpMethod = httpRequest.getHttpMethod();
-
-                if (httpMethod == HttpMethod.PATCH) {
-                    return sendPatchViaSocket(httpRequest);
-                }
-
-                return setConnectionRequest(connection, httpRequest)
-                    .then(writeRequestBody(connection, httpRequest))
-                    .then(readResponse(connection, httpRequest))
-                    .doFinally(signalType -> connection.disconnect()) // Disconnect connection after processing
-                    .onErrorResume(e -> Mono.error(new RuntimeException(e)));
-            });
+            .flatMap(connection -> setConnectionRequest(connection, httpRequest)
+                .then(writeRequestBody(connection, httpRequest))
+                .then(readResponse(connection, httpRequest))
+                .doFinally(signalType -> connection.disconnect()) // Disconnect connection after processing
+                .onErrorResume(e -> Mono.error(new RuntimeException(e))));
     }
 
     // Send a PATCH request via a SocketClient
@@ -139,4 +135,5 @@ public class HttpUrlConnectionClient implements HttpClient {
             }
         });
     }
+
 }
