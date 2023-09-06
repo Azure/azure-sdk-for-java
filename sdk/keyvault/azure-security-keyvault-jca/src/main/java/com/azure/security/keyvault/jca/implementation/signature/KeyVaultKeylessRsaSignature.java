@@ -13,12 +13,12 @@ import java.util.Base64;
 /**
  * key vault Rsa signature to support key less
  */
-public class KeyVaultKeyLessRsaSignature extends AbstractKeyVaultKeyLessSignature {
+public class KeyVaultKeylessRsaSignature extends AbstractKeyVaultKeylessSignature {
 
     /**
      * Construct a new KeyVaultKeyLessRsaSignature
      */
-    public KeyVaultKeyLessRsaSignature() {
+    public KeyVaultKeylessRsaSignature() {
         super();
         this.messageDigest = null;
     }

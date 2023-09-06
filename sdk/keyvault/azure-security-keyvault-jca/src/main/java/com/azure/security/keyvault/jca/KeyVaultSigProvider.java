@@ -3,17 +3,16 @@
 
 package com.azure.security.keyvault.jca;
 
-import com.azure.security.keyvault.jca.implementation.signature.KeyVaultKeylessRsaSignature;
+import com.azure.security.keyvault.jca.implementation.signature.AbstractKeyVaultKeylessSignature;
+import com.azure.security.keyvault.jca.implementation.signature.KeyVaultKeylessEcSha256Signature;
 import com.azure.security.keyvault.jca.implementation.signature.KeyVaultKeylessEcSha384Signature;
 import com.azure.security.keyvault.jca.implementation.signature.KeyVaultKeylessEcSha512Signature;
-import com.azure.security.keyvault.jca.implementation.signature.KeyVaultKeylessEcSha256Signature;
-import com.azure.security.keyvault.jca.implementation.signature.AbstractKeyVaultKeylessSignature;
+import com.azure.security.keyvault.jca.implementation.signature.KeyVaultKeylessRsa512Signature;
+import com.azure.security.keyvault.jca.implementation.signature.KeyVaultKeylessRsaSignature;
 
 import java.lang.reflect.InvocationTargetException;
 import java.security.PrivilegedAction;
 import java.security.Provider;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.stream.Stream;
 
 /**
@@ -21,12 +20,12 @@ import java.util.stream.Stream;
  *
  * @see Provider
  */
-public final class KeyVaultJcaProvider extends Provider {
+public final class KeyVaultSigProvider extends Provider {
 
     /**
      * Stores the name.
      */
-    public static final String PROVIDER_NAME = KeyVaultKeyStore.KEY_STORE_TYPE;
+    public static final String PROVIDER_NAME = "KeyVaultSig";
 
     /**
      * Stores the serial version UID.
@@ -36,7 +35,7 @@ public final class KeyVaultJcaProvider extends Provider {
     /**
      * Stores the information.
      */
-    private static final String INFO = "Azure Key Vault JCA Provider";
+    private static final String INFO = "Azure Key Vault Sig Provider";
 
     /**
      * Stores the version.
@@ -46,7 +45,7 @@ public final class KeyVaultJcaProvider extends Provider {
     /**
      * Constructor.
      */
-    public KeyVaultJcaProvider() {
+    public KeyVaultSigProvider() {
         super(PROVIDER_NAME, VERSION, INFO);
         initialize();
     }
@@ -57,47 +56,9 @@ public final class KeyVaultJcaProvider extends Provider {
     @SuppressWarnings("removal")
     private void initialize() {
         java.security.AccessController.doPrivileged((PrivilegedAction<Object>) () -> {
-            putService(
-                new Provider.Service(
-                    this,
-                    "KeyManagerFactory",
-                    "SunX509",
-                    KeyVaultKeyManagerFactory.class.getName(),
-                    Arrays.asList("SunX509", "IbmX509"),
-                    null
-                )
-            );
-
-            /*
-             * Note for Tomcat we needed to add "DKS" as an algorithm so it does
-             * not use an in-memory key store and later on can wrap the
-             * KeyManager using its JSSEKeyManager so the key alias is known.
-             *
-             * See SSLUtilBase.getKeyManagers and look for the
-             * "DKS".equalsIgnoreCase(certificate.getCertificateKeystoreType()
-             */
-            putService(
-                new Provider.Service(
-                    this,
-                    "KeyStore",
-                    "DKS",
-                    KeyVaultKeyStore.class.getName(),
-                    Collections.singletonList("DKS"),
-                    null
-                )
-            );
-            putService(
-                new Provider.Service(
-                    this,
-                    "KeyStore",
-                    KeyVaultKeyStore.ALGORITHM_NAME,
-                    KeyVaultKeyStore.class.getName(),
-                    Collections.singletonList(KeyVaultKeyStore.ALGORITHM_NAME),
-                    null
-                )
-            );
             Stream.of(
                 KeyVaultKeylessRsaSignature.class,
+                KeyVaultKeylessRsa512Signature.class,
                 KeyVaultKeylessEcSha256Signature.class,
                 KeyVaultKeylessEcSha384Signature.class,
                 KeyVaultKeylessEcSha512Signature.class)

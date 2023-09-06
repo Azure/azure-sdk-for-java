@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.security.keyvault.jca.implementation.utils;
 
-import com.azure.security.keyvault.jca.implementation.JREKeyStoreFactory;
+import com.azure.security.keyvault.jca.implementation.JreKeyStoreFactory;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ResponseHandler;
@@ -113,7 +113,7 @@ public final class HttpUtil {
     }
 
     private static CloseableHttpClient buildClient() {
-        KeyStore keyStore = JREKeyStoreFactory.getDefaultKeyStore();
+        KeyStore keyStore = JreKeyStoreFactory.getDefaultKeyStore();
 
         SSLContext sslContext = null;
         try {

@@ -17,9 +17,9 @@ import java.security.InvalidAlgorithmParameterException;
 import java.security.spec.AlgorithmParameterSpec;
 
 /**
- * KeyVault Signature to key less sign
+ * KeyVault Signature to keyless sign
  */
-public abstract class AbstractKeyVaultKeyLessSignature extends SignatureSpi {
+public abstract class AbstractKeyVaultKeylessSignature extends SignatureSpi {
 
     protected KeyVaultClient keyVaultClient;
 

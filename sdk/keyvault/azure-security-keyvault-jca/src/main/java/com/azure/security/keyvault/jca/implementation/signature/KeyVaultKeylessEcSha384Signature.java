@@ -3,20 +3,19 @@
 package com.azure.security.keyvault.jca.implementation.signature;
 
 /**
- * key vault SHA512
+ * key vault SHA384
  */
-public final class KeyVaultKeyLessEcSha512Signature extends KeyVaultKeyLessECSignature {
+public final class KeyVaultKeylessEcSha384Signature extends KeyVaultKeylessEcSignature {
 
     @Override
     public String getAlgorithmName() {
-        return "SHA512withECDSA";
+        return "SHA384withECDSA";
     }
 
     /**
-     * support SHA-512
+     * support SHA-384
      */
-    public KeyVaultKeyLessEcSha512Signature() {
-        super("SHA-512", "ES512");
+    public KeyVaultKeylessEcSha384Signature() {
+        super("SHA-384", "ES384");
     }
-
 }

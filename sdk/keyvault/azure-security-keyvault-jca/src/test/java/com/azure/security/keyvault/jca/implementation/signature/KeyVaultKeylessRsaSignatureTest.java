@@ -22,9 +22,9 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class KeyVaultKeyLessRsaSignatureTest {
+public class KeyVaultKeylessRsaSignatureTest {
 
-    KeyVaultKeyLessRsaSignature keyVaultKeyLessRsaSignature;
+    KeyVaultKeylessRsaSignature keyVaultKeylessRsaSignature;
 
     static final String KEY_VAULT_TEST_URI_GLOBAL = "https://fake.vault.azure.net/";
 
@@ -35,7 +35,7 @@ public class KeyVaultKeyLessRsaSignatureTest {
     @BeforeEach
     public void before() {
         System.setProperty("azure.keyvault.uri", KEY_VAULT_TEST_URI_GLOBAL);
-        keyVaultKeyLessRsaSignature = new KeyVaultKeyLessRsaSignature();
+        keyVaultKeylessRsaSignature = new KeyVaultKeylessRsaSignature();
     }
 
     private final PublicKey publicKey = new PublicKey() {
@@ -74,56 +74,56 @@ public class KeyVaultKeyLessRsaSignatureTest {
 
     @Test
     public void engineInitVerifyTest() {
-        assertThrows(UnsupportedOperationException.class, () -> keyVaultKeyLessRsaSignature.engineInitVerify(publicKey));
+        assertThrows(UnsupportedOperationException.class, () -> keyVaultKeylessRsaSignature.engineInitVerify(publicKey));
     }
 
     @Test
     public void engineInitSignTest() {
-        assertThrows(UnsupportedOperationException.class, () -> keyVaultKeyLessRsaSignature.engineInitSign(privateKey));
+        assertThrows(UnsupportedOperationException.class, () -> keyVaultKeylessRsaSignature.engineInitSign(privateKey));
     }
 
     @Test
     public void engineInitSignWithRandomTest() {
-        assertThrows(UnsupportedOperationException.class, () -> keyVaultKeyLessRsaSignature.engineInitSign(privateKey, null));
+        assertThrows(UnsupportedOperationException.class, () -> keyVaultKeylessRsaSignature.engineInitSign(privateKey, null));
     }
 
     @Test
     public void engineVerify() {
-        assertThrows(UnsupportedOperationException.class, () -> keyVaultKeyLessRsaSignature.engineVerify(null));
+        assertThrows(UnsupportedOperationException.class, () -> keyVaultKeylessRsaSignature.engineVerify(null));
     }
 
     @Test
     public void engineSetParameterTest() {
-        assertThrows(UnsupportedOperationException.class, () -> keyVaultKeyLessRsaSignature.engineSetParameter("", null));
+        assertThrows(UnsupportedOperationException.class, () -> keyVaultKeylessRsaSignature.engineSetParameter("", null));
     }
 
     @Test
     public void setDigestNameAndEngineSignTest() throws InvalidAlgorithmParameterException {
-        keyVaultKeyLessRsaSignature = new KeyVaultKeyLessRsaSignature();
+        keyVaultKeylessRsaSignature = new KeyVaultKeylessRsaSignature();
         when(keyVaultPrivateKey.getKeyVaultClient()).thenReturn(keyVaultClient);
-        keyVaultKeyLessRsaSignature.engineInitSign(keyVaultPrivateKey, null);
-        keyVaultKeyLessRsaSignature.engineSetParameter(new PSSParameterSpec("SHA-1", "MGF1", MGF1ParameterSpec.SHA1, 20, 1));
+        keyVaultKeylessRsaSignature.engineInitSign(keyVaultPrivateKey, null);
+        keyVaultKeylessRsaSignature.engineSetParameter(new PSSParameterSpec("SHA-1", "MGF1", MGF1ParameterSpec.SHA1, 20, 1));
         when(keyVaultClient.getSignedWithPrivateKey(ArgumentMatchers.eq("PS256"), anyString(), ArgumentMatchers.eq(null))).thenReturn("fakeValue".getBytes());
-        assertArrayEquals("fakeValue".getBytes(), keyVaultKeyLessRsaSignature.engineSign());
+        assertArrayEquals("fakeValue".getBytes(), keyVaultKeylessRsaSignature.engineSign());
     }
 
     @Test
     public void engineSetParameterWithNullParameterTest() {
-        keyVaultKeyLessRsaSignature = new KeyVaultKeyLessRsaSignature();
-        assertThrows(InvalidAlgorithmParameterException.class, () -> keyVaultKeyLessRsaSignature.engineSetParameter(null));
+        keyVaultKeylessRsaSignature = new KeyVaultKeylessRsaSignature();
+        assertThrows(InvalidAlgorithmParameterException.class, () -> keyVaultKeylessRsaSignature.engineSetParameter(null));
     }
 
     @Test
     public void engineSetParameterWithNotPSSParameterSpecTest() {
-        keyVaultKeyLessRsaSignature = new KeyVaultKeyLessRsaSignature();
+        keyVaultKeylessRsaSignature = new KeyVaultKeylessRsaSignature();
         AlgorithmParameterSpec algorithmParameterSpec = mock(AlgorithmParameterSpec.class);
-        assertThrows(InvalidAlgorithmParameterException.class, () -> keyVaultKeyLessRsaSignature.engineSetParameter(algorithmParameterSpec));
+        assertThrows(InvalidAlgorithmParameterException.class, () -> keyVaultKeylessRsaSignature.engineSetParameter(algorithmParameterSpec));
     }
 
     @Test
     public void engineSetParameterWithNullAlgorithmTest() {
-        keyVaultKeyLessRsaSignature = new KeyVaultKeyLessRsaSignature();
+        keyVaultKeylessRsaSignature = new KeyVaultKeylessRsaSignature();
         AlgorithmParameterSpec algorithmParameterSpec = new PSSParameterSpec("fake-value", "fake-value", null, 10, 10);
-        assertThrows(InvalidAlgorithmParameterException.class, () -> keyVaultKeyLessRsaSignature.engineSetParameter(algorithmParameterSpec));
+        assertThrows(InvalidAlgorithmParameterException.class, () -> keyVaultKeylessRsaSignature.engineSetParameter(algorithmParameterSpec));
     }
 }

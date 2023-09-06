@@ -14,14 +14,14 @@ import static com.azure.security.keyvault.jca.KeyVaultEncode.encodeByte;
 /**
  * KeyVault EC signature to support key less
  */
-public abstract class KeyVaultKeyLessECSignature extends AbstractKeyVaultKeyLessSignature {
+abstract class KeyVaultKeylessEcSignature extends AbstractKeyVaultKeylessSignature {
 
     private final String keyVaultDigestName;
 
     /**
-     * Constructs a new KeyVaultKeyLessECSignature that will use the specified digest
+     * Constructs a new KeyVaultKeylessEcSignature that will use the specified digest
      */
-    KeyVaultKeyLessECSignature(String digestName, String keyVaultDigestName) {
+    KeyVaultKeylessEcSignature(String digestName, String keyVaultDigestName) {
         super();
         try {
             messageDigest = MessageDigest.getInstance(digestName);

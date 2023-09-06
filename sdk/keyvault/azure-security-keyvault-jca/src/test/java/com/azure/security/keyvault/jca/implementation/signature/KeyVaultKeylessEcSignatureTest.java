@@ -19,9 +19,9 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class KeyVaultKeyLessECSignatureTest {
+public class KeyVaultKeylessEcSignatureTest {
 
-    KeyVaultKeyLessECSignature keyVaultKeyLessECSignature;
+    KeyVaultKeylessEcSignature keyVaultKeylessEcSignature;
 
     private final KeyVaultClient keyVaultClient = mock(KeyVaultClient.class);
 
@@ -35,7 +35,7 @@ public class KeyVaultKeyLessECSignatureTest {
     @BeforeEach
     public void before() {
         System.setProperty("azure.keyvault.uri", KEY_VAULT_TEST_URI_GLOBAL);
-        keyVaultKeyLessECSignature = new KeyVaultKeyLessEcSha256Signature();
+        keyVaultKeylessEcSignature = new KeyVaultKeylessEcSha256Signature();
     }
 
     private final PublicKey publicKey = new PublicKey() {
@@ -74,41 +74,41 @@ public class KeyVaultKeyLessECSignatureTest {
 
     @Test
     public void engineInitVerifyTest() {
-        assertThrows(UnsupportedOperationException.class, () -> keyVaultKeyLessECSignature.engineInitVerify(publicKey));
+        assertThrows(UnsupportedOperationException.class, () -> keyVaultKeylessEcSignature.engineInitVerify(publicKey));
     }
 
     @Test
     public void engineInitSignTest() {
-        assertThrows(UnsupportedOperationException.class, () -> keyVaultKeyLessECSignature.engineInitSign(privateKey));
+        assertThrows(UnsupportedOperationException.class, () -> keyVaultKeylessEcSignature.engineInitSign(privateKey));
     }
 
     @Test
     public void engineInitSignWithRandomTest() {
-        assertThrows(UnsupportedOperationException.class, () -> keyVaultKeyLessECSignature.engineInitSign(privateKey, null));
+        assertThrows(UnsupportedOperationException.class, () -> keyVaultKeylessEcSignature.engineInitSign(privateKey, null));
     }
 
     @Test
     public void engineVerify() {
-        assertThrows(UnsupportedOperationException.class, () -> keyVaultKeyLessECSignature.engineVerify(null));
+        assertThrows(UnsupportedOperationException.class, () -> keyVaultKeylessEcSignature.engineVerify(null));
     }
 
     @Test
     public void engineSetParameterTest() {
-        assertThrows(UnsupportedOperationException.class, () -> keyVaultKeyLessECSignature.engineSetParameter("", null));
+        assertThrows(UnsupportedOperationException.class, () -> keyVaultKeylessEcSignature.engineSetParameter("", null));
     }
 
     @Test
     public void setDigestNameAndEngineSignTest() {
-        keyVaultKeyLessECSignature = new KeyVaultKeyLessEcSha256Signature();
+        keyVaultKeylessEcSignature = new KeyVaultKeylessEcSha256Signature();
         when(keyVaultClient.getSignedWithPrivateKey(ArgumentMatchers.eq("ES256"), anyString(), ArgumentMatchers.eq(null))).thenReturn(signedWithES256);
         when(keyVaultPrivateKey.getKeyVaultClient()).thenReturn(keyVaultClient);
-        keyVaultKeyLessECSignature.engineInitSign(keyVaultPrivateKey, null);
-        Assertions.assertArrayEquals(KeyVaultEncode.encodeByte(signedWithES256), keyVaultKeyLessECSignature.engineSign());
+        keyVaultKeylessEcSignature.engineInitSign(keyVaultPrivateKey, null);
+        Assertions.assertArrayEquals(KeyVaultEncode.encodeByte(signedWithES256), keyVaultKeylessEcSignature.engineSign());
 
-        keyVaultKeyLessECSignature = new KeyVaultKeyLessEcSha384Signature();
-        keyVaultKeyLessECSignature.engineInitSign(keyVaultPrivateKey, null);
+        keyVaultKeylessEcSignature = new KeyVaultKeylessEcSha384Signature();
+        keyVaultKeylessEcSignature.engineInitSign(keyVaultPrivateKey, null);
         when(keyVaultClient.getSignedWithPrivateKey(ArgumentMatchers.eq("ES384"), anyString(), ArgumentMatchers.eq(null))).thenReturn(signedWithES384);
-        assertArrayEquals(KeyVaultEncode.encodeByte(signedWithES384), keyVaultKeyLessECSignature.engineSign());
+        assertArrayEquals(KeyVaultEncode.encodeByte(signedWithES384), keyVaultKeylessEcSignature.engineSign());
     }
 
 }
