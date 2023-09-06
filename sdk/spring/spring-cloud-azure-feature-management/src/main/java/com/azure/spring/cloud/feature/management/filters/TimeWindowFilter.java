@@ -2,18 +2,22 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.feature.management.filters;
 
-import static com.azure.spring.cloud.feature.management.models.FilterParameters.TIME_WINDOW_FILTER_SETTING_END;
-import static com.azure.spring.cloud.feature.management.models.FilterParameters.TIME_WINDOW_FILTER_SETTING_START;
-
+import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
+import com.azure.spring.cloud.feature.management.filters.crontab.CrontabExpression;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
 
 import com.azure.spring.cloud.feature.management.models.FeatureFilterEvaluationContext;
+
+import static com.azure.spring.cloud.feature.management.models.FilterParameters.*;
 
 /**
  * A feature filter that can be used at activate a feature based on a time window.
@@ -30,38 +34,80 @@ public final class TimeWindowFilter implements FeatureFilter {
      */
     @Override
     public boolean evaluate(FeatureFilterEvaluationContext context) {
-        String start = (String) context.getParameters().get(TIME_WINDOW_FILTER_SETTING_START);
-        String end = (String) context.getParameters().get(TIME_WINDOW_FILTER_SETTING_END);
-
-        ZonedDateTime now = ZonedDateTime.now();
-
-        if (!StringUtils.hasText(start) && !StringUtils.hasText(end)) {
-            LOGGER.warn("The {} feature filter is not valid for feature {}. It must specify either {}, {}, or both.",
-                this.getClass().getSimpleName(), context.getName(), TIME_WINDOW_FILTER_SETTING_START,
-                TIME_WINDOW_FILTER_SETTING_END);
+        final TimeWindowFilterParameters filterParameters = new TimeWindowFilterParameters(context);
+        if (!filterParameters.isValid()) {
             return false;
         }
-        
-        ZonedDateTime startTime = null;
-        ZonedDateTime endTime = null;
 
-        try {
-            startTime = StringUtils.hasText(start)
-                ? ZonedDateTime.parse(start, DateTimeFormatter.ISO_DATE_TIME)
-                : null;
-            endTime = StringUtils.hasText(end)
-                ? ZonedDateTime.parse(end, DateTimeFormatter.ISO_DATE_TIME)
-                : null;
-        } catch (DateTimeParseException e) {
-            startTime = StringUtils.hasText(start)
-                ? ZonedDateTime.parse(start, DateTimeFormatter.RFC_1123_DATE_TIME)
-                : null;
-            endTime = StringUtils.hasText(end)
-                ? ZonedDateTime.parse(end, DateTimeFormatter.RFC_1123_DATE_TIME)
-                : null;
+        ZonedDateTime now = ZonedDateTime.now();
+        // check if match start time(end time) when specify start time(end time)
+        if (filterParameters.startTime != null && now.isBefore(filterParameters.startTime) ||
+            (filterParameters.endTime != null && now.isAfter(filterParameters.endTime))) {
+            return false;
         }
-        return (!StringUtils.hasText(start) || now.isAfter(startTime))
-            && (!StringUtils.hasText(end) || now.isBefore(endTime));
+
+        // Need to set Zone Offset
+        final ZoneOffset zoneOffset = filterParameters.startTime != null ? filterParameters.startTime.getOffset() :
+            (filterParameters.endTime != null ? filterParameters.endTime.getOffset() : null);
+        if (zoneOffset != null) {
+            now.withZoneSameInstant(zoneOffset);
+        }
+        // check if match crontab expression
+        for (final CrontabExpression expression : filterParameters.filterCronTabExpressions) {
+            if (expression.isMatch(now)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private static class TimeWindowFilterParameters {
+        private final String name;
+        private final String start;
+        private final String end;
+        private final List<String> filters = new ArrayList<>();
+        private ZonedDateTime startTime;
+        private ZonedDateTime endTime;
+        private final List<CrontabExpression> filterCronTabExpressions = new ArrayList<>();
+
+        public TimeWindowFilterParameters(FeatureFilterEvaluationContext context) {
+            this.name = context.getName();
+            this.start = (String) context.getParameters().get(TIME_WINDOW_FILTER_SETTING_START);
+            this.end = (String) context.getParameters().get(TIME_WINDOW_FILTER_SETTING_END);
+            final Object filtersObj = context.getParameters().get(TIME_WINDOW_FILTER_SETTING_FILTERS);
+            if (filtersObj instanceof Map) {
+                this.filters.addAll(((Map<String, String>) filtersObj).values());
+            }
+        }
+
+        public boolean isValid() {
+            // Must specify at least one parameter
+            if (!StringUtils.hasText(start) && !StringUtils.hasText(end) && filters.size() == 0) {
+                LOGGER.warn("The {} feature filter is not valid for feature {}. It must specify at least one of {}, {}, {}.",
+                    TimeWindowFilter.class.getSimpleName(), this.name, TIME_WINDOW_FILTER_SETTING_START,
+                    TIME_WINDOW_FILTER_SETTING_END, TIME_WINDOW_FILTER_SETTING_FILTERS);
+                return false;
+            }
+            // Check if date format is valid
+            try {
+                startTime = StringUtils.hasText(start)
+                    ? ZonedDateTime.parse(start, DateTimeFormatter.ISO_DATE_TIME)
+                    : null;
+                endTime = StringUtils.hasText(end)
+                    ? ZonedDateTime.parse(end, DateTimeFormatter.ISO_DATE_TIME)
+                    : null;
+            } catch (DateTimeParseException e) {
+                startTime = StringUtils.hasText(start)
+                    ? ZonedDateTime.parse(start, DateTimeFormatter.RFC_1123_DATE_TIME)
+                    : null;
+                endTime = StringUtils.hasText(end)
+                    ? ZonedDateTime.parse(end, DateTimeFormatter.RFC_1123_DATE_TIME)
+                    : null;
+            }
+            // Check if crontab is valid
+            filters.forEach(filter -> filterCronTabExpressions.add(new CrontabExpression(filter)));
+            return true;
+        }
     }
 
 }

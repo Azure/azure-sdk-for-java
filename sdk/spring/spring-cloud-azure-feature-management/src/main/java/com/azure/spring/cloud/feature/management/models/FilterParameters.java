@@ -6,9 +6,9 @@ package com.azure.spring.cloud.feature.management.models;
  * Parameters for the predefined filters.
  */
 public final class FilterParameters {
-    
+
     private FilterParameters() {
-        
+
     }
 
     /**
@@ -25,5 +25,10 @@ public final class FilterParameters {
      * Property for the end of the Time Window Filter
      */
     public static final String TIME_WINDOW_FILTER_SETTING_END = "End";
+
+    /**
+     * Property for the filters of the Recurring Time Window Filter
+     */
+    public static final String TIME_WINDOW_FILTER_SETTING_FILTERS = "Filters";
 
 }
