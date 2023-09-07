@@ -20,8 +20,6 @@ import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.options.BlobQueryOptions;
 import com.azure.storage.common.implementation.Constants;
-import com.azure.storage.common.test.shared.extensions.LiveOnly;
-import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledIf;
@@ -31,9 +29,6 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
-import reactor.core.Exceptions;
-import spock.lang.Retry;
-import spock.lang.Unroll;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -41,10 +36,8 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Objects;
+import java.time.OffsetDateTime;
+import java.util.*;
 import java.util.function.Consumer;
 import java.util.logging.Logger;
 import java.util.stream.Stream;
@@ -52,6 +45,7 @@ import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -692,7 +686,6 @@ public class BlobBaseApiTests extends BlobTestBase {
                 queryData = readFromInputStream(qqStream, downloadedData.length);
             } catch (IOException e) {
                 throw LOGGER.logExceptionAsError(new RuntimeException(e));
-                throw LOGGER.logExceptionAsError(new RuntimeException(e));
             }
 
             assertArrayEquals(queryData, downloadedData);
@@ -731,189 +724,162 @@ public class BlobBaseApiTests extends BlobTestBase {
     }
 
     @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
-    @Retry(count = 5, delay = 5, condition = { environment.testMode == TestMode.LIVE })
-    public void query arrow input IA() {
-        setup:
-        def inSer = new BlobQueryArrowSerialization()
-        String expression = "SELECT * from BlobStorage"
+    @Test
+    public void queryArrowInputIA() {
+        BlobQueryArrowSerialization inSer = new BlobQueryArrowSerialization();
+        String expression = "SELECT * from BlobStorage";
         BlobQueryOptions options = new BlobQueryOptions(expression)
-            .setInputSerialization(inSer)
+            .setInputSerialization(inSer);
 
-        when:
-        InputStream stream = bc.openQueryInputStreamWithResponse(options).getValue()  /* Don't need to call read. */
-
-        then:
-        thrown(IllegalArgumentException)
-
-        when:
-        options = new BlobQueryOptions(expression, new ByteArrayOutputStream())
-            .setInputSerialization(inSer)
-        bc.queryWithResponse(options, null, null)
-
-        then:
-        thrown(IllegalArgumentException)
+        liveTestScenarioWithRetry(() -> {
+            assertThrows(IllegalArgumentException.class,
+                () -> bc.openQueryInputStreamWithResponse(options).getValue()  /* Don't need to call read. */);
+            BlobQueryOptions options2 = new BlobQueryOptions(expression, new ByteArrayOutputStream())
+                .setInputSerialization(inSer);
+            assertThrows(IllegalArgumentException.class, () -> bc.queryWithResponse(options, null, null));
+        });
     }
 
     @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20201002ServiceVersion")
-    @Retry(count = 5, delay = 5, condition = { environment.testMode == TestMode.LIVE })
-    public void query parquet output IA() {
-        setup:
-        def outSer = new BlobQueryParquetSerialization()
-        String expression = "SELECT * from BlobStorage"
+    @Test
+    public void queryParquetOutputIA() {
+        BlobQueryParquetSerialization outSer = new BlobQueryParquetSerialization();
+        String expression = "SELECT * from BlobStorage";
         BlobQueryOptions options = new BlobQueryOptions(expression)
-            .setOutputSerialization(outSer)
+            .setOutputSerialization(outSer);
 
-        when:
-        InputStream stream = bc.openQueryInputStreamWithResponse(options).getValue()  /* Don't need to call read. */
-
-        then:
-        thrown(IllegalArgumentException)
-
-        when:
-        options = new BlobQueryOptions(expression, new ByteArrayOutputStream())
-            .setOutputSerialization(outSer)
-        bc.queryWithResponse(options, null, null)
-
-        then:
-        thrown(IllegalArgumentException)
+        liveTestScenarioWithRetry(() -> {
+            assertThrows(IllegalArgumentException.class,
+                () -> bc.openQueryInputStreamWithResponse(options).getValue()  /* Don't need to call read. */);
+            BlobQueryOptions options2 = new BlobQueryOptions(expression, new ByteArrayOutputStream())
+                .setOutputSerialization(outSer);
+            assertThrows(IllegalArgumentException.class,
+                () -> bc.queryWithResponse(options, null, null));
+            });
     }
 
     @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
-    @Retry(count = 5, delay = 5, condition = { environment.testMode == TestMode.LIVE })
-    public void query error() {
-        setup:
-        bc = cc.getBlobClient(generateBlobName())
-
-        when:
-        bc.openQueryInputStream("SELECT * from BlobStorage") /* Don't need to call read. */
-
-        then:
-        thrown(BlobStorageException)
-
-        when:
-        bc.query(new ByteArrayOutputStream(), "SELECT * from BlobStorage")
-
-        then:
-        thrown(BlobStorageException)
+    @Test
+    public void queryError() {
+        liveTestScenarioWithRetry(() -> {
+            bc = cc.getBlobClient(generateBlobName());
+            assertThrows(BlobStorageException.class,
+                () -> bc.openQueryInputStream("SELECT * from BlobStorage") /* Don't need to call read. */);
+            assertThrows(BlobStorageException.class,
+                () -> bc.query(new ByteArrayOutputStream(), "SELECT * from BlobStorage"));
+        });
     }
 
     @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
-    @Unroll
-    @Retry(count = 5, delay = 5, condition = { environment.testMode == TestMode.LIVE })
-    public void query AC() {
-        setup:
-        def t = new HashMap<String, String>()
-        t.put("foo", "bar")
-        bc.setTags(t)
-        match = setupBlobMatchCondition(bc, match)
-        leaseID = setupBlobLeaseCondition(bc, leaseID)
-        def bac = new BlobRequestConditions()
+    @ParameterizedTest
+    @MethodSource("queryACSupplier")
+    public void queryAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
+        String leaseID, String tags) {
+        Map<String, String> t = new HashMap<>();
+        t.put("foo", "bar");
+        bc.setTags(t);
+        match = setupBlobMatchCondition(bc, match);
+        leaseID = setupBlobLeaseCondition(bc, leaseID);
+        BlobRequestConditions bac = new BlobRequestConditions()
             .setLeaseId(leaseID)
             .setIfMatch(match)
             .setIfNoneMatch(noneMatch)
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified)
-            .setTagsConditions(tags)
-        String expression = "SELECT * from BlobStorage"
+            .setTagsConditions(tags);
+        String expression = "SELECT * from BlobStorage";
         BlobQueryOptions optionsIs = new BlobQueryOptions(expression)
-            .setRequestConditions(bac)
+            .setRequestConditions(bac);
         BlobQueryOptions optionsOs = new BlobQueryOptions(expression, new ByteArrayOutputStream())
-            .setRequestConditions(bac)
+            .setRequestConditions(bac);
 
-        when:
-        InputStream stream = bc.openQueryInputStreamWithResponse(optionsIs).getValue()
-        stream.read()
-        stream.close()
+        liveTestScenarioWithRetry(() -> {
+            InputStream stream = bc.openQueryInputStreamWithResponse(optionsIs).getValue();
+            try {
+                stream.read();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            assertDoesNotThrow(stream::close);
+            assertDoesNotThrow(() -> bc.queryWithResponse(optionsOs, null, null));
+        });
+    }
 
-        then:
-        notThrown(BlobStorageException)
-
-        when:
-        bc.queryWithResponse(optionsOs, null, null)
-
-        then:
-        notThrown(BlobStorageException)
-
-        where:
-        modified | unmodified | match        | noneMatch   | leaseID         | tags
-        null     | null       | null         | null        | null            | null
-        oldDate  | null       | null         | null        | null            | null
-        null     | newDate    | null         | null        | null            | null
-        null     | null       | receivedEtag | null        | null            | null
-        null     | null       | null         | garbageEtag | null            | null
-        null     | null       | null         | null        | receivedLeaseID | null
-        null     | null       | null         | null        | null            | "\"foo\" = 'bar'"
+    private static Stream<Arguments> queryACSupplier() {
+        return Stream.of(Arguments.of(null, null, null, null, null, null),
+            Arguments.of(OLD_DATE, null, null, null, null, null),
+            Arguments.of(null, NEW_DATE, null, null, null, null),
+            Arguments.of(null, null, RECEIVED_ETAG, null, null, null),
+            Arguments.of(null, null, null, null, RECEIVED_LEASE_ID, null),
+            Arguments.of(null, null, null, null, null, "\"foo\" = 'bar'")
+            );
     }
 
     @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
-    @Unroll
-    public void query AC fail() {
-        setup:
-        setupBlobLeaseCondition(bc, leaseID)
-        def bac = new BlobRequestConditions()
+    @ParameterizedTest
+    @MethodSource("queryACFailSupplier")
+    public void queryACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
+        String leaseID, String tags) {
+        setupBlobLeaseCondition(bc, leaseID);
+        BlobRequestConditions bac = new BlobRequestConditions()
             .setLeaseId(leaseID)
             .setIfMatch(match)
             .setIfNoneMatch(setupBlobMatchCondition(bc, noneMatch))
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified)
-            .setTagsConditions(tags)
-        String expression = "SELECT * from BlobStorage"
+            .setTagsConditions(tags);
+        String expression = "SELECT * from BlobStorage";
         BlobQueryOptions optionsIs = new BlobQueryOptions(expression)
-            .setRequestConditions(bac)
+            .setRequestConditions(bac);
         BlobQueryOptions optionsOs = new BlobQueryOptions(expression, new ByteArrayOutputStream())
-            .setRequestConditions(bac)
+            .setRequestConditions(bac);
 
-        when:
-        bc.openQueryInputStreamWithResponse(optionsIs).getValue() /* Don't need to call read. */
+        assertThrows(BlobStorageException.class,
+            () -> bc.openQueryInputStreamWithResponse(optionsIs).getValue() /* Don't need to call read. */);
 
-        then:
-        thrown(BlobStorageException)
-
-        when:
-        bc.queryWithResponse(optionsOs, null, null)
-
-        then:
-        thrown(BlobStorageException)
-
-        where:
-        modified | unmodified | match       | noneMatch    | leaseID        | tags
-        newDate  | null       | null        | null         | null           | null
-        null     | oldDate    | null        | null         | null           | null
-        null     | null       | garbageEtag | null         | null           | null
-        null     | null       | null        | receivedEtag | null           | null
-        null     | null       | null        | null         | garbageLeaseID | null
-        null     | null       | null        | null        | null            | "\"notfoo\" = 'notbar'"
+        assertThrows(BlobStorageException.class,
+            () -> bc.queryWithResponse(optionsOs, null, null));
     }
 
-    class MockProgressConsumer implements Consumer<BlobQueryProgress> {
+    private static Stream<Arguments> queryACFailSupplier() {
+        return Stream.of(Arguments.of(NEW_DATE, null, null, null, null, null),
+            Arguments.of(null, OLD_DATE, null, null, null, null),
+            Arguments.of(null, null, GARBAGE_ETAG, null, null, null),
+            Arguments.of(null, null, null, RECEIVED_ETAG, null, null),
+            Arguments.of(null, null, null, null, GARBAGE_LEASE_ID, null),
+            Arguments.of(null, null, null, null, null, "\"notfoo\" = 'notbar'")
+        );
+    }
 
-        List<Long> progressList
+    static class MockProgressConsumer implements Consumer<BlobQueryProgress> {
+
+        List<Long> progressList;
 
         MockProgressConsumer() {
-            this.progressList = new ArrayList<>()
+            this.progressList = new ArrayList<>();
         }
 
         @Override
-        void accept(BlobQueryProgress progress) {
-            progressList.add(progress.getBytesScanned())
+        public void accept(BlobQueryProgress progress) {
+            progressList.add(progress.getBytesScanned());
         }
     }
 
-    class MockErrorConsumer implements Consumer<BlobQueryError> {
+    static class MockErrorConsumer implements Consumer<BlobQueryError> {
 
-        String expectedType
-        int numErrors
+        String expectedType;
+        int numErrors;
 
         MockErrorConsumer(String expectedType) {
-            this.expectedType = expectedType
-            this.numErrors = 0
+            this.expectedType = expectedType;
+            this.numErrors = 0;
         }
 
         @Override
-        void accept(BlobQueryError nonFatalError) {
-            assert !nonFatalError.isFatal()
-            assert nonFatalError.getName() == expectedType
-            numErrors++
+        public void accept(BlobQueryError nonFatalError) {
+            assertFalse(nonFatalError.isFatal());
+            assertEquals(nonFatalError.getName(), expectedType);
+            numErrors++;
         }
     }
 }

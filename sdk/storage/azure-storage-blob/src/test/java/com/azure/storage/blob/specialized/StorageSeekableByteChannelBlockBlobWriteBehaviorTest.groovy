@@ -12,7 +12,7 @@ import org.mockito.Mockito
 import spock.lang.Specification
 import spock.lang.Unroll
 
-class StorageSeekableByteChannelBlockBlobWriteBehaviorTests extends Specification {
+class StorageSeekableByteChannelBlockBlobWriteBehaviorTest extends Specification {
     def data = TestDataFactory.getInstance()
 
     StorageSeekableByteChannelBlockBlobWriteBehavior getSimpleBehavior(BlockBlobClient client) {

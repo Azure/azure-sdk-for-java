@@ -21,7 +21,7 @@ import java.nio.charset.Charset
 import java.time.Duration
 import java.util.concurrent.TimeoutException
 
-class DownloadResponseMockFlux {
+class DownloadResponseMockFluxTest {
     static final int DR_TEST_SCENARIO_SUCCESSFUL_ONE_CHUNK = 0 // Data emitted in one chunk
     static final int DR_TEST_SCENARIO_SUCCESSFUL_MULTI_CHUNK = 1 // Data emitted in multiple chunks
     static final int DR_TEST_SCENARIO_SUCCESSFUL_STREAM_FAILURES = 2 // Stream failures successfully handled
@@ -39,7 +39,7 @@ class DownloadResponseMockFlux {
     private DownloadRetryOptions options
     private boolean subscribed = false // Only used for multiple subscription test.
 
-    DownloadResponseMockFlux(int scenario, APISpec apiSpec) {
+    DownloadResponseMockFluxTest(int scenario, APISpec apiSpec) {
         this.scenario = scenario
 
         if (scenario == DR_TEST_SCENARIO_SUCCESSFUL_ONE_CHUNK) {
@@ -57,8 +57,9 @@ class DownloadResponseMockFlux {
     /*
     For internal construction on NO_MULTIPLE_SUBSCRIPTION test
      */
-    DownloadResponseMockFlux(int scenario, int tryNumber, ByteBuffer scenarioData,
-        DownloadRetryOptions options) {
+
+    DownloadResponseMockFluxTest(int scenario, int tryNumber, ByteBuffer scenarioData,
+                                 DownloadRetryOptions options) {
         this.scenario = scenario
         this.tryNumber = tryNumber
         this.scenarioData = scenarioData
@@ -233,7 +234,7 @@ class DownloadResponseMockFlux {
                     case DR_TEST_SCENARIO_NO_MULTIPLE_SUBSCRIPTION:
                         // Construct a new flux each time to mimic getting a new download stream.
                         // Construct a new flux each time to mimic getting a new download stream.
-                        def nextFlux = new DownloadResponseMockFlux(scenario, tryNumber, scenarioData, options)
+                        def nextFlux = new DownloadResponseMockFluxTest(scenario, tryNumber, scenarioData, options)
                         def newResponse = new MockHttpResponse(null, 200) {
                             @Override
                             Flux<ByteBuffer> getBody() {

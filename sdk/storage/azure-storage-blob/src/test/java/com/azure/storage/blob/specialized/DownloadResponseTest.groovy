@@ -72,7 +72,7 @@ class DownloadResponseTest extends APISpec {
     @Unroll
     def "Successful"() {
         setup:
-        DownloadResponseMockFlux flux = new DownloadResponseMockFlux(scenario, this)
+        DownloadResponseMockFluxTest flux = new DownloadResponseMockFluxTest(scenario, this)
 
         DownloadRetryOptions options = new DownloadRetryOptions().setMaxRetryRequests(5)
 
@@ -90,19 +90,19 @@ class DownloadResponseTest extends APISpec {
 
 
         where:
-        scenario                                                             | tryNumber | setCount
-        DownloadResponseMockFlux.DR_TEST_SCENARIO_SUCCESSFUL_ONE_CHUNK       | 1         | true
-        DownloadResponseMockFlux.DR_TEST_SCENARIO_SUCCESSFUL_MULTI_CHUNK     | 1         | true
-        DownloadResponseMockFlux.DR_TEST_SCENARIO_SUCCESSFUL_STREAM_FAILURES | 4         | true
-        DownloadResponseMockFlux.DR_TEST_SCENARIO_NO_MULTIPLE_SUBSCRIPTION   | 4         | true
-        DownloadResponseMockFlux.DR_TEST_SCENARIO_ERROR_AFTER_ALL_DATA       | 1         | true // Range download
-        DownloadResponseMockFlux.DR_TEST_SCENARIO_ERROR_AFTER_ALL_DATA       | 1         | false // Non-range download
+        scenario                                                                 | tryNumber | setCount
+        DownloadResponseMockFluxTest.DR_TEST_SCENARIO_SUCCESSFUL_ONE_CHUNK       | 1         | true
+        DownloadResponseMockFluxTest.DR_TEST_SCENARIO_SUCCESSFUL_MULTI_CHUNK     | 1         | true
+        DownloadResponseMockFluxTest.DR_TEST_SCENARIO_SUCCESSFUL_STREAM_FAILURES | 4         | true
+        DownloadResponseMockFluxTest.DR_TEST_SCENARIO_NO_MULTIPLE_SUBSCRIPTION   | 4         | true
+        DownloadResponseMockFluxTest.DR_TEST_SCENARIO_ERROR_AFTER_ALL_DATA       | 1         | true // Range download
+        DownloadResponseMockFluxTest.DR_TEST_SCENARIO_ERROR_AFTER_ALL_DATA       | 1         | false // Non-range download
     }
 
     @Unroll
     def "Failure"() {
         setup:
-        DownloadResponseMockFlux flux = new DownloadResponseMockFlux(scenario, this)
+        DownloadResponseMockFluxTest flux = new DownloadResponseMockFluxTest(scenario, this)
         DownloadRetryOptions options = new DownloadRetryOptions().setMaxRetryRequests(5)
 
         def bsc = getServiceClientBuilder(environment.primaryAccount.credential, primaryBlobServiceClient.getAccountUrl(), flux.asPolicy()).buildAsyncClient()
@@ -123,15 +123,15 @@ class DownloadResponseTest extends APISpec {
 
         where:
         scenario                                                       | exceptionType        | tryNumber
-        DownloadResponseMockFlux.DR_TEST_SCENARIO_MAX_RETRIES_EXCEEDED | IOException          | 6
-        DownloadResponseMockFlux.DR_TEST_SCENARIO_NON_RETRYABLE_ERROR  | Exception            | 1
-        DownloadResponseMockFlux.DR_TEST_SCENARIO_ERROR_GETTER_MIDDLE  | BlobStorageException | 2
+        DownloadResponseMockFluxTest.DR_TEST_SCENARIO_MAX_RETRIES_EXCEEDED | IOException          | 6
+        DownloadResponseMockFluxTest.DR_TEST_SCENARIO_NON_RETRYABLE_ERROR  | Exception            | 1
+        DownloadResponseMockFluxTest.DR_TEST_SCENARIO_ERROR_GETTER_MIDDLE  | BlobStorageException | 2
     }
 
     @Unroll
     def "Timeout"() {
         setup:
-        DownloadResponseMockFlux flux = new DownloadResponseMockFlux(DownloadResponseMockFlux.DR_TEST_SCENARIO_TIMEOUT,
+        DownloadResponseMockFluxTest flux = new DownloadResponseMockFluxTest(DownloadResponseMockFluxTest.DR_TEST_SCENARIO_TIMEOUT,
             this)
         DownloadRetryOptions options = new DownloadRetryOptions().setMaxRetryRequests(retryCount)
 
