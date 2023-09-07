@@ -3,6 +3,8 @@
 
 package com.azure.ai.metricsadvisor.administration;
 
+import com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient;
+import com.azure.ai.metricsadvisor.MetricsAdvisorClientBuilder;
 import com.azure.ai.metricsadvisor.MetricsAdvisorServiceVersion;
 import com.azure.ai.metricsadvisor.administration.models.AnomalyAlertConfiguration;
 import com.azure.ai.metricsadvisor.administration.models.AnomalyDetectionConfiguration;
@@ -75,18 +77,64 @@ import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
 
 /**
- * This class provides an asynchronous client that contains all the operations that apply to Azure Metrics Advisor.
- * <p><strong>Instantiating a asynchronous Metrics Advisor Administration Client</strong></p>
- * <!-- src_embed com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.instantiation -->
+ * <p>This class provides asynchronous client to connect to the Metrics Advisor Azure Cognitive Service.</p>
+ * <p>This client provides asynchronous methods to perform:</p>
+ * <ol>
+ *     <li>Connect to a variety of data sources, Metrics Advisor can connect to, and ingest multi-dimensional metric data
+ *     from many data stores, including: SQL Server, Azure Blob Storage, and MongoDB. Use
+ *     {@link com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient#createDataFeed(DataFeed)}
+ *     method to add your respective data source.</li>
+ *     <li>Customize anomaly detection configuration to detect anomalies for your needs using the
+ *     {@link com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient#createDetectionConfig(String, AnomalyDetectionConfiguration)}
+ *     method.</li>
+ *     <li>Add real-time notification through multiple channels. Configure hooks for multiple alerting and detection
+ *     configuration using the
+ *     {@link com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient#createHook(NotificationHook)}
+ *     method./li>
+ * </ol>
+ *
+ * <p>Service clients are the point of interaction for developers to use Azure Metrics Advisor.
+ * {@link com.azure.ai.metricsadvisor.MetricsAdvisorClient} is the synchronous service client and
+ * {@link com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient} is the asynchronous service client.
+ * The examples shown in this document use a credential object named DefaultAzureCredential for authentication, which is
+ * appropriate for most scenarios, including local development and production environments. Additionally, we
+ * recommend using
+ * <a href="https://learn.microsoft.com/azure/active-directory/managed-identities-azure-resources/">managed identity</a>
+ * for authentication in production environments.
+ * You can find more information on different ways of authenticating and their corresponding credential types in the
+ * <a href="https://learn.microsoft.com/java/api/overview/azure/identity-readme">Azure Identity documentation"</a>.
+ * </p>
+ *
+ * <p><strong>Sample: Construct a MetricsAdvisorClient with DefaultAzureCredential</strong></p>
+ *
+ * <p>The following code sample demonstrates the creation of a
+ * {@link com.azure.ai.metricsadvisor.MetricsAdvisorClient}, using the `DefaultAzureCredentialBuilder` to configure it.</p>
+ *
+ * <!-- src_embed com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.instantiation.withAAD -->
  * <pre>
- * MetricsAdvisorAdministrationAsyncClient metricsAdvisorAdminAsyncClient =
+ * MetricsAdvisorAdministrationClient metricsAdvisorAdminClient =
+ *     new MetricsAdvisorAdministrationClientBuilder&#40;&#41;
+ *         .credential&#40;new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;&#41;
+ *         .endpoint&#40;&quot;&#123;endpoint&#125;&quot;&#41;
+ *         .buildClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.instantiation.withAAD  -->
+ *
+ * <p>Further, see the code sample below to use
+ * {@link com.azure.ai.metricsadvisor.models.MetricsAdvisorKeyCredential MetricsAdvisorKeyCredential} for client creation.</p>
+ *
+ * <!-- src_embed com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.instantiation -->
+ * <pre>
+ * MetricsAdvisorAdministrationClient metricsAdvisorAdminClient =
  *     new MetricsAdvisorAdministrationClientBuilder&#40;&#41;
  *         .credential&#40;new MetricsAdvisorKeyCredential&#40;&quot;&#123;subscription_key&#125;&quot;, &quot;&#123;api_key&#125;&quot;&#41;&#41;
  *         .endpoint&#40;&quot;&#123;endpoint&#125;&quot;&#41;
- *         .buildAsyncClient&#40;&#41;;
+ *         .buildClient&#40;&#41;;
  * </pre>
- * <!-- end com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.instantiation -->
+ * <!-- end com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.instantiation  -->
  *
+ * @see com.azure.ai.metricsadvisor
+ * @see MetricsAdvisorAdministrationClient
  * @see MetricsAdvisorAdministrationClientBuilder
  */
 @ServiceClient(builder = MetricsAdvisorAdministrationClientBuilder.class, isAsync = true)

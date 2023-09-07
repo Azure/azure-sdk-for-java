@@ -120,21 +120,40 @@
  *
  * <!-- src_embed com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.createDetectionConfigWithResponse#String-AnomalyDetectionConfiguration-Context -->
  * <pre>
- * final String detectionConfigurationId = &quot;c0f2539f-b804-4ab9-a70f-0da0c89c76d8&quot;;
- * final OffsetDateTime startTime = OffsetDateTime.parse&#40;&quot;2020-09-09T00:00:00Z&quot;&#41;;
- * final OffsetDateTime endTime = OffsetDateTime.parse&#40;&quot;2020-09-09T12:00:00Z&quot;&#41;;
+ * final MetricWholeSeriesDetectionCondition wholeSeriesCondition = new MetricWholeSeriesDetectionCondition&#40;&#41;
+ *     .setConditionOperator&#40;DetectionConditionOperator.OR&#41;
+ *     .setSmartDetectionCondition&#40;new SmartDetectionCondition&#40;
+ *         50,
+ *         AnomalyDetectorDirection.BOTH,
+ *         new SuppressCondition&#40;50, 50&#41;&#41;&#41;
+ *     .setHardThresholdCondition&#40;new HardThresholdCondition&#40;
+ *         AnomalyDetectorDirection.BOTH,
+ *         new SuppressCondition&#40;5, 5&#41;&#41;
+ *         .setLowerBound&#40;0.0&#41;
+ *         .setUpperBound&#40;100.0&#41;&#41;
+ *     .setChangeThresholdCondition&#40;new ChangeThresholdCondition&#40;
+ *         50,
+ *         30,
+ *         true,
+ *         AnomalyDetectorDirection.BOTH,
+ *         new SuppressCondition&#40;2, 2&#41;&#41;&#41;;
  *
- * metricsAdvisorAsyncClient.listAnomaliesForDetectionConfig&#40;detectionConfigurationId,
- *     startTime, endTime&#41;
- *     .subscribe&#40;anomaly -&gt; &#123;
- *         System.out.printf&#40;&quot;DataPoint Anomaly AnomalySeverity: %s%n&quot;, anomaly.getSeverity&#40;&#41;&#41;;
- *         System.out.printf&#40;&quot;Series Key:&quot;&#41;;
- *         DimensionKey seriesKey = anomaly.getSeriesKey&#40;&#41;;
- *         for &#40;Map.Entry&lt;String, String&gt; dimension : seriesKey.asMap&#40;&#41;.entrySet&#40;&#41;&#41; &#123;
- *             System.out.printf&#40;&quot;DimensionName: %s DimensionValue:%s%n&quot;,
- *                 dimension.getKey&#40;&#41;, dimension.getValue&#40;&#41;&#41;;
- *         &#125;
- *     &#125;&#41;;
+ * final String detectionConfigName = &quot;my_detection_config&quot;;
+ * final String detectionConfigDescription = &quot;anomaly detection config for metric&quot;;
+ * final AnomalyDetectionConfiguration detectionConfig
+ *     = new AnomalyDetectionConfiguration&#40;detectionConfigName&#41;
+ *     .setDescription&#40;detectionConfigDescription&#41;
+ *     .setWholeSeriesDetectionCondition&#40;wholeSeriesCondition&#41;;
+ *
+ * final String metricId = &quot;0b836da8-10e6-46cd-8f4f-28262e113a62&quot;;
+ * Response&lt;AnomalyDetectionConfiguration&gt; response = metricsAdvisorAdminClient
+ *     .createDetectionConfigWithResponse&#40;metricId, detectionConfig, Context.NONE&#41;;
+ * System.out.printf&#40;&quot;Response statusCode: %d%n&quot;, response.getStatusCode&#40;&#41;&#41;;
+ * AnomalyDetectionConfiguration createdDetectionConfig = response.getValue&#40;&#41;;
+ * System.out.printf&#40;&quot;Detection config Id: %s%n&quot;, createdDetectionConfig.getId&#40;&#41;&#41;;
+ * System.out.printf&#40;&quot;Name: %s%n&quot;, createdDetectionConfig.getName&#40;&#41;&#41;;
+ * System.out.printf&#40;&quot;Description: %s%n&quot;, createdDetectionConfig.getDescription&#40;&#41;&#41;;
+ * System.out.printf&#40;&quot;MetricId: %s%n&quot;, createdDetectionConfig.getMetricId&#40;&#41;&#41;;
  * </pre>
  * <!-- end com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient.listAnomaliesForDetectionConfig#String-OffsetDateTime-OffsetDateTime -->
  * <p>

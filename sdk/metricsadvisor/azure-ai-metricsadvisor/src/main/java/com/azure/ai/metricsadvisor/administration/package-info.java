@@ -54,11 +54,11 @@
  *
  * <!-- src_embed com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.instantiation.withAAD -->
  * <pre>
- * MetricsAdvisorClient metricsAdvisorClient =
- *     new MetricsAdvisorClientBuilder&#40;&#41;
+ * MetricsAdvisorAdministrationAsyncClient metricsAdvisorAdminAsyncClient =
+ *     new MetricsAdvisorAdministrationClientBuilder&#40;&#41;
  *         .credential&#40;new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;&#41;
  *         .endpoint&#40;&quot;&#123;endpoint&#125;&quot;&#41;
- *         .buildClient&#40;&#41;;
+ *         .buildAsyncClient&#40;&#41;;
  * </pre>
  * <!-- end com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.instantiation.withAAD  -->
  *
@@ -67,11 +67,11 @@
  *
  * <!-- src_embed com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.instantiation -->
  * <pre>
- * MetricsAdvisorClient metricsAdvisorClient =
- *     new MetricsAdvisorClientBuilder&#40;&#41;
+ * MetricsAdvisorAdministrationAsyncClient metricsAdvisorAdminAsyncClient =
+ *     new MetricsAdvisorAdministrationClientBuilder&#40;&#41;
  *         .credential&#40;new MetricsAdvisorKeyCredential&#40;&quot;&#123;subscription_key&#125;&quot;, &quot;&#123;api_key&#125;&quot;&#41;&#41;
  *         .endpoint&#40;&quot;&#123;endpoint&#125;&quot;&#41;
- *         .buildClient&#40;&#41;;
+ *         .buildAsyncClient&#40;&#41;;
  * </pre>
  * <!-- end com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.instantiation  -->
  *
@@ -88,59 +88,42 @@
  * <p>The following code sample demonstrates to connect data source to create a data feed using an SQL data source</p>
  *
  * <!-- src_embed com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.createDataFeed#DataFeed -->
- * <pre>
- * final String metricId = &quot;2dgfbbbb-41ec-a637-677e77b81455&quot;;
- * final OffsetDateTime startTime = OffsetDateTime.parse&#40;&quot;2020-09-09T00:00:00Z&quot;&#41;;
- * final OffsetDateTime endTime = OffsetDateTime.parse&#40;&quot;2020-09-09T12:00:00Z&quot;&#41;;
- *
- * final List&lt;DimensionKey&gt; seriesKeyFilter
- *     = Arrays.asList&#40;new DimensionKey&#40;&#41;.put&#40;&quot;cost&quot;, &quot;redmond&quot;&#41;&#41;;
- *
- * metricsAdvisorAsyncClient.listMetricSeriesData&#40;metricId, seriesKeyFilter, startTime, endTime&#41;
- *     .subscribe&#40;metricSeriesData -&gt; &#123;
- *         System.out.println&#40;&quot;List of data points for this series:&quot;&#41;;
- *         System.out.println&#40;metricSeriesData.getMetricValues&#40;&#41;&#41;;
- *         System.out.println&#40;&quot;Timestamps of the data related to this time series:&quot;&#41;;
- *         System.out.println&#40;metricSeriesData.getTimestamps&#40;&#41;&#41;;
- *         System.out.printf&#40;&quot;Series Key:&quot;&#41;;
- *         System.out.println&#40;metricSeriesData.getSeriesKey&#40;&#41;.asMap&#40;&#41;&#41;;
- *     &#125;&#41;;
- * </pre>
- * <!-- end src_embed com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.createDataFeed#DataFeed -->
- * <p>
- *
- * <br>
- *
- * <hr>
- *
- * <h2>Configure metrics and fine tune detection configuration</h2>
- *
- * <p>You can use the  parameter tuning and interactive feedback to customize the model applied on your data, and future anomaly detection results.
- *  Depending on the use case, certain types of anomalies may be of more significant interest. Sometimes you may be interested
- *  in sudden spikes or dips, but other cases, spikes/dips or transient anomalies aren't critical.
- *  This API helps users in fine tuning the configuration, and reduces alert noise</p>
- *
- * <p><strong>Sample: Fine tuning anomaly detection configuration</strong></p>
- *
- * <p>The following code sample demonstrates how to configure the metrics and fine tune the detection configuration.</p>
- *
  * <!-- src_embed com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.createDetectionConfigWithResponse#String-AnomalyDetectionConfiguration-Context -->
  * <pre>
- * final String detectionConfigurationId = &quot;c0f2539f-b804-4ab9-a70f-0da0c89c76d8&quot;;
- * final OffsetDateTime startTime = OffsetDateTime.parse&#40;&quot;2020-09-09T00:00:00Z&quot;&#41;;
- * final OffsetDateTime endTime = OffsetDateTime.parse&#40;&quot;2020-09-09T12:00:00Z&quot;&#41;;
+ * final MetricWholeSeriesDetectionCondition wholeSeriesCondition = new MetricWholeSeriesDetectionCondition&#40;&#41;
+ *     .setConditionOperator&#40;DetectionConditionOperator.OR&#41;
+ *     .setSmartDetectionCondition&#40;new SmartDetectionCondition&#40;
+ *         50,
+ *         AnomalyDetectorDirection.BOTH,
+ *         new SuppressCondition&#40;50, 50&#41;&#41;&#41;
+ *     .setHardThresholdCondition&#40;new HardThresholdCondition&#40;
+ *         AnomalyDetectorDirection.BOTH,
+ *         new SuppressCondition&#40;5, 5&#41;&#41;
+ *         .setLowerBound&#40;0.0&#41;
+ *         .setUpperBound&#40;100.0&#41;&#41;
+ *     .setChangeThresholdCondition&#40;new ChangeThresholdCondition&#40;
+ *         50,
+ *         30,
+ *         true,
+ *         AnomalyDetectorDirection.BOTH,
+ *         new SuppressCondition&#40;2, 2&#41;&#41;&#41;;
  *
- * metricsAdvisorAsyncClient.listAnomaliesForDetectionConfig&#40;detectionConfigurationId,
- *     startTime, endTime&#41;
- *     .subscribe&#40;anomaly -&gt; &#123;
- *         System.out.printf&#40;&quot;DataPoint Anomaly AnomalySeverity: %s%n&quot;, anomaly.getSeverity&#40;&#41;&#41;;
- *         System.out.printf&#40;&quot;Series Key:&quot;&#41;;
- *         DimensionKey seriesKey = anomaly.getSeriesKey&#40;&#41;;
- *         for &#40;Map.Entry&lt;String, String&gt; dimension : seriesKey.asMap&#40;&#41;.entrySet&#40;&#41;&#41; &#123;
- *             System.out.printf&#40;&quot;DimensionName: %s DimensionValue:%s%n&quot;,
- *                 dimension.getKey&#40;&#41;, dimension.getValue&#40;&#41;&#41;;
- *         &#125;
- *     &#125;&#41;;
+ * final String detectionConfigName = &quot;my_detection_config&quot;;
+ * final String detectionConfigDescription = &quot;anomaly detection config for metric&quot;;
+ * final AnomalyDetectionConfiguration detectionConfig
+ *     = new AnomalyDetectionConfiguration&#40;detectionConfigName&#41;
+ *     .setDescription&#40;detectionConfigDescription&#41;
+ *     .setWholeSeriesDetectionCondition&#40;wholeSeriesCondition&#41;;
+ *
+ * final String metricId = &quot;0b836da8-10e6-46cd-8f4f-28262e113a62&quot;;
+ * Response&lt;AnomalyDetectionConfiguration&gt; response = metricsAdvisorAdminClient
+ *     .createDetectionConfigWithResponse&#40;metricId, detectionConfig, Context.NONE&#41;;
+ * System.out.printf&#40;&quot;Response statusCode: %d%n&quot;, response.getStatusCode&#40;&#41;&#41;;
+ * AnomalyDetectionConfiguration createdDetectionConfig = response.getValue&#40;&#41;;
+ * System.out.printf&#40;&quot;Detection config Id: %s%n&quot;, createdDetectionConfig.getId&#40;&#41;&#41;;
+ * System.out.printf&#40;&quot;Name: %s%n&quot;, createdDetectionConfig.getName&#40;&#41;&#41;;
+ * System.out.printf&#40;&quot;Description: %s%n&quot;, createdDetectionConfig.getDescription&#40;&#41;&#41;;
+ * System.out.printf&#40;&quot;MetricId: %s%n&quot;, createdDetectionConfig.getMetricId&#40;&#41;&#41;;
  * </pre>
  * <!-- end com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.createDetectionConfigWithResponse#String-AnomalyDetectionConfiguration-Context -->
  * <p>
@@ -160,18 +143,19 @@
  ```java readme-sample-createHook
  * <!-- src_embed readme-sample-createHook -->
  * <pre>
- * final String detectionConfigurationId = &quot;c0dddf2539f-b804-4ab9-a70f-0da0c89c76d8&quot;;
- * final String incidentId = &quot;c5thh0f2539f-b804-4ab9-a70f-0da0c89c456d&quot;;
+ * NotificationHook emailNotificationHook = new EmailNotificationHook&#40;&quot;email Hook&quot;&#41;
+ *     .setDescription&#40;&quot;my email Hook&quot;&#41;
+ *     .setEmailsToAlert&#40;Collections.singletonList&#40;&quot;alertme&#64;alertme.com&quot;&#41;&#41;
+ *     .setExternalLink&#40;&quot;https:&#47;&#47;adwiki.azurewebsites.net&#47;articles&#47;howto&#47;alerts&#47;create-hooks.html&quot;&#41;;
  *
- * metricsAdvisorClient.listIncidentRootCauses&#40;detectionConfigurationId, incidentId&#41;
- *     .forEach&#40;incidentRootCause -&gt; &#123;
- *         System.out.printf&#40;&quot;Description: %s%n&quot;, incidentRootCause.getDescription&#40;&#41;&#41;;
- *         System.out.printf&#40;&quot;Series Key:&quot;&#41;;
- *         System.out.println&#40;incidentRootCause.getSeriesKey&#40;&#41;.asMap&#40;&#41;&#41;;
- *         System.out.printf&#40;&quot;Confidence for the detected incident root cause %.2f%n&quot;,
- *             incidentRootCause.getContributionScore&#40;&#41;&#41;;
- *     &#125;&#41;;
- *
+ * final NotificationHook notificationHook = metricsAdvisorAdminClient.createHook&#40;emailNotificationHook&#41;;
+ * EmailNotificationHook createdEmailHook = &#40;EmailNotificationHook&#41; notificationHook;
+ * System.out.printf&#40;&quot;Email Hook Id: %s%n&quot;, createdEmailHook.getId&#40;&#41;&#41;;
+ * System.out.printf&#40;&quot;Email Hook name: %s%n&quot;, createdEmailHook.getName&#40;&#41;&#41;;
+ * System.out.printf&#40;&quot;Email Hook description: %s%n&quot;, createdEmailHook.getDescription&#40;&#41;&#41;;
+ * System.out.printf&#40;&quot;Email Hook external Link: %s%n&quot;, createdEmailHook.getExternalLink&#40;&#41;&#41;;
+ * System.out.printf&#40;&quot;Email Hook emails to alert: %s%n&quot;,
+ *     String.join&#40;&quot;,&quot;, createdEmailHook.getEmailsToAlert&#40;&#41;&#41;&#41;;
  * </pre>
  * <!-- end readme-sample-createHook -->
  *
