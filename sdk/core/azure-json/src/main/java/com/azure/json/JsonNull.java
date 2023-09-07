@@ -41,7 +41,7 @@ public class JsonNull extends JsonElement{
      * @param jsonWriter JsonWriter that the serialized JsonNull is written to. 
      * @return JsonWriter state after the serialized JsonNull has been written 
      * to it. 
-     * @throws IOException Thrown when JsonWriter.writeBoolean call throws an 
+     * @throws IOException Thrown when JsonWriter.writeNull call throws an 
      * IOException. 
      */
     @Override
