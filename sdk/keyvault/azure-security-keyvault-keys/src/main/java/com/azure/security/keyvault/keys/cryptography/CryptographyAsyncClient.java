@@ -968,7 +968,7 @@ public class CryptographyAsyncClient {
         }
     }
 
-    protected static boolean isCurveSupportedByRuntimeJavaVersion(KeyCurveName keyCurveName) {
+    static boolean isCurveSupportedByRuntimeJavaVersion(KeyCurveName keyCurveName) {
         String javaVersion = System.getProperty("java.version");
 
         if (javaVersion.startsWith("1.")) {
