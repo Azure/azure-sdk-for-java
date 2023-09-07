@@ -79,21 +79,21 @@ public class ExcludeRegionWithFaultInjectionTests extends TestSuiteBase {
         return new Object[][] {
             {
                 // fault injection regions
-                chooseLastTwoRegions, 
+                chooseLastTwoRegions,
                 new ExpectedResult(
                     HttpConstants.StatusCodes.NOTFOUND,
                     HttpConstants.SubStatusCodes.READ_SESSION_NOT_AVAILABLE,
                     // expected contacted regions
-                    chooseLastTwoRegions.apply(this.preferredRegions)), 
+                    chooseLastTwoRegions.apply(this.preferredRegions)),
                 // exclude regions
                 chooseFirstRegion
             },
             {
-                chooseFirstTwoRegions, 
+                chooseFirstTwoRegions,
                 new ExpectedResult(
                     HttpConstants.StatusCodes.NOTFOUND,
                     HttpConstants.SubStatusCodes.READ_SESSION_NOT_AVAILABLE,
-                    chooseFirstTwoRegions.apply(this.preferredRegions)), 
+                    chooseFirstTwoRegions.apply(this.preferredRegions)),
                 chooseThirdRegion
             },
             {
@@ -105,6 +105,16 @@ public class ExcludeRegionWithFaultInjectionTests extends TestSuiteBase {
                         chooseFirstRegion.apply(this.preferredRegions).get(0),
                         chooseThirdRegion.apply(this.preferredRegions).get(0))),
                 chooseSecondRegion
+            },
+            {
+                // fault injection regions
+                chooseThirdRegion,
+                new ExpectedResult(
+                    HttpConstants.StatusCodes.NOTFOUND,
+                    HttpConstants.SubStatusCodes.READ_SESSION_NOT_AVAILABLE,
+                    Arrays.asList(
+                        chooseThirdRegion.apply(this.preferredRegions).get(0))),
+                chooseFirstTwoRegions
             }
         };
     }
@@ -115,12 +125,15 @@ public class ExcludeRegionWithFaultInjectionTests extends TestSuiteBase {
         ExpectedResult expectedResult,
         Function<List<String>, List<String>> chooseExclusionRegions) {
 
+        System.setProperty("COSMOS.MAX_RETRIES_IN_LOCAL_REGION_WHEN_REMOTE_REGION_PREFERRED", String.valueOf(2));
+
         CosmosAsyncClient clientWithPreferredRegions = null;
 
         try {
             clientWithPreferredRegions = new CosmosClientBuilder()
                 .endpoint(TestConfigurations.HOST)
                 .key(TestConfigurations.MASTER_KEY)
+                .endpointDiscoveryEnabled(true)
                 .consistencyLevel(BridgeInternal.getContextClient(this.cosmosAsyncClient).getConsistencyLevel())
                 .preferredRegions(this.preferredRegions)
                 .sessionRetryOptions(new SessionRetryOptionsBuilder().regionSwitchHint(CosmosRegionSwitchHint.REMOTE_REGION_PREFERRED).build())
@@ -178,6 +191,7 @@ public class ExcludeRegionWithFaultInjectionTests extends TestSuiteBase {
 
     @AfterClass(groups = {"multi-master"})
     public void afterClass() {
+//        safeDeleteDatabase(this.cosmosAsyncContainer.getDatabase());
         safeCloseAsync(this.cosmosAsyncClient);
     }
 
