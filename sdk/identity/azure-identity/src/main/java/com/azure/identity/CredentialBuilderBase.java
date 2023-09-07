@@ -31,6 +31,9 @@ public abstract class CredentialBuilderBase<T extends CredentialBuilderBase<T>> 
     private static final ClientLogger LOGGER = new ClientLogger(CredentialBuilderBase.class);
     IdentityClientOptions identityClientOptions;
 
+    /**
+     * Creates an instance of the {@link CredentialBuilderBase}
+     */
     CredentialBuilderBase() {
         this.identityClientOptions = new IdentityClientOptions();
     }

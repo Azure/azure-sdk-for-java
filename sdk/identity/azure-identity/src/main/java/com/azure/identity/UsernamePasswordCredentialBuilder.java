@@ -50,6 +50,11 @@ public class UsernamePasswordCredentialBuilder extends AadCredentialBuilderBase<
     private String password;
 
     /**
+     * Creates an instance of the {@link UsernamePasswordCredentialBuilder}
+     */
+    public UsernamePasswordCredentialBuilder() { }
+
+    /**
      * Sets the username of the user.
      * @param username the username of the user
      * @return the UserCredentialBuilder itself

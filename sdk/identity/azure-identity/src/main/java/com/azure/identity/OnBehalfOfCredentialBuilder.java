@@ -48,6 +48,11 @@ public class OnBehalfOfCredentialBuilder extends AadCredentialBuilderBase<OnBeha
     private String clientCertificatePassword;
 
     /**
+     * Creates an instance of the {@link OnBehalfOfCredentialBuilder}
+     */
+    public OnBehalfOfCredentialBuilder() { }
+
+    /**
      * Sets the client secret for the authentication.
      * @param clientSecret the secret value of the AAD application.
      * @return An updated instance of this builder.

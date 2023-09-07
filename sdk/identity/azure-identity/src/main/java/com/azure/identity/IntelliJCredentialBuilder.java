@@ -48,6 +48,11 @@ public class IntelliJCredentialBuilder extends CredentialBuilderBase<VisualStudi
     private String tenantId;
 
     /**
+     * Creates an instance of the {@link IntelliJCredentialBuilder}
+     */
+    public IntelliJCredentialBuilder() { }
+
+    /**
      * Sets the tenant id of the user to authenticate through the {@link IntelliJCredential}. The default is
      * the tenant the user originally authenticated to via the Azure Toolkit for IntelliJ plugin.
      *

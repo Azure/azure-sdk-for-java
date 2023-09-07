@@ -74,6 +74,11 @@ public class ClientSecretCredentialBuilder extends AadCredentialBuilderBase<Clie
     private String clientSecret;
 
     /**
+     * Creates an instance of the {@link ClientSecretCredentialBuilder}
+     */
+    public ClientSecretCredentialBuilder() { }
+
+    /**
      * Sets the client secret for the authentication.
      * @param clientSecret the secret value of the AAD application.
      * @return An updated instance of this builder.

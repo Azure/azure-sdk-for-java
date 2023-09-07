@@ -22,8 +22,9 @@ class AzureApplicationCredentialBuilder extends CredentialBuilderBase<AzureAppli
     private String managedIdentityClientId;
     private String managedIdentityResourceId;
 
+
     /**
-     * Creates an instance of a AzureApplicationCredentialBuilder.
+     * Creates an instance of a {@link AzureApplicationCredentialBuilder}.
      */
     AzureApplicationCredentialBuilder() {
         Configuration configuration = Configuration.getGlobalConfiguration().clone();

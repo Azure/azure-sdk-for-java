@@ -4,6 +4,7 @@
 package com.azure.identity;
 
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.identity.implementation.IdentityClientOptions;
 import com.azure.identity.implementation.util.IdentityUtil;
 import com.azure.identity.implementation.util.ValidationUtil;
 
@@ -23,6 +24,11 @@ public abstract class AadCredentialBuilderBase<T extends AadCredentialBuilderBas
 
     String clientId;
     String tenantId;
+
+    /**
+     * Creates an instance of the {@link AadCredentialBuilderBase}
+     */
+    AadCredentialBuilderBase() { }
 
     /**
      * Specifies the Azure Active Directory endpoint to acquire tokens.
