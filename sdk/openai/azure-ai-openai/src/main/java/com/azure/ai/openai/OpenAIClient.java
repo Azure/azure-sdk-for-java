@@ -10,8 +10,6 @@ import com.azure.ai.openai.implementation.NonAzureOpenAIClientImpl;
 import com.azure.ai.openai.implementation.OpenAIClientImpl;
 import com.azure.ai.openai.implementation.OpenAIServerSentEvents;
 import com.azure.ai.openai.models.AudioTranscription;
-import com.azure.ai.openai.models.AudioTranscriptionFormat;
-import com.azure.ai.openai.models.AudioTranscriptionSimpleJson;
 import com.azure.ai.openai.models.AudioTranslationOptions;
 import com.azure.ai.openai.models.ChatCompletions;
 import com.azure.ai.openai.models.ChatCompletionsOptions;
@@ -706,29 +704,28 @@ public final class OpenAIClient {
                 deploymentOrModelName, chatCompletionsOptions, requestOptions);
     }
 
-
     public String getAudioTranslationText(
-        String deploymentOrModelName, AudioTranslationOptions audioTranslationOptions, String fileName) {
+            String deploymentOrModelName, AudioTranslationOptions audioTranslationOptions, String fileName) {
         RequestOptions requestOptions = new RequestOptions();
         MultipartDataHelper helper = new MultipartDataHelper();
         helper.addFields(
-            (fields) -> {
-                if (audioTranslationOptions.getResponseFormat() != null) {
-                    fields.add(
-                        new MultipartField(
-                            "response_format", audioTranslationOptions.getResponseFormat().toString()));
-                }
-            });
+                (fields) -> {
+                    if (audioTranslationOptions.getResponseFormat() != null) {
+                        fields.add(
+                                new MultipartField(
+                                        "response_format", audioTranslationOptions.getResponseFormat().toString()));
+                    }
+                });
         MultipartDataHelper.SerializationResult result =
-            helper.serializeAudioTranscriptionOption(audioTranslationOptions, fileName);
+                helper.serializeAudioTranscriptionOption(audioTranslationOptions, fileName);
         // TODO define a method that looks into responseFormat and calls the right method
         // return getAudioTranslationWithResponse(
-        BinaryData value = getAudioTranslationPlainTextWithResponse(deploymentOrModelName, result.getDataLength(), result.getData(), requestOptions)
-            .getValue();
-                return value.toString();
-        }
-
-
+        BinaryData value =
+                getAudioTranslationPlainTextWithResponse(
+                                deploymentOrModelName, result.getDataLength(), result.getData(), requestOptions)
+                        .getValue();
+        return value.toString();
+    }
 
     public AudioTranscription getAudioTranslation(
             String deploymentOrModelName, AudioTranslationOptions audioTranslationOptions, String fileName) {
@@ -746,7 +743,6 @@ public final class OpenAIClient {
                 helper.serializeAudioTranscriptionOption(audioTranslationOptions, fileName);
         // TODO define a method that looks into responseFormat and calls the right method
         // return getAudioTranslationWithResponse(
-
         return getAudioTranslationSimpleJsonWithResponse(
                         deploymentOrModelName, result.getDataLength(), result.getData(), requestOptions)
                 .getValue()
@@ -1163,7 +1159,7 @@ public final class OpenAIClient {
      * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
      *     (when using non-Azure OpenAI) to use for this request.
      * @param contentLength The content length of the operation. This needs to be provided by the caller.
-     * @param audioTranslationOptionsVerboseJson Lorem ipsum.
+     * @param audioTranslationOptionsVtt Lorem ipsum.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1176,10 +1172,10 @@ public final class OpenAIClient {
     Response<BinaryData> getAudioTranslationVttWithResponse(
             String deploymentOrModelName,
             long contentLength,
-            BinaryData audioTranslationOptionsVerboseJson,
+            BinaryData audioTranslationOptionsVtt,
             RequestOptions requestOptions) {
         return this.serviceClient.getAudioTranslationVttWithResponse(
-                deploymentOrModelName, contentLength, audioTranslationOptionsVerboseJson, requestOptions);
+                deploymentOrModelName, contentLength, audioTranslationOptionsVtt, requestOptions);
     }
 
     /**

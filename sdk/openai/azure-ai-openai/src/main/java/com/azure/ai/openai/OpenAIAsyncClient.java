@@ -1111,7 +1111,7 @@ public final class OpenAIAsyncClient {
      * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
      *     (when using non-Azure OpenAI) to use for this request.
      * @param contentLength The content length of the operation. This needs to be provided by the caller.
-     * @param audioTranslationOptionsVerboseJson Lorem ipsum.
+     * @param audioTranslationOptionsVtt Lorem ipsum.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1124,10 +1124,10 @@ public final class OpenAIAsyncClient {
     Mono<Response<BinaryData>> getAudioTranslationVttWithResponse(
             String deploymentOrModelName,
             long contentLength,
-            BinaryData audioTranslationOptionsVerboseJson,
+            BinaryData audioTranslationOptionsVtt,
             RequestOptions requestOptions) {
         return this.serviceClient.getAudioTranslationVttWithResponseAsync(
-                deploymentOrModelName, contentLength, audioTranslationOptionsVerboseJson, requestOptions);
+                deploymentOrModelName, contentLength, audioTranslationOptionsVtt, requestOptions);
     }
 
     /**

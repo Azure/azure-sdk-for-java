@@ -449,7 +449,7 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
 
             String transcription = client.getAudioTranslationText(
                 deploymentName, translationOptions, "JP_it_is_rainy_today.wav");
-            assertEquals("It's raining today.", transcription);
+            assertEquals("It's raining today.\n", transcription);
         });
     }
 }

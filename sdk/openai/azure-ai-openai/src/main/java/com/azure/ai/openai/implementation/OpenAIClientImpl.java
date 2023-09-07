@@ -588,7 +588,7 @@ public final class OpenAIClientImpl {
                 @HeaderParam("content-type") String contentType,
                 @HeaderParam("content-length") long contentLength,
                 @HeaderParam("accept") String accept,
-                @BodyParam("multipart/form-data; boundary=azure_openai") BinaryData audioTranslationOptionsVerboseJson,
+                @BodyParam("multipart/form-data; boundary=azure_openai") BinaryData audioTranslationOptionsVtt,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -611,7 +611,7 @@ public final class OpenAIClientImpl {
                 @HeaderParam("content-type") String contentType,
                 @HeaderParam("content-length") long contentLength,
                 @HeaderParam("accept") String accept,
-                @BodyParam("multipart/form-data; boundary=azure_openai") BinaryData audioTranslationOptionsVerboseJson,
+                @BodyParam("multipart/form-data; boundary=azure_openai") BinaryData audioTranslationOptionsVtt,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -1121,7 +1121,7 @@ public final class OpenAIClientImpl {
             BinaryData audioTranscriptionOptionsPlainText,
             RequestOptions requestOptions) {
         final String contentType = "multipart/form-data; boundary=azure_openai";
-        final String accept = "application/json, text/plain";
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.getAudioTranscriptionPlainText(
@@ -1175,7 +1175,7 @@ public final class OpenAIClientImpl {
             BinaryData audioTranscriptionOptionsPlainText,
             RequestOptions requestOptions) {
         final String contentType = "multipart/form-data; boundary=azure_openai";
-        final String accept = "application/json, text/plain";
+        final String accept = "application/json";
         return service.getAudioTranscriptionPlainTextSync(
                 this.getEndpoint(),
                 this.getServiceVersion().getVersion(),
@@ -1227,7 +1227,7 @@ public final class OpenAIClientImpl {
             BinaryData audioTranscriptionOptionsSrt,
             RequestOptions requestOptions) {
         final String contentType = "multipart/form-data; boundary=azure_openai";
-        final String accept = "application/json, text/plain";
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.getAudioTranscriptionSrt(
@@ -1281,7 +1281,7 @@ public final class OpenAIClientImpl {
             BinaryData audioTranscriptionOptionsSrt,
             RequestOptions requestOptions) {
         final String contentType = "multipart/form-data; boundary=azure_openai";
-        final String accept = "application/json, text/plain";
+        final String accept = "application/json";
         return service.getAudioTranscriptionSrtSync(
                 this.getEndpoint(),
                 this.getServiceVersion().getVersion(),
@@ -1333,7 +1333,7 @@ public final class OpenAIClientImpl {
             BinaryData audioTranscriptionOptionsVtt,
             RequestOptions requestOptions) {
         final String contentType = "multipart/form-data; boundary=azure_openai";
-        final String accept = "application/json, text/plain";
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.getAudioTranscriptionVtt(
@@ -1387,7 +1387,7 @@ public final class OpenAIClientImpl {
             BinaryData audioTranscriptionOptionsVtt,
             RequestOptions requestOptions) {
         final String contentType = "multipart/form-data; boundary=azure_openai";
-        final String accept = "application/json, text/plain";
+        final String accept = "application/json";
         return service.getAudioTranscriptionVttSync(
                 this.getEndpoint(),
                 this.getServiceVersion().getVersion(),
@@ -1692,7 +1692,7 @@ public final class OpenAIClientImpl {
             BinaryData audioTranslationOptionsPlainText,
             RequestOptions requestOptions) {
         final String contentType = "multipart/form-data; boundary=azure_openai";
-        final String accept = "application/json, text/plain";
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.getAudioTranslationPlainText(
@@ -1745,7 +1745,7 @@ public final class OpenAIClientImpl {
             BinaryData audioTranslationOptionsPlainText,
             RequestOptions requestOptions) {
         final String contentType = "multipart/form-data; boundary=azure_openai";
-        final String accept = "application/json, text/plain";
+        final String accept = "application/json";
         return service.getAudioTranslationPlainTextSync(
                 this.getEndpoint(),
                 this.getServiceVersion().getVersion(),
@@ -1796,7 +1796,7 @@ public final class OpenAIClientImpl {
             BinaryData audioTranslationOptionsSrt,
             RequestOptions requestOptions) {
         final String contentType = "multipart/form-data; boundary=azure_openai";
-        final String accept = "application/json, text/plain";
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.getAudioTranslationSrt(
@@ -1849,7 +1849,7 @@ public final class OpenAIClientImpl {
             BinaryData audioTranslationOptionsSrt,
             RequestOptions requestOptions) {
         final String contentType = "multipart/form-data; boundary=azure_openai";
-        final String accept = "application/json, text/plain";
+        final String accept = "application/json";
         return service.getAudioTranslationSrtSync(
                 this.getEndpoint(),
                 this.getServiceVersion().getVersion(),
@@ -1885,7 +1885,7 @@ public final class OpenAIClientImpl {
      * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
      *     (when using non-Azure OpenAI) to use for this request.
      * @param contentLength The content length of the operation. This needs to be provided by the caller.
-     * @param audioTranslationOptionsVerboseJson Lorem ipsum.
+     * @param audioTranslationOptionsVtt Lorem ipsum.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1897,10 +1897,10 @@ public final class OpenAIClientImpl {
     public Mono<Response<BinaryData>> getAudioTranslationVttWithResponseAsync(
             String deploymentOrModelName,
             long contentLength,
-            BinaryData audioTranslationOptionsVerboseJson,
+            BinaryData audioTranslationOptionsVtt,
             RequestOptions requestOptions) {
         final String contentType = "multipart/form-data; boundary=azure_openai";
-        final String accept = "application/json, text/plain";
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.getAudioTranslationVtt(
@@ -1910,7 +1910,7 @@ public final class OpenAIClientImpl {
                                 contentType,
                                 contentLength,
                                 accept,
-                                audioTranslationOptionsVerboseJson,
+                                audioTranslationOptionsVtt,
                                 requestOptions,
                                 context));
     }
@@ -1938,7 +1938,7 @@ public final class OpenAIClientImpl {
      * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
      *     (when using non-Azure OpenAI) to use for this request.
      * @param contentLength The content length of the operation. This needs to be provided by the caller.
-     * @param audioTranslationOptionsVerboseJson Lorem ipsum.
+     * @param audioTranslationOptionsVtt Lorem ipsum.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1950,10 +1950,10 @@ public final class OpenAIClientImpl {
     public Response<BinaryData> getAudioTranslationVttWithResponse(
             String deploymentOrModelName,
             long contentLength,
-            BinaryData audioTranslationOptionsVerboseJson,
+            BinaryData audioTranslationOptionsVtt,
             RequestOptions requestOptions) {
         final String contentType = "multipart/form-data; boundary=azure_openai";
-        final String accept = "application/json, text/plain";
+        final String accept = "application/json";
         return service.getAudioTranslationVttSync(
                 this.getEndpoint(),
                 this.getServiceVersion().getVersion(),
@@ -1961,7 +1961,7 @@ public final class OpenAIClientImpl {
                 contentType,
                 contentLength,
                 accept,
-                audioTranslationOptionsVerboseJson,
+                audioTranslationOptionsVtt,
                 requestOptions,
                 Context.NONE);
     }
