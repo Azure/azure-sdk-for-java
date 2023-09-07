@@ -3,10 +3,10 @@
 
 package com.azure.monitor.opentelemetry.exporter.implementation.utils;
 
-import com.azure.core.util.Configuration;
 import com.azure.monitor.opentelemetry.exporter.implementation.ResourceAttributes;
 import com.azure.monitor.opentelemetry.exporter.implementation.builders.AbstractTelemetryBuilder;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.ContextTagKeys;
+import io.opentelemetry.sdk.autoconfigure.spi.ConfigProperties;
 import io.opentelemetry.sdk.resources.Resource;
 
 import java.util.Map;
@@ -17,7 +17,7 @@ public final class ResourceParser {
 
     // visible for testing
     public static void updateRoleNameAndInstance(
-        AbstractTelemetryBuilder builder, Resource resource, Configuration configuration) {
+        AbstractTelemetryBuilder builder, Resource resource, ConfigProperties configProperties) {
 
         // update AKS role name and role instance
         if (AksResourceAttributes.isAks(resource)) {
@@ -31,7 +31,7 @@ public final class ResourceParser {
             || !existingTags.containsKey(ContextTagKeys.AI_CLOUD_ROLE.toString())) {
             String serviceName = resource.getAttribute(ResourceAttributes.SERVICE_NAME);
             if (serviceName == null || DEFAULT_SERVICE_NAME.equals(serviceName)) {
-                String websiteSiteName = Strings.trimAndEmptyToNull(configuration.get("WEBSITE_SITE_NAME"));
+                String websiteSiteName = Strings.trimAndEmptyToNull(configProperties.getString("WEBSITE_SITE_NAME"));
                 if (websiteSiteName != null) {
                     serviceName = websiteSiteName;
                 }
@@ -54,7 +54,7 @@ public final class ResourceParser {
             || !existingTags.containsKey(ContextTagKeys.AI_CLOUD_ROLE_INSTANCE.toString())) {
             String roleInstance = resource.getAttribute(ResourceAttributes.SERVICE_INSTANCE_ID);
             if (roleInstance == null) {
-                roleInstance = Strings.trimAndEmptyToNull(configuration.get("WEBSITE_INSTANCE_ID"));
+                roleInstance = Strings.trimAndEmptyToNull(configProperties.getString("WEBSITE_INSTANCE_ID"));
             }
             if (roleInstance == null) {
                 roleInstance = HostName.get(); // default hostname

@@ -6,59 +6,19 @@ package com.azure.monitor.opentelemetry.exporter;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.HttpPipelineBuilder;
-import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
-import com.azure.core.http.policy.CookiePolicy;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
-import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RetryPolicy;
-import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
-import com.azure.core.util.CoreUtils;
-import com.azure.core.util.logging.ClientLogger;
-import com.azure.monitor.opentelemetry.exporter.implementation.AzureMonitorExporterProviderKeys;
-import com.azure.monitor.opentelemetry.exporter.implementation.AzureMonitorLogRecordExporterProvider;
-import com.azure.monitor.opentelemetry.exporter.implementation.AzureMonitorMetricExporterProvider;
-import com.azure.monitor.opentelemetry.exporter.implementation.AzureMonitorSpanExporterProvider;
-import com.azure.monitor.opentelemetry.exporter.implementation.LogDataMapper;
-import com.azure.monitor.opentelemetry.exporter.implementation.MetricDataMapper;
-import com.azure.monitor.opentelemetry.exporter.implementation.SpanDataMapper;
-import com.azure.monitor.opentelemetry.exporter.implementation.builders.AbstractTelemetryBuilder;
 import com.azure.monitor.opentelemetry.exporter.implementation.configuration.ConnectionString;
-import com.azure.monitor.opentelemetry.exporter.implementation.heartbeat.HeartbeatExporter;
-import com.azure.monitor.opentelemetry.exporter.implementation.localstorage.LocalStorageStats;
-import com.azure.monitor.opentelemetry.exporter.implementation.localstorage.LocalStorageTelemetryPipelineListener;
-import com.azure.monitor.opentelemetry.exporter.implementation.models.ContextTagKeys;
-import com.azure.monitor.opentelemetry.exporter.implementation.pipeline.TelemetryItemExporter;
-import com.azure.monitor.opentelemetry.exporter.implementation.pipeline.TelemetryPipeline;
-import com.azure.monitor.opentelemetry.exporter.implementation.pipeline.TelemetryPipelineListener;
-import com.azure.monitor.opentelemetry.exporter.implementation.utils.ResourceParser;
-import com.azure.monitor.opentelemetry.exporter.implementation.utils.TempDirs;
-import com.azure.monitor.opentelemetry.exporter.implementation.utils.VersionGenerator;
 import io.opentelemetry.sdk.autoconfigure.AutoConfiguredOpenTelemetrySdkBuilder;
-import io.opentelemetry.sdk.autoconfigure.ResourceConfiguration;
-import io.opentelemetry.sdk.autoconfigure.spi.ConfigProperties;
-import io.opentelemetry.sdk.autoconfigure.spi.internal.DefaultConfigProperties;
-import io.opentelemetry.sdk.logs.export.LogRecordExporter;
-import io.opentelemetry.sdk.metrics.Aggregation;
-import io.opentelemetry.sdk.metrics.InstrumentSelector;
-import io.opentelemetry.sdk.metrics.View;
-import io.opentelemetry.sdk.metrics.export.MetricExporter;
-import io.opentelemetry.sdk.resources.Resource;
 import io.opentelemetry.sdk.trace.export.SpanExporter;
 
-import java.io.File;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
-
-import static java.util.Collections.emptyMap;
-import static java.util.concurrent.TimeUnit.MINUTES;
 
 /**
  * This class provides a fluent builder API to instantiate {@link AzureMonitorTraceExporter} that
@@ -66,30 +26,17 @@ import static java.util.concurrent.TimeUnit.MINUTES;
  */
 public final class AzureMonitorExporterBuilder {
 
-    private static final ClientLogger LOGGER = new ClientLogger(AzureMonitorExporterBuilder.class);
-
-    private static final String APPLICATIONINSIGHTS_CONNECTION_STRING =
-        "APPLICATIONINSIGHTS_CONNECTION_STRING";
-    private static final String APPLICATIONINSIGHTS_AUTHENTICATION_SCOPE =
-        "https://monitor.azure.com//.default";
-
-    private static final Map<String, String> PROPERTIES =
-        CoreUtils.getProperties("azure-monitor-opentelemetry-exporter.properties");
-
     private ConnectionString connectionString;
     private TokenCredential credential;
 
-    // suppress warnings is needed in ApplicationInsights-Java repo, can be removed when upstreaming
-    @SuppressWarnings({"UnusedVariable", "FieldCanBeLocal"})
     private AzureMonitorExporterServiceVersion serviceVersion;
 
     private HttpPipeline httpPipeline;
     private HttpClient httpClient;
     private HttpLogOptions httpLogOptions;
-    private RetryPolicy retryPolicy;
     private final List<HttpPipelinePolicy> httpPipelinePolicies = new ArrayList<>();
 
-    private Configuration configuration = Configuration.getGlobalConfiguration();
+    private Configuration configuration;
     private ClientOptions clientOptions;
 
     /**
@@ -103,7 +50,7 @@ public final class AzureMonitorExporterBuilder {
      * settings are ignored.
      *
      * @param httpPipeline The HTTP pipeline to use for sending service requests and receiving
-     * responses.
+     *                     responses.
      * @return The updated {@link AzureMonitorExporterBuilder} object.
      */
     public AzureMonitorExporterBuilder httpPipeline(HttpPipeline httpPipeline) {
@@ -128,26 +75,11 @@ public final class AzureMonitorExporterBuilder {
      * <p>If logLevel is not provided, default value of {@link HttpLogDetailLevel#NONE} is set.
      *
      * @param httpLogOptions The logging configuration to use when sending and receiving HTTP
-     * requests/responses.
+     *                       requests/responses.
      * @return The updated {@link AzureMonitorExporterBuilder} object.
      */
     public AzureMonitorExporterBuilder httpLogOptions(HttpLogOptions httpLogOptions) {
         this.httpLogOptions = httpLogOptions;
-        return this;
-    }
-
-    /**
-     * Sets the {@link RetryPolicy} that is used when each request is sent.
-     *
-     * <p>The default retry policy will be used if not provided to build {@link
-     * AzureMonitorExporterBuilder} .
-     *
-     * @param retryPolicy user's retry policy applied to each request.
-     * @return The updated {@link AzureMonitorExporterBuilder} object.
-     */
-    public AzureMonitorExporterBuilder retryPolicy(RetryPolicy retryPolicy) {
-        // TODO (trask) revisit this when we add local storage / retry
-        this.retryPolicy = retryPolicy;
         return this;
     }
 
@@ -174,6 +106,7 @@ public final class AzureMonitorExporterBuilder {
      * @param configuration The configuration store used to
      * @return The updated {@link AzureMonitorExporterBuilder} object.
      */
+    // TODO (trask) remove in favor of OpenTelemetry ConfigProperties?
     public AzureMonitorExporterBuilder configuration(Configuration configuration) {
         this.configuration = configuration;
         return this;
@@ -195,7 +128,7 @@ public final class AzureMonitorExporterBuilder {
      *
      * @param connectionString The connection string for the Azure Monitor resource.
      * @return The updated {@link AzureMonitorExporterBuilder} object.
-     * @throws NullPointerException If the connection string is {@code null}.
+     * @throws NullPointerException     If the connection string is {@code null}.
      * @throws IllegalArgumentException If the connection string is invalid.
      */
     public AzureMonitorExporterBuilder connectionString(String connectionString) {
@@ -227,179 +160,13 @@ public final class AzureMonitorExporterBuilder {
     }
 
     /**
-     * Creates an {@link AzureMonitorTraceExporter} based on the options set in the builder. This
-     * exporter is an implementation of OpenTelemetry {@link SpanExporter}.
-     *
-     * @return An instance of {@link AzureMonitorTraceExporter}.
-     * @throws NullPointerException if the connection string is not set on this builder or if the
-     * environment variable "APPLICATIONINSIGHTS_CONNECTION_STRING" is not set.
-     */
-    // TODO (trask) deprecate in favor of getOpenTelemetrySdkBuilder()?
-    SpanExporter buildTraceExporter() {
-        return buildTraceExporter(DefaultConfigProperties.create(emptyMap()));
-    }
-
-    private SpanExporter buildTraceExporter(ConfigProperties configProperties) {
-        SpanDataMapper mapper =
-            new SpanDataMapper(
-                true,
-                this::populateDefaults,
-                (event, instrumentationName) -> false,
-                (span, event) -> false);
-
-        return new AzureMonitorTraceExporter(mapper, initExporterBuilder(configProperties));
-    }
-
-    private MetricExporter buildMetricExporter(ConfigProperties configProperties) {
-        TelemetryItemExporter telemetryItemExporter = initExporterBuilder(configProperties);
-        HeartbeatExporter.start(
-            MINUTES.toSeconds(15), this::populateDefaults, telemetryItemExporter::send);
-        return new AzureMonitorMetricExporter(
-            new MetricDataMapper(this::populateDefaults, true), telemetryItemExporter);
-    }
-
-    private LogRecordExporter buildLogRecordExporter(ConfigProperties config) {
-        return new AzureMonitorLogRecordExporter(
-            new LogDataMapper(true, false, this::populateDefaults),
-                initExporterBuilder(config));
-    }
-
-    private TelemetryItemExporter initExporterBuilder(ConfigProperties configProperties) {
-        if (connectionString == null) {
-            // if connection string is not set, try loading from configuration
-            Configuration configuration = Configuration.getGlobalConfiguration();
-            connectionString(configuration.get(APPLICATIONINSIGHTS_CONNECTION_STRING));
-        }
-
-        Objects.requireNonNull(connectionString, "'connectionString' cannot be null");
-
-        if (this.credential != null) {
-            // Add authentication policy to HttpPipeline
-            BearerTokenAuthenticationPolicy authenticationPolicy =
-                new BearerTokenAuthenticationPolicy(
-                    this.credential, APPLICATIONINSIGHTS_AUTHENTICATION_SCOPE);
-            httpPipelinePolicies.add(authenticationPolicy);
-        }
-
-        if (httpPipeline == null) {
-            httpPipeline = createHttpPipeline();
-        }
-
-        TelemetryPipeline pipeline = new TelemetryPipeline(httpPipeline);
-
-        File tempDir =
-            TempDirs.getApplicationInsightsTempDir(
-                LOGGER,
-                "Telemetry will not be stored to disk and retried on sporadic network failures");
-
-        TelemetryItemExporter telemetryItemExporter;
-        if (tempDir != null) {
-            telemetryItemExporter =
-                new TelemetryItemExporter(
-                    pipeline,
-                    new LocalStorageTelemetryPipelineListener(
-                        50, // default to 50MB
-                        TempDirs.getSubDir(tempDir, "telemetry"),
-                        pipeline,
-                        LocalStorageStats.noop(),
-                        false),
-                    ResourceConfiguration.createEnvironmentResource(configProperties));
-        } else {
-            telemetryItemExporter = new TelemetryItemExporter(
-                    pipeline,
-                    TelemetryPipelineListener.noop(),
-                    ResourceConfiguration.createEnvironmentResource(configProperties));
-        }
-        return telemetryItemExporter;
-    }
-
-    private HttpPipeline createHttpPipeline() {
-        Configuration buildConfiguration =
-            (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
-        if (httpLogOptions == null) {
-            httpLogOptions = new HttpLogOptions();
-        }
-
-        if (clientOptions == null) {
-            clientOptions = new ClientOptions();
-        }
-        List<HttpPipelinePolicy> policies = new ArrayList<>();
-        String clientName = PROPERTIES.getOrDefault("name", "UnknownName");
-        String clientVersion = PROPERTIES.getOrDefault("version", "UnknownVersion");
-
-        String applicationId = CoreUtils.getApplicationId(clientOptions, httpLogOptions);
-
-        policies.add(new UserAgentPolicy(applicationId, clientName, clientVersion, buildConfiguration));
-        policies.add(retryPolicy == null ? new RetryPolicy() : retryPolicy);
-        policies.add(new CookiePolicy());
-        policies.addAll(this.httpPipelinePolicies);
-        policies.add(new HttpLoggingPolicy(httpLogOptions));
-        return new HttpPipelineBuilder()
-            .policies(policies.toArray(new HttpPipelinePolicy[0]))
-            .httpClient(httpClient)
-            .tracer(new NoopTracer())
-            .build();
-    }
-
-    void populateDefaults(AbstractTelemetryBuilder builder, Resource resource) {
-        builder.setConnectionString(connectionString);
-        builder.addTag(
-            ContextTagKeys.AI_INTERNAL_SDK_VERSION.toString(), VersionGenerator.getSdkVersion());
-        ResourceParser.updateRoleNameAndInstance(builder, resource, configuration);
-    }
-
-    /**
      * Configures an {@link AutoConfiguredOpenTelemetrySdkBuilder} based on the options set in the builder.
      */
     public void build(AutoConfiguredOpenTelemetrySdkBuilder sdkBuilder) {
-        sdkBuilder
-            .addPropertiesSupplier(() -> {
-                Map<String, String> props = new HashMap<>();
-                props.put("otel.traces.exporter", AzureMonitorExporterProviderKeys.EXPORTER_NAME);
-                props.put("otel.metrics.exporter", AzureMonitorExporterProviderKeys.EXPORTER_NAME);
-                props.put("otel.logs.exporter", AzureMonitorExporterProviderKeys.EXPORTER_NAME);
-                props.put(AzureMonitorExporterProviderKeys.INTERNAL_USING_BUILDER, "true");
-                return props;
-            })
-            .addSpanExporterCustomizer(
-                (spanExporter, configProperties) -> {
-                    if (spanExporter instanceof AzureMonitorSpanExporterProvider.MarkerSpanExporter) {
-                        spanExporter = buildTraceExporter(configProperties);
-                    }
-                    return spanExporter;
-                })
-            .addMetricExporterCustomizer(
-                (metricExporter, configProperties) -> {
-                    if (metricExporter instanceof AzureMonitorMetricExporterProvider.MarkerMetricExporter) {
-                        metricExporter = buildMetricExporter(configProperties);
-                    }
-                    return metricExporter;
-                })
-            .addLogRecordExporterCustomizer(
-                (logRecordExporter, configProperties) -> {
-                    if (logRecordExporter instanceof AzureMonitorLogRecordExporterProvider.MarkerLogRecordExporter) {
-                        logRecordExporter = buildLogRecordExporter(configProperties);
-                    }
-                    return logRecordExporter;
-                })
-            .addMeterProviderCustomizer((sdkMeterProviderBuilder, configProperties) -> {
-                sdkMeterProviderBuilder.registerView(
-                    InstrumentSelector.builder()
-                        .setMeterName("io.opentelemetry.sdk.trace")
-                        .build(),
-                    View.builder()
-                        .setAggregation(Aggregation.drop())
-                        .build()
-                );
-                sdkMeterProviderBuilder.registerView(
-                    InstrumentSelector.builder()
-                        .setMeterName("io.opentelemetry.sdk.logs")
-                        .build(),
-                    View.builder()
-                        .setAggregation(Aggregation.drop())
-                        .build()
-                );
-                return sdkMeterProviderBuilder;
-            });
+        HttpPipelineBuilder httpPipelineBuilder = new HttpPipelineBuilder(credential, httpClient, httpLogOptions,
+            httpPipelinePolicies, configuration, clientOptions, httpPipeline);
+        AzureMonitorExporterBuilderHelper helper =
+            new AzureMonitorExporterBuilderHelper(connectionString, serviceVersion, configuration, clientOptions, httpPipelineBuilder);
+        helper.build(sdkBuilder);
     }
 }
