@@ -6,13 +6,11 @@ import java.io.StringWriter;
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Iterator;
 
 /**
  * Class representing the JSON array type
  */
 public class JsonArray extends JsonElement {
-
     /**
      * Stores the JsonElements nested in this JsonArray object.
      * Each of these elements should be one of the following valid JSON types:
@@ -20,10 +18,19 @@ public class JsonArray extends JsonElement {
      */
     private List<JsonElement> elements = new ArrayList<>(0);
 
+    /**
+     * Default constructor. 
+     */
     public JsonArray() {
         super();
     }
 
+    /**
+     * Constructor used to construct JsonArray from a JsonReader. 
+     * 
+     * @param reader The JsonReader to construct the JsonArray object from. 
+     * @throws IOException Thrown when the build method call throws an IOException. 
+     */
     public JsonArray(JsonReader reader) throws IOException {
         super();
         this.build(reader);
@@ -88,7 +95,7 @@ public class JsonArray extends JsonElement {
      * Instantiated JsonElements must be passed. Must pass instantiated JsonNull 
      * to represent JSON null value. 
      * @throws IndexOutOfBoundsException Thrown when index parameter is < 0 or 
-     * > size() 
+     * >= size() 
      */
     public JsonArray setElement(int index, JsonElement element) throws IllegalArgumentException, IndexOutOfBoundsException {
         if (element == null) { 
@@ -265,7 +272,6 @@ public class JsonArray extends JsonElement {
             JsonToken token = reader.nextToken();
 
             switch (token) {
-
                 // Case: the currently read token is a JsonToken.FIELD_NAME token. 
                 // No field names should be present within a valid JSON array.  
                 case FIELD_NAME:
