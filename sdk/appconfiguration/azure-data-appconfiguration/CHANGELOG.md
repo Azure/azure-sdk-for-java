@@ -5,11 +5,12 @@
 ### Features Added
 
 - Added `SnapshotFields` enum to support fields selection for snapshot.
+- Added a property `fields` in class `SnapshotSelector` to support fields selection for snapshot.
 
 ### Breaking Changes
 Note: Below breaking changes only affect the version `1.5.0-beta.1`.
 
-- Changed `listConfigurationSettingsForSnapshot` method's `fields` parameter type to `List`.
+- Replace `listConfigurationSettingsForSnapshot` method's `SettingFields[] fields` parameter by `SettingSelector selector`.
 - Renamed `ConfigurationSettingSnapshot` to `ConfigurationSettingsSnapshot`.
 - Renamed `ConfigurationSettingSnapshot`'s property name, `size` to `sizeInBytes`.
 

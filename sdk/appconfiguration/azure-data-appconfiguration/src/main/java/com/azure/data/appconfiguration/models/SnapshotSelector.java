@@ -15,6 +15,8 @@ public final class SnapshotSelector {
     private String name;
     private Iterable<SnapshotStatus> status;
 
+    private Iterable<SnapshotFields> fields;
+
     /**
      * Gets the snapshot name
      *
@@ -55,4 +57,28 @@ public final class SnapshotSelector {
         return this;
     }
 
+    /**
+     * Gets the fields on {@link ConfigurationSettingsSnapshot} to return from the GET request. If none are set, the
+     * service returns the snapshot with all of their fields populated.
+     *
+     * @return The set of {@link ConfigurationSettingsSnapshot} fields to return for a GET request.
+     */
+    public Iterable<SnapshotFields> getFields() {
+        return fields;
+    }
+
+    /**
+     * Sets fields that will be returned in the response corresponding to properties in
+     * {@link ConfigurationSettingsSnapshot}. If none are set, the service returns snapshot with all of their fields
+     * populated.
+     *
+     * @param fields The fields to select for the query response. If none are set, the service will return the
+     * snapshot with a default set of properties.
+     *
+     * @return The updated SnapshotSelector object.
+     */
+    public SnapshotSelector setFields(SnapshotFields... fields) {
+        this.fields = fields == null ? null : Arrays.asList(fields);
+        return this;
+    }
 }

@@ -15,7 +15,6 @@ import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -309,15 +308,14 @@ public class ConfigurationAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippets for {@link ConfigurationAsyncClient#listConfigurationSettingsForSnapshot(String, List)}
+     * Code snippets for {@link ConfigurationAsyncClient#listConfigurationSettingsForSnapshot(String, SettingSelector)}
      */
     public void listConfigurationSettingsForSnapshotMaxOverload() {
         ConfigurationAsyncClient client = getAsyncClient();
         // BEGIN: com.azure.data.appconfiguration.configurationasyncclient.listConfigurationSettingsForSnapshotMaxOverload
         String snapshotName = "{snapshotName}";
-        List<SettingFields> fields = Arrays.asList(SettingFields.KEY);
-
-        client.listConfigurationSettingsForSnapshot(snapshotName, fields)
+        SettingSelector selector = new SettingSelector().setFields(SettingFields.KEY);
+        client.listConfigurationSettingsForSnapshot(snapshotName, selector)
             .subscribe(setting ->
                 System.out.printf("Key: %s, Value: %s", setting.getKey(), setting.getValue()));
         // END: com.azure.data.appconfiguration.configurationasyncclient.listConfigurationSettingsForSnapshotMaxOverload

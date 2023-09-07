@@ -19,7 +19,6 @@ import com.azure.data.appconfiguration.models.SnapshotSettingFilter;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -368,18 +367,16 @@ public final class ConfigurationClientJavaDocCodeSnippets {
     }
 
     /**
-     * Generates code sample for using {@link ConfigurationClient#listConfigurationSettingsForSnapshot(String, List, Context)}
+     * Generates code sample for using {@link ConfigurationClient#listConfigurationSettingsForSnapshot(String, SettingSelector, Context)}
      */
     public void listConfigurationSettingsForSnapshotMaxOverload() {
         ConfigurationClient configurationClient = createSyncConfigurationClient();
         // BEGIN: com.azure.data.applicationconfig.configurationclient.listConfigurationSettingsForSnapshotMaxOverload
         String snapshotName = "{snapshotName}";
+        SettingSelector selector = new SettingSelector().setFields(SettingFields.KEY);
         Context ctx = new Context(key2, value2);
-        List<SettingFields> fields = Arrays.asList(SettingFields.KEY);
-
-        configurationClient.listConfigurationSettingsForSnapshot(snapshotName, fields, ctx).forEach(setting -> {
-            System.out.printf("Key: %s, Value: %s", setting.getKey(), setting.getValue());
-        });
+        configurationClient.listConfigurationSettingsForSnapshot(snapshotName, selector, ctx)
+            .forEach(setting -> System.out.printf("Key: %s, Value: %s", setting.getKey(), setting.getValue()));
         // END: com.azure.data.applicationconfig.configurationclient.listConfigurationSettingsForSnapshotMaxOverload
     }
 
