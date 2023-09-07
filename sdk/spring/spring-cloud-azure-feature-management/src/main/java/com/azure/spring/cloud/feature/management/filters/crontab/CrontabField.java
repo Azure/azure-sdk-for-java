@@ -13,11 +13,30 @@ public class CrontabField {
     public CrontabField(CrontabFiledType filedType) {
         this.filedType = filedType;
         switch (filedType) {
-            case MINUTE -> {this.minValue = 0; this.maxValue = 59;}
-            case HOUR -> {this.minValue = 0; this.maxValue = 23;}
-            case DAY_OF_MONTH -> {this.minValue = 1; this.maxValue = 31;}
-            case MONTH -> {this.minValue = 1; this.maxValue = 12;}
-            default -> {this.minValue = 0; this.maxValue = 7;}
+            case MINUTE:
+                this.minValue = 0;
+                this.maxValue = 59;
+                break;
+            case HOUR:
+                this.minValue = 0;
+                this.maxValue = 23;
+                break;
+            case DAY_OF_MONTH:
+                this.minValue = 1;
+                this.maxValue = 31;
+                break;
+            case MONTH:
+                this.minValue = 1;
+                this.maxValue = 12;
+                break;
+            case DAY_OF_WEEK:
+                this.minValue = 0;
+                this.maxValue = 7;
+                break;
+            default:
+                this.minValue = -1;
+                this.maxValue = -1;
+                break;
         }
         this.bits = 0;
     }
@@ -114,32 +133,53 @@ public class CrontabField {
 
     private static int getMonthNumber(String name) {
         switch (name.toUpperCase()) {
-            case "JAN" -> {return 1;}
-            case "FEB" -> {return 2;}
-            case "MAR" -> {return 3;}
-            case "APR" -> {return 4;}
-            case "MAY" -> {return 5;}
-            case "JUN" -> {return 6;}
-            case "JUL" -> {return 7;}
-            case "AUG" -> {return 8;}
-            case "SEP" -> {return 9;}
-            case "OCT" -> {return 10;}
-            case "NOV" -> {return 11;}
-            case "DEC" -> {return 12;}
-            default -> {return -1;}
+            case "JAN":
+                return 1;
+            case "FEB":
+                return 2;
+            case "MAR":
+                return 3;
+            case "APR":
+                return 4;
+            case "MAY":
+                return 5;
+            case "JUN":
+                return 6;
+            case "JUL":
+                return 7;
+            case "AUG":
+                return 8;
+            case "SEP":
+                return 9;
+            case "OCT":
+                return 10;
+            case "NOV":
+                return 11;
+            case "DEC":
+                return 12;
+            default:
+                return -1;
         }
     }
 
     private static int getDayOfWeekNumber(String name) {
         switch (name.toUpperCase()) {
-            case "SUN" -> {return 0;}
-            case "MON" -> {return 1;}
-            case "TUE" -> {return 2;}
-            case "WED" -> {return 3;}
-            case "THU" -> {return 4;}
-            case "FRI" -> {return 5;}
-            case "SAT" -> {return 6;}
-            default -> {return -1;}
+            case "SUN":
+                return 0;
+            case "MON":
+                return 1;
+            case "TUE":
+                return 2;
+            case "WED":
+                return 3;
+            case "THU":
+                return 4;
+            case "FRI":
+                return 5;
+            case "SAT":
+                return 6;
+            default:
+                return -1;
         }
     }
 

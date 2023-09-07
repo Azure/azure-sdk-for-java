@@ -7,7 +7,6 @@ import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -78,9 +77,9 @@ public final class TimeWindowFilter implements FeatureFilter {
             this.end = (String) context.getParameters().get(TIME_WINDOW_FILTER_SETTING_END);
             final Object filtersObj = context.getParameters().get(TIME_WINDOW_FILTER_SETTING_FILTERS);
             if (filtersObj instanceof Map) {
-                this.filters.addAll(((Map<String, String>) filtersObj).values());
-            } else if (filtersObj instanceof List) {
-                this.filters.addAll((Collection<String>) filtersObj);
+                ((Map<?, ?>) filtersObj).values().forEach(filterObj -> this.filters.add(filterObj.toString()));
+            } else if (filtersObj instanceof List<?>) {
+                ((List<?>) filtersObj).forEach(filterObj -> this.filters.add(filterObj.toString()));
             }
         }
 
