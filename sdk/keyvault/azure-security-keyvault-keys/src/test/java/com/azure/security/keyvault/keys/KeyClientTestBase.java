@@ -21,6 +21,7 @@ import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.RetryStrategy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.http.rest.Response;
+import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.models.BodilessMatcher;
 import com.azure.core.test.models.CustomMatcher;
@@ -79,6 +80,8 @@ public abstract class KeyClientTestBase extends TestProxyTestBase {
 
     protected boolean isHsmEnabled = false;
     protected boolean runManagedHsmTest = false;
+    protected boolean runReleaseKeyTest = getTestMode() == TestMode.PLAYBACK
+        || Configuration.getGlobalConfiguration().get("AZURE_KEYVAULT_ATTESTATION_URL") != null;
 
     @Override
     protected String getTestName() {
