@@ -9,35 +9,30 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
-import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.util.ClientOptions;
-import com.azure.core.util.Configuration;
 import com.azure.monitor.opentelemetry.exporter.implementation.configuration.ConnectionString;
 import io.opentelemetry.sdk.autoconfigure.AutoConfiguredOpenTelemetrySdkBuilder;
-import io.opentelemetry.sdk.trace.export.SpanExporter;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 /**
- * This class provides a fluent builder API to instantiate {@link AzureMonitorTraceExporter} that
- * implements {@link SpanExporter} interface defined by OpenTelemetry API specification.
+ * This class provides a fluent builder API to configure the OpenTelemetry SDK with Azure Monitor Exporters.
  */
 public final class AzureMonitorExporterBuilder {
 
     private ConnectionString connectionString;
+
+    // http pipeline configuration
     private TokenCredential credential;
-
-    private AzureMonitorExporterServiceVersion serviceVersion;
-
-    private HttpPipeline httpPipeline;
     private HttpClient httpClient;
     private HttpLogOptions httpLogOptions;
     private final List<HttpPipelinePolicy> httpPipelinePolicies = new ArrayList<>();
-
-    private Configuration configuration;
     private ClientOptions clientOptions;
+    private HttpPipeline httpPipeline;
+
+    private AzureMonitorExporterServiceVersion serviceVersion;
 
     /**
      * Creates an instance of {@link AzureMonitorExporterBuilder}.
@@ -97,22 +92,6 @@ public final class AzureMonitorExporterBuilder {
     }
 
     /**
-     * Sets the configuration store that is used during construction of the service client.
-     *
-     * <p>The default configuration store is a clone of the {@link
-     * Configuration#getGlobalConfiguration() global configuration store}, use {@link
-     * Configuration#NONE} to bypass using configuration settings during construction.
-     *
-     * @param configuration The configuration store used to
-     * @return The updated {@link AzureMonitorExporterBuilder} object.
-     */
-    // TODO (trask) remove in favor of OpenTelemetry ConfigProperties?
-    public AzureMonitorExporterBuilder configuration(Configuration configuration) {
-        this.configuration = configuration;
-        return this;
-    }
-
-    /**
      * Sets the client options such as application ID and custom headers to set on a request.
      *
      * @param clientOptions The client options.
@@ -163,10 +142,34 @@ public final class AzureMonitorExporterBuilder {
      * Configures an {@link AutoConfiguredOpenTelemetrySdkBuilder} based on the options set in the builder.
      */
     public void build(AutoConfiguredOpenTelemetrySdkBuilder sdkBuilder) {
-        HttpPipelineBuilder httpPipelineBuilder = new HttpPipelineBuilder(credential, httpClient, httpLogOptions,
-            httpPipelinePolicies, configuration, clientOptions, httpPipeline);
+        validate();
+
+        LazyConnectionString lazyConnectionString = new LazyConnectionString(connectionString);
+        LazyTelemetryItemExporter lazyTelemetryItemExporter = new LazyTelemetryItemExporter();
+        LazyHttpPipeline lazyHttpPipeline = new LazyHttpPipeline(credential, httpClient, httpLogOptions,
+            httpPipelinePolicies, clientOptions, httpPipeline);
         AzureMonitorExporterBuilderHelper helper =
-            new AzureMonitorExporterBuilderHelper(connectionString, serviceVersion, configuration, clientOptions, httpPipelineBuilder);
+            new AzureMonitorExporterBuilderHelper(serviceVersion, lazyConnectionString, lazyTelemetryItemExporter, lazyHttpPipeline);
         helper.build(sdkBuilder);
+    }
+
+    private void validate() {
+        if (httpPipeline != null) {
+            if (credential != null) {
+                throw new IllegalStateException("'credential' is not supported when custom 'httpPipeline' is specified");
+            }
+            if (httpClient != null) {
+                throw new IllegalStateException("'httpClient' is not supported when custom 'httpPipeline' is specified");
+            }
+            if (httpLogOptions != null) {
+                throw new IllegalStateException("'httpLogOptions' is not supported when custom 'httpPipeline' is specified");
+            }
+            if (!httpPipelinePolicies.isEmpty()) {
+                throw new IllegalStateException("'httpPipelinePolicies' is not supported when custom 'httpPipeline' is specified");
+            }
+            if (clientOptions != null) {
+                throw new IllegalStateException("'clientOptions' is not supported when custom 'httpPipeline' is specified");
+            }
+        }
     }
 }

@@ -8,9 +8,6 @@ import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
-import com.azure.core.test.utils.TestConfigurationSource;
-import com.azure.core.util.Configuration;
-import com.azure.core.util.ConfigurationBuilder;
 import com.azure.core.util.FluxUtil;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.MessageData;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.MetricsData;
@@ -38,7 +35,9 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.CountDownLatch;
 import java.util.zip.GZIPInputStream;
@@ -173,13 +172,8 @@ public class AzureMonitorExportersEndToEndTest extends MonitorExporterClientTest
         // TODO (trask) also export and validate logs in this test
     }
 
-    private static Configuration getConfiguration() {
-        return new ConfigurationBuilder(
-            new TestConfigurationSource(),
-            new TestConfigurationSource(),
-            new TestConfigurationSource()
-                .put("APPLICATIONINSIGHTS_CONNECTION_STRING", CONNECTION_STRING_ENV))
-            .build();
+    private static Map<String, String> getConfiguration() {
+        return Collections.singletonMap("APPLICATIONINSIGHTS_CONNECTION_STRING", CONNECTION_STRING_ENV);
     }
 
     @SuppressWarnings("try")

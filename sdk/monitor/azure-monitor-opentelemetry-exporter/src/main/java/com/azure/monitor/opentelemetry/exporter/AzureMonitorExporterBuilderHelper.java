@@ -3,9 +3,6 @@
 
 package com.azure.monitor.opentelemetry.exporter;
 
-import com.azure.core.http.HttpPipeline;
-import com.azure.core.util.ClientOptions;
-import com.azure.core.util.Configuration;
 import com.azure.monitor.opentelemetry.exporter.implementation.AzureMonitorExporterProviderKeys;
 import com.azure.monitor.opentelemetry.exporter.implementation.AzureMonitorLogRecordExporterProvider;
 import com.azure.monitor.opentelemetry.exporter.implementation.AzureMonitorMetricExporterProvider;
@@ -41,28 +38,18 @@ class AzureMonitorExporterBuilderHelper {
     // TODO (trask) this is unused
     private final AzureMonitorExporterServiceVersion serviceVersion;
 
-    private final Configuration configuration;
-    private final ConnectionStringBuilder connectionStringBuilder;
-    private final HttpPipelineBuilder httpPipelineBuilder;
-    private final TelemetryItemExporterBuilder telemetryItemExporterBuilder;
-
-    // lazy created
-    private ConnectionString connectionString;
-    // lazy created
-    private HttpPipeline httpPipeline;
-    // lazy created
-    private TelemetryItemExporter telemetryItemExporter;
+    private final LazyConnectionString connectionString;
+    private final LazyHttpPipeline httpPipeline;
+    private final LazyTelemetryItemExporter telemetryItemExporter;
 
     AzureMonitorExporterBuilderHelper(AzureMonitorExporterServiceVersion serviceVersion,
-                                      Configuration configuration,
-                                      ConnectionStringBuilder connectionStringBuilder,
-                                      TelemetryItemExporterBuilder telemetryItemExporterBuilder,
-                                      HttpPipelineBuilder httpPipelineBuilder) {
+                                      LazyConnectionString connectionString,
+                                      LazyTelemetryItemExporter telemetryItemExporter,
+                                      LazyHttpPipeline httpPipeline) {
         this.serviceVersion = serviceVersion;
-        this.configuration = configuration;
-        this.connectionStringBuilder=connectionStringBuilder;
-        this.telemetryItemExporterBuilder = telemetryItemExporterBuilder;
-        this.httpPipelineBuilder = httpPipelineBuilder;
+        this.connectionString = connectionString;
+        this.telemetryItemExporter = telemetryItemExporter;
+        this.httpPipeline = httpPipeline;
     }
 
 
@@ -124,61 +111,44 @@ class AzureMonitorExporterBuilderHelper {
             ));
     }
 
-
     private SpanExporter buildTraceExporter(ConfigProperties configProperties) {
-        return new AzureMonitorTraceExporter(createSpanDataMapper(), getItemExporter(configProperties));
+        TelemetryItemExporter telemetryItemExporter = getTelemetryItemExporter(configProperties);
+        return new AzureMonitorTraceExporter(createSpanDataMapper(configProperties), telemetryItemExporter);
     }
 
     private MetricExporter buildMetricExporter(ConfigProperties configProperties) {
-        TelemetryItemExporter telemetryItemExporter = getItemExporter(configProperties);
+        TelemetryItemExporter telemetryItemExporter = getTelemetryItemExporter(configProperties);
         HeartbeatExporter.start(
-            MINUTES.toSeconds(15), populateDefaults(connectionString), telemetryItemExporter::send);
+            MINUTES.toSeconds(15), createDefaultPopulator(configProperties), telemetryItemExporter::send);
         return new AzureMonitorMetricExporter(
-            new MetricDataMapper(populateDefaults(connectionString), true), telemetryItemExporter);
+            new MetricDataMapper(createDefaultPopulator(configProperties), true), telemetryItemExporter);
     }
 
     private LogRecordExporter buildLogRecordExporter(ConfigProperties configProperties) {
+        TelemetryItemExporter telemetryItemExporter = getTelemetryItemExporter(configProperties);
         return new AzureMonitorLogRecordExporter(
-            new LogDataMapper(true, false, populateDefaults(connectionString, configProperties)),
-            getItemExporter(configProperties));
+            new LogDataMapper(true, false, createDefaultPopulator(configProperties)), telemetryItemExporter);
     }
 
-    private SpanDataMapper createSpanDataMapper(ConnectionString connectionString, ConfigProperties configProperties) {
+    private TelemetryItemExporter getTelemetryItemExporter(ConfigProperties configProperties) {
+        return telemetryItemExporter.get(httpPipeline.get(), configProperties);
+    }
+
+    private SpanDataMapper createSpanDataMapper(ConfigProperties configProperties) {
         return new SpanDataMapper(
             true,
-            populateDefaults(connectionString, configProperties),
+            createDefaultPopulator(configProperties),
             (event, instrumentationName) -> false,
             (span, event) -> false);
     }
 
-    private static BiConsumer<AbstractTelemetryBuilder, Resource> populateDefaults(ConnectionString connectionString,
-                                                                                   ConfigProperties configProperties) {
+    private BiConsumer<AbstractTelemetryBuilder, Resource> createDefaultPopulator(ConfigProperties configProperties) {
+        ConnectionString connectionString = this.connectionString.get(configProperties);
         return (builder, resource) -> {
             builder.setConnectionString(connectionString);
             builder.addTag(
                 ContextTagKeys.AI_INTERNAL_SDK_VERSION.toString(), VersionGenerator.getSdkVersion());
             ResourceParser.updateRoleNameAndInstance(builder, resource, configProperties);
         };
-    }
-
-    private synchronized ConnectionString getConnectionString(ConfigProperties configProperties) {
-        if (connectionString == null) {
-            connectionString = connectionStringBuilder.build(configProperties);
-        }
-        return connectionString;
-    }
-
-    private synchronized TelemetryItemExporter getItemExporter(ConfigProperties configProperties) {
-        if (telemetryItemExporter == null) {
-            telemetryItemExporter = telemetryItemExporterBuilder.build(getHttpPipeline(), configProperties);
-        }
-        return telemetryItemExporter;
-    }
-
-    private synchronized HttpPipeline getHttpPipeline() {
-        if (httpPipeline == null) {
-            httpPipeline = httpPipelineBuilder.build();
-        }
-        return httpPipeline;
     }
 }

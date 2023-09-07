@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-class HttpPipelineBuilder {
+class LazyHttpPipeline {
 
     private static final String APPLICATIONINSIGHTS_AUTHENTICATION_SCOPE =
         "https://monitor.azure.com//.default";
@@ -34,40 +34,32 @@ class HttpPipelineBuilder {
     private final HttpLogOptions httpLogOptions;
     private final List<HttpPipelinePolicy> httpPipelinePolicies;
 
-    private final Configuration configuration;
     private final ClientOptions clientOptions;
-    private final HttpPipeline httpPipeline;
+    private HttpPipeline httpPipeline;
 
-    HttpPipelineBuilder(TokenCredential credential, HttpClient httpClient, HttpLogOptions httpLogOptions,
-                        List<HttpPipelinePolicy> httpPipelinePolicies,
-                        Configuration configuration, ClientOptions clientOptions,
-                        HttpPipeline httpPipeline) {
+    LazyHttpPipeline(TokenCredential credential, HttpClient httpClient, HttpLogOptions httpLogOptions,
+                     List<HttpPipelinePolicy> httpPipelinePolicies, ClientOptions clientOptions,
+                     HttpPipeline httpPipeline) {
         this.credential = credential;
         this.httpClient = httpClient;
         this.httpLogOptions = httpLogOptions;
         this.httpPipelinePolicies = httpPipelinePolicies;
-        this.configuration = configuration;
         this.clientOptions = clientOptions;
         this.httpPipeline = httpPipeline;
     }
 
-
-    // TODO (trask) pass in OpenTelemetry ConfigProperties
-    HttpPipeline build() {
-        if (httpPipeline != null) {
-            // TODO (trask) log warning if any of the other parameters were non-null since they will go unused
-            return httpPipeline;
-        } else {
-            return build(configuration, httpLogOptions, clientOptions, credential, httpPipelinePolicies, httpClient);
+    synchronized HttpPipeline get() {
+        if (httpPipeline == null) {
+            httpPipeline = create(httpLogOptions, clientOptions, credential, httpPipelinePolicies, httpClient);
         }
+        return httpPipeline;
     }
 
-    private static HttpPipeline build(Configuration configuration,
-                                      HttpLogOptions httpLogOptions,
-                                      ClientOptions clientOptions,
-                                      TokenCredential credential,
-                                      List<HttpPipelinePolicy> httpPipelinePolicies,
-                                      HttpClient httpClient) {
+    private static HttpPipeline create(HttpLogOptions httpLogOptions,
+                                       ClientOptions clientOptions,
+                                       TokenCredential credential,
+                                       List<HttpPipelinePolicy> httpPipelinePolicies,
+                                       HttpClient httpClient) {
 
         List<HttpPipelinePolicy> policies = new ArrayList<>();
         String clientName = PROPERTIES.getOrDefault("name", "UnknownName");
@@ -75,7 +67,7 @@ class HttpPipelineBuilder {
 
         String applicationId = CoreUtils.getApplicationId(clientOptions, httpLogOptions);
 
-        policies.add(new UserAgentPolicy(applicationId, clientName, clientVersion, configuration));
+        policies.add(new UserAgentPolicy(applicationId, clientName, clientVersion, Configuration.getGlobalConfiguration()));
         policies.add(new CookiePolicy());
         if (credential != null) {
             policies.add(new BearerTokenAuthenticationPolicy(credential, APPLICATIONINSIGHTS_AUTHENTICATION_SCOPE));
