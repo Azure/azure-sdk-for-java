@@ -4,6 +4,7 @@
 package com.azure.resourcemanager.compute.implementation;
 
 import com.azure.resourcemanager.compute.ComputeManager;
+import com.azure.resourcemanager.compute.models.HyperVGenerationTypes;
 import com.azure.resourcemanager.compute.models.VirtualMachineCustomImage;
 import com.azure.resourcemanager.compute.models.VirtualMachineCustomImages;
 import com.azure.resourcemanager.compute.fluent.models.ImageInner;
@@ -35,6 +36,6 @@ public class VirtualMachineCustomImagesImpl
 
     @Override
     public VirtualMachineCustomImageImpl define(String name) {
-        return this.wrapModel(name);
+        return this.wrapModel(name).withHyperVGeneration(HyperVGenerationTypes.V1);
     }
 }
