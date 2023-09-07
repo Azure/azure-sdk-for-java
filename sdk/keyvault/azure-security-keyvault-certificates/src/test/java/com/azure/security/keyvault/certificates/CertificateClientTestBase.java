@@ -39,19 +39,23 @@ import com.azure.security.keyvault.certificates.models.CertificatePolicy;
 import com.azure.security.keyvault.certificates.models.CertificatePolicyAction;
 import com.azure.security.keyvault.certificates.models.ImportCertificateOptions;
 import com.azure.security.keyvault.certificates.models.KeyVaultCertificate;
-import com.azure.security.keyvault.certificates.models.KeyVaultCertificateWithPolicy;
 import com.azure.security.keyvault.certificates.models.LifetimeAction;
 import com.azure.security.keyvault.certificates.models.WellKnownIssuerNames;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.provider.Arguments;
 
-import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
-import java.io.FileReader;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.security.KeyFactory;
+import java.security.NoSuchAlgorithmException;
+import java.security.PrivateKey;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
+import java.security.spec.InvalidKeySpecException;
+import java.security.spec.PKCS8EncodedKeySpec;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -65,7 +69,8 @@ import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
 
-import static com.azure.security.keyvault.certificates.FakeCredentialInTest.FAKE_CERTIFICATE_CONTENT;
+import static com.azure.security.keyvault.certificates.FakeCredentialsForTests.FAKE_CERTIFICATE;
+import static com.azure.security.keyvault.certificates.FakeCredentialsForTests.FAKE_PEM_CERTIFICATE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -485,7 +490,7 @@ public abstract class CertificateClientTestBase extends TestProxyTestBase {
         tags.put("key", "val");
 
         ImportCertificateOptions importCertificateOptions =
-            new ImportCertificateOptions(certificateName, Base64.getDecoder().decode(FAKE_CERTIFICATE_CONTENT))
+            new ImportCertificateOptions(certificateName, Base64.getDecoder().decode(FAKE_CERTIFICATE))
                 .setPassword(certificatePassword)
                 .setEnabled(true)
                 .setTags(tags);
@@ -498,8 +503,7 @@ public abstract class CertificateClientTestBase extends TestProxyTestBase {
         throws IOException;
 
     void importPemCertificateRunner(Consumer<ImportCertificateOptions> testRunner) throws IOException {
-
-        byte[] certificateContent = readCertificate("pemCert.pem");
+        byte[] certificateContent = FAKE_PEM_CERTIFICATE.getBytes();
 
         String certificateName = testResourceNamer.randomName("importCertPem", 25);
         HashMap<String, String> tags = new HashMap<>();
@@ -514,21 +518,19 @@ public abstract class CertificateClientTestBase extends TestProxyTestBase {
     }
 
     @Test
+    public abstract void mergeCertificate(HttpClient httpClient, CertificateServiceVersion serviceVersion);
+
+    @Test
     public abstract void mergeCertificateNotFound(HttpClient httpClient, CertificateServiceVersion serviceVersion);
+    protected PrivateKey loadPrivateKey(String filename)
+        throws IOException, NoSuchAlgorithmException, InvalidKeySpecException {
 
-    private byte[] readCertificate(String certName) throws IOException {
-        String pemPath = getClass().getClassLoader().getResource(certName).getPath();
-        StringBuilder pemCert = new StringBuilder();
+        byte[] keyBytes = Files.readAllBytes(Paths.get("src", "test", "resources", filename));
 
-        try (BufferedReader br = new BufferedReader(new FileReader(pemPath))) {
-            String line;
+        PKCS8EncodedKeySpec spec = new PKCS8EncodedKeySpec(keyBytes);
+        KeyFactory kf = KeyFactory.getInstance("RSA");
 
-            while ((line = br.readLine()) != null) {
-                pemCert.append(line).append("\n");
-            }
-        }
-
-        return pemCert.toString().getBytes();
+        return kf.generatePrivate(spec);
     }
 
     @SuppressWarnings("ArraysAsListWithZeroOrOneArgument")
@@ -565,13 +567,12 @@ public abstract class CertificateClientTestBase extends TestProxyTestBase {
         return hexString.toString().replace("-", "");
     }
 
-    X509Certificate loadCerToX509Certificate(KeyVaultCertificateWithPolicy certificate)
-        throws CertificateException, IOException {
+    X509Certificate loadCerToX509Certificate(byte[] certificate) throws CertificateException, IOException {
+        assertNotNull(certificate);
 
-        assertNotNull(certificate.getCer());
-
-        ByteArrayInputStream cerStream = new ByteArrayInputStream(certificate.getCer());
+        ByteArrayInputStream cerStream = new ByteArrayInputStream(certificate);
         CertificateFactory certificateFactory = CertificateFactory.getInstance("X.509");
+
         X509Certificate x509Certificate = (X509Certificate) certificateFactory.generateCertificate(cerStream);
 
         cerStream.close();
