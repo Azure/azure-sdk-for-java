@@ -4,7 +4,6 @@ package com.azure.spring.cloud.appconfiguration.config.implementation;
 
 import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.FEATURE_FLAG_CONTENT_TYPE;
 import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.FEATURE_FLAG_PREFIX;
-import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.FEATURE_MANAGEMENT_KEY;
 import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.SELECT_ALL_FEATURE_FLAGS;
 
 import java.util.Arrays;
@@ -16,7 +15,6 @@ import org.springframework.util.StringUtils;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.FeatureFlagConfigurationSetting;
 import com.azure.data.appconfiguration.models.SettingSelector;
-import com.azure.spring.cloud.appconfiguration.config.implementation.http.policy.TracingInfo;
 
 /**
  * Azure App Configuration PropertySource unique per Store Label(Profile) combo.
@@ -69,21 +67,13 @@ class AppConfigurationFeatureManagementPropertySource extends AppConfigurationPr
             settingSelector.setLabelFilter(label);
 
             List<ConfigurationSetting> features = replicaClient.listSettings(settingSelector);
-            TracingInfo tracing = replicaClient.getTracingInfo();
+            
 
             // Reading In Features
             for (ConfigurationSetting setting : features) {
                 if (setting instanceof FeatureFlagConfigurationSetting
                     && FEATURE_FLAG_CONTENT_TYPE.equals(setting.getContentType())) {
-                    featureConfigurationSettings.add(setting);
-                    FeatureFlagConfigurationSetting featureFlag = (FeatureFlagConfigurationSetting) setting;
-
-                    String configName = FEATURE_MANAGEMENT_KEY
-                        + setting.getKey().trim().substring(FEATURE_FLAG_PREFIX.length());
-
-                    updateTelemetry(featureFlag, tracing);
-
-                    properties.put(configName, createFeature(featureFlag));
+                    processFeatureFlag(null, (FeatureFlagConfigurationSetting) setting, null);
                 }
             }
         }

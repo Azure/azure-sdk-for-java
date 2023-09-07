@@ -279,7 +279,7 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
                     selectedKeys.getKeyFilter() + store.getEndpoint() + "/", client, keyVaultClientFactory,
                     selectedKeys.getKeyFilter(), selectedKeys.getLabelFilter(profiles));
             }
-            propertySource.initProperties(store.getTrim());
+            propertySource.initProperties(store.getTrimKeyPrefix());
             sourceList.add(propertySource);
 
         }
