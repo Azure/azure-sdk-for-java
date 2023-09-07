@@ -91,7 +91,7 @@ public abstract class JsonElement extends StringWriter {
      * @return
      * @throws InvalidJsonDataTypeException
      */
-    public JsonArray addElement(int index, JsonElement element) throws IllegalArgumentException {
+    public JsonArray addElement(int index, JsonElement element) throws IllegalArgumentException, IndexOutOfBoundsException {
         // Case:
         if(this.isArray()) { return (this.asArray()).addElement(index, element); }
         // Case:
@@ -105,7 +105,7 @@ public abstract class JsonElement extends StringWriter {
      * @return
      * @throws InvalidJsonDataTypeException
      */
-    public JsonArray setElement(int index, JsonElement element) throws IllegalArgumentException {
+    public JsonArray setElement(int index, JsonElement element) throws IllegalArgumentException, IndexOutOfBoundsException {
         // Case:
         if(this.isArray()) { return (this.asArray()).setElement(index, element); }
         // Case:
@@ -118,7 +118,7 @@ public abstract class JsonElement extends StringWriter {
      * @return
      * @throws InvalidJsonDataTypeException
      */
-    public JsonElement getElement(int index) throws InvalidJsonDataTypeException {
+    public JsonElement getElement(int index) throws IndexOutOfBoundsException {
         // Case:
         if(this.isArray()) {return (this.asArray()).getElement(index); }
         // Case:
@@ -131,7 +131,7 @@ public abstract class JsonElement extends StringWriter {
      * @return
      * @throws InvalidJsonDataTypeException
      */
-    public JsonElement removeElement(int index) throws InvalidJsonDataTypeException {
+    public JsonElement removeElement(int index) throws IndexOutOfBoundsException {
         // Case:
         if(this.isArray()) { return (this.asArray()).removeElement(index); }
         // Case:
