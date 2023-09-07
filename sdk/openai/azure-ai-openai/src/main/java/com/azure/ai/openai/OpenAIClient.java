@@ -829,9 +829,9 @@ public final class OpenAIClient {
 
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getAudioTranslationWithResponse(
-        String deploymentOrModelName, BinaryData audioTranslationOptions, RequestOptions requestOptions, String boundary, String contentLength) {
+        String deploymentOrModelName, BinaryData audioTranslationOptions, RequestOptions requestOptions, String boundary, long contentLength) {
         return this.serviceClient.getAudioTranslationWithResponse(
-            deploymentOrModelName, audioTranslationOptions, requestOptions, boundary, contentLength);
+            deploymentOrModelName, audioTranslationOptions, requestOptions, boundary, String.valueOf(contentLength));
     }
 
     /**
@@ -888,7 +888,7 @@ public final class OpenAIClient {
                 .toObject(AudioTranscription.class);
     }
 
-    public AudioTranscription getAudioTranscription(
+    public AudioTranscription getAudioTranslation(
         String deploymentOrModelName, AudioTranslationOptions audioTranslationOptions, String fileName
     ) {
         RequestOptions requestOptions = new RequestOptions();
@@ -908,9 +908,9 @@ public final class OpenAIClient {
             result.getData(),
             requestOptions,
             helper.getBoundary(),
-            String.valueOf(result.getDataLength())
+            result.getDataLength()
         )
             .getValue()
-            .toObject(AudioTranscription.class);//
+            .toObject(AudioTranscription.class);
     }
 }

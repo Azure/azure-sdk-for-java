@@ -15,9 +15,10 @@ import java.util.function.Consumer;
 public class MultipartDataHelper {
     private final String boundaryId = UUID.randomUUID().toString().substring(0, 16);
 
-    private final String boundary = "--------------------------" + boundaryId;
+    private final String boundary = "--AZ-OAI-JAVA--" + boundaryId;
     private final String endBoundary = boundary + "--";
 
+    private final String CRLF = "\r\n";
     private final List<MultipartField> fields = new ArrayList<>();
 
     public String getBoundary() {
@@ -29,16 +30,16 @@ public class MultipartDataHelper {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         // File
         String fileFieldPreamble = boundary
-            + "\nContent-Disposition: form-data; name=\"file\"; filename=\""
+            + CRLF + "Content-Disposition: form-data; name=\"file\"; filename=\""
             + fileName + "\""
-            + "\nContent-Type: application/octet-stream\n\n";
+            + CRLF + "Content-Type: application/octet-stream" + CRLF + CRLF;
         try {
             byteArrayOutputStream.write(fileFieldPreamble.getBytes(StandardCharsets.US_ASCII));
             byteArrayOutputStream.write(audioTranscriptionOptions.getFile());
             for (MultipartField field : fields) {
                 byteArrayOutputStream.write(serializeField(field));
             }
-            byteArrayOutputStream.write(("\n" + endBoundary).getBytes(StandardCharsets.US_ASCII));
+            byteArrayOutputStream.write((CRLF + endBoundary).getBytes(StandardCharsets.US_ASCII));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -54,19 +55,19 @@ public class MultipartDataHelper {
     }
 
     private byte[] serializeField(MultipartField field) {
-        String toSerizalise = "\n" + boundary
-            + "\nContent-Disposition: form-data; name=\""
-            + field.getWireName() + "\"\n\n"
+        String toSerizalise = CRLF + boundary
+            + CRLF + "Content-Disposition: form-data; name=\""
+            + field.getWireName() + "\"" + CRLF + CRLF
             + field.getValue();
 
         return toSerizalise.getBytes(StandardCharsets.US_ASCII);
     }
 
     public class SerializationResult {
-        private final  int dataLength;
+        private final long dataLength;
         private final BinaryData data;
 
-        public SerializationResult(BinaryData data, int contentLength) {
+        public SerializationResult(BinaryData data, long contentLength) {
             this.dataLength = contentLength;
             this.data = data;
         }
@@ -75,7 +76,7 @@ public class MultipartDataHelper {
             return data;
         }
 
-        public int getDataLength() {
+        public long getDataLength() {
             return dataLength;
         }
     }
