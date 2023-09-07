@@ -26,7 +26,7 @@ public class VisualStudioCodeCredentialBuilder extends CredentialBuilderBase<Vis
     private String tenantId;
 
     /**
-     * Creates an instance of the {@link OnBehalfOfCredentialBuilder}
+     * Creates an instance of the {@link VisualStudioCodeCredentialBuilder}
      */
     public VisualStudioCodeCredentialBuilder() { }
 

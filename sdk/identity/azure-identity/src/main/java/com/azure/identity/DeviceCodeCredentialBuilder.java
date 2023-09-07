@@ -66,7 +66,7 @@ public class DeviceCodeCredentialBuilder extends AadCredentialBuilderBase<Device
     private boolean automaticAuthentication = true;
 
     /**
-     * Creates an instance of the {@link ClientSecretCredentialBuilder}
+     * Creates an instance of the {@link DeviceCodeCredentialBuilder}
      */
     public DeviceCodeCredentialBuilder() { }
 

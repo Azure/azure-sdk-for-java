@@ -18,7 +18,7 @@ public final class TokenCachePersistenceOptions {
     private String name;
 
     /**
-     * Creates an instance of the {@link ClientSecretCredentialBuilder}
+     * Creates an instance of the {@link TokenCachePersistenceOptions}
      */
     public TokenCachePersistenceOptions() { }
 

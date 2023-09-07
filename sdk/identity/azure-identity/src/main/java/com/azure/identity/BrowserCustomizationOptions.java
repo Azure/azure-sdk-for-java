@@ -7,7 +7,6 @@ package com.azure.identity;
  * Represent Options to customize browser view.
  */
 public class BrowserCustomizationOptions {
-
     private String successMessage;
     private String errorMessage;
 

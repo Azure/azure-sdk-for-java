@@ -78,7 +78,7 @@ public class ClientCertificateCredentialBuilder extends AadCredentialBuilderBase
     private String clientCertificatePassword;
 
     /**
-     * Creates an instance of the {@link ClientAssertionCredentialBuilder}
+     * Creates an instance of the {@link ClientCertificateCredentialBuilder}
      */
     public ClientCertificateCredentialBuilder() { }
 

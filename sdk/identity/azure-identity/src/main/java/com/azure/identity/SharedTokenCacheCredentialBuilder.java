@@ -18,7 +18,7 @@ public class SharedTokenCacheCredentialBuilder extends AadCredentialBuilderBase<
         .setUnencryptedStorageAllowed(true);
 
     /**
-     * Creates an instance of the {@link OnBehalfOfCredentialBuilder}
+     * Creates an instance of the {@link SharedTokenCacheCredentialBuilder}
      */
     public SharedTokenCacheCredentialBuilder() { }
 
