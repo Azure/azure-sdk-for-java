@@ -42,13 +42,19 @@ public final class BackupResourceVaultConfig {
     private SoftDeleteFeatureState softDeleteFeatureState;
 
     /*
+     * Soft delete retention period in days
+     */
+    @JsonProperty(value = "softDeleteRetentionPeriodInDays")
+    private Integer softDeleteRetentionPeriodInDays;
+
+    /*
      * ResourceGuard Operation Requests
      */
     @JsonProperty(value = "resourceGuardOperationRequests")
     private List<String> resourceGuardOperationRequests;
 
     /*
-     * Is soft delete feature state editable
+     * This flag is no longer in use. Please use 'softDeleteFeatureState' to set the soft delete state for the vault
      */
     @JsonProperty(value = "isSoftDeleteFeatureStateEditable")
     private Boolean isSoftDeleteFeatureStateEditable;
@@ -160,6 +166,26 @@ public final class BackupResourceVaultConfig {
     }
 
     /**
+     * Get the softDeleteRetentionPeriodInDays property: Soft delete retention period in days.
+     *
+     * @return the softDeleteRetentionPeriodInDays value.
+     */
+    public Integer softDeleteRetentionPeriodInDays() {
+        return this.softDeleteRetentionPeriodInDays;
+    }
+
+    /**
+     * Set the softDeleteRetentionPeriodInDays property: Soft delete retention period in days.
+     *
+     * @param softDeleteRetentionPeriodInDays the softDeleteRetentionPeriodInDays value to set.
+     * @return the BackupResourceVaultConfig object itself.
+     */
+    public BackupResourceVaultConfig withSoftDeleteRetentionPeriodInDays(Integer softDeleteRetentionPeriodInDays) {
+        this.softDeleteRetentionPeriodInDays = softDeleteRetentionPeriodInDays;
+        return this;
+    }
+
+    /**
      * Get the resourceGuardOperationRequests property: ResourceGuard Operation Requests.
      *
      * @return the resourceGuardOperationRequests value.
@@ -180,7 +206,8 @@ public final class BackupResourceVaultConfig {
     }
 
     /**
-     * Get the isSoftDeleteFeatureStateEditable property: Is soft delete feature state editable.
+     * Get the isSoftDeleteFeatureStateEditable property: This flag is no longer in use. Please use
+     * 'softDeleteFeatureState' to set the soft delete state for the vault.
      *
      * @return the isSoftDeleteFeatureStateEditable value.
      */
@@ -189,7 +216,8 @@ public final class BackupResourceVaultConfig {
     }
 
     /**
-     * Set the isSoftDeleteFeatureStateEditable property: Is soft delete feature state editable.
+     * Set the isSoftDeleteFeatureStateEditable property: This flag is no longer in use. Please use
+     * 'softDeleteFeatureState' to set the soft delete state for the vault.
      *
      * @param isSoftDeleteFeatureStateEditable the isSoftDeleteFeatureStateEditable value to set.
      * @return the BackupResourceVaultConfig object itself.

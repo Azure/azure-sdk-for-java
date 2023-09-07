@@ -33,7 +33,7 @@ public final class BackupWorkloadItemsListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"workloadItemType\":\"WorkloadItem\",\"backupManagementType\":\"fksxqce\",\"workloadType\":\"fpxgnmqvz\",\"friendlyName\":\"uyqqaiosssc\",\"protectionState\":\"Protected\"},\"eTag\":\"fppuacvfye\",\"location\":\"w\",\"tags\":{\"jdhsoy\":\"x\",\"pboujs\":\"hpvtyqftteh\",\"suenyg\":\"kfvvdshxcde\"},\"id\":\"xcgjtf\",\"name\":\"nquktrfnslnlrxs\",\"type\":\"ylt\"}]}";
+            "{\"value\":[{\"properties\":{\"workloadItemType\":\"WorkloadItem\",\"backupManagementType\":\"ribqlotokh\",\"workloadType\":\"wtaznkcqw\",\"friendlyName\":\"wjyofgwhnkbtl\",\"protectionState\":\"NotProtected\"},\"eTag\":\"smctsn\",\"location\":\"dkpwolgisub\",\"tags\":{\"fksxqce\":\"eogfgfiijrykwl\",\"qa\":\"zfpxgnmqvzvluy\",\"fppuacvfye\":\"ossscyva\"},\"id\":\"w\",\"name\":\"sfxtjd\",\"type\":\"soy\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -64,21 +64,15 @@ public final class BackupWorkloadItemsListMockTests {
         PagedIterable<WorkloadItemResource> response =
             manager
                 .backupWorkloadItems()
-                .list(
-                    "vribqlotokht",
-                    "wtaznkcqw",
-                    "xwjyofgwhnk",
-                    "tlwljssmcts",
-                    "ldkpwolgisu",
-                    "xbteogfgfiijryk",
-                    com.azure.core.util.Context.NONE);
+                .list("x", "jlf", "ecominxojjluxxd", "ilz", "dzzqjmu", "za", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("w", response.iterator().next().location());
-        Assertions.assertEquals("x", response.iterator().next().tags().get("jdhsoy"));
-        Assertions.assertEquals("fksxqce", response.iterator().next().properties().backupManagementType());
-        Assertions.assertEquals("fpxgnmqvz", response.iterator().next().properties().workloadType());
-        Assertions.assertEquals("uyqqaiosssc", response.iterator().next().properties().friendlyName());
-        Assertions.assertEquals(ProtectionStatus.PROTECTED, response.iterator().next().properties().protectionState());
-        Assertions.assertEquals("fppuacvfye", response.iterator().next().etag());
+        Assertions.assertEquals("dkpwolgisub", response.iterator().next().location());
+        Assertions.assertEquals("eogfgfiijrykwl", response.iterator().next().tags().get("fksxqce"));
+        Assertions.assertEquals("ribqlotokh", response.iterator().next().properties().backupManagementType());
+        Assertions.assertEquals("wtaznkcqw", response.iterator().next().properties().workloadType());
+        Assertions.assertEquals("wjyofgwhnkbtl", response.iterator().next().properties().friendlyName());
+        Assertions
+            .assertEquals(ProtectionStatus.NOT_PROTECTED, response.iterator().next().properties().protectionState());
+        Assertions.assertEquals("smctsn", response.iterator().next().etag());
     }
 }

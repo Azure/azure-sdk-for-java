@@ -12,7 +12,7 @@ public final class MabErrorInfoTests {
     public void testDeserialize() throws Exception {
         MabErrorInfo model =
             BinaryData
-                .fromString("{\"errorString\":\"jmxmcuqud\",\"recommendations\":[\"clxyn\"]}")
+                .fromString("{\"errorString\":\"zpofoiyjwpfilk\",\"recommendations\":[\"holvdn\",\"viauogphua\"]}")
                 .toObject(MabErrorInfo.class);
     }
 

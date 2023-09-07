@@ -35,7 +35,7 @@ public final class BackupResourceVaultConfigsGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"storageModelType\":\"ZoneRedundant\",\"storageType\":\"ZoneRedundant\",\"storageTypeState\":\"Unlocked\",\"enhancedSecurityState\":\"Disabled\",\"softDeleteFeatureState\":\"Invalid\",\"resourceGuardOperationRequests\":[\"kwqpat\"],\"isSoftDeleteFeatureStateEditable\":true},\"eTag\":\"dtcjbctv\",\"location\":\"vuzqymt\",\"tags\":{\"tgitsqhzvbrzc\":\"o\",\"ndscxmxeatk\":\"banf\",\"aomhjrmkuhmaxl\":\"bmwnrdjyibqb\"},\"id\":\"alfihcjmobcancd\",\"name\":\"xxqcwgaxf\",\"type\":\"vaknokzwjj\"}";
+            "{\"properties\":{\"storageModelType\":\"LocallyRedundant\",\"storageType\":\"Invalid\",\"storageTypeState\":\"Invalid\",\"enhancedSecurityState\":\"Invalid\",\"softDeleteFeatureState\":\"Invalid\",\"softDeleteRetentionPeriodInDays\":1300257862,\"resourceGuardOperationRequests\":[\"p\",\"dpmiljpn\"],\"isSoftDeleteFeatureStateEditable\":false},\"eTag\":\"dqllzsauzpjlxeeh\",\"location\":\"xiqhzlraymezxlsk\",\"tags\":{\"nw\":\"xrfdsajre\",\"afpwzyifrkgwl\":\"yshtuwgmev\"},\"id\":\"xeqipx\",\"name\":\"zdyi\",\"type\":\"sfayorpravkjoges\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -66,18 +66,19 @@ public final class BackupResourceVaultConfigsGetWithResponseMockTests {
         BackupResourceVaultConfigResource response =
             manager
                 .backupResourceVaultConfigs()
-                .getWithResponse("n", "yopetxivc", com.azure.core.util.Context.NONE)
+                .getWithResponse("weryekzk", "hmeott", com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals("vuzqymt", response.location());
-        Assertions.assertEquals("o", response.tags().get("tgitsqhzvbrzc"));
-        Assertions.assertEquals(StorageType.ZONE_REDUNDANT, response.properties().storageModelType());
-        Assertions.assertEquals(StorageType.ZONE_REDUNDANT, response.properties().storageType());
-        Assertions.assertEquals(StorageTypeState.UNLOCKED, response.properties().storageTypeState());
-        Assertions.assertEquals(EnhancedSecurityState.DISABLED, response.properties().enhancedSecurityState());
+        Assertions.assertEquals("xiqhzlraymezxlsk", response.location());
+        Assertions.assertEquals("xrfdsajre", response.tags().get("nw"));
+        Assertions.assertEquals(StorageType.LOCALLY_REDUNDANT, response.properties().storageModelType());
+        Assertions.assertEquals(StorageType.INVALID, response.properties().storageType());
+        Assertions.assertEquals(StorageTypeState.INVALID, response.properties().storageTypeState());
+        Assertions.assertEquals(EnhancedSecurityState.INVALID, response.properties().enhancedSecurityState());
         Assertions.assertEquals(SoftDeleteFeatureState.INVALID, response.properties().softDeleteFeatureState());
-        Assertions.assertEquals("kwqpat", response.properties().resourceGuardOperationRequests().get(0));
-        Assertions.assertEquals(true, response.properties().isSoftDeleteFeatureStateEditable());
-        Assertions.assertEquals("dtcjbctv", response.etag());
+        Assertions.assertEquals(1300257862, response.properties().softDeleteRetentionPeriodInDays());
+        Assertions.assertEquals("p", response.properties().resourceGuardOperationRequests().get(0));
+        Assertions.assertEquals(false, response.properties().isSoftDeleteFeatureStateEditable());
+        Assertions.assertEquals("dqllzsauzpjlxeeh", response.etag());
     }
 }

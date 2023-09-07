@@ -16,12 +16,12 @@ public final class PrepareDataMoveRequestTests {
         PrepareDataMoveRequest model =
             BinaryData
                 .fromString(
-                    "{\"targetResourceId\":\"y\",\"targetRegion\":\"enjbdlwtgrhp\",\"dataMoveLevel\":\"Vault\",\"sourceContainerArmIds\":[\"umasxazjpq\",\"e\"],\"ignoreMoved\":false}")
+                    "{\"targetResourceId\":\"ujjugwdkcglh\",\"targetRegion\":\"lazjdyggdtjixhbk\",\"dataMoveLevel\":\"Container\",\"sourceContainerArmIds\":[\"wey\",\"hmenevfyexfwhybc\",\"bvyvdcsity\"],\"ignoreMoved\":false}")
                 .toObject(PrepareDataMoveRequest.class);
-        Assertions.assertEquals("y", model.targetResourceId());
-        Assertions.assertEquals("enjbdlwtgrhp", model.targetRegion());
-        Assertions.assertEquals(DataMoveLevel.VAULT, model.dataMoveLevel());
-        Assertions.assertEquals("umasxazjpq", model.sourceContainerArmIds().get(0));
+        Assertions.assertEquals("ujjugwdkcglh", model.targetResourceId());
+        Assertions.assertEquals("lazjdyggdtjixhbk", model.targetRegion());
+        Assertions.assertEquals(DataMoveLevel.CONTAINER, model.dataMoveLevel());
+        Assertions.assertEquals("wey", model.sourceContainerArmIds().get(0));
         Assertions.assertEquals(false, model.ignoreMoved());
     }
 
@@ -29,16 +29,16 @@ public final class PrepareDataMoveRequestTests {
     public void testSerialize() throws Exception {
         PrepareDataMoveRequest model =
             new PrepareDataMoveRequest()
-                .withTargetResourceId("y")
-                .withTargetRegion("enjbdlwtgrhp")
-                .withDataMoveLevel(DataMoveLevel.VAULT)
-                .withSourceContainerArmIds(Arrays.asList("umasxazjpq", "e"))
+                .withTargetResourceId("ujjugwdkcglh")
+                .withTargetRegion("lazjdyggdtjixhbk")
+                .withDataMoveLevel(DataMoveLevel.CONTAINER)
+                .withSourceContainerArmIds(Arrays.asList("wey", "hmenevfyexfwhybc", "bvyvdcsity"))
                 .withIgnoreMoved(false);
         model = BinaryData.fromObject(model).toObject(PrepareDataMoveRequest.class);
-        Assertions.assertEquals("y", model.targetResourceId());
-        Assertions.assertEquals("enjbdlwtgrhp", model.targetRegion());
-        Assertions.assertEquals(DataMoveLevel.VAULT, model.dataMoveLevel());
-        Assertions.assertEquals("umasxazjpq", model.sourceContainerArmIds().get(0));
+        Assertions.assertEquals("ujjugwdkcglh", model.targetResourceId());
+        Assertions.assertEquals("lazjdyggdtjixhbk", model.targetRegion());
+        Assertions.assertEquals(DataMoveLevel.CONTAINER, model.dataMoveLevel());
+        Assertions.assertEquals("wey", model.sourceContainerArmIds().get(0));
         Assertions.assertEquals(false, model.ignoreMoved());
     }
 }

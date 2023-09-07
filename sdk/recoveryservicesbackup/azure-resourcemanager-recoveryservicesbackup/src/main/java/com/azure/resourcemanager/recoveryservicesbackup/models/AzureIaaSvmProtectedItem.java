@@ -391,8 +391,8 @@ public class AzureIaaSvmProtectedItem extends ProtectedItem {
 
     /** {@inheritDoc} */
     @Override
-    public AzureIaaSvmProtectedItem withSoftDeleteRetentionPeriod(Integer softDeleteRetentionPeriod) {
-        super.withSoftDeleteRetentionPeriod(softDeleteRetentionPeriod);
+    public AzureIaaSvmProtectedItem withSoftDeleteRetentionPeriodInDays(Integer softDeleteRetentionPeriodInDays) {
+        super.withSoftDeleteRetentionPeriodInDays(softDeleteRetentionPeriodInDays);
         return this;
     }
 

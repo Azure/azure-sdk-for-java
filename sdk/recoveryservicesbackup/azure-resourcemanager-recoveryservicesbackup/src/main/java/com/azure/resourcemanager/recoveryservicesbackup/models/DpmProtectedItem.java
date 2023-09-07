@@ -224,8 +224,8 @@ public final class DpmProtectedItem extends ProtectedItem {
 
     /** {@inheritDoc} */
     @Override
-    public DpmProtectedItem withSoftDeleteRetentionPeriod(Integer softDeleteRetentionPeriod) {
-        super.withSoftDeleteRetentionPeriod(softDeleteRetentionPeriod);
+    public DpmProtectedItem withSoftDeleteRetentionPeriodInDays(Integer softDeleteRetentionPeriodInDays) {
+        super.withSoftDeleteRetentionPeriodInDays(softDeleteRetentionPeriodInDays);
         return this;
     }
 

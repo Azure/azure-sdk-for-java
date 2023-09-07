@@ -19,35 +19,38 @@ public final class BackupResourceVaultConfigTests {
         BackupResourceVaultConfig model =
             BinaryData
                 .fromString(
-                    "{\"storageModelType\":\"ReadAccessGeoZoneRedundant\",\"storageType\":\"LocallyRedundant\",\"storageTypeState\":\"Locked\",\"enhancedSecurityState\":\"Enabled\",\"softDeleteFeatureState\":\"Disabled\",\"resourceGuardOperationRequests\":[\"xhvpmoue\"],\"isSoftDeleteFeatureStateEditable\":true}")
+                    "{\"storageModelType\":\"Invalid\",\"storageType\":\"ReadAccessGeoZoneRedundant\",\"storageTypeState\":\"Invalid\",\"enhancedSecurityState\":\"Invalid\",\"softDeleteFeatureState\":\"Enabled\",\"softDeleteRetentionPeriodInDays\":102046613,\"resourceGuardOperationRequests\":[\"khixuigdtopbo\"],\"isSoftDeleteFeatureStateEditable\":false}")
                 .toObject(BackupResourceVaultConfig.class);
-        Assertions.assertEquals(StorageType.READ_ACCESS_GEO_ZONE_REDUNDANT, model.storageModelType());
-        Assertions.assertEquals(StorageType.LOCALLY_REDUNDANT, model.storageType());
-        Assertions.assertEquals(StorageTypeState.LOCKED, model.storageTypeState());
-        Assertions.assertEquals(EnhancedSecurityState.ENABLED, model.enhancedSecurityState());
-        Assertions.assertEquals(SoftDeleteFeatureState.DISABLED, model.softDeleteFeatureState());
-        Assertions.assertEquals("xhvpmoue", model.resourceGuardOperationRequests().get(0));
-        Assertions.assertEquals(true, model.isSoftDeleteFeatureStateEditable());
+        Assertions.assertEquals(StorageType.INVALID, model.storageModelType());
+        Assertions.assertEquals(StorageType.READ_ACCESS_GEO_ZONE_REDUNDANT, model.storageType());
+        Assertions.assertEquals(StorageTypeState.INVALID, model.storageTypeState());
+        Assertions.assertEquals(EnhancedSecurityState.INVALID, model.enhancedSecurityState());
+        Assertions.assertEquals(SoftDeleteFeatureState.ENABLED, model.softDeleteFeatureState());
+        Assertions.assertEquals(102046613, model.softDeleteRetentionPeriodInDays());
+        Assertions.assertEquals("khixuigdtopbo", model.resourceGuardOperationRequests().get(0));
+        Assertions.assertEquals(false, model.isSoftDeleteFeatureStateEditable());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         BackupResourceVaultConfig model =
             new BackupResourceVaultConfig()
-                .withStorageModelType(StorageType.READ_ACCESS_GEO_ZONE_REDUNDANT)
-                .withStorageType(StorageType.LOCALLY_REDUNDANT)
-                .withStorageTypeState(StorageTypeState.LOCKED)
-                .withEnhancedSecurityState(EnhancedSecurityState.ENABLED)
-                .withSoftDeleteFeatureState(SoftDeleteFeatureState.DISABLED)
-                .withResourceGuardOperationRequests(Arrays.asList("xhvpmoue"))
-                .withIsSoftDeleteFeatureStateEditable(true);
+                .withStorageModelType(StorageType.INVALID)
+                .withStorageType(StorageType.READ_ACCESS_GEO_ZONE_REDUNDANT)
+                .withStorageTypeState(StorageTypeState.INVALID)
+                .withEnhancedSecurityState(EnhancedSecurityState.INVALID)
+                .withSoftDeleteFeatureState(SoftDeleteFeatureState.ENABLED)
+                .withSoftDeleteRetentionPeriodInDays(102046613)
+                .withResourceGuardOperationRequests(Arrays.asList("khixuigdtopbo"))
+                .withIsSoftDeleteFeatureStateEditable(false);
         model = BinaryData.fromObject(model).toObject(BackupResourceVaultConfig.class);
-        Assertions.assertEquals(StorageType.READ_ACCESS_GEO_ZONE_REDUNDANT, model.storageModelType());
-        Assertions.assertEquals(StorageType.LOCALLY_REDUNDANT, model.storageType());
-        Assertions.assertEquals(StorageTypeState.LOCKED, model.storageTypeState());
-        Assertions.assertEquals(EnhancedSecurityState.ENABLED, model.enhancedSecurityState());
-        Assertions.assertEquals(SoftDeleteFeatureState.DISABLED, model.softDeleteFeatureState());
-        Assertions.assertEquals("xhvpmoue", model.resourceGuardOperationRequests().get(0));
-        Assertions.assertEquals(true, model.isSoftDeleteFeatureStateEditable());
+        Assertions.assertEquals(StorageType.INVALID, model.storageModelType());
+        Assertions.assertEquals(StorageType.READ_ACCESS_GEO_ZONE_REDUNDANT, model.storageType());
+        Assertions.assertEquals(StorageTypeState.INVALID, model.storageTypeState());
+        Assertions.assertEquals(EnhancedSecurityState.INVALID, model.enhancedSecurityState());
+        Assertions.assertEquals(SoftDeleteFeatureState.ENABLED, model.softDeleteFeatureState());
+        Assertions.assertEquals(102046613, model.softDeleteRetentionPeriodInDays());
+        Assertions.assertEquals("khixuigdtopbo", model.resourceGuardOperationRequests().get(0));
+        Assertions.assertEquals(false, model.isSoftDeleteFeatureStateEditable());
     }
 }

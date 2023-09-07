@@ -171,8 +171,9 @@ public final class AzureIaaSComputeVMProtectedItem extends AzureIaaSvmProtectedI
 
     /** {@inheritDoc} */
     @Override
-    public AzureIaaSComputeVMProtectedItem withSoftDeleteRetentionPeriod(Integer softDeleteRetentionPeriod) {
-        super.withSoftDeleteRetentionPeriod(softDeleteRetentionPeriod);
+    public AzureIaaSComputeVMProtectedItem withSoftDeleteRetentionPeriodInDays(
+        Integer softDeleteRetentionPeriodInDays) {
+        super.withSoftDeleteRetentionPeriodInDays(softDeleteRetentionPeriodInDays);
         return this;
     }
 

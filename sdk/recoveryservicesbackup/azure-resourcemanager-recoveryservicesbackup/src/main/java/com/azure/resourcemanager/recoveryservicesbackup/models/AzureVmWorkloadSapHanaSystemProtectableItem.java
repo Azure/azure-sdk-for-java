@@ -76,6 +76,13 @@ public final class AzureVmWorkloadSapHanaSystemProtectableItem extends AzureVmWo
 
     /** {@inheritDoc} */
     @Override
+    public AzureVmWorkloadSapHanaSystemProtectableItem withIsProtectable(Boolean isProtectable) {
+        super.withIsProtectable(isProtectable);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
     public AzureVmWorkloadSapHanaSystemProtectableItem withBackupManagementType(String backupManagementType) {
         super.withBackupManagementType(backupManagementType);
         return this;

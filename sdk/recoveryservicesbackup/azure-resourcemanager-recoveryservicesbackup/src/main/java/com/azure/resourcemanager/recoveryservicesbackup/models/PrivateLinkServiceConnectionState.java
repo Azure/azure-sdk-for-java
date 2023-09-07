@@ -25,8 +25,8 @@ public final class PrivateLinkServiceConnectionState {
     /*
      * Gets or sets actions required
      */
-    @JsonProperty(value = "actionRequired")
-    private String actionRequired;
+    @JsonProperty(value = "actionsRequired")
+    private String actionsRequired;
 
     /** Creates an instance of PrivateLinkServiceConnectionState class. */
     public PrivateLinkServiceConnectionState() {
@@ -73,22 +73,22 @@ public final class PrivateLinkServiceConnectionState {
     }
 
     /**
-     * Get the actionRequired property: Gets or sets actions required.
+     * Get the actionsRequired property: Gets or sets actions required.
      *
-     * @return the actionRequired value.
+     * @return the actionsRequired value.
      */
-    public String actionRequired() {
-        return this.actionRequired;
+    public String actionsRequired() {
+        return this.actionsRequired;
     }
 
     /**
-     * Set the actionRequired property: Gets or sets actions required.
+     * Set the actionsRequired property: Gets or sets actions required.
      *
-     * @param actionRequired the actionRequired value to set.
+     * @param actionsRequired the actionsRequired value to set.
      * @return the PrivateLinkServiceConnectionState object itself.
      */
-    public PrivateLinkServiceConnectionState withActionRequired(String actionRequired) {
-        this.actionRequired = actionRequired;
+    public PrivateLinkServiceConnectionState withActionsRequired(String actionsRequired) {
+        this.actionsRequired = actionsRequired;
         return this;
     }
 

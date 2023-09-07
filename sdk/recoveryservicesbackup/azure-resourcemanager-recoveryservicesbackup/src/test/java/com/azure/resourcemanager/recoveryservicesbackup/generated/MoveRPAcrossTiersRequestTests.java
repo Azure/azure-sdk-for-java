@@ -15,9 +15,9 @@ public final class MoveRPAcrossTiersRequestTests {
         MoveRPAcrossTiersRequest model =
             BinaryData
                 .fromString(
-                    "{\"objectType\":\"gitvg\",\"sourceTierType\":\"InstantRP\",\"targetTierType\":\"ArchivedRP\"}")
+                    "{\"objectType\":\"bqpc\",\"sourceTierType\":\"InstantRP\",\"targetTierType\":\"ArchivedRP\"}")
                 .toObject(MoveRPAcrossTiersRequest.class);
-        Assertions.assertEquals("gitvg", model.objectType());
+        Assertions.assertEquals("bqpc", model.objectType());
         Assertions.assertEquals(RecoveryPointTierType.INSTANT_RP, model.sourceTierType());
         Assertions.assertEquals(RecoveryPointTierType.ARCHIVED_RP, model.targetTierType());
     }
@@ -26,11 +26,11 @@ public final class MoveRPAcrossTiersRequestTests {
     public void testSerialize() throws Exception {
         MoveRPAcrossTiersRequest model =
             new MoveRPAcrossTiersRequest()
-                .withObjectType("gitvg")
+                .withObjectType("bqpc")
                 .withSourceTierType(RecoveryPointTierType.INSTANT_RP)
                 .withTargetTierType(RecoveryPointTierType.ARCHIVED_RP);
         model = BinaryData.fromObject(model).toObject(MoveRPAcrossTiersRequest.class);
-        Assertions.assertEquals("gitvg", model.objectType());
+        Assertions.assertEquals("bqpc", model.objectType());
         Assertions.assertEquals(RecoveryPointTierType.INSTANT_RP, model.sourceTierType());
         Assertions.assertEquals(RecoveryPointTierType.ARCHIVED_RP, model.targetTierType());
     }

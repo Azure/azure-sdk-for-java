@@ -17,27 +17,28 @@ public final class RestoreRequestResourceTests {
         RestoreRequestResource model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"objectType\":\"RestoreRequest\"},\"eTag\":\"qzrnkcqvyxlwhz\",\"location\":\"sicohoqqnwvlry\",\"tags\":{\"konocu\":\"hheunmmqhgyx\"},\"id\":\"oklyaxuconuq\",\"name\":\"zf\",\"type\":\"beypewrmjmw\"}")
+                    "{\"properties\":{\"objectType\":\"RestoreRequest\"},\"eTag\":\"txfvgx\",\"location\":\"fsm\",\"tags\":{\"odebfqkkrbmpu\":\"hmpvecx\"},\"id\":\"gr\",\"name\":\"wflzlfbxzpuzy\",\"type\":\"ispnqzahmgkbrp\"}")
                 .toObject(RestoreRequestResource.class);
-        Assertions.assertEquals("sicohoqqnwvlry", model.location());
-        Assertions.assertEquals("hheunmmqhgyx", model.tags().get("konocu"));
-        Assertions.assertEquals("qzrnkcqvyxlwhz", model.etag());
+        Assertions.assertEquals("fsm", model.location());
+        Assertions.assertEquals("hmpvecx", model.tags().get("odebfqkkrbmpu"));
+        Assertions.assertEquals("txfvgx", model.etag());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         RestoreRequestResource model =
             new RestoreRequestResource()
-                .withLocation("sicohoqqnwvlry")
-                .withTags(mapOf("konocu", "hheunmmqhgyx"))
+                .withLocation("fsm")
+                .withTags(mapOf("odebfqkkrbmpu", "hmpvecx"))
                 .withProperties(new RestoreRequest())
-                .withEtag("qzrnkcqvyxlwhz");
+                .withEtag("txfvgx");
         model = BinaryData.fromObject(model).toObject(RestoreRequestResource.class);
-        Assertions.assertEquals("sicohoqqnwvlry", model.location());
-        Assertions.assertEquals("hheunmmqhgyx", model.tags().get("konocu"));
-        Assertions.assertEquals("qzrnkcqvyxlwhz", model.etag());
+        Assertions.assertEquals("fsm", model.location());
+        Assertions.assertEquals("hmpvecx", model.tags().get("odebfqkkrbmpu"));
+        Assertions.assertEquals("txfvgx", model.etag());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

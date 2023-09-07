@@ -34,7 +34,7 @@ public final class RecoveryPointsRecommendedForMovesListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"objectType\":\"RecoveryPoint\"},\"eTag\":\"qfp\",\"location\":\"vstclg\",\"tags\":{\"smtbljjehhcif\":\"werfwx\",\"tbrekqhsqhtf\":\"wdv\",\"yejuwyqwdqigmghg\":\"wpq\"},\"id\":\"nztxlujkh\",\"name\":\"jcmrnkfm\",\"type\":\"h\"}]}";
+            "{\"value\":[{\"properties\":{\"objectType\":\"RecoveryPoint\"},\"eTag\":\"kldmaxxijv\",\"location\":\"kwsdgkj\",\"tags\":{\"wefcvoinw\":\"cwrase\",\"qicladv\":\"qartwy\"},\"id\":\"tdavuqmcbymsfobj\",\"name\":\"quvjez\",\"type\":\"j\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -66,18 +66,18 @@ public final class RecoveryPointsRecommendedForMovesListMockTests {
             manager
                 .recoveryPointsRecommendedForMoves()
                 .list(
-                    "cladvatdavuqmcb",
-                    "msfobjlquvj",
-                    "zcjumvpsimioyoig",
-                    "kmi",
-                    "wnnra",
+                    "rbf",
+                    "xyxz",
+                    "bcip",
+                    "msexroqr",
+                    "dktxfv",
                     new ListRecoveryPointsRecommendedForMoveRequest()
-                        .withObjectType("ibb")
-                        .withExcludedRPList(Arrays.asList("spkladydgnhau", "wuk", "xzgpmn", "abeddqilwgd")),
+                        .withObjectType("feeqgpkrietbgnix")
+                        .withExcludedRPList(Arrays.asList("wzkyf", "nwpiwxeiicrm")),
                     com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("vstclg", response.iterator().next().location());
-        Assertions.assertEquals("werfwx", response.iterator().next().tags().get("smtbljjehhcif"));
-        Assertions.assertEquals("qfp", response.iterator().next().etag());
+        Assertions.assertEquals("kwsdgkj", response.iterator().next().location());
+        Assertions.assertEquals("cwrase", response.iterator().next().tags().get("wefcvoinw"));
+        Assertions.assertEquals("kldmaxxijv", response.iterator().next().etag());
     }
 }

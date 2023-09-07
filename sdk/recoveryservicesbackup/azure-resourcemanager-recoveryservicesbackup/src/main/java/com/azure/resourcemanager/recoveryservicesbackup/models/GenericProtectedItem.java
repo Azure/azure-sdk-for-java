@@ -281,8 +281,8 @@ public final class GenericProtectedItem extends ProtectedItem {
 
     /** {@inheritDoc} */
     @Override
-    public GenericProtectedItem withSoftDeleteRetentionPeriod(Integer softDeleteRetentionPeriod) {
-        super.withSoftDeleteRetentionPeriod(softDeleteRetentionPeriod);
+    public GenericProtectedItem withSoftDeleteRetentionPeriodInDays(Integer softDeleteRetentionPeriodInDays) {
+        super.withSoftDeleteRetentionPeriodInDays(softDeleteRetentionPeriodInDays);
         return this;
     }
 

@@ -60,7 +60,7 @@ public final class BmsPrepareDataMoveOperationResultsGetWithResponseMockTests {
         VaultStorageConfigOperationResultResponse response =
             manager
                 .bmsPrepareDataMoveOperationResults()
-                .getWithResponse("gltygxhqfgq", "ayejsxtlgflwfgz", "iucijjcea", com.azure.core.util.Context.NONE)
+                .getWithResponse("lgjyyxpvels", "erqzevxo", "eintxwaljglzobl", com.azure.core.util.Context.NONE)
                 .getValue();
     }
 }

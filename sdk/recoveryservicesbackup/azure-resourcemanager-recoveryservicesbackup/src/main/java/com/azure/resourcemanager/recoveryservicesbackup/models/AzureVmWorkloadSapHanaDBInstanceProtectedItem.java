@@ -103,6 +103,13 @@ public final class AzureVmWorkloadSapHanaDBInstanceProtectedItem extends AzureVm
 
     /** {@inheritDoc} */
     @Override
+    public AzureVmWorkloadSapHanaDBInstanceProtectedItem withNodesList(List<DistributedNodesInfo> nodesList) {
+        super.withNodesList(nodesList);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
     public AzureVmWorkloadSapHanaDBInstanceProtectedItem withContainerName(String containerName) {
         super.withContainerName(containerName);
         return this;
@@ -206,9 +213,9 @@ public final class AzureVmWorkloadSapHanaDBInstanceProtectedItem extends AzureVm
 
     /** {@inheritDoc} */
     @Override
-    public AzureVmWorkloadSapHanaDBInstanceProtectedItem withSoftDeleteRetentionPeriod(
-        Integer softDeleteRetentionPeriod) {
-        super.withSoftDeleteRetentionPeriod(softDeleteRetentionPeriod);
+    public AzureVmWorkloadSapHanaDBInstanceProtectedItem withSoftDeleteRetentionPeriodInDays(
+        Integer softDeleteRetentionPeriodInDays) {
+        super.withSoftDeleteRetentionPeriodInDays(softDeleteRetentionPeriodInDays);
         return this;
     }
 

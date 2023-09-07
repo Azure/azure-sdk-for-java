@@ -200,8 +200,8 @@ public final class AzureSqlProtectedItem extends ProtectedItem {
 
     /** {@inheritDoc} */
     @Override
-    public AzureSqlProtectedItem withSoftDeleteRetentionPeriod(Integer softDeleteRetentionPeriod) {
-        super.withSoftDeleteRetentionPeriod(softDeleteRetentionPeriod);
+    public AzureSqlProtectedItem withSoftDeleteRetentionPeriodInDays(Integer softDeleteRetentionPeriodInDays) {
+        super.withSoftDeleteRetentionPeriodInDays(softDeleteRetentionPeriodInDays);
         return this;
     }
 

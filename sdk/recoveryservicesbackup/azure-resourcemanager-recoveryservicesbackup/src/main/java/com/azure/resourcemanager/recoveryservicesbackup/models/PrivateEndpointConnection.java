@@ -6,6 +6,7 @@ package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
 /** Private Endpoint Connection Response Properties. */
 @Fluent
@@ -21,6 +22,12 @@ public final class PrivateEndpointConnection {
      */
     @JsonProperty(value = "privateEndpoint")
     private PrivateEndpoint privateEndpoint;
+
+    /*
+     * Group Ids for the Private Endpoint
+     */
+    @JsonProperty(value = "groupIds")
+    private List<VaultSubResourceType> groupIds;
 
     /*
      * Gets or sets private link service connection state
@@ -69,6 +76,26 @@ public final class PrivateEndpointConnection {
      */
     public PrivateEndpointConnection withPrivateEndpoint(PrivateEndpoint privateEndpoint) {
         this.privateEndpoint = privateEndpoint;
+        return this;
+    }
+
+    /**
+     * Get the groupIds property: Group Ids for the Private Endpoint.
+     *
+     * @return the groupIds value.
+     */
+    public List<VaultSubResourceType> groupIds() {
+        return this.groupIds;
+    }
+
+    /**
+     * Set the groupIds property: Group Ids for the Private Endpoint.
+     *
+     * @param groupIds the groupIds value to set.
+     * @return the PrivateEndpointConnection object itself.
+     */
+    public PrivateEndpointConnection withGroupIds(List<VaultSubResourceType> groupIds) {
+        this.groupIds = groupIds;
         return this;
     }
 

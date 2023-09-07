@@ -89,6 +89,7 @@ public final class AzureWorkloadSapHanaRecoveryPointTests {
         Assertions.assertEquals(false, model.recoveryPointProperties().isSoftDeleted());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

@@ -129,8 +129,8 @@ public class ProtectedItem {
     /*
      * Soft delete retention period in days
      */
-    @JsonProperty(value = "softDeleteRetentionPeriod")
-    private Integer softDeleteRetentionPeriod;
+    @JsonProperty(value = "softDeleteRetentionPeriodInDays")
+    private Integer softDeleteRetentionPeriodInDays;
 
     /** Creates an instance of ProtectedItem class. */
     public ProtectedItem() {
@@ -445,22 +445,22 @@ public class ProtectedItem {
     }
 
     /**
-     * Get the softDeleteRetentionPeriod property: Soft delete retention period in days.
+     * Get the softDeleteRetentionPeriodInDays property: Soft delete retention period in days.
      *
-     * @return the softDeleteRetentionPeriod value.
+     * @return the softDeleteRetentionPeriodInDays value.
      */
-    public Integer softDeleteRetentionPeriod() {
-        return this.softDeleteRetentionPeriod;
+    public Integer softDeleteRetentionPeriodInDays() {
+        return this.softDeleteRetentionPeriodInDays;
     }
 
     /**
-     * Set the softDeleteRetentionPeriod property: Soft delete retention period in days.
+     * Set the softDeleteRetentionPeriodInDays property: Soft delete retention period in days.
      *
-     * @param softDeleteRetentionPeriod the softDeleteRetentionPeriod value to set.
+     * @param softDeleteRetentionPeriodInDays the softDeleteRetentionPeriodInDays value to set.
      * @return the ProtectedItem object itself.
      */
-    public ProtectedItem withSoftDeleteRetentionPeriod(Integer softDeleteRetentionPeriod) {
-        this.softDeleteRetentionPeriod = softDeleteRetentionPeriod;
+    public ProtectedItem withSoftDeleteRetentionPeriodInDays(Integer softDeleteRetentionPeriodInDays) {
+        this.softDeleteRetentionPeriodInDays = softDeleteRetentionPeriodInDays;
         return this;
     }
 

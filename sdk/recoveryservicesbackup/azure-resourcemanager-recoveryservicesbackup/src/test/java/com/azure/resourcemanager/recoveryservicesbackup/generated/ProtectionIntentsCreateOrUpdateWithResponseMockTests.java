@@ -36,7 +36,7 @@ public final class ProtectionIntentsCreateOrUpdateWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"protectionIntentItemType\":\"ProtectionIntent\",\"backupManagementType\":\"AzureIaasVM\",\"sourceResourceId\":\"rvcqguefzhomphe\",\"itemId\":\"urelyujlfyoump\",\"policyId\":\"yec\",\"protectionState\":\"Protected\"},\"eTag\":\"gptaj\",\"location\":\"rzmq\",\"tags\":{\"yzyzjd\":\"ycijoclxiutgj\",\"jb\":\"r\",\"w\":\"xjeaoqaqbzgyh\"},\"id\":\"v\",\"name\":\"atbwbqam\",\"type\":\"e\"}";
+            "{\"properties\":{\"protectionIntentItemType\":\"ProtectionIntent\",\"backupManagementType\":\"AzureStorage\",\"sourceResourceId\":\"qi\",\"itemId\":\"eialwvskb\",\"policyId\":\"z\",\"protectionState\":\"NotProtected\"},\"eTag\":\"ty\",\"location\":\"tco\",\"tags\":{\"zakuejk\":\"jpds\",\"vjufycsjmlbe\":\"vbiztjofqcv\",\"iuxegth\":\"yeji\"},\"id\":\"rtudawlpjfel\",\"name\":\"erppt\",\"type\":\"bgqnz\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -67,30 +67,31 @@ public final class ProtectionIntentsCreateOrUpdateWithResponseMockTests {
         ProtectionIntentResource response =
             manager
                 .protectionIntents()
-                .define("qdx")
-                .withRegion("aovurexdndsbdwe")
-                .withExistingBackupFabric("bbcccgz", "raoxnyuff", "tsgftipwcxbyubh")
-                .withTags(mapOf("opagttmvmmag", "rzmwn"))
+                .define("ah")
+                .withRegion("qtvbczsu")
+                .withExistingBackupFabric("jkpdxphlkksnm", "zvyfijdkzuqnwsi", "huqol")
+                .withTags(mapOf("g", "gglmepjpfsey", "vecjujcn", "angpszngafpgyl", "dm", "oady"))
                 .withProperties(
                     new ProtectionIntent()
-                        .withBackupManagementType(BackupManagementType.AZURE_SQL)
-                        .withSourceResourceId("nuhzafccnuh")
-                        .withItemId("gbylbuig")
-                        .withPolicyId("vatvcrkd")
-                        .withProtectionState(ProtectionStatus.INVALID))
-                .withEtag("qxvhcsyhzlwxa")
+                        .withBackupManagementType(BackupManagementType.DPM)
+                        .withSourceResourceId("ulsutrjbhxy")
+                        .withItemId("hyqezvqq")
+                        .withPolicyId("drftbcvexreuquo")
+                        .withProtectionState(ProtectionStatus.PROTECTING))
+                .withEtag("vfwhreagkhyxv")
                 .create();
 
-        Assertions.assertEquals("rzmq", response.location());
-        Assertions.assertEquals("ycijoclxiutgj", response.tags().get("yzyzjd"));
-        Assertions.assertEquals(BackupManagementType.AZURE_IAAS_VM, response.properties().backupManagementType());
-        Assertions.assertEquals("rvcqguefzhomphe", response.properties().sourceResourceId());
-        Assertions.assertEquals("urelyujlfyoump", response.properties().itemId());
-        Assertions.assertEquals("yec", response.properties().policyId());
-        Assertions.assertEquals(ProtectionStatus.PROTECTED, response.properties().protectionState());
-        Assertions.assertEquals("gptaj", response.etag());
+        Assertions.assertEquals("tco", response.location());
+        Assertions.assertEquals("jpds", response.tags().get("zakuejk"));
+        Assertions.assertEquals(BackupManagementType.AZURE_STORAGE, response.properties().backupManagementType());
+        Assertions.assertEquals("qi", response.properties().sourceResourceId());
+        Assertions.assertEquals("eialwvskb", response.properties().itemId());
+        Assertions.assertEquals("z", response.properties().policyId());
+        Assertions.assertEquals(ProtectionStatus.NOT_PROTECTED, response.properties().protectionState());
+        Assertions.assertEquals("ty", response.etag());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

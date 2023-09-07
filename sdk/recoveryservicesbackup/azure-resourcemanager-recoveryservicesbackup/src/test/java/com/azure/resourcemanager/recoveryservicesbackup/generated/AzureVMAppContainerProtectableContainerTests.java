@@ -15,26 +15,26 @@ public final class AzureVMAppContainerProtectableContainerTests {
         AzureVMAppContainerProtectableContainer model =
             BinaryData
                 .fromString(
-                    "{\"protectableContainerType\":\"VMAppContainer\",\"friendlyName\":\"fbvfbhdy\",\"backupManagementType\":\"AzureWorkload\",\"healthStatus\":\"wpg\",\"containerId\":\"eimawzovgkkumui\"}")
+                    "{\"protectableContainerType\":\"VMAppContainer\",\"friendlyName\":\"urlpshh\",\"backupManagementType\":\"AzureStorage\",\"healthStatus\":\"dwqslsrhmpqvw\",\"containerId\":\"kondcb\"}")
                 .toObject(AzureVMAppContainerProtectableContainer.class);
-        Assertions.assertEquals("fbvfbhdy", model.friendlyName());
-        Assertions.assertEquals(BackupManagementType.AZURE_WORKLOAD, model.backupManagementType());
-        Assertions.assertEquals("wpg", model.healthStatus());
-        Assertions.assertEquals("eimawzovgkkumui", model.containerId());
+        Assertions.assertEquals("urlpshh", model.friendlyName());
+        Assertions.assertEquals(BackupManagementType.AZURE_STORAGE, model.backupManagementType());
+        Assertions.assertEquals("dwqslsrhmpqvw", model.healthStatus());
+        Assertions.assertEquals("kondcb", model.containerId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AzureVMAppContainerProtectableContainer model =
             new AzureVMAppContainerProtectableContainer()
-                .withFriendlyName("fbvfbhdy")
-                .withBackupManagementType(BackupManagementType.AZURE_WORKLOAD)
-                .withHealthStatus("wpg")
-                .withContainerId("eimawzovgkkumui");
+                .withFriendlyName("urlpshh")
+                .withBackupManagementType(BackupManagementType.AZURE_STORAGE)
+                .withHealthStatus("dwqslsrhmpqvw")
+                .withContainerId("kondcb");
         model = BinaryData.fromObject(model).toObject(AzureVMAppContainerProtectableContainer.class);
-        Assertions.assertEquals("fbvfbhdy", model.friendlyName());
-        Assertions.assertEquals(BackupManagementType.AZURE_WORKLOAD, model.backupManagementType());
-        Assertions.assertEquals("wpg", model.healthStatus());
-        Assertions.assertEquals("eimawzovgkkumui", model.containerId());
+        Assertions.assertEquals("urlpshh", model.friendlyName());
+        Assertions.assertEquals(BackupManagementType.AZURE_STORAGE, model.backupManagementType());
+        Assertions.assertEquals("dwqslsrhmpqvw", model.healthStatus());
+        Assertions.assertEquals("kondcb", model.containerId());
     }
 }

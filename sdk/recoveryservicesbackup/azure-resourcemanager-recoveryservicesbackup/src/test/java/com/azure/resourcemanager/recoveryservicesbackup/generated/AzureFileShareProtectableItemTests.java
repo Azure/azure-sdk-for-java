@@ -16,14 +16,14 @@ public final class AzureFileShareProtectableItemTests {
         AzureFileShareProtectableItem model =
             BinaryData
                 .fromString(
-                    "{\"protectableItemType\":\"AzureFileShare\",\"parentContainerFabricId\":\"bzxliohrdddtfgxq\",\"parentContainerFriendlyName\":\"wpcbbnzqcy\",\"azureFileShareType\":\"XSync\",\"backupManagementType\":\"qofyuicdhzbdy\",\"workloadType\":\"wgbdvibidmhmwffp\",\"friendlyName\":\"muvapc\",\"protectionState\":\"ProtectionFailed\"}")
+                    "{\"protectableItemType\":\"AzureFileShare\",\"parentContainerFabricId\":\"vbopfppdbwnu\",\"parentContainerFriendlyName\":\"ahxku\",\"azureFileShareType\":\"XSync\",\"backupManagementType\":\"caac\",\"workloadType\":\"mmcpug\",\"friendlyName\":\"hqepvufhbzehewh\",\"protectionState\":\"Protected\"}")
                 .toObject(AzureFileShareProtectableItem.class);
-        Assertions.assertEquals("qofyuicdhzbdy", model.backupManagementType());
-        Assertions.assertEquals("wgbdvibidmhmwffp", model.workloadType());
-        Assertions.assertEquals("muvapc", model.friendlyName());
-        Assertions.assertEquals(ProtectionStatus.PROTECTION_FAILED, model.protectionState());
-        Assertions.assertEquals("bzxliohrdddtfgxq", model.parentContainerFabricId());
-        Assertions.assertEquals("wpcbbnzqcy", model.parentContainerFriendlyName());
+        Assertions.assertEquals("caac", model.backupManagementType());
+        Assertions.assertEquals("mmcpug", model.workloadType());
+        Assertions.assertEquals("hqepvufhbzehewh", model.friendlyName());
+        Assertions.assertEquals(ProtectionStatus.PROTECTED, model.protectionState());
+        Assertions.assertEquals("vbopfppdbwnu", model.parentContainerFabricId());
+        Assertions.assertEquals("ahxku", model.parentContainerFriendlyName());
         Assertions.assertEquals(AzureFileShareType.XSYNC, model.azureFileShareType());
     }
 
@@ -31,20 +31,20 @@ public final class AzureFileShareProtectableItemTests {
     public void testSerialize() throws Exception {
         AzureFileShareProtectableItem model =
             new AzureFileShareProtectableItem()
-                .withBackupManagementType("qofyuicdhzbdy")
-                .withWorkloadType("wgbdvibidmhmwffp")
-                .withFriendlyName("muvapc")
-                .withProtectionState(ProtectionStatus.PROTECTION_FAILED)
-                .withParentContainerFabricId("bzxliohrdddtfgxq")
-                .withParentContainerFriendlyName("wpcbbnzqcy")
+                .withBackupManagementType("caac")
+                .withWorkloadType("mmcpug")
+                .withFriendlyName("hqepvufhbzehewh")
+                .withProtectionState(ProtectionStatus.PROTECTED)
+                .withParentContainerFabricId("vbopfppdbwnu")
+                .withParentContainerFriendlyName("ahxku")
                 .withAzureFileShareType(AzureFileShareType.XSYNC);
         model = BinaryData.fromObject(model).toObject(AzureFileShareProtectableItem.class);
-        Assertions.assertEquals("qofyuicdhzbdy", model.backupManagementType());
-        Assertions.assertEquals("wgbdvibidmhmwffp", model.workloadType());
-        Assertions.assertEquals("muvapc", model.friendlyName());
-        Assertions.assertEquals(ProtectionStatus.PROTECTION_FAILED, model.protectionState());
-        Assertions.assertEquals("bzxliohrdddtfgxq", model.parentContainerFabricId());
-        Assertions.assertEquals("wpcbbnzqcy", model.parentContainerFriendlyName());
+        Assertions.assertEquals("caac", model.backupManagementType());
+        Assertions.assertEquals("mmcpug", model.workloadType());
+        Assertions.assertEquals("hqepvufhbzehewh", model.friendlyName());
+        Assertions.assertEquals(ProtectionStatus.PROTECTED, model.protectionState());
+        Assertions.assertEquals("vbopfppdbwnu", model.parentContainerFabricId());
+        Assertions.assertEquals("ahxku", model.parentContainerFriendlyName());
         Assertions.assertEquals(AzureFileShareType.XSYNC, model.azureFileShareType());
     }
 }

@@ -31,7 +31,7 @@ public final class ProtectionPoliciesGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"backupManagementType\":\"ProtectionPolicy\",\"protectedItemsCount\":1629498323,\"resourceGuardOperationRequests\":[\"yion\"]},\"eTag\":\"ninbdbzsxcwqqrs\",\"location\":\"pcbbprtugav\",\"tags\":{\"dr\":\"cyksivmfo\",\"cwjjxsgmbawvif\":\"bfcmkrfts\",\"wkloozr\":\"xkecifhocj\"},\"id\":\"txvcm\",\"name\":\"funlcpxxvi\",\"type\":\"yeyng\"}";
+            "{\"properties\":{\"backupManagementType\":\"ProtectionPolicy\",\"protectedItemsCount\":2111335393,\"resourceGuardOperationRequests\":[\"hrg\",\"nzhctmjtsgh\",\"bcbcpz\"]},\"eTag\":\"pzeqacdldtz\",\"location\":\"pypefcpczshnuq\",\"tags\":{\"tu\":\"izupfkhu\"},\"id\":\"zx\",\"name\":\"mtvtvegwqiukvzwy\",\"type\":\"wtthaokgksk\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,13 +62,13 @@ public final class ProtectionPoliciesGetWithResponseMockTests {
         ProtectionPolicyResource response =
             manager
                 .protectionPolicies()
-                .getWithResponse("hajqfuk", "eexpgeumi", "hwu", com.azure.core.util.Context.NONE)
+                .getWithResponse("skoynuiylpc", "aewse", "vesk", com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals("pcbbprtugav", response.location());
-        Assertions.assertEquals("cyksivmfo", response.tags().get("dr"));
-        Assertions.assertEquals(1629498323, response.properties().protectedItemsCount());
-        Assertions.assertEquals("yion", response.properties().resourceGuardOperationRequests().get(0));
-        Assertions.assertEquals("ninbdbzsxcwqqrs", response.etag());
+        Assertions.assertEquals("pypefcpczshnuq", response.location());
+        Assertions.assertEquals("izupfkhu", response.tags().get("tu"));
+        Assertions.assertEquals(2111335393, response.properties().protectedItemsCount());
+        Assertions.assertEquals("hrg", response.properties().resourceGuardOperationRequests().get(0));
+        Assertions.assertEquals("pzeqacdldtz", response.etag());
     }
 }

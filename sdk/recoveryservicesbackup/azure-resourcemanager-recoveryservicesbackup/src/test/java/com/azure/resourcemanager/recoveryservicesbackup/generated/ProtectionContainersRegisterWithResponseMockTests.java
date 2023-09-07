@@ -35,7 +35,7 @@ public final class ProtectionContainersRegisterWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"containerType\":\"ProtectionContainer\",\"friendlyName\":\"hueoijyzcqyp\",\"backupManagementType\":\"AzureWorkload\",\"registrationStatus\":\"fgsyfejyvdw\",\"healthStatus\":\"xptpqaya\",\"protectableObjectType\":\"ncfgybmxsnxoc\"},\"eTag\":\"llojkpoyhgwwdj\",\"location\":\"xdbdljzgdyrcvu\",\"tags\":{\"qogdx\":\"gzlrqhbj\",\"xxtjlflecomi\":\"bsfp\"},\"id\":\"xojjl\",\"name\":\"xxdhilzzdzzqjm\",\"type\":\"ezay\"}";
+            "{\"properties\":{\"containerType\":\"ProtectionContainer\",\"friendlyName\":\"kh\",\"backupManagementType\":\"AzureSql\",\"registrationStatus\":\"jy\",\"healthStatus\":\"qypzqzufgs\",\"protectableObjectType\":\"ej\"},\"eTag\":\"dwtfx\",\"location\":\"tpq\",\"tags\":{\"uullojkp\":\"mkncfgybmxsnxo\",\"j\":\"yhgww\"},\"id\":\"xdbdljzgdyrcvu\",\"name\":\"bsgzl\",\"type\":\"qhbjnqogdxwbsfpy\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -66,30 +66,31 @@ public final class ProtectionContainersRegisterWithResponseMockTests {
         ProtectionContainerResource response =
             manager
                 .protectionContainers()
-                .define("rsubklrxhjnl")
-                .withRegion("klozkxbz")
-                .withExistingBackupFabric("kerv", "choadhrsxqv", "vspabdsrgfajgl")
-                .withTags(mapOf("tttk", "jplssan"))
+                .define("choadhrsxqv")
+                .withRegion("wa")
+                .withExistingBackupFabric("wnbaf", "ctohzhaquvwsxbgn", "kerv")
+                .withTags(mapOf("w", "dxvqzxoe", "upwtz", "jxbibanb", "ozkxbzrpejplss", "pak"))
                 .withProperties(
                     new ProtectionContainer()
-                        .withFriendlyName("tjdvqydieqqkwa")
-                        .withBackupManagementType(BackupManagementType.DEFAULT_BACKUP)
-                        .withRegistrationStatus("xv")
-                        .withHealthStatus("xoebwg")
-                        .withProtectableObjectType("bibanbau"))
-                .withEtag("tzvp")
+                        .withFriendlyName("pabdsrg")
+                        .withBackupManagementType(BackupManagementType.INVALID)
+                        .withRegistrationStatus("lzrsub")
+                        .withHealthStatus("rxhjnltcet")
+                        .withProtectableObjectType("vqy"))
+                .withEtag("eqq")
                 .create();
 
-        Assertions.assertEquals("xdbdljzgdyrcvu", response.location());
-        Assertions.assertEquals("gzlrqhbj", response.tags().get("qogdx"));
-        Assertions.assertEquals("hueoijyzcqyp", response.properties().friendlyName());
-        Assertions.assertEquals(BackupManagementType.AZURE_WORKLOAD, response.properties().backupManagementType());
-        Assertions.assertEquals("fgsyfejyvdw", response.properties().registrationStatus());
-        Assertions.assertEquals("xptpqaya", response.properties().healthStatus());
-        Assertions.assertEquals("ncfgybmxsnxoc", response.properties().protectableObjectType());
-        Assertions.assertEquals("llojkpoyhgwwdj", response.etag());
+        Assertions.assertEquals("tpq", response.location());
+        Assertions.assertEquals("mkncfgybmxsnxo", response.tags().get("uullojkp"));
+        Assertions.assertEquals("kh", response.properties().friendlyName());
+        Assertions.assertEquals(BackupManagementType.AZURE_SQL, response.properties().backupManagementType());
+        Assertions.assertEquals("jy", response.properties().registrationStatus());
+        Assertions.assertEquals("qypzqzufgs", response.properties().healthStatus());
+        Assertions.assertEquals("ej", response.properties().protectableObjectType());
+        Assertions.assertEquals("dwtfx", response.etag());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

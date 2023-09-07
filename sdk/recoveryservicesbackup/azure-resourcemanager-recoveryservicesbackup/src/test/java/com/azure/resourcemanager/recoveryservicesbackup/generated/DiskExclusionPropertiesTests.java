@@ -14,20 +14,18 @@ public final class DiskExclusionPropertiesTests {
     public void testDeserialize() throws Exception {
         DiskExclusionProperties model =
             BinaryData
-                .fromString("{\"diskLunList\":[1782711093,389915828],\"isInclusionList\":true}")
+                .fromString("{\"diskLunList\":[724220741],\"isInclusionList\":false}")
                 .toObject(DiskExclusionProperties.class);
-        Assertions.assertEquals(1782711093, model.diskLunList().get(0));
-        Assertions.assertEquals(true, model.isInclusionList());
+        Assertions.assertEquals(724220741, model.diskLunList().get(0));
+        Assertions.assertEquals(false, model.isInclusionList());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DiskExclusionProperties model =
-            new DiskExclusionProperties()
-                .withDiskLunList(Arrays.asList(1782711093, 389915828))
-                .withIsInclusionList(true);
+            new DiskExclusionProperties().withDiskLunList(Arrays.asList(724220741)).withIsInclusionList(false);
         model = BinaryData.fromObject(model).toObject(DiskExclusionProperties.class);
-        Assertions.assertEquals(1782711093, model.diskLunList().get(0));
-        Assertions.assertEquals(true, model.isInclusionList());
+        Assertions.assertEquals(724220741, model.diskLunList().get(0));
+        Assertions.assertEquals(false, model.isInclusionList());
     }
 }

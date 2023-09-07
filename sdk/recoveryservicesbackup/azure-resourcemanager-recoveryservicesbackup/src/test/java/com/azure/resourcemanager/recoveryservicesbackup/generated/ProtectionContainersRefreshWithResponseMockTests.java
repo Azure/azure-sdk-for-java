@@ -59,6 +59,6 @@ public final class ProtectionContainersRefreshWithResponseMockTests {
         manager
             .protectionContainers()
             .refreshWithResponse(
-                "npd", "zigjsugswhgsaodk", "wnbaf", "ctohzhaquvwsxbgn", com.azure.core.util.Context.NONE);
+                "zipbwxgoooxzp", "admskx", "npd", "zigjsugswhgsaodk", com.azure.core.util.Context.NONE);
     }
 }

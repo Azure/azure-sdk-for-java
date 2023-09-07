@@ -1,14 +1,202 @@
 # Release History
 
-## 1.2.0-beta.1 (Unreleased)
+## 1.2.0 (2023-09-07)
 
-### Features Added
+- Azure Resource Manager RecoveryServicesBackup client library for Java. This package contains Microsoft Azure SDK for RecoveryServicesBackup Management SDK. Open API 2.0 Specs for Azure RecoveryServices Backup service. Package tag package-2023-04. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Breaking Changes
 
-### Bugs Fixed
+* `models.AzureVmWorkloadSapHanaHsr` was removed
 
-### Other Changes
+#### `models.AzureIaaSComputeVMProtectedItem` was modified
+
+* `withSoftDeleteRetentionPeriod(java.lang.Integer)` was removed
+
+#### `models.MabFileFolderProtectedItem` was modified
+
+* `withSoftDeleteRetentionPeriod(java.lang.Integer)` was removed
+
+#### `models.AzureVmWorkloadSapHanaDatabaseProtectedItem` was modified
+
+* `withSoftDeleteRetentionPeriod(java.lang.Integer)` was removed
+
+#### `models.AzureVmWorkloadSapAseDatabaseProtectedItem` was modified
+
+* `withSoftDeleteRetentionPeriod(java.lang.Integer)` was removed
+
+#### `models.AzureIaaSvmProtectedItem` was modified
+
+* `withSoftDeleteRetentionPeriod(java.lang.Integer)` was removed
+
+#### `models.AzureVmWorkloadSqlDatabaseProtectedItem` was modified
+
+* `withSoftDeleteRetentionPeriod(java.lang.Integer)` was removed
+
+#### `models.AzureVmWorkloadProtectedItem` was modified
+
+* `withSoftDeleteRetentionPeriod(java.lang.Integer)` was removed
+
+#### `models.ProtectedItem` was modified
+
+* `softDeleteRetentionPeriod()` was removed
+* `withSoftDeleteRetentionPeriod(java.lang.Integer)` was removed
+
+#### `models.AzureVmWorkloadSapHanaDBInstanceProtectedItem` was modified
+
+* `withSoftDeleteRetentionPeriod(java.lang.Integer)` was removed
+
+#### `models.PrivateLinkServiceConnectionState` was modified
+
+* `actionRequired()` was removed
+* `withActionRequired(java.lang.String)` was removed
+
+#### `models.AzureIaaSClassicComputeVMProtectedItem` was modified
+
+* `withSoftDeleteRetentionPeriod(java.lang.Integer)` was removed
+
+#### `models.GenericProtectedItem` was modified
+
+* `withSoftDeleteRetentionPeriod(java.lang.Integer)` was removed
+
+#### `models.AzureFileshareProtectedItem` was modified
+
+* `withSoftDeleteRetentionPeriod(java.lang.Integer)` was removed
+
+#### `models.AzureSqlProtectedItem` was modified
+
+* `withSoftDeleteRetentionPeriod(java.lang.Integer)` was removed
+
+#### `models.DpmProtectedItem` was modified
+
+* `withSoftDeleteRetentionPeriod(java.lang.Integer)` was removed
+
+### Features Added
+
+* `models.AzureVmWorkloadSapHanaHsrProtectableItem` was added
+
+* `models.VaultSubResourceType` was added
+
+#### `models.AzureIaaSComputeVMProtectedItem` was modified
+
+* `withSoftDeleteRetentionPeriodInDays(java.lang.Integer)` was added
+
+#### `models.MabFileFolderProtectedItem` was modified
+
+* `withSoftDeleteRetentionPeriodInDays(java.lang.Integer)` was added
+
+#### `models.AzureVmWorkloadSapHanaDBInstance` was modified
+
+* `withIsProtectable(java.lang.Boolean)` was added
+
+#### `models.AzureVmWorkloadSapHanaDatabaseProtectedItem` was modified
+
+* `withNodesList(java.util.List)` was added
+* `withSoftDeleteRetentionPeriodInDays(java.lang.Integer)` was added
+
+#### `models.AzureVmWorkloadSqlInstanceProtectableItem` was modified
+
+* `withIsProtectable(java.lang.Boolean)` was added
+
+#### `models.AzureVmWorkloadSqlAvailabilityGroupProtectableItem` was modified
+
+* `nodesList()` was added
+* `withNodesList(java.util.List)` was added
+* `withIsProtectable(java.lang.Boolean)` was added
+
+#### `models.AzureVmWorkloadSapAseDatabaseProtectedItem` was modified
+
+* `withNodesList(java.util.List)` was added
+* `withSoftDeleteRetentionPeriodInDays(java.lang.Integer)` was added
+
+#### `models.BackupResourceVaultConfig` was modified
+
+* `withSoftDeleteRetentionPeriodInDays(java.lang.Integer)` was added
+* `softDeleteRetentionPeriodInDays()` was added
+
+#### `models.AzureIaaSvmProtectedItem` was modified
+
+* `withSoftDeleteRetentionPeriodInDays(java.lang.Integer)` was added
+
+#### `models.InquiryValidation` was modified
+
+* `protectableItemCount()` was added
+
+#### `models.AzureVmWorkloadSqlDatabaseProtectedItem` was modified
+
+* `withSoftDeleteRetentionPeriodInDays(java.lang.Integer)` was added
+* `withNodesList(java.util.List)` was added
+
+#### `models.AzureVmWorkloadProtectedItem` was modified
+
+* `withSoftDeleteRetentionPeriodInDays(java.lang.Integer)` was added
+* `nodesList()` was added
+* `withNodesList(java.util.List)` was added
+
+#### `models.ProtectedItem` was modified
+
+* `withSoftDeleteRetentionPeriodInDays(java.lang.Integer)` was added
+* `softDeleteRetentionPeriodInDays()` was added
+
+#### `models.AzureVmWorkloadSapHanaSystemProtectableItem` was modified
+
+* `withIsProtectable(java.lang.Boolean)` was added
+
+#### `models.AzureVmWorkloadProtectableItem` was modified
+
+* `isProtectable()` was added
+* `withIsProtectable(java.lang.Boolean)` was added
+
+#### `models.AzureVmWorkloadSapHanaDBInstanceProtectedItem` was modified
+
+* `withSoftDeleteRetentionPeriodInDays(java.lang.Integer)` was added
+* `withNodesList(java.util.List)` was added
+
+#### `models.PrivateLinkServiceConnectionState` was modified
+
+* `withActionsRequired(java.lang.String)` was added
+* `actionsRequired()` was added
+
+#### `models.AzureIaaSClassicComputeVMProtectedItem` was modified
+
+* `withSoftDeleteRetentionPeriodInDays(java.lang.Integer)` was added
+
+#### `models.GenericProtectedItem` was modified
+
+* `withSoftDeleteRetentionPeriodInDays(java.lang.Integer)` was added
+
+#### `models.PrivateEndpointConnection` was modified
+
+* `withGroupIds(java.util.List)` was added
+* `groupIds()` was added
+
+#### `models.AzureVmWorkloadSqlDatabaseProtectableItem` was modified
+
+* `withIsProtectable(java.lang.Boolean)` was added
+
+#### `models.AzureVmWorkloadSapAseSystemProtectableItem` was modified
+
+* `withIsProtectable(java.lang.Boolean)` was added
+
+#### `models.AzureFileshareProtectedItem` was modified
+
+* `withSoftDeleteRetentionPeriodInDays(java.lang.Integer)` was added
+
+#### `models.DistributedNodesInfo` was modified
+
+* `withSourceResourceId(java.lang.String)` was added
+* `sourceResourceId()` was added
+
+#### `models.AzureSqlProtectedItem` was modified
+
+* `withSoftDeleteRetentionPeriodInDays(java.lang.Integer)` was added
+
+#### `models.DpmProtectedItem` was modified
+
+* `withSoftDeleteRetentionPeriodInDays(java.lang.Integer)` was added
+
+#### `models.AzureVmWorkloadSapHanaDatabaseProtectableItem` was modified
+
+* `withIsProtectable(java.lang.Boolean)` was added
 
 ## 1.1.0 (2023-03-16)
 

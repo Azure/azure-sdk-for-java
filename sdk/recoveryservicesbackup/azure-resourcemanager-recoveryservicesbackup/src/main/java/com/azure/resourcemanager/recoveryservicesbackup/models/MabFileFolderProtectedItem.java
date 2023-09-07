@@ -302,8 +302,8 @@ public final class MabFileFolderProtectedItem extends ProtectedItem {
 
     /** {@inheritDoc} */
     @Override
-    public MabFileFolderProtectedItem withSoftDeleteRetentionPeriod(Integer softDeleteRetentionPeriod) {
-        super.withSoftDeleteRetentionPeriod(softDeleteRetentionPeriod);
+    public MabFileFolderProtectedItem withSoftDeleteRetentionPeriodInDays(Integer softDeleteRetentionPeriodInDays) {
+        super.withSoftDeleteRetentionPeriodInDays(softDeleteRetentionPeriodInDays);
         return this;
     }
 

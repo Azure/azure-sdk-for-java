@@ -8,95 +8,102 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Azure VM workload-specific protectable item representing SAP HANA Dbinstance. */
+/** Azure VM workload-specific protectable item representing HANA HSR. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "protectableItemType")
-@JsonTypeName("SAPHanaHSR")
+@JsonTypeName("HanaHSRContainer")
 @Fluent
-public final class AzureVmWorkloadSapHanaHsr extends AzureVmWorkloadProtectableItem {
-    /** Creates an instance of AzureVmWorkloadSapHanaHsr class. */
-    public AzureVmWorkloadSapHanaHsr() {
+public final class AzureVmWorkloadSapHanaHsrProtectableItem extends AzureVmWorkloadProtectableItem {
+    /** Creates an instance of AzureVmWorkloadSapHanaHsrProtectableItem class. */
+    public AzureVmWorkloadSapHanaHsrProtectableItem() {
     }
 
     /** {@inheritDoc} */
     @Override
-    public AzureVmWorkloadSapHanaHsr withParentName(String parentName) {
+    public AzureVmWorkloadSapHanaHsrProtectableItem withParentName(String parentName) {
         super.withParentName(parentName);
         return this;
     }
 
     /** {@inheritDoc} */
     @Override
-    public AzureVmWorkloadSapHanaHsr withParentUniqueName(String parentUniqueName) {
+    public AzureVmWorkloadSapHanaHsrProtectableItem withParentUniqueName(String parentUniqueName) {
         super.withParentUniqueName(parentUniqueName);
         return this;
     }
 
     /** {@inheritDoc} */
     @Override
-    public AzureVmWorkloadSapHanaHsr withServerName(String serverName) {
+    public AzureVmWorkloadSapHanaHsrProtectableItem withServerName(String serverName) {
         super.withServerName(serverName);
         return this;
     }
 
     /** {@inheritDoc} */
     @Override
-    public AzureVmWorkloadSapHanaHsr withIsAutoProtectable(Boolean isAutoProtectable) {
+    public AzureVmWorkloadSapHanaHsrProtectableItem withIsAutoProtectable(Boolean isAutoProtectable) {
         super.withIsAutoProtectable(isAutoProtectable);
         return this;
     }
 
     /** {@inheritDoc} */
     @Override
-    public AzureVmWorkloadSapHanaHsr withIsAutoProtected(Boolean isAutoProtected) {
+    public AzureVmWorkloadSapHanaHsrProtectableItem withIsAutoProtected(Boolean isAutoProtected) {
         super.withIsAutoProtected(isAutoProtected);
         return this;
     }
 
     /** {@inheritDoc} */
     @Override
-    public AzureVmWorkloadSapHanaHsr withSubinquireditemcount(Integer subinquireditemcount) {
+    public AzureVmWorkloadSapHanaHsrProtectableItem withSubinquireditemcount(Integer subinquireditemcount) {
         super.withSubinquireditemcount(subinquireditemcount);
         return this;
     }
 
     /** {@inheritDoc} */
     @Override
-    public AzureVmWorkloadSapHanaHsr withSubprotectableitemcount(Integer subprotectableitemcount) {
+    public AzureVmWorkloadSapHanaHsrProtectableItem withSubprotectableitemcount(Integer subprotectableitemcount) {
         super.withSubprotectableitemcount(subprotectableitemcount);
         return this;
     }
 
     /** {@inheritDoc} */
     @Override
-    public AzureVmWorkloadSapHanaHsr withPrebackupvalidation(PreBackupValidation prebackupvalidation) {
+    public AzureVmWorkloadSapHanaHsrProtectableItem withPrebackupvalidation(PreBackupValidation prebackupvalidation) {
         super.withPrebackupvalidation(prebackupvalidation);
         return this;
     }
 
     /** {@inheritDoc} */
     @Override
-    public AzureVmWorkloadSapHanaHsr withBackupManagementType(String backupManagementType) {
+    public AzureVmWorkloadSapHanaHsrProtectableItem withIsProtectable(Boolean isProtectable) {
+        super.withIsProtectable(isProtectable);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureVmWorkloadSapHanaHsrProtectableItem withBackupManagementType(String backupManagementType) {
         super.withBackupManagementType(backupManagementType);
         return this;
     }
 
     /** {@inheritDoc} */
     @Override
-    public AzureVmWorkloadSapHanaHsr withWorkloadType(String workloadType) {
+    public AzureVmWorkloadSapHanaHsrProtectableItem withWorkloadType(String workloadType) {
         super.withWorkloadType(workloadType);
         return this;
     }
 
     /** {@inheritDoc} */
     @Override
-    public AzureVmWorkloadSapHanaHsr withFriendlyName(String friendlyName) {
+    public AzureVmWorkloadSapHanaHsrProtectableItem withFriendlyName(String friendlyName) {
         super.withFriendlyName(friendlyName);
         return this;
     }
 
     /** {@inheritDoc} */
     @Override
-    public AzureVmWorkloadSapHanaHsr withProtectionState(ProtectionStatus protectionState) {
+    public AzureVmWorkloadSapHanaHsrProtectableItem withProtectionState(ProtectionStatus protectionState) {
         super.withProtectionState(protectionState);
         return this;
     }

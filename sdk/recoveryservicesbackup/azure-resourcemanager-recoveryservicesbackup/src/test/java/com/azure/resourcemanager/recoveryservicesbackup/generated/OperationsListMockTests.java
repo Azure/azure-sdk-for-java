@@ -32,7 +32,7 @@ public final class OperationsListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"name\":\"fytoi\",\"display\":{\"provider\":\"ygvfltgvdihoyn\",\"resource\":\"xwetwkdrcyrucpc\",\"operation\":\"nuzdqumo\",\"description\":\"odnaienhqhskndn\"},\"origin\":\"qkaadlknw\",\"properties\":{\"serviceSpecification\":{\"logSpecifications\":[]}}}]}";
+            "{\"value\":[{\"name\":\"btxjeaoqaqbzg\",\"display\":{\"provider\":\"w\",\"resource\":\"uatbwbqamteuliy\",\"operation\":\"pkcvmwf\",\"description\":\"xxe\"},\"origin\":\"ywbo\",\"properties\":{\"serviceSpecification\":{\"logSpecifications\":[{\"name\":\"ciijqpkzfbojxj\",\"displayName\":\"smyqwixvcpwnkwyw\",\"blobDuration\":\"ofalickduoiqtam\"},{\"name\":\"vsknxrwzawnv\",\"displayName\":\"cfhzagxnvhycv\",\"blobDuration\":\"mwrzregzgyufutrw\"}]}}}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -63,11 +63,37 @@ public final class OperationsListMockTests {
         PagedIterable<ClientDiscoveryValueForSingleApi> response =
             manager.operations().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("fytoi", response.iterator().next().name());
-        Assertions.assertEquals("ygvfltgvdihoyn", response.iterator().next().display().provider());
-        Assertions.assertEquals("xwetwkdrcyrucpc", response.iterator().next().display().resource());
-        Assertions.assertEquals("nuzdqumo", response.iterator().next().display().operation());
-        Assertions.assertEquals("odnaienhqhskndn", response.iterator().next().display().description());
-        Assertions.assertEquals("qkaadlknw", response.iterator().next().origin());
+        Assertions.assertEquals("btxjeaoqaqbzg", response.iterator().next().name());
+        Assertions.assertEquals("w", response.iterator().next().display().provider());
+        Assertions.assertEquals("uatbwbqamteuliy", response.iterator().next().display().resource());
+        Assertions.assertEquals("pkcvmwf", response.iterator().next().display().operation());
+        Assertions.assertEquals("xxe", response.iterator().next().display().description());
+        Assertions.assertEquals("ywbo", response.iterator().next().origin());
+        Assertions
+            .assertEquals(
+                "ciijqpkzfbojxj",
+                response.iterator().next().properties().serviceSpecification().logSpecifications().get(0).name());
+        Assertions
+            .assertEquals(
+                "smyqwixvcpwnkwyw",
+                response
+                    .iterator()
+                    .next()
+                    .properties()
+                    .serviceSpecification()
+                    .logSpecifications()
+                    .get(0)
+                    .displayName());
+        Assertions
+            .assertEquals(
+                "ofalickduoiqtam",
+                response
+                    .iterator()
+                    .next()
+                    .properties()
+                    .serviceSpecification()
+                    .logSpecifications()
+                    .get(0)
+                    .blobDuration());
     }
 }

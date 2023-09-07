@@ -15,11 +15,11 @@ public final class WorkloadProtectableItemTests {
         WorkloadProtectableItem model =
             BinaryData
                 .fromString(
-                    "{\"protectableItemType\":\"WorkloadProtectableItem\",\"backupManagementType\":\"hhahhxvrhmzkwpjg\",\"workloadType\":\"spughftqsxhq\",\"friendlyName\":\"j\",\"protectionState\":\"Protecting\"}")
+                    "{\"protectableItemType\":\"WorkloadProtectableItem\",\"backupManagementType\":\"hgbijt\",\"workloadType\":\"vfxzsjab\",\"friendlyName\":\"systawfsdjp\",\"protectionState\":\"Protecting\"}")
                 .toObject(WorkloadProtectableItem.class);
-        Assertions.assertEquals("hhahhxvrhmzkwpjg", model.backupManagementType());
-        Assertions.assertEquals("spughftqsxhq", model.workloadType());
-        Assertions.assertEquals("j", model.friendlyName());
+        Assertions.assertEquals("hgbijt", model.backupManagementType());
+        Assertions.assertEquals("vfxzsjab", model.workloadType());
+        Assertions.assertEquals("systawfsdjp", model.friendlyName());
         Assertions.assertEquals(ProtectionStatus.PROTECTING, model.protectionState());
     }
 
@@ -27,14 +27,14 @@ public final class WorkloadProtectableItemTests {
     public void testSerialize() throws Exception {
         WorkloadProtectableItem model =
             new WorkloadProtectableItem()
-                .withBackupManagementType("hhahhxvrhmzkwpjg")
-                .withWorkloadType("spughftqsxhq")
-                .withFriendlyName("j")
+                .withBackupManagementType("hgbijt")
+                .withWorkloadType("vfxzsjab")
+                .withFriendlyName("systawfsdjp")
                 .withProtectionState(ProtectionStatus.PROTECTING);
         model = BinaryData.fromObject(model).toObject(WorkloadProtectableItem.class);
-        Assertions.assertEquals("hhahhxvrhmzkwpjg", model.backupManagementType());
-        Assertions.assertEquals("spughftqsxhq", model.workloadType());
-        Assertions.assertEquals("j", model.friendlyName());
+        Assertions.assertEquals("hgbijt", model.backupManagementType());
+        Assertions.assertEquals("vfxzsjab", model.workloadType());
+        Assertions.assertEquals("systawfsdjp", model.friendlyName());
         Assertions.assertEquals(ProtectionStatus.PROTECTING, model.protectionState());
     }
 }

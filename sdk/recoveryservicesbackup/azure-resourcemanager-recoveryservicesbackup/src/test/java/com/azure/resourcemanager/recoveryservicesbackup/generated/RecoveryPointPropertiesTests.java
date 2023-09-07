@@ -13,20 +13,20 @@ public final class RecoveryPointPropertiesTests {
     public void testDeserialize() throws Exception {
         RecoveryPointProperties model =
             BinaryData
-                .fromString("{\"expiryTime\":\"huwrykqgaifm\",\"ruleName\":\"klbydv\",\"isSoftDeleted\":true}")
+                .fromString("{\"expiryTime\":\"rydxtqm\",\"ruleName\":\"ox\",\"isSoftDeleted\":true}")
                 .toObject(RecoveryPointProperties.class);
-        Assertions.assertEquals("huwrykqgaifm", model.expiryTime());
-        Assertions.assertEquals("klbydv", model.ruleName());
+        Assertions.assertEquals("rydxtqm", model.expiryTime());
+        Assertions.assertEquals("ox", model.ruleName());
         Assertions.assertEquals(true, model.isSoftDeleted());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         RecoveryPointProperties model =
-            new RecoveryPointProperties().withExpiryTime("huwrykqgaifm").withRuleName("klbydv").withIsSoftDeleted(true);
+            new RecoveryPointProperties().withExpiryTime("rydxtqm").withRuleName("ox").withIsSoftDeleted(true);
         model = BinaryData.fromObject(model).toObject(RecoveryPointProperties.class);
-        Assertions.assertEquals("huwrykqgaifm", model.expiryTime());
-        Assertions.assertEquals("klbydv", model.ruleName());
+        Assertions.assertEquals("rydxtqm", model.expiryTime());
+        Assertions.assertEquals("ox", model.ruleName());
         Assertions.assertEquals(true, model.isSoftDeleted());
     }
 }

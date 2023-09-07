@@ -62,14 +62,14 @@ public final class ResourceProvidersBmsTriggerDataMoveMockTests {
         manager
             .resourceProviders()
             .bmsTriggerDataMove(
-                "keciqchxrtuicd",
-                "iw",
+                "lboncqbazqicqc",
+                "ygtvxbyjanepub",
                 new TriggerDataMoveRequest()
-                    .withSourceResourceId("fmmp")
-                    .withSourceRegion("hzzwvywrgyngy")
-                    .withDataMoveLevel(DataMoveLevel.CONTAINER)
-                    .withCorrelationId("rpxncaki")
-                    .withSourceContainerArmIds(Arrays.asList("ndjrkclamggl", "lmf", "jdoq"))
+                    .withSourceResourceId("pkxyqvgxi")
+                    .withSourceRegion("od")
+                    .withDataMoveLevel(DataMoveLevel.INVALID)
+                    .withCorrelationId("vohkxdxuws")
+                    .withSourceContainerArmIds(Arrays.asList("m", "wnosbzlehgcvkbck"))
                     .withPauseGC(false),
                 com.azure.core.util.Context.NONE);
     }

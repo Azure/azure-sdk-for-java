@@ -14,26 +14,26 @@ public final class ContainerIdentityInfoTests {
         ContainerIdentityInfo model =
             BinaryData
                 .fromString(
-                    "{\"uniqueName\":\"yvpkpatlbijpzgsk\",\"aadTenantId\":\"fhfv\",\"servicePrincipalClientId\":\"mknbnxwcdommpv\",\"audience\":\"awz\"}")
+                    "{\"uniqueName\":\"atzuuv\",\"aadTenantId\":\"ngrebwg\",\"servicePrincipalClientId\":\"httzlswvajqfutlx\",\"audience\":\"qzasunwqrjzfrgqh\"}")
                 .toObject(ContainerIdentityInfo.class);
-        Assertions.assertEquals("yvpkpatlbijpzgsk", model.uniqueName());
-        Assertions.assertEquals("fhfv", model.aadTenantId());
-        Assertions.assertEquals("mknbnxwcdommpv", model.servicePrincipalClientId());
-        Assertions.assertEquals("awz", model.audience());
+        Assertions.assertEquals("atzuuv", model.uniqueName());
+        Assertions.assertEquals("ngrebwg", model.aadTenantId());
+        Assertions.assertEquals("httzlswvajqfutlx", model.servicePrincipalClientId());
+        Assertions.assertEquals("qzasunwqrjzfrgqh", model.audience());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ContainerIdentityInfo model =
             new ContainerIdentityInfo()
-                .withUniqueName("yvpkpatlbijpzgsk")
-                .withAadTenantId("fhfv")
-                .withServicePrincipalClientId("mknbnxwcdommpv")
-                .withAudience("awz");
+                .withUniqueName("atzuuv")
+                .withAadTenantId("ngrebwg")
+                .withServicePrincipalClientId("httzlswvajqfutlx")
+                .withAudience("qzasunwqrjzfrgqh");
         model = BinaryData.fromObject(model).toObject(ContainerIdentityInfo.class);
-        Assertions.assertEquals("yvpkpatlbijpzgsk", model.uniqueName());
-        Assertions.assertEquals("fhfv", model.aadTenantId());
-        Assertions.assertEquals("mknbnxwcdommpv", model.servicePrincipalClientId());
-        Assertions.assertEquals("awz", model.audience());
+        Assertions.assertEquals("atzuuv", model.uniqueName());
+        Assertions.assertEquals("ngrebwg", model.aadTenantId());
+        Assertions.assertEquals("httzlswvajqfutlx", model.servicePrincipalClientId());
+        Assertions.assertEquals("qzasunwqrjzfrgqh", model.audience());
     }
 }

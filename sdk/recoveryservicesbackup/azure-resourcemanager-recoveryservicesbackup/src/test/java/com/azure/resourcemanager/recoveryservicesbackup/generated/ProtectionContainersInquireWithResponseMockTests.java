@@ -58,6 +58,7 @@ public final class ProtectionContainersInquireWithResponseMockTests {
 
         manager
             .protectionContainers()
-            .inquireWithResponse("iedfsbwcei", "bv", "ipbwxgooo", "zp", "admskx", com.azure.core.util.Context.NONE);
+            .inquireWithResponse(
+                "hzdue", "ihapfjiiknjdiq", "liejhpc", "bi", "dfsbwceivb", com.azure.core.util.Context.NONE);
     }
 }

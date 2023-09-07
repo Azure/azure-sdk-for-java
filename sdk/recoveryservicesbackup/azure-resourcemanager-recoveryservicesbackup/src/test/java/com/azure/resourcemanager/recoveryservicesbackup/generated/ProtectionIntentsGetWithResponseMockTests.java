@@ -33,7 +33,7 @@ public final class ProtectionIntentsGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"protectionIntentItemType\":\"ProtectionIntent\",\"backupManagementType\":\"MAB\",\"sourceResourceId\":\"lkvec\",\"itemId\":\"jcngoadyed\",\"policyId\":\"rgjfoknubnoi\",\"protectionState\":\"ProtectionFailed\"},\"eTag\":\"ztrgdgxvcoq\",\"location\":\"aswugyxpqitw\",\"tags\":{\"vskbuhzacaq\":\"l\",\"dsxzakuejkmvb\":\"yltcoqcuj\"},\"id\":\"ztjofqcvovjufyc\",\"name\":\"jmlbemyejiriux\",\"type\":\"gthortudaw\"}";
+            "{\"properties\":{\"protectionIntentItemType\":\"ProtectionIntent\",\"backupManagementType\":\"AzureBackupServer\",\"sourceResourceId\":\"rhvhfnracwnpqigt\",\"itemId\":\"jwouhda\",\"policyId\":\"igrb\",\"protectionState\":\"Protected\"},\"eTag\":\"jybvit\",\"location\":\"qkj\",\"tags\":{\"tggmuwdchozfnkfe\":\"nu\",\"noakiz\":\"lv\",\"yxl\":\"oaiknaqlnuwig\",\"xzcwxhmpejt\":\"kwph\"},\"id\":\"ke\",\"name\":\"aonwivkcqhrxh\",\"type\":\"knlccrmmkyup\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -64,17 +64,16 @@ public final class ProtectionIntentsGetWithResponseMockTests {
         ProtectionIntentResource response =
             manager
                 .protectionIntents()
-                .getWithResponse(
-                    "agk", "yxvrqtvbczsul", "dgglmepjpfs", "ykgsangpszng", com.azure.core.util.Context.NONE)
+                .getWithResponse("selpkpbaf", "afhlbyl", "cbevxrhyzdfw", "sofpltd", com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals("aswugyxpqitw", response.location());
-        Assertions.assertEquals("l", response.tags().get("vskbuhzacaq"));
-        Assertions.assertEquals(BackupManagementType.MAB, response.properties().backupManagementType());
-        Assertions.assertEquals("lkvec", response.properties().sourceResourceId());
-        Assertions.assertEquals("jcngoadyed", response.properties().itemId());
-        Assertions.assertEquals("rgjfoknubnoi", response.properties().policyId());
-        Assertions.assertEquals(ProtectionStatus.PROTECTION_FAILED, response.properties().protectionState());
-        Assertions.assertEquals("ztrgdgxvcoq", response.etag());
+        Assertions.assertEquals("qkj", response.location());
+        Assertions.assertEquals("nu", response.tags().get("tggmuwdchozfnkfe"));
+        Assertions.assertEquals(BackupManagementType.AZURE_BACKUP_SERVER, response.properties().backupManagementType());
+        Assertions.assertEquals("rhvhfnracwnpqigt", response.properties().sourceResourceId());
+        Assertions.assertEquals("jwouhda", response.properties().itemId());
+        Assertions.assertEquals("igrb", response.properties().policyId());
+        Assertions.assertEquals(ProtectionStatus.PROTECTED, response.properties().protectionState());
+        Assertions.assertEquals("jybvit", response.etag());
     }
 }

@@ -22,49 +22,54 @@ public final class BackupResourceVaultConfigResourceInnerTests {
         BackupResourceVaultConfigResourceInner model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"storageModelType\":\"LocallyRedundant\",\"storageType\":\"ZoneRedundant\",\"storageTypeState\":\"Locked\",\"enhancedSecurityState\":\"Invalid\",\"softDeleteFeatureState\":\"Enabled\",\"resourceGuardOperationRequests\":[\"csglum\",\"a\",\"tjaodxobnb\"],\"isSoftDeleteFeatureStateEditable\":false},\"eTag\":\"pxokajionp\",\"location\":\"mexgstxgcp\",\"tags\":{\"mcl\":\"maajrmvdjwzrlo\",\"jctbza\":\"hijco\"},\"id\":\"s\",\"name\":\"sycbkbfk\",\"type\":\"ukdkexxppofmxa\"}")
+                    "{\"properties\":{\"storageModelType\":\"Invalid\",\"storageType\":\"ReadAccessGeoZoneRedundant\",\"storageTypeState\":\"Invalid\",\"enhancedSecurityState\":\"Invalid\",\"softDeleteFeatureState\":\"AlwaysON\",\"softDeleteRetentionPeriodInDays\":1491222167,\"resourceGuardOperationRequests\":[\"zaqsqsycbkbfk\",\"ukdkexxppofmxa\",\"c\",\"jpgd\"],\"isSoftDeleteFeatureStateEditable\":true},\"eTag\":\"jjxhvpmo\",\"location\":\"exhd\",\"tags\":{\"jnxqbzvddntwn\":\"bqe\"},\"id\":\"eic\",\"name\":\"twnpzaoqvuhrhcf\",\"type\":\"cyddglmjthjqk\"}")
                 .toObject(BackupResourceVaultConfigResourceInner.class);
-        Assertions.assertEquals("mexgstxgcp", model.location());
-        Assertions.assertEquals("maajrmvdjwzrlo", model.tags().get("mcl"));
-        Assertions.assertEquals(StorageType.LOCALLY_REDUNDANT, model.properties().storageModelType());
-        Assertions.assertEquals(StorageType.ZONE_REDUNDANT, model.properties().storageType());
-        Assertions.assertEquals(StorageTypeState.LOCKED, model.properties().storageTypeState());
+        Assertions.assertEquals("exhd", model.location());
+        Assertions.assertEquals("bqe", model.tags().get("jnxqbzvddntwn"));
+        Assertions.assertEquals(StorageType.INVALID, model.properties().storageModelType());
+        Assertions.assertEquals(StorageType.READ_ACCESS_GEO_ZONE_REDUNDANT, model.properties().storageType());
+        Assertions.assertEquals(StorageTypeState.INVALID, model.properties().storageTypeState());
         Assertions.assertEquals(EnhancedSecurityState.INVALID, model.properties().enhancedSecurityState());
-        Assertions.assertEquals(SoftDeleteFeatureState.ENABLED, model.properties().softDeleteFeatureState());
-        Assertions.assertEquals("csglum", model.properties().resourceGuardOperationRequests().get(0));
-        Assertions.assertEquals(false, model.properties().isSoftDeleteFeatureStateEditable());
-        Assertions.assertEquals("pxokajionp", model.etag());
+        Assertions.assertEquals(SoftDeleteFeatureState.ALWAYS_ON, model.properties().softDeleteFeatureState());
+        Assertions.assertEquals(1491222167, model.properties().softDeleteRetentionPeriodInDays());
+        Assertions.assertEquals("zaqsqsycbkbfk", model.properties().resourceGuardOperationRequests().get(0));
+        Assertions.assertEquals(true, model.properties().isSoftDeleteFeatureStateEditable());
+        Assertions.assertEquals("jjxhvpmo", model.etag());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         BackupResourceVaultConfigResourceInner model =
             new BackupResourceVaultConfigResourceInner()
-                .withLocation("mexgstxgcp")
-                .withTags(mapOf("mcl", "maajrmvdjwzrlo", "jctbza", "hijco"))
+                .withLocation("exhd")
+                .withTags(mapOf("jnxqbzvddntwn", "bqe"))
                 .withProperties(
                     new BackupResourceVaultConfig()
-                        .withStorageModelType(StorageType.LOCALLY_REDUNDANT)
-                        .withStorageType(StorageType.ZONE_REDUNDANT)
-                        .withStorageTypeState(StorageTypeState.LOCKED)
+                        .withStorageModelType(StorageType.INVALID)
+                        .withStorageType(StorageType.READ_ACCESS_GEO_ZONE_REDUNDANT)
+                        .withStorageTypeState(StorageTypeState.INVALID)
                         .withEnhancedSecurityState(EnhancedSecurityState.INVALID)
-                        .withSoftDeleteFeatureState(SoftDeleteFeatureState.ENABLED)
-                        .withResourceGuardOperationRequests(Arrays.asList("csglum", "a", "tjaodxobnb"))
-                        .withIsSoftDeleteFeatureStateEditable(false))
-                .withEtag("pxokajionp");
+                        .withSoftDeleteFeatureState(SoftDeleteFeatureState.ALWAYS_ON)
+                        .withSoftDeleteRetentionPeriodInDays(1491222167)
+                        .withResourceGuardOperationRequests(
+                            Arrays.asList("zaqsqsycbkbfk", "ukdkexxppofmxa", "c", "jpgd"))
+                        .withIsSoftDeleteFeatureStateEditable(true))
+                .withEtag("jjxhvpmo");
         model = BinaryData.fromObject(model).toObject(BackupResourceVaultConfigResourceInner.class);
-        Assertions.assertEquals("mexgstxgcp", model.location());
-        Assertions.assertEquals("maajrmvdjwzrlo", model.tags().get("mcl"));
-        Assertions.assertEquals(StorageType.LOCALLY_REDUNDANT, model.properties().storageModelType());
-        Assertions.assertEquals(StorageType.ZONE_REDUNDANT, model.properties().storageType());
-        Assertions.assertEquals(StorageTypeState.LOCKED, model.properties().storageTypeState());
+        Assertions.assertEquals("exhd", model.location());
+        Assertions.assertEquals("bqe", model.tags().get("jnxqbzvddntwn"));
+        Assertions.assertEquals(StorageType.INVALID, model.properties().storageModelType());
+        Assertions.assertEquals(StorageType.READ_ACCESS_GEO_ZONE_REDUNDANT, model.properties().storageType());
+        Assertions.assertEquals(StorageTypeState.INVALID, model.properties().storageTypeState());
         Assertions.assertEquals(EnhancedSecurityState.INVALID, model.properties().enhancedSecurityState());
-        Assertions.assertEquals(SoftDeleteFeatureState.ENABLED, model.properties().softDeleteFeatureState());
-        Assertions.assertEquals("csglum", model.properties().resourceGuardOperationRequests().get(0));
-        Assertions.assertEquals(false, model.properties().isSoftDeleteFeatureStateEditable());
-        Assertions.assertEquals("pxokajionp", model.etag());
+        Assertions.assertEquals(SoftDeleteFeatureState.ALWAYS_ON, model.properties().softDeleteFeatureState());
+        Assertions.assertEquals(1491222167, model.properties().softDeleteRetentionPeriodInDays());
+        Assertions.assertEquals("zaqsqsycbkbfk", model.properties().resourceGuardOperationRequests().get(0));
+        Assertions.assertEquals(true, model.properties().isSoftDeleteFeatureStateEditable());
+        Assertions.assertEquals("jjxhvpmo", model.etag());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

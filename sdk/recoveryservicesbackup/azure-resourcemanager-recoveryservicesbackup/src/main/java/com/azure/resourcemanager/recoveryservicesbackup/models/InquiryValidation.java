@@ -28,6 +28,12 @@ public final class InquiryValidation {
     @JsonProperty(value = "additionalDetail", access = JsonProperty.Access.WRITE_ONLY)
     private String additionalDetail;
 
+    /*
+     * Dictionary to store the count of ProtectableItems with key POType.
+     */
+    @JsonProperty(value = "protectableItemCount", access = JsonProperty.Access.WRITE_ONLY)
+    private Object protectableItemCount;
+
     /** Creates an instance of InquiryValidation class. */
     public InquiryValidation() {
     }
@@ -79,6 +85,15 @@ public final class InquiryValidation {
      */
     public String additionalDetail() {
         return this.additionalDetail;
+    }
+
+    /**
+     * Get the protectableItemCount property: Dictionary to store the count of ProtectableItems with key POType.
+     *
+     * @return the protectableItemCount value.
+     */
+    public Object protectableItemCount() {
+        return this.protectableItemCount;
     }
 
     /**

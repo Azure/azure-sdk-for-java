@@ -16,23 +16,23 @@ public final class AzureWorkloadBackupRequestTests {
         AzureWorkloadBackupRequest model =
             BinaryData
                 .fromString(
-                    "{\"objectType\":\"AzureWorkloadBackupRequest\",\"backupType\":\"Incremental\",\"enableCompression\":false,\"recoveryPointExpiryTimeInUTC\":\"2021-05-21T17:48:07Z\"}")
+                    "{\"objectType\":\"AzureWorkloadBackupRequest\",\"backupType\":\"SnapshotFull\",\"enableCompression\":true,\"recoveryPointExpiryTimeInUTC\":\"2021-10-30T09:30:32Z\"}")
                 .toObject(AzureWorkloadBackupRequest.class);
-        Assertions.assertEquals(BackupType.INCREMENTAL, model.backupType());
-        Assertions.assertEquals(false, model.enableCompression());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-05-21T17:48:07Z"), model.recoveryPointExpiryTimeInUtc());
+        Assertions.assertEquals(BackupType.SNAPSHOT_FULL, model.backupType());
+        Assertions.assertEquals(true, model.enableCompression());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-10-30T09:30:32Z"), model.recoveryPointExpiryTimeInUtc());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AzureWorkloadBackupRequest model =
             new AzureWorkloadBackupRequest()
-                .withBackupType(BackupType.INCREMENTAL)
-                .withEnableCompression(false)
-                .withRecoveryPointExpiryTimeInUtc(OffsetDateTime.parse("2021-05-21T17:48:07Z"));
+                .withBackupType(BackupType.SNAPSHOT_FULL)
+                .withEnableCompression(true)
+                .withRecoveryPointExpiryTimeInUtc(OffsetDateTime.parse("2021-10-30T09:30:32Z"));
         model = BinaryData.fromObject(model).toObject(AzureWorkloadBackupRequest.class);
-        Assertions.assertEquals(BackupType.INCREMENTAL, model.backupType());
-        Assertions.assertEquals(false, model.enableCompression());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-05-21T17:48:07Z"), model.recoveryPointExpiryTimeInUtc());
+        Assertions.assertEquals(BackupType.SNAPSHOT_FULL, model.backupType());
+        Assertions.assertEquals(true, model.enableCompression());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-10-30T09:30:32Z"), model.recoveryPointExpiryTimeInUtc());
     }
 }

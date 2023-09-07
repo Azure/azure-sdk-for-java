@@ -16,13 +16,13 @@ public final class TriggerDataMoveRequestTests {
         TriggerDataMoveRequest model =
             BinaryData
                 .fromString(
-                    "{\"sourceResourceId\":\"lhbxxhejjzzvdud\",\"sourceRegion\":\"wdslfhotwmcy\",\"dataMoveLevel\":\"Vault\",\"correlationId\":\"wlbjnpgacftade\",\"sourceContainerArmIds\":[\"ltyfsop\",\"usue\",\"nzwdejba\",\"orxzdmohctbqvud\"],\"pauseGC\":false}")
+                    "{\"sourceResourceId\":\"amdecte\",\"sourceRegion\":\"f\",\"dataMoveLevel\":\"Container\",\"correlationId\":\"scjeypv\",\"sourceContainerArmIds\":[\"rkgqhcjrefo\",\"gm\",\"qsl\",\"yyvxyqjpkcattpn\"],\"pauseGC\":false}")
                 .toObject(TriggerDataMoveRequest.class);
-        Assertions.assertEquals("lhbxxhejjzzvdud", model.sourceResourceId());
-        Assertions.assertEquals("wdslfhotwmcy", model.sourceRegion());
-        Assertions.assertEquals(DataMoveLevel.VAULT, model.dataMoveLevel());
-        Assertions.assertEquals("wlbjnpgacftade", model.correlationId());
-        Assertions.assertEquals("ltyfsop", model.sourceContainerArmIds().get(0));
+        Assertions.assertEquals("amdecte", model.sourceResourceId());
+        Assertions.assertEquals("f", model.sourceRegion());
+        Assertions.assertEquals(DataMoveLevel.CONTAINER, model.dataMoveLevel());
+        Assertions.assertEquals("scjeypv", model.correlationId());
+        Assertions.assertEquals("rkgqhcjrefo", model.sourceContainerArmIds().get(0));
         Assertions.assertEquals(false, model.pauseGC());
     }
 
@@ -30,18 +30,18 @@ public final class TriggerDataMoveRequestTests {
     public void testSerialize() throws Exception {
         TriggerDataMoveRequest model =
             new TriggerDataMoveRequest()
-                .withSourceResourceId("lhbxxhejjzzvdud")
-                .withSourceRegion("wdslfhotwmcy")
-                .withDataMoveLevel(DataMoveLevel.VAULT)
-                .withCorrelationId("wlbjnpgacftade")
-                .withSourceContainerArmIds(Arrays.asList("ltyfsop", "usue", "nzwdejba", "orxzdmohctbqvud"))
+                .withSourceResourceId("amdecte")
+                .withSourceRegion("f")
+                .withDataMoveLevel(DataMoveLevel.CONTAINER)
+                .withCorrelationId("scjeypv")
+                .withSourceContainerArmIds(Arrays.asList("rkgqhcjrefo", "gm", "qsl", "yyvxyqjpkcattpn"))
                 .withPauseGC(false);
         model = BinaryData.fromObject(model).toObject(TriggerDataMoveRequest.class);
-        Assertions.assertEquals("lhbxxhejjzzvdud", model.sourceResourceId());
-        Assertions.assertEquals("wdslfhotwmcy", model.sourceRegion());
-        Assertions.assertEquals(DataMoveLevel.VAULT, model.dataMoveLevel());
-        Assertions.assertEquals("wlbjnpgacftade", model.correlationId());
-        Assertions.assertEquals("ltyfsop", model.sourceContainerArmIds().get(0));
+        Assertions.assertEquals("amdecte", model.sourceResourceId());
+        Assertions.assertEquals("f", model.sourceRegion());
+        Assertions.assertEquals(DataMoveLevel.CONTAINER, model.dataMoveLevel());
+        Assertions.assertEquals("scjeypv", model.correlationId());
+        Assertions.assertEquals("rkgqhcjrefo", model.sourceContainerArmIds().get(0));
         Assertions.assertEquals(false, model.pauseGC());
     }
 }

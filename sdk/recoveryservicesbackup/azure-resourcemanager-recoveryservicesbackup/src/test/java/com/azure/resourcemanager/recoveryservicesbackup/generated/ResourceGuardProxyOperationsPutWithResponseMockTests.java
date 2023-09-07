@@ -12,6 +12,7 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager;
+import com.azure.resourcemanager.recoveryservicesbackup.models.ResourceGuardOperationDetail;
 import com.azure.resourcemanager.recoveryservicesbackup.models.ResourceGuardProxyBase;
 import com.azure.resourcemanager.recoveryservicesbackup.models.ResourceGuardProxyBaseResource;
 import java.nio.ByteBuffer;
@@ -35,7 +36,7 @@ public final class ResourceGuardProxyOperationsPutWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"resourceGuardResourceId\":\"xrkbhammgmqfmef\",\"resourceGuardOperationDetails\":[],\"lastUpdatedTime\":\"pd\",\"description\":\"gquxweysland\"},\"eTag\":\"cdjhunhg\",\"location\":\"cgawnrrnquo\",\"tags\":{\"bfsx\":\"tireimse\",\"mxcjzlquzexokjx\":\"tcyilbvz\"},\"id\":\"bjvbzinzab\",\"name\":\"mvoglj\",\"type\":\"v\"}";
+            "{\"properties\":{\"resourceGuardResourceId\":\"gzseznuxkeua\",\"resourceGuardOperationDetails\":[{\"vaultCriticalOperation\":\"bmdlqjbed\",\"defaultResourceRequest\":\"ixlhupm\"},{\"vaultCriticalOperation\":\"ihzbdnpxpk\",\"defaultResourceRequest\":\"pre\"},{\"vaultCriticalOperation\":\"elyicghf\",\"defaultResourceRequest\":\"ufssjyghsfxr\"}],\"lastUpdatedTime\":\"hammgmqfmefgv\",\"description\":\"pd\"},\"eTag\":\"gquxweysland\",\"location\":\"dcdjhunh\",\"tags\":{\"sotirei\":\"gawnrrnquo\",\"sxstcyilbvzmm\":\"seob\",\"b\":\"cjzlquzexokjxebj\"},\"id\":\"inzabwmvoglj\",\"name\":\"v\",\"type\":\"pgidnw\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -66,27 +67,48 @@ public final class ResourceGuardProxyOperationsPutWithResponseMockTests {
         ResourceGuardProxyBaseResource response =
             manager
                 .resourceGuardProxyOperations()
-                .define("xb")
-                .withRegion("uxk")
-                .withExistingVault("gejkbvhh", "aurghooxa")
-                .withTags(mapOf("xlhupmomihzbdnp", "iraabmdlqjbedpf"))
+                .define("wrczfjjnnuxxrk")
+                .withRegion("wuyqaeo")
+                .withExistingVault("fqnh", "twd")
+                .withTags(mapOf("oxae", "hgejkbvhhdaurgh"))
                 .withProperties(
                     new ResourceGuardProxyBase()
-                        .withResourceGuardResourceId("jxjoezlq")
-                        .withResourceGuardOperationDetails(Arrays.asList())
-                        .withLastUpdatedTime("knkob")
-                        .withDescription("tmbozomtzamicbig"))
-                .withEtag("dgzsez")
+                        .withResourceGuardResourceId("mnulwe")
+                        .withResourceGuardOperationDetails(
+                            Arrays
+                                .asList(
+                                    new ResourceGuardOperationDetail()
+                                        .withVaultCriticalOperation("ifrhjulrsul")
+                                        .withDefaultResourceRequest("pflu"),
+                                    new ResourceGuardOperationDetail()
+                                        .withVaultCriticalOperation("awmhh")
+                                        .withDefaultResourceRequest("ot"),
+                                    new ResourceGuardOperationDetail()
+                                        .withVaultCriticalOperation("iyrgkoek")
+                                        .withDefaultResourceRequest("wxxyxhighctx"),
+                                    new ResourceGuardOperationDetail()
+                                        .withVaultCriticalOperation("molpcqyde")
+                                        .withDefaultResourceRequest("vskiczd")))
+                        .withLastUpdatedTime("jei")
+                        .withDescription("kgqaboo"))
+                .withEtag("bmsgycqsxrmdv")
                 .create();
 
-        Assertions.assertEquals("cgawnrrnquo", response.location());
-        Assertions.assertEquals("tireimse", response.tags().get("bfsx"));
-        Assertions.assertEquals("xrkbhammgmqfmef", response.properties().resourceGuardResourceId());
-        Assertions.assertEquals("pd", response.properties().lastUpdatedTime());
-        Assertions.assertEquals("gquxweysland", response.properties().description());
-        Assertions.assertEquals("cdjhunhg", response.etag());
+        Assertions.assertEquals("dcdjhunh", response.location());
+        Assertions.assertEquals("gawnrrnquo", response.tags().get("sotirei"));
+        Assertions.assertEquals("gzseznuxkeua", response.properties().resourceGuardResourceId());
+        Assertions
+            .assertEquals(
+                "bmdlqjbed", response.properties().resourceGuardOperationDetails().get(0).vaultCriticalOperation());
+        Assertions
+            .assertEquals(
+                "ixlhupm", response.properties().resourceGuardOperationDetails().get(0).defaultResourceRequest());
+        Assertions.assertEquals("hammgmqfmefgv", response.properties().lastUpdatedTime());
+        Assertions.assertEquals("pd", response.properties().description());
+        Assertions.assertEquals("gquxweysland", response.etag());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

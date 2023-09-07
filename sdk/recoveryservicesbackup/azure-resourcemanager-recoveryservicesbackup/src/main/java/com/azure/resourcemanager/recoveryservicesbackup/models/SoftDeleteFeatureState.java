@@ -19,6 +19,9 @@ public final class SoftDeleteFeatureState extends ExpandableStringEnum<SoftDelet
     /** Static value Disabled for SoftDeleteFeatureState. */
     public static final SoftDeleteFeatureState DISABLED = fromString("Disabled");
 
+    /** Static value AlwaysON for SoftDeleteFeatureState. */
+    public static final SoftDeleteFeatureState ALWAYS_ON = fromString("AlwaysON");
+
     /**
      * Creates a new instance of SoftDeleteFeatureState value.
      *

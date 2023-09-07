@@ -32,7 +32,7 @@ public final class ResourceGuardProxyOperationsUnlockDeleteWithResponseMockTests
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr = "{\"unlockDeleteExpiryTime\":\"xrmdvewuyqaeohpj\"}";
+        String responseStr = "{\"unlockDeleteExpiryTime\":\"ykyalugek\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -64,15 +64,15 @@ public final class ResourceGuardProxyOperationsUnlockDeleteWithResponseMockTests
             manager
                 .resourceGuardProxyOperations()
                 .unlockDeleteWithResponse(
-                    "yrgkoekv",
-                    "wxxyxhighctx",
-                    "xmolpcqydeyk",
+                    "kzfzqxjosho",
+                    "totryegpkhxrme",
+                    "znlw",
                     new UnlockDeleteRequest()
-                        .withResourceGuardOperationRequests(Arrays.asList("ic", "dfrjeizik"))
-                        .withResourceToBeDeleted("aboohxbmsgyc"),
+                        .withResourceGuardOperationRequests(Arrays.asList("okxkhupzer", "fgjblcd"))
+                        .withResourceToBeDeleted("yfcemftz"),
                     com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals("xrmdvewuyqaeohpj", response.unlockDeleteExpiryTime());
+        Assertions.assertEquals("ykyalugek", response.unlockDeleteExpiryTime());
     }
 }

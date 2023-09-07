@@ -18,43 +18,44 @@ public final class ProtectionContainerResourceInnerTests {
         ProtectionContainerResourceInner model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"containerType\":\"ProtectionContainer\",\"friendlyName\":\"qal\",\"backupManagementType\":\"MAB\",\"registrationStatus\":\"jijpxac\",\"healthStatus\":\"udfnbyxba\",\"protectableObjectType\":\"bjyvay\"},\"eTag\":\"imrzrtuzqog\",\"location\":\"exn\",\"tags\":{\"wmewzsyy\":\"dnw\"},\"id\":\"euzsoi\",\"name\":\"judpfrxt\",\"type\":\"thzvaytdwkqbrqu\"}")
+                    "{\"properties\":{\"containerType\":\"ProtectionContainer\",\"friendlyName\":\"d\",\"backupManagementType\":\"AzureSql\",\"registrationStatus\":\"y\",\"healthStatus\":\"ogjltdtbnnhad\",\"protectableObjectType\":\"crkvcikhnv\"},\"eTag\":\"mqg\",\"location\":\"qqu\",\"tags\":{\"uipiccjzk\":\"kywggxkallatmel\"},\"id\":\"ivgvvcna\",\"name\":\"rhyrnxxmueed\",\"type\":\"drd\"}")
                 .toObject(ProtectionContainerResourceInner.class);
-        Assertions.assertEquals("exn", model.location());
-        Assertions.assertEquals("dnw", model.tags().get("wmewzsyy"));
-        Assertions.assertEquals("qal", model.properties().friendlyName());
-        Assertions.assertEquals(BackupManagementType.MAB, model.properties().backupManagementType());
-        Assertions.assertEquals("jijpxac", model.properties().registrationStatus());
-        Assertions.assertEquals("udfnbyxba", model.properties().healthStatus());
-        Assertions.assertEquals("bjyvay", model.properties().protectableObjectType());
-        Assertions.assertEquals("imrzrtuzqog", model.etag());
+        Assertions.assertEquals("qqu", model.location());
+        Assertions.assertEquals("kywggxkallatmel", model.tags().get("uipiccjzk"));
+        Assertions.assertEquals("d", model.properties().friendlyName());
+        Assertions.assertEquals(BackupManagementType.AZURE_SQL, model.properties().backupManagementType());
+        Assertions.assertEquals("y", model.properties().registrationStatus());
+        Assertions.assertEquals("ogjltdtbnnhad", model.properties().healthStatus());
+        Assertions.assertEquals("crkvcikhnv", model.properties().protectableObjectType());
+        Assertions.assertEquals("mqg", model.etag());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ProtectionContainerResourceInner model =
             new ProtectionContainerResourceInner()
-                .withLocation("exn")
-                .withTags(mapOf("wmewzsyy", "dnw"))
+                .withLocation("qqu")
+                .withTags(mapOf("uipiccjzk", "kywggxkallatmel"))
                 .withProperties(
                     new ProtectionContainer()
-                        .withFriendlyName("qal")
-                        .withBackupManagementType(BackupManagementType.MAB)
-                        .withRegistrationStatus("jijpxac")
-                        .withHealthStatus("udfnbyxba")
-                        .withProtectableObjectType("bjyvay"))
-                .withEtag("imrzrtuzqog");
+                        .withFriendlyName("d")
+                        .withBackupManagementType(BackupManagementType.AZURE_SQL)
+                        .withRegistrationStatus("y")
+                        .withHealthStatus("ogjltdtbnnhad")
+                        .withProtectableObjectType("crkvcikhnv"))
+                .withEtag("mqg");
         model = BinaryData.fromObject(model).toObject(ProtectionContainerResourceInner.class);
-        Assertions.assertEquals("exn", model.location());
-        Assertions.assertEquals("dnw", model.tags().get("wmewzsyy"));
-        Assertions.assertEquals("qal", model.properties().friendlyName());
-        Assertions.assertEquals(BackupManagementType.MAB, model.properties().backupManagementType());
-        Assertions.assertEquals("jijpxac", model.properties().registrationStatus());
-        Assertions.assertEquals("udfnbyxba", model.properties().healthStatus());
-        Assertions.assertEquals("bjyvay", model.properties().protectableObjectType());
-        Assertions.assertEquals("imrzrtuzqog", model.etag());
+        Assertions.assertEquals("qqu", model.location());
+        Assertions.assertEquals("kywggxkallatmel", model.tags().get("uipiccjzk"));
+        Assertions.assertEquals("d", model.properties().friendlyName());
+        Assertions.assertEquals(BackupManagementType.AZURE_SQL, model.properties().backupManagementType());
+        Assertions.assertEquals("y", model.properties().registrationStatus());
+        Assertions.assertEquals("ogjltdtbnnhad", model.properties().healthStatus());
+        Assertions.assertEquals("crkvcikhnv", model.properties().protectableObjectType());
+        Assertions.assertEquals("mqg", model.etag());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

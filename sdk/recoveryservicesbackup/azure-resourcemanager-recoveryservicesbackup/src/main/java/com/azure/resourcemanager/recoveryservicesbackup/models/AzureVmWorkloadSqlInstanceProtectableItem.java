@@ -75,6 +75,13 @@ public final class AzureVmWorkloadSqlInstanceProtectableItem extends AzureVmWork
 
     /** {@inheritDoc} */
     @Override
+    public AzureVmWorkloadSqlInstanceProtectableItem withIsProtectable(Boolean isProtectable) {
+        super.withIsProtectable(isProtectable);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
     public AzureVmWorkloadSqlInstanceProtectableItem withBackupManagementType(String backupManagementType) {
         super.withBackupManagementType(backupManagementType);
         return this;

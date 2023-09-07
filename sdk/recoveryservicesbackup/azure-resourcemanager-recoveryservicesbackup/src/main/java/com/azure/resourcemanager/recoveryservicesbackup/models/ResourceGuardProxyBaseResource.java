@@ -97,11 +97,13 @@ public interface ResourceGuardProxyBaseResource {
             DefinitionStages.WithParentResource,
             DefinitionStages.WithCreate {
     }
+
     /** The ResourceGuardProxyBaseResource definition stages. */
     interface DefinitionStages {
         /** The first stage of the ResourceGuardProxyBaseResource definition. */
         interface Blank extends WithLocation {
         }
+
         /** The stage of the ResourceGuardProxyBaseResource definition allowing to specify location. */
         interface WithLocation {
             /**
@@ -120,6 +122,7 @@ public interface ResourceGuardProxyBaseResource {
              */
             WithParentResource withRegion(String location);
         }
+
         /** The stage of the ResourceGuardProxyBaseResource definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
@@ -131,6 +134,7 @@ public interface ResourceGuardProxyBaseResource {
              */
             WithCreate withExistingVault(String vaultName, String resourceGroupName);
         }
+
         /**
          * The stage of the ResourceGuardProxyBaseResource definition which contains all the minimum required properties
          * for the resource to be created, but also allows for any other optional properties to be specified.
@@ -152,6 +156,7 @@ public interface ResourceGuardProxyBaseResource {
              */
             ResourceGuardProxyBaseResource create(Context context);
         }
+
         /** The stage of the ResourceGuardProxyBaseResource definition allowing to specify tags. */
         interface WithTags {
             /**
@@ -162,6 +167,7 @@ public interface ResourceGuardProxyBaseResource {
              */
             WithCreate withTags(Map<String, String> tags);
         }
+
         /** The stage of the ResourceGuardProxyBaseResource definition allowing to specify properties. */
         interface WithProperties {
             /**
@@ -172,6 +178,7 @@ public interface ResourceGuardProxyBaseResource {
              */
             WithCreate withProperties(ResourceGuardProxyBase properties);
         }
+
         /** The stage of the ResourceGuardProxyBaseResource definition allowing to specify etag. */
         interface WithEtag {
             /**
@@ -183,6 +190,7 @@ public interface ResourceGuardProxyBaseResource {
             WithCreate withEtag(String etag);
         }
     }
+
     /**
      * Begins update for the ResourceGuardProxyBaseResource resource.
      *
@@ -207,6 +215,7 @@ public interface ResourceGuardProxyBaseResource {
          */
         ResourceGuardProxyBaseResource apply(Context context);
     }
+
     /** The ResourceGuardProxyBaseResource update stages. */
     interface UpdateStages {
         /** The stage of the ResourceGuardProxyBaseResource update allowing to specify tags. */
@@ -219,6 +228,7 @@ public interface ResourceGuardProxyBaseResource {
              */
             Update withTags(Map<String, String> tags);
         }
+
         /** The stage of the ResourceGuardProxyBaseResource update allowing to specify properties. */
         interface WithProperties {
             /**
@@ -229,6 +239,7 @@ public interface ResourceGuardProxyBaseResource {
              */
             Update withProperties(ResourceGuardProxyBase properties);
         }
+
         /** The stage of the ResourceGuardProxyBaseResource update allowing to specify etag. */
         interface WithEtag {
             /**
@@ -240,6 +251,7 @@ public interface ResourceGuardProxyBaseResource {
             Update withEtag(String etag);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

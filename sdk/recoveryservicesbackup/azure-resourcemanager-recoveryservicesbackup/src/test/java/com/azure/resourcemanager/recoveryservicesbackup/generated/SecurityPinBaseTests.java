@@ -14,16 +14,16 @@ public final class SecurityPinBaseTests {
     public void testDeserialize() throws Exception {
         SecurityPinBase model =
             BinaryData
-                .fromString("{\"resourceGuardOperationRequests\":[\"yrqufegxuvwz\",\"bnhlmc\"]}")
+                .fromString("{\"resourceGuardOperationRequests\":[\"eokerqwkyhkobopg\"]}")
                 .toObject(SecurityPinBase.class);
-        Assertions.assertEquals("yrqufegxuvwz", model.resourceGuardOperationRequests().get(0));
+        Assertions.assertEquals("eokerqwkyhkobopg", model.resourceGuardOperationRequests().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SecurityPinBase model =
-            new SecurityPinBase().withResourceGuardOperationRequests(Arrays.asList("yrqufegxuvwz", "bnhlmc"));
+            new SecurityPinBase().withResourceGuardOperationRequests(Arrays.asList("eokerqwkyhkobopg"));
         model = BinaryData.fromObject(model).toObject(SecurityPinBase.class);
-        Assertions.assertEquals("yrqufegxuvwz", model.resourceGuardOperationRequests().get(0));
+        Assertions.assertEquals("eokerqwkyhkobopg", model.resourceGuardOperationRequests().get(0));
     }
 }

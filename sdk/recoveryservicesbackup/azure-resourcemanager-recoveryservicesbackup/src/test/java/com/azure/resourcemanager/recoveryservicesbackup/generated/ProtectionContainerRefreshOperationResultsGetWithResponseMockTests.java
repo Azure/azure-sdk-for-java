@@ -58,7 +58,6 @@ public final class ProtectionContainerRefreshOperationResultsGetWithResponseMock
 
         manager
             .protectionContainerRefreshOperationResults()
-            .getWithResponse(
-                "vgmfalkzazmgok", "dgjqafkmkro", "zrthqet", "pqrtvaoznqni", com.azure.core.util.Context.NONE);
+            .getWithResponse("vlzw", "vgmfalkzazmgok", "dgjqafkmkro", "zrthqet", com.azure.core.util.Context.NONE);
     }
 }
