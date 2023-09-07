@@ -11,19 +11,16 @@ import java.util.Collection;
 /** Defines the format of the output. */
 public final class AudioTranscriptionFormat extends ExpandableStringEnum<AudioTranscriptionFormat> {
 
-    /** JSON format. The translation/transcription response will only contain 'text'. */
-    @Generated public static final AudioTranscriptionFormat JSON = fromString("json");
-
-    /** Text format. The translation/transcription response will be of type text/plain. */
+    /** Lorem ipsum. */
     @Generated public static final AudioTranscriptionFormat TEXT = fromString("text");
 
-    /** SRT format. The translation/transcription response will be of type text/plain. */
+    /** Lorem ipsum. */
     @Generated public static final AudioTranscriptionFormat SRT = fromString("srt");
 
-    /** Verbose JSON format.The translation/transcription response will contain additional information. */
+    /** Lorem ipsum. */
     @Generated public static final AudioTranscriptionFormat VERBOSE_JSON = fromString("verbose_json");
 
-    /** VTT format. The translation/transcription response will be of type text/plain. */
+    /** Lorem ipsum. */
     @Generated public static final AudioTranscriptionFormat VTT = fromString("vtt");
 
     /**
@@ -56,4 +53,7 @@ public final class AudioTranscriptionFormat extends ExpandableStringEnum<AudioTr
     public static Collection<AudioTranscriptionFormat> values() {
         return values(AudioTranscriptionFormat.class);
     }
+
+    /** Lorem ipsum. */
+    @Generated public static final AudioTranscriptionFormat SIMPLE_JSON = fromString("json");
 }

@@ -12,9 +12,9 @@ import java.util.UUID;
 import java.util.function.Consumer;
 
 public class MultipartDataHelper {
-    private final String boundaryId = UUID.randomUUID().toString().substring(0, 16);
+//    private final String boundaryId = UUID.randomUUID().toString().substring(0, 16);
 
-    private final String boundary = "AZ-OAI-JAVA--" + boundaryId;
+    private final String boundary = "azure_openai";// + boundaryId;
 
     private final String partSeparator = "--" + boundary;
     private final String endMarker = partSeparator + "--";

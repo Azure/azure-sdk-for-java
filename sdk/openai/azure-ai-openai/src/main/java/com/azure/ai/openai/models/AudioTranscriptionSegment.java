@@ -18,21 +18,21 @@ public final class AudioTranscriptionSegment {
      */
     @Generated
     @JsonProperty(value = "id")
-    private Integer id;
+    private int id;
 
     /*
      * Segment start offset.
      */
     @Generated
     @JsonProperty(value = "start")
-    private Double start;
+    private double start;
 
     /*
      * Segment end offset.
      */
     @Generated
     @JsonProperty(value = "end")
-    private Double end;
+    private double end;
 
     /*
      * Segment text.
@@ -46,28 +46,28 @@ public final class AudioTranscriptionSegment {
      */
     @Generated
     @JsonProperty(value = "temperature")
-    private Double temperature;
+    private double temperature;
 
     /*
      * Average log probability.
      */
     @Generated
     @JsonProperty(value = "avg_logprob")
-    private Double averageLogProb;
+    private double averageLogProb;
 
     /*
      * Compression ratio.
      */
     @Generated
     @JsonProperty(value = "compression_ratio")
-    private Double compressionRatio;
+    private double compressionRatio;
 
     /*
      * Probability of 'no speech'.
      */
     @Generated
     @JsonProperty(value = "no_speech_prob")
-    private Double noSpeechProb;
+    private double noSpeechProb;
 
     /*
      * Tokens in this segment
@@ -84,26 +84,12 @@ public final class AudioTranscriptionSegment {
     private int seek;
 
     /**
-     * Creates an instance of AudioTranscriptionSegment class.
-     *
-     * @param tokens the tokens value to set.
-     * @param seek the seek value to set.
-     */
-    @Generated
-    @JsonCreator
-    private AudioTranscriptionSegment(
-            @JsonProperty(value = "tokens") List<Integer> tokens, @JsonProperty(value = "seek") int seek) {
-        this.tokens = tokens;
-        this.seek = seek;
-    }
-
-    /**
      * Get the id property: Segment identifier.
      *
      * @return the id value.
      */
     @Generated
-    public Integer getId() {
+    public int getId() {
         return this.id;
     }
 
@@ -113,7 +99,7 @@ public final class AudioTranscriptionSegment {
      * @return the start value.
      */
     @Generated
-    public Double getStart() {
+    public double getStart() {
         return this.start;
     }
 
@@ -123,7 +109,7 @@ public final class AudioTranscriptionSegment {
      * @return the end value.
      */
     @Generated
-    public Double getEnd() {
+    public double getEnd() {
         return this.end;
     }
 
@@ -143,7 +129,7 @@ public final class AudioTranscriptionSegment {
      * @return the temperature value.
      */
     @Generated
-    public Double getTemperature() {
+    public double getTemperature() {
         return this.temperature;
     }
 
@@ -153,7 +139,7 @@ public final class AudioTranscriptionSegment {
      * @return the averageLogProb value.
      */
     @Generated
-    public Double getAverageLogProb() {
+    public double getAverageLogProb() {
         return this.averageLogProb;
     }
 
@@ -163,7 +149,7 @@ public final class AudioTranscriptionSegment {
      * @return the compressionRatio value.
      */
     @Generated
-    public Double getCompressionRatio() {
+    public double getCompressionRatio() {
         return this.compressionRatio;
     }
 
@@ -173,7 +159,7 @@ public final class AudioTranscriptionSegment {
      * @return the noSpeechProb value.
      */
     @Generated
-    public Double getNoSpeechProb() {
+    public double getNoSpeechProb() {
         return this.noSpeechProb;
     }
 
@@ -195,5 +181,44 @@ public final class AudioTranscriptionSegment {
     @Generated
     public int getSeek() {
         return this.seek;
+    }
+
+    /**
+     * Creates an instance of AudioTranscriptionSegment class.
+     *
+     * @param id the id value to set.
+     * @param start the start value to set.
+     * @param end the end value to set.
+     * @param text the text value to set.
+     * @param temperature the temperature value to set.
+     * @param averageLogProb the averageLogProb value to set.
+     * @param compressionRatio the compressionRatio value to set.
+     * @param noSpeechProb the noSpeechProb value to set.
+     * @param tokens the tokens value to set.
+     * @param seek the seek value to set.
+     */
+    @Generated
+    @JsonCreator
+    private AudioTranscriptionSegment(
+            @JsonProperty(value = "id") int id,
+            @JsonProperty(value = "start") double start,
+            @JsonProperty(value = "end") double end,
+            @JsonProperty(value = "text") String text,
+            @JsonProperty(value = "temperature") double temperature,
+            @JsonProperty(value = "avg_logprob") double averageLogProb,
+            @JsonProperty(value = "compression_ratio") double compressionRatio,
+            @JsonProperty(value = "no_speech_prob") double noSpeechProb,
+            @JsonProperty(value = "tokens") List<Integer> tokens,
+            @JsonProperty(value = "seek") int seek) {
+        this.id = id;
+        this.start = start;
+        this.end = end;
+        this.text = text;
+        this.temperature = temperature;
+        this.averageLogProb = averageLogProb;
+        this.compressionRatio = compressionRatio;
+        this.noSpeechProb = noSpeechProb;
+        this.tokens = tokens;
+        this.seek = seek;
     }
 }
