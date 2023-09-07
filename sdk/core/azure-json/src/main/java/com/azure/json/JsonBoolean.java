@@ -58,8 +58,8 @@ public class JsonBoolean extends JsonElement {
     public boolean isFalse() { return this.booleanValue.equals("false"); }
 
     /** 
-     * @param jsonWriter JsonWriter that the serialised JsonBoolean is written to. 
-     * @return JsonWriter state after the serialised JsonBoolean has been 
+     * @param jsonWriter JsonWriter that the serialized JsonBoolean is written to. 
+     * @return JsonWriter state after the serialized JsonBoolean has been 
      * written to it. 
      * @throws IOException Thrown when JsonWriter.writeBoolean call throws an 
      * IOException. 
