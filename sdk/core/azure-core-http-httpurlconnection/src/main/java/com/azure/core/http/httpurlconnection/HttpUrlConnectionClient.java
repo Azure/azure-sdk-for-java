@@ -9,6 +9,13 @@ import java.io.*;
 import java.net.*;
 import java.nio.charset.StandardCharsets;
 
+/**
+ * This class provides a HttpUrlConnection implementation for the {@link HttpClient} interface.
+ * Creating an instance of this class can be achieved by using the {@link HttpUrlConnectionClientBuilder} class.
+ *
+ * @see HttpClient
+ * @see HttpUrlConnectionClientBuilder
+ */
 public class HttpUrlConnectionClient implements HttpClient {
 
     // Asynchronous send method returning a Mono of HttpResponse
@@ -29,7 +36,13 @@ public class HttpUrlConnectionClient implements HttpClient {
         return sendAsync(httpRequest, context).block();
     }
 
-    // Asynchronous send method with additional context
+    /**
+     * Asyncronously send the HttpRequest
+     *
+     * @param httpRequest The HTTP Request being sent
+     * @param context The context of the request, for any additional changes
+     * @return A Mono containing a HttpResponse object
+     */
     public Mono<HttpResponse> sendAsync(HttpRequest httpRequest, Context context) {
         HttpMethod httpMethod = httpRequest.getHttpMethod();
         if (httpMethod == HttpMethod.PATCH) {
