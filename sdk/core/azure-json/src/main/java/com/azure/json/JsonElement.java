@@ -57,11 +57,45 @@ to tell what would be the best name here.
 public abstract class JsonElement extends StringWriter {
     /**
      * Default constructor.
+     * 
      * TODO: may need to remove this due to design guidelines? Unnecessary having
      * this constructor defined in the source code if compiler is already adding
      * this constructor implicitly when no other constructor is defined.
      */
     public JsonElement() {}
+
+    /**
+     * Abstract method that should be defined in a JsonElement sub class to 
+     * handle how to serialize the given JsonElement. 
+     * 
+     * @param jsonWriter JsonWriter to serialize the JsonElement to. 
+     * @return JsonWriter after the given JsonElement has been serialized and 
+     * written to it. 
+     * @throws IOException thrown by the given JsonElement's serialize implementation 
+     */
+    public abstract JsonWriter serialize(JsonWriter jsonWriter) throws IOException;
+
+    /**
+     * Abstract method that should be defined in a JsonElement sub class to
+     * handle how to represent the given JsonElement as a String.
+     *
+     * @return String representation of the JsonElement
+     */
+    public abstract String toString();
+
+    /**
+     * JsonElement it in of itself cannot be converted to JSON. Subclasses of 
+     * JsonElement are expected to implement toJson. 
+     * 
+     * @return String object with the corresponding String representation of the 
+     * JSON. 
+     * @throws IOException Thrown by the toJson implementation.  
+     * 
+     * TODO: should this be an abstract method? 
+     */
+    public String toJson() throws IOException {
+        return null;
+    }
 
     //------------------------------------------------------------------------//
     //------------------------ Methods for JsonArray -------------------------//
@@ -72,10 +106,10 @@ public abstract class JsonElement extends StringWriter {
 
     // All throw unless isArray is true.
     /**
-     *
+     * 
      * @param element
      * @return
-     * @throws
+     * @throws IllegalArgumentException
      */
     public JsonArray addElement(JsonElement element) throws IllegalArgumentException  {
         // Case:
@@ -85,11 +119,12 @@ public abstract class JsonElement extends StringWriter {
     }
 
     /**
-     *
+     * 
      * @param index
      * @param element
      * @return
-     * @throws InvalidJsonDataTypeException
+     * @throws IllegalArgumentException
+     * @throws IndexOutOfBoundsException
      */
     public JsonArray addElement(int index, JsonElement element) throws IllegalArgumentException, IndexOutOfBoundsException {
         // Case:
@@ -99,11 +134,12 @@ public abstract class JsonElement extends StringWriter {
     }
 
     /**
-     *
+     * 
      * @param index
      * @param element
      * @return
-     * @throws InvalidJsonDataTypeException
+     * @throws IllegalArgumentException
+     * @throws IndexOutOfBoundsException
      */
     public JsonArray setElement(int index, JsonElement element) throws IllegalArgumentException, IndexOutOfBoundsException {
         // Case:
@@ -113,10 +149,10 @@ public abstract class JsonElement extends StringWriter {
     }
 
     /**
-     *
+     * 
      * @param index
      * @return
-     * @throws InvalidJsonDataTypeException
+     * @throws IndexOutOfBoundsException
      */
     public JsonElement getElement(int index) throws IndexOutOfBoundsException {
         // Case:
@@ -126,10 +162,10 @@ public abstract class JsonElement extends StringWriter {
     }
 
     /**
-     *
+     * 
      * @param index
      * @return
-     * @throws InvalidJsonDataTypeException
+     * @throws IndexOutOfBoundsException
      */
     public JsonElement removeElement(int index) throws IndexOutOfBoundsException {
         // Case:
@@ -158,6 +194,7 @@ public abstract class JsonElement extends StringWriter {
         // Case:
         else { throw new InvalidJsonDataTypeException(); }
     }
+
     /**
      *
      * @param key
@@ -225,15 +262,6 @@ public abstract class JsonElement extends StringWriter {
         else { throw new InvalidJsonDataTypeException(); }
     }
 
-    /**
-     * Abstract method that should be defined in a JsonElement sub class to
-     * handle how to represent the given JsonElement as a String.
-     *
-     * @return String representation of the JsonElement
-     */
-    public abstract String toString();
-
-
     //------------------------------------------------------------------------//
     //--------------- isX Methods (JSON type checking methods) ---------------//
     //------------------------------------------------------------------------//
@@ -272,7 +300,6 @@ public abstract class JsonElement extends StringWriter {
      */
     public boolean isString() { return false; }
 
-
     //------------------------------------------------------------------------//
     //------------------------ Methods for Conversion ------------------------//
     // TODO: not sure if these asX methods really need to be defined or how   //
@@ -308,12 +335,5 @@ public abstract class JsonElement extends StringWriter {
      * @return
      */
     public JsonString asString() { return new JsonString(); }
-
-
-    public abstract JsonWriter serialize(JsonWriter jsonWriter) throws IOException;
-
-    public String toJson() throws IOException {
-        return null;
-    }
 }
 
