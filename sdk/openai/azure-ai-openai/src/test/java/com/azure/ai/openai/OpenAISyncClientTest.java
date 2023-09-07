@@ -436,4 +436,20 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
             assertNotNull(transcription);
         });
     }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    public void testGetAudioTranslationTextPlain(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        client = getOpenAIClient(httpClient, serviceVersion);
+
+        getAudioTranscriptionRunner((deploymentName, fileName) -> {
+            byte[] file = BinaryData.fromFile(Path.of("src/test/resources/JP_it_is_rainy_today.wav")).toBytes();
+            AudioTranslationOptions translationOptions = new AudioTranslationOptions(file);
+            translationOptions.setResponseFormat(AudioTranscriptionFormat.TEXT);
+
+            String transcription = client.getAudioTranslationText(
+                deploymentName, translationOptions, "JP_it_is_rainy_today.wav");
+            assertEquals("It's raining today.", transcription);
+        });
+    }
 }

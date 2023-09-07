@@ -10,6 +10,8 @@ import com.azure.ai.openai.implementation.NonAzureOpenAIClientImpl;
 import com.azure.ai.openai.implementation.OpenAIClientImpl;
 import com.azure.ai.openai.implementation.OpenAIServerSentEvents;
 import com.azure.ai.openai.models.AudioTranscription;
+import com.azure.ai.openai.models.AudioTranscriptionFormat;
+import com.azure.ai.openai.models.AudioTranscriptionSimpleJson;
 import com.azure.ai.openai.models.AudioTranslationOptions;
 import com.azure.ai.openai.models.ChatCompletions;
 import com.azure.ai.openai.models.ChatCompletionsOptions;
@@ -704,6 +706,30 @@ public final class OpenAIClient {
                 deploymentOrModelName, chatCompletionsOptions, requestOptions);
     }
 
+
+    public String getAudioTranslationText(
+        String deploymentOrModelName, AudioTranslationOptions audioTranslationOptions, String fileName) {
+        RequestOptions requestOptions = new RequestOptions();
+        MultipartDataHelper helper = new MultipartDataHelper();
+        helper.addFields(
+            (fields) -> {
+                if (audioTranslationOptions.getResponseFormat() != null) {
+                    fields.add(
+                        new MultipartField(
+                            "response_format", audioTranslationOptions.getResponseFormat().toString()));
+                }
+            });
+        MultipartDataHelper.SerializationResult result =
+            helper.serializeAudioTranscriptionOption(audioTranslationOptions, fileName);
+        // TODO define a method that looks into responseFormat and calls the right method
+        // return getAudioTranslationWithResponse(
+        BinaryData value = getAudioTranslationPlainTextWithResponse(deploymentOrModelName, result.getDataLength(), result.getData(), requestOptions)
+            .getValue();
+                return value.toString();
+        }
+
+
+
     public AudioTranscription getAudioTranslation(
             String deploymentOrModelName, AudioTranslationOptions audioTranslationOptions, String fileName) {
         RequestOptions requestOptions = new RequestOptions();
@@ -720,6 +746,7 @@ public final class OpenAIClient {
                 helper.serializeAudioTranscriptionOption(audioTranslationOptions, fileName);
         // TODO define a method that looks into responseFormat and calls the right method
         // return getAudioTranslationWithResponse(
+
         return getAudioTranslationSimpleJsonWithResponse(
                         deploymentOrModelName, result.getDataLength(), result.getData(), requestOptions)
                 .getValue()
@@ -1094,48 +1121,6 @@ public final class OpenAIClient {
      * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
      *     (when using non-Azure OpenAI) to use for this request.
      * @param contentLength The content length of the operation. This needs to be provided by the caller.
-     * @param audioTranslationOptionsPlainText Lorem ipsum.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a sequence of textual characters along with {@link Response}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<BinaryData> getAudioTranslationPlainTextWithResponse(
-            String deploymentOrModelName,
-            long contentLength,
-            BinaryData audioTranslationOptionsPlainText,
-            RequestOptions requestOptions) {
-        return this.serviceClient.getAudioTranslationPlainTextWithResponse(
-                deploymentOrModelName, contentLength, audioTranslationOptionsPlainText, requestOptions);
-    }
-
-    /**
-     * Transcribes and translates input audio into English text.
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     file: byte[] (Required)
-     *     prompt: String (Optional)
-     *     temperature: Double (Optional)
-     *     response_format: String(json/text/srt/verbose_json/vtt) (Optional)
-     * }
-     * }</pre>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * String
-     * }</pre>
-     *
-     * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
-     *     (when using non-Azure OpenAI) to use for this request.
-     * @param contentLength The content length of the operation. This needs to be provided by the caller.
      * @param audioTranslationOptionsSrt Lorem ipsum.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1195,5 +1180,47 @@ public final class OpenAIClient {
             RequestOptions requestOptions) {
         return this.serviceClient.getAudioTranslationVttWithResponse(
                 deploymentOrModelName, contentLength, audioTranslationOptionsVerboseJson, requestOptions);
+    }
+
+    /**
+     * Transcribes and translates input audio into English text.
+     *
+     * <p><strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     file: byte[] (Required)
+     *     prompt: String (Optional)
+     *     temperature: Double (Optional)
+     *     response_format: String(json/text/srt/verbose_json/vtt) (Optional)
+     * }
+     * }</pre>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * String
+     * }</pre>
+     *
+     * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
+     *     (when using non-Azure OpenAI) to use for this request.
+     * @param contentLength The content length of the operation. This needs to be provided by the caller.
+     * @param audioTranslationOptionsPlainText Lorem ipsum.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a sequence of textual characters along with {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<BinaryData> getAudioTranslationPlainTextWithResponse(
+            String deploymentOrModelName,
+            long contentLength,
+            BinaryData audioTranslationOptionsPlainText,
+            RequestOptions requestOptions) {
+        return this.serviceClient.getAudioTranslationPlainTextWithResponse(
+                deploymentOrModelName, contentLength, audioTranslationOptionsPlainText, requestOptions);
     }
 }

@@ -1069,48 +1069,6 @@ public final class OpenAIAsyncClient {
      * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
      *     (when using non-Azure OpenAI) to use for this request.
      * @param contentLength The content length of the operation. This needs to be provided by the caller.
-     * @param audioTranslationOptionsPlainText Lorem ipsum.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a sequence of textual characters along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<BinaryData>> getAudioTranslationPlainTextWithResponse(
-            String deploymentOrModelName,
-            long contentLength,
-            BinaryData audioTranslationOptionsPlainText,
-            RequestOptions requestOptions) {
-        return this.serviceClient.getAudioTranslationPlainTextWithResponseAsync(
-                deploymentOrModelName, contentLength, audioTranslationOptionsPlainText, requestOptions);
-    }
-
-    /**
-     * Transcribes and translates input audio into English text.
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     file: byte[] (Required)
-     *     prompt: String (Optional)
-     *     temperature: Double (Optional)
-     *     response_format: String(json/text/srt/verbose_json/vtt) (Optional)
-     * }
-     * }</pre>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * String
-     * }</pre>
-     *
-     * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
-     *     (when using non-Azure OpenAI) to use for this request.
-     * @param contentLength The content length of the operation. This needs to be provided by the caller.
      * @param audioTranslationOptionsSrt Lorem ipsum.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1170,5 +1128,47 @@ public final class OpenAIAsyncClient {
             RequestOptions requestOptions) {
         return this.serviceClient.getAudioTranslationVttWithResponseAsync(
                 deploymentOrModelName, contentLength, audioTranslationOptionsVerboseJson, requestOptions);
+    }
+
+    /**
+     * Transcribes and translates input audio into English text.
+     *
+     * <p><strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     file: byte[] (Required)
+     *     prompt: String (Optional)
+     *     temperature: Double (Optional)
+     *     response_format: String(json/text/srt/verbose_json/vtt) (Optional)
+     * }
+     * }</pre>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * String
+     * }</pre>
+     *
+     * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
+     *     (when using non-Azure OpenAI) to use for this request.
+     * @param contentLength The content length of the operation. This needs to be provided by the caller.
+     * @param audioTranslationOptionsPlainText Lorem ipsum.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a sequence of textual characters along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<BinaryData>> getAudioTranslationPlainTextWithResponse(
+            String deploymentOrModelName,
+            long contentLength,
+            BinaryData audioTranslationOptionsPlainText,
+            RequestOptions requestOptions) {
+        return this.serviceClient.getAudioTranslationPlainTextWithResponseAsync(
+                deploymentOrModelName, contentLength, audioTranslationOptionsPlainText, requestOptions);
     }
 }
