@@ -39,6 +39,11 @@ public class EnvironmentCredentialBuilder extends CredentialBuilderBase<Environm
     private String authorityHost;
 
     /**
+     * Creates an instance of the {@link EnvironmentCredentialBuilder}
+     */
+    public EnvironmentCredentialBuilder() { }
+
+    /**
      * Specifies the Azure Active Directory endpoint to acquire tokens.
      * @param authorityHost the Azure Active Directory endpoint
      * @return An updated instance of this builder with the authority host set as specified.

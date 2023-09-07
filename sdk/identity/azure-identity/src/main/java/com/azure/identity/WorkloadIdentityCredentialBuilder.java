@@ -54,7 +54,6 @@ public class WorkloadIdentityCredentialBuilder extends AadCredentialBuilderBase<
      */
     public WorkloadIdentityCredentialBuilder() { }
 
-
     /**
      * Configure the path to a file containing a Kubernetes service account token that authenticates the identity.
      * The file path is required to authenticate.

@@ -18,6 +18,11 @@ public class SharedTokenCacheCredentialBuilder extends AadCredentialBuilderBase<
         .setUnencryptedStorageAllowed(true);
 
     /**
+     * Creates an instance of the {@link OnBehalfOfCredentialBuilder}
+     */
+    public SharedTokenCacheCredentialBuilder() { }
+
+    /**
      * Sets the username for the account.
      *
      * @param username The username for the account.

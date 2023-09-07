@@ -50,6 +50,11 @@ public class AuthorizationCodeCredentialBuilder extends AadCredentialBuilderBase
     private String clientSecret;
 
     /**
+     * Creates an instance of the {@link AuthorizationCodeCredentialBuilder}
+     */
+    public AuthorizationCodeCredentialBuilder() { }
+
+    /**
      * Sets the authorization code on the builder.
      *
      * @param authCode the authorization code acquired from user login

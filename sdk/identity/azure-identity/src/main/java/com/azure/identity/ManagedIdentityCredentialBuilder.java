@@ -60,6 +60,11 @@ public class ManagedIdentityCredentialBuilder extends CredentialBuilderBase<Mana
     private String resourceId;
 
     /**
+     * Creates an instance of the {@link ManagedIdentityCredentialBuilder}
+     */
+    public ManagedIdentityCredentialBuilder() { }
+
+    /**
      * Specifies the client ID of user assigned or system assigned identity.
      *
      * Only one of clientId and resourceId can be specified.

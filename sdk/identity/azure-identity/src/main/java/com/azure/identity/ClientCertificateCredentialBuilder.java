@@ -78,6 +78,11 @@ public class ClientCertificateCredentialBuilder extends AadCredentialBuilderBase
     private String clientCertificatePassword;
 
     /**
+     * Creates an instance of the {@link ClientAssertionCredentialBuilder}
+     */
+    public ClientCertificateCredentialBuilder() { }
+
+    /**
      * Sets the path of the PEM certificate for authenticating to AAD.
      *
      * @param certificatePath the PEM file containing the certificate
