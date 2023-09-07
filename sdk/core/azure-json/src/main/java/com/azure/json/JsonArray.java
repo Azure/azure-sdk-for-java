@@ -289,8 +289,9 @@ public class JsonArray extends JsonElement {
                     this.addElement(new JsonNull());
                     break;
                 // END_DOCUMENT and END_ARRAY cases are picked up by the overall 
-                // while statement. These cases should not be reached, so exception 
-                // is thrown. 
+                // while statement. These cases should not be reached, assuming 
+                // the JSON array being deserialised is properly formed, so 
+                // exception is thrown. 
                 case END_DOCUMENT:
                     throw new IOException("Invalid JsonToken.END_DOCUMENT token read prematurely from deserialised JSON array. Deserialisation aborted."); 
                 case END_ARRAY:

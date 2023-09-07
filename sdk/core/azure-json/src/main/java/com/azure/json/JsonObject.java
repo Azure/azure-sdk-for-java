@@ -36,7 +36,6 @@ public class JsonObject extends JsonElement {
      * Stores the key and values of each property in the JsonObject. The values
      * may be any valid JSON type: object, array, string, number, boolean, and null
      */
-
     private Map<String, JsonElement> properties = new LinkedHashMap<>();
 
     /**
@@ -323,10 +322,8 @@ public class JsonObject extends JsonElement {
 
         String fieldName = null;
         JsonToken token = reader.nextToken();
-        while(token != JsonToken.END_OBJECT) {
 
-            //todo remove this debug line
-            //System.out.printf("Token: %s%n", token);
+        while (token != JsonToken.END_OBJECT) {
 
             switch (token) {
 
@@ -351,24 +348,21 @@ public class JsonObject extends JsonElement {
                 case NULL:
                     this.addProperty(fieldName, new JsonNull());
                     break;
-//                 These two cases are picked up by the overall while statement.
+                // END_DOCUMENT and END_OBJECT cases are picked up by the overall 
+                // while statement. These cases should not be reached, assuming 
+                // the JSON object being deserialised is properly formed, so 
+                // exception is thrown. 
                 case END_DOCUMENT:
-                    return;
+                    throw new IOException("Invalid JsonToken.END_DOCUMENT token read prematurely from deserialised JSON object. Deserialisation aborted."); 
                 case END_OBJECT:
-                    //It shouldn't get here assuming all is working correctly, and the JSON
-                    //Is properly formed
-                    return;
+                    throw new IOException("Invalid JsonToken.END_OBJECT token read prematurely from deserialised JSON object. Deserialisation aborted."); 
+                // Case: the currently read token is a JsonToken.END_ARRAY token. 
+                // JSON object is being deserialised, not a JSON array. 
                 case END_ARRAY:
-                    //this should be an error, it's not possible
-                    return;
-
+                    throw new IOException("Invalid JsonToken.END_ARRAY token read from deserialised JSON object. JSON object is being deserialised not a JSON array. This is not a valid JSON object. Deserialisation aborted."); 
             }
             token = reader.nextToken();
-
         }
-
-
-
     }
 
     /**
