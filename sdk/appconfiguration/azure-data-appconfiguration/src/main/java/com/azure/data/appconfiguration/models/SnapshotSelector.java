@@ -5,9 +5,11 @@ package com.azure.data.appconfiguration.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.ExpandableStringEnum;
 import com.azure.core.util.IterableStream;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.stream.Collectors;
 
 /**
@@ -16,9 +18,9 @@ import java.util.stream.Collectors;
 @Fluent
 public final class SnapshotSelector {
     private String name;
-    private Iterable<SnapshotStatus> status;
+    private List<SnapshotStatus> status;
 
-    private Iterable<SnapshotFields> fields;
+    private List<SnapshotFields> fields;
 
     /**
      * Gets the snapshot name
@@ -45,7 +47,7 @@ public final class SnapshotSelector {
      *
      * @return The snapshot status.
      */
-    public Iterable<SnapshotStatus> getSnapshotStatus() {
+    public List<SnapshotStatus> getSnapshotStatus() {
         return status;
     }
 
@@ -66,7 +68,7 @@ public final class SnapshotSelector {
      *
      * @return The set of {@link ConfigurationSettingsSnapshot} fields to return for a GET request.
      */
-    public Iterable<SnapshotFields> getFields() {
+    public List<SnapshotFields> getFields() {
         return fields;
     }
 
@@ -88,24 +90,24 @@ public final class SnapshotSelector {
     @Override
     public String toString() {
         String fields;
-        if (CoreUtils.isNullOrEmpty(Arrays.asList(this.fields))) {
+        if (CoreUtils.isNullOrEmpty(this.fields)) {
             fields = "ALL_FIELDS";
         } else {
-            // join an iterable of enum values into a comma-separated string
-            fields = IterableStream.of(this.fields)
+            // join a list of enum values into a comma-separated string
+            fields = this.fields == null ? null : IterableStream.of(this.fields)
                 .stream()
-                .map(s -> s.toString())
+                .map(ExpandableStringEnum::toString)
                 .collect(Collectors.joining(","));
         }
 
         String status;
-        if (CoreUtils.isNullOrEmpty(Arrays.asList(this.status))) {
+        if (CoreUtils.isNullOrEmpty(this.status)) {
             status = "ALL_STATUS";
         } else {
-            // join an iterable of enum values into a comma-separated string
-            status = IterableStream.of(this.status)
+            // join a list of enum values into a comma-separated string
+            status = this.status == null ? null : IterableStream.of(this.status)
                 .stream()
-                .map(s -> s.toString())
+                .map(ExpandableStringEnum::toString)
                 .collect(Collectors.joining(","));
         }
 

@@ -31,12 +31,14 @@ import com.azure.data.appconfiguration.models.ConfigurationSettingsSnapshot;
 import com.azure.data.appconfiguration.models.CreateSnapshotOperationDetail;
 import com.azure.data.appconfiguration.models.FeatureFlagConfigurationSetting;
 import com.azure.data.appconfiguration.models.SecretReferenceConfigurationSetting;
+import com.azure.data.appconfiguration.models.SettingFields;
 import com.azure.data.appconfiguration.models.SettingSelector;
 import com.azure.data.appconfiguration.models.SnapshotFields;
 import com.azure.data.appconfiguration.models.SnapshotSelector;
 import com.azure.data.appconfiguration.models.SnapshotStatus;
 
 import java.time.OffsetDateTime;
+import java.util.List;
 
 import static com.azure.data.appconfiguration.implementation.ConfigurationSettingDeserializationHelper.toConfigurationSettingWithPagedResponse;
 import static com.azure.data.appconfiguration.implementation.ConfigurationSettingDeserializationHelper.toConfigurationSettingWithResponse;
@@ -1106,16 +1108,17 @@ public final class ConfigurationClient {
      * <!-- src_embed com.azure.data.applicationconfig.configurationclient.listConfigurationSettingsForSnapshotMaxOverload -->
      * <pre>
      * String snapshotName = &quot;&#123;snapshotName&#125;&quot;;
-     * SettingSelector selector = new SettingSelector&#40;&#41;.setFields&#40;SettingFields.KEY&#41;;
+     * List&lt;SettingFields&gt; fields = Arrays.asList&#40;SettingFields.KEY&#41;;
      * Context ctx = new Context&#40;key2, value2&#41;;
-     * configurationClient.listConfigurationSettingsForSnapshot&#40;snapshotName, selector, ctx&#41;
+     * configurationClient.listConfigurationSettingsForSnapshot&#40;snapshotName, fields, ctx&#41;
      *     .forEach&#40;setting -&gt; System.out.printf&#40;&quot;Key: %s, Value: %s&quot;, setting.getKey&#40;&#41;, setting.getValue&#40;&#41;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.data.applicationconfig.configurationclient.listConfigurationSettingsForSnapshotMaxOverload -->
      *
      * @param snapshotName Optional. A filter used get {@link ConfigurationSetting}s for a snapshot. The value should
      * be the name of the snapshot.
-     * @param selector Optional. Selector to filter configuration setting results from the service.
+     * @param fields Optional. The fields to select for the query response. If none are set, the service will return the
+     * ConfigurationSettings with a default set of properties.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A {@link PagedIterable} of ConfigurationSettings that matches the {@code selector}. If no options were
      * provided, the {@link PagedIterable} contains all the current settings in the service.
@@ -1123,24 +1126,23 @@ public final class ConfigurationClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ConfigurationSetting> listConfigurationSettingsForSnapshot(String snapshotName,
-                                                                                    SettingSelector selector,
+                                                                                    List<SettingFields> fields,
                                                                                     Context context) {
-        String acceptDateTime = selector == null ? null : selector.getAcceptDateTime();
         return new PagedIterable<>(
             () -> {
                 final PagedResponse<KeyValue> pagedResponse = serviceClient.getKeyValuesSinglePage(
                     null,
                     null,
                     null,
-                    acceptDateTime,
-                    selector == null ? null : toSettingFieldsList(selector.getFields()),
+                    null,
+                    fields,
                     snapshotName,
                     enableSyncRestProxy(addTracingNamespace(context)));
                 return toConfigurationSettingWithPagedResponse(pagedResponse);
             },
             nextLink -> {
                 final PagedResponse<KeyValue> pagedResponse = serviceClient.getKeyValuesNextSinglePage(nextLink,
-                    acceptDateTime, enableSyncRestProxy(addTracingNamespace(context)));
+                    null, enableSyncRestProxy(addTracingNamespace(context)));
                 return toConfigurationSettingWithPagedResponse(pagedResponse);
             }
         );
@@ -1312,10 +1314,10 @@ public final class ConfigurationClient {
      * @return A {@link Response} of {@link ConfigurationSettingsSnapshot}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ConfigurationSettingsSnapshot> getSnapshotWithResponse(String name, Iterable<SnapshotFields> fields,
+    public Response<ConfigurationSettingsSnapshot> getSnapshotWithResponse(String name, List<SnapshotFields> fields,
                                                                           Context context) {
         final ResponseBase<GetSnapshotHeaders, ConfigurationSettingsSnapshot> response =
-            serviceClient.getSnapshotWithResponse(name, null, null, iterableToList(fields), context);
+            serviceClient.getSnapshotWithResponse(name, null, null, fields, context);
         return new SimpleResponse<>(response, response.getValue());
     }
 

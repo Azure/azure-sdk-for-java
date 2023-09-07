@@ -1093,8 +1093,8 @@ public final class ConfigurationAsyncClient {
      * <!-- src_embed com.azure.data.appconfiguration.configurationasyncclient.listConfigurationSettingsForSnapshotMaxOverload -->
      * <pre>
      * String snapshotName = &quot;&#123;snapshotName&#125;&quot;;
-     * SettingSelector selector = new SettingSelector&#40;&#41;.setFields&#40;SettingFields.KEY&#41;;
-     * client.listConfigurationSettingsForSnapshot&#40;snapshotName, selector&#41;
+     * List&lt;SettingFields&gt; fields = Arrays.asList&#40;SettingFields.KEY&#41;;
+     * client.listConfigurationSettingsForSnapshot&#40;snapshotName, fields&#41;
      *     .subscribe&#40;setting -&gt;
      *         System.out.printf&#40;&quot;Key: %s, Value: %s&quot;, setting.getKey&#40;&#41;, setting.getValue&#40;&#41;&#41;&#41;;
      * </pre>
@@ -1102,27 +1102,30 @@ public final class ConfigurationAsyncClient {
      *
      * @param snapshotName Optional. A filter used get {@link ConfigurationSetting}s for a snapshot. The value should
      * be the name of the snapshot.
-     * @param selector Optional. Selector to filter configuration setting results from the service.
+     * @param fields Optional. The fields to select for the query response. If none are set, the service will return the
+     * ConfigurationSettings with a default set of properties.
      * @return A Flux of ConfigurationSettings that matches the {@code selector}. If no options were provided, the Flux
      * contains all of the current settings in the service.
      * @throws HttpResponseException If a client or service error occurs, such as a 404, 409, 429 or 500.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ConfigurationSetting> listConfigurationSettingsForSnapshot(String snapshotName,
-                                                                                SettingSelector selector) {
-        String acceptDateTime = selector == null ? null : selector.getAcceptDateTime();
+                                                                                List<SettingFields> fields) {
         return new PagedFlux<>(
             () -> withContext(
                 context -> serviceClient.getKeyValuesSinglePageAsync(
-                    null, null, null, acceptDateTime,
-                        selector == null ? null : toSettingFieldsList(selector.getFields()),
+                    null,
+                        null,
+                        null,
+                        null,
+                        fields,
                         snapshotName,
                         addTracingNamespace(context))
                     .map(pagedResponse -> toConfigurationSettingWithPagedResponse(pagedResponse))),
             nextLink -> withContext(
                 context -> serviceClient.getKeyValuesNextSinglePageAsync(
                         nextLink,
-                        acceptDateTime,
+                        null,
                         addTracingNamespace(context))
                     .map(pagedResponse -> toConfigurationSettingWithPagedResponse(pagedResponse)))
         );
@@ -1261,8 +1264,8 @@ public final class ConfigurationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ConfigurationSettingsSnapshot>> getSnapshotWithResponse(String name,
-        Iterable<SnapshotFields> fields) {
-        return serviceClient.getSnapshotWithResponseAsync(name, null, null, iterableToList(fields), Context.NONE)
+                                                                                 List<SnapshotFields> fields) {
+        return serviceClient.getSnapshotWithResponseAsync(name, null, null, fields, Context.NONE)
             .map(response -> new SimpleResponse<>(response, response.getValue()));
     }
 
