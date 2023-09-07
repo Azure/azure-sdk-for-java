@@ -36,7 +36,7 @@ public class CrontabExpression {
             throw new IllegalArgumentException(exceptionStringFormat.formatted(null, "Expression is null."));
         }
 
-        final String[] fields = expression.split("[\t\n ]");
+        final String[] fields = expression.replaceAll("\\s+", " ").split(" ");
         if (fields.length != NUMBER_OF_FIELDS) {
             throw new IllegalArgumentException(exceptionStringFormat.formatted(expression,
                 "Five fields in the sequence of Minute, Hour, Day of month, Month, and Day of week are required."));

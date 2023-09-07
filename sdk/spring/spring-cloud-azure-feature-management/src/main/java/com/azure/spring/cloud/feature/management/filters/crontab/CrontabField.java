@@ -46,20 +46,20 @@ public class CrontabField {
     public void tryParse(String content) {
         this.bits = 0;
 
-        final String[] segments = content.split(",");   // The field can be a list which is a set of numbers or ranges separated by commas.
+        final String[] segments = content.split(",", -1);   // The field can be a list which is a set of numbers or ranges separated by commas.
         for (final String segment : segments) {
             if (StringUtil.isNullOrEmpty(segment)) {
                 throw new IllegalArgumentException(invalidSyntaxErrorMessage(content));
             }
             final int value = getNumber(segment);
             if (isValueValid(value)) {
-                this.bits = this.bits & (1L << value);
+                this.bits = this.bits | (1L << value);
                 continue;
             }
 
             if (segment.contains("-") || segment.contains("*")) {   // Ranges are two numbers/names separated with a hyphen or an asterisk which represents all possible values in the field.
-                final String[] parts = segment.split("/");    // Step values can be used in conjunction with ranges after a slash.
-                if (parts.length > 2) { // multiple slashes
+                final String[] parts = segment.split("/", -1);    // Step values can be used in conjunction with ranges after a slash.
+                if (parts.length > 2) { // invalid slash
                     throw new IllegalArgumentException(invalidSyntaxErrorMessage(content));
                 }
 
@@ -70,11 +70,11 @@ public class CrontabField {
 
                 final String range = parts[0];
                 int first, last;
-                if (range.equals("*")) {    // asterisk represents unrestricted range
+                if ("*".equals(range)) {    // asterisk represents unrestricted range
                     first = this.minValue;
                     last = this.maxValue;
                 } else {    // range should be defined by two numbers separated with a hyphen
-                    final String[] numbers = range.split("-");
+                    final String[] numbers = range.split("-", -1);
                     if (numbers.length != 2) {
                         throw new IllegalArgumentException(invalidSyntaxErrorMessage(content));
                     }
@@ -91,7 +91,7 @@ public class CrontabField {
                 }
 
                 for (int num = first; num <= last; num += step) {
-                    this.bits = this.bits & (1L << value);
+                    this.bits = this.bits | (1L << num);
                 }
             } else { // The segment is neither a range nor a valid number.
                 throw new IllegalArgumentException(invalidValueErrorMessage(content, segment));
@@ -113,7 +113,7 @@ public class CrontabField {
     }
 
     private static int getMonthNumber(String name) {
-        switch (name) {
+        switch (name.toUpperCase()) {
             case "JAN" -> {return 1;}
             case "FEB" -> {return 2;}
             case "MAR" -> {return 3;}
@@ -131,7 +131,7 @@ public class CrontabField {
     }
 
     private static int getDayOfWeekNumber(String name) {
-        switch (name) {
+        switch (name.toUpperCase()) {
             case "SUN" -> {return 0;}
             case "MON" -> {return 1;}
             case "TUE" -> {return 2;}

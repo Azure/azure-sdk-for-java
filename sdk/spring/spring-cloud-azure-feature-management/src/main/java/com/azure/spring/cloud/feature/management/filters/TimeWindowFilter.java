@@ -7,6 +7,7 @@ import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -46,11 +47,12 @@ public final class TimeWindowFilter implements FeatureFilter {
             return false;
         }
 
-        // Need to set Zone Offset
+        // Need to set Zone Offset when compare with crontab expression
+        boolean enabled = filterParameters.filterCronTabExpressions.size() == 0;
         final ZoneOffset zoneOffset = filterParameters.startTime != null ? filterParameters.startTime.getOffset() :
             (filterParameters.endTime != null ? filterParameters.endTime.getOffset() : null);
         if (zoneOffset != null) {
-            now.withZoneSameInstant(zoneOffset);
+            now = now.withZoneSameInstant(zoneOffset);
         }
         // check if match crontab expression
         for (final CrontabExpression expression : filterParameters.filterCronTabExpressions) {
@@ -58,7 +60,7 @@ public final class TimeWindowFilter implements FeatureFilter {
                 return true;
             }
         }
-        return false;
+        return enabled;
     }
 
     private static class TimeWindowFilterParameters {
@@ -77,6 +79,8 @@ public final class TimeWindowFilter implements FeatureFilter {
             final Object filtersObj = context.getParameters().get(TIME_WINDOW_FILTER_SETTING_FILTERS);
             if (filtersObj instanceof Map) {
                 this.filters.addAll(((Map<String, String>) filtersObj).values());
+            } else if (filtersObj instanceof List) {
+                this.filters.addAll((Collection<String>) filtersObj);
             }
         }
 
