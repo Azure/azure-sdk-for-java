@@ -37,14 +37,15 @@ public class JsonArray extends JsonElement {
      * types: object, array, string, number, boolean, and null
      * @return JsonArray object representing the new state of the JsonArray object
      * after the addition of the new JsonElement object appended.
+     * @throws IllegalArgumentException Thrown when a null JsonElement is passed. 
+     * Instantiated JsonElements must be passed. Must pass instantiated JsonNull 
+     * to represent JSON null value. 
      */
     public JsonArray addElement(JsonElement element) throws IllegalArgumentException {
-        if(element == null) { 
+        if (element == null) { 
             throw new IllegalArgumentException("Cannot add a null JsonElement to the JsonArray. Use a JsonNull object to represent a valid JSON null value."); 
         }
-
         this.elements.add(element);
-
         return this;
     }
 
@@ -59,17 +60,17 @@ public class JsonArray extends JsonElement {
      * object and where to shift from
      * @return JsonArray object representing the new state of the JsonArray object
      * after the addition of the new JsonElement object.
-     * TODO: throws error(s) relating to the index in respect to the current state
-     * of the elements ArrayList
+     * @throws IllegalArgumentException Thrown when a null JsonElement is passed. 
+     * Instantiated JsonElements must be passed. Must pass instantiated JsonNull 
+     * to represent JSON null value. 
+     * @throws IndexOutOfBoundsException Thrown when index parameter is < 0 or 
+     * > size() 
      */
-    public JsonArray addElement(int index, JsonElement element) throws IllegalArgumentException {
-        if(element == null) { 
+    public JsonArray addElement(int index, JsonElement element) throws IllegalArgumentException, IndexOutOfBoundsException {
+        if (element == null) { 
             throw new IllegalArgumentException("Cannot add a null JsonElement to the JsonArray. Use a JsonNull object to represent a valid JSON null value."); 
         }
-
-        // TODO: check for out of bounds
         this.elements.add(index, element);
-
         return this;
     }
 
@@ -83,20 +84,17 @@ public class JsonArray extends JsonElement {
      * JsonElement with the newly specified JsonElement object
      * @return JsonArray object representing the new state of the JsonArray object
      * after the setting of the new JsonElement object at index.
-     *
-     * TODO: maybe rename this to replaceElement due to the nature of the
-     * ArrayList.set() method
-     * TODO: throws error(s) relating to the index in respect to the current state
-     * of the elements ArrayList
+     * @throws IllegalArgumentException Thrown when a null JsonElement is passed. 
+     * Instantiated JsonElements must be passed. Must pass instantiated JsonNull 
+     * to represent JSON null value. 
+     * @throws IndexOutOfBoundsException Thrown when index parameter is < 0 or 
+     * > size() 
      */
-    public JsonArray setElement(int index, JsonElement element) throws IllegalArgumentException {
-        if(element == null) { 
+    public JsonArray setElement(int index, JsonElement element) throws IllegalArgumentException, IndexOutOfBoundsException {
+        if (element == null) { 
             throw new IllegalArgumentException("Cannot set a null JsonElement in the JsonArray. Use a JsonNull object to represent a valid JSON null value."); 
         }
-
-        // TODO: check for out of bounds
         this.elements.set(index, element);
-
         return this;
     }
 
@@ -106,29 +104,26 @@ public class JsonArray extends JsonElement {
      * @param index the index specifying which JsonElement from the JsonArray
      * object to return.
      * @return the JsonElement by index from the JsonArray
-     *
-     * TODO: throws error(s) relating to the index in respect to the current state
-     * of the elements ArrayList
+     * @throws IndexOutOfBoundsException Thrown when index parameter is < 0 or 
+     * >= size() 
      */
-    public JsonElement getElement(int index) {
-        // TODO: check for index out of bounds
+    public JsonElement getElement(int index) throws IndexOutOfBoundsException {
         return this.elements.get(index);
     }
 
     /**
-     * Removes a specified JsonElement object from the JsonArray
+     * Removes a specified element according to its index from the JsonArray, 
+     * shifting the existing elements from that index to the left and decrementing 
+     * the size of the JsonArray by 1.
      *
      * @param index the index specifying which JsonElement from the JsonArray
      * object to remove.
-     *
-     * TODO: may want to change the return to returning the removed JsonElement
-     * object.
-     *
-     * TODO: throws error(s) relating to the index in respect to the current state
-     * of the elements ArrayList
+     * @return the resulting JsonArray after the specified JsonElement has been 
+     * removed. 
+     * @throws IndexOutOfBoundsException Thrown when index parameter is < 0 or 
+     * >= size() 
      */
-    public JsonElement removeElement(int index) {
-        // TODO: check for index out of bounds
+    public JsonElement removeElement(int index) throws IndexOutOfBoundsException {
         this.elements.remove(index);
         return this;
     }
@@ -139,7 +134,6 @@ public class JsonArray extends JsonElement {
      * toWriter method and then returns the resulting String.
      * @return String representation of the JsonArray object
      */
-
     public String toJson() throws IOException {
         try (StringWriter stringOutput = new StringWriter()) {
             toWriter(stringOutput);
@@ -183,7 +177,6 @@ public class JsonArray extends JsonElement {
      * @return the JsonWriter
      * @throws IOException if the JsonWriter throws an exception
      */
-
     public JsonWriter serialize(JsonWriter jsonWriter) throws IOException {
 
         // Start writing the array into jsonWriter, if it hits another array or object, then pass the writer in to
@@ -270,9 +263,6 @@ public class JsonArray extends JsonElement {
         while(reader.currentToken() != JsonToken.END_ARRAY) {
 
             JsonToken token = reader.nextToken();
-            //todo remove this debug line, and remove the comment out cases
-            //System.out.printf("Token: %s%n", token);
-
 
             switch (token) {
 
@@ -298,7 +288,7 @@ public class JsonArray extends JsonElement {
                 case NULL:
                     this.addElement(new JsonNull());
                     break;
-//                 These two cases are picked up by the overall while statement.
+                    // These two cases are picked up by the overall while statement.
                 case END_DOCUMENT:
                     return;
                 case END_ARRAY:
