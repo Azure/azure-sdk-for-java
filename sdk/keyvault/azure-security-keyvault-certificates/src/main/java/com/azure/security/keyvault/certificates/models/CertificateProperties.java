@@ -5,12 +5,17 @@ package com.azure.security.keyvault.certificates.models;
 
 import com.azure.core.util.Base64Url;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.security.keyvault.certificates.implementation.CertificatePropertiesHelper;
 import com.azure.security.keyvault.certificates.implementation.IdMetadata;
 import com.azure.security.keyvault.certificates.implementation.models.CertificateAttributes;
 import com.azure.security.keyvault.certificates.implementation.models.CertificateBundle;
 import com.azure.security.keyvault.certificates.implementation.models.CertificateItem;
 
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.Map;
 import java.util.Objects;
@@ -20,7 +25,7 @@ import static com.azure.security.keyvault.certificates.implementation.Certificat
 /**
  * Represents base properties of a certificate.
  */
-public class CertificateProperties {
+public class CertificateProperties implements JsonSerializable<CertificateProperties> {
     private static final ClientLogger LOGGER = new ClientLogger(CertificateProperties.class);
 
     static {
@@ -111,7 +116,7 @@ public class CertificateProperties {
             bundle.getAttributes().getRecoverableDays());
     }
 
-    private CertificateProperties(String id, CertificateAttributes attributes, Map<String, String> tags,
+    CertificateProperties(String id, CertificateAttributes attributes, Map<String, String> tags,
         byte[] wireThumbprint, Integer recoverableDays) {
         IdMetadata idMetadata = getIdMetadata(id, 1, 2, 3, LOGGER);
         this.id = idMetadata.getId();
@@ -119,12 +124,22 @@ public class CertificateProperties {
         this.name = idMetadata.getName();
         this.version = idMetadata.getVersion();
 
-        this.enabled = attributes.isEnabled();
-        this.notBefore = attributes.getNotBefore();
-        this.expiresOn = attributes.getExpires();
-        this.createdOn = attributes.getCreated();
-        this.updatedOn = attributes.getUpdated();
-        this.recoveryLevel = Objects.toString(attributes.getRecoveryLevel(), null);
+        if (attributes != null) {
+            this.enabled = attributes.isEnabled();
+            this.notBefore = attributes.getNotBefore();
+            this.expiresOn = attributes.getExpires();
+            this.createdOn = attributes.getCreated();
+            this.updatedOn = attributes.getUpdated();
+            this.recoveryLevel = Objects.toString(attributes.getRecoveryLevel(), null);
+        } else {
+            this.enabled = null;
+            this.notBefore = null;
+            this.expiresOn = null;
+            this.createdOn = null;
+            this.updatedOn = null;
+            this.recoveryLevel = null;
+        }
+
         this.tags = tags;
         this.x509Thumbprint = (wireThumbprint == null || wireThumbprint.length == 0)
             ? null : Base64Url.encode(wireThumbprint);
@@ -273,6 +288,52 @@ public class CertificateProperties {
             return this.x509Thumbprint.decodedBytes();
         }
         return null;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        return jsonWriter.writeStartObject()
+            .writeMapField("tags", tags, JsonWriter::writeString)
+            .writeEndObject();
+    }
+
+    /**
+     * Reads a JSON stream into a {@link CertificateProperties}.
+     *
+     * @param jsonReader The {@link JsonReader} being read.
+     * @return The {@link CertificateProperties} that the JSON stream represented, may return null.
+     * @throws IOException If a {@link CertificateProperties} fails to be read from the {@code jsonReader}.
+     */
+    public static CertificateProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String id = null;
+            CertificateAttributes attributes = null;
+            Map<String, String> tags = null;
+            byte[] wireThumbprint = null;
+            Integer recoverableDays = null;
+
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    id = reader.getString();
+                } else if ("attributes".equals(fieldName)) {
+                    attributes = CertificateAttributes.fromJson(reader);
+                } else if ("tags".equals(fieldName)) {
+                    tags = reader.readMap(JsonReader::getString);
+                } else if ("x5t".equals(fieldName)) {
+                    wireThumbprint = reader.getBinary();
+                } else if ("recoverableDays".equals(fieldName)) {
+                    recoverableDays = reader.getInt();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return new CertificateProperties(id, attributes == null ? new CertificateAttributes() : attributes, tags,
+                wireThumbprint, recoverableDays);
+        });
     }
 }
 

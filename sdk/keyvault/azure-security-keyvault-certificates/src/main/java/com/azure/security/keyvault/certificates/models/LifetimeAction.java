@@ -3,13 +3,18 @@
 
 package com.azure.security.keyvault.certificates.models;
 
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonWriter;
 import com.azure.security.keyvault.certificates.implementation.models.Action;
 import com.azure.security.keyvault.certificates.implementation.models.Trigger;
+
+import java.io.IOException;
 
 /**
  * Represents a LifeTimeAction in {@link CertificatePolicy}
  */
-public final class LifetimeAction {
+public final class LifetimeAction implements JsonSerializable<LifetimeAction> {
     private final com.azure.security.keyvault.certificates.implementation.models.LifetimeAction impl;
 
     com.azure.security.keyvault.certificates.implementation.models.LifetimeAction getImpl() {
@@ -84,5 +89,22 @@ public final class LifetimeAction {
      */
     public CertificatePolicyAction getAction() {
         return impl.getAction() == null ? null : impl.getAction().getActionType();
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        return impl.toJson(jsonWriter);
+    }
+
+    /**
+     * Reads a JSON stream into a {@link LifetimeAction}.
+     *
+     * @param jsonReader The {@link JsonReader} being read.
+     * @return The {@link LifetimeAction} that the JSON stream represented, may return null.
+     * @throws IOException If a {@link LifetimeAction} fails to be read from the {@code jsonReader}.
+     */
+    public static LifetimeAction fromJson(JsonReader jsonReader) throws IOException {
+        return new LifetimeAction(
+            com.azure.security.keyvault.certificates.implementation.models.LifetimeAction.fromJson(jsonReader));
     }
 }

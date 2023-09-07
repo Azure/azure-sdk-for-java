@@ -47,11 +47,8 @@ import java.io.IOException;
 import java.math.BigInteger;
 import java.net.HttpURLConnection;
 import java.security.GeneralSecurityException;
-import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
-import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
-import java.security.spec.InvalidKeySpecException;
 import java.time.Duration;
 import java.util.Arrays;
 import java.util.Collections;
@@ -473,7 +470,7 @@ public class CertificateClientTest extends CertificateClientTestBase {
         cancelCertificateOperationRunner(certName -> {
             SyncPoller<CertificateOperation, KeyVaultCertificateWithPolicy> certPoller =
                 certificateClient.beginCreateCertificate(certName, CertificatePolicy.getDefault())
-                    .setPollInterval(Duration.ofMillis(250));
+                    .setPollInterval(Duration.ofMillis(100));
 
             LongRunningOperationStatus firstStatus = certPoller.poll().getStatus();
 
