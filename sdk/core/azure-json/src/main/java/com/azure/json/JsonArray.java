@@ -260,7 +260,7 @@ public class JsonArray extends JsonElement {
      */
     private void build(JsonReader reader) throws IOException {
 
-        while(reader.currentToken() != JsonToken.END_ARRAY) {
+        while (reader.currentToken() != JsonToken.END_ARRAY) {
 
             JsonToken token = reader.nextToken();
 
@@ -288,16 +288,17 @@ public class JsonArray extends JsonElement {
                 case NULL:
                     this.addElement(new JsonNull());
                     break;
-                    // These two cases are picked up by the overall while statement.
+                // END_DOCUMENT and END_ARRAY cases are picked up by the overall 
+                // while statement. These cases should not be reached, so exception 
+                // is thrown. 
                 case END_DOCUMENT:
-                    return;
+                    throw new IOException("Invalid JsonToken.END_DOCUMENT token read prematurely from deserialised JSON array. Deserialisation aborted."); 
                 case END_ARRAY:
-                    // It shouldn't get here, the loop prevents it BUT just in case...
-                    return;
+                    throw new IOException("Invalid JsonToken.END_ARRAY token read prematurely from deserialised JSON array. Deserialisation aborted."); 
+                // Case: the currently read token is a JsonToken.END_OBJECT token. 
+                // JSON array is being deserialised, not a JSON object. 
                 case END_OBJECT:
-                    //this should be an error, it's not possible with valid JSON
-                    break;
-
+                    throw new IOException("Invalid JsonToken.END_OBJECT token read from deserialised JSON array. JSON array is being deserialised not a JSON object. This is not a valid JSON array. Deserialisation aborted."); 
             }
         }
     }
