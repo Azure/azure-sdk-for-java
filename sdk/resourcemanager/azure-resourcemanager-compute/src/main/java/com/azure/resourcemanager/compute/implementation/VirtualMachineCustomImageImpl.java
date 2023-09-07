@@ -34,7 +34,9 @@ class VirtualMachineCustomImageImpl
     VirtualMachineCustomImageImpl(final String name, ImageInner innerModel, final ComputeManager computeManager) {
         super(name, innerModel, computeManager);
         // set the default value for the hyper-v generation
-        this.innerModel().withHyperVGeneration(HyperVGenerationTypes.V1);
+        if (this.innerModel().hyperVGeneration() == null) {
+            this.innerModel().withHyperVGeneration(HyperVGenerationTypes.V1);
+        }
     }
 
     @Override

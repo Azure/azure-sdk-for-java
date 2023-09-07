@@ -10,6 +10,8 @@
 
 ### Bugs Fixed
 
+- Fixed a bug that `VirtualMachineCustomImages.getById()` returns `HyperVGenerationTypes.V1` for all instances. ([#36619](https://github.com/Azure/azure-sdk-for-java/issues/36619))
+
 ### Other Changes
 
 ## 2.30.0 (2023-08-25)
