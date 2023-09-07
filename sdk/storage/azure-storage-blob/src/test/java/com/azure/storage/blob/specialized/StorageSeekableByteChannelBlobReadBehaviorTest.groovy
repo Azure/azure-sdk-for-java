@@ -22,7 +22,7 @@ import spock.lang.Unroll
 import java.nio.ByteBuffer
 import java.time.Duration
 
-class StorageSeekableByteChannelBlobReadBehaviorTests extends APISpec {
+class StorageSeekableByteChannelBlobReadBehaviorTest extends APISpec {
     BlockBlobClient blockBlobClient
     PageBlobClient pageBlobClient
     AppendBlobClient appendBlobClient

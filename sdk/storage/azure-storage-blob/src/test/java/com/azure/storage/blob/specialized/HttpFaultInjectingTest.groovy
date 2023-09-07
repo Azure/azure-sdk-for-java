@@ -31,8 +31,8 @@ import java.util.concurrent.atomic.AtomicInteger
 // macOS has known issues running HTTP fault injector, change this once
 // https://github.com/Azure/azure-sdk-tools/pull/6216 is resolved
 @IgnoreIf({ OperatingSystem.current.family == OperatingSystem.Family.MAC_OS })
-class HttpFaultInjectingTests extends APISpec {
-    private static final def LOGGER = new ClientLogger(HttpFaultInjectingTests.class)
+class HttpFaultInjectingTest extends APISpec {
+    private static final def LOGGER = new ClientLogger(HttpFaultInjectingTest.class)
     private static final def UPSTREAM_URI_HEADER = HttpHeaderName.fromString("X-Upstream-Base-Uri")
     private static final def HTTP_FAULT_INJECTOR_RESPONSE_HEADER
         = HttpHeaderName.fromString("x-ms-faultinjector-response-option")

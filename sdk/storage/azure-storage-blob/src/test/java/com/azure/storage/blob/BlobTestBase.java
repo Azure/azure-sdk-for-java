@@ -51,6 +51,7 @@ import okhttp3.ConnectionPool;
 import org.junit.jupiter.api.BeforeAll;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import spock.util.environment.OperatingSystem;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -110,6 +111,14 @@ public class BlobTestBase extends TestProxyTestBase {
     protected static final HttpHeaderName LAST_MODIFIED = HttpHeaderName.fromString("last-modified");
     protected static final HttpHeaderName X_MS_VERSION = HttpHeaderName.fromString("x-ms-version");
     protected static final HttpHeaderName X_MS_CONTENT_CRC64 = HttpHeaderName.fromString("x-ms-content-crc64");
+    protected static final HttpHeaderName X_MS_REQUEST_SERVER_ENCRYPTED =
+        HttpHeaderName.fromString("x-ms-request-server-encrypted");
+    protected static final HttpHeaderName X_MS_BLOB_CONTENT_LENGTH =
+        HttpHeaderName.fromString("x-ms-blob-content-length");
+
+    protected static final HttpHeaderName X_MS_COPY_ID = HttpHeaderName.fromString("x-ms-copy-id");
+
+    protected static final HttpHeaderName X_MS_ENCRYPTION_SCOPE = HttpHeaderName.fromString("x-ms-encryption-scope");
 
     /*
     Note that this value is only used to check if we are depending on the received etag. This value will not actually
@@ -291,14 +300,14 @@ public class BlobTestBase extends TestProxyTestBase {
     /*
     Size must be an int because ByteBuffer sizes can only be an int. Long is not supported.
     */
-    protected ByteBuffer getRandomData(int size) {
+    public ByteBuffer getRandomData(int size) {
         return ByteBuffer.wrap(getRandomByteArray(size));
     }
 
     /*
     We only allow int because anything larger than 2GB (which would require a long) is left to stress/perf.
      */
-    File getRandomFile(int size) throws IOException {
+    protected File getRandomFile(int size) throws IOException {
         File file = File.createTempFile(UUID.randomUUID().toString(), ".txt");
         file.deleteOnExit();
         FileOutputStream fos = new FileOutputStream(file);
@@ -324,7 +333,7 @@ public class BlobTestBase extends TestProxyTestBase {
      * @param count Size of the download from the service
      * @return Whether the files have equivalent content based on offset and read count
      */
-    boolean compareFiles(File file1, File file2, long offset, long count) throws IOException {
+    protected boolean compareFiles(File file1, File file2, long offset, long count) throws IOException {
         long pos = 0L;
         int defaultBufferSize = 128 * Constants.KB;
         FileInputStream stream1 = new FileInputStream(file1);
@@ -662,7 +671,7 @@ public class BlobTestBase extends TestProxyTestBase {
     to play too nicely with mocked objects and the complex reflection stuff on both ends made it more difficult to work
     with than was worth it.
      */
-    HttpResponse getStubResponse(int code, HttpRequest request) {
+    public static HttpResponse getStubResponse(int code, HttpRequest request) {
         return new HttpResponse(request) {
 
             @Override
@@ -702,7 +711,7 @@ public class BlobTestBase extends TestProxyTestBase {
         };
     }
 
-    HttpResponse getStubDownloadResponse(HttpResponse response, int code, Flux<ByteBuffer> body, HttpHeaders headers) {
+    protected HttpResponse getStubDownloadResponse(HttpResponse response, int code, Flux<ByteBuffer> body, HttpHeaders headers) {
         return new HttpResponse(response.getRequest()) {
 
             @Override
@@ -750,7 +759,7 @@ public class BlobTestBase extends TestProxyTestBase {
             if (Objects.equals(status, CopyStatusType.FAILED.toString()) || currentTime.minusMinutes(1) == start) {
                 throw new Exception("Copy failed or took too long");
             }
-            sleepIfLiveTesting(1000);
+            sleepIfRunningAgainstService(1000);
         }
     }
 
@@ -780,24 +789,6 @@ public class BlobTestBase extends TestProxyTestBase {
             && Arrays.equals(response.getValue().getContentMd5(), contentMD5)
             && Objects.equals(response.getValue().getContentType(), contentType);
     }
-    /**
-     * Temporary utility method that waits if running against a live service.
-     * <p>
-     *
-     * @param milliseconds Milliseconds to sleep.
-     */
-    public static void sleepIfLiveTesting(long milliseconds) {
-        if (ENVIRONMENT.getTestMode() == TestMode.PLAYBACK) {
-            return;
-        }
-
-        try {
-            Thread.sleep(milliseconds);
-        } catch (InterruptedException ex) {
-            throw new RuntimeException(ex);
-        }
-    }
-
 
     /**
      * Injects one retry-able IOException failure per url.
@@ -865,12 +856,36 @@ public class BlobTestBase extends TestProxyTestBase {
         return olderThan(BlobServiceVersion.V2019_12_12);
     }
 
+    protected static boolean olderThan20201206ServiceVersion() {
+        return olderThan(BlobServiceVersion.V2020_12_06);
+    }
+
+
     protected static boolean olderThan20201002ServiceVersion() {
         return olderThan(BlobServiceVersion.V2020_10_02);
     }
 
+    protected static boolean olderThan20200408ServiceVersion() {
+        return olderThan(BlobServiceVersion.V2020_04_08);
+    }
+
+    protected static boolean olderThan20210410ServiceVersion() {
+        return olderThan(BlobServiceVersion.V2021_04_10);
+    }
+    protected static boolean olderThan20210608ServiceVersion() {
+        return olderThan(BlobServiceVersion.V2021_06_08);
+    }
+
+    protected static boolean olderThan20211202ServiceVersion() {
+        return olderThan(BlobServiceVersion.V2021_12_02);
+    }
+
     protected static boolean olderThan20221102ServiceVersion() {
         return olderThan(BlobServiceVersion.V2022_11_02);
+    }
+
+    protected static boolean olderThan20210212ServiceVersion() {
+        return olderThan(BlobServiceVersion.V2021_02_12);
     }
 
     protected static boolean olderThan(BlobServiceVersion targetVersion) {
@@ -888,5 +903,13 @@ public class BlobTestBase extends TestProxyTestBase {
 
     public static boolean isLiveMode() {
         return ENVIRONMENT.getTestMode() == TestMode.LIVE;
+    }
+
+    public static boolean isPlaybackMode() {
+        return ENVIRONMENT.getTestMode() == TestMode.PLAYBACK;
+    }
+
+    public static boolean isOperatingSystemMac() {
+        return OperatingSystem.getCurrent().getFamily() == OperatingSystem.Family.MAC_OS;
     }
 }

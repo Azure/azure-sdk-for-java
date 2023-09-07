@@ -28,7 +28,7 @@ import com.azure.storage.common.test.shared.extensions.LiveOnly
 import java.nio.ByteBuffer
 import java.time.Duration
 
-class BlobSeekableByteChannelTests extends APISpec {
+class BlobSeekableByteChannelTest extends APISpec {
     BlobClient bc
     BlockBlobClient blockClient
 
