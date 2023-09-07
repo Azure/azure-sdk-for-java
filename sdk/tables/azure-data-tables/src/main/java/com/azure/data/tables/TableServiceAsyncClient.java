@@ -48,17 +48,17 @@ import static com.azure.data.tables.implementation.TableUtils.applyOptionalTimeo
 import static com.azure.data.tables.implementation.TableUtils.swallowExceptionForStatusCode;
 
 /**
- * 
+ *
  * Provides an asynchronous service client for accessing the Azure Tables service.
  *
  * <h2>Overview</h2>
- * 
+ *
  * <p>The client encapsulates the URL for the Tables service endpoint and the credentials for accessing the storage or
  * CosmosDB table API account. It provides methods to create, delete, and list tables within the account. These methods
  * invoke REST API operations to make the requests and obtain the results that are returned.</p>
  *
  * <h2>Getting Started</h2>
- * 
+ *
  * <p>The building and authenticating of instances of this client are handled by {@link TableServiceClientBuilder} instances. The sample below
  * shows how to authenticate and build a TableServiceAsyncClient using a connection string.</p>
  *
@@ -69,17 +69,17 @@ import static com.azure.data.tables.implementation.TableUtils.swallowExceptionFo
  *     .buildAsyncClient&#40;&#41;;
  * </pre>
  * <!-- end com.azure.data.tables.tableServiceAsyncClient.instantiation -->
- * 
+ *
  * <p>See {@link TableServiceClientBuilder} documentation for more information on constructing and authenticating a client.</p>
- * 
+ *
  * <h2>Usage Code Samples</h2>
- * 
+ *
  * <p>The following code samples show the various ways you can interact with the tables service using this client.</p>
- * 
- * <strong>Creating a Table</strong>
- * 
- * The following sample creates a table with the name "myTable".
- * 
+ *
+ * <strong>Create a Table</strong>
+ *
+ * <p>The following sample creates a table with the name "myTable".</p>
+ *
  * <!-- src_embed com.azure.data.tables.tableServiceAsyncClient.createTable#String -->
  * <pre>
  * tableServiceAsyncClient.createTable&#40;&quot;myTable&quot;&#41;
@@ -88,26 +88,24 @@ import static com.azure.data.tables.implementation.TableUtils.swallowExceptionFo
  *         System.out.printf&#40;&quot;Table with name '%s' was created.&quot;, tableAsyncClient.getTableName&#40;&#41;&#41;&#41;;
  * </pre>
  * <!-- end com.azure.data.tables.tableServiceAsyncClient.createTable#String -->
- * 
- * <strong>Deleting a Table</strong>
- * 
- * The following sample deletes the table with the name "myTable".
- * 
+ *
+ * <strong>Delete a Table</strong>
+ *
+ * <p>The following sample deletes the table with the name "myTable".</p>
+ *
  * <!-- src_embed com.azure.data.tables.tableServiceAsyncClient.deleteTable#String -->
  * <pre>
- * String tableName = &quot;myTable&quot;;
- *
- * tableServiceAsyncClient.deleteTable&#40;tableName&#41;
+ * tableServiceAsyncClient.deleteTable&#40;&quot;myTable&quot;&#41;
  *     .contextWrite&#40;Context.of&#40;&quot;key1&quot;, &quot;value1&quot;, &quot;key2&quot;, &quot;value2&quot;&#41;&#41;
  *     .subscribe&#40;unused -&gt;
- *         System.out.printf&#40;&quot;Table with name '%s' was deleted.&quot;, tableName&#41;&#41;;
+ *         System.out.printf&#40;&quot;Table with name '%s' was deleted.&quot;, &quot;myTable&quot;&#41;&#41;;
  * </pre>
  * <!-- end com.azure.data.tables.tableServiceAsyncClient.deleteTable#String -->
- * 
- * <strong>Getting a {@link TableServiceAsyncClient}</strong>
- * 
- * The following sample gets a {@link TableServiceAsyncClient} using the table name "myTable".
- * 
+ *
+ * <strong>Get a {@link TableServiceAsyncClient}</strong>
+ *
+ * <p>The following sample gets a {@link TableServiceAsyncClient} using the table name "myTable".</p>
+ *
  * <!-- src_embed com.azure.data.tables.tableServiceAsyncClient.getTableClient#String -->
  * <pre>
  * TableAsyncClient tableAsyncClient = tableServiceAsyncClient.getTableClient&#40;&quot;myTable&quot;&#41;;
@@ -115,35 +113,33 @@ import static com.azure.data.tables.implementation.TableUtils.swallowExceptionFo
  * System.out.printf&#40;&quot;Table with name '%s' was retrieved.&quot;, tableAsyncClient.getTableName&#40;&#41;&#41;;
  * </pre>
  * <!-- end com.azure.data.tables.tableServiceAsyncClient.getTableClient#String -->
- * 
- * <strong>Listing Tables</strong>
- * 
- * The following samples list the tables in the Table service account.
- * 
+ *
+ * <strong>List Tables</strong>
+ *
+ * <p>The following samples list the tables in the Table service account.</p>
+ *
  * <p>Without filtering, returning all tables:</p>
- * 
+ *
  * <!-- src_embed com.azure.data.tables.tableServiceAsyncClient.listTables -->
  * <pre>
  * tableServiceAsyncClient.listTables&#40;&#41;.subscribe&#40;tableItem -&gt;
  *     System.out.printf&#40;&quot;Retrieved table with name '%s'.%n&quot;, tableItem.getName&#40;&#41;&#41;&#41;;
  * </pre>
  * <!-- end com.azure.data.tables.tableServiceAsyncClient.listTables -->
- * 
+ *
  * <p>With filtering:</p>
- * 
+ *
  * <!-- src_embed com.azure.data.tables.tableServiceAsyncClient.listTables#ListTablesOptions -->
  * <pre>
- * ListTablesOptions options = new ListTablesOptions&#40;&#41;.setFilter&#40;&quot;TableName eq 'myTable'&quot;&#41;;
- *
- * tableServiceAsyncClient.listTables&#40;options&#41;.subscribe&#40;tableItem -&gt;
- *     System.out.printf&#40;&quot;Retrieved table with name '%s'.%n&quot;, tableItem.getName&#40;&#41;&#41;&#41;;
+ * tableServiceAsyncClient.listTables&#40;new ListTablesOptions&#40;&#41;.setFilter&#40;&quot;TableName eq 'myTable'&quot;&#41;&#41;.
+ *     subscribe&#40;tableItem -&gt; System.out.printf&#40;&quot;Retrieved table with name '%s'.%n&quot;, tableItem.getName&#40;&#41;&#41;&#41;;
  * </pre>
  * <!-- end com.azure.data.tables.tableServiceAsyncClient.listTables#ListTablesOptions -->
- * 
- * <strong>Getting Table Properties</strong>
- * 
- * The following sample gets the properties of the Table service account.
- * 
+ *
+ * <strong>Get Table Properties</strong>
+ *
+ * <p>The following sample gets the properties of the Table service account.</p>
+ *
  * <!-- src_embed com.azure.data.tables.tableServiceAsyncClient.getProperties -->
  * <pre>
  * tableServiceAsyncClient.getProperties&#40;&#41;
@@ -151,11 +147,11 @@ import static com.azure.data.tables.implementation.TableUtils.swallowExceptionFo
  *     .subscribe&#40;properties -&gt; System.out.print&#40;&quot;Retrieved service properties successfully.&quot;&#41;&#41;;
  * </pre>
  * <!-- end com.azure.data.tables.tableServiceAsyncClient.getProperties -->
- * 
- * <strong>Setting Table Properties</strong>
- * 
- * The following sample sets the properties of the Table service account.
- * 
+ *
+ * <strong>Set Table Properties</strong>
+ *
+ * <p>The following sample sets the properties of the Table service account.</p>
+ *
  * <!-- src_embed com.azure.data.tables.tableServiceAsyncClient.setProperties#TableServiceProperties -->
  * <pre>
  * TableServiceProperties properties = new TableServiceProperties&#40;&#41;
@@ -174,11 +170,11 @@ import static com.azure.data.tables.implementation.TableUtils.swallowExceptionFo
  *     .subscribe&#40;unused -&gt; System.out.print&#40;&quot;Set service properties successfully.&quot;&#41;&#41;;
  * </pre>
  * <!-- end com.azure.data.tables.tableServiceAsyncClient.setProperties#TableServiceProperties -->
- * 
- * <strong>Getting Table Statistics</strong>
- * 
- * The following sample gets the statistics of the Table service account.
- * 
+ *
+ * <strong>Get Table Statistics</strong>
+ *
+ * <p>The following sample gets the statistics of the Table service account.</p>
+ *
  * <!-- src_embed com.azure.data.tables.tableServiceAsyncClient.getStatistics -->
  * <pre>
  * tableServiceAsyncClient.getStatistics&#40;&#41;
@@ -186,8 +182,9 @@ import static com.azure.data.tables.implementation.TableUtils.swallowExceptionFo
  *     .subscribe&#40;statistics -&gt; System.out.print&#40;&quot;Retrieved service statistics successfully.&quot;&#41;&#41;;
  * </pre>
  * <!-- end com.azure.data.tables.tableServiceAsyncClient.getStatistics -->
- * 
+ *
  * @see TableServiceClientBuilder
+ * @see com.azure.data.tables
  */
 @ServiceClient(builder = TableServiceClientBuilder.class, isAsync = true)
 public final class TableServiceAsyncClient {
@@ -454,12 +451,10 @@ public final class TableServiceAsyncClient {
      * <p>Deletes a table.</p>
      * <!-- src_embed com.azure.data.tables.tableServiceAsyncClient.deleteTable#String -->
      * <pre>
-     * String tableName = &quot;myTable&quot;;
-     *
-     * tableServiceAsyncClient.deleteTable&#40;tableName&#41;
+     * tableServiceAsyncClient.deleteTable&#40;&quot;myTable&quot;&#41;
      *     .contextWrite&#40;Context.of&#40;&quot;key1&quot;, &quot;value1&quot;, &quot;key2&quot;, &quot;value2&quot;&#41;&#41;
      *     .subscribe&#40;unused -&gt;
-     *         System.out.printf&#40;&quot;Table with name '%s' was deleted.&quot;, tableName&#41;&#41;;
+     *         System.out.printf&#40;&quot;Table with name '%s' was deleted.&quot;, &quot;myTable&quot;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.data.tables.tableServiceAsyncClient.deleteTable#String -->
      *
@@ -482,13 +477,11 @@ public final class TableServiceAsyncClient {
      * <p>Deletes a table.</p>
      * <!-- src_embed com.azure.data.tables.tableServiceAsyncClient.deleteTableWithResponse#String -->
      * <pre>
-     * String myTableName = &quot;myTable&quot;;
-     *
-     * tableServiceAsyncClient.deleteTableWithResponse&#40;myTableName&#41;
+     * tableServiceAsyncClient.deleteTableWithResponse&#40;&quot;myTable&quot;&#41;
      *     .contextWrite&#40;Context.of&#40;&quot;key1&quot;, &quot;value1&quot;, &quot;key2&quot;, &quot;value2&quot;&#41;&#41;
      *     .subscribe&#40;response -&gt;
      *         System.out.printf&#40;&quot;Response successful with status code: %d. Table with name '%s' was deleted.&quot;,
-     *             response.getStatusCode&#40;&#41;, myTableName&#41;&#41;;
+     *             response.getStatusCode&#40;&#41;, &quot;myTable&quot;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.data.tables.tableServiceAsyncClient.deleteTableWithResponse#String -->
      *
@@ -548,10 +541,8 @@ public final class TableServiceAsyncClient {
      * <p>Lists all tables that match the filter. Prints out the details of the retrieved tables.</p>
      * <!-- src_embed com.azure.data.tables.tableServiceAsyncClient.listTables#ListTablesOptions -->
      * <pre>
-     * ListTablesOptions options = new ListTablesOptions&#40;&#41;.setFilter&#40;&quot;TableName eq 'myTable'&quot;&#41;;
-     *
-     * tableServiceAsyncClient.listTables&#40;options&#41;.subscribe&#40;tableItem -&gt;
-     *     System.out.printf&#40;&quot;Retrieved table with name '%s'.%n&quot;, tableItem.getName&#40;&#41;&#41;&#41;;
+     * tableServiceAsyncClient.listTables&#40;new ListTablesOptions&#40;&#41;.setFilter&#40;&quot;TableName eq 'myTable'&quot;&#41;&#41;.
+     *     subscribe&#40;tableItem -&gt; System.out.printf&#40;&quot;Retrieved table with name '%s'.%n&quot;, tableItem.getName&#40;&#41;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.data.tables.tableServiceAsyncClient.listTables#ListTablesOptions -->
      *

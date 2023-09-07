@@ -40,6 +40,7 @@ Licensed under the MIT License.
       --add-opens com.azure.data.tables/com.azure.data.tables.implementation.models=ALL-UNNAMED
       --add-opens com.azure.data.tables/com.azure.data.tables.models=ALL-UNNAMED
     </javaModulesSurefireArgLine>
+    <javadoc.excludePackageNames>com.azure.json</javadoc.excludePackageNames>
   </properties>
 
   <dependencies>

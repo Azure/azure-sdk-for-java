@@ -67,7 +67,7 @@ public class TableServiceClientJavaDocCodeSnippets {
         // END: com.azure.data.tables.tableServiceClient.getTableClient#String
     }
 
-    
+
 
     /**
      * Generates code samples for using {@link TableServiceClient#createTable(String)} and
@@ -122,21 +122,18 @@ public class TableServiceClientJavaDocCodeSnippets {
         TableServiceClient tableServiceClient = createClient();
 
         // BEGIN: com.azure.data.tables.tableServiceClient.deleteTable#String
-        String tableName = "myTable";
 
-        tableServiceClient.deleteTable(tableName);
+        tableServiceClient.deleteTable("myTable");
 
-        System.out.printf("Table with name '%s' was deleted.", tableName);
+        System.out.printf("Table with name '%s' was deleted.", "myTable");
         // END: com.azure.data.tables.tableServiceClient.deleteTable#String
 
         // BEGIN: com.azure.data.tables.tableServiceClient.deleteTableWithResponse#String-Duration-Context
-        String myTableName = "myTable";
-
-        Response<Void> response = tableServiceClient.deleteTableWithResponse(myTableName, Duration.ofSeconds(5),
+        Response<Void> response = tableServiceClient.deleteTableWithResponse("myTable", Duration.ofSeconds(5),
             new Context("key1", "value1"));
 
         System.out.printf("Response successful with status code: %d. Table with name '%s' was deleted.",
-            response.getStatusCode(), myTableName);
+            response.getStatusCode(), "myTable");
         // END: com.azure.data.tables.tableServiceClient.deleteTableWithResponse#String-Duration-Context
     }
 

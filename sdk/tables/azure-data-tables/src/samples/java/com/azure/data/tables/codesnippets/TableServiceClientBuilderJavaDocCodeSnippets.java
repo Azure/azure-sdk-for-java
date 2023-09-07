@@ -4,22 +4,20 @@ package com.azure.data.tables.codesnippets;
 
 import com.azure.core.credential.AzureNamedKeyCredential;
 import com.azure.core.credential.AzureSasCredential;
-import com.azure.core.credential.TokenCredential;
 import com.azure.data.tables.TableServiceAsyncClient;
 import com.azure.data.tables.TableServiceClient;
 import com.azure.data.tables.TableServiceClientBuilder;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class TableServiceClientBuilderJavaDocCodeSnippets {
-    
+
     /**
      * Generates a code sample for using {@link TableServiceClientBuilder#buildClient()} using a connection string.
      */
     public void buildClientWithConnectionString() {
         // BEGIN: com.azure.data.tables.tableServiceClientBuilder.connectionString#string
-        String connectionString = "connectionstring";
         TableServiceClient tableServiceClient = new TableServiceClientBuilder()
-            .connectionString(connectionString)
+            .connectionString("connectionstring")
             .buildClient();
         // END: com.azure.data.tables.tableServiceClientBuilder.connectionString#string
     }
@@ -29,10 +27,9 @@ public class TableServiceClientBuilderJavaDocCodeSnippets {
      */
     public void buildClientWithSharedKeyCredential() {
         // BEGIN: com.azure.data.tables.tableServiceClientBuilder.credential#sharedKeyCredential
-        AzureNamedKeyCredential credential = new AzureNamedKeyCredential("name", "key");
         TableServiceClient tableServiceClient = new TableServiceClientBuilder()
             .endpoint("endpoint")
-            .credential(credential)
+            .credential(new AzureNamedKeyCredential("name", "key"))
             .buildClient();
         // END: com.azure.data.tables.tableServiceClientBuilder.credential#sharedKeyCredential
     }
@@ -42,10 +39,9 @@ public class TableServiceClientBuilderJavaDocCodeSnippets {
      */
     public void buildClientWithAzureSasCredential() {
         // BEGIN: com.azure.data.tables.tableServiceClientBuilder.credential#azureSasCredential
-        AzureSasCredential azureSasCredential = new AzureSasCredential("sasToken");
         TableServiceClient tableServiceClient = new TableServiceClientBuilder()
             .endpoint("endpoint")
-            .credential(azureSasCredential)
+            .credential(new AzureSasCredential("sasToken"))
             .buildClient();
         // END: com.azure.data.tables.tableServiceClientBuilder.credential#azureSasCredential
     }
@@ -55,10 +51,9 @@ public class TableServiceClientBuilderJavaDocCodeSnippets {
      */
     public void buildClientWithSasToken() {
         // BEGIN: com.azure.data.tables.tableServiceClientBuilder.sasToken#string
-        String sasToken = "sasToken";
         TableServiceClient tableServiceClient = new TableServiceClientBuilder()
             .endpoint("endpoint")
-            .sasToken(sasToken)
+            .sasToken("sasToken")
             .buildClient();
         // END: com.azure.data.tables.tableServiceClientBuilder.sasToken#string
     }
@@ -68,10 +63,9 @@ public class TableServiceClientBuilderJavaDocCodeSnippets {
      */
     public void buildClientWithTokenCredential() {
         // BEGIN: com.azure.data.tables.tableServiceClientBuilder.credential#tokenCredential
-        TokenCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
         TableServiceClient tableServiceClient = new TableServiceClientBuilder()
             .endpoint("endpoint")
-            .credential(tokenCredential)
+            .credential(new DefaultAzureCredentialBuilder().build())
             .buildClient();
         // END: com.azure.data.tables.tableServiceClientBuilder.credential#tokenCredential
     }
