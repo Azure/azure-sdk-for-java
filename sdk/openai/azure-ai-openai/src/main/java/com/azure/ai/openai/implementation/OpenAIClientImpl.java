@@ -452,6 +452,20 @@ public final class OpenAIClientImpl {
                 @BodyParam("multipart/form-data") BinaryData audioTranslationOptions,
                 RequestOptions requestOptions,
                 Context context);
+
+        @Post("/deployments/{deploymentId}/audio/translations")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> getAudioTranslationSync(
+            @HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("deploymentId") String deploymentOrModelName,
+            @HeaderParam("content-type") String contentType,
+            @HeaderParam("accept") String accept,
+            @HeaderParam("content-length") String contentLength,
+            @BodyParam("multipart/form-data") BinaryData audioTranslationOptions,
+            RequestOptions requestOptions,
+            Context context);
     }
 
     /**
@@ -1927,5 +1941,22 @@ public final class OpenAIClientImpl {
                 audioTranslationOptions,
                 requestOptions,
                 Context.NONE);
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> getAudioTranslationWithResponse(
+        String deploymentOrModelName, BinaryData audioTranslationOptions, RequestOptions requestOptions, String boundary, String contentLength) {
+        final String contentType = "multipart/form-data; boundary=" + boundary ;
+        final String accept = "*/*";
+        return service.getAudioTranslationSync(
+            this.getEndpoint(),
+            this.getServiceVersion().getVersion(),
+            deploymentOrModelName,
+            contentType,
+            accept,
+            contentLength,
+            audioTranslationOptions,
+            requestOptions,
+            Context.NONE);
     }
 }
