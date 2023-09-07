@@ -105,15 +105,17 @@ public final class CertificateAttributes extends Attributes {
                         if ("enabled".equals(fieldName)) {
                             deserializedCertificateAttributes.setEnabled(reader.getNullable(JsonReader::getBoolean));
                         } else if ("nbf".equals(fieldName)) {
-                            deserializedCertificateAttributes.setNotBefore(
-                                    OffsetDateTime.ofInstant(
-                                            Instant.ofEpochSecond(reader.getNullable(JsonReader::getLong)),
-                                            ZoneOffset.UTC));
+                            Long notBefore = reader.getNullable(JsonReader::getLong);
+                            if (notBefore != null) {
+                                deserializedCertificateAttributes.setNotBefore(
+                                        OffsetDateTime.ofInstant(Instant.ofEpochSecond(notBefore), ZoneOffset.UTC));
+                            }
                         } else if ("exp".equals(fieldName)) {
-                            deserializedCertificateAttributes.setExpires(
-                                    OffsetDateTime.ofInstant(
-                                            Instant.ofEpochSecond(reader.getNullable(JsonReader::getLong)),
-                                            ZoneOffset.UTC));
+                            Long expires = reader.getNullable(JsonReader::getLong);
+                            if (expires != null) {
+                                deserializedCertificateAttributes.setExpires(
+                                        OffsetDateTime.ofInstant(Instant.ofEpochSecond(expires), ZoneOffset.UTC));
+                            }
                         } else if ("created".equals(fieldName)) {
                             deserializedCertificateAttributes.setCreated(reader.getNullable(JsonReader::getLong));
                         } else if ("updated".equals(fieldName)) {

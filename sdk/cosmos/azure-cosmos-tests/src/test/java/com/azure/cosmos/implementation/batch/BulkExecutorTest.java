@@ -11,33 +11,27 @@ import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosDatabaseForTest;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
-import com.azure.cosmos.models.CosmosBulkExecutionOptions;
 import com.azure.cosmos.models.CosmosBulkItemResponse;
-import com.azure.cosmos.models.CosmosBulkOperationResponse;
-import com.azure.cosmos.models.CosmosBulkOperations;
-import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosItemOperation;
-import com.azure.cosmos.models.CosmosPatchOperations;
+import com.azure.cosmos.models.CosmosContainerProperties;
+import com.azure.cosmos.models.CosmosBulkOperations;
 import com.azure.cosmos.models.PartitionKey;
+import com.azure.cosmos.models.CosmosBulkExecutionOptions;
+import com.azure.cosmos.models.CosmosBulkOperationResponse;
 import com.azure.cosmos.test.faultinjection.CosmosFaultInjectionHelper;
-import com.azure.cosmos.test.faultinjection.FaultInjectionCondition;
-import com.azure.cosmos.test.faultinjection.FaultInjectionConditionBuilder;
 import com.azure.cosmos.test.faultinjection.FaultInjectionConnectionErrorType;
-import com.azure.cosmos.test.faultinjection.FaultInjectionConnectionType;
+import com.azure.cosmos.test.faultinjection.FaultInjectionRule;
 import com.azure.cosmos.test.faultinjection.FaultInjectionOperationType;
 import com.azure.cosmos.test.faultinjection.FaultInjectionResultBuilders;
-import com.azure.cosmos.test.faultinjection.FaultInjectionRule;
-import com.azure.cosmos.test.faultinjection.FaultInjectionRuleBuilder;
-import com.azure.cosmos.test.faultinjection.FaultInjectionServerErrorResultBuilder;
 import com.azure.cosmos.test.faultinjection.FaultInjectionServerErrorType;
-import com.azure.cosmos.test.faultinjection.IFaultInjectionResult;
+import com.azure.cosmos.test.faultinjection.FaultInjectionConditionBuilder;
+import com.azure.cosmos.test.faultinjection.FaultInjectionRuleBuilder;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.testng.SkipException;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.DataProvider;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 import reactor.core.Disposable;
@@ -60,7 +54,7 @@ public class BulkExecutorTest extends BatchTestBase {
     private CosmosAsyncDatabase database;
     private String preExistingDatabaseId = CosmosDatabaseForTest.generateId();
 
-    @Factory(dataProvider = "simpleClientBuildersWithDirect")
+    @Factory(dataProvider = "simpleClientBuildersWithJustDirectTcp")
     public BulkExecutorTest(CosmosClientBuilder clientBuilder) {
         super(clientBuilder);
     }
@@ -213,17 +207,17 @@ public class BulkExecutorTest extends BatchTestBase {
             Flux.fromIterable(cosmosItemOperations),
             new CosmosBulkExecutionOptions());
 
-        CosmosFaultInjectionHelper
-            .configureFaultInjectionRules(container, Arrays.asList(connectionCloseRule, serverResponseDelayRule))
-            .block();
+        try {
+            CosmosFaultInjectionHelper
+                .configureFaultInjectionRules(container, Arrays.asList(connectionCloseRule, serverResponseDelayRule))
+                .block();
 
-        List<CosmosBulkOperationResponse<BulkExecutorTest>>  bulkResponse =
+            List<CosmosBulkOperationResponse<BulkExecutorTest>>  bulkResponse =
                 Flux
                     .deferContextual(context -> executor.execute())
                     .collectList()
                     .block();
 
-        try {
             assertThat(bulkResponse.size()).isEqualTo(1);
 
             CosmosBulkOperationResponse<BulkExecutorTest> operationResponse = bulkResponse.get(0);
@@ -237,7 +231,7 @@ public class BulkExecutorTest extends BatchTestBase {
             serverResponseDelayRule.disable();
         }
     }
-
+    
     @Test(groups = { "emulator" }, timeOut = TIMEOUT)
     public void executeBulk_complete() throws InterruptedException {
         int totalRequest = 10;

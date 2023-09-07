@@ -148,9 +148,11 @@ public final class DeletedCertificateItem extends CertificateItem {
                             Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
                             deserializedDeletedCertificateItem.setTags(tags);
                         } else if ("x5t".equals(fieldName)) {
-                            deserializedDeletedCertificateItem.setX509Thumbprint(
-                                    reader.getNullable(nonNullReader -> new Base64Url(nonNullReader.getString()))
-                                            .decodedBytes());
+                            Base64Url x509Thumbprint =
+                                    reader.getNullable(nonNullReader -> new Base64Url(nonNullReader.getString()));
+                            if (x509Thumbprint != null) {
+                                deserializedDeletedCertificateItem.setX509Thumbprint(x509Thumbprint.decodedBytes());
+                            }
                         } else if ("recoveryId".equals(fieldName)) {
                             deserializedDeletedCertificateItem.recoveryId = reader.getString();
                         } else if ("scheduledPurgeDate".equals(fieldName)) {
