@@ -12,7 +12,7 @@
 
 ### Other Changes
 
-### Dependency Updates
+#### Dependency Updates
 
 - Upgraded Reactor Core from `3.4.30` to `3.4.31`.
 
