@@ -4,8 +4,11 @@
 package com.azure.data.appconfiguration.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
+import com.azure.core.util.IterableStream;
 
 import java.util.Arrays;
+import java.util.stream.Collectors;
 
 /**
  * Snapshot selector, the optional bag
@@ -80,5 +83,33 @@ public final class SnapshotSelector {
     public SnapshotSelector setFields(SnapshotFields... fields) {
         this.fields = fields == null ? null : Arrays.asList(fields);
         return this;
+    }
+
+    @Override
+    public String toString() {
+        String fields;
+        if (CoreUtils.isNullOrEmpty(Arrays.asList(this.fields))) {
+            fields = "ALL_FIELDS";
+        } else {
+            // join an iterable of enum values into a comma-separated string
+            fields = IterableStream.of(this.fields)
+                .stream()
+                .map(s -> s.toString())
+                .collect(Collectors.joining(","));
+        }
+
+        String status;
+        if (CoreUtils.isNullOrEmpty(Arrays.asList(this.status))) {
+            status = "ALL_STATUS";
+        } else {
+            // join an iterable of enum values into a comma-separated string
+            status = IterableStream.of(this.status)
+                .stream()
+                .map(s -> s.toString())
+                .collect(Collectors.joining(","));
+        }
+
+        return String.format("SnapshotSelector(name=%s, status=%s, fields=%s)",
+            this.name, status, fields);
     }
 }
