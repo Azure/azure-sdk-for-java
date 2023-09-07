@@ -7,7 +7,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 import java.util.function.Consumer;
@@ -15,8 +14,10 @@ import java.util.function.Consumer;
 public class MultipartDataHelper {
     private final String boundaryId = UUID.randomUUID().toString().substring(0, 16);
 
-    private final String boundary = "--AZ-OAI-JAVA--" + boundaryId;
-    private final String endBoundary = boundary + "--";
+    private final String boundary = "AZ-OAI-JAVA--" + boundaryId;
+
+    private final String partSeparator = "--" + boundary;
+    private final String endMarker = partSeparator + "--";
 
     private final String CRLF = "\r\n";
     private final List<MultipartField> fields = new ArrayList<>();
@@ -29,7 +30,7 @@ public class MultipartDataHelper {
         AudioTranslationOptions audioTranscriptionOptions, String fileName) {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         // File
-        String fileFieldPreamble = boundary
+        String fileFieldPreamble = partSeparator
             + CRLF + "Content-Disposition: form-data; name=\"file\"; filename=\""
             + fileName + "\""
             + CRLF + "Content-Type: application/octet-stream" + CRLF + CRLF;
@@ -39,7 +40,7 @@ public class MultipartDataHelper {
             for (MultipartField field : fields) {
                 byteArrayOutputStream.write(serializeField(field));
             }
-            byteArrayOutputStream.write((CRLF + endBoundary).getBytes(StandardCharsets.US_ASCII));
+            byteArrayOutputStream.write((CRLF + endMarker).getBytes(StandardCharsets.US_ASCII));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -55,7 +56,7 @@ public class MultipartDataHelper {
     }
 
     private byte[] serializeField(MultipartField field) {
-        String toSerizalise = CRLF + boundary
+        String toSerizalise = CRLF + partSeparator
             + CRLF + "Content-Disposition: form-data; name=\""
             + field.getWireName() + "\"" + CRLF + CRLF
             + field.getValue();
