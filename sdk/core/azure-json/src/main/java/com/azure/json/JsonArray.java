@@ -178,20 +178,22 @@ public class JsonArray extends JsonElement {
     }
 
     /**
-     * Takes a JsonWriter and uses it to serialize the JsonArray object. At every step, it utilises
-     * serialize() method, which is inherited from the parent. This means essentially it doesn't matter
-     * what JsonElement is passed in to the add method, all it has to do is pass the JsonWriter to the serialize()
-     * method of whatever JsonElement it is using, and it will serialize.
+     * Takes a JsonWriter and uses it to serialize the JsonArray object. At 
+     * every step, it utilises serialize() method, which is inherited from the 
+     * parent. This means essentially it doesn't matter what JsonElement is 
+     * passed in to the add method, all it has to do is pass the JsonWriter to 
+     * the serialize() method of whatever JsonElement it is using, and it will 
+     * serialize.
      *
      * @param jsonWriter the JsonWriter to use
      * @return the JsonWriter
      * @throws IOException if the JsonWriter throws an exception
      */
     public JsonWriter serialize(JsonWriter jsonWriter) throws IOException {
-
-        // Start writing the array into jsonWriter, if it hits another array or object, then pass the writer in to
-        // that objects serialize (which will call this method again) and then return the writer to here.
-        // this will unnest the lot.
+        // Start writing the array into jsonWriter, if it hits another array or 
+        // object, then pass the writer in to that objects serialize (which will 
+        // call this method again) and then return the writer to here. This will 
+        // unnest the lot.
 
         jsonWriter.writeStartArray();
 
@@ -262,16 +264,16 @@ public class JsonArray extends JsonElement {
     }
 
     /**
-     * The build method is used when a JsonReader is passed in to the array (usually through the constructor)
-     * It will then read the JsonReader and build the JsonArray from it. If it hits a nested element, the reader
-     * is passed into the constructor of the new element, and it builds recursively.
-     * @param reader the JsonReader to use
-     * @throws IOException if the JsonReader throws an exception
+     * Builds the JsonArray from an opened JsonReader. 
+     * 
+     * JsonReader is passed to the nested JsonElements to recursively build. 
+     * 
+     * @param reader the JsonReader to build the JsonArray from. 
+     * @throws IOException Thrown when build is aborted due to encountering an 
+     * invalid JsonToken indicating a improperly formed JsonArray. 
      */
     private void build(JsonReader reader) throws IOException {
-
         while (reader.currentToken() != JsonToken.END_ARRAY) {
-
             JsonToken token = reader.nextToken();
 
             switch (token) {
