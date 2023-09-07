@@ -35,7 +35,7 @@ public final class UpdatesListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"maintenanceScope\":\"Host\",\"impactType\":\"None\",\"status\":\"Completed\",\"impactDurationInSec\":1920566576,\"notBefore\":\"2021-01-25T02:25:22Z\",\"properties\":{\"resourceId\":\"oqmcbxvwvxyslq\"}}]}";
+            "{\"value\":[{\"maintenanceScope\":\"InGuestPatch\",\"impactType\":\"None\",\"status\":\"Completed\",\"impactDurationInSec\":744779451,\"notBefore\":\"2021-11-07T02:39:13Z\",\"properties\":{\"resourceId\":\"glka\"}}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -64,13 +64,15 @@ public final class UpdatesListMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<Update> response =
-            manager.updates().list("u", "ivkrtsw", "xqzvszjfa", "vjfdx", com.azure.core.util.Context.NONE);
+            manager
+                .updates()
+                .list("opxlhslnelxieixy", "llxecwc", "ojphslhc", "wjutifdwfmv", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(MaintenanceScope.HOST, response.iterator().next().maintenanceScope());
+        Assertions.assertEquals(MaintenanceScope.IN_GUEST_PATCH, response.iterator().next().maintenanceScope());
         Assertions.assertEquals(ImpactType.NONE, response.iterator().next().impactType());
         Assertions.assertEquals(UpdateStatus.COMPLETED, response.iterator().next().status());
-        Assertions.assertEquals(1920566576, response.iterator().next().impactDurationInSec());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-01-25T02:25:22Z"), response.iterator().next().notBefore());
-        Assertions.assertEquals("oqmcbxvwvxyslq", response.iterator().next().resourceId());
+        Assertions.assertEquals(744779451, response.iterator().next().impactDurationInSec());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-11-07T02:39:13Z"), response.iterator().next().notBefore());
+        Assertions.assertEquals("glka", response.iterator().next().resourceId());
     }
 }

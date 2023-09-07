@@ -30,6 +30,10 @@ public final class IssueCollection {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
+    /** Creates an instance of IssueCollection class. */
+    public IssueCollection() {
+    }
+
     /**
      * Get the value property: Issue values.
      *

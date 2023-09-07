@@ -7,7 +7,10 @@ package com.azure.resourcemanager.apimanagement.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for ProductState. */
+/**
+ * whether product is published or not. Published products are discoverable by users of developer portal. Non published
+ * products are visible only to administrators. Default state of Product is notPublished.
+ */
 public enum ProductState {
     /** Enum value notPublished. */
     NOT_PUBLISHED("notPublished"),
@@ -30,6 +33,9 @@ public enum ProductState {
      */
     @JsonCreator
     public static ProductState fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         ProductState[] items = ProductState.values();
         for (ProductState item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -39,6 +45,7 @@ public enum ProductState {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

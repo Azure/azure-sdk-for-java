@@ -1,0 +1,44 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+
+trigger:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/spring/ci.monitor.yml
+      - sdk/spring/spring-cloud-azure-starter-monitor/
+      - sdk/spring/spring-cloud-azure-starter-monitor-test/
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/spring/ci.monitor.yml
+      - sdk/spring/spring-cloud-azure-starter-monitor/
+      - sdk/spring/spring-cloud-azure-starter-monitor-test/
+
+extends:
+  template:  ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: spring
+    EnableBatchRelease: true
+    Artifacts:
+      - name: spring-cloud-azure-starter-monitor
+        groupId: com.azure.spring
+        safeName: springcloudazurestartermonitor
+        skipPublishDocGithubIo: true
+        skipPublishDocMs: true
+        skipUpdatePackageJson: true
+        skipVerifyChangelog: true
+        releaseInBatch: true
+    AdditionalModules:
+      - name: spring-cloud-azure-starter-monitor-test
+        groupId: com.azure.spring

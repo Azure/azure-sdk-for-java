@@ -18,6 +18,10 @@ public final class PolicyContractInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private PolicyContractProperties innerProperties;
 
+    /** Creates an instance of PolicyContractInner class. */
+    public PolicyContractInner() {
+    }
+
     /**
      * Get the innerProperties property: Properties of the Policy.
      *

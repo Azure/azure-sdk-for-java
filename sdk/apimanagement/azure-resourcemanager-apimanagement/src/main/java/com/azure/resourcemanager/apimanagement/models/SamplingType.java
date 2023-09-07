@@ -8,10 +8,19 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for SamplingType. */
+/** Sampling type. */
 public final class SamplingType extends ExpandableStringEnum<SamplingType> {
     /** Static value fixed for SamplingType. */
     public static final SamplingType FIXED = fromString("fixed");
+
+    /**
+     * Creates a new instance of SamplingType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SamplingType() {
+    }
 
     /**
      * Creates or finds a SamplingType from its string representation.
@@ -24,7 +33,11 @@ public final class SamplingType extends ExpandableStringEnum<SamplingType> {
         return fromString(name, SamplingType.class);
     }
 
-    /** @return known SamplingType values. */
+    /**
+     * Gets known SamplingType values.
+     *
+     * @return known SamplingType values.
+     */
     public static Collection<SamplingType> values() {
         return values(SamplingType.class);
     }

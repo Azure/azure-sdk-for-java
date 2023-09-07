@@ -17,6 +17,15 @@ public final class SsoStatus extends ExpandableStringEnum<SsoStatus> {
     public static final SsoStatus DISABLED = fromString("Disabled");
 
     /**
+     * Creates a new instance of SsoStatus value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SsoStatus() {
+    }
+
+    /**
      * Creates or finds a SsoStatus from its string representation.
      *
      * @param name a name to look for.

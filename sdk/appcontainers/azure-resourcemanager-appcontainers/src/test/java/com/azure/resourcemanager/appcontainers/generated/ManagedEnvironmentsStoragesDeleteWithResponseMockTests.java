@@ -58,6 +58,6 @@ public final class ManagedEnvironmentsStoragesDeleteWithResponseMockTests {
 
         manager
             .managedEnvironmentsStorages()
-            .deleteWithResponse("ahxsgxjcmm", "rrscubiwsdrnp", "qwodiffjx", com.azure.core.util.Context.NONE);
+            .deleteWithResponse("ykcrraue", "kcsueho", "ddacbcbgydlqidy", com.azure.core.util.Context.NONE);
     }
 }

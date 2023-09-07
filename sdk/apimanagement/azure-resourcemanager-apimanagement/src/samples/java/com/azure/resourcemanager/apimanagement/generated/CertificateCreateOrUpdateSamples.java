@@ -9,7 +9,7 @@ import com.azure.resourcemanager.apimanagement.models.KeyVaultContractCreateProp
 /** Samples for Certificate CreateOrUpdate. */
 public final class CertificateCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementCreateCertificate.json
+     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementCreateCertificate.json
      */
     /**
      * Sample code: ApiManagementCreateCertificate.
@@ -28,7 +28,7 @@ public final class CertificateCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementCreateCertificateWithKeyVault.json
+     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementCreateCertificateWithKeyVault.json
      */
     /**
      * Sample code: ApiManagementCreateCertificateWithKeyVault.
@@ -43,8 +43,7 @@ public final class CertificateCreateOrUpdateSamples {
             .withExistingService("rg1", "apimService1")
             .withKeyVault(
                 new KeyVaultContractCreateProperties()
-                    .withSecretIdentifier(
-                        "https://rpbvtkeyvaultintegration.vault-int.azure-int.net/secrets/msitestingCert")
+                    .withSecretIdentifier("fakeTokenPlaceholder")
                     .withIdentityClientId("ceaa6b06-c00f-43ef-99ac-f53d1fe876a0"))
             .create();
     }

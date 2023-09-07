@@ -17,18 +17,20 @@ public class ApiVersionSetEntityBase {
     private String description;
 
     /*
-     * Name of query parameter that indicates the API Version if
-     * versioningScheme is set to `query`.
+     * Name of query parameter that indicates the API Version if versioningScheme is set to `query`.
      */
     @JsonProperty(value = "versionQueryName")
     private String versionQueryName;
 
     /*
-     * Name of HTTP header parameter that indicates the API Version if
-     * versioningScheme is set to `header`.
+     * Name of HTTP header parameter that indicates the API Version if versioningScheme is set to `header`.
      */
     @JsonProperty(value = "versionHeaderName")
     private String versionHeaderName;
+
+    /** Creates an instance of ApiVersionSetEntityBase class. */
+    public ApiVersionSetEntityBase() {
+    }
 
     /**
      * Get the description property: Description of API Version Set.

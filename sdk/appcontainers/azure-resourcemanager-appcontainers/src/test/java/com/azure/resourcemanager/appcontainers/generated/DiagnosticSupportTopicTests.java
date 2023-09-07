@@ -12,7 +12,7 @@ public final class DiagnosticSupportTopicTests {
     public void testDeserialize() throws Exception {
         DiagnosticSupportTopic model =
             BinaryData
-                .fromString("{\"id\":\"neqsxvmh\",\"pesId\":\"uzjyihsasbhudypo\"}")
+                .fromString("{\"id\":\"bkwdlenrds\",\"pesId\":\"ujbazpjuohminyfl\"}")
                 .toObject(DiagnosticSupportTopic.class);
     }
 

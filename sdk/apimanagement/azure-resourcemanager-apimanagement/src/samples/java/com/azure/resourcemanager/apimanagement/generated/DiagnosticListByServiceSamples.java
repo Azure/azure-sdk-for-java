@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.apimanagement.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Diagnostic ListByService. */
 public final class DiagnosticListByServiceSamples {
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementListDiagnostics.json
+     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementListDiagnostics.json
      */
     /**
      * Sample code: ApiManagementListDiagnostics.
@@ -18,6 +16,6 @@ public final class DiagnosticListByServiceSamples {
      */
     public static void apiManagementListDiagnostics(
         com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
-        manager.diagnostics().listByService("rg1", "apimService1", null, null, null, Context.NONE);
+        manager.diagnostics().listByService("rg1", "apimService1", null, null, null, com.azure.core.util.Context.NONE);
     }
 }

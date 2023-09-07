@@ -13,24 +13,20 @@ public final class LogSpecificationTests {
     public void testDeserialize() throws Exception {
         LogSpecification model =
             BinaryData
-                .fromString(
-                    "{\"name\":\"isdkfthwxmnteiw\",\"displayName\":\"pvkmijcmmxdcuf\",\"blobDuration\":\"srp\"}")
+                .fromString("{\"name\":\"czvyifq\",\"displayName\":\"kdvjsll\",\"blobDuration\":\"vvdfwatkpnpul\"}")
                 .toObject(LogSpecification.class);
-        Assertions.assertEquals("isdkfthwxmnteiw", model.name());
-        Assertions.assertEquals("pvkmijcmmxdcuf", model.displayName());
-        Assertions.assertEquals("srp", model.blobDuration());
+        Assertions.assertEquals("czvyifq", model.name());
+        Assertions.assertEquals("kdvjsll", model.displayName());
+        Assertions.assertEquals("vvdfwatkpnpul", model.blobDuration());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         LogSpecification model =
-            new LogSpecification()
-                .withName("isdkfthwxmnteiw")
-                .withDisplayName("pvkmijcmmxdcuf")
-                .withBlobDuration("srp");
+            new LogSpecification().withName("czvyifq").withDisplayName("kdvjsll").withBlobDuration("vvdfwatkpnpul");
         model = BinaryData.fromObject(model).toObject(LogSpecification.class);
-        Assertions.assertEquals("isdkfthwxmnteiw", model.name());
-        Assertions.assertEquals("pvkmijcmmxdcuf", model.displayName());
-        Assertions.assertEquals("srp", model.blobDuration());
+        Assertions.assertEquals("czvyifq", model.name());
+        Assertions.assertEquals("kdvjsll", model.displayName());
+        Assertions.assertEquals("vvdfwatkpnpul", model.blobDuration());
     }
 }

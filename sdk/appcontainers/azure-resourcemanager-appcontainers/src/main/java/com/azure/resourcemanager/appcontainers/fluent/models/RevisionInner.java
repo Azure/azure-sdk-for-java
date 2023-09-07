@@ -6,9 +6,9 @@ package com.azure.resourcemanager.appcontainers.fluent.models;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.appcontainers.models.RevisionHealthState;
 import com.azure.resourcemanager.appcontainers.models.RevisionProvisioningState;
+import com.azure.resourcemanager.appcontainers.models.RevisionRunningState;
 import com.azure.resourcemanager.appcontainers.models.Template;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
@@ -22,12 +22,6 @@ public final class RevisionInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private RevisionProperties innerProperties;
 
-    /*
-     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
-    private SystemData systemData;
-
     /** Creates an instance of RevisionInner class. */
     public RevisionInner() {
     }
@@ -39,15 +33,6 @@ public final class RevisionInner extends ProxyResource {
      */
     private RevisionProperties innerProperties() {
         return this.innerProperties;
-    }
-
-    /**
-     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
-     * @return the systemData value.
-     */
-    public SystemData systemData() {
-        return this.systemData;
     }
 
     /**
@@ -140,6 +125,15 @@ public final class RevisionInner extends ProxyResource {
      */
     public RevisionProvisioningState provisioningState() {
         return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
+     * Get the runningState property: Current running state of the revision.
+     *
+     * @return the runningState value.
+     */
+    public RevisionRunningState runningState() {
+        return this.innerProperties() == null ? null : this.innerProperties().runningState();
     }
 
     /**

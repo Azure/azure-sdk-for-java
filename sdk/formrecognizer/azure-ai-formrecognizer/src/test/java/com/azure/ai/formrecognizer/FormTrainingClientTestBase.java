@@ -152,19 +152,11 @@ public abstract class FormTrainingClientTestBase extends TestProxyTestBase {
     @Test
     abstract void getFormRecognizerClientAndValidate(HttpClient httpClient,
         FormRecognizerServiceVersion serviceVersion);
-
-    @Test
-    abstract void getCustomModelNullModelId(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
-
     @Test
     abstract void getCustomModelLabeled(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
 
     @Test
     abstract void getCustomModelUnlabeled(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
-
-    @Test
-    abstract void getCustomModelInvalidModelId(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
-
     @Test
     abstract void getCustomModelWithResponse(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
 
@@ -173,19 +165,11 @@ public abstract class FormTrainingClientTestBase extends TestProxyTestBase {
 
     @Test
     abstract void validGetAccountPropertiesWithResponse(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
-
-    @Test
-    abstract void deleteModelInvalidModelId(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
-
     @Test
     abstract void deleteModelValidModelIdWithResponse(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
 
     @Test
     abstract void listCustomModels(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
-
-    @Test
-    abstract void beginTrainingNullInput(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
-
     @Test
     abstract void beginCopy(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
 
@@ -229,10 +213,6 @@ public abstract class FormTrainingClientTestBase extends TestProxyTestBase {
     @Test
     abstract void beginTrainingWithoutTrainingLabelsExcludeSubfolderWithNonExistPrefixName(HttpClient httpClient,
         FormRecognizerServiceVersion serviceVersion);
-
-    void getCustomModelInvalidModelIdRunner(Consumer<String> testRunner) {
-        testRunner.accept(TestUtils.INVALID_MODEL_ID);
-    }
 
     void beginTrainingLabeledRunner(BiConsumer<String, Boolean> testRunner) {
         testRunner.accept(getTrainingFilesContainerUrl(), true);

@@ -52,22 +52,13 @@ public final class ApisImpl implements Apis {
         return Utils.mapPage(inner, inner1 -> new ApiContractImpl(inner1, this.manager()));
     }
 
-    public void getEntityTag(String resourceGroupName, String serviceName, String apiId) {
-        this.serviceClient().getEntityTag(resourceGroupName, serviceName, apiId);
-    }
-
     public ApisGetEntityTagResponse getEntityTagWithResponse(
         String resourceGroupName, String serviceName, String apiId, Context context) {
         return this.serviceClient().getEntityTagWithResponse(resourceGroupName, serviceName, apiId, context);
     }
 
-    public ApiContract get(String resourceGroupName, String serviceName, String apiId) {
-        ApiContractInner inner = this.serviceClient().get(resourceGroupName, serviceName, apiId);
-        if (inner != null) {
-            return new ApiContractImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+    public void getEntityTag(String resourceGroupName, String serviceName, String apiId) {
+        this.serviceClient().getEntityTag(resourceGroupName, serviceName, apiId);
     }
 
     public Response<ApiContract> getWithResponse(
@@ -84,8 +75,13 @@ public final class ApisImpl implements Apis {
         }
     }
 
-    public void delete(String resourceGroupName, String serviceName, String apiId, String ifMatch) {
-        this.serviceClient().delete(resourceGroupName, serviceName, apiId, ifMatch);
+    public ApiContract get(String resourceGroupName, String serviceName, String apiId) {
+        ApiContractInner inner = this.serviceClient().get(resourceGroupName, serviceName, apiId);
+        if (inner != null) {
+            return new ApiContractImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public Response<Void> deleteWithResponse(
@@ -98,6 +94,10 @@ public final class ApisImpl implements Apis {
         return this
             .serviceClient()
             .deleteWithResponse(resourceGroupName, serviceName, apiId, ifMatch, deleteRevisions, context);
+    }
+
+    public void delete(String resourceGroupName, String serviceName, String apiId, String ifMatch) {
+        this.serviceClient().delete(resourceGroupName, serviceName, apiId, ifMatch);
     }
 
     public PagedIterable<TagResourceContract> listByTags(String resourceGroupName, String serviceName) {

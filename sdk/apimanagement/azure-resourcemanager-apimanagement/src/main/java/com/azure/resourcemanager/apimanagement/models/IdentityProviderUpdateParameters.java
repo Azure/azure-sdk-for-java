@@ -18,6 +18,10 @@ public final class IdentityProviderUpdateParameters {
     @JsonProperty(value = "properties")
     private IdentityProviderUpdateProperties innerProperties;
 
+    /** Creates an instance of IdentityProviderUpdateParameters class. */
+    public IdentityProviderUpdateParameters() {
+    }
+
     /**
      * Get the innerProperties property: Identity Provider update properties.
      *
@@ -262,6 +266,31 @@ public final class IdentityProviderUpdateParameters {
             this.innerProperties = new IdentityProviderUpdateProperties();
         }
         this.innerProperties().withPasswordResetPolicyName(passwordResetPolicyName);
+        return this;
+    }
+
+    /**
+     * Get the clientLibrary property: The client library to be used in the developer portal. Only applies to AAD and
+     * AAD B2C Identity Provider.
+     *
+     * @return the clientLibrary value.
+     */
+    public String clientLibrary() {
+        return this.innerProperties() == null ? null : this.innerProperties().clientLibrary();
+    }
+
+    /**
+     * Set the clientLibrary property: The client library to be used in the developer portal. Only applies to AAD and
+     * AAD B2C Identity Provider.
+     *
+     * @param clientLibrary the clientLibrary value to set.
+     * @return the IdentityProviderUpdateParameters object itself.
+     */
+    public IdentityProviderUpdateParameters withClientLibrary(String clientLibrary) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new IdentityProviderUpdateProperties();
+        }
+        this.innerProperties().withClientLibrary(clientLibrary);
         return this;
     }
 

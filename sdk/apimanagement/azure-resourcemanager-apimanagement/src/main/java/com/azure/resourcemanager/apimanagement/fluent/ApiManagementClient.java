@@ -10,8 +10,7 @@ import java.time.Duration;
 /** The interface for ApiManagementClient class. */
 public interface ApiManagementClient {
     /**
-     * Gets Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
-     * part of the URI for every service call.
+     * Gets The ID of the target subscription.
      *
      * @return the subscriptionId value.
      */
@@ -88,6 +87,20 @@ public interface ApiManagementClient {
     TagsClient getTags();
 
     /**
+     * Gets the GraphQLApiResolversClient object to access its operations.
+     *
+     * @return the GraphQLApiResolversClient object.
+     */
+    GraphQLApiResolversClient getGraphQLApiResolvers();
+
+    /**
+     * Gets the GraphQLApiResolverPoliciesClient object to access its operations.
+     *
+     * @return the GraphQLApiResolverPoliciesClient object.
+     */
+    GraphQLApiResolverPoliciesClient getGraphQLApiResolverPolicies();
+
+    /**
      * Gets the ApiProductsClient object to access its operations.
      *
      * @return the ApiProductsClient object.
@@ -151,6 +164,20 @@ public interface ApiManagementClient {
     OperationsClient getOperations();
 
     /**
+     * Gets the ApiWikisClient object to access its operations.
+     *
+     * @return the ApiWikisClient object.
+     */
+    ApiWikisClient getApiWikis();
+
+    /**
+     * Gets the ApiWikisOperationsClient object to access its operations.
+     *
+     * @return the ApiWikisOperationsClient object.
+     */
+    ApiWikisOperationsClient getApiWikisOperations();
+
+    /**
      * Gets the ApiExportsClient object to access its operations.
      *
      * @return the ApiExportsClient object.
@@ -170,6 +197,34 @@ public interface ApiManagementClient {
      * @return the AuthorizationServersClient object.
      */
     AuthorizationServersClient getAuthorizationServers();
+
+    /**
+     * Gets the AuthorizationProvidersClient object to access its operations.
+     *
+     * @return the AuthorizationProvidersClient object.
+     */
+    AuthorizationProvidersClient getAuthorizationProviders();
+
+    /**
+     * Gets the AuthorizationsClient object to access its operations.
+     *
+     * @return the AuthorizationsClient object.
+     */
+    AuthorizationsClient getAuthorizations();
+
+    /**
+     * Gets the AuthorizationLoginLinksClient object to access its operations.
+     *
+     * @return the AuthorizationLoginLinksClient object.
+     */
+    AuthorizationLoginLinksClient getAuthorizationLoginLinks();
+
+    /**
+     * Gets the AuthorizationAccessPoliciesClient object to access its operations.
+     *
+     * @return the AuthorizationAccessPoliciesClient object.
+     */
+    AuthorizationAccessPoliciesClient getAuthorizationAccessPolicies();
 
     /**
      * Gets the BackendsClient object to access its operations.
@@ -382,6 +437,20 @@ public interface ApiManagementClient {
     PolicyDescriptionsClient getPolicyDescriptions();
 
     /**
+     * Gets the PolicyFragmentsClient object to access its operations.
+     *
+     * @return the PolicyFragmentsClient object.
+     */
+    PolicyFragmentsClient getPolicyFragments();
+
+    /**
+     * Gets the PortalConfigsClient object to access its operations.
+     *
+     * @return the PortalConfigsClient object.
+     */
+    PortalConfigsClient getPortalConfigs();
+
+    /**
      * Gets the PortalRevisionsClient object to access its operations.
      *
      * @return the PortalRevisionsClient object.
@@ -457,6 +526,20 @@ public interface ApiManagementClient {
      * @return the ProductPoliciesClient object.
      */
     ProductPoliciesClient getProductPolicies();
+
+    /**
+     * Gets the ProductWikisClient object to access its operations.
+     *
+     * @return the ProductWikisClient object.
+     */
+    ProductWikisClient getProductWikis();
+
+    /**
+     * Gets the ProductWikisOperationsClient object to access its operations.
+     *
+     * @return the ProductWikisOperationsClient object.
+     */
+    ProductWikisOperationsClient getProductWikisOperations();
 
     /**
      * Gets the QuotaByCounterKeysClient object to access its operations.
@@ -576,4 +659,11 @@ public interface ApiManagementClient {
      * @return the UserConfirmationPasswordsClient object.
      */
     UserConfirmationPasswordsClient getUserConfirmationPasswords();
+
+    /**
+     * Gets the DocumentationsClient object to access its operations.
+     *
+     * @return the DocumentationsClient object.
+     */
+    DocumentationsClient getDocumentations();
 }

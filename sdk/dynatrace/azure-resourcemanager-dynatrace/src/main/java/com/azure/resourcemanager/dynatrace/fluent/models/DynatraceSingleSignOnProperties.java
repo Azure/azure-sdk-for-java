@@ -43,6 +43,10 @@ public final class DynatraceSingleSignOnProperties {
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
+    /** Creates an instance of DynatraceSingleSignOnProperties class. */
+    public DynatraceSingleSignOnProperties() {
+    }
+
     /**
      * Get the singleSignOnState property: State of Single Sign On.
      *

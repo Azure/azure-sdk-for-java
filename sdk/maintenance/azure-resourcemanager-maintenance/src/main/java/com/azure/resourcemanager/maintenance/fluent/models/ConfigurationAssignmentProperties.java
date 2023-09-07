@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.maintenance.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.resourcemanager.maintenance.models.ConfigurationAssignmentFilterProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Properties for configuration assignment. */
@@ -21,6 +22,12 @@ public final class ConfigurationAssignmentProperties {
      */
     @JsonProperty(value = "resourceId")
     private String resourceId;
+
+    /*
+     * Properties of the configuration assignment
+     */
+    @JsonProperty(value = "filter")
+    private ConfigurationAssignmentFilterProperties filter;
 
     /** Creates an instance of ConfigurationAssignmentProperties class. */
     public ConfigurationAssignmentProperties() {
@@ -67,10 +74,33 @@ public final class ConfigurationAssignmentProperties {
     }
 
     /**
+     * Get the filter property: Properties of the configuration assignment.
+     *
+     * @return the filter value.
+     */
+    public ConfigurationAssignmentFilterProperties filter() {
+        return this.filter;
+    }
+
+    /**
+     * Set the filter property: Properties of the configuration assignment.
+     *
+     * @param filter the filter value to set.
+     * @return the ConfigurationAssignmentProperties object itself.
+     */
+    public ConfigurationAssignmentProperties withFilter(ConfigurationAssignmentFilterProperties filter) {
+        this.filter = filter;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (filter() != null) {
+            filter().validate();
+        }
     }
 }

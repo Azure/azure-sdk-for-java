@@ -33,7 +33,7 @@ public final class ScriptExecutionsGetExecutionLogsWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"scriptCmdletId\":\"sysidfvclglxnf\",\"parameters\":[],\"hiddenParameters\":[],\"failureReason\":\"usqogsfikayia\",\"timeout\":\"sharujtj\",\"retention\":\"xfz\",\"submittedAt\":\"2021-09-16T23:50:41Z\",\"startedAt\":\"2021-11-24T09:34:57Z\",\"finishedAt\":\"2021-06-13T02:09:09Z\",\"provisioningState\":\"Canceled\",\"output\":[\"j\",\"enuygbq\",\"qqekewvnqvcdlgu\"],\"namedOutputs\":{\"axpunjqikczvv\":\"datamfdjwn\",\"serxht\":\"datatacgxmfc\",\"xypruuuy\":\"datasoxhlwntsjgqr\"},\"information\":[\"hrszi\",\"oyuelyetn\"],\"warnings\":[\"fqyggagflnlgmtr\"],\"errors\":[\"zjmucftbyrplroh\",\"pigqfusuckzmkw\",\"lsnoxaxmqeqalh\"]},\"id\":\"jnhgwydyyn\",\"name\":\"svkhgbv\",\"type\":\"ta\"}";
+            "{\"properties\":{\"scriptCmdletId\":\"benribcawetzq\",\"parameters\":[{\"type\":\"ScriptExecutionParameter\",\"name\":\"jwfljhznamtua\"},{\"type\":\"ScriptExecutionParameter\",\"name\":\"mzwcjjncqt\"},{\"type\":\"ScriptExecutionParameter\",\"name\":\"z\"},{\"type\":\"ScriptExecutionParameter\",\"name\":\"izvg\"}],\"hiddenParameters\":[{\"type\":\"ScriptExecutionParameter\",\"name\":\"tzuuvb\"},{\"type\":\"ScriptExecutionParameter\",\"name\":\"ngrebwg\"}],\"failureReason\":\"httzlswvajqfutlx\",\"timeout\":\"oqza\",\"retention\":\"nwqrjzfrgqh\",\"submittedAt\":\"2021-05-07T20:50:08Z\",\"startedAt\":\"2021-05-24T01:31:46Z\",\"finishedAt\":\"2021-03-17T16:52:41Z\",\"provisioningState\":\"Canceled\",\"output\":[\"r\",\"hmbpyryxamebly\",\"yvk\",\"kmrocxne\"],\"namedOutputs\":{\"pyapucygvoav\":\"datamtodl\"},\"information\":[\"ssxlghieegjlg\",\"vpaseksgbu\"],\"warnings\":[\"tu\",\"gdhg\",\"qipir\",\"iwrqofulopmjnl\"],\"errors\":[\"hcbjpibk\"]},\"id\":\"phuuuerctato\",\"name\":\"intqpbrlcyr\",\"type\":\"uczkgofxyfsruc\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -65,17 +65,24 @@ public final class ScriptExecutionsGetExecutionLogsWithResponseMockTests {
             manager
                 .scriptExecutions()
                 .getExecutionLogsWithResponse(
-                    "m",
-                    "urbuhhlkyqltq",
-                    "rogtuwkf",
-                    Arrays.asList(ScriptOutputStreamType.INFORMATION),
+                    "qvapcohhoucq",
+                    "q",
+                    "jxcx",
+                    Arrays
+                        .asList(
+                            ScriptOutputStreamType.OUTPUT,
+                            ScriptOutputStreamType.ERROR,
+                            ScriptOutputStreamType.INFORMATION,
+                            ScriptOutputStreamType.WARNING),
                     com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals("sysidfvclglxnf", response.scriptCmdletId());
-        Assertions.assertEquals("usqogsfikayia", response.failureReason());
-        Assertions.assertEquals("sharujtj", response.timeout());
-        Assertions.assertEquals("xfz", response.retention());
-        Assertions.assertEquals("j", response.output().get(0));
+        Assertions.assertEquals("benribcawetzq", response.scriptCmdletId());
+        Assertions.assertEquals("jwfljhznamtua", response.parameters().get(0).name());
+        Assertions.assertEquals("tzuuvb", response.hiddenParameters().get(0).name());
+        Assertions.assertEquals("httzlswvajqfutlx", response.failureReason());
+        Assertions.assertEquals("oqza", response.timeout());
+        Assertions.assertEquals("nwqrjzfrgqh", response.retention());
+        Assertions.assertEquals("r", response.output().get(0));
     }
 }

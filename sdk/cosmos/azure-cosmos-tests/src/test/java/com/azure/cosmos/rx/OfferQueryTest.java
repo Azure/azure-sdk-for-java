@@ -48,7 +48,7 @@ public class OfferQueryTest extends TestSuiteBase {
         super(clientBuilder);
     }
 
-    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
+    @Test(groups = { "query" }, timeOut = TIMEOUT)
     public void queryOffersWithFilter() throws Exception {
         String collectionResourceId = createdCollections.get(0).getResourceId();
         String query = String.format("SELECT * from c where c.offerResourceId = '%s'", collectionResourceId);
@@ -76,7 +76,7 @@ public class OfferQueryTest extends TestSuiteBase {
         validateQuerySuccess(queryObservable, validator, 10000);
     }
 
-    @Test(groups = { "emulator" }, timeOut = TIMEOUT * 10)
+    @Test(groups = { "query" }, timeOut = TIMEOUT * 10)
     public void queryOffersFilterMorePages() throws Exception {
 
         List<String> collectionResourceIds = createdCollections.stream().map(c -> c.getResourceId()).collect(Collectors.toList());
@@ -109,7 +109,7 @@ public class OfferQueryTest extends TestSuiteBase {
         validateQuerySuccess(queryObservable, validator, 10000);
     }
 
-    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
+    @Test(groups = { "query" }, timeOut = TIMEOUT)
     public void queryCollections_NoResults() throws Exception {
 
         String query = "SELECT * from root r where r.id = '2'";
@@ -125,7 +125,7 @@ public class OfferQueryTest extends TestSuiteBase {
         validateQuerySuccess(queryObservable, validator);
     }
 
-    @BeforeClass(groups = { "emulator" }, timeOut = SETUP_TIMEOUT)
+    @BeforeClass(groups = { "query" }, timeOut = SETUP_TIMEOUT)
     public void before_OfferQueryTest() throws Exception {
         client = clientBuilder().build();
 
@@ -147,7 +147,7 @@ public class OfferQueryTest extends TestSuiteBase {
         }
     }
 
-    @AfterClass(groups = { "emulator" }, timeOut = 2*SHUTDOWN_TIMEOUT, alwaysRun = true)
+    @AfterClass(groups = { "query" }, timeOut = 2*SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
         safeDeleteDatabase(client, databaseId);
         safeClose(client);

@@ -40,6 +40,9 @@ public final class DiskCreateOption extends ExpandableStringEnum<DiskCreateOptio
     /** Static value UploadPreparedSecure for DiskCreateOption. */
     public static final DiskCreateOption UPLOAD_PREPARED_SECURE = fromString("UploadPreparedSecure");
 
+    /** Static value CopyFromSanSnapshot for DiskCreateOption. */
+    public static final DiskCreateOption COPY_FROM_SAN_SNAPSHOT = fromString("CopyFromSanSnapshot");
+
     /**
      * Creates a new instance of DiskCreateOption value.
      *

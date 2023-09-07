@@ -613,7 +613,7 @@ public class CosmosQueryRequestOptions {
      * Sets indexMetricsEnabled, which is used to obtain the index metrics to understand how the query engine used existing
      * indexes and could use potential new indexes.
      * The results will be displayed in QueryMetrics. Please note that this options will incurs overhead, so it should be
-     * enabled when debuging slow queries.
+     * enabled when debugging slow queries.
      *
      * By default the indexMetrics are disabled.
      *

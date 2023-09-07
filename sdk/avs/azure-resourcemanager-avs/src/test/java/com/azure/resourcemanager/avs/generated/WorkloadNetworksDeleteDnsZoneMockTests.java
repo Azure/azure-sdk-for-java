@@ -56,6 +56,8 @@ public final class WorkloadNetworksDeleteDnsZoneMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.workloadNetworks().deleteDnsZone("zmlovuanash", "xlpm", "erbdk", com.azure.core.util.Context.NONE);
+        manager
+            .workloadNetworks()
+            .deleteDnsZone("hr", "mqgjsxvpq", "bfrmbodthsqqgvri", com.azure.core.util.Context.NONE);
     }
 }

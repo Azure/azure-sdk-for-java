@@ -4,13 +4,12 @@
 
 package com.azure.resourcemanager.apimanagement.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.apimanagement.models.IdentityProviderType;
 
 /** Samples for IdentityProvider GetEntityTag. */
 public final class IdentityProviderGetEntityTagSamples {
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementHeadIdentityProvider.json
+     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementHeadIdentityProvider.json
      */
     /**
      * Sample code: ApiManagementHeadIdentityProvider.
@@ -21,6 +20,7 @@ public final class IdentityProviderGetEntityTagSamples {
         com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
         manager
             .identityProviders()
-            .getEntityTagWithResponse("rg1", "apimService1", IdentityProviderType.AAD_B2C, Context.NONE);
+            .getEntityTagWithResponse(
+                "rg1", "apimService1", IdentityProviderType.AAD_B2C, com.azure.core.util.Context.NONE);
     }
 }

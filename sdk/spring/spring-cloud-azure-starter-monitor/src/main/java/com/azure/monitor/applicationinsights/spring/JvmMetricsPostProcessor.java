@@ -20,14 +20,14 @@ import org.springframework.core.Ordered;
 // See https://github.com/Azure/azure-sdk-for-java/issues/35725
 public class JvmMetricsPostProcessor implements BeanPostProcessor, Ordered {
 
-    private final AzureTelemetryActivation azureTelemetryActivation;
+    private final AzureSpringMonitorActivation azureSpringMonitorActivation;
 
     /**
      * Create an instance of JvmMetricsPostProcessor
-     * @param azureTelemetryActivation the azure telemetry activation
+     * @param azureSpringMonitorActivation the azure telemetry activation
      */
-    public JvmMetricsPostProcessor(AzureTelemetryActivation azureTelemetryActivation) {
-        this.azureTelemetryActivation = azureTelemetryActivation;
+    public JvmMetricsPostProcessor(AzureSpringMonitorActivation azureSpringMonitorActivation) {
+        this.azureSpringMonitorActivation = azureSpringMonitorActivation;
     }
 
     /**
@@ -39,7 +39,7 @@ public class JvmMetricsPostProcessor implements BeanPostProcessor, Ordered {
      */
     @Override
     public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
-        if (azureTelemetryActivation.isTrue() && bean instanceof OpenTelemetry) {
+        if (azureSpringMonitorActivation.isTrue() && bean instanceof OpenTelemetry) {
             OpenTelemetry openTelemetry = (OpenTelemetry) bean;
             BufferPools.registerObservers(openTelemetry);
             Classes.registerObservers(openTelemetry);
