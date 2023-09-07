@@ -182,7 +182,7 @@ feature-management:
 
 ### TimeWindowFilter
 
-This filter provides the capability to enable a feature based on a time window. If only `time-window-filter-setting-end` is specified, the feature will be considered on until that time. If only start is specified, the feature will be considered on at all points after that time. If both are specified the feature will be considered valid between the two times.
+This filter provides the capability to enable a feature based on a time window. If only `End` is specified, the feature will be considered on until that time. If only `Start` is specified, the feature will be considered on at all points after that time. If both are specified the feature will be considered valid between the two times.
 
 ```yaml
 feature-management:
@@ -191,10 +191,51 @@ feature-management:
       enabled-for:
         -
          name: TimeWindowFilter
-          parameters:
-            time-window-filter-setting-start: "Wed, 01 May 2019 13:59:59 GMT",
-            time-window-filter-setting-end: "Mon, 01 July 2019 00:00:00 GMT"
+         parameters:
+            start: "Wed, 01 May 2019 13:59:59 GMT",
+            end: "Mon, 01 July 2019 00:00:00 GMT"
 ```
+This filter also provides the capability to enable a feature during some recurring time windows. The recurring time windows act as the additional filters of evaluation, supplementing the time window defined by the `Start` and `End`. If any recurring time window filter is specified, the feature will only be enabled when the current time falls between the `Start` and `End`, and also falls within a recurring time window listed in the `Filters`.
+We can see some Crontab expressions are listed under the `Filters`, which specify the recurring time windows.
+``` yaml
+feature-management:
+  feature-flags:
+    feature-v:
+      enabled-for:
+        -
+         name: TimeWindowFilter
+         parameters:
+            start: "2023-09-06T00:00:00+08:00",
+            filters:
+                - "* 18-19 * * Mon-Fri" # 18:00-20:00 on weekdays
+                - "* 18-21 * * Sat,Sun" # 18:00-22:00 on weekends
+```
+In UNIX, the usage of Crontab expression is to represent the time to execute a command. The Crontab serves as a schedule. The Crontab expression is designed to represent discrete time point rather than continuous time span. For example, the Cron job “* * * * * echo hi >> log” will execute “echo hi >> log” at the beginning of each minute.
+
+However, when the time granularity is at minute-level, we can consider it as a continuous time intervals. For example, the Crontab expression “* 16 * * *” means “at every minute past the 16th hour of the day”. We can intuitively consider it as the time span 16:00-17:00. As a result, the recurring time window can be represented by a Crontab expression.
+
+The UNIX Crontab format can be refered to [man-pages](https://man7.org/linux/man-pages/man5/crontab.5.html). Notice that randomization(e.g., 0~59) is not supported.
+
+The crontab format has five time fields separated by at least one blank:
+
+```
+{minute} {hour} {day-of-month} {month} {day-of-week}
+```
+
+| Crontab Expression Example | Recurring Time Window |
+|--------|--------|
+| * 6-9,16-19 * * *| 6:00-10:00 and 16:00-20:00 every day |
+| * * * 7-8 Wed,Fri | Every Wednesday and Friday in July and August |
+| * 18-21 25 12 * | 18:00-22:00 on Dec 25th |
+| * * 1-7 9 Mon | The first Monday in September |
+
+The Crontab does not contain the information of UTC time offset.
+- If the UTC offset is specified in `Start`, it will also be applied to Crontabs listed in `Filters`.
+- If the UTC offset of `Start` is not specified and the UTC offset of `End` is specified, the UTC offset of `End` will be applied to Crontabs listed in `Filters`.
+- Otherwise, we will use the default UTC offset: UTC+0:00.
+
+In the above example, the `Start` is "2023-09-06T00:00:00+08:00", as a result, the UTC+8:00 will be also applied to the recurring time window filters: 18:00-20:00 on weekdays and 18:00-22:00 on weekends.
+
 
 ### TargetingFilter
 
