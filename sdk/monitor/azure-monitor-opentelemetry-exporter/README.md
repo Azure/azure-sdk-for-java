@@ -52,11 +52,13 @@ The following example shows how to export a trace data to Azure Monitor through 
 ```java readme-sample-setupExporter
 // Create Azure Monitor exporter and initialize OpenTelemetry SDK
 // This should be done just once when application starts up
-OpenTelemetry openTelemetry = new AzureMonitorExporterBuilder()
+AutoConfiguredOpenTelemetrySdkBuilder sdkBuilder = AutoConfiguredOpenTelemetrySdk.builder();
+
+new AzureMonitorExporterBuilder()
     .connectionString("{connection-string}")
-    .getOpenTelemetrySdkBuilder()
-    .build()
-    .getOpenTelemetrySdk();
+    .build(sdkBuilder);
+
+OpenTelemetry openTelemetry = sdkBuilder.build().getOpenTelemetrySdk();
 
 Tracer tracer = openTelemetry.getTracer("Sample");
 ```
