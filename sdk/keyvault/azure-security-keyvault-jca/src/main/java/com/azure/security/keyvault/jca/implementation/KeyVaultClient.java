@@ -326,10 +326,11 @@ public class KeyVaultClient {
             // if the service needs to obtain the private key for authentication,
             // and we can't access private key(which is not exportable), we will use
             // the Azure Key Vault Secrets API to obtain the private key (keyless).
+            String keyType2 = keyType.contains("-HSM") ? keyType.substring(0, keyType.indexOf("-HSM")) : keyType;
             LOGGER.exiting("KeyVaultClient", "getKey", null);
             return Optional.ofNullable(certificateBundle)
                            .map(CertificateBundle::getKid)
-                           .map(kid -> new KeyVaultPrivateKey(keyType, kid, this))
+                           .map(kid -> new KeyVaultPrivateKey(keyType2, kid, this))
                            .orElse(null);
         }
         String certificateSecretUri = certificateBundle.getSid();
