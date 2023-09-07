@@ -42,16 +42,16 @@ class AppConfigurationApplicationSettingPropertySource extends AppConfigurationP
 
     private final String keyFilter;
 
-    private final String[] labelFilter;
+    private final String[] labelFilters;
 
     AppConfigurationApplicationSettingPropertySource(String name, AppConfigurationReplicaClient replicaClient,
-        AppConfigurationKeyVaultClientFactory keyVaultClientFactory, String keyFilter, String[] labelFilter) {
+        AppConfigurationKeyVaultClientFactory keyVaultClientFactory, String keyFilter, String[] labelFilters) {
         // The context alone does not uniquely define a PropertySource, append storeName
         // and label to uniquely define a PropertySource
-        super(name + getLabelName(labelFilter), replicaClient);
+        super(name + getLabelName(labelFilters), replicaClient);
         this.keyVaultClientFactory = keyVaultClientFactory;
         this.keyFilter = keyFilter;
-        this.labelFilter = labelFilter;
+        this.labelFilters = labelFilters;
     }
 
     /**
@@ -59,12 +59,13 @@ class AppConfigurationApplicationSettingPropertySource extends AppConfigurationP
      * Gets settings from Azure/Cache to set as configurations. Updates the cache.
      * </p>
      * 
-     * @param trim prefix to trim
+     * @param keyPrefixTrimValues prefixs to trim from key values
      * @throws JsonProcessingException thrown if fails to parse Json content type
      */
-    public void initProperties(List<String> trim) throws JsonProcessingException {
+    public void initProperties(List<String> keyPrefixTrimValues) throws JsonProcessingException {
 
-        List<String> labels = Arrays.asList(labelFilter);
+        List<String> labels = Arrays.asList(labelFilters);
+        // Reverse labels so they have the right priority order.
         Collections.reverse(labels);
 
         for (String label : labels) {
@@ -72,74 +73,48 @@ class AppConfigurationApplicationSettingPropertySource extends AppConfigurationP
 
             // * for wildcard match
             processConfigurationSettings(replicaClient.listSettings(settingSelector), settingSelector.getKeyFilter(),
-                trim, keyVaultClientFactory);
+                keyPrefixTrimValues);
         }
-
     }
 
     protected void processConfigurationSettings(List<ConfigurationSetting> settings, String keyFilter,
-        List<String> trimStrings, AppConfigurationKeyVaultClientFactory keyVaultClientFactory)
+        List<String> keyPrefixTrimValues)
         throws JsonProcessingException {
         for (ConfigurationSetting setting : settings) {
-            if (trimStrings == null && StringUtils.hasText(keyFilter)) {
-                trimStrings = new ArrayList<>();
-                trimStrings.add(keyFilter.substring(0, keyFilter.length() - 1));
+            if (keyPrefixTrimValues == null && StringUtils.hasText(keyFilter)) {
+                keyPrefixTrimValues = new ArrayList<>();
+                keyPrefixTrimValues.add(keyFilter.substring(0, keyFilter.length() - 1));
             }
-            String key = trimKey(setting.getKey(), trimStrings);
+            String key = trimKey(setting.getKey(), keyPrefixTrimValues);
 
             if (setting instanceof SecretReferenceConfigurationSetting) {
                 handleKeyVaultReference(key, (SecretReferenceConfigurationSetting) setting);
             } else if (setting instanceof FeatureFlagConfigurationSetting
                 && FEATURE_FLAG_CONTENT_TYPE.equals(setting.getContentType())) {
-                handleFeatureFlag(key, (FeatureFlagConfigurationSetting) setting, trimStrings);
+                handleFeatureFlag(key, (FeatureFlagConfigurationSetting) setting, keyPrefixTrimValues);
             } else if (StringUtils.hasText(setting.getContentType())
                 && JsonConfigurationParser.isJsonContentType(setting.getContentType())) {
-                handleJson(setting, trimStrings);
+                handleJson(setting, keyPrefixTrimValues);
             } else {
                 properties.put(key, setting.getValue());
             }
         }
     }
-
-    void handleKeyVaultReference(String key, SecretReferenceConfigurationSetting setting) {
-        String entry = getKeyVaultEntry(keyVaultClientFactory, setting);
-
-        // Null in the case of failFast is false, will just skip entry.
-        if (entry != null) {
-            properties.put(key, entry);
-        }
-    }
-
-    void handleFeatureFlag(String key, FeatureFlagConfigurationSetting setting, List<String> trimStrings)
-        throws JsonProcessingException {
-        handleJson(setting, trimStrings);
-    }
-
-    void handleJson(ConfigurationSetting setting, List<String> trimStrings)
-        throws JsonProcessingException {
-        Map<String, Object> jsonSettings = JsonConfigurationParser.parseJsonSetting(setting);
-        for (Entry<String, Object> jsonSetting : jsonSettings.entrySet()) {
-            String key = trimKey(jsonSetting.getKey(), trimStrings);
-            properties.put(key, jsonSetting.getValue());
-        }
-    }
-
+    
     /**
      * Given a Setting's Key Vault Reference stored in the Settings value, it will get its entry in Key Vault.
      *
+     * @param key Application Setting name 
      * @param secretReference {"uri": "&lt;your-vault-url&gt;/secret/&lt;secret&gt;/&lt;version&gt;"}
      * @return Key Vault Secret Value
      */
-    protected String getKeyVaultEntry(AppConfigurationKeyVaultClientFactory keyVaultClientFactory,
-        SecretReferenceConfigurationSetting secretReference) {
-        String secretValue = null;
+    protected void handleKeyVaultReference(String key, SecretReferenceConfigurationSetting secretReference) {
         try {
-            URI uri = null;
             KeyVaultSecret secret = null;
 
             // Parsing Key Vault Reference for URI
             try {
-                uri = new URI(secretReference.getSecretId());
+                URI uri = new URI(secretReference.getSecretId());
                 secret = keyVaultClientFactory.getClient("https://" + uri.getHost()).getSecret(uri);
             } catch (URISyntaxException e) {
                 LOGGER.error("Error Processing Key Vault Entry URI.");
@@ -149,13 +124,27 @@ class AppConfigurationApplicationSettingPropertySource extends AppConfigurationP
             if (secret == null) {
                 throw new IOException("No Key Vault Secret found for Reference.");
             }
-            secretValue = secret.getValue();
+            properties.put(key, secret.getValue());
         } catch (RuntimeException | IOException e) {
             LOGGER.error("Error Retrieving Key Vault Entry");
             ReflectionUtils.rethrowRuntimeException(e);
         }
-        return secretValue;
     }
+
+    void handleFeatureFlag(String key, FeatureFlagConfigurationSetting setting, List<String> trimStrings)
+        throws JsonProcessingException {
+        handleJson(setting, trimStrings);
+    }
+
+    void handleJson(ConfigurationSetting setting, List<String> keyPrefixTrimValues)
+        throws JsonProcessingException {
+        Map<String, Object> jsonSettings = JsonConfigurationParser.parseJsonSetting(setting);
+        for (Entry<String, Object> jsonSetting : jsonSettings.entrySet()) {
+            String key = trimKey(jsonSetting.getKey(), keyPrefixTrimValues);
+            properties.put(key, jsonSetting.getValue());
+        }
+    }
+
 
     protected String trimKey(String key, List<String> trimStrings) {
         key = key.trim();

@@ -7,6 +7,7 @@ import static com.azure.spring.cloud.appconfiguration.config.implementation.AppC
 import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.DEFAULT_ROLLOUT_PERCENTAGE;
 import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.DEFAULT_ROLLOUT_PERCENTAGE_CAPS;
 import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.FEATURE_FLAG_PREFIX;
+import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.FEATURE_MANAGEMENT_KEY;
 import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.GROUPS;
 import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.GROUPS_CAPS;
 import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.REQUIREMENT_TYPE_SERVICE;
@@ -42,13 +43,14 @@ import com.fasterxml.jackson.databind.json.JsonMapper;
  * Azure App Configuration PropertySource unique per Store Label(Profile) combo.
  *
  * <p>
- * i.e. If connecting to 2 stores and have 2 labels set 4 AppConfigurationPropertySources need to be created.
+ * i.e. If connecting to 2 stores and have 2 labels set 4 AppConfigurationPropertySources need to be
+ * created.
  * </p>
  */
 abstract class AppConfigurationPropertySource extends EnumerablePropertySource<ConfigurationClient> {
 
-    private static final ObjectMapper CASE_INSENSITIVE_MAPPER = JsonMapper.builder()
-        .configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES, true).build();
+    private static final ObjectMapper CASE_INSENSITIVE_MAPPER =
+        JsonMapper.builder().configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES, true).build();
 
     protected final Map<String, Object> properties = new LinkedHashMap<>();
 
@@ -74,20 +76,27 @@ abstract class AppConfigurationPropertySource extends EnumerablePropertySource<C
         return properties.get(name);
     }
 
-    protected static String getLabelName(String[] labelFilter) {
-        if (labelFilter == null) {
+    protected static String getLabelName(String[] labelFilters) {
+        if (labelFilters == null) {
             return "";
         }
-        StringBuilder labelName = new StringBuilder();
-        for (String label : labelFilter) {
-
-            labelName.append((labelName.length() == 0) ? label : "," + label);
-        }
-        return labelName.toString();
+        return String.join(",", labelFilters);
     }
 
     List<ConfigurationSetting> getFeatureFlagSettings() {
         return featureConfigurationSettings;
+    }
+
+    protected void processFeatureFlag(String key, FeatureFlagConfigurationSetting setting, List<String> trimStrings) {
+        TracingInfo tracing = replicaClient.getTracingInfo();
+        featureConfigurationSettings.add(setting);
+        FeatureFlagConfigurationSetting featureFlag = setting;
+
+        String configName = FEATURE_MANAGEMENT_KEY + setting.getKey().trim().substring(FEATURE_FLAG_PREFIX.length());
+
+        updateTelemetry(featureFlag, tracing);
+
+        properties.put(configName, createFeature(featureFlag));
     }
 
     /**
@@ -180,9 +189,8 @@ abstract class AppConfigurationPropertySource extends EnumerablePropertySource<C
     }
 
     private static List<Object> convertToListOrEmptyList(Map<String, Object> parameters, String key) {
-        List<Object> listObjects = CASE_INSENSITIVE_MAPPER.convertValue(parameters.get(key),
-            new TypeReference<List<Object>>() {
-            });
+        List<Object> listObjects =
+            CASE_INSENSITIVE_MAPPER.convertValue(parameters.get(key), new TypeReference<List<Object>>() {});
         return listObjects == null ? emptyList() : listObjects;
     }
 
