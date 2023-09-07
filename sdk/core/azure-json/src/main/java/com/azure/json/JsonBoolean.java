@@ -15,6 +15,7 @@ public class JsonBoolean extends JsonElement {
     /**
      * Default constructor
      * Default sets booleanValue to "true" through the other constructor.
+     * 
      * TODO: may need to remove this due to design guidelines? May only want to
      * have the public JsonBoolean(boolean value) constructor.
      */
@@ -44,7 +45,6 @@ public class JsonBoolean extends JsonElement {
     @Override
     public boolean isBoolean() { return true; }
 
-
     /**
      * @return boolean of whether this JsonBoolean object is currently representing
      * true
@@ -57,6 +57,13 @@ public class JsonBoolean extends JsonElement {
      */
     public boolean isFalse() { return this.booleanValue.equals("false"); }
 
+    /** 
+     * @param jsonWriter JsonWriter that the serialised JsonBoolean is written to. 
+     * @return JsonWriter state after the serialised JsonBoolean has been 
+     * written to it. 
+     * @throws IOException Thrown when JsonWriter.writeBoolean call throws an 
+     * IOException. 
+     */
     @Override
     public JsonWriter serialize(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeBoolean(Boolean.parseBoolean(this.booleanValue));
