@@ -28,7 +28,10 @@ public class JsonArray extends JsonElement {
     /**
      * Constructor used to construct JsonArray from a JsonReader. 
      * 
-     * @param reader The JsonReader to construct the JsonArray object from. 
+     * If the developer knows they want to build an array from JSON, then they 
+     * can bypass the JsonBuilder and just use this constructor directly. 
+     * 
+     * @param reader The opened JsonReader to construct the JsonArray object from. 
      * @throws IOException Thrown when the build method call throws an IOException. 
      */
     public JsonArray(JsonReader reader) throws IOException {
