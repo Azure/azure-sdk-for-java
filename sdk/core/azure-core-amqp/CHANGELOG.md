@@ -1,6 +1,6 @@
 # Release History
 
-## 2.9.0-beta.6 (2023-09-07)
+## 2.8.9 (2023-09-07)
 
 ### Bugs Fixed
 
