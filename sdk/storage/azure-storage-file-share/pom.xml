@@ -50,6 +50,7 @@
       --add-reads com.azure.storage.file.share=com.azure.http.netty
       --add-reads com.azure.storage.file.share=com.azure.core.http.okhttp
     </javaModulesSurefireArgLine>
+    <parallelizeLiveTests>true</parallelizeLiveTests>
   </properties>
 
   <dependencies>
