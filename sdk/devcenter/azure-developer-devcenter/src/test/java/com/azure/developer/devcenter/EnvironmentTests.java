@@ -17,7 +17,7 @@ class EnvironmentTests extends DevCenterClientTestBase {
         String projectName = Configuration.getGlobalConfiguration().get("DEFAULT_PROJECT_NAME", "sdk-project-hdhjgzht7tgyq");
         String environmentTypeName = Configuration.getGlobalConfiguration().get("DEFAULT_ENVIRONMENT_TYPE_NAME", "sdk-default-environment-type");
         String catalogName = Configuration.getGlobalConfiguration().get("DEFAULT_CATALOG_NAME", "sdk-default-catalog");
-        String catalogItemName = Configuration.getGlobalConfiguration().get("DEFAULT_CATALOG_ITEM_NAME", "Empty");
+        String catalogItemName = Configuration.getGlobalConfiguration().get("DEFAULT_CATALOG_ITEM_NAME", "Sandbox");
 
         // Create an environment
         BinaryData environmentBody = BinaryData.fromString(
