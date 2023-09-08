@@ -1301,9 +1301,19 @@ public final class ConfigurationClient {
      * <pre>
      * String snapshotName = &quot;&#123;snapshotName&#125;&quot;;
      * Context ctx = new Context&#40;key2, value2&#41;;
-     * ConfigurationSettingsSnapshot getSnapshot = client.getSnapshotWithResponse&#40;snapshotName, null, ctx&#41;.getValue&#40;&#41;;
+     * ConfigurationSettingsSnapshot getSnapshot = client.getSnapshotWithResponse&#40;
+     *     snapshotName,
+     *     Arrays.asList&#40;SnapshotFields.NAME, SnapshotFields.CREATED_AT, SnapshotFields.STATUS, SnapshotFields.FILTERS&#41;,
+     *     ctx&#41;
+     *     .getValue&#40;&#41;;
+     * &#47;&#47; Only properties `name`, `createAt`, `status` and `filters` have value, and expect null or
+     * &#47;&#47; empty value other than the `fields` specified in the request.
      * System.out.printf&#40;&quot;Snapshot name=%s is created at %s, snapshot status is %s.%n&quot;,
      *     getSnapshot.getName&#40;&#41;, getSnapshot.getCreatedAt&#40;&#41;, getSnapshot.getStatus&#40;&#41;&#41;;
+     * List&lt;SnapshotSettingFilter&gt; filters = getSnapshot.getFilters&#40;&#41;;
+     * for &#40;SnapshotSettingFilter filter : filters&#41; &#123;
+     *     System.out.printf&#40;&quot;Snapshot filter key=%s, label=%s.%n&quot;, filter.getKey&#40;&#41;, filter.getLabel&#40;&#41;&#41;;
+     * &#125;
      * </pre>
      * <!-- end com.azure.data.appconfiguration.configurationclient.getSnapshotByNameMaxOverload -->
      *
@@ -1345,6 +1355,12 @@ public final class ConfigurationClient {
 
     /**
      * Update a snapshot status from {@link SnapshotStatus#READY} to {@link SnapshotStatus#ARCHIVED}.
+     *
+     * <p>
+     * To turn on using 'if-match' header, set the second parameter 'ifUnchanged' to true.
+     * It used to perform an operation only if the targeted resource's ETag matches the value provided.
+     * Otherwise, it will throw an exception '412 Precondition Failed'.
+     * </p>
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -1397,6 +1413,12 @@ public final class ConfigurationClient {
 
     /**
      * Update a snapshot status from {@link SnapshotStatus#ARCHIVED} to {@link SnapshotStatus#READY}.
+     *
+     * <p>
+     * To turn on using 'if-match' header, set the second parameter 'ifUnchanged' to true.
+     * It used to perform an operation only if the targeted resource's ETag matches the value provided.
+     * Otherwise, it will throw an exception '412 Precondition Failed'.
+     * </p>
      *
      * <p><strong>Code Samples</strong></p>
      *

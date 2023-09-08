@@ -6,6 +6,7 @@ package com.azure.data.appconfiguration;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.rest.Response;
+import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
@@ -13,6 +14,7 @@ import com.azure.data.appconfiguration.models.ConfigurationSettingsSnapshot;
 import com.azure.data.appconfiguration.models.CreateSnapshotOperationDetail;
 import com.azure.data.appconfiguration.models.SettingFields;
 import com.azure.data.appconfiguration.models.SettingSelector;
+import com.azure.data.appconfiguration.models.SnapshotFields;
 import com.azure.data.appconfiguration.models.SnapshotSelector;
 import com.azure.data.appconfiguration.models.SnapshotSettingFilter;
 
@@ -456,9 +458,19 @@ public final class ConfigurationClientJavaDocCodeSnippets {
         // BEGIN: com.azure.data.appconfiguration.configurationclient.getSnapshotByNameMaxOverload
         String snapshotName = "{snapshotName}";
         Context ctx = new Context(key2, value2);
-        ConfigurationSettingsSnapshot getSnapshot = client.getSnapshotWithResponse(snapshotName, null, ctx).getValue();
+        ConfigurationSettingsSnapshot getSnapshot = client.getSnapshotWithResponse(
+            snapshotName,
+            Arrays.asList(SnapshotFields.NAME, SnapshotFields.CREATED_AT, SnapshotFields.STATUS, SnapshotFields.FILTERS),
+            ctx)
+            .getValue();
+        // Only properties `name`, `createAt`, `status` and `filters` have value, and expect null or
+        // empty value other than the `fields` specified in the request.
         System.out.printf("Snapshot name=%s is created at %s, snapshot status is %s.%n",
             getSnapshot.getName(), getSnapshot.getCreatedAt(), getSnapshot.getStatus());
+        List<SnapshotSettingFilter> filters = getSnapshot.getFilters();
+        for (SnapshotSettingFilter filter : filters) {
+            System.out.printf("Snapshot filter key=%s, label=%s.%n", filter.getKey(), filter.getLabel());
+        }
         // END: com.azure.data.appconfiguration.configurationclient.getSnapshotByNameMaxOverload
     }
 
@@ -565,6 +577,6 @@ public final class ConfigurationClientJavaDocCodeSnippets {
      * @return {@code null}
      */
     private String getConnectionString() {
-        return null;
+        return Configuration.getGlobalConfiguration().get("AZURE_APPCONFIG_CONNECTION_STRING");
     }
 }
