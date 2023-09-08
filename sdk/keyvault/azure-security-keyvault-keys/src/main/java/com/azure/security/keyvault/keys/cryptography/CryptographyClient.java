@@ -30,7 +30,6 @@ import reactor.core.publisher.Mono;
 
 import java.util.Objects;
 
-import static com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.isCurveSupportedByRuntimeJavaVersion;
 import static com.azure.security.keyvault.keys.cryptography.CryptographyClientImpl.checkKeyPermissions;
 import static com.azure.security.keyvault.keys.cryptography.CryptographyClientImpl.initializeCryptoClient;
 import static com.azure.security.keyvault.keys.cryptography.CryptographyClientImpl.unpackAndValidateId;
@@ -69,6 +68,7 @@ public class CryptographyClient {
     private final String keyCollection;
     private final HttpPipeline pipeline;
 
+    private boolean localOperationNotSupported = false;
     private LocalKeyCryptographyClient localKeyCryptographyClient;
 
     final CryptographyClientImpl implClient;
@@ -110,25 +110,6 @@ public class CryptographyClient {
 
         if (jsonWebKey.getKeyType() == null) {
             throw new IllegalArgumentException("The JSON Web Key's key type property is not configured.");
-        }
-
-        if (!isCurveSupportedByRuntimeJavaVersion(jsonWebKey.getCurveName())) {
-            String javaVersion = System.getProperty("java.version");
-
-            if (javaVersion.startsWith("1.")) {
-                javaVersion = javaVersion.substring(2, 3);
-            } else {
-                int period = javaVersion.indexOf(".");
-
-                if (period != -1) {
-                    javaVersion = javaVersion.substring(0, period);
-                }
-            }
-
-            String errorMessage = String.format("This JSON Web Key's curve (%s) is not supported by the runtime Java"
-                + " version (%s).", jsonWebKey.getCurveName(), javaVersion);
-
-            throw new IllegalArgumentException(errorMessage);
         }
 
         this.keyCollection = null;
@@ -310,7 +291,7 @@ public class CryptographyClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public EncryptResult encrypt(EncryptionAlgorithm algorithm, byte[] plaintext, Context context) {
-        if (!isValidKeyAvailable()) {
+        if (!isValidKeyLocallyAvailable()) {
             return implClient.encrypt(algorithm, plaintext, context);
         }
 
@@ -379,7 +360,7 @@ public class CryptographyClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public EncryptResult encrypt(EncryptParameters encryptParameters, Context context) {
-        if (!isValidKeyAvailable()) {
+        if (!isValidKeyLocallyAvailable()) {
             return implClient.encrypt(encryptParameters, context);
         }
 
@@ -501,7 +482,7 @@ public class CryptographyClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DecryptResult decrypt(EncryptionAlgorithm algorithm, byte[] ciphertext, Context context) {
-        if (!isValidKeyAvailable()) {
+        if (!isValidKeyLocallyAvailable()) {
             return implClient.decrypt(algorithm, ciphertext, context);
         }
 
@@ -571,7 +552,7 @@ public class CryptographyClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DecryptResult decrypt(DecryptParameters decryptParameters, Context context) {
-        if (!isValidKeyAvailable()) {
+        if (!isValidKeyLocallyAvailable()) {
             return implClient.decrypt(decryptParameters, context);
         }
 
@@ -673,7 +654,7 @@ public class CryptographyClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SignResult sign(SignatureAlgorithm algorithm, byte[] digest, Context context) {
-        if (!isValidKeyAvailable()) {
+        if (!isValidKeyLocallyAvailable()) {
             return implClient.sign(algorithm, digest, context);
         }
 
@@ -783,7 +764,7 @@ public class CryptographyClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VerifyResult verify(SignatureAlgorithm algorithm, byte[] digest, byte[] signature, Context context) {
-        if (!isValidKeyAvailable()) {
+        if (!isValidKeyLocallyAvailable()) {
             return implClient.verify(algorithm, digest, signature, context);
         }
 
@@ -883,7 +864,7 @@ public class CryptographyClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WrapResult wrapKey(KeyWrapAlgorithm algorithm, byte[] key, Context context) {
-        if (!isValidKeyAvailable()) {
+        if (!isValidKeyLocallyAvailable()) {
             return implClient.wrapKey(algorithm, key, context);
         }
 
@@ -991,7 +972,7 @@ public class CryptographyClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public UnwrapResult unwrapKey(KeyWrapAlgorithm algorithm, byte[] encryptedKey, Context context) {
-        if (!isValidKeyAvailable()) {
+        if (!isValidKeyLocallyAvailable()) {
             return implClient.unwrapKey(algorithm, encryptedKey, context);
         }
 
@@ -1087,7 +1068,7 @@ public class CryptographyClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SignResult signData(SignatureAlgorithm algorithm, byte[] data, Context context) {
-        if (!isValidKeyAvailable()) {
+        if (!isValidKeyLocallyAvailable()) {
             return implClient.signData(algorithm, data, context);
         }
 
@@ -1194,7 +1175,7 @@ public class CryptographyClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VerifyResult verifyData(SignatureAlgorithm algorithm, byte[] data, byte[] signature, Context context) {
-        if (!isValidKeyAvailable()) {
+        if (!isValidKeyLocallyAvailable()) {
             return implClient.verifyData(algorithm, data, signature, context);
         }
 
@@ -1207,7 +1188,11 @@ public class CryptographyClient {
         return localKeyCryptographyClient.verifyData(algorithm, data, signature, key, context);
     }
 
-    private boolean isValidKeyAvailable() {
+    private boolean isValidKeyLocallyAvailable() {
+        if (localOperationNotSupported) {
+            return false;
+        }
+
         boolean keyNotAvailable = (key == null && keyCollection != null);
 
         if (keyNotAvailable) {
@@ -1222,9 +1207,18 @@ public class CryptographyClient {
             return false;
         }
 
-        if (key.isValid() && isCurveSupportedByRuntimeJavaVersion(key.getCurveName())) {
+        if (key.isValid()) {
             if (localKeyCryptographyClient == null) {
-                localKeyCryptographyClient = initializeCryptoClient(key, implClient);
+                try {
+                    localKeyCryptographyClient = initializeCryptoClient(key, implClient);
+                } catch (RuntimeException e) {
+                    localOperationNotSupported = true;
+
+                    LOGGER.logExceptionAsWarning(
+                        new RuntimeException("Defaulting to service use for cryptographic operations.", e));
+
+                    return false;
+                }
             }
 
             return true;

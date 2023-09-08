@@ -36,7 +36,6 @@ import java.util.Map;
 import java.util.Random;
 
 import static com.azure.security.keyvault.keys.TestUtils.buildSyncAssertingClient;
-import static com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.isCurveSupportedByRuntimeJavaVersion;
 import static com.azure.security.keyvault.keys.cryptography.TestHelper.DISPLAY_NAME_WITH_ARGUMENTS;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -45,6 +44,8 @@ import static org.junit.jupiter.api.Assertions.fail;
 public class CryptographyClientTest extends CryptographyClientTestBase {
     private KeyClient client;
     private HttpPipeline pipeline;
+
+    private boolean curveNotSupportedByRuntime = false;
 
     @Override
     protected void beforeTest() {
@@ -326,7 +327,7 @@ public class CryptographyClientTest extends CryptographyClientTestBase {
     @Test
     public void signDataVerifyEcLocal() {
         signVerifyEcRunner(signVerifyEcData -> {
-            if (isCurveSupportedByRuntimeJavaVersion(signVerifyEcData.getCurve())) {
+            if (isCurveSupportedByRuntime(signVerifyEcData.getCurve())) {
                 try {
                     String algorithmName = "EC";
                     Provider[] providers = Security.getProviders();
@@ -377,6 +378,30 @@ public class CryptographyClientTest extends CryptographyClientTestBase {
                 }
             }
         });
+    }
+
+    private boolean isCurveSupportedByRuntime(KeyCurveName keyCurveName) {
+        if (curveNotSupportedByRuntime) {
+            return false;
+        }
+
+        String javaVersion = System.getProperty("java.version");
+
+        if (javaVersion.startsWith("1.")) {
+            javaVersion = javaVersion.substring(2, 3);
+        } else {
+            int period = javaVersion.indexOf(".");
+
+            if (period != -1) {
+                javaVersion = javaVersion.substring(0, period);
+            }
+        }
+
+        // The SECP256K1 curve is not supported on Java 16+.
+        curveNotSupportedByRuntime =
+            !(Integer.parseInt(javaVersion) >= 16 && keyCurveName == KeyCurveName.P_256K);
+
+        return curveNotSupportedByRuntime;
     }
 
     @Test
