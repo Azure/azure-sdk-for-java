@@ -4,13 +4,12 @@
 
 package com.azure.resourcemanager.apimanagement.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.apimanagement.models.AccessIdName;
 
 /** Samples for TenantAccess Get. */
 public final class TenantAccessGetSamples {
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementGetTenantAccess.json
+     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementGetTenantAccess.json
      */
     /**
      * Sample code: ApiManagementGetTenantAccess.
@@ -19,11 +18,13 @@ public final class TenantAccessGetSamples {
      */
     public static void apiManagementGetTenantAccess(
         com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
-        manager.tenantAccess().getWithResponse("rg1", "apimService1", AccessIdName.ACCESS, Context.NONE);
+        manager
+            .tenantAccess()
+            .getWithResponse("rg1", "apimService1", AccessIdName.ACCESS, com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementGetTenantGitAccess.json
+     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementGetTenantGitAccess.json
      */
     /**
      * Sample code: ApiManagementGetTenantGitAccess.
@@ -32,6 +33,8 @@ public final class TenantAccessGetSamples {
      */
     public static void apiManagementGetTenantGitAccess(
         com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
-        manager.tenantAccess().getWithResponse("rg1", "apimService1", AccessIdName.GIT_ACCESS, Context.NONE);
+        manager
+            .tenantAccess()
+            .getWithResponse("rg1", "apimService1", AccessIdName.GIT_ACCESS, com.azure.core.util.Context.NONE);
     }
 }

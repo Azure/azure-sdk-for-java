@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.elasticsan.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for VolumeGroups Get. */
 public final class VolumeGroupsGetSamples {
     /*
-     * x-ms-original-file: specification/elasticsan/resource-manager/Microsoft.ElasticSan/preview/2021-11-20-preview/examples/VolumeGroups_Get_MinimumSet_Gen.json
+     * x-ms-original-file: specification/elasticsan/resource-manager/Microsoft.ElasticSan/preview/2022-12-01-preview/examples/VolumeGroups_Get_MinimumSet_Gen.json
      */
     /**
      * Sample code: VolumeGroups_Get_MinimumSet_Gen.
@@ -17,11 +15,14 @@ public final class VolumeGroupsGetSamples {
      * @param manager Entry point to ElasticSanManager.
      */
     public static void volumeGroupsGetMinimumSetGen(com.azure.resourcemanager.elasticsan.ElasticSanManager manager) {
-        manager.volumeGroups().getWithResponse("rgelasticsan", "ti7q-k952-1qB3J_5", "u_5I_1j4t3", Context.NONE);
+        manager
+            .volumeGroups()
+            .getWithResponse(
+                "resourcegroupname", "elasticsanname", "volumegroupname", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/elasticsan/resource-manager/Microsoft.ElasticSan/preview/2021-11-20-preview/examples/VolumeGroups_Get_MaximumSet_Gen.json
+     * x-ms-original-file: specification/elasticsan/resource-manager/Microsoft.ElasticSan/preview/2022-12-01-preview/examples/VolumeGroups_Get_MaximumSet_Gen.json
      */
     /**
      * Sample code: VolumeGroups_Get_MaximumSet_Gen.
@@ -29,6 +30,9 @@ public final class VolumeGroupsGetSamples {
      * @param manager Entry point to ElasticSanManager.
      */
     public static void volumeGroupsGetMaximumSetGen(com.azure.resourcemanager.elasticsan.ElasticSanManager manager) {
-        manager.volumeGroups().getWithResponse("rgelasticsan", "ti7q-k952-1qB3J_5", "u_5I_1j4t3", Context.NONE);
+        manager
+            .volumeGroups()
+            .getWithResponse(
+                "resourcegroupname", "elasticsanname", "volumegroupname", com.azure.core.util.Context.NONE);
     }
 }

@@ -25,7 +25,7 @@ add the direct dependency to your project as follows.
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-communication-rooms</artifactId>
-  <version>1.0.0-beta.3</version>
+  <version>1.0.2</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -125,6 +125,21 @@ Use the `deleteRoom` function to delete a created room.
 try {
     roomsClient.deleteRoom("<Room Id>");
 } catch (RuntimeException ex) {
+    System.out.println(ex);
+}
+```
+
+### List rooms
+Use the `list rooms` function to list all active rooms.
+
+```java readme-sample-listRooms
+try {
+    PagedIterable<CommunicationRoom> rooms = roomsClient.listRooms();
+
+    for (CommunicationRoom room : rooms) {
+        System.out.println("Room ID: " + room.getRoomId());
+    }
+} catch (Exception ex) {
     System.out.println(ex);
 }
 ```

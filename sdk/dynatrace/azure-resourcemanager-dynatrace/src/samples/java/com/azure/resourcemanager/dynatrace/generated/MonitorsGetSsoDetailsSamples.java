@@ -4,13 +4,12 @@
 
 package com.azure.resourcemanager.dynatrace.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.dynatrace.models.SsoDetailsRequest;
 
 /** Samples for Monitors GetSsoDetails. */
 public final class MonitorsGetSsoDetailsSamples {
     /*
-     * x-ms-original-file: specification/dynatrace/resource-manager/Dynatrace.Observability/stable/2021-09-01/examples/Monitors_GetSSODetails_MaximumSet_Gen.json
+     * x-ms-original-file: specification/dynatrace/resource-manager/Dynatrace.Observability/stable/2023-04-27/examples/Monitors_GetSSODetails_MaximumSet_Gen.json
      */
     /**
      * Sample code: Monitors_GetSSODetails_MaximumSet_Gen.
@@ -25,11 +24,11 @@ public final class MonitorsGetSsoDetailsSamples {
                 "myResourceGroup",
                 "myMonitor",
                 new SsoDetailsRequest().withUserPrincipal("alice@microsoft.com"),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/dynatrace/resource-manager/Dynatrace.Observability/stable/2021-09-01/examples/Monitors_GetSSODetails_MinimumSet_Gen.json
+     * x-ms-original-file: specification/dynatrace/resource-manager/Dynatrace.Observability/stable/2023-04-27/examples/Monitors_GetSSODetails_MinimumSet_Gen.json
      */
     /**
      * Sample code: Monitors_GetSSODetails_MinimumSet_Gen.
@@ -40,6 +39,10 @@ public final class MonitorsGetSsoDetailsSamples {
         com.azure.resourcemanager.dynatrace.DynatraceManager manager) {
         manager
             .monitors()
-            .getSsoDetailsWithResponse("myResourceGroup", "myMonitor", new SsoDetailsRequest(), Context.NONE);
+            .getSsoDetailsWithResponse(
+                "myResourceGroup",
+                "myMonitor",
+                new SsoDetailsRequest().withUserPrincipal("alice@microsoft.com"),
+                com.azure.core.util.Context.NONE);
     }
 }

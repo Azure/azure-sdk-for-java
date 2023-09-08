@@ -20,6 +20,15 @@ public final class SqlWorkloadType extends ExpandableStringEnum<SqlWorkloadType>
     public static final SqlWorkloadType DW = fromString("DW");
 
     /**
+     * Creates a new instance of SqlWorkloadType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SqlWorkloadType() {
+    }
+
+    /**
      * Creates or finds a SqlWorkloadType from its string representation.
      *
      * @param name a name to look for.

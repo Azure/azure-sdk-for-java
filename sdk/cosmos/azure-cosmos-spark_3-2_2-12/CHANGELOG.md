@@ -1,6 +1,6 @@
 ## Release History
 
-### 4.19.0-beta.1 (Unreleased)
+### 4.22.0-beta.1 (Unreleased)
 
 #### Features Added
 
@@ -9,6 +9,34 @@
 #### Bugs Fixed
 
 #### Other Changes
+
+### 4.21.1 (2023-08-28)
+
+#### Bugs Fixed
+* Fixed an issue where spark job failed due to 409 when `ItemBulkUpdate` is being configured - See [PR 36541](https://github.com/Azure/azure-sdk-for-java/pull/36541)
+
+### 4.21.0 (2023-08-09)
+
+#### Features Added
+* Added a new configuration setting `spark.cosmos.write.bulk.initialBatchSize` to allow specifying the initial micro batch size for bulk operations. The batch size will be tuned automatically based on the throttling rate afterwards - by default it starts initially with 100 documents per batch. This can lead to exceeding the requested throughput when using throughput control in the first few seconds of a Spark job. This usually isn't a problem - but if there is the desire to avoid this, reducing the initial micro batch size - for example setting it to `1` - would avoid the initial spike in RU/s usage. - See [PR 36068](https://github.com/Azure/azure-sdk-for-java/pull/36068)
+* Added new strategy `ItemBulkUpdate` to allow patch with more than 10 columns - See [PR 35977](https://github.com/Azure/azure-sdk-for-java/pull/35977)
+
+#### Bugs Fixed
+* Fixed schema reference issue for empty array - See [PR 35746](https://github.com/Azure/azure-sdk-for-java/pull/35746)
+
+### 4.20.0 (2023-06-26)
+
+#### Features Added
+* Added `feed_detail` diagnostics mode. - See [PR 35501](https://github.com/Azure/azure-sdk-for-java/pull/35501)
+
+### 4.19.0 (2023-06-09)
+
+#### Features Added
+* Added support for priority based throttling - See [PR 35238](https://github.com/Azure/azure-sdk-for-java/pull/35238)
+* Added new configuration parameter `spark.cosmos.write.bulk.targetedPayloadSizeInBytes` to allow increasing the micro batch payload size for better efficiency when documents are often above 110 KB.  - See [PR 35379](https://github.com/Azure/azure-sdk-for-java/pull/35379)
+
+#### Bugs Fixed
+* Addressed `NullPointerException` in `CosmosDataItemSource` constructor when Spark runtime initialization hasn't completed yet. - See [PR 35201](https://github.com/Azure/azure-sdk-for-java/pull/35201)
 
 ### 4.18.2 (2023-05-16)
 

@@ -7,6 +7,8 @@ package com.azure.messaging.eventhubs;
 import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.amqp.ProxyAuthenticationType;
 import com.azure.core.amqp.ProxyOptions;
+import com.azure.core.credential.TokenCredential;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 
 import java.net.InetSocketAddress;
 import java.net.Proxy;
@@ -31,12 +33,11 @@ public class PublishEventsWithWebSocketsAndProxy {
             new EventData("Tofu".getBytes(UTF_8)),
             new EventData("Turkey".getBytes(UTF_8)));
 
-        // The connection string value can be obtained by:
-        // 1. Going to your Event Hubs namespace in Azure Portal.
-        // 2. Creating an Event Hub instance.
-        // 3. Creating a "Shared access policy" for your Event Hub instance.
-        // 4. Copying the connection string from the policy's properties.
-        String connectionString = "Endpoint={endpoint};SharedAccessKeyName={sharedAccessKeyName};SharedAccessKey={sharedAccessKey};EntityPath={eventHubName}";
+        // The credential used is DefaultAzureCredential because it combines commonly used credentials
+        // in deployment and development and chooses the credential to used based on its running environment.
+        // More information can be found at: https://learn.microsoft.com/java/api/overview/azure/identity-readme
+        TokenCredential credential = new DefaultAzureCredentialBuilder()
+            .build();
 
         // By default, the AMQP port 5671 is used, but clients can use web sockets, port 443.
         // When using web sockets, developers can specify proxy options.
@@ -46,10 +47,14 @@ public class PublishEventsWithWebSocketsAndProxy {
             "digest-user", "digest-user-password");
 
         // Instantiate a client that will be used to call the service.
+        //
+        // "<<fully-qualified-namespace>>" will look similar to "{your-namespace}.servicebus.windows.net"
+        // "<<event-hub-name>>" will be the name of the Event Hub instance you created inside the Event Hubs namespace.
         EventHubProducerClient producer = new EventHubClientBuilder()
             .transportType(AmqpTransportType.AMQP_WEB_SOCKETS)
             .proxyOptions(proxyOptions)
-            .connectionString(connectionString)
+            .credential("<<fully-qualified-namespace>>", "<<event-hub-name>>",
+                credential)
             .buildProducerClient();
 
         // Creates an EventDataBatch where the Event Hubs service will automatically load balance the events between all

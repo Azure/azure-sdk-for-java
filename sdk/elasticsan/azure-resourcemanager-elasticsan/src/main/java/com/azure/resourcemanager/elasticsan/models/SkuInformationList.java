@@ -18,6 +18,12 @@ public final class SkuInformationList {
     @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<SkuInformationInner> value;
 
+    /*
+     * URI to fetch the next section of the paginated response.
+     */
+    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
+    private String nextLink;
+
     /** Creates an instance of SkuInformationList class. */
     public SkuInformationList() {
     }
@@ -29,6 +35,15 @@ public final class SkuInformationList {
      */
     public List<SkuInformationInner> value() {
         return this.value;
+    }
+
+    /**
+     * Get the nextLink property: URI to fetch the next section of the paginated response.
+     *
+     * @return the nextLink value.
+     */
+    public String nextLink() {
+        return this.nextLink;
     }
 
     /**

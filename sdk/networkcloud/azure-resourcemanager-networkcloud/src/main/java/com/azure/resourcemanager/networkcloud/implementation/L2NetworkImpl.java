@@ -56,6 +56,15 @@ public final class L2NetworkImpl implements L2Network, L2Network.Definition, L2N
         return this.innerModel().systemData();
     }
 
+    public List<String> associatedResourceIds() {
+        List<String> inner = this.innerModel().associatedResourceIds();
+        if (inner != null) {
+            return Collections.unmodifiableList(inner);
+        } else {
+            return Collections.emptyList();
+        }
+    }
+
     public String clusterId() {
         return this.innerModel().clusterId();
     }

@@ -12,16 +12,16 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.elasticsan.ElasticSanManager;
+import com.azure.resourcemanager.elasticsan.models.Action;
 import com.azure.resourcemanager.elasticsan.models.EncryptionType;
 import com.azure.resourcemanager.elasticsan.models.NetworkRuleSet;
 import com.azure.resourcemanager.elasticsan.models.StorageTargetType;
+import com.azure.resourcemanager.elasticsan.models.VirtualNetworkRule;
 import com.azure.resourcemanager.elasticsan.models.VolumeGroup;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
@@ -37,7 +37,7 @@ public final class VolumeGroupsCreateMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"provisioningState\":\"Succeeded\",\"protocolType\":\"None\",\"encryption\":\"EncryptionAtRestWithPlatformKey\",\"networkAcls\":{\"virtualNetworkRules\":[]}},\"tags\":{\"nxdhbt\":\"k\"},\"id\":\"kphywpnvjto\",\"name\":\"nermcl\",\"type\":\"plpho\"}";
+            "{\"properties\":{\"provisioningState\":\"Succeeded\",\"protocolType\":\"None\",\"encryption\":\"EncryptionAtRestWithPlatformKey\",\"networkAcls\":{\"virtualNetworkRules\":[{\"id\":\"jrkvfgbvfvpdbo\",\"action\":\"Allow\",\"state\":\"deprovisioning\"},{\"id\":\"sjq\",\"action\":\"Allow\",\"state\":\"networkSourceDeleted\"},{\"id\":\"ibdeibq\",\"action\":\"Allow\",\"state\":\"failed\"},{\"id\":\"hvxndzwmkrefajpj\",\"action\":\"Allow\",\"state\":\"failed\"}]},\"privateEndpointConnections\":[{\"properties\":{\"provisioningState\":\"Pending\",\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"groupIds\":[\"tjivfxzsjabib\"]},\"id\":\"stawfsdjpvkv\",\"name\":\"bjxbkzbzk\",\"type\":\"vncjabudurgk\"},{\"properties\":{\"provisioningState\":\"Pending\",\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"groupIds\":[\"hjjklff\",\"mouwqlgzrfzeey\",\"bizikayuhq\",\"bjbsybb\"]},\"id\":\"r\",\"name\":\"t\",\"type\":\"dgmfpgvmpipasl\"},{\"properties\":{\"provisioningState\":\"Failed\",\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"groupIds\":[\"ss\"]},\"id\":\"u\",\"name\":\"wbdsr\",\"type\":\"zpdrhneu\"}]},\"id\":\"wqkdwytisibi\",\"name\":\"cgpik\",\"type\":\"zimejzanlfzx\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -68,27 +68,25 @@ public final class VolumeGroupsCreateMockTests {
         VolumeGroup response =
             manager
                 .volumeGroups()
-                .define("txp")
-                .withExistingElasticSan("kdwzbaiuebbaumny", "upedeojnabckhs")
-                .withTags(mapOf("htldwk", "skrdqmhjj", "otogtwrupqs", "zxuutkncwscwsvl"))
-                .withProtocolType(StorageTargetType.NONE)
+                .define("r")
+                .withExistingElasticSan("lolp", "vk")
+                .withProtocolType(StorageTargetType.ISCSI)
                 .withEncryption(EncryptionType.ENCRYPTION_AT_REST_WITH_PLATFORM_KEY)
-                .withNetworkAcls(new NetworkRuleSet().withVirtualNetworkRules(Arrays.asList()))
+                .withNetworkAcls(
+                    new NetworkRuleSet()
+                        .withVirtualNetworkRules(
+                            Arrays
+                                .asList(
+                                    new VirtualNetworkRule()
+                                        .withVirtualNetworkResourceId("w")
+                                        .withAction(Action.ALLOW))))
                 .create();
 
-        Assertions.assertEquals("k", response.tags().get("nxdhbt"));
         Assertions.assertEquals(StorageTargetType.NONE, response.protocolType());
         Assertions.assertEquals(EncryptionType.ENCRYPTION_AT_REST_WITH_PLATFORM_KEY, response.encryption());
-    }
-
-    @SuppressWarnings("unchecked")
-    private static <T> Map<String, T> mapOf(Object... inputs) {
-        Map<String, T> map = new HashMap<>();
-        for (int i = 0; i < inputs.length; i += 2) {
-            String key = (String) inputs[i];
-            T value = (T) inputs[i + 1];
-            map.put(key, value);
-        }
-        return map;
+        Assertions
+            .assertEquals(
+                "jrkvfgbvfvpdbo", response.networkAcls().virtualNetworkRules().get(0).virtualNetworkResourceId());
+        Assertions.assertEquals(Action.ALLOW, response.networkAcls().virtualNetworkRules().get(0).action());
     }
 }

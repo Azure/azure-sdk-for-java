@@ -14,7 +14,7 @@ import com.azure.core.util.logging.ClientLogger;
  * Uses optional Sync-Token request/response headers will guarantee real-time consistency between different client
  * instances and requests.
  *
- * @see <a href="https://github.com/Azure/AppConfiguration/blob/master/docs/REST/consistency.md">Real-time Consistency</a>
+ * @see <a href="https://learn.microsoft.com/azure/azure-app-configuration/rest-api-consistency">Real-time Consistency</a>
  */
 public final class SyncToken {
     private static final String CANNOT_EMPTY_OR_NULL = "sync-token cannot be null or empty.";

@@ -22,7 +22,7 @@ public class ConsistencyReaderUnderTest extends ConsistencyReader {
                                       TransportClient transportClient,
                                       GatewayServiceConfigurationReader serviceConfigReader,
                                       IAuthorizationTokenProvider authorizationTokenProvider) {
-        super(mockDiagnosticsClientContext(), new Configs(), addressSelector, sessionContainer, transportClient, serviceConfigReader, authorizationTokenProvider);
+        super(mockDiagnosticsClientContext(), new Configs(), addressSelector, sessionContainer, transportClient, serviceConfigReader, authorizationTokenProvider, null);
 
     }
 

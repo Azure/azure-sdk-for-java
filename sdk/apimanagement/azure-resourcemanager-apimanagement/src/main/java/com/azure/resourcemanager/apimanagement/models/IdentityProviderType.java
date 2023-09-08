@@ -29,6 +29,15 @@ public final class IdentityProviderType extends ExpandableStringEnum<IdentityPro
     public static final IdentityProviderType AAD_B2C = fromString("aadB2C");
 
     /**
+     * Creates a new instance of IdentityProviderType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public IdentityProviderType() {
+    }
+
+    /**
      * Creates or finds a IdentityProviderType from its string representation.
      *
      * @param name a name to look for.
@@ -39,7 +48,11 @@ public final class IdentityProviderType extends ExpandableStringEnum<IdentityPro
         return fromString(name, IdentityProviderType.class);
     }
 
-    /** @return known IdentityProviderType values. */
+    /**
+     * Gets known IdentityProviderType values.
+     *
+     * @return known IdentityProviderType values.
+     */
     public static Collection<IdentityProviderType> values() {
         return values(IdentityProviderType.class);
     }

@@ -16,6 +16,10 @@ public final class ListAccountSasResponseInner {
     @JsonProperty(value = "accountSasToken", access = JsonProperty.Access.WRITE_ONLY)
     private String accountSasToken;
 
+    /** Creates an instance of ListAccountSasResponseInner class. */
+    public ListAccountSasResponseInner() {
+    }
+
     /**
      * Get the accountSasToken property: List SAS credentials of storage account.
      *

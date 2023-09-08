@@ -9,11 +9,10 @@ import com.azure.resourcemanager.sqlvirtualmachine.models.LoadBalancerConfigurat
 import com.azure.resourcemanager.sqlvirtualmachine.models.PrivateIpAddress;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class LoadBalancerConfigurationTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         LoadBalancerConfiguration model =
             BinaryData
                 .fromString(
@@ -27,8 +26,8 @@ public final class LoadBalancerConfigurationTests {
         Assertions.assertEquals("njaqwixjspro", model.sqlVirtualMachineInstances().get(0));
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         LoadBalancerConfiguration model =
             new LoadBalancerConfiguration()
                 .withPrivateIpAddress(new PrivateIpAddress().withIpAddress("jye").withSubnetResourceId("kvnipjoxz"))

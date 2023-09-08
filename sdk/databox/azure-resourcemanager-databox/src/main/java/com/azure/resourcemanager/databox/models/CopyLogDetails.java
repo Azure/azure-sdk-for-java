@@ -18,6 +18,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("CopyLogDetails")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "DataBox", value = DataBoxAccountCopyLogDetails.class),
+    @JsonSubTypes.Type(name = "DataBoxCustomerDisk", value = DataBoxCustomerDiskCopyLogDetails.class),
     @JsonSubTypes.Type(name = "DataBoxDisk", value = DataBoxDiskCopyLogDetails.class),
     @JsonSubTypes.Type(name = "DataBoxHeavy", value = DataBoxHeavyAccountCopyLogDetails.class)
 })

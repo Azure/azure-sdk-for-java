@@ -193,7 +193,22 @@ public final class QueueClientBuilder implements
      * and {@link #retryOptions(RequestRetryOptions)} have been set.
      */
     public QueueClient buildClient() {
-        return new QueueClient(buildAsyncClient());
+        StorageImplUtils.assertNotNull("queueName", queueName);
+        if (processMessageDecodingErrorAsyncHandler != null && processMessageDecodingErrorHandler != null) {
+            throw LOGGER.logExceptionAsError(new IllegalStateException(
+                "Either processMessageDecodingError or processMessageDecodingAsyncError should be specified"
+                    + "but not both.")
+            );
+        }
+        if (processMessageDecodingErrorAsyncHandler != null) {
+            LOGGER.warning("Please use processMessageDecodingErrorHandler for QueueClient.");
+        }
+        QueueServiceVersion serviceVersion = version != null ? version : QueueServiceVersion.getLatest();
+        AzureQueueStorageImpl queueStorage = createAzureQueueStorageImpl(serviceVersion);
+        QueueAsyncClient asyncClient = new QueueAsyncClient(queueStorage, queueName, accountName, serviceVersion,
+            messageEncoding, processMessageDecodingErrorAsyncHandler, processMessageDecodingErrorHandler, null);
+        return new QueueClient(createAzureQueueStorageImpl(serviceVersion), queueName, accountName, serviceVersion,
+            messageEncoding, processMessageDecodingErrorAsyncHandler, processMessageDecodingErrorHandler, asyncClient);
     }
 
     /**
@@ -222,22 +237,15 @@ public final class QueueClientBuilder implements
                     + "but not both.")
             );
         }
-
+        if (processMessageDecodingErrorHandler != null) {
+            LOGGER.warning("Please use processMessageDecodingErrorAsyncHandler for QueueAsyncClient.");
+        }
         QueueServiceVersion serviceVersion = version != null ? version : QueueServiceVersion.getLatest();
-
-        HttpPipeline pipeline = (httpPipeline != null) ? httpPipeline : BuilderHelper.buildPipeline(
-            storageSharedKeyCredential, tokenCredential, azureSasCredential, sasToken,
-            endpoint, retryOptions, coreRetryOptions, logOptions,
-            clientOptions, httpClient, perCallPolicies, perRetryPolicies, configuration, LOGGER);
-
-        AzureQueueStorageImpl azureQueueStorage = new AzureQueueStorageImplBuilder()
-            .url(endpoint)
-            .pipeline(pipeline)
-            .version(serviceVersion.getVersion())
-            .buildClient();
-
-        return new QueueAsyncClient(azureQueueStorage, queueName, accountName, serviceVersion,
-            messageEncoding, processMessageDecodingErrorAsyncHandler, processMessageDecodingErrorHandler);
+        AzureQueueStorageImpl queueStorage = createAzureQueueStorageImpl(serviceVersion);
+        QueueClient queueClient = new QueueClient(queueStorage, queueName, accountName, serviceVersion,
+            messageEncoding, processMessageDecodingErrorAsyncHandler, processMessageDecodingErrorHandler, null);
+        return new QueueAsyncClient(createAzureQueueStorageImpl(serviceVersion), queueName, accountName, serviceVersion,
+            messageEncoding, processMessageDecodingErrorAsyncHandler, processMessageDecodingErrorHandler, queueClient);
     }
 
     /**
@@ -703,5 +711,18 @@ public final class QueueClientBuilder implements
     public QueueClientBuilder serviceVersion(QueueServiceVersion version) {
         this.version = version;
         return this;
+    }
+
+    private AzureQueueStorageImpl createAzureQueueStorageImpl(QueueServiceVersion version) {
+        HttpPipeline pipeline = (httpPipeline != null) ? httpPipeline : BuilderHelper.buildPipeline(
+            storageSharedKeyCredential, tokenCredential, azureSasCredential, sasToken,
+            endpoint, retryOptions, coreRetryOptions, logOptions,
+            clientOptions, httpClient, perCallPolicies, perRetryPolicies, configuration, LOGGER);
+
+        return new AzureQueueStorageImplBuilder()
+            .url(endpoint)
+            .pipeline(pipeline)
+            .version(version.getVersion())
+            .buildClient();
     }
 }

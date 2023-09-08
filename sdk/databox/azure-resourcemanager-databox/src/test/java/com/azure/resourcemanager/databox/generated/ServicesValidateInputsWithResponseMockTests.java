@@ -65,7 +65,7 @@ public final class ServicesValidateInputsWithResponseMockTests {
             manager
                 .services()
                 .validateInputsWithResponse(
-                    "lyzrpzbchckqqzqi",
+                    "bsfgytguslfea",
                     new ValidationRequest().withIndividualRequestDetails(Arrays.asList(new ValidationInputRequest())),
                     com.azure.core.util.Context.NONE)
                 .getValue();

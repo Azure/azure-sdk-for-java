@@ -17,48 +17,39 @@ public final class ContactDetailsTests {
         ContactDetails model =
             BinaryData
                 .fromString(
-                    "{\"contactName\":\"inpvswjdkirsoodq\",\"phone\":\"hc\",\"phoneExtension\":\"nohjt\",\"mobile\":\"whdsoifiyip\",\"emailList\":[\"sqwpgrjb\",\"norcjxvsnbyxqab\",\"mocpc\",\"shurzafbljjgpbto\"],\"notificationPreference\":[{\"stageName\":\"Dispatched\",\"sendNotification\":false},{\"stageName\":\"AtAzureDC\",\"sendNotification\":true},{\"stageName\":\"DataCopy\",\"sendNotification\":false},{\"stageName\":\"Dispatched\",\"sendNotification\":true}]}")
+                    "{\"contactName\":\"kwh\",\"phone\":\"soifiyipjxsqw\",\"phoneExtension\":\"rjb\",\"mobile\":\"orcjxvsnby\",\"emailList\":[\"abnmocpcyshu\",\"zafb\"],\"notificationPreference\":[{\"stageName\":\"DataCopy\",\"sendNotification\":true}]}")
                 .toObject(ContactDetails.class);
-        Assertions.assertEquals("inpvswjdkirsoodq", model.contactName());
-        Assertions.assertEquals("hc", model.phone());
-        Assertions.assertEquals("nohjt", model.phoneExtension());
-        Assertions.assertEquals("whdsoifiyip", model.mobile());
-        Assertions.assertEquals("sqwpgrjb", model.emailList().get(0));
-        Assertions.assertEquals(NotificationStageName.DISPATCHED, model.notificationPreference().get(0).stageName());
-        Assertions.assertEquals(false, model.notificationPreference().get(0).sendNotification());
+        Assertions.assertEquals("kwh", model.contactName());
+        Assertions.assertEquals("soifiyipjxsqw", model.phone());
+        Assertions.assertEquals("rjb", model.phoneExtension());
+        Assertions.assertEquals("orcjxvsnby", model.mobile());
+        Assertions.assertEquals("abnmocpcyshu", model.emailList().get(0));
+        Assertions.assertEquals(NotificationStageName.DATA_COPY, model.notificationPreference().get(0).stageName());
+        Assertions.assertEquals(true, model.notificationPreference().get(0).sendNotification());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ContactDetails model =
             new ContactDetails()
-                .withContactName("inpvswjdkirsoodq")
-                .withPhone("hc")
-                .withPhoneExtension("nohjt")
-                .withMobile("whdsoifiyip")
-                .withEmailList(Arrays.asList("sqwpgrjb", "norcjxvsnbyxqab", "mocpc", "shurzafbljjgpbto"))
+                .withContactName("kwh")
+                .withPhone("soifiyipjxsqw")
+                .withPhoneExtension("rjb")
+                .withMobile("orcjxvsnby")
+                .withEmailList(Arrays.asList("abnmocpcyshu", "zafb"))
                 .withNotificationPreference(
                     Arrays
                         .asList(
                             new NotificationPreference()
-                                .withStageName(NotificationStageName.DISPATCHED)
-                                .withSendNotification(false),
-                            new NotificationPreference()
-                                .withStageName(NotificationStageName.AT_AZURE_DC)
-                                .withSendNotification(true),
-                            new NotificationPreference()
                                 .withStageName(NotificationStageName.DATA_COPY)
-                                .withSendNotification(false),
-                            new NotificationPreference()
-                                .withStageName(NotificationStageName.DISPATCHED)
                                 .withSendNotification(true)));
         model = BinaryData.fromObject(model).toObject(ContactDetails.class);
-        Assertions.assertEquals("inpvswjdkirsoodq", model.contactName());
-        Assertions.assertEquals("hc", model.phone());
-        Assertions.assertEquals("nohjt", model.phoneExtension());
-        Assertions.assertEquals("whdsoifiyip", model.mobile());
-        Assertions.assertEquals("sqwpgrjb", model.emailList().get(0));
-        Assertions.assertEquals(NotificationStageName.DISPATCHED, model.notificationPreference().get(0).stageName());
-        Assertions.assertEquals(false, model.notificationPreference().get(0).sendNotification());
+        Assertions.assertEquals("kwh", model.contactName());
+        Assertions.assertEquals("soifiyipjxsqw", model.phone());
+        Assertions.assertEquals("rjb", model.phoneExtension());
+        Assertions.assertEquals("orcjxvsnby", model.mobile());
+        Assertions.assertEquals("abnmocpcyshu", model.emailList().get(0));
+        Assertions.assertEquals(NotificationStageName.DATA_COPY, model.notificationPreference().get(0).stageName());
+        Assertions.assertEquals(true, model.notificationPreference().get(0).sendNotification());
     }
 }

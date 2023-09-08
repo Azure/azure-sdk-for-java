@@ -14,23 +14,23 @@ public final class DiskScheduleAvailabilityRequestTests {
         DiskScheduleAvailabilityRequest model =
             BinaryData
                 .fromString(
-                    "{\"skuName\":\"DataBoxDisk\",\"expectedDataSizeInTeraBytes\":158092972,\"storageLocation\":\"semwabnet\",\"country\":\"hszhedplvwiwu\"}")
+                    "{\"skuName\":\"DataBoxDisk\",\"expectedDataSizeInTeraBytes\":1305337055,\"storageLocation\":\"xbjhwuaanozjosph\",\"country\":\"ulpjr\"}")
                 .toObject(DiskScheduleAvailabilityRequest.class);
-        Assertions.assertEquals("semwabnet", model.storageLocation());
-        Assertions.assertEquals("hszhedplvwiwu", model.country());
-        Assertions.assertEquals(158092972, model.expectedDataSizeInTeraBytes());
+        Assertions.assertEquals("xbjhwuaanozjosph", model.storageLocation());
+        Assertions.assertEquals("ulpjr", model.country());
+        Assertions.assertEquals(1305337055, model.expectedDataSizeInTeraBytes());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DiskScheduleAvailabilityRequest model =
             new DiskScheduleAvailabilityRequest()
-                .withStorageLocation("semwabnet")
-                .withCountry("hszhedplvwiwu")
-                .withExpectedDataSizeInTeraBytes(158092972);
+                .withStorageLocation("xbjhwuaanozjosph")
+                .withCountry("ulpjr")
+                .withExpectedDataSizeInTeraBytes(1305337055);
         model = BinaryData.fromObject(model).toObject(DiskScheduleAvailabilityRequest.class);
-        Assertions.assertEquals("semwabnet", model.storageLocation());
-        Assertions.assertEquals("hszhedplvwiwu", model.country());
-        Assertions.assertEquals(158092972, model.expectedDataSizeInTeraBytes());
+        Assertions.assertEquals("xbjhwuaanozjosph", model.storageLocation());
+        Assertions.assertEquals("ulpjr", model.country());
+        Assertions.assertEquals(1305337055, model.expectedDataSizeInTeraBytes());
     }
 }

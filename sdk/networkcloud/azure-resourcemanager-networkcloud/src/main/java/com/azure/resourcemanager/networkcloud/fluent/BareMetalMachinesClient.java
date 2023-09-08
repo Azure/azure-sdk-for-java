@@ -12,6 +12,7 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.networkcloud.fluent.models.BareMetalMachineInner;
+import com.azure.resourcemanager.networkcloud.fluent.models.OperationStatusResultInner;
 import com.azure.resourcemanager.networkcloud.models.BareMetalMachineCordonParameters;
 import com.azure.resourcemanager.networkcloud.models.BareMetalMachinePatchParameters;
 import com.azure.resourcemanager.networkcloud.models.BareMetalMachinePowerOffParameters;
@@ -19,7 +20,6 @@ import com.azure.resourcemanager.networkcloud.models.BareMetalMachineReplacePara
 import com.azure.resourcemanager.networkcloud.models.BareMetalMachineRunCommandParameters;
 import com.azure.resourcemanager.networkcloud.models.BareMetalMachineRunDataExtractsParameters;
 import com.azure.resourcemanager.networkcloud.models.BareMetalMachineRunReadCommandsParameters;
-import com.azure.resourcemanager.networkcloud.models.BareMetalMachineValidateHardwareParameters;
 
 /** An instance of this class provides access to all the operations defined in BareMetalMachinesClient. */
 public interface BareMetalMachinesClient {
@@ -346,10 +346,11 @@ public interface BareMetalMachinesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginCordon(String resourceGroupName, String bareMetalMachineName);
+    SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginCordon(
+        String resourceGroupName, String bareMetalMachineName);
 
     /**
      * Cordon the bare metal machine.
@@ -363,10 +364,10 @@ public interface BareMetalMachinesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginCordon(
+    SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginCordon(
         String resourceGroupName,
         String bareMetalMachineName,
         BareMetalMachineCordonParameters bareMetalMachineCordonParameters,
@@ -382,9 +383,10 @@ public interface BareMetalMachinesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void cordon(String resourceGroupName, String bareMetalMachineName);
+    OperationStatusResultInner cordon(String resourceGroupName, String bareMetalMachineName);
 
     /**
      * Cordon the bare metal machine.
@@ -398,9 +400,10 @@ public interface BareMetalMachinesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void cordon(
+    OperationStatusResultInner cordon(
         String resourceGroupName,
         String bareMetalMachineName,
         BareMetalMachineCordonParameters bareMetalMachineCordonParameters,
@@ -416,10 +419,11 @@ public interface BareMetalMachinesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginPowerOff(String resourceGroupName, String bareMetalMachineName);
+    SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginPowerOff(
+        String resourceGroupName, String bareMetalMachineName);
 
     /**
      * Power off the bare metal machine.
@@ -433,10 +437,10 @@ public interface BareMetalMachinesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginPowerOff(
+    SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginPowerOff(
         String resourceGroupName,
         String bareMetalMachineName,
         BareMetalMachinePowerOffParameters bareMetalMachinePowerOffParameters,
@@ -452,9 +456,10 @@ public interface BareMetalMachinesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void powerOff(String resourceGroupName, String bareMetalMachineName);
+    OperationStatusResultInner powerOff(String resourceGroupName, String bareMetalMachineName);
 
     /**
      * Power off the bare metal machine.
@@ -468,9 +473,10 @@ public interface BareMetalMachinesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void powerOff(
+    OperationStatusResultInner powerOff(
         String resourceGroupName,
         String bareMetalMachineName,
         BareMetalMachinePowerOffParameters bareMetalMachinePowerOffParameters,
@@ -486,10 +492,11 @@ public interface BareMetalMachinesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginReimage(String resourceGroupName, String bareMetalMachineName);
+    SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginReimage(
+        String resourceGroupName, String bareMetalMachineName);
 
     /**
      * Reimage the bare metal machine.
@@ -502,10 +509,10 @@ public interface BareMetalMachinesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginReimage(
+    SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginReimage(
         String resourceGroupName, String bareMetalMachineName, Context context);
 
     /**
@@ -518,9 +525,10 @@ public interface BareMetalMachinesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void reimage(String resourceGroupName, String bareMetalMachineName);
+    OperationStatusResultInner reimage(String resourceGroupName, String bareMetalMachineName);
 
     /**
      * Reimage the bare metal machine.
@@ -533,9 +541,10 @@ public interface BareMetalMachinesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void reimage(String resourceGroupName, String bareMetalMachineName, Context context);
+    OperationStatusResultInner reimage(String resourceGroupName, String bareMetalMachineName, Context context);
 
     /**
      * Replace (service) the bare metal machine.
@@ -547,10 +556,11 @@ public interface BareMetalMachinesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginReplace(String resourceGroupName, String bareMetalMachineName);
+    SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginReplace(
+        String resourceGroupName, String bareMetalMachineName);
 
     /**
      * Replace (service) the bare metal machine.
@@ -564,10 +574,10 @@ public interface BareMetalMachinesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginReplace(
+    SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginReplace(
         String resourceGroupName,
         String bareMetalMachineName,
         BareMetalMachineReplaceParameters bareMetalMachineReplaceParameters,
@@ -583,9 +593,10 @@ public interface BareMetalMachinesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void replace(String resourceGroupName, String bareMetalMachineName);
+    OperationStatusResultInner replace(String resourceGroupName, String bareMetalMachineName);
 
     /**
      * Replace (service) the bare metal machine.
@@ -599,9 +610,10 @@ public interface BareMetalMachinesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void replace(
+    OperationStatusResultInner replace(
         String resourceGroupName,
         String bareMetalMachineName,
         BareMetalMachineReplaceParameters bareMetalMachineReplaceParameters,
@@ -617,10 +629,11 @@ public interface BareMetalMachinesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginRestart(String resourceGroupName, String bareMetalMachineName);
+    SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginRestart(
+        String resourceGroupName, String bareMetalMachineName);
 
     /**
      * Restart the bare metal machine.
@@ -633,10 +646,10 @@ public interface BareMetalMachinesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginRestart(
+    SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginRestart(
         String resourceGroupName, String bareMetalMachineName, Context context);
 
     /**
@@ -649,9 +662,10 @@ public interface BareMetalMachinesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void restart(String resourceGroupName, String bareMetalMachineName);
+    OperationStatusResultInner restart(String resourceGroupName, String bareMetalMachineName);
 
     /**
      * Restart the bare metal machine.
@@ -664,9 +678,10 @@ public interface BareMetalMachinesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void restart(String resourceGroupName, String bareMetalMachineName, Context context);
+    OperationStatusResultInner restart(String resourceGroupName, String bareMetalMachineName, Context context);
 
     /**
      * Run the command on the bare metal machine.
@@ -680,10 +695,10 @@ public interface BareMetalMachinesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginRunCommand(
+    SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginRunCommand(
         String resourceGroupName,
         String bareMetalMachineName,
         BareMetalMachineRunCommandParameters bareMetalMachineRunCommandParameters);
@@ -701,10 +716,10 @@ public interface BareMetalMachinesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginRunCommand(
+    SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginRunCommand(
         String resourceGroupName,
         String bareMetalMachineName,
         BareMetalMachineRunCommandParameters bareMetalMachineRunCommandParameters,
@@ -722,9 +737,10 @@ public interface BareMetalMachinesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void runCommand(
+    OperationStatusResultInner runCommand(
         String resourceGroupName,
         String bareMetalMachineName,
         BareMetalMachineRunCommandParameters bareMetalMachineRunCommandParameters);
@@ -742,9 +758,10 @@ public interface BareMetalMachinesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void runCommand(
+    OperationStatusResultInner runCommand(
         String resourceGroupName,
         String bareMetalMachineName,
         BareMetalMachineRunCommandParameters bareMetalMachineRunCommandParameters,
@@ -763,10 +780,10 @@ public interface BareMetalMachinesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginRunDataExtracts(
+    SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginRunDataExtracts(
         String resourceGroupName,
         String bareMetalMachineName,
         BareMetalMachineRunDataExtractsParameters bareMetalMachineRunDataExtractsParameters);
@@ -785,10 +802,10 @@ public interface BareMetalMachinesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginRunDataExtracts(
+    SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginRunDataExtracts(
         String resourceGroupName,
         String bareMetalMachineName,
         BareMetalMachineRunDataExtractsParameters bareMetalMachineRunDataExtractsParameters,
@@ -807,9 +824,10 @@ public interface BareMetalMachinesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void runDataExtracts(
+    OperationStatusResultInner runDataExtracts(
         String resourceGroupName,
         String bareMetalMachineName,
         BareMetalMachineRunDataExtractsParameters bareMetalMachineRunDataExtractsParameters);
@@ -828,9 +846,10 @@ public interface BareMetalMachinesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void runDataExtracts(
+    OperationStatusResultInner runDataExtracts(
         String resourceGroupName,
         String bareMetalMachineName,
         BareMetalMachineRunDataExtractsParameters bareMetalMachineRunDataExtractsParameters,
@@ -849,10 +868,10 @@ public interface BareMetalMachinesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginRunReadCommands(
+    SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginRunReadCommands(
         String resourceGroupName,
         String bareMetalMachineName,
         BareMetalMachineRunReadCommandsParameters bareMetalMachineRunReadCommandsParameters);
@@ -871,10 +890,10 @@ public interface BareMetalMachinesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginRunReadCommands(
+    SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginRunReadCommands(
         String resourceGroupName,
         String bareMetalMachineName,
         BareMetalMachineRunReadCommandsParameters bareMetalMachineRunReadCommandsParameters,
@@ -893,9 +912,10 @@ public interface BareMetalMachinesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void runReadCommands(
+    OperationStatusResultInner runReadCommands(
         String resourceGroupName,
         String bareMetalMachineName,
         BareMetalMachineRunReadCommandsParameters bareMetalMachineRunReadCommandsParameters);
@@ -914,9 +934,10 @@ public interface BareMetalMachinesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void runReadCommands(
+    OperationStatusResultInner runReadCommands(
         String resourceGroupName,
         String bareMetalMachineName,
         BareMetalMachineRunReadCommandsParameters bareMetalMachineRunReadCommandsParameters,
@@ -932,10 +953,11 @@ public interface BareMetalMachinesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginStart(String resourceGroupName, String bareMetalMachineName);
+    SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginStart(
+        String resourceGroupName, String bareMetalMachineName);
 
     /**
      * Start the bare metal machine.
@@ -948,10 +970,10 @@ public interface BareMetalMachinesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginStart(
+    SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginStart(
         String resourceGroupName, String bareMetalMachineName, Context context);
 
     /**
@@ -964,9 +986,10 @@ public interface BareMetalMachinesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void start(String resourceGroupName, String bareMetalMachineName);
+    OperationStatusResultInner start(String resourceGroupName, String bareMetalMachineName);
 
     /**
      * Start the bare metal machine.
@@ -979,9 +1002,10 @@ public interface BareMetalMachinesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void start(String resourceGroupName, String bareMetalMachineName, Context context);
+    OperationStatusResultInner start(String resourceGroupName, String bareMetalMachineName, Context context);
 
     /**
      * Uncordon the bare metal machine.
@@ -993,10 +1017,11 @@ public interface BareMetalMachinesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginUncordon(String resourceGroupName, String bareMetalMachineName);
+    SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginUncordon(
+        String resourceGroupName, String bareMetalMachineName);
 
     /**
      * Uncordon the bare metal machine.
@@ -1009,10 +1034,10 @@ public interface BareMetalMachinesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginUncordon(
+    SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginUncordon(
         String resourceGroupName, String bareMetalMachineName, Context context);
 
     /**
@@ -1025,9 +1050,10 @@ public interface BareMetalMachinesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void uncordon(String resourceGroupName, String bareMetalMachineName);
+    OperationStatusResultInner uncordon(String resourceGroupName, String bareMetalMachineName);
 
     /**
      * Uncordon the bare metal machine.
@@ -1040,85 +1066,8 @@ public interface BareMetalMachinesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void uncordon(String resourceGroupName, String bareMetalMachineName, Context context);
-
-    /**
-     * Trigger hardware validation of the bare metal machine.
-     *
-     * <p>Validate the hardware of the provided bare metal machine.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param bareMetalMachineName The name of the bare metal machine.
-     * @param bareMetalMachineValidateHardwareParameters The request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginValidateHardware(
-        String resourceGroupName,
-        String bareMetalMachineName,
-        BareMetalMachineValidateHardwareParameters bareMetalMachineValidateHardwareParameters);
-
-    /**
-     * Trigger hardware validation of the bare metal machine.
-     *
-     * <p>Validate the hardware of the provided bare metal machine.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param bareMetalMachineName The name of the bare metal machine.
-     * @param bareMetalMachineValidateHardwareParameters The request body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginValidateHardware(
-        String resourceGroupName,
-        String bareMetalMachineName,
-        BareMetalMachineValidateHardwareParameters bareMetalMachineValidateHardwareParameters,
-        Context context);
-
-    /**
-     * Trigger hardware validation of the bare metal machine.
-     *
-     * <p>Validate the hardware of the provided bare metal machine.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param bareMetalMachineName The name of the bare metal machine.
-     * @param bareMetalMachineValidateHardwareParameters The request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void validateHardware(
-        String resourceGroupName,
-        String bareMetalMachineName,
-        BareMetalMachineValidateHardwareParameters bareMetalMachineValidateHardwareParameters);
-
-    /**
-     * Trigger hardware validation of the bare metal machine.
-     *
-     * <p>Validate the hardware of the provided bare metal machine.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param bareMetalMachineName The name of the bare metal machine.
-     * @param bareMetalMachineValidateHardwareParameters The request body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void validateHardware(
-        String resourceGroupName,
-        String bareMetalMachineName,
-        BareMetalMachineValidateHardwareParameters bareMetalMachineValidateHardwareParameters,
-        Context context);
+    OperationStatusResultInner uncordon(String resourceGroupName, String bareMetalMachineName, Context context);
 }

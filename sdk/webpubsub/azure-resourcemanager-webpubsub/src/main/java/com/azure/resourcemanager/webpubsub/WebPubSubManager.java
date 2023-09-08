@@ -32,6 +32,7 @@ import com.azure.resourcemanager.webpubsub.implementation.WebPubSubHubsImpl;
 import com.azure.resourcemanager.webpubsub.implementation.WebPubSubManagementClientBuilder;
 import com.azure.resourcemanager.webpubsub.implementation.WebPubSubPrivateEndpointConnectionsImpl;
 import com.azure.resourcemanager.webpubsub.implementation.WebPubSubPrivateLinkResourcesImpl;
+import com.azure.resourcemanager.webpubsub.implementation.WebPubSubReplicasImpl;
 import com.azure.resourcemanager.webpubsub.implementation.WebPubSubSharedPrivateLinkResourcesImpl;
 import com.azure.resourcemanager.webpubsub.implementation.WebPubSubsImpl;
 import com.azure.resourcemanager.webpubsub.models.Operations;
@@ -41,6 +42,7 @@ import com.azure.resourcemanager.webpubsub.models.WebPubSubCustomDomains;
 import com.azure.resourcemanager.webpubsub.models.WebPubSubHubs;
 import com.azure.resourcemanager.webpubsub.models.WebPubSubPrivateEndpointConnections;
 import com.azure.resourcemanager.webpubsub.models.WebPubSubPrivateLinkResources;
+import com.azure.resourcemanager.webpubsub.models.WebPubSubReplicas;
 import com.azure.resourcemanager.webpubsub.models.WebPubSubSharedPrivateLinkResources;
 import com.azure.resourcemanager.webpubsub.models.WebPubSubs;
 import java.time.Duration;
@@ -67,6 +69,8 @@ public final class WebPubSubManager {
     private WebPubSubPrivateEndpointConnections webPubSubPrivateEndpointConnections;
 
     private WebPubSubPrivateLinkResources webPubSubPrivateLinkResources;
+
+    private WebPubSubReplicas webPubSubReplicas;
 
     private WebPubSubSharedPrivateLinkResources webPubSubSharedPrivateLinkResources;
 
@@ -235,7 +239,7 @@ public final class WebPubSubManager {
                 .append("-")
                 .append("com.azure.resourcemanager.webpubsub")
                 .append("/")
-                .append("1.0.0");
+                .append("1.1.0-beta.1");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder
                     .append(" (")
@@ -391,6 +395,18 @@ public final class WebPubSubManager {
                 new WebPubSubPrivateLinkResourcesImpl(clientObject.getWebPubSubPrivateLinkResources(), this);
         }
         return webPubSubPrivateLinkResources;
+    }
+
+    /**
+     * Gets the resource collection API of WebPubSubReplicas. It manages Replica.
+     *
+     * @return Resource collection API of WebPubSubReplicas.
+     */
+    public WebPubSubReplicas webPubSubReplicas() {
+        if (this.webPubSubReplicas == null) {
+            this.webPubSubReplicas = new WebPubSubReplicasImpl(clientObject.getWebPubSubReplicas(), this);
+        }
+        return webPubSubReplicas;
     }
 
     /**

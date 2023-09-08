@@ -114,11 +114,13 @@ public interface CommitmentPlan {
     interface Definition
         extends DefinitionStages.Blank, DefinitionStages.WithResourceGroup, DefinitionStages.WithCreate {
     }
+
     /** The CommitmentPlan definition stages. */
     interface DefinitionStages {
         /** The first stage of the CommitmentPlan definition. */
         interface Blank extends WithResourceGroup {
         }
+
         /** The stage of the CommitmentPlan definition allowing to specify parent resource. */
         interface WithResourceGroup {
             /**
@@ -129,6 +131,7 @@ public interface CommitmentPlan {
              */
             WithCreate withExistingResourceGroup(String resourceGroupName);
         }
+
         /**
          * The stage of the CommitmentPlan definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
@@ -154,6 +157,7 @@ public interface CommitmentPlan {
              */
             CommitmentPlan create(Context context);
         }
+
         /** The stage of the CommitmentPlan definition allowing to specify location. */
         interface WithLocation {
             /**
@@ -172,6 +176,7 @@ public interface CommitmentPlan {
              */
             WithCreate withRegion(String location);
         }
+
         /** The stage of the CommitmentPlan definition allowing to specify tags. */
         interface WithTags {
             /**
@@ -182,6 +187,7 @@ public interface CommitmentPlan {
              */
             WithCreate withTags(Map<String, String> tags);
         }
+
         /** The stage of the CommitmentPlan definition allowing to specify kind. */
         interface WithKind {
             /**
@@ -192,6 +198,7 @@ public interface CommitmentPlan {
              */
             WithCreate withKind(String kind);
         }
+
         /** The stage of the CommitmentPlan definition allowing to specify sku. */
         interface WithSku {
             /**
@@ -202,6 +209,7 @@ public interface CommitmentPlan {
              */
             WithCreate withSku(Sku sku);
         }
+
         /** The stage of the CommitmentPlan definition allowing to specify properties. */
         interface WithProperties {
             /**
@@ -213,6 +221,7 @@ public interface CommitmentPlan {
             WithCreate withProperties(CommitmentPlanProperties properties);
         }
     }
+
     /**
      * Begins update for the CommitmentPlan resource.
      *
@@ -237,6 +246,7 @@ public interface CommitmentPlan {
          */
         CommitmentPlan apply(Context context);
     }
+
     /** The CommitmentPlan update stages. */
     interface UpdateStages {
         /** The stage of the CommitmentPlan update allowing to specify tags. */
@@ -249,6 +259,7 @@ public interface CommitmentPlan {
              */
             Update withTags(Map<String, String> tags);
         }
+
         /** The stage of the CommitmentPlan update allowing to specify sku. */
         interface WithSku {
             /**
@@ -260,6 +271,7 @@ public interface CommitmentPlan {
             Update withSku(Sku sku);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

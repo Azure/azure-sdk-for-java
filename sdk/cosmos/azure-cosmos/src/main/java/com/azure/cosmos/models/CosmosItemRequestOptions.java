@@ -9,6 +9,7 @@ import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfig;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.RequestOptions;
 import com.azure.cosmos.implementation.WriteRetryPolicy;
+import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
 
 import java.time.Duration;
@@ -41,6 +42,7 @@ public class CosmosItemRequestOptions {
     private Boolean nonIdempotentWriteRetriesEnabled;
     private boolean useTrackingIds;
     private CosmosEndToEndOperationLatencyPolicyConfig endToEndOperationLatencyPolicyConfig;
+    private List<String> excludeRegions;
 
     /**
      * copy constructor
@@ -62,6 +64,7 @@ public class CosmosItemRequestOptions {
         nonIdempotentWriteRetriesEnabled = options.nonIdempotentWriteRetriesEnabled;
         useTrackingIds = options.useTrackingIds;
         endToEndOperationLatencyPolicyConfig = options.endToEndOperationLatencyPolicyConfig;
+        excludeRegions = options.excludeRegions;
         if (options.customOptions != null) {
             this.customOptions = new HashMap<>(options.customOptions);
         }
@@ -375,6 +378,31 @@ public class CosmosItemRequestOptions {
     }
 
     /**
+     * List of regions to exclude for the request/retries. Example "East US" or "East US, West US"
+     * These regions will be excluded from the preferred regions list
+     *
+     * @param excludeRegions list of regions
+     * @return the {@link CosmosItemRequestOptions}
+     */
+    public CosmosItemRequestOptions setExcludedRegions(List<String> excludeRegions) {
+        this.excludeRegions = excludeRegions;
+        return this;
+    }
+
+    /**
+     * Gets the list of regions to be excluded for the request/retries. These regions are excluded
+     * from the preferred region list.
+     *
+     * @return a list of excluded regions
+     * */
+    public List<String> getExcludedRegions() {
+        if (this.excludeRegions == null) {
+            return null;
+        }
+        return UnmodifiableList.unmodifiableList(this.excludeRegions);
+    }
+
+    /**
      * Gets the partition key
      *
      * @return the partition key
@@ -413,6 +441,7 @@ public class CosmosItemRequestOptions {
             requestOptions.setNonIdempotentWriteRetriesEnabled(this.nonIdempotentWriteRetriesEnabled);
         }
         requestOptions.setCosmosEndToEndLatencyPolicyConfig(endToEndOperationLatencyPolicyConfig);
+        requestOptions.setExcludeRegions(excludeRegions);
         if(this.customOptions != null) {
             for(Map.Entry<String, String> entry : this.customOptions.entrySet()) {
                 requestOptions.setHeader(entry.getKey(), entry.getValue());

@@ -21,75 +21,88 @@ public final class AmlFilesystemsListResultTests {
         AmlFilesystemsListResult model =
             BinaryData
                 .fromString(
-                    "{\"nextLink\":\"aq\",\"value\":[{\"identity\":{\"principalId\":\"pkii\",\"tenantId\":\"yexz\",\"type\":\"None\",\"userAssignedIdentities\":{}},\"sku\":{\"name\":\"nr\"},\"zones\":[\"o\",\"hb\",\"xknalaulppg\"],\"properties\":{\"storageCapacityTiB\":96.281746,\"provisioningState\":\"Failed\",\"filesystemSubnet\":\"pnyiropuhp\",\"mgsAddress\":\"vpgylgqgitxmed\",\"mountCommand\":\"c\",\"lustreVersion\":\"ynqwwncwzzhxgk\",\"throughputProvisionedMBps\":1481822403},\"location\":\"napkteoellw\",\"tags\":{\"gpfqbuace\":\"d\",\"qeqxo\":\"pzfqrhhuaoppp\",\"ahzxctobgbk\":\"z\",\"mgrcfbu\":\"moizpos\"},\"id\":\"rmfqjhhkxbpvj\",\"name\":\"mjh\",\"type\":\"xjyngudivk\"},{\"identity\":{\"principalId\":\"wbxqzvszjfau\",\"tenantId\":\"fdxxivetvtcqaqtd\",\"type\":\"None\",\"userAssignedIdentities\":{}},\"sku\":{\"name\":\"vwvxyslqbhsfx\"},\"zones\":[\"ytkblmpew\"],\"properties\":{\"storageCapacityTiB\":62.109833,\"provisioningState\":\"Updating\",\"filesystemSubnet\":\"vrnsvshqjohxc\",\"mgsAddress\":\"bfovasrruvwbhsq\",\"mountCommand\":\"ubcgjbirxb\",\"lustreVersion\":\"bsrfbj\",\"throughputProvisionedMBps\":837542479},\"location\":\"otftpvjzbexilz\",\"tags\":{\"aruoujmkcjhwqyt\":\"qqnvwpmq\",\"bnw\":\"r\",\"enq\":\"ewgdrjervn\",\"ndoygmifthnzdnd\":\"eh\"},\"id\":\"l\",\"name\":\"nayqi\",\"type\":\"ynduha\"}]}")
+                    "{\"nextLink\":\"mhquvgjxp\",\"value\":[{\"identity\":{\"principalId\":\"ehmtzop\",\"tenantId\":\"phrupidgsybbejhp\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{}},\"sku\":{\"name\":\"xaobhdxbmtqioqjz\"},\"zones\":[\"bmufpown\",\"izhwlrxy\"],\"properties\":{\"storageCapacityTiB\":33.52534,\"provisioningState\":\"Creating\",\"filesystemSubnet\":\"jgkdmbpazlobcu\",\"throughputProvisionedMBps\":1053599723},\"location\":\"t\",\"tags\":{\"ooojywifsqe\":\"jnqglhqgnu\",\"zlhjxrifkwmrvkt\":\"aagdfmg\",\"ajpsquc\":\"izntocipao\",\"gjofjd\":\"poyfdkfogkn\"},\"id\":\"eqsrdeupewnwreit\",\"name\":\"zyf\",\"type\":\"usarhmofc\"},{\"identity\":{\"principalId\":\"my\",\"tenantId\":\"kdtmlxhekuk\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{}},\"sku\":{\"name\":\"cdm\"},\"zones\":[\"cryuan\",\"w\",\"xzdxtayrlhmwh\",\"pmrqobm\"],\"properties\":{\"storageCapacityTiB\":59.327854,\"provisioningState\":\"Failed\",\"filesystemSubnet\":\"yrtih\",\"throughputProvisionedMBps\":1773018691},\"location\":\"zvgnwzs\",\"tags\":{\"anufhfcbjysag\":\"lzufcyzkohdbi\",\"qhabifpikxwcz\":\"th\"},\"id\":\"yscnpqxu\",\"name\":\"ivyqniwbybrkxvd\",\"type\":\"mjgr\"},{\"identity\":{\"principalId\":\"vukxgau\",\"tenantId\":\"cs\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{}},\"sku\":{\"name\":\"yejhk\"},\"zones\":[\"tnapczwlokjyemkk\",\"ni\",\"joxzjnchgejspodm\",\"ilzyd\"],\"properties\":{\"storageCapacityTiB\":1.213932,\"provisioningState\":\"Updating\",\"filesystemSubnet\":\"ahuxinpm\",\"throughputProvisionedMBps\":972887206},\"location\":\"xj\",\"tags\":{\"gjvw\":\"ozvcput\"},\"id\":\"fdatsc\",\"name\":\"dvpjhulsuuvmk\",\"type\":\"ozkrwfndiodjpslw\"},{\"identity\":{\"principalId\":\"pvwryoqpsoacc\",\"tenantId\":\"zakljlahbc\",\"type\":\"None\",\"userAssignedIdentities\":{}},\"sku\":{\"name\":\"dosyg\"},\"zones\":[\"aojakhmsbzjhcrz\",\"vdphlxaolthqtr\",\"qjbpfzfsin\",\"gvfcj\"],\"properties\":{\"storageCapacityTiB\":42.41827,\"provisioningState\":\"Deleting\",\"filesystemSubnet\":\"j\",\"throughputProvisionedMBps\":1190609144},\"location\":\"fziton\",\"tags\":{\"vhpfxxypininmay\":\"fpjkjlxofp\",\"oginuvamiheognar\":\"uybbkpodep\"},\"id\":\"zxtheotusivyevcc\",\"name\":\"qi\",\"type\":\"nhungbw\"}]}")
                 .toObject(AmlFilesystemsListResult.class);
-        Assertions.assertEquals("aq", model.nextLink());
-        Assertions.assertEquals("napkteoellw", model.value().get(0).location());
-        Assertions.assertEquals("d", model.value().get(0).tags().get("gpfqbuace"));
-        Assertions.assertEquals(AmlFilesystemIdentityType.NONE, model.value().get(0).identity().type());
-        Assertions.assertEquals("nr", model.value().get(0).sku().name());
-        Assertions.assertEquals("o", model.value().get(0).zones().get(0));
-        Assertions.assertEquals(96.281746f, model.value().get(0).storageCapacityTiB());
-        Assertions.assertEquals("pnyiropuhp", model.value().get(0).filesystemSubnet());
+        Assertions.assertEquals("mhquvgjxp", model.nextLink());
+        Assertions.assertEquals("t", model.value().get(0).location());
+        Assertions.assertEquals("jnqglhqgnu", model.value().get(0).tags().get("ooojywifsqe"));
+        Assertions.assertEquals(AmlFilesystemIdentityType.USER_ASSIGNED, model.value().get(0).identity().type());
+        Assertions.assertEquals("xaobhdxbmtqioqjz", model.value().get(0).sku().name());
+        Assertions.assertEquals("bmufpown", model.value().get(0).zones().get(0));
+        Assertions.assertEquals(33.52534f, model.value().get(0).storageCapacityTiB());
+        Assertions.assertEquals("jgkdmbpazlobcu", model.value().get(0).filesystemSubnet());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AmlFilesystemsListResult model =
             new AmlFilesystemsListResult()
-                .withNextLink("aq")
+                .withNextLink("mhquvgjxp")
                 .withValue(
                     Arrays
                         .asList(
                             new AmlFilesystemInner()
-                                .withLocation("napkteoellw")
+                                .withLocation("t")
                                 .withTags(
                                     mapOf(
-                                        "gpfqbuace",
-                                        "d",
-                                        "qeqxo",
-                                        "pzfqrhhuaoppp",
-                                        "ahzxctobgbk",
-                                        "z",
-                                        "mgrcfbu",
-                                        "moizpos"))
+                                        "ooojywifsqe",
+                                        "jnqglhqgnu",
+                                        "zlhjxrifkwmrvkt",
+                                        "aagdfmg",
+                                        "ajpsquc",
+                                        "izntocipao",
+                                        "gjofjd",
+                                        "poyfdkfogkn"))
                                 .withIdentity(
                                     new AmlFilesystemIdentity()
-                                        .withType(AmlFilesystemIdentityType.NONE)
+                                        .withType(AmlFilesystemIdentityType.USER_ASSIGNED)
                                         .withUserAssignedIdentities(mapOf()))
-                                .withSku(new SkuName().withName("nr"))
-                                .withZones(Arrays.asList("o", "hb", "xknalaulppg"))
-                                .withStorageCapacityTiB(96.281746f)
-                                .withFilesystemSubnet("pnyiropuhp"),
+                                .withSku(new SkuName().withName("xaobhdxbmtqioqjz"))
+                                .withZones(Arrays.asList("bmufpown", "izhwlrxy"))
+                                .withStorageCapacityTiB(33.52534f)
+                                .withFilesystemSubnet("jgkdmbpazlobcu"),
                             new AmlFilesystemInner()
-                                .withLocation("otftpvjzbexilz")
-                                .withTags(
-                                    mapOf(
-                                        "aruoujmkcjhwqyt",
-                                        "qqnvwpmq",
-                                        "bnw",
-                                        "r",
-                                        "enq",
-                                        "ewgdrjervn",
-                                        "ndoygmifthnzdnd",
-                                        "eh"))
+                                .withLocation("zvgnwzs")
+                                .withTags(mapOf("anufhfcbjysag", "lzufcyzkohdbi", "qhabifpikxwcz", "th"))
+                                .withIdentity(
+                                    new AmlFilesystemIdentity()
+                                        .withType(AmlFilesystemIdentityType.USER_ASSIGNED)
+                                        .withUserAssignedIdentities(mapOf()))
+                                .withSku(new SkuName().withName("cdm"))
+                                .withZones(Arrays.asList("cryuan", "w", "xzdxtayrlhmwh", "pmrqobm"))
+                                .withStorageCapacityTiB(59.327854f)
+                                .withFilesystemSubnet("yrtih"),
+                            new AmlFilesystemInner()
+                                .withLocation("xj")
+                                .withTags(mapOf("gjvw", "ozvcput"))
+                                .withIdentity(
+                                    new AmlFilesystemIdentity()
+                                        .withType(AmlFilesystemIdentityType.USER_ASSIGNED)
+                                        .withUserAssignedIdentities(mapOf()))
+                                .withSku(new SkuName().withName("yejhk"))
+                                .withZones(Arrays.asList("tnapczwlokjyemkk", "ni", "joxzjnchgejspodm", "ilzyd"))
+                                .withStorageCapacityTiB(1.213932f)
+                                .withFilesystemSubnet("ahuxinpm"),
+                            new AmlFilesystemInner()
+                                .withLocation("fziton")
+                                .withTags(mapOf("vhpfxxypininmay", "fpjkjlxofp", "oginuvamiheognar", "uybbkpodep"))
                                 .withIdentity(
                                     new AmlFilesystemIdentity()
                                         .withType(AmlFilesystemIdentityType.NONE)
                                         .withUserAssignedIdentities(mapOf()))
-                                .withSku(new SkuName().withName("vwvxyslqbhsfx"))
-                                .withZones(Arrays.asList("ytkblmpew"))
-                                .withStorageCapacityTiB(62.109833f)
-                                .withFilesystemSubnet("vrnsvshqjohxc")));
+                                .withSku(new SkuName().withName("dosyg"))
+                                .withZones(Arrays.asList("aojakhmsbzjhcrz", "vdphlxaolthqtr", "qjbpfzfsin", "gvfcj"))
+                                .withStorageCapacityTiB(42.41827f)
+                                .withFilesystemSubnet("j")));
         model = BinaryData.fromObject(model).toObject(AmlFilesystemsListResult.class);
-        Assertions.assertEquals("aq", model.nextLink());
-        Assertions.assertEquals("napkteoellw", model.value().get(0).location());
-        Assertions.assertEquals("d", model.value().get(0).tags().get("gpfqbuace"));
-        Assertions.assertEquals(AmlFilesystemIdentityType.NONE, model.value().get(0).identity().type());
-        Assertions.assertEquals("nr", model.value().get(0).sku().name());
-        Assertions.assertEquals("o", model.value().get(0).zones().get(0));
-        Assertions.assertEquals(96.281746f, model.value().get(0).storageCapacityTiB());
-        Assertions.assertEquals("pnyiropuhp", model.value().get(0).filesystemSubnet());
+        Assertions.assertEquals("mhquvgjxp", model.nextLink());
+        Assertions.assertEquals("t", model.value().get(0).location());
+        Assertions.assertEquals("jnqglhqgnu", model.value().get(0).tags().get("ooojywifsqe"));
+        Assertions.assertEquals(AmlFilesystemIdentityType.USER_ASSIGNED, model.value().get(0).identity().type());
+        Assertions.assertEquals("xaobhdxbmtqioqjz", model.value().get(0).sku().name());
+        Assertions.assertEquals("bmufpown", model.value().get(0).zones().get(0));
+        Assertions.assertEquals(33.52534f, model.value().get(0).storageCapacityTiB());
+        Assertions.assertEquals("jgkdmbpazlobcu", model.value().get(0).filesystemSubnet());
     }
 
     @SuppressWarnings("unchecked")

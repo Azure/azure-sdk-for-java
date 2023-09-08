@@ -4,13 +4,13 @@
 
 package com.azure.ai.formrecognizer.documentanalysis.implementation.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** A content line object consisting of an adjacent sequence of content elements, such as words and selection marks. */
-@Fluent
+@Immutable
 public final class DocumentLine {
     /*
      * Concatenated content of the contained elements in reading order.
@@ -37,7 +37,7 @@ public final class DocumentLine {
      * @param spans the spans value to set.
      */
     @JsonCreator
-    public DocumentLine(
+    private DocumentLine(
             @JsonProperty(value = "content", required = true) String content,
             @JsonProperty(value = "spans", required = true) List<DocumentSpan> spans) {
         this.content = content;
@@ -60,17 +60,6 @@ public final class DocumentLine {
      */
     public List<Float> getPolygon() {
         return this.polygon;
-    }
-
-    /**
-     * Set the polygon property: Bounding polygon of the line.
-     *
-     * @param polygon the polygon value to set.
-     * @return the DocumentLine object itself.
-     */
-    public DocumentLine setPolygon(List<Float> polygon) {
-        this.polygon = polygon;
-        return this;
     }
 
     /**

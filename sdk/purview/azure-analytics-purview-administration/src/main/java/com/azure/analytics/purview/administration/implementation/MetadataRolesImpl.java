@@ -79,6 +79,25 @@ public final class MetadataRolesImpl {
                 RequestOptions requestOptions,
                 Context context);
 
+        @Get("/metadataRoles")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> listSync(
+                @HostParam("Endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
@@ -97,6 +116,25 @@ public final class MetadataRolesImpl {
                 @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
+
+        @Get("{nextLink}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> listNextSync(
+                @PathParam(value = "nextLink", encoded = true) String nextLink,
+                @HostParam("Endpoint") String endpoint,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
     }
 
     /**
@@ -106,41 +144,36 @@ public final class MetadataRolesImpl {
      *
      * <pre>{@code
      * {
-     *     values: [
-     *         {
-     *             id: String
-     *             name: String
-     *             type: String
-     *             properties: {
-     *                 provisioningState: String
-     *                 roleType: String
-     *                 friendlyName: String
-     *                 description: String
-     *                 cnfCondition: [
-     *                     [
-     *                         {
-     *                             attributeName: String
-     *                             attributeValueIncludes: String
-     *                             attributeValueIncludedIn: [
-     *                                 String
-     *                             ]
-     *                             attributeValueExcludes: String
-     *                             attributeValueExcludedIn: [
-     *                                 String
-     *                             ]
-     *                         }
+     *     id: String (Optional)
+     *     name: String (Optional)
+     *     type: String (Optional)
+     *     properties (Optional): {
+     *         provisioningState: String (Optional)
+     *         roleType: String (Optional)
+     *         friendlyName: String (Optional)
+     *         description: String (Optional)
+     *         cnfCondition (Optional): [
+     *              (Optional)[
+     *                  (Optional){
+     *                     attributeName: String (Optional)
+     *                     attributeValueIncludes: String (Optional)
+     *                     attributeValueIncludedIn (Optional): [
+     *                         String (Optional)
      *                     ]
-     *                 ]
-     *                 dnfCondition: [
-     *                     [
-     *                         (recursive schema, see above)
+     *                     attributeValueExcludes: String (Optional)
+     *                     attributeValueExcludedIn (Optional): [
+     *                         String (Optional)
      *                     ]
-     *                 ]
-     *                 version: Long
-     *             }
-     *         }
-     *     ]
-     *     nextLink: String
+     *                 }
+     *             ]
+     *         ]
+     *         dnfCondition (Optional): [
+     *              (Optional)[
+     *                 (recursive schema, see above)
+     *             ]
+     *         ]
+     *         version: Long (Optional)
+     *     }
      * }
      * }</pre>
      *
@@ -152,7 +185,7 @@ public final class MetadataRolesImpl {
      * @return list of Metadata roles along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<BinaryData>> listSinglePageAsync(RequestOptions requestOptions) {
+    private Mono<PagedResponse<BinaryData>> listSinglePageAsync(RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                         context ->
@@ -180,114 +213,36 @@ public final class MetadataRolesImpl {
      *
      * <pre>{@code
      * {
-     *     values: [
-     *         {
-     *             id: String
-     *             name: String
-     *             type: String
-     *             properties: {
-     *                 provisioningState: String
-     *                 roleType: String
-     *                 friendlyName: String
-     *                 description: String
-     *                 cnfCondition: [
-     *                     [
-     *                         {
-     *                             attributeName: String
-     *                             attributeValueIncludes: String
-     *                             attributeValueIncludedIn: [
-     *                                 String
-     *                             ]
-     *                             attributeValueExcludes: String
-     *                             attributeValueExcludedIn: [
-     *                                 String
-     *                             ]
-     *                         }
+     *     id: String (Optional)
+     *     name: String (Optional)
+     *     type: String (Optional)
+     *     properties (Optional): {
+     *         provisioningState: String (Optional)
+     *         roleType: String (Optional)
+     *         friendlyName: String (Optional)
+     *         description: String (Optional)
+     *         cnfCondition (Optional): [
+     *              (Optional)[
+     *                  (Optional){
+     *                     attributeName: String (Optional)
+     *                     attributeValueIncludes: String (Optional)
+     *                     attributeValueIncludedIn (Optional): [
+     *                         String (Optional)
      *                     ]
-     *                 ]
-     *                 dnfCondition: [
-     *                     [
-     *                         (recursive schema, see above)
+     *                     attributeValueExcludes: String (Optional)
+     *                     attributeValueExcludedIn (Optional): [
+     *                         String (Optional)
      *                     ]
-     *                 ]
-     *                 version: Long
-     *             }
-     *         }
-     *     ]
-     *     nextLink: String
-     * }
-     * }</pre>
-     *
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return list of Metadata roles along with {@link PagedResponse} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<BinaryData>> listSinglePageAsync(RequestOptions requestOptions, Context context) {
-        final String accept = "application/json";
-        return service.list(
-                        this.client.getEndpoint(),
-                        this.client.getServiceVersion().getVersion(),
-                        accept,
-                        requestOptions,
-                        context)
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        getValues(res.getValue(), "values"),
-                                        getNextLink(res.getValue(), "nextLink"),
-                                        null));
-    }
-
-    /**
-     * Lists roles for Purview Account.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     values: [
-     *         {
-     *             id: String
-     *             name: String
-     *             type: String
-     *             properties: {
-     *                 provisioningState: String
-     *                 roleType: String
-     *                 friendlyName: String
-     *                 description: String
-     *                 cnfCondition: [
-     *                     [
-     *                         {
-     *                             attributeName: String
-     *                             attributeValueIncludes: String
-     *                             attributeValueIncludedIn: [
-     *                                 String
-     *                             ]
-     *                             attributeValueExcludes: String
-     *                             attributeValueExcludedIn: [
-     *                                 String
-     *                             ]
-     *                         }
-     *                     ]
-     *                 ]
-     *                 dnfCondition: [
-     *                     [
-     *                         (recursive schema, see above)
-     *                     ]
-     *                 ]
-     *                 version: Long
-     *             }
-     *         }
-     *     ]
-     *     nextLink: String
+     *                 }
+     *             ]
+     *         ]
+     *         dnfCondition (Optional): [
+     *              (Optional)[
+     *                 (recursive schema, see above)
+     *             ]
+     *         ]
+     *         version: Long (Optional)
+     *     }
      * }
      * }</pre>
      *
@@ -317,62 +272,63 @@ public final class MetadataRolesImpl {
      *
      * <pre>{@code
      * {
-     *     values: [
-     *         {
-     *             id: String
-     *             name: String
-     *             type: String
-     *             properties: {
-     *                 provisioningState: String
-     *                 roleType: String
-     *                 friendlyName: String
-     *                 description: String
-     *                 cnfCondition: [
-     *                     [
-     *                         {
-     *                             attributeName: String
-     *                             attributeValueIncludes: String
-     *                             attributeValueIncludedIn: [
-     *                                 String
-     *                             ]
-     *                             attributeValueExcludes: String
-     *                             attributeValueExcludedIn: [
-     *                                 String
-     *                             ]
-     *                         }
+     *     id: String (Optional)
+     *     name: String (Optional)
+     *     type: String (Optional)
+     *     properties (Optional): {
+     *         provisioningState: String (Optional)
+     *         roleType: String (Optional)
+     *         friendlyName: String (Optional)
+     *         description: String (Optional)
+     *         cnfCondition (Optional): [
+     *              (Optional)[
+     *                  (Optional){
+     *                     attributeName: String (Optional)
+     *                     attributeValueIncludes: String (Optional)
+     *                     attributeValueIncludedIn (Optional): [
+     *                         String (Optional)
      *                     ]
-     *                 ]
-     *                 dnfCondition: [
-     *                     [
-     *                         (recursive schema, see above)
+     *                     attributeValueExcludes: String (Optional)
+     *                     attributeValueExcludedIn (Optional): [
+     *                         String (Optional)
      *                     ]
-     *                 ]
-     *                 version: Long
-     *             }
-     *         }
-     *     ]
-     *     nextLink: String
+     *                 }
+     *             ]
+     *         ]
+     *         dnfCondition (Optional): [
+     *              (Optional)[
+     *                 (recursive schema, see above)
+     *             ]
+     *         ]
+     *         version: Long (Optional)
+     *     }
      * }
      * }</pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return list of Metadata roles as paginated response with {@link PagedFlux}.
+     * @return list of Metadata roles along with {@link PagedResponse}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> listAsync(RequestOptions requestOptions, Context context) {
-        RequestOptions requestOptionsForNextPage = new RequestOptions();
-        requestOptionsForNextPage.setContext(
-                requestOptions != null && requestOptions.getContext() != null
-                        ? requestOptions.getContext()
-                        : Context.NONE);
-        return new PagedFlux<>(
-                () -> listSinglePageAsync(requestOptions, context),
-                nextLink -> listNextSinglePageAsync(nextLink, requestOptionsForNextPage, context));
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<BinaryData> listSinglePage(RequestOptions requestOptions) {
+        final String accept = "application/json";
+        Response<BinaryData> res =
+                service.listSync(
+                        this.client.getEndpoint(),
+                        this.client.getServiceVersion().getVersion(),
+                        accept,
+                        requestOptions,
+                        Context.NONE);
+        return new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                getValues(res.getValue(), "values"),
+                getNextLink(res.getValue(), "nextLink"),
+                null);
     }
 
     /**
@@ -382,41 +338,36 @@ public final class MetadataRolesImpl {
      *
      * <pre>{@code
      * {
-     *     values: [
-     *         {
-     *             id: String
-     *             name: String
-     *             type: String
-     *             properties: {
-     *                 provisioningState: String
-     *                 roleType: String
-     *                 friendlyName: String
-     *                 description: String
-     *                 cnfCondition: [
-     *                     [
-     *                         {
-     *                             attributeName: String
-     *                             attributeValueIncludes: String
-     *                             attributeValueIncludedIn: [
-     *                                 String
-     *                             ]
-     *                             attributeValueExcludes: String
-     *                             attributeValueExcludedIn: [
-     *                                 String
-     *                             ]
-     *                         }
+     *     id: String (Optional)
+     *     name: String (Optional)
+     *     type: String (Optional)
+     *     properties (Optional): {
+     *         provisioningState: String (Optional)
+     *         roleType: String (Optional)
+     *         friendlyName: String (Optional)
+     *         description: String (Optional)
+     *         cnfCondition (Optional): [
+     *              (Optional)[
+     *                  (Optional){
+     *                     attributeName: String (Optional)
+     *                     attributeValueIncludes: String (Optional)
+     *                     attributeValueIncludedIn (Optional): [
+     *                         String (Optional)
      *                     ]
-     *                 ]
-     *                 dnfCondition: [
-     *                     [
-     *                         (recursive schema, see above)
+     *                     attributeValueExcludes: String (Optional)
+     *                     attributeValueExcludedIn (Optional): [
+     *                         String (Optional)
      *                     ]
-     *                 ]
-     *                 version: Long
-     *             }
-     *         }
-     *     ]
-     *     nextLink: String
+     *                 }
+     *             ]
+     *         ]
+     *         dnfCondition (Optional): [
+     *              (Optional)[
+     *                 (recursive schema, see above)
+     *             ]
+     *         ]
+     *         version: Long (Optional)
+     *     }
      * }
      * }</pre>
      *
@@ -429,7 +380,14 @@ public final class MetadataRolesImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> list(RequestOptions requestOptions) {
-        return new PagedIterable<>(listAsync(requestOptions));
+        RequestOptions requestOptionsForNextPage = new RequestOptions();
+        requestOptionsForNextPage.setContext(
+                requestOptions != null && requestOptions.getContext() != null
+                        ? requestOptions.getContext()
+                        : Context.NONE);
+        return new PagedIterable<>(
+                () -> listSinglePage(requestOptions),
+                nextLink -> listNextSinglePage(nextLink, requestOptionsForNextPage));
     }
 
     /**
@@ -439,45 +397,41 @@ public final class MetadataRolesImpl {
      *
      * <pre>{@code
      * {
-     *     values: [
-     *         {
-     *             id: String
-     *             name: String
-     *             type: String
-     *             properties: {
-     *                 provisioningState: String
-     *                 roleType: String
-     *                 friendlyName: String
-     *                 description: String
-     *                 cnfCondition: [
-     *                     [
-     *                         {
-     *                             attributeName: String
-     *                             attributeValueIncludes: String
-     *                             attributeValueIncludedIn: [
-     *                                 String
-     *                             ]
-     *                             attributeValueExcludes: String
-     *                             attributeValueExcludedIn: [
-     *                                 String
-     *                             ]
-     *                         }
+     *     id: String (Optional)
+     *     name: String (Optional)
+     *     type: String (Optional)
+     *     properties (Optional): {
+     *         provisioningState: String (Optional)
+     *         roleType: String (Optional)
+     *         friendlyName: String (Optional)
+     *         description: String (Optional)
+     *         cnfCondition (Optional): [
+     *              (Optional)[
+     *                  (Optional){
+     *                     attributeName: String (Optional)
+     *                     attributeValueIncludes: String (Optional)
+     *                     attributeValueIncludedIn (Optional): [
+     *                         String (Optional)
      *                     ]
-     *                 ]
-     *                 dnfCondition: [
-     *                     [
-     *                         (recursive schema, see above)
+     *                     attributeValueExcludes: String (Optional)
+     *                     attributeValueExcludedIn (Optional): [
+     *                         String (Optional)
      *                     ]
-     *                 ]
-     *                 version: Long
-     *             }
-     *         }
-     *     ]
-     *     nextLink: String
+     *                 }
+     *             ]
+     *         ]
+     *         dnfCondition (Optional): [
+     *              (Optional)[
+     *                 (recursive schema, see above)
+     *             ]
+     *         ]
+     *         version: Long (Optional)
+     *     }
      * }
      * }</pre>
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -486,7 +440,7 @@ public final class MetadataRolesImpl {
      * @return list of Metadata roles along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<BinaryData>> listNextSinglePageAsync(String nextLink, RequestOptions requestOptions) {
+    private Mono<PagedResponse<BinaryData>> listNextSinglePageAsync(String nextLink, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                         context ->
@@ -509,67 +463,60 @@ public final class MetadataRolesImpl {
      *
      * <pre>{@code
      * {
-     *     values: [
-     *         {
-     *             id: String
-     *             name: String
-     *             type: String
-     *             properties: {
-     *                 provisioningState: String
-     *                 roleType: String
-     *                 friendlyName: String
-     *                 description: String
-     *                 cnfCondition: [
-     *                     [
-     *                         {
-     *                             attributeName: String
-     *                             attributeValueIncludes: String
-     *                             attributeValueIncludedIn: [
-     *                                 String
-     *                             ]
-     *                             attributeValueExcludes: String
-     *                             attributeValueExcludedIn: [
-     *                                 String
-     *                             ]
-     *                         }
+     *     id: String (Optional)
+     *     name: String (Optional)
+     *     type: String (Optional)
+     *     properties (Optional): {
+     *         provisioningState: String (Optional)
+     *         roleType: String (Optional)
+     *         friendlyName: String (Optional)
+     *         description: String (Optional)
+     *         cnfCondition (Optional): [
+     *              (Optional)[
+     *                  (Optional){
+     *                     attributeName: String (Optional)
+     *                     attributeValueIncludes: String (Optional)
+     *                     attributeValueIncludedIn (Optional): [
+     *                         String (Optional)
      *                     ]
-     *                 ]
-     *                 dnfCondition: [
-     *                     [
-     *                         (recursive schema, see above)
+     *                     attributeValueExcludes: String (Optional)
+     *                     attributeValueExcludedIn (Optional): [
+     *                         String (Optional)
      *                     ]
-     *                 ]
-     *                 version: Long
-     *             }
-     *         }
-     *     ]
-     *     nextLink: String
+     *                 }
+     *             ]
+     *         ]
+     *         dnfCondition (Optional): [
+     *              (Optional)[
+     *                 (recursive schema, see above)
+     *             ]
+     *         ]
+     *         version: Long (Optional)
+     *     }
      * }
      * }</pre>
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return list of Metadata roles along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return list of Metadata roles along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<BinaryData>> listNextSinglePageAsync(
-            String nextLink, RequestOptions requestOptions, Context context) {
+    private PagedResponse<BinaryData> listNextSinglePage(String nextLink, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.listNext(nextLink, this.client.getEndpoint(), accept, requestOptions, context)
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        getValues(res.getValue(), "values"),
-                                        getNextLink(res.getValue(), "nextLink"),
-                                        null));
+        Response<BinaryData> res =
+                service.listNextSync(nextLink, this.client.getEndpoint(), accept, requestOptions, Context.NONE);
+        return new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                getValues(res.getValue(), "values"),
+                getNextLink(res.getValue(), "nextLink"),
+                null);
     }
 
     private List<BinaryData> getValues(BinaryData binaryData, String path) {

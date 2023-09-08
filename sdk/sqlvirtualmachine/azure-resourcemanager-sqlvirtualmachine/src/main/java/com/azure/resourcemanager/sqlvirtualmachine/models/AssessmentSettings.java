@@ -7,29 +7,33 @@ package com.azure.resourcemanager.sqlvirtualmachine.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Configure assessment for databases in your SQL virtual machine. */
+/** Configure SQL best practices Assessment for databases in your SQL virtual machine. */
 @Fluent
 public final class AssessmentSettings {
     /*
-     * Enable or disable assessment feature on SQL virtual machine.
+     * Enable or disable SQL best practices Assessment feature on SQL virtual machine.
      */
     @JsonProperty(value = "enable")
     private Boolean enable;
 
     /*
-     * Run assessment immediately on SQL virtual machine.
+     * Run SQL best practices Assessment immediately on SQL virtual machine.
      */
     @JsonProperty(value = "runImmediately")
     private Boolean runImmediately;
 
     /*
-     * Schedule for Assessment.
+     * Schedule for SQL best practices Assessment.
      */
     @JsonProperty(value = "schedule")
     private Schedule schedule;
 
+    /** Creates an instance of AssessmentSettings class. */
+    public AssessmentSettings() {
+    }
+
     /**
-     * Get the enable property: Enable or disable assessment feature on SQL virtual machine.
+     * Get the enable property: Enable or disable SQL best practices Assessment feature on SQL virtual machine.
      *
      * @return the enable value.
      */
@@ -38,7 +42,7 @@ public final class AssessmentSettings {
     }
 
     /**
-     * Set the enable property: Enable or disable assessment feature on SQL virtual machine.
+     * Set the enable property: Enable or disable SQL best practices Assessment feature on SQL virtual machine.
      *
      * @param enable the enable value to set.
      * @return the AssessmentSettings object itself.
@@ -49,7 +53,7 @@ public final class AssessmentSettings {
     }
 
     /**
-     * Get the runImmediately property: Run assessment immediately on SQL virtual machine.
+     * Get the runImmediately property: Run SQL best practices Assessment immediately on SQL virtual machine.
      *
      * @return the runImmediately value.
      */
@@ -58,7 +62,7 @@ public final class AssessmentSettings {
     }
 
     /**
-     * Set the runImmediately property: Run assessment immediately on SQL virtual machine.
+     * Set the runImmediately property: Run SQL best practices Assessment immediately on SQL virtual machine.
      *
      * @param runImmediately the runImmediately value to set.
      * @return the AssessmentSettings object itself.
@@ -69,7 +73,7 @@ public final class AssessmentSettings {
     }
 
     /**
-     * Get the schedule property: Schedule for Assessment.
+     * Get the schedule property: Schedule for SQL best practices Assessment.
      *
      * @return the schedule value.
      */
@@ -78,7 +82,7 @@ public final class AssessmentSettings {
     }
 
     /**
-     * Set the schedule property: Schedule for Assessment.
+     * Set the schedule property: Schedule for SQL best practices Assessment.
      *
      * @param schedule the schedule value to set.
      * @return the AssessmentSettings object itself.

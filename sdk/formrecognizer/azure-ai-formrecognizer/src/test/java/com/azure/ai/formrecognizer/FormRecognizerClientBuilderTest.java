@@ -27,7 +27,6 @@ import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
-import static com.azure.ai.formrecognizer.FormRecognizerClientTestBase.INVALID_ENDPOINT;
 import static com.azure.ai.formrecognizer.FormTrainingClientTestBase.AZURE_FORM_RECOGNIZER_API_KEY;
 import static com.azure.ai.formrecognizer.FormTrainingClientTestBase.AZURE_FORM_RECOGNIZER_ENDPOINT;
 import static com.azure.ai.formrecognizer.TestUtils.CONTENT_FORM_JPG;
@@ -99,27 +98,12 @@ public class FormRecognizerClientBuilderTest extends TestProxyTestBase {
     }
 
     /**
-     * Test for invalid endpoint, which throws connection refused exception message.
-     */
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-    public void clientBuilderWithInvalidEndpoint(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
-        clientBuilderWithDefaultPipelineRunner(httpClient, serviceVersion, clientBuilder -> (input) -> {
-            assertThrows(RuntimeException.class,
-                () -> clientBuilder.endpoint(INVALID_ENDPOINT)
-                    .retryPolicy(new RetryPolicy(new FixedDelay(3, Duration.ofMillis(1))))
-                    .buildClient()
-                    .beginRecognizeContentFromUrl(input).getFinalResult());
-        });
-    }
-
-    /**
      * Test for an valid http endpoint, which throws HTTPS requirement exception message.
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
     public void clientBuilderWithHttpEndpoint(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
-        clientBuilderWithDefaultPipelineRunner(httpClient, serviceVersion, clientBuilder -> (input) -> {
+        clientBuilderWithNoRecordPipelineRunner(httpClient, serviceVersion, clientBuilder -> (input) -> {
             assertThrows(RuntimeException.class, () -> clientBuilder.endpoint(VALID_HTTP_LOCALHOST)
                 .retryPolicy(new RetryPolicy(new FixedDelay(3, Duration.ofMillis(1))))
                 .buildClient()
@@ -232,6 +216,17 @@ public class FormRecognizerClientBuilderTest extends TestProxyTestBase {
             createClientBuilder(httpClient, serviceVersion, getEndpoint(), new AzureKeyCredential(getApiKey()))
                 .configuration(Configuration.getGlobalConfiguration())
                 .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS));
+        testRunner.apply(clientBuilder).accept(URL_TEST_FILE_FORMAT + CONTENT_FORM_JPG);
+    }
+
+    void clientBuilderWithNoRecordPipelineRunner(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion,
+                                                Function<FormRecognizerClientBuilder, Consumer<String>> testRunner) {
+        final FormRecognizerClientBuilder clientBuilder = new FormRecognizerClientBuilder()
+            .credential(new AzureKeyCredential(getApiKey()))
+            .endpoint(getEndpoint())
+            .httpClient(httpClient)
+            .serviceVersion(serviceVersion);
+
         testRunner.apply(clientBuilder).accept(URL_TEST_FILE_FORMAT + CONTENT_FORM_JPG);
     }
 

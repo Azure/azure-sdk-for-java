@@ -105,7 +105,7 @@ troubleshooting issues. To enable logging the HTTP request and response payload,
 ```java readme-sample-enablehttplogging
 DocumentAnalysisClient client = new DocumentAnalysisClientBuilder()
     .endpoint("{endpoint}")
-    .credential(defaultCredential)
+    .credential(new DefaultAzureCredentialBuilder().build())
     .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
     .buildClient();
 ```

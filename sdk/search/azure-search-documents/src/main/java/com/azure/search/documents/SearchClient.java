@@ -42,6 +42,7 @@ import com.azure.search.documents.util.SuggestPagedIterable;
 import com.azure.search.documents.util.SuggestPagedResponse;
 
 import java.util.List;
+import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -618,7 +619,7 @@ public final class SearchClient {
         Context context) {
 
         try {
-            Response<Object> response = restClient.getDocuments()
+            Response<Map<String, Object>> response = restClient.getDocuments()
                 .getWithResponse(key, selectedFields, null, Utility.enableSyncRestProxy(context));
 
             return new SimpleResponse<>(response, serializer.deserializeFromBytes(
@@ -778,7 +779,8 @@ public final class SearchClient {
             SearchPagedResponse page = new SearchPagedResponse(
                 new SimpleResponse<>(response, getSearchResults(result, serializer)),
                 createContinuationToken(result, serviceVersion), result.getFacets(), result.getCount(),
-                result.getCoverage(), result.getAnswers());
+                result.getCoverage(), result.getAnswers(), result.getSemanticPartialResponseReason(), 
+                result.getSemanticPartialResponseType());
             if (continuationToken == null) {
                 firstPageResponseWrapper.setFirstPageResponse(page);
             }

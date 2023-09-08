@@ -31,7 +31,7 @@ public final class SkusListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"resourceType\":\"irclnpk\",\"name\":\"ayzri\",\"tier\":\"hya\",\"locations\":[\"jlb\",\"xqvkjlmxhomdyn\",\"dwdigumb\"],\"locationInfo\":[{\"location\":\"auzzptjazysd\",\"zones\":[\"zwwva\",\"qyuvvfonkp\"],\"zoneDetails\":[]},{\"location\":\"yik\",\"zones\":[\"auy\",\"vluwmncsttij\"],\"zoneDetails\":[]},{\"location\":\"vpo\",\"zones\":[\"sgsgbdhu\"],\"zoneDetails\":[]},{\"location\":\"njdgkynscliq\",\"zones\":[\"h\",\"nk\"],\"zoneDetails\":[]}],\"restrictions\":[\"databo\"]}]}";
+            "{\"value\":[{\"resourceType\":\"q\",\"name\":\"aj\",\"tier\":\"wxacevehj\",\"locations\":[\"xoafgaoqltfae\",\"linmfgv\"],\"locationInfo\":[{\"location\":\"pghriypoqeyhl\",\"zones\":[\"kprlpyznuc\",\"qdsmexiit\",\"fuxtyasiibmiybnn\"],\"zoneDetails\":[{\"name\":[\"ljhnmgixhcmav\"],\"capabilities\":[{},{}]},{\"name\":[\"dorhcgyyp\",\"otwypundmb\"],\"capabilities\":[{},{},{},{}]},{\"name\":[\"mjkavlgorbmft\",\"mdtzfjltfvnzc\",\"jtotpvopvpbd\",\"zq\"],\"capabilities\":[{}]},{\"name\":[\"edsvqwthmk\",\"ibcysihsgqc\",\"dhohsdtmcdzsuf\",\"ohdxbzlmcmu\"],\"capabilities\":[{}]}]}],\"restrictions\":[\"datadbevwqqxeysko\",\"dataqzinkfkbg\",\"dataz\",\"dataowxeqocljmy\"]}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -59,6 +59,6 @@ public final class SkusListMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<SkuDescription> response = manager.skus().list("qtmldgxo", com.azure.core.util.Context.NONE);
+        PagedIterable<SkuDescription> response = manager.skus().list("acvbmqz", com.azure.core.util.Context.NONE);
     }
 }

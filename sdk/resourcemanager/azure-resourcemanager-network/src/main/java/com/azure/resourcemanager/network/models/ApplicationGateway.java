@@ -12,10 +12,12 @@ import com.azure.resourcemanager.resources.fluentcore.model.Appliable;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.model.Refreshable;
 import com.azure.resourcemanager.resources.fluentcore.model.Updatable;
+import reactor.core.publisher.Mono;
+
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import reactor.core.publisher.Mono;
 
 /** Entry point for application gateway management API in Azure. */
 public interface ApplicationGateway
@@ -64,7 +66,14 @@ public interface ApplicationGateway
 
     // Getters
 
-    /** @return disabled SSL protocols */
+    /**
+     * Get the disabled SSL protocols.
+     *
+     * @return disabled SSL protocols
+     * @deprecated Application Gateway V1 is officially deprecated on April 28, 2023.
+     *             This attribute has no effect for V2 gateways, instead, use {@link ApplicationGateway#sslPolicy()}.
+     */
+    @Deprecated
     Collection<ApplicationGatewaySslProtocol> disabledSslProtocols();
 
     /**
@@ -182,6 +191,31 @@ public interface ApplicationGateway
      * @return a front end listener, or null if none found
      */
     ApplicationGatewayListener listenerByPortNumber(int portNumber);
+
+    /** @return resource id of the Web Application Firewall Policy (if any) associated with the application gateway */
+    String getWebApplicationFirewallPolicyId();
+
+    /**
+     * Get the Web Application Firewall Policy (if any) associated with the application gateway by calling REST API.
+     *
+     * @return Web Application Firewall Policy (if any) associated with the application gateway
+     */
+    WebApplicationFirewallPolicy getWebApplicationFirewallPolicy();
+
+    /**
+     * Get the Web Application Firewall Policy (if any) associated with the application gateway by calling REST API
+     * in async manner.
+     *
+     * @return {@link Mono} of Web Application Firewall Policy (if any) associated with the application gateway
+     */
+    Mono<WebApplicationFirewallPolicy> getWebApplicationFirewallPolicyAsync();
+
+    /**
+     * Get the SSL policy for the application gateway.
+     *
+     * @return SSL policy of the application gateway
+     */
+    ApplicationGatewaySslPolicy sslPolicy();
 
     /** Grouping of application gateway definition stages. */
     interface DefinitionStages {
@@ -382,6 +416,11 @@ public interface ApplicationGateway
             /**
              * Set tier of an application gateway. Possible values include: 'Standard', 'WAF', 'Standard_v2', 'WAF_v2'.
              *
+             * <p>Application Gateway V1 is officially deprecated on April 28, 2023.
+             *
+             * See <a href="https://learn.microsoft.com/azure/application-gateway/v1-retirement#retirement-timelines">v1-retirement-timeline</a>
+             * for V1 retirement timeline and start planning your migration to Application Gateway V2 today.</p>
+             *
              * @param tier the tier value to set
              * @return the next stage of the definition
              */
@@ -394,6 +433,10 @@ public interface ApplicationGateway
              * the most correct, so following that here.
              *
              * <p>By default, the smallest size is used.
+             *
+             * <p>Application Gateway V1 is officially deprecated on April 28, 2023.
+             * See <a href="https://learn.microsoft.com/azure/application-gateway/v1-retirement#retirement-timelines">v1-retirement-timeline</a>
+             * for V1 retirement timeline and start planning your migration to Application Gateway V2 today.</p>
              *
              * @param size an application gateway SKU name
              * @return the next stage of the definition
@@ -410,7 +453,16 @@ public interface ApplicationGateway
              * @param enabled enable the firewall when created
              * @param mode Web application firewall mode.
              * @return the next stage of the definition
+             * @deprecated No further investments will be made on legacy WAF configuration.
+             *             You are strongly encouraged to upgrade from legacy WAF configuration to WAF Policy for
+             *             easier management, better scale, and a richer feature set at no additional cost.
+             *             More <a href="https://learn.microsoft.com/azure/web-application-firewall/ag/upgrade-ag-waf-policy">
+             *                 upgrade-ag-waf-policy
+             *                 </a>
+             *
+             * @see WithWebApplicationFirewallPolicy
              */
+            @Deprecated
             WithCreate withWebApplicationFirewall(boolean enabled, ApplicationGatewayFirewallMode mode);
 
             /**
@@ -418,7 +470,15 @@ public interface ApplicationGateway
              *
              * @param webApplicationFirewallConfiguration Web application firewall configuration
              * @return the next stage of the definition
+             * @deprecated No further investments will be made on legacy WAF configuration.
+             *             You are strongly encouraged to upgrade from legacy WAF configuration to WAF Policy for
+             *             easier management, better scale, and a richer feature set at no additional cost.
+             *             More <a href="https://learn.microsoft.com/azure/web-application-firewall/ag/upgrade-ag-waf-policy">
+             *                 upgrade-ag-waf-policy
+             *                 </a>
+             * @see WithWebApplicationFirewallPolicy
              */
+            @Deprecated
             WithCreate withWebApplicationFirewall(
                 ApplicationGatewayWebApplicationFirewallConfiguration webApplicationFirewallConfiguration);
         }
@@ -506,7 +566,12 @@ public interface ApplicationGateway
              *
              * @param protocol an SSL protocol
              * @return the next stage of the definition
+             * @deprecated This method no longer has effect.
+             *             Consider {@link WithSslPolicy#withPredefinedSslPolicy(ApplicationGatewaySslPolicyName)} to use
+             *             pre-defined TLS/SSL policy, or {@link WithSslPolicy#withCustomV2SslPolicy(ApplicationGatewaySslProtocol, List)}
+             *             for custom TLS/SSL policy.
              */
+            @Deprecated
             WithCreate withDisabledSslProtocol(ApplicationGatewaySslProtocol protocol);
 
             /**
@@ -514,7 +579,12 @@ public interface ApplicationGateway
              *
              * @param protocols SSL protocols
              * @return the next stage of the definition
+             * @deprecated This method no longer has effect.
+             *             Consider {@link WithSslPolicy#withPredefinedSslPolicy(ApplicationGatewaySslPolicyName)} to use
+             *             pre-defined TLS/SSL policy, or {@link WithSslPolicy#withCustomV2SslPolicy(ApplicationGatewaySslProtocol, List)}
+             *             for custom TLS/SSL policy.
              */
+            @Deprecated
             WithCreate withDisabledSslProtocols(ApplicationGatewaySslProtocol... protocols);
         }
 
@@ -553,6 +623,78 @@ public interface ApplicationGateway
         }
 
         /**
+         * The stage of the application gateway definition allowing to associate a Web Application Firewall Policy.
+         */
+        interface WithWebApplicationFirewallPolicy {
+            /**
+             * Associates an existing Web Application Firewall Policy with the application gateway.
+             * The new association will remove and replace previous WAF policy association (if any).
+             *
+             * @param wafPolicy existing Web Application Firewall Policy
+             * @return the next stage of the definition
+             */
+            WithCreate withExistingWebApplicationFirewallPolicy(WebApplicationFirewallPolicy wafPolicy);
+
+            /**
+             * Associates an existing Web Application Firewall Policy with the application gateway.
+             * The new association will remove and replace previous WAF policy association (if any).
+             *
+             * @param resourceId existing Web Application Firewall Policy
+             * @return the next stage of the definition
+             */
+            WithCreate withExistingWebApplicationFirewallPolicy(String resourceId);
+
+            /**
+             * Associates a new Web Application Firewall Policy with the application gateway.
+             * The new association will remove and replace previous WAF policy association (if any).
+             *
+             * @param mode the Web Application Firewall mode
+             * @return the next stage of the update
+             */
+            WithCreate withNewWebApplicationFirewallPolicy(WebApplicationFirewallMode mode);
+
+            /**
+             * Associates a new Web Application Firewall Policy with the application gateway.
+             * The new association will remove and replace previous WAF policy association (if any).
+             *
+             * @param creatable full definition of the new Web Application Firewall Policy
+             * @return the next stage of the definition
+             */
+            WithCreate withNewWebApplicationFirewallPolicy(Creatable<WebApplicationFirewallPolicy> creatable);
+        }
+
+        /**
+         * The stage of the application gateway definition allowing to configure TLS/SSL policy for the application gateway.
+         */
+        interface WithSslPolicy {
+            /**
+             * Configures to use predefined TLS/SSL policy for the application gateway.
+             *
+             * @param policyName predefined TLS/SSL policy name
+             * @return the next stage of the definition
+             */
+            WithCreate withPredefinedSslPolicy(ApplicationGatewaySslPolicyName policyName);
+
+            /**
+             * Configures to use CustomV2 policy for the application gateway.
+             *
+             * @param minProtocolVersion minimum version of TLS/SSL protocol to be supported on application gateway.
+             * @param cipherSuites TLS/SSL cipher suites to be enabled in the specified order to application gateway.
+             * @return the next stage of the definition
+             */
+            WithCreate withCustomV2SslPolicy(ApplicationGatewaySslProtocol minProtocolVersion,
+                                             List<ApplicationGatewaySslCipherSuite> cipherSuites);
+
+            /**
+             * Configures to use the provided TLS/SSL policy for the application gateway.
+             *
+             * @param sslPolicy the TLS/SSL policy to use for the application gateway
+             * @return the next stage of the definition
+             */
+            WithCreate withSslPolicy(ApplicationGatewaySslPolicy sslPolicy);
+        }
+
+        /**
          * The stage of an application gateway definition containing all the required inputs for the resource to be
          * created, but also allowing for any other optional settings to be specified.
          */
@@ -578,7 +720,9 @@ public interface ApplicationGateway
                 WithRedirectConfiguration,
                 WithAvailabilityZone,
                 WithManagedServiceIdentity,
-                WithHttp2 {
+                WithHttp2,
+                WithWebApplicationFirewallPolicy,
+                WithSslPolicy {
         }
     }
 
@@ -914,6 +1058,10 @@ public interface ApplicationGateway
             /**
              * Set tier of an application gateway. Possible values include: 'Standard', 'WAF', 'Standard_v2', 'WAF_v2'.
              *
+             * <p>Application Gateway V1 is officially deprecated on April 28, 2023.
+             * See <a href="https://learn.microsoft.com/azure/application-gateway/v1-retirement#retirement-timelines">v1-retirement-timeline</a>
+             * for V1 retirement timeline and start planning your migration to Application Gateway V2 today.</p>
+             *
              * @param tier the tier value to set
              * @return the next stage of the update
              */
@@ -921,6 +1069,10 @@ public interface ApplicationGateway
 
             /**
              * Specifies the size of the application gateway to use within the context of the selected tier.
+             *
+             * <p>Application Gateway V1 is officially deprecated on April 28, 2023.
+             * See <a href="https://learn.microsoft.com/azure/application-gateway/v1-retirement#retirement-timelines">v1-retirement-timeline</a>
+             * for V1 retirement timeline and start planning your migration to Application Gateway V2 today.</p>
              *
              * @param size an application gateway size name
              * @return the next stage of the update
@@ -934,8 +1086,16 @@ public interface ApplicationGateway
              * Specifies webApplicationFirewallConfiguration.
              *
              * @param config Web application firewall configuration
-             * @return the next update stage
+             * @return the next stage of the update
+             * @deprecated No further investments will be made on legacy WAF configuration.
+             *             You are strongly encouraged to upgrade from legacy WAF configuration to WAF Policy for
+             *             easier management, better scale, and a richer feature set at no additional cost.
+             *             More <a href="https://learn.microsoft.com/azure/web-application-firewall/ag/upgrade-ag-waf-policy">
+             *                 upgrade-ag-waf-policy
+             *                 </a>
+             * @see WithWebApplicationFirewallPolicy
              */
+            @Deprecated
             Update withWebApplicationFirewall(ApplicationGatewayWebApplicationFirewallConfiguration config);
         }
 
@@ -1153,7 +1313,12 @@ public interface ApplicationGateway
              *
              * @param protocol an SSL protocol
              * @return the next stage of the update
+             * @deprecated This method no longer has effect.
+             *             Consider {@link WithSslPolicy#withPredefinedSslPolicy(ApplicationGatewaySslPolicyName)} to use
+             *             pre-defined TLS/SSL policy, or {@link WithSslPolicy#withCustomV2SslPolicy(ApplicationGatewaySslProtocol, List)}
+             *             for custom TLS/SSL policy.
              */
+            @Deprecated
             Update withDisabledSslProtocol(ApplicationGatewaySslProtocol protocol);
 
             /**
@@ -1161,7 +1326,12 @@ public interface ApplicationGateway
              *
              * @param protocols SSL protocols
              * @return the next stage of the update
+             * @deprecated This method no longer has effect.
+             *             Consider {@link WithSslPolicy#withPredefinedSslPolicy(ApplicationGatewaySslPolicyName)} to use
+             *             pre-defined TLS/SSL policy, or {@link WithSslPolicy#withCustomV2SslPolicy(ApplicationGatewaySslProtocol, List)}
+             *             for custom TLS/SSL policy.
              */
+            @Deprecated
             Update withDisabledSslProtocols(ApplicationGatewaySslProtocol... protocols);
 
             /**
@@ -1169,7 +1339,12 @@ public interface ApplicationGateway
              *
              * @param protocol an SSL protocol
              * @return the next stage of the update
+             * @deprecated This method no longer has effect.
+             *             Consider {@link WithSslPolicy#withPredefinedSslPolicy(ApplicationGatewaySslPolicyName)} to use
+             *             pre-defined TLS/SSL policy, or {@link WithSslPolicy#withCustomV2SslPolicy(ApplicationGatewaySslProtocol, List)}
+             *             for custom TLS/SSL policy.
              */
+            @Deprecated
             Update withoutDisabledSslProtocol(ApplicationGatewaySslProtocol protocol);
 
             /**
@@ -1177,14 +1352,24 @@ public interface ApplicationGateway
              *
              * @param protocols SSL protocols
              * @return the next stage of the update
+             * @deprecated This method no longer has effect.
+             *             Consider {@link WithSslPolicy#withPredefinedSslPolicy(ApplicationGatewaySslPolicyName)} to use
+             *             pre-defined TLS/SSL policy, or {@link WithSslPolicy#withCustomV2SslPolicy(ApplicationGatewaySslProtocol, List)}
+             *             for custom TLS/SSL policy.
              */
+            @Deprecated
             Update withoutDisabledSslProtocols(ApplicationGatewaySslProtocol... protocols);
 
             /**
              * Enables all SSL protocols, if previously disabled.
              *
              * @return the next stage of the update
+             * @deprecated This method no longer has effect.
+             *             Consider {@link WithSslPolicy#withPredefinedSslPolicy(ApplicationGatewaySslPolicyName)} to use
+             *             pre-defined TLS/SSL policy, or {@link WithSslPolicy#withCustomV2SslPolicy(ApplicationGatewaySslProtocol, List)}
+             *             for custom TLS/SSL policy.
              */
+            @Deprecated
             Update withoutAnyDisabledSslProtocols();
         }
 
@@ -1206,6 +1391,78 @@ public interface ApplicationGateway
              * @return the next stage of the update
              */
             Update withoutHttp2();
+        }
+
+        /**
+         * The stage of the application gateway update allowing to associate a Web Application Firewall Policy.
+         */
+        interface WithWebApplicationFirewallPolicy {
+            /**
+             * Associates an existing Web Application Firewall Policy with the application gateway.
+             * The newly associated policy will replace the previous associated one(if any) on the gateway.
+             *
+             * @param wafPolicy existing Web Application Firewall Policy
+             * @return the next stage of the update
+             */
+            Update withExistingWebApplicationFirewallPolicy(WebApplicationFirewallPolicy wafPolicy);
+
+            /**
+             * Associates an existing Web Application Firewall Policy with the application gateway.
+             * The newly associated policy will replace the previous associated one(if any) on the gateway.
+             *
+             * @param resourceId existing Web Application Firewall Policy
+             * @return the next stage of the update
+             */
+            Update withExistingWebApplicationFirewallPolicy(String resourceId);
+
+            /**
+             * Associates a new Web Application Firewall Policy with the application gateway.
+             * The newly associated policy will replace the previous associated one(if any) on the gateway.
+             *
+             * @param mode the Web Application Firewall mode
+             * @return the next stage of the update
+             */
+            Update withNewWebApplicationFirewallPolicy(WebApplicationFirewallMode mode);
+
+            /**
+             * Associates a new Web Application Firewall Policy with the application gateway.
+             * The newly associated policy will replace the previous associated one(if any) on the gateway.
+             *
+             * @param creatable full definition of the new Web Application Firewall Policy
+             * @return the next stage of the update
+             */
+            Update withNewWebApplicationFirewallPolicy(Creatable<WebApplicationFirewallPolicy> creatable);
+        }
+
+        /**
+         * The stage of the application gateway update allowing to configure TLS/SSL policy for the application gateway.
+         */
+        interface WithSslPolicy {
+            /**
+             * Configures to use predefined TLS/SSL policy for the application gateway.
+             *
+             * @param policyName predefined TLS/SSL policy name
+             * @return the next stage of the update
+             */
+            Update withPredefinedSslPolicy(ApplicationGatewaySslPolicyName policyName);
+
+            /**
+             * Configures to use CustomV2 policy for the application gateway.
+             *
+             * @param minProtocolVersion minimum version of TLS/SSL protocol to be supported on application gateway.
+             * @param cipherSuites TLS/SSL cipher suites to be enabled in the specified order to application gateway.
+             * @return the next stage of the update
+             */
+            Update withCustomV2SslPolicy(ApplicationGatewaySslProtocol minProtocolVersion,
+                                                              List<ApplicationGatewaySslCipherSuite> cipherSuites);
+
+            /**
+             * Configures to use the provided TLS/SSL policy for the application gateway.
+             *
+             * @param sslPolicy the TLS/SSL policy to use for the application gateway
+             * @return the next stage of the update
+             */
+            Update withSslPolicy(ApplicationGatewaySslPolicy sslPolicy);
         }
     }
 
@@ -1232,6 +1489,8 @@ public interface ApplicationGateway
             UpdateStages.WithRedirectConfiguration,
             UpdateStages.WithUrlPathMap,
             UpdateStages.WithManagedServiceIdentity,
-            UpdateStages.WithHttp2 {
+            UpdateStages.WithHttp2,
+            UpdateStages.WithWebApplicationFirewallPolicy,
+            UpdateStages.WithSslPolicy {
     }
 }

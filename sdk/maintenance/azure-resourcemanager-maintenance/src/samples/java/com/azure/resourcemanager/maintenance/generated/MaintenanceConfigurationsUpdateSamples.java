@@ -11,7 +11,7 @@ import com.azure.resourcemanager.maintenance.models.Visibility;
 /** Samples for MaintenanceConfigurations Update. */
 public final class MaintenanceConfigurationsUpdateSamples {
     /*
-     * x-ms-original-file: specification/maintenance/resource-manager/Microsoft.Maintenance/stable/2021-05-01/examples/MaintenanceConfigurations_UpdateForResource.json
+     * x-ms-original-file: specification/maintenance/resource-manager/Microsoft.Maintenance/stable/2023-04-01/examples/MaintenanceConfigurations_UpdateForResource.json
      */
     /**
      * Sample code: MaintenanceConfigurations_UpdateForResource.
@@ -28,7 +28,7 @@ public final class MaintenanceConfigurationsUpdateSamples {
         resource
             .update()
             .withNamespace("Microsoft.Maintenance")
-            .withMaintenanceScope(MaintenanceScope.HOST)
+            .withMaintenanceScope(MaintenanceScope.OSIMAGE)
             .withVisibility(Visibility.CUSTOM)
             .withStartDateTime("2020-04-30 08:00")
             .withExpirationDateTime("9999-12-31 00:00")

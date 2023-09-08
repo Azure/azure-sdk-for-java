@@ -4,10 +4,21 @@
 package com.azure.resourcemanager.containerregistry.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.resourcemanager.containerregistry.ContainerRegistryManager;
+import com.azure.resourcemanager.containerregistry.fluent.models.PrivateEndpointConnectionInner;
+import com.azure.resourcemanager.containerregistry.fluent.models.PrivateLinkResourceInner;
 import com.azure.resourcemanager.containerregistry.fluent.models.RegistryInner;
 import com.azure.resourcemanager.containerregistry.fluent.models.RunInner;
 import com.azure.resourcemanager.containerregistry.models.AccessKeyType;
+import com.azure.resourcemanager.containerregistry.models.Action;
+import com.azure.resourcemanager.containerregistry.models.ActionsRequired;
+import com.azure.resourcemanager.containerregistry.models.ConnectionStatus;
+import com.azure.resourcemanager.containerregistry.models.DefaultAction;
+import com.azure.resourcemanager.containerregistry.models.IpRule;
+import com.azure.resourcemanager.containerregistry.models.NetworkRuleBypassOptions;
+import com.azure.resourcemanager.containerregistry.models.NetworkRuleSet;
+import com.azure.resourcemanager.containerregistry.models.PrivateLinkServiceConnectionState;
 import com.azure.resourcemanager.containerregistry.models.PublicNetworkAccess;
 import com.azure.resourcemanager.containerregistry.models.Registry;
 import com.azure.resourcemanager.containerregistry.models.RegistryCredentials;
@@ -18,11 +29,21 @@ import com.azure.resourcemanager.containerregistry.models.Sku;
 import com.azure.resourcemanager.containerregistry.models.SkuName;
 import com.azure.resourcemanager.containerregistry.models.SourceUploadDefinition;
 import com.azure.resourcemanager.containerregistry.models.WebhookOperations;
+import com.azure.resourcemanager.resources.fluentcore.arm.models.PrivateEndpoint;
+import com.azure.resourcemanager.resources.fluentcore.arm.models.PrivateEndpointConnection;
+import com.azure.resourcemanager.resources.fluentcore.arm.models.PrivateEndpointConnectionProvisioningState;
+import com.azure.resourcemanager.resources.fluentcore.arm.models.PrivateLinkResource;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
+import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import reactor.core.publisher.Mono;
 
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
 
 /** Implementation for Registry and its create and update interfaces. */
 public class RegistryImpl extends GroupableResourceImpl<Registry, RegistryInner, RegistryImpl, ContainerRegistryManager>
@@ -189,6 +210,27 @@ public class RegistryImpl extends GroupableResourceImpl<Registry, RegistryInner,
     }
 
     @Override
+    public boolean canAccessFromTrustedServices() {
+        return this.innerModel().networkRuleBypassOptions() == NetworkRuleBypassOptions.AZURE_SERVICES;
+    }
+
+    @Override
+    public NetworkRuleSet networkRuleSet() {
+        return this.innerModel().networkRuleSet();
+    }
+
+    @Override
+    public boolean isDedicatedDataEndpointsEnabled() {
+        return ResourceManagerUtils.toPrimitiveBoolean(this.innerModel().dataEndpointEnabled());
+    }
+
+    @Override
+    public List<String> dedicatedDataEndpointsHostNames() {
+        return this.innerModel().dataEndpointHostNames() == null
+            ? Collections.emptyList() : Collections.unmodifiableList(this.innerModel().dataEndpointHostNames());
+    }
+
+    @Override
     public RegistryTaskRun.DefinitionStages.BlankFromRegistry scheduleRun() {
         return new RegistryTaskRunImpl(this.manager(), new RunInner())
             .withExistingRegistry(this.resourceGroupName(), this.name());
@@ -243,5 +285,256 @@ public class RegistryImpl extends GroupableResourceImpl<Registry, RegistryInner,
             updateParameters.withPublicNetworkAccess(PublicNetworkAccess.DISABLED);
         }
         return this;
+    }
+
+    @Override
+    public RegistryImpl withAccessFromSelectedNetworks() {
+        ensureNetworkRuleSet();
+        if (isInCreateMode()) {
+            this.innerModel().networkRuleSet().withDefaultAction(DefaultAction.DENY);
+        } else {
+            updateParameters.networkRuleSet().withDefaultAction(DefaultAction.DENY);
+        }
+        return this;
+    }
+
+    @Override
+    public RegistryImpl withAccessFromAllNetworks() {
+        ensureNetworkRuleSet();
+        if (isInCreateMode()) {
+            this.innerModel().networkRuleSet().withDefaultAction(DefaultAction.ALLOW);
+        } else {
+            updateParameters.networkRuleSet().withDefaultAction(DefaultAction.ALLOW);
+        }
+        return this;
+    }
+
+    @Override
+    public RegistryImpl withAccessFromIpAddressRange(String ipAddressCidr) {
+        ensureNetworkRuleSet();
+        if (this.innerModel().networkRuleSet().ipRules()
+            .stream().noneMatch(ipRule -> Objects.equals(ipRule.ipAddressOrRange(), ipAddressCidr))) {
+            this.innerModel().networkRuleSet().ipRules().add(new IpRule().withAction(Action.ALLOW).withIpAddressOrRange(ipAddressCidr));
+        }
+        if (!isInCreateMode()) {
+            updateParameters.networkRuleSet().withIpRules(this.innerModel().networkRuleSet().ipRules());
+        }
+        return this;
+    }
+
+    @Override
+    public RegistryImpl withoutAccessFromIpAddressRange(String ipAddressCidr) {
+        if (this.innerModel().networkRuleSet() == null) {
+            return this;
+        }
+        ensureNetworkRuleSet();
+        this.innerModel().networkRuleSet().ipRules().removeIf(ipRule -> Objects.equals(ipRule.ipAddressOrRange(), ipAddressCidr));
+        if (!isInCreateMode()) {
+            updateParameters.networkRuleSet().withIpRules(this.innerModel().networkRuleSet().ipRules());
+        }
+        return this;
+    }
+
+    @Override
+    public RegistryImpl withAccessFromIpAddress(String ipAddress) {
+        return withAccessFromIpAddressRange(ipAddress);
+    }
+
+    @Override
+    public RegistryImpl withoutAccessFromIpAddress(String ipAddress) {
+        return withoutAccessFromIpAddressRange(ipAddress);
+    }
+
+    @Override
+    public RegistryImpl withAccessFromTrustedServices() {
+        if (isInCreateMode()) {
+            this.innerModel().withNetworkRuleBypassOptions(NetworkRuleBypassOptions.AZURE_SERVICES);
+        } else {
+            updateParameters.withNetworkRuleBypassOptions(NetworkRuleBypassOptions.AZURE_SERVICES);
+        }
+        return this;
+    }
+
+    @Override
+    public RegistryImpl withoutAccessFromTrustedServices() {
+        if (isInCreateMode()) {
+            this.innerModel().withNetworkRuleBypassOptions(NetworkRuleBypassOptions.NONE);
+        } else {
+            updateParameters.withNetworkRuleBypassOptions(NetworkRuleBypassOptions.NONE);
+        }
+        return this;
+    }
+
+    @Override
+    public RegistryImpl enableDedicatedDataEndpoints() {
+        if (isInCreateMode()) {
+            this.innerModel().withDataEndpointEnabled(true);
+        } else {
+            updateParameters.withDataEndpointEnabled(true);
+        }
+        return this;
+    }
+
+    @Override
+    public RegistryImpl disableDedicatedDataEndpoints() {
+        if (isInCreateMode()) {
+            this.innerModel().withDataEndpointEnabled(false);
+        } else {
+            updateParameters.withDataEndpointEnabled(false);
+        }
+        return this;
+    }
+
+    @Override
+    public PagedIterable<PrivateEndpointConnection> listPrivateEndpointConnections() {
+        return new PagedIterable<>(this.listPrivateEndpointConnectionsAsync());
+    }
+
+    @Override
+    public PagedFlux<PrivateEndpointConnection> listPrivateEndpointConnectionsAsync() {
+        return PagedConverter.mapPage(this.manager().serviceClient().getPrivateEndpointConnections()
+            .listAsync(this.resourceGroupName(), this.name()), PrivateEndpointConnectionImpl::new);
+    }
+
+    @Override
+    public void approvePrivateEndpointConnection(String privateEndpointConnectionName) {
+        approvePrivateEndpointConnectionAsync(privateEndpointConnectionName).block();
+    }
+
+    @Override
+    public Mono<Void> approvePrivateEndpointConnectionAsync(String privateEndpointConnectionName) {
+        return this.manager().serviceClient().getPrivateEndpointConnections()
+            .createOrUpdateAsync(this.resourceGroupName(), this.name(), privateEndpointConnectionName,
+                new PrivateEndpointConnectionInner().withPrivateLinkServiceConnectionState(
+                    new PrivateLinkServiceConnectionState()
+                        .withStatus(
+                            ConnectionStatus.APPROVED)))
+            .then();
+    }
+
+    @Override
+    public void rejectPrivateEndpointConnection(String privateEndpointConnectionName) {
+        rejectPrivateEndpointConnectionAsync(privateEndpointConnectionName).block();
+    }
+
+    @Override
+    public Mono<Void> rejectPrivateEndpointConnectionAsync(String privateEndpointConnectionName) {
+        return this.manager().serviceClient().getPrivateEndpointConnections()
+            .createOrUpdateAsync(this.resourceGroupName(), this.name(), privateEndpointConnectionName,
+                new PrivateEndpointConnectionInner().withPrivateLinkServiceConnectionState(
+                    new PrivateLinkServiceConnectionState()
+                        .withStatus(
+                            ConnectionStatus.REJECTED)))
+            .then();
+    }
+
+    private void ensureNetworkRuleSet() {
+        if (this.isInCreateMode()) {
+            if (this.innerModel().networkRuleSet() == null) {
+                this.innerModel().withNetworkRuleSet(new NetworkRuleSet());
+                this.innerModel().networkRuleSet().withIpRules(new ArrayList<>());
+            }
+        } else {
+            if (updateParameters.networkRuleSet() == null) {
+                updateParameters.withNetworkRuleSet(this.innerModel().networkRuleSet());
+            }
+        }
+    }
+
+    @Override
+    public PagedIterable<PrivateLinkResource> listPrivateLinkResources() {
+        return new PagedIterable<>(this.listPrivateLinkResourcesAsync());
+    }
+
+    @Override
+    public PagedFlux<PrivateLinkResource> listPrivateLinkResourcesAsync() {
+        return this.manager().serviceClient().getRegistries()
+            .listPrivateLinkResourcesAsync(this.resourceGroupName(), this.name())
+            .mapPage(PrivateLinkResourceImpl::new);
+    }
+
+    private static final class PrivateLinkResourceImpl implements PrivateLinkResource {
+        private final PrivateLinkResourceInner innerModel;
+
+        private PrivateLinkResourceImpl(PrivateLinkResourceInner innerModel) {
+            this.innerModel = innerModel;
+        }
+
+        @Override
+        public String groupId() {
+            return innerModel.groupId();
+        }
+
+        @Override
+        public List<String> requiredMemberNames() {
+            return Collections.unmodifiableList(innerModel.requiredMembers());
+        }
+
+        @Override
+        public List<String> requiredDnsZoneNames() {
+            return Collections.unmodifiableList(innerModel.requiredZoneNames());
+        }
+    }
+
+    private static final class PrivateEndpointConnectionImpl implements PrivateEndpointConnection {
+        private final PrivateEndpointConnectionInner innerModel;
+
+        private final PrivateEndpoint privateEndpoint;
+        private final com.azure.resourcemanager.resources.fluentcore.arm.models.PrivateLinkServiceConnectionState
+            privateLinkServiceConnectionState;
+        private final PrivateEndpointConnectionProvisioningState provisioningState;
+
+        private PrivateEndpointConnectionImpl(PrivateEndpointConnectionInner innerModel) {
+            this.innerModel = innerModel;
+
+            this.privateEndpoint = innerModel.privateEndpoint() == null
+                ? null
+                : new PrivateEndpoint(innerModel.privateEndpoint().id());
+            this.privateLinkServiceConnectionState = innerModel.privateLinkServiceConnectionState() == null
+                ? null
+                : new com.azure.resourcemanager.resources.fluentcore.arm.models.PrivateLinkServiceConnectionState(
+                innerModel.privateLinkServiceConnectionState().status() == null
+                    ? null
+                    : com.azure.resourcemanager.resources.fluentcore.arm.models.PrivateEndpointServiceConnectionStatus
+                    .fromString(innerModel.privateLinkServiceConnectionState().status().toString()),
+                innerModel.privateLinkServiceConnectionState().description(),
+                innerModel.privateLinkServiceConnectionState().actionsRequired() == null
+                    ? ActionsRequired.NONE.toString()
+                    : innerModel.privateLinkServiceConnectionState().actionsRequired().toString());
+            this.provisioningState = innerModel.provisioningState() == null
+                ? null
+                : PrivateEndpointConnectionProvisioningState.fromString(innerModel.provisioningState().toString());
+        }
+
+        @Override
+        public String id() {
+            return innerModel.id();
+        }
+
+        @Override
+        public String name() {
+            return innerModel.name();
+        }
+
+        @Override
+        public String type() {
+            return innerModel.type();
+        }
+
+        @Override
+        public PrivateEndpoint privateEndpoint() {
+            return privateEndpoint;
+        }
+
+        @Override
+        public com.azure.resourcemanager.resources.fluentcore.arm.models.PrivateLinkServiceConnectionState
+            privateLinkServiceConnectionState() {
+            return privateLinkServiceConnectionState;
+        }
+
+        @Override
+        public PrivateEndpointConnectionProvisioningState provisioningState() {
+            return provisioningState;
+        }
     }
 }

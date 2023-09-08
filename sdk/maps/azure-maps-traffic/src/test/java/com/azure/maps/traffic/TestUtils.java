@@ -3,6 +3,16 @@
 
 package com.azure.maps.traffic;
 
+import com.azure.core.test.TestBase;
+import com.azure.core.util.serializer.JacksonAdapter;
+import com.azure.core.util.serializer.SerializerAdapter;
+import com.azure.core.util.serializer.SerializerEncoding;
+import com.azure.core.util.serializer.TypeReference;
+import com.azure.maps.traffic.models.TrafficFlowSegmentData;
+import com.azure.maps.traffic.models.TrafficIncidentDetail;
+import com.azure.maps.traffic.models.TrafficIncidentViewport;
+import org.junit.jupiter.params.provider.Arguments;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -11,17 +21,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Stream;
-
-import com.azure.core.test.TestBase;
-import com.azure.core.util.serializer.JacksonAdapter;
-import com.azure.core.util.serializer.SerializerAdapter;
-import com.azure.core.util.serializer.SerializerEncoding;
-import com.azure.core.util.serializer.TypeReference;
-import com.azure.maps.traffic.models.TrafficIncidentDetail;
-import com.azure.maps.traffic.models.TrafficFlowSegmentData;
-import com.azure.maps.traffic.models.TrafficIncidentViewport;
-
-import org.junit.jupiter.params.provider.Arguments;
 
 public class TestUtils {
     static final String FAKE_API_KEY = "fakeApiKey";
@@ -77,10 +76,10 @@ public class TestUtils {
 
     public static byte[] toByteArray(InputStream in) throws IOException {
         ByteArrayOutputStream os = new ByteArrayOutputStream();
- 
+
         byte[] buffer = new byte[1024];
         int len;
- 
+
         // read bytes from the input stream and store them in the buffer
         while ((len = in.read(buffer)) != -1) {
             // write bytes from the buffer into the output stream

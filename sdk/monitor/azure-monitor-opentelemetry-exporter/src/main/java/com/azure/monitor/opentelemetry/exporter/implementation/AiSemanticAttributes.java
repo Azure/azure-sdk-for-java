@@ -91,6 +91,10 @@ public final class AiSemanticAttributes {
         AttributeKey.stringKey("message_bus.destination");
     public static final AttributeKey<Long> AZURE_SDK_ENQUEUED_TIME =
         AttributeKey.longKey("x-opt-enqueued-time");
+    public static final AttributeKey<String> AZURE_SDK_DB_TYPE = AttributeKey.stringKey("db.type");
+    public static final AttributeKey<String> AZURE_SDK_DB_INSTANCE =
+        AttributeKey.stringKey("db.instance");
+    public static final AttributeKey<String> AZURE_SDK_DB_URL = AttributeKey.stringKey("db.url");
 
     public static final AttributeKey<Long> KAFKA_RECORD_QUEUE_TIME_MS =
         AttributeKey.longKey("kafka.record.queue_time_ms");

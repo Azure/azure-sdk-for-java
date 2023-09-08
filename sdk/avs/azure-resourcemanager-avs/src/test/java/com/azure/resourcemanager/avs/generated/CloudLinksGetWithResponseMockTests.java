@@ -31,7 +31,7 @@ public final class CloudLinksGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"status\":\"Disconnected\",\"linkedCloud\":\"ansnvp\"},\"id\":\"ibmikostbzb\",\"name\":\"iwbuqny\",\"type\":\"phzfylsgcrp\"}";
+            "{\"properties\":{\"status\":\"Disconnected\",\"linkedCloud\":\"ecb\"},\"id\":\"opwndyqleallk\",\"name\":\"mtkhlowkxxpvbr\",\"type\":\"fjmzsyzfho\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,9 +62,9 @@ public final class CloudLinksGetWithResponseMockTests {
         CloudLink response =
             manager
                 .cloudLinks()
-                .getWithResponse("rylniofrzg", "zjedmstkvnlv", "bcuiiz", com.azure.core.util.Context.NONE)
+                .getWithResponse("ycjimryvwgcwwpbm", "gwe", "ydsx", com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals("ansnvp", response.linkedCloud());
+        Assertions.assertEquals("ecb", response.linkedCloud());
     }
 }

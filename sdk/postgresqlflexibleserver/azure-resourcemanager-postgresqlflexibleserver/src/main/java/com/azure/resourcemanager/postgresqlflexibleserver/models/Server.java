@@ -141,7 +141,8 @@ public interface Server {
     Backup backup();
 
     /**
-     * Gets the network property: Network properties of a server.
+     * Gets the network property: Network properties of a server. This Network property is required to be passed only in
+     * case you want the server to be Private access server.
      *
      * @return the network value.
      */
@@ -163,7 +164,8 @@ public interface Server {
 
     /**
      * Gets the sourceServerResourceId property: The source server resource ID to restore from. It's required when
-     * 'createMode' is 'PointInTimeRestore' or 'GeoRestore' or 'Replica'.
+     * 'createMode' is 'PointInTimeRestore' or 'GeoRestore' or 'Replica' or 'ReviveDropped'. This property is returned
+     * only for Replica server.
      *
      * @return the sourceServerResourceId value.
      */
@@ -171,7 +173,7 @@ public interface Server {
 
     /**
      * Gets the pointInTimeUtc property: Restore point creation time (ISO8601 format), specifying the time to restore
-     * from. It's required when 'createMode' is 'PointInTimeRestore' or 'GeoRestore'.
+     * from. It's required when 'createMode' is 'PointInTimeRestore' or 'GeoRestore' or 'ReviveDropped'.
      *
      * @return the pointInTimeUtc value.
      */
@@ -294,7 +296,6 @@ public interface Server {
                 DefinitionStages.WithPointInTimeUtc,
                 DefinitionStages.WithAvailabilityZone,
                 DefinitionStages.WithReplicationRole,
-                DefinitionStages.WithReplicaCapacity,
                 DefinitionStages.WithCreateMode {
             /**
              * Executes the create request.
@@ -417,9 +418,11 @@ public interface Server {
         /** The stage of the Server definition allowing to specify network. */
         interface WithNetwork {
             /**
-             * Specifies the network property: Network properties of a server..
+             * Specifies the network property: Network properties of a server. This Network property is required to be
+             * passed only in case you want the server to be Private access server..
              *
-             * @param network Network properties of a server.
+             * @param network Network properties of a server. This Network property is required to be passed only in
+             *     case you want the server to be Private access server.
              * @return the next definition stage.
              */
             WithCreate withNetwork(Network network);
@@ -438,10 +441,12 @@ public interface Server {
         interface WithSourceServerResourceId {
             /**
              * Specifies the sourceServerResourceId property: The source server resource ID to restore from. It's
-             * required when 'createMode' is 'PointInTimeRestore' or 'GeoRestore' or 'Replica'..
+             * required when 'createMode' is 'PointInTimeRestore' or 'GeoRestore' or 'Replica' or 'ReviveDropped'. This
+             * property is returned only for Replica server.
              *
              * @param sourceServerResourceId The source server resource ID to restore from. It's required when
-             *     'createMode' is 'PointInTimeRestore' or 'GeoRestore' or 'Replica'.
+             *     'createMode' is 'PointInTimeRestore' or 'GeoRestore' or 'Replica' or 'ReviveDropped'. This property
+             *     is returned only for Replica server.
              * @return the next definition stage.
              */
             WithCreate withSourceServerResourceId(String sourceServerResourceId);
@@ -450,10 +455,11 @@ public interface Server {
         interface WithPointInTimeUtc {
             /**
              * Specifies the pointInTimeUtc property: Restore point creation time (ISO8601 format), specifying the time
-             * to restore from. It's required when 'createMode' is 'PointInTimeRestore' or 'GeoRestore'..
+             * to restore from. It's required when 'createMode' is 'PointInTimeRestore' or 'GeoRestore' or
+             * 'ReviveDropped'..
              *
              * @param pointInTimeUtc Restore point creation time (ISO8601 format), specifying the time to restore from.
-             *     It's required when 'createMode' is 'PointInTimeRestore' or 'GeoRestore'.
+             *     It's required when 'createMode' is 'PointInTimeRestore' or 'GeoRestore' or 'ReviveDropped'.
              * @return the next definition stage.
              */
             WithCreate withPointInTimeUtc(OffsetDateTime pointInTimeUtc);
@@ -477,16 +483,6 @@ public interface Server {
              * @return the next definition stage.
              */
             WithCreate withReplicationRole(ReplicationRole replicationRole);
-        }
-        /** The stage of the Server definition allowing to specify replicaCapacity. */
-        interface WithReplicaCapacity {
-            /**
-             * Specifies the replicaCapacity property: Replicas allowed for a server..
-             *
-             * @param replicaCapacity Replicas allowed for a server.
-             * @return the next definition stage.
-             */
-            WithCreate withReplicaCapacity(Integer replicaCapacity);
         }
         /** The stage of the Server definition allowing to specify createMode. */
         interface WithCreateMode {
@@ -520,7 +516,8 @@ public interface Server {
             UpdateStages.WithAuthConfig,
             UpdateStages.WithDataEncryption,
             UpdateStages.WithCreateMode,
-            UpdateStages.WithReplicationRole {
+            UpdateStages.WithReplicationRole,
+            UpdateStages.WithNetwork {
         /**
          * Executes the update request.
          *
@@ -667,6 +664,18 @@ public interface Server {
              * @return the next definition stage.
              */
             Update withReplicationRole(ReplicationRole replicationRole);
+        }
+        /** The stage of the Server update allowing to specify network. */
+        interface WithNetwork {
+            /**
+             * Specifies the network property: Network properties of a server. These are required to be passed only in
+             * case if server is a private access server..
+             *
+             * @param network Network properties of a server. These are required to be passed only in case if server is
+             *     a private access server.
+             * @return the next definition stage.
+             */
+            Update withNetwork(Network network);
         }
     }
     /**

@@ -60,11 +60,10 @@ public final class ProductPoliciesClientImpl implements ProductPoliciesClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "ApiManagementClientP")
-    private interface ProductPoliciesService {
+    public interface ProductPoliciesService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement"
-                + "/service/{serviceName}/products/{productId}/policies")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/products/{productId}/policies")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<PolicyCollectionInner>> listByProduct(
@@ -79,8 +78,7 @@ public final class ProductPoliciesClientImpl implements ProductPoliciesClient {
 
         @Headers({"Content-Type: application/json"})
         @Head(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement"
-                + "/service/{serviceName}/products/{productId}/policies/{policyId}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/products/{productId}/policies/{policyId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<ProductPoliciesGetEntityTagResponse> getEntityTag(
@@ -96,8 +94,7 @@ public final class ProductPoliciesClientImpl implements ProductPoliciesClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement"
-                + "/service/{serviceName}/products/{productId}/policies/{policyId}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/products/{productId}/policies/{policyId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<ProductPoliciesGetResponse> get(
@@ -114,8 +111,7 @@ public final class ProductPoliciesClientImpl implements ProductPoliciesClient {
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement"
-                + "/service/{serviceName}/products/{productId}/policies/{policyId}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/products/{productId}/policies/{policyId}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<ProductPoliciesCreateOrUpdateResponse> createOrUpdate(
@@ -133,8 +129,7 @@ public final class ProductPoliciesClientImpl implements ProductPoliciesClient {
 
         @Headers({"Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement"
-                + "/service/{serviceName}/products/{productId}/policies/{policyId}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/products/{productId}/policies/{policyId}")
         @ExpectedResponses({200, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> delete(
@@ -153,7 +148,7 @@ public final class ProductPoliciesClientImpl implements ProductPoliciesClient {
     /**
      * Get the policy configuration at the Product level.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param productId Product identifier. Must be unique in the current API Management service instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -207,7 +202,7 @@ public final class ProductPoliciesClientImpl implements ProductPoliciesClient {
     /**
      * Get the policy configuration at the Product level.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param productId Product identifier. Must be unique in the current API Management service instance.
      * @param context The context to associate with this operation.
@@ -259,7 +254,7 @@ public final class ProductPoliciesClientImpl implements ProductPoliciesClient {
     /**
      * Get the policy configuration at the Product level.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param productId Product identifier. Must be unique in the current API Management service instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -271,36 +266,13 @@ public final class ProductPoliciesClientImpl implements ProductPoliciesClient {
     private Mono<PolicyCollectionInner> listByProductAsync(
         String resourceGroupName, String serviceName, String productId) {
         return listByProductWithResponseAsync(resourceGroupName, serviceName, productId)
-            .flatMap(
-                (Response<PolicyCollectionInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Get the policy configuration at the Product level.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param serviceName The name of the API Management service.
-     * @param productId Product identifier. Must be unique in the current API Management service instance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the policy configuration at the Product level.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PolicyCollectionInner listByProduct(String resourceGroupName, String serviceName, String productId) {
-        return listByProductAsync(resourceGroupName, serviceName, productId).block();
-    }
-
-    /**
-     * Get the policy configuration at the Product level.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param productId Product identifier. Must be unique in the current API Management service instance.
      * @param context The context to associate with this operation.
@@ -316,9 +288,25 @@ public final class ProductPoliciesClientImpl implements ProductPoliciesClient {
     }
 
     /**
+     * Get the policy configuration at the Product level.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serviceName The name of the API Management service.
+     * @param productId Product identifier. Must be unique in the current API Management service instance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the policy configuration at the Product level.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PolicyCollectionInner listByProduct(String resourceGroupName, String serviceName, String productId) {
+        return listByProductWithResponse(resourceGroupName, serviceName, productId, Context.NONE).getValue();
+    }
+
+    /**
      * Get the ETag of the policy configuration at the Product level.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param productId Product identifier. Must be unique in the current API Management service instance.
      * @param policyId The identifier of the Policy.
@@ -376,7 +364,7 @@ public final class ProductPoliciesClientImpl implements ProductPoliciesClient {
     /**
      * Get the ETag of the policy configuration at the Product level.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param productId Product identifier. Must be unique in the current API Management service instance.
      * @param policyId The identifier of the Policy.
@@ -432,7 +420,7 @@ public final class ProductPoliciesClientImpl implements ProductPoliciesClient {
     /**
      * Get the ETag of the policy configuration at the Product level.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param productId Product identifier. Must be unique in the current API Management service instance.
      * @param policyId The identifier of the Policy.
@@ -445,29 +433,13 @@ public final class ProductPoliciesClientImpl implements ProductPoliciesClient {
     private Mono<Void> getEntityTagAsync(
         String resourceGroupName, String serviceName, String productId, PolicyIdName policyId) {
         return getEntityTagWithResponseAsync(resourceGroupName, serviceName, productId, policyId)
-            .flatMap((ProductPoliciesGetEntityTagResponse res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
      * Get the ETag of the policy configuration at the Product level.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param serviceName The name of the API Management service.
-     * @param productId Product identifier. Must be unique in the current API Management service instance.
-     * @param policyId The identifier of the Policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void getEntityTag(String resourceGroupName, String serviceName, String productId, PolicyIdName policyId) {
-        getEntityTagAsync(resourceGroupName, serviceName, productId, policyId).block();
-    }
-
-    /**
-     * Get the ETag of the policy configuration at the Product level.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param productId Product identifier. Must be unique in the current API Management service instance.
      * @param policyId The identifier of the Policy.
@@ -484,9 +456,25 @@ public final class ProductPoliciesClientImpl implements ProductPoliciesClient {
     }
 
     /**
+     * Get the ETag of the policy configuration at the Product level.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serviceName The name of the API Management service.
+     * @param productId Product identifier. Must be unique in the current API Management service instance.
+     * @param policyId The identifier of the Policy.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void getEntityTag(String resourceGroupName, String serviceName, String productId, PolicyIdName policyId) {
+        getEntityTagWithResponse(resourceGroupName, serviceName, productId, policyId, Context.NONE);
+    }
+
+    /**
      * Get the policy configuration at the Product level.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param productId Product identifier. Must be unique in the current API Management service instance.
      * @param policyId The identifier of the Policy.
@@ -550,7 +538,7 @@ public final class ProductPoliciesClientImpl implements ProductPoliciesClient {
     /**
      * Get the policy configuration at the Product level.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param productId Product identifier. Must be unique in the current API Management service instance.
      * @param policyId The identifier of the Policy.
@@ -613,38 +601,7 @@ public final class ProductPoliciesClientImpl implements ProductPoliciesClient {
     /**
      * Get the policy configuration at the Product level.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param serviceName The name of the API Management service.
-     * @param productId Product identifier. Must be unique in the current API Management service instance.
-     * @param policyId The identifier of the Policy.
-     * @param format Policy Export Format.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the policy configuration at the Product level on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PolicyContractInner> getAsync(
-        String resourceGroupName,
-        String serviceName,
-        String productId,
-        PolicyIdName policyId,
-        PolicyExportFormat format) {
-        return getWithResponseAsync(resourceGroupName, serviceName, productId, policyId, format)
-            .flatMap(
-                (ProductPoliciesGetResponse res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Get the policy configuration at the Product level.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param productId Product identifier. Must be unique in the current API Management service instance.
      * @param policyId The identifier of the Policy.
@@ -658,39 +615,13 @@ public final class ProductPoliciesClientImpl implements ProductPoliciesClient {
         String resourceGroupName, String serviceName, String productId, PolicyIdName policyId) {
         final PolicyExportFormat format = null;
         return getWithResponseAsync(resourceGroupName, serviceName, productId, policyId, format)
-            .flatMap(
-                (ProductPoliciesGetResponse res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Get the policy configuration at the Product level.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param serviceName The name of the API Management service.
-     * @param productId Product identifier. Must be unique in the current API Management service instance.
-     * @param policyId The identifier of the Policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the policy configuration at the Product level.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PolicyContractInner get(
-        String resourceGroupName, String serviceName, String productId, PolicyIdName policyId) {
-        final PolicyExportFormat format = null;
-        return getAsync(resourceGroupName, serviceName, productId, policyId, format).block();
-    }
-
-    /**
-     * Get the policy configuration at the Product level.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param productId Product identifier. Must be unique in the current API Management service instance.
      * @param policyId The identifier of the Policy.
@@ -713,9 +644,28 @@ public final class ProductPoliciesClientImpl implements ProductPoliciesClient {
     }
 
     /**
+     * Get the policy configuration at the Product level.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serviceName The name of the API Management service.
+     * @param productId Product identifier. Must be unique in the current API Management service instance.
+     * @param policyId The identifier of the Policy.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the policy configuration at the Product level.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PolicyContractInner get(
+        String resourceGroupName, String serviceName, String productId, PolicyIdName policyId) {
+        final PolicyExportFormat format = null;
+        return getWithResponse(resourceGroupName, serviceName, productId, policyId, format, Context.NONE).getValue();
+    }
+
+    /**
      * Creates or updates policy configuration for the Product.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param productId Product identifier. Must be unique in the current API Management service instance.
      * @param policyId The identifier of the Policy.
@@ -787,7 +737,7 @@ public final class ProductPoliciesClientImpl implements ProductPoliciesClient {
     /**
      * Creates or updates policy configuration for the Product.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param productId Product identifier. Must be unique in the current API Management service instance.
      * @param policyId The identifier of the Policy.
@@ -858,40 +808,7 @@ public final class ProductPoliciesClientImpl implements ProductPoliciesClient {
     /**
      * Creates or updates policy configuration for the Product.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param serviceName The name of the API Management service.
-     * @param productId Product identifier. Must be unique in the current API Management service instance.
-     * @param policyId The identifier of the Policy.
-     * @param parameters The policy contents to apply.
-     * @param ifMatch ETag of the Entity. Not required when creating an entity, but required when updating an entity.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return policy Contract details on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PolicyContractInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String serviceName,
-        String productId,
-        PolicyIdName policyId,
-        PolicyContractInner parameters,
-        String ifMatch) {
-        return createOrUpdateWithResponseAsync(resourceGroupName, serviceName, productId, policyId, parameters, ifMatch)
-            .flatMap(
-                (ProductPoliciesCreateOrUpdateResponse res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Creates or updates policy configuration for the Product.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param productId Product identifier. Must be unique in the current API Management service instance.
      * @param policyId The identifier of the Policy.
@@ -910,44 +827,13 @@ public final class ProductPoliciesClientImpl implements ProductPoliciesClient {
         PolicyContractInner parameters) {
         final String ifMatch = null;
         return createOrUpdateWithResponseAsync(resourceGroupName, serviceName, productId, policyId, parameters, ifMatch)
-            .flatMap(
-                (ProductPoliciesCreateOrUpdateResponse res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Creates or updates policy configuration for the Product.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param serviceName The name of the API Management service.
-     * @param productId Product identifier. Must be unique in the current API Management service instance.
-     * @param policyId The identifier of the Policy.
-     * @param parameters The policy contents to apply.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return policy Contract details.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PolicyContractInner createOrUpdate(
-        String resourceGroupName,
-        String serviceName,
-        String productId,
-        PolicyIdName policyId,
-        PolicyContractInner parameters) {
-        final String ifMatch = null;
-        return createOrUpdateAsync(resourceGroupName, serviceName, productId, policyId, parameters, ifMatch).block();
-    }
-
-    /**
-     * Creates or updates policy configuration for the Product.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param productId Product identifier. Must be unique in the current API Management service instance.
      * @param policyId The identifier of the Policy.
@@ -974,9 +860,35 @@ public final class ProductPoliciesClientImpl implements ProductPoliciesClient {
     }
 
     /**
+     * Creates or updates policy configuration for the Product.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serviceName The name of the API Management service.
+     * @param productId Product identifier. Must be unique in the current API Management service instance.
+     * @param policyId The identifier of the Policy.
+     * @param parameters The policy contents to apply.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return policy Contract details.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PolicyContractInner createOrUpdate(
+        String resourceGroupName,
+        String serviceName,
+        String productId,
+        PolicyIdName policyId,
+        PolicyContractInner parameters) {
+        final String ifMatch = null;
+        return createOrUpdateWithResponse(
+                resourceGroupName, serviceName, productId, policyId, parameters, ifMatch, Context.NONE)
+            .getValue();
+    }
+
+    /**
      * Deletes the policy configuration at the Product.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param productId Product identifier. Must be unique in the current API Management service instance.
      * @param policyId The identifier of the Policy.
@@ -1040,7 +952,7 @@ public final class ProductPoliciesClientImpl implements ProductPoliciesClient {
     /**
      * Deletes the policy configuration at the Product.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param productId Product identifier. Must be unique in the current API Management service instance.
      * @param policyId The identifier of the Policy.
@@ -1107,7 +1019,7 @@ public final class ProductPoliciesClientImpl implements ProductPoliciesClient {
     /**
      * Deletes the policy configuration at the Product.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param productId Product identifier. Must be unique in the current API Management service instance.
      * @param policyId The identifier of the Policy.
@@ -1122,32 +1034,13 @@ public final class ProductPoliciesClientImpl implements ProductPoliciesClient {
     private Mono<Void> deleteAsync(
         String resourceGroupName, String serviceName, String productId, PolicyIdName policyId, String ifMatch) {
         return deleteWithResponseAsync(resourceGroupName, serviceName, productId, policyId, ifMatch)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
      * Deletes the policy configuration at the Product.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param serviceName The name of the API Management service.
-     * @param productId Product identifier. Must be unique in the current API Management service instance.
-     * @param policyId The identifier of the Policy.
-     * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(
-        String resourceGroupName, String serviceName, String productId, PolicyIdName policyId, String ifMatch) {
-        deleteAsync(resourceGroupName, serviceName, productId, policyId, ifMatch).block();
-    }
-
-    /**
-     * Deletes the policy configuration at the Product.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param productId Product identifier. Must be unique in the current API Management service instance.
      * @param policyId The identifier of the Policy.
@@ -1168,5 +1061,24 @@ public final class ProductPoliciesClientImpl implements ProductPoliciesClient {
         String ifMatch,
         Context context) {
         return deleteWithResponseAsync(resourceGroupName, serviceName, productId, policyId, ifMatch, context).block();
+    }
+
+    /**
+     * Deletes the policy configuration at the Product.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serviceName The name of the API Management service.
+     * @param productId Product identifier. Must be unique in the current API Management service instance.
+     * @param policyId The identifier of the Policy.
+     * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
+     *     request or it should be * for unconditional update.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void delete(
+        String resourceGroupName, String serviceName, String productId, PolicyIdName policyId, String ifMatch) {
+        deleteWithResponse(resourceGroupName, serviceName, productId, policyId, ifMatch, Context.NONE);
     }
 }

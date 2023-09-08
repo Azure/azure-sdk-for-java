@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * An object describing the location and semantic content of a document.
+ * Model class describing the location and semantic content of a document.
  */
 public class AnalyzedDocument {
     /*

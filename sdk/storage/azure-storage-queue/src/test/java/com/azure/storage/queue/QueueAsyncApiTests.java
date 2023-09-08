@@ -4,6 +4,7 @@
 package com.azure.storage.queue;
 
 import com.azure.core.util.BinaryData;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.queue.models.PeekedMessageItem;
 import com.azure.storage.queue.models.QueueAccessPolicy;
@@ -17,6 +18,8 @@ import org.junit.jupiter.params.provider.MethodSource;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -34,10 +37,12 @@ import static com.azure.storage.queue.QueueApiTests.CREATE_METADATA;
 import static com.azure.storage.queue.QueueApiTests.TEST_METADATA;
 import static com.azure.storage.queue.QueueTestHelper.assertAsyncResponseStatusCode;
 import static com.azure.storage.queue.QueueTestHelper.assertExceptionStatusCodeAndMessage;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class QueueAsyncApiTests extends QueueTestBase {
     private String queueName;
@@ -78,6 +83,16 @@ public class QueueAsyncApiTests extends QueueTestBase {
     @Test
     public void createIfNotExistsQueueWithSharedKey() {
         assertAsyncResponseStatusCode(queueAsyncClient.createIfNotExistsWithResponse(null), 201);
+    }
+
+    @Test
+    public void createIfNotExistsMin() {
+        String queueName = getRandomName(60);
+        QueueAsyncClient client = primaryQueueServiceAsyncClient.getQueueAsyncClient(queueName);
+
+        assertEquals(queueName, client.getQueueName());
+        assertDoesNotThrow(client::createIfNotExists);
+        assertNotNull(client.getProperties());
     }
 
     @Test
@@ -755,7 +770,65 @@ public class QueueAsyncApiTests extends QueueTestBase {
     }
 
     @Test
+    public void updateMessageNoBody() {
+        String messageText = "test message before update";
+        queueAsyncClient.create().block();
+        queueAsyncClient.sendMessage(messageText).block();
+
+        QueueMessageItem dequeueMsg = queueAsyncClient.receiveMessage().block();
+
+        assertAsyncResponseStatusCode(queueAsyncClient.updateMessageWithResponse(dequeueMsg.getMessageId(),
+            dequeueMsg.getPopReceipt(), null, Duration.ofSeconds(1), null), 204);
+
+        sleepIfRunningAgainstService(2000);
+
+        StepVerifier.create(queueAsyncClient.peekMessage()).assertNext(peekedMessageItem ->
+                assertEquals(messageText, peekedMessageItem.getMessageText())).verifyComplete();
+    }
+
+    @Test
+    public void updateMessageNullDuration() {
+        String messageText = "test message before update";
+        queueAsyncClient.create().block();
+        queueAsyncClient.sendMessage(messageText).block();
+
+        QueueMessageItem dequeueMsg = queueAsyncClient.receiveMessage().block();
+
+        assertAsyncResponseStatusCode(queueAsyncClient.updateMessageWithResponse(dequeueMsg.getMessageId(),
+            dequeueMsg.getPopReceipt(), null, null), 204);
+
+        sleepIfRunningAgainstService(2000);
+
+        StepVerifier.create(queueAsyncClient.peekMessage()).assertNext(peekedMessageItem ->
+            assertEquals(messageText, peekedMessageItem.getMessageText())).verifyComplete();
+    }
+
+    @Test
     public void getQueueName() {
         assertEquals(queueName, queueAsyncClient.getQueueName());
+    }
+
+    @Test
+    public void builderBearerTokenValidation() throws MalformedURLException {
+        URL url = new URL(queueAsyncClient.getQueueUrl());
+        String endpoint = new URL("http", url.getHost(), url.getPort(), url.getFile()).toString();
+
+        assertThrows(IllegalArgumentException.class, () -> new QueueClientBuilder()
+            .credential(new DefaultAzureCredentialBuilder().build())
+            .endpoint(endpoint)
+            .buildAsyncClient());
+    }
+
+    // This tests the policy is in the right place because if it were added per retry, it would be after the credentials
+    // and auth would fail because we changed a signed header.
+    @Test
+    public void perCallPolicy() {
+        QueueAsyncClient queueAsyncClient = queueBuilderHelper().addPolicy(getPerCallVersionPolicy())
+            .buildAsyncClient();
+
+        queueAsyncClient.create().block();
+
+        StepVerifier.create(queueAsyncClient.getPropertiesWithResponse()).assertNext(queuePropertiesResponse ->
+            assertEquals("2017-11-09", queuePropertiesResponse.getHeaders().getValue("x-ms-version"))).verifyComplete();
     }
 }

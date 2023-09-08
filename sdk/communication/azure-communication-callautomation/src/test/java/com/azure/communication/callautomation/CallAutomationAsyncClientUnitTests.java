@@ -20,9 +20,7 @@ import org.junit.jupiter.api.Test;
 import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -61,14 +59,10 @@ public class CallAutomationAsyncClientUnitTests extends CallAutomationUnitTestBa
                 new AbstractMap.SimpleEntry<>(generateCallProperties(CALL_CONNECTION_ID, CALL_SERVER_CALL_ID,
                     CALL_CALLER_ID, CALL_CALLER_DISPLAY_NAME, CALL_TARGET_ID, CALL_CONNECTION_STATE, CALL_SUBJECT, CALL_CALLBACK_URL, MEDIA_SUBSCRIPTION_ID), 201)
             )));
-        Map<String, String> voipHeaders = new HashMap<String, String>();
-        Map<String, String> sipHeaders = new HashMap<String, String>();
         List<CommunicationIdentifier> targets = new ArrayList<>(Collections.singletonList(new CommunicationUserIdentifier(CALL_TARGET_ID)));
         CreateGroupCallOptions callOptions = new CreateGroupCallOptions(targets, CALL_CALLBACK_URL);
         callOptions.setOperationContext(CALL_SUBJECT);
-        callOptions.setMediaStreamingConfiguration(MEDIA_STREAMING_CONFIGURATION)
-            .setSipHeaders(sipHeaders)
-            .setVoipHeaders(voipHeaders);
+        callOptions.setMediaStreamingConfiguration(MEDIA_STREAMING_CONFIGURATION);
 
         Response<CreateCallResult> createCallResult = callAutomationAsyncClient.createGroupCallWithResponse(callOptions).block();
 
@@ -86,8 +80,7 @@ public class CallAutomationAsyncClientUnitTests extends CallAutomationUnitTestBa
                     CALL_CALLER_ID, CALL_CALLER_DISPLAY_NAME, CALL_TARGET_ID, CALL_CONNECTION_STATE, CALL_SUBJECT, CALL_CALLBACK_URL, MEDIA_SUBSCRIPTION_ID), 201)
             )));
         //List<CommunicationIdentifier> targets = new ArrayList<>(Collections.singletonList(new CommunicationUserIdentifier(CALL_TARGET_ID)));
-        Map<String, String> voipHeaders = new HashMap<String, String>();
-        CallInvite callInvite = new CallInvite(new CommunicationUserIdentifier(CALL_TARGET_ID), voipHeaders);
+        CallInvite callInvite = new CallInvite(new CommunicationUserIdentifier(CALL_TARGET_ID));
         CreateCallOptions callOptions = new CreateCallOptions(callInvite, CALL_CALLBACK_URL);
         callOptions.setOperationContext(CALL_SUBJECT);
         callOptions.setMediaStreamingConfiguration(MEDIA_STREAMING_CONFIGURATION);
@@ -140,8 +133,7 @@ public class CallAutomationAsyncClientUnitTests extends CallAutomationUnitTestBa
             ))
         );
 
-        Map<String, String> voipHeaders = new HashMap<String, String>();
-        CallInvite target = new CallInvite(new CommunicationUserIdentifier(CALL_TARGET_ID), voipHeaders);
+        CallInvite target = new CallInvite(new CommunicationUserIdentifier(CALL_TARGET_ID));
 
         callAutomationAsyncClient.redirectCall(CALL_INCOMING_CALL_CONTEXT, target);
     }

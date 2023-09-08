@@ -9,7 +9,6 @@ import com.azure.spring.data.cosmos.domain.Contact;
 import com.azure.spring.data.cosmos.exception.CosmosAccessException;
 import com.azure.spring.data.cosmos.repository.TestRepositoryConfig;
 import com.azure.spring.data.cosmos.repository.repository.ContactRepository;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.assertj.core.util.Lists;
 import org.junit.Assert;
 import org.junit.Before;

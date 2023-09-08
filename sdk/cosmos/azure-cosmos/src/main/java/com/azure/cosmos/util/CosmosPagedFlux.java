@@ -268,7 +268,9 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
                 pagedFluxOptions.getEffectiveConsistencyLevel(),
                 pagedFluxOptions.getMaxItemCount(),
                 pagedFluxOptions.getDiagnosticsThresholds(),
-                null);
+                null,
+                pagedFluxOptions.getConnectionMode(),
+                pagedFluxOptions.getUserAgent());
             ctxAccessor.setSamplingRateSnapshot(cosmosCtx, pagedFluxOptions.getSamplingRateSnapshot());
 
             return Flux

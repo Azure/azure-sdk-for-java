@@ -2,7 +2,7 @@
 
 Azure Resource Manager AzureDatabricks client library for Java.
 
-This package contains Microsoft Azure SDK for AzureDatabricks Management SDK. The Microsoft Azure management APIs allow end users to operate on Azure Databricks Workspace resources. Package tag package-2021-04-01-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+This package contains Microsoft Azure SDK for AzureDatabricks Management SDK. The Microsoft Azure management APIs allow end users to operate on Azure Databricks Workspace / Access Connector resources. Package tag package-2023-05-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ## We'd love to hear your feedback
 
@@ -32,7 +32,7 @@ Various documentation is available to help you get started
 <dependency>
     <groupId>com.azure.resourcemanager</groupId>
     <artifactId>azure-resourcemanager-databricks</artifactId>
-    <version>1.0.0-beta.3</version>
+    <version>1.0.0-beta.4</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -74,6 +74,14 @@ See [API design][design] for general introduction on design and key concepts on 
 
 ## Examples
 
+```java
+workspace = databricksManager.workspaces().define(workspaceName)
+    .withRegion(REGION)
+    .withExistingResourceGroup(resourceGroupName)
+    .withManagedResourceGroupId(managedResourceGroupId)
+    .withSku(new Sku().withName("standard"))
+    .create();
+```
 [Code snippets and samples](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/databricks/azure-resourcemanager-databricks/SAMPLE.md)
 
 

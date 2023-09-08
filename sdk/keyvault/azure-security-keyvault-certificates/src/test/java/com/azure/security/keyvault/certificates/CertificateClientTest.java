@@ -8,7 +8,6 @@ import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.test.http.AssertingHttpClientBuilder;
 import com.azure.core.util.Context;
@@ -28,20 +27,40 @@ import com.azure.security.keyvault.certificates.models.IssuerProperties;
 import com.azure.security.keyvault.certificates.models.KeyVaultCertificate;
 import com.azure.security.keyvault.certificates.models.KeyVaultCertificateWithPolicy;
 import com.azure.security.keyvault.certificates.models.MergeCertificateOptions;
+import org.bouncycastle.asn1.x500.X500Name;
+import org.bouncycastle.asn1.x509.AlgorithmIdentifier;
+import org.bouncycastle.asn1.x509.Certificate;
+import org.bouncycastle.asn1.x509.SubjectPublicKeyInfo;
+import org.bouncycastle.cert.X509v3CertificateBuilder;
+import org.bouncycastle.crypto.params.AsymmetricKeyParameter;
+import org.bouncycastle.crypto.util.PrivateKeyFactory;
+import org.bouncycastle.operator.ContentSigner;
+import org.bouncycastle.operator.DefaultDigestAlgorithmIdentifierFinder;
+import org.bouncycastle.operator.DefaultSignatureAlgorithmIdentifierFinder;
+import org.bouncycastle.operator.OperatorCreationException;
+import org.bouncycastle.operator.bc.BcRSAContentSignerBuilder;
+import org.bouncycastle.pkcs.PKCS10CertificationRequest;
+import org.junit.jupiter.api.condition.DisabledForJreRange;
+import org.junit.jupiter.api.condition.JRE;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.io.IOException;
+import java.math.BigInteger;
 import java.net.HttpURLConnection;
+import java.security.NoSuchAlgorithmException;
+import java.security.PrivateKey;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
+import java.security.spec.InvalidKeySpecException;
 import java.time.Duration;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.function.BiFunction;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -78,18 +97,7 @@ public class CertificateClientTest extends CertificateClientTestBase {
     }
 
     private HttpClient buildSyncAssertingClient(HttpClient httpClient) {
-        //skip paging and polling requests until their sync stack support lands in azure-core.
-        BiFunction<HttpRequest, Context, Boolean> skipRequestFunction = (request, context) -> {
-            String callerMethod = (String) context.getData("caller-method").orElse("");
-            return (callerMethod.contains("list") || callerMethod.contains("getCertificates")
-                || callerMethod.contains("getCertificateVersions") || callerMethod.contains("delete")
-                || callerMethod.contains("recover") || callerMethod.contains("createCertificate")
-                || callerMethod.contains("getCertificateOperation") || callerMethod.contains("setCertificateContacts")
-                || callerMethod.contains("deleteCertificateContacts") || callerMethod.contains("getCertificateContacts")
-                || callerMethod.contains("getCertificateIssuers"));
-        };
         return new AssertingHttpClientBuilder(httpClient)
-            .skipRequest(skipRequestFunction)
             .assertSync()
             .build();
     }
@@ -475,7 +483,8 @@ public class CertificateClientTest extends CertificateClientTestBase {
 
         cancelCertificateOperationRunner((certName) -> {
             SyncPoller<CertificateOperation, KeyVaultCertificateWithPolicy> certPoller =
-                certificateClient.beginCreateCertificate(certName, CertificatePolicy.getDefault());
+                certificateClient.beginCreateCertificate(certName, CertificatePolicy.getDefault())
+                    .setPollInterval(Duration.ofMillis(250));
 
             LongRunningOperationStatus firstStatus = certPoller.poll().getStatus();
 
@@ -487,7 +496,7 @@ public class CertificateClientTest extends CertificateClientTestBase {
             }
 
             certPoller.cancelOperation();
-            certPoller.waitUntil(LongRunningOperationStatus.USER_CANCELLED);
+            certPoller.waitUntil(LongRunningOperationStatus.fromString("cancelled", true));
 
             KeyVaultCertificateWithPolicy certificate = certPoller.getFinalResult();
 
@@ -899,7 +908,7 @@ public class CertificateClientTest extends CertificateClientTestBase {
             X509Certificate x509Certificate = null;
 
             try {
-                x509Certificate = loadCerToX509Certificate(importedCertificate);
+                x509Certificate = loadCerToX509Certificate(importedCertificate.getCer());
             } catch (CertificateException | IOException e) {
                 e.printStackTrace();
                 fail();
@@ -908,6 +917,66 @@ public class CertificateClientTest extends CertificateClientTestBase {
             assertEquals("CN=KeyVaultTest", x509Certificate.getSubjectX500Principal().getName());
             assertEquals("CN=KeyVaultTest", x509Certificate.getIssuerX500Principal().getName());
         });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getTestParameters")
+    @DisabledForJreRange(min = JRE.JAVA_17) // Access to sun.security.* classes used here is not possible on Java 17+.
+    @SuppressWarnings("ArraysAsListWithZeroOrOneArgument")
+    public void mergeCertificate(HttpClient httpClient, CertificateServiceVersion serviceVersion) {
+        try {
+            createCertificateClient(httpClient, serviceVersion);
+
+            String certificateName = testResourceNamer.randomName("testCert", 25);
+            String issuer = "Unknown";
+            String subject = "CN=MyCert";
+            SyncPoller<CertificateOperation, KeyVaultCertificateWithPolicy> createCertificatePoller =
+                certificateClient.beginCreateCertificate(certificateName,
+                    new CertificatePolicy(issuer, subject).setCertificateTransparent(false));
+
+            createCertificatePoller.waitUntil(LongRunningOperationStatus.IN_PROGRESS);
+
+            CertificateOperation certificateOperation = createCertificatePoller.poll().getValue();
+            byte[] certificateSignRequest = certificateOperation.getCsr();
+            PKCS10CertificationRequest pkcs10CertificationRequest =
+                new PKCS10CertificationRequest(certificateSignRequest);
+            byte[] certificateToMerge = FakeCredentialsForTests.FAKE_PEM_CERTIFICATE_FOR_MERGE.getBytes();
+            X509Certificate x509ToMerge = loadCerToX509Certificate(certificateToMerge);
+            PrivateKey privateKey = loadPrivateKey("priv8.der");
+            Date notBefore = new Date();
+            Date notAfter = new Date(notBefore.getTime() + 60 * 86400000L);
+
+            X500Name mergeIssuer = new X500Name(x509ToMerge.getSubjectX500Principal().getName());
+            X500Name mergeSubject = pkcs10CertificationRequest.getSubject();
+            AlgorithmIdentifier signatureAlgorithmIdentifier =
+                new DefaultSignatureAlgorithmIdentifierFinder().find("SHA256withRSA");
+            AlgorithmIdentifier digestAlgorithmIdentifier =
+                new DefaultDigestAlgorithmIdentifierFinder().find(signatureAlgorithmIdentifier);
+            AsymmetricKeyParameter asymmetricKeyParameter = PrivateKeyFactory.createKey(privateKey.getEncoded());
+            SubjectPublicKeyInfo publicKeyInfo = pkcs10CertificationRequest.getSubjectPublicKeyInfo();
+            X509v3CertificateBuilder x509CertificateBuilder =
+                new X509v3CertificateBuilder(mergeIssuer, BigInteger.ONE, notBefore, notAfter, mergeSubject,
+                    publicKeyInfo);
+
+            ContentSigner contentSigner =
+                new BcRSAContentSignerBuilder(signatureAlgorithmIdentifier, digestAlgorithmIdentifier)
+                    .build(asymmetricKeyParameter);
+
+            Certificate certificate = x509CertificateBuilder.build(contentSigner).toASN1Structure();
+
+            MergeCertificateOptions mergeCertificateOptions =
+                new MergeCertificateOptions(certificateName, Collections.singletonList(certificate.getEncoded()));
+
+            certificateClient.mergeCertificate(mergeCertificateOptions);
+
+            PollResponse<CertificateOperation> pollResponse = createCertificatePoller.poll();
+
+            assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, pollResponse.getStatus());
+        } catch (CertificateException | InvalidKeySpecException | IOException
+                 | NoSuchAlgorithmException | OperatorCreationException e) {
+
+            fail(e);
+        }
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)

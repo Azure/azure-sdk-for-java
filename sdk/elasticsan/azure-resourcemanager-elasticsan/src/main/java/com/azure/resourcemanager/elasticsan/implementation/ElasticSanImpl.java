@@ -8,13 +8,16 @@ import com.azure.core.management.Region;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.elasticsan.fluent.models.ElasticSanInner;
+import com.azure.resourcemanager.elasticsan.fluent.models.PrivateEndpointConnectionInner;
 import com.azure.resourcemanager.elasticsan.models.ElasticSan;
 import com.azure.resourcemanager.elasticsan.models.ElasticSanUpdate;
+import com.azure.resourcemanager.elasticsan.models.PrivateEndpointConnection;
 import com.azure.resourcemanager.elasticsan.models.ProvisioningStates;
 import com.azure.resourcemanager.elasticsan.models.Sku;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public final class ElasticSanImpl implements ElasticSan, ElasticSan.Definition, ElasticSan.Update {
     private ElasticSanInner innerObject;
@@ -93,6 +96,20 @@ public final class ElasticSanImpl implements ElasticSan, ElasticSan.Definition, 
 
     public Long totalSizeTiB() {
         return this.innerModel().totalSizeTiB();
+    }
+
+    public List<PrivateEndpointConnection> privateEndpointConnections() {
+        List<PrivateEndpointConnectionInner> inner = this.innerModel().privateEndpointConnections();
+        if (inner != null) {
+            return Collections
+                .unmodifiableList(
+                    inner
+                        .stream()
+                        .map(inner1 -> new PrivateEndpointConnectionImpl(inner1, this.manager()))
+                        .collect(Collectors.toList()));
+        } else {
+            return Collections.emptyList();
+        }
     }
 
     public Region region() {

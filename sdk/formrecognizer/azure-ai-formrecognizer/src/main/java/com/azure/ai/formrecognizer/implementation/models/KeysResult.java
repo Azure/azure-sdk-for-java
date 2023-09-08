@@ -18,6 +18,9 @@ public final class KeysResult {
     @JsonProperty(value = "clusters", required = true)
     private Map<String, List<String>> clusters;
 
+    /** Creates an instance of KeysResult class. */
+    public KeysResult() {}
+
     /**
      * Get the clusters property: Object mapping clusterIds to a list of keys.
      *

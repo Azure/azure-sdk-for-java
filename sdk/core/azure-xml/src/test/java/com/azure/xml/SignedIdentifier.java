@@ -3,8 +3,9 @@
 
 package com.azure.xml;
 
-import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
+
+import static com.azure.xml.AzureXmlTestUtils.getRootElementName;
 
 public class SignedIdentifier implements XmlSerializable<SignedIdentifier> {
     private String id;
@@ -30,65 +31,58 @@ public class SignedIdentifier implements XmlSerializable<SignedIdentifier> {
 
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
-        return xmlWriter.writeStartElement("SignedIdentifier")
+        return toXml(xmlWriter, null);
+    }
+
+    @Override
+    public XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException {
+        return xmlWriter.writeStartElement(getRootElementName(rootElementName, "SignedIdentifier"))
             .writeStringElement("Id", id)
             .writeXml(accessPolicy)
             .writeEndElement();
     }
 
     public static SignedIdentifier fromXml(XmlReader xmlReader) throws XMLStreamException {
-        if (xmlReader.currentToken() != XmlToken.START_ELEMENT) {
-            // Since SignedIdentifier only cares about XML elements use nextElement()
-            xmlReader.nextElement();
-        }
+        return fromXml(xmlReader, null);
+    }
 
-        if (xmlReader.currentToken() != XmlToken.START_ELEMENT) {
-            throw new IllegalStateException("Illegal start of XML deserialization. "
-                + "Expected 'XmlToken.START_ELEMENT' but it was: 'XmlToken." + xmlReader.currentToken() + "'.");
-        }
+    public static SignedIdentifier fromXml(XmlReader xmlReader, String rootElementName) throws XMLStreamException {
+        return xmlReader.readObject(getRootElementName(rootElementName, "SignedIdentifier"), reader -> {
+            String id = null;
+            boolean idFound = false;
+            AccessPolicy accessPolicy = null;
+            boolean accessPolicyFound = false;
+            while (xmlReader.nextElement() != XmlToken.END_ELEMENT) {
+                String elementName = xmlReader.getElementName().getLocalPart();
 
-        QName elementQName = xmlReader.getElementName();
-        String elementName = elementQName.toString();
-        if (!"SignedIdentifier".equals(elementName)) {
-            throw new IllegalStateException("Expected XML element to be 'SignedIdentifier' but it was: "
-                + "'" + elementName + "'.");
-        }
-
-        String id = null;
-        boolean idFound = false;
-        AccessPolicy accessPolicy = null;
-        boolean accessPolicyFound = false;
-        while (xmlReader.nextElement() != XmlToken.END_ELEMENT) {
-            elementQName = xmlReader.getElementName();
-            elementName = elementQName.toString();
-
-            if ("Id".equals(elementName)) {
-                id = xmlReader.getStringElement();
-                idFound = true;
-            } else if ("AccessPolicy".equals(elementName)) {
-                accessPolicy = AccessPolicy.fromXml(xmlReader);
-                accessPolicyFound = true;
+                if ("Id".equals(elementName)) {
+                    id = xmlReader.getStringElement();
+                    idFound = true;
+                } else if ("AccessPolicy".equals(elementName)) {
+                    accessPolicy = AccessPolicy.fromXml(xmlReader);
+                    accessPolicyFound = true;
+                }
             }
-        }
 
-        if (idFound && accessPolicyFound) {
-            return new SignedIdentifier().setId(id).setAccessPolicy(accessPolicy);
-        }
-
-        StringBuilder errorMessageBuilder = new StringBuilder("Missing required property/properties: ");
-        boolean firstMissingProperty = true;
-        if (!idFound) {
-            errorMessageBuilder.append("'Id'");
-            firstMissingProperty = false;
-        }
-
-        if (!accessPolicyFound) {
-            if (!firstMissingProperty) {
-                errorMessageBuilder.append(" and ");
+            if (idFound && accessPolicyFound) {
+                return new SignedIdentifier().setId(id).setAccessPolicy(accessPolicy);
             }
-            errorMessageBuilder.append("'AccessPolicy'");
-        }
 
-        throw new IllegalStateException(errorMessageBuilder.toString());
+            StringBuilder errorMessageBuilder = new StringBuilder("Missing required property/properties: ");
+            boolean firstMissingProperty = true;
+            if (!idFound) {
+                errorMessageBuilder.append("'Id'");
+                firstMissingProperty = false;
+            }
+
+            if (!accessPolicyFound) {
+                if (!firstMissingProperty) {
+                    errorMessageBuilder.append(" and ");
+                }
+                errorMessageBuilder.append("'AccessPolicy'");
+            }
+
+            throw new IllegalStateException(errorMessageBuilder.toString());
+        });
     }
 }

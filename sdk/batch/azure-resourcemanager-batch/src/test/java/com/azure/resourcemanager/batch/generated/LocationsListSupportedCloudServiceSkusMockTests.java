@@ -12,7 +12,6 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.batch.BatchManager;
 import com.azure.resourcemanager.batch.models.SupportedSku;
 import java.nio.ByteBuffer;
@@ -32,7 +31,7 @@ public final class LocationsListSupportedCloudServiceSkusMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"name\":\"ob\",\"familyName\":\"gxedkow\",\"capabilities\":[{\"name\":\"pc\",\"value\":\"kbwcc\"}]}]}";
+            "{\"value\":[{\"name\":\"wiithtywub\",\"familyName\":\"bihwqknfdnt\",\"capabilities\":[{\"name\":\"rdgoihxumw\",\"value\":\"ond\"},{\"name\":\"luudfdlwggytsb\",\"value\":\"ovvtgseinqfiu\"},{\"name\":\"qknp\",\"value\":\"gnepttwqmsni\"},{\"name\":\"cdm\",\"value\":\"r\"}]}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -61,6 +60,9 @@ public final class LocationsListSupportedCloudServiceSkusMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<SupportedSku> response =
-            manager.locations().listSupportedCloudServiceSkus("feo", 1181848977, "rqwky", Context.NONE);
+            manager
+                .locations()
+                .listSupportedCloudServiceSkus(
+                    "ttpkiwkkbnujrywv", 90585391, "lbfpncurd", com.azure.core.util.Context.NONE);
     }
 }

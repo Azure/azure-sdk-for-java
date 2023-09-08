@@ -29,11 +29,17 @@ import com.azure.resourcemanager.postgresqlflexibleserver.fluent.CheckNameAvaila
 import com.azure.resourcemanager.postgresqlflexibleserver.fluent.ConfigurationsClient;
 import com.azure.resourcemanager.postgresqlflexibleserver.fluent.DatabasesClient;
 import com.azure.resourcemanager.postgresqlflexibleserver.fluent.FirewallRulesClient;
+import com.azure.resourcemanager.postgresqlflexibleserver.fluent.FlexibleServersClient;
 import com.azure.resourcemanager.postgresqlflexibleserver.fluent.GetPrivateDnsZoneSuffixesClient;
 import com.azure.resourcemanager.postgresqlflexibleserver.fluent.LocationBasedCapabilitiesClient;
+import com.azure.resourcemanager.postgresqlflexibleserver.fluent.LogFilesClient;
+import com.azure.resourcemanager.postgresqlflexibleserver.fluent.LtrBackupOperationsClient;
+import com.azure.resourcemanager.postgresqlflexibleserver.fluent.MigrationsClient;
 import com.azure.resourcemanager.postgresqlflexibleserver.fluent.OperationsClient;
 import com.azure.resourcemanager.postgresqlflexibleserver.fluent.PostgreSqlManagementClient;
 import com.azure.resourcemanager.postgresqlflexibleserver.fluent.ReplicasClient;
+import com.azure.resourcemanager.postgresqlflexibleserver.fluent.ResourceProvidersClient;
+import com.azure.resourcemanager.postgresqlflexibleserver.fluent.ServerCapabilitiesClient;
 import com.azure.resourcemanager.postgresqlflexibleserver.fluent.ServersClient;
 import com.azure.resourcemanager.postgresqlflexibleserver.fluent.VirtualNetworkSubnetUsagesClient;
 import java.io.IOException;
@@ -156,6 +162,18 @@ public final class PostgreSqlManagementClientImpl implements PostgreSqlManagemen
         return this.locationBasedCapabilities;
     }
 
+    /** The ServerCapabilitiesClient object to access its operations. */
+    private final ServerCapabilitiesClient serverCapabilities;
+
+    /**
+     * Gets the ServerCapabilitiesClient object to access its operations.
+     *
+     * @return the ServerCapabilitiesClient object.
+     */
+    public ServerCapabilitiesClient getServerCapabilities() {
+        return this.serverCapabilities;
+    }
+
     /** The CheckNameAvailabilitiesClient object to access its operations. */
     private final CheckNameAvailabilitiesClient checkNameAvailabilities;
 
@@ -228,6 +246,30 @@ public final class PostgreSqlManagementClientImpl implements PostgreSqlManagemen
         return this.servers;
     }
 
+    /** The MigrationsClient object to access its operations. */
+    private final MigrationsClient migrations;
+
+    /**
+     * Gets the MigrationsClient object to access its operations.
+     *
+     * @return the MigrationsClient object.
+     */
+    public MigrationsClient getMigrations() {
+        return this.migrations;
+    }
+
+    /** The ResourceProvidersClient object to access its operations. */
+    private final ResourceProvidersClient resourceProviders;
+
+    /**
+     * Gets the ResourceProvidersClient object to access its operations.
+     *
+     * @return the ResourceProvidersClient object.
+     */
+    public ResourceProvidersClient getResourceProviders() {
+        return this.resourceProviders;
+    }
+
     /** The OperationsClient object to access its operations. */
     private final OperationsClient operations;
 
@@ -264,6 +306,18 @@ public final class PostgreSqlManagementClientImpl implements PostgreSqlManagemen
         return this.replicas;
     }
 
+    /** The LogFilesClient object to access its operations. */
+    private final LogFilesClient logFiles;
+
+    /**
+     * Gets the LogFilesClient object to access its operations.
+     *
+     * @return the LogFilesClient object.
+     */
+    public LogFilesClient getLogFiles() {
+        return this.logFiles;
+    }
+
     /** The VirtualNetworkSubnetUsagesClient object to access its operations. */
     private final VirtualNetworkSubnetUsagesClient virtualNetworkSubnetUsages;
 
@@ -274,6 +328,30 @@ public final class PostgreSqlManagementClientImpl implements PostgreSqlManagemen
      */
     public VirtualNetworkSubnetUsagesClient getVirtualNetworkSubnetUsages() {
         return this.virtualNetworkSubnetUsages;
+    }
+
+    /** The FlexibleServersClient object to access its operations. */
+    private final FlexibleServersClient flexibleServers;
+
+    /**
+     * Gets the FlexibleServersClient object to access its operations.
+     *
+     * @return the FlexibleServersClient object.
+     */
+    public FlexibleServersClient getFlexibleServers() {
+        return this.flexibleServers;
+    }
+
+    /** The LtrBackupOperationsClient object to access its operations. */
+    private final LtrBackupOperationsClient ltrBackupOperations;
+
+    /**
+     * Gets the LtrBackupOperationsClient object to access its operations.
+     *
+     * @return the LtrBackupOperationsClient object.
+     */
+    public LtrBackupOperationsClient getLtrBackupOperations() {
+        return this.ltrBackupOperations;
     }
 
     /**
@@ -298,20 +376,26 @@ public final class PostgreSqlManagementClientImpl implements PostgreSqlManagemen
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2022-12-01";
+        this.apiVersion = "2023-03-01-preview";
         this.administrators = new AdministratorsClientImpl(this);
         this.backups = new BackupsClientImpl(this);
         this.locationBasedCapabilities = new LocationBasedCapabilitiesClientImpl(this);
+        this.serverCapabilities = new ServerCapabilitiesClientImpl(this);
         this.checkNameAvailabilities = new CheckNameAvailabilitiesClientImpl(this);
         this.checkNameAvailabilityWithLocations = new CheckNameAvailabilityWithLocationsClientImpl(this);
         this.configurations = new ConfigurationsClientImpl(this);
         this.databases = new DatabasesClientImpl(this);
         this.firewallRules = new FirewallRulesClientImpl(this);
         this.servers = new ServersClientImpl(this);
+        this.migrations = new MigrationsClientImpl(this);
+        this.resourceProviders = new ResourceProvidersClientImpl(this);
         this.operations = new OperationsClientImpl(this);
         this.getPrivateDnsZoneSuffixes = new GetPrivateDnsZoneSuffixesClientImpl(this);
         this.replicas = new ReplicasClientImpl(this);
+        this.logFiles = new LogFilesClientImpl(this);
         this.virtualNetworkSubnetUsages = new VirtualNetworkSubnetUsagesClientImpl(this);
+        this.flexibleServers = new FlexibleServersClientImpl(this);
+        this.ltrBackupOperations = new LtrBackupOperationsClientImpl(this);
     }
 
     /**

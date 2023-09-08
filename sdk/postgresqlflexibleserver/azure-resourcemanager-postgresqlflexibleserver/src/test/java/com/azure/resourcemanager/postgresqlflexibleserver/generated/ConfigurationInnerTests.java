@@ -14,17 +14,17 @@ public final class ConfigurationInnerTests {
         ConfigurationInner model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"value\":\"xbezyiuokktwh\",\"description\":\"xw\",\"defaultValue\":\"wqsmbsur\",\"dataType\":\"Enumeration\",\"allowedValues\":\"o\",\"source\":\"ocfs\",\"isDynamicConfig\":false,\"isReadOnly\":true,\"isConfigPendingRestart\":true,\"unit\":\"stkiiuxhqyud\",\"documentationLink\":\"rrqnbpoczvyifqrv\"},\"id\":\"vjsllrmvvdfw\",\"name\":\"t\",\"type\":\"pnpulexxbczwtru\"}")
+                    "{\"properties\":{\"value\":\"gcpo\",\"description\":\"maajrmvdjwzrlo\",\"defaultValue\":\"clwhijcoejctbz\",\"dataType\":\"Boolean\",\"allowedValues\":\"sycbkbfk\",\"source\":\"kdkexxp\",\"isDynamicConfig\":false,\"isReadOnly\":true,\"isConfigPendingRestart\":false,\"unit\":\"fjpgddtocjjxhvp\",\"documentationLink\":\"uexhdzx\"},\"id\":\"qeojnxqbzvddntw\",\"name\":\"deicbtwnpzao\",\"type\":\"vuhrhcffcyddgl\"}")
                 .toObject(ConfigurationInner.class);
-        Assertions.assertEquals("xbezyiuokktwh", model.value());
-        Assertions.assertEquals("ocfs", model.source());
+        Assertions.assertEquals("gcpo", model.value());
+        Assertions.assertEquals("kdkexxp", model.source());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ConfigurationInner model = new ConfigurationInner().withValue("xbezyiuokktwh").withSource("ocfs");
+        ConfigurationInner model = new ConfigurationInner().withValue("gcpo").withSource("kdkexxp");
         model = BinaryData.fromObject(model).toObject(ConfigurationInner.class);
-        Assertions.assertEquals("xbezyiuokktwh", model.value());
-        Assertions.assertEquals("ocfs", model.source());
+        Assertions.assertEquals("gcpo", model.value());
+        Assertions.assertEquals("kdkexxp", model.source());
     }
 }

@@ -4,13 +4,13 @@
 
 package com.azure.ai.formrecognizer.documentanalysis.implementation.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The DocumentModelsCopyModelToHeaders model. */
-@Fluent
+@Immutable
 public final class DocumentModelsCopyModelToHeaders {
     /*
      * The Operation-Location property.
@@ -37,16 +37,5 @@ public final class DocumentModelsCopyModelToHeaders {
      */
     public String getOperationLocation() {
         return this.operationLocation;
-    }
-
-    /**
-     * Set the operationLocation property: The Operation-Location property.
-     *
-     * @param operationLocation the operationLocation value to set.
-     * @return the DocumentModelsCopyModelToHeaders object itself.
-     */
-    public DocumentModelsCopyModelToHeaders setOperationLocation(String operationLocation) {
-        this.operationLocation = operationLocation;
-        return this;
     }
 }

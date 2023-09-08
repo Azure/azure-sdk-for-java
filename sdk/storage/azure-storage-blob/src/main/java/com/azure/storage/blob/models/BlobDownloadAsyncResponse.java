@@ -9,6 +9,7 @@ import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.StreamResponse;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.ProgressReporter;
+import com.azure.core.util.io.IOUtils;
 import com.azure.storage.blob.implementation.accesshelpers.BlobDownloadAsyncResponseConstructorProxy;
 import com.azure.storage.blob.implementation.models.BlobsDownloadHeaders;
 import com.azure.storage.blob.implementation.util.ModelHelper;
@@ -34,8 +35,8 @@ public final class BlobDownloadAsyncResponse extends ResponseBase<BlobDownloadHe
     private static final ByteBuffer EMPTY_BUFFER = ByteBuffer.allocate(0);
 
     private final StreamResponse sourceResponse;
-    //private final BiFunction<Throwable, Long, Mono<StreamResponse>> onErrorResume;
-    //private final DownloadRetryOptions retryOptions;
+    private final BiFunction<Throwable, Long, Mono<StreamResponse>> onErrorResume;
+    private final DownloadRetryOptions retryOptions;
 
     /**
      * Constructs a {@link BlobDownloadAsyncResponse}.
@@ -50,8 +51,8 @@ public final class BlobDownloadAsyncResponse extends ResponseBase<BlobDownloadHe
         BlobDownloadHeaders deserializedHeaders) {
         super(request, statusCode, headers, value, deserializedHeaders);
         this.sourceResponse = null;
-        //this.onErrorResume = null;
-        //this.retryOptions = null;
+        this.onErrorResume = null;
+        this.retryOptions = null;
     }
 
     /**
@@ -66,8 +67,8 @@ public final class BlobDownloadAsyncResponse extends ResponseBase<BlobDownloadHe
         super(sourceResponse.getRequest(), sourceResponse.getStatusCode(), sourceResponse.getHeaders(),
             createResponseFlux(sourceResponse, onErrorResume, retryOptions), extractHeaders(sourceResponse));
         this.sourceResponse = Objects.requireNonNull(sourceResponse, "'sourceResponse' must not be null");
-        //this.onErrorResume = Objects.requireNonNull(onErrorResume, "'onErrorResume' must not be null");
-        //this.retryOptions = Objects.requireNonNull(retryOptions, "'retryOptions' must not be null");
+        this.onErrorResume = Objects.requireNonNull(onErrorResume, "'onErrorResume' must not be null");
+        this.retryOptions = Objects.requireNonNull(retryOptions, "'retryOptions' must not be null");
     }
 
     private static BlobDownloadHeaders extractHeaders(StreamResponse response) {
@@ -92,14 +93,10 @@ public final class BlobDownloadAsyncResponse extends ResponseBase<BlobDownloadHe
      */
     public Mono<Void> writeValueToAsync(AsynchronousByteChannel channel, ProgressReporter progressReporter) {
         Objects.requireNonNull(channel, "'channel' must not be null");
-        // Retaining commented out code as there will be a fix within the Core libraries, specifically HTTP Netty,
-        // where this performance enhancement will be re-enabled again in the future.
-//        if (sourceResponse != null) {
-//            return IOUtils.transferStreamResponseToAsynchronousByteChannel(channel, sourceResponse, onErrorResume,
-//                progressReporter, retryOptions.getMaxRetryRequests());
-//        }
-
-        if (super.getValue() != null) {
+        if (sourceResponse != null) {
+            return IOUtils.transferStreamResponseToAsynchronousByteChannel(channel, sourceResponse, onErrorResume,
+                progressReporter, retryOptions.getMaxRetryRequests());
+        } else if (super.getValue() != null) {
             return FluxUtil.writeToAsynchronousByteChannel(
                 FluxUtil.addProgressReporting(super.getValue(), progressReporter), channel);
         } else {

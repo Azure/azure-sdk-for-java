@@ -10,7 +10,7 @@ import com.azure.resourcemanager.maps.models.MapsKeySpecification;
 /** Samples for Accounts RegenerateKeys. */
 public final class AccountsRegenerateKeysSamples {
     /*
-     * x-ms-original-file: specification/maps/resource-manager/Microsoft.Maps/stable/2021-02-01/examples/RegenerateKey.json
+     * x-ms-original-file: specification/maps/resource-manager/Microsoft.Maps/stable/2023-06-01/examples/RegenerateKey.json
      */
     /**
      * Sample code: Regenerate Key.

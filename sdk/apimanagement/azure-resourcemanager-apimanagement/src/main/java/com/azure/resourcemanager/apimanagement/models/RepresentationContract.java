@@ -15,30 +15,28 @@ import java.util.Map;
 @Fluent
 public final class RepresentationContract {
     /*
-     * Specifies a registered or custom content type for this representation,
-     * e.g. application/xml.
+     * Specifies a registered or custom content type for this representation, e.g. application/xml.
      */
     @JsonProperty(value = "contentType", required = true)
     private String contentType;
 
     /*
-     * Schema identifier. Applicable only if 'contentType' value is neither
-     * 'application/x-www-form-urlencoded' nor 'multipart/form-data'.
+     * Schema identifier. Applicable only if 'contentType' value is neither 'application/x-www-form-urlencoded' nor
+     * 'multipart/form-data'.
      */
     @JsonProperty(value = "schemaId")
     private String schemaId;
 
     /*
-     * Type name defined by the schema. Applicable only if 'contentType' value
-     * is neither 'application/x-www-form-urlencoded' nor
-     * 'multipart/form-data'.
+     * Type name defined by the schema. Applicable only if 'contentType' value is neither
+     * 'application/x-www-form-urlencoded' nor 'multipart/form-data'.
      */
     @JsonProperty(value = "typeName")
     private String typeName;
 
     /*
-     * Collection of form parameters. Required if 'contentType' value is either
-     * 'application/x-www-form-urlencoded' or 'multipart/form-data'..
+     * Collection of form parameters. Required if 'contentType' value is either 'application/x-www-form-urlencoded' or
+     * 'multipart/form-data'..
      */
     @JsonProperty(value = "formParameters")
     private List<ParameterContract> formParameters;
@@ -49,6 +47,10 @@ public final class RepresentationContract {
     @JsonProperty(value = "examples")
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, ParameterExampleContract> examples;
+
+    /** Creates an instance of RepresentationContract class. */
+    public RepresentationContract() {
+    }
 
     /**
      * Get the contentType property: Specifies a registered or custom content type for this representation, e.g.

@@ -2,13 +2,14 @@
 // Licensed under the MIT License.
 package com.azure.spring.data.cosmos.domain;
 
+import com.azure.spring.data.cosmos.common.TestConstants;
 import com.azure.spring.data.cosmos.core.mapping.CompositeIndex;
 import com.azure.spring.data.cosmos.core.mapping.CompositeIndexPath;
 import com.azure.spring.data.cosmos.core.mapping.Container;
 import com.azure.spring.data.cosmos.core.mapping.CosmosIndexingPolicy;
 import org.springframework.data.annotation.Id;
 
-@Container
+@Container(ru = TestConstants.DEFAULT_MINIMUM_RU)
 @CosmosIndexingPolicy(
     includePaths = {"/field/?"},
     excludePaths = {"/*", "/\"_etag\"/?"},

@@ -17,6 +17,15 @@ public final class Commit extends ExpandableStringEnum<Commit> {
     public static final Commit ASYNCHRONOUS_COMMIT = fromString("ASYNCHRONOUS_COMMIT");
 
     /**
+     * Creates a new instance of Commit value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public Commit() {
+    }
+
+    /**
      * Creates or finds a Commit from its string representation.
      *
      * @param name a name to look for.

@@ -6,6 +6,9 @@ package com.azure.ai.formrecognizer.documentanalysis.implementation.util;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentFormula;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentFormulaKind;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentSpan;
+import com.azure.ai.formrecognizer.documentanalysis.models.Point;
+
+import java.util.List;
 
 /**
  * The helper class to set the non-public properties of an {@link DocumentFormula} instance.
@@ -25,8 +28,7 @@ public final class DocumentFormulaHelper {
         void setKind(DocumentFormula documentFormula, DocumentFormulaKind kind);
 
         void setValue(DocumentFormula documentFormula, String value);
-
-
+        void setPolygon(DocumentFormula documentFormula, List<Point> polygon);
         void setConfidence(DocumentFormula documentFormula, float confidence);
     }
 
@@ -51,6 +53,9 @@ public final class DocumentFormulaHelper {
         accessor.setConfidence(documentFormula, confidence);
     }
 
+    static void setBoundingPolygon(DocumentFormula documentFormula, List<Point> polygon) {
+        accessor.setPolygon(documentFormula, polygon);
+    }
     static void setValue(DocumentFormula documentFormula, String value) {
         accessor.setValue(documentFormula, value);
     }

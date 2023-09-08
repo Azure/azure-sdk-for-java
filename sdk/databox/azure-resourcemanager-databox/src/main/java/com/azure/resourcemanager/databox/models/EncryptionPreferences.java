@@ -16,6 +16,12 @@ public final class EncryptionPreferences {
     @JsonProperty(value = "doubleEncryption")
     private DoubleEncryption doubleEncryption;
 
+    /*
+     * Defines Hardware level encryption (Only for disk)
+     */
+    @JsonProperty(value = "hardwareEncryption")
+    private HardwareEncryption hardwareEncryption;
+
     /** Creates an instance of EncryptionPreferences class. */
     public EncryptionPreferences() {
     }
@@ -37,6 +43,26 @@ public final class EncryptionPreferences {
      */
     public EncryptionPreferences withDoubleEncryption(DoubleEncryption doubleEncryption) {
         this.doubleEncryption = doubleEncryption;
+        return this;
+    }
+
+    /**
+     * Get the hardwareEncryption property: Defines Hardware level encryption (Only for disk).
+     *
+     * @return the hardwareEncryption value.
+     */
+    public HardwareEncryption hardwareEncryption() {
+        return this.hardwareEncryption;
+    }
+
+    /**
+     * Set the hardwareEncryption property: Defines Hardware level encryption (Only for disk).
+     *
+     * @param hardwareEncryption the hardwareEncryption value to set.
+     * @return the EncryptionPreferences object itself.
+     */
+    public EncryptionPreferences withHardwareEncryption(HardwareEncryption hardwareEncryption) {
+        this.hardwareEncryption = hardwareEncryption;
         return this;
     }
 

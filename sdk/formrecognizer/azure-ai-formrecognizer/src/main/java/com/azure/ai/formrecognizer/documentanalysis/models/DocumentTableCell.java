@@ -66,7 +66,6 @@ public final class DocumentTableCell {
      * Set the kind property: Table cell kind.
      *
      * @param kind the kind value to set.
-     * @return the DocumentTableCell object itself.
      */
     private void setKind(DocumentTableCellKind kind) {
         this.kind = kind;
@@ -85,7 +84,6 @@ public final class DocumentTableCell {
      * Set the rowIndex property: Row index of the cell.
      *
      * @param rowIndex the rowIndex value to set.
-     * @return the DocumentTableCell object itself.
      */
     private void setRowIndex(int rowIndex) {
         this.rowIndex = rowIndex;
@@ -104,7 +102,6 @@ public final class DocumentTableCell {
      * Set the columnIndex property: Column index of the cell.
      *
      * @param columnIndex the columnIndex value to set.
-     * @return the DocumentTableCell object itself.
      */
     private void setColumnIndex(int columnIndex) {
         this.columnIndex = columnIndex;
@@ -123,7 +120,6 @@ public final class DocumentTableCell {
      * Set the rowSpan property: Number of rows spanned by this cell.
      *
      * @param rowSpan the rowSpan value to set.
-     * @return the DocumentTableCell object itself.
      */
     private void setRowSpan(Integer rowSpan) {
         this.rowSpan = rowSpan;
@@ -142,7 +138,6 @@ public final class DocumentTableCell {
      * Set the columnSpan property: Number of columns spanned by this cell.
      *
      * @param columnSpan the columnSpan value to set.
-     * @return the DocumentTableCell object itself.
      */
     private void setColumnSpan(Integer columnSpan) {
         this.columnSpan = columnSpan;
@@ -161,7 +156,6 @@ public final class DocumentTableCell {
      * Set the content property: Concatenated content of the table cell in reading order.
      *
      * @param content the content value to set.
-     * @return the DocumentTableCell object itself.
      */
     private void setContent(String content) {
         this.content = content;
@@ -180,7 +174,6 @@ public final class DocumentTableCell {
      * Set the boundingRegions property: Bounding regions covering the table cell.
      *
      * @param boundingRegions the boundingRegions value to set.
-     * @return the DocumentTableCell object itself.
      */
     private void setBoundingRegions(List<BoundingRegion> boundingRegions) {
         this.boundingRegions = boundingRegions;
@@ -199,7 +192,6 @@ public final class DocumentTableCell {
      * Set the spans property: Location of the table cell in the reading order concatenated content.
      *
      * @param spans the spans value to set.
-     * @return the DocumentTableCell object itself.
      */
     private void setSpans(List<DocumentSpan> spans) {
         this.spans = spans;

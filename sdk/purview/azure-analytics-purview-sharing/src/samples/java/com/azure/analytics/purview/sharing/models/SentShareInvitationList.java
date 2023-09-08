@@ -4,11 +4,14 @@
 
 package com.azure.analytics.purview.sharing.models;
 
-import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** List of the sent share invitations. */
+import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+/**
+ * List of the sent share invitations.
+ */
 @Fluent
 public final class SentShareInvitationList {
     /*
@@ -18,17 +21,20 @@ public final class SentShareInvitationList {
     private String nextLink;
 
     /*
-     * Collection of items of type DataTransferObjects.
+     * Collection of items of type SentShareInvitation
      */
     @JsonProperty(value = "value", required = true)
     private List<SentShareInvitation> value;
 
-    /** Creates an instance of SentShareInvitationList class. */
-    public SentShareInvitationList() {}
+    /**
+     * Creates an instance of SentShareInvitationList class.
+     */
+    public SentShareInvitationList() {
+    }
 
     /**
      * Get the nextLink property: The Url of next result page.
-     *
+     * 
      * @return the nextLink value.
      */
     public String getNextLink() {
@@ -37,7 +43,7 @@ public final class SentShareInvitationList {
 
     /**
      * Set the nextLink property: The Url of next result page.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the SentShareInvitationList object itself.
      */
@@ -47,8 +53,8 @@ public final class SentShareInvitationList {
     }
 
     /**
-     * Get the value property: Collection of items of type DataTransferObjects.
-     *
+     * Get the value property: Collection of items of type SentShareInvitation.
+     * 
      * @return the value value.
      */
     public List<SentShareInvitation> getValue() {
@@ -56,8 +62,8 @@ public final class SentShareInvitationList {
     }
 
     /**
-     * Set the value property: Collection of items of type DataTransferObjects.
-     *
+     * Set the value property: Collection of items of type SentShareInvitation.
+     * 
      * @param value the value value to set.
      * @return the SentShareInvitationList object itself.
      */

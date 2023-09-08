@@ -12,6 +12,8 @@ import javax.xml.stream.XMLStreamException;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import static com.azure.xml.AzureXmlTestUtils.getRootElementName;
+
 public class BlobItemInternal implements XmlSerializable<BlobItemInternal> {
     /*
      * The Name property.
@@ -290,7 +292,12 @@ public class BlobItemInternal implements XmlSerializable<BlobItemInternal> {
 
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
-        xmlWriter.writeStartElement("Blob");
+        return toXml(xmlWriter, null);
+    }
+
+    @Override
+    public XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException {
+        xmlWriter.writeStartElement(getRootElementName(rootElementName, "Blob"));
 
         xmlWriter.writeXml(name);
         xmlWriter.writeBooleanElement("Deleted", deleted);
@@ -335,7 +342,11 @@ public class BlobItemInternal implements XmlSerializable<BlobItemInternal> {
     }
 
     public static BlobItemInternal fromXml(XmlReader xmlReader) throws XMLStreamException {
-        return xmlReader.readObject("Blob", reader -> {
+        return fromXml(xmlReader, null);
+    }
+
+    public static BlobItemInternal fromXml(XmlReader xmlReader, String rootElementName) throws XMLStreamException {
+        return xmlReader.readObject(getRootElementName(rootElementName, "Blob"), reader -> {
             BlobItemInternal deserialized = new BlobItemInternal();
 
             while (reader.nextElement() != XmlToken.END_ELEMENT) {

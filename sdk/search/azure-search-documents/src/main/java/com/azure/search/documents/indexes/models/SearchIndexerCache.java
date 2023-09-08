@@ -26,6 +26,14 @@ public final class SearchIndexerCache implements JsonSerializable<SearchIndexerC
      */
     private Boolean enableReprocessing;
 
+    /*
+     * The user-assigned managed identity used for connections to the enrichment cache.  If the connection string
+     * indicates an identity (ResourceId) and it's not specified, the system-assigned managed identity is used. On
+     * updates to the indexer, if the identity is unspecified, the value remains unchanged. If set to "none", the value
+     * of this property is cleared.
+     */
+    private SearchIndexerDataIdentity identity;
+
     /** Creates an instance of SearchIndexerCache class. */
     public SearchIndexerCache() {}
 
@@ -71,11 +79,38 @@ public final class SearchIndexerCache implements JsonSerializable<SearchIndexerC
         return this;
     }
 
+    /**
+     * Get the identity property: The user-assigned managed identity used for connections to the enrichment cache. If
+     * the connection string indicates an identity (ResourceId) and it's not specified, the system-assigned managed
+     * identity is used. On updates to the indexer, if the identity is unspecified, the value remains unchanged. If set
+     * to "none", the value of this property is cleared.
+     *
+     * @return the identity value.
+     */
+    public SearchIndexerDataIdentity getIdentity() {
+        return this.identity;
+    }
+
+    /**
+     * Set the identity property: The user-assigned managed identity used for connections to the enrichment cache. If
+     * the connection string indicates an identity (ResourceId) and it's not specified, the system-assigned managed
+     * identity is used. On updates to the indexer, if the identity is unspecified, the value remains unchanged. If set
+     * to "none", the value of this property is cleared.
+     *
+     * @param identity the identity value to set.
+     * @return the SearchIndexerCache object itself.
+     */
+    public SearchIndexerCache setIdentity(SearchIndexerDataIdentity identity) {
+        this.identity = identity;
+        return this;
+    }
+
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("storageConnectionString", this.storageConnectionString);
         jsonWriter.writeBooleanField("enableReprocessing", this.enableReprocessing);
+        jsonWriter.writeJsonField("identity", this.identity);
         return jsonWriter.writeEndObject();
     }
 
@@ -100,6 +135,8 @@ public final class SearchIndexerCache implements JsonSerializable<SearchIndexerC
                         } else if ("enableReprocessing".equals(fieldName)) {
                             deserializedSearchIndexerCache.enableReprocessing =
                                     reader.getNullable(JsonReader::getBoolean);
+                        } else if ("identity".equals(fieldName)) {
+                            deserializedSearchIndexerCache.identity = SearchIndexerDataIdentity.fromJson(reader);
                         } else {
                             reader.skipChildren();
                         }

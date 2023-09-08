@@ -12,7 +12,6 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.resourcehealth.ResourceHealthManager;
 import com.azure.resourcemanager.resourcehealth.models.AvailabilityStateValues;
 import com.azure.resourcemanager.resourcehealth.models.AvailabilityStatus;
@@ -35,7 +34,7 @@ public final class AvailabilityStatusesListBySubscriptionIdMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"id\":\"lwhijcoejctbzaq\",\"name\":\"sycbkbfk\",\"type\":\"kdkexxp\",\"location\":\"fmxa\",\"properties\":{\"availabilityState\":\"Available\",\"title\":\"gddtocj\",\"summary\":\"hvpmoue\",\"detailedStatus\":\"dzxibqeojnxqbzvd\",\"reasonType\":\"t\",\"rootCauseAttributionTime\":\"2021-05-08T12:29:29Z\",\"healthEventType\":\"icbtwnpzao\",\"healthEventCause\":\"uhrhcffcyddgl\",\"healthEventCategory\":\"t\",\"healthEventId\":\"qkwpyeicxmqc\",\"resolutionETA\":\"2021-08-11T13:08:26Z\",\"occuredTime\":\"2021-01-16T07:23:11Z\",\"reasonChronicity\":\"Transient\",\"reportedTime\":\"2021-01-03T15:56:28Z\",\"recentlyResolved\":{\"unavailableOccuredTime\":\"2021-04-28T05:58:26Z\",\"resolvedTime\":\"2021-12-07T01:46:53Z\",\"unavailableSummary\":\"pbobjo\"},\"recommendedActions\":[],\"serviceImpactingEvents\":[]}}]}";
+            "{\"value\":[{\"id\":\"rvnaenqpeh\",\"name\":\"doy\",\"type\":\"ifthnz\",\"location\":\"dslgnayqigynduh\",\"properties\":{\"availabilityState\":\"Unavailable\",\"title\":\"kthumaqolbgycdui\",\"summary\":\"tgccymvaolpss\",\"detailedStatus\":\"lfmmdnbbglzpswi\",\"reasonType\":\"mcwyhzdxssadb\",\"context\":\"nvdfznuda\",\"category\":\"vxzbncb\",\"articleId\":\"lpstdbhhxsrzdz\",\"rootCauseAttributionTime\":\"2021-10-15T02:58:18Z\",\"healthEventType\":\"scdntnevf\",\"healthEventCause\":\"jmygtdsslswtmwer\",\"healthEventCategory\":\"fzp\",\"healthEventId\":\"semwabnet\",\"resolutionETA\":\"2021-07-19T10:32:31Z\",\"occuredTime\":\"2021-08-31T12:26:12Z\",\"reasonChronicity\":\"Persistent\",\"reportedTime\":\"2021-01-02T19:13:53Z\",\"recentlyResolved\":{\"unavailableOccuredTime\":\"2021-10-13T23:51:57Z\",\"resolvedTime\":\"2021-09-12T04:45:44Z\",\"unavailableSummary\":\"bmwmbesldnkw\"},\"recommendedActions\":[],\"serviceImpactingEvents\":[]}}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -64,47 +63,53 @@ public final class AvailabilityStatusesListBySubscriptionIdMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<AvailabilityStatus> response =
-            manager.availabilityStatuses().listBySubscriptionId("aajrm", "djwzrlov", Context.NONE);
+            manager
+                .availabilityStatuses()
+                .listBySubscriptionId("qtaruoujmkcjhwq", "tjrybnwjewgdr", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("lwhijcoejctbzaq", response.iterator().next().id());
-        Assertions.assertEquals("sycbkbfk", response.iterator().next().name());
-        Assertions.assertEquals("kdkexxp", response.iterator().next().type());
-        Assertions.assertEquals("fmxa", response.iterator().next().location());
+        Assertions.assertEquals("rvnaenqpeh", response.iterator().next().id());
+        Assertions.assertEquals("doy", response.iterator().next().name());
+        Assertions.assertEquals("ifthnz", response.iterator().next().type());
+        Assertions.assertEquals("dslgnayqigynduh", response.iterator().next().location());
         Assertions
             .assertEquals(
-                AvailabilityStateValues.AVAILABLE, response.iterator().next().properties().availabilityState());
-        Assertions.assertEquals("gddtocj", response.iterator().next().properties().title());
-        Assertions.assertEquals("hvpmoue", response.iterator().next().properties().summary());
-        Assertions.assertEquals("dzxibqeojnxqbzvd", response.iterator().next().properties().detailedStatus());
-        Assertions.assertEquals("t", response.iterator().next().properties().reasonType());
+                AvailabilityStateValues.UNAVAILABLE, response.iterator().next().properties().availabilityState());
+        Assertions.assertEquals("kthumaqolbgycdui", response.iterator().next().properties().title());
+        Assertions.assertEquals("tgccymvaolpss", response.iterator().next().properties().summary());
+        Assertions.assertEquals("lfmmdnbbglzpswi", response.iterator().next().properties().detailedStatus());
+        Assertions.assertEquals("mcwyhzdxssadb", response.iterator().next().properties().reasonType());
+        Assertions.assertEquals("nvdfznuda", response.iterator().next().properties().context());
+        Assertions.assertEquals("vxzbncb", response.iterator().next().properties().category());
+        Assertions.assertEquals("lpstdbhhxsrzdz", response.iterator().next().properties().articleId());
         Assertions
             .assertEquals(
-                OffsetDateTime.parse("2021-05-08T12:29:29Z"),
+                OffsetDateTime.parse("2021-10-15T02:58:18Z"),
                 response.iterator().next().properties().rootCauseAttributionTime());
-        Assertions.assertEquals("icbtwnpzao", response.iterator().next().properties().healthEventType());
-        Assertions.assertEquals("uhrhcffcyddgl", response.iterator().next().properties().healthEventCause());
-        Assertions.assertEquals("t", response.iterator().next().properties().healthEventCategory());
-        Assertions.assertEquals("qkwpyeicxmqc", response.iterator().next().properties().healthEventId());
+        Assertions.assertEquals("scdntnevf", response.iterator().next().properties().healthEventType());
+        Assertions.assertEquals("jmygtdsslswtmwer", response.iterator().next().properties().healthEventCause());
+        Assertions.assertEquals("fzp", response.iterator().next().properties().healthEventCategory());
+        Assertions.assertEquals("semwabnet", response.iterator().next().properties().healthEventId());
         Assertions
             .assertEquals(
-                OffsetDateTime.parse("2021-08-11T13:08:26Z"), response.iterator().next().properties().resolutionEta());
+                OffsetDateTime.parse("2021-07-19T10:32:31Z"), response.iterator().next().properties().resolutionEta());
         Assertions
             .assertEquals(
-                OffsetDateTime.parse("2021-01-16T07:23:11Z"), response.iterator().next().properties().occuredTime());
+                OffsetDateTime.parse("2021-08-31T12:26:12Z"), response.iterator().next().properties().occuredTime());
         Assertions
-            .assertEquals(ReasonChronicityTypes.TRANSIENT, response.iterator().next().properties().reasonChronicity());
-        Assertions
-            .assertEquals(
-                OffsetDateTime.parse("2021-01-03T15:56:28Z"), response.iterator().next().properties().reportedTime());
+            .assertEquals(ReasonChronicityTypes.PERSISTENT, response.iterator().next().properties().reasonChronicity());
         Assertions
             .assertEquals(
-                OffsetDateTime.parse("2021-04-28T05:58:26Z"),
+                OffsetDateTime.parse("2021-01-02T19:13:53Z"), response.iterator().next().properties().reportedTime());
+        Assertions
+            .assertEquals(
+                OffsetDateTime.parse("2021-10-13T23:51:57Z"),
                 response.iterator().next().properties().recentlyResolved().unavailableOccuredTime());
         Assertions
             .assertEquals(
-                OffsetDateTime.parse("2021-12-07T01:46:53Z"),
+                OffsetDateTime.parse("2021-09-12T04:45:44Z"),
                 response.iterator().next().properties().recentlyResolved().resolvedTime());
         Assertions
-            .assertEquals("pbobjo", response.iterator().next().properties().recentlyResolved().unavailableSummary());
+            .assertEquals(
+                "bmwmbesldnkw", response.iterator().next().properties().recentlyResolved().unavailableSummary());
     }
 }

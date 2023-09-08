@@ -15,6 +15,14 @@ public final class IntegrationRuntimeReferenceType extends ExpandableStringEnum<
             fromString("IntegrationRuntimeReference");
 
     /**
+     * Creates a new instance of IntegrationRuntimeReferenceType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public IntegrationRuntimeReferenceType() {}
+
+    /**
      * Creates or finds a IntegrationRuntimeReferenceType from its string representation.
      *
      * @param name a name to look for.

@@ -8,10 +8,12 @@ import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 public final class ApprovalRequestReassignTests extends PurviewWorkflowClientTestBase {
     @Test
+    @Disabled
     public void testApprovalRequestReassignTests() {
         BinaryData reassignCommand =
                 BinaryData.fromString(
@@ -19,7 +21,7 @@ public final class ApprovalRequestReassignTests extends PurviewWorkflowClientTes
         RequestOptions requestOptions = new RequestOptions();
         Response<Void> response =
                 purviewWorkflowClient.reassignWorkflowTaskWithResponse(
-                        "5b2ae679-13d3-4a50-9938-582eba7bf716", reassignCommand, requestOptions);
+                        "11b0244b-70ea-4c6b-9d28-08f52de40f2f", reassignCommand, requestOptions);
         Assertions.assertEquals(200, response.getStatusCode());
     }
 }

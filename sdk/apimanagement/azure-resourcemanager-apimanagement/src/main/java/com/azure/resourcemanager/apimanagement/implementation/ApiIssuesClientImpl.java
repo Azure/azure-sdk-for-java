@@ -65,11 +65,10 @@ public final class ApiIssuesClientImpl implements ApiIssuesClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "ApiManagementClientA")
-    private interface ApiIssuesService {
+    public interface ApiIssuesService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement"
-                + "/service/{serviceName}/apis/{apiId}/issues")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/apis/{apiId}/issues")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<IssueCollection>> listByService(
@@ -88,8 +87,7 @@ public final class ApiIssuesClientImpl implements ApiIssuesClient {
 
         @Headers({"Content-Type: application/json"})
         @Head(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement"
-                + "/service/{serviceName}/apis/{apiId}/issues/{issueId}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/apis/{apiId}/issues/{issueId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<ApiIssuesGetEntityTagResponse> getEntityTag(
@@ -105,8 +103,7 @@ public final class ApiIssuesClientImpl implements ApiIssuesClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement"
-                + "/service/{serviceName}/apis/{apiId}/issues/{issueId}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/apis/{apiId}/issues/{issueId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<ApiIssuesGetResponse> get(
@@ -123,8 +120,7 @@ public final class ApiIssuesClientImpl implements ApiIssuesClient {
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement"
-                + "/service/{serviceName}/apis/{apiId}/issues/{issueId}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/apis/{apiId}/issues/{issueId}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<ApiIssuesCreateOrUpdateResponse> createOrUpdate(
@@ -142,8 +138,7 @@ public final class ApiIssuesClientImpl implements ApiIssuesClient {
 
         @Headers({"Content-Type: application/json"})
         @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement"
-                + "/service/{serviceName}/apis/{apiId}/issues/{issueId}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/apis/{apiId}/issues/{issueId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<ApiIssuesUpdateResponse> update(
@@ -161,8 +156,7 @@ public final class ApiIssuesClientImpl implements ApiIssuesClient {
 
         @Headers({"Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement"
-                + "/service/{serviceName}/apis/{apiId}/issues/{issueId}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/apis/{apiId}/issues/{issueId}")
         @ExpectedResponses({200, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> delete(
@@ -191,7 +185,7 @@ public final class ApiIssuesClientImpl implements ApiIssuesClient {
     /**
      * Lists all issues associated with the specified API.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
      * @param filter | Field | Usage | Supported operators | Supported functions
@@ -271,7 +265,7 @@ public final class ApiIssuesClientImpl implements ApiIssuesClient {
     /**
      * Lists all issues associated with the specified API.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
      * @param filter | Field | Usage | Supported operators | Supported functions
@@ -350,7 +344,7 @@ public final class ApiIssuesClientImpl implements ApiIssuesClient {
     /**
      * Lists all issues associated with the specified API.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
      * @param filter | Field | Usage | Supported operators | Supported functions
@@ -384,7 +378,7 @@ public final class ApiIssuesClientImpl implements ApiIssuesClient {
     /**
      * Lists all issues associated with the specified API.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -409,7 +403,7 @@ public final class ApiIssuesClientImpl implements ApiIssuesClient {
     /**
      * Lists all issues associated with the specified API.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
      * @param filter | Field | Usage | Supported operators | Supported functions
@@ -445,7 +439,7 @@ public final class ApiIssuesClientImpl implements ApiIssuesClient {
     /**
      * Lists all issues associated with the specified API.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -466,7 +460,7 @@ public final class ApiIssuesClientImpl implements ApiIssuesClient {
     /**
      * Lists all issues associated with the specified API.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
      * @param filter | Field | Usage | Supported operators | Supported functions
@@ -500,7 +494,7 @@ public final class ApiIssuesClientImpl implements ApiIssuesClient {
     /**
      * Gets the entity state (Etag) version of the Issue for an API specified by its identifier.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
      * @param issueId Issue identifier. Must be unique in the current API Management service instance.
@@ -559,7 +553,7 @@ public final class ApiIssuesClientImpl implements ApiIssuesClient {
     /**
      * Gets the entity state (Etag) version of the Issue for an API specified by its identifier.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
      * @param issueId Issue identifier. Must be unique in the current API Management service instance.
@@ -616,7 +610,7 @@ public final class ApiIssuesClientImpl implements ApiIssuesClient {
     /**
      * Gets the entity state (Etag) version of the Issue for an API specified by its identifier.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
      * @param issueId Issue identifier. Must be unique in the current API Management service instance.
@@ -629,29 +623,13 @@ public final class ApiIssuesClientImpl implements ApiIssuesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> getEntityTagAsync(String resourceGroupName, String serviceName, String apiId, String issueId) {
         return getEntityTagWithResponseAsync(resourceGroupName, serviceName, apiId, issueId)
-            .flatMap((ApiIssuesGetEntityTagResponse res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
      * Gets the entity state (Etag) version of the Issue for an API specified by its identifier.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param serviceName The name of the API Management service.
-     * @param apiId API identifier. Must be unique in the current API Management service instance.
-     * @param issueId Issue identifier. Must be unique in the current API Management service instance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void getEntityTag(String resourceGroupName, String serviceName, String apiId, String issueId) {
-        getEntityTagAsync(resourceGroupName, serviceName, apiId, issueId).block();
-    }
-
-    /**
-     * Gets the entity state (Etag) version of the Issue for an API specified by its identifier.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
      * @param issueId Issue identifier. Must be unique in the current API Management service instance.
@@ -668,9 +646,25 @@ public final class ApiIssuesClientImpl implements ApiIssuesClient {
     }
 
     /**
+     * Gets the entity state (Etag) version of the Issue for an API specified by its identifier.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serviceName The name of the API Management service.
+     * @param apiId API identifier. Must be unique in the current API Management service instance.
+     * @param issueId Issue identifier. Must be unique in the current API Management service instance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void getEntityTag(String resourceGroupName, String serviceName, String apiId, String issueId) {
+        getEntityTagWithResponse(resourceGroupName, serviceName, apiId, issueId, Context.NONE);
+    }
+
+    /**
      * Gets the details of the Issue for an API specified by its identifier.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
      * @param issueId Issue identifier. Must be unique in the current API Management service instance.
@@ -730,7 +724,7 @@ public final class ApiIssuesClientImpl implements ApiIssuesClient {
     /**
      * Gets the details of the Issue for an API specified by its identifier.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
      * @param issueId Issue identifier. Must be unique in the current API Management service instance.
@@ -793,34 +787,7 @@ public final class ApiIssuesClientImpl implements ApiIssuesClient {
     /**
      * Gets the details of the Issue for an API specified by its identifier.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param serviceName The name of the API Management service.
-     * @param apiId API identifier. Must be unique in the current API Management service instance.
-     * @param issueId Issue identifier. Must be unique in the current API Management service instance.
-     * @param expandCommentsAttachments Expand the comment attachments.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of the Issue for an API specified by its identifier on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<IssueContractInner> getAsync(
-        String resourceGroupName, String serviceName, String apiId, String issueId, Boolean expandCommentsAttachments) {
-        return getWithResponseAsync(resourceGroupName, serviceName, apiId, issueId, expandCommentsAttachments)
-            .flatMap(
-                (ApiIssuesGetResponse res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Gets the details of the Issue for an API specified by its identifier.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
      * @param issueId Issue identifier. Must be unique in the current API Management service instance.
@@ -834,38 +801,13 @@ public final class ApiIssuesClientImpl implements ApiIssuesClient {
         String resourceGroupName, String serviceName, String apiId, String issueId) {
         final Boolean expandCommentsAttachments = null;
         return getWithResponseAsync(resourceGroupName, serviceName, apiId, issueId, expandCommentsAttachments)
-            .flatMap(
-                (ApiIssuesGetResponse res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Gets the details of the Issue for an API specified by its identifier.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param serviceName The name of the API Management service.
-     * @param apiId API identifier. Must be unique in the current API Management service instance.
-     * @param issueId Issue identifier. Must be unique in the current API Management service instance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of the Issue for an API specified by its identifier.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public IssueContractInner get(String resourceGroupName, String serviceName, String apiId, String issueId) {
-        final Boolean expandCommentsAttachments = null;
-        return getAsync(resourceGroupName, serviceName, apiId, issueId, expandCommentsAttachments).block();
-    }
-
-    /**
-     * Gets the details of the Issue for an API specified by its identifier.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
      * @param issueId Issue identifier. Must be unique in the current API Management service instance.
@@ -889,9 +831,28 @@ public final class ApiIssuesClientImpl implements ApiIssuesClient {
     }
 
     /**
+     * Gets the details of the Issue for an API specified by its identifier.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serviceName The name of the API Management service.
+     * @param apiId API identifier. Must be unique in the current API Management service instance.
+     * @param issueId Issue identifier. Must be unique in the current API Management service instance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the details of the Issue for an API specified by its identifier.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public IssueContractInner get(String resourceGroupName, String serviceName, String apiId, String issueId) {
+        final Boolean expandCommentsAttachments = null;
+        return getWithResponse(resourceGroupName, serviceName, apiId, issueId, expandCommentsAttachments, Context.NONE)
+            .getValue();
+    }
+
+    /**
      * Creates a new Issue for an API or updates an existing one.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
      * @param issueId Issue identifier. Must be unique in the current API Management service instance.
@@ -963,7 +924,7 @@ public final class ApiIssuesClientImpl implements ApiIssuesClient {
     /**
      * Creates a new Issue for an API or updates an existing one.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
      * @param issueId Issue identifier. Must be unique in the current API Management service instance.
@@ -1034,40 +995,7 @@ public final class ApiIssuesClientImpl implements ApiIssuesClient {
     /**
      * Creates a new Issue for an API or updates an existing one.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param serviceName The name of the API Management service.
-     * @param apiId API identifier. Must be unique in the current API Management service instance.
-     * @param issueId Issue identifier. Must be unique in the current API Management service instance.
-     * @param parameters Create parameters.
-     * @param ifMatch ETag of the Entity. Not required when creating an entity, but required when updating an entity.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return issue Contract details on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<IssueContractInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        String issueId,
-        IssueContractInner parameters,
-        String ifMatch) {
-        return createOrUpdateWithResponseAsync(resourceGroupName, serviceName, apiId, issueId, parameters, ifMatch)
-            .flatMap(
-                (ApiIssuesCreateOrUpdateResponse res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Creates a new Issue for an API or updates an existing one.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
      * @param issueId Issue identifier. Must be unique in the current API Management service instance.
@@ -1082,40 +1010,13 @@ public final class ApiIssuesClientImpl implements ApiIssuesClient {
         String resourceGroupName, String serviceName, String apiId, String issueId, IssueContractInner parameters) {
         final String ifMatch = null;
         return createOrUpdateWithResponseAsync(resourceGroupName, serviceName, apiId, issueId, parameters, ifMatch)
-            .flatMap(
-                (ApiIssuesCreateOrUpdateResponse res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Creates a new Issue for an API or updates an existing one.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param serviceName The name of the API Management service.
-     * @param apiId API identifier. Must be unique in the current API Management service instance.
-     * @param issueId Issue identifier. Must be unique in the current API Management service instance.
-     * @param parameters Create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return issue Contract details.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public IssueContractInner createOrUpdate(
-        String resourceGroupName, String serviceName, String apiId, String issueId, IssueContractInner parameters) {
-        final String ifMatch = null;
-        return createOrUpdateAsync(resourceGroupName, serviceName, apiId, issueId, parameters, ifMatch).block();
-    }
-
-    /**
-     * Creates a new Issue for an API or updates an existing one.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
      * @param issueId Issue identifier. Must be unique in the current API Management service instance.
@@ -1142,9 +1043,31 @@ public final class ApiIssuesClientImpl implements ApiIssuesClient {
     }
 
     /**
+     * Creates a new Issue for an API or updates an existing one.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serviceName The name of the API Management service.
+     * @param apiId API identifier. Must be unique in the current API Management service instance.
+     * @param issueId Issue identifier. Must be unique in the current API Management service instance.
+     * @param parameters Create parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return issue Contract details.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public IssueContractInner createOrUpdate(
+        String resourceGroupName, String serviceName, String apiId, String issueId, IssueContractInner parameters) {
+        final String ifMatch = null;
+        return createOrUpdateWithResponse(
+                resourceGroupName, serviceName, apiId, issueId, parameters, ifMatch, Context.NONE)
+            .getValue();
+    }
+
+    /**
      * Updates an existing issue for an API.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
      * @param issueId Issue identifier. Must be unique in the current API Management service instance.
@@ -1220,7 +1143,7 @@ public final class ApiIssuesClientImpl implements ApiIssuesClient {
     /**
      * Updates an existing issue for an API.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
      * @param issueId Issue identifier. Must be unique in the current API Management service instance.
@@ -1295,7 +1218,7 @@ public final class ApiIssuesClientImpl implements ApiIssuesClient {
     /**
      * Updates an existing issue for an API.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
      * @param issueId Issue identifier. Must be unique in the current API Management service instance.
@@ -1316,46 +1239,13 @@ public final class ApiIssuesClientImpl implements ApiIssuesClient {
         String ifMatch,
         IssueUpdateContract parameters) {
         return updateWithResponseAsync(resourceGroupName, serviceName, apiId, issueId, ifMatch, parameters)
-            .flatMap(
-                (ApiIssuesUpdateResponse res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Updates an existing issue for an API.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param serviceName The name of the API Management service.
-     * @param apiId API identifier. Must be unique in the current API Management service instance.
-     * @param issueId Issue identifier. Must be unique in the current API Management service instance.
-     * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
-     * @param parameters Update parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return issue Contract details.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public IssueContractInner update(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        String issueId,
-        String ifMatch,
-        IssueUpdateContract parameters) {
-        return updateAsync(resourceGroupName, serviceName, apiId, issueId, ifMatch, parameters).block();
-    }
-
-    /**
-     * Updates an existing issue for an API.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
      * @param issueId Issue identifier. Must be unique in the current API Management service instance.
@@ -1382,9 +1272,36 @@ public final class ApiIssuesClientImpl implements ApiIssuesClient {
     }
 
     /**
+     * Updates an existing issue for an API.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serviceName The name of the API Management service.
+     * @param apiId API identifier. Must be unique in the current API Management service instance.
+     * @param issueId Issue identifier. Must be unique in the current API Management service instance.
+     * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
+     *     request or it should be * for unconditional update.
+     * @param parameters Update parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return issue Contract details.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public IssueContractInner update(
+        String resourceGroupName,
+        String serviceName,
+        String apiId,
+        String issueId,
+        String ifMatch,
+        IssueUpdateContract parameters) {
+        return updateWithResponse(resourceGroupName, serviceName, apiId, issueId, ifMatch, parameters, Context.NONE)
+            .getValue();
+    }
+
+    /**
      * Deletes the specified Issue from an API.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
      * @param issueId Issue identifier. Must be unique in the current API Management service instance.
@@ -1448,7 +1365,7 @@ public final class ApiIssuesClientImpl implements ApiIssuesClient {
     /**
      * Deletes the specified Issue from an API.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
      * @param issueId Issue identifier. Must be unique in the current API Management service instance.
@@ -1510,7 +1427,7 @@ public final class ApiIssuesClientImpl implements ApiIssuesClient {
     /**
      * Deletes the specified Issue from an API.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
      * @param issueId Issue identifier. Must be unique in the current API Management service instance.
@@ -1525,31 +1442,13 @@ public final class ApiIssuesClientImpl implements ApiIssuesClient {
     private Mono<Void> deleteAsync(
         String resourceGroupName, String serviceName, String apiId, String issueId, String ifMatch) {
         return deleteWithResponseAsync(resourceGroupName, serviceName, apiId, issueId, ifMatch)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
      * Deletes the specified Issue from an API.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param serviceName The name of the API Management service.
-     * @param apiId API identifier. Must be unique in the current API Management service instance.
-     * @param issueId Issue identifier. Must be unique in the current API Management service instance.
-     * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String serviceName, String apiId, String issueId, String ifMatch) {
-        deleteAsync(resourceGroupName, serviceName, apiId, issueId, ifMatch).block();
-    }
-
-    /**
-     * Deletes the specified Issue from an API.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
      * @param issueId Issue identifier. Must be unique in the current API Management service instance.
@@ -1568,9 +1467,28 @@ public final class ApiIssuesClientImpl implements ApiIssuesClient {
     }
 
     /**
+     * Deletes the specified Issue from an API.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serviceName The name of the API Management service.
+     * @param apiId API identifier. Must be unique in the current API Management service instance.
+     * @param issueId Issue identifier. Must be unique in the current API Management service instance.
+     * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
+     *     request or it should be * for unconditional update.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void delete(String resourceGroupName, String serviceName, String apiId, String issueId, String ifMatch) {
+        deleteWithResponse(resourceGroupName, serviceName, apiId, issueId, ifMatch, Context.NONE);
+    }
+
+    /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1606,7 +1524,8 @@ public final class ApiIssuesClientImpl implements ApiIssuesClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

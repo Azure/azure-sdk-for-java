@@ -18,7 +18,7 @@ import java.util.Arrays;
 /** Samples for SimPolicies CreateOrUpdate. */
 public final class SimPoliciesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2022-11-01/examples/SimPolicyCreate.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-06-01/examples/SimPolicyCreate.json
      */
     /**
      * Sample code: Create SIM policy.
@@ -35,7 +35,7 @@ public final class SimPoliciesCreateOrUpdateSamples {
             .withDefaultSlice(
                 new SliceResourceId()
                     .withId(
-                        "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/slices/testSlice"))
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/slices/testSlice"))
             .withSliceConfigurations(
                 Arrays
                     .asList(
@@ -43,11 +43,11 @@ public final class SimPoliciesCreateOrUpdateSamples {
                             .withSlice(
                                 new SliceResourceId()
                                     .withId(
-                                        "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/slices/testSlice"))
+                                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/slices/testSlice"))
                             .withDefaultDataNetwork(
                                 new DataNetworkResourceId()
                                     .withId(
-                                        "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/dataNetworks/testdataNetwork"))
+                                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/dataNetworks/testdataNetwork"))
                             .withDataNetworkConfigurations(
                                 Arrays
                                     .asList(
@@ -55,7 +55,7 @@ public final class SimPoliciesCreateOrUpdateSamples {
                                             .withDataNetwork(
                                                 new DataNetworkResourceId()
                                                     .withId(
-                                                        "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/dataNetworks/testdataNetwork"))
+                                                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/dataNetworks/testdataNetwork"))
                                             .withSessionAmbr(new Ambr().withUplink("500 Mbps").withDownlink("1 Gbps"))
                                             .withFiveQi(9)
                                             .withAllocationAndRetentionPriorityLevel(9)
@@ -68,7 +68,7 @@ public final class SimPoliciesCreateOrUpdateSamples {
                                                     .asList(
                                                         new ServiceResourceId()
                                                             .withId(
-                                                                "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/services/testService")))
+                                                                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/services/testService")))
                                             .withMaximumNumberOfBufferedPackets(200)))))
             .withRegistrationTimer(3240)
             .create();

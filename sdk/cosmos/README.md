@@ -1,4 +1,4 @@
-# Azure CosmosDB Client library for Java
+# Azure Cosmos DB Client library for Java
 
 [![Build Status](https://dev.azure.com/azure-sdk/public/_apis/build/status/17?branchName=master)](https://dev.azure.com/azure-sdk/public/_build/latest?definitionId=17) [![Build Documentation](https://img.shields.io/badge/documentation-published-blue.svg)](https://azuresdkartifacts.blob.core.windows.net/azure-sdk-for-java/index.html) [![Dependencies](https://img.shields.io/badge/dependencies-analyzed-blue.svg)](https://azuresdkartifacts.blob.core.windows.net/azure-sdk-for-java/staging/dependencies.html) [![SpotBugs](https://img.shields.io/badge/SpotBugs-Clean-success.svg)](https://azuresdkartifacts.blob.core.windows.net/azure-sdk-for-java/staging/spotbugsXml.html) [![CheckStyle](https://img.shields.io/badge/CheckStyle-Clean-success.svg)](https://azuresdkartifacts.blob.core.windows.net/azure-sdk-for-java/staging/checkstyle-aggregate.html)
 
@@ -12,7 +12,7 @@ To get started with a specific library, see the **README.md** file located in th
 - [Azure Spring Data Cosmos](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/azure-spring-data-cosmos/README.md) provides Spring Data support for Azure Cosmos DB using the SQL API, based on Spring Data framework.
 - [Azure Cosmos Encryption](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/cosmos/azure-cosmos-encryption/README.md) supports encryption for Azure Cosmos DB using SQL API. This plugin library is still under development and not is not ready to be consumed yet. 
 - [Azure Cosmos Benchmark](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/cosmos/azure-cosmos-benchmark/README.md) is the benchmarking tool which provides different kinds of benchmarking workloads including but not limited to `readLatency`, `readThroughput`, `writeThroughput`, `readMyWrites`, etc.
-- [Azure Cosmos DotNet Benchmark](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/cosmos/azure-cosmos-dotnet-benchmark/README.md) is the port of CosmosDB .NET benchmarking tool. 
+- [Azure Cosmos DotNet Benchmark](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/cosmos/azure-cosmos-dotnet-benchmark/README.md) is the port of Cosmos DB .NET benchmarking tool. 
 - [Azure Cosmos Examples](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/cosmos/azure-cosmos-examples/README.md) provides various examples / samples on how to use Azure Cosmos DB SDK for SQL API.
 
 <!-- LINKS -->

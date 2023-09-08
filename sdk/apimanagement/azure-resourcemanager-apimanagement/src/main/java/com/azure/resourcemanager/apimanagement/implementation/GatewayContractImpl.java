@@ -39,6 +39,10 @@ public final class GatewayContractImpl implements GatewayContract, GatewayContra
         return this.innerModel().description();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public GatewayContractInner innerModel() {
         return this.innerObject;
     }
@@ -148,16 +152,12 @@ public final class GatewayContractImpl implements GatewayContract, GatewayContra
         return this;
     }
 
-    public GatewayKeysContract listKeys() {
-        return serviceManager.gateways().listKeys(resourceGroupName, serviceName, gatewayId);
-    }
-
     public Response<GatewayKeysContract> listKeysWithResponse(Context context) {
         return serviceManager.gateways().listKeysWithResponse(resourceGroupName, serviceName, gatewayId, context);
     }
 
-    public void regenerateKey(GatewayKeyRegenerationRequestContract parameters) {
-        serviceManager.gateways().regenerateKey(resourceGroupName, serviceName, gatewayId, parameters);
+    public GatewayKeysContract listKeys() {
+        return serviceManager.gateways().listKeys(resourceGroupName, serviceName, gatewayId);
     }
 
     public Response<Void> regenerateKeyWithResponse(GatewayKeyRegenerationRequestContract parameters, Context context) {
@@ -166,8 +166,8 @@ public final class GatewayContractImpl implements GatewayContract, GatewayContra
             .regenerateKeyWithResponse(resourceGroupName, serviceName, gatewayId, parameters, context);
     }
 
-    public GatewayTokenContract generateToken(GatewayTokenRequestContract parameters) {
-        return serviceManager.gateways().generateToken(resourceGroupName, serviceName, gatewayId, parameters);
+    public void regenerateKey(GatewayKeyRegenerationRequestContract parameters) {
+        serviceManager.gateways().regenerateKey(resourceGroupName, serviceName, gatewayId, parameters);
     }
 
     public Response<GatewayTokenContract> generateTokenWithResponse(
@@ -175,6 +175,10 @@ public final class GatewayContractImpl implements GatewayContract, GatewayContra
         return serviceManager
             .gateways()
             .generateTokenWithResponse(resourceGroupName, serviceName, gatewayId, parameters, context);
+    }
+
+    public GatewayTokenContract generateToken(GatewayTokenRequestContract parameters) {
+        return serviceManager.gateways().generateToken(resourceGroupName, serviceName, gatewayId, parameters);
     }
 
     public GatewayContractImpl withLocationData(ResourceLocationDataContract locationData) {

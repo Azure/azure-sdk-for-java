@@ -7,20 +7,24 @@ package com.azure.communication.callautomation.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The CommunicationIdentifierModel model. */
+/**
+ * Identifies a participant in Azure Communication services. A participant is, for example, a phone number or an Azure
+ * communication user. This model is polymorphic: Apart from kind and rawId, at most one further property may be set
+ * which must match the kind enum value.
+ */
 @Fluent
 public final class CommunicationIdentifierModel {
     /*
-     * Full ID of the identifier.
-     */
-    @JsonProperty(value = "rawId")
-    private String rawId;
-
-    /*
-     * Type of CommunicationIdentifierModel.
+     * The identifier kind. Only required in responses.
      */
     @JsonProperty(value = "kind")
     private CommunicationIdentifierModelKind kind;
+
+    /*
+     * Raw Id of the identifier. Optional in requests, required in responses.
+     */
+    @JsonProperty(value = "rawId")
+    private String rawId;
 
     /*
      * The communication user.
@@ -41,27 +45,7 @@ public final class CommunicationIdentifierModel {
     private MicrosoftTeamsUserIdentifierModel microsoftTeamsUser;
 
     /**
-     * Get the rawId property: Full ID of the identifier.
-     *
-     * @return the rawId value.
-     */
-    public String getRawId() {
-        return this.rawId;
-    }
-
-    /**
-     * Set the rawId property: Full ID of the identifier.
-     *
-     * @param rawId the rawId value to set.
-     * @return the CommunicationIdentifierModel object itself.
-     */
-    public CommunicationIdentifierModel setRawId(String rawId) {
-        this.rawId = rawId;
-        return this;
-    }
-
-    /**
-     * Get the kind property: Type of CommunicationIdentifierModel.
+     * Get the kind property: The identifier kind. Only required in responses.
      *
      * @return the kind value.
      */
@@ -70,13 +54,33 @@ public final class CommunicationIdentifierModel {
     }
 
     /**
-     * Set the kind property: Type of CommunicationIdentifierModel.
+     * Set the kind property: The identifier kind. Only required in responses.
      *
      * @param kind the kind value to set.
      * @return the CommunicationIdentifierModel object itself.
      */
     public CommunicationIdentifierModel setKind(CommunicationIdentifierModelKind kind) {
         this.kind = kind;
+        return this;
+    }
+
+    /**
+     * Get the rawId property: Raw Id of the identifier. Optional in requests, required in responses.
+     *
+     * @return the rawId value.
+     */
+    public String getRawId() {
+        return this.rawId;
+    }
+
+    /**
+     * Set the rawId property: Raw Id of the identifier. Optional in requests, required in responses.
+     *
+     * @param rawId the rawId value to set.
+     * @return the CommunicationIdentifierModel object itself.
+     */
+    public CommunicationIdentifierModel setRawId(String rawId) {
+        this.rawId = rawId;
         return this;
     }
 

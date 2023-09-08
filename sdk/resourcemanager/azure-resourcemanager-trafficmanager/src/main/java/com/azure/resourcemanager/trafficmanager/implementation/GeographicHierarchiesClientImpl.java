@@ -50,7 +50,7 @@ public final class GeographicHierarchiesClientImpl implements GeographicHierarch
      */
     @Host("{$host}")
     @ServiceInterface(name = "TrafficManagerManage")
-    private interface GeographicHierarchiesService {
+    public interface GeographicHierarchiesService {
         @Headers({"Content-Type: application/json"})
         @Get("/providers/Microsoft.Network/trafficManagerGeographicHierarchies/default")
         @ExpectedResponses({200})

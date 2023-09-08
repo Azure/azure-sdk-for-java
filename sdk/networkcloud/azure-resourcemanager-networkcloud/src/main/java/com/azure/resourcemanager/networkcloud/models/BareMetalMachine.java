@@ -66,6 +66,14 @@ public interface BareMetalMachine {
     SystemData systemData();
 
     /**
+     * Gets the associatedResourceIds property: The list of resource IDs for the other Microsoft.NetworkCloud resources
+     * that have attached this network.
+     *
+     * @return the associatedResourceIds value.
+     */
+    List<String> associatedResourceIds();
+
+    /**
      * Gets the bmcConnectionString property: The connection string for the baseboard management controller including IP
      * address and protocol.
      *
@@ -148,8 +156,8 @@ public interface BareMetalMachine {
     HardwareValidationStatus hardwareValidationStatus();
 
     /**
-     * Gets the hybridAksClustersAssociatedIds property: The list of the resource IDs for the HybridAksClusters that
-     * have nodes hosted on this bare metal machine.
+     * Gets the hybridAksClustersAssociatedIds property: Field Deprecated. These fields will be empty/omitted. The list
+     * of the resource IDs for the HybridAksClusters that have nodes hosted on this bare metal machine.
      *
      * @return the hybridAksClustersAssociatedIds value.
      */
@@ -265,8 +273,8 @@ public interface BareMetalMachine {
     String serviceTag();
 
     /**
-     * Gets the virtualMachinesAssociatedIds property: The list of the resource IDs for the VirtualMachines that are
-     * hosted on this bare metal machine.
+     * Gets the virtualMachinesAssociatedIds property: Field Deprecated. These fields will be empty/omitted. The list of
+     * the resource IDs for the VirtualMachines that are hosted on this bare metal machine.
      *
      * @return the virtualMachinesAssociatedIds value.
      */
@@ -318,11 +326,13 @@ public interface BareMetalMachine {
             DefinitionStages.WithSerialNumber,
             DefinitionStages.WithCreate {
     }
+
     /** The BareMetalMachine definition stages. */
     interface DefinitionStages {
         /** The first stage of the BareMetalMachine definition. */
         interface Blank extends WithLocation {
         }
+
         /** The stage of the BareMetalMachine definition allowing to specify location. */
         interface WithLocation {
             /**
@@ -341,6 +351,7 @@ public interface BareMetalMachine {
              */
             WithResourceGroup withRegion(String location);
         }
+
         /** The stage of the BareMetalMachine definition allowing to specify parent resource. */
         interface WithResourceGroup {
             /**
@@ -351,6 +362,7 @@ public interface BareMetalMachine {
              */
             WithExtendedLocation withExistingResourceGroup(String resourceGroupName);
         }
+
         /** The stage of the BareMetalMachine definition allowing to specify extendedLocation. */
         interface WithExtendedLocation {
             /**
@@ -366,6 +378,7 @@ public interface BareMetalMachine {
              */
             WithBmcConnectionString withExtendedLocation(ExtendedLocation extendedLocation);
         }
+
         /** The stage of the BareMetalMachine definition allowing to specify bmcConnectionString. */
         interface WithBmcConnectionString {
             /**
@@ -378,6 +391,7 @@ public interface BareMetalMachine {
              */
             WithBmcCredentials withBmcConnectionString(String bmcConnectionString);
         }
+
         /** The stage of the BareMetalMachine definition allowing to specify bmcCredentials. */
         interface WithBmcCredentials {
             /**
@@ -393,6 +407,7 @@ public interface BareMetalMachine {
              */
             WithBmcMacAddress withBmcCredentials(AdministrativeCredentials bmcCredentials);
         }
+
         /** The stage of the BareMetalMachine definition allowing to specify bmcMacAddress. */
         interface WithBmcMacAddress {
             /**
@@ -403,6 +418,7 @@ public interface BareMetalMachine {
              */
             WithBootMacAddress withBmcMacAddress(String bmcMacAddress);
         }
+
         /** The stage of the BareMetalMachine definition allowing to specify bootMacAddress. */
         interface WithBootMacAddress {
             /**
@@ -413,6 +429,7 @@ public interface BareMetalMachine {
              */
             WithMachineDetails withBootMacAddress(String bootMacAddress);
         }
+
         /** The stage of the BareMetalMachine definition allowing to specify machineDetails. */
         interface WithMachineDetails {
             /**
@@ -423,6 +440,7 @@ public interface BareMetalMachine {
              */
             WithMachineName withMachineDetails(String machineDetails);
         }
+
         /** The stage of the BareMetalMachine definition allowing to specify machineName. */
         interface WithMachineName {
             /**
@@ -433,6 +451,7 @@ public interface BareMetalMachine {
              */
             WithMachineSkuId withMachineName(String machineName);
         }
+
         /** The stage of the BareMetalMachine definition allowing to specify machineSkuId. */
         interface WithMachineSkuId {
             /**
@@ -443,6 +462,7 @@ public interface BareMetalMachine {
              */
             WithRackId withMachineSkuId(String machineSkuId);
         }
+
         /** The stage of the BareMetalMachine definition allowing to specify rackId. */
         interface WithRackId {
             /**
@@ -453,6 +473,7 @@ public interface BareMetalMachine {
              */
             WithRackSlot withRackId(String rackId);
         }
+
         /** The stage of the BareMetalMachine definition allowing to specify rackSlot. */
         interface WithRackSlot {
             /**
@@ -465,6 +486,7 @@ public interface BareMetalMachine {
              */
             WithSerialNumber withRackSlot(long rackSlot);
         }
+
         /** The stage of the BareMetalMachine definition allowing to specify serialNumber. */
         interface WithSerialNumber {
             /**
@@ -475,6 +497,7 @@ public interface BareMetalMachine {
              */
             WithCreate withSerialNumber(String serialNumber);
         }
+
         /**
          * The stage of the BareMetalMachine definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
@@ -495,6 +518,7 @@ public interface BareMetalMachine {
              */
             BareMetalMachine create(Context context);
         }
+
         /** The stage of the BareMetalMachine definition allowing to specify tags. */
         interface WithTags {
             /**
@@ -506,6 +530,7 @@ public interface BareMetalMachine {
             WithCreate withTags(Map<String, String> tags);
         }
     }
+
     /**
      * Begins update for the BareMetalMachine resource.
      *
@@ -530,6 +555,7 @@ public interface BareMetalMachine {
          */
         BareMetalMachine apply(Context context);
     }
+
     /** The BareMetalMachine update stages. */
     interface UpdateStages {
         /** The stage of the BareMetalMachine update allowing to specify tags. */
@@ -542,6 +568,7 @@ public interface BareMetalMachine {
              */
             Update withTags(Map<String, String> tags);
         }
+
         /** The stage of the BareMetalMachine update allowing to specify machineDetails. */
         interface WithMachineDetails {
             /**
@@ -555,6 +582,7 @@ public interface BareMetalMachine {
             Update withMachineDetails(String machineDetails);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *
@@ -577,8 +605,9 @@ public interface BareMetalMachine {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
-    void cordon();
+    OperationStatusResult cordon();
 
     /**
      * Cordon the bare metal machine.
@@ -590,8 +619,9 @@ public interface BareMetalMachine {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
-    void cordon(BareMetalMachineCordonParameters bareMetalMachineCordonParameters, Context context);
+    OperationStatusResult cordon(BareMetalMachineCordonParameters bareMetalMachineCordonParameters, Context context);
 
     /**
      * Power off the bare metal machine.
@@ -600,8 +630,9 @@ public interface BareMetalMachine {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
-    void powerOff();
+    OperationStatusResult powerOff();
 
     /**
      * Power off the bare metal machine.
@@ -613,8 +644,10 @@ public interface BareMetalMachine {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
-    void powerOff(BareMetalMachinePowerOffParameters bareMetalMachinePowerOffParameters, Context context);
+    OperationStatusResult powerOff(
+        BareMetalMachinePowerOffParameters bareMetalMachinePowerOffParameters, Context context);
 
     /**
      * Reimage the bare metal machine.
@@ -623,8 +656,9 @@ public interface BareMetalMachine {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
-    void reimage();
+    OperationStatusResult reimage();
 
     /**
      * Reimage the bare metal machine.
@@ -635,8 +669,9 @@ public interface BareMetalMachine {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
-    void reimage(Context context);
+    OperationStatusResult reimage(Context context);
 
     /**
      * Replace (service) the bare metal machine.
@@ -645,8 +680,9 @@ public interface BareMetalMachine {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
-    void replace();
+    OperationStatusResult replace();
 
     /**
      * Replace (service) the bare metal machine.
@@ -658,8 +694,9 @@ public interface BareMetalMachine {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
-    void replace(BareMetalMachineReplaceParameters bareMetalMachineReplaceParameters, Context context);
+    OperationStatusResult replace(BareMetalMachineReplaceParameters bareMetalMachineReplaceParameters, Context context);
 
     /**
      * Restart the bare metal machine.
@@ -668,8 +705,9 @@ public interface BareMetalMachine {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
-    void restart();
+    OperationStatusResult restart();
 
     /**
      * Restart the bare metal machine.
@@ -680,8 +718,9 @@ public interface BareMetalMachine {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
-    void restart(Context context);
+    OperationStatusResult restart(Context context);
 
     /**
      * Run the command on the bare metal machine.
@@ -693,8 +732,9 @@ public interface BareMetalMachine {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
-    void runCommand(BareMetalMachineRunCommandParameters bareMetalMachineRunCommandParameters);
+    OperationStatusResult runCommand(BareMetalMachineRunCommandParameters bareMetalMachineRunCommandParameters);
 
     /**
      * Run the command on the bare metal machine.
@@ -707,8 +747,10 @@ public interface BareMetalMachine {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
-    void runCommand(BareMetalMachineRunCommandParameters bareMetalMachineRunCommandParameters, Context context);
+    OperationStatusResult runCommand(
+        BareMetalMachineRunCommandParameters bareMetalMachineRunCommandParameters, Context context);
 
     /**
      * Run data extraction for a bare metal machine.
@@ -721,8 +763,10 @@ public interface BareMetalMachine {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
-    void runDataExtracts(BareMetalMachineRunDataExtractsParameters bareMetalMachineRunDataExtractsParameters);
+    OperationStatusResult runDataExtracts(
+        BareMetalMachineRunDataExtractsParameters bareMetalMachineRunDataExtractsParameters);
 
     /**
      * Run data extraction for a bare metal machine.
@@ -736,8 +780,9 @@ public interface BareMetalMachine {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
-    void runDataExtracts(
+    OperationStatusResult runDataExtracts(
         BareMetalMachineRunDataExtractsParameters bareMetalMachineRunDataExtractsParameters, Context context);
 
     /**
@@ -751,8 +796,10 @@ public interface BareMetalMachine {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
-    void runReadCommands(BareMetalMachineRunReadCommandsParameters bareMetalMachineRunReadCommandsParameters);
+    OperationStatusResult runReadCommands(
+        BareMetalMachineRunReadCommandsParameters bareMetalMachineRunReadCommandsParameters);
 
     /**
      * Run read-only commands against a bare metal machine.
@@ -766,8 +813,9 @@ public interface BareMetalMachine {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
-    void runReadCommands(
+    OperationStatusResult runReadCommands(
         BareMetalMachineRunReadCommandsParameters bareMetalMachineRunReadCommandsParameters, Context context);
 
     /**
@@ -777,8 +825,9 @@ public interface BareMetalMachine {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
-    void start();
+    OperationStatusResult start();
 
     /**
      * Start the bare metal machine.
@@ -789,8 +838,9 @@ public interface BareMetalMachine {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
-    void start(Context context);
+    OperationStatusResult start(Context context);
 
     /**
      * Uncordon the bare metal machine.
@@ -799,8 +849,9 @@ public interface BareMetalMachine {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
-    void uncordon();
+    OperationStatusResult uncordon();
 
     /**
      * Uncordon the bare metal machine.
@@ -811,32 +862,7 @@ public interface BareMetalMachine {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
-    void uncordon(Context context);
-
-    /**
-     * Trigger hardware validation of the bare metal machine.
-     *
-     * <p>Validate the hardware of the provided bare metal machine.
-     *
-     * @param bareMetalMachineValidateHardwareParameters The request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void validateHardware(BareMetalMachineValidateHardwareParameters bareMetalMachineValidateHardwareParameters);
-
-    /**
-     * Trigger hardware validation of the bare metal machine.
-     *
-     * <p>Validate the hardware of the provided bare metal machine.
-     *
-     * @param bareMetalMachineValidateHardwareParameters The request body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void validateHardware(
-        BareMetalMachineValidateHardwareParameters bareMetalMachineValidateHardwareParameters, Context context);
+    OperationStatusResult uncordon(Context context);
 }

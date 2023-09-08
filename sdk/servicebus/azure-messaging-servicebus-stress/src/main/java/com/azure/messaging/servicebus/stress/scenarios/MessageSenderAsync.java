@@ -3,66 +3,85 @@
 
 package com.azure.messaging.servicebus.stress.scenarios;
 
-import com.azure.messaging.servicebus.ServiceBusClientBuilder;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.ServiceBusMessage;
 import com.azure.messaging.servicebus.ServiceBusSenderAsyncClient;
-import com.azure.messaging.servicebus.stress.util.EntityType;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
-import java.util.stream.IntStream;
+import java.util.concurrent.atomic.AtomicLong;
+
+import static com.azure.messaging.servicebus.stress.scenarios.TestUtils.blockingWait;
+import static com.azure.messaging.servicebus.stress.scenarios.TestUtils.createBatch;
+import static com.azure.messaging.servicebus.stress.scenarios.TestUtils.createMessagePayload;
 
 /**
  * Test ServiceBusSenderAsyncClient
  */
 @Component("MessageSenderAsync")
 public class MessageSenderAsync extends ServiceBusScenario {
+    private static final ClientLogger LOGGER = new ClientLogger(MessageSenderAsync.class);
+    @Value("${DURATION_IN_MINUTES:15}")
+    private int durationInMinutes;
 
-    private static final Random RANDOM = new Random();
+    @Value("${SEND_MESSAGE_RATE:100}")
+    private int sendMessageRatePerSecond;
 
-    @Value("${SEND_TIMES:100000}")
-    private int sendTimes;
+    @Value("${BATCH_SIZE:2}")
+    private int batchSize;
 
-    @Value("${SEND_MESSAGES:10}")
-    private int messagesToSend;
+    @Value("${MESSAGE_SIZE_IN_BYTES:128}")
+    private int messageSize;
 
-    @Value("${PAYLOAD_SIZE_IN_BYTE:8}")
-    private int payloadSize;
+    @Value("${SEND_CONCURRENCY:5}")
+    private int sendConcurrency;
 
+    private final AtomicLong counter = new AtomicLong();
     @Override
     public void run() {
-        final String connectionString = options.getServicebusConnectionString();
-        final EntityType entityType = options.getServicebusEntityType();
-        String queueName = null;
-        String topicName = null;
-        if (entityType == EntityType.QUEUE) {
-            queueName = options.getServicebusQueueName();
-        } else if (entityType == EntityType.TOPIC) {
-            topicName = options.getServicebusTopicName();
+        final byte[] messagePayload = createMessagePayload(messageSize);
+        Duration testDuration = Duration.ofMinutes(durationInMinutes);
+
+        // workaround non-retryable send
+        List<ServiceBusSenderAsyncClient> clients = new ArrayList<>();
+        for (int i = 0; i < sendConcurrency; i++) {
+            clients.add(TestUtils.getSenderBuilder(options, false).buildAsyncClient());
         }
 
-        ServiceBusSenderAsyncClient client = new ServiceBusClientBuilder()
-            .connectionString(connectionString)
-            .sender()
-            .queueName(queueName)
-            .topicName(topicName)
-            .buildAsyncClient();
+        int batchRatePerSec = sendMessageRatePerSecond / batchSize;
+        RateLimiter rateLimiter = new RateLimiter(batchRatePerSec, sendConcurrency);
+        Flux<List<ServiceBusMessage>> batches = Mono.fromSupplier(() -> createBatch(messagePayload, batchSize))
+            .repeat();
 
-        final byte[] payload = new byte[payloadSize];
-        RANDOM.nextBytes(payload);
+        batches
+            .take(testDuration)
+            .flatMap(batch ->
+                rateLimiter.acquire()
+                    .then(getClient(clients).sendMessages(batch)
+                        .onErrorResume(t -> true, t -> {
+                            LOGGER.error("error when sending", t);
+                            return Mono.empty();
+                        })
+                        .doFinally(i -> rateLimiter.release()))
+            )
+            .parallel(sendConcurrency, sendConcurrency)
+            .runOn(Schedulers.boundedElastic())
+            .subscribe();
 
-        Flux.range(0, sendTimes).concatMap(i -> {
-            List<ServiceBusMessage> eventDataList = new ArrayList<>();
-            IntStream.range(0, messagesToSend).forEach(j -> {
-                eventDataList.add(new ServiceBusMessage(payload));
-            });
-            return client.sendMessages(eventDataList);
-        }).blockLast();
+        blockingWait(testDuration.plusSeconds(30));
+        LOGGER.info("done");
+        clients.forEach(c -> c.close());
+        rateLimiter.close();
+    }
 
-        client.close();
+    private ServiceBusSenderAsyncClient getClient(List<ServiceBusSenderAsyncClient> clients) {
+        int index = (int) counter.getAndIncrement() % clients.size();
+        return clients.get(index);
     }
 }

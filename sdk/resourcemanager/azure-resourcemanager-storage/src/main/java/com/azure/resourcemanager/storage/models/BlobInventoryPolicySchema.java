@@ -37,6 +37,10 @@ public final class BlobInventoryPolicySchema {
     @JsonProperty(value = "rules", required = true)
     private List<BlobInventoryPolicyRule> rules;
 
+    /** Creates an instance of BlobInventoryPolicySchema class. */
+    public BlobInventoryPolicySchema() {
+    }
+
     /**
      * Get the enabled property: Policy is enabled if set to true.
      *

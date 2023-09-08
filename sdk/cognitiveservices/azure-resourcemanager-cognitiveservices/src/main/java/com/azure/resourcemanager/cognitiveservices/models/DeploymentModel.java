@@ -23,10 +23,18 @@ public class DeploymentModel {
     private String name;
 
     /*
-     * Deployment model version.
+     * Optional. Deployment model version. If version is not specified, a default version will be assigned. The default
+     * version is different for different models and might change when there is new version available for a model.
+     * Default version for a model could be found from list models API.
      */
     @JsonProperty(value = "version")
     private String version;
+
+    /*
+     * Optional. Deployment model source ARM resource ID.
+     */
+    @JsonProperty(value = "source")
+    private String source;
 
     /*
      * The call rate limit Cognitive Services account.
@@ -79,7 +87,9 @@ public class DeploymentModel {
     }
 
     /**
-     * Get the version property: Deployment model version.
+     * Get the version property: Optional. Deployment model version. If version is not specified, a default version will
+     * be assigned. The default version is different for different models and might change when there is new version
+     * available for a model. Default version for a model could be found from list models API.
      *
      * @return the version value.
      */
@@ -88,13 +98,35 @@ public class DeploymentModel {
     }
 
     /**
-     * Set the version property: Deployment model version.
+     * Set the version property: Optional. Deployment model version. If version is not specified, a default version will
+     * be assigned. The default version is different for different models and might change when there is new version
+     * available for a model. Default version for a model could be found from list models API.
      *
      * @param version the version value to set.
      * @return the DeploymentModel object itself.
      */
     public DeploymentModel withVersion(String version) {
         this.version = version;
+        return this;
+    }
+
+    /**
+     * Get the source property: Optional. Deployment model source ARM resource ID.
+     *
+     * @return the source value.
+     */
+    public String source() {
+        return this.source;
+    }
+
+    /**
+     * Set the source property: Optional. Deployment model source ARM resource ID.
+     *
+     * @param source the source value to set.
+     * @return the DeploymentModel object itself.
+     */
+    public DeploymentModel withSource(String source) {
+        this.source = source;
         return this;
     }
 

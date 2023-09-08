@@ -302,6 +302,40 @@ public final class WorkspaceInner extends Resource {
     }
 
     /**
+     * Get the managedDiskIdentity property: The details of Managed Identity of Disk Encryption Set used for Managed
+     * Disk Encryption.
+     *
+     * @return the managedDiskIdentity value.
+     */
+    public ManagedIdentityConfiguration managedDiskIdentity() {
+        return this.innerProperties() == null ? null : this.innerProperties().managedDiskIdentity();
+    }
+
+    /**
+     * Set the managedDiskIdentity property: The details of Managed Identity of Disk Encryption Set used for Managed
+     * Disk Encryption.
+     *
+     * @param managedDiskIdentity the managedDiskIdentity value to set.
+     * @return the WorkspaceInner object itself.
+     */
+    public WorkspaceInner withManagedDiskIdentity(ManagedIdentityConfiguration managedDiskIdentity) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WorkspaceProperties();
+        }
+        this.innerProperties().withManagedDiskIdentity(managedDiskIdentity);
+        return this;
+    }
+
+    /**
+     * Get the diskEncryptionSetId property: The resource Id of the managed disk encryption set.
+     *
+     * @return the diskEncryptionSetId value.
+     */
+    public String diskEncryptionSetId() {
+        return this.innerProperties() == null ? null : this.innerProperties().diskEncryptionSetId();
+    }
+
+    /**
      * Get the encryption property: Encryption properties for databricks workspace.
      *
      * @return the encryption value.

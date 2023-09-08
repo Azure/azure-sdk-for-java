@@ -6,7 +6,7 @@ package com.azure.ai.formrecognizer.documentanalysis.administration.models;
 import com.azure.core.annotation.Fluent;
 
 /**
- * Options that may be passed to build document classifier models.
+ * The configurable options to pass when building document classifier models.
  */
 @Fluent
 public final class BuildDocumentClassifierOptions {

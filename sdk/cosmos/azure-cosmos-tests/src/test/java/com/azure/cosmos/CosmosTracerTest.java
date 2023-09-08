@@ -1329,6 +1329,10 @@ public class CosmosTracerTest extends TestSuiteBase {
                 currentSpan.getContext()
             );
 
+            assertThat(cosmosDiagnostics.getUserAgent()).isEqualTo(ctx.getUserAgent());
+            assertThat(ctx.getSystemUsage()).isNotNull();
+            assertThat(ctx.getConnectionMode()).isEqualTo(client.getConnectionPolicy().getConnectionMode().toString());
+
             Collection<TracerUnderTest.EventRecord> events  = currentSpan.getEvents();
             if (ctx.isCompleted() && (ctx.isFailure() || ctx.isThresholdViolated())) {
                 if (ctx.isFailure()) {
@@ -1392,7 +1396,7 @@ public class CosmosTracerTest extends TestSuiteBase {
                             if (s.getResponseStatisticsList() == null) {
                                 continue;
                             }
-                            assertStoreResponseStatistics(mockTracer, s.getResponseStatisticsList());
+                            assertStoreResponseStatistics(ctx, mockTracer, s.getResponseStatisticsList());
                         }
                     }
 
@@ -1402,6 +1406,7 @@ public class CosmosTracerTest extends TestSuiteBase {
     }
 
     private void assertStoreResponseStatistics(
+        CosmosDiagnosticsContext ctx,
         TracerUnderTest mockTracer,
         List<ClientSideRequestStatistics.StoreResponseStatistics> storeResponseStatistics) {
 
@@ -1435,7 +1440,7 @@ public class CosmosTracerTest extends TestSuiteBase {
             }
 
             String activityId = storeResponseDiagnostics.getActivityId();
-            if (requestSessionToken != null && !requestSessionToken.isEmpty()) {
+            if (activityId != null && !activityId.isEmpty()) {
                 attributes.put("rntbd.activity_id", activityId);
             }
 
@@ -1469,9 +1474,9 @@ public class CosmosTracerTest extends TestSuiteBase {
             }
 
             Instant startTime = null;
+            int eventCount = 0;
             for (RequestTimeline.Event event : storeResponseDiagnostics.getRequestTimeline()) {
-                Instant eventTime = event.getStartTime() != null ?
-                    event.getStartTime() : null;
+                Instant eventTime = event.getStartTime();
 
                 if (eventTime != null &&
                     (startTime == null || startTime.isBefore(eventTime))) {
@@ -1484,11 +1489,53 @@ public class CosmosTracerTest extends TestSuiteBase {
                 }
 
                 attributes.put("rntbd.latency_" + event.getName().toLowerCase(Locale.ROOT), duration.toString());
+                if (event.getStartTime() != null) {
+                    eventCount++;
+                }
             }
 
             attributes.put("rntbd.request_size_bytes",storeResponseDiagnostics.getRequestPayloadLength());
             attributes.put("rntbd.response_size_bytes",storeResponseDiagnostics.getResponsePayloadLength());
 
+            Collection<CosmosDiagnosticsRequestInfo> requestInfo = ctx.getRequestInfo();
+            assertThat(requestInfo).isNotNull();
+            final int expectedEventCount = eventCount;
+            assertThat(requestInfo).anyMatch(info -> {
+                    assertThat(info.getStartTime()).isNotNull();
+
+                    if (activityId != null && !activityId.isEmpty() && !info.getActivityId().equals(activityId)) {
+                        logger.info("ActivityId mismatch {} - {}", activityId, info.getActivityId());
+
+                        return false;
+                    }
+
+                    if (latency != null && !latency.equals(info.getDuration())) {
+                        logger.info("Duration mismatch {} - {}", latency, info.getDuration());
+
+                        return false;
+                    }
+
+
+                    if (backendLatency != null && info.getBackendLatency().minusNanos((long)(backendLatency * 1000000d)).abs().compareTo(Duration.ofMillis(1)) > 1) {
+                        logger.info("Backend duration mismatch {} - {}", backendLatency, info.getBackendLatency());
+
+                        return false;
+                    }
+
+                    if (pkRangeId != null && !pkRangeId.isEmpty() && !pkRangeId.equals(info.getPartitionKeyRangeId())) {
+                        logger.info("PKRangeId mismatch {} - {}", pkRangeId, info.getPartitionKeyRangeId());
+
+                        return false;
+                    }
+
+                    if (expectedEventCount != info.getRequestPipelineEvents().size()) {
+                        logger.info("Event count mismatch {} - {}", expectedEventCount, info.getRequestPipelineEvents().size());
+
+                        return false;
+                    }
+
+                    return true;
+                });
             assertEvent(mockTracer, "rntbd.request", startTime, attributes);
         }
     }
@@ -1721,12 +1768,12 @@ public class CosmosTracerTest extends TestSuiteBase {
                             eventName,
                             clientSideStatistics.getRequestStartTimeUTC());
                     }
-                } else if (clientSideStatistics.getGatewayStatistics() != null) {
-                    String pkRangeId = clientSideStatistics.getGatewayStatistics().getPartitionKeyRangeId();
+                } else if (clientSideStatistics.getGatewayStatisticsList() != null && clientSideStatistics.getGatewayStatisticsList().size() > 0) {
+                    String pkRangeId = clientSideStatistics.getGatewayStatisticsList().get(0).getPartitionKeyRangeId();
 
                     if (pkRangeId != null) {
                         String eventName = "Diagnostics for PKRange "
-                            + clientSideStatistics.getGatewayStatistics().getPartitionKeyRangeId();
+                            + clientSideStatistics.getGatewayStatisticsList().get(0).getPartitionKeyRangeId();
                         assertEvent(
                             mockTracer,
                             eventName,

@@ -4,13 +4,12 @@
 
 package com.azure.resourcemanager.redis.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.redis.models.CheckNameAvailabilityParameters;
 
 /** Samples for Redis CheckNameAvailability. */
 public final class RedisCheckNameAvailabilitySamples {
     /*
-     * x-ms-original-file: specification/redis/resource-manager/Microsoft.Cache/stable/2022-06-01/examples/RedisCacheCheckNameAvailability.json
+     * x-ms-original-file: specification/redis/resource-manager/Microsoft.Cache/stable/2023-04-01/examples/RedisCacheCheckNameAvailability.json
      */
     /**
      * Sample code: RedisCacheCheckNameAvailability.
@@ -25,6 +24,6 @@ public final class RedisCheckNameAvailabilitySamples {
             .getRedis()
             .checkNameAvailabilityWithResponse(
                 new CheckNameAvailabilityParameters().withName("cacheName").withType("Microsoft.Cache/Redis"),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

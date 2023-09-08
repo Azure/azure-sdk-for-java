@@ -50,8 +50,8 @@ public class KubernetesClusterNetworkProfileImpl
     }
 
     @Override
+    @Deprecated
     public KubernetesClusterNetworkProfileImpl withDockerBridgeCidr(String dockerBridgeCidr) {
-        ensureNetworkProfile().withDockerBridgeCidr(dockerBridgeCidr);
         return this;
     }
 

@@ -7,7 +7,7 @@ package com.azure.resourcemanager.cognitiveservices.generated;
 /** Samples for Accounts ListModels. */
 public final class AccountsListModelsSamples {
     /*
-     * x-ms-original-file: specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2022-12-01/examples/ListAccountModels.json
+     * x-ms-original-file: specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2023-05-01/examples/ListAccountModels.json
      */
     /**
      * Sample code: List AccountModels.

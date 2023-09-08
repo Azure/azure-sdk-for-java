@@ -7,60 +7,44 @@ import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.communication.common.implementation.CommunicationConnectionString;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.AzureKeyCredential;
-import com.azure.core.credential.TokenCredential;
-import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpResponse;
-import com.azure.core.test.TestBase;
-import com.azure.core.test.TestMode;
+import com.azure.core.test.InterceptorManager;
+import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.http.AssertingHttpClientBuilder;
-import com.azure.core.test.models.NetworkCallRecord;
+import com.azure.core.test.models.CustomMatcher;
+import com.azure.core.test.models.TestProxySanitizer;
+import com.azure.core.test.models.TestProxySanitizerType;
+import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.Configuration;
-import com.azure.core.util.CoreUtils;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import org.junit.jupiter.api.BeforeEach;
 import reactor.core.publisher.Mono;
 
-import java.time.OffsetDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
-import java.util.StringJoiner;
-import java.util.function.Function;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-public class CommunicationIdentityClientTestBase extends TestBase {
+public class CommunicationIdentityClientTestBase extends TestProxyTestBase {
 
     private static final String REDACTED = "REDACTED";
     private static final String URI_IDENTITY_REPLACER_REGEX = "/identities/([^/?]+)";
     protected static final String CONNECTION_STRING = Configuration.getGlobalConfiguration()
             .get("COMMUNICATION_LIVETEST_DYNAMIC_CONNECTION_STRING", "endpoint=https://REDACTED.communication.azure.com/;accesskey=QWNjZXNzS2V5");
 
-    private static final StringJoiner JSON_PROPERTIES_TO_REDACT
-            = new StringJoiner("\":\"|\"", "\"", "\":\"")
-            .add("token")
-            .add("id");
-
-    private static final Pattern JSON_PROPERTY_VALUE_REDACTION_PATTERN
-            = Pattern.compile(String.format("(?:%s)(.*?)(?:\",|\"})", JSON_PROPERTIES_TO_REDACT.toString()),
-            Pattern.CASE_INSENSITIVE);
-
     protected HttpClient httpClient;
 
-    @BeforeEach
-    public void setup() {
-        getHttpClients().forEach(client -> {
-            this.httpClient = client;
-            return;
-        });
+    @Override
+    public void beforeTest() {
+        getHttpClients().forEach(client -> this.httpClient = client);
     }
 
     protected HttpClient buildSyncAssertingClient(HttpClient httpClient) {
-        HttpClient client = httpClient == null ? interceptorManager.getPlaybackClient() : httpClient;
+        HttpClient client = interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient;
         return new AssertingHttpClientBuilder(client)
             .skipRequest((ignored1, ignored2) -> false)
             .assertSync()
@@ -68,7 +52,7 @@ public class CommunicationIdentityClientTestBase extends TestBase {
     }
 
     protected HttpClient buildAsyncAssertingClient(HttpClient httpClient) {
-        HttpClient client = httpClient == null ? interceptorManager.getPlaybackClient() : httpClient;
+        HttpClient client = interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient;
         return new AssertingHttpClientBuilder(client)
             .skipRequest((ignored1, ignored2) -> false)
             .assertAsync()
@@ -82,16 +66,16 @@ public class CommunicationIdentityClientTestBase extends TestBase {
         String communicationEndpoint = communicationConnectionString.getEndpoint();
         String communicationAccessKey = communicationConnectionString.getAccessKey();
 
-        builder.endpoint(communicationEndpoint)
-                .credential(new AzureKeyCredential(communicationAccessKey))
-                .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient);
+        builder
+            .endpoint(communicationEndpoint)
+            .credential(new AzureKeyCredential(communicationAccessKey))
+            .httpClient(httpClient);
 
-        if (getTestMode() == TestMode.RECORD) {
-            List<Function<String, String>> redactors = new ArrayList<>();
-            redactors.add(data -> redact(data, JSON_PROPERTY_VALUE_REDACTION_PATTERN.matcher(data), REDACTED));
-            builder.addPolicy(interceptorManager.getRecordPolicy(redactors));
+        if (interceptorManager.isRecordMode()) {
+            builder.addPolicy(interceptorManager.getRecordPolicy());
         }
 
+        addTestProxyTestSanitizersAndMatchers(interceptorManager);
         return builder;
     }
 
@@ -102,21 +86,19 @@ public class CommunicationIdentityClientTestBase extends TestBase {
         String communicationEndpoint = communicationConnectionString.getEndpoint();
 
         builder
-                .endpoint(communicationEndpoint)
-                .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient);
+            .endpoint(communicationEndpoint)
+            .httpClient(httpClient);
 
-        if (getTestMode() == TestMode.PLAYBACK) {
-            builder.credential(new FakeCredentials());
+        if (interceptorManager.isPlaybackMode()) {
+            builder.credential(new MockTokenCredential());
         } else {
             builder.credential(new DefaultAzureCredentialBuilder().build());
+            if (interceptorManager.isRecordMode()) {
+                builder.addPolicy(interceptorManager.getRecordPolicy());
+            }
         }
 
-        if (getTestMode() == TestMode.RECORD) {
-            List<Function<String, String>> redactors = new ArrayList<>();
-            redactors.add(data -> redact(data, JSON_PROPERTY_VALUE_REDACTION_PATTERN.matcher(data), REDACTED));
-            builder.addPolicy(interceptorManager.getRecordPolicy(redactors));
-        }
-
+        addTestProxyTestSanitizersAndMatchers(interceptorManager);
         return builder;
     }
 
@@ -124,15 +106,34 @@ public class CommunicationIdentityClientTestBase extends TestBase {
         CommunicationIdentityClientBuilder builder = new CommunicationIdentityClientBuilder();
         builder
                 .connectionString(CONNECTION_STRING)
-                .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient);
+                .httpClient(httpClient);
 
-        if (getTestMode() == TestMode.RECORD) {
-            List<Function<String, String>> redactors = new ArrayList<>();
-            redactors.add(data -> redact(data, JSON_PROPERTY_VALUE_REDACTION_PATTERN.matcher(data), REDACTED));
-            builder.addPolicy(interceptorManager.getRecordPolicy(redactors));
+        if (interceptorManager.isRecordMode()) {
+            builder.addPolicy(interceptorManager.getRecordPolicy());
         }
 
+        addTestProxyTestSanitizersAndMatchers(interceptorManager);
         return builder;
+    }
+
+    private void addTestProxyTestSanitizersAndMatchers(InterceptorManager interceptorManager) {
+        if (interceptorManager.isLiveMode()) {
+            return;
+        }
+
+        List<TestProxySanitizer> customSanitizers = new ArrayList<>();
+        customSanitizers.add(new TestProxySanitizer("$..id", null, REDACTED, TestProxySanitizerType.BODY_KEY));
+        customSanitizers.add(new TestProxySanitizer("$..token", null, REDACTED, TestProxySanitizerType.BODY_KEY));
+        customSanitizers.add(new TestProxySanitizer("$..appId", null, REDACTED, TestProxySanitizerType.BODY_KEY));
+        customSanitizers.add(new TestProxySanitizer("$..userId", null, REDACTED, TestProxySanitizerType.BODY_KEY));
+        customSanitizers.add(new TestProxySanitizer(URI_IDENTITY_REPLACER_REGEX, "/identities/" + REDACTED, TestProxySanitizerType.URL));
+        interceptorManager.addSanitizers(customSanitizers);
+
+        if (interceptorManager.isPlaybackMode()) {
+            /** Skipping matching authentication headers since running in playback mode don't rely on environment variables */
+            interceptorManager.addMatchers(Collections.singletonList(
+                new CustomMatcher().setExcludedHeaders(Arrays.asList("x-ms-hmac-string-to-sign-base64", "x-ms-content-sha256"))));
+        }
     }
 
     protected CommunicationIdentityClient setupClient(CommunicationIdentityClientBuilder builder, String testName) {
@@ -157,57 +158,6 @@ public class CommunicationIdentityClientTestBase extends TestBase {
                             + bufferedResponse.getRequest().getUrl() + ": " + bufferedResponse.getHeaderValue("MS-CV"));
                     return Mono.just(bufferedResponse);
                 });
-    }
-
-    static class FakeCredentials implements TokenCredential {
-        @Override
-        public Mono<AccessToken> getToken(TokenRequestContext tokenRequestContext) {
-            return Mono.just(new AccessToken("someFakeToken", OffsetDateTime.MAX));
-        }
-    }
-
-    private String redact(String content, Matcher matcher, String replacement) {
-        while (matcher.find()) {
-            String captureGroup = matcher.group(1);
-            if (!CoreUtils.isNullOrEmpty(captureGroup)) {
-                content = content.replace(matcher.group(1), replacement);
-            }
-        }
-
-        return content;
-    }
-
-    @Override
-    protected void afterTest() {
-        super.afterTest();
-        if (getTestMode() == TestMode.RECORD) {
-            List<NetworkCallRecord> networkCallRecords = collectNetworkCallsWithIdentityUri();
-            sanitizeIdentityInUri(networkCallRecords);
-        }
-    }
-
-    private List<NetworkCallRecord> collectNetworkCallsWithIdentityUri() {
-        List<NetworkCallRecord> networkCallRecords = new ArrayList<>();
-        NetworkCallRecord networkCallRecord = interceptorManager.getRecordedData().findFirstAndRemoveNetworkCall(record -> {
-            return Pattern.compile(URI_IDENTITY_REPLACER_REGEX).matcher(record.getUri()).find();
-        });
-        do {
-            if (networkCallRecord != null) {
-                networkCallRecords.add(networkCallRecord);
-            }
-            networkCallRecord = interceptorManager.getRecordedData().findFirstAndRemoveNetworkCall(record -> {
-                return Pattern.compile(URI_IDENTITY_REPLACER_REGEX).matcher(record.getUri()).find();
-            });
-        } while (networkCallRecord != null);
-        return networkCallRecords;
-    }
-
-    private void sanitizeIdentityInUri(List<NetworkCallRecord> networkCallRecords) {
-        for (NetworkCallRecord networkCallRecord: networkCallRecords) {
-            String sanitizedUri = networkCallRecord.getUri().replaceAll(URI_IDENTITY_REPLACER_REGEX, "/identities/" + REDACTED);
-            networkCallRecord.setUri(sanitizedUri);
-            interceptorManager.getRecordedData().addNetworkCall(networkCallRecord);
-        }
     }
 
     protected void verifyTokenNotEmpty(AccessToken issuedToken) {

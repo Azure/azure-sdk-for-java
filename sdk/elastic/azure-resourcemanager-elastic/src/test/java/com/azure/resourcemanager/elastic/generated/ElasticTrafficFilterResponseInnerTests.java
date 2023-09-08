@@ -17,14 +17,14 @@ public final class ElasticTrafficFilterResponseInnerTests {
         ElasticTrafficFilterResponseInner model =
             BinaryData
                 .fromString(
-                    "{\"rulesets\":[{\"id\":\"ddntwndei\",\"name\":\"twnpzaoqvuhrhcf\",\"description\":\"yd\",\"region\":\"lmjthjq\",\"type\":\"ip\",\"includeByDefault\":true,\"rules\":[]},{\"id\":\"mqc\",\"name\":\"q\",\"description\":\"khixuigdtopbo\",\"region\":\"og\",\"type\":\"ip\",\"includeByDefault\":false,\"rules\":[]},{\"id\":\"uhrzayvvt\",\"name\":\"vdfgiotk\",\"description\":\"utqxlngx\",\"region\":\"fgugnxkrxdqmid\",\"type\":\"ip\",\"includeByDefault\":false,\"rules\":[]},{\"id\":\"rabhjybigeho\",\"name\":\"bowsk\",\"description\":\"yktz\",\"region\":\"u\",\"type\":\"ip\",\"includeByDefault\":false,\"rules\":[]}]}")
+                    "{\"rulesets\":[{\"id\":\"pyeicxm\",\"name\":\"iwqvhkh\",\"description\":\"uigdtopbobjog\",\"region\":\"e\",\"type\":\"ip\",\"includeByDefault\":false,\"rules\":[]}]}")
                 .toObject(ElasticTrafficFilterResponseInner.class);
-        Assertions.assertEquals("ddntwndei", model.rulesets().get(0).id());
-        Assertions.assertEquals("twnpzaoqvuhrhcf", model.rulesets().get(0).name());
-        Assertions.assertEquals("yd", model.rulesets().get(0).description());
-        Assertions.assertEquals("lmjthjq", model.rulesets().get(0).region());
+        Assertions.assertEquals("pyeicxm", model.rulesets().get(0).id());
+        Assertions.assertEquals("iwqvhkh", model.rulesets().get(0).name());
+        Assertions.assertEquals("uigdtopbobjog", model.rulesets().get(0).description());
+        Assertions.assertEquals("e", model.rulesets().get(0).region());
         Assertions.assertEquals(Type.IP, model.rulesets().get(0).type());
-        Assertions.assertEquals(true, model.rulesets().get(0).includeByDefault());
+        Assertions.assertEquals(false, model.rulesets().get(0).includeByDefault());
     }
 
     @org.junit.jupiter.api.Test
@@ -35,43 +35,19 @@ public final class ElasticTrafficFilterResponseInnerTests {
                     Arrays
                         .asList(
                             new ElasticTrafficFilter()
-                                .withId("ddntwndei")
-                                .withName("twnpzaoqvuhrhcf")
-                                .withDescription("yd")
-                                .withRegion("lmjthjq")
-                                .withType(Type.IP)
-                                .withIncludeByDefault(true)
-                                .withRules(Arrays.asList()),
-                            new ElasticTrafficFilter()
-                                .withId("mqc")
-                                .withName("q")
-                                .withDescription("khixuigdtopbo")
-                                .withRegion("og")
-                                .withType(Type.IP)
-                                .withIncludeByDefault(false)
-                                .withRules(Arrays.asList()),
-                            new ElasticTrafficFilter()
-                                .withId("uhrzayvvt")
-                                .withName("vdfgiotk")
-                                .withDescription("utqxlngx")
-                                .withRegion("fgugnxkrxdqmid")
-                                .withType(Type.IP)
-                                .withIncludeByDefault(false)
-                                .withRules(Arrays.asList()),
-                            new ElasticTrafficFilter()
-                                .withId("rabhjybigeho")
-                                .withName("bowsk")
-                                .withDescription("yktz")
-                                .withRegion("u")
+                                .withId("pyeicxm")
+                                .withName("iwqvhkh")
+                                .withDescription("uigdtopbobjog")
+                                .withRegion("e")
                                 .withType(Type.IP)
                                 .withIncludeByDefault(false)
                                 .withRules(Arrays.asList())));
         model = BinaryData.fromObject(model).toObject(ElasticTrafficFilterResponseInner.class);
-        Assertions.assertEquals("ddntwndei", model.rulesets().get(0).id());
-        Assertions.assertEquals("twnpzaoqvuhrhcf", model.rulesets().get(0).name());
-        Assertions.assertEquals("yd", model.rulesets().get(0).description());
-        Assertions.assertEquals("lmjthjq", model.rulesets().get(0).region());
+        Assertions.assertEquals("pyeicxm", model.rulesets().get(0).id());
+        Assertions.assertEquals("iwqvhkh", model.rulesets().get(0).name());
+        Assertions.assertEquals("uigdtopbobjog", model.rulesets().get(0).description());
+        Assertions.assertEquals("e", model.rulesets().get(0).region());
         Assertions.assertEquals(Type.IP, model.rulesets().get(0).type());
-        Assertions.assertEquals(true, model.rulesets().get(0).includeByDefault());
+        Assertions.assertEquals(false, model.rulesets().get(0).includeByDefault());
     }
 }

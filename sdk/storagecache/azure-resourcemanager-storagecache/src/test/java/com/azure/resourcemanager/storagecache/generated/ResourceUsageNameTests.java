@@ -13,17 +13,17 @@ public final class ResourceUsageNameTests {
     public void testDeserialize() throws Exception {
         ResourceUsageName model =
             BinaryData
-                .fromString("{\"value\":\"zevgb\",\"localizedValue\":\"jqabcypmivkwlzuv\"}")
+                .fromString("{\"value\":\"nehmpvecx\",\"localizedValue\":\"debfqkkrbmpukgri\"}")
                 .toObject(ResourceUsageName.class);
-        Assertions.assertEquals("zevgb", model.value());
-        Assertions.assertEquals("jqabcypmivkwlzuv", model.localizedValue());
+        Assertions.assertEquals("nehmpvecx", model.value());
+        Assertions.assertEquals("debfqkkrbmpukgri", model.localizedValue());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ResourceUsageName model = new ResourceUsageName().withValue("zevgb").withLocalizedValue("jqabcypmivkwlzuv");
+        ResourceUsageName model = new ResourceUsageName().withValue("nehmpvecx").withLocalizedValue("debfqkkrbmpukgri");
         model = BinaryData.fromObject(model).toObject(ResourceUsageName.class);
-        Assertions.assertEquals("zevgb", model.value());
-        Assertions.assertEquals("jqabcypmivkwlzuv", model.localizedValue());
+        Assertions.assertEquals("nehmpvecx", model.value());
+        Assertions.assertEquals("debfqkkrbmpukgri", model.localizedValue());
     }
 }

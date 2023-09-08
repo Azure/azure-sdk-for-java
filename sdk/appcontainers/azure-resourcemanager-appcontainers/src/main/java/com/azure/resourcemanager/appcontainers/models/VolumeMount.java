@@ -22,6 +22,12 @@ public final class VolumeMount {
     @JsonProperty(value = "mountPath")
     private String mountPath;
 
+    /*
+     * Path within the volume from which the container's volume should be mounted. Defaults to "" (volume's root).
+     */
+    @JsonProperty(value = "subPath")
+    private String subPath;
+
     /** Creates an instance of VolumeMount class. */
     public VolumeMount() {
     }
@@ -63,6 +69,28 @@ public final class VolumeMount {
      */
     public VolumeMount withMountPath(String mountPath) {
         this.mountPath = mountPath;
+        return this;
+    }
+
+    /**
+     * Get the subPath property: Path within the volume from which the container's volume should be mounted. Defaults to
+     * "" (volume's root).
+     *
+     * @return the subPath value.
+     */
+    public String subPath() {
+        return this.subPath;
+    }
+
+    /**
+     * Set the subPath property: Path within the volume from which the container's volume should be mounted. Defaults to
+     * "" (volume's root).
+     *
+     * @param subPath the subPath value to set.
+     * @return the VolumeMount object itself.
+     */
+    public VolumeMount withSubPath(String subPath) {
+        this.subPath = subPath;
         return this;
     }
 

@@ -16,28 +16,22 @@ public final class ConfigurationListResultTests {
         ConfigurationListResult model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"properties\":{\"value\":\"cocpecfvmmcoofsx\",\"description\":\"evgbmqjq\",\"defaultValue\":\"c\",\"dataType\":\"Integer\",\"allowedValues\":\"vkwlzuvccfwnf\",\"source\":\"acfi\",\"isDynamicConfig\":false,\"isReadOnly\":true,\"isConfigPendingRestart\":true,\"unit\":\"qgtz\",\"documentationLink\":\"pnqbqqwxrjfe\"},\"id\":\"lnwsubisn\",\"name\":\"ampmngnz\",\"type\":\"c\"},{\"properties\":{\"value\":\"wooc\",\"description\":\"bonqvpkvlrxnjeas\",\"defaultValue\":\"pheoflokeyy\",\"dataType\":\"Boolean\",\"allowedValues\":\"bdlwtgrhpdjpj\",\"source\":\"asxazjpqyegualhb\",\"isDynamicConfig\":false,\"isReadOnly\":false,\"isConfigPendingRestart\":true,\"unit\":\"v\",\"documentationLink\":\"dgwdslfhot\"},\"id\":\"cynpwlbjnp\",\"name\":\"acfta\",\"type\":\"ehxnltyfsop\"},{\"properties\":{\"value\":\"uesnzwdejbavo\",\"description\":\"zdmohctbqvu\",\"defaultValue\":\"xdn\",\"dataType\":\"Boolean\",\"allowedValues\":\"w\",\"source\":\"jjugwdkcglhslaz\",\"isDynamicConfig\":true,\"isReadOnly\":true,\"isConfigPendingRestart\":true,\"unit\":\"ixhbkuofqweykhm\",\"documentationLink\":\"evfyexfwhybcib\"},\"id\":\"vdcsitynn\",\"name\":\"amdecte\",\"type\":\"f\"},{\"properties\":{\"value\":\"cj\",\"description\":\"pvhez\",\"defaultValue\":\"gqhcjrefovg\",\"dataType\":\"Boolean\",\"allowedValues\":\"leyyvx\",\"source\":\"jpkcattpng\",\"isDynamicConfig\":true,\"isReadOnly\":true,\"isConfigPendingRestart\":true,\"unit\":\"pjhvmdajvnys\",\"documentationLink\":\"nqecanoaeup\"},\"id\":\"yhltrpmopjmcm\",\"name\":\"tuo\",\"type\":\"thfuiuaodsfcpkvx\"}],\"nextLink\":\"puozmyzydag\"}")
+                    "{\"value\":[{\"properties\":{\"value\":\"bl\",\"description\":\"gpbtoqcjmklj\",\"defaultValue\":\"bqidtqaj\",\"dataType\":\"Integer\",\"allowedValues\":\"pku\",\"source\":\"krlkhbzhfepg\",\"isDynamicConfig\":false,\"isReadOnly\":true,\"isConfigPendingRestart\":false,\"unit\":\"c\",\"documentationLink\":\"c\"},\"id\":\"ierhhbcsglummaj\",\"name\":\"j\",\"type\":\"odxobnbdxkqpxok\"}],\"nextLink\":\"ionpimexg\"}")
                 .toObject(ConfigurationListResult.class);
-        Assertions.assertEquals("cocpecfvmmcoofsx", model.value().get(0).value());
-        Assertions.assertEquals("acfi", model.value().get(0).source());
-        Assertions.assertEquals("puozmyzydag", model.nextLink());
+        Assertions.assertEquals("bl", model.value().get(0).value());
+        Assertions.assertEquals("krlkhbzhfepg", model.value().get(0).source());
+        Assertions.assertEquals("ionpimexg", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ConfigurationListResult model =
             new ConfigurationListResult()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new ConfigurationInner().withValue("cocpecfvmmcoofsx").withSource("acfi"),
-                            new ConfigurationInner().withValue("wooc").withSource("asxazjpqyegualhb"),
-                            new ConfigurationInner().withValue("uesnzwdejbavo").withSource("jjugwdkcglhslaz"),
-                            new ConfigurationInner().withValue("cj").withSource("jpkcattpng")))
-                .withNextLink("puozmyzydag");
+                .withValue(Arrays.asList(new ConfigurationInner().withValue("bl").withSource("krlkhbzhfepg")))
+                .withNextLink("ionpimexg");
         model = BinaryData.fromObject(model).toObject(ConfigurationListResult.class);
-        Assertions.assertEquals("cocpecfvmmcoofsx", model.value().get(0).value());
-        Assertions.assertEquals("acfi", model.value().get(0).source());
-        Assertions.assertEquals("puozmyzydag", model.nextLink());
+        Assertions.assertEquals("bl", model.value().get(0).value());
+        Assertions.assertEquals("krlkhbzhfepg", model.value().get(0).source());
+        Assertions.assertEquals("ionpimexg", model.nextLink());
     }
 }

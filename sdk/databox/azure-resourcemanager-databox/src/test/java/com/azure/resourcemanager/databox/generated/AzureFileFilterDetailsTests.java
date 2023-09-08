@@ -15,23 +15,23 @@ public final class AzureFileFilterDetailsTests {
         AzureFileFilterDetails model =
             BinaryData
                 .fromString(
-                    "{\"filePrefixList\":[\"dudgwdslfhot\"],\"filePathList\":[\"ynpwlbj\",\"pgacftadehxnlty\",\"sop\"],\"fileShareList\":[\"uesnzwdejbavo\",\"xzdmohctb\"]}")
+                    "{\"filePrefixList\":[\"owgujjugwdkcglhs\"],\"filePathList\":[\"jdyggdtji\"],\"fileShareList\":[\"kuofqweykhme\"]}")
                 .toObject(AzureFileFilterDetails.class);
-        Assertions.assertEquals("dudgwdslfhot", model.filePrefixList().get(0));
-        Assertions.assertEquals("ynpwlbj", model.filePathList().get(0));
-        Assertions.assertEquals("uesnzwdejbavo", model.fileShareList().get(0));
+        Assertions.assertEquals("owgujjugwdkcglhs", model.filePrefixList().get(0));
+        Assertions.assertEquals("jdyggdtji", model.filePathList().get(0));
+        Assertions.assertEquals("kuofqweykhme", model.fileShareList().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AzureFileFilterDetails model =
             new AzureFileFilterDetails()
-                .withFilePrefixList(Arrays.asList("dudgwdslfhot"))
-                .withFilePathList(Arrays.asList("ynpwlbj", "pgacftadehxnlty", "sop"))
-                .withFileShareList(Arrays.asList("uesnzwdejbavo", "xzdmohctb"));
+                .withFilePrefixList(Arrays.asList("owgujjugwdkcglhs"))
+                .withFilePathList(Arrays.asList("jdyggdtji"))
+                .withFileShareList(Arrays.asList("kuofqweykhme"));
         model = BinaryData.fromObject(model).toObject(AzureFileFilterDetails.class);
-        Assertions.assertEquals("dudgwdslfhot", model.filePrefixList().get(0));
-        Assertions.assertEquals("ynpwlbj", model.filePathList().get(0));
-        Assertions.assertEquals("uesnzwdejbavo", model.fileShareList().get(0));
+        Assertions.assertEquals("owgujjugwdkcglhs", model.filePrefixList().get(0));
+        Assertions.assertEquals("jdyggdtji", model.filePathList().get(0));
+        Assertions.assertEquals("kuofqweykhme", model.fileShareList().get(0));
     }
 }

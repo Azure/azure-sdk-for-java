@@ -9,7 +9,7 @@ import com.azure.resourcemanager.selfhelp.models.CheckNameAvailabilityRequest;
 /** Samples for Diagnostics CheckNameAvailability. */
 public final class DiagnosticsCheckNameAvailabilitySamples {
     /*
-     * x-ms-original-file: specification/help/resource-manager/Microsoft.Help/preview/2023-01-01-preview/examples/CheckNameAvailabilityForDiagnosticWhenNameIsNotAvailable.json
+     * x-ms-original-file: specification/help/resource-manager/Microsoft.Help/stable/2023-06-01/examples/CheckNameAvailabilityForDiagnosticWhenNameIsNotAvailable.json
      */
     /**
      * Sample code: Example when name is not available for a Diagnostic resource.
@@ -27,7 +27,7 @@ public final class DiagnosticsCheckNameAvailabilitySamples {
     }
 
     /*
-     * x-ms-original-file: specification/help/resource-manager/Microsoft.Help/preview/2023-01-01-preview/examples/CheckNameAvailabilityForDiagnosticWhenNameIsAvailable.json
+     * x-ms-original-file: specification/help/resource-manager/Microsoft.Help/stable/2023-06-01/examples/CheckNameAvailabilityForDiagnosticWhenNameIsAvailable.json
      */
     /**
      * Sample code: Example when name is available for a Diagnostic resource.

@@ -13,7 +13,7 @@ public final class DataBoxDiskCopyLogDetailsTests {
         DataBoxDiskCopyLogDetails model =
             BinaryData
                 .fromString(
-                    "{\"copyLogDetailsType\":\"DataBoxDisk\",\"diskSerialNumber\":\"jvzunluthnnp\",\"errorLogLink\":\"xipeilpjzuaejx\",\"verboseLogLink\":\"ltskzbbtd\"}")
+                    "{\"copyLogDetailsType\":\"DataBoxDisk\",\"diskSerialNumber\":\"apvhelxprgly\",\"errorLogLink\":\"dd\",\"verboseLogLink\":\"cbcuejrjxgciqi\"}")
                 .toObject(DataBoxDiskCopyLogDetails.class);
     }
 

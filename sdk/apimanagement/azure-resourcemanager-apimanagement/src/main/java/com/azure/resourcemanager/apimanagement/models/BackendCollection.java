@@ -30,6 +30,10 @@ public final class BackendCollection {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of BackendCollection class. */
+    public BackendCollection() {
+    }
+
     /**
      * Get the value property: Backend values.
      *

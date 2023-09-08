@@ -4,13 +4,12 @@
 
 package com.azure.resourcemanager.apimanagement.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.apimanagement.models.GroupContract;
 
 /** Samples for Group Update. */
 public final class GroupUpdateSamples {
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementUpdateGroup.json
+     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementUpdateGroup.json
      */
     /**
      * Sample code: ApiManagementUpdateGroup.
@@ -19,7 +18,10 @@ public final class GroupUpdateSamples {
      */
     public static void apiManagementUpdateGroup(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
         GroupContract resource =
-            manager.groups().getWithResponse("rg1", "apimService1", "tempgroup", Context.NONE).getValue();
+            manager
+                .groups()
+                .getWithResponse("rg1", "apimService1", "tempgroup", com.azure.core.util.Context.NONE)
+                .getValue();
         resource.update().withDisplayName("temp group").withIfMatch("*").apply();
     }
 }

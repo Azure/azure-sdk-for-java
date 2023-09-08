@@ -30,7 +30,7 @@ public final class BackupsGetStatusWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"healthy\":true,\"relationshipStatus\":\"Transferring\",\"mirrorState\":\"Mirrored\",\"unhealthyReason\":\"mes\",\"errorMessage\":\"dlpagzrcxfail\",\"lastTransferSize\":9166652088180488730,\"lastTransferType\":\"dboxdfgsftufqobr\",\"totalTransferBytes\":3034279146046559675}";
+            "{\"healthy\":false,\"relationshipStatus\":\"Idle\",\"mirrorState\":\"Broken\",\"unhealthyReason\":\"zbgomfgbeg\",\"errorMessage\":\"gleohi\",\"lastTransferSize\":566359286330686935,\"lastTransferType\":\"uankrrfxeeeb\",\"totalTransferBytes\":845055246835017871}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -61,7 +61,7 @@ public final class BackupsGetStatusWithResponseMockTests {
         BackupStatus response =
             manager
                 .backups()
-                .getStatusWithResponse("pypqtgsfj", "cbslhhx", "db", "vodhtn", com.azure.core.util.Context.NONE)
+                .getStatusWithResponse("zihgrkyu", "zabs", "mfp", "hojeevy", com.azure.core.util.Context.NONE)
                 .getValue();
     }
 }

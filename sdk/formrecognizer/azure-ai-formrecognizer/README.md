@@ -1,5 +1,6 @@
-# Azure Form Recognizer client library for Java
-Azure Form Recognizer is a cloud service that uses machine learning to analyze text and structured data from your documents.
+# Azure Document Intelligence client library for Java
+Azure Document Intelligence ([previously known as Form Recognizer][service-rename]) is a cloud service that uses machine
+learning to analyze text and structured data from your documents. 
 It includes the following main features:
 
 * Layout - Extract text, table structures, and selection marks, along with their bounding region coordinates, from documents.
@@ -58,20 +59,20 @@ add the direct dependency to your project as follows.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-ai-formrecognizer</artifactId>
-    <version>4.1.0-beta.2</version>
+    <version>4.1.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
-> Note: This version of the client library defaults to the `"2022-08-31"` version of the service.
+> Note: This version of the client library defaults to the `"2023-07-31"` version of the service.
 
 This table shows the relationship between SDK versions and supported API versions of the service:
 
-|SDK version|Supported API version of service
-|-|-
-|3.0.x | 2.0
-|3.1.X - 3.1.12| 2.0, 2.1 (default)
-|4.0.0-beta.1 - Latest GA release| 2022-08-31 (default)
-|4.1.0-beta.1 - Latest beta release| V2023_02_28_preview
+| SDK version    |Supported API version of service
+|----------------|-
+| 3.0.x          | 2.0
+| 3.1.X - 3.1.12 | 2.0, 2.1 (default)
+| 4.0.0          | 2.0, 2.1, 2022-08-31 (default)
+| 4.1.0          | 2.0, 2.1, 2022-08-31, 2023-07-31 (default)
 
 > Note: Starting with version 4.0.X, a new set of clients were introduced to leverage the newest features
 > of the Form Recognizer service. Please see the [Migration Guide][migration_guide] for detailed instructions on how to update application
@@ -80,6 +81,7 @@ This table shows the relationship between SDK versions and supported API version
 
 |API version|Supported clients
 |-|-
+|2023-07-31 | DocumentAnalysisClient and DocumentModelAdministrationClient
 |2022-08-31 | DocumentAnalysisClient and DocumentModelAdministrationClient
 |2.1 | FormRecognizerClient and FormTrainingClient
 |2.0 | FormRecognizerClient and FormTrainingClient
@@ -146,10 +148,11 @@ DocumentAnalysisClient documentAnalysisClient = new DocumentAnalysisClientBuilde
 ```
 
 ```java readme-sample-createDocumentModelAdministrationClient
-DocumentModelAdministrationClient documentModelAdminClient = new DocumentModelAdministrationClientBuilder()
-    .credential(new AzureKeyCredential("{key}"))
-    .endpoint("{endpoint}")
-    .buildClient();
+DocumentModelAdministrationClient client =
+    new DocumentModelAdministrationClientBuilder()
+        .credential(new AzureKeyCredential("{key}"))
+        .endpoint("{endpoint}")
+        .buildClient();
 ```
 
 #### Create a Document Analysis client with Azure Active Directory credential
@@ -164,7 +167,7 @@ Authentication with AAD requires some initial setup:
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.8.2</version>
+    <version>1.9.2</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -180,10 +183,9 @@ Authorization is easiest using [DefaultAzureCredential][wiki_identity]. It finds
 running environment. For more information about using Azure Active Directory authorization with Form Recognizer, see [the associated documentation][aad_authorization].
 
 ```java readme-sample-createDocumentAnalysisClientWithAAD
-TokenCredential credential = new DefaultAzureCredentialBuilder().build();
 DocumentAnalysisClient documentAnalysisClient = new DocumentAnalysisClientBuilder()
     .endpoint("{endpoint}")
-    .credential(credential)
+    .credential(new DefaultAzureCredentialBuilder().build())
     .buildClient();
 ```
 
@@ -239,7 +241,7 @@ Extract text, table structures, and selection marks like radio buttons and check
 // analyze document layout using file input stream
 File layoutDocument = new File("local/file_path/filename.png");
 Path filePath = layoutDocument.toPath();
-BinaryData layoutDocumentData = BinaryData.fromFile(filePath);
+BinaryData layoutDocumentData = BinaryData.fromFile(filePath, (int) layoutDocument.length());
 
 SyncPoller<OperationResult, AnalyzeResult> analyzeLayoutResultPoller =
     documentAnalysisClient.beginAnalyzeDocument("prebuilt-layout", layoutDocumentData);
@@ -281,7 +283,7 @@ for (int i = 0; i < tables.size(); i++) {
 }
 ```
 
-### Use a General Document Model 
+### Use a General Document Model
 Analyze key-value pairs, tables, styles, and selection marks from documents using the general document model provided by
 the Form Recognizer service.
 Select the General Document Model by passing modelId="prebuilt-document" into the beginAnalyzeDocumentFromUrl method as follows:
@@ -650,7 +652,7 @@ DocumentAnalysisAsyncClient documentAnalysisAsyncClient = new DocumentAnalysisCl
 
 ### Additional documentation
 See the [Sample README][sample_readme] for several code snippets illustrating common patterns used in the Form Recognizer Java SDK.
-For more extensive documentation on Azure Cognitive Services Form Recognizer, see the [Form Recognizer documentation][api_reference_doc].
+For more extensive documentation on Azure Cognitive Services Form Recognizer, see the [Form Recognizer documentation][form_recognizer_doc].
 
 ## Contributing
 
@@ -664,7 +666,8 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [aad_authorization]: https://docs.microsoft.com/azure/cognitive-services/authentication#authenticate-with-azure-active-directory
 [azure_key_credential]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core/src/main/java/com/azure/core/credential/AzureKeyCredential.java
 [key]: https://docs.microsoft.com/azure/cognitive-services/cognitive-services-apis-create-account?tabs=multiservice%2Cwindows#get-the-keys-for-your-resource
-[api_reference_doc]: https://aka.ms/azsdk-java-formrecognizer-ref-doc
+[api_reference_doc]: https://azure.github.io/azure-sdk-for-java
+[form_recognizer_doc]: https://aka.ms/azsdk-java-formrecognizer-ref-doc
 [azure_identity_credential_type]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/identity/azure-identity#credentials
 [azure_cli]: https://docs.microsoft.com/azure/cognitive-services/cognitive-services-apis-create-account-cli?tabs=windows
 [azure_cli_endpoint]: https://docs.microsoft.com/cli/azure/cognitiveservices/account?view=azure-cli-latest#az-cognitiveservices-account-show
@@ -731,6 +734,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [service_analyze_identity_documents_fields]: https://aka.ms/azsdk/formrecognizer/iddocumentfieldschema
 [service_analyze_receipt_fields]: https://aka.ms/azsdk/formrecognizer/receiptfieldschema
 [service_analyze_w2_documents_fields]: https://aka.ms/azsdk/formrecognizer/taxusw2fieldschema
+[service-rename]: https://techcommunity.microsoft.com/t5/azure-ai-services-blog/azure-form-recognizer-is-now-azure-ai-document-intelligence-with/ba-p/3875765
 [source_code]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src
 [quickstart_training]: https://learn.microsoft.com/azure/applied-ai-services/form-recognizer/quickstarts/get-started-sdks-rest-api?view=form-recog-3.0.0&pivots=programming-language-java
 [wiki_identity]: https://github.com/Azure/azure-sdk-for-java/wiki/Identity-and-Authentication

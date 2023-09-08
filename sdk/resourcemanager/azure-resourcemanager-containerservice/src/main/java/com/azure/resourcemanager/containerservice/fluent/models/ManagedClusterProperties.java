@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.containerservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.resourcemanager.containerservice.models.ClusterUpgradeSettings;
 import com.azure.resourcemanager.containerservice.models.ContainerServiceLinuxProfile;
 import com.azure.resourcemanager.containerservice.models.ContainerServiceNetworkProfile;
 import com.azure.resourcemanager.containerservice.models.KubernetesSupportPlan;
@@ -205,6 +206,12 @@ public final class ManagedClusterProperties {
      */
     @JsonProperty(value = "autoUpgradeProfile")
     private ManagedClusterAutoUpgradeProfile autoUpgradeProfile;
+
+    /*
+     * Settings for upgrading a cluster.
+     */
+    @JsonProperty(value = "upgradeSettings")
+    private ClusterUpgradeSettings upgradeSettings;
 
     /*
      * Parameters to be applied to the cluster-autoscaler when enabled
@@ -750,6 +757,26 @@ public final class ManagedClusterProperties {
     }
 
     /**
+     * Get the upgradeSettings property: Settings for upgrading a cluster.
+     *
+     * @return the upgradeSettings value.
+     */
+    public ClusterUpgradeSettings upgradeSettings() {
+        return this.upgradeSettings;
+    }
+
+    /**
+     * Set the upgradeSettings property: Settings for upgrading a cluster.
+     *
+     * @param upgradeSettings the upgradeSettings value to set.
+     * @return the ManagedClusterProperties object itself.
+     */
+    public ManagedClusterProperties withUpgradeSettings(ClusterUpgradeSettings upgradeSettings) {
+        this.upgradeSettings = upgradeSettings;
+        return this;
+    }
+
+    /**
      * Get the autoScalerProfile property: Parameters to be applied to the cluster-autoscaler when enabled.
      *
      * @return the autoScalerProfile value.
@@ -1056,6 +1083,9 @@ public final class ManagedClusterProperties {
         }
         if (autoUpgradeProfile() != null) {
             autoUpgradeProfile().validate();
+        }
+        if (upgradeSettings() != null) {
+            upgradeSettings().validate();
         }
         if (autoScalerProfile() != null) {
             autoScalerProfile().validate();

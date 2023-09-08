@@ -2,6 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.messaging.eventhubs;
 
+import com.azure.core.credential.TokenCredential;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -13,7 +15,7 @@ import java.util.concurrent.atomic.AtomicReference;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
- * Sample demonstrates how to sent events with custom metadata to Event Hubs using {@link EventData#getProperties()}.
+ * Sample demonstrates how to send events with custom metadata to Event Hubs using {@link EventData#getProperties()}.
  * Allows the service to load-balance the events between all partitions by using
  * {@link EventHubProducerAsyncClient#createBatch()} which uses the default set of create batch options.
  */
@@ -26,16 +28,19 @@ public class PublishEventsWithCustomMetadata {
      * @param args Unused arguments to the program.
      */
     public static void main(String[] args) {
-        // The connection string value can be obtained by:
-        // 1. Going to your Event Hubs namespace in Azure Portal.
-        // 2. Creating an Event Hub instance.
-        // 3. Creating a "Shared access policy" for your Event Hub instance.
-        // 4. Copying the connection string from the policy's properties.
-        String connectionString = "Endpoint={endpoint};SharedAccessKeyName={sharedAccessKeyName};SharedAccessKey={sharedAccessKey};EntityPath={eventHubName}";
+        // The credential used is DefaultAzureCredential because it combines commonly used credentials
+        // in deployment and development and chooses the credential to used based on its running environment.
+        // More information can be found at: https://learn.microsoft.com/java/api/overview/azure/identity-readme
+        TokenCredential credential = new DefaultAzureCredentialBuilder()
+            .build();
 
         // Create a producer.
+        //
+        // "<<fully-qualified-namespace>>" will look similar to "{your-namespace}.servicebus.windows.net"
+        // "<<event-hub-name>>" will be the name of the Event Hub instance you created inside the Event Hubs namespace.
         EventHubProducerAsyncClient producer = new EventHubClientBuilder()
-            .connectionString(connectionString)
+            .credential("<<fully-qualified-namespace>>", "<<event-hub-name>>",
+                credential)
             .buildAsyncProducerClient();
 
         // Because an event consists mainly of an opaque set of bytes, it may be difficult for consumers of those events

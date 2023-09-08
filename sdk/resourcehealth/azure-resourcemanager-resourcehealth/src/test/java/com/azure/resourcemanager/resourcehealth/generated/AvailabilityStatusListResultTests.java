@@ -13,15 +13,14 @@ import com.azure.resourcemanager.resourcehealth.models.ReasonChronicityTypes;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class AvailabilityStatusListResultTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         AvailabilityStatusListResult model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"id\":\"hq\",\"name\":\"gjxpybczmehmt\",\"type\":\"pbsphrupidgs\",\"location\":\"bejhphoycmsxa\",\"properties\":{\"availabilityState\":\"Degraded\",\"title\":\"bmtqioq\",\"summary\":\"ehtbm\",\"detailedStatus\":\"p\",\"reasonType\":\"noi\",\"rootCauseAttributionTime\":\"2021-08-05T07:19:53Z\",\"healthEventType\":\"rxybqsoq\",\"healthEventCause\":\"gkdmb\",\"healthEventCategory\":\"zlobcufpd\",\"healthEventId\":\"rbt\",\"resolutionETA\":\"2021-09-11T14:00:46Z\",\"occuredTime\":\"2021-05-11T18:58:09Z\",\"reasonChronicity\":\"Transient\",\"reportedTime\":\"2021-03-31T06:52:57Z\",\"recommendedActions\":[],\"serviceImpactingEvents\":[]}},{\"id\":\"foooj\",\"name\":\"ifsqesaagdfmg\",\"type\":\"lhjxr\",\"location\":\"kwm\",\"properties\":{\"availabilityState\":\"Unknown\",\"title\":\"izntocipao\",\"summary\":\"jpsq\",\"detailedStatus\":\"mpoyfd\",\"reasonType\":\"ogknygjofjdd\",\"rootCauseAttributionTime\":\"2021-08-21T00:07:14Z\",\"healthEventType\":\"deupewnwrei\",\"healthEventCause\":\"zyf\",\"healthEventCategory\":\"sarhmofc\",\"healthEventId\":\"smy\",\"resolutionETA\":\"2021-02-14T18:03:27Z\",\"occuredTime\":\"2021-01-31T22:58:09Z\",\"reasonChronicity\":\"Transient\",\"reportedTime\":\"2021-10-06T17:56:05Z\",\"recommendedActions\":[],\"serviceImpactingEvents\":[]}},{\"id\":\"sjtxukcdmp\",\"name\":\"cryuan\",\"type\":\"uxzdxtay\",\"location\":\"hmwhfpmrqo\",\"properties\":{\"availabilityState\":\"Available\",\"title\":\"knryrtihfxtij\",\"summary\":\"zvgnwzs\",\"detailedStatus\":\"glzufc\",\"reasonType\":\"kohdbiha\",\"rootCauseAttributionTime\":\"2021-07-21T15:51:12Z\",\"healthEventType\":\"fcbjysagithxqha\",\"healthEventCause\":\"fpikxwczb\",\"healthEventCategory\":\"cnpqxuhivyqniwby\",\"healthEventId\":\"k\",\"resolutionETA\":\"2021-04-25T05:12:43Z\",\"occuredTime\":\"2021-06-29T10:27:04Z\",\"reasonChronicity\":\"Transient\",\"reportedTime\":\"2021-10-16T19:19:35Z\",\"recommendedActions\":[],\"serviceImpactingEvents\":[]}}],\"nextLink\":\"k\"}")
+                    "{\"value\":[{\"id\":\"hq\",\"name\":\"gjxpybczmehmt\",\"type\":\"pbsphrupidgs\",\"location\":\"bejhphoycmsxa\",\"properties\":{\"availabilityState\":\"Degraded\",\"title\":\"bmtqioq\",\"summary\":\"ehtbm\",\"detailedStatus\":\"p\",\"reasonType\":\"noi\",\"context\":\"wlrxyb\",\"category\":\"oqijgkdmbpaz\",\"articleId\":\"bc\",\"rootCauseAttributionTime\":\"2021-08-16T12:22:59Z\",\"healthEventType\":\"znrb\",\"healthEventCause\":\"qqjnqgl\",\"healthEventCategory\":\"gnufoooj\",\"healthEventId\":\"ifsqesaagdfmg\",\"resolutionETA\":\"2021-05-15T08:16:53Z\",\"occuredTime\":\"2021-07-04T01:57:27Z\",\"reasonChronicity\":\"Transient\",\"reportedTime\":\"2021-05-21T02:09:04Z\",\"recommendedActions\":[],\"serviceImpactingEvents\":[]}},{\"id\":\"vktsizntocipao\",\"name\":\"jpsq\",\"type\":\"mpoyfd\",\"location\":\"ogknygjofjdd\",\"properties\":{\"availabilityState\":\"Available\",\"title\":\"eupewnwreitjz\",\"summary\":\"lusarh\",\"detailedStatus\":\"fcqhsmyurkd\",\"reasonType\":\"lx\",\"context\":\"kuksjtxukcdm\",\"category\":\"rcryuanzwuxzdxta\",\"articleId\":\"lhmwhfpmrqobm\",\"rootCauseAttributionTime\":\"2021-05-19T00:26:38Z\",\"healthEventType\":\"nryrtihf\",\"healthEventCause\":\"ijbpzvgnwzsymgl\",\"healthEventCategory\":\"fcyzkohdbihanufh\",\"healthEventId\":\"bj\",\"resolutionETA\":\"2021-10-05T18:31:22Z\",\"occuredTime\":\"2021-11-25T18:32:18Z\",\"reasonChronicity\":\"Transient\",\"reportedTime\":\"2021-03-22T18:05:05Z\",\"recommendedActions\":[],\"serviceImpactingEvents\":[]}},{\"id\":\"fpikxwczb\",\"name\":\"cnpqxuhivyqniwby\",\"type\":\"k\",\"location\":\"dumjgrtfwvuk\",\"properties\":{\"availabilityState\":\"Degraded\",\"title\":\"ccsnhsjc\",\"summary\":\"ejhkry\",\"detailedStatus\":\"napczwlokjy\",\"reasonType\":\"kkvnipjox\",\"context\":\"nchgej\",\"category\":\"odmailzyd\",\"articleId\":\"o\",\"rootCauseAttributionTime\":\"2021-05-10T11:45:10Z\",\"healthEventType\":\"huxinpmqnj\",\"healthEventCause\":\"wixjsprozvcp\",\"healthEventCategory\":\"eg\",\"healthEventId\":\"wmfdatscmdvpjhul\",\"resolutionETA\":\"2021-11-19T18:36:28Z\",\"occuredTime\":\"2021-05-03T23:04:21Z\",\"reasonChronicity\":\"Persistent\",\"reportedTime\":\"2021-09-20T02:03:10Z\",\"recommendedActions\":[],\"serviceImpactingEvents\":[]}}],\"nextLink\":\"ndiodjpslwejdpv\"}")
                 .toObject(AvailabilityStatusListResult.class);
         Assertions.assertEquals("hq", model.value().get(0).id());
         Assertions.assertEquals("gjxpybczmehmt", model.value().get(0).name());
@@ -33,29 +32,32 @@ public final class AvailabilityStatusListResultTests {
         Assertions.assertEquals("ehtbm", model.value().get(0).properties().summary());
         Assertions.assertEquals("p", model.value().get(0).properties().detailedStatus());
         Assertions.assertEquals("noi", model.value().get(0).properties().reasonType());
+        Assertions.assertEquals("wlrxyb", model.value().get(0).properties().context());
+        Assertions.assertEquals("oqijgkdmbpaz", model.value().get(0).properties().category());
+        Assertions.assertEquals("bc", model.value().get(0).properties().articleId());
         Assertions
             .assertEquals(
-                OffsetDateTime.parse("2021-08-05T07:19:53Z"),
+                OffsetDateTime.parse("2021-08-16T12:22:59Z"),
                 model.value().get(0).properties().rootCauseAttributionTime());
-        Assertions.assertEquals("rxybqsoq", model.value().get(0).properties().healthEventType());
-        Assertions.assertEquals("gkdmb", model.value().get(0).properties().healthEventCause());
-        Assertions.assertEquals("zlobcufpd", model.value().get(0).properties().healthEventCategory());
-        Assertions.assertEquals("rbt", model.value().get(0).properties().healthEventId());
+        Assertions.assertEquals("znrb", model.value().get(0).properties().healthEventType());
+        Assertions.assertEquals("qqjnqgl", model.value().get(0).properties().healthEventCause());
+        Assertions.assertEquals("gnufoooj", model.value().get(0).properties().healthEventCategory());
+        Assertions.assertEquals("ifsqesaagdfmg", model.value().get(0).properties().healthEventId());
         Assertions
             .assertEquals(
-                OffsetDateTime.parse("2021-09-11T14:00:46Z"), model.value().get(0).properties().resolutionEta());
+                OffsetDateTime.parse("2021-05-15T08:16:53Z"), model.value().get(0).properties().resolutionEta());
         Assertions
             .assertEquals(
-                OffsetDateTime.parse("2021-05-11T18:58:09Z"), model.value().get(0).properties().occuredTime());
+                OffsetDateTime.parse("2021-07-04T01:57:27Z"), model.value().get(0).properties().occuredTime());
         Assertions.assertEquals(ReasonChronicityTypes.TRANSIENT, model.value().get(0).properties().reasonChronicity());
         Assertions
             .assertEquals(
-                OffsetDateTime.parse("2021-03-31T06:52:57Z"), model.value().get(0).properties().reportedTime());
-        Assertions.assertEquals("k", model.nextLink());
+                OffsetDateTime.parse("2021-05-21T02:09:04Z"), model.value().get(0).properties().reportedTime());
+        Assertions.assertEquals("ndiodjpslwejdpv", model.nextLink());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         AvailabilityStatusListResult model =
             new AvailabilityStatusListResult()
                 .withValue(
@@ -73,64 +75,73 @@ public final class AvailabilityStatusListResultTests {
                                         .withSummary("ehtbm")
                                         .withDetailedStatus("p")
                                         .withReasonType("noi")
-                                        .withRootCauseAttributionTime(OffsetDateTime.parse("2021-08-05T07:19:53Z"))
-                                        .withHealthEventType("rxybqsoq")
-                                        .withHealthEventCause("gkdmb")
-                                        .withHealthEventCategory("zlobcufpd")
-                                        .withHealthEventId("rbt")
-                                        .withResolutionEta(OffsetDateTime.parse("2021-09-11T14:00:46Z"))
-                                        .withOccuredTime(OffsetDateTime.parse("2021-05-11T18:58:09Z"))
+                                        .withContext("wlrxyb")
+                                        .withCategory("oqijgkdmbpaz")
+                                        .withArticleId("bc")
+                                        .withRootCauseAttributionTime(OffsetDateTime.parse("2021-08-16T12:22:59Z"))
+                                        .withHealthEventType("znrb")
+                                        .withHealthEventCause("qqjnqgl")
+                                        .withHealthEventCategory("gnufoooj")
+                                        .withHealthEventId("ifsqesaagdfmg")
+                                        .withResolutionEta(OffsetDateTime.parse("2021-05-15T08:16:53Z"))
+                                        .withOccuredTime(OffsetDateTime.parse("2021-07-04T01:57:27Z"))
                                         .withReasonChronicity(ReasonChronicityTypes.TRANSIENT)
-                                        .withReportedTime(OffsetDateTime.parse("2021-03-31T06:52:57Z"))
+                                        .withReportedTime(OffsetDateTime.parse("2021-05-21T02:09:04Z"))
                                         .withRecommendedActions(Arrays.asList())
                                         .withServiceImpactingEvents(Arrays.asList())),
                             new AvailabilityStatusInner()
-                                .withId("foooj")
-                                .withName("ifsqesaagdfmg")
-                                .withType("lhjxr")
-                                .withLocation("kwm")
-                                .withProperties(
-                                    new AvailabilityStatusProperties()
-                                        .withAvailabilityState(AvailabilityStateValues.UNKNOWN)
-                                        .withTitle("izntocipao")
-                                        .withSummary("jpsq")
-                                        .withDetailedStatus("mpoyfd")
-                                        .withReasonType("ogknygjofjdd")
-                                        .withRootCauseAttributionTime(OffsetDateTime.parse("2021-08-21T00:07:14Z"))
-                                        .withHealthEventType("deupewnwrei")
-                                        .withHealthEventCause("zyf")
-                                        .withHealthEventCategory("sarhmofc")
-                                        .withHealthEventId("smy")
-                                        .withResolutionEta(OffsetDateTime.parse("2021-02-14T18:03:27Z"))
-                                        .withOccuredTime(OffsetDateTime.parse("2021-01-31T22:58:09Z"))
-                                        .withReasonChronicity(ReasonChronicityTypes.TRANSIENT)
-                                        .withReportedTime(OffsetDateTime.parse("2021-10-06T17:56:05Z"))
-                                        .withRecommendedActions(Arrays.asList())
-                                        .withServiceImpactingEvents(Arrays.asList())),
-                            new AvailabilityStatusInner()
-                                .withId("sjtxukcdmp")
-                                .withName("cryuan")
-                                .withType("uxzdxtay")
-                                .withLocation("hmwhfpmrqo")
+                                .withId("vktsizntocipao")
+                                .withName("jpsq")
+                                .withType("mpoyfd")
+                                .withLocation("ogknygjofjdd")
                                 .withProperties(
                                     new AvailabilityStatusProperties()
                                         .withAvailabilityState(AvailabilityStateValues.AVAILABLE)
-                                        .withTitle("knryrtihfxtij")
-                                        .withSummary("zvgnwzs")
-                                        .withDetailedStatus("glzufc")
-                                        .withReasonType("kohdbiha")
-                                        .withRootCauseAttributionTime(OffsetDateTime.parse("2021-07-21T15:51:12Z"))
-                                        .withHealthEventType("fcbjysagithxqha")
-                                        .withHealthEventCause("fpikxwczb")
-                                        .withHealthEventCategory("cnpqxuhivyqniwby")
-                                        .withHealthEventId("k")
-                                        .withResolutionEta(OffsetDateTime.parse("2021-04-25T05:12:43Z"))
-                                        .withOccuredTime(OffsetDateTime.parse("2021-06-29T10:27:04Z"))
+                                        .withTitle("eupewnwreitjz")
+                                        .withSummary("lusarh")
+                                        .withDetailedStatus("fcqhsmyurkd")
+                                        .withReasonType("lx")
+                                        .withContext("kuksjtxukcdm")
+                                        .withCategory("rcryuanzwuxzdxta")
+                                        .withArticleId("lhmwhfpmrqobm")
+                                        .withRootCauseAttributionTime(OffsetDateTime.parse("2021-05-19T00:26:38Z"))
+                                        .withHealthEventType("nryrtihf")
+                                        .withHealthEventCause("ijbpzvgnwzsymgl")
+                                        .withHealthEventCategory("fcyzkohdbihanufh")
+                                        .withHealthEventId("bj")
+                                        .withResolutionEta(OffsetDateTime.parse("2021-10-05T18:31:22Z"))
+                                        .withOccuredTime(OffsetDateTime.parse("2021-11-25T18:32:18Z"))
                                         .withReasonChronicity(ReasonChronicityTypes.TRANSIENT)
-                                        .withReportedTime(OffsetDateTime.parse("2021-10-16T19:19:35Z"))
+                                        .withReportedTime(OffsetDateTime.parse("2021-03-22T18:05:05Z"))
+                                        .withRecommendedActions(Arrays.asList())
+                                        .withServiceImpactingEvents(Arrays.asList())),
+                            new AvailabilityStatusInner()
+                                .withId("fpikxwczb")
+                                .withName("cnpqxuhivyqniwby")
+                                .withType("k")
+                                .withLocation("dumjgrtfwvuk")
+                                .withProperties(
+                                    new AvailabilityStatusProperties()
+                                        .withAvailabilityState(AvailabilityStateValues.DEGRADED)
+                                        .withTitle("ccsnhsjc")
+                                        .withSummary("ejhkry")
+                                        .withDetailedStatus("napczwlokjy")
+                                        .withReasonType("kkvnipjox")
+                                        .withContext("nchgej")
+                                        .withCategory("odmailzyd")
+                                        .withArticleId("o")
+                                        .withRootCauseAttributionTime(OffsetDateTime.parse("2021-05-10T11:45:10Z"))
+                                        .withHealthEventType("huxinpmqnj")
+                                        .withHealthEventCause("wixjsprozvcp")
+                                        .withHealthEventCategory("eg")
+                                        .withHealthEventId("wmfdatscmdvpjhul")
+                                        .withResolutionEta(OffsetDateTime.parse("2021-11-19T18:36:28Z"))
+                                        .withOccuredTime(OffsetDateTime.parse("2021-05-03T23:04:21Z"))
+                                        .withReasonChronicity(ReasonChronicityTypes.PERSISTENT)
+                                        .withReportedTime(OffsetDateTime.parse("2021-09-20T02:03:10Z"))
                                         .withRecommendedActions(Arrays.asList())
                                         .withServiceImpactingEvents(Arrays.asList()))))
-                .withNextLink("k");
+                .withNextLink("ndiodjpslwejdpv");
         model = BinaryData.fromObject(model).toObject(AvailabilityStatusListResult.class);
         Assertions.assertEquals("hq", model.value().get(0).id());
         Assertions.assertEquals("gjxpybczmehmt", model.value().get(0).name());
@@ -142,24 +153,27 @@ public final class AvailabilityStatusListResultTests {
         Assertions.assertEquals("ehtbm", model.value().get(0).properties().summary());
         Assertions.assertEquals("p", model.value().get(0).properties().detailedStatus());
         Assertions.assertEquals("noi", model.value().get(0).properties().reasonType());
+        Assertions.assertEquals("wlrxyb", model.value().get(0).properties().context());
+        Assertions.assertEquals("oqijgkdmbpaz", model.value().get(0).properties().category());
+        Assertions.assertEquals("bc", model.value().get(0).properties().articleId());
         Assertions
             .assertEquals(
-                OffsetDateTime.parse("2021-08-05T07:19:53Z"),
+                OffsetDateTime.parse("2021-08-16T12:22:59Z"),
                 model.value().get(0).properties().rootCauseAttributionTime());
-        Assertions.assertEquals("rxybqsoq", model.value().get(0).properties().healthEventType());
-        Assertions.assertEquals("gkdmb", model.value().get(0).properties().healthEventCause());
-        Assertions.assertEquals("zlobcufpd", model.value().get(0).properties().healthEventCategory());
-        Assertions.assertEquals("rbt", model.value().get(0).properties().healthEventId());
+        Assertions.assertEquals("znrb", model.value().get(0).properties().healthEventType());
+        Assertions.assertEquals("qqjnqgl", model.value().get(0).properties().healthEventCause());
+        Assertions.assertEquals("gnufoooj", model.value().get(0).properties().healthEventCategory());
+        Assertions.assertEquals("ifsqesaagdfmg", model.value().get(0).properties().healthEventId());
         Assertions
             .assertEquals(
-                OffsetDateTime.parse("2021-09-11T14:00:46Z"), model.value().get(0).properties().resolutionEta());
+                OffsetDateTime.parse("2021-05-15T08:16:53Z"), model.value().get(0).properties().resolutionEta());
         Assertions
             .assertEquals(
-                OffsetDateTime.parse("2021-05-11T18:58:09Z"), model.value().get(0).properties().occuredTime());
+                OffsetDateTime.parse("2021-07-04T01:57:27Z"), model.value().get(0).properties().occuredTime());
         Assertions.assertEquals(ReasonChronicityTypes.TRANSIENT, model.value().get(0).properties().reasonChronicity());
         Assertions
             .assertEquals(
-                OffsetDateTime.parse("2021-03-31T06:52:57Z"), model.value().get(0).properties().reportedTime());
-        Assertions.assertEquals("k", model.nextLink());
+                OffsetDateTime.parse("2021-05-21T02:09:04Z"), model.value().get(0).properties().reportedTime());
+        Assertions.assertEquals("ndiodjpslwejdpv", model.nextLink());
     }
 }

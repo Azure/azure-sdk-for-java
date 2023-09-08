@@ -25,6 +25,12 @@ public class AzureKeyVaultLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties.baseUrl", required = true)
     private Object baseUrl;
 
+    /*
+     * The credential reference containing authentication information.
+     */
+    @JsonProperty(value = "typeProperties.credential")
+    private CredentialReference credential;
+
     /** Creates an instance of AzureKeyVaultLinkedService class. */
     public AzureKeyVaultLinkedService() {}
 
@@ -47,6 +53,26 @@ public class AzureKeyVaultLinkedService extends LinkedService {
      */
     public AzureKeyVaultLinkedService setBaseUrl(Object baseUrl) {
         this.baseUrl = baseUrl;
+        return this;
+    }
+
+    /**
+     * Get the credential property: The credential reference containing authentication information.
+     *
+     * @return the credential value.
+     */
+    public CredentialReference getCredential() {
+        return this.credential;
+    }
+
+    /**
+     * Set the credential property: The credential reference containing authentication information.
+     *
+     * @param credential the credential value to set.
+     * @return the AzureKeyVaultLinkedService object itself.
+     */
+    public AzureKeyVaultLinkedService setCredential(CredentialReference credential) {
+        this.credential = credential;
         return this;
     }
 

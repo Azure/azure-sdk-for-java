@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.redis.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for LinkedServer Delete. */
 public final class LinkedServerDeleteSamples {
     /*
-     * x-ms-original-file: specification/redis/resource-manager/Microsoft.Cache/stable/2022-06-01/examples/RedisCacheLinkedServer_Delete.json
+     * x-ms-original-file: specification/redis/resource-manager/Microsoft.Cache/stable/2023-04-01/examples/RedisCacheLinkedServer_Delete.json
      */
     /**
      * Sample code: LinkedServerDelete.
@@ -22,6 +20,6 @@ public final class LinkedServerDeleteSamples {
             .manager()
             .serviceClient()
             .getLinkedServers()
-            .delete("rg1", "cache1", "cache2", Context.NONE);
+            .delete("rg1", "cache1", "cache2", com.azure.core.util.Context.NONE);
     }
 }

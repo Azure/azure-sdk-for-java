@@ -86,6 +86,16 @@ public class GlobalEndpointManager implements AutoCloseable {
         return this.locationCache.getWriteEndpoints();
     }
 
+    public UnmodifiableList<URI> getApplicableReadEndpoints(RxDocumentServiceRequest request) {
+        // readonly
+        return this.locationCache.getApplicableReadEndpoints(request);
+    }
+
+    public UnmodifiableList<URI> getApplicableWriteEndpoints(RxDocumentServiceRequest request) {
+        //readonly
+        return this.locationCache.getApplicableWriteEndpoints(request);
+    }
+
     public List<URI> getAvailableReadEndpoints() {
         return this.locationCache.getAvailableReadEndpoints();
     }

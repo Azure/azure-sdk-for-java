@@ -4,6 +4,7 @@
 
 package com.azure.communication.phonenumbers.siprouting.implementation;
 
+import com.azure.communication.phonenumbers.CodeCoverageAnnotation.Generated;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaders;
@@ -71,6 +72,7 @@ public final class SipRoutingAdminClientImplBuilder {
      * @param apiVersion the apiVersion value.
      * @return the SipRoutingAdminClientImplBuilder.
      */
+    @Generated
     public SipRoutingAdminClientImplBuilder apiVersion(String apiVersion) {
         this.apiVersion = apiVersion;
         return this;
@@ -103,6 +105,7 @@ public final class SipRoutingAdminClientImplBuilder {
      * @param serializerAdapter the serializerAdapter value.
      * @return the SipRoutingAdminClientImplBuilder.
      */
+    @Generated
     public SipRoutingAdminClientImplBuilder serializerAdapter(SerializerAdapter serializerAdapter) {
         this.serializerAdapter = serializerAdapter;
         return this;
@@ -119,6 +122,7 @@ public final class SipRoutingAdminClientImplBuilder {
      * @param httpClient the httpClient value.
      * @return the SipRoutingAdminClientImplBuilder.
      */
+    @Generated
     public SipRoutingAdminClientImplBuilder httpClient(HttpClient httpClient) {
         this.httpClient = httpClient;
         return this;
@@ -136,6 +140,7 @@ public final class SipRoutingAdminClientImplBuilder {
      * @param configuration the configuration value.
      * @return the SipRoutingAdminClientImplBuilder.
      */
+    @Generated
     public SipRoutingAdminClientImplBuilder configuration(Configuration configuration) {
         this.configuration = configuration;
         return this;
@@ -152,6 +157,7 @@ public final class SipRoutingAdminClientImplBuilder {
      * @param httpLogOptions the httpLogOptions value.
      * @return the SipRoutingAdminClientImplBuilder.
      */
+    @Generated
     public SipRoutingAdminClientImplBuilder httpLogOptions(HttpLogOptions httpLogOptions) {
         this.httpLogOptions = httpLogOptions;
         return this;
@@ -169,6 +175,7 @@ public final class SipRoutingAdminClientImplBuilder {
      * @param retryPolicy the retryPolicy value.
      * @return the SipRoutingAdminClientImplBuilder.
      */
+    @Generated
     public SipRoutingAdminClientImplBuilder retryPolicy(RetryPolicy retryPolicy) {
         this.retryPolicy = retryPolicy;
         return this;
@@ -191,6 +198,7 @@ public final class SipRoutingAdminClientImplBuilder {
      * @param clientOptions the clientOptions value.
      * @return the SipRoutingAdminClientImplBuilder.
      */
+    @Generated
     public SipRoutingAdminClientImplBuilder clientOptions(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
         return this;
@@ -202,6 +210,7 @@ public final class SipRoutingAdminClientImplBuilder {
      * @param customPolicy The custom Http pipeline policy to add.
      * @return the SipRoutingAdminClientImplBuilder.
      */
+    @Generated
     public SipRoutingAdminClientImplBuilder addPolicy(HttpPipelinePolicy customPolicy) {
         pipelinePolicies.add(customPolicy);
         return this;
@@ -227,6 +236,7 @@ public final class SipRoutingAdminClientImplBuilder {
         return client;
     }
 
+    @Generated
     private HttpPipeline createHttpPipeline() {
         Configuration buildConfiguration =
                 (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;

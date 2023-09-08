@@ -17,6 +17,9 @@ public final class JobErrors {
     @JsonProperty(value = "errors")
     private List<Error> errors;
 
+    /** Creates an instance of JobErrors class. */
+    public JobErrors() {}
+
     /**
      * Get the errors property: The errors property.
      *

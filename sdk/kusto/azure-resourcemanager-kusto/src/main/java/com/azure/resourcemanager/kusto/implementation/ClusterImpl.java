@@ -14,6 +14,7 @@ import com.azure.resourcemanager.kusto.fluent.models.PrivateEndpointConnectionIn
 import com.azure.resourcemanager.kusto.models.AcceptedAudiences;
 import com.azure.resourcemanager.kusto.models.AzureSku;
 import com.azure.resourcemanager.kusto.models.Cluster;
+import com.azure.resourcemanager.kusto.models.ClusterMigrateRequest;
 import com.azure.resourcemanager.kusto.models.ClusterNetworkAccessFlag;
 import com.azure.resourcemanager.kusto.models.ClusterUpdate;
 import com.azure.resourcemanager.kusto.models.DiagnoseVirtualNetworkResult;
@@ -23,6 +24,7 @@ import com.azure.resourcemanager.kusto.models.Identity;
 import com.azure.resourcemanager.kusto.models.KeyVaultProperties;
 import com.azure.resourcemanager.kusto.models.LanguageExtension;
 import com.azure.resourcemanager.kusto.models.LanguageExtensionsList;
+import com.azure.resourcemanager.kusto.models.MigrationClusterProperties;
 import com.azure.resourcemanager.kusto.models.OptimizedAutoscale;
 import com.azure.resourcemanager.kusto.models.PrivateEndpointConnection;
 import com.azure.resourcemanager.kusto.models.ProvisioningState;
@@ -217,6 +219,10 @@ public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.U
         }
     }
 
+    public MigrationClusterProperties migrationCluster() {
+        return this.innerModel().migrationCluster();
+    }
+
     public Region region() {
         return Region.fromName(this.regionName());
     }
@@ -347,6 +353,14 @@ public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.U
 
     public void start(Context context) {
         serviceManager.clusters().start(resourceGroupName, clusterName, context);
+    }
+
+    public void migrate(ClusterMigrateRequest clusterMigrateRequest) {
+        serviceManager.clusters().migrate(resourceGroupName, clusterName, clusterMigrateRequest);
+    }
+
+    public void migrate(ClusterMigrateRequest clusterMigrateRequest, Context context) {
+        serviceManager.clusters().migrate(resourceGroupName, clusterName, clusterMigrateRequest, context);
     }
 
     public PagedIterable<FollowerDatabaseDefinition> listFollowerDatabases() {

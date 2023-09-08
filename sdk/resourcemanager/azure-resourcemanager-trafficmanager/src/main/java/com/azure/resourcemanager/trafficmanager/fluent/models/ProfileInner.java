@@ -6,6 +6,7 @@ package com.azure.resourcemanager.trafficmanager.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
+import com.azure.resourcemanager.trafficmanager.models.AllowedEndpointRecordType;
 import com.azure.resourcemanager.trafficmanager.models.DnsConfig;
 import com.azure.resourcemanager.trafficmanager.models.MonitorConfig;
 import com.azure.resourcemanager.trafficmanager.models.ProfileStatus;
@@ -271,6 +272,29 @@ public final class ProfileInner extends Resource {
             this.innerProperties = new ProfileProperties();
         }
         this.innerProperties().withTrafficViewEnrollmentStatus(trafficViewEnrollmentStatus);
+        return this;
+    }
+
+    /**
+     * Get the allowedEndpointRecordTypes property: The list of allowed endpoint record types.
+     *
+     * @return the allowedEndpointRecordTypes value.
+     */
+    public List<AllowedEndpointRecordType> allowedEndpointRecordTypes() {
+        return this.innerProperties() == null ? null : this.innerProperties().allowedEndpointRecordTypes();
+    }
+
+    /**
+     * Set the allowedEndpointRecordTypes property: The list of allowed endpoint record types.
+     *
+     * @param allowedEndpointRecordTypes the allowedEndpointRecordTypes value to set.
+     * @return the ProfileInner object itself.
+     */
+    public ProfileInner withAllowedEndpointRecordTypes(List<AllowedEndpointRecordType> allowedEndpointRecordTypes) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ProfileProperties();
+        }
+        this.innerProperties().withAllowedEndpointRecordTypes(allowedEndpointRecordTypes);
         return this;
     }
 

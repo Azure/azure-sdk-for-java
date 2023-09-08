@@ -13,7 +13,7 @@ public interface Caches {
     /**
      * Lists a collection of all external Caches in the specified service instance.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -25,7 +25,7 @@ public interface Caches {
     /**
      * Lists a collection of all external Caches in the specified service instance.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param top Number of records to return.
      * @param skip Number of records to skip.
@@ -41,20 +41,7 @@ public interface Caches {
     /**
      * Gets the entity state (Etag) version of the Cache specified by its identifier.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param serviceName The name of the API Management service.
-     * @param cacheId Identifier of the Cache entity. Cache identifier (should be either 'default' or valid Azure region
-     *     identifier).
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void getEntityTag(String resourceGroupName, String serviceName, String cacheId);
-
-    /**
-     * Gets the entity state (Etag) version of the Cache specified by its identifier.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param cacheId Identifier of the Cache entity. Cache identifier (should be either 'default' or valid Azure region
      *     identifier).
@@ -68,23 +55,22 @@ public interface Caches {
         String resourceGroupName, String serviceName, String cacheId, Context context);
 
     /**
-     * Gets the details of the Cache specified by its identifier.
+     * Gets the entity state (Etag) version of the Cache specified by its identifier.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param cacheId Identifier of the Cache entity. Cache identifier (should be either 'default' or valid Azure region
      *     identifier).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of the Cache specified by its identifier.
      */
-    CacheContract get(String resourceGroupName, String serviceName, String cacheId);
+    void getEntityTag(String resourceGroupName, String serviceName, String cacheId);
 
     /**
      * Gets the details of the Cache specified by its identifier.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param cacheId Identifier of the Cache entity. Cache identifier (should be either 'default' or valid Azure region
      *     identifier).
@@ -98,24 +84,23 @@ public interface Caches {
         String resourceGroupName, String serviceName, String cacheId, Context context);
 
     /**
-     * Deletes specific Cache.
+     * Gets the details of the Cache specified by its identifier.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param cacheId Identifier of the Cache entity. Cache identifier (should be either 'default' or valid Azure region
      *     identifier).
-     * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the details of the Cache specified by its identifier.
      */
-    void delete(String resourceGroupName, String serviceName, String cacheId, String ifMatch);
+    CacheContract get(String resourceGroupName, String serviceName, String cacheId);
 
     /**
      * Deletes specific Cache.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param cacheId Identifier of the Cache entity. Cache identifier (should be either 'default' or valid Azure region
      *     identifier).
@@ -129,6 +114,21 @@ public interface Caches {
      */
     Response<Void> deleteWithResponse(
         String resourceGroupName, String serviceName, String cacheId, String ifMatch, Context context);
+
+    /**
+     * Deletes specific Cache.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serviceName The name of the API Management service.
+     * @param cacheId Identifier of the Cache entity. Cache identifier (should be either 'default' or valid Azure region
+     *     identifier).
+     * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
+     *     request or it should be * for unconditional update.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void delete(String resourceGroupName, String serviceName, String cacheId, String ifMatch);
 
     /**
      * Gets the details of the Cache specified by its identifier.

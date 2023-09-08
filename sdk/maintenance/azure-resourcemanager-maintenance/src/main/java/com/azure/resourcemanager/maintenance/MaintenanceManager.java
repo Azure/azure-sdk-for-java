@@ -26,7 +26,10 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.maintenance.fluent.MaintenanceManagementClient;
 import com.azure.resourcemanager.maintenance.implementation.ApplyUpdateForResourceGroupsImpl;
 import com.azure.resourcemanager.maintenance.implementation.ApplyUpdatesImpl;
+import com.azure.resourcemanager.maintenance.implementation.ConfigurationAssignmentsForResourceGroupsImpl;
+import com.azure.resourcemanager.maintenance.implementation.ConfigurationAssignmentsForSubscriptionsImpl;
 import com.azure.resourcemanager.maintenance.implementation.ConfigurationAssignmentsImpl;
+import com.azure.resourcemanager.maintenance.implementation.ConfigurationAssignmentsWithinSubscriptionsImpl;
 import com.azure.resourcemanager.maintenance.implementation.MaintenanceConfigurationsForResourceGroupsImpl;
 import com.azure.resourcemanager.maintenance.implementation.MaintenanceConfigurationsImpl;
 import com.azure.resourcemanager.maintenance.implementation.MaintenanceManagementClientBuilder;
@@ -36,6 +39,9 @@ import com.azure.resourcemanager.maintenance.implementation.UpdatesImpl;
 import com.azure.resourcemanager.maintenance.models.ApplyUpdateForResourceGroups;
 import com.azure.resourcemanager.maintenance.models.ApplyUpdates;
 import com.azure.resourcemanager.maintenance.models.ConfigurationAssignments;
+import com.azure.resourcemanager.maintenance.models.ConfigurationAssignmentsForResourceGroups;
+import com.azure.resourcemanager.maintenance.models.ConfigurationAssignmentsForSubscriptions;
+import com.azure.resourcemanager.maintenance.models.ConfigurationAssignmentsWithinSubscriptions;
 import com.azure.resourcemanager.maintenance.models.MaintenanceConfigurations;
 import com.azure.resourcemanager.maintenance.models.MaintenanceConfigurationsForResourceGroups;
 import com.azure.resourcemanager.maintenance.models.Operations;
@@ -61,6 +67,12 @@ public final class MaintenanceManager {
     private MaintenanceConfigurationsForResourceGroups maintenanceConfigurationsForResourceGroups;
 
     private ApplyUpdateForResourceGroups applyUpdateForResourceGroups;
+
+    private ConfigurationAssignmentsWithinSubscriptions configurationAssignmentsWithinSubscriptions;
+
+    private ConfigurationAssignmentsForSubscriptions configurationAssignmentsForSubscriptions;
+
+    private ConfigurationAssignmentsForResourceGroups configurationAssignmentsForResourceGroups;
 
     private Operations operations;
 
@@ -231,7 +243,7 @@ public final class MaintenanceManager {
                 .append("-")
                 .append("com.azure.resourcemanager.maintenance")
                 .append("/")
-                .append("1.0.0-beta.3");
+                .append("1.0.0");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder
                     .append(" (")
@@ -367,6 +379,48 @@ public final class MaintenanceManager {
     }
 
     /**
+     * Gets the resource collection API of ConfigurationAssignmentsWithinSubscriptions.
+     *
+     * @return Resource collection API of ConfigurationAssignmentsWithinSubscriptions.
+     */
+    public ConfigurationAssignmentsWithinSubscriptions configurationAssignmentsWithinSubscriptions() {
+        if (this.configurationAssignmentsWithinSubscriptions == null) {
+            this.configurationAssignmentsWithinSubscriptions =
+                new ConfigurationAssignmentsWithinSubscriptionsImpl(
+                    clientObject.getConfigurationAssignmentsWithinSubscriptions(), this);
+        }
+        return configurationAssignmentsWithinSubscriptions;
+    }
+
+    /**
+     * Gets the resource collection API of ConfigurationAssignmentsForSubscriptions. It manages ConfigurationAssignment.
+     *
+     * @return Resource collection API of ConfigurationAssignmentsForSubscriptions.
+     */
+    public ConfigurationAssignmentsForSubscriptions configurationAssignmentsForSubscriptions() {
+        if (this.configurationAssignmentsForSubscriptions == null) {
+            this.configurationAssignmentsForSubscriptions =
+                new ConfigurationAssignmentsForSubscriptionsImpl(
+                    clientObject.getConfigurationAssignmentsForSubscriptions(), this);
+        }
+        return configurationAssignmentsForSubscriptions;
+    }
+
+    /**
+     * Gets the resource collection API of ConfigurationAssignmentsForResourceGroups.
+     *
+     * @return Resource collection API of ConfigurationAssignmentsForResourceGroups.
+     */
+    public ConfigurationAssignmentsForResourceGroups configurationAssignmentsForResourceGroups() {
+        if (this.configurationAssignmentsForResourceGroups == null) {
+            this.configurationAssignmentsForResourceGroups =
+                new ConfigurationAssignmentsForResourceGroupsImpl(
+                    clientObject.getConfigurationAssignmentsForResourceGroups(), this);
+        }
+        return configurationAssignmentsForResourceGroups;
+    }
+
+    /**
      * Gets the resource collection API of Operations.
      *
      * @return Resource collection API of Operations.
@@ -391,8 +445,10 @@ public final class MaintenanceManager {
     }
 
     /**
-     * @return Wrapped service client MaintenanceManagementClient providing direct access to the underlying
-     *     auto-generated API implementation, based on Azure REST API.
+     * Gets wrapped service client MaintenanceManagementClient providing direct access to the underlying auto-generated
+     * API implementation, based on Azure REST API.
+     *
+     * @return Wrapped service client MaintenanceManagementClient.
      */
     public MaintenanceManagementClient serviceClient() {
         return this.clientObject;

@@ -36,6 +36,12 @@ public final class Volume {
     @JsonProperty(value = "secrets")
     private List<SecretVolumeItem> secrets;
 
+    /*
+     * Mount options used while mounting the AzureFile. Must be a comma-separated string.
+     */
+    @JsonProperty(value = "mountOptions")
+    private String mountOptions;
+
     /** Creates an instance of Volume class. */
     public Volume() {
     }
@@ -119,6 +125,26 @@ public final class Volume {
      */
     public Volume withSecrets(List<SecretVolumeItem> secrets) {
         this.secrets = secrets;
+        return this;
+    }
+
+    /**
+     * Get the mountOptions property: Mount options used while mounting the AzureFile. Must be a comma-separated string.
+     *
+     * @return the mountOptions value.
+     */
+    public String mountOptions() {
+        return this.mountOptions;
+    }
+
+    /**
+     * Set the mountOptions property: Mount options used while mounting the AzureFile. Must be a comma-separated string.
+     *
+     * @param mountOptions the mountOptions value to set.
+     * @return the Volume object itself.
+     */
+    public Volume withMountOptions(String mountOptions) {
+        this.mountOptions = mountOptions;
         return this;
     }
 

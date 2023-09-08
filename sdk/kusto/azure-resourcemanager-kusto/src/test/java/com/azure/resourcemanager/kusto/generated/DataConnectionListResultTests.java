@@ -16,9 +16,9 @@ public final class DataConnectionListResultTests {
         DataConnectionListResult model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"kind\":\"DataConnection\",\"location\":\"hyoulpjr\",\"id\":\"xagl\",\"name\":\"vimjwos\",\"type\":\"tx\"},{\"kind\":\"DataConnection\",\"location\":\"cskfcktqumiekk\",\"id\":\"zzikhlyfjhdg\",\"name\":\"gge\",\"type\":\"dunyg\"},{\"kind\":\"DataConnection\",\"location\":\"qidbqfatpxllrxcy\",\"id\":\"moadsuvarmy\",\"name\":\"dmjsjqb\",\"type\":\"hhyxxrw\"},{\"kind\":\"DataConnection\",\"location\":\"co\",\"id\":\"uhpkxkgymar\",\"name\":\"qnajxqugj\",\"type\":\"ky\"}]}")
+                    "{\"value\":[{\"kind\":\"DataConnection\",\"location\":\"zxnfaaz\",\"id\":\"xdtnkdmkqjjlw\",\"name\":\"envrkpyouaibrebq\",\"type\":\"aysjkixqtnqttez\"},{\"kind\":\"DataConnection\",\"location\":\"fffiak\",\"id\":\"jpqqmted\",\"name\":\"tmmjihyeozph\",\"type\":\"wau\"}]}")
                 .toObject(DataConnectionListResult.class);
-        Assertions.assertEquals("hyoulpjr", model.value().get(0).location());
+        Assertions.assertEquals("zxnfaaz", model.value().get(0).location());
     }
 
     @org.junit.jupiter.api.Test
@@ -28,11 +28,9 @@ public final class DataConnectionListResultTests {
                 .withValue(
                     Arrays
                         .asList(
-                            new DataConnectionInner().withLocation("hyoulpjr"),
-                            new DataConnectionInner().withLocation("cskfcktqumiekk"),
-                            new DataConnectionInner().withLocation("qidbqfatpxllrxcy"),
-                            new DataConnectionInner().withLocation("co")));
+                            new DataConnectionInner().withLocation("zxnfaaz"),
+                            new DataConnectionInner().withLocation("fffiak")));
         model = BinaryData.fromObject(model).toObject(DataConnectionListResult.class);
-        Assertions.assertEquals("hyoulpjr", model.value().get(0).location());
+        Assertions.assertEquals("zxnfaaz", model.value().get(0).location());
     }
 }

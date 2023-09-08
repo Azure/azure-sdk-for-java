@@ -4,44 +4,35 @@
 
 package com.azure.communication.jobrouter.models;
 
+import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
+import java.util.Collection;
 
 /** Defines values for ScoringRuleParameterSelector. */
-public enum ScoringRuleParameterSelector {
-    /** Enum value jobLabels. */
-    JOB_LABELS("jobLabels"),
+public final class ScoringRuleParameterSelector extends ExpandableStringEnum<ScoringRuleParameterSelector> {
+    /** Static value jobLabels for ScoringRuleParameterSelector. */
+    public static final ScoringRuleParameterSelector JOB_LABELS = fromString("jobLabels");
 
-    /** Enum value workerSelectors. */
-    WORKER_SELECTORS("workerSelectors");
+    /** Static value workerSelectors for ScoringRuleParameterSelector. */
+    public static final ScoringRuleParameterSelector WORKER_SELECTORS = fromString("workerSelectors");
 
-    /** The actual serialized value for a ScoringRuleParameterSelector instance. */
-    private final String value;
-
-    ScoringRuleParameterSelector(String value) {
-        this.value = value;
+    /**
+     * Creates or finds a ScoringRuleParameterSelector from its string representation.
+     *
+     * @param name a name to look for.
+     * @return the corresponding ScoringRuleParameterSelector.
+     */
+    @JsonCreator
+    public static ScoringRuleParameterSelector fromString(String name) {
+        return fromString(name, ScoringRuleParameterSelector.class);
     }
 
     /**
-     * Parses a serialized value to a ScoringRuleParameterSelector instance.
+     * Gets known ScoringRuleParameterSelector values.
      *
-     * @param value the serialized value to parse.
-     * @return the parsed ScoringRuleParameterSelector object, or null if unable to parse.
+     * @return known ScoringRuleParameterSelector values.
      */
-    @JsonCreator
-    public static ScoringRuleParameterSelector fromString(String value) {
-        ScoringRuleParameterSelector[] items = ScoringRuleParameterSelector.values();
-        for (ScoringRuleParameterSelector item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
-    }
-
-    @JsonValue
-    @Override
-    public String toString() {
-        return this.value;
+    public static Collection<ScoringRuleParameterSelector> values() {
+        return values(ScoringRuleParameterSelector.class);
     }
 }

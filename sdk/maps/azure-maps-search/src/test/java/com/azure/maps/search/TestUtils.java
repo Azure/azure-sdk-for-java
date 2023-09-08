@@ -3,19 +3,6 @@
 
 package com.azure.maps.search;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Files;
-import java.time.Duration;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Stream;
-
-import org.junit.jupiter.params.provider.Arguments;
-
 import com.azure.core.http.HttpClient;
 import com.azure.core.models.GeoLineString;
 import com.azure.core.models.GeoObject;
@@ -26,15 +13,27 @@ import com.azure.core.util.serializer.JsonSerializerProviders;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.core.util.serializer.TypeReference;
-import com.azure.maps.search.models.MapsPolygon;
 import com.azure.maps.search.models.BatchReverseSearchResult;
 import com.azure.maps.search.models.BatchSearchResult;
+import com.azure.maps.search.models.MapsPolygon;
 import com.azure.maps.search.models.PointOfInterestCategoryTreeResult;
 import com.azure.maps.search.models.ReverseSearchAddressResult;
 import com.azure.maps.search.models.ReverseSearchCrossStreetAddressResult;
 import com.azure.maps.search.models.SearchAddressResult;
 import com.fasterxml.jackson.core.exc.StreamReadException;
 import com.fasterxml.jackson.databind.DatabindException;
+import org.junit.jupiter.params.provider.Arguments;
+
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.time.Duration;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Stream;
 
 
 public class TestUtils {

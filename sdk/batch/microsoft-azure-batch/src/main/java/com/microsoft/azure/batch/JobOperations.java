@@ -14,7 +14,6 @@ import com.microsoft.azure.batch.protocol.models.JobDeleteOptions;
 import com.microsoft.azure.batch.protocol.models.JobDisableOptions;
 import com.microsoft.azure.batch.protocol.models.JobEnableOptions;
 import com.microsoft.azure.batch.protocol.models.JobExecutionInformation;
-import com.microsoft.azure.batch.protocol.models.JobGetAllLifetimeStatisticsOptions;
 import com.microsoft.azure.batch.protocol.models.JobGetOptions;
 import com.microsoft.azure.batch.protocol.models.JobGetTaskCountsOptions;
 import com.microsoft.azure.batch.protocol.models.JobListFromJobScheduleOptions;
@@ -25,7 +24,6 @@ import com.microsoft.azure.batch.protocol.models.JobPatchParameter;
 import com.microsoft.azure.batch.protocol.models.JobPreparationAndReleaseTaskExecutionInformation;
 import com.microsoft.azure.batch.protocol.models.JobPreparationTask;
 import com.microsoft.azure.batch.protocol.models.JobReleaseTask;
-import com.microsoft.azure.batch.protocol.models.JobStatistics;
 import com.microsoft.azure.batch.protocol.models.JobTerminateOptions;
 import com.microsoft.azure.batch.protocol.models.JobUpdateOptions;
 import com.microsoft.azure.batch.protocol.models.JobUpdateParameter;
@@ -76,33 +74,6 @@ public class JobOperations implements IInheritedBehaviors {
     public IInheritedBehaviors withCustomBehaviors(Collection<BatchClientBehavior> behaviors) {
         customBehaviors = behaviors;
         return this;
-    }
-
-    /**
-     * Gets lifetime summary statistics for all of the jobs in the current account.
-     *
-     * @return The aggregated job statistics.
-     * @throws BatchErrorException Exception thrown when an error response is received from the Batch service.
-     * @throws IOException Exception thrown when there is an error in serialization/deserialization of data sent to/received from the Batch service.
-     */
-    public JobStatistics getAllJobsLifetimeStatistics() throws BatchErrorException, IOException {
-        return getAllJobsLifetimeStatistics(null);
-    }
-
-    /**
-     * Gets lifetime summary statistics for all of the jobs in the current account.
-     *
-     * @param additionalBehaviors A collection of {@link BatchClientBehavior} instances that are applied to the Batch service request.
-     * @return The aggregated job statistics.
-     * @throws BatchErrorException Exception thrown when an error response is received from the Batch service.
-     * @throws IOException Exception thrown when there is an error in serialization/deserialization of data sent to/received from the Batch service.
-     */
-    public JobStatistics getAllJobsLifetimeStatistics(Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
-        JobGetAllLifetimeStatisticsOptions options = new JobGetAllLifetimeStatisticsOptions();
-        BehaviorManager bhMgr = new BehaviorManager(this.customBehaviors(), additionalBehaviors);
-        bhMgr.applyRequestBehaviors(options);
-
-        return this.parentBatchClient.protocolLayer().jobs().getAllLifetimeStatistics(options);
     }
 
     /**

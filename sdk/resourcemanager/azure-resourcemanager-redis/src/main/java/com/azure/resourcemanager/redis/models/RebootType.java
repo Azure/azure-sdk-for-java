@@ -20,6 +20,15 @@ public final class RebootType extends ExpandableStringEnum<RebootType> {
     public static final RebootType ALL_NODES = fromString("AllNodes");
 
     /**
+     * Creates a new instance of RebootType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public RebootType() {
+    }
+
+    /**
      * Creates or finds a RebootType from its string representation.
      *
      * @param name a name to look for.

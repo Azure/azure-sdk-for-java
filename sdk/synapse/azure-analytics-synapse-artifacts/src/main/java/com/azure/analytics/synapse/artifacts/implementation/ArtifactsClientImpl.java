@@ -6,7 +6,6 @@ package com.azure.analytics.synapse.artifacts.implementation;
 
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
-import com.azure.core.http.policy.CookiePolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.serializer.JacksonAdapter;
@@ -60,6 +59,18 @@ public final class ArtifactsClientImpl {
      */
     public LinkConnectionsImpl getLinkConnections() {
         return this.linkConnections;
+    }
+
+    /** The RunNotebooksImpl object to access its operations. */
+    private final RunNotebooksImpl runNotebooks;
+
+    /**
+     * Gets the RunNotebooksImpl object to access its operations.
+     *
+     * @return the RunNotebooksImpl object.
+     */
+    public RunNotebooksImpl getRunNotebooks() {
+        return this.runNotebooks;
     }
 
     /** The KqlScriptsImpl object to access its operations. */
@@ -333,9 +344,7 @@ public final class ArtifactsClientImpl {
      */
     public ArtifactsClientImpl(String endpoint) {
         this(
-                new HttpPipelineBuilder()
-                        .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
-                        .build(),
+                new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy()).build(),
                 JacksonAdapter.createDefaultSerializerAdapter(),
                 endpoint);
     }
@@ -362,6 +371,7 @@ public final class ArtifactsClientImpl {
         this.serializerAdapter = serializerAdapter;
         this.endpoint = endpoint;
         this.linkConnections = new LinkConnectionsImpl(this);
+        this.runNotebooks = new RunNotebooksImpl(this);
         this.kqlScripts = new KqlScriptsImpl(this);
         this.kqlScriptsOperations = new KqlScriptsOperationsImpl(this);
         this.metastores = new MetastoresImpl(this);

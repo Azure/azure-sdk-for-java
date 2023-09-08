@@ -56,6 +56,8 @@ public final class ClusterPrincipalAssignmentsDeleteMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.clusterPrincipalAssignments().delete("lerchpq", "mfpjbabw", "dfc", com.azure.core.util.Context.NONE);
+        manager
+            .clusterPrincipalAssignments()
+            .delete("zab", "elawumu", "slzkwrrwoycqu", com.azure.core.util.Context.NONE);
     }
 }

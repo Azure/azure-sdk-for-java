@@ -7,6 +7,7 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.test.http.PlaybackClient;
 import com.azure.core.test.http.TestProxyPlaybackClient;
 import com.azure.core.test.models.NetworkCallRecord;
+import com.azure.core.test.models.TestProxyRecordingOptions;
 import com.azure.core.test.models.RecordedData;
 import com.azure.core.test.models.RecordingRedactor;
 import com.azure.core.test.models.TestProxyRequestMatcher;
@@ -26,6 +27,8 @@ import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -74,6 +77,8 @@ public class InterceptorManager implements AutoCloseable {
     private TestProxyPlaybackClient testProxyPlaybackClient;
     private final Queue<String> proxyVariableQueue = new LinkedList<>();
     private HttpClient httpClient;
+    private final Path testClassPath;
+    private String xRecordingFileLocation;
 
     /**
      * Creates a new InterceptorManager that either replays test-session records or saves them.
@@ -96,7 +101,7 @@ public class InterceptorManager implements AutoCloseable {
      */
     @Deprecated
     public InterceptorManager(String testName, TestMode testMode) {
-        this(testName, testName, testMode, false, false, false);
+        this(testName, testName, testMode, false, false, false, null);
     }
 
     /**
@@ -122,10 +127,10 @@ public class InterceptorManager implements AutoCloseable {
     public InterceptorManager(TestContextManager testContextManager) {
         this(testContextManager.getTestName(), testContextManager.getTestPlaybackRecordingName(),
             testContextManager.getTestMode(), testContextManager.doNotRecordTest(),
-            testContextManager.isTestProxyEnabled(), testContextManager.skipRecordingRequestBody());
+            testContextManager.isTestProxyEnabled(), testContextManager.skipRecordingRequestBody(), testContextManager.getTestClassPath());
     }
 
-    private InterceptorManager(String testName, String playbackRecordName, TestMode testMode, boolean doNotRecord, boolean enableTestProxy, boolean skipRecordingRequestBody) {
+    private InterceptorManager(String testName, String playbackRecordName, TestMode testMode, boolean doNotRecord, boolean enableTestProxy, boolean skipRecordingRequestBody, Path testClassPath) {
         this.testProxyEnabled = enableTestProxy;
         Objects.requireNonNull(testName, "'testName' cannot be null.");
 
@@ -134,6 +139,7 @@ public class InterceptorManager implements AutoCloseable {
         this.testMode = testMode;
         this.textReplacementRules = new HashMap<>();
         this.skipRecordingRequestBody = skipRecordingRequestBody;
+        this.testClassPath = testClassPath;
 
         this.allowedToReadRecordedValues = (testMode == TestMode.PLAYBACK && !doNotRecord);
         this.allowedToRecordValues = (testMode == TestMode.RECORD && !doNotRecord);
@@ -215,6 +221,7 @@ public class InterceptorManager implements AutoCloseable {
         this.allowedToRecordValues = false;
         this.testProxyEnabled = false;
         this.skipRecordingRequestBody = false;
+        this.testClassPath = null;
 
         this.recordedData = allowedToReadRecordedValues ? readDataFromFile() : null;
         this.textReplacementRules = textReplacementRules;
@@ -325,7 +332,9 @@ public class InterceptorManager implements AutoCloseable {
             }
             if (testProxyPlaybackClient == null) {
                 testProxyPlaybackClient = new TestProxyPlaybackClient(httpClient, skipRecordingRequestBody);
-                proxyVariableQueue.addAll(testProxyPlaybackClient.startPlayback(getTestProxyRecordFile()));
+                proxyVariableQueue.addAll(testProxyPlaybackClient.startPlayback(getTestProxyRecordFile(),
+                    testClassPath));
+                xRecordingFileLocation = testProxyPlaybackClient.getRecordingFileLocation();
             }
             return testProxyPlaybackClient;
         } else {
@@ -373,7 +382,7 @@ public class InterceptorManager implements AutoCloseable {
                 throw new IllegalStateException("A recording policy can only be requested in RECORD mode.");
             }
             testProxyRecordPolicy = new TestProxyRecordPolicy(httpClient, skipRecordingRequestBody);
-            testProxyRecordPolicy.startRecording(getTestProxyRecordFile());
+            testProxyRecordPolicy.startRecording(getTestProxyRecordFile(), testClassPath);
         }
         return testProxyRecordPolicy;
     }
@@ -383,10 +392,10 @@ public class InterceptorManager implements AutoCloseable {
      * @return A {@link File} with the partial path to where the record file lives.
      */
     private File getTestProxyRecordFile() {
-        Path recordFolder = TestUtils.getRecordFolder().toPath();
-        Path repoRoot = TestUtils.getRepoRoot();
-        File recordFile = new File(recordFolder.toFile(), playbackRecordName + ".json");
-        return repoRoot.relativize(recordFile.toPath()).toFile();
+        Path repoRoot = TestUtils.getRepoRootResolveUntil(testClassPath, "eng");
+        Path targetFolderRoot = TestUtils.getRepoRootResolveUntil(testClassPath, "target");
+        Path filePath = Paths.get(targetFolderRoot.toString(), "src/test/resources/session-records", playbackRecordName + ".json");
+        return repoRoot.relativize(filePath).toFile();
     }
 
     /*
@@ -449,6 +458,9 @@ public class InterceptorManager implements AutoCloseable {
      * @throws RuntimeException Neither playback or record has started.
      */
     public void addSanitizers(List<TestProxySanitizer> testProxySanitizers) {
+        if (CoreUtils.isNullOrEmpty(testProxySanitizers)) {
+            return;
+        }
         if (testProxyPlaybackClient != null) {
             testProxyPlaybackClient.addProxySanitization(testProxySanitizers);
         } else if (testProxyRecordPolicy != null) {
@@ -459,12 +471,26 @@ public class InterceptorManager implements AutoCloseable {
     }
 
     /**
+     * Add sanitizer rule for sanitization during record or playback.
+     * @param testProxySanitizers the list of replacement regex and rules.
+     */
+    public void addSanitizers(TestProxySanitizer... testProxySanitizers) {
+        if (testProxySanitizers != null) {
+            addSanitizers(Arrays.asList(testProxySanitizers));
+        }
+    }
+
+    /**
      * Add matcher rules to match recorded data in playback.
      * Matchers are only applied for playback session and so this will be a noop when invoked in RECORD/LIVE mode.
      * @param testProxyMatchers the list of matcher rules when playing back recorded data.
      * @throws RuntimeException Playback has not started.
      */
     public void addMatchers(List<TestProxyRequestMatcher> testProxyMatchers) {
+        if (CoreUtils.isNullOrEmpty(testProxyMatchers)) {
+            return;
+        }
+
         if (testMode != TestMode.PLAYBACK) {
             return;
         }
@@ -476,11 +502,45 @@ public class InterceptorManager implements AutoCloseable {
     }
 
     /**
+     * Add matcher rules to match recorded data in playback.
+     * Matchers are only applied for playback session and so this will be a noop when invoked in RECORD/LIVE mode.
+     * @param testProxyRequestMatchers the list of matcher rules when playing back recorded data.
+     */
+    public void addMatchers(TestProxyRequestMatcher... testProxyRequestMatchers) {
+        if (testProxyRequestMatchers != null) {
+            addMatchers(Arrays.asList(testProxyRequestMatchers));
+        }
+    }
+
+    /**
+     * Get the recording file location in assets repo.
+     * @return the assets repo location of the recording file.
+     */
+    public String getRecordingFileLocation() {
+        return xRecordingFileLocation;
+    }
+
+    /**
      * Sets the httpClient to be used for this test.
      * @param httpClient The {@link HttpClient} implementation to use.
      */
     void setHttpClient(HttpClient httpClient) {
-
         this.httpClient = httpClient;
+    }
+
+    /**
+     * Sets the recording options for the proxy.
+     * @param testProxyRecordingOptions The {@link TestProxyRecordingOptions} to use.
+     * @throws RuntimeException if test mode is not record.
+     */
+    public void setProxyRecordingOptions(TestProxyRecordingOptions testProxyRecordingOptions) {
+        if (testMode != TestMode.RECORD) {
+            return;
+        }
+        if (testProxyRecordPolicy != null) {
+            testProxyRecordPolicy.setRecordingOptions(testProxyRecordingOptions);
+        } else {
+            throw new RuntimeException("Recording must have been started before setting recording options.");
+        }
     }
 }

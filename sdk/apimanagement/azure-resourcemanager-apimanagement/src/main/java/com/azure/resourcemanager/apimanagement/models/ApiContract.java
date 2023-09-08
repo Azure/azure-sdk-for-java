@@ -184,6 +184,13 @@ public interface ApiContract {
     ApiLicenseInformation license();
 
     /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
+
+    /**
      * Gets the inner com.azure.resourcemanager.apimanagement.fluent.models.ApiContractInner object.
      *
      * @return the inner object.
@@ -194,22 +201,25 @@ public interface ApiContract {
     interface Definition
         extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
+
     /** The ApiContract definition stages. */
     interface DefinitionStages {
         /** The first stage of the ApiContract definition. */
         interface Blank extends WithParentResource {
         }
+
         /** The stage of the ApiContract definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
              * Specifies resourceGroupName, serviceName.
              *
-             * @param resourceGroupName The name of the resource group.
+             * @param resourceGroupName The name of the resource group. The name is case insensitive.
              * @param serviceName The name of the API Management service.
              * @return the next definition stage.
              */
             WithCreate withExistingService(String resourceGroupName, String serviceName);
         }
+
         /**
          * The stage of the ApiContract definition which contains all the minimum required properties for the resource
          * to be created, but also allows for any other optional properties to be specified.
@@ -219,6 +229,7 @@ public interface ApiContract {
                 DefinitionStages.WithFormat,
                 DefinitionStages.WithWsdlSelector,
                 DefinitionStages.WithSoapApiType,
+                DefinitionStages.WithTranslateRequiredQueryParametersConduct,
                 DefinitionStages.WithSourceApiId,
                 DefinitionStages.WithDisplayName,
                 DefinitionStages.WithServiceUrl,
@@ -255,6 +266,7 @@ public interface ApiContract {
              */
             ApiContract create(Context context);
         }
+
         /** The stage of the ApiContract definition allowing to specify value. */
         interface WithValue {
             /**
@@ -265,6 +277,7 @@ public interface ApiContract {
              */
             WithCreate withValue(String value);
         }
+
         /** The stage of the ApiContract definition allowing to specify format. */
         interface WithFormat {
             /**
@@ -275,6 +288,7 @@ public interface ApiContract {
              */
             WithCreate withFormat(ContentFormat format);
         }
+
         /** The stage of the ApiContract definition allowing to specify wsdlSelector. */
         interface WithWsdlSelector {
             /**
@@ -285,6 +299,7 @@ public interface ApiContract {
              */
             WithCreate withWsdlSelector(ApiCreateOrUpdatePropertiesWsdlSelector wsdlSelector);
         }
+
         /** The stage of the ApiContract definition allowing to specify soapApiType. */
         interface WithSoapApiType {
             /**
@@ -297,6 +312,21 @@ public interface ApiContract {
              */
             WithCreate withSoapApiType(SoapApiType soapApiType);
         }
+
+        /** The stage of the ApiContract definition allowing to specify translateRequiredQueryParametersConduct. */
+        interface WithTranslateRequiredQueryParametersConduct {
+            /**
+             * Specifies the translateRequiredQueryParametersConduct property: Strategy of translating required query
+             * parameters to template ones. By default has value 'template'. Possible values: 'template', 'query'.
+             *
+             * @param translateRequiredQueryParametersConduct Strategy of translating required query parameters to
+             *     template ones. By default has value 'template'. Possible values: 'template', 'query'.
+             * @return the next definition stage.
+             */
+            WithCreate withTranslateRequiredQueryParametersConduct(
+                TranslateRequiredQueryParametersConduct translateRequiredQueryParametersConduct);
+        }
+
         /** The stage of the ApiContract definition allowing to specify sourceApiId. */
         interface WithSourceApiId {
             /**
@@ -307,6 +337,7 @@ public interface ApiContract {
              */
             WithCreate withSourceApiId(String sourceApiId);
         }
+
         /** The stage of the ApiContract definition allowing to specify displayName. */
         interface WithDisplayName {
             /**
@@ -317,6 +348,7 @@ public interface ApiContract {
              */
             WithCreate withDisplayName(String displayName);
         }
+
         /** The stage of the ApiContract definition allowing to specify serviceUrl. */
         interface WithServiceUrl {
             /**
@@ -329,6 +361,7 @@ public interface ApiContract {
              */
             WithCreate withServiceUrl(String serviceUrl);
         }
+
         /** The stage of the ApiContract definition allowing to specify path. */
         interface WithPath {
             /**
@@ -343,6 +376,7 @@ public interface ApiContract {
              */
             WithCreate withPath(String path);
         }
+
         /** The stage of the ApiContract definition allowing to specify protocols. */
         interface WithProtocols {
             /**
@@ -354,6 +388,7 @@ public interface ApiContract {
              */
             WithCreate withProtocols(List<Protocol> protocols);
         }
+
         /** The stage of the ApiContract definition allowing to specify apiVersionSet. */
         interface WithApiVersionSet {
             /**
@@ -364,6 +399,7 @@ public interface ApiContract {
              */
             WithCreate withApiVersionSet(ApiVersionSetContractDetails apiVersionSet);
         }
+
         /** The stage of the ApiContract definition allowing to specify description. */
         interface WithDescription {
             /**
@@ -374,6 +410,7 @@ public interface ApiContract {
              */
             WithCreate withDescription(String description);
         }
+
         /** The stage of the ApiContract definition allowing to specify authenticationSettings. */
         interface WithAuthenticationSettings {
             /**
@@ -385,6 +422,7 @@ public interface ApiContract {
              */
             WithCreate withAuthenticationSettings(AuthenticationSettingsContract authenticationSettings);
         }
+
         /** The stage of the ApiContract definition allowing to specify subscriptionKeyParameterNames. */
         interface WithSubscriptionKeyParameterNames {
             /**
@@ -396,6 +434,7 @@ public interface ApiContract {
             WithCreate withSubscriptionKeyParameterNames(
                 SubscriptionKeyParameterNamesContract subscriptionKeyParameterNames);
         }
+
         /** The stage of the ApiContract definition allowing to specify apiType. */
         interface WithApiType {
             /**
@@ -406,6 +445,7 @@ public interface ApiContract {
              */
             WithCreate withApiType(ApiType apiType);
         }
+
         /** The stage of the ApiContract definition allowing to specify apiRevision. */
         interface WithApiRevision {
             /**
@@ -418,6 +458,7 @@ public interface ApiContract {
              */
             WithCreate withApiRevision(String apiRevision);
         }
+
         /** The stage of the ApiContract definition allowing to specify apiVersion. */
         interface WithApiVersion {
             /**
@@ -428,6 +469,7 @@ public interface ApiContract {
              */
             WithCreate withApiVersion(String apiVersion);
         }
+
         /** The stage of the ApiContract definition allowing to specify isCurrent. */
         interface WithIsCurrent {
             /**
@@ -438,6 +480,7 @@ public interface ApiContract {
              */
             WithCreate withIsCurrent(Boolean isCurrent);
         }
+
         /** The stage of the ApiContract definition allowing to specify apiRevisionDescription. */
         interface WithApiRevisionDescription {
             /**
@@ -448,6 +491,7 @@ public interface ApiContract {
              */
             WithCreate withApiRevisionDescription(String apiRevisionDescription);
         }
+
         /** The stage of the ApiContract definition allowing to specify apiVersionDescription. */
         interface WithApiVersionDescription {
             /**
@@ -458,6 +502,7 @@ public interface ApiContract {
              */
             WithCreate withApiVersionDescription(String apiVersionDescription);
         }
+
         /** The stage of the ApiContract definition allowing to specify apiVersionSetId. */
         interface WithApiVersionSetId {
             /**
@@ -468,6 +513,7 @@ public interface ApiContract {
              */
             WithCreate withApiVersionSetId(String apiVersionSetId);
         }
+
         /** The stage of the ApiContract definition allowing to specify subscriptionRequired. */
         interface WithSubscriptionRequired {
             /**
@@ -480,6 +526,7 @@ public interface ApiContract {
              */
             WithCreate withSubscriptionRequired(Boolean subscriptionRequired);
         }
+
         /** The stage of the ApiContract definition allowing to specify termsOfServiceUrl. */
         interface WithTermsOfServiceUrl {
             /**
@@ -491,6 +538,7 @@ public interface ApiContract {
              */
             WithCreate withTermsOfServiceUrl(String termsOfServiceUrl);
         }
+
         /** The stage of the ApiContract definition allowing to specify contact. */
         interface WithContact {
             /**
@@ -501,6 +549,7 @@ public interface ApiContract {
              */
             WithCreate withContact(ApiContactInformation contact);
         }
+
         /** The stage of the ApiContract definition allowing to specify license. */
         interface WithLicense {
             /**
@@ -511,6 +560,7 @@ public interface ApiContract {
              */
             WithCreate withLicense(ApiLicenseInformation license);
         }
+
         /** The stage of the ApiContract definition allowing to specify ifMatch. */
         interface WithIfMatch {
             /**
@@ -524,6 +574,7 @@ public interface ApiContract {
             WithCreate withIfMatch(String ifMatch);
         }
     }
+
     /**
      * Begins update for the ApiContract resource.
      *
@@ -567,6 +618,7 @@ public interface ApiContract {
          */
         ApiContract apply(Context context);
     }
+
     /** The ApiContract update stages. */
     interface UpdateStages {
         /** The stage of the ApiContract update allowing to specify displayName. */
@@ -579,6 +631,7 @@ public interface ApiContract {
              */
             Update withDisplayName(String displayName);
         }
+
         /** The stage of the ApiContract update allowing to specify serviceUrl. */
         interface WithServiceUrl {
             /**
@@ -589,6 +642,7 @@ public interface ApiContract {
              */
             Update withServiceUrl(String serviceUrl);
         }
+
         /** The stage of the ApiContract update allowing to specify path. */
         interface WithPath {
             /**
@@ -603,6 +657,7 @@ public interface ApiContract {
              */
             Update withPath(String path);
         }
+
         /** The stage of the ApiContract update allowing to specify protocols. */
         interface WithProtocols {
             /**
@@ -614,6 +669,7 @@ public interface ApiContract {
              */
             Update withProtocols(List<Protocol> protocols);
         }
+
         /** The stage of the ApiContract update allowing to specify description. */
         interface WithDescription {
             /**
@@ -624,6 +680,7 @@ public interface ApiContract {
              */
             Update withDescription(String description);
         }
+
         /** The stage of the ApiContract update allowing to specify authenticationSettings. */
         interface WithAuthenticationSettings {
             /**
@@ -635,6 +692,7 @@ public interface ApiContract {
              */
             Update withAuthenticationSettings(AuthenticationSettingsContract authenticationSettings);
         }
+
         /** The stage of the ApiContract update allowing to specify subscriptionKeyParameterNames. */
         interface WithSubscriptionKeyParameterNames {
             /**
@@ -646,6 +704,7 @@ public interface ApiContract {
             Update withSubscriptionKeyParameterNames(
                 SubscriptionKeyParameterNamesContract subscriptionKeyParameterNames);
         }
+
         /** The stage of the ApiContract update allowing to specify apiType. */
         interface WithApiType {
             /**
@@ -656,6 +715,7 @@ public interface ApiContract {
              */
             Update withApiType(ApiType apiType);
         }
+
         /** The stage of the ApiContract update allowing to specify apiRevision. */
         interface WithApiRevision {
             /**
@@ -668,6 +728,7 @@ public interface ApiContract {
              */
             Update withApiRevision(String apiRevision);
         }
+
         /** The stage of the ApiContract update allowing to specify apiVersion. */
         interface WithApiVersion {
             /**
@@ -678,6 +739,7 @@ public interface ApiContract {
              */
             Update withApiVersion(String apiVersion);
         }
+
         /** The stage of the ApiContract update allowing to specify isCurrent. */
         interface WithIsCurrent {
             /**
@@ -688,6 +750,7 @@ public interface ApiContract {
              */
             Update withIsCurrent(Boolean isCurrent);
         }
+
         /** The stage of the ApiContract update allowing to specify apiRevisionDescription. */
         interface WithApiRevisionDescription {
             /**
@@ -698,6 +761,7 @@ public interface ApiContract {
              */
             Update withApiRevisionDescription(String apiRevisionDescription);
         }
+
         /** The stage of the ApiContract update allowing to specify apiVersionDescription. */
         interface WithApiVersionDescription {
             /**
@@ -708,6 +772,7 @@ public interface ApiContract {
              */
             Update withApiVersionDescription(String apiVersionDescription);
         }
+
         /** The stage of the ApiContract update allowing to specify apiVersionSetId. */
         interface WithApiVersionSetId {
             /**
@@ -718,6 +783,7 @@ public interface ApiContract {
              */
             Update withApiVersionSetId(String apiVersionSetId);
         }
+
         /** The stage of the ApiContract update allowing to specify subscriptionRequired. */
         interface WithSubscriptionRequired {
             /**
@@ -730,6 +796,7 @@ public interface ApiContract {
              */
             Update withSubscriptionRequired(Boolean subscriptionRequired);
         }
+
         /** The stage of the ApiContract update allowing to specify termsOfServiceUrl. */
         interface WithTermsOfServiceUrl {
             /**
@@ -741,6 +808,7 @@ public interface ApiContract {
              */
             Update withTermsOfServiceUrl(String termsOfServiceUrl);
         }
+
         /** The stage of the ApiContract update allowing to specify contact. */
         interface WithContact {
             /**
@@ -751,6 +819,7 @@ public interface ApiContract {
              */
             Update withContact(ApiContactInformation contact);
         }
+
         /** The stage of the ApiContract update allowing to specify license. */
         interface WithLicense {
             /**
@@ -761,6 +830,7 @@ public interface ApiContract {
              */
             Update withLicense(ApiLicenseInformation license);
         }
+
         /** The stage of the ApiContract update allowing to specify ifMatch. */
         interface WithIfMatch {
             /**
@@ -774,6 +844,7 @@ public interface ApiContract {
             Update withIfMatch(String ifMatch);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

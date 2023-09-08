@@ -74,7 +74,7 @@ public class ReceiveNamedSessionSample {
         receiver.setSessionState(newState);
 
         // Get session state. The assertion is to ensure the state is correct. User should remove this.
-        byte[] state = receiver.getSessionState("greetings-id");
+        byte[] state = receiver.getSessionState();
         Assertions.assertArrayEquals(state, newState);
 
         try {

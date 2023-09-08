@@ -20,7 +20,7 @@ import java.util.TimeZone;
  * In this sample, the deserialization into well known type is done using Jackson ObjectMapper
  * <p>
  * This sample is based on the hotels-sample index available to install from the portal.
- * See https://docs.microsoft.com/en-us/azure/search/search-get-started-portal
+ * See https://docs.microsoft.com/azure/search/search-get-started-portal
  */
 public class SearchAsyncWithFullyTypedDocumentsExample {
 
