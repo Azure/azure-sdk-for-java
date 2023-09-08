@@ -17,16 +17,14 @@ import java.nio.file.Paths;
 
 public class AnalyzeImage {
     public static void main(String[] args) {
-        // BEGIN:com.azure.ai.contentsafety.createClient
+        // BEGIN:com.azure.ai.contentsafety.analyzeimage
         String endpoint = Configuration.getGlobalConfiguration().get("CONTENT_SAFETY_ENDPOINT");
         String key = Configuration.getGlobalConfiguration().get("CONTENT_SAFETY_KEY");
 
         ContentSafetyClient contentSafetyClient = new ContentSafetyClientBuilder()
             .credential(new AzureKeyCredential(key))
             .endpoint(endpoint).buildClient();
-        // END:com.azure.ai.contentsafety.createClient
 
-        // BEGIN:com.azure.ai.contentsafety.analyzeimage
         ImageData image = new ImageData();
         try {
             image.setContent(Files.readAllBytes(Paths.get("./image.jpg")));

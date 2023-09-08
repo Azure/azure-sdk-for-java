@@ -7,6 +7,7 @@ package com.azure.ai.contentsafety;
 import com.azure.ai.contentsafety.models.*;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.exception.HttpResponseException;
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
@@ -43,12 +44,12 @@ public class ManageTextBlocklist {
         // BEGIN:com.azure.ai.contentsafety.addblockitems
         String blockItemText1 = "k*ll";
         String blockItemText2 = "h*te";
-        var blockItems = Arrays.asList(new TextBlockItemInfo(blockItemText1).setDescription("Kill word"),
+        List<TextBlockItemInfo> blockItems = Arrays.asList(new TextBlockItemInfo(blockItemText1).setDescription("Kill word"),
             new TextBlockItemInfo(blockItemText2).setDescription("Hate word"));
         AddBlockItemsResult addedBlockItems = contentSafetyClient.addBlockItems(blocklistName, new AddBlockItemsOptions(blockItems));
         if (addedBlockItems != null && addedBlockItems.getValue() != null) {
             System.out.println("\nBlockItems added:");
-            for (var addedBlockItem : addedBlockItems.getValue()) {
+            for (TextBlockItem addedBlockItem : addedBlockItems.getValue()) {
                 System.out.println("BlockItemId: " + addedBlockItem.getBlockItemId() + ", Text: " + addedBlockItem.getText() + ", Description: " + addedBlockItem.getDescription());
             }
         }
@@ -71,25 +72,33 @@ public class ManageTextBlocklist {
 
         if (analyzeTextResult.getBlocklistsMatchResults() != null) {
             System.out.println("\nBlocklist match result:");
-            for (var matchResult : analyzeTextResult.getBlocklistsMatchResults()) {
+            for (TextBlocklistMatchResult matchResult : analyzeTextResult.getBlocklistsMatchResults()) {
                 System.out.println("Blockitem was hit in text: Offset: " + matchResult.getOffset() + ", Length: " + matchResult.getLength());
                 System.out.println("BlocklistName: " + matchResult.getBlocklistName() + ", BlockItemId: " + matchResult.getBlockItemId() + ", BlockItemText: " + matchResult.getBlockItemText());
             }
         }
         // END:com.azure.ai.contentsafety.analyzetextwithblocklist
 
-        // BEGIN:com.azure.ai.contentsafety.getalltextblocklist
+        // BEGIN:com.azure.ai.contentsafety.listtextblocklists
+        PagedIterable<TextBlocklist> allTextBlocklists= contentSafetyClient.listTextBlocklists();
+        System.out.println("\nList Blocklist:");
+        for (TextBlocklist blocklist : allTextBlocklists) {
+            System.out.println("Blocklist: " + blocklist.getBlocklistName() + ", Description: " + blocklist.getDescription());
+        }
+        // END:com.azure.ai.contentsafety.listtextblocklists
+
+        // BEGIN:com.azure.ai.contentsafety.gettextblocklist
         TextBlocklist getBlocklist = contentSafetyClient.getTextBlocklist(blocklistName);
         if (getBlocklist != null) {
             System.out.println("\nGet blocklist:");
             System.out.println("BlocklistName: " + getBlocklist.getBlocklistName() + ", Description: " + getBlocklist.getDescription());
         }
-        // END:com.azure.ai.contentsafety.getalltextblocklist
+        // END:com.azure.ai.contentsafety.gettextblocklist
 
         // BEGIN:com.azure.ai.contentsafety.listtextblocklistitems
-        var allBlockitems = contentSafetyClient.listTextBlocklistItems(blocklistName);
+        PagedIterable<TextBlockItem> allBlockitems = contentSafetyClient.listTextBlocklistItems(blocklistName);
         System.out.println("\nList BlockItems:");
-        for (var blocklistItem : allBlockitems) {
+        for (TextBlockItem blocklistItem : allBlockitems) {
             System.out.println("BlockItemId: " + blocklistItem.getBlockItemId() + ", Text: " + blocklistItem.getText() + ", Description: " + blocklistItem.getDescription());
         }
         // END:com.azure.ai.contentsafety.listtextblocklistitems

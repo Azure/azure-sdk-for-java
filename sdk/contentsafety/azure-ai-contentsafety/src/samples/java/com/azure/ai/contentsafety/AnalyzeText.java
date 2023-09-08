@@ -13,16 +13,13 @@ import com.azure.core.util.Configuration;
 
 public class AnalyzeText {
     public static void main(String[] args) {
-        // BEGIN:com.azure.ai.contentsafety.createClient
+        // BEGIN:com.azure.ai.contentsafety.analyzetext
         String endpoint = Configuration.getGlobalConfiguration().get("CONTENT_SAFETY_ENDPOINT");
         String key = Configuration.getGlobalConfiguration().get("CONTENT_SAFETY_KEY");
-
         ContentSafetyClient contentSafetyClient = new ContentSafetyClientBuilder()
             .credential(new AzureKeyCredential(key))
             .endpoint(endpoint).buildClient();
-        // END:com.azure.ai.contentsafety.createClient
 
-        // BEGIN:com.azure.ai.contentsafety.analyzetext
         AnalyzeTextResult response;
         try{
             response = contentSafetyClient.analyzeText(new AnalyzeTextOptions("This is text example"));

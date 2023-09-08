@@ -1,8 +1,10 @@
 # Azure ContentSafety client library for Java
 
-Azure ContentSafety client library for Java.
+[Azure AI Content Safety][contentsafety_overview] detects harmful user-generated and AI-generated content in applications and services. Content Safety includes several APIs that allow you to detect material that is harmful:
 
-This package contains Microsoft Azure ContentSafety client library.
+* Text Analysis API: Scans text for sexual content, violence, hate, and self harm with multi-severity levels.
+* Image Analysis API: Scans images for sexual content, violence, hate, and self harm with multi-severity levels.
+* Text Blocklist Management APIs: The default AI classifiers are sufficient for most content safety needs; however, you might need to screen for terms that are specific to your use case. You can create blocklists of terms to use with the Text API.
 
 ## Documentation
 
@@ -30,17 +32,236 @@ Various documentation is available to help you get started
 ```
 [//]: # ({x-version-update-end})
 
-### Authentication
+### Authenticate the client
 
-[Azure Identity][azure_identity] package provides the default implementation for authenticating the client.
+#### Get the endpoint
+You can find the endpoint for your Azure AI Content Safety service resource using the [Azure Portal][azure_portal] or [Azure CLI][azure_cli_endpoint_lookup]:
 
-## Key concepts
-
-## Examples
-
-```java com.azure.ai.contentsafety.readme
+```bash
+# Get the endpoint for the Azure AI Content Safety service resource
+az cognitiveservices account show --name "resource-name" --resource-group "resource-group-name" --query "properties.endpoint"
 ```
 
+#### Get the API key
+
+The API key can be found in the [Azure Portal][azure_portal] or by running the following [Azure CLI][azure_cli_key_lookup] command:
+
+```bash
+az cognitiveservices account keys list --name "<resource-name>" --resource-group "<resource-group-name>"
+```
+#### Create a ContentSafetyClient with AzureKeyCredential
+```java com.azure.ai.contentsafety.createClient
+String endpoint = Configuration.getGlobalConfiguration().get("CONTENT_SAFETY_ENDPOINT");
+String key = Configuration.getGlobalConfiguration().get("CONTENT_SAFETY_KEY");
+
+ContentSafetyClient contentSafetyClient = new ContentSafetyClientBuilder()
+    .credential(new AzureKeyCredential(key))
+    .endpoint(endpoint).buildClient();
+```
+
+## Key concepts
+### Harm categories
+
+Content Safety recognizes four distinct categories of objectionable content.
+
+|Category |Description  |
+|---------|---------|
+|Hate |Hate refers to any content that attacks or uses pejorative or discriminatory language in reference to a person or identity group based on certain differentiating attributes of that group. This includes but is not limited to race, ethnicity, nationality, gender identity and expression, sexual orientation, religion, immigration status, ability status, personal appearance, and body size.|
+|Sexual |Sexual describes content related to anatomical organs and genitals, romantic relationships, acts portrayed in erotic or affectionate terms, pregnancy, physical sexual acts—including those acts portrayed as an assault or a forced sexual violent act against one’s will—, prostitution, pornography, and abuse.|
+|Violence |Violence describes content related to physical actions intended to hurt, injure, damage, or kill someone or something. It also includes weapons, guns and related entities, such as manufacturers, associations, legislation, and similar.|
+|Self-harm |Self-harm describes content related to physical actions intended to purposely hurt, injure, or damage one’s body or kill oneself.|
+
+Classification can be multi-labeled. For example, when a text sample goes through the text moderation model, it could be classified as both Sexual content and Violence.
+
+### Severity levels
+
+Every harm category the service applies also comes with a severity level rating. The severity level is meant to indicate the severity of the consequences of showing the flagged content.
+
+|Severity |Label |
+|---------|---------|
+|0 |Safe|
+|2 |Low|
+|4 |Medium|
+|6 |High|
+
+### Text blocklist management
+
+Following operations are supported to manage your text blocklist:
+
+* Create or modify a blocklist
+* List all blocklists
+* Get a blocklist by blocklistName
+* Add blockItems to a blocklist
+* Remove blockItems from a blocklist
+* List all blockItems in a blocklist by blocklistName
+* Get a blockItem in a blocklist by blockItemId and blocklistName
+* Delete a blocklist and all of its blockItems
+
+You can set the blocklists you want to use when analyze text, then you can get blocklist match result from returned response.
+
+### Thread safety
+
+We guarantee that all client instance methods are thread-safe and independent of each other ([guideline](https://azure.github.io/azure-sdk/dotnet_introduction.html#dotnet-service-methods-thread-safety)). This ensures that the recommendation of reusing client instances is always safe, even across threads.
+
+## Examples
+The following section provides several code snippets covering some of the most common Content Safety service tasks, including:
+
+* [Analyze text](#analyze-text)
+* [Analyze image](#analyze-image)
+* [Manage text blocklist](#manage-text-blocklist)
+
+Please refer to [sample data](https://github.com/Azure/azure-sdk-for-net/blob/main/sdk/contentsafety/Azure.AI.ContentSafety/tests/Samples/sample_data) for the data used here. For more samples, please refer to [Samples](https://github.com/Azure/azure-sdk-for-net/blob/main/sdk/contentsafety/Azure.AI.ContentSafety/tests/Samples).
+
+### Analyze text
+
+#### Analyze text without blocklists
+```java com.azure.ai.contentsafety.analyzetext
+String endpoint = Configuration.getGlobalConfiguration().get("CONTENT_SAFETY_ENDPOINT");
+String key = Configuration.getGlobalConfiguration().get("CONTENT_SAFETY_KEY");
+ContentSafetyClient contentSafetyClient = new ContentSafetyClientBuilder()
+    .credential(new AzureKeyCredential(key))
+    .endpoint(endpoint).buildClient();
+
+AnalyzeTextResult response;
+try{
+    response = contentSafetyClient.analyzeText(new AnalyzeTextOptions("This is text example"));
+}catch(HttpResponseException ex){
+    System.out.println(String.format("Analyze text failed.\nStatus code: %s, Error message: %s",
+        ex.getResponse().getStatusCode(), ex.getMessage()));
+    throw ex;
+}
+System.out.println("Hate severity: " + response.getHateResult().getSeverity());
+System.out.println("SelfHarm severity: " + response.getSelfHarmResult().getSeverity());
+System.out.println("Sexual severity: " + response.getSexualResult().getSeverity());
+System.out.println("Violence severity: " + response.getViolenceResult().getSeverity());
+```
+
+#### Analyze text with blocklists
+```java com.azure.ai.contentsafety.analyzetextwithblocklist
+// After you edit your blocklist, it usually takes effect in 5 minutes, please wait some time before analyzing with blocklist after editing.
+AnalyzeTextOptions request = new AnalyzeTextOptions("I h*te you and I want to k*ll you");
+request.getBlocklistNames().add(blocklistName);
+request.setBreakByBlocklists(true);
+
+AnalyzeTextResult analyzeTextResult;
+try {
+    analyzeTextResult = contentSafetyClient.analyzeText(request);
+} catch (HttpResponseException ex) {
+    System.out.println("Analyze text failed.\nStatus code: " + ex.getResponse().getStatusCode() + ", Error message: " + ex.getMessage());
+    throw ex;
+}
+
+if (analyzeTextResult.getBlocklistsMatchResults() != null) {
+    System.out.println("\nBlocklist match result:");
+    for (TextBlocklistMatchResult matchResult : analyzeTextResult.getBlocklistsMatchResults()) {
+        System.out.println("Blockitem was hit in text: Offset: " + matchResult.getOffset() + ", Length: " + matchResult.getLength());
+        System.out.println("BlocklistName: " + matchResult.getBlocklistName() + ", BlockItemId: " + matchResult.getBlockItemId() + ", BlockItemText: " + matchResult.getBlockItemText());
+    }
+}
+```
+
+### Analyze image
+```java com.azure.ai.contentsafety.analyzeimage
+String endpoint = Configuration.getGlobalConfiguration().get("CONTENT_SAFETY_ENDPOINT");
+String key = Configuration.getGlobalConfiguration().get("CONTENT_SAFETY_KEY");
+
+ContentSafetyClient contentSafetyClient = new ContentSafetyClientBuilder()
+    .credential(new AzureKeyCredential(key))
+    .endpoint(endpoint).buildClient();
+
+ImageData image = new ImageData();
+try {
+    image.setContent(Files.readAllBytes(Paths.get("./image.jpg")));
+} catch (IOException e) {
+    throw new RuntimeException(e);
+}
+
+AnalyzeImageResult response;
+try{
+    response =
+        contentSafetyClient.analyzeImage(new AnalyzeImageOptions(image));
+}catch(HttpResponseException ex){
+    System.out.println(String.format("Analyze text failed.\nStatus code: %s, Error message: %s",
+        ex.getResponse().getStatusCode(), ex.getMessage()));
+    throw ex;
+}
+System.out.println("Hate severity: " + response.getHateResult().getSeverity());
+System.out.println("SelfHarm severity: " + response.getSelfHarmResult().getSeverity());
+System.out.println("Sexual severity: " + response.getSexualResult().getSeverity());
+System.out.println("Violence severity: " + response.getViolenceResult().getSeverity());
+```
+
+### Manage text blocklist
+
+#### Create or update text blocklist
+```java com.azure.ai.contentsafety.createorupdatetextblocklist
+String blocklistName = "TestBlocklist";
+BinaryData resource = BinaryData.fromString("{\"description\":\"Test Blocklist\"}");
+RequestOptions requestOptions = new RequestOptions();
+Response<BinaryData> response =
+    contentSafetyClient.createOrUpdateTextBlocklistWithResponse(blocklistName, resource, requestOptions);
+if (response.getStatusCode() == 201) {
+    System.out.println("\nBlocklist " + blocklistName + " created.");
+} else if (response.getStatusCode() == 200) {
+    System.out.println("\nBlocklist " + blocklistName + " updated.");
+}
+```
+#### Add blockItems
+```java com.azure.ai.contentsafety.addblockitems
+String blockItemText1 = "k*ll";
+String blockItemText2 = "h*te";
+List<TextBlockItemInfo> blockItems = Arrays.asList(new TextBlockItemInfo(blockItemText1).setDescription("Kill word"),
+    new TextBlockItemInfo(blockItemText2).setDescription("Hate word"));
+AddBlockItemsResult addedBlockItems = contentSafetyClient.addBlockItems(blocklistName, new AddBlockItemsOptions(blockItems));
+if (addedBlockItems != null && addedBlockItems.getValue() != null) {
+    System.out.println("\nBlockItems added:");
+    for (TextBlockItem addedBlockItem : addedBlockItems.getValue()) {
+        System.out.println("BlockItemId: " + addedBlockItem.getBlockItemId() + ", Text: " + addedBlockItem.getText() + ", Description: " + addedBlockItem.getDescription());
+    }
+}
+```
+#### List text blocklists
+```java com.azure.ai.contentsafety.listtextblocklists
+PagedIterable<TextBlocklist> allTextBlocklists= contentSafetyClient.listTextBlocklists();
+System.out.println("\nList Blocklist:");
+for (TextBlocklist blocklist : allTextBlocklists) {
+    System.out.println("Blocklist: " + blocklist.getBlocklistName() + ", Description: " + blocklist.getDescription());
+}
+```
+#### Get text blocklist
+```java com.azure.ai.contentsafety.gettextblocklist
+TextBlocklist getBlocklist = contentSafetyClient.getTextBlocklist(blocklistName);
+if (getBlocklist != null) {
+    System.out.println("\nGet blocklist:");
+    System.out.println("BlocklistName: " + getBlocklist.getBlocklistName() + ", Description: " + getBlocklist.getDescription());
+}
+```
+#### List blockItems
+``` java com.azure.ai.contentsafety.listtextblocklistitems
+PagedIterable<TextBlockItem> allBlockitems = contentSafetyClient.listTextBlocklistItems(blocklistName);
+System.out.println("\nList BlockItems:");
+for (TextBlockItem blocklistItem : allBlockitems) {
+    System.out.println("BlockItemId: " + blocklistItem.getBlockItemId() + ", Text: " + blocklistItem.getText() + ", Description: " + blocklistItem.getDescription());
+}
+```
+#### Get blockItem
+```java com.azure.ai.contentsafety.gettextblocklistitem
+String getBlockItemId = addedBlockItems.getValue().get(0).getBlockItemId();
+TextBlockItem getBlockItem = contentSafetyClient.getTextBlocklistItem(blocklistName, getBlockItemId);
+System.out.println("\nGet BlockItem:");
+System.out.println("BlockItemId: " + getBlockItem.getBlockItemId() + ", Text: " + getBlockItem.getText() + ", Description: " + getBlockItem.getDescription());
+```
+#### Remove blockItems
+```java com.azure.ai.contentsafety.removeblockitems
+String removeBlockItemId = addedBlockItems.getValue().get(0).getBlockItemId();
+List<String> removeBlockItemIds = new ArrayList<>();
+removeBlockItemIds.add(removeBlockItemId);
+contentSafetyClient.removeBlockItems(blocklistName, new RemoveBlockItemsOptions(removeBlockItemIds));
+```
+#### Delete text blocklist
+```java com.azure.ai.contentsafety.deletetextblocklist
+contentSafetyClient.deleteTextBlocklist(blocklistName);
+```
 ## Troubleshooting
 
 ## Next steps
@@ -61,5 +282,9 @@ For details on contributing to this repository, see the [contributing guide](htt
 [jdk]: https://docs.microsoft.com/java/azure/jdk/
 [azure_subscription]: https://azure.microsoft.com/free/
 [azure_identity]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/identity/azure-identity
+[contentsafety_overview]: https://aka.ms/acs-doc
+[azure_portal]: https://ms.portal.azure.com/
+[azure_cli_endpoint_lookup]: https://docs.microsoft.com/cli/azure/cognitiveservices/account?view=azure-cli-latest#az-cognitiveservices-account-show
+[azure_cli_key_lookup]: https://docs.microsoft.com/cli/azure/cognitiveservices/account/keys?view=azure-cli-latest#az-cognitiveservices-account-keys-list
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fcontentsafety%2Fazure-ai-contentsafety%2FREADME.png)
