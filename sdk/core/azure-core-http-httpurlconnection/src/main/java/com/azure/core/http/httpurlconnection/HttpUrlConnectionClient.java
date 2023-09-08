@@ -61,7 +61,7 @@ public class HttpUrlConnectionClient implements HttpClient {
     private Mono<HttpResponse> sendPatchViaSocket(HttpRequest httpRequest) {
         return Mono.fromCallable(() -> {
             try {
-                return new SocketClient(httpRequest.getUrl()).sendPatchRequest(httpRequest);
+                return new SocketClient(httpRequest.getUrl().toString()).sendPatchRequest(httpRequest);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
