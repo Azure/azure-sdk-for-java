@@ -43,14 +43,15 @@ steps:
       mavenPomFile: pom.xml
       ${{ if ne(parameters.SDKType, 'client') }}:
         options: '$(DefaultOptions) --no-transfer-progress -T 1C -Dcheckstyle.failOnViolation=false -Dcheckstyle.failsOnError=false -Dspotbugs.failOnError=false -pl $(ProjectList)'
+        goals: 'checkstyle:check spotbugs:check'
       ${{ else }}:
         options: '$(DefaultOptions) --no-transfer-progress -T 1C -Dcheckstyle.failOnViolation=false -Dcheckstyle.failsOnError=false -Dspotbugs.failOnError=false -Drevapi.failBuildOnProblemsFound=false -pl $(ProjectList)'
+        goals: 'checkstyle:check spotbugs:check revapi:check'
       mavenOptions: '$(MemoryOptions)'
       javaHomeOption: 'JDKVersion'
       jdkVersionOption: ${{ parameters.JavaBuildVersion }}
       jdkArchitectureOption: 'x64'
       publishJUnitResults: false
-      goals: 'checkstyle:check spotbugs:check revapi:check'
     continueOnError: ${{ parameters.ContinueOnError }}
     condition: or(eq(coalesce(variables['IsLatestNonLtsJdk'], true), true), and(${{ parameters.RunLinting }}, succeeded()))
 
