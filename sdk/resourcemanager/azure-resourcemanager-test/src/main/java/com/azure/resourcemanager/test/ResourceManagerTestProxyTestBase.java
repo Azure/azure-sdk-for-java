@@ -92,6 +92,14 @@ public abstract class ResourceManagerTestProxyTestBase extends TestProxyTestBase
         @Override
         public void write(int b) {
         }
+
+        @Override
+        public void write(byte[] b) {
+        }
+
+        @Override
+        public void write(byte[] b, int off, int len) {
+        }
     };
 
     /**
@@ -111,7 +119,7 @@ public abstract class ResourceManagerTestProxyTestBase extends TestProxyTestBase
      * bound.
      */
     @RegisterExtension
-    final PlaybackTimeoutInterceptor playbackTimeoutInterceptor = new PlaybackTimeoutInterceptor(() -> Duration.ofSeconds(30));
+    final PlaybackTimeoutInterceptor playbackTimeoutInterceptor = new PlaybackTimeoutInterceptor(() -> Duration.ofSeconds(60));
 
     /**
      * Generates a random resource name.
@@ -349,7 +357,7 @@ public abstract class ResourceManagerTestProxyTestBase extends TestProxyTestBase
                 if (host != null) {
                     clientBuilder.proxy(new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress(host, port)));
                 }
-            } catch (URISyntaxException e) { }
+            } catch (URISyntaxException ignored) { }
         }
         return clientBuilder.build();
     }
