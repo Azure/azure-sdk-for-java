@@ -46,7 +46,6 @@ import static com.azure.data.appconfiguration.implementation.Utility.ETAG_ANY;
 import static com.azure.data.appconfiguration.implementation.Utility.addTracingNamespace;
 import static com.azure.data.appconfiguration.implementation.Utility.enableSyncRestProxy;
 import static com.azure.data.appconfiguration.implementation.Utility.getETag;
-import static com.azure.data.appconfiguration.implementation.Utility.iterableToList;
 import static com.azure.data.appconfiguration.implementation.Utility.toKeyValue;
 import static com.azure.data.appconfiguration.implementation.Utility.toSettingFieldsList;
 import static com.azure.data.appconfiguration.implementation.Utility.updateSnapshotSync;
@@ -1475,8 +1474,8 @@ public final class ConfigurationClient {
             () -> serviceClient.getSnapshotsSinglePage(
                 selector == null ? null : selector.getName(),
                 null,
-                selector == null ? null : iterableToList(selector.getFields()),
-                selector == null ? null : iterableToList(selector.getSnapshotStatus()),
+                selector == null ? null : selector.getFields(),
+                selector == null ? null : selector.getSnapshotStatus(),
                 enableSyncRestProxy(addTracingNamespace(context))),
             nextLink -> serviceClient.getSnapshotsNextSinglePage(nextLink,
                 enableSyncRestProxy(addTracingNamespace(context))));

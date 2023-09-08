@@ -46,7 +46,6 @@ import static com.azure.data.appconfiguration.implementation.ConfigurationSettin
 import static com.azure.data.appconfiguration.implementation.Utility.ETAG_ANY;
 import static com.azure.data.appconfiguration.implementation.Utility.addTracingNamespace;
 import static com.azure.data.appconfiguration.implementation.Utility.getETag;
-import static com.azure.data.appconfiguration.implementation.Utility.iterableToList;
 import static com.azure.data.appconfiguration.implementation.Utility.toKeyValue;
 import static com.azure.data.appconfiguration.implementation.Utility.toSettingFieldsList;
 import static com.azure.data.appconfiguration.implementation.Utility.updateSnapshotAsync;
@@ -1404,8 +1403,8 @@ public final class ConfigurationAsyncClient {
                     context -> serviceClient.getSnapshotsSinglePageAsync(
                         selector == null ? null : selector.getName(),
                         null,
-                        selector == null ? null : iterableToList(selector.getFields()),
-                        selector == null ? null : iterableToList(selector.getSnapshotStatus()),
+                        selector == null ? null : selector.getFields(),
+                        selector == null ? null : selector.getSnapshotStatus(),
                         addTracingNamespace(context))),
                 nextLink -> withContext(
                     context -> serviceClient.getSnapshotsNextSinglePageAsync(nextLink, addTracingNamespace(context)))
