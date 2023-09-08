@@ -1,5 +1,13 @@
 # Release History
 
+## 4.12.0-beta.1 (Unreleased)
+
+### Spring Cloud Azure Autoconfigure
+This section includes changes in `spring-cloud-azure-autoconfigure` module.
+
+#### Bugs Fixed
+- Fix the issue that prevented the `disableChallengeResourceVerification` property of the AKV `SecretClient` to be configured [#36628](https://github.com/Azure/azure-sdk-for-java/pull/36628).
+
 ## 5.5.0 (2023-08-28)
 - This release is compatible with Spring Boot 3.0.0-3.1.2. (Note: 3.1.x (x>2) should be supported, but they aren't tested with this release.)
 - This release is compatible with Spring Cloud 2022.0.0-2022.0.4. (Note: 2022.0.x (x>4) should be supported, but they aren't tested with this release.)
