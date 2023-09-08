@@ -12,7 +12,7 @@ import java.util.Map;
 /** Samples for IpAllocations CreateOrUpdate. */
 public final class IpAllocationsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-04-01/examples/IpAllocationCreate.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-05-01/examples/IpAllocationCreate.json
      */
     /**
      * Sample code: Create IpAllocation.
@@ -39,7 +39,6 @@ public final class IpAllocationsCreateOrUpdateSamples {
                 com.azure.core.util.Context.NONE);
     }
 
-    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

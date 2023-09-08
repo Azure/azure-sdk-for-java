@@ -85,5 +85,11 @@
       <version>1.4.3</version> <!-- {x-version-update;com.azure:azure-core-serializer-json-jackson;dependency} -->
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-data-appconfiguration</artifactId>
+      <version>1.4.8</version> <!-- {x-version-update;com.azure:azure-data-appconfiguration;dependency} -->
+      <scope>test</scope>
+    </dependency>
   </dependencies>
 </project>

@@ -145,6 +145,7 @@ class AzureKeyVaultSecretAutoConfigurationTests extends AbstractAzureServiceConf
             .withPropertyValues(
                 "spring.cloud.azure.keyvault.secret.endpoint=" + endpoint,
                 "spring.cloud.azure.keyvault.secret.service-version=V7_2",
+                "spring.cloud.azure.keyvault.secret.challenge-resource-verification-enabled=false",
 
                 "spring.cloud.azure.keyvault.secret.property-source-enabled=false",
                 "spring.cloud.azure.keyvault.secret.property-sources[0].endpoint=" + endpoint + "-1",
@@ -161,6 +162,7 @@ class AzureKeyVaultSecretAutoConfigurationTests extends AbstractAzureServiceConf
                 assertEquals(endpoint, properties.getEndpoint());
                 assertFalse(properties.isPropertySourceEnabled());
                 assertEquals(SecretServiceVersion.V7_2, properties.getServiceVersion());
+                assertFalse(properties.isChallengeResourceVerificationEnabled());
 
                 AzureKeyVaultPropertySourceProperties propertySourceProperties = properties.getPropertySources().get(0);
                 assertEquals(endpoint + "-1", propertySourceProperties.getEndpoint());
