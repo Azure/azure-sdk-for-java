@@ -60,15 +60,14 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
+import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 /**
  * Template class for cosmos db
@@ -243,13 +242,24 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
         return toDomainObject(domainType, response.getItem());
     }
 
-    public <S extends T, T> Iterable<S> insertAll(String containerName, Class<T> domainType, Flux<CosmosItemOperation> cosmosItemOperationFlux) {
-        Assert.notNull(cosmosItemOperationFlux, "entities to be deleted should not be null");
+    public <S extends T, T, ID extends Serializable> Iterable<S> insertAll(CosmosEntityInformation<T,ID> information, Iterable<S> entities) {
+        Assert.notNull(entities, "entities to be inserted should not be null");
+
+        String containerName = information.getContainerName();
+        Class<T> domainType = information.getJavaType();
+
+        List<CosmosItemOperation> cosmosItemOperations = new ArrayList<>();
+        entities.forEach(entity -> {
+            JsonNode originalItem = this.mappingCosmosConverter.writeJsonNode(entity);
+            PartitionKey partitionKey = new PartitionKey(information.getPartitionKeyFieldValue(entity));
+            cosmosItemOperations.add(CosmosBulkOperations.getUpsertItemOperation(originalItem,
+                partitionKey));
+        });
 
         return (Iterable<S>) this.getCosmosAsyncClient()
             .getDatabase(this.getDatabaseName())
             .getContainer(containerName)
-            .executeBulkOperations(cosmosItemOperationFlux)
+            .executeBulkOperations(Flux.fromIterable(cosmosItemOperations))
             .flatMap(r -> {
                 return Flux.just(r.getResponse().getItem(domainType));
             })

@@ -11,6 +11,7 @@ import com.azure.cosmos.models.CosmosPatchItemRequestOptions;
 import com.azure.cosmos.models.CosmosPatchOperations;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.spring.data.cosmos.core.CosmosOperations;
+import com.azure.spring.data.cosmos.core.CosmosTemplate;
 import com.azure.spring.data.cosmos.core.query.CosmosQuery;
 import com.azure.spring.data.cosmos.core.query.Criteria;
 import com.azure.spring.data.cosmos.core.query.CriteriaType;
@@ -24,7 +25,8 @@ import org.springframework.util.StringUtils;
 import reactor.core.publisher.Flux;
 
 import java.io.Serializable;
-import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.stream.StreamSupport;
 
@@ -148,17 +150,7 @@ public class SimpleCosmosRepository<T, ID extends Serializable> implements Cosmo
     public <S extends T> Iterable<S> saveAll(Iterable<S> entities) {
         Assert.notNull(entities, "Iterable entities should not be null");
 
-        Flux<CosmosItemOperation> cosmosItemOperationFlux = Flux.fromIterable(entities).map(entity -> {
-            if (information.isNew(entity)) {
-                return CosmosBulkOperations.getCreateItemOperation(entity,
-                    new PartitionKey(information.getPartitionKeyFieldValue(entity)));
-            } else {
-                return CosmosBulkOperations.getReplaceItemOperation(information.getId(entity).toString(),
-                    entity, new PartitionKey(information.getPartitionKeyFieldValue(entity)));
-            }
-        });
-
-        return operation.insertAll(this.information.getContainerName(), information.getJavaType(), cosmosItemOperationFlux);
+        return operation.insertAll(this.information, entities);
     }
 
     /**

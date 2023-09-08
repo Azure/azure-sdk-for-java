@@ -18,6 +18,7 @@ import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.Sort;
 import reactor.core.publisher.Flux;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -172,7 +173,7 @@ public interface CosmosOperations {
      * @param <T> type class of domain type
      * @return the inserted item
      */
-    <S extends T, T> Iterable<S> insertAll(String containerName, Class<T> domainType, Flux<CosmosItemOperation> cosmosItemOperationFlux);
+    <S extends T, T, ID extends Serializable> Iterable<S> insertAll(CosmosEntityInformation<T,ID> information, Iterable<S> entities);
 
     /**
      * Inserts item
