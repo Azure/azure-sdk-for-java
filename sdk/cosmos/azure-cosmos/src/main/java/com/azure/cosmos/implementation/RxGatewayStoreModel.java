@@ -568,8 +568,7 @@ public class RxGatewayStoreModel implements RxStoreModel {
 
     @Override
     public void enableThroughputControl(ThroughputControlStore throughputControlStore) {
-        // no-op
-        // Disable throughput control for gateway mode
+        this.throughputControlStore = throughputControlStore;
     }
 
     @Override
