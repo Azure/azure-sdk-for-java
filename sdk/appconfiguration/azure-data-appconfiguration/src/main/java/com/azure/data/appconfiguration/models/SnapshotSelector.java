@@ -109,8 +109,6 @@ public final class SnapshotSelector {
                 .map(statusEnumValue -> statusEnumValue.toString())
                 .collect(Collectors.joining(","));
         }
-
-        return String.format("SnapshotSelector(name=%s, status=%s, fields=%s)",
-            this.name, status, fields);
+        return "SnapshotSelector(name=" + name + ", status=" + status + ", fields=" + fields + ")";
     }
 }
