@@ -55,7 +55,7 @@ public class ExcludeRegionWithFaultInjectionTests extends TestSuiteBase {
     private Function<List<String>, List<String>> chooseFirstRegion = (regions) -> chooseKthRegion(regions, 1);
     private Function<List<String>, List<String>> chooseSecondRegion = (regions) -> chooseKthRegion(regions, 2);
     private Function<List<String>, List<String>> chooseThirdRegion = (regions) -> chooseKthRegion(regions, 3);
-
+    private Function<List<String>, List<String>> chooseLastRegion = (regions) -> chooseLastRegion(regions);
 
     @Factory(dataProvider = "clientBuilderSolelyDirectWithSessionConsistency")
     public ExcludeRegionWithFaultInjectionTests(CosmosClientBuilder cosmosClientBuilder) {
@@ -73,7 +73,6 @@ public class ExcludeRegionWithFaultInjectionTests extends TestSuiteBase {
 
     @DataProvider(name = "readSessionNotAvailableTestConfigs")
     public Object[][] readSessionNotAvailableTestConfigs() {
-
 
         return new Object[][] {
             {
@@ -120,7 +119,6 @@ public class ExcludeRegionWithFaultInjectionTests extends TestSuiteBase {
 
     // todo:
     //  1. inject fault for several op types
-    //  2. perform N mutations
     //  3. inject various types of faults
     @DataProvider(name = "regionExclusionTestConfigs")
     public Object[] regionExclusionTestConfigs() {
@@ -129,7 +127,36 @@ public class ExcludeRegionWithFaultInjectionTests extends TestSuiteBase {
                 .withChooseInitialExclusionRegions(this.chooseFirstRegion)
                 .withChooseFaultInjectionRegions(this.chooseFirstTwoRegions)
                 .withFaultInjectionOperationType(FaultInjectionOperationType.READ_ITEM)
-                .withRegionExclusionMutator(this.chooseFirstRegion)
+                // applied to the preferred regions
+                .withRegionExclusionMutator(this.chooseLastRegion)
+                .withExpectedResultBeforeMutation(new ExpectedResult(
+                    HttpConstants.StatusCodes.OK,
+                    HttpConstants.SubStatusCodes.UNKNOWN,
+                    this.chooseLastTwoRegions.apply(this.preferredRegions)
+                ))
+                .withExpectedResultAfterMutation(new ExpectedResult(
+                    HttpConstants.StatusCodes.NOTFOUND,
+                    HttpConstants.SubStatusCodes.READ_SESSION_NOT_AVAILABLE,
+                    this.chooseFirstTwoRegions.apply(this.preferredRegions)
+            )),
+            new MutationTestConfig()
+                .withChooseInitialExclusionRegions(this.chooseSecondRegion)
+                .withChooseFaultInjectionRegions(this.chooseFirstTwoRegions)
+                .withFaultInjectionOperationType(FaultInjectionOperationType.READ_ITEM)
+                // applied to the preferred regions
+                .withRegionExclusionMutator(this.chooseFirstTwoRegions)
+                .withExpectedResultBeforeMutation(new ExpectedResult(
+                    HttpConstants.StatusCodes.OK,
+                    HttpConstants.SubStatusCodes.UNKNOWN,
+                    Arrays.asList(
+                        this.chooseFirstRegion.apply(this.preferredRegions).get(0),
+                        this.chooseThirdRegion.apply(this.preferredRegions).get(0))
+                ))
+                .withExpectedResultAfterMutation(new ExpectedResult(
+                    HttpConstants.StatusCodes.OK,
+                    HttpConstants.SubStatusCodes.UNKNOWN,
+                    this.chooseLastRegion.apply(this.preferredRegions)
+            ))
         };
     }
 
@@ -204,8 +231,8 @@ public class ExcludeRegionWithFaultInjectionTests extends TestSuiteBase {
     }
 
     // todo: remove region hardcoding
-    @Test(groups = {"multi-master"}, dataProvider = "regionExclusionTestConfigs")
-    public void regionExclusionMutationOnClient_test(MutationTestConfig mutationTestConfig) {
+    @Test(groups = { "multi-master" }, dataProvider = "regionExclusionTestConfigs")
+    public void regionExclusionMutationOnClient_test(MutationTestConfig mutationTestConfig) throws InterruptedException {
         System.setProperty("COSMOS.MAX_RETRIES_IN_LOCAL_REGION_WHEN_REMOTE_REGION_PREFERRED", String.valueOf(2));
 
         CosmosAsyncClient clientWithPreferredRegions = null;
@@ -229,9 +256,13 @@ public class ExcludeRegionWithFaultInjectionTests extends TestSuiteBase {
                 .getContainer(this.cosmosAsyncContainer.getId());
 
             TestItem createdItem = TestItem.createNewItem();
+
+            Thread.sleep(5_000);
+
             containerForClientWithPreferredRegions.createItem(createdItem).block();
 
-            List<String> faultInjectionRegions = mutationTestConfig.chooseFaultInjectionRegions.apply(this.preferredRegions);
+            List<String> faultInjectionRegions =
+                mutationTestConfig.chooseFaultInjectionRegions.apply(this.preferredRegions);
 
             List<FaultInjectionRule> readSessionNotAvailableRules = buildReadSessionNotAvailableRules(
                 faultInjectionRegions, mutationTestConfig.faultInjectionOperationType);
@@ -240,57 +271,6 @@ public class ExcludeRegionWithFaultInjectionTests extends TestSuiteBase {
                 .configureFaultInjectionRules(containerForClientWithPreferredRegions, readSessionNotAvailableRules)
                 .block();
 
-            List<Function<List<String>, List<String>>> regionExclusionMutators = mutationTestConfig.regionExclusionMutator;
-
-            for (int i = -1; i < regionExclusionMutators.size(); i++) {
-
-                if (i < 0) {
-                    try {
-
-                        CosmosItemResponse<TestItem> itemResponse = containerForClientWithPreferredRegions.readItem(
-                            createdItem.getId(),
-                            new PartitionKey(createdItem.getId()),
-                            new CosmosItemRequestOptions(),
-                            TestItem.class).block();
-
-                        validateResponse(
-                            new OperationExecutionResult<TestItem>(
-                                itemResponse,
-                                null),
-                            new ExpectedResult(
-                                HttpConstants.StatusCodes.OK,
-                                HttpConstants.SubStatusCodes.UNKNOWN,
-                                Arrays.asList("East US", "West US")
-                            ));
-
-                    } catch (Exception exception) {
-
-                        if (exception instanceof CosmosException) {
-                            CosmosException cosmosException = Utils.as(exception, CosmosException.class);
-
-                            // todo: add exception based tests
-                            validateResponse(
-                                new OperationExecutionResult<TestItem>(
-                                    null,
-                                    cosmosException),
-                                new ExpectedResult(
-                                    HttpConstants.StatusCodes.NOTFOUND,
-                                    HttpConstants.SubStatusCodes.READ_SESSION_NOT_AVAILABLE,
-                                    Arrays.asList("")
-                                ));
-                        } else {
-                            fail("A CosmosException instance should have been thrown.");
-                        }
-                    }
-                }
-            }
-
-
-
-            excludeRegions.add("East US");
-
-            // setExcludeRegions with list -> South Central US, East US
-            clientWithPreferredRegions.setExcludeRegions(excludeRegions);
 
             try {
 
@@ -304,11 +284,7 @@ public class ExcludeRegionWithFaultInjectionTests extends TestSuiteBase {
                     new OperationExecutionResult<TestItem>(
                         itemResponse,
                         null),
-                    new ExpectedResult(
-                        HttpConstants.StatusCodes.OK,
-                        HttpConstants.SubStatusCodes.UNKNOWN,
-                        Arrays.asList("West US")
-                    ));
+                    mutationTestConfig.getExpectedResultBeforeMutation());
 
             } catch (Exception exception) {
 
@@ -320,16 +296,47 @@ public class ExcludeRegionWithFaultInjectionTests extends TestSuiteBase {
                         new OperationExecutionResult<TestItem>(
                             null,
                             cosmosException),
-                        new ExpectedResult(
-                            HttpConstants.StatusCodes.NOTFOUND,
-                            HttpConstants.SubStatusCodes.READ_SESSION_NOT_AVAILABLE,
-                            Arrays.asList("")
-                        ));
+                        mutationTestConfig.getExpectedResultBeforeMutation());
                 } else {
                     fail("A CosmosException instance should have been thrown.");
                 }
             }
 
+            Function<List<String>, List<String>> regionExclusionMutators = mutationTestConfig.regionExclusionMutator;
+
+            try {
+
+                List<String> mutatedExcludedRegions = regionExclusionMutators.apply(this.preferredRegions);
+
+                clientWithPreferredRegions.setExcludeRegions(mutatedExcludedRegions);
+
+                CosmosItemResponse<TestItem> itemResponse = containerForClientWithPreferredRegions.readItem(
+                    createdItem.getId(),
+                    new PartitionKey(createdItem.getId()),
+                    new CosmosItemRequestOptions(),
+                    TestItem.class).block();
+
+                validateResponse(
+                    new OperationExecutionResult<TestItem>(
+                        itemResponse,
+                        null),
+                    mutationTestConfig.getExpectedResultAfterMutation());
+
+            } catch (Exception exception) {
+
+                if (exception instanceof CosmosException) {
+                    CosmosException cosmosException = Utils.as(exception, CosmosException.class);
+
+                    // todo: add exception based tests
+                    validateResponse(
+                        new OperationExecutionResult<TestItem>(
+                            null,
+                            cosmosException),
+                        mutationTestConfig.getExpectedResultAfterMutation());
+                } else {
+                    fail("A CosmosException instance should have been thrown.");
+                }
+            }
 
         } finally {
             System.clearProperty("COSMOS.MAX_RETRIES_IN_LOCAL_REGION_WHEN_REMOTE_REGION_PREFERRED");
@@ -339,7 +346,6 @@ public class ExcludeRegionWithFaultInjectionTests extends TestSuiteBase {
 
     @AfterClass(groups = {"multi-master"})
     public void afterClass() {
-        //        safeDeleteDatabase(this.cosmosAsyncContainer.getDatabase());
         safeCloseAsync(this.cosmosAsyncClient);
     }
 
@@ -362,7 +368,7 @@ public class ExcludeRegionWithFaultInjectionTests extends TestSuiteBase {
             FaultInjectionRule readSessionNotAvailableRule = readSessionNotAvailableRuleBuilder
                 .condition(faultInjectionConditionForRegion)
                 .result(readSessionNotAvailableServerErrorResult)
-                .duration(Duration.ofSeconds(10))
+                .duration(Duration.ofMinutes(10))
                 .build();
 
             readSessionNotAvailableRules.add(readSessionNotAvailableRule);
@@ -399,6 +405,16 @@ public class ExcludeRegionWithFaultInjectionTests extends TestSuiteBase {
         }
 
         return Arrays.asList(regions.get(k - 1));
+    }
+
+    private static List<String> chooseLastRegion(List<String> regions) {
+        int regionCount = regions == null ? 0 : regions.size();
+
+        if (regionCount == 0) {
+            return new ArrayList<>();
+        }
+
+        return Arrays.asList(regions.get(regionCount - 1));
     }
 
     private static <T> void validateResponse(OperationExecutionResult<T> operationExecutionResult, ExpectedResult expectedResult) {
@@ -467,6 +483,8 @@ public class ExcludeRegionWithFaultInjectionTests extends TestSuiteBase {
             = ExcludeRegionWithFaultInjectionTests::chooseLastTwoRegions;
         private FaultInjectionOperationType faultInjectionOperationType = FaultInjectionOperationType.READ_ITEM;
         private Function<List<String>, List<String>> regionExclusionMutator = ExcludeRegionWithFaultInjectionTests::chooseLastTwoRegions;;
+        private ExpectedResult expectedResultBeforeMutation = null;
+        private ExpectedResult expectedResultAfterMutation = null;
 
         public MutationTestConfig withChooseFaultInjectionRegions(
             Function<List<String>, List<String>> chooseFaultInjectionRegions) {
@@ -491,6 +509,16 @@ public class ExcludeRegionWithFaultInjectionTests extends TestSuiteBase {
             return this;
         }
 
+        public MutationTestConfig withExpectedResultBeforeMutation(ExpectedResult expectedResultBeforeMutation) {
+            this.expectedResultBeforeMutation = expectedResultBeforeMutation;
+            return this;
+        }
+
+        public MutationTestConfig withExpectedResultAfterMutation(ExpectedResult expectedResultAfterMutation) {
+            this.expectedResultAfterMutation = expectedResultAfterMutation;
+            return this;
+        }
+
         public Function<List<String>, List<String>> getChooseFaultInjectionRegions() {
             return chooseFaultInjectionRegions;
         }
@@ -505,6 +533,14 @@ public class ExcludeRegionWithFaultInjectionTests extends TestSuiteBase {
 
         public Function<List<String>, List<String>> getRegionExclusionMutator() {
             return regionExclusionMutator;
+        }
+
+        public ExpectedResult getExpectedResultBeforeMutation() {
+            return expectedResultBeforeMutation;
+        }
+
+        public ExpectedResult getExpectedResultAfterMutation() {
+            return expectedResultAfterMutation;
         }
     }
 }
