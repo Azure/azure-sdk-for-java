@@ -4,6 +4,9 @@
 package com.azure.ai.metricsadvisor;
 
 import com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClientBuilder;
+import com.azure.ai.metricsadvisor.administration.models.AnomalyDetectionConfiguration;
+import com.azure.ai.metricsadvisor.administration.models.DataFeed;
+import com.azure.ai.metricsadvisor.administration.models.NotificationHook;
 import com.azure.ai.metricsadvisor.implementation.MetricsAdvisorImpl;
 import com.azure.ai.metricsadvisor.implementation.models.AlertingResultQuery;
 import com.azure.ai.metricsadvisor.implementation.models.AnomalyDimensionQuery;
@@ -75,7 +78,6 @@ import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
-import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
@@ -110,8 +112,18 @@ import static com.azure.ai.metricsadvisor.implementation.util.Utility.validateSt
 
 /**
  * <p>This class provides a synchronous client to connect to the Metrics Advisor Azure Cognitive Service.</p>
- * <p>This client provides synchronous methods to query information about the data being monitored,
- * list detected anomalies, alerts, incidents, and their root causes.
+ * <p>This client provides synchronous methods to perform:</p>
+ * <ol>
+ *     <li>Analyze root cause into specific dimension using the
+ *     {@link com.azure.ai.metricsadvisor.MetricsAdvisorClient#listIncidentRootCauses(String, String, Context)}
+ *     method with your respective data source.</li>
+ *     <li>Fetch incidents triggered for a particular detection configuration using the
+ *     {@link com.azure.ai.metricsadvisor.MetricsAdvisorClient#listIncidentsForDetectionConfig(String, OffsetDateTime, OffsetDateTime, ListIncidentsDetectedOptions, Context)}
+ *     method.</li>
+ *     <li>Fetch all the anomalies detected for a particular detction configuration using the
+ *     {@link com.azure.ai.metricsadvisor.MetricsAdvisorClient#listAnomaliesForDetectionConfig(String, OffsetDateTime, OffsetDateTime)}
+ *     method./li>
+ * </ol>
  *
  * <p>Service clients are the point of interaction for developers to use Azure Metrics Advisor.
  * {@link com.azure.ai.metricsadvisor.MetricsAdvisorClient} is the synchronous service client and

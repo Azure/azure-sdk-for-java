@@ -105,8 +105,18 @@ import static com.azure.core.util.FluxUtil.withContext;
 
 /**
  * <p>This class provides an asynchronous client to connect to the Metrics Advisor Azure Cognitive Service.</p>
- * <p>This client provides asynchronous methods to query information about the data being monitored,
- * list detected anomalies, alerts, incidents, and their root causes.
+ * <p>This client provides asynchronous methods to perform:</p>
+ * <ol>
+ *     <li>Analyze root cause into specific dimension using the
+ *     {@link com.azure.ai.metricsadvisor.MetricsAdvisorClient#listIncidentRootCauses(String, String, Context)}
+ *     method with your respective data source.</li>
+ *     <li>Fetch incidents triggered for a particular detection configuration using the
+ *     {@link com.azure.ai.metricsadvisor.MetricsAdvisorClient#listIncidentsForDetectionConfig(String, OffsetDateTime, OffsetDateTime, ListIncidentsDetectedOptions, Context)}
+ *     method.</li>
+ *     <li>Fetch all the anomalies detected for a particular detction configuration using the
+ *     {@link com.azure.ai.metricsadvisor.MetricsAdvisorClient#listAnomaliesForDetectionConfig(String, OffsetDateTime, OffsetDateTime)}
+ *     method./li>
+ * </ol>
  *
  * <p>Service clients are the point of interaction for developers to use Azure Metrics Advisor.
  * {@link com.azure.ai.metricsadvisor.MetricsAdvisorClient} is the synchronous service client and

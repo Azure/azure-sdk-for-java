@@ -3,8 +3,6 @@
 
 package com.azure.ai.metricsadvisor.administration;
 
-import com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient;
-import com.azure.ai.metricsadvisor.MetricsAdvisorClientBuilder;
 import com.azure.ai.metricsadvisor.MetricsAdvisorServiceVersion;
 import com.azure.ai.metricsadvisor.administration.models.AnomalyAlertConfiguration;
 import com.azure.ai.metricsadvisor.administration.models.AnomalyDetectionConfiguration;
