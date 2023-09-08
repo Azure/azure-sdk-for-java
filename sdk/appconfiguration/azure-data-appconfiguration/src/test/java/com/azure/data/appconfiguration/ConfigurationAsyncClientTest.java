@@ -1353,11 +1353,22 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
                 MINIMUM_RETENTION_PERIOD, Long.valueOf(1000), Long.valueOf(0), null, snapshotResult);
 
             // Retrieve a snapshot after creation
-            StepVerifier.create(client.getSnapshotWithResponse(name, null))
-                .assertNext(getSnapshot -> assertConfigurationSettingsSnapshotWithResponse(200, name,
-                    SnapshotStatus.READY, filters, CompositionType.KEY,
-                    MINIMUM_RETENTION_PERIOD, Long.valueOf(1000), Long.valueOf(0), null,
-                    getSnapshot))
+            StepVerifier.create(client.getSnapshotWithResponse(name,
+                    Arrays.asList(SnapshotFields.NAME, SnapshotFields.STATUS, SnapshotFields.FILTERS)))
+                .assertNext(getSnapshot -> {
+                    assertEquals(200, getSnapshot.getStatusCode());
+
+                    ConfigurationSettingsSnapshot actualSnapshot = getSnapshot.getValue();
+                    assertEquals(name, actualSnapshot.getName());
+                    assertEquals(SnapshotStatus.READY, actualSnapshot.getStatus());
+                    assertEqualsSnapshotFilters(filters, actualSnapshot.getFilters());
+                    assertNull(actualSnapshot.getCompositionType());
+                    assertNull(actualSnapshot.getRetentionPeriod());
+                    assertNull(actualSnapshot.getCreatedAt());
+                    assertNull(actualSnapshot.getItemCount());
+                    assertNull(actualSnapshot.getSizeInBytes());
+                    assertNull(actualSnapshot.getETag());
+                })
                 .verifyComplete();
 
             // Archived the snapshot, it will be deleted automatically when retention period expires.

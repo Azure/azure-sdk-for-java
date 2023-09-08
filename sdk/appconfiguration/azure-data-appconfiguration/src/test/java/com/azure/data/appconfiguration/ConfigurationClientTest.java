@@ -1048,10 +1048,20 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
                 MINIMUM_RETENTION_PERIOD, Long.valueOf(1000), Long.valueOf(0), null, snapshotResult);
 
             // Retrieve a snapshot after creation
-            Response<ConfigurationSettingsSnapshot> getSnapshot = client.getSnapshotWithResponse(name, null, Context.NONE);
-            assertConfigurationSettingsSnapshotWithResponse(200, name,
-                SnapshotStatus.READY, filters, CompositionType.KEY,
-                MINIMUM_RETENTION_PERIOD, Long.valueOf(1000), Long.valueOf(0), null, getSnapshot);
+            Response<ConfigurationSettingsSnapshot> getSnapshot = client.getSnapshotWithResponse(name,
+                Arrays.asList(SnapshotFields.NAME, SnapshotFields.STATUS, SnapshotFields.FILTERS), Context.NONE);
+
+            assertEquals(200, getSnapshot.getStatusCode());
+            ConfigurationSettingsSnapshot actualSnapshot = getSnapshot.getValue();
+            assertEquals(name, actualSnapshot.getName());
+            assertEquals(SnapshotStatus.READY, actualSnapshot.getStatus());
+            assertEqualsSnapshotFilters(filters, actualSnapshot.getFilters());
+            assertNull(actualSnapshot.getCompositionType());
+            assertNull(actualSnapshot.getRetentionPeriod());
+            assertNull(actualSnapshot.getCreatedAt());
+            assertNull(actualSnapshot.getItemCount());
+            assertNull(actualSnapshot.getSizeInBytes());
+            assertNull(actualSnapshot.getETag());
 
             // Archived the snapshot, it will be deleted automatically when retention period expires.
             ConfigurationSettingsSnapshot archivedSnapshot = client.archiveSnapshot(name);
