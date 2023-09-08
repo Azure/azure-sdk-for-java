@@ -47,6 +47,8 @@ import java.nio.charset.StandardCharsets;
 import java.util.EnumSet;
 import java.util.function.Consumer;
 
+import static com.azure.core.util.FluxUtil.monoError;
+
 public abstract class RestProxyBase {
     static final String MUST_IMPLEMENT_PAGE_ERROR =
         "Unable to create PagedResponse<T>. Body must be of a type that implements: " + Page.class;
@@ -110,7 +112,7 @@ public abstract class RestProxyBase {
 
         } catch (IOException e) {
             if (isAsync) {
-                return Mono.error(LOGGER.logExceptionAsError(Exceptions.propagate(e)));
+                return monoError(LOGGER, Exceptions.propagate(e));
             } else {
                 throw LOGGER.logExceptionAsError(Exceptions.propagate(e));
             }
@@ -406,6 +408,11 @@ public abstract class RestProxyBase {
      */
     static ByteBuffer serializeAsXmlSerializable(Object bodyContent) throws IOException {
         return ReflectionSerializable.serializeXmlSerializableToByteBuffer(bodyContent);
+    }
+
+    @SuppressWarnings("unchecked")
+    static <E extends Exception> void sneakyThrows(Exception e) throws E {
+        throw (E) e;
     }
 }
 

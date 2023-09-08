@@ -54,14 +54,14 @@ public class SyncRestProxy extends RestProxyBase {
         return httpPipeline.sendSync(request, contextData);
     }
 
+    @SuppressWarnings({"try", "unused"})
     @Override
     public Object invoke(Object proxy, Method method, RequestOptions options, EnumSet<ErrorOptions> errorOptions,
         Consumer<HttpRequest> requestCallback, SwaggerMethodParser methodParser, HttpRequest request, Context context) {
         HttpResponseDecoder.HttpDecodedResponse decodedResponse = null;
 
         context = startTracingSpan(methodParser, context);
-        AutoCloseable scope = tracer.makeSpanCurrent(context);
-        try {
+        try (AutoCloseable scope = tracer.makeSpanCurrent(context)) {
             // If there is 'RequestOptions' apply its request callback operations before validating the body.
             // This is because the callbacks may mutate the request body.
             if (options != null && requestCallback != null) {
@@ -80,15 +80,10 @@ public class SyncRestProxy extends RestProxyBase {
 
             return handleRestReturnType(decodedResponse, methodParser, methodParser.getReturnType(), context, options,
                 errorOptions);
-        } catch (RuntimeException e) {
+        } catch (Exception e) {
             tracer.end(null, e, context);
-            throw LOGGER.logExceptionAsError(e);
-        } finally {
-            try {
-                scope.close();
-            } catch (Exception e) {
-                LOGGER.verbose("Failed to close scope");
-            }
+            sneakyThrows(e);
+            return null;
         }
     }
 
@@ -131,11 +126,8 @@ public class SyncRestProxy extends RestProxyBase {
                 decodedResponse.getSourceResponse(), responseBytes, decodedBody);
         }
 
-        if (e instanceof RuntimeException) {
-            throw LOGGER.logExceptionAsError((RuntimeException) e);
-        } else {
-            throw LOGGER.logExceptionAsError(new RuntimeException(e));
-        }
+        sneakyThrows(e);
+        return null;
     }
 
     private Object handleRestResponseReturnType(HttpResponseDecoder.HttpDecodedResponse response,
