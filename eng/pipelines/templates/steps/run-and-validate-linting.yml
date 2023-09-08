@@ -90,6 +90,9 @@ steps:
       jdkVersionOption: ${{ parameters.JavaBuildVersion }}
       jdkArchitectureOption: 'x64'
       publishJUnitResults: false
-      goals: 'javadoc:jar codesnippet:verify-codesnippet'
+      ${{ if ne(parameters.SDKType, 'client') }}:
+        goals: 'javadoc:jar'
+      ${{ else }}:
+        goals: 'javadoc:jar codesnippet:verify-codesnippet'
     continueOnError: ${{ parameters.ContinueOnError }}
     condition: or(eq(coalesce(variables['IsLatestNonLtsJdk'], true), true), and(${{ parameters.RunLinting }}, succeeded()))
