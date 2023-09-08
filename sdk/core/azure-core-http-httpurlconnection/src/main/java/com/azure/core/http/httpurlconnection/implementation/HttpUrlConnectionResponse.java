@@ -1,15 +1,13 @@
 package com.azure.core.http.httpurlconnection.implementation;
 
-import com.azure.core.http.HttpHeader;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
+import com.azure.core.http.*;
+import com.azure.core.util.CoreUtils;
+import com.azure.core.util.FluxUtil;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
 
 public final class HttpUrlConnectionResponse extends HttpResponse {
 
@@ -29,13 +27,16 @@ public final class HttpUrlConnectionResponse extends HttpResponse {
         return this.responseCode;
     }
 
-    /**
-     * @deprecated
-     */
     @Override
+    @Deprecated
     public String getHeaderValue(String s) {
         HttpHeader header = this.headers.get(s);
         return header != null ? header.getValue() : null;
+    }
+
+    @Override
+    public String getHeaderValue(HttpHeaderName headerName) {
+        return headers.getValue(headerName);
     }
 
     @Override
@@ -53,16 +54,21 @@ public final class HttpUrlConnectionResponse extends HttpResponse {
 
     @Override
     public Mono<byte[]> getBodyAsByteArray() {
-        return Mono.just(this.body);
+        return FluxUtil.collectBytesFromNetworkResponse(getBody(), getHeaders())
+            // Map empty byte[] into Mono.empty, this matches how the other HttpResponse implementations handle this.
+            .flatMap(bytes -> (bytes == null || bytes.length == 0)
+                ? Mono.empty()
+                : Mono.just(bytes));
     }
 
     @Override
     public Mono<String> getBodyAsString() {
-        return getBodyAsString(StandardCharsets.UTF_8);
+        return getBodyAsByteArray().map(bytes -> CoreUtils.bomAwareToString(bytes,
+            getHeaderValue(HttpHeaderName.CONTENT_TYPE)));
     }
 
     @Override
     public Mono<String> getBodyAsString(Charset charset) {
-        return Mono.just(new String(this.body, charset));
+        return getBodyAsByteArray().map(bytes -> new String(bytes, charset));
     }
 }
