@@ -7,7 +7,7 @@ package com.azure.messaging.eventgrid.systemevents;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Schema of the Data property of an EventGridEvent for MQTT Client Created Or Updated event. */
+/** Schema of the Data property of an EventGridEvent for MQTT Client state changes. */
 @Fluent
 public class EventGridMqttClientEventData {
     /*
