@@ -11,7 +11,6 @@ import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
-import com.azure.core.http.policy.TimeoutPolicy;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.test.TestMode;
@@ -42,7 +41,6 @@ import java.io.UnsupportedEncodingException;
 import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.InetSocketAddress;
 import java.net.Proxy;
@@ -289,8 +287,7 @@ public abstract class ResourceManagerTestProxyTestBase extends TestProxyTestBase
             }
 
             List<HttpPipelinePolicy> policies = new ArrayList<>();
-            policies.add(new TimeoutPolicy(Duration.ofMinutes(1)));
-            if (!interceptorManager.isLiveMode() && !testContextManager.doNotRecordTest()) {
+            if (interceptorManager.isRecordMode() && !testContextManager.doNotRecordTest()) {
                 policies.add(this.interceptorManager.getRecordPolicy());
                 addSanitizers();
             }
@@ -420,10 +417,7 @@ public abstract class ResourceManagerTestProxyTestBase extends TestProxyTestBase
             setAccessible(constructor);
             return constructor.newInstance(httpPipeline, profile);
 
-        } catch (NoSuchMethodException
-            | IllegalAccessException
-            | InstantiationException
-            | InvocationTargetException ex) {
+        } catch (ReflectiveOperationException ex) {
             throw LOGGER.logExceptionAsError(new RuntimeException(ex));
         }
     }
