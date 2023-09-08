@@ -1,8 +1,7 @@
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License.
+// ** To be implemented alongside options ** //
 
-
-        // ** Commented out until proxies and configurations are implemented ** //
+//// Copyright (c) Microsoft Corporation. All rights reserved.
+//// Licensed under the MIT License.
 //package com.azure.core.http.httpurlconnection;
 //
 //import com.azure.core.http.HttpClient;
