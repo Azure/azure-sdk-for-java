@@ -27,7 +27,6 @@ import java.nio.ByteBuffer;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -124,9 +123,9 @@ public class ChangefeedTests {
     }
 
     private static Stream<Arguments> changefeedLastConsumablePopulatedSupplier() {
-        // endTime || safeEndTime
+        // endTime, safeEndTime
         return Stream.of(
-            Arguments.of(OffsetDateTime.MAX, OffsetDateTime.of(2020, 5, 4, 19, 0, 0, 0, ZoneOffset.UTC)), // endTime is after. Limited by lastConsumable.
+            Arguments.of(OffsetDateTime.MAX, OffsetDateTime.of(2020, 5, 4, 20, 0, 0, 0, ZoneOffset.UTC)), // endTime is after. Limited by lastConsumable.
             Arguments.of(OffsetDateTime.of(2019, 5, 4, 19, 0, 0, 0, ZoneOffset.UTC), OffsetDateTime.of(2019, 5, 4, 19, 0, 0, 0, ZoneOffset.UTC)) // endTime is before. Limited by endTime.
         );
     }
@@ -141,7 +140,7 @@ public class ChangefeedTests {
         new PagedResponseBase<>(null, 200, null, Arrays.asList(
             new BlobItem().setName("idx/segments/" + year + "/01/01/1200/meta.json"),
             new BlobItem().setName("idx/segments/" + year + "/01/01/0300/meta.json"),
-            new BlobItem().setName("idx/segments/"+ year +"/01/01/0500/meta.json"),
+            new BlobItem().setName("idx/segments/" + year + "/01/01/0500/meta.json"),
             new BlobItem().setName("idx/segments/" + year + "/01/01/0600/meta.json")), null, null));
 
     /* No options. */
@@ -184,33 +183,18 @@ public class ChangefeedTests {
     }
 
     private static Stream<Arguments> changefeedStartTimeSupplier() {
-        // startTime || yearPaths | eventNums
+        // startTime, yearPaths, eventNums
         return Stream.of(
-            Arguments.of(OffsetDateTime.of(2016, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC),
-                Arrays.asList("idx/segments/2017", "idx/segments/2018", "idx/segments/2019", "idx/segments/2020"),
-                Arrays.asList(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15)),
-            Arguments.of(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC),
-                Arrays.asList("idx/segments/2017", "idx/segments/2018", "idx/segments/2019", "idx/segments/2020"),
-                Arrays.asList(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15)),
-            Arguments.of(OffsetDateTime.of(2018, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC),
-                Arrays.asList("idx/segments/2018", "idx/segments/2019", "idx/segments/2020"),
-                Arrays.asList(4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15)),
-            Arguments.of(OffsetDateTime.of(2019, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC),
-                Arrays.asList("idx/segments/2019", "idx/segments/2020"), Arrays.asList(8, 9, 10, 11, 12, 13, 14, 15)),
-            Arguments.of(OffsetDateTime.of(2020, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC),
-                Collections.singletonList("idx/segments/2020"), Arrays.asList(12, 13, 14, 15)),
-            Arguments.of(OffsetDateTime.of(2021, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC),
-                Collections.emptyList(), Collections.emptyList()),
-            Arguments.of(OffsetDateTime.of(2017, 1, 1, 2, 0, 0, 0, ZoneOffset.UTC),
-                Arrays.asList("idx/segments/2017", "idx/segments/2018", "idx/segments/2019", "idx/segments/2020"),
-                Arrays.asList(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11)), // All segments taken from year.
-            Arguments.of(OffsetDateTime.of(2018, 1, 2, 0, 0, 0, 0, ZoneOffset.UTC),
-                Arrays.asList("idx/segments/2018", "idx/segments/2019", "idx/segments/2020"),
-                Arrays.asList(4, 5, 6, 7, 8, 9, 10, 11)), // No segments taken from year.
-            Arguments.of(OffsetDateTime.of(2019, 1, 1, 6, 0, 0, 0, ZoneOffset.UTC),
-                Arrays.asList("idx/segments/2019", "idx/segments/2020"), Arrays.asList(10, 11, 12, 13, 14, 15)), // Partial segments taken from year. Checks isEqual.
-            Arguments.of(OffsetDateTime.of(2020, 1, 1, 8, 0, 0, 0, ZoneOffset.UTC),
-                Collections.singletonList("idx/segments/2020"), Collections.singletonList(15)) // Partial segments taken from year. Checks is strictly before.
+            Arguments.of(OffsetDateTime.of(2016, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC), Arrays.asList("idx/segments/2017", "idx/segments/2018", "idx/segments/2019", "idx/segments/2020"), Arrays.asList(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15)),
+            Arguments.of(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC), Arrays.asList("idx/segments/2017", "idx/segments/2018", "idx/segments/2019", "idx/segments/2020"), Arrays.asList(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15)),
+            Arguments.of(OffsetDateTime.of(2018, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC), Arrays.asList("idx/segments/2018", "idx/segments/2019", "idx/segments/2020"), Arrays.asList(4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15)),
+            Arguments.of(OffsetDateTime.of(2019, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC), Arrays.asList("idx/segments/2019", "idx/segments/2020"), Arrays.asList(8, 9, 10, 11, 12, 13, 14, 15)),
+            Arguments.of(OffsetDateTime.of(2020, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC), Arrays.asList("idx/segments/2020"), Arrays.asList(12, 13, 14, 15)),
+            Arguments.of(OffsetDateTime.of(2021, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC), Arrays.asList(), Arrays.asList()),
+            Arguments.of(OffsetDateTime.of(2017, 1, 1, 2, 0, 0, 0, ZoneOffset.UTC), Arrays.asList("idx/segments/2017", "idx/segments/2018", "idx/segments/2019", "idx/segments/2020"), Arrays.asList(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15)), // All segments taken from year.
+            Arguments.of(OffsetDateTime.of(2018, 1, 2, 0, 0, 0, 0, ZoneOffset.UTC), Arrays.asList("idx/segments/2018", "idx/segments/2019", "idx/segments/2020"), Arrays.asList(8, 9, 10, 11, 12, 13, 14, 15)), // No segments taken from year.
+            Arguments.of(OffsetDateTime.of(2019, 1, 1, 6, 0, 0, 0, ZoneOffset.UTC), Arrays.asList("idx/segments/2019", "idx/segments/2020"), Arrays.asList(10, 11, 12, 13, 14, 15)), // Partial segments taken from year. Checks isEqual.
+            Arguments.of(OffsetDateTime.of(2020, 1, 1, 8, 0, 0, 0, ZoneOffset.UTC), Arrays.asList("idx/segments/2020"), Arrays.asList(15)) // Partial segments taken from year. Checks is strictly before.
         );
     }
 
@@ -234,34 +218,18 @@ public class ChangefeedTests {
     }
 
     private static Stream<Arguments> changefeedEndTimeSupplier() {
-        // endTime || yearPaths | eventNums
+        // endTime, yearPaths, eventNums
         return Stream.of(
-            Arguments.of(OffsetDateTime.of(2016, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC), Collections.emptyList(),
-                Collections.emptyList()),
-            Arguments.of(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC),
-                Collections.singletonList("idx/segments/2017"),
-                Arrays.asList(0, 1, 2, 3)), Arguments.of(OffsetDateTime.of(2018, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC),
-                Arrays.asList("idx/segments/2017", "idx/segments/2018"), Arrays.asList(0, 1, 2, 3, 4, 5, 6, 7)),
-            Arguments.of(OffsetDateTime.of(2019, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC),
-                Arrays.asList("idx/segments/2017", "idx/segments/2018", "idx/segments/2019"),
-                Arrays.asList(0, 1, 2, 3, 4, 5, 6, 7)),
-            Arguments.of(OffsetDateTime.of(2020, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC),
-                Arrays.asList("idx/segments/2017", "idx/segments/2018", "idx/segments/2019", "idx/segments/2020"),
-                Arrays.asList(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11)),
-            Arguments.of(OffsetDateTime.of(2021, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC),
-                Arrays.asList("idx/segments/2017", "idx/segments/2018", "idx/segments/2019", "idx/segments/2020"),
-                Arrays.asList(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15)),
-            Arguments.of(OffsetDateTime.of(2017, 1, 1, 2, 0, 0, 0, ZoneOffset.UTC),
-                Collections.singletonList("idx/segments/2017"), Arrays.asList(0, 1, 2, 3)), // All segments taken from year.
-            Arguments.of(OffsetDateTime.of(2018, 1, 2, 0, 0, 0, 0, ZoneOffset.UTC),
-                Collections.singletonList("idx/segments/2018"), Arrays.asList(0, 1, 2, 3)), // No segments taken from year.
-            Arguments.of(OffsetDateTime.of(2019, 1, 1, 6, 0, 0, 0, ZoneOffset.UTC),
-                Collections.singletonList("idx/segments/2019"),
-                Arrays.asList(0, 1, 2, 3, 4, 5, 6, 7, 8, 9)), // Partial segments taken from year. Checks isEqual.
-            Arguments.of(OffsetDateTime.of(2020, 1, 1, 8, 0, 0, 0, ZoneOffset.UTC),
-                Collections.singletonList("idx/segments/2020"),
-                Arrays.asList(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14))
-            // Partial segments taken from year. Checks is strictly before.
+            Arguments.of(OffsetDateTime.of(2016, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC), Arrays.asList(), Arrays.asList()),
+            Arguments.of(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC), Arrays.asList("idx/segments/2017"), Arrays.asList()),
+            Arguments.of(OffsetDateTime.of(2018, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC), Arrays.asList("idx/segments/2017", "idx/segments/2018"), Arrays.asList(0, 1, 2, 3)),
+            Arguments.of(OffsetDateTime.of(2019, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC), Arrays.asList("idx/segments/2017", "idx/segments/2018", "idx/segments/2019"), Arrays.asList(0, 1, 2, 3, 4, 5, 6, 7)),
+            Arguments.of(OffsetDateTime.of(2020, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC), Arrays.asList("idx/segments/2017", "idx/segments/2018", "idx/segments/2019", "idx/segments/2020"), Arrays.asList(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11)),
+            Arguments.of(OffsetDateTime.of(2021, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC), Arrays.asList("idx/segments/2017", "idx/segments/2018", "idx/segments/2019", "idx/segments/2020"), Arrays.asList(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15)),
+            Arguments.of(OffsetDateTime.of(2017, 12, 12, 2, 0, 0, 0, ZoneOffset.UTC), Arrays.asList("idx/segments/2017"), Arrays.asList(0, 1, 2, 3)), // All segments taken from year.
+            Arguments.of(OffsetDateTime.of(2018, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC), Arrays.asList("idx/segments/2017", "idx/segments/2018"), Arrays.asList(0, 1, 2, 3)), // No segments taken from year.
+            Arguments.of(OffsetDateTime.of(2019, 1, 1, 6, 0, 0, 0, ZoneOffset.UTC), Arrays.asList("idx/segments/2017", "idx/segments/2018", "idx/segments/2019"), Arrays.asList(0, 1, 2, 3, 4, 5, 6, 7, 8, 9)), // Partial segments taken from year. Checks isEqual.
+            Arguments.of(OffsetDateTime.of(2020, 1, 1, 8, 0, 0, 0, ZoneOffset.UTC), Arrays.asList("idx/segments/2017", "idx/segments/2018", "idx/segments/2019", "idx/segments/2020"), Arrays.asList(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14)) // Partial segments taken from year. Checks is strictly before.
         );
     }
 
@@ -304,7 +272,7 @@ public class ChangefeedTests {
     }
 
     private static Stream<Arguments> changefeedCursorStartTimeSupplier() {
-        // cursorNum || yearPaths | eventNums
+        // cursorNum, yearPaths, eventNums
         return Stream.of(
             Arguments.of(0, Arrays.asList("idx/segments/2017", "idx/segments/2018", "idx/segments/2019", "idx/segments/2020"), Arrays.asList(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15)),
             Arguments.of(1, Arrays.asList("idx/segments/2017", "idx/segments/2018", "idx/segments/2019", "idx/segments/2020"), Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15)),
@@ -318,10 +286,10 @@ public class ChangefeedTests {
             Arguments.of(9, Arrays.asList("idx/segments/2019", "idx/segments/2020"), Arrays.asList(9, 10, 11, 12, 13, 14, 15)),
             Arguments.of(10, Arrays.asList("idx/segments/2019", "idx/segments/2020"), Arrays.asList(10, 11, 12, 13, 14, 15)),
             Arguments.of(11, Arrays.asList("idx/segments/2019", "idx/segments/2020"), Arrays.asList(11, 12, 13, 14, 15)),
-            Arguments.of(12, Collections.singletonList("idx/segments/2020"), Arrays.asList(12, 13, 14, 15)),
-            Arguments.of(13, Collections.singletonList("idx/segments/2020"), Arrays.asList(13, 14, 15)),
-            Arguments.of(14, Collections.singletonList("idx/segments/2020"), Arrays.asList(14, 15)),
-            Arguments.of(15, Collections.singletonList("idx/segments/2020"), Collections.singletonList(15))
+            Arguments.of(12, Arrays.asList("idx/segments/2020"), Arrays.asList(12, 13, 14, 15)),
+            Arguments.of(13, Arrays.asList("idx/segments/2020"), Arrays.asList(13, 14, 15)),
+            Arguments.of(14, Arrays.asList("idx/segments/2020"), Arrays.asList(14, 15)),
+            Arguments.of(15, Arrays.asList("idx/segments/2020"), Arrays.asList(15))
         );
     }
 
@@ -365,12 +333,12 @@ public class ChangefeedTests {
     }
 
     public static Stream<Arguments> changefeedCursorEndTimeSupplier() {
-        // cursorNum || yearPaths | eventNums
+        // cursorNum, yearPaths, eventNums
         return Stream.of(
-            Arguments.of(0, Collections.singletonList("idx/segments/2017"), Collections.emptyList()),
-            Arguments.of(1, Collections.singletonList("idx/segments/2017"), Collections.singletonList(0)),
-            Arguments.of(2, Collections.singletonList("idx/segments/2017"), Arrays.asList(0, 1)),
-            Arguments.of(3, Collections.singletonList("idx/segments/2017"), Arrays.asList(0, 1, 2)),
+            Arguments.of(0, Arrays.asList("idx/segments/2017"), Arrays.asList()),
+            Arguments.of(1, Arrays.asList("idx/segments/2017"), Arrays.asList(0)),
+            Arguments.of(2, Arrays.asList("idx/segments/2017"), Arrays.asList(0, 1)),
+            Arguments.of(3, Arrays.asList("idx/segments/2017"), Arrays.asList(0, 1, 2)),
             Arguments.of(4, Arrays.asList("idx/segments/2017", "idx/segments/2018"), Arrays.asList(0, 1, 2, 3)),
             Arguments.of(5, Arrays.asList("idx/segments/2017", "idx/segments/2018"), Arrays.asList(0, 1, 2, 3, 4)),
             Arguments.of(6, Arrays.asList("idx/segments/2017", "idx/segments/2018"), Arrays.asList(0, 1, 2, 3, 4, 5)),

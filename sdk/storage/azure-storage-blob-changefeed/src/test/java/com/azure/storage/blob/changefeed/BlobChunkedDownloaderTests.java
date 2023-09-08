@@ -17,7 +17,11 @@ import com.azure.storage.blob.BlobServiceAsyncClient;
 import com.azure.storage.blob.BlobServiceClient;
 import com.azure.storage.blob.BlobServiceClientBuilder;
 import com.azure.storage.blob.models.BlobContainerItem;
+import com.azure.storage.blob.models.BlobDownloadAsyncResponse;
+import com.azure.storage.blob.models.BlobRange;
+import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobStorageException;
+import com.azure.storage.blob.models.DownloadRetryOptions;
 import com.azure.storage.blob.models.ListBlobContainersOptions;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.test.shared.ServiceVersionValidationPolicy;
@@ -29,8 +33,8 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
-import org.mockito.Mockito;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.lang.reflect.Method;
 import java.nio.ByteBuffer;
@@ -46,10 +50,6 @@ import java.util.zip.CRC32;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyBoolean;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
 
 public class BlobChunkedDownloaderTests extends TestProxyTestBase {
     protected static final TestEnvironment ENV = TestEnvironment.getInstance();
@@ -58,7 +58,7 @@ public class BlobChunkedDownloaderTests extends TestProxyTestBase {
         .connectionPool(new ConnectionPool(50, 5, TimeUnit.MINUTES))
         .build();
 
-    private BlobAsyncClient bc;
+    private DownloadWithResponseTrackingClient bc;
     private BlobChunkedDownloaderFactory factory;
 
     private String prefix;
@@ -73,7 +73,7 @@ public class BlobChunkedDownloaderTests extends TestProxyTestBase {
 
         BlobContainerAsyncClient cc = primaryBlobServiceAsyncClient.getBlobContainerAsyncClient(generateContainerName());
         cc.create().block();
-        bc = Mockito.spy(cc.getBlobAsyncClient(generateBlobName()));
+        bc = new DownloadWithResponseTrackingClient(cc.getBlobAsyncClient(generateBlobName()));
         factory = new BlobChunkedDownloaderFactory(cc);
     }
 
@@ -145,7 +145,7 @@ public class BlobChunkedDownloaderTests extends TestProxyTestBase {
         byte[] output = downloadHelper(new BlobChunkedDownloader(bc, blockSize, 0));
 
         TestUtils.assertArraysEqual(input, output);
-        verify(bc.downloadWithResponse(any(), any(), any(), anyBoolean()), times(numDownloads));
+        assertEquals(numDownloads, bc.downloadCalls);
     }
 
     private static Stream<Arguments> downloadBlockSizeSupplier() {
@@ -164,7 +164,7 @@ public class BlobChunkedDownloaderTests extends TestProxyTestBase {
         byte[] output = downloadHelper(new BlobChunkedDownloader(bc, Constants.KB, offset));
 
         TestUtils.assertArraysEqual(input, offset, output, 0, input.length - offset);
-        verify(bc.downloadWithResponse(any(), any(), any(), anyBoolean()));
+        assertEquals(1, bc.downloadCalls);
     }
 
     @ParameterizedTest
@@ -174,7 +174,7 @@ public class BlobChunkedDownloaderTests extends TestProxyTestBase {
         byte[] output = downloadHelper(new BlobChunkedDownloader(bc, Constants.KB, offset));
 
         TestUtils.assertArraysEqual(input, offset, output, 0, input.length - offset);
-        verify(bc.downloadWithResponse(any(), any(), any(), anyBoolean()), times(numDownloads));
+        assertEquals(numDownloads, bc.downloadCalls);
     }
 
     private static Stream<Arguments> downloadBlockSizeOffsetSupplier() {
@@ -204,7 +204,7 @@ public class BlobChunkedDownloaderTests extends TestProxyTestBase {
 
         assertEquals(downloadSize, output.length);
         TestUtils.assertArraysEqual(input, 0, output, 0, downloadSize);
-        verify(bc.downloadWithResponse(any(), any(), any(), anyBoolean()));
+        assertEquals(1, bc.downloadCalls);
     }
 
     private static Stream<Arguments> downloadPartialSupplier() {
@@ -263,6 +263,26 @@ public class BlobChunkedDownloaderTests extends TestProxyTestBase {
             }
         } else {
             return interceptorManager.getPlaybackClient();
+        }
+    }
+
+    private static final class DownloadWithResponseTrackingClient extends BlobAsyncClient {
+        private final BlobAsyncClient wrapped;
+        private int downloadCalls;
+
+        private DownloadWithResponseTrackingClient(BlobAsyncClient wrapped) {
+            super(wrapped.getHttpPipeline(), wrapped.getBlobUrl(), wrapped.getServiceVersion(),
+                wrapped.getAccountName(), wrapped.getContainerName(), wrapped.getBlobName(), wrapped.getSnapshotId(),
+                wrapped.getCustomerProvidedKey(), null, wrapped.getVersionId());
+
+            this.wrapped = wrapped;
+        }
+
+        @Override
+        public Mono<BlobDownloadAsyncResponse> downloadWithResponse(BlobRange range, DownloadRetryOptions options,
+            BlobRequestConditions requestConditions, boolean getRangeContentMd5) {
+            downloadCalls++;
+            return super.downloadWithResponse(range, options, requestConditions, getRangeContentMd5);
         }
     }
 }

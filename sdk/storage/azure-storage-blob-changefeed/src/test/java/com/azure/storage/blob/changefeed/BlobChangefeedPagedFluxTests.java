@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.storage.blob.changefeed;
 
-import com.azure.storage.blob.BlobContainerAsyncClient;
 import com.azure.storage.blob.changefeed.implementation.models.BlobChangefeedEventWrapper;
 import com.azure.storage.blob.changefeed.implementation.models.ChangefeedCursor;
 import com.azure.storage.blob.changefeed.models.BlobChangefeedEvent;
@@ -154,7 +153,7 @@ public class BlobChangefeedPagedFluxTests {
         String randomCursor = "randomCursor";
         OffsetDateTime startTime = OffsetDateTime.MIN;
         OffsetDateTime endTime = OffsetDateTime.MAX;
-        when(mockChangefeedFactory.getChangefeed( any(OffsetDateTime.class), any(OffsetDateTime.class)))
+        when(mockChangefeedFactory.getChangefeed(any(OffsetDateTime.class), any(OffsetDateTime.class)))
             .thenReturn(mockChangefeed);
 
         BlobChangefeedPagedFlux pagedFlux = new BlobChangefeedPagedFlux(mockChangefeedFactory, startTime, endTime);
