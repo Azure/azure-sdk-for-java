@@ -35,7 +35,6 @@ import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.tracing.Tracer;
 import com.azure.json.JsonSerializable;
 import reactor.core.Exceptions;
-import reactor.core.publisher.Mono;
 
 import java.io.IOException;
 import java.lang.invoke.MethodHandle;
@@ -247,7 +246,6 @@ public abstract class RestProxyBase {
         return request;
     }
 
-    @SuppressWarnings("unchecked")
     private HttpRequest configRequest(final HttpRequest request, final SwaggerMethodParser methodParser,
         SerializerAdapter serializerAdapter, boolean isAsync, final Object[] args) throws IOException {
         final Object bodyContentObject = methodParser.setBody(args, serializer);
@@ -307,8 +305,8 @@ public abstract class RestProxyBase {
      * @param responseDecodedContent the decoded response content to use when constructing exception
      * @return the Unexpected Exception
      */
-    public Exception instantiateUnexpectedException(final UnexpectedExceptionInformation exception,
-        final HttpResponse httpResponse, final byte[] responseContent, final Object responseDecodedContent) {
+    public static HttpResponseException instantiateUnexpectedException(UnexpectedExceptionInformation exception,
+        HttpResponse httpResponse, byte[] responseContent, Object responseDecodedContent) {
         StringBuilder exceptionMessage = new StringBuilder("Status code ")
             .append(httpResponse.getStatusCode())
             .append(", ");
@@ -320,7 +318,7 @@ public abstract class RestProxyBase {
         } else if (responseContent == null || responseContent.length == 0) {
             exceptionMessage.append("(empty body)");
         } else {
-            exceptionMessage.append("\"").append(new String(responseContent, StandardCharsets.UTF_8)).append("\"");
+            exceptionMessage.append('\"').append(new String(responseContent, StandardCharsets.UTF_8)).append('\"');
         }
 
         // If the decoded response content is on of these exception types there was a failure in creating the actual
@@ -358,12 +356,14 @@ public abstract class RestProxyBase {
                 return ResponseExceptionConstructorCache.invoke(handle, exceptionMessage.toString(), httpResponse,
                     responseDecodedContent);
             } catch (RuntimeException e) {
-                // And if reflection fails, return an IOException.
-                // TODO (alzimmer): Determine if this should be an IOException or HttpResponseException.
+                // And if reflection fails, return an HttpResponseException.
                 exceptionMessage.append(". An instance of ")
                     .append(exceptionType.getCanonicalName())
                     .append(" couldn't be created.");
-                return new IOException(exceptionMessage.toString(), e);
+                HttpResponseException exception1 = new HttpResponseException(exceptionMessage.toString(), httpResponse,
+                    responseDecodedContent);
+                exception1.addSuppressed(e);
+                return exception1;
             }
         }
     }
