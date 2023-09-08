@@ -10,6 +10,7 @@
 
 #### Other Changes
 * Handling negative end-to-end timeouts provided more gracefully by throwing a `CosmsoException` (`OperationCancelledException`) instead of `IllegalArgumentException`. - See [PR 36507](https://github.com/Azure/azure-sdk-for-java/pull/36507)
+* Reverted preserve ordering in bulk mode([PR 35892](https://github.com/Azure/azure-sdk-for-java/pull/35892)). See [PR 36638](https://github.com/Azure/azure-sdk-for-java/pull/36638)
 
 ### 4.49.0 (2023-08-21)
 
