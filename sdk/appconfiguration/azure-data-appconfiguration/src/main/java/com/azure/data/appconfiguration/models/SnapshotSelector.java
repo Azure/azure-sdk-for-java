@@ -5,7 +5,6 @@ package com.azure.data.appconfiguration.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.ExpandableStringEnum;
 import com.azure.core.util.IterableStream;
 
 import java.util.Arrays;
@@ -96,7 +95,7 @@ public final class SnapshotSelector {
             // join a list of enum values into a comma-separated string
             fields = this.fields == null ? null : IterableStream.of(this.fields)
                 .stream()
-                .map(ExpandableStringEnum::toString)
+                .map(fieldsEnumValue -> fieldsEnumValue.toString())
                 .collect(Collectors.joining(","));
         }
 
@@ -107,7 +106,7 @@ public final class SnapshotSelector {
             // join a list of enum values into a comma-separated string
             status = this.status == null ? null : IterableStream.of(this.status)
                 .stream()
-                .map(ExpandableStringEnum::toString)
+                .map(statusEnumValue -> statusEnumValue.toString())
                 .collect(Collectors.joining(","));
         }
 
