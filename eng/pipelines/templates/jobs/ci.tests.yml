@@ -78,7 +78,6 @@ jobs:
       - template: /eng/common/testproxy/test-proxy-tool.yml
         parameters:
           runProxy: true
-          targetVersion: 1.0.0-dev.20230908.1
 
       - template: /eng/pipelines/templates/steps/restore-test-proxy-recordings.yml
         parameters:
