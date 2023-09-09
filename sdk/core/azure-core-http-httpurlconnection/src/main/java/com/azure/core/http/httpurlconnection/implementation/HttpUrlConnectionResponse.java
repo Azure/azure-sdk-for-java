@@ -11,7 +11,6 @@ import reactor.core.publisher.Mono;
 
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -26,14 +25,11 @@ public class HttpUrlConnectionResponse extends HttpResponse {
         super(request);
         this.statusCode = statusCode;
         this.headers = new HttpHeaders();
-
         for (Map.Entry<String, List<String>> header : headers.entrySet()) {
             for (String headerValue : header.getValue()) {
                 this.headers.add(header.getKey(), headerValue);
             }
         }
-
-
         this.body = body;
         this.bufferedBody = new ArrayList<>();
     }
