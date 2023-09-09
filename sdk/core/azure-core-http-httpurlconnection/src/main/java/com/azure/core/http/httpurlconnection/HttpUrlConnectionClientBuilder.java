@@ -38,8 +38,6 @@ public class HttpUrlConnectionClientBuilder {
     private Executor executor;
 
     public HttpUrlConnectionClientBuilder() {
-        this.connectionTimeout = DEFAULT_CONNECT_TIMEOUT;
-        this.configuration = Configuration.getGlobalConfiguration();
     }
 
     public HttpUrlConnectionClientBuilder executor(Executor executor) {
