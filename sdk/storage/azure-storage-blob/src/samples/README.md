@@ -21,7 +21,7 @@ This document describes how to use samples and what is done in each sample.
 ## Getting started
 Getting started explained in detail [here][SDK_README_GETTING_STARTED].
 
-For details on including this dependency in other build tools (Gradle, SBT, etc), refer [here](https://search.maven.org/artifact/com.azure/azure-core).
+For details on including this dependency in other build tools (Gradle, SBT, etc), refer [here](https://central.sonatype.com/artifact/com.azure/azure-core).
 
 ## Examples
    Following section document various examples.
