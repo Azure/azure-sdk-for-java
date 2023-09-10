@@ -7,16 +7,18 @@ import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosClientBuilder;
+import com.azure.cosmos.CosmosDiagnosticsTest;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.CosmosRegionSwitchHint;
 import com.azure.cosmos.SessionRetryOptionsBuilder;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.implementation.Utils;
-import com.azure.cosmos.implementation.guava25.base.Function;
 import com.azure.cosmos.implementation.throughputControl.TestItem;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
+import com.azure.cosmos.models.CosmosPatchItemRequestOptions;
+import com.azure.cosmos.models.CosmosPatchOperations;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.rx.TestSuiteBase;
 import com.azure.cosmos.test.faultinjection.CosmosFaultInjectionHelper;
@@ -28,6 +30,7 @@ import com.azure.cosmos.test.faultinjection.FaultInjectionRule;
 import com.azure.cosmos.test.faultinjection.FaultInjectionRuleBuilder;
 import com.azure.cosmos.test.faultinjection.FaultInjectionServerErrorResult;
 import com.azure.cosmos.test.faultinjection.FaultInjectionServerErrorType;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
@@ -41,6 +44,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 import java.util.UUID;
+import java.util.function.Function;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.fail;
@@ -208,6 +212,224 @@ public class ExcludeRegionWithFaultInjectionTests extends TestSuiteBase {
                     HttpConstants.StatusCodes.INTERNAL_SERVER_ERROR,
                     HttpConstants.SubStatusCodes.UNKNOWN,
                     this.chooseFirstRegion.apply(this.preferredRegions)
+            ))
+        };
+    }
+
+    @DataProvider(name = "regionExclusionWriteAfterCreateTestConfigs")
+    public Object[] regionExclusionWriteAfterCreateTestConfigs() {
+
+        Function<ItemOperationInvocationParameters, OperationExecutionResult<?>> createAnotherItemCallback =
+            (params) -> {
+
+                String newDocumentId = UUID.randomUUID().toString();
+
+                try {
+
+                    CosmosItemResponse<TestItem> response = params.cosmosAsyncContainer
+                        .createItem(
+                            new TestItem(newDocumentId, newDocumentId, newDocumentId),
+                            new PartitionKey(newDocumentId),
+                            null)
+                        .block();
+
+                    return new OperationExecutionResult<>(response, null);
+                } catch (Exception exception) {
+
+                    if (exception instanceof CosmosException) {
+                        CosmosException cosmosException = Utils.as(exception, CosmosException.class);
+
+                        return new OperationExecutionResult<>(null, cosmosException);
+                    } else {
+                        fail("A CosmosException instance should have been thrown.");
+                    }
+                }
+
+                return null;
+            };
+
+        Function<ItemOperationInvocationParameters, OperationExecutionResult<?>> replaceItemCallback =
+            (params) -> {
+
+                TestItem alreadyCreatedItem = params.createdItem;
+                alreadyCreatedItem.setProp(UUID.randomUUID().toString());
+
+                try {
+
+                    CosmosItemResponse<TestItem> response = params.cosmosAsyncContainer
+                        .replaceItem(
+                           alreadyCreatedItem,
+                           alreadyCreatedItem.getId(),
+                           new PartitionKey(alreadyCreatedItem.getId()))
+                        .block();
+
+                    return new OperationExecutionResult<>(response, null);
+                } catch (Exception exception) {
+                    if (exception instanceof CosmosException) {
+                        CosmosException cosmosException = Utils.as(exception, CosmosException.class);
+
+                        return new OperationExecutionResult<>(null, cosmosException);
+                    } else {
+                        fail("A CosmosException instance should have been thrown.");
+                    }
+                }
+
+                return null;
+            };
+
+        Function<ItemOperationInvocationParameters, OperationExecutionResult<?>> deleteItemCallback =
+            (params) -> {
+
+                TestItem alreadyCreatedItem = params.createdItem;
+
+                try {
+
+                    CosmosItemResponse<?> response = params.cosmosAsyncContainer
+                        .deleteItem(
+                            alreadyCreatedItem.getId(),
+                            new PartitionKey(alreadyCreatedItem.getMypk()))
+                        .block();
+
+                    return new OperationExecutionResult<>(response, null);
+                } catch (Exception exception) {
+                    if (exception instanceof CosmosException) {
+                        CosmosException cosmosException = Utils.as(exception, CosmosException.class);
+
+                        return new OperationExecutionResult<>(null, cosmosException);
+                    } else {
+                        fail("A CosmosException instance should have been thrown.");
+                    }
+                }
+
+                return null;
+            };
+
+        Function<ItemOperationInvocationParameters, OperationExecutionResult<?>> deleteNonExistingItemCallback =
+            (params) -> {
+
+                TestItem nonExistingItem = TestItem.createNewItem();
+
+                try {
+
+                    CosmosItemResponse<?> response = params.cosmosAsyncContainer
+                        .deleteItem(
+                            nonExistingItem.getId(),
+                            new PartitionKey(nonExistingItem.getMypk()))
+                        .block();
+
+                    return new OperationExecutionResult<>(response, null);
+                } catch (Exception exception) {
+                    if (exception instanceof CosmosException) {
+                        CosmosException cosmosException = Utils.as(exception, CosmosException.class);
+
+                        return new OperationExecutionResult<>(null, cosmosException);
+                    } else {
+                        fail("A CosmosException instance should have been thrown.");
+                    }
+                }
+
+                return null;
+            };
+
+        Function<ItemOperationInvocationParameters, OperationExecutionResult<?>> upsertExistingItemCallback =
+            (params) -> {
+
+                TestItem alreadyCreatedItem = params.createdItem;
+                alreadyCreatedItem.setProp(UUID.randomUUID().toString());
+                
+                try {
+                    
+                    CosmosItemResponse<TestItem> response = params.cosmosAsyncContainer.upsertItem(
+                        alreadyCreatedItem, 
+                        new PartitionKey(alreadyCreatedItem.getMypk()), 
+                        null).block();
+                    
+                    return new OperationExecutionResult<>(response, null);
+                    
+                } catch (Exception exception) {
+                    if (exception instanceof CosmosException) {
+                        CosmosException cosmosException = Utils.as(exception, CosmosException.class);
+
+                        return new OperationExecutionResult<>(null, cosmosException);
+                    } else {
+                        fail("A CosmosException instance should have been thrown.");
+                    }
+                }
+                
+                return null;
+            };
+
+        Function<ItemOperationInvocationParameters, OperationExecutionResult<?>> patchItemCallback =
+            (params) -> {
+                CosmosPatchOperations patchOperations = CosmosPatchOperations.create();
+                patchOperations.add("/newField", UUID.randomUUID().toString());
+
+                if (params.nonIdempotentWriteRetriesEnabled) {
+                    params.options.setNonIdempotentWriteRetryPolicy(
+                        true, true
+                    );
+                }
+
+                try {
+                    CosmosItemResponse<TestItem> response = params.cosmosAsyncContainer.patchItem(
+                        params.createdItem.getId(),
+                        new PartitionKey(params.createdItem.getMypk()),
+                        patchOperations,
+                        params.options,
+                        TestItem.class
+                    ).block();
+                } catch (Exception exception) {
+
+                    if (exception instanceof CosmosException) {
+                        CosmosException cosmosException = Utils.as(exception, CosmosException.class);
+
+                        return new OperationExecutionResult<>(null, cosmosException);
+                    } else {
+                        fail("A CosmosException instance should have been thrown.");
+                    }
+                }
+                
+                return null;
+            };
+
+        return new Object[] {
+            new MutationTestConfig()
+                .withChooseFaultInjectionRegions(this.chooseFirstRegion)
+                .withWriteOperationExecutor(createAnotherItemCallback)
+                .withFaultInjectionServerErrorType(FaultInjectionServerErrorType.READ_SESSION_NOT_AVAILABLE)
+                .withRegionExclusionMutator(this.chooseSecondRegion)
+                .withFaultInjectionOperationType(FaultInjectionOperationType.CREATE_ITEM)
+                .withExpectedResultBeforeMutation(new ExpectedResult(
+                    HttpConstants.StatusCodes.CREATED,
+                    HttpConstants.SubStatusCodes.UNKNOWN,
+                    this.chooseFirstTwoRegions.apply(this.preferredRegions)
+                ))
+                .withExpectedResultAfterMutation(new ExpectedResult(
+                    HttpConstants.StatusCodes.CREATED,
+                    HttpConstants.SubStatusCodes.UNKNOWN,
+                    Arrays.asList(
+                        this.chooseFirstRegion.apply(this.preferredRegions).get(0),
+                        this.chooseLastRegion.apply(this.preferredRegions).get(0)
+                    )
+                )),
+            new MutationTestConfig()
+                .withChooseFaultInjectionRegions(this.chooseFirstRegion)
+                .withWriteOperationExecutor(replaceItemCallback)
+                .withFaultInjectionServerErrorType(FaultInjectionServerErrorType.READ_SESSION_NOT_AVAILABLE)
+                .withRegionExclusionMutator(this.chooseSecondRegion)
+                .withFaultInjectionOperationType(FaultInjectionOperationType.REPLACE_ITEM)
+                .withExpectedResultBeforeMutation(new ExpectedResult(
+                    HttpConstants.StatusCodes.OK,
+                    HttpConstants.SubStatusCodes.UNKNOWN,
+                    this.chooseFirstTwoRegions.apply(this.preferredRegions)
+                ))
+                .withExpectedResultAfterMutation(new ExpectedResult(
+                    HttpConstants.StatusCodes.OK,
+                    HttpConstants.SubStatusCodes.UNKNOWN,
+                    Arrays.asList(
+                        this.chooseFirstRegion.apply(this.preferredRegions).get(0),
+                        this.chooseLastRegion.apply(this.preferredRegions).get(0)
+                    )
             ))
         };
     }
@@ -390,6 +612,73 @@ public class ExcludeRegionWithFaultInjectionTests extends TestSuiteBase {
                     fail("A CosmosException instance should have been thrown.");
                 }
             }
+
+        } finally {
+            System.clearProperty("COSMOS.MAX_RETRIES_IN_LOCAL_REGION_WHEN_REMOTE_REGION_PREFERRED");
+            safeCloseAsync(clientWithPreferredRegions);
+        }
+    }
+
+    @Test(groups = { "multi-master" }, dataProvider = "regionExclusionWriteAfterCreateTestConfigs")
+    public void regionExclusionMutationOnClient_writeAfterCreate_test(MutationTestConfig mutationTestConfig) throws InterruptedException {
+        System.setProperty("COSMOS.MAX_RETRIES_IN_LOCAL_REGION_WHEN_REMOTE_REGION_PREFERRED", String.valueOf(2));
+
+        CosmosAsyncClient clientWithPreferredRegions = null;
+
+        List<String> excludeRegions = mutationTestConfig.chooseInitialExclusionRegions.apply(this.preferredRegions);
+
+        try {
+            clientWithPreferredRegions = new CosmosClientBuilder()
+                .endpoint(TestConfigurations.HOST)
+                .key(TestConfigurations.MASTER_KEY)
+                .endpointDiscoveryEnabled(true)
+                .consistencyLevel(BridgeInternal.getContextClient(this.cosmosAsyncClient).getConsistencyLevel())
+                .preferredRegions(this.preferredRegions)
+                .sessionRetryOptions(new SessionRetryOptionsBuilder().regionSwitchHint(CosmosRegionSwitchHint.REMOTE_REGION_PREFERRED).build())
+                .directMode()
+                .excludeRegions(excludeRegions)
+                .buildAsyncClient();
+
+            CosmosAsyncContainer containerForClientWithPreferredRegions = clientWithPreferredRegions
+                .getDatabase(this.cosmosAsyncContainer.getDatabase().getId())
+                .getContainer(this.cosmosAsyncContainer.getId());
+
+            TestItem createdItem = TestItem.createNewItem();
+
+            Thread.sleep(5_000);
+
+            containerForClientWithPreferredRegions.createItem(createdItem).block();
+
+            List<String> faultInjectionRegions =
+                mutationTestConfig.chooseFaultInjectionRegions.apply(this.preferredRegions);
+
+            List<FaultInjectionRule> readSessionNotAvailableRules = buildFaultInjectionRules(
+                faultInjectionRegions,
+                mutationTestConfig.faultInjectionOperationType,
+                mutationTestConfig.faultInjectionServerErrorType);
+
+            CosmosFaultInjectionHelper
+                .configureFaultInjectionRules(containerForClientWithPreferredRegions, readSessionNotAvailableRules)
+                .block();
+
+            Function<ItemOperationInvocationParameters, OperationExecutionResult<?>> writeOperationExecutor =
+                mutationTestConfig.writeOperationExecutor;
+
+            ItemOperationInvocationParameters params = new ItemOperationInvocationParameters();
+
+            params.cosmosAsyncContainer = containerForClientWithPreferredRegions;
+            params.createdItem = createdItem;
+
+            OperationExecutionResult<?> operationExecutionResultBeforeMutation = writeOperationExecutor.apply(params);
+            validateResponse(operationExecutionResultBeforeMutation, mutationTestConfig.expectedResultBeforeMutation);
+
+            Function<List<String>, List<String>> regionExclusionMutators = mutationTestConfig.regionExclusionMutator;
+
+            List<String> mutatedExcludedRegions = regionExclusionMutators.apply(this.preferredRegions);
+            clientWithPreferredRegions.setExcludeRegions(mutatedExcludedRegions);
+
+            OperationExecutionResult<?> operationExecutionResultAfterMutation = writeOperationExecutor.apply(params);
+            validateResponse(operationExecutionResultAfterMutation, mutationTestConfig.expectedResultAfterMutation);
 
         } finally {
             System.clearProperty("COSMOS.MAX_RETRIES_IN_LOCAL_REGION_WHEN_REMOTE_REGION_PREFERRED");
@@ -611,8 +900,10 @@ public class ExcludeRegionWithFaultInjectionTests extends TestSuiteBase {
         private FaultInjectionServerErrorType faultInjectionServerErrorType = FaultInjectionServerErrorType.READ_SESSION_NOT_AVAILABLE;
         private Function<List<String>, List<String>> regionExclusionMutator
             = (regions) -> new ArrayList<>();
+        private Function<ItemOperationInvocationParameters, OperationExecutionResult<?>> writeOperationExecutor = null;
         private ExpectedResult expectedResultBeforeMutation = null;
         private ExpectedResult expectedResultAfterMutation = null;
+        private boolean nonIdempotentWritesEnabled = false;
 
         public MutationTestConfig withChooseFaultInjectionRegions(
             Function<List<String>, List<String>> chooseFaultInjectionRegions) {
@@ -651,5 +942,23 @@ public class ExcludeRegionWithFaultInjectionTests extends TestSuiteBase {
             this.expectedResultAfterMutation = expectedResultAfterMutation;
             return this;
         }
+
+        public MutationTestConfig withWriteOperationExecutor(
+            Function<ItemOperationInvocationParameters, OperationExecutionResult<?>> writeOperationExecutor) {
+            this.writeOperationExecutor = writeOperationExecutor;
+            return this;
+        }
+
+        public MutationTestConfig withNonIdempotentWritesEnabled(boolean nonIdempotentWritesEnabled) {
+            this.nonIdempotentWritesEnabled = nonIdempotentWritesEnabled;
+            return this;
+        }
+    }
+
+    private static class ItemOperationInvocationParameters {
+        public boolean nonIdempotentWriteRetriesEnabled;
+        public CosmosPatchItemRequestOptions options;
+        public CosmosAsyncContainer cosmosAsyncContainer;
+        public TestItem createdItem;
     }
 }
