@@ -2670,7 +2670,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         return ObservableHelper.inlineIfPossibleAsObs(() -> readDocumentInternal(documentLink, options, retryPolicyInstance, endToEndPolicyConfig, clientContextOverride), retryPolicyInstance);
     }
 
-
     private Mono<ResourceResponse<Document>> readDocumentInternal(String documentLink, RequestOptions options,
                                                                   DocumentClientRetryPolicy retryPolicyInstance,
                                                                   CosmosEndToEndOperationLatencyPolicyConfig endToEndPolicyConfig,
