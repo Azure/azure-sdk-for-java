@@ -7,6 +7,7 @@ import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosContainerProactiveInitConfig;
 import com.azure.cosmos.CosmosDiagnostics;
+import com.azure.cosmos.SessionRetryOptions;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
 import com.azure.cosmos.implementation.guava27.Strings;
 import com.azure.cosmos.models.CosmosContainerIdentity;
@@ -77,7 +78,8 @@ public interface DiagnosticsClientContext {
                 }
                 generator.writeEndObject();
                 generator.writeStringField("consistencyCfg", clientConfig.consistencyRelatedConfig());
-                generator.writeStringField("proactiveInit", clientConfig.proactivelyInitializedContainersAsString);
+                generator.writeStringField("proactiveInitCfg", clientConfig.proactivelyInitializedContainersAsString);
+                generator.writeStringField("sessionRetryOps", clientConfig.sessionRetryOptionsAsString);
             } catch (Exception e) {
                 logger.debug("unexpected failure", e);
             }
@@ -106,6 +108,7 @@ public interface DiagnosticsClientContext {
         private ConnectionMode connectionMode;
         private String machineId;
         private boolean replicaValidationEnabled = Configs.isReplicaAddressValidationEnabled();
+        private String sessionRetryOptionsAsString;
 
         public DiagnosticsClientConfig withMachineId(String machineId) {
             this.machineId = machineId;
@@ -183,6 +186,16 @@ public interface DiagnosticsClientContext {
 
         public DiagnosticsClientConfig withConnectionMode(ConnectionMode connectionMode) {
             this.connectionMode = connectionMode;
+            return this;
+        }
+
+        public DiagnosticsClientConfig withSessionRetryOptions(SessionRetryOptions sessionRetryOptions) {
+            if (sessionRetryOptions == null) {
+                this.sessionRetryOptionsAsString = "";
+            } else {
+                this.sessionRetryOptionsAsString = sessionRetryOptions.toString();
+            }
+
             return this;
         }
 

@@ -6,6 +6,9 @@ package com.azure.cosmos.implementation;
 import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.CosmosContainerProactiveInitConfig;
 import com.azure.cosmos.CosmosContainerProactiveInitConfigBuilder;
+import com.azure.cosmos.CosmosRegionSwitchHint;
+import com.azure.cosmos.SessionRetryOptions;
+import com.azure.cosmos.SessionRetryOptionsBuilder;
 import com.azure.cosmos.implementation.directconnectivity.RntbdTransportClient;
 import com.azure.cosmos.implementation.guava25.collect.ImmutableList;
 import com.azure.cosmos.implementation.http.HttpClientConfig;
@@ -19,6 +22,7 @@ import org.mockito.Mockito;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
+import java.io.IOException;
 import java.io.StringWriter;
 import java.time.Duration;
 import java.util.Arrays;
@@ -83,6 +87,31 @@ public class ClientConfigDiagnosticsTest {
         };
     }
 
+    @DataProvider(name = "sessionRetryOptionsConfigProvider")
+    public Object[][] sessionRetryOptionsConfigProvider() {
+
+        SessionRetryOptions sessionRetryOptionsWithLocalRegionPreferred = new SessionRetryOptionsBuilder()
+            .regionSwitchHint(CosmosRegionSwitchHint.LOCAL_REGION_PREFERRED)
+            .build();
+
+        SessionRetryOptions sessionRetryOptionsWithRemoteRegionPreferred = new SessionRetryOptionsBuilder()
+            .regionSwitchHint(CosmosRegionSwitchHint.REMOTE_REGION_PREFERRED)
+            .build();
+
+       SessionRetryOptions sessionRetryOptionsWithNull = new SessionRetryOptionsBuilder().build();
+
+        return new Object[][] {
+            {
+                sessionRetryOptionsWithLocalRegionPreferred,
+                "(rsh:LOCAL_REGION_PREFERRED)"
+            },
+            {
+                sessionRetryOptionsWithRemoteRegionPreferred,
+                "(rsh:REMOTE_REGION_PREFERRED)"
+            }
+        };
+    }
+
     @Test(groups = { "unit" })
     public void bareMinimum() throws Exception {
         DiagnosticsClientContext clientContext = Mockito.mock(DiagnosticsClientContext.class);
@@ -111,7 +140,6 @@ public class ClientConfigDiagnosticsTest {
         assertThat(objectNode.get("connCfg").get("rntbd").asText()).isEqualTo("null");
         assertThat(objectNode.get("connCfg").get("gw").asText()).isEqualTo("null");
         assertThat(objectNode.get("connCfg").get("other").asText()).isEqualTo("(ed: false, cs: false, rv: true)");
-
     }
 
     @Test(groups = { "unit" })
@@ -227,9 +255,41 @@ public class ClientConfigDiagnosticsTest {
 
         String expectedProactiveInitConfigString = reconstructProactiveInitConfigString(cosmosContainerIdentities, aggressiveWarmupDuration, proactiveConnectionRegionCount);
 
-        assertThat(objectNode.get("proactiveInit").asText()).isEqualTo(expectedProactiveInitConfigString);
+        assertThat(objectNode.get("proactiveInitCfg").asText()).isEqualTo(expectedProactiveInitConfigString);
 
         System.clearProperty("COSMOS.REPLICA_ADDRESS_VALIDATION_ENABLED");
+    }
+
+    @Test(groups = {"unit"}, dataProvider = "sessionRetryOptionsConfigProvider")
+    public void testSessionRetryOptions(SessionRetryOptions sessionRetryOptions, String expectedSessionRetryOptionsAsString) throws IOException {
+        DiagnosticsClientContext clientContext = Mockito.mock(DiagnosticsClientContext.class);
+
+        DiagnosticsClientContext.DiagnosticsClientConfig diagnosticsClientConfig = new DiagnosticsClientContext.DiagnosticsClientConfig();
+        String machineId = "vmId:" + UUID.randomUUID();
+        diagnosticsClientConfig.withMachineId(machineId);
+        diagnosticsClientConfig.withClientId(1);
+        diagnosticsClientConfig.withConnectionMode(ConnectionMode.DIRECT);
+        diagnosticsClientConfig.withActiveClientCounter(new AtomicInteger(2));
+        diagnosticsClientConfig.withClientMap(new HashMap<>());
+        diagnosticsClientConfig.withSessionRetryOptions(sessionRetryOptions);
+
+        Mockito.doReturn(diagnosticsClientConfig).when(clientContext).getConfig();
+
+        StringWriter jsonWriter = new StringWriter();
+        JsonGenerator jsonGenerator = new JsonFactory().createGenerator(jsonWriter);
+        SerializerProvider serializerProvider = objectMapper.getSerializerProvider();
+        DiagnosticsClientContext.DiagnosticsClientConfigSerializer.INSTANCE.serialize(clientContext.getConfig(), jsonGenerator, serializerProvider);
+        jsonGenerator.flush();
+        ObjectNode objectNode = (ObjectNode) objectMapper.readTree(jsonWriter.toString());
+
+        assertThat(objectNode.get("id").asInt()).isEqualTo(1);
+        assertThat(objectNode.get("machineId").asText()).isEqualTo(machineId);
+        assertThat(objectNode.get("numberOfClients").asInt()).isEqualTo(2);
+        assertThat(objectNode.get("consistencyCfg").asText()).isEqualTo("(consistency: null, mm: false, prgns: [null])");
+        assertThat(objectNode.get("connCfg").get("rntbd").asText()).isEqualTo("null");
+        assertThat(objectNode.get("connCfg").get("gw").asText()).isEqualTo("null");
+        assertThat(objectNode.get("connCfg").get("other").asText()).isEqualTo("(ed: false, cs: false, rv: true)");
+        assertThat(objectNode.get("sessionRetryOps").asText()).isEqualTo(expectedSessionRetryOptionsAsString);
     }
 
     private static String reconstructProactiveInitConfigString(

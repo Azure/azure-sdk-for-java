@@ -21,6 +21,33 @@ public final class SessionRetryOptions {
         this.regionSwitchHint = regionSwitchHint;
     }
 
+    @Override
+    public String toString() {
+        return String.format(
+            "(rsh:%s)",
+            this.stringifyRegionSwitchHint()
+        );
+    }
+
+    private String stringifyRegionSwitchHint() {
+
+        String regionSwitchHintAsString = "";
+
+        if (this.regionSwitchHint == null) {
+            return regionSwitchHintAsString;
+        }
+
+        if (this.regionSwitchHint == CosmosRegionSwitchHint.REMOTE_REGION_PREFERRED) {
+            regionSwitchHintAsString = "REMOTE_REGION_PREFERRED";
+        }
+
+        if (this.regionSwitchHint == CosmosRegionSwitchHint.LOCAL_REGION_PREFERRED) {
+            regionSwitchHintAsString = "LOCAL_REGION_PREFERRED";
+        }
+
+        return regionSwitchHintAsString;
+    }
+
     static void initialize() {
         ImplementationBridgeHelpers.CosmosSessionRetryOptionsHelper.setCosmosSessionRetryOptionsAccessor(
 
