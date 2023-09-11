@@ -8,6 +8,7 @@ import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosDiagnostics;
+import com.azure.cosmos.CosmosRegionSwitchHint;
 import com.azure.cosmos.SessionRetryOptions;
 import com.azure.cosmos.SessionRetryOptionsBuilder;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
@@ -16,6 +17,7 @@ import com.azure.cosmos.implementation.DatabaseAccount;
 import com.azure.cosmos.implementation.DatabaseAccountLocation;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.implementation.throughputControl.TestItem;
@@ -23,7 +25,6 @@ import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosPatchOperations;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
-import com.azure.cosmos.CosmosRegionSwitchHint;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.SqlQuerySpec;
@@ -53,16 +54,28 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.testng.AssertJUnit.fail;
 
 public class SessionRetryOptionsTests extends TestSuiteBase {
 
     private CosmosAsyncClient cosmosAsyncClient;
     private CosmosAsyncContainer cosmosAsyncContainer;
     private Map<String, String> writeRegionMap;
+    private static ImplementationBridgeHelpers.CosmosSessionRetryOptionsHelper.CosmosSessionRetryOptionsAccessor sessionRetryOptionsAccessor
+        = ImplementationBridgeHelpers.CosmosSessionRetryOptionsHelper.getCosmosSessionRetryOptionsAccessor();
+    private Consumer<SessionRetryOptions> regionSwitchHintToggler = ((sessionRetryOptions) -> {
+
+        CosmosRegionSwitchHint regionSwitchHint = sessionRetryOptionsAccessor.getRegionSwitchHint(sessionRetryOptions);
+
+        if (regionSwitchHint == CosmosRegionSwitchHint.LOCAL_REGION_PREFERRED) {
+            sessionRetryOptions.setRegionSwitchHint(CosmosRegionSwitchHint.REMOTE_REGION_PREFERRED);
+        } else if (regionSwitchHint == CosmosRegionSwitchHint.REMOTE_REGION_PREFERRED) {
+            sessionRetryOptions.setRegionSwitchHint(CosmosRegionSwitchHint.LOCAL_REGION_PREFERRED);
+        }
+    });
 
     @Factory(dataProvider = "clientBuilderSolelyDirectWithSessionConsistency")
     public SessionRetryOptionsTests(CosmosClientBuilder cosmosClientBuilder) {
@@ -83,27 +96,26 @@ public class SessionRetryOptionsTests extends TestSuiteBase {
     @DataProvider(name = "nonWriteOperationContextProvider")
     public Object[][] nonWriteOperationContextProvider() {
         return new Object[][]{
-            {OperationType.Read, FaultInjectionOperationType.READ_ITEM, CosmosRegionSwitchHint.REMOTE_REGION_PREFERRED, 2},
-            {OperationType.Query, FaultInjectionOperationType.QUERY_ITEM, CosmosRegionSwitchHint.REMOTE_REGION_PREFERRED, 1},
-            {OperationType.Read, FaultInjectionOperationType.READ_ITEM, CosmosRegionSwitchHint.LOCAL_REGION_PREFERRED, 2},
-            {OperationType.Query, FaultInjectionOperationType.QUERY_ITEM, CosmosRegionSwitchHint.LOCAL_REGION_PREFERRED, 2}
+            {OperationType.Read, FaultInjectionOperationType.READ_ITEM, CosmosRegionSwitchHint.REMOTE_REGION_PREFERRED, 2, true},
+            {OperationType.Query, FaultInjectionOperationType.QUERY_ITEM, CosmosRegionSwitchHint.REMOTE_REGION_PREFERRED, 1, false},
+            {OperationType.Read, FaultInjectionOperationType.READ_ITEM, CosmosRegionSwitchHint.LOCAL_REGION_PREFERRED, 2, true},
+            {OperationType.Query, FaultInjectionOperationType.QUERY_ITEM, CosmosRegionSwitchHint.LOCAL_REGION_PREFERRED, 2, false}
         };
     }
 
     @DataProvider(name = "writeOperationContextProvider")
     public Object[][] writeOperationContextProvider() {
         return new Object[][]{
-            {OperationType.Create, FaultInjectionOperationType.CREATE_ITEM, CosmosRegionSwitchHint.REMOTE_REGION_PREFERRED, 2},
-            {OperationType.Replace, FaultInjectionOperationType.REPLACE_ITEM, CosmosRegionSwitchHint.REMOTE_REGION_PREFERRED, 1},
-            {OperationType.Delete, FaultInjectionOperationType.DELETE_ITEM, CosmosRegionSwitchHint.REMOTE_REGION_PREFERRED, 2},
-            {OperationType.Upsert, FaultInjectionOperationType.UPSERT_ITEM, CosmosRegionSwitchHint.REMOTE_REGION_PREFERRED, 3},
-            {OperationType.Patch, FaultInjectionOperationType.PATCH_ITEM, CosmosRegionSwitchHint.REMOTE_REGION_PREFERRED, 1},
-            {OperationType.Create, FaultInjectionOperationType.CREATE_ITEM, CosmosRegionSwitchHint.LOCAL_REGION_PREFERRED, 3},
-            {OperationType.Replace, FaultInjectionOperationType.REPLACE_ITEM, CosmosRegionSwitchHint.LOCAL_REGION_PREFERRED, 1},
-            {OperationType.Delete, FaultInjectionOperationType.DELETE_ITEM, CosmosRegionSwitchHint.LOCAL_REGION_PREFERRED, 2},
-            {OperationType.Upsert, FaultInjectionOperationType.UPSERT_ITEM, CosmosRegionSwitchHint.LOCAL_REGION_PREFERRED, 1},
-            {OperationType.Patch, FaultInjectionOperationType.PATCH_ITEM, CosmosRegionSwitchHint.LOCAL_REGION_PREFERRED, 1}
-
+            {OperationType.Create, FaultInjectionOperationType.CREATE_ITEM, CosmosRegionSwitchHint.REMOTE_REGION_PREFERRED, 2, true},
+            {OperationType.Replace, FaultInjectionOperationType.REPLACE_ITEM, CosmosRegionSwitchHint.REMOTE_REGION_PREFERRED, 1, false},
+            {OperationType.Delete, FaultInjectionOperationType.DELETE_ITEM, CosmosRegionSwitchHint.REMOTE_REGION_PREFERRED, 2, true},
+            {OperationType.Upsert, FaultInjectionOperationType.UPSERT_ITEM, CosmosRegionSwitchHint.REMOTE_REGION_PREFERRED, 3, false},
+            {OperationType.Patch, FaultInjectionOperationType.PATCH_ITEM, CosmosRegionSwitchHint.REMOTE_REGION_PREFERRED, 1, true},
+            {OperationType.Create, FaultInjectionOperationType.CREATE_ITEM, CosmosRegionSwitchHint.LOCAL_REGION_PREFERRED, 3, false},
+            {OperationType.Replace, FaultInjectionOperationType.REPLACE_ITEM, CosmosRegionSwitchHint.LOCAL_REGION_PREFERRED, 1, true},
+            {OperationType.Delete, FaultInjectionOperationType.DELETE_ITEM, CosmosRegionSwitchHint.LOCAL_REGION_PREFERRED, 2, true},
+            {OperationType.Upsert, FaultInjectionOperationType.UPSERT_ITEM, CosmosRegionSwitchHint.LOCAL_REGION_PREFERRED, 1, true},
+            {OperationType.Patch, FaultInjectionOperationType.PATCH_ITEM, CosmosRegionSwitchHint.LOCAL_REGION_PREFERRED, 1, false}
         };
     }
 
@@ -112,7 +124,8 @@ public class SessionRetryOptionsTests extends TestSuiteBase {
         OperationType operationType,
         FaultInjectionOperationType faultInjectionOperationType,
         CosmosRegionSwitchHint regionSwitchHint,
-        int sessionTokenMismatchRetryAttempts) {
+        int sessionTokenMismatchRetryAttempts,
+        boolean shouldToggleRegionSwitchHint) {
 
         System.setProperty("COSMOS.MAX_RETRIES_IN_LOCAL_REGION_WHEN_REMOTE_REGION_PREFERRED", String.valueOf(sessionTokenMismatchRetryAttempts));
 
@@ -125,12 +138,15 @@ public class SessionRetryOptionsTests extends TestSuiteBase {
         CosmosAsyncClient clientWithPreferredRegions = null;
 
         try {
+
+            SessionRetryOptions sessionRetryOptions = new SessionRetryOptionsBuilder().regionSwitchHint(regionSwitchHint).build();
+
             clientWithPreferredRegions = new CosmosClientBuilder()
                 .endpoint(TestConfigurations.HOST)
                 .key(TestConfigurations.MASTER_KEY)
                 .consistencyLevel(BridgeInternal.getContextClient(this.cosmosAsyncClient).getConsistencyLevel())
                 .preferredRegions(preferredLocations)
-                .sessionRetryOptions(new SessionRetryOptionsBuilder().regionSwitchHint(regionSwitchHint).build())
+                .sessionRetryOptions(sessionRetryOptions)
                 .directMode()
                 .buildAsyncClient();
 
@@ -156,7 +172,7 @@ public class SessionRetryOptionsTests extends TestSuiteBase {
             FaultInjectionRule badSessionTokenRule = badSessionTokenRuleBuilder
                 .condition(faultInjectionConditionForReadsInPrimaryRegion)
                 .result(badSessionTokenServerErrorResult)
-                .duration(Duration.ofSeconds(10))
+                .duration(Duration.ofMinutes(10))
                 .build();
 
             CosmosFaultInjectionHelper
@@ -178,6 +194,23 @@ public class SessionRetryOptionsTests extends TestSuiteBase {
             if (regionSwitchHint == CosmosRegionSwitchHint.REMOTE_REGION_PREFERRED) {
                 assertThat(badSessionTokenRule.getHitCount()).isBetween((long) sessionTokenMismatchRetryAttempts, sessionTokenMismatchRetryAttempts * 4L);
             }
+
+            if (shouldToggleRegionSwitchHint) {
+                this.regionSwitchHintToggler.accept(sessionRetryOptions);
+
+                CosmosRegionSwitchHint toggledRegionSwitchHint = sessionRetryOptionsAccessor
+                    .getRegionSwitchHint(sessionRetryOptions);
+
+                validateOperationExecutionResult(
+                    performDocumentOperation(
+                        containerForClientWithPreferredRegions,
+                        createdItem,
+                        operationType
+                    ),
+                    sessionTokenMismatchDefaultWaitTime,
+                    toggledRegionSwitchHint);
+            }
+
         } finally {
             System.clearProperty("COSMOS.MAX_RETRIES_IN_LOCAL_REGION_WHEN_REMOTE_REGION_PREFERRED");
             safeCloseAsync(clientWithPreferredRegions);
@@ -189,7 +222,8 @@ public class SessionRetryOptionsTests extends TestSuiteBase {
         OperationType operationType,
         FaultInjectionOperationType faultInjectionOperationType,
         CosmosRegionSwitchHint regionSwitchHint,
-        int sessionTokenMismatchRetryAttempts) {
+        int sessionTokenMismatchRetryAttempts,
+        boolean shouldToggleRegionSwitchHint) {
 
         System.setProperty("COSMOS.MAX_RETRIES_IN_LOCAL_REGION_WHEN_REMOTE_REGION_PREFERRED", String.valueOf(sessionTokenMismatchRetryAttempts));
 
@@ -203,15 +237,18 @@ public class SessionRetryOptionsTests extends TestSuiteBase {
         CosmosAsyncClient clientWithPreferredRegions = null;
 
         try {
+
+            SessionRetryOptions sessionRetryOptions = new SessionRetryOptionsBuilder().regionSwitchHint(regionSwitchHint).build();
+
             clientWithPreferredRegions = new CosmosClientBuilder()
                 .endpoint(TestConfigurations.HOST)
                 .key(TestConfigurations.MASTER_KEY)
                 .contentResponseOnWriteEnabled(true)
                 .preferredRegions(preferredRegions)
-                .sessionRetryOptions(new SessionRetryOptionsBuilder().regionSwitchHint(regionSwitchHint).build())
+                .sessionRetryOptions(sessionRetryOptions)
                 .buildAsyncClient();
 
-            CosmosAsyncContainer asyncContainerFromClientWithPreferredRegions = clientWithPreferredRegions
+            CosmosAsyncContainer containerFromClientWithPreferredRegions = clientWithPreferredRegions
                 .getDatabase(cosmosAsyncContainer.getDatabase().getId())
                 .getContainer(cosmosAsyncContainer.getId());
 
@@ -232,14 +269,14 @@ public class SessionRetryOptionsTests extends TestSuiteBase {
                 .build();
 
             CosmosFaultInjectionHelper
-                .configureFaultInjectionRules(asyncContainerFromClientWithPreferredRegions, Arrays.asList(badSessionTokenRule))
+                .configureFaultInjectionRules(containerFromClientWithPreferredRegions, Arrays.asList(badSessionTokenRule))
                 .block();
 
             TestItem testItem = TestItem.createNewItem();
 
             validateOperationExecutionResult(
                 performDocumentOperation(
-                    asyncContainerFromClientWithPreferredRegions,
+                    containerFromClientWithPreferredRegions,
                     testItem,
                     operationType
                 ),
@@ -251,6 +288,24 @@ public class SessionRetryOptionsTests extends TestSuiteBase {
             // for sessionTokenMismatchRetryAttempts by tracking the badSessionTokenRule hit count
             if (regionSwitchHint == CosmosRegionSwitchHint.REMOTE_REGION_PREFERRED) {
                 assertThat(badSessionTokenRule.getHitCount()).isEqualTo(sessionTokenMismatchRetryAttempts);
+            }
+
+            if (shouldToggleRegionSwitchHint) {
+                this.regionSwitchHintToggler.accept(sessionRetryOptions);
+
+                CosmosRegionSwitchHint toggledRegionSwitchHint = sessionRetryOptionsAccessor
+                    .getRegionSwitchHint(sessionRetryOptions);
+
+                testItem = TestItem.createNewItem();
+
+                validateOperationExecutionResult(
+                    performDocumentOperation(
+                        containerFromClientWithPreferredRegions,
+                        testItem,
+                        operationType
+                    ),
+                    sessionTokenMismatchDefaultWaitTime,
+                    toggledRegionSwitchHint);
             }
         } finally {
             System.clearProperty("COSMOS.MAX_RETRIES_IN_LOCAL_REGION_WHEN_REMOTE_REGION_PREFERRED");
