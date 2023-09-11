@@ -9,7 +9,7 @@ import io.opentelemetry.sdk.logs.export.LogRecordExporter;
 
 import java.util.Collection;
 
-public class AzureMonitorLogRecordExporterProvider implements ConfigurableLogRecordExporterProvider {
+public final class AzureMonitorLogRecordExporterProvider implements ConfigurableLogRecordExporterProvider {
     @Override
     public LogRecordExporter createExporter(ConfigProperties configProperties) {
         if (configProperties.getBoolean(AzureMonitorExporterProviderKeys.INTERNAL_USING_BUILDER, false)) {
