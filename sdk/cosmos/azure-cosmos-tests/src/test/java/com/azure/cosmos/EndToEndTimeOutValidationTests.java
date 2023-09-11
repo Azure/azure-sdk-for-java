@@ -70,17 +70,17 @@ public class EndToEndTimeOutValidationTests extends TestSuiteBase {
     @DataProvider(name = "endToEndOperationTimeoutMutationConfigs")
     public Object[][] endToEndOperationTimeoutMutationConfigs() {
 
-        Function<CosmosOperationWrapper, Mono<CosmosItemResponse<TestObject>>> readOperationExecutor
+        Function<ItemOperationInvocationParameters, Mono<CosmosItemResponse<TestObject>>> readOperationExecutor
             = (opWrapper) -> executeReadOperation(opWrapper);
-        Function<CosmosOperationWrapper, Mono<CosmosItemResponse<TestObject>>> createOperationExecutor
+        Function<ItemOperationInvocationParameters, Mono<CosmosItemResponse<TestObject>>> createOperationExecutor
             = (opWrapper) -> executeCreateOperation(opWrapper);
-        Function<CosmosOperationWrapper, Mono<CosmosItemResponse<Object>>> deleteOperationExecutor
+        Function<ItemOperationInvocationParameters, Mono<CosmosItemResponse<Object>>> deleteOperationExecutor
             = (opWrapper) -> executeDeleteOperation(opWrapper);
-        Function<CosmosOperationWrapper, Mono<CosmosItemResponse<Object>>> replaceOperationExecutor
+        Function<ItemOperationInvocationParameters, Mono<CosmosItemResponse<Object>>> replaceOperationExecutor
             = (opWrapper) -> executeReplaceOperation(opWrapper);
-        Function<CosmosOperationWrapper, Mono<CosmosItemResponse<Object>>> upsertOperationExecutor
+        Function<ItemOperationInvocationParameters, Mono<CosmosItemResponse<Object>>> upsertOperationExecutor
             = (opWrapper) -> executeUpsertOperation(opWrapper);
-        Function<CosmosOperationWrapper, Mono<CosmosItemResponse<TestObject>>> patchOperationExecutor
+        Function<ItemOperationInvocationParameters, Mono<CosmosItemResponse<TestObject>>> patchOperationExecutor
             = (opWrapper) -> executePatchOperation(opWrapper);
 
         return new Object[][] {
@@ -294,7 +294,7 @@ public class EndToEndTimeOutValidationTests extends TestSuiteBase {
 
     @Test(groups = { "simple" }, dataProvider = "endToEndOperationTimeoutMutationConfigs")
     public void clientLevelEndToEndTimeoutMutationForPointOperation(
-        Function<CosmosOperationWrapper, Mono<CosmosItemResponse<TestObject>>> operationExecutor,
+        Function<ItemOperationInvocationParameters, Mono<CosmosItemResponse<TestObject>>> operationExecutor,
         FaultInjectionOperationType faultInjectionOperationType) {
 
         if (getClientBuilder().buildConnectionPolicy().getConnectionMode() != ConnectionMode.DIRECT) {
@@ -323,7 +323,7 @@ public class EndToEndTimeOutValidationTests extends TestSuiteBase {
                                                                          .getContainer(containerName);
 
             Mono<CosmosItemResponse<TestObject>> cosmosItemResponseMonoWithLowerE2ETimeout =
-                operationExecutor.apply(new CosmosOperationWrapper(new TestObject(
+                operationExecutor.apply(new ItemOperationInvocationParameters(new TestObject(
                     UUID.randomUUID().toString(),
                     "name123",
                     1,
@@ -337,7 +337,7 @@ public class EndToEndTimeOutValidationTests extends TestSuiteBase {
             cosmosEndToEndOperationLatencyPolicyConfig.setEndToEndOperationTimeout(Duration.ofSeconds(5));
 
             Mono<CosmosItemResponse<TestObject>> cosmosItemResponseMonoWithHigherE2ETimeout =
-                operationExecutor.apply(new CosmosOperationWrapper(new TestObject(
+                operationExecutor.apply(new ItemOperationInvocationParameters(new TestObject(
                     UUID.randomUUID().toString(),
                     "name123",
                     1,
@@ -357,7 +357,7 @@ public class EndToEndTimeOutValidationTests extends TestSuiteBase {
         }
     }
 
-    private static Mono<CosmosItemResponse<TestObject>> executeReadOperation(CosmosOperationWrapper operationWrapper) {
+    private static Mono<CosmosItemResponse<TestObject>> executeReadOperation(ItemOperationInvocationParameters operationWrapper) {
         TestObject testObject = operationWrapper.testObject;
         CosmosAsyncContainer cosmosAsyncContainer = operationWrapper.cosmosAsyncContainer;
 
@@ -366,14 +366,14 @@ public class EndToEndTimeOutValidationTests extends TestSuiteBase {
         return cosmosAsyncContainer.readItem(testObject.getId(), new PartitionKey(testObject.getMypk()), TestObject.class);
     }
 
-    private static Mono<CosmosItemResponse<TestObject>> executeCreateOperation(CosmosOperationWrapper operationWrapper) {
+    private static Mono<CosmosItemResponse<TestObject>> executeCreateOperation(ItemOperationInvocationParameters operationWrapper) {
         CosmosAsyncContainer cosmosAsyncContainer = operationWrapper.cosmosAsyncContainer;
         TestObject testObject = operationWrapper.testObject;
 
         return cosmosAsyncContainer.createItem(testObject);
     }
 
-    private static Mono<CosmosItemResponse<Object>> executeDeleteOperation(CosmosOperationWrapper operationWrapper) {
+    private static Mono<CosmosItemResponse<Object>> executeDeleteOperation(ItemOperationInvocationParameters operationWrapper) {
         CosmosAsyncContainer cosmosAsyncContainer = operationWrapper.cosmosAsyncContainer;
         TestObject testObject = operationWrapper.testObject;
 
@@ -382,7 +382,7 @@ public class EndToEndTimeOutValidationTests extends TestSuiteBase {
         return cosmosAsyncContainer.deleteItem(testObject.getId(), new PartitionKey(testObject.getMypk()));
     }
 
-    private static Mono<CosmosItemResponse<Object>> executeReplaceOperation(CosmosOperationWrapper operationWrapper) {
+    private static Mono<CosmosItemResponse<Object>> executeReplaceOperation(ItemOperationInvocationParameters operationWrapper) {
         CosmosAsyncContainer cosmosAsyncContainer = operationWrapper.cosmosAsyncContainer;
         TestObject testObject = operationWrapper.testObject;
 
@@ -393,7 +393,7 @@ public class EndToEndTimeOutValidationTests extends TestSuiteBase {
         return cosmosAsyncContainer.replaceItem(testObject, testObject.getId(), new PartitionKey(testObject.getMypk()));
     }
 
-    private static Mono<CosmosItemResponse<Object>> executeUpsertOperation(CosmosOperationWrapper operationWrapper) {
+    private static Mono<CosmosItemResponse<Object>> executeUpsertOperation(ItemOperationInvocationParameters operationWrapper) {
         CosmosAsyncContainer cosmosAsyncContainer = operationWrapper.cosmosAsyncContainer;
         TestObject testObject = operationWrapper.testObject;
 
@@ -404,7 +404,7 @@ public class EndToEndTimeOutValidationTests extends TestSuiteBase {
         return cosmosAsyncContainer.upsertItem(testObject, new PartitionKey(testObject.getMypk()), null);
     }
 
-    private static Mono<CosmosItemResponse<TestObject>> executePatchOperation(CosmosOperationWrapper operationWrapper) {
+    private static Mono<CosmosItemResponse<TestObject>> executePatchOperation(ItemOperationInvocationParameters operationWrapper) {
         CosmosAsyncContainer cosmosAsyncContainer = operationWrapper.cosmosAsyncContainer;
         TestObject testObject = operationWrapper.testObject;
 
@@ -528,10 +528,10 @@ public class EndToEndTimeOutValidationTests extends TestSuiteBase {
         }
     }
 
-    private static class CosmosOperationWrapper {
+    private static class ItemOperationInvocationParameters {
         private TestObject testObject;
         private CosmosAsyncContainer cosmosAsyncContainer;
-        CosmosOperationWrapper(
+        ItemOperationInvocationParameters(
             TestObject testObject,
             CosmosAsyncContainer cosmosAsyncContainer) {
 
