@@ -192,8 +192,8 @@ feature-management:
         -
          name: TimeWindowFilter
          parameters:
-            start: "Wed, 01 May 2019 13:59:59 GMT",
-            end: "Mon, 01 July 2019 00:00:00 GMT"
+            Start: "Wed, 01 May 2019 13:59:59 GMT",
+            End: "Mon, 01 July 2019 00:00:00 GMT"
 ```
 This filter also provides the capability to enable a feature during some recurring time windows. The recurring time windows act as the additional filters of evaluation, supplementing the time window defined by the `Start` and `End`. If any recurring time window filter is specified, the feature will only be enabled when the current time falls between the `Start` and `End`, and also falls within a recurring time window listed in the `Filters`.
 We can see some Crontab expressions are listed under the `Filters`, which specify the recurring time windows.
@@ -205,8 +205,8 @@ feature-management:
         -
          name: TimeWindowFilter
          parameters:
-            start: "2023-09-06T00:00:00+08:00",
-            filters:
+            Start: "2023-09-06T00:00:00+08:00"
+            Filters:
                 - "* 18-19 * * Mon-Fri" # 18:00-20:00 on weekdays
                 - "* 18-21 * * Sat,Sun" # 18:00-22:00 on weekends
 ```
