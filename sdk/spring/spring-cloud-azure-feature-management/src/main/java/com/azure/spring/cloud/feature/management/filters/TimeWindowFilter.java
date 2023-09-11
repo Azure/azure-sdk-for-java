@@ -2,6 +2,12 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.feature.management.filters;
 
+import com.azure.spring.cloud.feature.management.filters.crontab.CrontabExpression;
+import com.azure.spring.cloud.feature.management.models.FeatureFilterEvaluationContext;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.util.StringUtils;
+
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
@@ -10,14 +16,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import com.azure.spring.cloud.feature.management.filters.crontab.CrontabExpression;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.util.StringUtils;
-
-import com.azure.spring.cloud.feature.management.models.FeatureFilterEvaluationContext;
-
-import static com.azure.spring.cloud.feature.management.models.FilterParameters.*;
+import static com.azure.spring.cloud.feature.management.models.FilterParameters.TIME_WINDOW_FILTER_SETTING_END;
+import static com.azure.spring.cloud.feature.management.models.FilterParameters.TIME_WINDOW_FILTER_SETTING_FILTERS;
+import static com.azure.spring.cloud.feature.management.models.FilterParameters.TIME_WINDOW_FILTER_SETTING_START;
 
 /**
  * A feature filter that can be used at activate a feature based on a time window.
