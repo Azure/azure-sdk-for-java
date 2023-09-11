@@ -5,7 +5,6 @@ package com.azure.cosmos;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.OperationCancelledException;
 import com.azure.cosmos.implementation.TestConfigurations;
-import com.azure.cosmos.implementation.guava25.base.Function;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
@@ -40,8 +39,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 import java.util.UUID;
-
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import java.util.function.Function;
 
 public class EndToEndTimeOutValidationTests extends TestSuiteBase {
     private static final int DEFAULT_NUM_DOCUMENTS = 100;
