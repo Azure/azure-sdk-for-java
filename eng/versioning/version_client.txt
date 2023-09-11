@@ -448,3 +448,4 @@ unreleased_com.azure:azure-core-test;1.20.0
 # Format;
 # beta_<groupId>:<artifactId>;dependency-version
 # note: Released beta versions will not be manipulated with the automatic PR creation code.
+beta_com.azure:azure-data-appconfiguration;1.5.0-beta.1
