@@ -21,6 +21,9 @@ public enum RpAttachType {
     }
 
     static String getRpAttachType() {
+        if (attachType == null) {
+          throw AssertionError("RpAttachType.setRpAttachType() must be called first");
+        }
         return attachType.label;
     }
 }
