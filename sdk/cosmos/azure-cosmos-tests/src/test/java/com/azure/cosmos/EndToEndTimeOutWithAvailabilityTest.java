@@ -52,6 +52,7 @@ import java.util.UUID;
 
 import static com.azure.cosmos.CosmosDiagnostics.OBJECT_MAPPER;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.testng.AssertJUnit.fail;
 
 public class EndToEndTimeOutWithAvailabilityTest extends TestSuiteBase {
     private static final int DEFAULT_NUM_DOCUMENTS = 100;
@@ -163,7 +164,7 @@ public class EndToEndTimeOutWithAvailabilityTest extends TestSuiteBase {
             .buildAsyncClient();
 
         CosmosAsyncContainer asyncContainerFromClientWithPreferredRegions
-            = getSharedMultiPartitionCosmosContainerWithIdAsPartitionKey(clientWithPreferredRegions);
+            = getSharedSinglePartitionCosmosContainer(clientWithPreferredRegions);
 
         TestItem createdItem = TestItem.createNewItem();
         asyncContainerFromClientWithPreferredRegions.createItem(createdItem).block();
@@ -216,6 +217,8 @@ public class EndToEndTimeOutWithAvailabilityTest extends TestSuiteBase {
         // This is to wait for the item to be replicated to the secondary region
         Thread.sleep(2000);
 
+        cosmosDiagnostics = null;
+
         // injects a response delay in the first preferred region
         try {
             cosmosDiagnostics = performDocumentOperation(
@@ -224,10 +227,13 @@ public class EndToEndTimeOutWithAvailabilityTest extends TestSuiteBase {
                 createdItem,
                 null,
                 endToEndLatencyPolicyConfigWithAvailabilityStrategyMutation);
+
         } catch (Exception exception) {
             if (exception instanceof CosmosException) {
                 CosmosException cosmosException = Utils.as(exception, CosmosException.class);
                 cosmosDiagnostics = cosmosException.getDiagnostics();
+
+                fail("The request should have gotten a success response from a different region.");
             }
         }
 
