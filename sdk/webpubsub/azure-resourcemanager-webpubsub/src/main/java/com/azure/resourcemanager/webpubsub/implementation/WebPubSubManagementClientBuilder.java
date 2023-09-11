@@ -18,14 +18,12 @@ import java.time.Duration;
 @ServiceClientBuilder(serviceClients = {WebPubSubManagementClientImpl.class})
 public final class WebPubSubManagementClientBuilder {
     /*
-     * Gets subscription Id which uniquely identify the Microsoft Azure subscription. The subscription ID forms part of
-     * the URI for every service call.
+     * The ID of the target subscription. The value must be an UUID.
      */
     private String subscriptionId;
 
     /**
-     * Sets Gets subscription Id which uniquely identify the Microsoft Azure subscription. The subscription ID forms
-     * part of the URI for every service call.
+     * Sets The ID of the target subscription. The value must be an UUID.
      *
      * @param subscriptionId the subscriptionId value.
      * @return the WebPubSubManagementClientBuilder.

@@ -14,26 +14,26 @@ public final class ApiOperationDisplayTests {
         ApiOperationDisplay model =
             BinaryData
                 .fromString(
-                    "{\"operation\":\"uf\",\"provider\":\"zk\",\"resource\":\"dbihanufhfcbj\",\"description\":\"a\"}")
+                    "{\"operation\":\"gddtocj\",\"provider\":\"hvpmoue\",\"resource\":\"dzxibqeojnxqbzvd\",\"description\":\"t\"}")
                 .toObject(ApiOperationDisplay.class);
-        Assertions.assertEquals("uf", model.operation());
-        Assertions.assertEquals("zk", model.provider());
-        Assertions.assertEquals("dbihanufhfcbj", model.resource());
-        Assertions.assertEquals("a", model.description());
+        Assertions.assertEquals("gddtocj", model.operation());
+        Assertions.assertEquals("hvpmoue", model.provider());
+        Assertions.assertEquals("dzxibqeojnxqbzvd", model.resource());
+        Assertions.assertEquals("t", model.description());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ApiOperationDisplay model =
             new ApiOperationDisplay()
-                .withOperation("uf")
-                .withProvider("zk")
-                .withResource("dbihanufhfcbj")
-                .withDescription("a");
+                .withOperation("gddtocj")
+                .withProvider("hvpmoue")
+                .withResource("dzxibqeojnxqbzvd")
+                .withDescription("t");
         model = BinaryData.fromObject(model).toObject(ApiOperationDisplay.class);
-        Assertions.assertEquals("uf", model.operation());
-        Assertions.assertEquals("zk", model.provider());
-        Assertions.assertEquals("dbihanufhfcbj", model.resource());
-        Assertions.assertEquals("a", model.description());
+        Assertions.assertEquals("gddtocj", model.operation());
+        Assertions.assertEquals("hvpmoue", model.provider());
+        Assertions.assertEquals("dzxibqeojnxqbzvd", model.resource());
+        Assertions.assertEquals("t", model.description());
     }
 }

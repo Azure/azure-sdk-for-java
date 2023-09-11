@@ -17,10 +17,10 @@ public final class CapabilitiesResponsePropertiesTests {
         CapabilitiesResponseProperties model =
             BinaryData
                 .fromString(
-                    "{\"dnsZones\":[{\"requiredZoneNames\":[\"lluwfzitonpeq\",\"pjkjlxofpdv\",\"pfxxy\"],\"subResource\":\"AzureBackup_secondary\"},{\"requiredZoneNames\":[\"mayhuybbkpodepoo\",\"inuvamiheogn\",\"rxzxtheo\"],\"subResource\":\"AzureBackup\"}]}")
+                    "{\"dnsZones\":[{\"requiredZoneNames\":[\"olniwpwcukjf\",\"giawx\",\"lryplwckbasyy\",\"nddhsgcbacph\"],\"subResource\":\"AzureBackup\"},{\"requiredZoneNames\":[\"ynqgoulzndlikwyq\",\"gfgibm\"],\"subResource\":\"AzureBackup\"},{\"requiredZoneNames\":[\"eqsrxybzqqedqyt\",\"ciqfou\",\"lmmnkzsmodmglo\",\"gpbkwtmut\"],\"subResource\":\"AzureSiteRecovery\"}]}")
                 .toObject(CapabilitiesResponseProperties.class);
-        Assertions.assertEquals(VaultSubResourceType.AZURE_BACKUP_SECONDARY, model.dnsZones().get(0).subResource());
-        Assertions.assertEquals("lluwfzitonpeq", model.dnsZones().get(0).requiredZoneNames().get(0));
+        Assertions.assertEquals(VaultSubResourceType.AZURE_BACKUP, model.dnsZones().get(0).subResource());
+        Assertions.assertEquals("olniwpwcukjf", model.dnsZones().get(0).requiredZoneNames().get(0));
     }
 
     @org.junit.jupiter.api.Test
@@ -31,13 +31,18 @@ public final class CapabilitiesResponsePropertiesTests {
                     Arrays
                         .asList(
                             new DnsZoneResponse()
-                                .withSubResource(VaultSubResourceType.AZURE_BACKUP_SECONDARY)
-                                .withRequiredZoneNames(Arrays.asList("lluwfzitonpeq", "pjkjlxofpdv", "pfxxy")),
+                                .withSubResource(VaultSubResourceType.AZURE_BACKUP)
+                                .withRequiredZoneNames(
+                                    Arrays.asList("olniwpwcukjf", "giawx", "lryplwckbasyy", "nddhsgcbacph")),
                             new DnsZoneResponse()
                                 .withSubResource(VaultSubResourceType.AZURE_BACKUP)
-                                .withRequiredZoneNames(Arrays.asList("mayhuybbkpodepoo", "inuvamiheogn", "rxzxtheo"))));
+                                .withRequiredZoneNames(Arrays.asList("ynqgoulzndlikwyq", "gfgibm")),
+                            new DnsZoneResponse()
+                                .withSubResource(VaultSubResourceType.AZURE_SITE_RECOVERY)
+                                .withRequiredZoneNames(
+                                    Arrays.asList("eqsrxybzqqedqyt", "ciqfou", "lmmnkzsmodmglo", "gpbkwtmut"))));
         model = BinaryData.fromObject(model).toObject(CapabilitiesResponseProperties.class);
-        Assertions.assertEquals(VaultSubResourceType.AZURE_BACKUP_SECONDARY, model.dnsZones().get(0).subResource());
-        Assertions.assertEquals("lluwfzitonpeq", model.dnsZones().get(0).requiredZoneNames().get(0));
+        Assertions.assertEquals(VaultSubResourceType.AZURE_BACKUP, model.dnsZones().get(0).subResource());
+        Assertions.assertEquals("olniwpwcukjf", model.dnsZones().get(0).requiredZoneNames().get(0));
     }
 }

@@ -4,13 +4,13 @@
 
 package com.azure.ai.formrecognizer.documentanalysis.implementation.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** Status and result of the analyze operation. */
-@Fluent
+@Immutable
 public final class AnalyzeResultOperation {
     /*
      * Operation status.
@@ -50,7 +50,7 @@ public final class AnalyzeResultOperation {
      * @param lastUpdatedDateTime the lastUpdatedDateTime value to set.
      */
     @JsonCreator
-    public AnalyzeResultOperation(
+    private AnalyzeResultOperation(
             @JsonProperty(value = "status", required = true) AnalyzeResultOperationStatus status,
             @JsonProperty(value = "createdDateTime", required = true) OffsetDateTime createdDateTime,
             @JsonProperty(value = "lastUpdatedDateTime", required = true) OffsetDateTime lastUpdatedDateTime) {
@@ -96,33 +96,11 @@ public final class AnalyzeResultOperation {
     }
 
     /**
-     * Set the error property: Encountered error during document analysis.
-     *
-     * @param error the error value to set.
-     * @return the AnalyzeResultOperation object itself.
-     */
-    public AnalyzeResultOperation setError(Error error) {
-        this.error = error;
-        return this;
-    }
-
-    /**
      * Get the analyzeResult property: Document analysis result.
      *
      * @return the analyzeResult value.
      */
     public AnalyzeResult getAnalyzeResult() {
         return this.analyzeResult;
-    }
-
-    /**
-     * Set the analyzeResult property: Document analysis result.
-     *
-     * @param analyzeResult the analyzeResult value to set.
-     * @return the AnalyzeResultOperation object itself.
-     */
-    public AnalyzeResultOperation setAnalyzeResult(AnalyzeResult analyzeResult) {
-        this.analyzeResult = analyzeResult;
-        return this;
     }
 }

@@ -6,9 +6,7 @@ package com.azure.security.keyvault.keys.cryptography;
 import com.azure.core.cryptography.KeyEncryptionKey;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
-import com.azure.security.keyvault.keys.cryptography.implementation.CryptographyService;
 import com.azure.security.keyvault.keys.cryptography.implementation.SecretKey;
 import com.azure.security.keyvault.keys.models.JsonWebKey;
 import com.azure.security.keyvault.keys.models.KeyOperation;
@@ -20,6 +18,7 @@ import javax.crypto.spec.SecretKeySpec;
 import java.util.Arrays;
 import java.util.Base64;
 
+import static com.azure.security.keyvault.keys.TestUtils.buildSyncAssertingClient;
 import static com.azure.security.keyvault.keys.cryptography.TestHelper.DISPLAY_NAME_WITH_ARGUMENTS;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 
@@ -33,14 +32,14 @@ public class KeyEncryptionKeyClientTest extends KeyEncryptionKeyClientTestBase {
     }
 
     private void setupSecretKeyAndClient(byte[] kek, HttpClient httpClient, CryptographyServiceVersion serviceVersion) {
-        HttpPipeline pipeline = getHttpPipeline(httpClient);
+        HttpPipeline pipeline = getHttpPipeline(buildSyncAssertingClient(
+            interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient));
 
         if (secretKey == null) {
-            CryptographyServiceClient serviceClient =
-                new CryptographyServiceClient(getEndpoint(), RestProxy.create(CryptographyService.class, pipeline),
-                    serviceVersion);
-            secretKey = serviceClient.setSecretKey(new SecretKey(testResourceNamer.randomName("secretKey", 20),
-                Base64.getEncoder().encodeToString(kek)), Context.NONE).block().getValue();
+            CryptographyClientImpl implClient =
+                new CryptographyClientImpl(getEndpoint(), pipeline, serviceVersion);
+            secretKey = implClient.setSecretKey(new SecretKey(testResourceNamer.randomName("secretKey", 20),
+                Base64.getEncoder().encodeToString(kek)), Context.NONE).getValue();
             keyEncryptionKey = new KeyEncryptionKeyClientBuilder()
                 .pipeline(pipeline)
                 .serviceVersion(serviceVersion)

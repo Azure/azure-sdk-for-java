@@ -13,7 +13,7 @@ public interface AttachedDatabaseConfigurations {
     /**
      * Checks that the attached database configuration resource name is valid and is not already in use.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param resourceName The name of the resource.
      * @param context The context to associate with this operation.
@@ -31,7 +31,7 @@ public interface AttachedDatabaseConfigurations {
     /**
      * Checks that the attached database configuration resource name is valid and is not already in use.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param resourceName The name of the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -45,7 +45,7 @@ public interface AttachedDatabaseConfigurations {
     /**
      * Returns the list of attached database configurations of the given Kusto cluster.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -58,7 +58,7 @@ public interface AttachedDatabaseConfigurations {
     /**
      * Returns the list of attached database configurations of the given Kusto cluster.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -73,7 +73,7 @@ public interface AttachedDatabaseConfigurations {
     /**
      * Returns an attached database configuration.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param attachedDatabaseConfigurationName The name of the attached database configuration.
      * @param context The context to associate with this operation.
@@ -88,7 +88,7 @@ public interface AttachedDatabaseConfigurations {
     /**
      * Returns an attached database configuration.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param attachedDatabaseConfigurationName The name of the attached database configuration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -102,7 +102,7 @@ public interface AttachedDatabaseConfigurations {
     /**
      * Deletes the attached database configuration with the given name.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param attachedDatabaseConfigurationName The name of the attached database configuration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -114,7 +114,7 @@ public interface AttachedDatabaseConfigurations {
     /**
      * Deletes the attached database configuration with the given name.
      *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param attachedDatabaseConfigurationName The name of the attached database configuration.
      * @param context The context to associate with this operation.

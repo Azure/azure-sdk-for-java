@@ -49,6 +49,12 @@ public class CosmosDbLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;
 
+    /*
+     * The credential reference containing authentication information.
+     */
+    @JsonProperty(value = "typeProperties.credential")
+    private CredentialReference credential;
+
     /** Creates an instance of CosmosDbLinkedService class. */
     public CosmosDbLinkedService() {}
 
@@ -157,6 +163,26 @@ public class CosmosDbLinkedService extends LinkedService {
      */
     public CosmosDbLinkedService setEncryptedCredential(Object encryptedCredential) {
         this.encryptedCredential = encryptedCredential;
+        return this;
+    }
+
+    /**
+     * Get the credential property: The credential reference containing authentication information.
+     *
+     * @return the credential value.
+     */
+    public CredentialReference getCredential() {
+        return this.credential;
+    }
+
+    /**
+     * Set the credential property: The credential reference containing authentication information.
+     *
+     * @param credential the credential value to set.
+     * @return the CosmosDbLinkedService object itself.
+     */
+    public CosmosDbLinkedService setCredential(CredentialReference credential) {
+        this.credential = credential;
         return this;
     }
 

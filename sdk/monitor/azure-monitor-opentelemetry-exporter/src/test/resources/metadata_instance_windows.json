@@ -1,0 +1,17 @@
+{
+  "location": "eastus",
+  "name": "heya-windows-vm",
+  "offer": "Windows-10",
+  "osType": "Windows",
+  "placementGroupId": "",
+  "platformFaultDomain": "0",
+  "platformUpdateDomain": "0",
+  "publisher": "MicrosoftWindowsDesktop",
+  "resourceGroupName": "heya-java-ipa",
+  "sku": "20h1-pro",
+  "subscriptionId": "65b2f83e-7bf1-4be3-bafc-3a4163265a52",
+  "tags": "azsecpack:nonprod;platformsettings.host_environment.service.platform_optedin_for_rootcerts:true",
+  "version": "19041.928.2104091205",
+  "vmId": "2955a129-2323-4c1f-8918-994a7a83eefd",
+  "vmSize": "Standard_D2s_v3"
+}

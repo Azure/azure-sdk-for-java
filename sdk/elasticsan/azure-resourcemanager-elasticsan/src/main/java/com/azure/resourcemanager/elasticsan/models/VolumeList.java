@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.elasticsan.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.elasticsan.fluent.models.VolumeInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -16,7 +15,7 @@ public final class VolumeList {
     /*
      * An array of Volume objects.
      */
-    @JsonProperty(value = "value", required = true)
+    @JsonProperty(value = "value")
     private List<VolumeInner> value;
 
     /*
@@ -64,14 +63,8 @@ public final class VolumeList {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property value in model VolumeList"));
-        } else {
+        if (value() != null) {
             value().forEach(e -> e.validate());
         }
     }
-
-    private static final ClientLogger LOGGER = new ClientLogger(VolumeList.class);
 }

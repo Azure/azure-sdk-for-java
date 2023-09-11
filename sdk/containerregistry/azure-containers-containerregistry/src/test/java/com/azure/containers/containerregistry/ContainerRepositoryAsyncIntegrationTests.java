@@ -73,25 +73,25 @@ public class ContainerRepositoryAsyncIntegrationTests extends ContainerRegistryC
     }
 
     private ContainerRepositoryAsync getContainerRepositoryAsync(HttpClient httpClient) {
-        return getContainerRegistryBuilder(buildAsyncAssertingClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient))
+        return getContainerRegistryBuilder(buildAsyncAssertingClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient))
             .buildAsyncClient()
             .getRepository(HELLO_WORLD_REPOSITORY_NAME);
     }
 
     private ContainerRepositoryAsync getUnknownContainerRepositoryAsync(HttpClient httpClient) {
-        return getContainerRegistryBuilder(buildAsyncAssertingClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient))
+        return getContainerRegistryBuilder(buildAsyncAssertingClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient))
             .buildAsyncClient()
             .getRepository(TAG_UNKNOWN);
     }
 
     private ContainerRepository getContainerRepository(HttpClient httpClient) {
-        return getContainerRegistryBuilder(buildSyncAssertingClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient))
+        return getContainerRegistryBuilder(buildSyncAssertingClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient))
             .buildClient()
             .getRepository(HELLO_WORLD_REPOSITORY_NAME);
     }
 
     private ContainerRepository getUnknownContainerRepository(HttpClient httpClient) {
-        return getContainerRegistryBuilder(buildSyncAssertingClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient))
+        return getContainerRegistryBuilder(buildSyncAssertingClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient))
             .buildClient()
             .getRepository(TAG_UNKNOWN);
     }

@@ -17,6 +17,10 @@ public final class CorsRules {
     @JsonProperty(value = "corsRules")
     private List<CorsRule> corsRules;
 
+    /** Creates an instance of CorsRules class. */
+    public CorsRules() {
+    }
+
     /**
      * Get the corsRules property: The List of CORS rules. You can include up to five CorsRule elements in the request.
      *

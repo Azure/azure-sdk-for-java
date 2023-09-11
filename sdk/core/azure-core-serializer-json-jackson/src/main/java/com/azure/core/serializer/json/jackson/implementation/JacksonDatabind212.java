@@ -3,7 +3,6 @@
 
 package com.azure.core.serializer.json.jackson.implementation;
 
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.databind.BeanDescription;
 import com.fasterxml.jackson.databind.DeserializationConfig;
 import com.fasterxml.jackson.databind.DeserializationContext;
@@ -25,8 +24,6 @@ import com.fasterxml.jackson.databind.util.AccessPattern;
  * Utility methods for Jackson Databind types when it's known that the version is 2.12+.
  */
 final class JacksonDatabind212 {
-    private static final ClientLogger LOGGER = new ClientLogger(JacksonDatabind212.class);
-
     /**
      * Mutates the passed {@link ObjectMapper} to coerce empty strings as null.
      * <p>
@@ -79,5 +76,8 @@ final class JacksonDatabind212 {
         }
 
         return name;
+    }
+
+    private JacksonDatabind212() {
     }
 }

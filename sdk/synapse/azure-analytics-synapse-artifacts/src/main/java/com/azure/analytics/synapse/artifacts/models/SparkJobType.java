@@ -17,6 +17,14 @@ public final class SparkJobType extends ExpandableStringEnum<SparkJobType> {
     public static final SparkJobType SPARK_SESSION = fromString("SparkSession");
 
     /**
+     * Creates a new instance of SparkJobType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SparkJobType() {}
+
+    /**
      * Creates or finds a SparkJobType from its string representation.
      *
      * @param name a name to look for.

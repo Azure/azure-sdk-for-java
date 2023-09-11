@@ -59,6 +59,7 @@ import org.springframework.test.util.ReflectionTestUtils;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -90,6 +91,7 @@ import static com.azure.spring.data.cosmos.common.TestConstants.UPDATED_FIRST_NA
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -138,6 +140,8 @@ public class CosmosTemplateIT {
     private static CosmosEntityInformation<Person, String> personInfo;
     private static String containerName;
 
+    private MappingCosmosConverter cosmosConverter;
+
     private Person insertedPerson;
 
     private BasicItem pointReadItem;
@@ -174,7 +178,7 @@ public class CosmosTemplateIT {
         final CosmosFactory cosmosFactory = new CosmosFactory(client, dbName);
         final CosmosMappingContext mappingContext = new CosmosMappingContext();
         mappingContext.setInitialEntitySet(new EntityScanner(this.applicationContext).scan(Persistent.class));
-        final MappingCosmosConverter cosmosConverter = new MappingCosmosConverter(mappingContext, null);
+        cosmosConverter = new MappingCosmosConverter(mappingContext, null);
         return new CosmosTemplate(cosmosFactory, config, cosmosConverter);
     }
 
@@ -222,6 +226,17 @@ public class CosmosTemplateIT {
     }
 
     @Test
+    public void testDiagnosticsLogged() {
+        TestRepositoryConfig.capturingLogger.loggedMessages = new ArrayList<>();
+        cosmosTemplate.insert(TEST_PERSON_2,
+            new PartitionKey(personInfo.getPartitionKeyFieldValue(TEST_PERSON_2)));
+        cosmosTemplate.insert(TEST_PERSON_3,
+            new PartitionKey(personInfo.getPartitionKeyFieldValue(TEST_PERSON_3)));
+        final List<Person> result = TestUtils.toList(cosmosTemplate.findAll(Person.class.getSimpleName(),
+            Person.class));
+        assertTrue(TestRepositoryConfig.capturingLogger.getLoggedMessages().size() > 0);
+    }
+
     public void testFindByIdPointRead() {
         final BasicItem result = cosmosTemplate.findById(BasicItem.class.getSimpleName(),
             BASIC_ITEM.getId(), BasicItem.class);

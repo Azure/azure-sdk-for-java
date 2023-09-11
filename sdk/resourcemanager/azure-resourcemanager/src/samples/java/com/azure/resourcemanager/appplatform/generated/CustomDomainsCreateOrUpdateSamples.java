@@ -11,7 +11,7 @@ import com.azure.resourcemanager.appplatform.models.CustomDomainProperties;
 /** Samples for CustomDomains CreateOrUpdate. */
 public final class CustomDomainsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-04-01/examples/CustomDomains_CreateOrUpdate.json
+     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-12-01/examples/CustomDomains_CreateOrUpdate.json
      */
     /**
      * Sample code: CustomDomains_CreateOrUpdate.

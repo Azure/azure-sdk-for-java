@@ -17,6 +17,15 @@ public final class PrivateIpAllocationMethod extends ExpandableStringEnum<Privat
     public static final PrivateIpAllocationMethod STATIC = fromString("static");
 
     /**
+     * Creates a new instance of PrivateIpAllocationMethod value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public PrivateIpAllocationMethod() {
+    }
+
+    /**
      * Creates or finds a PrivateIpAllocationMethod from its string representation.
      *
      * @param name a name to look for.

@@ -15,17 +15,21 @@ public final class DataConnectionValidationListResultInnerTests {
     public void testDeserialize() throws Exception {
         DataConnectionValidationListResultInner model =
             BinaryData
-                .fromString("{\"value\":[{\"errorMessage\":\"vaytdwkqbrq\"}]}")
+                .fromString("{\"value\":[{\"errorMessage\":\"curdoiwiitht\"},{\"errorMessage\":\"ubxcbihw\"}]}")
                 .toObject(DataConnectionValidationListResultInner.class);
-        Assertions.assertEquals("vaytdwkqbrq", model.value().get(0).errorMessage());
+        Assertions.assertEquals("curdoiwiitht", model.value().get(0).errorMessage());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DataConnectionValidationListResultInner model =
             new DataConnectionValidationListResultInner()
-                .withValue(Arrays.asList(new DataConnectionValidationResult().withErrorMessage("vaytdwkqbrq")));
+                .withValue(
+                    Arrays
+                        .asList(
+                            new DataConnectionValidationResult().withErrorMessage("curdoiwiitht"),
+                            new DataConnectionValidationResult().withErrorMessage("ubxcbihw")));
         model = BinaryData.fromObject(model).toObject(DataConnectionValidationListResultInner.class);
-        Assertions.assertEquals("vaytdwkqbrq", model.value().get(0).errorMessage());
+        Assertions.assertEquals("curdoiwiitht", model.value().get(0).errorMessage());
     }
 }

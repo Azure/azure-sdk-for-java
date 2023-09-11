@@ -42,6 +42,10 @@ public final class MonitoredResourceInner {
     @JsonProperty(value = "reasonForLogsStatus")
     private String reasonForLogsStatus;
 
+    /** Creates an instance of MonitoredResourceInner class. */
+    public MonitoredResourceInner() {
+    }
+
     /**
      * Get the id property: The ARM id of the resource.
      *

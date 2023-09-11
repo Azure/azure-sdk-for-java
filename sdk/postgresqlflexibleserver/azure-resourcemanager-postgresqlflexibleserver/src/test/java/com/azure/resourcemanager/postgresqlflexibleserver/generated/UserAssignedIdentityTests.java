@@ -18,10 +18,10 @@ public final class UserAssignedIdentityTests {
         UserAssignedIdentity model =
             BinaryData
                 .fromString(
-                    "{\"userAssignedIdentities\":{\"zbhvgyuguosv\":{\"principalId\":\"ctyqik\",\"clientId\":\"bovpl\"},\"wiyighxpkdw\":{\"principalId\":\"fssxqukkfplg\",\"clientId\":\"sxnkjzkdeslpvlo\"}},\"type\":\"UserAssigned\"}")
+                    "{\"userAssignedIdentities\":{\"poczvyifqrvkdvjs\":{\"principalId\":\"o\",\"clientId\":\"qn\"},\"watkpnpulexxb\":{\"principalId\":\"rm\",\"clientId\":\"d\"},\"hzdobpxjmflbvvnc\":{\"principalId\":\"wtruwiqzbqjvsovm\",\"clientId\":\"kacspkw\"},\"imjm\":{\"principalId\":\"kcciwwzjuqkhr\",\"clientId\":\"jiwkuofoskghsau\"}},\"type\":\"UserAssigned\",\"tenantId\":\"eduugi\"}")
                 .toObject(UserAssignedIdentity.class);
-        Assertions.assertEquals("ctyqik", model.userAssignedIdentities().get("zbhvgyuguosv").principalId());
-        Assertions.assertEquals("bovpl", model.userAssignedIdentities().get("zbhvgyuguosv").clientId());
+        Assertions.assertEquals("o", model.userAssignedIdentities().get("poczvyifqrvkdvjs").principalId());
+        Assertions.assertEquals("qn", model.userAssignedIdentities().get("poczvyifqrvkdvjs").clientId());
         Assertions.assertEquals(IdentityType.USER_ASSIGNED, model.type());
     }
 
@@ -31,14 +31,18 @@ public final class UserAssignedIdentityTests {
             new UserAssignedIdentity()
                 .withUserAssignedIdentities(
                     mapOf(
-                        "zbhvgyuguosv",
-                        new UserIdentity().withPrincipalId("ctyqik").withClientId("bovpl"),
-                        "wiyighxpkdw",
-                        new UserIdentity().withPrincipalId("fssxqukkfplg").withClientId("sxnkjzkdeslpvlo")))
+                        "poczvyifqrvkdvjs",
+                        new UserIdentity().withPrincipalId("o").withClientId("qn"),
+                        "watkpnpulexxb",
+                        new UserIdentity().withPrincipalId("rm").withClientId("d"),
+                        "hzdobpxjmflbvvnc",
+                        new UserIdentity().withPrincipalId("wtruwiqzbqjvsovm").withClientId("kacspkw"),
+                        "imjm",
+                        new UserIdentity().withPrincipalId("kcciwwzjuqkhr").withClientId("jiwkuofoskghsau")))
                 .withType(IdentityType.USER_ASSIGNED);
         model = BinaryData.fromObject(model).toObject(UserAssignedIdentity.class);
-        Assertions.assertEquals("ctyqik", model.userAssignedIdentities().get("zbhvgyuguosv").principalId());
-        Assertions.assertEquals("bovpl", model.userAssignedIdentities().get("zbhvgyuguosv").clientId());
+        Assertions.assertEquals("o", model.userAssignedIdentities().get("poczvyifqrvkdvjs").principalId());
+        Assertions.assertEquals("qn", model.userAssignedIdentities().get("poczvyifqrvkdvjs").clientId());
         Assertions.assertEquals(IdentityType.USER_ASSIGNED, model.type());
     }
 

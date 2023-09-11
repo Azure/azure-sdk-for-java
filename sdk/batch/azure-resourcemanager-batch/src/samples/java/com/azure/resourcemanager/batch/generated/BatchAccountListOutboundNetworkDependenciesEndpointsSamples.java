@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.batch.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for BatchAccount ListOutboundNetworkDependenciesEndpoints. */
 public final class BatchAccountListOutboundNetworkDependenciesEndpointsSamples {
     /*
-     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2022-10-01/examples/BatchAccountListOutboundNetworkDependenciesEndpoints.json
+     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2023-05-01/examples/BatchAccountListOutboundNetworkDependenciesEndpoints.json
      */
     /**
      * Sample code: ListOutboundNetworkDependencies.
@@ -19,6 +17,7 @@ public final class BatchAccountListOutboundNetworkDependenciesEndpointsSamples {
     public static void listOutboundNetworkDependencies(com.azure.resourcemanager.batch.BatchManager manager) {
         manager
             .batchAccounts()
-            .listOutboundNetworkDependenciesEndpoints("default-azurebatch-japaneast", "sampleacct", Context.NONE);
+            .listOutboundNetworkDependenciesEndpoints(
+                "default-azurebatch-japaneast", "sampleacct", com.azure.core.util.Context.NONE);
     }
 }

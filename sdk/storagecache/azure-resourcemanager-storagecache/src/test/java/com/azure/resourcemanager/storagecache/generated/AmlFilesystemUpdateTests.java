@@ -19,36 +19,27 @@ public final class AmlFilesystemUpdateTests {
         AmlFilesystemUpdate model =
             BinaryData
                 .fromString(
-                    "{\"tags\":{\"wqapnedgfbcvk\":\"yjrxsagafcnih\",\"pkeqdcvdrhvoo\":\"vq\",\"dopcjwvnh\":\"sotbob\",\"mgxcxrslpm\":\"ld\"},\"properties\":{\"encryptionSettings\":{},\"maintenanceWindow\":{\"dayOfWeek\":\"Wednesday\",\"timeOfDayUTC\":\"pkhjwni\"}}}")
+                    "{\"tags\":{\"x\":\"a\",\"hr\":\"fizuckyf\"},\"properties\":{\"encryptionSettings\":{},\"maintenanceWindow\":{\"dayOfWeek\":\"Wednesday\",\"timeOfDayUTC\":\"zuhtymwisdkfthwx\"}}}")
                 .toObject(AmlFilesystemUpdate.class);
-        Assertions.assertEquals("yjrxsagafcnih", model.tags().get("wqapnedgfbcvk"));
+        Assertions.assertEquals("a", model.tags().get("x"));
         Assertions.assertEquals(MaintenanceDayOfWeekType.WEDNESDAY, model.maintenanceWindow().dayOfWeek());
-        Assertions.assertEquals("pkhjwni", model.maintenanceWindow().timeOfDayUtc());
+        Assertions.assertEquals("zuhtymwisdkfthwx", model.maintenanceWindow().timeOfDayUtc());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AmlFilesystemUpdate model =
             new AmlFilesystemUpdate()
-                .withTags(
-                    mapOf(
-                        "wqapnedgfbcvk",
-                        "yjrxsagafcnih",
-                        "pkeqdcvdrhvoo",
-                        "vq",
-                        "dopcjwvnh",
-                        "sotbob",
-                        "mgxcxrslpm",
-                        "ld"))
+                .withTags(mapOf("x", "a", "hr", "fizuckyf"))
                 .withEncryptionSettings(new AmlFilesystemEncryptionSettings())
                 .withMaintenanceWindow(
                     new AmlFilesystemUpdatePropertiesMaintenanceWindow()
                         .withDayOfWeek(MaintenanceDayOfWeekType.WEDNESDAY)
-                        .withTimeOfDayUtc("pkhjwni"));
+                        .withTimeOfDayUtc("zuhtymwisdkfthwx"));
         model = BinaryData.fromObject(model).toObject(AmlFilesystemUpdate.class);
-        Assertions.assertEquals("yjrxsagafcnih", model.tags().get("wqapnedgfbcvk"));
+        Assertions.assertEquals("a", model.tags().get("x"));
         Assertions.assertEquals(MaintenanceDayOfWeekType.WEDNESDAY, model.maintenanceWindow().dayOfWeek());
-        Assertions.assertEquals("pkhjwni", model.maintenanceWindow().timeOfDayUtc());
+        Assertions.assertEquals("zuhtymwisdkfthwx", model.maintenanceWindow().timeOfDayUtc());
     }
 
     @SuppressWarnings("unchecked")

@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.storage.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for PrivateEndpointConnections Get. */
 public final class PrivateEndpointConnectionsGetSamples {
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2022-09-01/examples/StorageAccountGetPrivateEndpointConnection.json
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-01-01/examples/StorageAccountGetPrivateEndpointConnection.json
      */
     /**
      * Sample code: StorageAccountGetPrivateEndpointConnection.
@@ -23,6 +21,6 @@ public final class PrivateEndpointConnectionsGetSamples {
             .manager()
             .serviceClient()
             .getPrivateEndpointConnections()
-            .getWithResponse("res6977", "sto2527", "{privateEndpointConnectionName}", Context.NONE);
+            .getWithResponse("res6977", "sto2527", "{privateEndpointConnectionName}", com.azure.core.util.Context.NONE);
     }
 }

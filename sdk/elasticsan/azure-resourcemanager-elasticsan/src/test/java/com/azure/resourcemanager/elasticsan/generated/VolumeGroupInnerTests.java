@@ -6,50 +6,51 @@ package com.azure.resourcemanager.elasticsan.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.elasticsan.fluent.models.VolumeGroupInner;
+import com.azure.resourcemanager.elasticsan.models.Action;
 import com.azure.resourcemanager.elasticsan.models.EncryptionType;
 import com.azure.resourcemanager.elasticsan.models.NetworkRuleSet;
 import com.azure.resourcemanager.elasticsan.models.StorageTargetType;
+import com.azure.resourcemanager.elasticsan.models.VirtualNetworkRule;
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class VolumeGroupInnerTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         VolumeGroupInner model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"provisioningState\":\"Invalid\",\"protocolType\":\"Iscsi\",\"encryption\":\"EncryptionAtRestWithPlatformKey\",\"networkAcls\":{\"virtualNetworkRules\":[]}},\"tags\":{\"scpai\":\"zloc\",\"l\":\"rhhbcs\",\"bnbdxkqpxokajion\":\"mmajtjaodx\"},\"id\":\"imexgstxgcpodgma\",\"name\":\"jrmvdjwzrlo\",\"type\":\"mcl\"}")
+                    "{\"properties\":{\"provisioningState\":\"Succeeded\",\"protocolType\":\"None\",\"encryption\":\"EncryptionAtRestWithPlatformKey\",\"networkAcls\":{\"virtualNetworkRules\":[{\"id\":\"gidyjrrf\",\"action\":\"Allow\",\"state\":\"provisioning\"},{\"id\":\"v\",\"action\":\"Allow\",\"state\":\"succeeded\"}]},\"privateEndpointConnections\":[{\"properties\":{\"provisioningState\":\"Creating\",\"privateEndpoint\":{\"id\":\"cohslkev\"},\"privateLinkServiceConnectionState\":{\"status\":\"Approved\",\"description\":\"zfbuhf\",\"actionsRequired\":\"faxkffeii\"},\"groupIds\":[\"vmezy\",\"shxmzsbbzoggigrx\",\"burvjxxjnspy\",\"ptkoenkoukn\"]},\"id\":\"dwtiukbldngkp\",\"name\":\"cipazyxoegukgjnp\",\"type\":\"ucgygevqz\"},{\"properties\":{\"provisioningState\":\"Invalid\",\"privateEndpoint\":{\"id\":\"rbpizc\"},\"privateLinkServiceConnectionState\":{\"status\":\"Rejected\",\"description\":\"sdpydnfyhxdeoejz\",\"actionsRequired\":\"w\"},\"groupIds\":[\"jttgzf\",\"ishc\",\"khaj\"]},\"id\":\"yeamdphagalpb\",\"name\":\"xw\",\"type\":\"ipwhonowk\"},{\"properties\":{\"provisioningState\":\"Deleting\",\"privateEndpoint\":{\"id\":\"nkixzbinj\"},\"privateLinkServiceConnectionState\":{\"status\":\"Rejected\",\"description\":\"tmryw\",\"actionsRequired\":\"zoqftiyqzrnkcqvy\"},\"groupIds\":[\"hzls\",\"cohoq\",\"nwvlryavwhheunmm\"]},\"id\":\"gyxzk\",\"name\":\"noc\",\"type\":\"koklya\"}]},\"id\":\"conuqszfkbeype\",\"name\":\"rmjmwvvjektc\",\"type\":\"senhwlrs\"}")
                 .toObject(VolumeGroupInner.class);
-        Assertions.assertEquals("zloc", model.tags().get("scpai"));
-        Assertions.assertEquals(StorageTargetType.ISCSI, model.protocolType());
+        Assertions.assertEquals(StorageTargetType.NONE, model.protocolType());
         Assertions.assertEquals(EncryptionType.ENCRYPTION_AT_REST_WITH_PLATFORM_KEY, model.encryption());
+        Assertions
+            .assertEquals("gidyjrrf", model.networkAcls().virtualNetworkRules().get(0).virtualNetworkResourceId());
+        Assertions.assertEquals(Action.ALLOW, model.networkAcls().virtualNetworkRules().get(0).action());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         VolumeGroupInner model =
             new VolumeGroupInner()
-                .withTags(mapOf("scpai", "zloc", "l", "rhhbcs", "bnbdxkqpxokajion", "mmajtjaodx"))
-                .withProtocolType(StorageTargetType.ISCSI)
+                .withProtocolType(StorageTargetType.NONE)
                 .withEncryption(EncryptionType.ENCRYPTION_AT_REST_WITH_PLATFORM_KEY)
-                .withNetworkAcls(new NetworkRuleSet().withVirtualNetworkRules(Arrays.asList()));
+                .withNetworkAcls(
+                    new NetworkRuleSet()
+                        .withVirtualNetworkRules(
+                            Arrays
+                                .asList(
+                                    new VirtualNetworkRule()
+                                        .withVirtualNetworkResourceId("gidyjrrf")
+                                        .withAction(Action.ALLOW),
+                                    new VirtualNetworkRule()
+                                        .withVirtualNetworkResourceId("v")
+                                        .withAction(Action.ALLOW))));
         model = BinaryData.fromObject(model).toObject(VolumeGroupInner.class);
-        Assertions.assertEquals("zloc", model.tags().get("scpai"));
-        Assertions.assertEquals(StorageTargetType.ISCSI, model.protocolType());
+        Assertions.assertEquals(StorageTargetType.NONE, model.protocolType());
         Assertions.assertEquals(EncryptionType.ENCRYPTION_AT_REST_WITH_PLATFORM_KEY, model.encryption());
-    }
-
-    @SuppressWarnings("unchecked")
-    private static <T> Map<String, T> mapOf(Object... inputs) {
-        Map<String, T> map = new HashMap<>();
-        for (int i = 0; i < inputs.length; i += 2) {
-            String key = (String) inputs[i];
-            T value = (T) inputs[i + 1];
-            map.put(key, value);
-        }
-        return map;
+        Assertions
+            .assertEquals("gidyjrrf", model.networkAcls().virtualNetworkRules().get(0).virtualNetworkResourceId());
+        Assertions.assertEquals(Action.ALLOW, model.networkAcls().virtualNetworkRules().get(0).action());
     }
 }

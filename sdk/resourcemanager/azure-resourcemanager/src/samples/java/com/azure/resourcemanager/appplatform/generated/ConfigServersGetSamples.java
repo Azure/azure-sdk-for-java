@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for ConfigServers Get. */
 public final class ConfigServersGetSamples {
     /*
-     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-04-01/examples/ConfigServers_Get.json
+     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-12-01/examples/ConfigServers_Get.json
      */
     /**
      * Sample code: ConfigServers_Get.

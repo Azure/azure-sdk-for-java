@@ -5,8 +5,12 @@
 package com.azure.resourcemanager.storagemover.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /** The AzureStorageBlobContainerEndpointUpdateProperties model. */
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "endpointType")
+@JsonTypeName("AzureStorageBlobContainer")
 @Fluent
 public final class AzureStorageBlobContainerEndpointUpdateProperties extends EndpointBaseUpdateProperties {
     /** Creates an instance of AzureStorageBlobContainerEndpointUpdateProperties class. */

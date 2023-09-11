@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for HostnameType. */
+/** Hostname type. */
 public final class HostnameType extends ExpandableStringEnum<HostnameType> {
     /** Static value Proxy for HostnameType. */
     public static final HostnameType PROXY = fromString("Proxy");
@@ -26,6 +26,15 @@ public final class HostnameType extends ExpandableStringEnum<HostnameType> {
     public static final HostnameType DEVELOPER_PORTAL = fromString("DeveloperPortal");
 
     /**
+     * Creates a new instance of HostnameType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public HostnameType() {
+    }
+
+    /**
      * Creates or finds a HostnameType from its string representation.
      *
      * @param name a name to look for.
@@ -36,7 +45,11 @@ public final class HostnameType extends ExpandableStringEnum<HostnameType> {
         return fromString(name, HostnameType.class);
     }
 
-    /** @return known HostnameType values. */
+    /**
+     * Gets known HostnameType values.
+     *
+     * @return known HostnameType values.
+     */
     public static Collection<HostnameType> values() {
         return values(HostnameType.class);
     }

@@ -41,6 +41,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.BiFunction;
 import java.util.function.Function;
@@ -62,7 +63,7 @@ public class DefaultDocumentQueryExecutionContext<T> extends DocumentQueryExecut
 
     public DefaultDocumentQueryExecutionContext(DiagnosticsClientContext diagnosticsClientContext, IDocumentQueryClient client, ResourceType resourceTypeEnum,
                                                 Class<T> resourceType, SqlQuerySpec query, CosmosQueryRequestOptions cosmosQueryRequestOptions, String resourceLink,
-                                                UUID correlatedActivityId) {
+                                                UUID correlatedActivityId, final AtomicBoolean isQueryCancelledOnTimeout) {
 
         super(diagnosticsClientContext, client,
                 resourceTypeEnum,
@@ -70,7 +71,8 @@ public class DefaultDocumentQueryExecutionContext<T> extends DocumentQueryExecut
                 query,
                 cosmosQueryRequestOptions,
                 resourceLink,
-                correlatedActivityId);
+                correlatedActivityId,
+                isQueryCancelledOnTimeout);
 
         this.fetchSchedulingMetrics = new SchedulingStopwatch();
         this.fetchSchedulingMetrics.ready();

@@ -6,6 +6,11 @@ package com.azure.ai.personalizer;
 import com.azure.ai.personalizer.models.PersonalizerRankOptions;
 import com.azure.ai.personalizer.models.PersonalizerRankResult;
 import com.azure.ai.personalizer.models.PersonalizerRankableAction;
+import com.azure.ai.personalizer.testmodels.ActionCategory;
+import com.azure.ai.personalizer.testmodels.ActionFeatures;
+import com.azure.ai.personalizer.testmodels.Context;
+import com.azure.ai.personalizer.testmodels.CurrentFeatures;
+import com.azure.ai.personalizer.testmodels.UserFeatures;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.BinaryData;
 

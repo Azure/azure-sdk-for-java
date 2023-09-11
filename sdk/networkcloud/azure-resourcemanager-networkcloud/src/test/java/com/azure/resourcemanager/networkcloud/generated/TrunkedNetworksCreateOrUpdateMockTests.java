@@ -36,7 +36,7 @@ public final class TrunkedNetworksCreateOrUpdateMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"extendedLocation\":{\"name\":\"rlhgenuze\",\"type\":\"gvkvebaqszll\"},\"properties\":{\"clusterId\":\"lsmmdqgmi\",\"detailedStatus\":\"Error\",\"detailedStatusMessage\":\"mcqrhnxt\",\"hybridAksClustersAssociatedIds\":[\"klogx\",\"vtza\",\"hzvqnsqktcmbjwz\",\"oslpky\"],\"hybridAksPluginType\":\"DPDK\",\"interfaceName\":\"wkzpga\",\"isolationDomainIds\":[\"qjcemqbmf\",\"vqar\",\"z\",\"uqrebluimmbwx\"],\"provisioningState\":\"Succeeded\",\"virtualMachinesAssociatedIds\":[\"mbvx\",\"kraokq\",\"budbt\"],\"vlans\":[4508123453658920592,4762329078829269298,6783828828714715371,3248104129731185824]},\"location\":\"aaknwfr\",\"tags\":{\"p\":\"sm\",\"gatolekscbctnan\":\"ujd\",\"wnsnlaimouxwks\":\"imwbzxpdcldpk\"},\"id\":\"mud\",\"name\":\"fco\",\"type\":\"bicziuswswj\"}";
+            "{\"extendedLocation\":{\"name\":\"vlizedvb\",\"type\":\"abv\"},\"properties\":{\"associatedResourceIds\":[\"ge\",\"zyqxadyfhbmwkh\"],\"clusterId\":\"qttbspvkhgla\",\"detailedStatus\":\"Error\",\"detailedStatusMessage\":\"yzstujrzxrkns\",\"hybridAksClustersAssociatedIds\":[\"lduyehiiittugyuq\",\"rldaxurfqa\",\"csozjv\",\"dzciggb\"],\"hybridAksPluginType\":\"OSDevice\",\"interfaceName\":\"o\",\"isolationDomainIds\":[\"alzyxwhoeamo\",\"obdoey\",\"fpnimtwuuhaueg\",\"kwmnfeub\"],\"provisioningState\":\"Succeeded\",\"virtualMachinesAssociatedIds\":[\"kwfugiphrrkuu\"],\"vlans\":[3759154775204122401]},\"location\":\"rhzz\",\"tags\":{\"pwnibittozt\":\"ueoqusvwluj\"},\"id\":\"dqumqvfm\",\"name\":\"caddtgc\",\"type\":\"xegtvgwyur\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -67,29 +67,29 @@ public final class TrunkedNetworksCreateOrUpdateMockTests {
         TrunkedNetwork response =
             manager
                 .trunkedNetworks()
-                .define("g")
-                .withRegion("jxul")
-                .withExistingResourceGroup("yeyng")
-                .withExtendedLocation(new ExtendedLocation().withName("rquv").withType("ygg"))
-                .withIsolationDomainIds(Arrays.asList("xyxgbkkqv", "cteoedlrslsk"))
-                .withVlans(
-                    Arrays
-                        .asList(709135618554592742L, 5929214324622775226L, 7524586451465684112L, 8005992370097576622L))
-                .withTags(mapOf("gcj", "cyrthxqlehm", "oka", "inue"))
-                .withHybridAksPluginType(HybridAksPluginType.SRIOV)
-                .withInterfaceName("blioskkfmkmf")
+                .define("qtrotpvclp")
+                .withRegion("rmvgoqplehmumkz")
+                .withExistingResourceGroup("wj")
+                .withExtendedLocation(new ExtendedLocation().withName("fyrlmwkptskwxj").withType("vhxccbmkakmkoo"))
+                .withIsolationDomainIds(Arrays.asList("jow", "yeyzm", "dsqcmhnxl"))
+                .withVlans(Arrays.asList(7344737615857384709L, 3877439825280273474L, 6320930867686077386L))
+                .withTags(
+                    mapOf("rwnhkgqggoxsst", "czd", "cwmhlymgnukxrk", "ivrakfrryn", "zaudgjtfbclakkuc", "mjpequlr"))
+                .withHybridAksPluginType(HybridAksPluginType.DPDK)
+                .withInterfaceName("ibfiplhxfnsm")
                 .create();
 
-        Assertions.assertEquals("aaknwfr", response.location());
-        Assertions.assertEquals("sm", response.tags().get("p"));
-        Assertions.assertEquals("rlhgenuze", response.extendedLocation().name());
-        Assertions.assertEquals("gvkvebaqszll", response.extendedLocation().type());
-        Assertions.assertEquals(HybridAksPluginType.DPDK, response.hybridAksPluginType());
-        Assertions.assertEquals("wkzpga", response.interfaceName());
-        Assertions.assertEquals("qjcemqbmf", response.isolationDomainIds().get(0));
-        Assertions.assertEquals(4508123453658920592L, response.vlans().get(0));
+        Assertions.assertEquals("rhzz", response.location());
+        Assertions.assertEquals("ueoqusvwluj", response.tags().get("pwnibittozt"));
+        Assertions.assertEquals("vlizedvb", response.extendedLocation().name());
+        Assertions.assertEquals("abv", response.extendedLocation().type());
+        Assertions.assertEquals(HybridAksPluginType.OSDEVICE, response.hybridAksPluginType());
+        Assertions.assertEquals("o", response.interfaceName());
+        Assertions.assertEquals("alzyxwhoeamo", response.isolationDomainIds().get(0));
+        Assertions.assertEquals(3759154775204122401L, response.vlans().get(0));
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

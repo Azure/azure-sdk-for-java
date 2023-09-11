@@ -40,7 +40,8 @@ public final class ResponseError implements JsonSerializable<ResponseError> {
      * @param message the error message of this error.
      */
     @JsonCreator
-    public ResponseError(@JsonProperty(value = "code") String code, @JsonProperty(value = "message") String message) {
+    public ResponseError(@JsonProperty(value = "code", required = true) String code,
+        @JsonProperty(value = "message", required = true) String message) {
         this.code = code;
         this.message = message;
     }
@@ -196,6 +197,14 @@ public final class ResponseError implements JsonSerializable<ResponseError> {
                 } else {
                     reader.skipChildren();
                 }
+            }
+
+            if (!codeFound && !messageFound) {
+                throw new IllegalStateException("Missing required properties: code, message");
+            } else if (!codeFound) {
+                throw new IllegalStateException("Missing required property: code");
+            } else if (!messageFound) {
+                throw new IllegalStateException("Missing required property: message");
             }
 
             return new ResponseError(code, message)

@@ -8,43 +8,42 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.batch.models.ComputeNodeIdentityReference;
 import com.azure.resourcemanager.batch.models.ResourceFile;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class ResourceFileTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         ResourceFile model =
             BinaryData
                 .fromString(
-                    "{\"autoStorageContainerName\":\"ljphuopxodl\",\"storageContainerUrl\":\"ynt\",\"httpUrl\":\"zihleosjswsr\",\"blobPrefix\":\"lyzrpzbchckqqzqi\",\"filePath\":\"iysui\",\"fileMode\":\"ynkedyatrwyhqmib\",\"identityReference\":{\"resourceId\":\"wit\"}}")
+                    "{\"autoStorageContainerName\":\"mnjijpxacqqudf\",\"storageContainerUrl\":\"yxbaaabjyvayf\",\"httpUrl\":\"m\",\"blobPrefix\":\"rtuzqogs\",\"filePath\":\"nevfdnw\",\"fileMode\":\"mewzsyyc\",\"identityReference\":{\"resourceId\":\"soibjudpfrx\"}}")
                 .toObject(ResourceFile.class);
-        Assertions.assertEquals("ljphuopxodl", model.autoStorageContainerName());
-        Assertions.assertEquals("ynt", model.storageContainerUrl());
-        Assertions.assertEquals("zihleosjswsr", model.httpUrl());
-        Assertions.assertEquals("lyzrpzbchckqqzqi", model.blobPrefix());
-        Assertions.assertEquals("iysui", model.filePath());
-        Assertions.assertEquals("ynkedyatrwyhqmib", model.fileMode());
-        Assertions.assertEquals("wit", model.identityReference().resourceId());
+        Assertions.assertEquals("mnjijpxacqqudf", model.autoStorageContainerName());
+        Assertions.assertEquals("yxbaaabjyvayf", model.storageContainerUrl());
+        Assertions.assertEquals("m", model.httpUrl());
+        Assertions.assertEquals("rtuzqogs", model.blobPrefix());
+        Assertions.assertEquals("nevfdnw", model.filePath());
+        Assertions.assertEquals("mewzsyyc", model.fileMode());
+        Assertions.assertEquals("soibjudpfrx", model.identityReference().resourceId());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         ResourceFile model =
             new ResourceFile()
-                .withAutoStorageContainerName("ljphuopxodl")
-                .withStorageContainerUrl("ynt")
-                .withHttpUrl("zihleosjswsr")
-                .withBlobPrefix("lyzrpzbchckqqzqi")
-                .withFilePath("iysui")
-                .withFileMode("ynkedyatrwyhqmib")
-                .withIdentityReference(new ComputeNodeIdentityReference().withResourceId("wit"));
+                .withAutoStorageContainerName("mnjijpxacqqudf")
+                .withStorageContainerUrl("yxbaaabjyvayf")
+                .withHttpUrl("m")
+                .withBlobPrefix("rtuzqogs")
+                .withFilePath("nevfdnw")
+                .withFileMode("mewzsyyc")
+                .withIdentityReference(new ComputeNodeIdentityReference().withResourceId("soibjudpfrx"));
         model = BinaryData.fromObject(model).toObject(ResourceFile.class);
-        Assertions.assertEquals("ljphuopxodl", model.autoStorageContainerName());
-        Assertions.assertEquals("ynt", model.storageContainerUrl());
-        Assertions.assertEquals("zihleosjswsr", model.httpUrl());
-        Assertions.assertEquals("lyzrpzbchckqqzqi", model.blobPrefix());
-        Assertions.assertEquals("iysui", model.filePath());
-        Assertions.assertEquals("ynkedyatrwyhqmib", model.fileMode());
-        Assertions.assertEquals("wit", model.identityReference().resourceId());
+        Assertions.assertEquals("mnjijpxacqqudf", model.autoStorageContainerName());
+        Assertions.assertEquals("yxbaaabjyvayf", model.storageContainerUrl());
+        Assertions.assertEquals("m", model.httpUrl());
+        Assertions.assertEquals("rtuzqogs", model.blobPrefix());
+        Assertions.assertEquals("nevfdnw", model.filePath());
+        Assertions.assertEquals("mewzsyyc", model.fileMode());
+        Assertions.assertEquals("soibjudpfrx", model.identityReference().resourceId());
     }
 }

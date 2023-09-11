@@ -36,6 +36,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
@@ -412,6 +413,29 @@ public final class CosmosClientTelemetryConfig {
             "The samplingRate must be between 0 and 1 (both inclusive).");
         this.samplingRate = samplingRate;
         return this;
+    }
+
+    @Override
+    public String toString() {
+
+        String handlers = "()";
+        if (!this.customDiagnosticHandlers.isEmpty()) {
+            handlers = "(" + this.customDiagnosticHandlers
+                .stream()
+                .map(h -> h.getClass().getCanonicalName())
+                .collect(Collectors.joining(", ")) + ")";
+        }
+
+        return "{" +
+            "samplingRate=" + this.samplingRate +
+            ", thresholds=" + this.diagnosticsThresholds +
+            ", clientCorrelationId=" + this.clientCorrelationId +
+            ", clientTelemetryEnabled=" + this.effectiveIsClientTelemetryEnabled +
+            ", clientMetricsEnabled=" + this.isClientMetricsEnabled +
+            ", transportLevelTracingEnabled=" + this.isTransportLevelTracingEnabled +
+            ", customTracerProvided=" + (this.tracer != null) +
+            ", customDiagnosticHandlers=" + handlers +
+            "}";
     }
 
     Tracer getOrCreateTracer() {

@@ -19,7 +19,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("EndpointBaseProperties")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "AzureStorageBlobContainer", value = AzureStorageBlobContainerEndpointProperties.class),
-    @JsonSubTypes.Type(name = "NfsMount", value = NfsMountEndpointProperties.class)
+    @JsonSubTypes.Type(name = "NfsMount", value = NfsMountEndpointProperties.class),
+    @JsonSubTypes.Type(name = "AzureStorageSmbFileShare", value = AzureStorageSmbFileShareEndpointProperties.class),
+    @JsonSubTypes.Type(name = "SmbMount", value = SmbMountEndpointProperties.class)
 })
 @Fluent
 public class EndpointBaseProperties {

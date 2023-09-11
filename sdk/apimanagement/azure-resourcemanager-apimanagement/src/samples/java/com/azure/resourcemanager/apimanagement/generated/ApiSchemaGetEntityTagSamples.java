@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.apimanagement.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ApiSchema GetEntityTag. */
 public final class ApiSchemaGetEntityTagSamples {
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementHeadApiSchema.json
+     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementHeadApiSchema.json
      */
     /**
      * Sample code: ApiManagementHeadApiSchema.
@@ -25,6 +23,6 @@ public final class ApiSchemaGetEntityTagSamples {
                 "apimService1",
                 "57d1f7558aa04f15146d9d8a",
                 "ec12520d-9d48-4e7b-8f39-698ca2ac63f1",
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

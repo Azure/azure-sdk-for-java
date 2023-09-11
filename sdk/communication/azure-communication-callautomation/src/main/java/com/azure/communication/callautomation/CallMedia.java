@@ -30,6 +30,19 @@ public final class CallMedia {
     /**
      * Play
      *
+     * @param playSources A List of {@link PlaySource} representing the sources to play.
+     * @param playTo the targets to play to.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void play(List<PlaySource> playSources, List<CommunicationIdentifier> playTo) {
+        callMediaAsync.play(playSources, playTo).block();
+    }
+
+    /**
+     * Play
+     *
      * @param playSource A {@link PlaySource} representing the source to play.
      * @param playTo the targets to play to.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -38,6 +51,18 @@ public final class CallMedia {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void play(PlaySource playSource, List<CommunicationIdentifier> playTo) {
         callMediaAsync.play(playSource, playTo).block();
+    }
+
+    /**
+     * Play to all participants
+     *
+     * @param playSources A List of {@link PlaySource} representing the sources to play.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void playToAll(List<PlaySource> playSources) {
+        callMediaAsync.playToAll(playSources).block();
     }
 
     /**
@@ -139,13 +164,14 @@ public final class CallMedia {
      * @param tones tones to be sent
      * @param targetParticipant the target participant
      * @param operationContext operationContext (pass null if not applicable)
+     * @param callbackUrl the call back URI override to set (pass null if not applicable)
      * @param context Context
      * @return Response for successful sendDtmf request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> sendDtmfWithResponse(List<DtmfTone> tones, CommunicationIdentifier targetParticipant,
-                                               String operationContext, Context context) {
-        return callMediaAsync.sendDtmfWithResponseInternal(targetParticipant, tones, operationContext, context).block();
+                                               String operationContext, String callbackUrl, Context context) {
+        return callMediaAsync.sendDtmfWithResponseInternal(targetParticipant, tones, operationContext, callbackUrl, context).block();
     }
 
     /**
@@ -184,10 +210,11 @@ public final class CallMedia {
      * @param targetParticipant the target participant
      * @param operationContext operationContext (pass null if not applicable)
      * @param context Context
+     * @param callbackUrl the call back URI override to set (pass null if not applicable)
      * @return Response for successful stop continuous dtmf recognition request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> stopContinuousDtmfRecognitionWithResponse(CommunicationIdentifier targetParticipant, String operationContext, Context context) {
-        return callMediaAsync.stopContinuousDtmfRecognitionWithResponseInternal(targetParticipant, operationContext, context).block();
+    public Response<Void> stopContinuousDtmfRecognitionWithResponse(CommunicationIdentifier targetParticipant, String operationContext, String callbackUrl, Context context) {
+        return callMediaAsync.stopContinuousDtmfRecognitionWithResponseInternal(targetParticipant, operationContext, callbackUrl, context).block();
     }
 }

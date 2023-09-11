@@ -55,11 +55,13 @@ public interface WorkloadNetworkDhcp {
     interface Definition
         extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
+
     /** The WorkloadNetworkDhcp definition stages. */
     interface DefinitionStages {
         /** The first stage of the WorkloadNetworkDhcp definition. */
         interface Blank extends WithParentResource {
         }
+
         /** The stage of the WorkloadNetworkDhcp definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
@@ -71,6 +73,7 @@ public interface WorkloadNetworkDhcp {
              */
             WithCreate withExistingPrivateCloud(String resourceGroupName, String privateCloudName);
         }
+
         /**
          * The stage of the WorkloadNetworkDhcp definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
@@ -91,6 +94,7 @@ public interface WorkloadNetworkDhcp {
              */
             WorkloadNetworkDhcp create(Context context);
         }
+
         /** The stage of the WorkloadNetworkDhcp definition allowing to specify properties. */
         interface WithProperties {
             /**
@@ -102,6 +106,7 @@ public interface WorkloadNetworkDhcp {
             WithCreate withProperties(WorkloadNetworkDhcpEntity properties);
         }
     }
+
     /**
      * Begins update for the WorkloadNetworkDhcp resource.
      *
@@ -126,6 +131,7 @@ public interface WorkloadNetworkDhcp {
          */
         WorkloadNetworkDhcp apply(Context context);
     }
+
     /** The WorkloadNetworkDhcp update stages. */
     interface UpdateStages {
         /** The stage of the WorkloadNetworkDhcp update allowing to specify properties. */
@@ -139,6 +145,7 @@ public interface WorkloadNetworkDhcp {
             Update withProperties(WorkloadNetworkDhcpEntity properties);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

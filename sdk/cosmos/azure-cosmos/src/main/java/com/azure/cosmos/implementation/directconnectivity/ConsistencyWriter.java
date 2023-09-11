@@ -6,6 +6,7 @@ package com.azure.cosmos.implementation.directconnectivity;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.SessionRetryOptions;
 import com.azure.cosmos.implementation.BackoffRetryUtility;
 import com.azure.cosmos.implementation.CosmosSchedulers;
 import com.azure.cosmos.implementation.DiagnosticsClientContext;
@@ -77,6 +78,7 @@ public class ConsistencyWriter {
     private final boolean useMultipleWriteLocations;
     private final GatewayServiceConfigurationReader serviceConfigReader;
     private final StoreReader storeReader;
+    private final SessionRetryOptions sessionRetryOptions;
 
     public ConsistencyWriter(
         DiagnosticsClientContext diagnosticsClientContext,
@@ -85,7 +87,8 @@ public class ConsistencyWriter {
         TransportClient transportClient,
         IAuthorizationTokenProvider authorizationTokenProvider,
         GatewayServiceConfigurationReader serviceConfigReader,
-        boolean useMultipleWriteLocations) {
+        boolean useMultipleWriteLocations,
+        SessionRetryOptions sessionRetryOptions) {
         this.diagnosticsClientContext = diagnosticsClientContext;
         this.transportClient = transportClient;
         this.addressSelector = addressSelector;
@@ -94,6 +97,7 @@ public class ConsistencyWriter {
         this.useMultipleWriteLocations = useMultipleWriteLocations;
         this.serviceConfigReader = serviceConfigReader;
         this.storeReader = new StoreReader(transportClient, addressSelector, null /*we need store reader only for global strong, no session is needed*/);
+        this.sessionRetryOptions = sessionRetryOptions;
     }
 
     public Mono<StoreResponse> writeAsync(
@@ -115,7 +119,7 @@ public class ConsistencyWriter {
         return  BackoffRetryUtility
             .executeRetry(
                 () -> this.writePrivateAsync(entity, timeout, forceRefresh),
-                new SessionTokenMismatchRetryPolicy(BridgeInternal.getRetryContext(entity.requestContext.cosmosDiagnostics)))
+                new SessionTokenMismatchRetryPolicy(BridgeInternal.getRetryContext(entity.requestContext.cosmosDiagnostics), sessionRetryOptions))
             .doOnEach(
             arg -> {
                 try {

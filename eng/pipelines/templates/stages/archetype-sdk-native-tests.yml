@@ -104,9 +104,6 @@ parameters:
   - name: TestOptions
     type: string
     default: $(TestOptions)
-  - name: LtsVersion
-    type: string
-    default: $(JavaTestVersion)
 
 stages:
   - ${{ each cloud in parameters.CloudConfig }}:

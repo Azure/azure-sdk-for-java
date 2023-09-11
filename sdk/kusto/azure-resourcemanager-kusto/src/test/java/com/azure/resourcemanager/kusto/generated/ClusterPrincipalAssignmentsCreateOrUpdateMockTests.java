@@ -33,7 +33,7 @@ public final class ClusterPrincipalAssignmentsCreateOrUpdateMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"principalId\":\"zulwmmrqzzrrj\",\"role\":\"AllDatabasesAdmin\",\"tenantId\":\"lydzgk\",\"principalType\":\"Group\",\"tenantName\":\"eevt\",\"principalName\":\"pryu\",\"provisioningState\":\"Succeeded\",\"aadObjectId\":\"tpzdmovzvfvaawzq\"},\"id\":\"dflgzuri\",\"name\":\"laecxndticok\",\"type\":\"vzm\"}";
+            "{\"properties\":{\"principalId\":\"zojhpctfnmd\",\"role\":\"AllDatabasesAdmin\",\"tenantId\":\"ngfdgugeyzihgrky\",\"principalType\":\"Group\",\"tenantName\":\"absnmfpp\",\"principalName\":\"jee\",\"provisioningState\":\"Succeeded\",\"aadObjectId\":\"hsgz\"},\"id\":\"czbgomfgbeg\",\"name\":\"qgleohibetnluank\",\"type\":\"rfxeeebtij\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -64,17 +64,17 @@ public final class ClusterPrincipalAssignmentsCreateOrUpdateMockTests {
         ClusterPrincipalAssignment response =
             manager
                 .clusterPrincipalAssignments()
-                .define("dwxf")
-                .withExistingCluster("fmo", "uxrkjp")
-                .withPrincipalId("iivwzjbhyzsxjrka")
+                .define("qspkcdqzhlctd")
+                .withExistingCluster("ttexoqqpwcyyufmh", "uncuw")
+                .withPrincipalId("nqndyfpchrqbn")
                 .withRole(ClusterPrincipalRole.ALL_DATABASES_ADMIN)
-                .withTenantId("rnegvmn")
-                .withPrincipalType(PrincipalType.USER)
+                .withTenantId("cgegydcwbo")
+                .withPrincipalType(PrincipalType.GROUP)
                 .create();
 
-        Assertions.assertEquals("zulwmmrqzzrrj", response.principalId());
+        Assertions.assertEquals("zojhpctfnmd", response.principalId());
         Assertions.assertEquals(ClusterPrincipalRole.ALL_DATABASES_ADMIN, response.role());
-        Assertions.assertEquals("lydzgk", response.tenantId());
+        Assertions.assertEquals("ngfdgugeyzihgrky", response.tenantId());
         Assertions.assertEquals(PrincipalType.GROUP, response.principalType());
     }
 }

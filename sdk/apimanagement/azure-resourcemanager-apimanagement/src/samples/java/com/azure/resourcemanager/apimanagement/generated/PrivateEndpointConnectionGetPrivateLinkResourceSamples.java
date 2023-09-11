@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.apimanagement.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for PrivateEndpointConnection GetPrivateLinkResource. */
 public final class PrivateEndpointConnectionGetPrivateLinkResourceSamples {
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementGetPrivateLinkGroupResource.json
+     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementGetPrivateLinkGroupResource.json
      */
     /**
      * Sample code: ApiManagementGetPrivateLinkGroupResource.
@@ -20,6 +18,7 @@ public final class PrivateEndpointConnectionGetPrivateLinkResourceSamples {
         com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
         manager
             .privateEndpointConnections()
-            .getPrivateLinkResourceWithResponse("rg1", "apimService1", "privateLinkSubResourceName", Context.NONE);
+            .getPrivateLinkResourceWithResponse(
+                "rg1", "apimService1", "privateLinkSubResourceName", com.azure.core.util.Context.NONE);
     }
 }

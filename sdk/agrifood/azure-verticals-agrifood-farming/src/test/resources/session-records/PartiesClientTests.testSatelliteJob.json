@@ -103,7 +103,33 @@
       "x-ms-throttle-information" : "100",
       "Content-Length" : "637",
       "x-ms-request-id" : "0d1f6269719f873362a39119ccf748e7",
-      "Body" : "{\"partyId\":\"contoso-party\",\"boundaryId\":\"contoso-boundary\",\"startDateTime\":\"2022-01-01T00:00:00Z\",\"endDateTime\":\"2022-02-01T00:00:00Z\",\"provider\":\"Microsoft\",\"source\":\"Sentinel_2_L2A\",\"data\":{\"imageNames\":[\"NDVI\"],\"imageFormats\":[\"TIF\"],\"imageResolutions\":[10.0]},\"id\":\"contoso-job-35864\",\"status\":\"Waiting\",\"message\":\"Created job 'contoso-job-35864' to fetch satellite data for boundary 'contoso-boundary' from startDate '01/01/2022' to endDate '02/01/2022' (both inclusive).\",\"createdDateTime\":\"2023-02-22T13:02:44Z\",\"lastActionDateTime\":\"2023-02-22T13:02:44Z\",\"startTime\":\"2023-02-22T13:02:44Z\",\"name\":\"string\",\"description\":\"string\"}",
+      "Body" : "{\"partyId\":\"contoso-party\",\"boundaryId\":\"contoso-boundary\",\"startDateTime\":\"2022-01-01T00:00:00Z\",\"endDateTime\":\"2022-02-01T00:00:00Z\",\"provider\":\"Microsoft\",\"source\":\"Sentinel_2_L2A\",\"data\":{\"imageNames\":[\"NDVI\"],\"imageFormats\":[\"TIF\"],\"imageResolutions\":[10.0]},\"id\":\"contoso-job-35864\",\"status\":\"Succeeded\",\"message\":\"Created job 'contoso-job-35864' to fetch satellite data for boundary 'contoso-boundary' from startDate '01/01/2022' to endDate '02/01/2022' (both inclusive).\",\"createdDateTime\":\"2023-02-22T13:02:44Z\",\"lastActionDateTime\":\"2023-02-22T13:02:44Z\",\"startTime\":\"2023-02-22T13:02:44Z\",\"name\":\"string\",\"description\":\"string\"}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.farmbeats.azure.net/scenes/satellite/ingest-data/contoso-job-35864?api-version=2022-11-01-preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-verticals-agrifood-farming/1.0.0-beta.3 (17.0.6; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "5476ed80-6396-4a09-87ea-5463192deebf"
+    },
+    "Response" : {
+      "api-supported-versions" : "2021-07-31-preview, 2022-11-01-preview",
+      "x-frame-options" : "SAMEORIGIN",
+      "Connection" : "keep-alive",
+      "mise-correlation-id" : "4cb0a2b5-cb9a-42ca-b0d3-6cd87a49514c",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Date" : "Wed, 22 Feb 2023 13:02:47 GMT",
+      "strict-transport-security" : "max-age=15724800; includeSubDomains",
+      "content-security-policy" : "self",
+      "x-content-type-options" : "nosniff",
+      "Vary" : "Accept-Encoding",
+      "x-ms-throttle-information" : "100",
+      "Content-Length" : "637",
+      "x-ms-request-id" : "0d1f6269719f873362a39119ccf748e7",
+      "Body" : "{\"partyId\":\"contoso-party\",\"boundaryId\":\"contoso-boundary\",\"startDateTime\":\"2022-01-01T00:00:00Z\",\"endDateTime\":\"2022-02-01T00:00:00Z\",\"provider\":\"Microsoft\",\"source\":\"Sentinel_2_L2A\",\"data\":{\"imageNames\":[\"NDVI\"],\"imageFormats\":[\"TIF\"],\"imageResolutions\":[10.0]},\"id\":\"contoso-job-35864\",\"status\":\"Succeeded\",\"message\":\"Created job 'contoso-job-35864' to fetch satellite data for boundary 'contoso-boundary' from startDate '01/01/2022' to endDate '02/01/2022' (both inclusive).\",\"createdDateTime\":\"2023-02-22T13:02:44Z\",\"lastActionDateTime\":\"2023-02-22T13:02:44Z\",\"startTime\":\"2023-02-22T13:02:44Z\",\"name\":\"string\",\"description\":\"string\"}",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null

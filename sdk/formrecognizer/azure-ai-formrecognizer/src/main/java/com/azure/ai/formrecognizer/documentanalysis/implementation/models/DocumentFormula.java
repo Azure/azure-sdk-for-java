@@ -5,13 +5,13 @@
 package com.azure.ai.formrecognizer.documentanalysis.implementation.models;
 
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentFormulaKind;
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** A formula object. */
-@Fluent
+@Immutable
 public final class DocumentFormula {
     /*
      * Formula kind.
@@ -52,7 +52,7 @@ public final class DocumentFormula {
      * @param confidence the confidence value to set.
      */
     @JsonCreator
-    public DocumentFormula(
+    private DocumentFormula(
             @JsonProperty(value = "kind", required = true) DocumentFormulaKind kind,
             @JsonProperty(value = "value", required = true) String value,
             @JsonProperty(value = "span", required = true) DocumentSpan span,
@@ -88,17 +88,6 @@ public final class DocumentFormula {
      */
     public List<Float> getPolygon() {
         return this.polygon;
-    }
-
-    /**
-     * Set the polygon property: Bounding polygon of the formula.
-     *
-     * @param polygon the polygon value to set.
-     * @return the DocumentFormula object itself.
-     */
-    public DocumentFormula setPolygon(List<Float> polygon) {
-        this.polygon = polygon;
-        return this;
     }
 
     /**

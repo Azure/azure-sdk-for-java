@@ -7,52 +7,121 @@ package com.azure.resourcemanager.hdinsight.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.hdinsight.fluent.models.CapabilitiesResultInner;
 import com.azure.resourcemanager.hdinsight.models.RegionsCapability;
+import com.azure.resourcemanager.hdinsight.models.VersionSpec;
 import com.azure.resourcemanager.hdinsight.models.VersionsCapability;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class CapabilitiesResultInnerTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         CapabilitiesResultInner model =
             BinaryData
                 .fromString(
-                    "{\"versions\":{\"rhzo\":{\"available\":[]},\"bmrqyibahwfl\":{\"available\":[]},\"dtmhrkwofyyvoqa\":{\"available\":[]},\"expbtg\":{\"available\":[]}},\"regions\":{\"xwbpokulpiuj\":{\"available\":[\"enwash\",\"tdtkcn\"]},\"wcciuqgbdbu\":{\"available\":[\"sipqii\",\"byuqerpqlp\"]},\"kkpwdreqnovvq\":{\"available\":[\"vfbtkuwh\",\"mhykojoxafnndl\",\"ichkoymkcdyhb\"]}},\"features\":[\"ljxywsu\",\"syrsndsytgadgvra\"],\"quota\":{\"coresUsed\":3800115719889326698,\"maxCoresAllowed\":4293634280481383135,\"regionalQuotas\":[{\"regionName\":\"wlquuijfqkace\",\"coresUsed\":9040428680411345053,\"coresAvailable\":7317687022147254934},{\"regionName\":\"ji\",\"coresUsed\":4782165638110518920,\"coresAvailable\":4706346504350614547},{\"regionName\":\"qkvpuvksgplsakn\",\"coresUsed\":3402828126111711911,\"coresAvailable\":44531628104673471},{\"regionName\":\"ph\",\"coresUsed\":7200001329577551370,\"coresAvailable\":4359673283515658098}]}}")
+                    "{\"versions\":{\"eaivxwczel\":{\"available\":[{\"friendlyName\":\"iizynkedyatrwyh\",\"displayName\":\"ibzyhwitsmyp\",\"isDefault\":true,\"componentVersions\":{\"nmabik\":\"dpumnzgmw\"}},{\"friendlyName\":\"orgjhxbldt\",\"displayName\":\"wrlkdmtn\",\"isDefault\":false,\"componentVersions\":{\"tdtbnnhadooc\":\"tllxdyhgsyocogj\",\"hnvpamqgxq\":\"kvci\",\"zikywgg\":\"u\"}},{\"friendlyName\":\"allatmelwuipic\",\"displayName\":\"zkzivgvvcnay\",\"isDefault\":true,\"componentVersions\":{\"rdvstkwqqtch\":\"xxmueedn\",\"mtdaa\":\"alm\",\"vgpiohgwxrt\":\"gdv\",\"vmnpkukghimdblx\":\"udxepxgyqagv\"}},{\"friendlyName\":\"imfnjhfjx\",\"displayName\":\"szkkfoqre\",\"isDefault\":true,\"componentVersions\":{\"aw\":\"kf\"}}]},\"yc\":{\"available\":[{\"friendlyName\":\"elsfeaen\",\"displayName\":\"bfatklddxbjhwu\",\"isDefault\":false,\"componentVersions\":{\"hyoulpjr\":\"jos\",\"vimjwos\":\"xagl\"}},{\"friendlyName\":\"xitc\",\"displayName\":\"fcktqumiekke\",\"isDefault\":false,\"componentVersions\":{\"jhdgqggebdunyga\":\"ly\",\"moadsuvarmy\":\"qidbqfatpxllrxcy\",\"hhyxxrw\":\"dmjsjqb\"}}]}},\"regions\":{\"xqugjhkycubedd\":{\"available\":[\"kxkgymareqna\"]},\"ayffim\":{\"available\":[\"ofwq\",\"zqalkrmnjijpx\",\"cqqudf\",\"byxbaaabjy\"]},\"wmewzsyy\":{\"available\":[\"tuzqogsexne\",\"fdnw\"]}},\"features\":[\"zsoibjudpfrxtr\",\"hzv\"],\"quota\":{\"coresUsed\":7682378708055964698,\"maxCoresAllowed\":8785236673495844841,\"regionalQuotas\":[{\"regionName\":\"bpaxhexiilivpdt\",\"coresUsed\":62353218674748426,\"coresAvailable\":233619173932499743}]}}")
                 .toObject(CapabilitiesResultInner.class);
-        Assertions.assertEquals("enwash", model.regions().get("xwbpokulpiuj").available().get(0));
-        Assertions.assertEquals("ljxywsu", model.features().get(0));
+        Assertions
+            .assertEquals("iizynkedyatrwyh", model.versions().get("eaivxwczel").available().get(0).friendlyName());
+        Assertions.assertEquals("ibzyhwitsmyp", model.versions().get("eaivxwczel").available().get(0).displayName());
+        Assertions.assertEquals(true, model.versions().get("eaivxwczel").available().get(0).isDefault());
+        Assertions
+            .assertEquals(
+                "dpumnzgmw", model.versions().get("eaivxwczel").available().get(0).componentVersions().get("nmabik"));
+        Assertions.assertEquals("kxkgymareqna", model.regions().get("xqugjhkycubedd").available().get(0));
+        Assertions.assertEquals("zsoibjudpfrxtr", model.features().get(0));
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         CapabilitiesResultInner model =
             new CapabilitiesResultInner()
                 .withVersions(
                     mapOf(
-                        "rhzo",
-                        new VersionsCapability().withAvailable(Arrays.asList()),
-                        "bmrqyibahwfl",
-                        new VersionsCapability().withAvailable(Arrays.asList()),
-                        "dtmhrkwofyyvoqa",
-                        new VersionsCapability().withAvailable(Arrays.asList()),
-                        "expbtg",
-                        new VersionsCapability().withAvailable(Arrays.asList())))
+                        "eaivxwczel",
+                        new VersionsCapability()
+                            .withAvailable(
+                                Arrays
+                                    .asList(
+                                        new VersionSpec()
+                                            .withFriendlyName("iizynkedyatrwyh")
+                                            .withDisplayName("ibzyhwitsmyp")
+                                            .withIsDefault(true)
+                                            .withComponentVersions(mapOf("nmabik", "dpumnzgmw")),
+                                        new VersionSpec()
+                                            .withFriendlyName("orgjhxbldt")
+                                            .withDisplayName("wrlkdmtn")
+                                            .withIsDefault(false)
+                                            .withComponentVersions(
+                                                mapOf(
+                                                    "tdtbnnhadooc",
+                                                    "tllxdyhgsyocogj",
+                                                    "hnvpamqgxq",
+                                                    "kvci",
+                                                    "zikywgg",
+                                                    "u")),
+                                        new VersionSpec()
+                                            .withFriendlyName("allatmelwuipic")
+                                            .withDisplayName("zkzivgvvcnay")
+                                            .withIsDefault(true)
+                                            .withComponentVersions(
+                                                mapOf(
+                                                    "rdvstkwqqtch",
+                                                    "xxmueedn",
+                                                    "mtdaa",
+                                                    "alm",
+                                                    "vgpiohgwxrt",
+                                                    "gdv",
+                                                    "vmnpkukghimdblx",
+                                                    "udxepxgyqagv")),
+                                        new VersionSpec()
+                                            .withFriendlyName("imfnjhfjx")
+                                            .withDisplayName("szkkfoqre")
+                                            .withIsDefault(true)
+                                            .withComponentVersions(mapOf("aw", "kf")))),
+                        "yc",
+                        new VersionsCapability()
+                            .withAvailable(
+                                Arrays
+                                    .asList(
+                                        new VersionSpec()
+                                            .withFriendlyName("elsfeaen")
+                                            .withDisplayName("bfatklddxbjhwu")
+                                            .withIsDefault(false)
+                                            .withComponentVersions(mapOf("hyoulpjr", "jos", "vimjwos", "xagl")),
+                                        new VersionSpec()
+                                            .withFriendlyName("xitc")
+                                            .withDisplayName("fcktqumiekke")
+                                            .withIsDefault(false)
+                                            .withComponentVersions(
+                                                mapOf(
+                                                    "jhdgqggebdunyga",
+                                                    "ly",
+                                                    "moadsuvarmy",
+                                                    "qidbqfatpxllrxcy",
+                                                    "hhyxxrw",
+                                                    "dmjsjqb"))))))
                 .withRegions(
                     mapOf(
-                        "xwbpokulpiuj",
-                        new RegionsCapability().withAvailable(Arrays.asList("enwash", "tdtkcn")),
-                        "wcciuqgbdbu",
-                        new RegionsCapability().withAvailable(Arrays.asList("sipqii", "byuqerpqlp")),
-                        "kkpwdreqnovvq",
+                        "xqugjhkycubedd",
+                        new RegionsCapability().withAvailable(Arrays.asList("kxkgymareqna")),
+                        "ayffim",
                         new RegionsCapability()
-                            .withAvailable(Arrays.asList("vfbtkuwh", "mhykojoxafnndl", "ichkoymkcdyhb"))))
-                .withFeatures(Arrays.asList("ljxywsu", "syrsndsytgadgvra"));
+                            .withAvailable(Arrays.asList("ofwq", "zqalkrmnjijpx", "cqqudf", "byxbaaabjy")),
+                        "wmewzsyy",
+                        new RegionsCapability().withAvailable(Arrays.asList("tuzqogsexne", "fdnw"))))
+                .withFeatures(Arrays.asList("zsoibjudpfrxtr", "hzv"));
         model = BinaryData.fromObject(model).toObject(CapabilitiesResultInner.class);
-        Assertions.assertEquals("enwash", model.regions().get("xwbpokulpiuj").available().get(0));
-        Assertions.assertEquals("ljxywsu", model.features().get(0));
+        Assertions
+            .assertEquals("iizynkedyatrwyh", model.versions().get("eaivxwczel").available().get(0).friendlyName());
+        Assertions.assertEquals("ibzyhwitsmyp", model.versions().get("eaivxwczel").available().get(0).displayName());
+        Assertions.assertEquals(true, model.versions().get("eaivxwczel").available().get(0).isDefault());
+        Assertions
+            .assertEquals(
+                "dpumnzgmw", model.versions().get("eaivxwczel").available().get(0).componentVersions().get("nmabik"));
+        Assertions.assertEquals("kxkgymareqna", model.regions().get("xqugjhkycubedd").available().get(0));
+        Assertions.assertEquals("zsoibjudpfrxtr", model.features().get(0));
     }
 
     @SuppressWarnings("unchecked")

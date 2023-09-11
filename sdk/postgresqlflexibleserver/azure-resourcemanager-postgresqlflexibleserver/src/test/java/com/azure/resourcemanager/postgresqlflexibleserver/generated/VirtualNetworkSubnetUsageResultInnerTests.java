@@ -13,7 +13,7 @@ public final class VirtualNetworkSubnetUsageResultInnerTests {
         VirtualNetworkSubnetUsageResultInner model =
             BinaryData
                 .fromString(
-                    "{\"delegatedSubnetsUsage\":[{\"subnetName\":\"kzbbtd\",\"usage\":1585824709452414573},{\"subnetName\":\"ekg\",\"usage\":7805655437752275233},{\"subnetName\":\"hkfpbs\",\"usage\":2825814840016940868},{\"subnetName\":\"xl\",\"usage\":2245300278286998069}],\"location\":\"touwaboekqv\",\"subscriptionId\":\"lns\"}")
+                    "{\"delegatedSubnetsUsage\":[{\"subnetName\":\"d\",\"usage\":6537183488569541179}],\"location\":\"wubmwmbesldn\",\"subscriptionId\":\"wtppjflcxogaoko\"}")
                 .toObject(VirtualNetworkSubnetUsageResultInner.class);
     }
 

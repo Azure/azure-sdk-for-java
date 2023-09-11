@@ -95,7 +95,8 @@ public interface SimPolicy {
     Integer rfspIndex();
 
     /**
-     * Gets the registrationTimer property: Interval for the UE periodic registration update procedure, in seconds.
+     * Gets the registrationTimer property: UE periodic registration update timer (5G) or UE periodic tracking area
+     * update timer (4G), in seconds.
      *
      * @return the registrationTimer value.
      */
@@ -147,11 +148,13 @@ public interface SimPolicy {
             DefinitionStages.WithSliceConfigurations,
             DefinitionStages.WithCreate {
     }
+
     /** The SimPolicy definition stages. */
     interface DefinitionStages {
         /** The first stage of the SimPolicy definition. */
         interface Blank extends WithLocation {
         }
+
         /** The stage of the SimPolicy definition allowing to specify location. */
         interface WithLocation {
             /**
@@ -170,6 +173,7 @@ public interface SimPolicy {
              */
             WithParentResource withRegion(String location);
         }
+
         /** The stage of the SimPolicy definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
@@ -181,6 +185,7 @@ public interface SimPolicy {
              */
             WithUeAmbr withExistingMobileNetwork(String resourceGroupName, String mobileNetworkName);
         }
+
         /** The stage of the SimPolicy definition allowing to specify ueAmbr. */
         interface WithUeAmbr {
             /**
@@ -193,6 +198,7 @@ public interface SimPolicy {
              */
             WithDefaultSlice withUeAmbr(Ambr ueAmbr);
         }
+
         /** The stage of the SimPolicy definition allowing to specify defaultSlice. */
         interface WithDefaultSlice {
             /**
@@ -206,6 +212,7 @@ public interface SimPolicy {
              */
             WithSliceConfigurations withDefaultSlice(SliceResourceId defaultSlice);
         }
+
         /** The stage of the SimPolicy definition allowing to specify sliceConfigurations. */
         interface WithSliceConfigurations {
             /**
@@ -218,6 +225,7 @@ public interface SimPolicy {
              */
             WithCreate withSliceConfigurations(List<SliceConfiguration> sliceConfigurations);
         }
+
         /**
          * The stage of the SimPolicy definition which contains all the minimum required properties for the resource to
          * be created, but also allows for any other optional properties to be specified.
@@ -239,6 +247,7 @@ public interface SimPolicy {
              */
             SimPolicy create(Context context);
         }
+
         /** The stage of the SimPolicy definition allowing to specify tags. */
         interface WithTags {
             /**
@@ -249,6 +258,7 @@ public interface SimPolicy {
              */
             WithCreate withTags(Map<String, String> tags);
         }
+
         /** The stage of the SimPolicy definition allowing to specify rfspIndex. */
         interface WithRfspIndex {
             /**
@@ -261,18 +271,21 @@ public interface SimPolicy {
              */
             WithCreate withRfspIndex(Integer rfspIndex);
         }
+
         /** The stage of the SimPolicy definition allowing to specify registrationTimer. */
         interface WithRegistrationTimer {
             /**
-             * Specifies the registrationTimer property: Interval for the UE periodic registration update procedure, in
-             * seconds..
+             * Specifies the registrationTimer property: UE periodic registration update timer (5G) or UE periodic
+             * tracking area update timer (4G), in seconds..
              *
-             * @param registrationTimer Interval for the UE periodic registration update procedure, in seconds.
+             * @param registrationTimer UE periodic registration update timer (5G) or UE periodic tracking area update
+             *     timer (4G), in seconds.
              * @return the next definition stage.
              */
             WithCreate withRegistrationTimer(Integer registrationTimer);
         }
     }
+
     /**
      * Begins update for the SimPolicy resource.
      *
@@ -297,6 +310,7 @@ public interface SimPolicy {
          */
         SimPolicy apply(Context context);
     }
+
     /** The SimPolicy update stages. */
     interface UpdateStages {
         /** The stage of the SimPolicy update allowing to specify tags. */
@@ -310,6 +324,7 @@ public interface SimPolicy {
             Update withTags(Map<String, String> tags);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

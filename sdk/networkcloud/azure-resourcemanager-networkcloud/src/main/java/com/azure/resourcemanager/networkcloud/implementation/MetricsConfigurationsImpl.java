@@ -28,17 +28,16 @@ public final class MetricsConfigurationsImpl implements MetricsConfigurations {
         this.serviceManager = serviceManager;
     }
 
-    public PagedIterable<ClusterMetricsConfiguration> listByResourceGroup(
-        String resourceGroupName, String clusterName) {
+    public PagedIterable<ClusterMetricsConfiguration> listByCluster(String resourceGroupName, String clusterName) {
         PagedIterable<ClusterMetricsConfigurationInner> inner =
-            this.serviceClient().listByResourceGroup(resourceGroupName, clusterName);
+            this.serviceClient().listByCluster(resourceGroupName, clusterName);
         return Utils.mapPage(inner, inner1 -> new ClusterMetricsConfigurationImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<ClusterMetricsConfiguration> listByResourceGroup(
+    public PagedIterable<ClusterMetricsConfiguration> listByCluster(
         String resourceGroupName, String clusterName, Context context) {
         PagedIterable<ClusterMetricsConfigurationInner> inner =
-            this.serviceClient().listByResourceGroup(resourceGroupName, clusterName, context);
+            this.serviceClient().listByCluster(resourceGroupName, clusterName, context);
         return Utils.mapPage(inner, inner1 -> new ClusterMetricsConfigurationImpl(inner1, this.manager()));
     }
 

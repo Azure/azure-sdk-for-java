@@ -197,9 +197,65 @@ public class LocationCache {
                 return this.defaultEndpoint;
             }
         } else {
-            UnmodifiableList<URI> endpoints = request.getOperationType().isWriteOperation()? this.getWriteEndpoints() : this.getReadEndpoints();
+            UnmodifiableList<URI> endpoints =
+                request.getOperationType().isWriteOperation()? this.getApplicableWriteEndpoints(request) : this.getApplicableReadEndpoints(request);
             return endpoints.get(locationIndex % endpoints.size());
         }
+    }
+
+    public UnmodifiableList<URI> getApplicableWriteEndpoints(RxDocumentServiceRequest request) {
+        UnmodifiableList<URI> writeEndpoints = this.getWriteEndpoints();
+
+        if (request.requestContext.getExcludeRegions() == null ||
+            request.requestContext.getExcludeRegions().isEmpty()) {
+            return writeEndpoints;
+        }
+
+        // filter regions based on the exclude region config
+        return this.getApplicableEndpoints(
+            writeEndpoints,
+            this.locationInfo.regionNameByWriteEndpoint,
+            this.defaultEndpoint,
+            request.requestContext.getExcludeRegions());
+    }
+
+    public UnmodifiableList<URI> getApplicableReadEndpoints(RxDocumentServiceRequest request) {
+        UnmodifiableList<URI> readEndpoints = this.getReadEndpoints();
+
+        if (request.requestContext.getExcludeRegions() == null ||
+            request.requestContext.getExcludeRegions().isEmpty()) {
+            return readEndpoints;
+        }
+
+        // filter regions based on the exclude region config
+        return this.getApplicableEndpoints(
+            readEndpoints,
+            this.locationInfo.regionNameByReadEndpoint,
+            this.locationInfo.writeEndpoints.get(0), // match the fallback region used in getPreferredAvailableEndpoints
+            request.requestContext.getExcludeRegions());
+    }
+
+    private UnmodifiableList<URI> getApplicableEndpoints(
+        UnmodifiableList<URI> endpoints,
+        UnmodifiableMap<URI, String> regionNameByEndpoint,
+        URI fallbackEndpoint,
+        List<String> excludeRegionList) {
+
+        List<URI> applicableEndpoints = new ArrayList<>();
+        for (URI endpoint : endpoints) {
+            Utils.ValueHolder<String> regionName = new Utils.ValueHolder<>();
+            if (Utils.tryGetValue(regionNameByEndpoint, endpoint, regionName)) {
+                if (!excludeRegionList.stream().anyMatch(regionName.v::equalsIgnoreCase)) {
+                    applicableEndpoints.add(endpoint);
+                }
+            }
+        }
+
+        if (applicableEndpoints.isEmpty()) {
+            applicableEndpoints.add(fallbackEndpoint);
+        }
+
+        return new UnmodifiableList<>(applicableEndpoints);
     }
 
     public URI resolveFaultInjectionEndpoint(String region, boolean writeOnly) {

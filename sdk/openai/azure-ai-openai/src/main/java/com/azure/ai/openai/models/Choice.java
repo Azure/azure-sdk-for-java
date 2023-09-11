@@ -104,4 +104,25 @@ public final class Choice {
     public CompletionsFinishReason getFinishReason() {
         return this.finishReason;
     }
+
+    /*
+     * Information about the content filtering category (hate, sexual, violence, self_harm), if it
+     * has been detected, as well as the severity level (very_low, low, medium, high-scale that
+     * determines the intensity and risk level of harmful content) and if it has been filtered or not.
+     */
+    @Generated
+    @JsonProperty(value = "content_filter_results")
+    private ContentFilterResults contentFilterResults;
+
+    /**
+     * Get the contentFilterResults property: Information about the content filtering category (hate, sexual, violence,
+     * self_harm), if it has been detected, as well as the severity level (very_low, low, medium, high-scale that
+     * determines the intensity and risk level of harmful content) and if it has been filtered or not.
+     *
+     * @return the contentFilterResults value.
+     */
+    @Generated
+    public ContentFilterResults getContentFilterResults() {
+        return this.contentFilterResults;
+    }
 }

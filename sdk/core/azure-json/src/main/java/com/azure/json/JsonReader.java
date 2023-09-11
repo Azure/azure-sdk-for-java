@@ -725,11 +725,7 @@ public abstract class JsonReader implements Closeable {
                 return "]";
 
             case FIELD_NAME:
-                if (raw) {
-                    return new String(ENCODER.quoteAsUTF8(getFieldName()), StandardCharsets.UTF_8);
-                } else {
-                    return getFieldName();
-                }
+                return raw ? new String(ENCODER.quoteAsUTF8(getFieldName()), StandardCharsets.UTF_8) : getFieldName();
 
             case BOOLEAN:
                 return String.valueOf(getBoolean());
@@ -738,11 +734,7 @@ public abstract class JsonReader implements Closeable {
                 return getString();
 
             case STRING:
-                if (raw) {
-                    return new String(ENCODER.quoteAsUTF8(getString()), StandardCharsets.UTF_8);
-                } else {
-                    return getString();
-                }
+                return raw ? new String(ENCODER.quoteAsUTF8(getString()), StandardCharsets.UTF_8) : getString();
 
             case NULL:
                 return "null";

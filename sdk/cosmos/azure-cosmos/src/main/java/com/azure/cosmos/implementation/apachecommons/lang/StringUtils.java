@@ -1392,4 +1392,39 @@ public class StringUtils {
     public static String defaultString(final String str, final String defaultStr) {
         return str == null ? defaultStr : str;
     }
+
+    /**
+     * Deletes all whitespaces from a String as defined by
+     * {@link Character#isWhitespace(char)}.
+     *
+     * <pre>
+     * StringUtils.deleteWhitespace(null)         = null
+     * StringUtils.deleteWhitespace("")           = ""
+     * StringUtils.deleteWhitespace("abc")        = "abc"
+     * StringUtils.deleteWhitespace("   ab  c  ") = "abc"
+     * </pre>
+     *
+     * @param str  the String to delete whitespace from, may be null
+     * @return the String without whitespaces, {@code null} if null String input
+     */
+    public static String deleteWhitespace(final String str) {
+        if (isEmpty(str)) {
+            return str;
+        }
+        final int sz = str.length();
+        final char[] chs = new char[sz];
+        int count = 0;
+        for (int i = 0; i < sz; i++) {
+            if (!Character.isWhitespace(str.charAt(i))) {
+                chs[count++] = str.charAt(i);
+            }
+        }
+        if (count == sz) {
+            return str;
+        }
+        if (count == 0) {
+            return EMPTY;
+        }
+        return new String(chs, 0, count);
+    }
 }

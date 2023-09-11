@@ -54,7 +54,7 @@ public final class CreateCosmosDBWithEventualConsistency {
                     .withKind(DatabaseAccountKind.GLOBAL_DOCUMENT_DB)
                     .withEventualConsistency()
                     .withWriteReplication(Region.US_EAST)
-                    .withReadReplication(Region.US_CENTRAL)
+                    .withReadReplication(Region.US_WEST3)
                     .create();
 
             System.out.println("Created CosmosDB");

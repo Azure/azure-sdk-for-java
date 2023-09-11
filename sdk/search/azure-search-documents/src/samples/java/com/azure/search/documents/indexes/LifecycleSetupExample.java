@@ -29,7 +29,7 @@ import java.util.List;
 
 /**
  * This scenario assumes an existing search solution and uses a pre-population data source with sample data set For more
- * information visit Azure Cognitive Search Sample Data: https://docs.microsoft.com/en-us/samples/azure-samples/azure-search-sample-data/azure-search-sample-data/
+ * information visit Azure Cognitive Search Sample Data: https://docs.microsoft.com/samples/azure-samples/azure-search-sample-data/azure-search-sample-data/
  */
 public class LifecycleSetupExample {
     /**

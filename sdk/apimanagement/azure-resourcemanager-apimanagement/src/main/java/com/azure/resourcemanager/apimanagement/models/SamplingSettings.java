@@ -22,6 +22,10 @@ public final class SamplingSettings {
     @JsonProperty(value = "percentage")
     private Double percentage;
 
+    /** Creates an instance of SamplingSettings class. */
+    public SamplingSettings() {
+    }
+
     /**
      * Get the samplingType property: Sampling type.
      *

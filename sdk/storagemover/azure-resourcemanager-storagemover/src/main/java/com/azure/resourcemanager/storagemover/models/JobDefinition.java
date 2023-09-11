@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.storagemover.models;
 
 import com.azure.core.http.rest.Response;
-import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.storagemover.fluent.models.JobDefinitionInner;
 
@@ -31,13 +30,6 @@ public interface JobDefinition {
      * @return the type value.
      */
     String type();
-
-    /**
-     * Gets the systemData property: Resource system metadata.
-     *
-     * @return the systemData value.
-     */
-    SystemData systemData();
 
     /**
      * Gets the description property: A description for the Job Definition.
@@ -162,11 +154,13 @@ public interface JobDefinition {
             DefinitionStages.WithTargetName,
             DefinitionStages.WithCreate {
     }
+
     /** The JobDefinition definition stages. */
     interface DefinitionStages {
         /** The first stage of the JobDefinition definition. */
         interface Blank extends WithParentResource {
         }
+
         /** The stage of the JobDefinition definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
@@ -179,6 +173,7 @@ public interface JobDefinition {
              */
             WithCopyMode withExistingProject(String resourceGroupName, String storageMoverName, String projectName);
         }
+
         /** The stage of the JobDefinition definition allowing to specify copyMode. */
         interface WithCopyMode {
             /**
@@ -189,6 +184,7 @@ public interface JobDefinition {
              */
             WithSourceName withCopyMode(CopyMode copyMode);
         }
+
         /** The stage of the JobDefinition definition allowing to specify sourceName. */
         interface WithSourceName {
             /**
@@ -199,6 +195,7 @@ public interface JobDefinition {
              */
             WithTargetName withSourceName(String sourceName);
         }
+
         /** The stage of the JobDefinition definition allowing to specify targetName. */
         interface WithTargetName {
             /**
@@ -209,6 +206,7 @@ public interface JobDefinition {
              */
             WithCreate withTargetName(String targetName);
         }
+
         /**
          * The stage of the JobDefinition definition which contains all the minimum required properties for the resource
          * to be created, but also allows for any other optional properties to be specified.
@@ -233,6 +231,7 @@ public interface JobDefinition {
              */
             JobDefinition create(Context context);
         }
+
         /** The stage of the JobDefinition definition allowing to specify description. */
         interface WithDescription {
             /**
@@ -243,6 +242,7 @@ public interface JobDefinition {
              */
             WithCreate withDescription(String description);
         }
+
         /** The stage of the JobDefinition definition allowing to specify sourceSubpath. */
         interface WithSourceSubpath {
             /**
@@ -253,6 +253,7 @@ public interface JobDefinition {
              */
             WithCreate withSourceSubpath(String sourceSubpath);
         }
+
         /** The stage of the JobDefinition definition allowing to specify targetSubpath. */
         interface WithTargetSubpath {
             /**
@@ -263,6 +264,7 @@ public interface JobDefinition {
              */
             WithCreate withTargetSubpath(String targetSubpath);
         }
+
         /** The stage of the JobDefinition definition allowing to specify agentName. */
         interface WithAgentName {
             /**
@@ -274,6 +276,7 @@ public interface JobDefinition {
             WithCreate withAgentName(String agentName);
         }
     }
+
     /**
      * Begins update for the JobDefinition resource.
      *
@@ -298,6 +301,7 @@ public interface JobDefinition {
          */
         JobDefinition apply(Context context);
     }
+
     /** The JobDefinition update stages. */
     interface UpdateStages {
         /** The stage of the JobDefinition update allowing to specify description. */
@@ -310,6 +314,7 @@ public interface JobDefinition {
              */
             Update withDescription(String description);
         }
+
         /** The stage of the JobDefinition update allowing to specify copyMode. */
         interface WithCopyMode {
             /**
@@ -320,6 +325,7 @@ public interface JobDefinition {
              */
             Update withCopyMode(CopyMode copyMode);
         }
+
         /** The stage of the JobDefinition update allowing to specify agentName. */
         interface WithAgentName {
             /**
@@ -331,6 +337,7 @@ public interface JobDefinition {
             Update withAgentName(String agentName);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

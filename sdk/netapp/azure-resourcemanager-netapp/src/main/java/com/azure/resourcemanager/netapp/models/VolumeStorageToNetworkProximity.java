@@ -23,6 +23,9 @@ public final class VolumeStorageToNetworkProximity extends ExpandableStringEnum<
     /** Static value T2 for VolumeStorageToNetworkProximity. */
     public static final VolumeStorageToNetworkProximity T2 = fromString("T2");
 
+    /** Static value AcrossT2 for VolumeStorageToNetworkProximity. */
+    public static final VolumeStorageToNetworkProximity ACROSS_T2 = fromString("AcrossT2");
+
     /**
      * Creates a new instance of VolumeStorageToNetworkProximity value.
      *

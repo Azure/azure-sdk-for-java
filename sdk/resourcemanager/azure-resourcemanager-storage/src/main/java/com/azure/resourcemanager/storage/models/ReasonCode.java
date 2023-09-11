@@ -21,6 +21,15 @@ public final class ReasonCode extends ExpandableStringEnum<ReasonCode> {
     public static final ReasonCode NOT_AVAILABLE_FOR_SUBSCRIPTION = fromString("NotAvailableForSubscription");
 
     /**
+     * Creates a new instance of ReasonCode value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ReasonCode() {
+    }
+
+    /**
      * Creates or finds a ReasonCode from its string representation.
      *
      * @param name a name to look for.

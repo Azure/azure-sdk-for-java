@@ -9,22 +9,21 @@ import com.azure.resourcemanager.elasticsan.fluent.models.SkuInformationInner;
 import com.azure.resourcemanager.elasticsan.models.SkuName;
 import com.azure.resourcemanager.elasticsan.models.SkuTier;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class SkuInformationInnerTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         SkuInformationInner model =
             BinaryData
                 .fromString(
-                    "{\"name\":\"Premium_ZRS\",\"tier\":\"Premium\",\"resourceType\":\"ihfxtijbpzvgnwzs\",\"locations\":[\"lzufcyzkohdbi\",\"anufhfcbjysag\"],\"locationInfo\":[{\"location\":\"qhabifpikxwcz\",\"zones\":[\"cnpqxuhivyqniwby\",\"rkxvdum\",\"grtfwvu\"]}],\"capabilities\":[{\"name\":\"udccsnhsjc\",\"value\":\"ejhkry\"},{\"name\":\"napczwlokjy\",\"value\":\"kkvnipjox\"}]}")
+                    "{\"name\":\"Premium_ZRS\",\"tier\":\"Premium\",\"resourceType\":\"qjbpfzfsin\",\"locations\":[\"f\"],\"locationInfo\":[{\"location\":\"zoxxjtf\",\"zones\":[\"uwfzitonpe\",\"fpjkjlxofp\",\"vhpfxxypininmay\",\"uybbkpodep\"]},{\"location\":\"ginuvamih\",\"zones\":[\"narxzxtheotus\",\"vyevcciqi\",\"nhungbw\"]},{\"location\":\"rnfygxgispem\",\"zones\":[\"fkufublj\",\"fxqeof\",\"aeqjhqjbasvms\"]},{\"location\":\"qulngsntnbybkzgc\",\"zones\":[\"clxxwrljdo\",\"skcqvkocrcjd\"]}],\"capabilities\":[{\"name\":\"hxbnjbiksqrg\",\"value\":\"sainqpjwnzl\"},{\"name\":\"fmppe\",\"value\":\"vmgxsab\"}]}")
                 .toObject(SkuInformationInner.class);
         Assertions.assertEquals(SkuName.PREMIUM_ZRS, model.name());
         Assertions.assertEquals(SkuTier.PREMIUM, model.tier());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         SkuInformationInner model = new SkuInformationInner().withName(SkuName.PREMIUM_ZRS).withTier(SkuTier.PREMIUM);
         model = BinaryData.fromObject(model).toObject(SkuInformationInner.class);
         Assertions.assertEquals(SkuName.PREMIUM_ZRS, model.name());

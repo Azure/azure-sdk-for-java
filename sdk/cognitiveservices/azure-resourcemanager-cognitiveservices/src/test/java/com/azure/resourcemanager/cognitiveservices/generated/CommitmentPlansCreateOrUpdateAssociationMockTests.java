@@ -31,7 +31,7 @@ public final class CommitmentPlansCreateOrUpdateAssociationMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"etag\":\"zqkjjeokbzefe\",\"properties\":{\"accountId\":\"cczurtlei\"},\"id\":\"q\",\"name\":\"bkwvzg\",\"type\":\"zvd\"}";
+            "{\"etag\":\"oihiqak\",\"properties\":{\"accountId\":\"wf\"},\"id\":\"rkwpzdqtvhcspod\",\"name\":\"qaxsipietgbebjf\",\"type\":\"lbmoichd\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,11 +62,11 @@ public final class CommitmentPlansCreateOrUpdateAssociationMockTests {
         CommitmentPlanAccountAssociation response =
             manager
                 .commitmentPlans()
-                .defineAssociation("dhohsdtmcdzsuf")
-                .withExistingCommitmentPlan("qgqqihedsvqwthmk", "ibcysihsgqc")
-                .withAccountId("dbevwqqxeysko")
+                .defineAssociation("jk")
+                .withExistingCommitmentPlan("memhooclutnpq", "emc")
+                .withAccountId("ylmbkzudni")
                 .create();
 
-        Assertions.assertEquals("cczurtlei", response.accountId());
+        Assertions.assertEquals("wf", response.accountId());
     }
 }

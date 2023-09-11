@@ -34,7 +34,7 @@ public final class VolumeQuotaRulesCreateMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"provisioningState\":\"Succeeded\",\"quotaSizeInKiBs\":3395635652856224250,\"quotaType\":\"IndividualUserQuota\",\"quotaTarget\":\"edm\"},\"location\":\"kvnlvxbcuiiznkt\",\"tags\":{\"bmikost\":\"nsnvpd\",\"kiwbuqnyoph\":\"z\"},\"id\":\"fy\",\"name\":\"sgcrpfbcunezzce\",\"type\":\"elfwy\"}";
+            "{\"properties\":{\"provisioningState\":\"Succeeded\",\"quotaSizeInKiBs\":363773495915623992,\"quotaType\":\"DefaultGroupQuota\",\"quotaTarget\":\"vclx\"},\"location\":\"pdkvg\",\"tags\":{\"zphdugneiknp\":\"uiyjib\",\"z\":\"oxgjiuqhibt\"},\"id\":\"pqwjedm\",\"name\":\"rrxxgewpktvq\",\"type\":\"lkm\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -65,20 +65,20 @@ public final class VolumeQuotaRulesCreateMockTests {
         VolumeQuotaRule response =
             manager
                 .volumeQuotaRules()
-                .define("xfyqonmpqoxwdo")
-                .withRegion("tmwwi")
-                .withExistingVolume("mv", "fgtayxonsup", "ujlzqnhcvsqltn", "oibgsxg")
-                .withTags(mapOf("bcblemb", "hfqpofv", "ihebwtsw", "kbwvqvxkdiv", "gegizvcjfel", "zuwfmdur"))
-                .withQuotaSizeInKiBs(7955310418875154253L)
-                .withQuotaType(Type.DEFAULT_GROUP_QUOTA)
-                .withQuotaTarget("qbi")
+                .define("jfrnxousxauzlwv")
+                .withRegion("jsvthnwpzteko")
+                .withExistingVolume("fpgpicrmnzhrgm", "gjsxv", "qcbfrmbodths", "qgvriibakcla")
+                .withTags(mapOf("lu", "ibiattg"))
+                .withQuotaSizeInKiBs(3437193079645331762L)
+                .withQuotaType(Type.INDIVIDUAL_USER_QUOTA)
+                .withQuotaTarget("zvuxm")
                 .create();
 
-        Assertions.assertEquals("kvnlvxbcuiiznkt", response.location());
-        Assertions.assertEquals("nsnvpd", response.tags().get("bmikost"));
-        Assertions.assertEquals(3395635652856224250L, response.quotaSizeInKiBs());
-        Assertions.assertEquals(Type.INDIVIDUAL_USER_QUOTA, response.quotaType());
-        Assertions.assertEquals("edm", response.quotaTarget());
+        Assertions.assertEquals("pdkvg", response.location());
+        Assertions.assertEquals("uiyjib", response.tags().get("zphdugneiknp"));
+        Assertions.assertEquals(363773495915623992L, response.quotaSizeInKiBs());
+        Assertions.assertEquals(Type.DEFAULT_GROUP_QUOTA, response.quotaType());
+        Assertions.assertEquals("vclx", response.quotaTarget());
     }
 
     @SuppressWarnings("unchecked")

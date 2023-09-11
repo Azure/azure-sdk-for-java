@@ -47,8 +47,13 @@ dns:
 eventhub:
   service: eventhubs
   suffix: generated
+fist:
+  service: iotfirmwaredefense
 graphservicesprod:
   service: graphservices
+hdinsight/Microsoft.HDInsight/HDInsightOnAks:
+  service: hdinsight
+  suffix: containers
 help:
   service: selfhelp
 hybridaks:
@@ -85,6 +90,8 @@ redis:
   suffix: generated
 resources:
   suffix: generated
+riskiq:
+  service: defendereasm
 service-map:
   service: servicemap
 servicebus:

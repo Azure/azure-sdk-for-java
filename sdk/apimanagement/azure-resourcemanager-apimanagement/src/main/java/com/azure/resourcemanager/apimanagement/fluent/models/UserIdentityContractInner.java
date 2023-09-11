@@ -22,6 +22,10 @@ public final class UserIdentityContractInner {
     @JsonProperty(value = "id")
     private String id;
 
+    /** Creates an instance of UserIdentityContractInner class. */
+    public UserIdentityContractInner() {
+    }
+
     /**
      * Get the provider property: Identity provider name.
      *

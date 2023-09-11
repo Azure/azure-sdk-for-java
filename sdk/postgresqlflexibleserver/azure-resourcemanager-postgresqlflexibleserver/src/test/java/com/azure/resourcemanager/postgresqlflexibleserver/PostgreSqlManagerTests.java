@@ -114,7 +114,6 @@ public class PostgreSqlManagerTests extends TestBase {
                     .withBackupRetentionDays(7))
                 .withHighAvailability(new HighAvailability().withMode(HighAvailabilityMode.DISABLED))
                 .withReplicationRole(ReplicationRole.PRIMARY)
-                .withReplicaCapacity(5)
                 .create();
             // @embedmeEnd
             server.refresh();

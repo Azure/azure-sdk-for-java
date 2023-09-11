@@ -47,7 +47,6 @@ public final class DocumentLine {
      * Set the content property: Concatenated content of the contained elements in reading order.
      *
      * @param content the content value to set.
-     * @return the DocumentLine object itself.
      */
     private void setContent(String content) {
         this.content = content;
@@ -70,7 +69,6 @@ public final class DocumentLine {
      * relative to the element orientation.
      *
      * @param boundingPolygon the boundingPolygon value to set.
-     * @return the DocumentLine object itself.
      */
     private void setBoundingPolygon(List<Point> boundingPolygon) {
         this.boundingPolygon = boundingPolygon;
@@ -89,7 +87,6 @@ public final class DocumentLine {
      * Set the spans property: Location of the line in the reading order concatenated content.
      *
      * @param spans the spans value to set.
-     * @return the DocumentLine object itself.
      */
     private void setSpans(List<DocumentSpan> spans) {
         this.spans = spans;

@@ -30,7 +30,11 @@ public final class TenantSettingsGetResponse
         super(request, statusCode, rawHeaders, value, headers);
     }
 
-    /** @return the deserialized response body. */
+    /**
+     * Gets the deserialized response body.
+     *
+     * @return the deserialized response body.
+     */
     @Override
     public TenantSettingsContractInner getValue() {
         return super.getValue();

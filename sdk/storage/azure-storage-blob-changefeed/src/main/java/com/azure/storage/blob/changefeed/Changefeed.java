@@ -36,8 +36,8 @@ class Changefeed {
 
     private static final ClientLogger LOGGER = new ClientLogger(Changefeed.class);
 
-    private static final String SEGMENT_PREFIX = "idx/segments/";
-    private static final String METADATA_SEGMENT_PATH = "meta/segments.json";
+    static final String SEGMENT_PREFIX = "idx/segments/";
+    static final String METADATA_SEGMENT_PATH = "meta/segments.json";
 
     private final BlobContainerAsyncClient client; /* Changefeed container */
     private final OffsetDateTime startTime; /* User provided start time. */
@@ -113,7 +113,7 @@ class Changefeed {
      * Log files in any segment that is dated after the date of the LastConsumable property in the
      * $blobchangefeed/meta/segments.json file, should not be consumed by your application.
      */
-    private Mono<OffsetDateTime> populateLastConsumable() {
+    Mono<OffsetDateTime> populateLastConsumable() {
         /* We can keep the entire metadata file in memory since it is expected to only be a few hundred bytes. */
         return DownloadUtils.downloadToByteArray(this.client, METADATA_SEGMENT_PATH)
             .flatMap(DownloadUtils::parseJson)

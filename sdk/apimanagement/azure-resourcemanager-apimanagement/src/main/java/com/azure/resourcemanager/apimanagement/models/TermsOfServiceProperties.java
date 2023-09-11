@@ -28,6 +28,10 @@ public final class TermsOfServiceProperties {
     @JsonProperty(value = "consentRequired")
     private Boolean consentRequired;
 
+    /** Creates an instance of TermsOfServiceProperties class. */
+    public TermsOfServiceProperties() {
+    }
+
     /**
      * Get the text property: A terms of service text.
      *

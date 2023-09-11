@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.storage.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for StorageAccounts HierarchicalNamespaceMigration. */
 public final class StorageAccountsHierarchicalNamespaceMigrationSamples {
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2022-09-01/examples/StorageAccountHierarchicalNamespaceMigration.json
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-01-01/examples/StorageAccountHierarchicalNamespaceMigration.json
      */
     /**
      * Sample code: StorageAccountHierarchicalNamespaceMigration.
@@ -23,6 +21,7 @@ public final class StorageAccountsHierarchicalNamespaceMigrationSamples {
             .manager()
             .serviceClient()
             .getStorageAccounts()
-            .hierarchicalNamespaceMigration("res4228", "sto2434", "HnsOnValidationRequest", Context.NONE);
+            .hierarchicalNamespaceMigration(
+                "res4228", "sto2434", "HnsOnValidationRequest", com.azure.core.util.Context.NONE);
     }
 }

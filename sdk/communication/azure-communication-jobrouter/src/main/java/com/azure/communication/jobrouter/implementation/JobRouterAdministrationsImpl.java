@@ -4,19 +4,19 @@
 
 package com.azure.communication.jobrouter.implementation;
 
+import com.azure.communication.jobrouter.implementation.models.ClassificationPolicyCollectionInternal;
+import com.azure.communication.jobrouter.implementation.models.ClassificationPolicyInternal;
+import com.azure.communication.jobrouter.implementation.models.ClassificationPolicyItemInternal;
 import com.azure.communication.jobrouter.implementation.models.CommunicationErrorResponseException;
-import com.azure.communication.jobrouter.models.ClassificationPolicy;
-import com.azure.communication.jobrouter.models.ClassificationPolicyCollection;
-import com.azure.communication.jobrouter.models.ClassificationPolicyItem;
-import com.azure.communication.jobrouter.models.DistributionPolicy;
-import com.azure.communication.jobrouter.models.DistributionPolicyCollection;
-import com.azure.communication.jobrouter.models.DistributionPolicyItem;
-import com.azure.communication.jobrouter.models.ExceptionPolicy;
-import com.azure.communication.jobrouter.models.ExceptionPolicyCollection;
-import com.azure.communication.jobrouter.models.ExceptionPolicyItem;
-import com.azure.communication.jobrouter.models.JobQueue;
-import com.azure.communication.jobrouter.models.JobQueueItem;
-import com.azure.communication.jobrouter.models.QueueCollection;
+import com.azure.communication.jobrouter.implementation.models.DistributionPolicyCollectionInternal;
+import com.azure.communication.jobrouter.implementation.models.DistributionPolicyInternal;
+import com.azure.communication.jobrouter.implementation.models.DistributionPolicyItemInternal;
+import com.azure.communication.jobrouter.implementation.models.ExceptionPolicyCollectionInternal;
+import com.azure.communication.jobrouter.implementation.models.ExceptionPolicyInternal;
+import com.azure.communication.jobrouter.implementation.models.ExceptionPolicyItemInternal;
+import com.azure.communication.jobrouter.implementation.models.RouterQueueCollectionInternal;
+import com.azure.communication.jobrouter.implementation.models.RouterQueueInternal;
+import com.azure.communication.jobrouter.implementation.models.RouterQueueItemInternal;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
@@ -69,20 +69,20 @@ public final class JobRouterAdministrationsImpl {
     @ServiceInterface(name = "AzureCommunicationSe")
     public interface JobRouterAdministrationsService {
         @Patch("/routing/classificationPolicies/{id}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Mono<Response<ClassificationPolicy>> upsertClassificationPolicy(
+        Mono<Response<ClassificationPolicyInternal>> upsertClassificationPolicy(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("id") String id,
                 @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/merge-patch+json") ClassificationPolicy patch,
+                @BodyParam("application/merge-patch+json") ClassificationPolicyInternal patch,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
         @Get("/routing/classificationPolicies/{id}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Mono<Response<ClassificationPolicy>> getClassificationPolicy(
+        Mono<Response<ClassificationPolicyInternal>> getClassificationPolicy(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("id") String id,
                 @QueryParam("api-version") String apiVersion,
@@ -102,28 +102,28 @@ public final class JobRouterAdministrationsImpl {
         @Get("/routing/classificationPolicies")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Mono<Response<ClassificationPolicyCollection>> listClassificationPolicies(
+        Mono<Response<ClassificationPolicyCollectionInternal>> listClassificationPolicies(
                 @HostParam("endpoint") String endpoint,
-                @QueryParam("maxPageSize") Integer maxPageSize,
+                @QueryParam("maxpagesize") Integer maxPageSize,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
         @Patch("/routing/distributionPolicies/{id}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Mono<Response<DistributionPolicy>> upsertDistributionPolicy(
+        Mono<Response<DistributionPolicyInternal>> upsertDistributionPolicy(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("id") String id,
                 @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/merge-patch+json") DistributionPolicy patch,
+                @BodyParam("application/merge-patch+json") DistributionPolicyInternal patch,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
         @Get("/routing/distributionPolicies/{id}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Mono<Response<DistributionPolicy>> getDistributionPolicy(
+        Mono<Response<DistributionPolicyInternal>> getDistributionPolicy(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("id") String id,
                 @QueryParam("api-version") String apiVersion,
@@ -143,28 +143,28 @@ public final class JobRouterAdministrationsImpl {
         @Get("/routing/distributionPolicies")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Mono<Response<DistributionPolicyCollection>> listDistributionPolicies(
+        Mono<Response<DistributionPolicyCollectionInternal>> listDistributionPolicies(
                 @HostParam("endpoint") String endpoint,
-                @QueryParam("maxPageSize") Integer maxPageSize,
+                @QueryParam("maxpagesize") Integer maxPageSize,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
         @Patch("/routing/exceptionPolicies/{id}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Mono<Response<ExceptionPolicy>> upsertExceptionPolicy(
+        Mono<Response<ExceptionPolicyInternal>> upsertExceptionPolicy(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("id") String id,
                 @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/merge-patch+json") ExceptionPolicy patch,
+                @BodyParam("application/merge-patch+json") ExceptionPolicyInternal patch,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
         @Get("/routing/exceptionPolicies/{id}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Mono<Response<ExceptionPolicy>> getExceptionPolicy(
+        Mono<Response<ExceptionPolicyInternal>> getExceptionPolicy(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("id") String id,
                 @QueryParam("api-version") String apiVersion,
@@ -184,28 +184,28 @@ public final class JobRouterAdministrationsImpl {
         @Get("/routing/exceptionPolicies")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Mono<Response<ExceptionPolicyCollection>> listExceptionPolicies(
+        Mono<Response<ExceptionPolicyCollectionInternal>> listExceptionPolicies(
                 @HostParam("endpoint") String endpoint,
-                @QueryParam("maxPageSize") Integer maxPageSize,
+                @QueryParam("maxpagesize") Integer maxPageSize,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
         @Patch("/routing/queues/{id}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Mono<Response<JobQueue>> upsertQueue(
+        Mono<Response<RouterQueueInternal>> upsertQueue(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("id") String id,
                 @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/merge-patch+json") JobQueue patch,
+                @BodyParam("application/merge-patch+json") RouterQueueInternal patch,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
         @Get("/routing/queues/{id}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Mono<Response<JobQueue>> getQueue(
+        Mono<Response<RouterQueueInternal>> getQueue(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("id") String id,
                 @QueryParam("api-version") String apiVersion,
@@ -225,9 +225,9 @@ public final class JobRouterAdministrationsImpl {
         @Get("/routing/queues")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Mono<Response<QueueCollection>> listQueues(
+        Mono<Response<RouterQueueCollectionInternal>> listQueues(
                 @HostParam("endpoint") String endpoint,
-                @QueryParam("maxPageSize") Integer maxPageSize,
+                @QueryParam("maxpagesize") Integer maxPageSize,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("Accept") String accept,
                 Context context);
@@ -235,7 +235,7 @@ public final class JobRouterAdministrationsImpl {
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Mono<Response<ClassificationPolicyCollection>> listClassificationPoliciesNext(
+        Mono<Response<ClassificationPolicyCollectionInternal>> listClassificationPoliciesNext(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
                 @HostParam("endpoint") String endpoint,
                 @HeaderParam("Accept") String accept,
@@ -244,7 +244,7 @@ public final class JobRouterAdministrationsImpl {
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Mono<Response<DistributionPolicyCollection>> listDistributionPoliciesNext(
+        Mono<Response<DistributionPolicyCollectionInternal>> listDistributionPoliciesNext(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
                 @HostParam("endpoint") String endpoint,
                 @HeaderParam("Accept") String accept,
@@ -253,7 +253,7 @@ public final class JobRouterAdministrationsImpl {
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Mono<Response<ExceptionPolicyCollection>> listExceptionPoliciesNext(
+        Mono<Response<ExceptionPolicyCollectionInternal>> listExceptionPoliciesNext(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
                 @HostParam("endpoint") String endpoint,
                 @HeaderParam("Accept") String accept,
@@ -262,7 +262,7 @@ public final class JobRouterAdministrationsImpl {
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Mono<Response<QueueCollection>> listQueuesNext(
+        Mono<Response<RouterQueueCollectionInternal>> listQueuesNext(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
                 @HostParam("endpoint") String endpoint,
                 @HeaderParam("Accept") String accept,
@@ -282,8 +282,8 @@ public final class JobRouterAdministrationsImpl {
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ClassificationPolicy>> upsertClassificationPolicyWithResponseAsync(
-            String id, ClassificationPolicy patch) {
+    public Mono<Response<ClassificationPolicyInternal>> upsertClassificationPolicyWithResponseAsync(
+            String id, ClassificationPolicyInternal patch) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
@@ -305,8 +305,8 @@ public final class JobRouterAdministrationsImpl {
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ClassificationPolicy>> upsertClassificationPolicyWithResponseAsync(
-            String id, ClassificationPolicy patch, Context context) {
+    public Mono<Response<ClassificationPolicyInternal>> upsertClassificationPolicyWithResponseAsync(
+            String id, ClassificationPolicyInternal patch, Context context) {
         final String accept = "application/json";
         return service.upsertClassificationPolicy(
                 this.client.getEndpoint(), id, this.client.getApiVersion(), patch, accept, context);
@@ -324,7 +324,8 @@ public final class JobRouterAdministrationsImpl {
      * @return a container for the rules that govern how jobs are classified on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ClassificationPolicy> upsertClassificationPolicyAsync(String id, ClassificationPolicy patch) {
+    public Mono<ClassificationPolicyInternal> upsertClassificationPolicyAsync(
+            String id, ClassificationPolicyInternal patch) {
         return upsertClassificationPolicyWithResponseAsync(id, patch).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -341,26 +342,10 @@ public final class JobRouterAdministrationsImpl {
      * @return a container for the rules that govern how jobs are classified on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ClassificationPolicy> upsertClassificationPolicyAsync(
-            String id, ClassificationPolicy patch, Context context) {
+    public Mono<ClassificationPolicyInternal> upsertClassificationPolicyAsync(
+            String id, ClassificationPolicyInternal patch, Context context) {
         return upsertClassificationPolicyWithResponseAsync(id, patch, context)
                 .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Creates or updates a classification policy.
-     *
-     * @param id Id of the classification policy.
-     * @param patch Model of classification policy properties to be patched. See also:
-     *     https://datatracker.ietf.org/doc/html/rfc7386.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a container for the rules that govern how jobs are classified.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ClassificationPolicy upsertClassificationPolicy(String id, ClassificationPolicy patch) {
-        return upsertClassificationPolicyAsync(id, patch).block();
     }
 
     /**
@@ -376,9 +361,25 @@ public final class JobRouterAdministrationsImpl {
      * @return a container for the rules that govern how jobs are classified along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ClassificationPolicy> upsertClassificationPolicyWithResponse(
-            String id, ClassificationPolicy patch, Context context) {
+    public Response<ClassificationPolicyInternal> upsertClassificationPolicyWithResponse(
+            String id, ClassificationPolicyInternal patch, Context context) {
         return upsertClassificationPolicyWithResponseAsync(id, patch, context).block();
+    }
+
+    /**
+     * Creates or updates a classification policy.
+     *
+     * @param id Id of the classification policy.
+     * @param patch Model of classification policy properties to be patched. See also:
+     *     https://datatracker.ietf.org/doc/html/rfc7386.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a container for the rules that govern how jobs are classified.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ClassificationPolicyInternal upsertClassificationPolicy(String id, ClassificationPolicyInternal patch) {
+        return upsertClassificationPolicyWithResponse(id, patch, Context.NONE).getValue();
     }
 
     /**
@@ -392,7 +393,7 @@ public final class JobRouterAdministrationsImpl {
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ClassificationPolicy>> getClassificationPolicyWithResponseAsync(String id) {
+    public Mono<Response<ClassificationPolicyInternal>> getClassificationPolicyWithResponseAsync(String id) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
@@ -412,7 +413,8 @@ public final class JobRouterAdministrationsImpl {
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ClassificationPolicy>> getClassificationPolicyWithResponseAsync(String id, Context context) {
+    public Mono<Response<ClassificationPolicyInternal>> getClassificationPolicyWithResponseAsync(
+            String id, Context context) {
         final String accept = "application/json";
         return service.getClassificationPolicy(
                 this.client.getEndpoint(), id, this.client.getApiVersion(), accept, context);
@@ -428,7 +430,7 @@ public final class JobRouterAdministrationsImpl {
      * @return a container for the rules that govern how jobs are classified on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ClassificationPolicy> getClassificationPolicyAsync(String id) {
+    public Mono<ClassificationPolicyInternal> getClassificationPolicyAsync(String id) {
         return getClassificationPolicyWithResponseAsync(id).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -443,22 +445,8 @@ public final class JobRouterAdministrationsImpl {
      * @return a container for the rules that govern how jobs are classified on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ClassificationPolicy> getClassificationPolicyAsync(String id, Context context) {
+    public Mono<ClassificationPolicyInternal> getClassificationPolicyAsync(String id, Context context) {
         return getClassificationPolicyWithResponseAsync(id, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Retrieves an existing classification policy by Id.
-     *
-     * @param id Id of the classification policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a container for the rules that govern how jobs are classified.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ClassificationPolicy getClassificationPolicy(String id) {
-        return getClassificationPolicyAsync(id).block();
     }
 
     /**
@@ -472,8 +460,22 @@ public final class JobRouterAdministrationsImpl {
      * @return a container for the rules that govern how jobs are classified along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ClassificationPolicy> getClassificationPolicyWithResponse(String id, Context context) {
+    public Response<ClassificationPolicyInternal> getClassificationPolicyWithResponse(String id, Context context) {
         return getClassificationPolicyWithResponseAsync(id, context).block();
+    }
+
+    /**
+     * Retrieves an existing classification policy by Id.
+     *
+     * @param id Id of the classification policy.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a container for the rules that govern how jobs are classified.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ClassificationPolicyInternal getClassificationPolicy(String id) {
+        return getClassificationPolicyWithResponse(id, Context.NONE).getValue();
     }
 
     /**
@@ -544,19 +546,6 @@ public final class JobRouterAdministrationsImpl {
      * Delete a classification policy by Id.
      *
      * @param id Id of the classification policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteClassificationPolicy(String id) {
-        deleteClassificationPolicyAsync(id).block();
-    }
-
-    /**
-     * Delete a classification policy by Id.
-     *
-     * @param id Id of the classification policy.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -566,6 +555,19 @@ public final class JobRouterAdministrationsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteClassificationPolicyWithResponse(String id, Context context) {
         return deleteClassificationPolicyWithResponseAsync(id, context).block();
+    }
+
+    /**
+     * Delete a classification policy by Id.
+     *
+     * @param id Id of the classification policy.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void deleteClassificationPolicy(String id) {
+        deleteClassificationPolicyWithResponse(id, Context.NONE);
     }
 
     /**
@@ -579,7 +581,7 @@ public final class JobRouterAdministrationsImpl {
      *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<ClassificationPolicyItem>> listClassificationPoliciesSinglePageAsync(
+    public Mono<PagedResponse<ClassificationPolicyItemInternal>> listClassificationPoliciesSinglePageAsync(
             Integer maxPageSize) {
         final String accept = "application/json";
         return FluxUtil.withContext(
@@ -613,7 +615,7 @@ public final class JobRouterAdministrationsImpl {
      *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<ClassificationPolicyItem>> listClassificationPoliciesSinglePageAsync(
+    public Mono<PagedResponse<ClassificationPolicyItemInternal>> listClassificationPoliciesSinglePageAsync(
             Integer maxPageSize, Context context) {
         final String accept = "application/json";
         return service.listClassificationPolicies(
@@ -639,7 +641,7 @@ public final class JobRouterAdministrationsImpl {
      * @return a paged collection of classification policies as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<ClassificationPolicyItem> listClassificationPoliciesAsync(Integer maxPageSize) {
+    public PagedFlux<ClassificationPolicyItemInternal> listClassificationPoliciesAsync(Integer maxPageSize) {
         return new PagedFlux<>(
                 () -> listClassificationPoliciesSinglePageAsync(maxPageSize),
                 nextLink -> listClassificationPoliciesNextSinglePageAsync(nextLink));
@@ -656,7 +658,8 @@ public final class JobRouterAdministrationsImpl {
      * @return a paged collection of classification policies as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<ClassificationPolicyItem> listClassificationPoliciesAsync(Integer maxPageSize, Context context) {
+    public PagedFlux<ClassificationPolicyItemInternal> listClassificationPoliciesAsync(
+            Integer maxPageSize, Context context) {
         return new PagedFlux<>(
                 () -> listClassificationPoliciesSinglePageAsync(maxPageSize, context),
                 nextLink -> listClassificationPoliciesNextSinglePageAsync(nextLink, context));
@@ -669,10 +672,40 @@ public final class JobRouterAdministrationsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a paged collection of classification policies along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PagedResponse<ClassificationPolicyItemInternal> listClassificationPoliciesSinglePage(Integer maxPageSize) {
+        return listClassificationPoliciesSinglePageAsync(maxPageSize).block();
+    }
+
+    /**
+     * Retrieves existing classification policies.
+     *
+     * @param maxPageSize Maximum page size.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a paged collection of classification policies along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PagedResponse<ClassificationPolicyItemInternal> listClassificationPoliciesSinglePage(
+            Integer maxPageSize, Context context) {
+        return listClassificationPoliciesSinglePageAsync(maxPageSize, context).block();
+    }
+
+    /**
+     * Retrieves existing classification policies.
+     *
+     * @param maxPageSize Maximum page size.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a paged collection of classification policies as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ClassificationPolicyItem> listClassificationPolicies(Integer maxPageSize) {
+    public PagedIterable<ClassificationPolicyItemInternal> listClassificationPolicies(Integer maxPageSize) {
         return new PagedIterable<>(listClassificationPoliciesAsync(maxPageSize));
     }
 
@@ -687,7 +720,8 @@ public final class JobRouterAdministrationsImpl {
      * @return a paged collection of classification policies as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ClassificationPolicyItem> listClassificationPolicies(Integer maxPageSize, Context context) {
+    public PagedIterable<ClassificationPolicyItemInternal> listClassificationPolicies(
+            Integer maxPageSize, Context context) {
         return new PagedIterable<>(listClassificationPoliciesAsync(maxPageSize, context));
     }
 
@@ -704,8 +738,8 @@ public final class JobRouterAdministrationsImpl {
      *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DistributionPolicy>> upsertDistributionPolicyWithResponseAsync(
-            String id, DistributionPolicy patch) {
+    public Mono<Response<DistributionPolicyInternal>> upsertDistributionPolicyWithResponseAsync(
+            String id, DistributionPolicyInternal patch) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
@@ -727,8 +761,8 @@ public final class JobRouterAdministrationsImpl {
      *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DistributionPolicy>> upsertDistributionPolicyWithResponseAsync(
-            String id, DistributionPolicy patch, Context context) {
+    public Mono<Response<DistributionPolicyInternal>> upsertDistributionPolicyWithResponseAsync(
+            String id, DistributionPolicyInternal patch, Context context) {
         final String accept = "application/json";
         return service.upsertDistributionPolicy(
                 this.client.getEndpoint(), id, this.client.getApiVersion(), patch, accept, context);
@@ -746,7 +780,7 @@ public final class JobRouterAdministrationsImpl {
      * @return policy governing how jobs are distributed to workers on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DistributionPolicy> upsertDistributionPolicyAsync(String id, DistributionPolicy patch) {
+    public Mono<DistributionPolicyInternal> upsertDistributionPolicyAsync(String id, DistributionPolicyInternal patch) {
         return upsertDistributionPolicyWithResponseAsync(id, patch).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -763,26 +797,10 @@ public final class JobRouterAdministrationsImpl {
      * @return policy governing how jobs are distributed to workers on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DistributionPolicy> upsertDistributionPolicyAsync(
-            String id, DistributionPolicy patch, Context context) {
+    public Mono<DistributionPolicyInternal> upsertDistributionPolicyAsync(
+            String id, DistributionPolicyInternal patch, Context context) {
         return upsertDistributionPolicyWithResponseAsync(id, patch, context)
                 .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Creates or updates a distribution policy.
-     *
-     * @param id Id of the distribution policy.
-     * @param patch Model of distribution policy properties to be patched. See also:
-     *     https://datatracker.ietf.org/doc/html/rfc7386.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return policy governing how jobs are distributed to workers.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public DistributionPolicy upsertDistributionPolicy(String id, DistributionPolicy patch) {
-        return upsertDistributionPolicyAsync(id, patch).block();
     }
 
     /**
@@ -798,9 +816,25 @@ public final class JobRouterAdministrationsImpl {
      * @return policy governing how jobs are distributed to workers along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DistributionPolicy> upsertDistributionPolicyWithResponse(
-            String id, DistributionPolicy patch, Context context) {
+    public Response<DistributionPolicyInternal> upsertDistributionPolicyWithResponse(
+            String id, DistributionPolicyInternal patch, Context context) {
         return upsertDistributionPolicyWithResponseAsync(id, patch, context).block();
+    }
+
+    /**
+     * Creates or updates a distribution policy.
+     *
+     * @param id Id of the distribution policy.
+     * @param patch Model of distribution policy properties to be patched. See also:
+     *     https://datatracker.ietf.org/doc/html/rfc7386.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return policy governing how jobs are distributed to workers.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public DistributionPolicyInternal upsertDistributionPolicy(String id, DistributionPolicyInternal patch) {
+        return upsertDistributionPolicyWithResponse(id, patch, Context.NONE).getValue();
     }
 
     /**
@@ -814,7 +848,7 @@ public final class JobRouterAdministrationsImpl {
      *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DistributionPolicy>> getDistributionPolicyWithResponseAsync(String id) {
+    public Mono<Response<DistributionPolicyInternal>> getDistributionPolicyWithResponseAsync(String id) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
@@ -834,7 +868,8 @@ public final class JobRouterAdministrationsImpl {
      *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DistributionPolicy>> getDistributionPolicyWithResponseAsync(String id, Context context) {
+    public Mono<Response<DistributionPolicyInternal>> getDistributionPolicyWithResponseAsync(
+            String id, Context context) {
         final String accept = "application/json";
         return service.getDistributionPolicy(
                 this.client.getEndpoint(), id, this.client.getApiVersion(), accept, context);
@@ -850,7 +885,7 @@ public final class JobRouterAdministrationsImpl {
      * @return policy governing how jobs are distributed to workers on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DistributionPolicy> getDistributionPolicyAsync(String id) {
+    public Mono<DistributionPolicyInternal> getDistributionPolicyAsync(String id) {
         return getDistributionPolicyWithResponseAsync(id).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -865,22 +900,8 @@ public final class JobRouterAdministrationsImpl {
      * @return policy governing how jobs are distributed to workers on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DistributionPolicy> getDistributionPolicyAsync(String id, Context context) {
+    public Mono<DistributionPolicyInternal> getDistributionPolicyAsync(String id, Context context) {
         return getDistributionPolicyWithResponseAsync(id, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Retrieves an existing distribution policy by Id.
-     *
-     * @param id Id of the distribution policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return policy governing how jobs are distributed to workers.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public DistributionPolicy getDistributionPolicy(String id) {
-        return getDistributionPolicyAsync(id).block();
     }
 
     /**
@@ -894,8 +915,22 @@ public final class JobRouterAdministrationsImpl {
      * @return policy governing how jobs are distributed to workers along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DistributionPolicy> getDistributionPolicyWithResponse(String id, Context context) {
+    public Response<DistributionPolicyInternal> getDistributionPolicyWithResponse(String id, Context context) {
         return getDistributionPolicyWithResponseAsync(id, context).block();
+    }
+
+    /**
+     * Retrieves an existing distribution policy by Id.
+     *
+     * @param id Id of the distribution policy.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return policy governing how jobs are distributed to workers.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public DistributionPolicyInternal getDistributionPolicy(String id) {
+        return getDistributionPolicyWithResponse(id, Context.NONE).getValue();
     }
 
     /**
@@ -966,19 +1001,6 @@ public final class JobRouterAdministrationsImpl {
      * Delete a distribution policy by Id.
      *
      * @param id Id of the distribution policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteDistributionPolicy(String id) {
-        deleteDistributionPolicyAsync(id).block();
-    }
-
-    /**
-     * Delete a distribution policy by Id.
-     *
-     * @param id Id of the distribution policy.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -988,6 +1010,19 @@ public final class JobRouterAdministrationsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteDistributionPolicyWithResponse(String id, Context context) {
         return deleteDistributionPolicyWithResponseAsync(id, context).block();
+    }
+
+    /**
+     * Delete a distribution policy by Id.
+     *
+     * @param id Id of the distribution policy.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void deleteDistributionPolicy(String id) {
+        deleteDistributionPolicyWithResponse(id, Context.NONE);
     }
 
     /**
@@ -1001,7 +1036,8 @@ public final class JobRouterAdministrationsImpl {
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<DistributionPolicyItem>> listDistributionPoliciesSinglePageAsync(Integer maxPageSize) {
+    public Mono<PagedResponse<DistributionPolicyItemInternal>> listDistributionPoliciesSinglePageAsync(
+            Integer maxPageSize) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                         context ->
@@ -1034,7 +1070,7 @@ public final class JobRouterAdministrationsImpl {
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<DistributionPolicyItem>> listDistributionPoliciesSinglePageAsync(
+    public Mono<PagedResponse<DistributionPolicyItemInternal>> listDistributionPoliciesSinglePageAsync(
             Integer maxPageSize, Context context) {
         final String accept = "application/json";
         return service.listDistributionPolicies(
@@ -1060,7 +1096,7 @@ public final class JobRouterAdministrationsImpl {
      * @return a paged collection of distribution policies as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<DistributionPolicyItem> listDistributionPoliciesAsync(Integer maxPageSize) {
+    public PagedFlux<DistributionPolicyItemInternal> listDistributionPoliciesAsync(Integer maxPageSize) {
         return new PagedFlux<>(
                 () -> listDistributionPoliciesSinglePageAsync(maxPageSize),
                 nextLink -> listDistributionPoliciesNextSinglePageAsync(nextLink));
@@ -1077,7 +1113,8 @@ public final class JobRouterAdministrationsImpl {
      * @return a paged collection of distribution policies as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<DistributionPolicyItem> listDistributionPoliciesAsync(Integer maxPageSize, Context context) {
+    public PagedFlux<DistributionPolicyItemInternal> listDistributionPoliciesAsync(
+            Integer maxPageSize, Context context) {
         return new PagedFlux<>(
                 () -> listDistributionPoliciesSinglePageAsync(maxPageSize, context),
                 nextLink -> listDistributionPoliciesNextSinglePageAsync(nextLink, context));
@@ -1090,10 +1127,40 @@ public final class JobRouterAdministrationsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a paged collection of distribution policies along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PagedResponse<DistributionPolicyItemInternal> listDistributionPoliciesSinglePage(Integer maxPageSize) {
+        return listDistributionPoliciesSinglePageAsync(maxPageSize).block();
+    }
+
+    /**
+     * Retrieves existing distribution policies.
+     *
+     * @param maxPageSize Maximum page size.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a paged collection of distribution policies along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PagedResponse<DistributionPolicyItemInternal> listDistributionPoliciesSinglePage(
+            Integer maxPageSize, Context context) {
+        return listDistributionPoliciesSinglePageAsync(maxPageSize, context).block();
+    }
+
+    /**
+     * Retrieves existing distribution policies.
+     *
+     * @param maxPageSize Maximum page size.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a paged collection of distribution policies as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DistributionPolicyItem> listDistributionPolicies(Integer maxPageSize) {
+    public PagedIterable<DistributionPolicyItemInternal> listDistributionPolicies(Integer maxPageSize) {
         return new PagedIterable<>(listDistributionPoliciesAsync(maxPageSize));
     }
 
@@ -1108,7 +1175,8 @@ public final class JobRouterAdministrationsImpl {
      * @return a paged collection of distribution policies as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DistributionPolicyItem> listDistributionPolicies(Integer maxPageSize, Context context) {
+    public PagedIterable<DistributionPolicyItemInternal> listDistributionPolicies(
+            Integer maxPageSize, Context context) {
         return new PagedIterable<>(listDistributionPoliciesAsync(maxPageSize, context));
     }
 
@@ -1125,7 +1193,8 @@ public final class JobRouterAdministrationsImpl {
      *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ExceptionPolicy>> upsertExceptionPolicyWithResponseAsync(String id, ExceptionPolicy patch) {
+    public Mono<Response<ExceptionPolicyInternal>> upsertExceptionPolicyWithResponseAsync(
+            String id, ExceptionPolicyInternal patch) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
@@ -1147,8 +1216,8 @@ public final class JobRouterAdministrationsImpl {
      *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ExceptionPolicy>> upsertExceptionPolicyWithResponseAsync(
-            String id, ExceptionPolicy patch, Context context) {
+    public Mono<Response<ExceptionPolicyInternal>> upsertExceptionPolicyWithResponseAsync(
+            String id, ExceptionPolicyInternal patch, Context context) {
         final String accept = "application/json";
         return service.upsertExceptionPolicy(
                 this.client.getEndpoint(), id, this.client.getApiVersion(), patch, accept, context);
@@ -1167,7 +1236,7 @@ public final class JobRouterAdministrationsImpl {
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ExceptionPolicy> upsertExceptionPolicyAsync(String id, ExceptionPolicy patch) {
+    public Mono<ExceptionPolicyInternal> upsertExceptionPolicyAsync(String id, ExceptionPolicyInternal patch) {
         return upsertExceptionPolicyWithResponseAsync(id, patch).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -1185,25 +1254,10 @@ public final class JobRouterAdministrationsImpl {
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ExceptionPolicy> upsertExceptionPolicyAsync(String id, ExceptionPolicy patch, Context context) {
+    public Mono<ExceptionPolicyInternal> upsertExceptionPolicyAsync(
+            String id, ExceptionPolicyInternal patch, Context context) {
         return upsertExceptionPolicyWithResponseAsync(id, patch, context)
                 .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Creates or updates a exception policy.
-     *
-     * @param id Id of the exception policy.
-     * @param patch Model of exception policy properties to be patched. See also:
-     *     https://datatracker.ietf.org/doc/html/rfc7386.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a policy that defines actions to execute when exception are triggered.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ExceptionPolicy upsertExceptionPolicy(String id, ExceptionPolicy patch) {
-        return upsertExceptionPolicyAsync(id, patch).block();
     }
 
     /**
@@ -1219,9 +1273,25 @@ public final class JobRouterAdministrationsImpl {
      * @return a policy that defines actions to execute when exception are triggered along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ExceptionPolicy> upsertExceptionPolicyWithResponse(
-            String id, ExceptionPolicy patch, Context context) {
+    public Response<ExceptionPolicyInternal> upsertExceptionPolicyWithResponse(
+            String id, ExceptionPolicyInternal patch, Context context) {
         return upsertExceptionPolicyWithResponseAsync(id, patch, context).block();
+    }
+
+    /**
+     * Creates or updates a exception policy.
+     *
+     * @param id Id of the exception policy.
+     * @param patch Model of exception policy properties to be patched. See also:
+     *     https://datatracker.ietf.org/doc/html/rfc7386.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a policy that defines actions to execute when exception are triggered.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ExceptionPolicyInternal upsertExceptionPolicy(String id, ExceptionPolicyInternal patch) {
+        return upsertExceptionPolicyWithResponse(id, patch, Context.NONE).getValue();
     }
 
     /**
@@ -1235,7 +1305,7 @@ public final class JobRouterAdministrationsImpl {
      *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ExceptionPolicy>> getExceptionPolicyWithResponseAsync(String id) {
+    public Mono<Response<ExceptionPolicyInternal>> getExceptionPolicyWithResponseAsync(String id) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
@@ -1255,7 +1325,7 @@ public final class JobRouterAdministrationsImpl {
      *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ExceptionPolicy>> getExceptionPolicyWithResponseAsync(String id, Context context) {
+    public Mono<Response<ExceptionPolicyInternal>> getExceptionPolicyWithResponseAsync(String id, Context context) {
         final String accept = "application/json";
         return service.getExceptionPolicy(this.client.getEndpoint(), id, this.client.getApiVersion(), accept, context);
     }
@@ -1271,7 +1341,7 @@ public final class JobRouterAdministrationsImpl {
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ExceptionPolicy> getExceptionPolicyAsync(String id) {
+    public Mono<ExceptionPolicyInternal> getExceptionPolicyAsync(String id) {
         return getExceptionPolicyWithResponseAsync(id).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -1287,22 +1357,8 @@ public final class JobRouterAdministrationsImpl {
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ExceptionPolicy> getExceptionPolicyAsync(String id, Context context) {
+    public Mono<ExceptionPolicyInternal> getExceptionPolicyAsync(String id, Context context) {
         return getExceptionPolicyWithResponseAsync(id, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Retrieves an existing exception policy by Id.
-     *
-     * @param id Id of the exception policy to retrieve.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a policy that defines actions to execute when exception are triggered.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ExceptionPolicy getExceptionPolicy(String id) {
-        return getExceptionPolicyAsync(id).block();
     }
 
     /**
@@ -1316,8 +1372,22 @@ public final class JobRouterAdministrationsImpl {
      * @return a policy that defines actions to execute when exception are triggered along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ExceptionPolicy> getExceptionPolicyWithResponse(String id, Context context) {
+    public Response<ExceptionPolicyInternal> getExceptionPolicyWithResponse(String id, Context context) {
         return getExceptionPolicyWithResponseAsync(id, context).block();
+    }
+
+    /**
+     * Retrieves an existing exception policy by Id.
+     *
+     * @param id Id of the exception policy to retrieve.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a policy that defines actions to execute when exception are triggered.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ExceptionPolicyInternal getExceptionPolicy(String id) {
+        return getExceptionPolicyWithResponse(id, Context.NONE).getValue();
     }
 
     /**
@@ -1388,19 +1458,6 @@ public final class JobRouterAdministrationsImpl {
      * Deletes a exception policy by Id.
      *
      * @param id Id of the exception policy to delete.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteExceptionPolicy(String id) {
-        deleteExceptionPolicyAsync(id).block();
-    }
-
-    /**
-     * Deletes a exception policy by Id.
-     *
-     * @param id Id of the exception policy to delete.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -1410,6 +1467,19 @@ public final class JobRouterAdministrationsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteExceptionPolicyWithResponse(String id, Context context) {
         return deleteExceptionPolicyWithResponseAsync(id, context).block();
+    }
+
+    /**
+     * Deletes a exception policy by Id.
+     *
+     * @param id Id of the exception policy to delete.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void deleteExceptionPolicy(String id) {
+        deleteExceptionPolicyWithResponse(id, Context.NONE);
     }
 
     /**
@@ -1423,7 +1493,7 @@ public final class JobRouterAdministrationsImpl {
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<ExceptionPolicyItem>> listExceptionPoliciesSinglePageAsync(Integer maxPageSize) {
+    public Mono<PagedResponse<ExceptionPolicyItemInternal>> listExceptionPoliciesSinglePageAsync(Integer maxPageSize) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                         context ->
@@ -1456,7 +1526,7 @@ public final class JobRouterAdministrationsImpl {
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<ExceptionPolicyItem>> listExceptionPoliciesSinglePageAsync(
+    public Mono<PagedResponse<ExceptionPolicyItemInternal>> listExceptionPoliciesSinglePageAsync(
             Integer maxPageSize, Context context) {
         final String accept = "application/json";
         return service.listExceptionPolicies(
@@ -1482,7 +1552,7 @@ public final class JobRouterAdministrationsImpl {
      * @return a paged collection of exception policies as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<ExceptionPolicyItem> listExceptionPoliciesAsync(Integer maxPageSize) {
+    public PagedFlux<ExceptionPolicyItemInternal> listExceptionPoliciesAsync(Integer maxPageSize) {
         return new PagedFlux<>(
                 () -> listExceptionPoliciesSinglePageAsync(maxPageSize),
                 nextLink -> listExceptionPoliciesNextSinglePageAsync(nextLink));
@@ -1499,7 +1569,7 @@ public final class JobRouterAdministrationsImpl {
      * @return a paged collection of exception policies as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<ExceptionPolicyItem> listExceptionPoliciesAsync(Integer maxPageSize, Context context) {
+    public PagedFlux<ExceptionPolicyItemInternal> listExceptionPoliciesAsync(Integer maxPageSize, Context context) {
         return new PagedFlux<>(
                 () -> listExceptionPoliciesSinglePageAsync(maxPageSize, context),
                 nextLink -> listExceptionPoliciesNextSinglePageAsync(nextLink, context));
@@ -1512,10 +1582,40 @@ public final class JobRouterAdministrationsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a paged collection of exception policies along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PagedResponse<ExceptionPolicyItemInternal> listExceptionPoliciesSinglePage(Integer maxPageSize) {
+        return listExceptionPoliciesSinglePageAsync(maxPageSize).block();
+    }
+
+    /**
+     * Retrieves existing exception policies.
+     *
+     * @param maxPageSize Number of objects to return per page.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a paged collection of exception policies along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PagedResponse<ExceptionPolicyItemInternal> listExceptionPoliciesSinglePage(
+            Integer maxPageSize, Context context) {
+        return listExceptionPoliciesSinglePageAsync(maxPageSize, context).block();
+    }
+
+    /**
+     * Retrieves existing exception policies.
+     *
+     * @param maxPageSize Number of objects to return per page.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a paged collection of exception policies as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ExceptionPolicyItem> listExceptionPolicies(Integer maxPageSize) {
+    public PagedIterable<ExceptionPolicyItemInternal> listExceptionPolicies(Integer maxPageSize) {
         return new PagedIterable<>(listExceptionPoliciesAsync(maxPageSize));
     }
 
@@ -1530,7 +1630,7 @@ public final class JobRouterAdministrationsImpl {
      * @return a paged collection of exception policies as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ExceptionPolicyItem> listExceptionPolicies(Integer maxPageSize, Context context) {
+    public PagedIterable<ExceptionPolicyItemInternal> listExceptionPolicies(Integer maxPageSize, Context context) {
         return new PagedIterable<>(listExceptionPoliciesAsync(maxPageSize, context));
     }
 
@@ -1546,7 +1646,7 @@ public final class JobRouterAdministrationsImpl {
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<JobQueue>> upsertQueueWithResponseAsync(String id, JobQueue patch) {
+    public Mono<Response<RouterQueueInternal>> upsertQueueWithResponseAsync(String id, RouterQueueInternal patch) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
@@ -1567,7 +1667,8 @@ public final class JobRouterAdministrationsImpl {
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<JobQueue>> upsertQueueWithResponseAsync(String id, JobQueue patch, Context context) {
+    public Mono<Response<RouterQueueInternal>> upsertQueueWithResponseAsync(
+            String id, RouterQueueInternal patch, Context context) {
         final String accept = "application/json";
         return service.upsertQueue(this.client.getEndpoint(), id, this.client.getApiVersion(), patch, accept, context);
     }
@@ -1583,7 +1684,7 @@ public final class JobRouterAdministrationsImpl {
      * @return a queue that can contain jobs to be routed on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<JobQueue> upsertQueueAsync(String id, JobQueue patch) {
+    public Mono<RouterQueueInternal> upsertQueueAsync(String id, RouterQueueInternal patch) {
         return upsertQueueWithResponseAsync(id, patch).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -1599,23 +1700,8 @@ public final class JobRouterAdministrationsImpl {
      * @return a queue that can contain jobs to be routed on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<JobQueue> upsertQueueAsync(String id, JobQueue patch, Context context) {
+    public Mono<RouterQueueInternal> upsertQueueAsync(String id, RouterQueueInternal patch, Context context) {
         return upsertQueueWithResponseAsync(id, patch, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Creates or updates a queue.
-     *
-     * @param id Id of the queue.
-     * @param patch Model of queue properties to be patched. See also: https://datatracker.ietf.org/doc/html/rfc7386.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a queue that can contain jobs to be routed.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public JobQueue upsertQueue(String id, JobQueue patch) {
-        return upsertQueueAsync(id, patch).block();
     }
 
     /**
@@ -1630,8 +1716,24 @@ public final class JobRouterAdministrationsImpl {
      * @return a queue that can contain jobs to be routed along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<JobQueue> upsertQueueWithResponse(String id, JobQueue patch, Context context) {
+    public Response<RouterQueueInternal> upsertQueueWithResponse(
+            String id, RouterQueueInternal patch, Context context) {
         return upsertQueueWithResponseAsync(id, patch, context).block();
+    }
+
+    /**
+     * Creates or updates a queue.
+     *
+     * @param id Id of the queue.
+     * @param patch Model of queue properties to be patched. See also: https://datatracker.ietf.org/doc/html/rfc7386.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a queue that can contain jobs to be routed.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public RouterQueueInternal upsertQueue(String id, RouterQueueInternal patch) {
+        return upsertQueueWithResponse(id, patch, Context.NONE).getValue();
     }
 
     /**
@@ -1645,7 +1747,7 @@ public final class JobRouterAdministrationsImpl {
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<JobQueue>> getQueueWithResponseAsync(String id) {
+    public Mono<Response<RouterQueueInternal>> getQueueWithResponseAsync(String id) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
@@ -1664,7 +1766,7 @@ public final class JobRouterAdministrationsImpl {
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<JobQueue>> getQueueWithResponseAsync(String id, Context context) {
+    public Mono<Response<RouterQueueInternal>> getQueueWithResponseAsync(String id, Context context) {
         final String accept = "application/json";
         return service.getQueue(this.client.getEndpoint(), id, this.client.getApiVersion(), accept, context);
     }
@@ -1679,7 +1781,7 @@ public final class JobRouterAdministrationsImpl {
      * @return a queue that can contain jobs to be routed on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<JobQueue> getQueueAsync(String id) {
+    public Mono<RouterQueueInternal> getQueueAsync(String id) {
         return getQueueWithResponseAsync(id).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -1694,22 +1796,8 @@ public final class JobRouterAdministrationsImpl {
      * @return a queue that can contain jobs to be routed on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<JobQueue> getQueueAsync(String id, Context context) {
+    public Mono<RouterQueueInternal> getQueueAsync(String id, Context context) {
         return getQueueWithResponseAsync(id, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Retrieves an existing queue by Id.
-     *
-     * @param id Id of the queue to retrieve.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a queue that can contain jobs to be routed.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public JobQueue getQueue(String id) {
-        return getQueueAsync(id).block();
     }
 
     /**
@@ -1723,8 +1811,22 @@ public final class JobRouterAdministrationsImpl {
      * @return a queue that can contain jobs to be routed along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<JobQueue> getQueueWithResponse(String id, Context context) {
+    public Response<RouterQueueInternal> getQueueWithResponse(String id, Context context) {
         return getQueueWithResponseAsync(id, context).block();
+    }
+
+    /**
+     * Retrieves an existing queue by Id.
+     *
+     * @param id Id of the queue to retrieve.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a queue that can contain jobs to be routed.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public RouterQueueInternal getQueue(String id) {
+        return getQueueWithResponse(id, Context.NONE).getValue();
     }
 
     /**
@@ -1794,19 +1896,6 @@ public final class JobRouterAdministrationsImpl {
      * Deletes a queue by Id.
      *
      * @param id Id of the queue to delete.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteQueue(String id) {
-        deleteQueueAsync(id).block();
-    }
-
-    /**
-     * Deletes a queue by Id.
-     *
-     * @param id Id of the queue to delete.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -1819,6 +1908,19 @@ public final class JobRouterAdministrationsImpl {
     }
 
     /**
+     * Deletes a queue by Id.
+     *
+     * @param id Id of the queue to delete.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void deleteQueue(String id) {
+        deleteQueueWithResponse(id, Context.NONE);
+    }
+
+    /**
      * Retrieves existing queues.
      *
      * @param maxPageSize Number of objects to return per page.
@@ -1828,7 +1930,7 @@ public final class JobRouterAdministrationsImpl {
      * @return a paged collection of queues along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<JobQueueItem>> listQueuesSinglePageAsync(Integer maxPageSize) {
+    public Mono<PagedResponse<RouterQueueItemInternal>> listQueuesSinglePageAsync(Integer maxPageSize) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                         context ->
@@ -1860,7 +1962,8 @@ public final class JobRouterAdministrationsImpl {
      * @return a paged collection of queues along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<JobQueueItem>> listQueuesSinglePageAsync(Integer maxPageSize, Context context) {
+    public Mono<PagedResponse<RouterQueueItemInternal>> listQueuesSinglePageAsync(
+            Integer maxPageSize, Context context) {
         final String accept = "application/json";
         return service.listQueues(this.client.getEndpoint(), maxPageSize, this.client.getApiVersion(), accept, context)
                 .map(
@@ -1884,7 +1987,7 @@ public final class JobRouterAdministrationsImpl {
      * @return a paged collection of queues as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<JobQueueItem> listQueuesAsync(Integer maxPageSize) {
+    public PagedFlux<RouterQueueItemInternal> listQueuesAsync(Integer maxPageSize) {
         return new PagedFlux<>(
                 () -> listQueuesSinglePageAsync(maxPageSize), nextLink -> listQueuesNextSinglePageAsync(nextLink));
     }
@@ -1900,7 +2003,7 @@ public final class JobRouterAdministrationsImpl {
      * @return a paged collection of queues as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<JobQueueItem> listQueuesAsync(Integer maxPageSize, Context context) {
+    public PagedFlux<RouterQueueItemInternal> listQueuesAsync(Integer maxPageSize, Context context) {
         return new PagedFlux<>(
                 () -> listQueuesSinglePageAsync(maxPageSize, context),
                 nextLink -> listQueuesNextSinglePageAsync(nextLink, context));
@@ -1913,10 +2016,39 @@ public final class JobRouterAdministrationsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a paged collection of queues along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PagedResponse<RouterQueueItemInternal> listQueuesSinglePage(Integer maxPageSize) {
+        return listQueuesSinglePageAsync(maxPageSize).block();
+    }
+
+    /**
+     * Retrieves existing queues.
+     *
+     * @param maxPageSize Number of objects to return per page.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a paged collection of queues along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PagedResponse<RouterQueueItemInternal> listQueuesSinglePage(Integer maxPageSize, Context context) {
+        return listQueuesSinglePageAsync(maxPageSize, context).block();
+    }
+
+    /**
+     * Retrieves existing queues.
+     *
+     * @param maxPageSize Number of objects to return per page.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a paged collection of queues as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<JobQueueItem> listQueues(Integer maxPageSize) {
+    public PagedIterable<RouterQueueItemInternal> listQueues(Integer maxPageSize) {
         return new PagedIterable<>(listQueuesAsync(maxPageSize));
     }
 
@@ -1931,14 +2063,15 @@ public final class JobRouterAdministrationsImpl {
      * @return a paged collection of queues as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<JobQueueItem> listQueues(Integer maxPageSize, Context context) {
+    public PagedIterable<RouterQueueItemInternal> listQueues(Integer maxPageSize, Context context) {
         return new PagedIterable<>(listQueuesAsync(maxPageSize, context));
     }
 
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1946,7 +2079,7 @@ public final class JobRouterAdministrationsImpl {
      *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<ClassificationPolicyItem>> listClassificationPoliciesNextSinglePageAsync(
+    public Mono<PagedResponse<ClassificationPolicyItemInternal>> listClassificationPoliciesNextSinglePageAsync(
             String nextLink) {
         final String accept = "application/json";
         return FluxUtil.withContext(
@@ -1967,7 +2100,8 @@ public final class JobRouterAdministrationsImpl {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -1976,7 +2110,7 @@ public final class JobRouterAdministrationsImpl {
      *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<ClassificationPolicyItem>> listClassificationPoliciesNextSinglePageAsync(
+    public Mono<PagedResponse<ClassificationPolicyItemInternal>> listClassificationPoliciesNextSinglePageAsync(
             String nextLink, Context context) {
         final String accept = "application/json";
         return service.listClassificationPoliciesNext(nextLink, this.client.getEndpoint(), accept, context)
@@ -1994,7 +2128,40 @@ public final class JobRouterAdministrationsImpl {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a paged collection of classification policies along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PagedResponse<ClassificationPolicyItemInternal> listClassificationPoliciesNextSinglePage(String nextLink) {
+        return listClassificationPoliciesNextSinglePageAsync(nextLink).block();
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a paged collection of classification policies along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PagedResponse<ClassificationPolicyItemInternal> listClassificationPoliciesNextSinglePage(
+            String nextLink, Context context) {
+        return listClassificationPoliciesNextSinglePageAsync(nextLink, context).block();
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2002,7 +2169,8 @@ public final class JobRouterAdministrationsImpl {
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<DistributionPolicyItem>> listDistributionPoliciesNextSinglePageAsync(String nextLink) {
+    public Mono<PagedResponse<DistributionPolicyItemInternal>> listDistributionPoliciesNextSinglePageAsync(
+            String nextLink) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                         context ->
@@ -2022,7 +2190,8 @@ public final class JobRouterAdministrationsImpl {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -2031,7 +2200,7 @@ public final class JobRouterAdministrationsImpl {
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<DistributionPolicyItem>> listDistributionPoliciesNextSinglePageAsync(
+    public Mono<PagedResponse<DistributionPolicyItemInternal>> listDistributionPoliciesNextSinglePageAsync(
             String nextLink, Context context) {
         final String accept = "application/json";
         return service.listDistributionPoliciesNext(nextLink, this.client.getEndpoint(), accept, context)
@@ -2049,7 +2218,40 @@ public final class JobRouterAdministrationsImpl {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a paged collection of distribution policies along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PagedResponse<DistributionPolicyItemInternal> listDistributionPoliciesNextSinglePage(String nextLink) {
+        return listDistributionPoliciesNextSinglePageAsync(nextLink).block();
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a paged collection of distribution policies along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PagedResponse<DistributionPolicyItemInternal> listDistributionPoliciesNextSinglePage(
+            String nextLink, Context context) {
+        return listDistributionPoliciesNextSinglePageAsync(nextLink, context).block();
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2057,7 +2259,7 @@ public final class JobRouterAdministrationsImpl {
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<ExceptionPolicyItem>> listExceptionPoliciesNextSinglePageAsync(String nextLink) {
+    public Mono<PagedResponse<ExceptionPolicyItemInternal>> listExceptionPoliciesNextSinglePageAsync(String nextLink) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                         context ->
@@ -2076,7 +2278,8 @@ public final class JobRouterAdministrationsImpl {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -2085,7 +2288,7 @@ public final class JobRouterAdministrationsImpl {
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<ExceptionPolicyItem>> listExceptionPoliciesNextSinglePageAsync(
+    public Mono<PagedResponse<ExceptionPolicyItemInternal>> listExceptionPoliciesNextSinglePageAsync(
             String nextLink, Context context) {
         final String accept = "application/json";
         return service.listExceptionPoliciesNext(nextLink, this.client.getEndpoint(), accept, context)
@@ -2103,14 +2306,47 @@ public final class JobRouterAdministrationsImpl {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a paged collection of exception policies along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PagedResponse<ExceptionPolicyItemInternal> listExceptionPoliciesNextSinglePage(String nextLink) {
+        return listExceptionPoliciesNextSinglePageAsync(nextLink).block();
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a paged collection of exception policies along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PagedResponse<ExceptionPolicyItemInternal> listExceptionPoliciesNextSinglePage(
+            String nextLink, Context context) {
+        return listExceptionPoliciesNextSinglePageAsync(nextLink, context).block();
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a paged collection of queues along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<JobQueueItem>> listQueuesNextSinglePageAsync(String nextLink) {
+    public Mono<PagedResponse<RouterQueueItemInternal>> listQueuesNextSinglePageAsync(String nextLink) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                         context -> service.listQueuesNext(nextLink, this.client.getEndpoint(), accept, context))
@@ -2128,7 +2364,8 @@ public final class JobRouterAdministrationsImpl {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -2136,7 +2373,8 @@ public final class JobRouterAdministrationsImpl {
      * @return a paged collection of queues along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<JobQueueItem>> listQueuesNextSinglePageAsync(String nextLink, Context context) {
+    public Mono<PagedResponse<RouterQueueItemInternal>> listQueuesNextSinglePageAsync(
+            String nextLink, Context context) {
         final String accept = "application/json";
         return service.listQueuesNext(nextLink, this.client.getEndpoint(), accept, context)
                 .map(
@@ -2148,5 +2386,36 @@ public final class JobRouterAdministrationsImpl {
                                         res.getValue().getValue(),
                                         res.getValue().getNextLink(),
                                         null));
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a paged collection of queues along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PagedResponse<RouterQueueItemInternal> listQueuesNextSinglePage(String nextLink) {
+        return listQueuesNextSinglePageAsync(nextLink).block();
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a paged collection of queues along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PagedResponse<RouterQueueItemInternal> listQueuesNextSinglePage(String nextLink, Context context) {
+        return listQueuesNextSinglePageAsync(nextLink, context).block();
     }
 }

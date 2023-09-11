@@ -5,20 +5,34 @@
 package com.azure.resourcemanager.postgresqlflexibleserver.generated;
 
 import com.azure.core.util.BinaryData;
+import com.azure.resourcemanager.postgresqlflexibleserver.models.AzureManagedDiskPerformanceTiers;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.Storage;
+import com.azure.resourcemanager.postgresqlflexibleserver.models.StorageAutoGrow;
 import org.junit.jupiter.api.Assertions;
 
 public final class StorageTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        Storage model = BinaryData.fromString("{\"storageSizeGB\":1146165631}").toObject(Storage.class);
-        Assertions.assertEquals(1146165631, model.storageSizeGB());
+        Storage model =
+            BinaryData
+                .fromString(
+                    "{\"storageSizeGB\":1240175495,\"autoGrow\":\"Disabled\",\"tier\":\"P3\",\"iops\":1235353776}")
+                .toObject(Storage.class);
+        Assertions.assertEquals(1240175495, model.storageSizeGB());
+        Assertions.assertEquals(StorageAutoGrow.DISABLED, model.autoGrow());
+        Assertions.assertEquals(AzureManagedDiskPerformanceTiers.P3, model.tier());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Storage model = new Storage().withStorageSizeGB(1146165631);
+        Storage model =
+            new Storage()
+                .withStorageSizeGB(1240175495)
+                .withAutoGrow(StorageAutoGrow.DISABLED)
+                .withTier(AzureManagedDiskPerformanceTiers.P3);
         model = BinaryData.fromObject(model).toObject(Storage.class);
-        Assertions.assertEquals(1146165631, model.storageSizeGB());
+        Assertions.assertEquals(1240175495, model.storageSizeGB());
+        Assertions.assertEquals(StorageAutoGrow.DISABLED, model.autoGrow());
+        Assertions.assertEquals(AzureManagedDiskPerformanceTiers.P3, model.tier());
     }
 }

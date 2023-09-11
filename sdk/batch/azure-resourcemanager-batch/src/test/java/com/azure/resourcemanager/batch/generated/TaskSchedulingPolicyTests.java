@@ -8,18 +8,17 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.batch.models.ComputeNodeFillType;
 import com.azure.resourcemanager.batch.models.TaskSchedulingPolicy;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class TaskSchedulingPolicyTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         TaskSchedulingPolicy model =
             BinaryData.fromString("{\"nodeFillType\":\"Spread\"}").toObject(TaskSchedulingPolicy.class);
         Assertions.assertEquals(ComputeNodeFillType.SPREAD, model.nodeFillType());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         TaskSchedulingPolicy model = new TaskSchedulingPolicy().withNodeFillType(ComputeNodeFillType.SPREAD);
         model = BinaryData.fromObject(model).toObject(TaskSchedulingPolicy.class);
         Assertions.assertEquals(ComputeNodeFillType.SPREAD, model.nodeFillType());

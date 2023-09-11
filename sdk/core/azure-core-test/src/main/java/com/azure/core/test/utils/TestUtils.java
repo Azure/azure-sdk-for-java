@@ -3,18 +3,29 @@
 
 package com.azure.core.test.utils;
 
+import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpHeaderName;
+import com.azure.core.http.HttpRequest;
+import com.azure.core.http.HttpResponse;
+import com.azure.core.util.Context;
+import com.azure.core.util.HttpClientOptions;
+import com.azure.core.util.UrlBuilder;
 import com.azure.core.util.logging.ClientLogger;
 import org.junit.jupiter.api.Assertions;
+import reactor.core.publisher.Mono;
 
 import java.io.File;
+import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.time.Duration;
 import java.util.Arrays;
 import java.util.Objects;
+import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * Contains utility methods used for testing.
@@ -24,6 +35,10 @@ public final class TestUtils {
     private static final ClientLogger LOGGER = new ClientLogger(TestUtils.class);
 
     private static final String RECORD_FOLDER = "session-records/";
+
+    private static final HttpHeaderName UPSTREAM_URI_HEADER = HttpHeaderName.fromString("X-Upstream-Base-Uri");
+    private static final HttpHeaderName HTTP_FAULT_INJECTOR_RESPONSE_HEADER
+        = HttpHeaderName.fromString("x-ms-faultinjector-response-option");
 
     /**
      * Asserts that two arrays are equal.
@@ -114,6 +129,7 @@ public final class TestUtils {
 
     /**
      * Get the {@link File} pointing to the folder where session records live.
+     *
      * @return The session-records folder.
      * @throws IllegalStateException if the session-records folder cannot be found.
      */
@@ -172,5 +188,174 @@ public final class TestUtils {
                 "Could not locate %s folder within repository %s", resolveFolder, repoName));
         }
         return path;
+    }
+
+    /**
+     * Wraps an {@link HttpClient} to make calls to
+     * <a href="https://github.com/Azure/azure-sdk-tools/tree/main/tools/http-fault-injector">HTTP fault injector</a>
+     * to test random network failures.
+     * <p>
+     * Using the {@link HttpClient} returned by this method requires all setup required by HTTP fault injector to be
+     * configured. {@code useHttps} determines whether requests are forwarded to HTTP fault injector using HTTPS or
+     * HTTP, using HTTP doesn't require the self-signed certificate used by HTTP fault injector to be trusted by the JVM
+     * making it easier to prototype tests using HTTP fault injector. Merge ready tests should always use HTTPS.
+     * <p>
+     * The {@link HttpClient} returned will use the default successful and failure response percentages. 75% of request
+     * will succeed, 24% of requests will fail with a partial body returned, and 1% of requests will never return a
+     * response. It is recommended for tests using HTTP fault injector to set
+     * {@link HttpClientOptions#setResponseTimeout(Duration)} and {@link HttpClientOptions#setReadTimeout(Duration)}, or
+     * the equivalent methods directly in the HTTP client builder being used, as the default timeouts are 60 seconds and
+     * with responses failing randomly reducing the timeout will let the tests run faster while still generally testing
+     * the same.
+     *
+     * @param clientToWrap The {@link HttpClient} being wrapped that will send the actual request.
+     * @param useHttps Whether HTTPS should be used to communicate with HTTP fault injector.
+     * @return An {@link HttpClient} that forwards requests to HTTP fault injector with automatic fault injection
+     * handling to run tests with flaky network.
+     */
+    public static HttpClient getFaultInjectingHttpClient(HttpClient clientToWrap, boolean useHttps) {
+        return getFaultInjectingHttpClient(clientToWrap, useHttps, 75, 24, 1);
+    }
+
+    /**
+     * Wraps an {@link HttpClient} to make calls to
+     * <a href="https://github.com/Azure/azure-sdk-tools/tree/main/tools/http-fault-injector">HTTP fault injector</a>
+     * to test random network failures.
+     * <p>
+     * Using the {@link HttpClient} returned by this method requires all setup required by HTTP fault injector to be
+     * configured. {@code useHttps} determines whether requests are forwarded to HTTP fault injector using HTTPS or
+     * HTTP, using HTTP doesn't require the self-signed certificate used by HTTP fault injector to be trusted by the JVM
+     * making it easier to prototype tests using HTTP fault injector. Merge ready tests should always use HTTPS.
+     * <p>
+     * The {@link HttpClient} returned will use the specified successful and failure response percentages. The
+     * combination of {@code successRate}, {@code partialRate}, and {@code failureRate} must equal 100, if not an
+     * {@link IllegalArgumentException} will be thrown. An {@link IllegalArgumentException} will also be thrown if any
+     * of the values are negative. It is recommended for tests using HTTP fault injector to set
+     * {@link HttpClientOptions#setResponseTimeout(Duration)} and {@link HttpClientOptions#setReadTimeout(Duration)}, or
+     * the equivalent methods directly in the HTTP client builder being used, as the default timeouts are 60 seconds and
+     * with responses failing randomly reducing the timeout will let the tests run faster while still generally testing
+     * the same.
+     *
+     * @param clientToWrap The {@link HttpClient} being wrapped that will send the actual request.
+     * @param useHttps Whether HTTPS should be used to communicate with HTTP fault injector.
+     * @param successRate Percent of requests that will succeed.
+     * @param partialRate Percent of requests that will partially succeed.
+     * @param failureRate Percent of requests that will fail.
+     * @return An {@link HttpClient} that forwards requests to HTTP fault injector with automatic fault injection
+     * handling to run tests with flaky network.
+     * @throws IllegalArgumentException If {@code successRate}, {@code partialRate}, and {@code failureRate} don't add
+     * up to 100 or if any of the values are negative.
+     */
+    public static HttpClient getFaultInjectingHttpClient(HttpClient clientToWrap, boolean useHttps, int successRate,
+        int partialRate, int failureRate) {
+        if (successRate + partialRate + failureRate != 100
+            || successRate < 0 || partialRate < 0 || failureRate < 0) {
+            throw LOGGER.atError()
+                .addKeyValue("successRate", successRate)
+                .addKeyValue("partialRage", partialRate)
+                .addKeyValue("failureRate", failureRate)
+                .log(new IllegalStateException(
+                    "'successRate', 'partialRate', and 'failureRate' must add to 100 and no values can be negative."));
+        }
+
+        return new HttpFaultInjectingHttpClient(clientToWrap, useHttps, successRate, partialRate);
+    }
+
+    private static final class HttpFaultInjectingHttpClient implements HttpClient {
+        private final HttpClient wrappedHttpClient;
+        private final boolean useHttps;
+        private final int successRate;
+        private final int partialRate;
+
+        HttpFaultInjectingHttpClient(HttpClient wrappedHttpClient, boolean useHttps, int successRate, int partialRate) {
+            this.wrappedHttpClient = wrappedHttpClient;
+            this.useHttps = useHttps;
+            this.successRate = successRate;
+            this.partialRate = partialRate;
+        }
+
+        @Override
+        public Mono<HttpResponse> send(HttpRequest request) {
+            return send(request, Context.NONE);
+        }
+
+        @Override
+        public Mono<HttpResponse> send(HttpRequest request, Context context) {
+            URL originalUrl = request.getUrl();
+            request.setHeader(UPSTREAM_URI_HEADER, originalUrl.toString()).setUrl(rewriteUrl(originalUrl));
+            String faultType = faultInjectorHandling();
+            request.setHeader(HTTP_FAULT_INJECTOR_RESPONSE_HEADER, faultType);
+
+            return wrappedHttpClient.send(request, context)
+                .map(response -> {
+                    HttpRequest request1 = response.getRequest();
+                    request1.getHeaders().remove(UPSTREAM_URI_HEADER);
+                    request1.setUrl(originalUrl);
+
+                    return response;
+                });
+        }
+
+        @Override
+        public HttpResponse sendSync(HttpRequest request, Context context) {
+            URL originalUrl = request.getUrl();
+            request.setHeader(UPSTREAM_URI_HEADER, originalUrl.toString()).setUrl(rewriteUrl(originalUrl));
+            String faultType = faultInjectorHandling();
+            request.setHeader(HTTP_FAULT_INJECTOR_RESPONSE_HEADER, faultType);
+
+            HttpResponse response = wrappedHttpClient.sendSync(request, context);
+            response.getRequest().setUrl(originalUrl);
+            response.getRequest().getHeaders().remove(UPSTREAM_URI_HEADER);
+
+            return response;
+        }
+
+        private URL rewriteUrl(URL originalUrl) {
+            try {
+                return UrlBuilder.parse(originalUrl)
+                    .setScheme(useHttps ? "https" : "http")
+                    .setHost("localhost")
+                    .setPort(useHttps ? 7778 : 7777)
+                    .toUrl();
+            } catch (MalformedURLException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        private String faultInjectorHandling() {
+            // f: Full response
+            // p: Partial Response (full headers, 50% of body), then wait indefinitely
+            // pc: Partial Response (full headers, 50% of body), then close (TCP FIN)
+            // pa: Partial Response (full headers, 50% of body), then abort (TCP RST)
+            // pn: Partial Response (full headers, 50% of body), then finish normally
+            // n: No response, then wait indefinitely
+            // nc: No response, then close (TCP FIN)
+            // na: No response, then abort (TCP RST)
+            double random = ThreadLocalRandom.current().nextDouble();
+            int choice = (int) (random * 100);
+
+            if (choice >= (100 - successRate)) {
+                // 75% of requests complete without error.
+                return "f";
+            } else if (choice >= (100 - successRate - partialRate)) {
+                if (random <= 0.34D) {
+                    return "n";
+                } else if (random <= 0.67D) {
+                    return "nc";
+                } else {
+                    return "na";
+                }
+            } else {
+                if (random <= 0.25D) {
+                    return "p";
+                } else if (random <= 0.50D) {
+                    return "pc";
+                } else if (random <= 0.75D) {
+                    return "pa";
+                } else {
+                    return "pn";
+                }
+            }
+        }
     }
 }

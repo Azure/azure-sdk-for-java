@@ -7,7 +7,7 @@ package com.azure.resourcemanager.elasticsan.models;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.elasticsan.fluent.models.VolumeGroupInner;
-import java.util.Map;
+import java.util.List;
 
 /** An immutable client-side representation of VolumeGroup. */
 public interface VolumeGroup {
@@ -33,18 +33,11 @@ public interface VolumeGroup {
     String type();
 
     /**
-     * Gets the systemData property: Resource metadata required by ARM RPC.
+     * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
      *
      * @return the systemData value.
      */
     SystemData systemData();
-
-    /**
-     * Gets the tags property: Azure resource tags.
-     *
-     * @return the tags value.
-     */
-    Map<String, String> tags();
 
     /**
      * Gets the provisioningState property: State of the operation on the resource.
@@ -75,6 +68,13 @@ public interface VolumeGroup {
     NetworkRuleSet networkAcls();
 
     /**
+     * Gets the privateEndpointConnections property: The list of Private Endpoint Connections.
+     *
+     * @return the privateEndpointConnections value.
+     */
+    List<PrivateEndpointConnection> privateEndpointConnections();
+
+    /**
      * Gets the name of the resource group.
      *
      * @return the name of the resource group.
@@ -92,11 +92,13 @@ public interface VolumeGroup {
     interface Definition
         extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
+
     /** The VolumeGroup definition stages. */
     interface DefinitionStages {
         /** The first stage of the VolumeGroup definition. */
         interface Blank extends WithParentResource {
         }
+
         /** The stage of the VolumeGroup definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
@@ -108,13 +110,13 @@ public interface VolumeGroup {
              */
             WithCreate withExistingElasticSan(String resourceGroupName, String elasticSanName);
         }
+
         /**
          * The stage of the VolumeGroup definition which contains all the minimum required properties for the resource
          * to be created, but also allows for any other optional properties to be specified.
          */
         interface WithCreate
-            extends DefinitionStages.WithTags,
-                DefinitionStages.WithProtocolType,
+            extends DefinitionStages.WithProtocolType,
                 DefinitionStages.WithEncryption,
                 DefinitionStages.WithNetworkAcls {
             /**
@@ -132,16 +134,7 @@ public interface VolumeGroup {
              */
             VolumeGroup create(Context context);
         }
-        /** The stage of the VolumeGroup definition allowing to specify tags. */
-        interface WithTags {
-            /**
-             * Specifies the tags property: Azure resource tags..
-             *
-             * @param tags Azure resource tags.
-             * @return the next definition stage.
-             */
-            WithCreate withTags(Map<String, String> tags);
-        }
+
         /** The stage of the VolumeGroup definition allowing to specify protocolType. */
         interface WithProtocolType {
             /**
@@ -152,6 +145,7 @@ public interface VolumeGroup {
              */
             WithCreate withProtocolType(StorageTargetType protocolType);
         }
+
         /** The stage of the VolumeGroup definition allowing to specify encryption. */
         interface WithEncryption {
             /**
@@ -162,6 +156,7 @@ public interface VolumeGroup {
              */
             WithCreate withEncryption(EncryptionType encryption);
         }
+
         /** The stage of the VolumeGroup definition allowing to specify networkAcls. */
         interface WithNetworkAcls {
             /**
@@ -174,6 +169,7 @@ public interface VolumeGroup {
             WithCreate withNetworkAcls(NetworkRuleSet networkAcls);
         }
     }
+
     /**
      * Begins update for the VolumeGroup resource.
      *
@@ -182,7 +178,7 @@ public interface VolumeGroup {
     VolumeGroup.Update update();
 
     /** The template for VolumeGroup update. */
-    interface Update extends UpdateStages.WithTags, UpdateStages.WithProtocolType, UpdateStages.WithEncryption {
+    interface Update extends UpdateStages.WithProtocolType, UpdateStages.WithEncryption {
         /**
          * Executes the update request.
          *
@@ -198,18 +194,9 @@ public interface VolumeGroup {
          */
         VolumeGroup apply(Context context);
     }
+
     /** The VolumeGroup update stages. */
     interface UpdateStages {
-        /** The stage of the VolumeGroup update allowing to specify tags. */
-        interface WithTags {
-            /**
-             * Specifies the tags property: Resource tags..
-             *
-             * @param tags Resource tags.
-             * @return the next definition stage.
-             */
-            Update withTags(Map<String, String> tags);
-        }
         /** The stage of the VolumeGroup update allowing to specify protocolType. */
         interface WithProtocolType {
             /**
@@ -220,6 +207,7 @@ public interface VolumeGroup {
              */
             Update withProtocolType(StorageTargetType protocolType);
         }
+
         /** The stage of the VolumeGroup update allowing to specify encryption. */
         interface WithEncryption {
             /**
@@ -231,6 +219,7 @@ public interface VolumeGroup {
             Update withEncryption(EncryptionType encryption);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

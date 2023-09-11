@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.appcontainers.models;
 
-import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.appcontainers.fluent.models.AvailableWorkloadProfileInner;
 
 /** An immutable client-side representation of AvailableWorkloadProfile. */
@@ -43,13 +42,6 @@ public interface AvailableWorkloadProfile {
      * @return the properties value.
      */
     AvailableWorkloadProfileProperties properties();
-
-    /**
-     * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
-     * @return the systemData value.
-     */
-    SystemData systemData();
 
     /**
      * Gets the inner com.azure.resourcemanager.appcontainers.fluent.models.AvailableWorkloadProfileInner object.

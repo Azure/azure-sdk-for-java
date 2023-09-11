@@ -28,6 +28,14 @@ public class CosmosProperties {
 
     private int responseContinuationTokenLimitInKb;
 
+    private int pointOperationLatencyThresholdInMS;
+
+    private int nonPointOperationLatencyThresholdInMS;
+
+    private int requestChargeThresholdInRU;
+
+    private int payloadSizeThresholdInBytes;
+
     public String getUri() {
         return uri;
     }
@@ -72,23 +80,55 @@ public class CosmosProperties {
         return maxDegreeOfParallelism;
     }
 
-    public int getMaxBufferedItemCount() {
-        return maxBufferedItemCount;
-    }
-
-    public int getResponseContinuationTokenLimitInKb() {
-        return responseContinuationTokenLimitInKb;
-    }
-
     public void setMaxDegreeOfParallelism(int maxDegreeOfParallelism) {
         this.maxDegreeOfParallelism = maxDegreeOfParallelism;
+    }
+
+    public int getMaxBufferedItemCount() {
+        return maxBufferedItemCount;
     }
 
     public void setMaxBufferedItemCount(int maxBufferedItemCount) {
         this.maxBufferedItemCount = maxBufferedItemCount;
     }
 
+    public int getResponseContinuationTokenLimitInKb() {
+        return responseContinuationTokenLimitInKb;
+    }
+
     public void setResponseContinuationTokenLimitInKb(int responseContinuationTokenLimitInKb) {
         this.responseContinuationTokenLimitInKb = responseContinuationTokenLimitInKb;
+    }
+
+    public int getPointOperationLatencyThresholdInMS() {
+        return pointOperationLatencyThresholdInMS;
+    }
+
+    public void setPointOperationLatencyThresholdInMS(int pointOperationLatencyThresholdInMS) {
+        this.pointOperationLatencyThresholdInMS = pointOperationLatencyThresholdInMS;
+    }
+
+    public int getNonPointOperationLatencyThresholdInMS() {
+        return nonPointOperationLatencyThresholdInMS;
+    }
+
+    public void setNonPointOperationLatencyThresholdInMS(int nonPointOperationLatencyThresholdInMS) {
+        this.nonPointOperationLatencyThresholdInMS = nonPointOperationLatencyThresholdInMS;
+    }
+
+    public int getRequestChargeThresholdInRU() {
+        return requestChargeThresholdInRU;
+    }
+
+    public void setRequestChargeThresholdInRU(int requestChargeThresholdInRU) {
+        this.requestChargeThresholdInRU = requestChargeThresholdInRU;
+    }
+
+    public int getPayloadSizeThresholdInBytes() {
+        return payloadSizeThresholdInBytes;
+    }
+
+    public void setPayloadSizeThresholdInBytes(int payloadSizeThresholdInBytes) {
+        this.payloadSizeThresholdInBytes = payloadSizeThresholdInBytes;
     }
 }

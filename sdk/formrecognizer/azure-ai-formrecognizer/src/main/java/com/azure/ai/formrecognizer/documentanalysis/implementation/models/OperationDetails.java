@@ -4,7 +4,7 @@
 
 package com.azure.ai.formrecognizer.documentanalysis.implementation.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
@@ -26,7 +26,7 @@ import java.util.Map;
     @JsonSubTypes.Type(name = "documentModelCopyTo", value = DocumentModelCopyToOperationDetails.class),
     @JsonSubTypes.Type(name = "documentClassifierBuild", value = DocumentClassifierBuildOperationDetails.class)
 })
-@Fluent
+@Immutable
 public class OperationDetails {
     /*
      * Operation ID
@@ -92,7 +92,7 @@ public class OperationDetails {
      * @param resourceLocation the resourceLocation value to set.
      */
     @JsonCreator
-    public OperationDetails(
+    protected OperationDetails(
             @JsonProperty(value = "operationId", required = true) String operationId,
             @JsonProperty(value = "status", required = true) OperationStatus status,
             @JsonProperty(value = "createdDateTime", required = true) OffsetDateTime createdDateTime,
@@ -133,17 +133,6 @@ public class OperationDetails {
     }
 
     /**
-     * Set the percentCompleted property: Operation progress (0-100).
-     *
-     * @param percentCompleted the percentCompleted value to set.
-     * @return the OperationDetails object itself.
-     */
-    public OperationDetails setPercentCompleted(Integer percentCompleted) {
-        this.percentCompleted = percentCompleted;
-        return this;
-    }
-
-    /**
      * Get the createdDateTime property: Date and time (UTC) when the operation was created.
      *
      * @return the createdDateTime value.
@@ -180,17 +169,6 @@ public class OperationDetails {
     }
 
     /**
-     * Set the apiVersion property: API version used to create this operation.
-     *
-     * @param apiVersion the apiVersion value to set.
-     * @return the OperationDetails object itself.
-     */
-    public OperationDetails setApiVersion(String apiVersion) {
-        this.apiVersion = apiVersion;
-        return this;
-    }
-
-    /**
      * Get the tags property: List of key-value tag attributes associated with the document model.
      *
      * @return the tags value.
@@ -200,33 +178,11 @@ public class OperationDetails {
     }
 
     /**
-     * Set the tags property: List of key-value tag attributes associated with the document model.
-     *
-     * @param tags the tags value to set.
-     * @return the OperationDetails object itself.
-     */
-    public OperationDetails setTags(Map<String, String> tags) {
-        this.tags = tags;
-        return this;
-    }
-
-    /**
      * Get the error property: Encountered error.
      *
      * @return the error value.
      */
     public Error getError() {
         return this.error;
-    }
-
-    /**
-     * Set the error property: Encountered error.
-     *
-     * @param error the error value to set.
-     * @return the OperationDetails object itself.
-     */
-    public OperationDetails setError(Error error) {
-        this.error = error;
-        return this;
     }
 }

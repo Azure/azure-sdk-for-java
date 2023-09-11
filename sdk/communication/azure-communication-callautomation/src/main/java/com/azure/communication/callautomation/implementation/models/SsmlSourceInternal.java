@@ -16,6 +16,12 @@ public final class SsmlSourceInternal {
     @JsonProperty(value = "ssmlText", required = true)
     private String ssmlText;
 
+    /*
+     * Endpoint where the custom voice was deployed.
+     */
+    @JsonProperty(value = "customVoiceEndpointId")
+    private String customVoiceEndpointId;
+
     /**
      * Get the ssmlText property: Ssml string for the cognitive service to be played.
      *
@@ -33,6 +39,26 @@ public final class SsmlSourceInternal {
      */
     public SsmlSourceInternal setSsmlText(String ssmlText) {
         this.ssmlText = ssmlText;
+        return this;
+    }
+
+    /**
+     * Get the customVoiceEndpointId property: Endpoint where the custom voice was deployed.
+     *
+     * @return the customVoiceEndpointId value.
+     */
+    public String getCustomVoiceEndpointId() {
+        return this.customVoiceEndpointId;
+    }
+
+    /**
+     * Set the customVoiceEndpointId property: Endpoint where the custom voice was deployed.
+     *
+     * @param customVoiceEndpointId the customVoiceEndpointId value to set.
+     * @return the SsmlSourceInternal object itself.
+     */
+    public SsmlSourceInternal setCustomVoiceEndpointId(String customVoiceEndpointId) {
+        this.customVoiceEndpointId = customVoiceEndpointId;
         return this;
     }
 }

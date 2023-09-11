@@ -97,7 +97,9 @@ public class RecordNetworkCallPolicy implements HttpPipelinePolicy {
         // Remove sensitive information such as SAS token signatures from the recording.
         UrlBuilder urlBuilder = UrlBuilder.parse(context.getHttpRequest().getUrl());
         redactedAccountName(urlBuilder);
-        urlBuilder.getQuery().replace(SIG, "REDACTED");
+        if (urlBuilder.getQuery().containsKey("sig")) {
+            urlBuilder.setQueryParameter(SIG, "REDACTED");
+        }
         String uriString = urlBuilder.toString();
         networkCallRecord.setUri(uriString.endsWith("?") ? uriString.substring(0, uriString.length() - 2) : uriString);
 

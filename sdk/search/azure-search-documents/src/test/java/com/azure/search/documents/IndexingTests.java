@@ -27,9 +27,6 @@ import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.net.HttpURLConnection;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
@@ -43,10 +40,8 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.TimeZone;
 import java.util.function.BiConsumer;
 
-import static com.azure.search.documents.TestHelpers.ISO8601_FORMAT;
 import static com.azure.search.documents.TestHelpers.assertHttpResponseException;
 import static com.azure.search.documents.TestHelpers.assertMapEquals;
 import static com.azure.search.documents.TestHelpers.assertObjectEquals;
@@ -1480,17 +1475,5 @@ public class IndexingTests extends SearchTestBase {
         expectedDoc.put("Rooms", expectedRooms);
 
         return expectedDoc;
-    }
-
-    @SuppressWarnings({"UseOfObsoleteDateTimeApi"})
-    private static Date parseDate(String dateString) {
-        DateFormat dateFormat = new SimpleDateFormat(ISO8601_FORMAT);
-        dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
-
-        try {
-            return dateFormat.parse(dateString);
-        } catch (ParseException ex) {
-            throw new RuntimeException(ex);
-        }
     }
 }

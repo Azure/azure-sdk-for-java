@@ -15,6 +15,15 @@ public final class EncryptionType extends ExpandableStringEnum<EncryptionType> {
         fromString("EncryptionAtRestWithPlatformKey");
 
     /**
+     * Creates a new instance of EncryptionType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public EncryptionType() {
+    }
+
+    /**
      * Creates or finds a EncryptionType from its string representation.
      *
      * @param name a name to look for.

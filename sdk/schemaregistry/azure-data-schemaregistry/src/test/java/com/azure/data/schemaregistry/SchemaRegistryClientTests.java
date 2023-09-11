@@ -9,8 +9,8 @@ import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.policy.RetryPolicy;
-import com.azure.core.test.TestBase;
+import com.azure.core.test.TestProxyTestBase;
+import com.azure.core.test.annotation.RecordWithoutRequestBody;
 import com.azure.core.test.http.AssertingHttpClientBuilder;
 import com.azure.core.util.Context;
 import com.azure.data.schemaregistry.models.SchemaFormat;
@@ -39,7 +39,7 @@ import static org.mockito.Mockito.when;
 /**
  * Tests {@link SchemaRegistryClient}.
  */
-public class SchemaRegistryClientTests extends TestBase {
+public class SchemaRegistryClientTests extends TestProxyTestBase {
 
     private String schemaGroup;
     private SchemaRegistryClientBuilder builder;
@@ -59,6 +59,9 @@ public class SchemaRegistryClientTests extends TestBase {
                 });
             });
 
+            when(tokenCredential.getTokenSync(any(TokenRequestContext.class)))
+                .thenAnswer(invocationOnMock -> new AccessToken("foo", OffsetDateTime.now().plusMinutes(20)));
+
             endpoint = "https://foo.servicebus.windows.net";
         } else {
             tokenCredential = new DefaultAzureCredentialBuilder().build();
@@ -75,9 +78,8 @@ public class SchemaRegistryClientTests extends TestBase {
 
         if (interceptorManager.isPlaybackMode()) {
             builder.httpClient(buildSyncAssertingClient(interceptorManager.getPlaybackClient()));
-        } else {
-            builder.addPolicy(new RetryPolicy())
-                .addPolicy(interceptorManager.getRecordPolicy());
+        } else if (interceptorManager.isRecordMode()) {
+            builder.addPolicy(interceptorManager.getRecordPolicy());
         }
     }
 
@@ -205,7 +207,8 @@ public class SchemaRegistryClientTests extends TestBase {
      * Verifies that a 4xx is returned if we use an invalid schema format.
      */
 
-    @Test()
+    @Test
+    @RecordWithoutRequestBody
     public void registerSchemaInvalidFormat() {
         // Arrange
         final String schemaName = testResourceNamer.randomName("sch", RESOURCE_LENGTH);
@@ -217,7 +220,7 @@ public class SchemaRegistryClientTests extends TestBase {
             client.registerSchemaWithResponse(schemaGroup, schemaName, SCHEMA_CONTENT, unknownSchemaFormat, Context.NONE);
 
         } catch (HttpResponseException e) {
-            assertEquals(403, e.getResponse().getStatusCode());
+            assertEquals(415, e.getResponse().getStatusCode());
         }
     }
 

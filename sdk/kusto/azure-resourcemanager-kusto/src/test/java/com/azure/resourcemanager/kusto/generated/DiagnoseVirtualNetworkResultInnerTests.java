@@ -14,16 +14,16 @@ public final class DiagnoseVirtualNetworkResultInnerTests {
     public void testDeserialize() throws Exception {
         DiagnoseVirtualNetworkResultInner model =
             BinaryData
-                .fromString("{\"findings\":[\"kuofqweykhme\"]}")
+                .fromString("{\"findings\":[\"zj\",\"yggdtjixh\"]}")
                 .toObject(DiagnoseVirtualNetworkResultInner.class);
-        Assertions.assertEquals("kuofqweykhme", model.findings().get(0));
+        Assertions.assertEquals("zj", model.findings().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DiagnoseVirtualNetworkResultInner model =
-            new DiagnoseVirtualNetworkResultInner().withFindings(Arrays.asList("kuofqweykhme"));
+            new DiagnoseVirtualNetworkResultInner().withFindings(Arrays.asList("zj", "yggdtjixh"));
         model = BinaryData.fromObject(model).toObject(DiagnoseVirtualNetworkResultInner.class);
-        Assertions.assertEquals("kuofqweykhme", model.findings().get(0));
+        Assertions.assertEquals("zj", model.findings().get(0));
     }
 }

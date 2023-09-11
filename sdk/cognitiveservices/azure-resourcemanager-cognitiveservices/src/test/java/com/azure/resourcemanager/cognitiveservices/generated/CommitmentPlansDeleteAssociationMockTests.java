@@ -56,6 +56,8 @@ public final class CommitmentPlansDeleteAssociationMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.commitmentPlans().deleteAssociation("cu", "chxgs", "boldforobwj", com.azure.core.util.Context.NONE);
+        manager
+            .commitmentPlans()
+            .deleteAssociation("axmqeqal", "hjnhgwydyynfsvk", "gbv", com.azure.core.util.Context.NONE);
     }
 }

@@ -22,6 +22,10 @@ public final class SshPublicKey {
     @JsonProperty(value = "key")
     private String key;
 
+    /** Creates an instance of SshPublicKey class. */
+    public SshPublicKey() {
+    }
+
     /**
      * Get the description property: Optional. It is used to store the function/usage of the key.
      *

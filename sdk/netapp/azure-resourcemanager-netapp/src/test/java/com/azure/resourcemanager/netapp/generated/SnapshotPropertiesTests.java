@@ -13,7 +13,7 @@ public final class SnapshotPropertiesTests {
         SnapshotProperties model =
             BinaryData
                 .fromString(
-                    "{\"snapshotId\":\"sjyofdx\",\"created\":\"2021-11-05T14:56:24Z\",\"provisioningState\":\"dttouwaboekqvkel\"}")
+                    "{\"snapshotId\":\"gx\",\"created\":\"2021-06-12T13:49:47Z\",\"provisioningState\":\"lpmutwuoegrpkhj\"}")
                 .toObject(SnapshotProperties.class);
     }
 

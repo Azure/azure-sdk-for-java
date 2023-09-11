@@ -98,11 +98,13 @@ public interface WorkloadNetworkDnsZone {
     interface Definition
         extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
+
     /** The WorkloadNetworkDnsZone definition stages. */
     interface DefinitionStages {
         /** The first stage of the WorkloadNetworkDnsZone definition. */
         interface Blank extends WithParentResource {
         }
+
         /** The stage of the WorkloadNetworkDnsZone definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
@@ -114,6 +116,7 @@ public interface WorkloadNetworkDnsZone {
              */
             WithCreate withExistingPrivateCloud(String resourceGroupName, String privateCloudName);
         }
+
         /**
          * The stage of the WorkloadNetworkDnsZone definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
@@ -140,6 +143,7 @@ public interface WorkloadNetworkDnsZone {
              */
             WorkloadNetworkDnsZone create(Context context);
         }
+
         /** The stage of the WorkloadNetworkDnsZone definition allowing to specify displayName. */
         interface WithDisplayName {
             /**
@@ -150,6 +154,7 @@ public interface WorkloadNetworkDnsZone {
              */
             WithCreate withDisplayName(String displayName);
         }
+
         /** The stage of the WorkloadNetworkDnsZone definition allowing to specify domain. */
         interface WithDomain {
             /**
@@ -160,6 +165,7 @@ public interface WorkloadNetworkDnsZone {
              */
             WithCreate withDomain(List<String> domain);
         }
+
         /** The stage of the WorkloadNetworkDnsZone definition allowing to specify dnsServerIps. */
         interface WithDnsServerIps {
             /**
@@ -170,6 +176,7 @@ public interface WorkloadNetworkDnsZone {
              */
             WithCreate withDnsServerIps(List<String> dnsServerIps);
         }
+
         /** The stage of the WorkloadNetworkDnsZone definition allowing to specify sourceIp. */
         interface WithSourceIp {
             /**
@@ -180,6 +187,7 @@ public interface WorkloadNetworkDnsZone {
              */
             WithCreate withSourceIp(String sourceIp);
         }
+
         /** The stage of the WorkloadNetworkDnsZone definition allowing to specify dnsServices. */
         interface WithDnsServices {
             /**
@@ -190,6 +198,7 @@ public interface WorkloadNetworkDnsZone {
              */
             WithCreate withDnsServices(Long dnsServices);
         }
+
         /** The stage of the WorkloadNetworkDnsZone definition allowing to specify revision. */
         interface WithRevision {
             /**
@@ -201,6 +210,7 @@ public interface WorkloadNetworkDnsZone {
             WithCreate withRevision(Long revision);
         }
     }
+
     /**
      * Begins update for the WorkloadNetworkDnsZone resource.
      *
@@ -231,6 +241,7 @@ public interface WorkloadNetworkDnsZone {
          */
         WorkloadNetworkDnsZone apply(Context context);
     }
+
     /** The WorkloadNetworkDnsZone update stages. */
     interface UpdateStages {
         /** The stage of the WorkloadNetworkDnsZone update allowing to specify displayName. */
@@ -243,6 +254,7 @@ public interface WorkloadNetworkDnsZone {
              */
             Update withDisplayName(String displayName);
         }
+
         /** The stage of the WorkloadNetworkDnsZone update allowing to specify domain. */
         interface WithDomain {
             /**
@@ -253,6 +265,7 @@ public interface WorkloadNetworkDnsZone {
              */
             Update withDomain(List<String> domain);
         }
+
         /** The stage of the WorkloadNetworkDnsZone update allowing to specify dnsServerIps. */
         interface WithDnsServerIps {
             /**
@@ -263,6 +276,7 @@ public interface WorkloadNetworkDnsZone {
              */
             Update withDnsServerIps(List<String> dnsServerIps);
         }
+
         /** The stage of the WorkloadNetworkDnsZone update allowing to specify sourceIp. */
         interface WithSourceIp {
             /**
@@ -273,6 +287,7 @@ public interface WorkloadNetworkDnsZone {
              */
             Update withSourceIp(String sourceIp);
         }
+
         /** The stage of the WorkloadNetworkDnsZone update allowing to specify dnsServices. */
         interface WithDnsServices {
             /**
@@ -283,6 +298,7 @@ public interface WorkloadNetworkDnsZone {
              */
             Update withDnsServices(Long dnsServices);
         }
+
         /** The stage of the WorkloadNetworkDnsZone update allowing to specify revision. */
         interface WithRevision {
             /**
@@ -294,6 +310,7 @@ public interface WorkloadNetworkDnsZone {
             Update withRevision(Long revision);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

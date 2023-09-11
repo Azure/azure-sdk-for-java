@@ -14,6 +14,15 @@ public final class Name extends ExpandableStringEnum<Name> {
     public static final Name ACCESS_TIME_TRACKING = fromString("AccessTimeTracking");
 
     /**
+     * Creates a new instance of Name value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public Name() {
+    }
+
+    /**
      * Creates or finds a Name from its string representation.
      *
      * @param name a name to look for.

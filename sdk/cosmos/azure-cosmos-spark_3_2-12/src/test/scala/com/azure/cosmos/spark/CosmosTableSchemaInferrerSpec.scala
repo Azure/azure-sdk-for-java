@@ -168,8 +168,8 @@ class CosmosTableSchemaInferrerSpec extends UnitSpec {
     val schema = CosmosTableSchemaInferrer.inferSchema(
       docs, includeSystemProperties = true, includeTimestamp = true, allowNullForInferredProperties = false)
     schema.fields should have size 1
-    schema.fields(0).dataType shouldBe NullType
-    schema.fields(0).nullable shouldBe true
+    schema.fields(0).dataType shouldBe ArrayType(NullType)
+    schema.fields(0).nullable shouldBe false
   }
 
   "nested array properties" should "handle different schema elements" in {
