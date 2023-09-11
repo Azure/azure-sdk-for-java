@@ -2,10 +2,10 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.feature.management.filters;
 
-import com.azure.spring.cloud.feature.management.filters.crontab.CrontabExpression;
 import com.azure.spring.cloud.feature.management.models.FeatureFilterEvaluationContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.scheduling.support.CronExpression;
 import org.springframework.util.StringUtils;
 
 import java.time.ZoneOffset;
@@ -56,22 +56,23 @@ public final class TimeWindowFilter implements FeatureFilter {
         if (zoneOffset != null) {
             now = now.withZoneSameInstant(zoneOffset);
         }
-        for (final CrontabExpression expression : filterParameters.filterCronTabExpressions) {
-            if (expression.isMatch(now)) {
+        for (final CronExpression expression : filterParameters.filterCronTabExpressions) {
+            final ZonedDateTime nextTriggerTime = expression.next(now);
+            if (nextTriggerTime.isBefore(now.plusSeconds(1L))) {
                 return true;
             }
         }
         return false;
     }
 
-    private final static class TimeWindowFilterParameters {
+    private static final class TimeWindowFilterParameters {
         private final String name;
         private final String start;
         private final String end;
         private final List<String> filters = new ArrayList<>();
         private ZonedDateTime startTime;
         private ZonedDateTime endTime;
-        private final List<CrontabExpression> filterCronTabExpressions = new ArrayList<>();
+        private final List<CronExpression> filterCronTabExpressions = new ArrayList<>();
 
         private TimeWindowFilterParameters(FeatureFilterEvaluationContext context) {
             this.name = context.getName();
@@ -110,7 +111,7 @@ public final class TimeWindowFilter implements FeatureFilter {
                     : null;
             }
             // Check if crontab is valid
-            filters.forEach(filter -> filterCronTabExpressions.add(new CrontabExpression(filter)));
+            filters.forEach(filter -> filterCronTabExpressions.add(CronExpression.parse("* " + filter)));
             return true;
         }
     }

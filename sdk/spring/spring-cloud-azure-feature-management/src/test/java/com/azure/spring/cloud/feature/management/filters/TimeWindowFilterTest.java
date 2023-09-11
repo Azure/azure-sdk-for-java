@@ -97,10 +97,11 @@ public class TimeWindowFilterTest {
         FeatureFilterEvaluationContext context = new FeatureFilterEvaluationContext();
         Map<String, Object> parameters = new LinkedHashMap<>();
         List<String> filters = new ArrayList<>();
-        filters.add("* * * * 4");   // Enabled on Monday every week
+        filters.add("* * * * 4");   // Enabled on Thursday every week
         parameters.put(TIME_WINDOW_FILTER_SETTING_FILTERS, filters);
         context.setParameters(parameters);
-        assertEquals(filter.evaluate(context), ZonedDateTime.now().getDayOfWeek().getValue() == 4);
+        ZonedDateTime now = ZonedDateTime.now();
+        assertEquals(filter.evaluate(context), now.getDayOfWeek().getValue() == 4);
     }
 
     @Test
@@ -109,10 +110,11 @@ public class TimeWindowFilterTest {
         FeatureFilterEvaluationContext context = new FeatureFilterEvaluationContext();
         Map<String, Object> parameters = new LinkedHashMap<>();
         List<String> filters = new ArrayList<>();
-        filters.add("* * * 3-4 *");   // Enabled on Monday every week
+        filters.add("* * * 3-4 *");   // Enabled on March April every year
         parameters.put(TIME_WINDOW_FILTER_SETTING_FILTERS, filters);
         context.setParameters(parameters);
-        assertEquals(filter.evaluate(context), ZonedDateTime.now().getMonthValue() == 3 || ZonedDateTime.now().getMonthValue() == 4);
+        ZonedDateTime now = ZonedDateTime.now();
+        assertEquals(filter.evaluate(context), now.getMonthValue() == 3 || now.getMonthValue() == 4);
     }
 
     @Test
@@ -121,10 +123,37 @@ public class TimeWindowFilterTest {
         FeatureFilterEvaluationContext context = new FeatureFilterEvaluationContext();
         Map<String, Object> parameters = new LinkedHashMap<>();
         List<String> filters = new ArrayList<>();
-        filters.add("* * 15 1 *");   // Enabled on Monday every week
+        filters.add("* * 15 1 *");   // Enabled on 15th Jan every year
         parameters.put(TIME_WINDOW_FILTER_SETTING_FILTERS, filters);
         context.setParameters(parameters);
-        assertEquals(filter.evaluate(context), ZonedDateTime.now().getDayOfMonth() == 15 && ZonedDateTime.now().getMonthValue() == 1);
+        ZonedDateTime now = ZonedDateTime.now();
+        assertEquals(filter.evaluate(context), now.getDayOfMonth() == 15 && now.getMonthValue() == 1);
+    }
+
+    @Test
+    public void hourFiltersTest() {
+        TimeWindowFilter filter = new TimeWindowFilter();
+        FeatureFilterEvaluationContext context = new FeatureFilterEvaluationContext();
+        Map<String, Object> parameters = new LinkedHashMap<>();
+        List<String> filters = new ArrayList<>();
+        filters.add("* 18-19 * * *");   // Enabled on 18:00-20:00 every day
+        parameters.put(TIME_WINDOW_FILTER_SETTING_FILTERS, filters);
+        context.setParameters(parameters);
+        ZonedDateTime now = ZonedDateTime.now();
+        assertEquals(filter.evaluate(context), now.getHour() == 18 || now.getHour() == 19);
+    }
+
+    @Test
+    public void minuteFiltersTest() {
+        TimeWindowFilter filter = new TimeWindowFilter();
+        FeatureFilterEvaluationContext context = new FeatureFilterEvaluationContext();
+        Map<String, Object> parameters = new LinkedHashMap<>();
+        List<String> filters = new ArrayList<>();
+        filters.add("55-59 * * * *");   // Enabled on every last five minutes
+        parameters.put(TIME_WINDOW_FILTER_SETTING_FILTERS, filters);
+        context.setParameters(parameters);
+        ZonedDateTime now = ZonedDateTime.now();
+        assertEquals(filter.evaluate(context), now.getSecond() >= 55);
     }
 
 
