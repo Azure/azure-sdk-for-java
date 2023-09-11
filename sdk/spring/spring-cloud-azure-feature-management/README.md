@@ -214,7 +214,7 @@ In UNIX, the usage of Crontab expression is to represent the time to execute a c
 
 However, when the time granularity is at minute-level, we can consider it as a continuous time intervals. For example, the Crontab expression “* 16 * * *” means “at every minute past the 16th hour of the day”. We can intuitively consider it as the time span 16:00-17:00. As a result, the recurring time window can be represented by a Crontab expression.
 
-The UNIX Crontab format can be refered to [man-pages](https://man7.org/linux/man-pages/man5/crontab.5.html). Notice that randomization(e.g., 0~59) is not supported.
+The UNIX Crontab format can be referred to [man-pages](https://man7.org/linux/man-pages/man5/crontab.5.html). Notice that randomization(e.g., 0~59) is not supported.
 
 The crontab format has five time fields separated by at least one blank:
 
