@@ -72,7 +72,7 @@ public final class TimeWindowFilter implements FeatureFilter {
         private ZonedDateTime endTime;
         private final List<CrontabExpression> filterCronTabExpressions = new ArrayList<>();
 
-        public TimeWindowFilterParameters(FeatureFilterEvaluationContext context) {
+        private TimeWindowFilterParameters(FeatureFilterEvaluationContext context) {
             this.name = context.getName();
             this.start = (String) context.getParameters().get(TIME_WINDOW_FILTER_SETTING_START);
             this.end = (String) context.getParameters().get(TIME_WINDOW_FILTER_SETTING_END);
@@ -84,7 +84,7 @@ public final class TimeWindowFilter implements FeatureFilter {
             }
         }
 
-        public boolean isValid() {
+        private boolean isValid() {
             // Must specify at least one parameter
             if (!StringUtils.hasText(start) && !StringUtils.hasText(end) && filters.size() == 0) {
                 LOGGER.warn("The {} feature filter is not valid for feature {}. It must specify at least one of {}, {}, {}.",
