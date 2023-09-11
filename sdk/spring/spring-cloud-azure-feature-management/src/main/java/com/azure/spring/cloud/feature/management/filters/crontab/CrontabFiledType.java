@@ -2,6 +2,10 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.feature.management.filters.crontab;
 
+/**
+ * Enum of crontab field type.
+ * Supported type: Minute, Hour, Day of month, Month, Day of week
+ * */
 public enum CrontabFiledType {
     MINUTE("minute"),
     HOUR("hour"),

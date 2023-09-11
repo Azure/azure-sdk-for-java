@@ -42,8 +42,8 @@ public final class TimeWindowFilter implements FeatureFilter {
 
         ZonedDateTime now = ZonedDateTime.now();
         // check if match start time(end time) when specify start time(end time)
-        if (filterParameters.startTime != null && now.isBefore(filterParameters.startTime) ||
-            (filterParameters.endTime != null && now.isAfter(filterParameters.endTime))) {
+        if (filterParameters.startTime != null && now.isBefore(filterParameters.startTime)
+            || (filterParameters.endTime != null && now.isAfter(filterParameters.endTime))) {
             return false;
         }
         if (filterParameters.filterCronTabExpressions.size() == 0) {
@@ -51,8 +51,8 @@ public final class TimeWindowFilter implements FeatureFilter {
         }
 
         // Need to set Zone Offset when compare with crontab expression
-        final ZoneOffset zoneOffset = filterParameters.startTime != null ? filterParameters.startTime.getOffset() :
-            (filterParameters.endTime != null ? filterParameters.endTime.getOffset() : null);
+        final ZoneOffset zoneOffset = filterParameters.startTime != null ? filterParameters.startTime.getOffset()
+            : (filterParameters.endTime != null ? filterParameters.endTime.getOffset() : null);
         if (zoneOffset != null) {
             now = now.withZoneSameInstant(zoneOffset);
         }
@@ -64,7 +64,7 @@ public final class TimeWindowFilter implements FeatureFilter {
         return false;
     }
 
-    private static class TimeWindowFilterParameters {
+    private final static class TimeWindowFilterParameters {
         private final String name;
         private final String start;
         private final String end;

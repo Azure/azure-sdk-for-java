@@ -4,12 +4,19 @@ package com.azure.spring.cloud.feature.management.filters.crontab;
 
 import io.netty.util.internal.StringUtil;
 
+/**
+ * The crontab field.
+ * */
 public class CrontabField {
     private final CrontabFiledType filedType;
     private final int minValue;
     private final int maxValue;
     private long bits;
 
+    /**
+     * Create a crontab field with specified type. There are five type supported: Minute, Hour, Day of month, Month, Day of week
+     * @param filedType The enum that describe crontab field type.
+     */
     public CrontabField(CrontabFiledType filedType) {
         this.filedType = filedType;
         switch (filedType) {
@@ -61,6 +68,7 @@ public class CrontabField {
      * Checks whether the given content can be parsed by the Crontab field.
      *
      * @param content The content to parse.
+     * @throws IllegalArgumentException
      */
     public void tryParse(String content) {
         this.bits = 0;
