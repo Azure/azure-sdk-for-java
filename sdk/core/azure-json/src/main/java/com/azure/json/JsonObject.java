@@ -24,12 +24,12 @@ public class JsonObject extends JsonElement {
     public JsonObject() {}
 
     /**
-     * Constructor used to construct JsonObject from a JsonReader. 
-     * 
-     * If the developer knows they want to build an object from JSON, then they 
-     * can bypass the JsonBuilder and just use this constructor directly. 
-     * 
-     * @param reader The opened JsonReader to construct the JsonObject object from. 
+     * Constructor used to construct JsonObject from a JsonReader.
+     *
+     * If the developer knows they want to build an object from JSON, then they
+     * can bypass the JsonBuilder and just use this constructor directly.
+     *
+     * @param reader The opened JsonReader to construct the JsonObject object from.
      */
     public JsonObject(JsonReader reader) {
         try {
@@ -41,19 +41,24 @@ public class JsonObject extends JsonElement {
     }
 
     /**
-     * Adds a new property into the JsonObject object using an object or 
+     * Adds a new property into the JsonObject object using an object or
      * primitive directly as the value.
-     * 
-     * If a primitive is passed it will be wrapped as an object. 
-     * 
-     * This method converts the element object into the appropriate JsonElement 
+     *
+     * If a primitive is passed it will be wrapped as an object.
+     *
+     * This method converts the element object into the appropriate JsonElement
      * type before using it as the new property's value.
      *
      * @param key specifies the key of the property being added
-     * @param element specifies the value of the property being added. 
+     * @param element specifies the value of the property being added.
      * @return JsonObject representing the new state of the JsonObject object
      * after the addition of the new property.
      */
+    /*
+    addProperty temporarily removed to better guarantee runtime behaviour.
+
+
+
     public JsonObject addProperty(String key, Object element) throws IllegalArgumentException {
         // Stores element cast or converted to a valid JsonElement type if such
         // cast or conversion exists for it.
@@ -185,16 +190,17 @@ public class JsonObject extends JsonElement {
         // addition of the new property
         return this;
     }
+     */
 
     /**
-     * Adds a new property into the JsonObject object using JsonElement as the 
-     * property value. 
-     * 
+     * Adds a new property into the JsonObject object using JsonElement as the
+     * property value.
+     *
      * The primary user is the build method of JsonObject and JsonArray.
-     * 
+     *
      * @param key
-     * @param element 
-     * @return The new state of the JsonObject after the successful addition of 
+     * @param element
+     * @return The new state of the JsonObject after the successful addition of
      * the new property
      * @throws IllegalArgumentException
      */
@@ -206,13 +212,13 @@ public class JsonObject extends JsonElement {
     }
 
     /**
-     * Returns a property value for the corresponding specified property key 
-     * from the JsonObject. 
-     * 
-     * @param key Specifies the property key that identifies the property in the 
-     * JsonObject. 
-     * @return JsonElement representing the value of the property specified by 
-     * the key. 
+     * Returns a property value for the corresponding specified property key
+     * from the JsonObject.
+     *
+     * @param key Specifies the property key that identifies the property in the
+     * JsonObject.
+     * @return JsonElement representing the value of the property specified by
+     * the key.
      *
      * TODO: this method currently does what the new getValueBykey method does.
      * This getProperty method should do what it suggests, which is get a property.
@@ -326,13 +332,13 @@ public class JsonObject extends JsonElement {
     public String toString() { return this.toJson(); }
 
     /**
-     * Builds the JsonObject from an opened JsonReader. 
-     * 
-     * JsonReader is passed to the nested JsonElements to recursively build. 
-     * 
-     * @param reader the JsonReader to build the JsonObject from. 
-     * @throws IOException Thrown when build is aborted due to encountering an 
-     * invalid JsonToken indicating a improperly formed JsonObject. 
+     * Builds the JsonObject from an opened JsonReader.
+     *
+     * JsonReader is passed to the nested JsonElements to recursively build.
+     *
+     * @param reader the JsonReader to build the JsonObject from.
+     * @throws IOException Thrown when build is aborted due to encountering an
+     * invalid JsonToken indicating a improperly formed JsonObject.
      */
     private void build(JsonReader reader) throws IOException {
         String fieldName = null;
@@ -361,25 +367,25 @@ public class JsonObject extends JsonElement {
                 case NULL:
                     this.addProperty(fieldName, new JsonNull());
                     break;
-                // END_DOCUMENT and END_OBJECT cases are picked up by the overall 
-                // while statement. These cases should not be reached, assuming 
-                // the JSON object being deserialised is properly formed, so 
-                // exception is thrown. 
+                // END_DOCUMENT and END_OBJECT cases are picked up by the overall
+                // while statement. These cases should not be reached, assuming
+                // the JSON object being deserialised is properly formed, so
+                // exception is thrown.
                 case END_DOCUMENT:
-                    throw new IOException("Invalid JsonToken.END_DOCUMENT token read prematurely from deserialised JSON object. Deserialisation aborted."); 
+                    throw new IOException("Invalid JsonToken.END_DOCUMENT token read prematurely from deserialised JSON object. Deserialisation aborted.");
                 case END_OBJECT:
-                    throw new IOException("Invalid JsonToken.END_OBJECT token read prematurely from deserialised JSON object. Deserialisation aborted."); 
-                // Case: the currently read token is a JsonToken.END_ARRAY token. 
-                // JSON object is being deserialised, not a JSON array. 
+                    throw new IOException("Invalid JsonToken.END_OBJECT token read prematurely from deserialised JSON object. Deserialisation aborted.");
+                // Case: the currently read token is a JsonToken.END_ARRAY token.
+                // JSON object is being deserialised, not a JSON array.
                 case END_ARRAY:
-                    throw new IOException("Invalid JsonToken.END_ARRAY token read from deserialised JSON object. JSON object is being deserialised not a JSON array. This is not a valid JSON object. Deserialisation aborted."); 
+                    throw new IOException("Invalid JsonToken.END_ARRAY token read from deserialised JSON object. JSON object is being deserialised not a JSON array. This is not a valid JSON object. Deserialisation aborted.");
             }
             token = reader.nextToken();
         }
     }
 
     /**
-     * Serializes the JsonObject to a String. This is a convenience method that 
+     * Serializes the JsonObject to a String. This is a convenience method that
      * utilises the toWriter method.
      * @return the String representation of the JsonObject
      */
@@ -398,9 +404,9 @@ public class JsonObject extends JsonElement {
 
     /**
      * Serializes the JsonObject to a Writer. May need to be named better
-     * than toWriter or toStream, but I'm unsure exactly what to use (as 
+     * than toWriter or toStream, but I'm unsure exactly what to use (as
      * toJsonWriter is confusing as JsonWriter is a class in itself.
-     * @param writer is the Writer to write to - this is in turn wrapped in a 
+     * @param writer is the Writer to write to - this is in turn wrapped in a
      * JsonWriter to abstract the underlying writer or stream
      * @return the Writer that was passed in
      * @exception IOException if the underlying writer or stream throws an exception
@@ -413,10 +419,10 @@ public class JsonObject extends JsonElement {
     }
 
     /**
-     * Serializes the JsonObject to an OutputStream. May need to be named better 
+     * Serializes the JsonObject to an OutputStream. May need to be named better
      * as per above
      *
-     * @param stream is the OutputStream to write to - this is in turn wrapped 
+     * @param stream is the OutputStream to write to - this is in turn wrapped
      * in a JsonWriter to abstract the underlying stream
      * @return the OutputStream that was passed in
      * @throws IOException if the underlying writer or stream throws an exception
@@ -429,10 +435,10 @@ public class JsonObject extends JsonElement {
     }
 
     /**
-     * Serializes the JsonObject to a JsonWriter (which could in turn contain a 
+     * Serializes the JsonObject to a JsonWriter (which could in turn contain a
      * stream or writer). All serialisation methods eventually utilise this method.
-     * 
-     * @param writer is the JsonWriter to write to - this is generally going to 
+     *
+     * @param writer is the JsonWriter to write to - this is generally going to
      * be provided by the wrapper toStream or toWriter methods
      * @return the JsonWriter that was passed in
      * @throws IOException if the underlying writer or stream throws an exception
