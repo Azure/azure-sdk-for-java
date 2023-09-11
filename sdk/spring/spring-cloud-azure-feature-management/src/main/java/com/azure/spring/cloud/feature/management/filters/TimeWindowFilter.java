@@ -46,21 +46,22 @@ public final class TimeWindowFilter implements FeatureFilter {
             (filterParameters.endTime != null && now.isAfter(filterParameters.endTime))) {
             return false;
         }
+        if (filterParameters.filterCronTabExpressions.size() == 0) {
+            return true;
+        }
 
         // Need to set Zone Offset when compare with crontab expression
-        boolean enabled = filterParameters.filterCronTabExpressions.size() == 0;
         final ZoneOffset zoneOffset = filterParameters.startTime != null ? filterParameters.startTime.getOffset() :
             (filterParameters.endTime != null ? filterParameters.endTime.getOffset() : null);
         if (zoneOffset != null) {
             now = now.withZoneSameInstant(zoneOffset);
         }
-        // check if match crontab expression
         for (final CrontabExpression expression : filterParameters.filterCronTabExpressions) {
             if (expression.isMatch(now)) {
                 return true;
             }
         }
-        return enabled;
+        return false;
     }
 
     private static class TimeWindowFilterParameters {
