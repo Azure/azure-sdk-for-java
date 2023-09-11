@@ -83,7 +83,11 @@ import reactor.core.publisher.Hooks;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
-import java.io.*;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.ByteBuffer;
@@ -342,25 +346,6 @@ public class BlobApiTests extends BlobTestBase {
         });
 
     }
-
-    private void liveTestScenarioWithRetry(Runnable runnable) {
-        if (!interceptorManager.isLiveMode()) {
-            runnable.run();
-            return;
-        }
-
-        int retry = 0;
-        while (retry < 5) {
-            try {
-                runnable.run();
-                break;
-            } catch (Exception ex) {
-                retry++;
-                sleepIfRunningAgainstService(5000);
-            }
-        }
-    }
-
 
     @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20211202ServiceVersion")
     @Test
@@ -2696,7 +2681,7 @@ public class BlobApiTests extends BlobTestBase {
     @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
     @Test
     public void setTierRehydratePriority() {
-        List<RehydratePriority> rehydratePriorities = List.of(RehydratePriority.STANDARD, RehydratePriority.HIGH);
+        List<RehydratePriority> rehydratePriorities = Arrays.asList(RehydratePriority.STANDARD, RehydratePriority.HIGH);
         for (RehydratePriority rehydratePriority : rehydratePriorities) {
             if (rehydratePriority != null) {
                 bc.setAccessTier(AccessTier.ARCHIVE);

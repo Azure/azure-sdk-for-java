@@ -3,9 +3,7 @@
 
 package com.azure.storage.blob.specialized;
 
-import com.azure.core.test.TestMode;
 import com.azure.storage.blob.BlobClient;
-import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.BlobTestBase;
 import com.azure.storage.blob.models.BlobQueryArrowField;
 import com.azure.storage.blob.models.BlobQueryArrowFieldType;
@@ -35,11 +33,13 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.time.OffsetDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import java.util.function.Consumer;
-import java.util.logging.Logger;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
@@ -51,11 +51,10 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class BlobBaseApiTests extends BlobTestBase {
     private BlobClient bc;
-    private String blobName;
 
     @BeforeEach
     public void setup() {
-        blobName = generateBlobName();
+        String blobName = generateBlobName();
         bc = cc.getBlobClient(blobName);
         bc.upload(new ByteArrayInputStream(new byte[0]), 0);
     }
@@ -162,24 +161,6 @@ public class BlobBaseApiTests extends BlobTestBase {
             byte[] osData = os.toByteArray();
             assertArrayEquals(downloadedData, osData);
         });
-    }
-
-    private void liveTestScenarioWithRetry(Runnable runnable) {
-        if (!interceptorManager.isLiveMode()) {
-            runnable.run();
-            return;
-        }
-
-        int retry = 0;
-        while (retry < 5) {
-            try {
-                runnable.run();
-                break;
-            } catch (Exception ex) {
-                retry++;
-                sleepIfRunningAgainstService(5000);
-            }
-        }
     }
 
     @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")

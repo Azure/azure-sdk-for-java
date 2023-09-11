@@ -17,7 +17,7 @@ import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion
 import spock.lang.Retry
 
 @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2020_10_02")
-class OAuthCopySourceTests extends APISpec {
+class OAuthCopySourceTest extends APISpec {
     BlobClient defaultDataSourceBlobClient
     BlobClient pageBlobDataSourceBlobClient
 

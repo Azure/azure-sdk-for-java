@@ -4,6 +4,8 @@
 package com.azure.storage.blob;
 
 import com.azure.core.client.traits.HttpTrait;
+import com.azure.core.credential.AccessToken;
+import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
@@ -113,6 +115,8 @@ public class BlobTestBase extends TestProxyTestBase {
     protected static final HttpHeaderName X_MS_CONTENT_CRC64 = HttpHeaderName.fromString("x-ms-content-crc64");
     protected static final HttpHeaderName X_MS_REQUEST_SERVER_ENCRYPTED =
         HttpHeaderName.fromString("x-ms-request-server-encrypted");
+    protected static final HttpHeaderName X_MS_ENCRYPTION_KEY_SHA256 =
+        HttpHeaderName.fromString("x-ms-encryption-key-sha256");
     protected static final HttpHeaderName X_MS_BLOB_CONTENT_LENGTH =
         HttpHeaderName.fromString("x-ms-blob-content-length");
 
@@ -271,6 +275,16 @@ public class BlobTestBase extends TestProxyTestBase {
         } else {
             return interceptorManager.getPlaybackClient();
         }
+    }
+
+    protected static String getAuthToken() {
+        if (ENVIRONMENT.getTestMode() == TestMode.PLAYBACK) {
+            // we just need some string to satisfy SDK for playback mode. Recording framework handles this fine.
+            return "recordingBearerToken";
+        }
+        return new EnvironmentCredentialBuilder().build().getToken(new TokenRequestContext()
+                .setScopes(Collections.singletonList("https://storage.azure.com/.default")))
+            .map(AccessToken::getToken).block();
     }
 
     protected String generateContainerName() {
@@ -791,6 +805,17 @@ public class BlobTestBase extends TestProxyTestBase {
     }
 
     /**
+     * Insecurely and quickly generates a random AES256 key for the purpose of unit tests. No one should ever make a
+     * real key this way.
+     */
+    protected static byte[] getRandomKey() {
+        long seed = new Random().nextLong();
+        byte[] key = new byte[32]; // 256-bit key
+        new Random(seed).nextBytes(key);
+        return key;
+    }
+
+    /**
      * Injects one retry-able IOException failure per url.
      */
     public static class TransientFailureInjectingHttpPipelinePolicy implements HttpPipelinePolicy {
@@ -815,6 +840,24 @@ public class BlobTestBase extends TestProxyTestBase {
                 })// Reduce in order to force processing of all buffers.
                 .reduce(0L, (a, byteBuffer) -> a + byteBuffer.remaining())
                     .flatMap(aLong -> Mono.error(new IOException("KABOOM!")));
+            }
+        }
+    }
+
+    protected void liveTestScenarioWithRetry(Runnable runnable) {
+        if (!interceptorManager.isLiveMode()) {
+            runnable.run();
+            return;
+        }
+
+        int retry = 0;
+        while (retry < 5) {
+            try {
+                runnable.run();
+                break;
+            } catch (Exception ex) {
+                retry++;
+                sleepIfRunningAgainstService(5000);
             }
         }
     }

@@ -339,50 +339,36 @@ public class CPKNTests extends BlobTestBase {
             .buildPageBlobClient());
     }
 
-    /**
-     * Insecurely and quickly generates a random AES256 key for the purpose of unit tests. No one should ever make a
-     * real key this way.
-     */
-    private byte[] getRandomKey() {
-        long seed = new Random().nextLong();
-        byte[] key = new byte[32]; // 256-bit key
-        new Random(seed).nextBytes(key);
-        return key;
-    }
-
     @Test
     public void getEncryptionScopeClient() {
         String newEncryptionScope = "newtestscope";
 
         // when: "AppendBlob"
         AppendBlobClient newCpknAppendBlob = cpknAppendBlob.getEncryptionScopeClient(newEncryptionScope);
-
         assertInstanceOf(AppendBlobClient.class, newCpknAppendBlob);
+        assertNotEquals(cpknAppendBlob.getEncryptionScope(), newCpknAppendBlob.getEncryptionScope());
 
         // when: "BlockBlob"
         BlockBlobClient newCpknBlockBlob = cpknBlockBlob.getEncryptionScopeClient(newEncryptionScope);
-        assertInstanceOf(BlockBlobClient.class, newCpknAppendBlob);
+        assertInstanceOf(BlockBlobClient.class, newCpknBlockBlob);
+        assertNotEquals(cpknBlockBlob.getEncryptionScope(), newCpknBlockBlob.getEncryptionScope());
 
         // when: "PageBlob"
-        def newCpknPageBlob = cpknPageBlob.getEncryptionScopeClient(newEncryptionScope)
+        PageBlobClient newCpknPageBlob = cpknPageBlob.getEncryptionScopeClient(newEncryptionScope);
+        assertInstanceOf(PageBlobClient.class, newCpknPageBlob);
+        assertNotEquals(cpknPageBlob.getEncryptionScope(), newCpknPageBlob.getEncryptionScope());
 
-        then:
-        newCpknPageBlob instanceof PageBlobClient
+        // when: "BlobClient"
+        BlobClient cpkBlobClient = cpknContainer.getBlobClient(generateBlobName()); // Inherits container's CPK
+        BlobClient newCpknBlobClient = cpkBlobClient.getEncryptionScopeClient(newEncryptionScope);
+        assertInstanceOf(BlobClient.class, newCpknBlobClient);
+        assertNotEquals(cpkBlobClient.getEncryptionScope(), newCpknBlobClient.getEncryptionScope());
 
-        when: "BlobClient"
-        def cpkBlobClient = cpknContainer.getBlobClient(generateBlobName()) // Inherits container's CPK
-        def newCpknBlobClient = cpkBlobClient.getEncryptionScopeClient(newEncryptionScope)
-
-        then:
-        newCpknBlobClient instanceof BlobClient
-            newCpknBlobClient.getEncryptionScope() != cpkBlobClient.getEncryptionScope()
-
-        when: "BlobClientBase"
-        def newCpknBlobClientBase = ((BlobClientBase) cpkBlobClient).getEncryptionScopeClient(newEncryptionScope)
-
-        then:
-        newCpknBlobClientBase instanceof BlobClientBase
-            newCpknBlobClientBase.getEncryptionScope() != cpkBlobClient.getEncryptionScope()
+        // when: "BlobClientBase"
+        BlobClientBase newCpknBlobClientBase = ((BlobClientBase) cpkBlobClient)
+            .getEncryptionScopeClient(newEncryptionScope);
+        assertInstanceOf(BlobClientBase.class, newCpknBlobClientBase);
+        assertNotEquals(cpkBlobClient.getEncryptionScope(), newCpknBlobClientBase.getEncryptionScope());
     }
 
 }

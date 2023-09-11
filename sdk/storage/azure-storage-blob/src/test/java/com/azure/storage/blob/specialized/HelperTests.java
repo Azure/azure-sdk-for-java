@@ -9,7 +9,7 @@ import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.storage.blob.BlobContainerAsyncClient;
 import com.azure.storage.blob.BlobTestBase;
 import com.azure.storage.blob.BlobUrlParts;
-import com.azure.storage.blob.FakeCredentialInTest;
+import com.azure.storage.blob.FakeCredentialInTests;
 import com.azure.storage.blob.implementation.util.BlobSasImplUtil;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.PageList;
@@ -90,7 +90,7 @@ public class HelperTests extends BlobTestBase {
     public void URLParser(String originalBlobName, String finalBlobName) throws MalformedURLException {
         BlobUrlParts parts = BlobUrlParts.parse(new URL("http://host/container/" + originalBlobName
             + "?snapshot=snapshot&sv=" + Constants.SAS_SERVICE_VERSION + "&sr=c&sp=r&sig="
-            + FakeCredentialInTest.fakeSignaturePlaceholder));
+            + FakeCredentialInTests.fakeSignaturePlaceholder));
 
         assertEquals("http", parts.getScheme());
         assertEquals("host", parts.getHost());

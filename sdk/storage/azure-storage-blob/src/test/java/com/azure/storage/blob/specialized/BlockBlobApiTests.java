@@ -1462,9 +1462,8 @@ public class BlockBlobApiTests extends BlobTestBase {
     @EnabledIf("com.azure.storage.blob.BlobTestBase#isLiveMode")
     public void asyncBufferedUploadEmptyBuffers(ByteBuffer buffer1, ByteBuffer buffer2, ByteBuffer buffer3,
         byte[] expectedDownload) {
-        StepVerifier.create(blobAsyncClient.upload(Flux.fromIterable(List.of(buffer1, buffer2, buffer3)), null, true))
-            .assertNext(it -> assertNotNull(it.getETag()))
-            .verifyComplete();
+        StepVerifier.create(blobAsyncClient.upload(Flux.fromIterable(Arrays.asList(buffer1, buffer2, buffer3)),
+                null, true)).assertNext(it -> assertNotNull(it.getETag())).verifyComplete();
 
         StepVerifier.create(FluxUtil.collectBytesInByteBufferStream(blobAsyncClient.download()))
             .assertNext(it -> assertEquals(it, expectedDownload))

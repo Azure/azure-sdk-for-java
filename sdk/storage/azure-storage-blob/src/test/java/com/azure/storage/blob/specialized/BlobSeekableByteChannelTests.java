@@ -32,6 +32,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.ByteBuffer;
 import java.nio.channels.SeekableByteChannel;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Stream;
 
@@ -318,12 +319,14 @@ public class BlobSeekableByteChannelTests extends BlobTestBase {
     }
 
     static Stream<Arguments> channelWriteModeDataSupplier() {
+        Map<String, String> metadata = new HashMap<>();
+        metadata.put("foo", "bar");
         return Stream.of(
             Arguments.of(OVERWRITE, null, null, null, null, null, null),
             Arguments.of(OVERWRITE, 500, null, null, null, null, null),
             Arguments.of(OVERWRITE, null, new BlobHttpHeaders(), null, null, null, null),
-            Arguments.of(OVERWRITE, null, null, Map.of("foo", "bar"), null, null, null),
-            Arguments.of(OVERWRITE, null, null, null, Map.of("foo", "bar"), null, null),
+            Arguments.of(OVERWRITE, null, null, metadata, null, null, null),
+            Arguments.of(OVERWRITE, null, null, null, metadata, null, null),
             Arguments.of(OVERWRITE, null, null, null, null, AccessTier.COOL, null),
             Arguments.of(OVERWRITE, null, null, null, null, null, new BlobRequestConditions())
         );
