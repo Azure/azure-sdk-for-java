@@ -11,7 +11,7 @@ import io.opentelemetry.sdk.metrics.export.MetricExporter;
 
 import java.util.Collection;
 
-public class AzureMonitorMetricExporterProvider implements ConfigurableMetricExporterProvider {
+public final class AzureMonitorMetricExporterProvider implements ConfigurableMetricExporterProvider {
     @Override
     public MetricExporter createExporter(ConfigProperties configProperties) {
         if (configProperties.getBoolean(AzureMonitorExporterProviderKeys.INTERNAL_USING_BUILDER, false)) {
