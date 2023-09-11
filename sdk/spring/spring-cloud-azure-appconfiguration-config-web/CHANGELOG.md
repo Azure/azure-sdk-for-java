@@ -1,14 +1,12 @@
 # Release History
 
-## 4.12.0-beta.1 (Unreleased)
+## 4.12.0-beta.1 (2023-09-11)
 
 ### Features Added
 
-### Breaking Changes
+* Snapshot support using, `spring.cloud.azure.appconfiguration.stores[0].selects[0].snapshot-name`.
+* Support for trimming prefixes from keys, default value is the key-filter when key-filter is used. `spring.cloud.azure.appconfiguration.stores[0].trim-key-prefix`
 
-### Bugs Fixed
-
-### Other Changes
 
 ## 4.11.0 (2023-08-25)
 
