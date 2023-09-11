@@ -7,8 +7,6 @@
 * Snapshot support using, `spring.cloud.azure.appconfiguration.stores[0].selects[0].snapshot-name`.
 * Support for trimming prefixes from keys, default value is the key-filter when key-filter is used. `spring.cloud.azure.appconfiguration.stores[0].trim-key-prefix`
 
-### Other Changes
-
 ## 4.11.0 (2023-08-25)
 
 Please refer to [spring/CHANGELOG.md](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/CHANGELOG.md#4110-2023-08-25) for more details.
