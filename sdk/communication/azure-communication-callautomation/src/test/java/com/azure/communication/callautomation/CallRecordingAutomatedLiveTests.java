@@ -21,6 +21,7 @@ import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.communication.identity.CommunicationIdentityClient;
 import com.azure.core.http.HttpClient;
+import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
@@ -34,6 +35,10 @@ import static org.junit.jupiter.api.Assertions.fail;
 public class CallRecordingAutomatedLiveTests extends CallAutomationAutomatedLiveTestBase {
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    @DisabledIfEnvironmentVariable(
+        named = "SKIP_LIVE_TEST",
+        matches = "(?i)(true)",
+        disabledReason = "Requires environment to be set up")
     public void createACSCallAndUnmixedAudioTest(HttpClient httpClient) {
         /* Test case: ACS to ACS call
          * 1. create a CallAutomationClient.
@@ -118,6 +123,10 @@ public class CallRecordingAutomatedLiveTests extends CallAutomationAutomatedLive
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    @DisabledIfEnvironmentVariable(
+        named = "SKIP_LIVE_TEST",
+        matches = "(?i)(true)",
+        disabledReason = "Requires environment to be set up")
     public void createACSCallUnmixedAudioAffinityTest(HttpClient httpClient) {
         /* Test case: ACS to ACS call
          * 1. create a CallAutomationClient.
