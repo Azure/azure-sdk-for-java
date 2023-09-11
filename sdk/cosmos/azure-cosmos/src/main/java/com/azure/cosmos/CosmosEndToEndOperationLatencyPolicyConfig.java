@@ -65,6 +65,11 @@ public final class CosmosEndToEndOperationLatencyPolicyConfig {
      * @param endToEndOperationTimeout the end to end operation timeout
      */
     public void setEndToEndOperationTimeout(Duration endToEndOperationTimeout) {
+
+        if (endToEndOperationTimeout == null) {
+            throw new IllegalArgumentException("end-to-end operation timeout cannot be set to null.");
+        }
+
         this.endToEndOperationTimeout = endToEndOperationTimeout;
     }
 }

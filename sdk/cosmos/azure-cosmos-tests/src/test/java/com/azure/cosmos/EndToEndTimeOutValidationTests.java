@@ -413,7 +413,6 @@ public class EndToEndTimeOutValidationTests extends TestSuiteBase {
         cosmosAsyncContainer.createItem(testObject).block();
 
         CosmosPatchOperations patchOperations = CosmosPatchOperations.create().add("/" + "newProperty", "newVal");
-        CosmosItemRequestOptions itemRequestOptions = new CosmosItemRequestOptions();
 
         return cosmosAsyncContainer.patchItem(testObject.getId(), new PartitionKey(testObject.getMypk()), patchOperations, TestObject.class);
     }

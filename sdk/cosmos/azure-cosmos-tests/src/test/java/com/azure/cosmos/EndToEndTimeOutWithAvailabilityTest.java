@@ -267,17 +267,14 @@ public class EndToEndTimeOutWithAvailabilityTest extends TestSuiteBase {
 
     private void assertResponseFromSpeculatedRegion(ObjectNode diagnosticsNode, boolean isReluctantAvailabilityStrategy) {
 
+        JsonNode responseStatisticsList = diagnosticsNode.get("responseStatisticsList");
+        assertThat(responseStatisticsList.isArray()).isTrue();
+        assertThat(responseStatisticsList.size()).isGreaterThan(0);
+        JsonNode storeResult = responseStatisticsList.get(0).get("storeResult");
+
         if (isReluctantAvailabilityStrategy) {
-            JsonNode responseStatisticsList = diagnosticsNode.get("responseStatisticsList");
-            assertThat(responseStatisticsList.isArray()).isTrue();
-            assertThat(responseStatisticsList.size()).isGreaterThan(0);
-            JsonNode storeResult = responseStatisticsList.get(0).get("storeResult");
             assertThat(storeResult.get("storePhysicalAddress").toString()).contains(StringUtils.deleteWhitespace(regions.get(0).toLowerCase(Locale.ROOT)));
         } else {
-            JsonNode responseStatisticsList = diagnosticsNode.get("responseStatisticsList");
-            assertThat(responseStatisticsList.isArray()).isTrue();
-            assertThat(responseStatisticsList.size()).isGreaterThan(0);
-            JsonNode storeResult = responseStatisticsList.get(0).get("storeResult");
             assertThat(storeResult.get("storePhysicalAddress").toString()).contains(StringUtils.deleteWhitespace(regions.get(1).toLowerCase(Locale.ROOT)));
         }
     }

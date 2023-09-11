@@ -1178,6 +1178,17 @@ public class CosmosClientBuilder implements
             }
         }
 
+        if (excludeRegions != null) {
+            // validate excludeRegions
+            excludeRegions.forEach(
+                excludeRegion -> {
+                    Preconditions.checkArgument(StringUtils.trimToNull(excludeRegion) != null, "excludeRegion can't be empty");
+                    String trimmedPreferredRegion = excludeRegion.toLowerCase(Locale.ROOT).replace(" ", "");
+                    LocationHelper.getLocationEndpoint(uri, trimmedPreferredRegion);
+                }
+            );
+        }
+
         ifThrowIllegalArgException(this.serviceEndpoint == null,
             "cannot buildAsyncClient client without service endpoint");
         ifThrowIllegalArgException(
