@@ -13,7 +13,7 @@ import com.azure.data.appconfiguration.implementation.ConfigurationClientCredent
 import com.azure.data.appconfiguration.implementation.ConfigurationSettingHelper;
 import com.azure.data.appconfiguration.models.CompositionType;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
-import com.azure.data.appconfiguration.models.ConfigurationSettingsSnapshot;
+import com.azure.data.appconfiguration.models.ConfigurationSettingSnapshot;
 import com.azure.data.appconfiguration.models.FeatureFlagConfigurationSetting;
 import com.azure.data.appconfiguration.models.FeatureFlagFilter;
 import com.azure.data.appconfiguration.models.SecretReferenceConfigurationSetting;
@@ -577,13 +577,7 @@ public abstract class ConfigurationClientTestBase extends TestProxyTestBase {
     public abstract void listSnapshots(HttpClient httpClient, ConfigurationServiceVersion serviceVersion);
 
     @Test
-    public abstract void listSnapshotsWithFields(HttpClient httpClient, ConfigurationServiceVersion serviceVersion);
-
-    @Test
     public abstract void listSettingFromSnapshot(HttpClient httpClient, ConfigurationServiceVersion serviceVersion);
-
-    @Test
-    public abstract void listSettingFromSnapshotWithFields(HttpClient httpClient, ConfigurationServiceVersion serviceVersion);
 
     /**
      * Helper method to verify that the RestResponse matches what was expected. This method assumes a response status of 200.
@@ -824,20 +818,20 @@ public abstract class ConfigurationClientTestBase extends TestProxyTestBase {
                 .setValue(getFeatureFlagConfigurationSettingValue(key));
     }
 
-    void assertConfigurationSettingsSnapshotWithResponse(int expectedStatusCode, String name,
+    void assertConfigurationSettingSnapshotWithResponse(int expectedStatusCode, String name,
         SnapshotStatus snapshotStatus, List<SnapshotSettingFilter> filters, CompositionType compositionType,
         Duration retentionPeriod, Long size, Long itemCount, Map<String, String> tags,
-        Response<ConfigurationSettingsSnapshot> response) {
+        Response<ConfigurationSettingSnapshot> response) {
         assertNotNull(response);
         assertEquals(expectedStatusCode, response.getStatusCode());
 
-        assertEqualsConfigurationSettingsSnapshot(name, snapshotStatus, filters, compositionType, retentionPeriod,
+        assertEqualsConfigurationSettingSnapshot(name, snapshotStatus, filters, compositionType, retentionPeriod,
             size, itemCount, tags, response.getValue());
     }
 
-    void assertEqualsConfigurationSettingsSnapshot(String name, SnapshotStatus snapshotStatus,
+    void assertEqualsConfigurationSettingSnapshot(String name, SnapshotStatus snapshotStatus,
         List<SnapshotSettingFilter> filters, CompositionType compositionType, Duration retentionPeriod, Long size,
-        Long itemCount, Map<String, String> tags, ConfigurationSettingsSnapshot actualSnapshot) {
+        Long itemCount, Map<String, String> tags, ConfigurationSettingSnapshot actualSnapshot) {
         assertEquals(name, actualSnapshot.getName());
         assertEquals(snapshotStatus, actualSnapshot.getStatus());
         assertEqualsSnapshotFilters(filters, actualSnapshot.getFilters());
@@ -845,7 +839,7 @@ public abstract class ConfigurationClientTestBase extends TestProxyTestBase {
         assertEquals(retentionPeriod, actualSnapshot.getRetentionPeriod());
         assertNotNull(actualSnapshot.getCreatedAt());
         assertEquals(itemCount, actualSnapshot.getItemCount());
-        assertNotNull(actualSnapshot.getSizeInBytes());
+        assertNotNull(actualSnapshot.getSize());
         assertNotNull(actualSnapshot.getETag());
 
         if (!CoreUtils.isNullOrEmpty(tags)) {

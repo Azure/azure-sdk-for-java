@@ -6,7 +6,7 @@ package com.azure.data.appconfiguration;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
-import com.azure.data.appconfiguration.models.ConfigurationSettingsSnapshot;
+import com.azure.data.appconfiguration.models.ConfigurationSettingSnapshot;
 import com.azure.data.appconfiguration.models.CreateSnapshotOperationDetail;
 import com.azure.data.appconfiguration.models.SnapshotSettingFilter;
 
@@ -49,26 +49,26 @@ public class CreateSnapshot {
 
         // Create a snapshot
         String snapshotName = "{snapshotName}";
-        SyncPoller<CreateSnapshotOperationDetail, ConfigurationSettingsSnapshot> poller =
-            client.beginCreateSnapshot(snapshotName, new ConfigurationSettingsSnapshot(filters), Context.NONE);
+        SyncPoller<CreateSnapshotOperationDetail, ConfigurationSettingSnapshot> poller =
+            client.beginCreateSnapshot(snapshotName, new ConfigurationSettingSnapshot(filters), Context.NONE);
         poller.setPollInterval(Duration.ofSeconds(10));
         poller.waitForCompletion();
-        ConfigurationSettingsSnapshot snapshot = poller.getFinalResult();
+        ConfigurationSettingSnapshot snapshot = poller.getFinalResult();
         System.out.printf("Snapshot name=%s is created at %s, snapshot status is %s.%n",
             snapshot.getName(), snapshot.getCreatedAt(), snapshot.getStatus());
 
         // Get the snapshot status
-        ConfigurationSettingsSnapshot getSnapshot = client.getSnapshot(snapshotName);
+        ConfigurationSettingSnapshot getSnapshot = client.getSnapshot(snapshotName);
         System.out.printf("Snapshot name=%s is created at %s, snapshot status is %s.%n",
             getSnapshot.getName(), getSnapshot.getCreatedAt(), getSnapshot.getStatus());
 
         // Archive a READY snapshot
-        ConfigurationSettingsSnapshot archivedSnapshot = client.archiveSnapshot(snapshotName);
+        ConfigurationSettingSnapshot archivedSnapshot = client.archiveSnapshot(snapshotName);
         System.out.printf("Archived snapshot name=%s is created at %s, snapshot status is %s.%n",
             archivedSnapshot.getName(), archivedSnapshot.getCreatedAt(), archivedSnapshot.getStatus());
 
         // Recover the Archived snapshot
-        ConfigurationSettingsSnapshot recoveredSnapshot = client.recoverSnapshot(snapshotName);
+        ConfigurationSettingSnapshot recoveredSnapshot = client.recoverSnapshot(snapshotName);
         System.out.printf("Recovered snapshot name=%s is created at %s, snapshot status is %s.%n",
             recoveredSnapshot.getName(), recoveredSnapshot.getCreatedAt(), recoveredSnapshot.getStatus());
 

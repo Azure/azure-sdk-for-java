@@ -69,12 +69,12 @@ import com.azure.data.appconfiguration.implementation.models.LabelListResult;
 import com.azure.data.appconfiguration.implementation.models.OperationDetails;
 import com.azure.data.appconfiguration.implementation.models.PutKeyValueHeaders;
 import com.azure.data.appconfiguration.implementation.models.PutLockHeaders;
+import com.azure.data.appconfiguration.implementation.models.SnapshotFields;
 import com.azure.data.appconfiguration.implementation.models.SnapshotListResult;
 import com.azure.data.appconfiguration.implementation.models.SnapshotUpdateParameters;
 import com.azure.data.appconfiguration.implementation.models.UpdateSnapshotHeaders;
-import com.azure.data.appconfiguration.models.ConfigurationSettingsSnapshot;
+import com.azure.data.appconfiguration.models.ConfigurationSettingSnapshot;
 import com.azure.data.appconfiguration.models.SettingFields;
-import com.azure.data.appconfiguration.models.SnapshotFields;
 import com.azure.data.appconfiguration.models.SnapshotStatus;
 import java.util.List;
 import java.util.Objects;
@@ -488,7 +488,7 @@ public final class AzureAppConfigurationImpl {
         @Get("/snapshots/{name}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<ResponseBase<GetSnapshotHeaders, ConfigurationSettingsSnapshot>> getSnapshot(
+        Mono<ResponseBase<GetSnapshotHeaders, ConfigurationSettingSnapshot>> getSnapshot(
                 @HostParam("endpoint") String endpoint,
                 @HeaderParam("Sync-Token") String syncToken,
                 @QueryParam("api-version") String apiVersion,
@@ -502,7 +502,7 @@ public final class AzureAppConfigurationImpl {
         @Get("/snapshots/{name}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        ResponseBase<GetSnapshotHeaders, ConfigurationSettingsSnapshot> getSnapshotSync(
+        ResponseBase<GetSnapshotHeaders, ConfigurationSettingSnapshot> getSnapshotSync(
                 @HostParam("endpoint") String endpoint,
                 @HeaderParam("Sync-Token") String syncToken,
                 @QueryParam("api-version") String apiVersion,
@@ -516,31 +516,31 @@ public final class AzureAppConfigurationImpl {
         @Put("/snapshots/{name}")
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<ResponseBase<CreateSnapshotHeaders, ConfigurationSettingsSnapshot>> createSnapshot(
+        Mono<ResponseBase<CreateSnapshotHeaders, ConfigurationSettingSnapshot>> createSnapshot(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("name") String name,
                 @HeaderParam("Sync-Token") String syncToken,
                 @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/json") ConfigurationSettingsSnapshot entity,
+                @BodyParam("application/json") ConfigurationSettingSnapshot entity,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
         @Put("/snapshots/{name}")
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        ResponseBase<CreateSnapshotHeaders, ConfigurationSettingsSnapshot> createSnapshotSync(
+        ResponseBase<CreateSnapshotHeaders, ConfigurationSettingSnapshot> createSnapshotSync(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("name") String name,
                 @HeaderParam("Sync-Token") String syncToken,
                 @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/json") ConfigurationSettingsSnapshot entity,
+                @BodyParam("application/json") ConfigurationSettingSnapshot entity,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
         @Patch("/snapshots/{name}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<ResponseBase<UpdateSnapshotHeaders, ConfigurationSettingsSnapshot>> updateSnapshot(
+        Mono<ResponseBase<UpdateSnapshotHeaders, ConfigurationSettingSnapshot>> updateSnapshot(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("name") String name,
                 @HeaderParam("Sync-Token") String syncToken,
@@ -554,7 +554,7 @@ public final class AzureAppConfigurationImpl {
         @Patch("/snapshots/{name}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        ResponseBase<UpdateSnapshotHeaders, ConfigurationSettingsSnapshot> updateSnapshotSync(
+        ResponseBase<UpdateSnapshotHeaders, ConfigurationSettingSnapshot> updateSnapshotSync(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("name") String name,
                 @HeaderParam("Sync-Token") String syncToken,
@@ -2477,7 +2477,7 @@ public final class AzureAppConfigurationImpl {
      * @return a list of key-value snapshots along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<ConfigurationSettingsSnapshot>> getSnapshotsSinglePageAsync(
+    public Mono<PagedResponse<ConfigurationSettingSnapshot>> getSnapshotsSinglePageAsync(
             String name, String after, List<SnapshotFields> select, List<SnapshotStatus> status) {
         final String accept = "application/vnd.microsoft.appconfig.snapshotset+json, application/problem+json";
         String selectConverted =
@@ -2526,7 +2526,7 @@ public final class AzureAppConfigurationImpl {
      * @return a list of key-value snapshots along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<ConfigurationSettingsSnapshot>> getSnapshotsSinglePageAsync(
+    public Mono<PagedResponse<ConfigurationSettingSnapshot>> getSnapshotsSinglePageAsync(
             String name, String after, List<SnapshotFields> select, List<SnapshotStatus> status, Context context) {
         final String accept = "application/vnd.microsoft.appconfig.snapshotset+json, application/problem+json";
         String selectConverted =
@@ -2572,7 +2572,7 @@ public final class AzureAppConfigurationImpl {
      * @return a list of key-value snapshots as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<ConfigurationSettingsSnapshot> getSnapshotsAsync(
+    public PagedFlux<ConfigurationSettingSnapshot> getSnapshotsAsync(
             String name, String after, List<SnapshotFields> select, List<SnapshotStatus> status) {
         return new PagedFlux<>(
                 () -> getSnapshotsSinglePageAsync(name, after, select, status),
@@ -2594,7 +2594,7 @@ public final class AzureAppConfigurationImpl {
      * @return a list of key-value snapshots as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<ConfigurationSettingsSnapshot> getSnapshotsAsync(
+    public PagedFlux<ConfigurationSettingSnapshot> getSnapshotsAsync(
             String name, String after, List<SnapshotFields> select, List<SnapshotStatus> status, Context context) {
         return new PagedFlux<>(
                 () -> getSnapshotsSinglePageAsync(name, after, select, status, context),
@@ -2615,7 +2615,7 @@ public final class AzureAppConfigurationImpl {
      * @return a list of key-value snapshots along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<ConfigurationSettingsSnapshot> getSnapshotsSinglePage(
+    public PagedResponse<ConfigurationSettingSnapshot> getSnapshotsSinglePage(
             String name, String after, List<SnapshotFields> select, List<SnapshotStatus> status) {
         final String accept = "application/vnd.microsoft.appconfig.snapshotset+json, application/problem+json";
         String selectConverted =
@@ -2661,7 +2661,7 @@ public final class AzureAppConfigurationImpl {
      * @return a list of key-value snapshots along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<ConfigurationSettingsSnapshot> getSnapshotsSinglePage(
+    public PagedResponse<ConfigurationSettingSnapshot> getSnapshotsSinglePage(
             String name, String after, List<SnapshotFields> select, List<SnapshotStatus> status, Context context) {
         final String accept = "application/vnd.microsoft.appconfig.snapshotset+json, application/problem+json";
         String selectConverted =
@@ -2706,7 +2706,7 @@ public final class AzureAppConfigurationImpl {
      * @return a list of key-value snapshots as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ConfigurationSettingsSnapshot> getSnapshots(
+    public PagedIterable<ConfigurationSettingSnapshot> getSnapshots(
             String name, String after, List<SnapshotFields> select, List<SnapshotStatus> status) {
         return new PagedIterable<>(
                 () -> getSnapshotsSinglePage(name, after, select, status, Context.NONE),
@@ -2728,7 +2728,7 @@ public final class AzureAppConfigurationImpl {
      * @return a list of key-value snapshots as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ConfigurationSettingsSnapshot> getSnapshots(
+    public PagedIterable<ConfigurationSettingSnapshot> getSnapshots(
             String name, String after, List<SnapshotFields> select, List<SnapshotStatus> status, Context context) {
         return new PagedIterable<>(
                 () -> getSnapshotsSinglePage(name, after, select, status, context),
@@ -2846,7 +2846,7 @@ public final class AzureAppConfigurationImpl {
      * @return a single key-value snapshot along with {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResponseBase<GetSnapshotHeaders, ConfigurationSettingsSnapshot>> getSnapshotWithResponseAsync(
+    public Mono<ResponseBase<GetSnapshotHeaders, ConfigurationSettingSnapshot>> getSnapshotWithResponseAsync(
             String name, String ifMatch, String ifNoneMatch, List<SnapshotFields> select) {
         final String accept = "application/vnd.microsoft.appconfig.snapshot+json, application/problem+json";
         String selectConverted =
@@ -2882,7 +2882,7 @@ public final class AzureAppConfigurationImpl {
      * @return a single key-value snapshot along with {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResponseBase<GetSnapshotHeaders, ConfigurationSettingsSnapshot>> getSnapshotWithResponseAsync(
+    public Mono<ResponseBase<GetSnapshotHeaders, ConfigurationSettingSnapshot>> getSnapshotWithResponseAsync(
             String name, String ifMatch, String ifNoneMatch, List<SnapshotFields> select, Context context) {
         final String accept = "application/vnd.microsoft.appconfig.snapshot+json, application/problem+json";
         String selectConverted =
@@ -2915,7 +2915,7 @@ public final class AzureAppConfigurationImpl {
      * @return a single key-value snapshot on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ConfigurationSettingsSnapshot> getSnapshotAsync(
+    public Mono<ConfigurationSettingSnapshot> getSnapshotAsync(
             String name, String ifMatch, String ifNoneMatch, List<SnapshotFields> select) {
         return getSnapshotWithResponseAsync(name, ifMatch, ifNoneMatch, select)
                 .flatMap(res -> Mono.justOrEmpty(res.getValue()));
@@ -2936,7 +2936,7 @@ public final class AzureAppConfigurationImpl {
      * @return a single key-value snapshot on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ConfigurationSettingsSnapshot> getSnapshotAsync(
+    public Mono<ConfigurationSettingSnapshot> getSnapshotAsync(
             String name, String ifMatch, String ifNoneMatch, List<SnapshotFields> select, Context context) {
         return getSnapshotWithResponseAsync(name, ifMatch, ifNoneMatch, select, context)
                 .flatMap(res -> Mono.justOrEmpty(res.getValue()));
@@ -2957,7 +2957,7 @@ public final class AzureAppConfigurationImpl {
      * @return a single key-value snapshot along with {@link ResponseBase}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ResponseBase<GetSnapshotHeaders, ConfigurationSettingsSnapshot> getSnapshotWithResponse(
+    public ResponseBase<GetSnapshotHeaders, ConfigurationSettingSnapshot> getSnapshotWithResponse(
             String name, String ifMatch, String ifNoneMatch, List<SnapshotFields> select, Context context) {
         final String accept = "application/vnd.microsoft.appconfig.snapshot+json, application/problem+json";
         String selectConverted =
@@ -2990,7 +2990,7 @@ public final class AzureAppConfigurationImpl {
      * @return a single key-value snapshot.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ConfigurationSettingsSnapshot getSnapshot(
+    public ConfigurationSettingSnapshot getSnapshot(
             String name, String ifMatch, String ifNoneMatch, List<SnapshotFields> select) {
         return getSnapshotWithResponse(name, ifMatch, ifNoneMatch, select, Context.NONE).getValue();
     }
@@ -3006,8 +3006,8 @@ public final class AzureAppConfigurationImpl {
      * @return the response body along with {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResponseBase<CreateSnapshotHeaders, ConfigurationSettingsSnapshot>> createSnapshotWithResponseAsync(
-            String name, ConfigurationSettingsSnapshot entity) {
+    public Mono<ResponseBase<CreateSnapshotHeaders, ConfigurationSettingSnapshot>> createSnapshotWithResponseAsync(
+            String name, ConfigurationSettingSnapshot entity) {
         final String accept = "application/vnd.microsoft.appconfig.snapshot+json, application/problem+json";
         return FluxUtil.withContext(
                 context ->
@@ -3033,8 +3033,8 @@ public final class AzureAppConfigurationImpl {
      * @return the response body along with {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResponseBase<CreateSnapshotHeaders, ConfigurationSettingsSnapshot>> createSnapshotWithResponseAsync(
-            String name, ConfigurationSettingsSnapshot entity, Context context) {
+    public Mono<ResponseBase<CreateSnapshotHeaders, ConfigurationSettingSnapshot>> createSnapshotWithResponseAsync(
+            String name, ConfigurationSettingSnapshot entity, Context context) {
         final String accept = "application/vnd.microsoft.appconfig.snapshot+json, application/problem+json";
         return service.createSnapshot(
                 this.getEndpoint(), name, this.getSyncToken(), this.getApiVersion(), entity, accept, context);
@@ -3051,7 +3051,7 @@ public final class AzureAppConfigurationImpl {
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ConfigurationSettingsSnapshot> createSnapshotAsync(String name, ConfigurationSettingsSnapshot entity) {
+    public Mono<ConfigurationSettingSnapshot> createSnapshotAsync(String name, ConfigurationSettingSnapshot entity) {
         return createSnapshotWithResponseAsync(name, entity).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -3067,8 +3067,8 @@ public final class AzureAppConfigurationImpl {
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ConfigurationSettingsSnapshot> createSnapshotAsync(
-            String name, ConfigurationSettingsSnapshot entity, Context context) {
+    public Mono<ConfigurationSettingSnapshot> createSnapshotAsync(
+            String name, ConfigurationSettingSnapshot entity, Context context) {
         return createSnapshotWithResponseAsync(name, entity, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -3084,8 +3084,8 @@ public final class AzureAppConfigurationImpl {
      * @return the response body along with {@link ResponseBase}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ResponseBase<CreateSnapshotHeaders, ConfigurationSettingsSnapshot> createSnapshotWithResponse(
-            String name, ConfigurationSettingsSnapshot entity, Context context) {
+    public ResponseBase<CreateSnapshotHeaders, ConfigurationSettingSnapshot> createSnapshotWithResponse(
+            String name, ConfigurationSettingSnapshot entity, Context context) {
         final String accept = "application/vnd.microsoft.appconfig.snapshot+json, application/problem+json";
         return service.createSnapshotSync(
                 this.getEndpoint(), name, this.getSyncToken(), this.getApiVersion(), entity, accept, context);
@@ -3102,7 +3102,7 @@ public final class AzureAppConfigurationImpl {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ConfigurationSettingsSnapshot createSnapshot(String name, ConfigurationSettingsSnapshot entity) {
+    public ConfigurationSettingSnapshot createSnapshot(String name, ConfigurationSettingSnapshot entity) {
         return createSnapshotWithResponse(name, entity, Context.NONE).getValue();
     }
 
@@ -3120,7 +3120,7 @@ public final class AzureAppConfigurationImpl {
      * @return the response body along with {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResponseBase<UpdateSnapshotHeaders, ConfigurationSettingsSnapshot>> updateSnapshotWithResponseAsync(
+    public Mono<ResponseBase<UpdateSnapshotHeaders, ConfigurationSettingSnapshot>> updateSnapshotWithResponseAsync(
             String name, SnapshotUpdateParameters entity, String ifMatch, String ifNoneMatch) {
         final String accept = "application/vnd.microsoft.appconfig.snapshot+json, application/problem+json";
         return FluxUtil.withContext(
@@ -3152,7 +3152,7 @@ public final class AzureAppConfigurationImpl {
      * @return the response body along with {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResponseBase<UpdateSnapshotHeaders, ConfigurationSettingsSnapshot>> updateSnapshotWithResponseAsync(
+    public Mono<ResponseBase<UpdateSnapshotHeaders, ConfigurationSettingSnapshot>> updateSnapshotWithResponseAsync(
             String name, SnapshotUpdateParameters entity, String ifMatch, String ifNoneMatch, Context context) {
         final String accept = "application/vnd.microsoft.appconfig.snapshot+json, application/problem+json";
         return service.updateSnapshot(
@@ -3181,7 +3181,7 @@ public final class AzureAppConfigurationImpl {
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ConfigurationSettingsSnapshot> updateSnapshotAsync(
+    public Mono<ConfigurationSettingSnapshot> updateSnapshotAsync(
             String name, SnapshotUpdateParameters entity, String ifMatch, String ifNoneMatch) {
         return updateSnapshotWithResponseAsync(name, entity, ifMatch, ifNoneMatch)
                 .flatMap(res -> Mono.justOrEmpty(res.getValue()));
@@ -3202,7 +3202,7 @@ public final class AzureAppConfigurationImpl {
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ConfigurationSettingsSnapshot> updateSnapshotAsync(
+    public Mono<ConfigurationSettingSnapshot> updateSnapshotAsync(
             String name, SnapshotUpdateParameters entity, String ifMatch, String ifNoneMatch, Context context) {
         return updateSnapshotWithResponseAsync(name, entity, ifMatch, ifNoneMatch, context)
                 .flatMap(res -> Mono.justOrEmpty(res.getValue()));
@@ -3223,7 +3223,7 @@ public final class AzureAppConfigurationImpl {
      * @return the response body along with {@link ResponseBase}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ResponseBase<UpdateSnapshotHeaders, ConfigurationSettingsSnapshot> updateSnapshotWithResponse(
+    public ResponseBase<UpdateSnapshotHeaders, ConfigurationSettingSnapshot> updateSnapshotWithResponse(
             String name, SnapshotUpdateParameters entity, String ifMatch, String ifNoneMatch, Context context) {
         final String accept = "application/vnd.microsoft.appconfig.snapshot+json, application/problem+json";
         return service.updateSnapshotSync(
@@ -3252,7 +3252,7 @@ public final class AzureAppConfigurationImpl {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ConfigurationSettingsSnapshot updateSnapshot(
+    public ConfigurationSettingSnapshot updateSnapshot(
             String name, SnapshotUpdateParameters entity, String ifMatch, String ifNoneMatch) {
         return updateSnapshotWithResponse(name, entity, ifMatch, ifNoneMatch, Context.NONE).getValue();
     }
@@ -4885,7 +4885,7 @@ public final class AzureAppConfigurationImpl {
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<ConfigurationSettingsSnapshot>> getSnapshotsNextSinglePageAsync(String nextLink) {
+    public Mono<PagedResponse<ConfigurationSettingSnapshot>> getSnapshotsNextSinglePageAsync(String nextLink) {
         final String accept = "application/vnd.microsoft.appconfig.snapshotset+json, application/problem+json";
         return FluxUtil.withContext(
                         context ->
@@ -4915,7 +4915,7 @@ public final class AzureAppConfigurationImpl {
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<ConfigurationSettingsSnapshot>> getSnapshotsNextSinglePageAsync(
+    public Mono<PagedResponse<ConfigurationSettingSnapshot>> getSnapshotsNextSinglePageAsync(
             String nextLink, Context context) {
         final String accept = "application/vnd.microsoft.appconfig.snapshotset+json, application/problem+json";
         return service.getSnapshotsNext(nextLink, this.getEndpoint(), this.getSyncToken(), accept, context)
@@ -4941,7 +4941,7 @@ public final class AzureAppConfigurationImpl {
      * @return the result of a snapshot list request along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<ConfigurationSettingsSnapshot> getSnapshotsNextSinglePage(String nextLink) {
+    public PagedResponse<ConfigurationSettingSnapshot> getSnapshotsNextSinglePage(String nextLink) {
         final String accept = "application/vnd.microsoft.appconfig.snapshotset+json, application/problem+json";
         ResponseBase<GetSnapshotsNextHeaders, SnapshotListResult> res =
                 service.getSnapshotsNextSync(nextLink, this.getEndpoint(), this.getSyncToken(), accept, Context.NONE);
@@ -4966,7 +4966,7 @@ public final class AzureAppConfigurationImpl {
      * @return the result of a snapshot list request along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<ConfigurationSettingsSnapshot> getSnapshotsNextSinglePage(String nextLink, Context context) {
+    public PagedResponse<ConfigurationSettingSnapshot> getSnapshotsNextSinglePage(String nextLink, Context context) {
         final String accept = "application/vnd.microsoft.appconfig.snapshotset+json, application/problem+json";
         ResponseBase<GetSnapshotsNextHeaders, SnapshotListResult> res =
                 service.getSnapshotsNextSync(nextLink, this.getEndpoint(), this.getSyncToken(), accept, context);

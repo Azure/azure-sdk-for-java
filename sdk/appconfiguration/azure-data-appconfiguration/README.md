@@ -461,11 +461,11 @@ String snapshotName = "{snapshotName}";
 List<SnapshotSettingFilter> filters = new ArrayList<>();
 // Key Name also supports RegExp but only support prefix end with "*", such as "k*" and is case-sensitive.
 filters.add(new SnapshotSettingFilter("Test*"));
-SyncPoller<CreateSnapshotOperationDetail, ConfigurationSettingsSnapshot> poller =
-    configurationClient.beginCreateSnapshot(snapshotName, new ConfigurationSettingsSnapshot(filters), Context.NONE);
+SyncPoller<CreateSnapshotOperationDetail, ConfigurationSettingSnapshot> poller =
+    configurationClient.beginCreateSnapshot(snapshotName, new ConfigurationSettingSnapshot(filters), Context.NONE);
 poller.setPollInterval(Duration.ofSeconds(10));
 poller.waitForCompletion();
-ConfigurationSettingsSnapshot snapshot = poller.getFinalResult();
+ConfigurationSettingSnapshot snapshot = poller.getFinalResult();
 System.out.printf("Snapshot name=%s is created at %s, snapshot status is %s.%n",
     snapshot.getName(), snapshot.getCreatedAt(), snapshot.getStatus());
 ```
@@ -476,7 +476,7 @@ Once a configuration setting snapshot is created, you can retrieve it using the 
 
 ```java readme-sample-getSnapshot
 String snapshotName = "{snapshotName}";
-ConfigurationSettingsSnapshot getSnapshot = configurationClient.getSnapshot(snapshotName);
+ConfigurationSettingSnapshot getSnapshot = configurationClient.getSnapshot(snapshotName);
 System.out.printf("Snapshot name=%s is created at %s, snapshot status is %s.%n",
     getSnapshot.getName(), getSnapshot.getCreatedAt(), getSnapshot.getStatus());
 ```
@@ -488,7 +488,7 @@ to `archived`.
 
 ```java readme-sample-archiveSnapshot
 String snapshotName = "{snapshotName}";
-ConfigurationSettingsSnapshot archivedSnapshot = configurationClient.archiveSnapshot(snapshotName);
+ConfigurationSettingSnapshot archivedSnapshot = configurationClient.archiveSnapshot(snapshotName);
 System.out.printf("Archived snapshot name=%s is created at %s, snapshot status is %s.%n",
     archivedSnapshot.getName(), archivedSnapshot.getCreatedAt(), archivedSnapshot.getStatus());
 ```
@@ -500,7 +500,7 @@ snapshot to `ready`.
 
 ```java readme-sample-recoverSnapshot
 String snapshotName = "{snapshotName}";
-ConfigurationSettingsSnapshot recoveredSnapshot = configurationClient.recoverSnapshot(snapshotName);
+ConfigurationSettingSnapshot recoveredSnapshot = configurationClient.recoverSnapshot(snapshotName);
 System.out.printf("Recovered snapshot name=%s is created at %s, snapshot status is %s.%n",
     recoveredSnapshot.getName(), recoveredSnapshot.getCreatedAt(), recoveredSnapshot.getStatus());
 ```
@@ -512,9 +512,9 @@ To retrieve all snapshots, you can use the `listSnapshots` method.
 ```java readme-sample-getAllSnapshots
 String snapshotNameProduct = "{snapshotNameInProduct}";
 SnapshotSelector snapshotSelector = new SnapshotSelector().setName(snapshotNameProduct);
-PagedIterable<ConfigurationSettingsSnapshot> configurationSettingsSnapshots =
+PagedIterable<ConfigurationSettingSnapshot> configurationSettingSnapshots =
     configurationClient.listSnapshots(snapshotSelector);
-for (ConfigurationSettingsSnapshot snapshot : configurationSettingsSnapshots) {
+for (ConfigurationSettingSnapshot snapshot : configurationSettingSnapshots) {
     System.out.printf("Listed Snapshot name = %s is created at %s, snapshot status is %s.%n",
         snapshot.getName(), snapshot.getCreatedAt(), snapshot.getStatus());
 }
