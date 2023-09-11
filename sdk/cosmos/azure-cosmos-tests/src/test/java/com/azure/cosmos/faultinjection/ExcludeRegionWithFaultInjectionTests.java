@@ -7,10 +7,13 @@ import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosClientBuilder;
-import com.azure.cosmos.CosmosDiagnosticsTest;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.CosmosRegionSwitchHint;
 import com.azure.cosmos.SessionRetryOptionsBuilder;
+import com.azure.cosmos.implementation.AsyncDocumentClient;
+import com.azure.cosmos.implementation.DatabaseAccount;
+import com.azure.cosmos.implementation.DatabaseAccountLocation;
+import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.implementation.Utils;
@@ -30,7 +33,6 @@ import com.azure.cosmos.test.faultinjection.FaultInjectionRule;
 import com.azure.cosmos.test.faultinjection.FaultInjectionRuleBuilder;
 import com.azure.cosmos.test.faultinjection.FaultInjectionServerErrorResult;
 import com.azure.cosmos.test.faultinjection.FaultInjectionServerErrorType;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
@@ -40,11 +42,15 @@ import org.testng.annotations.Test;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.fail;
@@ -60,6 +66,9 @@ public class ExcludeRegionWithFaultInjectionTests extends TestSuiteBase {
     private Function<List<String>, List<String>> chooseSecondRegion = (regions) -> chooseKthRegion(regions, 2);
     private Function<List<String>, List<String>> chooseThirdRegion = (regions) -> chooseKthRegion(regions, 3);
     private Function<List<String>, List<String>> chooseLastRegion = (regions) -> chooseLastRegion(regions);
+    private Function<List<String>, List<String>> chooseAllRegions = Function.identity();
+    private Map<String, String> readRegionMap;
+    private Map<String, String> writeRegionMap;
 
     @Factory(dataProvider = "clientBuilderSolelyDirectWithSessionConsistency")
     public ExcludeRegionWithFaultInjectionTests(CosmosClientBuilder cosmosClientBuilder) {
@@ -71,8 +80,14 @@ public class ExcludeRegionWithFaultInjectionTests extends TestSuiteBase {
         this.cosmosAsyncClient = getClientBuilder().buildAsyncClient();
         this.cosmosAsyncContainer = getSharedMultiPartitionCosmosContainerWithIdAsPartitionKey(this.cosmosAsyncClient);
 
-        // todo: do not hardcode here and adapt this test suite to make use of 2 preferred regions
-        this.preferredRegions = Arrays.asList("East US", "South Central US", "West US");
+        AsyncDocumentClient asyncDocumentClient = BridgeInternal.getContextClient(this.cosmosAsyncClient);
+        GlobalEndpointManager globalEndpointManager = asyncDocumentClient.getGlobalEndpointManager();
+        DatabaseAccount databaseAccount = globalEndpointManager.getLatestDatabaseAccount();
+
+        this.readRegionMap = getRegionMap(databaseAccount, false);
+        this.writeRegionMap = getRegionMap(databaseAccount, true);
+        // todo: adapt this test suite to make use of 2 preferred regions
+        this.preferredRegions = this.writeRegionMap.keySet().stream().collect(Collectors.toList());
     }
 
     @DataProvider(name = "readSessionNotAvailableTestConfigs")
@@ -121,99 +136,173 @@ public class ExcludeRegionWithFaultInjectionTests extends TestSuiteBase {
         };
     }
 
-    // todo:
-    //  1. inject fault for several op types
     @DataProvider(name = "regionExclusionReadAfterCreateTestConfigs")
     public Object[] regionExclusionReadAfterCreateTestConfigs() {
-        return new Object[] {
-            new MutationTestConfig()
-                .withChooseInitialExclusionRegions(this.chooseFirstRegion)
-                .withChooseFaultInjectionRegions(this.chooseFirstTwoRegions)
-                .withFaultInjectionOperationType(FaultInjectionOperationType.READ_ITEM)
-                .withFaultInjectionServerErrorType(FaultInjectionServerErrorType.READ_SESSION_NOT_AVAILABLE)
-                // applied to the preferred regions
-                .withRegionExclusionMutator(this.chooseLastRegion)
-                .withExpectedResultBeforeMutation(new ExpectedResult(
-                    HttpConstants.StatusCodes.OK,
+
+        if (this.preferredRegions.size() == 2) {
+            return new Object[] {
+                new MutationTestConfig()
+                    .withChooseInitialExclusionRegions(this.chooseFirstRegion)
+                    .withChooseFaultInjectionRegions(this.chooseFirstRegion)
+                    .withFaultInjectionOperationType(FaultInjectionOperationType.READ_ITEM)
+                    .withFaultInjectionServerErrorType(FaultInjectionServerErrorType.READ_SESSION_NOT_AVAILABLE)
+                    // applied to the preferred regions
+                    .withRegionExclusionMutator(this.chooseLastRegion)
+                    .withExpectedResultBeforeMutation(new ExpectedResult(
+                        HttpConstants.StatusCodes.OK,
+                        HttpConstants.SubStatusCodes.UNKNOWN,
+                        this.chooseLastRegion.apply(this.preferredRegions)
+                    ))
+                    .withExpectedResultAfterMutation(new ExpectedResult(
+                        HttpConstants.StatusCodes.NOTFOUND,
+                        HttpConstants.SubStatusCodes.READ_SESSION_NOT_AVAILABLE,
+                        this.chooseFirstRegion.apply(this.preferredRegions)
+                )),
+                new MutationTestConfig()
+                    .withFaultInjectionOperationType(FaultInjectionOperationType.READ_ITEM)
+                    .withFaultInjectionServerErrorType(FaultInjectionServerErrorType.READ_SESSION_NOT_AVAILABLE)
+                    // applied to the preferred regions
+                    .withRegionExclusionMutator(this.chooseFirstRegion)
+                    .withExpectedResultBeforeMutation(new ExpectedResult(
+                            HttpConstants.StatusCodes.OK,
+                            HttpConstants.SubStatusCodes.UNKNOWN,
+                            Arrays.asList(this.chooseFirstRegion.apply(this.preferredRegions).get(0))
+                        )
+                    )
+                    .withExpectedResultAfterMutation(new ExpectedResult(
+                        HttpConstants.StatusCodes.OK,
+                        HttpConstants.SubStatusCodes.UNKNOWN,
+                        Arrays.asList(this.chooseSecondRegion.apply(this.preferredRegions).get(0))
+                    )
+                ),
+                new MutationTestConfig()
+                    .withChooseInitialExclusionRegions(this.chooseFirstRegion)
+                    .withChooseFaultInjectionRegions(this.chooseFirstTwoRegions)
+                    .withFaultInjectionOperationType(FaultInjectionOperationType.READ_ITEM)
+                    .withFaultInjectionServerErrorType(FaultInjectionServerErrorType.SERVICE_UNAVAILABLE)
+                    // applied to the preferred regions
+                    .withRegionExclusionMutator(this.chooseLastRegion)
+                    .withExpectedResultBeforeMutation(new ExpectedResult(
+                        HttpConstants.StatusCodes.SERVICE_UNAVAILABLE,
+                        HttpConstants.SubStatusCodes.SERVER_GENERATED_503,
+                        this.chooseSecondRegion.apply(this.preferredRegions)
+                    ))
+                    .withExpectedResultAfterMutation(new ExpectedResult(
+                    HttpConstants.StatusCodes.SERVICE_UNAVAILABLE,
+                    HttpConstants.SubStatusCodes.SERVER_GENERATED_503,
+                    this.chooseFirstRegion.apply(this.preferredRegions)
+                )),
+                new MutationTestConfig()
+                    .withChooseInitialExclusionRegions(this.chooseFirstRegion)
+                    .withChooseFaultInjectionRegions(this.chooseFirstTwoRegions)
+                    .withFaultInjectionOperationType(FaultInjectionOperationType.READ_ITEM)
+                    .withFaultInjectionServerErrorType(FaultInjectionServerErrorType.INTERNAL_SERVER_ERROR)
+                    // applied to the preferred regions
+                    .withRegionExclusionMutator(this.chooseLastRegion)
+                    .withExpectedResultBeforeMutation(new ExpectedResult(
+                        HttpConstants.StatusCodes.INTERNAL_SERVER_ERROR,
+                        HttpConstants.SubStatusCodes.UNKNOWN,
+                        this.chooseSecondRegion.apply(this.preferredRegions)
+                    ))
+                    .withExpectedResultAfterMutation(new ExpectedResult(
+                    HttpConstants.StatusCodes.INTERNAL_SERVER_ERROR,
                     HttpConstants.SubStatusCodes.UNKNOWN,
-                    this.chooseLastTwoRegions.apply(this.preferredRegions)
+                    this.chooseFirstRegion.apply(this.preferredRegions)
                 ))
-                .withExpectedResultAfterMutation(new ExpectedResult(
-                HttpConstants.StatusCodes.NOTFOUND,
-                HttpConstants.SubStatusCodes.READ_SESSION_NOT_AVAILABLE,
-                this.chooseFirstTwoRegions.apply(this.preferredRegions)
-            )),
-            new MutationTestConfig()
-                .withChooseInitialExclusionRegions(this.chooseSecondRegion)
-                .withChooseFaultInjectionRegions(this.chooseFirstTwoRegions)
-                .withFaultInjectionOperationType(FaultInjectionOperationType.READ_ITEM)
-                .withFaultInjectionServerErrorType(FaultInjectionServerErrorType.READ_SESSION_NOT_AVAILABLE)
-                // applied to the preferred regions
-                .withRegionExclusionMutator(this.chooseFirstTwoRegions)
-                .withExpectedResultBeforeMutation(new ExpectedResult(
-                    HttpConstants.StatusCodes.OK,
-                    HttpConstants.SubStatusCodes.UNKNOWN,
-                    Arrays.asList(
-                        this.chooseFirstRegion.apply(this.preferredRegions).get(0),
-                        this.chooseThirdRegion.apply(this.preferredRegions).get(0))
-                ))
-                .withExpectedResultAfterMutation(new ExpectedResult(
+            };
+        } else if (this.preferredRegions.size() == 3) {
+            return new Object[] {
+                new MutationTestConfig()
+                    .withChooseInitialExclusionRegions(this.chooseFirstRegion)
+                    .withChooseFaultInjectionRegions(this.chooseFirstTwoRegions)
+                    .withFaultInjectionOperationType(FaultInjectionOperationType.READ_ITEM)
+                    .withFaultInjectionServerErrorType(FaultInjectionServerErrorType.READ_SESSION_NOT_AVAILABLE)
+                    // applied to the preferred regions
+                    .withRegionExclusionMutator(this.chooseLastRegion)
+                    .withExpectedResultBeforeMutation(new ExpectedResult(
+                        HttpConstants.StatusCodes.OK,
+                        HttpConstants.SubStatusCodes.UNKNOWN,
+                        this.chooseLastTwoRegions.apply(this.preferredRegions)
+                    ))
+                    .withExpectedResultAfterMutation(new ExpectedResult(
+                    HttpConstants.StatusCodes.NOTFOUND,
+                    HttpConstants.SubStatusCodes.READ_SESSION_NOT_AVAILABLE,
+                    this.chooseFirstTwoRegions.apply(this.preferredRegions)
+                )),
+                new MutationTestConfig()
+                    .withChooseInitialExclusionRegions(this.chooseSecondRegion)
+                    .withChooseFaultInjectionRegions(this.chooseFirstTwoRegions)
+                    .withFaultInjectionOperationType(FaultInjectionOperationType.READ_ITEM)
+                    .withFaultInjectionServerErrorType(FaultInjectionServerErrorType.READ_SESSION_NOT_AVAILABLE)
+                    // applied to the preferred regions
+                    .withRegionExclusionMutator(this.chooseFirstTwoRegions)
+                    .withExpectedResultBeforeMutation(new ExpectedResult(
+                        HttpConstants.StatusCodes.OK,
+                        HttpConstants.SubStatusCodes.UNKNOWN,
+                        Arrays.asList(
+                            this.chooseFirstRegion.apply(this.preferredRegions).get(0),
+                            this.chooseThirdRegion.apply(this.preferredRegions).get(0))
+                    ))
+                    .withExpectedResultAfterMutation(new ExpectedResult(
                     HttpConstants.StatusCodes.OK,
                     HttpConstants.SubStatusCodes.UNKNOWN,
                     this.chooseLastRegion.apply(this.preferredRegions)
-            )),
-            new MutationTestConfig()
-                .withFaultInjectionOperationType(FaultInjectionOperationType.READ_ITEM)
-                .withFaultInjectionServerErrorType(FaultInjectionServerErrorType.READ_SESSION_NOT_AVAILABLE)
-                // applied to the preferred regions
-                .withRegionExclusionMutator(this.chooseFirstRegion)
-                .withExpectedResultBeforeMutation(new ExpectedResult(
+                )),
+                new MutationTestConfig()
+                    .withFaultInjectionOperationType(FaultInjectionOperationType.READ_ITEM)
+                    .withFaultInjectionServerErrorType(FaultInjectionServerErrorType.READ_SESSION_NOT_AVAILABLE)
+                    // applied to the preferred regions
+                    .withRegionExclusionMutator(this.chooseFirstRegion)
+                    .withExpectedResultBeforeMutation(new ExpectedResult(
+                            HttpConstants.StatusCodes.OK,
+                            HttpConstants.SubStatusCodes.UNKNOWN,
+                            Arrays.asList(this.chooseFirstRegion.apply(this.preferredRegions).get(0))
+                        )
+                    )
+                    .withExpectedResultAfterMutation(new ExpectedResult(
                         HttpConstants.StatusCodes.OK,
                         HttpConstants.SubStatusCodes.UNKNOWN,
-                        Arrays.asList(this.chooseFirstRegion.apply(this.preferredRegions).get(0))
+                        Arrays.asList(this.chooseSecondRegion.apply(this.preferredRegions).get(0))
                     )
-                )
-                .withExpectedResultAfterMutation(new ExpectedResult(
-                    HttpConstants.StatusCodes.OK,
-                    HttpConstants.SubStatusCodes.UNKNOWN,
-                    Arrays.asList(this.chooseSecondRegion.apply(this.preferredRegions).get(0))
-                )
-            ),
-            new MutationTestConfig()
-                .withChooseInitialExclusionRegions(this.chooseFirstRegion)
-                .withChooseFaultInjectionRegions(this.chooseFirstTwoRegions)
-                .withFaultInjectionOperationType(FaultInjectionOperationType.READ_ITEM)
-                .withFaultInjectionServerErrorType(FaultInjectionServerErrorType.SERVICE_UNAVAILABLE)
-                // applied to the preferred regions
-                .withRegionExclusionMutator(this.chooseLastRegion)
-                .withExpectedResultBeforeMutation(new ExpectedResult(
-                    HttpConstants.StatusCodes.SERVICE_UNAVAILABLE,
-                    HttpConstants.SubStatusCodes.SERVER_GENERATED_503,
-                    this.chooseSecondRegion.apply(this.preferredRegions)
-                ))
-                .withExpectedResultAfterMutation(new ExpectedResult(
+                ),
+                new MutationTestConfig()
+                    .withChooseInitialExclusionRegions(this.chooseFirstRegion)
+                    .withChooseFaultInjectionRegions(this.chooseFirstTwoRegions)
+                    .withFaultInjectionOperationType(FaultInjectionOperationType.READ_ITEM)
+                    .withFaultInjectionServerErrorType(FaultInjectionServerErrorType.SERVICE_UNAVAILABLE)
+                    // applied to the preferred regions
+                    .withRegionExclusionMutator(this.chooseLastRegion)
+                    .withExpectedResultBeforeMutation(new ExpectedResult(
+                        HttpConstants.StatusCodes.SERVICE_UNAVAILABLE,
+                        HttpConstants.SubStatusCodes.SERVER_GENERATED_503,
+                        this.chooseSecondRegion.apply(this.preferredRegions)
+                    ))
+                    .withExpectedResultAfterMutation(new ExpectedResult(
                     HttpConstants.StatusCodes.SERVICE_UNAVAILABLE,
                     HttpConstants.SubStatusCodes.SERVER_GENERATED_503,
                     this.chooseFirstRegion.apply(this.preferredRegions)
-            )),
-            new MutationTestConfig()
-                .withChooseInitialExclusionRegions(this.chooseFirstRegion)
-                .withChooseFaultInjectionRegions(this.chooseFirstTwoRegions)
-                .withFaultInjectionOperationType(FaultInjectionOperationType.READ_ITEM)
-                .withFaultInjectionServerErrorType(FaultInjectionServerErrorType.INTERNAL_SERVER_ERROR)
-                // applied to the preferred regions
-                .withRegionExclusionMutator(this.chooseLastRegion)
-                .withExpectedResultBeforeMutation(new ExpectedResult(
-                    HttpConstants.StatusCodes.INTERNAL_SERVER_ERROR,
-                    HttpConstants.SubStatusCodes.UNKNOWN,
-                    this.chooseSecondRegion.apply(this.preferredRegions)
-                ))
-                .withExpectedResultAfterMutation(new ExpectedResult(
+                )),
+                new MutationTestConfig()
+                    .withChooseInitialExclusionRegions(this.chooseFirstRegion)
+                    .withChooseFaultInjectionRegions(this.chooseFirstTwoRegions)
+                    .withFaultInjectionOperationType(FaultInjectionOperationType.READ_ITEM)
+                    .withFaultInjectionServerErrorType(FaultInjectionServerErrorType.INTERNAL_SERVER_ERROR)
+                    // applied to the preferred regions
+                    .withRegionExclusionMutator(this.chooseLastRegion)
+                    .withExpectedResultBeforeMutation(new ExpectedResult(
+                        HttpConstants.StatusCodes.INTERNAL_SERVER_ERROR,
+                        HttpConstants.SubStatusCodes.UNKNOWN,
+                        this.chooseSecondRegion.apply(this.preferredRegions)
+                    ))
+                    .withExpectedResultAfterMutation(new ExpectedResult(
                     HttpConstants.StatusCodes.INTERNAL_SERVER_ERROR,
                     HttpConstants.SubStatusCodes.UNKNOWN,
                     this.chooseFirstRegion.apply(this.preferredRegions)
-            ))
-        };
+                ))
+            };
+        }
+
+        throw new IllegalStateException("This test suite is tested for 2 or 3 preferred regions");
     }
 
     @DataProvider(name = "regionExclusionWriteAfterCreateTestConfigs")
@@ -287,34 +376,7 @@ public class ExcludeRegionWithFaultInjectionTests extends TestSuiteBase {
                     CosmosItemResponse<?> response = params.cosmosAsyncContainer
                         .deleteItem(
                             alreadyCreatedItem.getId(),
-                            new PartitionKey(alreadyCreatedItem.getMypk()))
-                        .block();
-
-                    return new OperationExecutionResult<>(response, null);
-                } catch (Exception exception) {
-                    if (exception instanceof CosmosException) {
-                        CosmosException cosmosException = Utils.as(exception, CosmosException.class);
-
-                        return new OperationExecutionResult<>(null, cosmosException);
-                    } else {
-                        fail("A CosmosException instance should have been thrown.");
-                    }
-                }
-
-                return null;
-            };
-
-        Function<ItemOperationInvocationParameters, OperationExecutionResult<?>> deleteNonExistingItemCallback =
-            (params) -> {
-
-                TestItem nonExistingItem = TestItem.createNewItem();
-
-                try {
-
-                    CosmosItemResponse<?> response = params.cosmosAsyncContainer
-                        .deleteItem(
-                            nonExistingItem.getId(),
-                            new PartitionKey(nonExistingItem.getMypk()))
+                            new PartitionKey(alreadyCreatedItem.getId()))
                         .block();
 
                     return new OperationExecutionResult<>(response, null);
@@ -341,7 +403,7 @@ public class ExcludeRegionWithFaultInjectionTests extends TestSuiteBase {
                     
                     CosmosItemResponse<TestItem> response = params.cosmosAsyncContainer.upsertItem(
                         alreadyCreatedItem, 
-                        new PartitionKey(alreadyCreatedItem.getMypk()), 
+                        new PartitionKey(alreadyCreatedItem.getId()),
                         null).block();
                     
                     return new OperationExecutionResult<>(response, null);
@@ -359,6 +421,33 @@ public class ExcludeRegionWithFaultInjectionTests extends TestSuiteBase {
                 return null;
             };
 
+        Function<ItemOperationInvocationParameters, OperationExecutionResult<?>> upsertNonExistingItemCallback =
+            (params) -> {
+
+                TestItem newItem = TestItem.createNewItem();
+
+                try {
+
+                    CosmosItemResponse<TestItem> response = params.cosmosAsyncContainer.upsertItem(
+                        newItem,
+                        new PartitionKey(newItem.getId()),
+                        null).block();
+
+                    return new OperationExecutionResult<>(response, null);
+
+                } catch (Exception exception) {
+                    if (exception instanceof CosmosException) {
+                        CosmosException cosmosException = Utils.as(exception, CosmosException.class);
+
+                        return new OperationExecutionResult<>(null, cosmosException);
+                    } else {
+                        fail("A CosmosException instance should have been thrown.");
+                    }
+                }
+
+                return null;
+            };
+
         Function<ItemOperationInvocationParameters, OperationExecutionResult<?>> patchItemCallback =
             (params) -> {
                 CosmosPatchOperations patchOperations = CosmosPatchOperations.create();
@@ -373,11 +462,13 @@ public class ExcludeRegionWithFaultInjectionTests extends TestSuiteBase {
                 try {
                     CosmosItemResponse<TestItem> response = params.cosmosAsyncContainer.patchItem(
                         params.createdItem.getId(),
-                        new PartitionKey(params.createdItem.getMypk()),
+                        new PartitionKey(params.createdItem.getId()),
                         patchOperations,
                         params.options,
                         TestItem.class
                     ).block();
+
+                    return new OperationExecutionResult<>(response, null);
                 } catch (Exception exception) {
 
                     if (exception instanceof CosmosException) {
@@ -392,19 +483,123 @@ public class ExcludeRegionWithFaultInjectionTests extends TestSuiteBase {
                 return null;
             };
 
-        return new Object[] {
-            new MutationTestConfig()
-                .withChooseFaultInjectionRegions(this.chooseFirstRegion)
-                .withWriteOperationExecutor(createAnotherItemCallback)
-                .withFaultInjectionServerErrorType(FaultInjectionServerErrorType.READ_SESSION_NOT_AVAILABLE)
-                .withRegionExclusionMutator(this.chooseSecondRegion)
-                .withFaultInjectionOperationType(FaultInjectionOperationType.CREATE_ITEM)
-                .withExpectedResultBeforeMutation(new ExpectedResult(
+        if (this.preferredRegions.size() == 2) {
+            return new Object[] {
+                new MutationTestConfig()
+                    .withChooseFaultInjectionRegions(this.chooseFirstRegion)
+                    .withWriteOperationExecutor(createAnotherItemCallback)
+                    .withFaultInjectionServerErrorType(FaultInjectionServerErrorType.READ_SESSION_NOT_AVAILABLE)
+                    .withRegionExclusionMutator(this.chooseSecondRegion)
+                    .withFaultInjectionOperationType(FaultInjectionOperationType.CREATE_ITEM)
+                    .withExpectedResultBeforeMutation(new ExpectedResult(
+                        HttpConstants.StatusCodes.CREATED,
+                        HttpConstants.SubStatusCodes.UNKNOWN,
+                        this.chooseFirstTwoRegions.apply(this.preferredRegions)
+                    ))
+                    .withExpectedResultAfterMutation(new ExpectedResult(
+                        HttpConstants.StatusCodes.NOTFOUND,
+                        HttpConstants.SubStatusCodes.READ_SESSION_NOT_AVAILABLE,
+                        this.chooseFirstRegion.apply(this.preferredRegions)
+                )),
+                new MutationTestConfig()
+                    .withChooseFaultInjectionRegions(this.chooseFirstRegion)
+                    .withWriteOperationExecutor(replaceItemCallback)
+                    .withFaultInjectionServerErrorType(FaultInjectionServerErrorType.READ_SESSION_NOT_AVAILABLE)
+                    .withRegionExclusionMutator(this.chooseSecondRegion)
+                    .withFaultInjectionOperationType(FaultInjectionOperationType.REPLACE_ITEM)
+                    .withExpectedResultBeforeMutation(new ExpectedResult(
+                        HttpConstants.StatusCodes.OK,
+                        HttpConstants.SubStatusCodes.UNKNOWN,
+                        this.chooseFirstTwoRegions.apply(this.preferredRegions)
+                    ))
+                    .withExpectedResultAfterMutation(new ExpectedResult(
+                        HttpConstants.StatusCodes.NOTFOUND,
+                        HttpConstants.SubStatusCodes.READ_SESSION_NOT_AVAILABLE,
+                        this.chooseFirstRegion.apply(this.preferredRegions)
+                )),
+                new MutationTestConfig()
+                    .withChooseFaultInjectionRegions(this.chooseAllRegions)
+                    .withChooseInitialExclusionRegions(this.chooseLastRegion)
+                    .withWriteOperationExecutor(deleteItemCallback)
+                    .withFaultInjectionServerErrorType(FaultInjectionServerErrorType.READ_SESSION_NOT_AVAILABLE)
+                    .withRegionExclusionMutator((regions) -> new ArrayList<>())
+                    .withFaultInjectionOperationType(FaultInjectionOperationType.DELETE_ITEM)
+                    .withExpectedResultBeforeMutation(new ExpectedResult(
+                        HttpConstants.StatusCodes.NOTFOUND,
+                        HttpConstants.SubStatusCodes.READ_SESSION_NOT_AVAILABLE,
+                        this.chooseFirstRegion.apply(this.preferredRegions)
+                    ))
+                    .withExpectedResultAfterMutation(new ExpectedResult(
+                        HttpConstants.StatusCodes.NOTFOUND,
+                        HttpConstants.SubStatusCodes.READ_SESSION_NOT_AVAILABLE,
+                        this.chooseAllRegions.apply(this.preferredRegions)
+                )),
+                new MutationTestConfig()
+                    .withChooseFaultInjectionRegions(this.chooseFirstRegion)
+                    .withChooseInitialExclusionRegions(this.chooseLastRegion)
+                    .withWriteOperationExecutor(upsertExistingItemCallback)
+                    .withFaultInjectionServerErrorType(FaultInjectionServerErrorType.READ_SESSION_NOT_AVAILABLE)
+                    .withRegionExclusionMutator((regions) -> new ArrayList<>())
+                    .withFaultInjectionOperationType(FaultInjectionOperationType.UPSERT_ITEM)
+                    .withExpectedResultBeforeMutation(new ExpectedResult(
+                        HttpConstants.StatusCodes.NOTFOUND,
+                        HttpConstants.SubStatusCodes.READ_SESSION_NOT_AVAILABLE,
+                        this.chooseFirstRegion.apply(this.preferredRegions)
+                    ))
+                    .withExpectedResultAfterMutation(new ExpectedResult(
+                        HttpConstants.StatusCodes.OK,
+                        HttpConstants.SubStatusCodes.UNKNOWN,
+                        this.chooseAllRegions.apply(this.preferredRegions)
+                )),
+                new MutationTestConfig()
+                    .withChooseFaultInjectionRegions(this.chooseFirstRegion)
+                    .withChooseInitialExclusionRegions(this.chooseLastRegion)
+                    .withWriteOperationExecutor(upsertNonExistingItemCallback)
+                    .withFaultInjectionServerErrorType(FaultInjectionServerErrorType.READ_SESSION_NOT_AVAILABLE)
+                    .withRegionExclusionMutator((regions) -> new ArrayList<>())
+                    .withFaultInjectionOperationType(FaultInjectionOperationType.UPSERT_ITEM)
+                    .withExpectedResultBeforeMutation(new ExpectedResult(
+                        HttpConstants.StatusCodes.NOTFOUND,
+                        HttpConstants.SubStatusCodes.READ_SESSION_NOT_AVAILABLE,
+                        this.chooseFirstRegion.apply(this.preferredRegions)
+                    ))
+                    .withExpectedResultAfterMutation(new ExpectedResult(
                     HttpConstants.StatusCodes.CREATED,
                     HttpConstants.SubStatusCodes.UNKNOWN,
-                    this.chooseFirstTwoRegions.apply(this.preferredRegions)
-                ))
-                .withExpectedResultAfterMutation(new ExpectedResult(
+                    this.chooseAllRegions.apply(this.preferredRegions)
+                )),
+                new MutationTestConfig()
+                    .withChooseFaultInjectionRegions(this.chooseFirstRegion)
+                    .withChooseInitialExclusionRegions(this.chooseLastRegion)
+                    .withWriteOperationExecutor(patchItemCallback)
+                    .withFaultInjectionServerErrorType(FaultInjectionServerErrorType.READ_SESSION_NOT_AVAILABLE)
+                    .withRegionExclusionMutator((regions) -> new ArrayList<>())
+                    .withFaultInjectionOperationType(FaultInjectionOperationType.PATCH_ITEM)
+                    .withExpectedResultBeforeMutation(new ExpectedResult(
+                        HttpConstants.StatusCodes.NOTFOUND,
+                        HttpConstants.SubStatusCodes.READ_SESSION_NOT_AVAILABLE,
+                        this.chooseFirstRegion.apply(this.preferredRegions)
+                    ))
+                    .withExpectedResultAfterMutation(new ExpectedResult(
+                        HttpConstants.StatusCodes.OK,
+                        HttpConstants.SubStatusCodes.UNKNOWN,
+                        this.chooseAllRegions.apply(this.preferredRegions)
+                )),
+            };
+        } else if (this.preferredRegions.size() == 3) {
+            return new Object[] {
+                new MutationTestConfig()
+                    .withChooseFaultInjectionRegions(this.chooseFirstRegion)
+                    .withWriteOperationExecutor(createAnotherItemCallback)
+                    .withFaultInjectionServerErrorType(FaultInjectionServerErrorType.READ_SESSION_NOT_AVAILABLE)
+                    .withRegionExclusionMutator(this.chooseSecondRegion)
+                    .withFaultInjectionOperationType(FaultInjectionOperationType.CREATE_ITEM)
+                    .withExpectedResultBeforeMutation(new ExpectedResult(
+                        HttpConstants.StatusCodes.CREATED,
+                        HttpConstants.SubStatusCodes.UNKNOWN,
+                        this.chooseFirstTwoRegions.apply(this.preferredRegions)
+                    ))
+                    .withExpectedResultAfterMutation(new ExpectedResult(
                     HttpConstants.StatusCodes.CREATED,
                     HttpConstants.SubStatusCodes.UNKNOWN,
                     Arrays.asList(
@@ -412,26 +607,97 @@ public class ExcludeRegionWithFaultInjectionTests extends TestSuiteBase {
                         this.chooseLastRegion.apply(this.preferredRegions).get(0)
                     )
                 )),
-            new MutationTestConfig()
-                .withChooseFaultInjectionRegions(this.chooseFirstRegion)
-                .withWriteOperationExecutor(replaceItemCallback)
-                .withFaultInjectionServerErrorType(FaultInjectionServerErrorType.READ_SESSION_NOT_AVAILABLE)
-                .withRegionExclusionMutator(this.chooseSecondRegion)
-                .withFaultInjectionOperationType(FaultInjectionOperationType.REPLACE_ITEM)
-                .withExpectedResultBeforeMutation(new ExpectedResult(
-                    HttpConstants.StatusCodes.OK,
-                    HttpConstants.SubStatusCodes.UNKNOWN,
-                    this.chooseFirstTwoRegions.apply(this.preferredRegions)
-                ))
-                .withExpectedResultAfterMutation(new ExpectedResult(
+                new MutationTestConfig()
+                    .withChooseFaultInjectionRegions(this.chooseFirstRegion)
+                    .withWriteOperationExecutor(replaceItemCallback)
+                    .withFaultInjectionServerErrorType(FaultInjectionServerErrorType.READ_SESSION_NOT_AVAILABLE)
+                    .withRegionExclusionMutator(this.chooseSecondRegion)
+                    .withFaultInjectionOperationType(FaultInjectionOperationType.REPLACE_ITEM)
+                    .withExpectedResultBeforeMutation(new ExpectedResult(
+                        HttpConstants.StatusCodes.OK,
+                        HttpConstants.SubStatusCodes.UNKNOWN,
+                        this.chooseFirstTwoRegions.apply(this.preferredRegions)
+                    ))
+                    .withExpectedResultAfterMutation(new ExpectedResult(
                     HttpConstants.StatusCodes.OK,
                     HttpConstants.SubStatusCodes.UNKNOWN,
                     Arrays.asList(
                         this.chooseFirstRegion.apply(this.preferredRegions).get(0),
                         this.chooseLastRegion.apply(this.preferredRegions).get(0)
                     )
-            ))
-        };
+                )),
+                new MutationTestConfig()
+                    .withChooseFaultInjectionRegions(this.chooseFirstTwoRegions)
+                    .withChooseInitialExclusionRegions(this.chooseLastRegion)
+                    .withWriteOperationExecutor(deleteItemCallback)
+                    .withFaultInjectionServerErrorType(FaultInjectionServerErrorType.READ_SESSION_NOT_AVAILABLE)
+                    .withRegionExclusionMutator((regions) -> new ArrayList<>())
+                    .withFaultInjectionOperationType(FaultInjectionOperationType.DELETE_ITEM)
+                    .withExpectedResultBeforeMutation(new ExpectedResult(
+                        HttpConstants.StatusCodes.NOTFOUND,
+                        HttpConstants.SubStatusCodes.READ_SESSION_NOT_AVAILABLE,
+                        this.chooseFirstTwoRegions.apply(this.preferredRegions)
+                    ))
+                    .withExpectedResultAfterMutation(new ExpectedResult(
+                    HttpConstants.StatusCodes.NO_CONTENT,
+                    HttpConstants.SubStatusCodes.UNKNOWN,
+                    this.chooseAllRegions.apply(this.preferredRegions)
+                )),
+                new MutationTestConfig()
+                    .withChooseFaultInjectionRegions(this.chooseFirstTwoRegions)
+                    .withChooseInitialExclusionRegions(this.chooseLastRegion)
+                    .withWriteOperationExecutor(upsertExistingItemCallback)
+                    .withFaultInjectionServerErrorType(FaultInjectionServerErrorType.READ_SESSION_NOT_AVAILABLE)
+                    .withRegionExclusionMutator((regions) -> new ArrayList<>())
+                    .withFaultInjectionOperationType(FaultInjectionOperationType.UPSERT_ITEM)
+                    .withExpectedResultBeforeMutation(new ExpectedResult(
+                        HttpConstants.StatusCodes.NOTFOUND,
+                        HttpConstants.SubStatusCodes.READ_SESSION_NOT_AVAILABLE,
+                        this.chooseFirstTwoRegions.apply(this.preferredRegions)
+                    ))
+                    .withExpectedResultAfterMutation(new ExpectedResult(
+                    HttpConstants.StatusCodes.OK,
+                    HttpConstants.SubStatusCodes.UNKNOWN,
+                    this.chooseAllRegions.apply(this.preferredRegions)
+                )),
+                new MutationTestConfig()
+                    .withChooseFaultInjectionRegions(this.chooseFirstTwoRegions)
+                    .withChooseInitialExclusionRegions(this.chooseLastRegion)
+                    .withWriteOperationExecutor(upsertNonExistingItemCallback)
+                    .withFaultInjectionServerErrorType(FaultInjectionServerErrorType.READ_SESSION_NOT_AVAILABLE)
+                    .withRegionExclusionMutator((regions) -> new ArrayList<>())
+                    .withFaultInjectionOperationType(FaultInjectionOperationType.UPSERT_ITEM)
+                    .withExpectedResultBeforeMutation(new ExpectedResult(
+                        HttpConstants.StatusCodes.NOTFOUND,
+                        HttpConstants.SubStatusCodes.READ_SESSION_NOT_AVAILABLE,
+                        this.chooseFirstTwoRegions.apply(this.preferredRegions)
+                    ))
+                    .withExpectedResultAfterMutation(new ExpectedResult(
+                    HttpConstants.StatusCodes.CREATED,
+                    HttpConstants.SubStatusCodes.UNKNOWN,
+                    this.chooseAllRegions.apply(this.preferredRegions)
+                )),
+                new MutationTestConfig()
+                    .withChooseFaultInjectionRegions(this.chooseFirstTwoRegions)
+                    .withChooseInitialExclusionRegions(this.chooseLastRegion)
+                    .withWriteOperationExecutor(patchItemCallback)
+                    .withFaultInjectionServerErrorType(FaultInjectionServerErrorType.READ_SESSION_NOT_AVAILABLE)
+                    .withRegionExclusionMutator((regions) -> new ArrayList<>())
+                    .withFaultInjectionOperationType(FaultInjectionOperationType.PATCH_ITEM)
+                    .withExpectedResultBeforeMutation(new ExpectedResult(
+                        HttpConstants.StatusCodes.NOTFOUND,
+                        HttpConstants.SubStatusCodes.READ_SESSION_NOT_AVAILABLE,
+                        this.chooseFirstTwoRegions.apply(this.preferredRegions)
+                    ))
+                    .withExpectedResultAfterMutation(new ExpectedResult(
+                    HttpConstants.StatusCodes.OK,
+                    HttpConstants.SubStatusCodes.UNKNOWN,
+                    this.chooseAllRegions.apply(this.preferredRegions)
+                )),
+            };
+        }
+
+        throw new IllegalStateException("This test suite is tested for 2 or 3 preferred regions");
     }
 
     @Test(groups = {"multi-master"}, dataProvider = "readSessionNotAvailableTestConfigs", enabled = true)
@@ -504,7 +770,6 @@ public class ExcludeRegionWithFaultInjectionTests extends TestSuiteBase {
         }
     }
 
-    // todo: remove region hardcoding
     @Test(groups = { "multi-master" }, dataProvider = "regionExclusionReadAfterCreateTestConfigs")
     public void regionExclusionMutationOnClient_readAfterCreate_test(MutationTestConfig mutationTestConfig) throws InterruptedException {
         System.setProperty("COSMOS.MAX_RETRIES_IN_LOCAL_REGION_WHEN_REMOTE_REGION_PREFERRED", String.valueOf(2));
@@ -566,7 +831,6 @@ public class ExcludeRegionWithFaultInjectionTests extends TestSuiteBase {
                 if (exception instanceof CosmosException) {
                     CosmosException cosmosException = Utils.as(exception, CosmosException.class);
 
-                    // todo: add exception based tests
                     validateResponse(
                         new OperationExecutionResult<TestItem>(
                             null,
@@ -602,7 +866,6 @@ public class ExcludeRegionWithFaultInjectionTests extends TestSuiteBase {
                 if (exception instanceof CosmosException) {
                     CosmosException cosmosException = Utils.as(exception, CosmosException.class);
 
-                    // todo: add exception based tests
                     validateResponse(
                         new OperationExecutionResult<TestItem>(
                             null,
@@ -862,6 +1125,19 @@ public class ExcludeRegionWithFaultInjectionTests extends TestSuiteBase {
                 assertThat(actualContactedRegionNames.contains(expectedContactedRegionName.toLowerCase(Locale.ROOT))).isTrue();
             }
         }
+    }
+
+    private static Map<String, String> getRegionMap(DatabaseAccount databaseAccount, boolean writeOnly) {
+        Iterator<DatabaseAccountLocation> locationIterator =
+            writeOnly ? databaseAccount.getWritableLocations().iterator() : databaseAccount.getReadableLocations().iterator();
+        Map<String, String> regionMap = new ConcurrentHashMap<>();
+
+        while (locationIterator.hasNext()) {
+            DatabaseAccountLocation accountLocation = locationIterator.next();
+            regionMap.put(accountLocation.getName(), accountLocation.getEndpoint());
+        }
+
+        return regionMap;
     }
 
     private static class OperationExecutionResult<T> {
