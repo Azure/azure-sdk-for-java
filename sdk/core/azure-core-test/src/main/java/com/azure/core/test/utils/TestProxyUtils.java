@@ -13,6 +13,7 @@ import com.azure.core.test.models.CustomMatcher;
 import com.azure.core.test.models.TestProxyRequestMatcher;
 import com.azure.core.test.models.TestProxySanitizer;
 import com.azure.core.test.models.TestProxySanitizerType;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.UrlBuilder;
 import com.azure.core.util.logging.ClientLogger;
 
@@ -91,7 +92,8 @@ public class TestProxyUtils {
      * @param skipRecordingRequestBody Flag indicating to skip recording request bodies when tests run in Record mode.
      * @throws RuntimeException Construction of one of the URLs failed.
      */
-    public static void changeHeaders(HttpRequest request, URL proxyUrl, String xRecordingId, String mode, boolean skipRecordingRequestBody) {
+    public static void changeHeaders(HttpRequest request, URL proxyUrl, String xRecordingId, String mode,
+        boolean skipRecordingRequestBody) {
         HttpHeader upstreamUri = request.getHeaders().get(X_RECORDING_UPSTREAM_BASE_URI);
 
         UrlBuilder proxyUrlBuilder = UrlBuilder.parse(request.getUrl());
@@ -265,7 +267,7 @@ public class TestProxyUtils {
     }
 
     private static String createCustomMatcherRequestBody(CustomMatcher customMatcher) {
-        return String.format("{\"ignoredHeaders\":\"%s\",\"excludedHeaders\":\"%s\",\"compareBodies\":%s,\"ignoredQueryParameters\":\"%s\", \"ignoreQueryOrdering\":%s}",
+        return String.format("{\"ignoredHeaders\":\"%s\",\"excludedHeaders\":\"%s\",\"compareBodies\":%s,\"ignoredQueryParameters\":\"%s\",\"ignoreQueryOrdering\":%s}",
             getCommaSeperatedString(customMatcher.getHeadersKeyOnlyMatch()),
             getCommaSeperatedString(customMatcher.getExcludedHeaders()),
             customMatcher.isComparingBodies(),
@@ -278,7 +280,7 @@ public class TestProxyUtils {
             return null;
         }
         return stringList.stream()
-            .filter(s -> s != null && !s.isEmpty())
+            .filter(s -> !CoreUtils.isNullOrEmpty(s))
             .collect(Collectors.joining(","));
     }
 
@@ -320,7 +322,10 @@ public class TestProxyUtils {
      * @param proxyUrl The proxyUrl to use when constructing requests.
      * @return the list of sanitizer {@link HttpRequest requests} to be sent.
      * @throws RuntimeException if {@link TestProxySanitizerType} is not supported.
+     * @deprecated Use {@link #createAddSanitizersRequest(List, URL)} instead as this will create a bulk HttpRequest
+     * for setting the sanitizers for a test proxy session instead of a request per sanitizer.
      */
+    @Deprecated
     public static List<HttpRequest> getSanitizerRequests(List<TestProxySanitizer> sanitizers, URL proxyUrl) {
         return sanitizers.stream().map(testProxySanitizer -> {
             String requestBody;
@@ -357,6 +362,64 @@ public class TestProxyUtils {
                         String.format("Sanitizer type {%s} not supported", testProxySanitizer.getType()));
             }
         }).collect(Collectors.toList());
+    }
+
+    /**
+     * Creates a request to bulk add sanitizers to the test proxy server.
+     * <p>
+     * For more information about adding bulk sanitizers see the
+     * <a href="https://github.com/Azure/azure-sdk-tools/tree/feature/add-bulk-sanitizers/tools/test-proxy/Azure.Sdk.Tools.TestProxy#passing-sanitizers-in-bulk">Passing Sanitizers in Bulk</a>
+     * wiki.
+     *
+     * @param sanitizers The list of sanitizers to be added.
+     * @param proxyUrl The proxyUrl to use when constructing requests.
+     * @return The {@link HttpRequest request} to be sent.
+     * @throws RuntimeException if {@link TestProxySanitizerType} is not supported.
+     */
+    public static HttpRequest createAddSanitizersRequest(List<TestProxySanitizer> sanitizers, URL proxyUrl) {
+        List<String> sanitizersJsonPayloads = new ArrayList<>(sanitizers.size());
+
+        for (TestProxySanitizer sanitizer : sanitizers) {
+            String requestBody;
+            String sanitizerType;
+            switch (sanitizer.getType()) {
+                case URL:
+                    sanitizerType = TestProxySanitizerType.URL.getName();
+                    requestBody = createRegexRequestBody(null, sanitizer.getRegex(), sanitizer.getRedactedValue(),
+                        sanitizer.getGroupForReplace());
+                    break;
+
+                case BODY_REGEX:
+                    sanitizerType = TestProxySanitizerType.BODY_REGEX.getName();
+                    requestBody = createRegexRequestBody(null, sanitizer.getRegex(), sanitizer.getRedactedValue(),
+                        sanitizer.getGroupForReplace());
+                    break;
+
+                case BODY_KEY:
+                    sanitizerType = TestProxySanitizerType.BODY_KEY.getName();
+                    requestBody = createBodyJsonKeyRequestBody(sanitizer.getKey(), sanitizer.getRegex(),
+                        sanitizer.getRedactedValue());
+                    break;
+
+                case HEADER:
+                    sanitizerType = HEADER.getName();
+                    if (sanitizer.getKey() == null && sanitizer.getRegex() == null) {
+                        throw new RuntimeException(
+                            "Missing regexKey and/or headerKey for sanitizer type {" + sanitizerType + "}");
+                    }
+                    requestBody = createRegexRequestBody(sanitizer.getKey(), sanitizer.getRegex(), sanitizer.getRedactedValue(),
+                        sanitizer.getGroupForReplace());
+                    break;
+
+                default:
+                    throw new RuntimeException("Sanitizer type {" + sanitizer.getType() + "} not supported");
+            }
+
+            sanitizersJsonPayloads.add("{\"Name\":\"" + sanitizerType + "\",\"Body\":" + requestBody + "}");
+        }
+
+        String requestBody = "[" + CoreUtils.stringJoin(",", sanitizersJsonPayloads) + "]";
+        return new HttpRequest(HttpMethod.POST, proxyUrl +"/Admin/AddSanitizers").setBody(requestBody);
     }
 
     private static HttpRequest createHttpRequest(String requestBody, String sanitizerType, URL proxyUrl) {
