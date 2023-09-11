@@ -92,6 +92,7 @@ public class ExcludeRegionWithFaultInjectionTests extends TestSuiteBase {
         this.preferredRegions = this.writeRegionMap.keySet().stream().collect(Collectors.toList());
     }
 
+    // todo: add scenarios for failover on 503s after fabian's ClientRetryPolicy improvement
     @DataProvider(name = "regionExclusionReadAfterCreateTestConfigs")
     public Object[] regionExclusionReadAfterCreateTestConfigs() {
 
