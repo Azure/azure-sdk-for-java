@@ -894,7 +894,7 @@ public class CosmosClientBuilder implements
     }
 
     /**
-     * Sets the regions to exclude from the list of preferred regions. This means the request will not be
+     * Gets the regions to exclude from the list of preferred regions. A request will not be
      * routed to these excluded regions for non-retry and retry scenarios
      * for the workload executed through this instance of {@link CosmosClient} / {@link CosmosAsyncClient}.
      *
