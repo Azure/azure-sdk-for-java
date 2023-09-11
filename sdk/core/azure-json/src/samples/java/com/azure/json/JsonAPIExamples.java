@@ -15,7 +15,7 @@ import java.io.IOException;
  *      - JsonString
  * NOTE: can be removed later.
  */
-public class MainClass {
+public class JsonAPIExamples {
     public static void main(String[] args) throws InvalidJsonDataTypeException, IOException {
 
         int[] numArray = new int[10];
