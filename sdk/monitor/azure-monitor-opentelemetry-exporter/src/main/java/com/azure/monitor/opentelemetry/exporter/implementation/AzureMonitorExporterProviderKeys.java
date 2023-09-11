@@ -1,6 +1,6 @@
 package com.azure.monitor.opentelemetry.exporter.implementation;
 
-public class AzureMonitorExporterProviderKeys {
+public final class AzureMonitorExporterProviderKeys {
 
     public static final String EXPORTER_NAME = "azure_monitor";
 
