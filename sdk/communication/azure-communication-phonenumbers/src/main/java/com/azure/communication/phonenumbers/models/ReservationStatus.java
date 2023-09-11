@@ -63,7 +63,11 @@ public final class ReservationStatus extends ExpandableStringEnum<ReservationSta
         return fromString(name, ReservationStatus.class);
     }
 
-    /** @return known ReservationStatus values. */
+    /** 
+     * Gives a Collection of ReservationStatus values.
+     * 
+     * @return known ReservationStatus values.
+     */
     public static Collection<ReservationStatus> values() {
         return values(ReservationStatus.class);
     }

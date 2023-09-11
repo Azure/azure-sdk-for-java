@@ -8,6 +8,7 @@ import com.azure.cosmos.implementation.IOpenConnectionsHandler;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.OpenConnectionResponse;
 import com.azure.cosmos.implementation.ShouldRetryResult;
+import com.azure.cosmos.implementation.directconnectivity.AddressSelector;
 import com.azure.cosmos.implementation.directconnectivity.TransportException;
 import com.azure.cosmos.implementation.directconnectivity.Uri;
 import com.azure.cosmos.models.CosmosContainerIdentity;
@@ -53,11 +54,12 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
     private static final Map<ConnectionOpenFlowAggressivenessHint, ConcurrencyConfiguration> concurrencySettings = new HashMap<>();
     private final IOpenConnectionsHandler openConnectionsHandler;
     private final RntbdEndpoint.Provider endpointProvider;
+    private final AddressSelector addressSelector;
     private Disposable openConnectionBackgroundTask;
     private final Sinks.EmitFailureHandler serializedEmitFailureHandler;
     private static final int OPEN_CONNECTION_SINK_BUFFER_SIZE = 100_000;
 
-    public ProactiveOpenConnectionsProcessor(final RntbdEndpoint.Provider endpointProvider) {
+    public ProactiveOpenConnectionsProcessor(final RntbdEndpoint.Provider endpointProvider, final AddressSelector addressSelector) {
         this.aggressivenessHint = new AtomicReference<>(ConnectionOpenFlowAggressivenessHint.DEFENSIVE);
         this.endpointsUnderMonitorMap = new ConcurrentHashMap<>();
         ReentrantReadWriteLock throughputReadWriteLock = new ReentrantReadWriteLock();
@@ -66,6 +68,7 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
 
         this.openConnectionsHandler = new RntbdOpenConnectionsHandler(endpointProvider);
         this.endpointProvider = endpointProvider;
+        this.addressSelector = addressSelector;
         this.serializedEmitFailureHandler = new SerializedEmitFailureHandler();
         this.containersUnderOpenConnectionAndInitCaches = ConcurrentHashMap.newKeySet();
         this.collectionRidsAndUrisUnderOpenConnectionAndInitCaches = new ConcurrentHashMap<>();
@@ -205,7 +208,7 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
             }
         }
     }
-    
+
     public void recordCollectionRidsAndUrisUnderOpenConnectionsAndInitCaches(String collectionRid, List<String> addressUrisAsString) {
         this.collectionRidsAndUrisUnderOpenConnectionAndInitCaches.compute(collectionRid, (ignore, urisAsString) -> {
 
@@ -314,7 +317,8 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
                 openConnectionTask.getServiceEndpoint(),
                 openConnectionTask.getAddressUri(),
                 this,
-                openConnectionTask.getMinConnectionsRequiredForEndpoint());
+                openConnectionTask.getMinConnectionsRequiredForEndpoint(),
+                this.addressSelector);
 
         endpoint.setMinChannelsRequired(Math.max(openConnectionTask.getMinConnectionsRequiredForEndpoint(),
                 endpoint.getMinChannelsRequired()));

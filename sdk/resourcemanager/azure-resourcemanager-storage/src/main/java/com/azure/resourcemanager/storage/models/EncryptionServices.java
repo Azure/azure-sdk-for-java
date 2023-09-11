@@ -34,6 +34,10 @@ public final class EncryptionServices {
     @JsonProperty(value = "queue")
     private EncryptionService queue;
 
+    /** Creates an instance of EncryptionServices class. */
+    public EncryptionServices() {
+    }
+
     /**
      * Get the blob property: The encryption function of the blob storage service.
      *

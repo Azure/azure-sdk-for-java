@@ -30,6 +30,10 @@ public final class PermissionScope {
     @JsonProperty(value = "resourceName", required = true)
     private String resourceName;
 
+    /** Creates an instance of PermissionScope class. */
+    public PermissionScope() {
+    }
+
     /**
      * Get the permissions property: The permissions for the local user. Possible values include: Read (r), Write (w),
      * Delete (d), List (l), and Create (c).

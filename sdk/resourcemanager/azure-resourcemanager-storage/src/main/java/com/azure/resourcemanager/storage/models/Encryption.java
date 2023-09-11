@@ -41,6 +41,10 @@ public final class Encryption {
     @JsonProperty(value = "identity")
     private EncryptionIdentity encryptionIdentity;
 
+    /** Creates an instance of Encryption class. */
+    public Encryption() {
+    }
+
     /**
      * Get the services property: List of services which support encryption.
      *

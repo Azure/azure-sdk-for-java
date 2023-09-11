@@ -7,21 +7,23 @@ package com.azure.resourcemanager.managednetworkfabric.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
-import com.azure.resourcemanager.managednetworkfabric.models.CommunityActionTypes;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.managednetworkfabric.models.AdministrativeState;
+import com.azure.resourcemanager.managednetworkfabric.models.ConfigurationState;
+import com.azure.resourcemanager.managednetworkfabric.models.IpCommunityRule;
 import com.azure.resourcemanager.managednetworkfabric.models.ProvisioningState;
-import com.azure.resourcemanager.managednetworkfabric.models.WellKnownCommunities;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/** The IpCommunity resource definition. */
+/** The IP Community resource definition. */
 @Fluent
 public final class IpCommunityInner extends Resource {
     /*
      * Resource properties.
      */
-    @JsonProperty(value = "properties")
-    private IpCommunityProperties innerProperties;
+    @JsonProperty(value = "properties", required = true)
+    private IpCommunityProperties innerProperties = new IpCommunityProperties();
 
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
@@ -66,81 +68,53 @@ public final class IpCommunityInner extends Resource {
     }
 
     /**
-     * Get the action property: Action to be taken on the configuration. Example: Permit | Deny.
+     * Get the configurationState property: Configuration state of the resource.
      *
-     * @return the action value.
+     * @return the configurationState value.
      */
-    public CommunityActionTypes action() {
-        return this.innerProperties() == null ? null : this.innerProperties().action();
+    public ConfigurationState configurationState() {
+        return this.innerProperties() == null ? null : this.innerProperties().configurationState();
     }
 
     /**
-     * Set the action property: Action to be taken on the configuration. Example: Permit | Deny.
-     *
-     * @param action the action value to set.
-     * @return the IpCommunityInner object itself.
-     */
-    public IpCommunityInner withAction(CommunityActionTypes action) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new IpCommunityProperties();
-        }
-        this.innerProperties().withAction(action);
-        return this;
-    }
-
-    /**
-     * Get the wellKnownCommunities property: Supported well known Community List.
-     *
-     * @return the wellKnownCommunities value.
-     */
-    public List<WellKnownCommunities> wellKnownCommunities() {
-        return this.innerProperties() == null ? null : this.innerProperties().wellKnownCommunities();
-    }
-
-    /**
-     * Set the wellKnownCommunities property: Supported well known Community List.
-     *
-     * @param wellKnownCommunities the wellKnownCommunities value to set.
-     * @return the IpCommunityInner object itself.
-     */
-    public IpCommunityInner withWellKnownCommunities(List<WellKnownCommunities> wellKnownCommunities) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new IpCommunityProperties();
-        }
-        this.innerProperties().withWellKnownCommunities(wellKnownCommunities);
-        return this;
-    }
-
-    /**
-     * Get the communityMembers property: List the communityMembers of IP Community .
-     *
-     * @return the communityMembers value.
-     */
-    public List<String> communityMembers() {
-        return this.innerProperties() == null ? null : this.innerProperties().communityMembers();
-    }
-
-    /**
-     * Set the communityMembers property: List the communityMembers of IP Community .
-     *
-     * @param communityMembers the communityMembers value to set.
-     * @return the IpCommunityInner object itself.
-     */
-    public IpCommunityInner withCommunityMembers(List<String> communityMembers) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new IpCommunityProperties();
-        }
-        this.innerProperties().withCommunityMembers(communityMembers);
-        return this;
-    }
-
-    /**
-     * Get the provisioningState property: Gets the provisioning state of the resource.
+     * Get the provisioningState property: Provisioning state of the resource.
      *
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
         return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
+     * Get the administrativeState property: Administrative state of the resource.
+     *
+     * @return the administrativeState value.
+     */
+    public AdministrativeState administrativeState() {
+        return this.innerProperties() == null ? null : this.innerProperties().administrativeState();
+    }
+
+    /**
+     * Get the ipCommunityRules property: List of IP Community Rules.
+     *
+     * @return the ipCommunityRules value.
+     */
+    public List<IpCommunityRule> ipCommunityRules() {
+        return this.innerProperties() == null ? null : this.innerProperties().ipCommunityRules();
+    }
+
+    /**
+     * Set the ipCommunityRules property: List of IP Community Rules.
+     *
+     * @param ipCommunityRules the ipCommunityRules value to set.
+     * @return the IpCommunityInner object itself.
+     */
+    public IpCommunityInner withIpCommunityRules(List<IpCommunityRule> ipCommunityRules) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new IpCommunityProperties();
+        }
+        this.innerProperties().withIpCommunityRules(ipCommunityRules);
+        return this;
     }
 
     /**
@@ -172,8 +146,15 @@ public final class IpCommunityInner extends Resource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (innerProperties() != null) {
+        if (innerProperties() == null) {
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property innerProperties in model IpCommunityInner"));
+        } else {
             innerProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(IpCommunityInner.class);
 }

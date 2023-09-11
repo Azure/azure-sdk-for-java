@@ -21,7 +21,7 @@ public interface IpCommunities {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the IpCommunity resource definition along with {@link Response}.
+     * @return the IP Community resource definition along with {@link Response}.
      */
     Response<IpCommunity> getByResourceGroupWithResponse(
         String resourceGroupName, String ipCommunityName, Context context);
@@ -36,7 +36,7 @@ public interface IpCommunities {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the IpCommunity resource definition.
+     * @return the IP Community resource definition.
      */
     IpCommunity getByResourceGroup(String resourceGroupName, String ipCommunityName);
 
@@ -68,53 +68,53 @@ public interface IpCommunities {
     void delete(String resourceGroupName, String ipCommunityName, Context context);
 
     /**
-     * List IpCommunities by resource group.
+     * List IP Communities by resource group.
      *
-     * <p>Implements IpCommunities list by resource group GET method.
+     * <p>Implements IP Communities list by resource group GET method.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of IPCommunities as paginated response with {@link PagedIterable}.
+     * @return list of IP Communities as paginated response with {@link PagedIterable}.
      */
     PagedIterable<IpCommunity> listByResourceGroup(String resourceGroupName);
 
     /**
-     * List IpCommunities by resource group.
+     * List IP Communities by resource group.
      *
-     * <p>Implements IpCommunities list by resource group GET method.
+     * <p>Implements IP Communities list by resource group GET method.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of IPCommunities as paginated response with {@link PagedIterable}.
+     * @return list of IP Communities as paginated response with {@link PagedIterable}.
      */
     PagedIterable<IpCommunity> listByResourceGroup(String resourceGroupName, Context context);
 
     /**
-     * List IpCommunities by subscription.
+     * List IP Communities by subscription.
      *
-     * <p>Implements IpCommunities list by subscription GET method.
+     * <p>Implements IP Communities list by subscription GET method.
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of IPCommunities as paginated response with {@link PagedIterable}.
+     * @return list of IP Communities as paginated response with {@link PagedIterable}.
      */
     PagedIterable<IpCommunity> list();
 
     /**
-     * List IpCommunities by subscription.
+     * List IP Communities by subscription.
      *
-     * <p>Implements IpCommunities list by subscription GET method.
+     * <p>Implements IP Communities list by subscription GET method.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of IPCommunities as paginated response with {@link PagedIterable}.
+     * @return list of IP Communities as paginated response with {@link PagedIterable}.
      */
     PagedIterable<IpCommunity> list(Context context);
 
@@ -127,7 +127,7 @@ public interface IpCommunities {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the IpCommunity resource definition along with {@link Response}.
+     * @return the IP Community resource definition along with {@link Response}.
      */
     IpCommunity getById(String id);
 
@@ -141,7 +141,7 @@ public interface IpCommunities {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the IpCommunity resource definition along with {@link Response}.
+     * @return the IP Community resource definition along with {@link Response}.
      */
     Response<IpCommunity> getByIdWithResponse(String id, Context context);
 

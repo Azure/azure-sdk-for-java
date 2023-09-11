@@ -46,7 +46,7 @@ public class TopQueryTests extends TestSuiteBase {
         super(clientBuilder);
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT, dataProvider = "queryMetricsArgProvider", retryAnalyzer = RetryAnalyzer.class)
+    @Test(groups = { "query" }, timeOut = TIMEOUT, dataProvider = "queryMetricsArgProvider", retryAnalyzer = RetryAnalyzer.class)
     public void queryDocumentsWithTop(Boolean qmEnabled) throws Exception {
 
         CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
@@ -97,7 +97,7 @@ public class TopQueryTests extends TestSuiteBase {
         }
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    @Test(groups = { "query" }, timeOut = TIMEOUT)
     public void topContinuationTokenRoundTrips() throws Exception {
         {
             // Positive
@@ -121,13 +121,13 @@ public class TopQueryTests extends TestSuiteBase {
         }
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT * 10, retryAnalyzer = RetryAnalyzer.class)
+    @Test(groups = { "query" }, timeOut = TIMEOUT * 10, retryAnalyzer = RetryAnalyzer.class)
     public void queryDocumentsWithTopContinuationTokens() throws Exception {
         String query = "SELECT TOP 8 * FROM c";
         this.queryWithContinuationTokensAndPageSizes(query, new int[] { 1, 5, 10 }, 8);
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT * 10, retryAnalyzer = RetryAnalyzer.class)
+    @Test(groups = { "query" }, timeOut = TIMEOUT * 10, retryAnalyzer = RetryAnalyzer.class)
     public void queryDocumentsWithTopGreaterThanItemsContinuationTokens() throws Exception {
         String query = "SELECT TOP 2147483647 * FROM c";
         this.queryWithContinuationTokensAndPageSizes(query, new int[] {1}, 20);
@@ -199,12 +199,12 @@ public class TopQueryTests extends TestSuiteBase {
         }
     }
 
-    @AfterClass(groups = { "simple" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
+    @AfterClass(groups = { "query" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
         safeClose(client);
     }
 
-    @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
+    @BeforeClass(groups = { "query" }, timeOut = SETUP_TIMEOUT)
     public void before_TopQueryTests() throws Exception {
         client = getClientBuilder().buildAsyncClient();
         createdCollection = getSharedSinglePartitionCosmosContainer(client);

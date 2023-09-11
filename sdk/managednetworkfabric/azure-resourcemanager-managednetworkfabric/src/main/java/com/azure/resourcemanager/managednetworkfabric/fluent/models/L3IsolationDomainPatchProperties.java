@@ -6,14 +6,15 @@ package com.azure.resourcemanager.managednetworkfabric.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.managednetworkfabric.models.AggregateRouteConfiguration;
-import com.azure.resourcemanager.managednetworkfabric.models.L3IsolationDomainPatchPropertiesConnectedSubnetRoutePolicy;
+import com.azure.resourcemanager.managednetworkfabric.models.AnnotationResource;
+import com.azure.resourcemanager.managednetworkfabric.models.ConnectedSubnetRoutePolicy;
 import com.azure.resourcemanager.managednetworkfabric.models.RedistributeConnectedSubnets;
 import com.azure.resourcemanager.managednetworkfabric.models.RedistributeStaticRoutes;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** L3IsolationDomainPatchProperties define the patch resource properties. */
+/** Resource properties. */
 @Fluent
-public class L3IsolationDomainPatchProperties {
+public final class L3IsolationDomainPatchProperties extends AnnotationResource {
     /*
      * Advertise Connected Subnets. Ex: "True" | "False".
      */
@@ -27,22 +28,16 @@ public class L3IsolationDomainPatchProperties {
     private RedistributeStaticRoutes redistributeStaticRoutes;
 
     /*
-     * List of Ipv4 and Ipv6 route configurations.
+     * Aggregate route configurations.
      */
     @JsonProperty(value = "aggregateRouteConfiguration")
     private AggregateRouteConfiguration aggregateRouteConfiguration;
 
     /*
-     * L3 Isolation Domain description.
-     */
-    @JsonProperty(value = "description")
-    private String description;
-
-    /*
      * Connected Subnet RoutePolicy
      */
     @JsonProperty(value = "connectedSubnetRoutePolicy")
-    private L3IsolationDomainPatchPropertiesConnectedSubnetRoutePolicy connectedSubnetRoutePolicy;
+    private ConnectedSubnetRoutePolicy connectedSubnetRoutePolicy;
 
     /** Creates an instance of L3IsolationDomainPatchProperties class. */
     public L3IsolationDomainPatchProperties() {
@@ -91,7 +86,7 @@ public class L3IsolationDomainPatchProperties {
     }
 
     /**
-     * Get the aggregateRouteConfiguration property: List of Ipv4 and Ipv6 route configurations.
+     * Get the aggregateRouteConfiguration property: Aggregate route configurations.
      *
      * @return the aggregateRouteConfiguration value.
      */
@@ -100,7 +95,7 @@ public class L3IsolationDomainPatchProperties {
     }
 
     /**
-     * Set the aggregateRouteConfiguration property: List of Ipv4 and Ipv6 route configurations.
+     * Set the aggregateRouteConfiguration property: Aggregate route configurations.
      *
      * @param aggregateRouteConfiguration the aggregateRouteConfiguration value to set.
      * @return the L3IsolationDomainPatchProperties object itself.
@@ -112,31 +107,11 @@ public class L3IsolationDomainPatchProperties {
     }
 
     /**
-     * Get the description property: L3 Isolation Domain description.
-     *
-     * @return the description value.
-     */
-    public String description() {
-        return this.description;
-    }
-
-    /**
-     * Set the description property: L3 Isolation Domain description.
-     *
-     * @param description the description value to set.
-     * @return the L3IsolationDomainPatchProperties object itself.
-     */
-    public L3IsolationDomainPatchProperties withDescription(String description) {
-        this.description = description;
-        return this;
-    }
-
-    /**
      * Get the connectedSubnetRoutePolicy property: Connected Subnet RoutePolicy.
      *
      * @return the connectedSubnetRoutePolicy value.
      */
-    public L3IsolationDomainPatchPropertiesConnectedSubnetRoutePolicy connectedSubnetRoutePolicy() {
+    public ConnectedSubnetRoutePolicy connectedSubnetRoutePolicy() {
         return this.connectedSubnetRoutePolicy;
     }
 
@@ -147,8 +122,15 @@ public class L3IsolationDomainPatchProperties {
      * @return the L3IsolationDomainPatchProperties object itself.
      */
     public L3IsolationDomainPatchProperties withConnectedSubnetRoutePolicy(
-        L3IsolationDomainPatchPropertiesConnectedSubnetRoutePolicy connectedSubnetRoutePolicy) {
+        ConnectedSubnetRoutePolicy connectedSubnetRoutePolicy) {
         this.connectedSubnetRoutePolicy = connectedSubnetRoutePolicy;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public L3IsolationDomainPatchProperties withAnnotation(String annotation) {
+        super.withAnnotation(annotation);
         return this;
     }
 
@@ -157,7 +139,9 @@ public class L3IsolationDomainPatchProperties {
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
+    @Override
     public void validate() {
+        super.validate();
         if (aggregateRouteConfiguration() != null) {
             aggregateRouteConfiguration().validate();
         }

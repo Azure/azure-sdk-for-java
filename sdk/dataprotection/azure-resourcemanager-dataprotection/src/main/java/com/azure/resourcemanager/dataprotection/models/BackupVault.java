@@ -64,6 +64,12 @@ public final class BackupVault {
     @JsonProperty(value = "featureSettings")
     private FeatureSettings featureSettings;
 
+    /*
+     * Secure Score of Backup Vault
+     */
+    @JsonProperty(value = "secureScore", access = JsonProperty.Access.WRITE_ONLY)
+    private SecureScoreLevel secureScore;
+
     /** Creates an instance of BackupVault class. */
     public BackupVault() {
     }
@@ -182,6 +188,15 @@ public final class BackupVault {
     public BackupVault withFeatureSettings(FeatureSettings featureSettings) {
         this.featureSettings = featureSettings;
         return this;
+    }
+
+    /**
+     * Get the secureScore property: Secure Score of Backup Vault.
+     *
+     * @return the secureScore value.
+     */
+    public SecureScoreLevel secureScore() {
+        return this.secureScore;
     }
 
     /**

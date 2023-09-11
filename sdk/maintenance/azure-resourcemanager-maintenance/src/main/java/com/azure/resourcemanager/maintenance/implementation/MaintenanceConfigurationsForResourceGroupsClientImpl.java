@@ -66,8 +66,7 @@ public final class MaintenanceConfigurationsForResourceGroupsClientImpl
     public interface MaintenanceConfigurationsForResourceGroupsService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Maintenance"
-                + "/maintenanceConfigurations")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Maintenance/maintenanceConfigurations")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ListMaintenanceConfigurationsResult>> listByResourceGroup(

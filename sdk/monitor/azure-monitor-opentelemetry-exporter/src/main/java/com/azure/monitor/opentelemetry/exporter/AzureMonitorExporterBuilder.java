@@ -31,8 +31,10 @@ import com.azure.monitor.opentelemetry.exporter.implementation.models.ContextTag
 import com.azure.monitor.opentelemetry.exporter.implementation.pipeline.TelemetryItemExporter;
 import com.azure.monitor.opentelemetry.exporter.implementation.pipeline.TelemetryPipeline;
 import com.azure.monitor.opentelemetry.exporter.implementation.pipeline.TelemetryPipelineListener;
+import com.azure.monitor.opentelemetry.exporter.implementation.utils.ResourceParser;
 import com.azure.monitor.opentelemetry.exporter.implementation.utils.TempDirs;
 import com.azure.monitor.opentelemetry.exporter.implementation.utils.VersionGenerator;
+import io.opentelemetry.sdk.autoconfigure.ResourceConfiguration;
 import io.opentelemetry.sdk.logs.export.LogRecordExporter;
 import io.opentelemetry.sdk.metrics.export.MetricExporter;
 import io.opentelemetry.sdk.resources.Resource;
@@ -222,7 +224,11 @@ public final class AzureMonitorExporterBuilder {
      */
     public SpanExporter buildTraceExporter() {
         SpanDataMapper mapper =
-            new SpanDataMapper(true, this::populateDefaults, (event, instrumentationName) -> false);
+            new SpanDataMapper(
+                true,
+                this::populateDefaults,
+                (event, instrumentationName) -> false,
+                (span, event) -> false);
 
         return new AzureMonitorTraceExporter(mapper, initExporterBuilder());
     }
@@ -285,8 +291,7 @@ public final class AzureMonitorExporterBuilder {
         File tempDir =
             TempDirs.getApplicationInsightsTempDir(
                 LOGGER,
-                "Telemetry will not be stored to disk and retried later"
-                    + " on sporadic network failures");
+                "Telemetry will not be stored to disk and retried on sporadic network failures");
 
         TelemetryItemExporter telemetryItemExporter;
         if (tempDir != null) {
@@ -298,9 +303,13 @@ public final class AzureMonitorExporterBuilder {
                         TempDirs.getSubDir(tempDir, "telemetry"),
                         pipeline,
                         LocalStorageStats.noop(),
-                        false));
+                        false),
+                    // TODO (trask) pass in autoconfigure's ConfigProperties after converting this to autoconfigure
+                    ResourceConfiguration.createEnvironmentResource());
         } else {
-            telemetryItemExporter = new TelemetryItemExporter(pipeline, TelemetryPipelineListener.noop());
+            telemetryItemExporter = new TelemetryItemExporter(
+                    // TODO (trask) pass in autoconfigure's ConfigProperties after converting this to autoconfigure
+                    pipeline, TelemetryPipelineListener.noop(), ResourceConfiguration.createEnvironmentResource());
         }
         return telemetryItemExporter;
     }
@@ -329,7 +338,7 @@ public final class AzureMonitorExporterBuilder {
         return new HttpPipelineBuilder()
             .policies(policies.toArray(new HttpPipelinePolicy[0]))
             .httpClient(httpClient)
-                .tracer(new NoopTracer())
+            .tracer(new NoopTracer())
             .build();
     }
 

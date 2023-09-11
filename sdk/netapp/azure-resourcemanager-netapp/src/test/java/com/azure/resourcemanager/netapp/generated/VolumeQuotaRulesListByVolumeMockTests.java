@@ -33,7 +33,7 @@ public final class VolumeQuotaRulesListByVolumeMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"Creating\",\"quotaSizeInKiBs\":1005908306135997596,\"quotaType\":\"IndividualUserQuota\",\"quotaTarget\":\"rd\"},\"location\":\"ovw\",\"tags\":{\"hv\":\"ptgoeiybbabp\",\"igjkskyrio\":\"slkvntjl\",\"mifrygznmma\":\"vzidsxwaab\"},\"id\":\"ri\",\"name\":\"kzobgopxlhsln\",\"type\":\"lxieixynllxecwcr\"}]}";
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Deleting\",\"quotaSizeInKiBs\":4670031312582327027,\"quotaType\":\"IndividualUserQuota\",\"quotaTarget\":\"xuuyilflqoiquvr\"},\"location\":\"mrnjh\",\"tags\":{\"w\":\"jztczytqj\",\"mr\":\"auunfprnjletlx\"},\"id\":\"ddoui\",\"name\":\"amowaziynknlqwzd\",\"type\":\"piwhxqs\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -64,12 +64,12 @@ public final class VolumeQuotaRulesListByVolumeMockTests {
         PagedIterable<VolumeQuotaRule> response =
             manager
                 .volumeQuotaRules()
-                .listByVolume("bjwgnyfus", "zsvtuikzhajqgl", "fh", "l", com.azure.core.util.Context.NONE);
+                .listByVolume("rgxffmshkw", "bkgozxwopdbydpi", "qaclnapxbiy", "nugj", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("ovw", response.iterator().next().location());
-        Assertions.assertEquals("ptgoeiybbabp", response.iterator().next().tags().get("hv"));
-        Assertions.assertEquals(1005908306135997596L, response.iterator().next().quotaSizeInKiBs());
+        Assertions.assertEquals("mrnjh", response.iterator().next().location());
+        Assertions.assertEquals("jztczytqj", response.iterator().next().tags().get("w"));
+        Assertions.assertEquals(4670031312582327027L, response.iterator().next().quotaSizeInKiBs());
         Assertions.assertEquals(Type.INDIVIDUAL_USER_QUOTA, response.iterator().next().quotaType());
-        Assertions.assertEquals("rd", response.iterator().next().quotaTarget());
+        Assertions.assertEquals("xuuyilflqoiquvr", response.iterator().next().quotaTarget());
     }
 }

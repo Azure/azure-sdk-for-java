@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class SupportedConnectorProperties {
     /*
-     * Connector type. Example: Optical.
+     * Type of connector used. Example: Optical.
      */
     @JsonProperty(value = "connectorType")
     private String connectorType;
@@ -27,7 +27,7 @@ public final class SupportedConnectorProperties {
     }
 
     /**
-     * Get the connectorType property: Connector type. Example: Optical.
+     * Get the connectorType property: Type of connector used. Example: Optical.
      *
      * @return the connectorType value.
      */
@@ -36,7 +36,7 @@ public final class SupportedConnectorProperties {
     }
 
     /**
-     * Set the connectorType property: Connector type. Example: Optical.
+     * Set the connectorType property: Type of connector used. Example: Optical.
      *
      * @param connectorType the connectorType value to set.
      * @return the SupportedConnectorProperties object itself.

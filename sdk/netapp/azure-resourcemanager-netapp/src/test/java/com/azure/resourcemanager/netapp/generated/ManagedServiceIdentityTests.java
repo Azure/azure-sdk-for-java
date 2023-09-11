@@ -18,28 +18,28 @@ public final class ManagedServiceIdentityTests {
         ManagedServiceIdentity model =
             BinaryData
                 .fromString(
-                    "{\"principalId\":\"b08e5065-c2d7-4c58-96f9-5287dc9ea765\",\"tenantId\":\"20af4492-d6c4-4406-afd3-7371b6caa8eb\",\"type\":\"None\",\"userAssignedIdentities\":{\"jfeallnwsub\":{\"principalId\":\"df6efb0e-0d53-47c7-9200-e52ecda72f1e\",\"clientId\":\"eb37883f-1094-4bdc-814a-af9d3fc93e04\"},\"jampmngnzscxaqw\":{\"principalId\":\"2730aa5b-9a50-4480-a8c8-9e61859de826\",\"clientId\":\"07aada81-b718-46a3-8975-ef02d6b68da5\"},\"hcbonqvpkvlr\":{\"principalId\":\"b15cab05-1bc0-49af-8bcf-e6cc585702c3\",\"clientId\":\"fbf982d5-e2f3-446b-8b46-3e9f66888c40\"},\"ea\":{\"principalId\":\"6f84b040-5de6-4797-ad21-1f16f4ac11fb\",\"clientId\":\"8f6139d5-6ecd-4ad6-aa8c-a6baf394265f\"}}}")
+                    "{\"principalId\":\"a9ec8ea8-dabf-4ffd-8f53-8f4b34a33124\",\"tenantId\":\"cd548a0f-aa6a-447b-810d-d9577b4ac7d9\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"fvgxbfsmxneh\":{\"principalId\":\"7f530e67-ac35-46df-b34b-20f03defcec3\",\"clientId\":\"b538b6e7-81ed-4a49-aa8b-d0344b9b16fb\"},\"ec\":{\"principalId\":\"66b61fe0-5aed-443a-9b11-52173809c64e\",\"clientId\":\"5ab2e0a4-cc79-4f58-8f34-c01a3e086cd4\"},\"debfqkkrbmpukgri\":{\"principalId\":\"b95bd7fa-c5b1-478a-9b96-9048e35bb92a\",\"clientId\":\"30173cb2-3da4-4a59-b2c0-284baa4914a1\"},\"zlfbxzpuzycispnq\":{\"principalId\":\"59a91bcd-dfae-4ce3-8fab-232352e6544c\",\"clientId\":\"5df37796-6064-441d-b6df-c925c3b4b3f8\"}}}")
                 .toObject(ManagedServiceIdentity.class);
-        Assertions.assertEquals(ManagedServiceIdentityType.NONE, model.type());
+        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED, model.type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ManagedServiceIdentity model =
             new ManagedServiceIdentity()
-                .withType(ManagedServiceIdentityType.NONE)
+                .withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED)
                 .withUserAssignedIdentities(
                     mapOf(
-                        "jfeallnwsub",
+                        "fvgxbfsmxneh",
                         new UserAssignedIdentity(),
-                        "jampmngnzscxaqw",
+                        "ec",
                         new UserAssignedIdentity(),
-                        "hcbonqvpkvlr",
+                        "debfqkkrbmpukgri",
                         new UserAssignedIdentity(),
-                        "ea",
+                        "zlfbxzpuzycispnq",
                         new UserAssignedIdentity()));
         model = BinaryData.fromObject(model).toObject(ManagedServiceIdentity.class);
-        Assertions.assertEquals(ManagedServiceIdentityType.NONE, model.type());
+        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED, model.type());
     }
 
     @SuppressWarnings("unchecked")

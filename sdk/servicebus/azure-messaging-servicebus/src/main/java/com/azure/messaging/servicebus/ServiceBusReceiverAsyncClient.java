@@ -805,7 +805,8 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      * will be notified with this error. No further messages will be delivered to {@link org.reactivestreams.Subscriber#onNext(Object)}
      * after the terminal event; the application must create a new client to resume the receive. Re-subscribing to the Flux
      * of the old client will have no effect.
-     * <br/>
+     * </p>
+     * <p>
      * Note: A few examples of non-retriable errors are - the application attempting to connect to a queue that does not
      * exist, deleting or disabling the queue in the middle of receiving, the user explicitly initiating Geo-DR.
      * These are certain events where the Service Bus communicates to the client that a non-retriable error occurred.

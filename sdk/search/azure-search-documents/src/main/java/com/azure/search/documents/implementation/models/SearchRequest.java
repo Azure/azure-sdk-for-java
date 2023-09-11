@@ -204,9 +204,9 @@ public final class SearchRequest implements JsonSerializable<SearchRequest> {
     private String semanticFields;
 
     /*
-     * The query parameters for vector and hybrid search queries.
+     * The query parameters for multi-vector search queries.
      */
-    private SearchQueryVector vector;
+    private List<SearchQueryVector> vectors;
 
     /** Creates an instance of SearchRequest class. */
     public SearchRequest() {}
@@ -862,22 +862,22 @@ public final class SearchRequest implements JsonSerializable<SearchRequest> {
     }
 
     /**
-     * Get the vector property: The query parameters for vector and hybrid search queries.
+     * Get the vectors property: The query parameters for multi-vector search queries.
      *
-     * @return the vector value.
+     * @return the vectors value.
      */
-    public SearchQueryVector getVector() {
-        return this.vector;
+    public List<SearchQueryVector> getVectors() {
+        return this.vectors;
     }
 
     /**
-     * Set the vector property: The query parameters for vector and hybrid search queries.
+     * Set the vectors property: The query parameters for multi-vector search queries.
      *
-     * @param vector the vector value to set.
+     * @param vectors the vectors value to set.
      * @return the SearchRequest object itself.
      */
-    public SearchRequest setVector(SearchQueryVector vector) {
-        this.vector = vector;
+    public SearchRequest setVectors(List<SearchQueryVector> vectors) {
+        this.vectors = vectors;
         return this;
     }
 
@@ -913,7 +913,7 @@ public final class SearchRequest implements JsonSerializable<SearchRequest> {
         jsonWriter.writeNumberField("top", this.top);
         jsonWriter.writeStringField("captions", this.captions);
         jsonWriter.writeStringField("semanticFields", this.semanticFields);
-        jsonWriter.writeJsonField("vector", this.vector);
+        jsonWriter.writeArrayField("vectors", this.vectors, (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -995,8 +995,10 @@ public final class SearchRequest implements JsonSerializable<SearchRequest> {
                             deserializedSearchRequest.captions = reader.getString();
                         } else if ("semanticFields".equals(fieldName)) {
                             deserializedSearchRequest.semanticFields = reader.getString();
-                        } else if ("vector".equals(fieldName)) {
-                            deserializedSearchRequest.vector = SearchQueryVector.fromJson(reader);
+                        } else if ("vectors".equals(fieldName)) {
+                            List<SearchQueryVector> vectors =
+                                    reader.readArray(reader1 -> SearchQueryVector.fromJson(reader1));
+                            deserializedSearchRequest.vectors = vectors;
                         } else {
                             reader.skipChildren();
                         }

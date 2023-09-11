@@ -56,18 +56,32 @@ public interface IpPrefix {
     SystemData systemData();
 
     /**
-     * Gets the ipPrefixRules property: IpPrefix contains the list of IP PrefixRules objects.
+     * Gets the configurationState property: Configuration state of the resource.
      *
-     * @return the ipPrefixRules value.
+     * @return the configurationState value.
      */
-    List<IpPrefixPropertiesIpPrefixRulesItem> ipPrefixRules();
+    ConfigurationState configurationState();
 
     /**
-     * Gets the provisioningState property: Gets the provisioning state of the resource.
+     * Gets the provisioningState property: Provisioning state of the resource.
      *
      * @return the provisioningState value.
      */
     ProvisioningState provisioningState();
+
+    /**
+     * Gets the administrativeState property: Administrative state of the resource.
+     *
+     * @return the administrativeState value.
+     */
+    AdministrativeState administrativeState();
+
+    /**
+     * Gets the ipPrefixRules property: The list of IP Prefix Rules.
+     *
+     * @return the ipPrefixRules value.
+     */
+    List<IpPrefixRule> ipPrefixRules();
 
     /**
      * Gets the annotation property: Switch configuration description.
@@ -109,14 +123,15 @@ public interface IpPrefix {
         extends DefinitionStages.Blank,
             DefinitionStages.WithLocation,
             DefinitionStages.WithResourceGroup,
-            DefinitionStages.WithIpPrefixRules,
             DefinitionStages.WithCreate {
     }
+
     /** The IpPrefix definition stages. */
     interface DefinitionStages {
         /** The first stage of the IpPrefix definition. */
         interface Blank extends WithLocation {
         }
+
         /** The stage of the IpPrefix definition allowing to specify location. */
         interface WithLocation {
             /**
@@ -135,6 +150,7 @@ public interface IpPrefix {
              */
             WithResourceGroup withRegion(String location);
         }
+
         /** The stage of the IpPrefix definition allowing to specify parent resource. */
         interface WithResourceGroup {
             /**
@@ -143,23 +159,15 @@ public interface IpPrefix {
              * @param resourceGroupName The name of the resource group. The name is case insensitive.
              * @return the next definition stage.
              */
-            WithIpPrefixRules withExistingResourceGroup(String resourceGroupName);
+            WithCreate withExistingResourceGroup(String resourceGroupName);
         }
-        /** The stage of the IpPrefix definition allowing to specify ipPrefixRules. */
-        interface WithIpPrefixRules {
-            /**
-             * Specifies the ipPrefixRules property: IpPrefix contains the list of IP PrefixRules objects..
-             *
-             * @param ipPrefixRules IpPrefix contains the list of IP PrefixRules objects.
-             * @return the next definition stage.
-             */
-            WithCreate withIpPrefixRules(List<IpPrefixPropertiesIpPrefixRulesItem> ipPrefixRules);
-        }
+
         /**
          * The stage of the IpPrefix definition which contains all the minimum required properties for the resource to
          * be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithAnnotation {
+        interface WithCreate
+            extends DefinitionStages.WithTags, DefinitionStages.WithIpPrefixRules, DefinitionStages.WithAnnotation {
             /**
              * Executes the create request.
              *
@@ -175,6 +183,7 @@ public interface IpPrefix {
              */
             IpPrefix create(Context context);
         }
+
         /** The stage of the IpPrefix definition allowing to specify tags. */
         interface WithTags {
             /**
@@ -185,6 +194,18 @@ public interface IpPrefix {
              */
             WithCreate withTags(Map<String, String> tags);
         }
+
+        /** The stage of the IpPrefix definition allowing to specify ipPrefixRules. */
+        interface WithIpPrefixRules {
+            /**
+             * Specifies the ipPrefixRules property: The list of IP Prefix Rules..
+             *
+             * @param ipPrefixRules The list of IP Prefix Rules.
+             * @return the next definition stage.
+             */
+            WithCreate withIpPrefixRules(List<IpPrefixRule> ipPrefixRules);
+        }
+
         /** The stage of the IpPrefix definition allowing to specify annotation. */
         interface WithAnnotation {
             /**
@@ -196,6 +217,7 @@ public interface IpPrefix {
             WithCreate withAnnotation(String annotation);
         }
     }
+
     /**
      * Begins update for the IpPrefix resource.
      *
@@ -204,7 +226,7 @@ public interface IpPrefix {
     IpPrefix.Update update();
 
     /** The template for IpPrefix update. */
-    interface Update extends UpdateStages.WithTags {
+    interface Update extends UpdateStages.WithTags, UpdateStages.WithIpPrefixRules, UpdateStages.WithAnnotation {
         /**
          * Executes the update request.
          *
@@ -220,6 +242,7 @@ public interface IpPrefix {
          */
         IpPrefix apply(Context context);
     }
+
     /** The IpPrefix update stages. */
     interface UpdateStages {
         /** The stage of the IpPrefix update allowing to specify tags. */
@@ -232,7 +255,30 @@ public interface IpPrefix {
              */
             Update withTags(Map<String, String> tags);
         }
+
+        /** The stage of the IpPrefix update allowing to specify ipPrefixRules. */
+        interface WithIpPrefixRules {
+            /**
+             * Specifies the ipPrefixRules property: The list of IP Prefix Rules..
+             *
+             * @param ipPrefixRules The list of IP Prefix Rules.
+             * @return the next definition stage.
+             */
+            Update withIpPrefixRules(List<IpPrefixRule> ipPrefixRules);
+        }
+
+        /** The stage of the IpPrefix update allowing to specify annotation. */
+        interface WithAnnotation {
+            /**
+             * Specifies the annotation property: Switch configuration description..
+             *
+             * @param annotation Switch configuration description.
+             * @return the next definition stage.
+             */
+            Update withAnnotation(String annotation);
+        }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

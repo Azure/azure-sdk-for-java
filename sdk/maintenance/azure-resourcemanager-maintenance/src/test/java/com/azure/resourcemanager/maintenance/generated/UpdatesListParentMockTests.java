@@ -35,7 +35,7 @@ public final class UpdatesListParentMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"maintenanceScope\":\"InGuestPatch\",\"impactType\":\"None\",\"status\":\"InProgress\",\"impactDurationInSec\":495861202,\"notBefore\":\"2021-07-29T03:03:57Z\",\"properties\":{\"resourceId\":\"n\"}}]}";
+            "{\"value\":[{\"maintenanceScope\":\"Host\",\"impactType\":\"Restart\",\"status\":\"RetryLater\",\"impactDurationInSec\":554486012,\"notBefore\":\"2021-02-10T15:07:23Z\",\"properties\":{\"resourceId\":\"zob\"}}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -67,13 +67,19 @@ public final class UpdatesListParentMockTests {
             manager
                 .updates()
                 .listParent(
-                    "cq", "qxolzdahzx", "t", "bgbkdmoizpost", "grcfb", "nrmfqjhhk", com.azure.core.util.Context.NONE);
+                    "ryxynqnzrd",
+                    "sovwxznptgoeiyb",
+                    "abpfhvfs",
+                    "kvntjlrigjkskyri",
+                    "ovzidsx",
+                    "aabzmif",
+                    com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(MaintenanceScope.IN_GUEST_PATCH, response.iterator().next().maintenanceScope());
-        Assertions.assertEquals(ImpactType.NONE, response.iterator().next().impactType());
-        Assertions.assertEquals(UpdateStatus.IN_PROGRESS, response.iterator().next().status());
-        Assertions.assertEquals(495861202, response.iterator().next().impactDurationInSec());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-07-29T03:03:57Z"), response.iterator().next().notBefore());
-        Assertions.assertEquals("n", response.iterator().next().resourceId());
+        Assertions.assertEquals(MaintenanceScope.HOST, response.iterator().next().maintenanceScope());
+        Assertions.assertEquals(ImpactType.RESTART, response.iterator().next().impactType());
+        Assertions.assertEquals(UpdateStatus.RETRY_LATER, response.iterator().next().status());
+        Assertions.assertEquals(554486012, response.iterator().next().impactDurationInSec());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-02-10T15:07:23Z"), response.iterator().next().notBefore());
+        Assertions.assertEquals("zob", response.iterator().next().resourceId());
     }
 }

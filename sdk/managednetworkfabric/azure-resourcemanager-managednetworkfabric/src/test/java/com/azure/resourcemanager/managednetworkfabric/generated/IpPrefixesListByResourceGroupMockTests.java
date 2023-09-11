@@ -13,6 +13,8 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager;
+import com.azure.resourcemanager.managednetworkfabric.models.CommunityActionTypes;
+import com.azure.resourcemanager.managednetworkfabric.models.Condition;
 import com.azure.resourcemanager.managednetworkfabric.models.IpPrefix;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
@@ -32,7 +34,7 @@ public final class IpPrefixesListByResourceGroupMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"ipPrefixRules\":[],\"provisioningState\":\"Updating\",\"annotation\":\"aqa\"},\"location\":\"ipietgbe\",\"tags\":{\"fpubntnbatz\":\"ulbmoichdlp\",\"ttcjuhplrvkmjc\":\"iqsowsaaelc\",\"vkyylizrzbjpsf\":\"mjvlgfgg\"},\"id\":\"sfuztlvtmv\",\"name\":\"gbwidqlvh\",\"type\":\"koveof\"}]}";
+            "{\"value\":[{\"properties\":{\"configurationState\":\"Failed\",\"provisioningState\":\"Deleting\",\"administrativeState\":\"MAT\",\"ipPrefixRules\":[{\"action\":\"Permit\",\"sequenceNumber\":5376347157026383231,\"networkPrefix\":\"urxrjwyz\",\"condition\":\"GreaterThanOrEqualTo\",\"subnetMaskLength\":\"tqmlzuwtbdzqa\"}],\"annotation\":\"kmpebfhlgeehb\"},\"location\":\"gplnl\",\"tags\":{\"afm\":\"eszunb\",\"vequzytapgzdhz\":\"ubukqmierzrnob\",\"v\":\"jecdsysxnku\"},\"id\":\"nlsevzcrrwnkk\",\"name\":\"dwqymxsfqe\",\"type\":\"xdqeluvmsaq\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -61,10 +63,19 @@ public final class IpPrefixesListByResourceGroupMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<IpPrefix> response =
-            manager.ipPrefixes().listByResourceGroup("kwpzdqtvh", com.azure.core.util.Context.NONE);
+            manager.ipPrefixes().listByResourceGroup("jzrfx", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("ipietgbe", response.iterator().next().location());
-        Assertions.assertEquals("ulbmoichdlp", response.iterator().next().tags().get("fpubntnbatz"));
-        Assertions.assertEquals("aqa", response.iterator().next().annotation());
+        Assertions.assertEquals("gplnl", response.iterator().next().location());
+        Assertions.assertEquals("eszunb", response.iterator().next().tags().get("afm"));
+        Assertions
+            .assertEquals(CommunityActionTypes.PERMIT, response.iterator().next().ipPrefixRules().get(0).action());
+        Assertions
+            .assertEquals(5376347157026383231L, response.iterator().next().ipPrefixRules().get(0).sequenceNumber());
+        Assertions.assertEquals("urxrjwyz", response.iterator().next().ipPrefixRules().get(0).networkPrefix());
+        Assertions
+            .assertEquals(
+                Condition.GREATER_THAN_OR_EQUAL_TO, response.iterator().next().ipPrefixRules().get(0).condition());
+        Assertions.assertEquals("tqmlzuwtbdzqa", response.iterator().next().ipPrefixRules().get(0).subnetMaskLength());
+        Assertions.assertEquals("kmpebfhlgeehb", response.iterator().next().annotation());
     }
 }

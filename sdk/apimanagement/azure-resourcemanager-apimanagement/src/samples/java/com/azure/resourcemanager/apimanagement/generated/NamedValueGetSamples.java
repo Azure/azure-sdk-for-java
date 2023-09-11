@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.apimanagement.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for NamedValue Get. */
 public final class NamedValueGetSamples {
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementGetNamedValueWithKeyVault.json
+     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementGetNamedValueWithKeyVault.json
      */
     /**
      * Sample code: ApiManagementGetNamedValueWithKeyVault.
@@ -18,11 +16,11 @@ public final class NamedValueGetSamples {
      */
     public static void apiManagementGetNamedValueWithKeyVault(
         com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
-        manager.namedValues().getWithResponse("rg1", "apimService1", "testprop6", Context.NONE);
+        manager.namedValues().getWithResponse("rg1", "apimService1", "testprop6", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementGetNamedValue.json
+     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementGetNamedValue.json
      */
     /**
      * Sample code: ApiManagementGetNamedValue.
@@ -31,6 +29,8 @@ public final class NamedValueGetSamples {
      */
     public static void apiManagementGetNamedValue(
         com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
-        manager.namedValues().getWithResponse("rg1", "apimService1", "testarmTemplateproperties2", Context.NONE);
+        manager
+            .namedValues()
+            .getWithResponse("rg1", "apimService1", "testarmTemplateproperties2", com.azure.core.util.Context.NONE);
     }
 }

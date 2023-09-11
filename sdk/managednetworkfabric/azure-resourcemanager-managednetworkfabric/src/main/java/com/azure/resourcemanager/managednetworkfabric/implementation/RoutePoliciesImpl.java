@@ -10,9 +10,16 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.managednetworkfabric.fluent.RoutePoliciesClient;
+import com.azure.resourcemanager.managednetworkfabric.fluent.models.CommonPostActionResponseForDeviceUpdateInner;
+import com.azure.resourcemanager.managednetworkfabric.fluent.models.CommonPostActionResponseForStateUpdateInner;
 import com.azure.resourcemanager.managednetworkfabric.fluent.models.RoutePolicyInner;
+import com.azure.resourcemanager.managednetworkfabric.fluent.models.ValidateConfigurationResponseInner;
+import com.azure.resourcemanager.managednetworkfabric.models.CommonPostActionResponseForDeviceUpdate;
+import com.azure.resourcemanager.managednetworkfabric.models.CommonPostActionResponseForStateUpdate;
 import com.azure.resourcemanager.managednetworkfabric.models.RoutePolicies;
 import com.azure.resourcemanager.managednetworkfabric.models.RoutePolicy;
+import com.azure.resourcemanager.managednetworkfabric.models.UpdateAdministrativeState;
+import com.azure.resourcemanager.managednetworkfabric.models.ValidateConfigurationResponse;
 
 public final class RoutePoliciesImpl implements RoutePolicies {
     private static final ClientLogger LOGGER = new ClientLogger(RoutePoliciesImpl.class);
@@ -78,6 +85,71 @@ public final class RoutePoliciesImpl implements RoutePolicies {
     public PagedIterable<RoutePolicy> list(Context context) {
         PagedIterable<RoutePolicyInner> inner = this.serviceClient().list(context);
         return Utils.mapPage(inner, inner1 -> new RoutePolicyImpl(inner1, this.manager()));
+    }
+
+    public CommonPostActionResponseForDeviceUpdate updateAdministrativeState(
+        String resourceGroupName, String routePolicyName, UpdateAdministrativeState body) {
+        CommonPostActionResponseForDeviceUpdateInner inner =
+            this.serviceClient().updateAdministrativeState(resourceGroupName, routePolicyName, body);
+        if (inner != null) {
+            return new CommonPostActionResponseForDeviceUpdateImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public CommonPostActionResponseForDeviceUpdate updateAdministrativeState(
+        String resourceGroupName, String routePolicyName, UpdateAdministrativeState body, Context context) {
+        CommonPostActionResponseForDeviceUpdateInner inner =
+            this.serviceClient().updateAdministrativeState(resourceGroupName, routePolicyName, body, context);
+        if (inner != null) {
+            return new CommonPostActionResponseForDeviceUpdateImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public ValidateConfigurationResponse validateConfiguration(String resourceGroupName, String routePolicyName) {
+        ValidateConfigurationResponseInner inner =
+            this.serviceClient().validateConfiguration(resourceGroupName, routePolicyName);
+        if (inner != null) {
+            return new ValidateConfigurationResponseImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public ValidateConfigurationResponse validateConfiguration(
+        String resourceGroupName, String routePolicyName, Context context) {
+        ValidateConfigurationResponseInner inner =
+            this.serviceClient().validateConfiguration(resourceGroupName, routePolicyName, context);
+        if (inner != null) {
+            return new ValidateConfigurationResponseImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public CommonPostActionResponseForStateUpdate commitConfiguration(
+        String resourceGroupName, String routePolicyName) {
+        CommonPostActionResponseForStateUpdateInner inner =
+            this.serviceClient().commitConfiguration(resourceGroupName, routePolicyName);
+        if (inner != null) {
+            return new CommonPostActionResponseForStateUpdateImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public CommonPostActionResponseForStateUpdate commitConfiguration(
+        String resourceGroupName, String routePolicyName, Context context) {
+        CommonPostActionResponseForStateUpdateInner inner =
+            this.serviceClient().commitConfiguration(resourceGroupName, routePolicyName, context);
+        if (inner != null) {
+            return new CommonPostActionResponseForStateUpdateImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public RoutePolicy getById(String id) {

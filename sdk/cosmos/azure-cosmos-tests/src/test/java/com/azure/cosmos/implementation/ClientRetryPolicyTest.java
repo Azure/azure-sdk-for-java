@@ -48,7 +48,7 @@ public class ClientRetryPolicyTest {
             validateSuccess(shouldRetry, ShouldRetryValidator.builder()
                     .nullException()
                     .shouldRetry(true)
-                    .backOfTime(Duration.ofMillis(ClientRetryPolicy.RetryIntervalInMS))
+                    .backOffTime(Duration.ofMillis(ClientRetryPolicy.RetryIntervalInMS))
                     .build());
 
             Mockito.verify(endpointManager, Mockito.times(i + 1)).markEndpointUnavailableForRead(Mockito.any());
@@ -83,7 +83,7 @@ public class ClientRetryPolicyTest {
         validateSuccess(shouldRetry, ShouldRetryValidator.builder()
             .nullException()
             .shouldRetry(true)
-            .backOfTime(Duration.ofMillis(1000))
+            .backOffTime(Duration.ofMillis(1000))
             .build());
 
         //Metadata Read
@@ -97,7 +97,7 @@ public class ClientRetryPolicyTest {
         validateSuccess(shouldRetry, ShouldRetryValidator.builder()
             .nullException()
             .shouldRetry(true)
-            .backOfTime(Duration.ofMillis(1000))
+            .backOffTime(Duration.ofMillis(1000))
             .build());
 
         //Query Plan
@@ -111,7 +111,7 @@ public class ClientRetryPolicyTest {
         validateSuccess(shouldRetry, ShouldRetryValidator.builder()
             .nullException()
             .shouldRetry(true)
-            .backOfTime(Duration.ofMillis(1000))
+            .backOffTime(Duration.ofMillis(1000))
             .build());
 
         //Data Plane Write - Should not retry
@@ -168,7 +168,7 @@ public class ClientRetryPolicyTest {
                 validateSuccess(shouldRetry, ShouldRetryValidator.builder()
                     .nullException()
                     .shouldRetry(true)
-                    .backOfTime(Duration.ofMillis(0))
+                    .backOffTime(Duration.ofMillis(0))
                     .build());
 
                 Assert.assertTrue(clientRetryPolicy.canUsePreferredLocations());
@@ -263,7 +263,7 @@ public class ClientRetryPolicyTest {
                 validateSuccess(shouldRetry, ShouldRetryValidator.builder()
                     .nullException()
                     .shouldRetry(true)
-                    .backOfTime(Duration.ofMillis(0))
+                    .backOffTime(Duration.ofMillis(0))
                     .build());
 
                 Assert.assertTrue(clientRetryPolicy.canUsePreferredLocations());
@@ -438,56 +438,13 @@ public class ClientRetryPolicyTest {
             validateSuccess(shouldRetry, ShouldRetryValidator.builder()
                 .nullException()
                 .shouldRetry(true)
-                .backOfTime(Duration.ofMillis(1000))
+                .backOffTime(Duration.ofMillis(1000))
                 .build());
 
             Mockito.verify(endpointManager, Mockito.times(i+1)).markEndpointUnavailableForRead(Mockito.any());
             Mockito.verify(endpointManager, Mockito.times(0)).markEndpointUnavailableForWrite(Mockito.any());
         }
     }
-
-    @Test(groups = "unit")
-    public void httpNetworkFailureOnAddressRefresh() throws Exception {
-        ThrottlingRetryOptions retryOptions = new ThrottlingRetryOptions();
-        GlobalEndpointManager endpointManager = Mockito.mock(GlobalEndpointManager.class);
-        Mockito.doReturn(new URI("http://localhost")).when(endpointManager).resolveServiceEndpoint(Mockito.any(RxDocumentServiceRequest.class));
-        Mockito.doReturn(Mono.empty()).when(endpointManager).refreshLocationAsync(Mockito.eq(null), Mockito.eq(false));
-        Mockito.doReturn(2).when(endpointManager).getPreferredLocationCount();
-        ClientRetryPolicy clientRetryPolicy = new ClientRetryPolicy(mockDiagnosticsClientContext(), endpointManager, true, retryOptions, null);
-
-        Exception exception = ReadTimeoutException.INSTANCE;
-        CosmosException cosmosException =
-            BridgeInternal.createCosmosException(null, HttpConstants.StatusCodes.REQUEST_TIMEOUT, exception);
-        BridgeInternal.setSubStatusCode(cosmosException, HttpConstants.SubStatusCodes.GATEWAY_ENDPOINT_READ_TIMEOUT);
-
-        RxDocumentServiceRequest dsr = RxDocumentServiceRequest.createFromName(mockDiagnosticsClientContext(),
-            OperationType.Read, "/dbs/db/colls/col/docs/", ResourceType.Document);
-        dsr.setAddressRefresh(true, false);
-        dsr.requestContext = new DocumentServiceRequestContext();
-
-        clientRetryPolicy.onBeforeSendRequest(dsr);
-
-        for (int i = 0; i < 10; i++) {
-            Mono<ShouldRetryResult> shouldRetry = clientRetryPolicy.shouldRetry(cosmosException);
-
-            if (i < 3) {
-                validateSuccess(shouldRetry, ShouldRetryValidator.builder()
-                                                 .nullException()
-                                                 .shouldRetry(true)
-                                                 .backOfTime(Duration.ofMillis(0))
-                                                 .build());
-            } else {
-                validateSuccess(shouldRetry, ShouldRetryValidator.builder()
-                                                 .nullException()
-                                                 .shouldRetry(false)
-                                                 .build());
-            }
-
-            Mockito.verify(endpointManager, Mockito.times(0)).markEndpointUnavailableForRead(Mockito.any());
-            Mockito.verify(endpointManager, Mockito.times(0)).markEndpointUnavailableForWrite(Mockito.any());
-        }
-    }
-
 
     @Test(groups = "unit")
     public void onBeforeSendRequestNotInvoked() {

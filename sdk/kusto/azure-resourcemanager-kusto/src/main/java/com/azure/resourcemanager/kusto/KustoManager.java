@@ -28,6 +28,7 @@ import com.azure.resourcemanager.kusto.implementation.AttachedDatabaseConfigurat
 import com.azure.resourcemanager.kusto.implementation.ClusterPrincipalAssignmentsImpl;
 import com.azure.resourcemanager.kusto.implementation.ClustersImpl;
 import com.azure.resourcemanager.kusto.implementation.DataConnectionsImpl;
+import com.azure.resourcemanager.kusto.implementation.DatabaseOperationsImpl;
 import com.azure.resourcemanager.kusto.implementation.DatabasePrincipalAssignmentsImpl;
 import com.azure.resourcemanager.kusto.implementation.DatabasesImpl;
 import com.azure.resourcemanager.kusto.implementation.KustoManagementClientBuilder;
@@ -43,6 +44,7 @@ import com.azure.resourcemanager.kusto.models.AttachedDatabaseConfigurations;
 import com.azure.resourcemanager.kusto.models.ClusterPrincipalAssignments;
 import com.azure.resourcemanager.kusto.models.Clusters;
 import com.azure.resourcemanager.kusto.models.DataConnections;
+import com.azure.resourcemanager.kusto.models.DatabaseOperations;
 import com.azure.resourcemanager.kusto.models.DatabasePrincipalAssignments;
 import com.azure.resourcemanager.kusto.models.Databases;
 import com.azure.resourcemanager.kusto.models.ManagedPrivateEndpoints;
@@ -77,6 +79,8 @@ public final class KustoManager {
     private AttachedDatabaseConfigurations attachedDatabaseConfigurations;
 
     private ManagedPrivateEndpoints managedPrivateEndpoints;
+
+    private DatabaseOperations databaseOperations;
 
     private DatabasePrincipalAssignments databasePrincipalAssignments;
 
@@ -259,7 +263,7 @@ public final class KustoManager {
                 .append("-")
                 .append("com.azure.resourcemanager.kusto")
                 .append("/")
-                .append("1.0.0-beta.6");
+                .append("1.0.0-beta.7");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder
                     .append(" (")
@@ -389,6 +393,18 @@ public final class KustoManager {
                 new ManagedPrivateEndpointsImpl(clientObject.getManagedPrivateEndpoints(), this);
         }
         return managedPrivateEndpoints;
+    }
+
+    /**
+     * Gets the resource collection API of DatabaseOperations.
+     *
+     * @return Resource collection API of DatabaseOperations.
+     */
+    public DatabaseOperations databaseOperations() {
+        if (this.databaseOperations == null) {
+            this.databaseOperations = new DatabaseOperationsImpl(clientObject.getDatabaseOperations(), this);
+        }
+        return databaseOperations;
     }
 
     /**

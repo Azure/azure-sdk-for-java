@@ -8,10 +8,17 @@ import com.azure.core.management.Region;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.managednetworkfabric.fluent.models.RoutePolicyInner;
+import com.azure.resourcemanager.managednetworkfabric.models.AddressFamilyType;
+import com.azure.resourcemanager.managednetworkfabric.models.AdministrativeState;
+import com.azure.resourcemanager.managednetworkfabric.models.CommonPostActionResponseForDeviceUpdate;
+import com.azure.resourcemanager.managednetworkfabric.models.CommonPostActionResponseForStateUpdate;
+import com.azure.resourcemanager.managednetworkfabric.models.ConfigurationState;
 import com.azure.resourcemanager.managednetworkfabric.models.ProvisioningState;
 import com.azure.resourcemanager.managednetworkfabric.models.RoutePolicy;
 import com.azure.resourcemanager.managednetworkfabric.models.RoutePolicyPatch;
 import com.azure.resourcemanager.managednetworkfabric.models.RoutePolicyStatementProperties;
+import com.azure.resourcemanager.managednetworkfabric.models.UpdateAdministrativeState;
+import com.azure.resourcemanager.managednetworkfabric.models.ValidateConfigurationResponse;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -50,6 +57,26 @@ public final class RoutePolicyImpl implements RoutePolicy, RoutePolicy.Definitio
         return this.innerModel().systemData();
     }
 
+    public String networkFabricId() {
+        return this.innerModel().networkFabricId();
+    }
+
+    public AddressFamilyType addressFamilyType() {
+        return this.innerModel().addressFamilyType();
+    }
+
+    public ConfigurationState configurationState() {
+        return this.innerModel().configurationState();
+    }
+
+    public ProvisioningState provisioningState() {
+        return this.innerModel().provisioningState();
+    }
+
+    public AdministrativeState administrativeState() {
+        return this.innerModel().administrativeState();
+    }
+
     public List<RoutePolicyStatementProperties> statements() {
         List<RoutePolicyStatementProperties> inner = this.innerModel().statements();
         if (inner != null) {
@@ -57,10 +84,6 @@ public final class RoutePolicyImpl implements RoutePolicy, RoutePolicy.Definitio
         } else {
             return Collections.emptyList();
         }
-    }
-
-    public ProvisioningState provisioningState() {
-        return this.innerModel().provisioningState();
     }
 
     public String annotation() {
@@ -175,6 +198,33 @@ public final class RoutePolicyImpl implements RoutePolicy, RoutePolicy.Definitio
         return this;
     }
 
+    public CommonPostActionResponseForDeviceUpdate updateAdministrativeState(UpdateAdministrativeState body) {
+        return serviceManager.routePolicies().updateAdministrativeState(resourceGroupName, routePolicyName, body);
+    }
+
+    public CommonPostActionResponseForDeviceUpdate updateAdministrativeState(
+        UpdateAdministrativeState body, Context context) {
+        return serviceManager
+            .routePolicies()
+            .updateAdministrativeState(resourceGroupName, routePolicyName, body, context);
+    }
+
+    public ValidateConfigurationResponse validateConfiguration() {
+        return serviceManager.routePolicies().validateConfiguration(resourceGroupName, routePolicyName);
+    }
+
+    public ValidateConfigurationResponse validateConfiguration(Context context) {
+        return serviceManager.routePolicies().validateConfiguration(resourceGroupName, routePolicyName, context);
+    }
+
+    public CommonPostActionResponseForStateUpdate commitConfiguration() {
+        return serviceManager.routePolicies().commitConfiguration(resourceGroupName, routePolicyName);
+    }
+
+    public CommonPostActionResponseForStateUpdate commitConfiguration(Context context) {
+        return serviceManager.routePolicies().commitConfiguration(resourceGroupName, routePolicyName, context);
+    }
+
     public RoutePolicyImpl withRegion(Region location) {
         this.innerModel().withLocation(location.toString());
         return this;
@@ -185,8 +235,8 @@ public final class RoutePolicyImpl implements RoutePolicy, RoutePolicy.Definitio
         return this;
     }
 
-    public RoutePolicyImpl withStatements(List<RoutePolicyStatementProperties> statements) {
-        this.innerModel().withStatements(statements);
+    public RoutePolicyImpl withNetworkFabricId(String networkFabricId) {
+        this.innerModel().withNetworkFabricId(networkFabricId);
         return this;
     }
 
@@ -196,6 +246,21 @@ public final class RoutePolicyImpl implements RoutePolicy, RoutePolicy.Definitio
             return this;
         } else {
             this.updateBody.withTags(tags);
+            return this;
+        }
+    }
+
+    public RoutePolicyImpl withAddressFamilyType(AddressFamilyType addressFamilyType) {
+        this.innerModel().withAddressFamilyType(addressFamilyType);
+        return this;
+    }
+
+    public RoutePolicyImpl withStatements(List<RoutePolicyStatementProperties> statements) {
+        if (isInCreateMode()) {
+            this.innerModel().withStatements(statements);
+            return this;
+        } else {
+            this.updateBody.withStatements(statements);
             return this;
         }
     }

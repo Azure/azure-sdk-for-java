@@ -4,14 +4,13 @@
 
 package com.azure.resourcemanager.managednetworkfabric.generated;
 
-import com.azure.resourcemanager.managednetworkfabric.models.NetworkDeviceRoleTypes;
 import java.util.HashMap;
 import java.util.Map;
 
 /** Samples for NetworkDevices Create. */
 public final class NetworkDevicesCreateSamples {
     /*
-     * x-ms-original-file: specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/preview/2023-02-01-preview/examples/NetworkDevices_Create_MaximumSet_Gen.json
+     * x-ms-original-file: specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/NetworkDevices_Create_MaximumSet_Gen.json
      */
     /**
      * Sample code: NetworkDevices_Create_MaximumSet_Gen.
@@ -22,15 +21,14 @@ public final class NetworkDevicesCreateSamples {
         com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager manager) {
         manager
             .networkDevices()
-            .define("networkDeviceName")
-            .withRegion("eastus")
-            .withExistingResourceGroup("resourceGroupName")
-            .withTags(mapOf("keyID", "keyValue"))
-            .withNetworkDeviceSku("DefaultSku")
-            .withNetworkDeviceRole(NetworkDeviceRoleTypes.CE)
-            .withHostname("networkDeviceName")
-            .withSerialNumber("Arista;DCS-7280PR3-24;12.05;JPE21330382")
-            .withAnnotation("null")
+            .define("example-device")
+            .withRegion("eastuseuap")
+            .withExistingResourceGroup("example-rg")
+            .withTags(mapOf("keyID", "fakeTokenPlaceholder"))
+            .withNetworkDeviceSku("DeviceSku")
+            .withHostname("NFA-Device")
+            .withSerialNumber("Vendor;DCS-7280XXX-24;12.05;JPE2111XXXX")
+            .withAnnotation("annotation")
             .create();
     }
 

@@ -15,7 +15,7 @@ import com.azure.resourcemanager.dns.DnsZoneManager;
 import com.azure.resourcemanager.keyvault.KeyVaultManager;
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
-import com.azure.resourcemanager.test.ResourceManagerTestBase;
+import com.azure.resourcemanager.test.ResourceManagerTestProxyTestBase;
 import com.azure.resourcemanager.test.utils.TestDelayProvider;
 
 import javax.net.ssl.HttpsURLConnection;
@@ -32,7 +32,7 @@ import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 
-public class AppPlatformTest extends ResourceManagerTestBase {
+public class AppPlatformTest extends ResourceManagerTestProxyTestBase {
     protected AppPlatformManager appPlatformManager;
     protected AppServiceManager appServiceManager;
     protected DnsZoneManager dnsZoneManager;

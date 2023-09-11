@@ -12,16 +12,14 @@ public final class AdhocBackupTriggerOptionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AdhocBackupTriggerOption model =
-            BinaryData
-                .fromString("{\"retentionTagOverride\":\"cukoklyaxuconu\"}")
-                .toObject(AdhocBackupTriggerOption.class);
-        Assertions.assertEquals("cukoklyaxuconu", model.retentionTagOverride());
+            BinaryData.fromString("{\"retentionTagOverride\":\"bkyvp\"}").toObject(AdhocBackupTriggerOption.class);
+        Assertions.assertEquals("bkyvp", model.retentionTagOverride());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AdhocBackupTriggerOption model = new AdhocBackupTriggerOption().withRetentionTagOverride("cukoklyaxuconu");
+        AdhocBackupTriggerOption model = new AdhocBackupTriggerOption().withRetentionTagOverride("bkyvp");
         model = BinaryData.fromObject(model).toObject(AdhocBackupTriggerOption.class);
-        Assertions.assertEquals("cukoklyaxuconu", model.retentionTagOverride());
+        Assertions.assertEquals("bkyvp", model.retentionTagOverride());
     }
 }

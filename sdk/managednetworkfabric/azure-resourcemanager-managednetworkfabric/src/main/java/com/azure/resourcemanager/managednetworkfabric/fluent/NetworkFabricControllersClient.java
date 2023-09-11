@@ -27,7 +27,7 @@ public interface NetworkFabricControllersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the NetworkFabricController resource definition.
+     * @return the {@link SyncPoller} for polling of the Network Fabric Controller resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<NetworkFabricControllerInner>, NetworkFabricControllerInner> beginCreate(
@@ -45,7 +45,7 @@ public interface NetworkFabricControllersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the NetworkFabricController resource definition.
+     * @return the {@link SyncPoller} for polling of the Network Fabric Controller resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<NetworkFabricControllerInner>, NetworkFabricControllerInner> beginCreate(
@@ -65,7 +65,7 @@ public interface NetworkFabricControllersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the NetworkFabricController resource definition.
+     * @return the Network Fabric Controller resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     NetworkFabricControllerInner create(
@@ -83,7 +83,7 @@ public interface NetworkFabricControllersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the NetworkFabricController resource definition.
+     * @return the Network Fabric Controller resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     NetworkFabricControllerInner create(
@@ -103,7 +103,7 @@ public interface NetworkFabricControllersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the NetworkFabricController resource definition along with {@link Response}.
+     * @return the Network Fabric Controller resource definition along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<NetworkFabricControllerInner> getByResourceGroupWithResponse(
@@ -119,7 +119,7 @@ public interface NetworkFabricControllersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the NetworkFabricController resource definition.
+     * @return the Network Fabric Controller resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     NetworkFabricControllerInner getByResourceGroup(String resourceGroupName, String networkFabricControllerName);
@@ -135,7 +135,7 @@ public interface NetworkFabricControllersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the NetworkFabricController resource definition.
+     * @return the {@link SyncPoller} for polling of the Network Fabric Controller resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<NetworkFabricControllerInner>, NetworkFabricControllerInner> beginUpdate(
@@ -153,7 +153,7 @@ public interface NetworkFabricControllersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the NetworkFabricController resource definition.
+     * @return the {@link SyncPoller} for polling of the Network Fabric Controller resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<NetworkFabricControllerInner>, NetworkFabricControllerInner> beginUpdate(
@@ -173,7 +173,7 @@ public interface NetworkFabricControllersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the NetworkFabricController resource definition.
+     * @return the Network Fabric Controller resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     NetworkFabricControllerInner update(
@@ -191,7 +191,7 @@ public interface NetworkFabricControllersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the NetworkFabricController resource definition.
+     * @return the Network Fabric Controller resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     NetworkFabricControllerInner update(
@@ -270,7 +270,7 @@ public interface NetworkFabricControllersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of NetworkFabricControllers as paginated response with {@link PagedIterable}.
+     * @return list of Network Fabric Controllers as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<NetworkFabricControllerInner> listByResourceGroup(String resourceGroupName);
@@ -285,7 +285,7 @@ public interface NetworkFabricControllersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of NetworkFabricControllers as paginated response with {@link PagedIterable}.
+     * @return list of Network Fabric Controllers as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<NetworkFabricControllerInner> listByResourceGroup(String resourceGroupName, Context context);
@@ -297,7 +297,7 @@ public interface NetworkFabricControllersClient {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of NetworkFabricControllers as paginated response with {@link PagedIterable}.
+     * @return list of Network Fabric Controllers as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<NetworkFabricControllerInner> list();
@@ -311,133 +311,8 @@ public interface NetworkFabricControllersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of NetworkFabricControllers as paginated response with {@link PagedIterable}.
+     * @return list of Network Fabric Controllers as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<NetworkFabricControllerInner> list(Context context);
-
-    /**
-     * Implements the operation to the underlying resources.
-     *
-     * <p>Enables the workloadManagementNetwork (Tenant Network).
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkFabricControllerName Name of the networkFabricController.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginEnableWorkloadManagementNetwork(
-        String resourceGroupName, String networkFabricControllerName);
-
-    /**
-     * Implements the operation to the underlying resources.
-     *
-     * <p>Enables the workloadManagementNetwork (Tenant Network).
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkFabricControllerName Name of the networkFabricController.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginEnableWorkloadManagementNetwork(
-        String resourceGroupName, String networkFabricControllerName, Context context);
-
-    /**
-     * Implements the operation to the underlying resources.
-     *
-     * <p>Enables the workloadManagementNetwork (Tenant Network).
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkFabricControllerName Name of the networkFabricController.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void enableWorkloadManagementNetwork(String resourceGroupName, String networkFabricControllerName);
-
-    /**
-     * Implements the operation to the underlying resources.
-     *
-     * <p>Enables the workloadManagementNetwork (Tenant Network).
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkFabricControllerName Name of the networkFabricController.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void enableWorkloadManagementNetwork(String resourceGroupName, String networkFabricControllerName, Context context);
-
-    /**
-     * Implements the operation to the underlying resources.
-     *
-     * <p>Disables the workloadManagementNetwork (Tenant Network).
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkFabricControllerName Name of the networkFabricController.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDisableWorkloadManagementNetwork(
-        String resourceGroupName, String networkFabricControllerName);
-
-    /**
-     * Implements the operation to the underlying resources.
-     *
-     * <p>Disables the workloadManagementNetwork (Tenant Network).
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkFabricControllerName Name of the networkFabricController.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDisableWorkloadManagementNetwork(
-        String resourceGroupName, String networkFabricControllerName, Context context);
-
-    /**
-     * Implements the operation to the underlying resources.
-     *
-     * <p>Disables the workloadManagementNetwork (Tenant Network).
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkFabricControllerName Name of the networkFabricController.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void disableWorkloadManagementNetwork(String resourceGroupName, String networkFabricControllerName);
-
-    /**
-     * Implements the operation to the underlying resources.
-     *
-     * <p>Disables the workloadManagementNetwork (Tenant Network).
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkFabricControllerName Name of the networkFabricController.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void disableWorkloadManagementNetwork(
-        String resourceGroupName, String networkFabricControllerName, Context context);
 }

@@ -159,7 +159,7 @@ public final class DocumentField extends TypedDocumentField<Object> {
      * @return the value.
      */
     @JsonIgnore
-    public Boolean isValueBoolean() {
+    public Boolean getValueAsBoolean() {
         return (Boolean) super.getValue();
     }
 

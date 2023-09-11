@@ -11,7 +11,7 @@ import java.util.Map;
 /** Samples for ConnectedEnvironmentsCertificates Update. */
 public final class ConnectedEnvironmentsCertificatesUpdateSamples {
     /*
-     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/preview/2022-11-01-preview/examples/ConnectedEnvironmentsCertificates_Patch.json
+     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/stable/2023-05-01/examples/ConnectedEnvironmentsCertificates_Patch.json
      */
     /**
      * Sample code: Patch Certificate.
@@ -28,6 +28,7 @@ public final class ConnectedEnvironmentsCertificatesUpdateSamples {
         resource.update().withTags(mapOf("tag1", "value1", "tag2", "value2")).apply();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

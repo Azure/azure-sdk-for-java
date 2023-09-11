@@ -9,37 +9,36 @@ import com.azure.resourcemanager.hdinsight.fluent.models.PrivateEndpointConnecti
 import com.azure.resourcemanager.hdinsight.models.PrivateLinkServiceConnectionState;
 import com.azure.resourcemanager.hdinsight.models.PrivateLinkServiceConnectionStatus;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class PrivateEndpointConnectionInnerTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         PrivateEndpointConnectionInner model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"privateEndpoint\":{\"id\":\"y\"},\"privateLinkServiceConnectionState\":{\"status\":\"Removed\",\"description\":\"v\",\"actionsRequired\":\"csonpclhoco\"},\"linkIdentifier\":\"lkevle\",\"provisioningState\":\"Failed\"},\"id\":\"buhfmvfaxkffeiit\",\"name\":\"lvmezyvshxmzsbbz\",\"type\":\"ggi\"}")
+                    "{\"properties\":{\"privateEndpoint\":{\"id\":\"aruoujmkcjhwqyt\"},\"privateLinkServiceConnectionState\":{\"status\":\"Approved\",\"description\":\"bnw\",\"actionsRequired\":\"wgdrjervnaenqp\"},\"linkIdentifier\":\"indoygmifthnzd\",\"provisioningState\":\"Updating\"},\"id\":\"gnayqigynduh\",\"name\":\"vhqlkthumaqo\",\"type\":\"bgycduiertgccym\"}")
                 .toObject(PrivateEndpointConnectionInner.class);
         Assertions
             .assertEquals(
-                PrivateLinkServiceConnectionStatus.REMOVED, model.privateLinkServiceConnectionState().status());
-        Assertions.assertEquals("v", model.privateLinkServiceConnectionState().description());
-        Assertions.assertEquals("csonpclhoco", model.privateLinkServiceConnectionState().actionsRequired());
+                PrivateLinkServiceConnectionStatus.APPROVED, model.privateLinkServiceConnectionState().status());
+        Assertions.assertEquals("bnw", model.privateLinkServiceConnectionState().description());
+        Assertions.assertEquals("wgdrjervnaenqp", model.privateLinkServiceConnectionState().actionsRequired());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         PrivateEndpointConnectionInner model =
             new PrivateEndpointConnectionInner()
                 .withPrivateLinkServiceConnectionState(
                     new PrivateLinkServiceConnectionState()
-                        .withStatus(PrivateLinkServiceConnectionStatus.REMOVED)
-                        .withDescription("v")
-                        .withActionsRequired("csonpclhoco"));
+                        .withStatus(PrivateLinkServiceConnectionStatus.APPROVED)
+                        .withDescription("bnw")
+                        .withActionsRequired("wgdrjervnaenqp"));
         model = BinaryData.fromObject(model).toObject(PrivateEndpointConnectionInner.class);
         Assertions
             .assertEquals(
-                PrivateLinkServiceConnectionStatus.REMOVED, model.privateLinkServiceConnectionState().status());
-        Assertions.assertEquals("v", model.privateLinkServiceConnectionState().description());
-        Assertions.assertEquals("csonpclhoco", model.privateLinkServiceConnectionState().actionsRequired());
+                PrivateLinkServiceConnectionStatus.APPROVED, model.privateLinkServiceConnectionState().status());
+        Assertions.assertEquals("bnw", model.privateLinkServiceConnectionState().description());
+        Assertions.assertEquals("wgdrjervnaenqp", model.privateLinkServiceConnectionState().actionsRequired());
     }
 }

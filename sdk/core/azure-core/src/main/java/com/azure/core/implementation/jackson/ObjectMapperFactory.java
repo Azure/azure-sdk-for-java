@@ -3,6 +3,10 @@
 
 package com.azure.core.implementation.jackson;
 
+import java.security.PrivilegedActionException;
+import java.security.PrivilegedExceptionAction;
+
+import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.logging.LogLevel;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
@@ -21,9 +25,17 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
  * Constructs and configures {@link ObjectMapper} instances.
  */
 final class ObjectMapperFactory {
+
     private static final ClientLogger LOGGER = new ClientLogger(ObjectMapperFactory.class);
     final boolean useJackson215;
     private boolean jackson215IsSafe = true;
+
+    private static final boolean USE_ACCESS_HELPER;
+
+    static {
+        USE_ACCESS_HELPER = Boolean.parseBoolean(Configuration.getGlobalConfiguration()
+            .get("AZURE_JACKSON_ADAPTER_USE_ACCESS_HELPER"));
+    }
 
     ObjectMapperFactory() {
         this.useJackson215 = PackageVersion.VERSION.getMinorVersion() >= 15
@@ -74,10 +86,27 @@ final class ObjectMapperFactory {
             .build());
     }
 
+    @SuppressWarnings("removal")
     private ObjectMapper attemptJackson215Mutation(ObjectMapper objectMapper) {
         if (useJackson215 && jackson215IsSafe) {
             try {
-                return JacksonDatabind215.mutateStreamReadConstraints(objectMapper);
+                if (USE_ACCESS_HELPER) {
+                    try {
+                        return java.security.AccessController.doPrivileged((PrivilegedExceptionAction<ObjectMapper>)
+                            () -> JacksonDatabind215.mutateStreamReadConstraints(objectMapper));
+                    } catch (PrivilegedActionException ex) {
+                        final Throwable cause = ex.getCause();
+                        if (cause instanceof Error) {
+                            throw (Error) cause;
+                        } else if (cause instanceof RuntimeException) {
+                            throw (RuntimeException) cause;
+                        } else {
+                            throw new RuntimeException(ex);
+                        }
+                    }
+                } else {
+                    return JacksonDatabind215.mutateStreamReadConstraints(objectMapper);
+                }
             } catch (Throwable ex) {
                 if (ex instanceof LinkageError) {
                     jackson215IsSafe = false;

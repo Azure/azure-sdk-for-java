@@ -29,7 +29,7 @@ public final class ResourceGuardsGetDefaultUpdateProtectedItemRequestsObjectWith
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr = "{\"id\":\"jrgywwpgjxsn\",\"name\":\"fujg\",\"type\":\"gaao\"}";
+        String responseStr = "{\"id\":\"oxczytp\",\"name\":\"nwvroevytlyokrr\",\"type\":\"uuxvnsasbcry\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -61,7 +61,7 @@ public final class ResourceGuardsGetDefaultUpdateProtectedItemRequestsObjectWith
             manager
                 .resourceGuards()
                 .getDefaultUpdateProtectedItemRequestsObjectWithResponse(
-                    "fewz", "kjexfdeqvhp", "ylkkshkbffmbm", com.azure.core.util.Context.NONE)
+                    "qct", "xxdtddmflh", "ytxzvtznapxbanno", com.azure.core.util.Context.NONE)
                 .getValue();
     }
 }

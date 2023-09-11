@@ -40,57 +40,46 @@ public interface InternalNetwork {
     SystemData systemData();
 
     /**
-     * Gets the disabledOnResources property: List of resources the InternalNetwork is disabled on. Can be either entire
-     * NetworkFabric or NetworkRack.
+     * Gets the vlanId property: Vlan identifier. Example: 1001.
      *
-     * @return the disabledOnResources value.
+     * @return the vlanId value.
      */
-    List<String> disabledOnResources();
+    int vlanId();
 
     /**
-     * Gets the administrativeState property: Administrative state of the InternalNetwork. Example: Enabled | Disabled.
+     * Gets the bgpConfiguration property: BGP configuration properties.
      *
-     * @return the administrativeState value.
+     * @return the bgpConfiguration value.
      */
-    EnabledDisabledState administrativeState();
+    InternalNetworkPropertiesBgpConfiguration bgpConfiguration();
 
     /**
-     * Gets the bgpDisabledOnResources property: List of resources the BGP is disabled on. Can be either entire
-     * NetworkFabric or NetworkRack.
+     * Gets the staticRouteConfiguration property: Static Route Configuration properties.
      *
-     * @return the bgpDisabledOnResources value.
+     * @return the staticRouteConfiguration value.
      */
-    List<String> bgpDisabledOnResources();
+    InternalNetworkPropertiesStaticRouteConfiguration staticRouteConfiguration();
 
     /**
-     * Gets the bfdDisabledOnResources property: List of resources the BFD for BGP is disabled on. Can be either entire
-     * NetworkFabric or NetworkRack.
+     * Gets the configurationState property: Configuration state of the resource.
      *
-     * @return the bfdDisabledOnResources value.
+     * @return the configurationState value.
      */
-    List<String> bfdDisabledOnResources();
+    ConfigurationState configurationState();
 
     /**
-     * Gets the bfdForStaticRoutesDisabledOnResources property: List of resources the BFD of StaticRoutes is disabled
-     * on. Can be either entire NetworkFabric or NetworkRack.
-     *
-     * @return the bfdForStaticRoutesDisabledOnResources value.
-     */
-    List<String> bfdForStaticRoutesDisabledOnResources();
-
-    /**
-     * Gets the provisioningState property: Gets the provisioning state of the resource.
+     * Gets the provisioningState property: Provisioning state of the resource.
      *
      * @return the provisioningState value.
      */
     ProvisioningState provisioningState();
 
     /**
-     * Gets the vlanId property: Vlan identifier. Example: 1001.
+     * Gets the administrativeState property: Administrative state of the resource.
      *
-     * @return the vlanId value.
+     * @return the administrativeState value.
      */
-    int vlanId();
+    AdministrativeState administrativeState();
 
     /**
      * Gets the mtu property: Maximum transmission unit. Default value is 1500.
@@ -100,46 +89,76 @@ public interface InternalNetwork {
     Integer mtu();
 
     /**
-     * Gets the connectedIPv4Subnets property: List with object connected IPv4 Subnets.
+     * Gets the connectedIPv4Subnets property: List of Connected IPv4 Subnets.
      *
      * @return the connectedIPv4Subnets value.
      */
     List<ConnectedSubnet> connectedIPv4Subnets();
 
     /**
-     * Gets the connectedIPv6Subnets property: List with object connected IPv6 Subnets.
+     * Gets the connectedIPv6Subnets property: List of connected IPv6 Subnets.
      *
      * @return the connectedIPv6Subnets value.
      */
     List<ConnectedSubnet> connectedIPv6Subnets();
 
     /**
-     * Gets the staticRouteConfiguration property: Static Route Configuration properties.
-     *
-     * @return the staticRouteConfiguration value.
-     */
-    StaticRouteConfiguration staticRouteConfiguration();
-
-    /**
-     * Gets the bgpConfiguration property: BGP configuration properties.
-     *
-     * @return the bgpConfiguration value.
-     */
-    BgpConfiguration bgpConfiguration();
-
-    /**
-     * Gets the importRoutePolicyId property: ARM resource ID of importRoutePolicy.
+     * Gets the importRoutePolicyId property: ARM Resource ID of the RoutePolicy. This is used for the backward
+     * compatibility.
      *
      * @return the importRoutePolicyId value.
      */
     String importRoutePolicyId();
 
     /**
-     * Gets the exportRoutePolicyId property: ARM resource ID of importRoutePolicy.
+     * Gets the exportRoutePolicyId property: ARM Resource ID of the RoutePolicy. This is used for the backward
+     * compatibility.
      *
      * @return the exportRoutePolicyId value.
      */
     String exportRoutePolicyId();
+
+    /**
+     * Gets the importRoutePolicy property: Import Route Policy either IPv4 or IPv6.
+     *
+     * @return the importRoutePolicy value.
+     */
+    ImportRoutePolicy importRoutePolicy();
+
+    /**
+     * Gets the exportRoutePolicy property: Export Route Policy either IPv4 or IPv6.
+     *
+     * @return the exportRoutePolicy value.
+     */
+    ExportRoutePolicy exportRoutePolicy();
+
+    /**
+     * Gets the ingressAclId property: Ingress Acl. ARM resource ID of Access Control Lists.
+     *
+     * @return the ingressAclId value.
+     */
+    String ingressAclId();
+
+    /**
+     * Gets the egressAclId property: Egress Acl. ARM resource ID of Access Control Lists.
+     *
+     * @return the egressAclId value.
+     */
+    String egressAclId();
+
+    /**
+     * Gets the isMonitoringEnabled property: To check whether monitoring of internal network is enabled or not.
+     *
+     * @return the isMonitoringEnabled value.
+     */
+    IsMonitoringEnabled isMonitoringEnabled();
+
+    /**
+     * Gets the extension property: Extension. Example: NoExtension | NPB.
+     *
+     * @return the extension value.
+     */
+    Extension extension();
 
     /**
      * Gets the annotation property: Switch configuration description.
@@ -169,22 +188,25 @@ public interface InternalNetwork {
             DefinitionStages.WithVlanId,
             DefinitionStages.WithCreate {
     }
+
     /** The InternalNetwork definition stages. */
     interface DefinitionStages {
         /** The first stage of the InternalNetwork definition. */
         interface Blank extends WithParentResource {
         }
+
         /** The stage of the InternalNetwork definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
              * Specifies resourceGroupName, l3IsolationDomainName.
              *
              * @param resourceGroupName The name of the resource group. The name is case insensitive.
-             * @param l3IsolationDomainName Name of the L3IsolationDomain.
+             * @param l3IsolationDomainName Name of the L3 Isolation Domain.
              * @return the next definition stage.
              */
             WithVlanId withExistingL3IsolationDomain(String resourceGroupName, String l3IsolationDomainName);
         }
+
         /** The stage of the InternalNetwork definition allowing to specify vlanId. */
         interface WithVlanId {
             /**
@@ -195,18 +217,25 @@ public interface InternalNetwork {
              */
             WithCreate withVlanId(int vlanId);
         }
+
         /**
          * The stage of the InternalNetwork definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
          */
         interface WithCreate
-            extends DefinitionStages.WithMtu,
+            extends DefinitionStages.WithBgpConfiguration,
+                DefinitionStages.WithStaticRouteConfiguration,
+                DefinitionStages.WithMtu,
                 DefinitionStages.WithConnectedIPv4Subnets,
                 DefinitionStages.WithConnectedIPv6Subnets,
-                DefinitionStages.WithStaticRouteConfiguration,
-                DefinitionStages.WithBgpConfiguration,
                 DefinitionStages.WithImportRoutePolicyId,
                 DefinitionStages.WithExportRoutePolicyId,
+                DefinitionStages.WithImportRoutePolicy,
+                DefinitionStages.WithExportRoutePolicy,
+                DefinitionStages.WithIngressAclId,
+                DefinitionStages.WithEgressAclId,
+                DefinitionStages.WithIsMonitoringEnabled,
+                DefinitionStages.WithExtension,
                 DefinitionStages.WithAnnotation {
             /**
              * Executes the create request.
@@ -223,6 +252,30 @@ public interface InternalNetwork {
              */
             InternalNetwork create(Context context);
         }
+
+        /** The stage of the InternalNetwork definition allowing to specify bgpConfiguration. */
+        interface WithBgpConfiguration {
+            /**
+             * Specifies the bgpConfiguration property: BGP configuration properties..
+             *
+             * @param bgpConfiguration BGP configuration properties.
+             * @return the next definition stage.
+             */
+            WithCreate withBgpConfiguration(InternalNetworkPropertiesBgpConfiguration bgpConfiguration);
+        }
+
+        /** The stage of the InternalNetwork definition allowing to specify staticRouteConfiguration. */
+        interface WithStaticRouteConfiguration {
+            /**
+             * Specifies the staticRouteConfiguration property: Static Route Configuration properties..
+             *
+             * @param staticRouteConfiguration Static Route Configuration properties.
+             * @return the next definition stage.
+             */
+            WithCreate withStaticRouteConfiguration(
+                InternalNetworkPropertiesStaticRouteConfiguration staticRouteConfiguration);
+        }
+
         /** The stage of the InternalNetwork definition allowing to specify mtu. */
         interface WithMtu {
             /**
@@ -233,66 +286,122 @@ public interface InternalNetwork {
              */
             WithCreate withMtu(Integer mtu);
         }
+
         /** The stage of the InternalNetwork definition allowing to specify connectedIPv4Subnets. */
         interface WithConnectedIPv4Subnets {
             /**
-             * Specifies the connectedIPv4Subnets property: List with object connected IPv4 Subnets..
+             * Specifies the connectedIPv4Subnets property: List of Connected IPv4 Subnets..
              *
-             * @param connectedIPv4Subnets List with object connected IPv4 Subnets.
+             * @param connectedIPv4Subnets List of Connected IPv4 Subnets.
              * @return the next definition stage.
              */
             WithCreate withConnectedIPv4Subnets(List<ConnectedSubnet> connectedIPv4Subnets);
         }
+
         /** The stage of the InternalNetwork definition allowing to specify connectedIPv6Subnets. */
         interface WithConnectedIPv6Subnets {
             /**
-             * Specifies the connectedIPv6Subnets property: List with object connected IPv6 Subnets..
+             * Specifies the connectedIPv6Subnets property: List of connected IPv6 Subnets..
              *
-             * @param connectedIPv6Subnets List with object connected IPv6 Subnets.
+             * @param connectedIPv6Subnets List of connected IPv6 Subnets.
              * @return the next definition stage.
              */
             WithCreate withConnectedIPv6Subnets(List<ConnectedSubnet> connectedIPv6Subnets);
         }
-        /** The stage of the InternalNetwork definition allowing to specify staticRouteConfiguration. */
-        interface WithStaticRouteConfiguration {
-            /**
-             * Specifies the staticRouteConfiguration property: Static Route Configuration properties..
-             *
-             * @param staticRouteConfiguration Static Route Configuration properties.
-             * @return the next definition stage.
-             */
-            WithCreate withStaticRouteConfiguration(StaticRouteConfiguration staticRouteConfiguration);
-        }
-        /** The stage of the InternalNetwork definition allowing to specify bgpConfiguration. */
-        interface WithBgpConfiguration {
-            /**
-             * Specifies the bgpConfiguration property: BGP configuration properties.
-             *
-             * @param bgpConfiguration BGP configuration properties.
-             * @return the next definition stage.
-             */
-            WithCreate withBgpConfiguration(BgpConfiguration bgpConfiguration);
-        }
+
         /** The stage of the InternalNetwork definition allowing to specify importRoutePolicyId. */
         interface WithImportRoutePolicyId {
             /**
-             * Specifies the importRoutePolicyId property: ARM resource ID of importRoutePolicy..
+             * Specifies the importRoutePolicyId property: ARM Resource ID of the RoutePolicy. This is used for the
+             * backward compatibility..
              *
-             * @param importRoutePolicyId ARM resource ID of importRoutePolicy.
+             * @param importRoutePolicyId ARM Resource ID of the RoutePolicy. This is used for the backward
+             *     compatibility.
              * @return the next definition stage.
              */
             WithCreate withImportRoutePolicyId(String importRoutePolicyId);
         }
+
         /** The stage of the InternalNetwork definition allowing to specify exportRoutePolicyId. */
         interface WithExportRoutePolicyId {
             /**
-             * Specifies the exportRoutePolicyId property: ARM resource ID of importRoutePolicy..
+             * Specifies the exportRoutePolicyId property: ARM Resource ID of the RoutePolicy. This is used for the
+             * backward compatibility..
              *
-             * @param exportRoutePolicyId ARM resource ID of importRoutePolicy.
+             * @param exportRoutePolicyId ARM Resource ID of the RoutePolicy. This is used for the backward
+             *     compatibility.
              * @return the next definition stage.
              */
             WithCreate withExportRoutePolicyId(String exportRoutePolicyId);
         }
+
+        /** The stage of the InternalNetwork definition allowing to specify importRoutePolicy. */
+        interface WithImportRoutePolicy {
+            /**
+             * Specifies the importRoutePolicy property: Import Route Policy either IPv4 or IPv6..
+             *
+             * @param importRoutePolicy Import Route Policy either IPv4 or IPv6.
+             * @return the next definition stage.
+             */
+            WithCreate withImportRoutePolicy(ImportRoutePolicy importRoutePolicy);
+        }
+
+        /** The stage of the InternalNetwork definition allowing to specify exportRoutePolicy. */
+        interface WithExportRoutePolicy {
+            /**
+             * Specifies the exportRoutePolicy property: Export Route Policy either IPv4 or IPv6..
+             *
+             * @param exportRoutePolicy Export Route Policy either IPv4 or IPv6.
+             * @return the next definition stage.
+             */
+            WithCreate withExportRoutePolicy(ExportRoutePolicy exportRoutePolicy);
+        }
+
+        /** The stage of the InternalNetwork definition allowing to specify ingressAclId. */
+        interface WithIngressAclId {
+            /**
+             * Specifies the ingressAclId property: Ingress Acl. ARM resource ID of Access Control Lists..
+             *
+             * @param ingressAclId Ingress Acl. ARM resource ID of Access Control Lists.
+             * @return the next definition stage.
+             */
+            WithCreate withIngressAclId(String ingressAclId);
+        }
+
+        /** The stage of the InternalNetwork definition allowing to specify egressAclId. */
+        interface WithEgressAclId {
+            /**
+             * Specifies the egressAclId property: Egress Acl. ARM resource ID of Access Control Lists..
+             *
+             * @param egressAclId Egress Acl. ARM resource ID of Access Control Lists.
+             * @return the next definition stage.
+             */
+            WithCreate withEgressAclId(String egressAclId);
+        }
+
+        /** The stage of the InternalNetwork definition allowing to specify isMonitoringEnabled. */
+        interface WithIsMonitoringEnabled {
+            /**
+             * Specifies the isMonitoringEnabled property: To check whether monitoring of internal network is enabled or
+             * not..
+             *
+             * @param isMonitoringEnabled To check whether monitoring of internal network is enabled or not.
+             * @return the next definition stage.
+             */
+            WithCreate withIsMonitoringEnabled(IsMonitoringEnabled isMonitoringEnabled);
+        }
+
+        /** The stage of the InternalNetwork definition allowing to specify extension. */
+        interface WithExtension {
+            /**
+             * Specifies the extension property: Extension. Example: NoExtension | NPB..
+             *
+             * @param extension Extension. Example: NoExtension | NPB.
+             * @return the next definition stage.
+             */
+            WithCreate withExtension(Extension extension);
+        }
+
         /** The stage of the InternalNetwork definition allowing to specify annotation. */
         interface WithAnnotation {
             /**
@@ -304,6 +413,7 @@ public interface InternalNetwork {
             WithCreate withAnnotation(String annotation);
         }
     }
+
     /**
      * Begins update for the InternalNetwork resource.
      *
@@ -313,13 +423,18 @@ public interface InternalNetwork {
 
     /** The template for InternalNetwork update. */
     interface Update
-        extends UpdateStages.WithMtu,
+        extends UpdateStages.WithBgpConfiguration,
+            UpdateStages.WithStaticRouteConfiguration,
+            UpdateStages.WithMtu,
             UpdateStages.WithConnectedIPv4Subnets,
             UpdateStages.WithConnectedIPv6Subnets,
-            UpdateStages.WithStaticRouteConfiguration,
-            UpdateStages.WithBgpConfiguration,
             UpdateStages.WithImportRoutePolicyId,
             UpdateStages.WithExportRoutePolicyId,
+            UpdateStages.WithImportRoutePolicy,
+            UpdateStages.WithExportRoutePolicy,
+            UpdateStages.WithIngressAclId,
+            UpdateStages.WithEgressAclId,
+            UpdateStages.WithIsMonitoringEnabled,
             UpdateStages.WithAnnotation {
         /**
          * Executes the update request.
@@ -336,38 +451,20 @@ public interface InternalNetwork {
          */
         InternalNetwork apply(Context context);
     }
+
     /** The InternalNetwork update stages. */
     interface UpdateStages {
-        /** The stage of the InternalNetwork update allowing to specify mtu. */
-        interface WithMtu {
+        /** The stage of the InternalNetwork update allowing to specify bgpConfiguration. */
+        interface WithBgpConfiguration {
             /**
-             * Specifies the mtu property: Maximum transmission unit. Default value is 1500..
+             * Specifies the bgpConfiguration property: BGP configuration properties..
              *
-             * @param mtu Maximum transmission unit. Default value is 1500.
+             * @param bgpConfiguration BGP configuration properties.
              * @return the next definition stage.
              */
-            Update withMtu(Integer mtu);
+            Update withBgpConfiguration(BgpConfiguration bgpConfiguration);
         }
-        /** The stage of the InternalNetwork update allowing to specify connectedIPv4Subnets. */
-        interface WithConnectedIPv4Subnets {
-            /**
-             * Specifies the connectedIPv4Subnets property: List with object connected IPv4 Subnets..
-             *
-             * @param connectedIPv4Subnets List with object connected IPv4 Subnets.
-             * @return the next definition stage.
-             */
-            Update withConnectedIPv4Subnets(List<ConnectedSubnet> connectedIPv4Subnets);
-        }
-        /** The stage of the InternalNetwork update allowing to specify connectedIPv6Subnets. */
-        interface WithConnectedIPv6Subnets {
-            /**
-             * Specifies the connectedIPv6Subnets property: List with object connected IPv6 Subnets..
-             *
-             * @param connectedIPv6Subnets List with object connected IPv6 Subnets.
-             * @return the next definition stage.
-             */
-            Update withConnectedIPv6Subnets(List<ConnectedSubnet> connectedIPv6Subnets);
-        }
+
         /** The stage of the InternalNetwork update allowing to specify staticRouteConfiguration. */
         interface WithStaticRouteConfiguration {
             /**
@@ -378,36 +475,122 @@ public interface InternalNetwork {
              */
             Update withStaticRouteConfiguration(StaticRouteConfiguration staticRouteConfiguration);
         }
-        /** The stage of the InternalNetwork update allowing to specify bgpConfiguration. */
-        interface WithBgpConfiguration {
+
+        /** The stage of the InternalNetwork update allowing to specify mtu. */
+        interface WithMtu {
             /**
-             * Specifies the bgpConfiguration property: BGP configuration properties.
+             * Specifies the mtu property: Maximum transmission unit. Default value is 1500..
              *
-             * @param bgpConfiguration BGP configuration properties.
+             * @param mtu Maximum transmission unit. Default value is 1500.
              * @return the next definition stage.
              */
-            Update withBgpConfiguration(BgpConfiguration bgpConfiguration);
+            Update withMtu(Integer mtu);
         }
+
+        /** The stage of the InternalNetwork update allowing to specify connectedIPv4Subnets. */
+        interface WithConnectedIPv4Subnets {
+            /**
+             * Specifies the connectedIPv4Subnets property: List of Connected IPv4 Subnets..
+             *
+             * @param connectedIPv4Subnets List of Connected IPv4 Subnets.
+             * @return the next definition stage.
+             */
+            Update withConnectedIPv4Subnets(List<ConnectedSubnet> connectedIPv4Subnets);
+        }
+
+        /** The stage of the InternalNetwork update allowing to specify connectedIPv6Subnets. */
+        interface WithConnectedIPv6Subnets {
+            /**
+             * Specifies the connectedIPv6Subnets property: List of connected IPv6 Subnets..
+             *
+             * @param connectedIPv6Subnets List of connected IPv6 Subnets.
+             * @return the next definition stage.
+             */
+            Update withConnectedIPv6Subnets(List<ConnectedSubnet> connectedIPv6Subnets);
+        }
+
         /** The stage of the InternalNetwork update allowing to specify importRoutePolicyId. */
         interface WithImportRoutePolicyId {
             /**
-             * Specifies the importRoutePolicyId property: ARM resource ID of importRoutePolicy..
+             * Specifies the importRoutePolicyId property: ARM Resource ID of the RoutePolicy. This is used for the
+             * backward compatibility..
              *
-             * @param importRoutePolicyId ARM resource ID of importRoutePolicy.
+             * @param importRoutePolicyId ARM Resource ID of the RoutePolicy. This is used for the backward
+             *     compatibility.
              * @return the next definition stage.
              */
             Update withImportRoutePolicyId(String importRoutePolicyId);
         }
+
         /** The stage of the InternalNetwork update allowing to specify exportRoutePolicyId. */
         interface WithExportRoutePolicyId {
             /**
-             * Specifies the exportRoutePolicyId property: ARM resource ID of importRoutePolicy..
+             * Specifies the exportRoutePolicyId property: ARM Resource ID of the RoutePolicy. This is used for the
+             * backward compatibility..
              *
-             * @param exportRoutePolicyId ARM resource ID of importRoutePolicy.
+             * @param exportRoutePolicyId ARM Resource ID of the RoutePolicy. This is used for the backward
+             *     compatibility.
              * @return the next definition stage.
              */
             Update withExportRoutePolicyId(String exportRoutePolicyId);
         }
+
+        /** The stage of the InternalNetwork update allowing to specify importRoutePolicy. */
+        interface WithImportRoutePolicy {
+            /**
+             * Specifies the importRoutePolicy property: Import Route Policy either IPv4 or IPv6..
+             *
+             * @param importRoutePolicy Import Route Policy either IPv4 or IPv6.
+             * @return the next definition stage.
+             */
+            Update withImportRoutePolicy(ImportRoutePolicy importRoutePolicy);
+        }
+
+        /** The stage of the InternalNetwork update allowing to specify exportRoutePolicy. */
+        interface WithExportRoutePolicy {
+            /**
+             * Specifies the exportRoutePolicy property: Export Route Policy either IPv4 or IPv6..
+             *
+             * @param exportRoutePolicy Export Route Policy either IPv4 or IPv6.
+             * @return the next definition stage.
+             */
+            Update withExportRoutePolicy(ExportRoutePolicy exportRoutePolicy);
+        }
+
+        /** The stage of the InternalNetwork update allowing to specify ingressAclId. */
+        interface WithIngressAclId {
+            /**
+             * Specifies the ingressAclId property: Ingress Acl. ARM resource ID of Access Control Lists..
+             *
+             * @param ingressAclId Ingress Acl. ARM resource ID of Access Control Lists.
+             * @return the next definition stage.
+             */
+            Update withIngressAclId(String ingressAclId);
+        }
+
+        /** The stage of the InternalNetwork update allowing to specify egressAclId. */
+        interface WithEgressAclId {
+            /**
+             * Specifies the egressAclId property: Egress Acl. ARM resource ID of Access Control Lists..
+             *
+             * @param egressAclId Egress Acl. ARM resource ID of Access Control Lists.
+             * @return the next definition stage.
+             */
+            Update withEgressAclId(String egressAclId);
+        }
+
+        /** The stage of the InternalNetwork update allowing to specify isMonitoringEnabled. */
+        interface WithIsMonitoringEnabled {
+            /**
+             * Specifies the isMonitoringEnabled property: To check whether monitoring of internal network is enabled or
+             * not..
+             *
+             * @param isMonitoringEnabled To check whether monitoring of internal network is enabled or not.
+             * @return the next definition stage.
+             */
+            Update withIsMonitoringEnabled(IsMonitoringEnabled isMonitoringEnabled);
+        }
+
         /** The stage of the InternalNetwork update allowing to specify annotation. */
         interface WithAnnotation {
             /**
@@ -419,6 +602,7 @@ public interface InternalNetwork {
             Update withAnnotation(String annotation);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *
@@ -443,8 +627,9 @@ public interface InternalNetwork {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return common response for the state updates.
      */
-    void updateAdministrativeState(UpdateAdministrativeState body);
+    CommonPostActionResponseForStateUpdate updateAdministrativeState(UpdateAdministrativeState body);
 
     /**
      * Executes the operation to the underlying resources.
@@ -456,8 +641,9 @@ public interface InternalNetwork {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return common response for the state updates.
      */
-    void updateAdministrativeState(UpdateAdministrativeState body, Context context);
+    CommonPostActionResponseForStateUpdate updateAdministrativeState(UpdateAdministrativeState body, Context context);
 
     /**
      * Executes the operation to the underlying resources for updating BGP state on edge devices.
@@ -468,8 +654,9 @@ public interface InternalNetwork {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return common response for the state updates.
      */
-    void updateBgpAdministrativeState(UpdateAdministrativeState body);
+    CommonPostActionResponseForStateUpdate updateBgpAdministrativeState(UpdateAdministrativeState body);
 
     /**
      * Executes the operation to the underlying resources for updating BGP state on edge devices.
@@ -481,106 +668,36 @@ public interface InternalNetwork {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return common response for the state updates.
      */
-    void updateBgpAdministrativeState(UpdateAdministrativeState body, Context context);
+    CommonPostActionResponseForStateUpdate updateBgpAdministrativeState(
+        UpdateAdministrativeState body, Context context);
 
     /**
      * Implements the operation to the underlying resources.
      *
-     * <p>Update BfdForBgp for internalNetwork.
+     * <p>Update Static Route BFD administrative state for internalNetwork.
      *
      * @param body Request payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return common response for the state updates.
      */
-    void updateBfdForBgpAdministrativeState(UpdateAdministrativeState body);
+    CommonPostActionResponseForStateUpdate updateStaticRouteBfdAdministrativeState(UpdateAdministrativeState body);
 
     /**
      * Implements the operation to the underlying resources.
      *
-     * <p>Update BfdForBgp for internalNetwork.
+     * <p>Update Static Route BFD administrative state for internalNetwork.
      *
      * @param body Request payload.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return common response for the state updates.
      */
-    void updateBfdForBgpAdministrativeState(UpdateAdministrativeState body, Context context);
-
-    /**
-     * Implements the operation to the underlying resources.
-     *
-     * <p>clearIpv6Neighbors for internalNetwork.
-     *
-     * @param body Request payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void clearIpv6Neighbors(EnableDisableOnResources body);
-
-    /**
-     * Implements the operation to the underlying resources.
-     *
-     * <p>clearIpv6Neighbors for internalNetwork.
-     *
-     * @param body Request payload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void clearIpv6Neighbors(EnableDisableOnResources body, Context context);
-
-    /**
-     * Executes clearArpEntries operation to the underlying resources.
-     *
-     * <p>clearArpEntries for internalNetwork.
-     *
-     * @param body Request payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void clearArpEntries(EnableDisableOnResources body);
-
-    /**
-     * Executes clearArpEntries operation to the underlying resources.
-     *
-     * <p>clearArpEntries for internalNetwork.
-     *
-     * @param body Request payload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void clearArpEntries(EnableDisableOnResources body, Context context);
-
-    /**
-     * Executes update BfdForStaticRoutes operation to the underlying resources.
-     *
-     * <p>Update BfdForStaticRoutes for internalNetwork.
-     *
-     * @param body Request payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void updateBfdForStaticRouteAdministrativeState(UpdateAdministrativeState body);
-
-    /**
-     * Executes update BfdForStaticRoutes operation to the underlying resources.
-     *
-     * <p>Update BfdForStaticRoutes for internalNetwork.
-     *
-     * @param body Request payload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void updateBfdForStaticRouteAdministrativeState(UpdateAdministrativeState body, Context context);
+    CommonPostActionResponseForStateUpdate updateStaticRouteBfdAdministrativeState(
+        UpdateAdministrativeState body, Context context);
 }

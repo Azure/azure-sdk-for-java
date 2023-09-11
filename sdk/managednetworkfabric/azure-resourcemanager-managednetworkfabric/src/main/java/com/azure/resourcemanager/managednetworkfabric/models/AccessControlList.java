@@ -8,6 +8,7 @@ import com.azure.core.management.Region;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.managednetworkfabric.fluent.models.AccessControlListInner;
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 
@@ -56,25 +57,60 @@ public interface AccessControlList {
     SystemData systemData();
 
     /**
-     * Gets the addressFamily property: IP address family. Example: ipv4 | ipv6.
+     * Gets the lastSyncedTime property: The last synced timestamp.
      *
-     * @return the addressFamily value.
+     * @return the lastSyncedTime value.
      */
-    AddressFamily addressFamily();
+    OffsetDateTime lastSyncedTime();
 
     /**
-     * Gets the conditions property: Access Control List conditions.
+     * Gets the configurationState property: Configuration state of the resource.
      *
-     * @return the conditions value.
+     * @return the configurationState value.
      */
-    List<AccessControlListConditionProperties> conditions();
+    ConfigurationState configurationState();
 
     /**
-     * Gets the provisioningState property: Gets the provisioning state of the resource.
+     * Gets the provisioningState property: Provisioning state of the resource.
      *
      * @return the provisioningState value.
      */
     ProvisioningState provisioningState();
+
+    /**
+     * Gets the administrativeState property: Administrative state of the resource.
+     *
+     * @return the administrativeState value.
+     */
+    AdministrativeState administrativeState();
+
+    /**
+     * Gets the configurationType property: Input method to configure Access Control List.
+     *
+     * @return the configurationType value.
+     */
+    ConfigurationType configurationType();
+
+    /**
+     * Gets the aclsUrl property: Access Control List file URL.
+     *
+     * @return the aclsUrl value.
+     */
+    String aclsUrl();
+
+    /**
+     * Gets the matchConfigurations property: List of match configurations.
+     *
+     * @return the matchConfigurations value.
+     */
+    List<AccessControlListMatchConfiguration> matchConfigurations();
+
+    /**
+     * Gets the dynamicMatchConfigurations property: List of dynamic match configurations.
+     *
+     * @return the dynamicMatchConfigurations value.
+     */
+    List<CommonDynamicMatchConfiguration> dynamicMatchConfigurations();
 
     /**
      * Gets the annotation property: Switch configuration description.
@@ -116,15 +152,15 @@ public interface AccessControlList {
         extends DefinitionStages.Blank,
             DefinitionStages.WithLocation,
             DefinitionStages.WithResourceGroup,
-            DefinitionStages.WithAddressFamily,
-            DefinitionStages.WithConditions,
             DefinitionStages.WithCreate {
     }
+
     /** The AccessControlList definition stages. */
     interface DefinitionStages {
         /** The first stage of the AccessControlList definition. */
         interface Blank extends WithLocation {
         }
+
         /** The stage of the AccessControlList definition allowing to specify location. */
         interface WithLocation {
             /**
@@ -143,6 +179,7 @@ public interface AccessControlList {
              */
             WithResourceGroup withRegion(String location);
         }
+
         /** The stage of the AccessControlList definition allowing to specify parent resource. */
         interface WithResourceGroup {
             /**
@@ -151,33 +188,20 @@ public interface AccessControlList {
              * @param resourceGroupName The name of the resource group. The name is case insensitive.
              * @return the next definition stage.
              */
-            WithAddressFamily withExistingResourceGroup(String resourceGroupName);
+            WithCreate withExistingResourceGroup(String resourceGroupName);
         }
-        /** The stage of the AccessControlList definition allowing to specify addressFamily. */
-        interface WithAddressFamily {
-            /**
-             * Specifies the addressFamily property: IP address family. Example: ipv4 | ipv6..
-             *
-             * @param addressFamily IP address family. Example: ipv4 | ipv6.
-             * @return the next definition stage.
-             */
-            WithConditions withAddressFamily(AddressFamily addressFamily);
-        }
-        /** The stage of the AccessControlList definition allowing to specify conditions. */
-        interface WithConditions {
-            /**
-             * Specifies the conditions property: Access Control List conditions..
-             *
-             * @param conditions Access Control List conditions.
-             * @return the next definition stage.
-             */
-            WithCreate withConditions(List<AccessControlListConditionProperties> conditions);
-        }
+
         /**
          * The stage of the AccessControlList definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithAnnotation {
+        interface WithCreate
+            extends DefinitionStages.WithTags,
+                DefinitionStages.WithConfigurationType,
+                DefinitionStages.WithAclsUrl,
+                DefinitionStages.WithMatchConfigurations,
+                DefinitionStages.WithDynamicMatchConfigurations,
+                DefinitionStages.WithAnnotation {
             /**
              * Executes the create request.
              *
@@ -193,6 +217,7 @@ public interface AccessControlList {
              */
             AccessControlList create(Context context);
         }
+
         /** The stage of the AccessControlList definition allowing to specify tags. */
         interface WithTags {
             /**
@@ -203,6 +228,51 @@ public interface AccessControlList {
              */
             WithCreate withTags(Map<String, String> tags);
         }
+
+        /** The stage of the AccessControlList definition allowing to specify configurationType. */
+        interface WithConfigurationType {
+            /**
+             * Specifies the configurationType property: Input method to configure Access Control List..
+             *
+             * @param configurationType Input method to configure Access Control List.
+             * @return the next definition stage.
+             */
+            WithCreate withConfigurationType(ConfigurationType configurationType);
+        }
+
+        /** The stage of the AccessControlList definition allowing to specify aclsUrl. */
+        interface WithAclsUrl {
+            /**
+             * Specifies the aclsUrl property: Access Control List file URL..
+             *
+             * @param aclsUrl Access Control List file URL.
+             * @return the next definition stage.
+             */
+            WithCreate withAclsUrl(String aclsUrl);
+        }
+
+        /** The stage of the AccessControlList definition allowing to specify matchConfigurations. */
+        interface WithMatchConfigurations {
+            /**
+             * Specifies the matchConfigurations property: List of match configurations..
+             *
+             * @param matchConfigurations List of match configurations.
+             * @return the next definition stage.
+             */
+            WithCreate withMatchConfigurations(List<AccessControlListMatchConfiguration> matchConfigurations);
+        }
+
+        /** The stage of the AccessControlList definition allowing to specify dynamicMatchConfigurations. */
+        interface WithDynamicMatchConfigurations {
+            /**
+             * Specifies the dynamicMatchConfigurations property: List of dynamic match configurations..
+             *
+             * @param dynamicMatchConfigurations List of dynamic match configurations.
+             * @return the next definition stage.
+             */
+            WithCreate withDynamicMatchConfigurations(List<CommonDynamicMatchConfiguration> dynamicMatchConfigurations);
+        }
+
         /** The stage of the AccessControlList definition allowing to specify annotation. */
         interface WithAnnotation {
             /**
@@ -214,6 +284,7 @@ public interface AccessControlList {
             WithCreate withAnnotation(String annotation);
         }
     }
+
     /**
      * Begins update for the AccessControlList resource.
      *
@@ -224,9 +295,11 @@ public interface AccessControlList {
     /** The template for AccessControlList update. */
     interface Update
         extends UpdateStages.WithTags,
-            UpdateStages.WithAddressFamily,
-            UpdateStages.WithConditions,
-            UpdateStages.WithAnnotation {
+            UpdateStages.WithAnnotation,
+            UpdateStages.WithConfigurationType,
+            UpdateStages.WithAclsUrl,
+            UpdateStages.WithMatchConfigurations,
+            UpdateStages.WithDynamicMatchConfigurations {
         /**
          * Executes the update request.
          *
@@ -242,6 +315,7 @@ public interface AccessControlList {
          */
         AccessControlList apply(Context context);
     }
+
     /** The AccessControlList update stages. */
     interface UpdateStages {
         /** The stage of the AccessControlList update allowing to specify tags. */
@@ -254,26 +328,7 @@ public interface AccessControlList {
              */
             Update withTags(Map<String, String> tags);
         }
-        /** The stage of the AccessControlList update allowing to specify addressFamily. */
-        interface WithAddressFamily {
-            /**
-             * Specifies the addressFamily property: IP address family. Example: ipv4 | ipv6..
-             *
-             * @param addressFamily IP address family. Example: ipv4 | ipv6.
-             * @return the next definition stage.
-             */
-            Update withAddressFamily(AddressFamily addressFamily);
-        }
-        /** The stage of the AccessControlList update allowing to specify conditions. */
-        interface WithConditions {
-            /**
-             * Specifies the conditions property: Access Control List conditions..
-             *
-             * @param conditions Access Control List conditions.
-             * @return the next definition stage.
-             */
-            Update withConditions(List<AccessControlListConditionProperties> conditions);
-        }
+
         /** The stage of the AccessControlList update allowing to specify annotation. */
         interface WithAnnotation {
             /**
@@ -284,7 +339,52 @@ public interface AccessControlList {
              */
             Update withAnnotation(String annotation);
         }
+
+        /** The stage of the AccessControlList update allowing to specify configurationType. */
+        interface WithConfigurationType {
+            /**
+             * Specifies the configurationType property: Input method to configure Access Control List..
+             *
+             * @param configurationType Input method to configure Access Control List.
+             * @return the next definition stage.
+             */
+            Update withConfigurationType(ConfigurationType configurationType);
+        }
+
+        /** The stage of the AccessControlList update allowing to specify aclsUrl. */
+        interface WithAclsUrl {
+            /**
+             * Specifies the aclsUrl property: Access Control List file URL..
+             *
+             * @param aclsUrl Access Control List file URL.
+             * @return the next definition stage.
+             */
+            Update withAclsUrl(String aclsUrl);
+        }
+
+        /** The stage of the AccessControlList update allowing to specify matchConfigurations. */
+        interface WithMatchConfigurations {
+            /**
+             * Specifies the matchConfigurations property: List of match configurations..
+             *
+             * @param matchConfigurations List of match configurations.
+             * @return the next definition stage.
+             */
+            Update withMatchConfigurations(List<AccessControlListMatchConfiguration> matchConfigurations);
+        }
+
+        /** The stage of the AccessControlList update allowing to specify dynamicMatchConfigurations. */
+        interface WithDynamicMatchConfigurations {
+            /**
+             * Specifies the dynamicMatchConfigurations property: List of dynamic match configurations..
+             *
+             * @param dynamicMatchConfigurations List of dynamic match configurations.
+             * @return the next definition stage.
+             */
+            Update withDynamicMatchConfigurations(List<CommonDynamicMatchConfiguration> dynamicMatchConfigurations);
+        }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *
@@ -299,4 +399,79 @@ public interface AccessControlList {
      * @return the refreshed resource.
      */
     AccessControlList refresh(Context context);
+
+    /**
+     * Updates administrative state of Access Control Lists.
+     *
+     * <p>Implements the operation to the underlying resources.
+     *
+     * @param body Request payload.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return common response for the state updates.
+     */
+    CommonPostActionResponseForStateUpdate updateAdministrativeState(UpdateAdministrativeState body);
+
+    /**
+     * Updates administrative state of Access Control Lists.
+     *
+     * <p>Implements the operation to the underlying resources.
+     *
+     * @param body Request payload.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return common response for the state updates.
+     */
+    CommonPostActionResponseForStateUpdate updateAdministrativeState(UpdateAdministrativeState body, Context context);
+
+    /**
+     * Resync operation on the Access Control Lists.
+     *
+     * <p>Implements the operation to the underlying resources.
+     *
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return common response for the state updates.
+     */
+    CommonPostActionResponseForStateUpdate resync();
+
+    /**
+     * Resync operation on the Access Control Lists.
+     *
+     * <p>Implements the operation to the underlying resources.
+     *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return common response for the state updates.
+     */
+    CommonPostActionResponseForStateUpdate resync(Context context);
+
+    /**
+     * Validates the configuration of the Access Control Lists.
+     *
+     * <p>Implements the operation to the underlying resources.
+     *
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of the action validate configuration.
+     */
+    ValidateConfigurationResponse validateConfiguration();
+
+    /**
+     * Validates the configuration of the Access Control Lists.
+     *
+     * <p>Implements the operation to the underlying resources.
+     *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of the action validate configuration.
+     */
+    ValidateConfigurationResponse validateConfiguration(Context context);
 }

@@ -8,6 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.managednetworkfabric.models.AnnotationResource;
 import com.azure.resourcemanager.managednetworkfabric.models.BgpConfiguration;
 import com.azure.resourcemanager.managednetworkfabric.models.ConnectedSubnet;
+import com.azure.resourcemanager.managednetworkfabric.models.ExportRoutePolicy;
+import com.azure.resourcemanager.managednetworkfabric.models.ImportRoutePolicy;
+import com.azure.resourcemanager.managednetworkfabric.models.IsMonitoringEnabled;
 import com.azure.resourcemanager.managednetworkfabric.models.StaticRouteConfiguration;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -16,22 +19,10 @@ import java.util.List;
 @Fluent
 public final class InternalNetworkPatchProperties extends AnnotationResource {
     /*
-     * Maximum transmission unit. Default value is 1500.
+     * BGP configuration properties.
      */
-    @JsonProperty(value = "mtu")
-    private Integer mtu;
-
-    /*
-     * List with object connected IPv4 Subnets.
-     */
-    @JsonProperty(value = "connectedIPv4Subnets")
-    private List<ConnectedSubnet> connectedIPv4Subnets;
-
-    /*
-     * List with object connected IPv6 Subnets.
-     */
-    @JsonProperty(value = "connectedIPv6Subnets")
-    private List<ConnectedSubnet> connectedIPv6Subnets;
+    @JsonProperty(value = "bgpConfiguration")
+    private BgpConfiguration bgpConfiguration;
 
     /*
      * Static Route Configuration properties.
@@ -40,84 +31,86 @@ public final class InternalNetworkPatchProperties extends AnnotationResource {
     private StaticRouteConfiguration staticRouteConfiguration;
 
     /*
-     * BGP configuration properties
+     * Maximum transmission unit. Default value is 1500.
      */
-    @JsonProperty(value = "bgpConfiguration")
-    private BgpConfiguration bgpConfiguration;
+    @JsonProperty(value = "mtu")
+    private Integer mtu;
 
     /*
-     * ARM resource ID of importRoutePolicy.
+     * List of Connected IPv4 Subnets.
+     */
+    @JsonProperty(value = "connectedIPv4Subnets")
+    private List<ConnectedSubnet> connectedIPv4Subnets;
+
+    /*
+     * List of connected IPv6 Subnets.
+     */
+    @JsonProperty(value = "connectedIPv6Subnets")
+    private List<ConnectedSubnet> connectedIPv6Subnets;
+
+    /*
+     * ARM Resource ID of the RoutePolicy. This is used for the backward compatibility.
      */
     @JsonProperty(value = "importRoutePolicyId")
     private String importRoutePolicyId;
 
     /*
-     * ARM resource ID of importRoutePolicy.
+     * ARM Resource ID of the RoutePolicy. This is used for the backward compatibility.
      */
     @JsonProperty(value = "exportRoutePolicyId")
     private String exportRoutePolicyId;
+
+    /*
+     * Import Route Policy either IPv4 or IPv6.
+     */
+    @JsonProperty(value = "importRoutePolicy")
+    private ImportRoutePolicy importRoutePolicy;
+
+    /*
+     * Export Route Policy either IPv4 or IPv6.
+     */
+    @JsonProperty(value = "exportRoutePolicy")
+    private ExportRoutePolicy exportRoutePolicy;
+
+    /*
+     * Ingress Acl. ARM resource ID of Access Control Lists.
+     */
+    @JsonProperty(value = "ingressAclId")
+    private String ingressAclId;
+
+    /*
+     * Egress Acl. ARM resource ID of Access Control Lists.
+     */
+    @JsonProperty(value = "egressAclId")
+    private String egressAclId;
+
+    /*
+     * To check whether monitoring of internal network is enabled or not.
+     */
+    @JsonProperty(value = "isMonitoringEnabled")
+    private IsMonitoringEnabled isMonitoringEnabled;
 
     /** Creates an instance of InternalNetworkPatchProperties class. */
     public InternalNetworkPatchProperties() {
     }
 
     /**
-     * Get the mtu property: Maximum transmission unit. Default value is 1500.
+     * Get the bgpConfiguration property: BGP configuration properties.
      *
-     * @return the mtu value.
+     * @return the bgpConfiguration value.
      */
-    public Integer mtu() {
-        return this.mtu;
+    public BgpConfiguration bgpConfiguration() {
+        return this.bgpConfiguration;
     }
 
     /**
-     * Set the mtu property: Maximum transmission unit. Default value is 1500.
+     * Set the bgpConfiguration property: BGP configuration properties.
      *
-     * @param mtu the mtu value to set.
+     * @param bgpConfiguration the bgpConfiguration value to set.
      * @return the InternalNetworkPatchProperties object itself.
      */
-    public InternalNetworkPatchProperties withMtu(Integer mtu) {
-        this.mtu = mtu;
-        return this;
-    }
-
-    /**
-     * Get the connectedIPv4Subnets property: List with object connected IPv4 Subnets.
-     *
-     * @return the connectedIPv4Subnets value.
-     */
-    public List<ConnectedSubnet> connectedIPv4Subnets() {
-        return this.connectedIPv4Subnets;
-    }
-
-    /**
-     * Set the connectedIPv4Subnets property: List with object connected IPv4 Subnets.
-     *
-     * @param connectedIPv4Subnets the connectedIPv4Subnets value to set.
-     * @return the InternalNetworkPatchProperties object itself.
-     */
-    public InternalNetworkPatchProperties withConnectedIPv4Subnets(List<ConnectedSubnet> connectedIPv4Subnets) {
-        this.connectedIPv4Subnets = connectedIPv4Subnets;
-        return this;
-    }
-
-    /**
-     * Get the connectedIPv6Subnets property: List with object connected IPv6 Subnets.
-     *
-     * @return the connectedIPv6Subnets value.
-     */
-    public List<ConnectedSubnet> connectedIPv6Subnets() {
-        return this.connectedIPv6Subnets;
-    }
-
-    /**
-     * Set the connectedIPv6Subnets property: List with object connected IPv6 Subnets.
-     *
-     * @param connectedIPv6Subnets the connectedIPv6Subnets value to set.
-     * @return the InternalNetworkPatchProperties object itself.
-     */
-    public InternalNetworkPatchProperties withConnectedIPv6Subnets(List<ConnectedSubnet> connectedIPv6Subnets) {
-        this.connectedIPv6Subnets = connectedIPv6Subnets;
+    public InternalNetworkPatchProperties withBgpConfiguration(BgpConfiguration bgpConfiguration) {
+        this.bgpConfiguration = bgpConfiguration;
         return this;
     }
 
@@ -143,27 +136,68 @@ public final class InternalNetworkPatchProperties extends AnnotationResource {
     }
 
     /**
-     * Get the bgpConfiguration property: BGP configuration properties.
+     * Get the mtu property: Maximum transmission unit. Default value is 1500.
      *
-     * @return the bgpConfiguration value.
+     * @return the mtu value.
      */
-    public BgpConfiguration bgpConfiguration() {
-        return this.bgpConfiguration;
+    public Integer mtu() {
+        return this.mtu;
     }
 
     /**
-     * Set the bgpConfiguration property: BGP configuration properties.
+     * Set the mtu property: Maximum transmission unit. Default value is 1500.
      *
-     * @param bgpConfiguration the bgpConfiguration value to set.
+     * @param mtu the mtu value to set.
      * @return the InternalNetworkPatchProperties object itself.
      */
-    public InternalNetworkPatchProperties withBgpConfiguration(BgpConfiguration bgpConfiguration) {
-        this.bgpConfiguration = bgpConfiguration;
+    public InternalNetworkPatchProperties withMtu(Integer mtu) {
+        this.mtu = mtu;
         return this;
     }
 
     /**
-     * Get the importRoutePolicyId property: ARM resource ID of importRoutePolicy.
+     * Get the connectedIPv4Subnets property: List of Connected IPv4 Subnets.
+     *
+     * @return the connectedIPv4Subnets value.
+     */
+    public List<ConnectedSubnet> connectedIPv4Subnets() {
+        return this.connectedIPv4Subnets;
+    }
+
+    /**
+     * Set the connectedIPv4Subnets property: List of Connected IPv4 Subnets.
+     *
+     * @param connectedIPv4Subnets the connectedIPv4Subnets value to set.
+     * @return the InternalNetworkPatchProperties object itself.
+     */
+    public InternalNetworkPatchProperties withConnectedIPv4Subnets(List<ConnectedSubnet> connectedIPv4Subnets) {
+        this.connectedIPv4Subnets = connectedIPv4Subnets;
+        return this;
+    }
+
+    /**
+     * Get the connectedIPv6Subnets property: List of connected IPv6 Subnets.
+     *
+     * @return the connectedIPv6Subnets value.
+     */
+    public List<ConnectedSubnet> connectedIPv6Subnets() {
+        return this.connectedIPv6Subnets;
+    }
+
+    /**
+     * Set the connectedIPv6Subnets property: List of connected IPv6 Subnets.
+     *
+     * @param connectedIPv6Subnets the connectedIPv6Subnets value to set.
+     * @return the InternalNetworkPatchProperties object itself.
+     */
+    public InternalNetworkPatchProperties withConnectedIPv6Subnets(List<ConnectedSubnet> connectedIPv6Subnets) {
+        this.connectedIPv6Subnets = connectedIPv6Subnets;
+        return this;
+    }
+
+    /**
+     * Get the importRoutePolicyId property: ARM Resource ID of the RoutePolicy. This is used for the backward
+     * compatibility.
      *
      * @return the importRoutePolicyId value.
      */
@@ -172,7 +206,8 @@ public final class InternalNetworkPatchProperties extends AnnotationResource {
     }
 
     /**
-     * Set the importRoutePolicyId property: ARM resource ID of importRoutePolicy.
+     * Set the importRoutePolicyId property: ARM Resource ID of the RoutePolicy. This is used for the backward
+     * compatibility.
      *
      * @param importRoutePolicyId the importRoutePolicyId value to set.
      * @return the InternalNetworkPatchProperties object itself.
@@ -183,7 +218,8 @@ public final class InternalNetworkPatchProperties extends AnnotationResource {
     }
 
     /**
-     * Get the exportRoutePolicyId property: ARM resource ID of importRoutePolicy.
+     * Get the exportRoutePolicyId property: ARM Resource ID of the RoutePolicy. This is used for the backward
+     * compatibility.
      *
      * @return the exportRoutePolicyId value.
      */
@@ -192,13 +228,114 @@ public final class InternalNetworkPatchProperties extends AnnotationResource {
     }
 
     /**
-     * Set the exportRoutePolicyId property: ARM resource ID of importRoutePolicy.
+     * Set the exportRoutePolicyId property: ARM Resource ID of the RoutePolicy. This is used for the backward
+     * compatibility.
      *
      * @param exportRoutePolicyId the exportRoutePolicyId value to set.
      * @return the InternalNetworkPatchProperties object itself.
      */
     public InternalNetworkPatchProperties withExportRoutePolicyId(String exportRoutePolicyId) {
         this.exportRoutePolicyId = exportRoutePolicyId;
+        return this;
+    }
+
+    /**
+     * Get the importRoutePolicy property: Import Route Policy either IPv4 or IPv6.
+     *
+     * @return the importRoutePolicy value.
+     */
+    public ImportRoutePolicy importRoutePolicy() {
+        return this.importRoutePolicy;
+    }
+
+    /**
+     * Set the importRoutePolicy property: Import Route Policy either IPv4 or IPv6.
+     *
+     * @param importRoutePolicy the importRoutePolicy value to set.
+     * @return the InternalNetworkPatchProperties object itself.
+     */
+    public InternalNetworkPatchProperties withImportRoutePolicy(ImportRoutePolicy importRoutePolicy) {
+        this.importRoutePolicy = importRoutePolicy;
+        return this;
+    }
+
+    /**
+     * Get the exportRoutePolicy property: Export Route Policy either IPv4 or IPv6.
+     *
+     * @return the exportRoutePolicy value.
+     */
+    public ExportRoutePolicy exportRoutePolicy() {
+        return this.exportRoutePolicy;
+    }
+
+    /**
+     * Set the exportRoutePolicy property: Export Route Policy either IPv4 or IPv6.
+     *
+     * @param exportRoutePolicy the exportRoutePolicy value to set.
+     * @return the InternalNetworkPatchProperties object itself.
+     */
+    public InternalNetworkPatchProperties withExportRoutePolicy(ExportRoutePolicy exportRoutePolicy) {
+        this.exportRoutePolicy = exportRoutePolicy;
+        return this;
+    }
+
+    /**
+     * Get the ingressAclId property: Ingress Acl. ARM resource ID of Access Control Lists.
+     *
+     * @return the ingressAclId value.
+     */
+    public String ingressAclId() {
+        return this.ingressAclId;
+    }
+
+    /**
+     * Set the ingressAclId property: Ingress Acl. ARM resource ID of Access Control Lists.
+     *
+     * @param ingressAclId the ingressAclId value to set.
+     * @return the InternalNetworkPatchProperties object itself.
+     */
+    public InternalNetworkPatchProperties withIngressAclId(String ingressAclId) {
+        this.ingressAclId = ingressAclId;
+        return this;
+    }
+
+    /**
+     * Get the egressAclId property: Egress Acl. ARM resource ID of Access Control Lists.
+     *
+     * @return the egressAclId value.
+     */
+    public String egressAclId() {
+        return this.egressAclId;
+    }
+
+    /**
+     * Set the egressAclId property: Egress Acl. ARM resource ID of Access Control Lists.
+     *
+     * @param egressAclId the egressAclId value to set.
+     * @return the InternalNetworkPatchProperties object itself.
+     */
+    public InternalNetworkPatchProperties withEgressAclId(String egressAclId) {
+        this.egressAclId = egressAclId;
+        return this;
+    }
+
+    /**
+     * Get the isMonitoringEnabled property: To check whether monitoring of internal network is enabled or not.
+     *
+     * @return the isMonitoringEnabled value.
+     */
+    public IsMonitoringEnabled isMonitoringEnabled() {
+        return this.isMonitoringEnabled;
+    }
+
+    /**
+     * Set the isMonitoringEnabled property: To check whether monitoring of internal network is enabled or not.
+     *
+     * @param isMonitoringEnabled the isMonitoringEnabled value to set.
+     * @return the InternalNetworkPatchProperties object itself.
+     */
+    public InternalNetworkPatchProperties withIsMonitoringEnabled(IsMonitoringEnabled isMonitoringEnabled) {
+        this.isMonitoringEnabled = isMonitoringEnabled;
         return this;
     }
 
@@ -217,17 +354,23 @@ public final class InternalNetworkPatchProperties extends AnnotationResource {
     @Override
     public void validate() {
         super.validate();
+        if (bgpConfiguration() != null) {
+            bgpConfiguration().validate();
+        }
+        if (staticRouteConfiguration() != null) {
+            staticRouteConfiguration().validate();
+        }
         if (connectedIPv4Subnets() != null) {
             connectedIPv4Subnets().forEach(e -> e.validate());
         }
         if (connectedIPv6Subnets() != null) {
             connectedIPv6Subnets().forEach(e -> e.validate());
         }
-        if (staticRouteConfiguration() != null) {
-            staticRouteConfiguration().validate();
+        if (importRoutePolicy() != null) {
+            importRoutePolicy().validate();
         }
-        if (bgpConfiguration() != null) {
-            bgpConfiguration().validate();
+        if (exportRoutePolicy() != null) {
+            exportRoutePolicy().validate();
         }
     }
 }

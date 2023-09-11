@@ -21,7 +21,6 @@ import com.azure.core.http.policy.AddDatePolicy;
 import com.azure.core.http.policy.AddHeadersFromContextPolicy;
 import com.azure.core.http.policy.AddHeadersPolicy;
 import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
-import com.azure.core.http.policy.CookiePolicy;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
@@ -40,12 +39,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 /** A builder for creating a new instance of the ArtifactsClient type. */
 @ServiceClientBuilder(
         serviceClients = {
             LinkConnectionClient.class,
+            RunNotebookClient.class,
             KqlScriptsClient.class,
             KqlScriptClient.class,
             MetastoreClient.class,
@@ -69,6 +68,7 @@ import java.util.stream.Collectors;
             TriggerRunClient.class,
             WorkspaceClient.class,
             LinkConnectionAsyncClient.class,
+            RunNotebookAsyncClient.class,
             KqlScriptsAsyncClient.class,
             KqlScriptAsyncClient.class,
             MetastoreAsyncClient.class,
@@ -294,21 +294,18 @@ public final class ArtifactsClientBuilder
         if (headers.getSize() > 0) {
             policies.add(new AddHeadersPolicy(headers));
         }
-        policies.addAll(
-                this.pipelinePolicies.stream()
-                        .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
-                        .collect(Collectors.toList()));
+        this.pipelinePolicies.stream()
+                .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
+                .forEach(p -> policies.add(p));
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
         policies.add(ClientBuilderUtil.validateAndGetRetryPolicy(retryPolicy, retryOptions, new RetryPolicy()));
         policies.add(new AddDatePolicy());
-        policies.add(new CookiePolicy());
         if (tokenCredential != null) {
             policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, DEFAULT_SCOPES));
         }
-        policies.addAll(
-                this.pipelinePolicies.stream()
-                        .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
-                        .collect(Collectors.toList()));
+        this.pipelinePolicies.stream()
+                .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
+                .forEach(p -> policies.add(p));
         HttpPolicyProviders.addAfterRetryPolicies(policies);
         policies.add(new HttpLoggingPolicy(httpLogOptions));
         HttpPipeline httpPipeline =
@@ -328,6 +325,16 @@ public final class ArtifactsClientBuilder
     @Generated
     public LinkConnectionAsyncClient buildLinkConnectionAsyncClient() {
         return new LinkConnectionAsyncClient(buildInnerClient().getLinkConnections());
+    }
+
+    /**
+     * Builds an instance of RunNotebookAsyncClient class.
+     *
+     * @return an instance of RunNotebookAsyncClient.
+     */
+    @Generated
+    public RunNotebookAsyncClient buildRunNotebookAsyncClient() {
+        return new RunNotebookAsyncClient(buildInnerClient().getRunNotebooks());
     }
 
     /**
@@ -558,6 +565,16 @@ public final class ArtifactsClientBuilder
     @Generated
     public LinkConnectionClient buildLinkConnectionClient() {
         return new LinkConnectionClient(buildInnerClient().getLinkConnections());
+    }
+
+    /**
+     * Builds an instance of RunNotebookClient class.
+     *
+     * @return an instance of RunNotebookClient.
+     */
+    @Generated
+    public RunNotebookClient buildRunNotebookClient() {
+        return new RunNotebookClient(buildInnerClient().getRunNotebooks());
     }
 
     /**

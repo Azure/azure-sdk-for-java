@@ -48,11 +48,13 @@ public interface VaultCertificateResponse {
     interface Definition
         extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
+
     /** The VaultCertificateResponse definition stages. */
     interface DefinitionStages {
         /** The first stage of the VaultCertificateResponse definition. */
         interface Blank extends WithParentResource {
         }
+
         /** The stage of the VaultCertificateResponse definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
@@ -64,6 +66,7 @@ public interface VaultCertificateResponse {
              */
             WithCreate withExistingVault(String resourceGroupName, String vaultName);
         }
+
         /**
          * The stage of the VaultCertificateResponse definition which contains all the minimum required properties for
          * the resource to be created, but also allows for any other optional properties to be specified.
@@ -84,6 +87,7 @@ public interface VaultCertificateResponse {
              */
             VaultCertificateResponse create(Context context);
         }
+
         /** The stage of the VaultCertificateResponse definition allowing to specify properties. */
         interface WithProperties {
             /**

@@ -7,6 +7,7 @@ package com.azure.resourcemanager.containerservice.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
+import com.azure.resourcemanager.containerservice.models.ClusterUpgradeSettings;
 import com.azure.resourcemanager.containerservice.models.ContainerServiceLinuxProfile;
 import com.azure.resourcemanager.containerservice.models.ContainerServiceNetworkProfile;
 import com.azure.resourcemanager.containerservice.models.ExtendedLocation;
@@ -669,6 +670,29 @@ public final class ManagedClusterInner extends Resource {
             this.innerProperties = new ManagedClusterProperties();
         }
         this.innerProperties().withAutoUpgradeProfile(autoUpgradeProfile);
+        return this;
+    }
+
+    /**
+     * Get the upgradeSettings property: Settings for upgrading a cluster.
+     *
+     * @return the upgradeSettings value.
+     */
+    public ClusterUpgradeSettings upgradeSettings() {
+        return this.innerProperties() == null ? null : this.innerProperties().upgradeSettings();
+    }
+
+    /**
+     * Set the upgradeSettings property: Settings for upgrading a cluster.
+     *
+     * @param upgradeSettings the upgradeSettings value to set.
+     * @return the ManagedClusterInner object itself.
+     */
+    public ManagedClusterInner withUpgradeSettings(ClusterUpgradeSettings upgradeSettings) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagedClusterProperties();
+        }
+        this.innerProperties().withUpgradeSettings(upgradeSettings);
         return this;
     }
 

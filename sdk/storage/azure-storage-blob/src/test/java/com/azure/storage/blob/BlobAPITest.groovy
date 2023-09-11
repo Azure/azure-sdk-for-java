@@ -3236,6 +3236,22 @@ class BlobAPITest extends APISpec {
         cc.delete()
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2021_12_02")
+    def "Set tier archive status rehydrate pending to cold"() {
+        setup:
+        def cc = primaryBlobServiceClient.createBlobContainer(generateBlobName())
+        def bc = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
+        bc.upload(data.defaultInputStream, data.defaultDataSize)
+
+        when:
+        bc.setAccessTier(AccessTier.ARCHIVE)
+        bc.setAccessTier(AccessTier.COLD)
+
+        then:
+        bc.getProperties().getArchiveStatus() == ArchiveStatus.REHYDRATE_PENDING_TO_COLD
+        cc.listBlobs().iterator().next().getProperties().getArchiveStatus() == ArchiveStatus.REHYDRATE_PENDING_TO_COLD
+    }
+
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     @Unroll
     def "Set tier rehydrate priority"() {
@@ -3512,7 +3528,7 @@ class BlobAPITest extends APISpec {
         when:
         // sas token's st and se are usually in the following format: st=2021-06-21T00:00:00Z&se=2021-06-22T00:00:00Z
         // using a hardcoded url to test the start time and end time parsing without time added
-        def testUrl = "https://<accountName>/<containerName>?sp=racwdl&st=2023-06-21&se=2023-06-22&spr=https&sv=2022-11-02&sr=c&sig=<signatureToken>"
+        def testUrl = "https://accountName/containerName?sp=racwdl&st=2023-06-21&se=2023-06-22&spr=https&sv=2022-11-02&sr=c&sig=<signatureToken>"
         def parts = BlobUrlParts.parse(testUrl)
 
         then:

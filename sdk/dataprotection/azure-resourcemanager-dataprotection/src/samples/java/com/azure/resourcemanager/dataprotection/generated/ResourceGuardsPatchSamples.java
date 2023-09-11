@@ -11,7 +11,7 @@ import java.util.Map;
 /** Samples for ResourceGuards Patch. */
 public final class ResourceGuardsPatchSamples {
     /*
-     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-01-01/examples/ResourceGuardCRUD/PatchResourceGuard.json
+     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-05-01/examples/ResourceGuardCRUD/PatchResourceGuard.json
      */
     /**
      * Sample code: Patch ResourceGuard.
@@ -25,7 +25,7 @@ public final class ResourceGuardsPatchSamples {
                 .getByResourceGroupWithResponse(
                     "SampleResourceGroup", "swaggerExample", com.azure.core.util.Context.NONE)
                 .getValue();
-        resource.update().withTags(mapOf("newKey", "newVal")).apply();
+        resource.update().withTags(mapOf("newKey", "fakeTokenPlaceholder")).apply();
     }
 
     @SuppressWarnings("unchecked")

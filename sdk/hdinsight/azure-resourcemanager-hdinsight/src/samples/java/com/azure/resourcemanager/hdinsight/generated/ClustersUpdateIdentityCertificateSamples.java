@@ -4,13 +4,12 @@
 
 package com.azure.resourcemanager.hdinsight.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.hdinsight.models.UpdateClusterIdentityCertificateParameters;
 
 /** Samples for Clusters UpdateIdentityCertificate. */
 public final class ClustersUpdateIdentityCertificateSamples {
     /*
-     * x-ms-original-file: specification/hdinsight/resource-manager/Microsoft.HDInsight/stable/2021-06-01/examples/HDI_Clusters_UpdateClusterIdentityCertificate.json
+     * x-ms-original-file: specification/hdinsight/resource-manager/Microsoft.HDInsight/preview/2023-04-15-preview/examples/HDI_Clusters_UpdateClusterIdentityCertificate.json
      */
     /**
      * Sample code: Update cluster identity certificate.
@@ -27,6 +26,6 @@ public final class ClustersUpdateIdentityCertificateSamples {
                     .withApplicationId("applicationId")
                     .withCertificate("base64encodedcertificate")
                     .withCertificatePassword("fakeTokenPlaceholder"),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

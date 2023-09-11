@@ -31,7 +31,7 @@ public final class ResourceGuardsGetByResourceGroupWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"provisioningState\":\"Failed\",\"allowAutoApprovals\":true,\"resourceGuardOperations\":[],\"vaultCriticalOperationExclusionList\":[\"nmokayzejnhlbk\",\"bzpcpiljhahzvec\",\"ndbnwieh\"],\"description\":\"ewjwiuubw\"},\"eTag\":\"qsfapaqt\",\"location\":\"rrqwexjk\",\"tags\":{\"btqwpwyawbzas\":\"apjwogqqnobpudcd\"},\"id\":\"bucljgkyexaogu\",\"name\":\"aipidsdaultxi\",\"type\":\"jumfqwazlnq\"}";
+            "{\"properties\":{\"provisioningState\":\"Provisioning\",\"allowAutoApprovals\":true,\"resourceGuardOperations\":[{\"vaultCriticalOperation\":\"jpllndnpdwrpq\",\"requestResourceType\":\"gfugsnnfhyet\"}],\"vaultCriticalOperationExclusionList\":[\"pococtfjgt\",\"xrjvzuyturmlm\",\"owolbaui\",\"opionszon\"],\"description\":\"ngajinnixjawrtmj\"},\"eTag\":\"myccx\",\"location\":\"hcoxov\",\"tags\":{\"tjxtxr\":\"henlusfnr\",\"jvidttge\":\"cq\"},\"id\":\"uslvyjtcvuwkasi\",\"name\":\"iesfuug\",\"type\":\"tuqfecjxeygtu\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,12 +62,12 @@ public final class ResourceGuardsGetByResourceGroupWithResponseMockTests {
         ResourceGuardResource response =
             manager
                 .resourceGuards()
-                .getByResourceGroupWithResponse("hrbbpneqvcwwyy", "r", com.azure.core.util.Context.NONE)
+                .getByResourceGroupWithResponse("kauxof", "hfphwpnulaiywze", com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals("rrqwexjk", response.location());
-        Assertions.assertEquals("apjwogqqnobpudcd", response.tags().get("btqwpwyawbzas"));
-        Assertions.assertEquals("qsfapaqt", response.etag());
-        Assertions.assertEquals("nmokayzejnhlbk", response.properties().vaultCriticalOperationExclusionList().get(0));
+        Assertions.assertEquals("hcoxov", response.location());
+        Assertions.assertEquals("henlusfnr", response.tags().get("tjxtxr"));
+        Assertions.assertEquals("myccx", response.etag());
+        Assertions.assertEquals("pococtfjgt", response.properties().vaultCriticalOperationExclusionList().get(0));
     }
 }

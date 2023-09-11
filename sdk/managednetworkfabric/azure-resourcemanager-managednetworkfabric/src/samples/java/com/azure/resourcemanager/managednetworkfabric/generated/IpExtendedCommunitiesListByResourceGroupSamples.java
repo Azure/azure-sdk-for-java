@@ -7,7 +7,7 @@ package com.azure.resourcemanager.managednetworkfabric.generated;
 /** Samples for IpExtendedCommunities ListByResourceGroup. */
 public final class IpExtendedCommunitiesListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/preview/2023-02-01-preview/examples/IpExtendedCommunities_ListByResourceGroup_MaximumSet_Gen.json
+     * x-ms-original-file: specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/IpExtendedCommunities_ListByResourceGroup_MaximumSet_Gen.json
      */
     /**
      * Sample code: IpExtendedCommunities_ListByResourceGroup_MaximumSet_Gen.
@@ -16,8 +16,6 @@ public final class IpExtendedCommunitiesListByResourceGroupSamples {
      */
     public static void ipExtendedCommunitiesListByResourceGroupMaximumSetGen(
         com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager manager) {
-        manager
-            .ipExtendedCommunities()
-            .listByResourceGroup("rgIpExtendedCommunityLists", com.azure.core.util.Context.NONE);
+        manager.ipExtendedCommunities().listByResourceGroup("example-rg", com.azure.core.util.Context.NONE);
     }
 }

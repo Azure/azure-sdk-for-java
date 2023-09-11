@@ -31,7 +31,7 @@ public final class AccountBackupsGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"location\":\"qbnj\",\"properties\":{\"backupId\":\"cgegydcwbo\",\"creationDate\":\"2021-01-16T19:47:43Z\",\"provisioningState\":\"vqqolih\",\"size\":1703396113637186556,\"label\":\"uaubrj\",\"backupType\":\"Manual\",\"failureReason\":\"xfuojrn\",\"volumeName\":\"flrzpas\",\"useExistingSnapshot\":true},\"id\":\"uimzdlyjd\",\"name\":\"qwmkyoquf\",\"type\":\"vruzslzojhpctfnm\"}";
+            "{\"location\":\"oibgsxg\",\"properties\":{\"backupId\":\"fyq\",\"creationDate\":\"2021-01-20T15:12:39Z\",\"provisioningState\":\"qoxwd\",\"size\":6770631017855519279,\"label\":\"iqxeiiqbimht\",\"backupType\":\"Scheduled\",\"failureReason\":\"nhe\",\"volumeName\":\"qpofvwbc\",\"useExistingSnapshot\":false},\"id\":\"mbnkb\",\"name\":\"vqvxk\",\"type\":\"ivqiheb\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,11 +62,11 @@ public final class AccountBackupsGetWithResponseMockTests {
         Backup response =
             manager
                 .accountBackups()
-                .getWithResponse("kcdqzhlct", "dunqnd", "fpch", com.azure.core.util.Context.NONE)
+                .getWithResponse("tayx", "nsup", "ujlzqnhcvsqltn", com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals("qbnj", response.location());
-        Assertions.assertEquals("uaubrj", response.label());
-        Assertions.assertEquals(true, response.useExistingSnapshot());
+        Assertions.assertEquals("oibgsxg", response.location());
+        Assertions.assertEquals("iqxeiiqbimht", response.label());
+        Assertions.assertEquals(false, response.useExistingSnapshot());
     }
 }

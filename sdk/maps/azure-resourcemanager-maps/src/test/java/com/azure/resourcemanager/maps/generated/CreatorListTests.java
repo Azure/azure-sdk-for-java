@@ -14,15 +14,15 @@ public final class CreatorListTests {
         CreatorList model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"properties\":{\"provisioningState\":\"ljjgpbtoqcjmkl\",\"storageUnits\":232928194},\"location\":\"vbqid\",\"tags\":{\"dj\":\"jzyulpk\",\"xzlocxscp\":\"rlkhbzhfepgzgq\"},\"id\":\"ierhhbcsglummaj\",\"name\":\"j\",\"type\":\"odxobnbdxkqpxok\"}],\"nextLink\":\"ionpimexg\"}")
+                    "{\"value\":[{\"properties\":{\"provisioningState\":\"nuqqkpikadrgvt\",\"storageUnits\":902769225},\"location\":\"n\",\"tags\":{\"rbu\":\"nhijggmebfsi\",\"ttdbhrbnl\":\"rcvpnazzmhjrunmp\",\"xywnytnrsynlqidy\":\"nkxmyskpbhenbtk\"},\"id\":\"yxczfclh\",\"name\":\"axdbabph\",\"type\":\"wrqlfktsthsuco\"},{\"properties\":{\"provisioningState\":\"nyyazttbtwwrqpue\",\"storageUnits\":1640743814},\"location\":\"zywbiex\",\"tags\":{\"qwalmuzyoxaepd\":\"yueaxibxujwb\",\"d\":\"zjancuxr\",\"dbpgnxytxhp\":\"bavxbniwdjswzt\",\"lcuhxwtctyqiklb\":\"xbzpfzab\"},\"id\":\"ovplw\",\"name\":\"bhvgy\",\"type\":\"gu\"},{\"properties\":{\"provisioningState\":\"vmkfssxqu\",\"storageUnits\":773521524},\"location\":\"plgmgsxnk\",\"tags\":{\"lopwiyig\":\"deslp\"},\"id\":\"xpkd\",\"name\":\"zb\",\"type\":\"iuebbaumny\"}],\"nextLink\":\"ped\"}")
                 .toObject(CreatorList.class);
-        Assertions.assertEquals("ionpimexg", model.nextLink());
+        Assertions.assertEquals("ped", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CreatorList model = new CreatorList().withNextLink("ionpimexg");
+        CreatorList model = new CreatorList().withNextLink("ped");
         model = BinaryData.fromObject(model).toObject(CreatorList.class);
-        Assertions.assertEquals("ionpimexg", model.nextLink());
+        Assertions.assertEquals("ped", model.nextLink());
     }
 }

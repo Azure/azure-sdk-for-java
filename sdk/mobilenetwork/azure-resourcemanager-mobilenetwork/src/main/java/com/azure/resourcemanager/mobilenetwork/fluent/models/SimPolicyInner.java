@@ -163,7 +163,8 @@ public final class SimPolicyInner extends Resource {
     }
 
     /**
-     * Get the registrationTimer property: Interval for the UE periodic registration update procedure, in seconds.
+     * Get the registrationTimer property: UE periodic registration update timer (5G) or UE periodic tracking area
+     * update timer (4G), in seconds.
      *
      * @return the registrationTimer value.
      */
@@ -172,7 +173,8 @@ public final class SimPolicyInner extends Resource {
     }
 
     /**
-     * Set the registrationTimer property: Interval for the UE periodic registration update procedure, in seconds.
+     * Set the registrationTimer property: UE periodic registration update timer (5G) or UE periodic tracking area
+     * update timer (4G), in seconds.
      *
      * @param registrationTimer the registrationTimer value to set.
      * @return the SimPolicyInner object itself.

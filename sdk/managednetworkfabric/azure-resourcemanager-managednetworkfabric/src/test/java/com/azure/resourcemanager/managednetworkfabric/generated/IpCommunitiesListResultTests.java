@@ -8,6 +8,8 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.managednetworkfabric.fluent.models.IpCommunityInner;
 import com.azure.resourcemanager.managednetworkfabric.models.CommunityActionTypes;
 import com.azure.resourcemanager.managednetworkfabric.models.IpCommunitiesListResult;
+import com.azure.resourcemanager.managednetworkfabric.models.IpCommunityRule;
+import com.azure.resourcemanager.managednetworkfabric.models.WellKnownCommunities;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -19,13 +21,19 @@ public final class IpCommunitiesListResultTests {
         IpCommunitiesListResult model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"properties\":{\"action\":\"Deny\",\"wellKnownCommunities\":[],\"communityMembers\":[],\"provisioningState\":\"Deleting\",\"annotation\":\"cxtbzsg\"},\"location\":\"c\",\"tags\":{\"jeiachboosfl\":\"ewmdw\",\"fqpte\":\"ro\",\"i\":\"hzzvypyq\",\"npvswjdkirso\":\"z\"},\"id\":\"dqxhcrmnohjtckwh\",\"name\":\"soifiyipjxsqw\",\"type\":\"gr\"},{\"properties\":{\"action\":\"Permit\",\"wellKnownCommunities\":[],\"communityMembers\":[],\"provisioningState\":\"Deleting\",\"annotation\":\"jxvsnbyxqabn\"},\"location\":\"cpc\",\"tags\":{\"jjgpb\":\"urzafb\",\"jmkljavbqidtqajz\":\"oq\",\"hbzhfepg\":\"ulpkudjkrl\"},\"id\":\"gqexzlocxs\",\"name\":\"paierh\",\"type\":\"bcsglumma\"},{\"properties\":{\"action\":\"Permit\",\"wellKnownCommunities\":[],\"communityMembers\":[],\"provisioningState\":\"Deleting\",\"annotation\":\"obnbdxkqpxokaj\"},\"location\":\"npime\",\"tags\":{\"vdjwzrlovm\":\"txgcpodgmaajr\",\"qsycbkbfkgu\":\"lwhijcoejctbzaq\"},\"id\":\"dkexxppofm\",\"name\":\"axcfjpgddtocjjx\",\"type\":\"vpmouexhdzxib\"},{\"properties\":{\"action\":\"Deny\",\"wellKnownCommunities\":[],\"communityMembers\":[],\"provisioningState\":\"Succeeded\",\"annotation\":\"bzv\"},\"location\":\"ntwndeicbtwnpzao\",\"tags\":{\"qkwpyeicxmqc\":\"hrhcffcyddglmjth\",\"pbobjo\":\"wqvhkhixuigdt\",\"w\":\"hm\",\"a\":\"a\"},\"id\":\"hrzayvvtpgvdf\",\"name\":\"iotkftutqxl\",\"type\":\"gxlefgugnxkrxd\"}],\"nextLink\":\"i\"}")
+                    "{\"value\":[{\"properties\":{\"configurationState\":\"Deprovisioned\",\"provisioningState\":\"Canceled\",\"administrativeState\":\"RMA\",\"ipCommunityRules\":[{\"action\":\"Deny\",\"sequenceNumber\":1422959044400322772,\"wellKnownCommunities\":[\"NoExport\"],\"communityMembers\":[\"gitsqh\",\"vbrzcdb\",\"nfzndscxmxeat\",\"db\"]},{\"action\":\"Deny\",\"sequenceNumber\":2580805120871115843,\"wellKnownCommunities\":[\"GShut\",\"LocalAS\"],\"communityMembers\":[\"q\",\"naomhjrm\",\"u\",\"maxljalfihcj\"]},{\"action\":\"Deny\",\"sequenceNumber\":2110046772829254579,\"wellKnownCommunities\":[\"GShut\"],\"communityMembers\":[\"exxqcwg\"]},{\"action\":\"Permit\",\"sequenceNumber\":2742032267971865419,\"wellKnownCommunities\":[\"Internet\",\"LocalAS\",\"Internet\"],\"communityMembers\":[\"zwjjzr\",\"tixldzyyfytpqs\"]}],\"annotation\":\"ymmpujivy\"},\"location\":\"kjuvs\",\"tags\":{\"zdbpqv\":\"slzoyov\"},\"id\":\"befgvmxn\",\"name\":\"kcvtl\",\"type\":\"bse\"},{\"properties\":{\"configurationState\":\"Deprovisioning\",\"provisioningState\":\"Accepted\",\"administrativeState\":\"Enabled\",\"ipCommunityRules\":[{\"action\":\"Deny\",\"sequenceNumber\":5713743179554383301,\"wellKnownCommunities\":[\"LocalAS\",\"NoAdvertise\",\"NoExport\",\"NoExport\"],\"communityMembers\":[\"cndzfqivjre\",\"ykbbmnwagltbxoe\"]},{\"action\":\"Permit\",\"sequenceNumber\":5100562583239732135,\"wellKnownCommunities\":[\"GShut\",\"Internet\",\"LocalAS\",\"Internet\"],\"communityMembers\":[\"mvqdbpbhfckdvez\",\"rcssbzhddubbnq\",\"b\",\"h\"]}],\"annotation\":\"lehpavawu\"},\"location\":\"qjtiogqgdm\",\"tags\":{\"gspnbonhpczykm\":\"ctteajohi\"},\"id\":\"tp\",\"name\":\"wxqcsehchkhufmpq\",\"type\":\"mqyjgy\"},{\"properties\":{\"configurationState\":\"DeferredControl\",\"provisioningState\":\"Succeeded\",\"administrativeState\":\"RMA\",\"ipCommunityRules\":[{\"action\":\"Deny\",\"sequenceNumber\":9167016379508265655,\"wellKnownCommunities\":[\"NoAdvertise\",\"Internet\"],\"communityMembers\":[\"hse\",\"wphpzfngqj\",\"lidftujwjj\",\"fwbeqrkuorh\"]},{\"action\":\"Deny\",\"sequenceNumber\":1522843195074318037,\"wellKnownCommunities\":[\"NoAdvertise\",\"GShut\",\"NoExport\"],\"communityMembers\":[\"hazcvjytiqswbqer\",\"w\"]}],\"annotation\":\"ytxtdgu\"},\"location\":\"lbpktg\",\"tags\":{\"swmowegmmuteyxe\":\"youambewr\",\"xlzdesygrijwa\":\"guqigijiitns\",\"fueqfrojs\":\"ufanray\",\"iecafygzmxi\":\"dgrhydkygywezs\"},\"id\":\"qv\",\"name\":\"smaklixqcahy\",\"type\":\"xalybxawoijpo\"}],\"nextLink\":\"blxpkkwjdjodq\"}")
                 .toObject(IpCommunitiesListResult.class);
-        Assertions.assertEquals("c", model.value().get(0).location());
-        Assertions.assertEquals("ewmdw", model.value().get(0).tags().get("jeiachboosfl"));
-        Assertions.assertEquals(CommunityActionTypes.DENY, model.value().get(0).action());
-        Assertions.assertEquals("cxtbzsg", model.value().get(0).annotation());
-        Assertions.assertEquals("i", model.nextLink());
+        Assertions.assertEquals("kjuvs", model.value().get(0).location());
+        Assertions.assertEquals("slzoyov", model.value().get(0).tags().get("zdbpqv"));
+        Assertions.assertEquals(CommunityActionTypes.DENY, model.value().get(0).ipCommunityRules().get(0).action());
+        Assertions.assertEquals(1422959044400322772L, model.value().get(0).ipCommunityRules().get(0).sequenceNumber());
+        Assertions
+            .assertEquals(
+                WellKnownCommunities.NO_EXPORT,
+                model.value().get(0).ipCommunityRules().get(0).wellKnownCommunities().get(0));
+        Assertions.assertEquals("gitsqh", model.value().get(0).ipCommunityRules().get(0).communityMembers().get(0));
+        Assertions.assertEquals("ymmpujivy", model.value().get(0).annotation());
+        Assertions.assertEquals("blxpkkwjdjodq", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
@@ -36,50 +44,121 @@ public final class IpCommunitiesListResultTests {
                     Arrays
                         .asList(
                             new IpCommunityInner()
-                                .withLocation("c")
-                                .withTags(
-                                    mapOf("jeiachboosfl", "ewmdw", "fqpte", "ro", "i", "hzzvypyq", "npvswjdkirso", "z"))
-                                .withAction(CommunityActionTypes.DENY)
-                                .withWellKnownCommunities(Arrays.asList())
-                                .withCommunityMembers(Arrays.asList())
-                                .withAnnotation("cxtbzsg"),
+                                .withLocation("kjuvs")
+                                .withTags(mapOf("zdbpqv", "slzoyov"))
+                                .withIpCommunityRules(
+                                    Arrays
+                                        .asList(
+                                            new IpCommunityRule()
+                                                .withAction(CommunityActionTypes.DENY)
+                                                .withSequenceNumber(1422959044400322772L)
+                                                .withWellKnownCommunities(Arrays.asList(WellKnownCommunities.NO_EXPORT))
+                                                .withCommunityMembers(
+                                                    Arrays.asList("gitsqh", "vbrzcdb", "nfzndscxmxeat", "db")),
+                                            new IpCommunityRule()
+                                                .withAction(CommunityActionTypes.DENY)
+                                                .withSequenceNumber(2580805120871115843L)
+                                                .withWellKnownCommunities(
+                                                    Arrays
+                                                        .asList(
+                                                            WellKnownCommunities.GSHUT, WellKnownCommunities.LOCAL_AS))
+                                                .withCommunityMembers(
+                                                    Arrays.asList("q", "naomhjrm", "u", "maxljalfihcj")),
+                                            new IpCommunityRule()
+                                                .withAction(CommunityActionTypes.DENY)
+                                                .withSequenceNumber(2110046772829254579L)
+                                                .withWellKnownCommunities(Arrays.asList(WellKnownCommunities.GSHUT))
+                                                .withCommunityMembers(Arrays.asList("exxqcwg")),
+                                            new IpCommunityRule()
+                                                .withAction(CommunityActionTypes.PERMIT)
+                                                .withSequenceNumber(2742032267971865419L)
+                                                .withWellKnownCommunities(
+                                                    Arrays
+                                                        .asList(
+                                                            WellKnownCommunities.INTERNET,
+                                                            WellKnownCommunities.LOCAL_AS,
+                                                            WellKnownCommunities.INTERNET))
+                                                .withCommunityMembers(Arrays.asList("zwjjzr", "tixldzyyfytpqs"))))
+                                .withAnnotation("ymmpujivy"),
                             new IpCommunityInner()
-                                .withLocation("cpc")
-                                .withTags(mapOf("jjgpb", "urzafb", "jmkljavbqidtqajz", "oq", "hbzhfepg", "ulpkudjkrl"))
-                                .withAction(CommunityActionTypes.PERMIT)
-                                .withWellKnownCommunities(Arrays.asList())
-                                .withCommunityMembers(Arrays.asList())
-                                .withAnnotation("jxvsnbyxqabn"),
+                                .withLocation("qjtiogqgdm")
+                                .withTags(mapOf("gspnbonhpczykm", "ctteajohi"))
+                                .withIpCommunityRules(
+                                    Arrays
+                                        .asList(
+                                            new IpCommunityRule()
+                                                .withAction(CommunityActionTypes.DENY)
+                                                .withSequenceNumber(5713743179554383301L)
+                                                .withWellKnownCommunities(
+                                                    Arrays
+                                                        .asList(
+                                                            WellKnownCommunities.LOCAL_AS,
+                                                            WellKnownCommunities.NO_ADVERTISE,
+                                                            WellKnownCommunities.NO_EXPORT,
+                                                            WellKnownCommunities.NO_EXPORT))
+                                                .withCommunityMembers(Arrays.asList("cndzfqivjre", "ykbbmnwagltbxoe")),
+                                            new IpCommunityRule()
+                                                .withAction(CommunityActionTypes.PERMIT)
+                                                .withSequenceNumber(5100562583239732135L)
+                                                .withWellKnownCommunities(
+                                                    Arrays
+                                                        .asList(
+                                                            WellKnownCommunities.GSHUT,
+                                                            WellKnownCommunities.INTERNET,
+                                                            WellKnownCommunities.LOCAL_AS,
+                                                            WellKnownCommunities.INTERNET))
+                                                .withCommunityMembers(
+                                                    Arrays.asList("mvqdbpbhfckdvez", "rcssbzhddubbnq", "b", "h"))))
+                                .withAnnotation("lehpavawu"),
                             new IpCommunityInner()
-                                .withLocation("npime")
-                                .withTags(mapOf("vdjwzrlovm", "txgcpodgmaajr", "qsycbkbfkgu", "lwhijcoejctbzaq"))
-                                .withAction(CommunityActionTypes.PERMIT)
-                                .withWellKnownCommunities(Arrays.asList())
-                                .withCommunityMembers(Arrays.asList())
-                                .withAnnotation("obnbdxkqpxokaj"),
-                            new IpCommunityInner()
-                                .withLocation("ntwndeicbtwnpzao")
+                                .withLocation("lbpktg")
                                 .withTags(
                                     mapOf(
-                                        "qkwpyeicxmqc",
-                                        "hrhcffcyddglmjth",
-                                        "pbobjo",
-                                        "wqvhkhixuigdt",
-                                        "w",
-                                        "hm",
-                                        "a",
-                                        "a"))
-                                .withAction(CommunityActionTypes.DENY)
-                                .withWellKnownCommunities(Arrays.asList())
-                                .withCommunityMembers(Arrays.asList())
-                                .withAnnotation("bzv")))
-                .withNextLink("i");
+                                        "swmowegmmuteyxe",
+                                        "youambewr",
+                                        "xlzdesygrijwa",
+                                        "guqigijiitns",
+                                        "fueqfrojs",
+                                        "ufanray",
+                                        "iecafygzmxi",
+                                        "dgrhydkygywezs"))
+                                .withIpCommunityRules(
+                                    Arrays
+                                        .asList(
+                                            new IpCommunityRule()
+                                                .withAction(CommunityActionTypes.DENY)
+                                                .withSequenceNumber(9167016379508265655L)
+                                                .withWellKnownCommunities(
+                                                    Arrays
+                                                        .asList(
+                                                            WellKnownCommunities.NO_ADVERTISE,
+                                                            WellKnownCommunities.INTERNET))
+                                                .withCommunityMembers(
+                                                    Arrays.asList("hse", "wphpzfngqj", "lidftujwjj", "fwbeqrkuorh")),
+                                            new IpCommunityRule()
+                                                .withAction(CommunityActionTypes.DENY)
+                                                .withSequenceNumber(1522843195074318037L)
+                                                .withWellKnownCommunities(
+                                                    Arrays
+                                                        .asList(
+                                                            WellKnownCommunities.NO_ADVERTISE,
+                                                            WellKnownCommunities.GSHUT,
+                                                            WellKnownCommunities.NO_EXPORT))
+                                                .withCommunityMembers(Arrays.asList("hazcvjytiqswbqer", "w"))))
+                                .withAnnotation("ytxtdgu")))
+                .withNextLink("blxpkkwjdjodq");
         model = BinaryData.fromObject(model).toObject(IpCommunitiesListResult.class);
-        Assertions.assertEquals("c", model.value().get(0).location());
-        Assertions.assertEquals("ewmdw", model.value().get(0).tags().get("jeiachboosfl"));
-        Assertions.assertEquals(CommunityActionTypes.DENY, model.value().get(0).action());
-        Assertions.assertEquals("cxtbzsg", model.value().get(0).annotation());
-        Assertions.assertEquals("i", model.nextLink());
+        Assertions.assertEquals("kjuvs", model.value().get(0).location());
+        Assertions.assertEquals("slzoyov", model.value().get(0).tags().get("zdbpqv"));
+        Assertions.assertEquals(CommunityActionTypes.DENY, model.value().get(0).ipCommunityRules().get(0).action());
+        Assertions.assertEquals(1422959044400322772L, model.value().get(0).ipCommunityRules().get(0).sequenceNumber());
+        Assertions
+            .assertEquals(
+                WellKnownCommunities.NO_EXPORT,
+                model.value().get(0).ipCommunityRules().get(0).wellKnownCommunities().get(0));
+        Assertions.assertEquals("gitsqh", model.value().get(0).ipCommunityRules().get(0).communityMembers().get(0));
+        Assertions.assertEquals("ymmpujivy", model.value().get(0).annotation());
+        Assertions.assertEquals("blxpkkwjdjodq", model.nextLink());
     }
 
     @SuppressWarnings("unchecked")

@@ -7,6 +7,7 @@ package com.azure.resourcemanager.dataprotection.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.dataprotection.models.DppIdentityDetails;
 import com.azure.resourcemanager.dataprotection.models.DppTrackedResource;
+import com.azure.resourcemanager.dataprotection.models.UserAssignedIdentity;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
@@ -17,27 +18,39 @@ public final class DppTrackedResourceTests {
         DppTrackedResource model =
             BinaryData
                 .fromString(
-                    "{\"identity\":{\"principalId\":\"bljofxqeof\",\"tenantId\":\"e\",\"type\":\"hqjbasvmsmj\"},\"eTag\":\"lngsntnbybkzgcwr\",\"location\":\"lxxwrljdouskc\",\"tags\":{\"tnhxbn\":\"ocrcjdk\",\"gls\":\"biksq\",\"pee\":\"ainqpjwnzlljfm\",\"yqduujit\":\"vmgxsab\"},\"id\":\"jczdzevndh\",\"name\":\"rwpdappdsbdkvwrw\",\"type\":\"feusnhut\"}")
+                    "{\"identity\":{\"principalId\":\"jgzjaoyfhrtx\",\"tenantId\":\"n\",\"type\":\"kujysvlejuvfq\",\"userAssignedIdentities\":{\"xwjkcprbnwbxg\":{\"principalId\":\"219e0109-deda-4ee9-8735-2600b97e58d4\",\"clientId\":\"7e50e910-e1d0-4503-ab76-e9b81e1f8ead\"},\"bvpyss\":{\"principalId\":\"1227691a-a47d-4bcd-8a59-37efbbfd7349\",\"clientId\":\"3595c5f9-0d4b-49d6-b44d-b3b3bd5db6c2\"},\"rujqg\":{\"principalId\":\"fc47465c-0b57-4de4-96fd-7ff47914d8c8\",\"clientId\":\"cc034697-3a26-49ac-9e6b-3909fdfc1c67\"},\"uouq\":{\"principalId\":\"80f5dd5f-bda6-4c08-bfc7-d9ade0acc0b0\",\"clientId\":\"e17afb2b-e0a4-4e8e-9c15-a3a6b9e2de52\"}}},\"eTag\":\"rwzwbng\",\"location\":\"tnwu\",\"tags\":{\"x\":\"a\",\"hr\":\"fizuckyf\"},\"id\":\"idf\",\"name\":\"zwdzuh\",\"type\":\"ymwisdkft\"}")
                 .toObject(DppTrackedResource.class);
-        Assertions.assertEquals("lxxwrljdouskc", model.location());
-        Assertions.assertEquals("ocrcjdk", model.tags().get("tnhxbn"));
-        Assertions.assertEquals("lngsntnbybkzgcwr", model.etag());
-        Assertions.assertEquals("hqjbasvmsmj", model.identity().type());
+        Assertions.assertEquals("tnwu", model.location());
+        Assertions.assertEquals("a", model.tags().get("x"));
+        Assertions.assertEquals("rwzwbng", model.etag());
+        Assertions.assertEquals("kujysvlejuvfq", model.identity().type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DppTrackedResource model =
             new DppTrackedResource()
-                .withLocation("lxxwrljdouskc")
-                .withTags(mapOf("tnhxbn", "ocrcjdk", "gls", "biksq", "pee", "ainqpjwnzlljfm", "yqduujit", "vmgxsab"))
-                .withEtag("lngsntnbybkzgcwr")
-                .withIdentity(new DppIdentityDetails().withType("hqjbasvmsmj"));
+                .withLocation("tnwu")
+                .withTags(mapOf("x", "a", "hr", "fizuckyf"))
+                .withEtag("rwzwbng")
+                .withIdentity(
+                    new DppIdentityDetails()
+                        .withType("kujysvlejuvfq")
+                        .withUserAssignedIdentities(
+                            mapOf(
+                                "xwjkcprbnwbxg",
+                                new UserAssignedIdentity(),
+                                "bvpyss",
+                                new UserAssignedIdentity(),
+                                "rujqg",
+                                new UserAssignedIdentity(),
+                                "uouq",
+                                new UserAssignedIdentity())));
         model = BinaryData.fromObject(model).toObject(DppTrackedResource.class);
-        Assertions.assertEquals("lxxwrljdouskc", model.location());
-        Assertions.assertEquals("ocrcjdk", model.tags().get("tnhxbn"));
-        Assertions.assertEquals("lngsntnbybkzgcwr", model.etag());
-        Assertions.assertEquals("hqjbasvmsmj", model.identity().type());
+        Assertions.assertEquals("tnwu", model.location());
+        Assertions.assertEquals("a", model.tags().get("x"));
+        Assertions.assertEquals("rwzwbng", model.etag());
+        Assertions.assertEquals("kujysvlejuvfq", model.identity().type());
     }
 
     @SuppressWarnings("unchecked")

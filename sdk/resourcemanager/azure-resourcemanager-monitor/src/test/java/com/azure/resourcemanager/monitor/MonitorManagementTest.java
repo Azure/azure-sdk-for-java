@@ -26,7 +26,7 @@ import com.azure.resourcemanager.sql.SqlServerManager;
 import com.azure.resourcemanager.sql.models.SqlElasticPool;
 import com.azure.resourcemanager.sql.models.SqlServer;
 import com.azure.resourcemanager.storage.StorageManager;
-import com.azure.resourcemanager.test.ResourceManagerTestBase;
+import com.azure.resourcemanager.test.ResourceManagerTestProxyTestBase;
 import com.azure.resourcemanager.test.utils.TestDelayProvider;
 import com.azure.resourcemanager.test.utils.TestIdentifierProvider;
 
@@ -34,7 +34,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 /** The base for Monitor manager tests. */
-public class MonitorManagementTest extends ResourceManagerTestBase {
+public class MonitorManagementTest extends ResourceManagerTestProxyTestBase {
     protected ResourceManager resourceManager;
     protected MonitorManager monitorManager;
     protected ComputeManager computeManager;

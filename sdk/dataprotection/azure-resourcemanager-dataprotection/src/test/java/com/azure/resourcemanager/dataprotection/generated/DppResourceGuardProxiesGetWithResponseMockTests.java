@@ -31,7 +31,7 @@ public final class DppResourceGuardProxiesGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"resourceGuardResourceId\":\"j\",\"resourceGuardOperationDetails\":[],\"lastUpdatedTime\":\"axkjeytunlbfjk\",\"description\":\"u\"},\"id\":\"kqbh\",\"name\":\"y\",\"type\":\"qunjqh\"}";
+            "{\"properties\":{\"resourceGuardResourceId\":\"mmyky\",\"resourceGuardOperationDetails\":[{\"vaultCriticalOperation\":\"glh\",\"defaultResourceRequest\":\"rryejylmbkzudnig\"},{\"vaultCriticalOperation\":\"ihotjewlpxuzzjg\",\"defaultResourceRequest\":\"efqyhqotoihiqaky\"}],\"lastUpdatedTime\":\"wf\",\"description\":\"kwpzdqtvh\"},\"id\":\"podaq\",\"name\":\"xsi\",\"type\":\"ietgbebjfu\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,11 +62,17 @@ public final class DppResourceGuardProxiesGetWithResponseMockTests {
         ResourceGuardProxyBaseResource response =
             manager
                 .dppResourceGuardProxies()
-                .getWithResponse("nbmhyree", "dzqavbpdqmjxlyyz", "lgouwtlmjj", com.azure.core.util.Context.NONE)
+                .getWithResponse("lrocuyzlwh", "memhooclutnpq", "emc", com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals("j", response.properties().resourceGuardResourceId());
-        Assertions.assertEquals("axkjeytunlbfjk", response.properties().lastUpdatedTime());
-        Assertions.assertEquals("u", response.properties().description());
+        Assertions.assertEquals("mmyky", response.properties().resourceGuardResourceId());
+        Assertions
+            .assertEquals("glh", response.properties().resourceGuardOperationDetails().get(0).vaultCriticalOperation());
+        Assertions
+            .assertEquals(
+                "rryejylmbkzudnig",
+                response.properties().resourceGuardOperationDetails().get(0).defaultResourceRequest());
+        Assertions.assertEquals("wf", response.properties().lastUpdatedTime());
+        Assertions.assertEquals("kwpzdqtvh", response.properties().description());
     }
 }

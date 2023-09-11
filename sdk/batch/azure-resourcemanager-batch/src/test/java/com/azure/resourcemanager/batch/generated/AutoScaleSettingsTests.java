@@ -8,25 +8,24 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.batch.models.AutoScaleSettings;
 import java.time.Duration;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class AutoScaleSettingsTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         AutoScaleSettings model =
             BinaryData
-                .fromString("{\"formula\":\"h\",\"evaluationInterval\":\"PT43H13M53S\"}")
+                .fromString("{\"formula\":\"jzbexilzznfq\",\"evaluationInterval\":\"PT73H38M19S\"}")
                 .toObject(AutoScaleSettings.class);
-        Assertions.assertEquals("h", model.formula());
-        Assertions.assertEquals(Duration.parse("PT43H13M53S"), model.evaluationInterval());
+        Assertions.assertEquals("jzbexilzznfq", model.formula());
+        Assertions.assertEquals(Duration.parse("PT73H38M19S"), model.evaluationInterval());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         AutoScaleSettings model =
-            new AutoScaleSettings().withFormula("h").withEvaluationInterval(Duration.parse("PT43H13M53S"));
+            new AutoScaleSettings().withFormula("jzbexilzznfq").withEvaluationInterval(Duration.parse("PT73H38M19S"));
         model = BinaryData.fromObject(model).toObject(AutoScaleSettings.class);
-        Assertions.assertEquals("h", model.formula());
-        Assertions.assertEquals(Duration.parse("PT43H13M53S"), model.evaluationInterval());
+        Assertions.assertEquals("jzbexilzznfq", model.formula());
+        Assertions.assertEquals(Duration.parse("PT73H38M19S"), model.evaluationInterval());
     }
 }

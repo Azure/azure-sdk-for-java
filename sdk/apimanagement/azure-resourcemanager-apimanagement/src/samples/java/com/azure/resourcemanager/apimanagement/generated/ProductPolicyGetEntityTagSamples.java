@@ -4,13 +4,12 @@
 
 package com.azure.resourcemanager.apimanagement.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.apimanagement.models.PolicyIdName;
 
 /** Samples for ProductPolicy GetEntityTag. */
 public final class ProductPolicyGetEntityTagSamples {
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementHeadProductPolicy.json
+     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementHeadProductPolicy.json
      */
     /**
      * Sample code: ApiManagementHeadProductPolicy.
@@ -21,6 +20,7 @@ public final class ProductPolicyGetEntityTagSamples {
         com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
         manager
             .productPolicies()
-            .getEntityTagWithResponse("rg1", "apimService1", "unlimited", PolicyIdName.POLICY, Context.NONE);
+            .getEntityTagWithResponse(
+                "rg1", "apimService1", "unlimited", PolicyIdName.POLICY, com.azure.core.util.Context.NONE);
     }
 }

@@ -12,7 +12,7 @@ import java.util.Map;
 /** Samples for L2Networks CreateOrUpdate. */
 public final class L2NetworksCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2023-05-01-preview/examples/L2Networks_Create.json
+     * x-ms-original-file: specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2023-07-01/examples/L2Networks_Create.json
      */
     /**
      * Sample code: Create or update L2 network.
@@ -32,12 +32,13 @@ public final class L2NetworksCreateOrUpdateSamples {
                     .withType("CustomLocation"))
             .withL2IsolationDomainId(
                 "/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/l2IsolationDomains/l2IsolationDomainName")
-            .withTags(mapOf("key1", "myvalue1", "key2", "myvalue2"))
+            .withTags(mapOf("key1", "fakeTokenPlaceholder", "key2", "fakeTokenPlaceholder"))
             .withHybridAksPluginType(HybridAksPluginType.DPDK)
             .withInterfaceName("eth0")
             .create();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

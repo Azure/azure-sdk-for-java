@@ -85,7 +85,21 @@
         "DESIRED_CONSISTENCIES": "[\"Session\"]",
         "JavaTestVersion": "1.11",
         "AdditionalArgs": "-DargLine=\"-DACCOUNT_HOST=https://localhost:8081/ -Dhadoop.home.dir=D:/Hadoop\""
-      }
+      },
+      "Spark 3.4 Integration Tests targeting Cosmos Emulator - Java 8'": {
+        "ProfileFlag": "-Dspark-e2e_3-4",
+        "PROTOCOLS": "[\"Tcp\"]",
+        "DESIRED_CONSISTENCIES": "[\"Session\"]",
+        "JavaTestVersion": "1.8",
+        "AdditionalArgs": "-DargLine=\"-DACCOUNT_HOST=https://localhost:8081/ -Dhadoop.home.dir=D:/Hadoop\""
+      },
+      "Spark 3.4 Integration Tests targeting Cosmos Emulator - Java 11'": {
+        "ProfileFlag": "-Dspark-e2e_3-4",
+        "PROTOCOLS": "[\"Tcp\"]",
+        "DESIRED_CONSISTENCIES": "[\"Session\"]",
+        "JavaTestVersion": "1.11",
+        "AdditionalArgs": "-DargLine=\"-DACCOUNT_HOST=https://localhost:8081/ -Dhadoop.home.dir=D:/Hadoop\""
+      }      
     }
   }
 }

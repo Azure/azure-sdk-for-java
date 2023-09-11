@@ -21,7 +21,7 @@ public interface AccessControlLists {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the AccessControlList resource definition along with {@link Response}.
+     * @return the Access Control List resource definition along with {@link Response}.
      */
     Response<AccessControlList> getByResourceGroupWithResponse(
         String resourceGroupName, String accessControlListName, Context context);
@@ -36,25 +36,9 @@ public interface AccessControlLists {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the AccessControlList resource definition.
+     * @return the Access Control List resource definition.
      */
     AccessControlList getByResourceGroup(String resourceGroupName, String accessControlListName);
-
-    /**
-     * Deletes a Access Control List.
-     *
-     * <p>Implements Access Control List DELETE method.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accessControlListName Name of the Access Control List.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
-    Response<Void> deleteByResourceGroupWithResponse(
-        String resourceGroupName, String accessControlListName, Context context);
 
     /**
      * Deletes a Access Control List.
@@ -70,6 +54,20 @@ public interface AccessControlLists {
     void deleteByResourceGroup(String resourceGroupName, String accessControlListName);
 
     /**
+     * Deletes a Access Control List.
+     *
+     * <p>Implements Access Control List DELETE method.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accessControlListName Name of the Access Control List.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void delete(String resourceGroupName, String accessControlListName, Context context);
+
+    /**
      * List AccessControlLists by resource group.
      *
      * <p>Implements AccessControlLists list by resource group GET method.
@@ -78,7 +76,7 @@ public interface AccessControlLists {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of AccessControlLists as paginated response with {@link PagedIterable}.
+     * @return list of Access Control Lists as paginated response with {@link PagedIterable}.
      */
     PagedIterable<AccessControlList> listByResourceGroup(String resourceGroupName);
 
@@ -92,7 +90,7 @@ public interface AccessControlLists {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of AccessControlLists as paginated response with {@link PagedIterable}.
+     * @return list of Access Control Lists as paginated response with {@link PagedIterable}.
      */
     PagedIterable<AccessControlList> listByResourceGroup(String resourceGroupName, Context context);
 
@@ -103,7 +101,7 @@ public interface AccessControlLists {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of AccessControlLists as paginated response with {@link PagedIterable}.
+     * @return list of Access Control Lists as paginated response with {@link PagedIterable}.
      */
     PagedIterable<AccessControlList> list();
 
@@ -116,9 +114,102 @@ public interface AccessControlLists {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of AccessControlLists as paginated response with {@link PagedIterable}.
+     * @return list of Access Control Lists as paginated response with {@link PagedIterable}.
      */
     PagedIterable<AccessControlList> list(Context context);
+
+    /**
+     * Updates administrative state of Access Control Lists.
+     *
+     * <p>Implements the operation to the underlying resources.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accessControlListName Name of the Access Control List.
+     * @param body Request payload.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return common response for the state updates.
+     */
+    CommonPostActionResponseForStateUpdate updateAdministrativeState(
+        String resourceGroupName, String accessControlListName, UpdateAdministrativeState body);
+
+    /**
+     * Updates administrative state of Access Control Lists.
+     *
+     * <p>Implements the operation to the underlying resources.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accessControlListName Name of the Access Control List.
+     * @param body Request payload.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return common response for the state updates.
+     */
+    CommonPostActionResponseForStateUpdate updateAdministrativeState(
+        String resourceGroupName, String accessControlListName, UpdateAdministrativeState body, Context context);
+
+    /**
+     * Resync operation on the Access Control Lists.
+     *
+     * <p>Implements the operation to the underlying resources.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accessControlListName Name of the Access Control List.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return common response for the state updates.
+     */
+    CommonPostActionResponseForStateUpdate resync(String resourceGroupName, String accessControlListName);
+
+    /**
+     * Resync operation on the Access Control Lists.
+     *
+     * <p>Implements the operation to the underlying resources.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accessControlListName Name of the Access Control List.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return common response for the state updates.
+     */
+    CommonPostActionResponseForStateUpdate resync(
+        String resourceGroupName, String accessControlListName, Context context);
+
+    /**
+     * Validates the configuration of the Access Control Lists.
+     *
+     * <p>Implements the operation to the underlying resources.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accessControlListName Name of the Access Control List.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of the action validate configuration.
+     */
+    ValidateConfigurationResponse validateConfiguration(String resourceGroupName, String accessControlListName);
+
+    /**
+     * Validates the configuration of the Access Control Lists.
+     *
+     * <p>Implements the operation to the underlying resources.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accessControlListName Name of the Access Control List.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of the action validate configuration.
+     */
+    ValidateConfigurationResponse validateConfiguration(
+        String resourceGroupName, String accessControlListName, Context context);
 
     /**
      * Gets a Access Control List.
@@ -129,7 +220,7 @@ public interface AccessControlLists {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the AccessControlList resource definition along with {@link Response}.
+     * @return the Access Control List resource definition along with {@link Response}.
      */
     AccessControlList getById(String id);
 
@@ -143,7 +234,7 @@ public interface AccessControlLists {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the AccessControlList resource definition along with {@link Response}.
+     * @return the Access Control List resource definition along with {@link Response}.
      */
     Response<AccessControlList> getByIdWithResponse(String id, Context context);
 
@@ -169,9 +260,8 @@ public interface AccessControlLists {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
      */
-    Response<Void> deleteByIdWithResponse(String id, Context context);
+    void deleteByIdWithResponse(String id, Context context);
 
     /**
      * Begins definition for a new AccessControlList resource.

@@ -15,16 +15,17 @@ public final class PatchResourceGuardInputTests {
     public void testDeserialize() throws Exception {
         PatchResourceGuardInput model =
             BinaryData
-                .fromString("{\"tags\":{\"aeneqnzarrwl\":\"rsndsytgadgvra\"}}")
+                .fromString("{\"tags\":{\"mrv\":\"kdwbwhkszz\",\"owtlmnguxawqald\":\"xztvbtqgsfraoyzk\"}}")
                 .toObject(PatchResourceGuardInput.class);
-        Assertions.assertEquals("rsndsytgadgvra", model.tags().get("aeneqnzarrwl"));
+        Assertions.assertEquals("kdwbwhkszz", model.tags().get("mrv"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PatchResourceGuardInput model = new PatchResourceGuardInput().withTags(mapOf("aeneqnzarrwl", "rsndsytgadgvra"));
+        PatchResourceGuardInput model =
+            new PatchResourceGuardInput().withTags(mapOf("mrv", "kdwbwhkszz", "owtlmnguxawqald", "xztvbtqgsfraoyzk"));
         model = BinaryData.fromObject(model).toObject(PatchResourceGuardInput.class);
-        Assertions.assertEquals("rsndsytgadgvra", model.tags().get("aeneqnzarrwl"));
+        Assertions.assertEquals("kdwbwhkszz", model.tags().get("mrv"));
     }
 
     @SuppressWarnings("unchecked")

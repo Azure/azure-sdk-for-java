@@ -18,7 +18,7 @@ public interface ResourceProvidersClient {
      * Performs a connectivity check between the API Management service and a given destination, and returns metrics for
      * the connection, as well as errors encountered while trying to establish it.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param connectivityCheckRequestParams Connectivity Check request parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -35,7 +35,7 @@ public interface ResourceProvidersClient {
      * Performs a connectivity check between the API Management service and a given destination, and returns metrics for
      * the connection, as well as errors encountered while trying to establish it.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param connectivityCheckRequestParams Connectivity Check request parameters.
      * @param context The context to associate with this operation.
@@ -56,7 +56,7 @@ public interface ResourceProvidersClient {
      * Performs a connectivity check between the API Management service and a given destination, and returns metrics for
      * the connection, as well as errors encountered while trying to establish it.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param connectivityCheckRequestParams Connectivity Check request parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -72,7 +72,7 @@ public interface ResourceProvidersClient {
      * Performs a connectivity check between the API Management service and a given destination, and returns metrics for
      * the connection, as well as errors encountered while trying to establish it.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param connectivityCheckRequestParams Connectivity Check request parameters.
      * @param context The context to associate with this operation.

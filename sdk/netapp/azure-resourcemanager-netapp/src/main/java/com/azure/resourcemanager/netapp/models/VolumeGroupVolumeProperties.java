@@ -498,7 +498,7 @@ public final class VolumeGroupVolumeProperties extends ProxyResource {
 
     /**
      * Get the snapshotDirectoryVisible property: If enabled (true) the volume will contain a read-only snapshot
-     * directory which provides access to each of the volume's snapshots (default to true).
+     * directory which provides access to each of the volume's snapshots (defaults to true).
      *
      * @return the snapshotDirectoryVisible value.
      */
@@ -508,7 +508,7 @@ public final class VolumeGroupVolumeProperties extends ProxyResource {
 
     /**
      * Set the snapshotDirectoryVisible property: If enabled (true) the volume will contain a read-only snapshot
-     * directory which provides access to each of the volume's snapshots (default to true).
+     * directory which provides access to each of the volume's snapshots (defaults to true).
      *
      * @param snapshotDirectoryVisible the snapshotDirectoryVisible value to set.
      * @return the VolumeGroupVolumeProperties object itself.
@@ -699,6 +699,16 @@ public final class VolumeGroupVolumeProperties extends ProxyResource {
         }
         this.innerProperties().withThroughputMibps(throughputMibps);
         return this;
+    }
+
+    /**
+     * Get the actualThroughputMibps property: Actual throughput in MiB/s for auto qosType volumes calculated based on
+     * size and serviceLevel.
+     *
+     * @return the actualThroughputMibps value.
+     */
+    public Float actualThroughputMibps() {
+        return this.innerProperties() == null ? null : this.innerProperties().actualThroughputMibps();
     }
 
     /**
@@ -1183,6 +1193,17 @@ public final class VolumeGroupVolumeProperties extends ProxyResource {
         }
         this.innerProperties().withIsLargeVolume(isLargeVolume);
         return this;
+    }
+
+    /**
+     * Get the originatingResourceId property: Originating Resource Id
+     *
+     * <p>Id of the snapshot or backup that the volume is restored from.
+     *
+     * @return the originatingResourceId value.
+     */
+    public String originatingResourceId() {
+        return this.innerProperties() == null ? null : this.innerProperties().originatingResourceId();
     }
 
     /**

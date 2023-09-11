@@ -38,7 +38,7 @@ public class ReadFeedExceptionHandlingTest extends TestSuiteBase {
         super(clientBuilder);
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    @Test(groups = { "query" }, timeOut = TIMEOUT)
     public void readFeedException() throws Exception {
 
         ArrayList<CosmosDatabaseProperties> dbs = new ArrayList<CosmosDatabaseProperties>();
@@ -83,12 +83,12 @@ public class ReadFeedExceptionHandlingTest extends TestSuiteBase {
         assertThat(subscriber.errorCount()).isEqualTo(1);
     }
 
-    @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
+    @BeforeClass(groups = { "query" }, timeOut = SETUP_TIMEOUT)
     public void before_ReadFeedExceptionHandlingTest() {
         client = getClientBuilder().buildAsyncClient();
     }
 
-    @AfterClass(groups = { "simple" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
+    @AfterClass(groups = { "query" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
         safeClose(this.client);
     }

@@ -3,7 +3,7 @@
 metadata:
   labels:
     testInstance: "{{.Stress.Scenario}}-{{ .Release.Name }}-{{ .Release.Revision }}"
-    testName: servicebus-stress-test
+    testName: java-sb-stress
     chaos: "{{ default false .Stress.chaos }}"
 spec:
   containers:
@@ -21,16 +21,13 @@ spec:
           export APPLICATIONINSIGHTS_ROLE_INSTANCE=sender-{{ .Stress.BaseName }} &&
           export APPLICATIONINSIGHTS_INSTRUMENTATION_LOGGING_LEVEL=DEBUG &&
           java -javaagent:BOOT-INF/classes/applicationinsights-agent-3.4.13.jar \
-          "org.springframework.boot.loader.JarLauncher" \
+          -jar /app/azure-messaging-servicebus-stress-1.0.0-beta.1.jar \
           --TEST_CLASS=MessageSenderAsync
       {{- include "stress-test-addons.container-env" . | nindent 6 }}
       resources:
         requests:
           memory: "1G"
           cpu: "1"
-        limits:
-          memory: "2G"
-          cpu: "2"
     - name: receiver
       image: {{ .Stress.imageTag }}
       imagePullPolicy: Always
@@ -46,16 +43,13 @@ spec:
           export APPLICATIONINSIGHTS_INSTRUMENTATION_LOGGING_LEVEL=DEBUG &&
           java -javaagent:BOOT-INF/classes/applicationinsights-agent-3.4.13.jar \
           -Dreactor.schedulers.defaultBoundedElasticSize=100 \
-          "org.springframework.boot.loader.JarLauncher" \
+          -jar /app/azure-messaging-servicebus-stress-1.0.0-beta.1.jar \
           --TEST_CLASS=MessageProcessor
       {{- include "stress-test-addons.container-env" . | nindent 6 }}
       resources:
         requests:
           memory: "1G"
           cpu: "1"
-        limits:
-          memory: "2G"
-          cpu: "2"
 {{- end -}}
 
 {{- include "stress-test-addons.chaos-wrapper.tpl" (list . "stress.network-chaos") -}}

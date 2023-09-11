@@ -26,15 +26,6 @@ public final class PortalSettingsImpl implements PortalSettings {
         this.serviceManager = serviceManager;
     }
 
-    public PortalSettingsCollection listByService(String resourceGroupName, String serviceName) {
-        PortalSettingsCollectionInner inner = this.serviceClient().listByService(resourceGroupName, serviceName);
-        if (inner != null) {
-            return new PortalSettingsCollectionImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<PortalSettingsCollection> listByServiceWithResponse(
         String resourceGroupName, String serviceName, Context context) {
         Response<PortalSettingsCollectionInner> inner =
@@ -45,6 +36,15 @@ public final class PortalSettingsImpl implements PortalSettings {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new PortalSettingsCollectionImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public PortalSettingsCollection listByService(String resourceGroupName, String serviceName) {
+        PortalSettingsCollectionInner inner = this.serviceClient().listByService(resourceGroupName, serviceName);
+        if (inner != null) {
+            return new PortalSettingsCollectionImpl(inner, this.manager());
         } else {
             return null;
         }

@@ -68,7 +68,7 @@ public interface NetworkRacks {
     void delete(String resourceGroupName, String networkRackName, Context context);
 
     /**
-     * List NetworkRacks by resource group.
+     * List Network Racks by resource group.
      *
      * <p>List all Network Rack resources in the given resource group.
      *
@@ -76,12 +76,12 @@ public interface NetworkRacks {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of NetworkRacks as paginated response with {@link PagedIterable}.
+     * @return list of Network Racks as paginated response with {@link PagedIterable}.
      */
     PagedIterable<NetworkRack> listByResourceGroup(String resourceGroupName);
 
     /**
-     * List NetworkRacks by resource group.
+     * List Network Racks by resource group.
      *
      * <p>List all Network Rack resources in the given resource group.
      *
@@ -90,23 +90,23 @@ public interface NetworkRacks {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of NetworkRacks as paginated response with {@link PagedIterable}.
+     * @return list of Network Racks as paginated response with {@link PagedIterable}.
      */
     PagedIterable<NetworkRack> listByResourceGroup(String resourceGroupName, Context context);
 
     /**
-     * List NetworkRacks by subscription.
+     * List Network Racks by subscription.
      *
      * <p>List all Network Rack resources in the given subscription.
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of NetworkRacks as paginated response with {@link PagedIterable}.
+     * @return list of Network Racks as paginated response with {@link PagedIterable}.
      */
     PagedIterable<NetworkRack> list();
 
     /**
-     * List NetworkRacks by subscription.
+     * List Network Racks by subscription.
      *
      * <p>List all Network Rack resources in the given subscription.
      *
@@ -114,7 +114,7 @@ public interface NetworkRacks {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of NetworkRacks as paginated response with {@link PagedIterable}.
+     * @return list of Network Racks as paginated response with {@link PagedIterable}.
      */
     PagedIterable<NetworkRack> list(Context context);
 

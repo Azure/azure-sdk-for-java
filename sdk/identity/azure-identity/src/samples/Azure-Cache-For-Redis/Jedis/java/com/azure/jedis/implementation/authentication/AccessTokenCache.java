@@ -24,6 +24,7 @@ import java.util.function.Supplier;
  * A token cache that supports caching a token and refreshing it.
  */
 public final class AccessTokenCache {
+
     // The delay after a refresh to attempt another token refresh
     private static final Duration REFRESH_DELAY = Duration.ofSeconds(30);
     // the offset before token expiry to attempt proactive token refresh

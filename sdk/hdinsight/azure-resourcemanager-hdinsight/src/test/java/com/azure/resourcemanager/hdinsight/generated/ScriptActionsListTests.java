@@ -9,43 +9,52 @@ import com.azure.resourcemanager.hdinsight.fluent.models.RuntimeScriptActionDeta
 import com.azure.resourcemanager.hdinsight.models.ScriptActionsList;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class ScriptActionsListTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         ScriptActionsList model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"scriptExecutionId\":2717141106438874007,\"startTime\":\"rvqqaatj\",\"endTime\":\"rv\",\"status\":\"upmfiibfg\",\"operation\":\"ioolvrwxkvtkkgll\",\"executionSummary\":[],\"debugInformation\":\"gvjayvblmh\",\"name\":\"k\",\"uri\":\"uhbxvvy\",\"parameters\":\"s\",\"roles\":[\"byrqufeg\",\"uvwzfbnh\",\"mctlpdngitv\"],\"applicationName\":\"mhrixkwmyijejve\"},{\"scriptExecutionId\":5137218899058687714,\"startTime\":\"nai\",\"endTime\":\"xccbdreaxhcex\",\"status\":\"rvqahqkghtpwi\",\"operation\":\"hyjsvfycx\",\"executionSummary\":[],\"debugInformation\":\"oowvrv\",\"name\":\"t\",\"uri\":\"jqppyostronzmy\",\"parameters\":\"fipns\",\"roles\":[\"mcwaekrrjr\",\"afxtsgum\",\"jglikkxwslolb\",\"pvuzlmv\"],\"applicationName\":\"lfktgplcrpwjxe\"}],\"nextLink\":\"oi\"}")
+                    "{\"value\":[{\"scriptExecutionId\":1563332735084443990,\"startTime\":\"ft\",\"endTime\":\"qobr\",\"status\":\"nac\",\"operation\":\"ckknhxkizvy\",\"executionSummary\":[{\"status\":\"vuljraaeranokqg\",\"instanceCount\":578630229},{\"status\":\"qnvb\",\"instanceCount\":387687877}],\"debugInformation\":\"a\",\"name\":\"xulcdisdos\",\"uri\":\"jbjsvgjrwh\",\"parameters\":\"vyc\",\"roles\":[\"dclxgc\"],\"applicationName\":\"nfnw\"},{\"scriptExecutionId\":3132711740281855287,\"startTime\":\"pdvjdhttzaefedx\",\"endTime\":\"ch\",\"status\":\"hk\",\"operation\":\"rjdqnsdfzp\",\"executionSummary\":[{\"status\":\"kylkdghrj\",\"instanceCount\":852383444}],\"debugInformation\":\"lwxezwzhokvbwnh\",\"name\":\"tqlgehgppi\",\"uri\":\"ifhpf\",\"parameters\":\"ajvgcxtxjcsheafi\",\"roles\":[\"tugsresmkssjh\",\"iftxfkf\",\"egprhptil\",\"ucb\"],\"applicationName\":\"tgdqohmcwsldriz\"},{\"scriptExecutionId\":7692206600451693142,\"startTime\":\"ralllibphb\",\"endTime\":\"mizak\",\"status\":\"ankjpdnjzh\",\"operation\":\"oylhjlmuoyxprimr\",\"executionSummary\":[{\"status\":\"eecjmeis\",\"instanceCount\":1157129881},{\"status\":\"asylwx\",\"instanceCount\":1212726658}],\"debugInformation\":\"mweoohgu\",\"name\":\"fuzboyjathwtzolb\",\"uri\":\"emwmdxmebwjs\",\"parameters\":\"p\",\"roles\":[\"lxveabfqx\",\"mwmqtibx\"],\"applicationName\":\"jddtvqct\"},{\"scriptExecutionId\":3995165957523237174,\"startTime\":\"aeukm\",\"endTime\":\"ieekpndzaa\",\"status\":\"udqmeqwigpibudq\",\"operation\":\"xebeybpmz\",\"executionSummary\":[{\"status\":\"ff\",\"instanceCount\":1447322372},{\"status\":\"tmhheioqa\",\"instanceCount\":170135486},{\"status\":\"eufuqyrxpdlcgql\",\"instanceCount\":732264201}],\"debugInformation\":\"jqfrddgamquh\",\"name\":\"os\",\"uri\":\"sjuivfcdisyir\",\"parameters\":\"zhczexrxzbujrtrh\",\"roles\":[\"wrevkhgnlnzon\",\"lrpiqywnc\",\"jtszcof\",\"zehtdhgb\"],\"applicationName\":\"vreljea\"}],\"nextLink\":\"rvzmlovuana\"}")
                 .toObject(ScriptActionsList.class);
-        Assertions.assertEquals("k", model.value().get(0).name());
-        Assertions.assertEquals("uhbxvvy", model.value().get(0).uri());
-        Assertions.assertEquals("s", model.value().get(0).parameters());
-        Assertions.assertEquals("byrqufeg", model.value().get(0).roles().get(0));
+        Assertions.assertEquals("xulcdisdos", model.value().get(0).name());
+        Assertions.assertEquals("jbjsvgjrwh", model.value().get(0).uri());
+        Assertions.assertEquals("vyc", model.value().get(0).parameters());
+        Assertions.assertEquals("dclxgc", model.value().get(0).roles().get(0));
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         ScriptActionsList model =
             new ScriptActionsList()
                 .withValue(
                     Arrays
                         .asList(
                             new RuntimeScriptActionDetailInner()
-                                .withName("k")
-                                .withUri("uhbxvvy")
-                                .withParameters("s")
-                                .withRoles(Arrays.asList("byrqufeg", "uvwzfbnh", "mctlpdngitv")),
+                                .withName("xulcdisdos")
+                                .withUri("jbjsvgjrwh")
+                                .withParameters("vyc")
+                                .withRoles(Arrays.asList("dclxgc")),
                             new RuntimeScriptActionDetailInner()
-                                .withName("t")
-                                .withUri("jqppyostronzmy")
-                                .withParameters("fipns")
-                                .withRoles(Arrays.asList("mcwaekrrjr", "afxtsgum", "jglikkxwslolb", "pvuzlmv"))));
+                                .withName("tqlgehgppi")
+                                .withUri("ifhpf")
+                                .withParameters("ajvgcxtxjcsheafi")
+                                .withRoles(Arrays.asList("tugsresmkssjh", "iftxfkf", "egprhptil", "ucb")),
+                            new RuntimeScriptActionDetailInner()
+                                .withName("fuzboyjathwtzolb")
+                                .withUri("emwmdxmebwjs")
+                                .withParameters("p")
+                                .withRoles(Arrays.asList("lxveabfqx", "mwmqtibx")),
+                            new RuntimeScriptActionDetailInner()
+                                .withName("os")
+                                .withUri("sjuivfcdisyir")
+                                .withParameters("zhczexrxzbujrtrh")
+                                .withRoles(Arrays.asList("wrevkhgnlnzon", "lrpiqywnc", "jtszcof", "zehtdhgb"))));
         model = BinaryData.fromObject(model).toObject(ScriptActionsList.class);
-        Assertions.assertEquals("k", model.value().get(0).name());
-        Assertions.assertEquals("uhbxvvy", model.value().get(0).uri());
-        Assertions.assertEquals("s", model.value().get(0).parameters());
-        Assertions.assertEquals("byrqufeg", model.value().get(0).roles().get(0));
+        Assertions.assertEquals("xulcdisdos", model.value().get(0).name());
+        Assertions.assertEquals("jbjsvgjrwh", model.value().get(0).uri());
+        Assertions.assertEquals("vyc", model.value().get(0).parameters());
+        Assertions.assertEquals("dclxgc", model.value().get(0).roles().get(0));
     }
 }

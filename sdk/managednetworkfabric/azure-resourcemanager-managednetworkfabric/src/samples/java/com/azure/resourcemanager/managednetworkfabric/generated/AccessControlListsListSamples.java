@@ -7,14 +7,14 @@ package com.azure.resourcemanager.managednetworkfabric.generated;
 /** Samples for AccessControlLists List. */
 public final class AccessControlListsListSamples {
     /*
-     * x-ms-original-file: specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/preview/2023-02-01-preview/examples/AccessControlLists_ListBySubscription_MinimumSet_Gen.json
+     * x-ms-original-file: specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/AccessControlLists_ListBySubscription_MaximumSet_Gen.json
      */
     /**
-     * Sample code: AccessControlLists_ListBySubscription_MinimumSet_Gen.
+     * Sample code: AccessControlLists_ListBySubscription_MaximumSet_Gen.
      *
      * @param manager Entry point to ManagedNetworkFabricManager.
      */
-    public static void accessControlListsListBySubscriptionMinimumSetGen(
+    public static void accessControlListsListBySubscriptionMaximumSetGen(
         com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager manager) {
         manager.accessControlLists().list(com.azure.core.util.Context.NONE);
     }

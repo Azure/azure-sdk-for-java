@@ -114,11 +114,13 @@ public interface MobileNetwork {
             DefinitionStages.WithPublicLandMobileNetworkIdentifier,
             DefinitionStages.WithCreate {
     }
+
     /** The MobileNetwork definition stages. */
     interface DefinitionStages {
         /** The first stage of the MobileNetwork definition. */
         interface Blank extends WithLocation {
         }
+
         /** The stage of the MobileNetwork definition allowing to specify location. */
         interface WithLocation {
             /**
@@ -137,6 +139,7 @@ public interface MobileNetwork {
              */
             WithResourceGroup withRegion(String location);
         }
+
         /** The stage of the MobileNetwork definition allowing to specify parent resource. */
         interface WithResourceGroup {
             /**
@@ -147,6 +150,7 @@ public interface MobileNetwork {
              */
             WithPublicLandMobileNetworkIdentifier withExistingResourceGroup(String resourceGroupName);
         }
+
         /** The stage of the MobileNetwork definition allowing to specify publicLandMobileNetworkIdentifier. */
         interface WithPublicLandMobileNetworkIdentifier {
             /**
@@ -163,6 +167,7 @@ public interface MobileNetwork {
              */
             WithCreate withPublicLandMobileNetworkIdentifier(PlmnId publicLandMobileNetworkIdentifier);
         }
+
         /**
          * The stage of the MobileNetwork definition which contains all the minimum required properties for the resource
          * to be created, but also allows for any other optional properties to be specified.
@@ -183,6 +188,7 @@ public interface MobileNetwork {
              */
             MobileNetwork create(Context context);
         }
+
         /** The stage of the MobileNetwork definition allowing to specify tags. */
         interface WithTags {
             /**
@@ -194,6 +200,7 @@ public interface MobileNetwork {
             WithCreate withTags(Map<String, String> tags);
         }
     }
+
     /**
      * Begins update for the MobileNetwork resource.
      *
@@ -218,6 +225,7 @@ public interface MobileNetwork {
          */
         MobileNetwork apply(Context context);
     }
+
     /** The MobileNetwork update stages. */
     interface UpdateStages {
         /** The stage of the MobileNetwork update allowing to specify tags. */
@@ -231,6 +239,7 @@ public interface MobileNetwork {
             Update withTags(Map<String, String> tags);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

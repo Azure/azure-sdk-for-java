@@ -56,6 +56,6 @@ public final class StorageMoversDeleteMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.storageMovers().delete("xibxujwbhqwalm", "zyoxaepdkzjan", com.azure.core.util.Context.NONE);
+        manager.storageMovers().delete("yydhibnuqqk", "ik", com.azure.core.util.Context.NONE);
     }
 }

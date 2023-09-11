@@ -39,7 +39,7 @@ public class VeryLargeDocumentQueryTest extends TestSuiteBase {
         super(clientBuilder);
     }
 
-    @Test(groups = { "simple" }, timeOut = 2 * TIMEOUT)
+    @Test(groups = { "query" }, timeOut = 2 * TIMEOUT)
     public void queryLargeDocuments() {
 
         int cnt = 5;
@@ -80,14 +80,14 @@ public class VeryLargeDocumentQueryTest extends TestSuiteBase {
                     .verify(Duration.ofMillis(subscriberValidationTimeout));
     }
 
-    @BeforeClass(groups = { "simple" }, timeOut = 2 * SETUP_TIMEOUT)
+    @BeforeClass(groups = { "query" }, timeOut = 2 * SETUP_TIMEOUT)
     public void before_VeryLargeDocumentQueryTest() {
         client = getClientBuilder().buildAsyncClient();
         createdCollection = getSharedMultiPartitionCosmosContainer(client);
         truncateCollection(createdCollection);
     }
 
-    @AfterClass(groups = { "simple" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
+    @AfterClass(groups = { "query" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
         safeClose(client);
     }

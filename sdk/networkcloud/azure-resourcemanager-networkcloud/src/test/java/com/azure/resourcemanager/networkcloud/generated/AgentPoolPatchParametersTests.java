@@ -17,26 +17,27 @@ public final class AgentPoolPatchParametersTests {
         AgentPoolPatchParameters model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"count\":1768984483743246873,\"upgradeSettings\":{\"maxSurge\":\"zgaz\"}},\"tags\":{\"vmfqhppubo\":\"boi\"}}")
+                    "{\"properties\":{\"count\":1064127963046156604,\"upgradeSettings\":{\"maxSurge\":\"fsv\"}},\"tags\":{\"gahxkumasjcaa\":\"vbopfppdbwnu\",\"ehqepvufhbzehe\":\"fdmmcpug\"}}")
                 .toObject(AgentPoolPatchParameters.class);
-        Assertions.assertEquals("boi", model.tags().get("vmfqhppubo"));
-        Assertions.assertEquals(1768984483743246873L, model.count());
-        Assertions.assertEquals("zgaz", model.upgradeSettings().maxSurge());
+        Assertions.assertEquals("vbopfppdbwnu", model.tags().get("gahxkumasjcaa"));
+        Assertions.assertEquals(1064127963046156604L, model.count());
+        Assertions.assertEquals("fsv", model.upgradeSettings().maxSurge());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AgentPoolPatchParameters model =
             new AgentPoolPatchParameters()
-                .withTags(mapOf("vmfqhppubo", "boi"))
-                .withCount(1768984483743246873L)
-                .withUpgradeSettings(new AgentPoolUpgradeSettings().withMaxSurge("zgaz"));
+                .withTags(mapOf("gahxkumasjcaa", "vbopfppdbwnu", "ehqepvufhbzehe", "fdmmcpug"))
+                .withCount(1064127963046156604L)
+                .withUpgradeSettings(new AgentPoolUpgradeSettings().withMaxSurge("fsv"));
         model = BinaryData.fromObject(model).toObject(AgentPoolPatchParameters.class);
-        Assertions.assertEquals("boi", model.tags().get("vmfqhppubo"));
-        Assertions.assertEquals(1768984483743246873L, model.count());
-        Assertions.assertEquals("zgaz", model.upgradeSettings().maxSurge());
+        Assertions.assertEquals("vbopfppdbwnu", model.tags().get("gahxkumasjcaa"));
+        Assertions.assertEquals(1064127963046156604L, model.count());
+        Assertions.assertEquals("fsv", model.upgradeSettings().maxSurge());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

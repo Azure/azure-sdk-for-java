@@ -120,6 +120,27 @@ public class DataLakeDirectoryClient extends DataLakePathClient {
     }
 
     /**
+     * Recursively deletes a directory and all contents within the directory.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakeDirectoryClient.deleteRecursively -->
+     * <pre>
+     * client.deleteRecursively&#40;&#41;;
+     * System.out.println&#40;&quot;Delete request completed&quot;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakeDirectoryClient.deleteRecursively -->
+     *
+     * <p>For more information see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/delete">Azure
+     * Docs</a></p>
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void deleteRecursively() {
+        deleteWithResponse(true, null, null, Context.NONE).getValue();
+    }
+
+    /**
      * Deletes a directory.
      *
      * <p><strong>Code Samples</strong></p>

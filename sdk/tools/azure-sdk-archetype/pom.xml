@@ -61,9 +61,9 @@
         <pluginManagement>
             <plugins>
                 <plugin>
-                    <groupId>org.apache.maven.archetype</groupId>
+                    <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-archetype-plugin</artifactId>
-                    <version>3.2.0</version> <!-- {x-version-update;org.apache.maven.archetype:maven-archetype-plugin;external_dependency} -->
+                    <version>3.2.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-archetype-plugin;external_dependency} -->
                 </plugin>
             </plugins>
         </pluginManagement>
@@ -171,6 +171,132 @@
                 </executions>
             </plugin>
             <!-- END: Empty Java Doc -->
+
+          <!-- TODO: Move the following plugins to a parent pom -->
+          <!-- This plugin scans checkstyle issues in the code -->
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-checkstyle-plugin</artifactId>
+            <version>3.1.2</version> <!-- {x-version-update;org.apache.maven.plugins:maven-checkstyle-plugin;external_dependency} -->
+            <dependencies>
+              <dependency>
+                <groupId>com.azure</groupId>
+                <artifactId>sdk-build-tools</artifactId>
+                <version>1.0.0</version> <!-- {x-version-update;com.azure:sdk-build-tools;external_dependency} -->
+              </dependency>
+              <dependency>
+                <groupId>com.puppycrawl.tools</groupId>
+                <artifactId>checkstyle</artifactId>
+                <version>9.3</version> <!-- {x-version-update;com.puppycrawl.tools:checkstyle;external_dependency} -->
+              </dependency>
+            </dependencies>
+          </plugin>
+          <!-- This plugin scans reports spotbugs in the code -->
+          <plugin>
+            <groupId>com.github.spotbugs</groupId>
+            <artifactId>spotbugs-maven-plugin</artifactId>
+            <version>4.2.2</version> <!-- {x-version-update;com.github.spotbugs:spotbugs-maven-plugin;external_dependency} -->
+            <dependencies>
+              <dependency>
+                <groupId>com.azure</groupId>
+                <artifactId>sdk-build-tools</artifactId>
+                <version>1.0.0</version> <!-- {x-version-update;com.azure:sdk-build-tools;external_dependency} -->
+              </dependency>
+              <dependency>
+                <groupId>com.github.spotbugs</groupId>
+                <artifactId>spotbugs</artifactId>
+                <version>4.2.2</version> <!-- {x-version-update;com.github.spotbugs:spotbugs;external_dependency} -->
+              </dependency>
+              <!-- Needed as the version of Spotbugs being used isn't compatible is Java 18+ without this. -->
+              <dependency>
+                <groupId>org.ow2.asm</groupId>
+                <artifactId>asm</artifactId>
+                <version>9.5</version> <!-- {x-version-update;org.ow2.asm:asm;external_dependency} -->
+              </dependency>
+            </dependencies>
+            <configuration>
+              <effort>max</effort>
+              <threshold>Low</threshold>
+              <xmlOutput>true</xmlOutput>
+              <spotbugsXmlOutputDirectory>${project.build.directory}/spotbugs</spotbugsXmlOutputDirectory>
+              <excludeFilterFile>spotbugs/spotbugs-exclude.xml</excludeFilterFile>
+              <fork>true</fork>
+            </configuration>
+          </plugin>
+
+          <!-- Checks public surface area for breaking changes. -->
+          <plugin>
+            <groupId>org.revapi</groupId>
+            <artifactId>revapi-maven-plugin</artifactId>
+            <version>0.14.6</version> <!-- {x-version-update;org.revapi:revapi-maven-plugin;external_dependency} -->
+            <configuration>
+              <convertAnalysisConfigurationFiles>true</convertAnalysisConfigurationFiles>
+              <analysisConfigurationFiles>
+                <configurationFile>
+                  <resource>revapi/revapi.json</resource>
+                </configurationFile>
+              </analysisConfigurationFiles>
+              <versionFormat>^\d+\.\d+\.\d+$</versionFormat>
+              <checkDependencies>true</checkDependencies>
+              <!-- The following configures reporting to file in addition to CLI reporting. -->
+              <analysisConfiguration>
+                <revapi.reporter.json id="file-report">
+                  <minSeverity>NON_BREAKING</minSeverity>
+                  <minCriticality>error</minCriticality>
+                  <indent>true</indent>
+                  <output>${project.build.directory}/revapi.json</output>
+                  <keepEmptyFile>false</keepEmptyFile>
+                </revapi.reporter.json>
+              </analysisConfiguration>
+              <pipelineConfiguration>
+                <filters>
+                  <include>
+                    <item>azure-sdk-tree-provider</item>
+                  </include>
+                </filters>
+              </pipelineConfiguration>
+            </configuration>
+            <dependencies>
+              <dependency>
+                <groupId>com.azure</groupId>
+                <artifactId>sdk-build-tools</artifactId>
+                <version>1.0.0</version> <!-- {x-version-update;com.azure:sdk-build-tools;external_dependency} -->
+              </dependency>
+              <dependency>
+                <groupId>org.revapi</groupId>
+                <artifactId>revapi-java</artifactId>
+                <version>0.26.1</version> <!-- {x-version-update;org.revapi:revapi-java;external_dependency} -->
+              </dependency>
+              <dependency>
+                <groupId>org.revapi</groupId>
+                <artifactId>revapi-reporter-json</artifactId>
+                <version>0.4.5</version> <!-- {x-version-update;org.revapi:revapi-reporter-json;external_dependency} -->
+              </dependency>
+            </dependencies>
+          </plugin>
+          <plugin>
+            <groupId>com.azure.tools</groupId>
+            <artifactId>codesnippet-maven-plugin</artifactId>
+            <version>1.0.0-beta.8</version> <!-- {x-version-update;com.azure.tools:codesnippet-maven-plugin;external_dependency} -->
+            <configuration>
+              <readmeGlob>**/*.md</readmeGlob>
+            </configuration>
+            <executions>
+              <execution>
+                <id>update-codesnippets</id>
+                <goals>
+                  <goal>update-codesnippet</goal>
+                </goals>
+              </execution>
+              <execution>
+                <id>verify-codesnippets</id>
+                <goals>
+                  <goal>verify-codesnippet</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+
         </plugins>
     </build>
 </project>

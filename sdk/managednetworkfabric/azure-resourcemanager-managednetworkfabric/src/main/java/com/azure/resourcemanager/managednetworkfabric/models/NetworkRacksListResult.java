@@ -9,11 +9,11 @@ import com.azure.resourcemanager.managednetworkfabric.fluent.models.NetworkRackI
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** List of NetworkRacks. */
+/** List of Network Racks. */
 @Fluent
 public final class NetworkRacksListResult {
     /*
-     * List of NetworkRack resources.
+     * List of Network Rack resources.
      */
     @JsonProperty(value = "value")
     private List<NetworkRackInner> value;
@@ -29,7 +29,7 @@ public final class NetworkRacksListResult {
     }
 
     /**
-     * Get the value property: List of NetworkRack resources.
+     * Get the value property: List of Network Rack resources.
      *
      * @return the value value.
      */
@@ -38,7 +38,7 @@ public final class NetworkRacksListResult {
     }
 
     /**
-     * Set the value property: List of NetworkRack resources.
+     * Set the value property: List of Network Rack resources.
      *
      * @param value the value value to set.
      * @return the NetworkRacksListResult object itself.

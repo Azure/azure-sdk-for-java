@@ -121,6 +121,20 @@ object CosmosPatchTestHelper {
   new BulkWriter(container, partitionKeyDefinition, writeConfigForPatch, DiagnosticsConfig(Option.empty, false, None))
  }
 
+ def getBulkWriterForPatchBulkUpdate(columnConfigsMap: TrieMap[String, CosmosPatchColumnConfig],
+                           container: CosmosAsyncContainer,
+                           partitionKeyDefinition: PartitionKeyDefinition,
+                           patchPredicateFilter: Option[String] = None): BulkWriter = {
+     val patchConfigs = CosmosPatchConfigs(columnConfigsMap, patchPredicateFilter)
+     val writeConfigForPatch = CosmosWriteConfig(
+         ItemWriteStrategy.ItemBulkUpdate,
+         5,
+         bulkEnabled = true,
+         patchConfigs = Some(patchConfigs))
+
+     new BulkWriter(container, partitionKeyDefinition, writeConfigForPatch, DiagnosticsConfig(Option.empty, false, None))
+ }
+
  def getPointWriterForPatch(columnConfigsMap: TrieMap[String, CosmosPatchColumnConfig],
                             container: CosmosAsyncContainer,
                             partitionKeyDefinition: PartitionKeyDefinition,
@@ -137,6 +151,21 @@ object CosmosPatchTestHelper {
    container, partitionKeyDefinition, writeConfigForPatch, DiagnosticsConfig(Option.empty, false, None), MockTaskContext.mockTaskContext())
  }
 
+ def getPointWriterForPatchBulkUpdate(columnConfigsMap: TrieMap[String, CosmosPatchColumnConfig],
+                                      container: CosmosAsyncContainer,
+                                      partitionKeyDefinition: PartitionKeyDefinition,
+                                      patchPredicateFilter: Option[String] = None): PointWriter = {
+
+     val patchConfigs = CosmosPatchConfigs(columnConfigsMap, patchPredicateFilter)
+     val writeConfigForPatch = CosmosWriteConfig(
+         ItemWriteStrategy.ItemBulkUpdate,
+         5,
+         bulkEnabled = false,
+         patchConfigs = Some(patchConfigs))
+
+     new PointWriter(
+         container, partitionKeyDefinition, writeConfigForPatch, DiagnosticsConfig(Option.empty, false, None), MockTaskContext.mockTaskContext())
+ }
 
  def getPatchConfigTestSchema(): StructType = {
   StructType(Seq(

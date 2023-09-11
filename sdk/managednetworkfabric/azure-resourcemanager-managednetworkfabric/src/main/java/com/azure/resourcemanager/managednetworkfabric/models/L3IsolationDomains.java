@@ -21,7 +21,7 @@ public interface L3IsolationDomains {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the L3IsolationDomain resource definition along with {@link Response}.
+     * @return the L3 Isolation Domain resource definition along with {@link Response}.
      */
     Response<L3IsolationDomain> getByResourceGroupWithResponse(
         String resourceGroupName, String l3IsolationDomainName, Context context);
@@ -36,7 +36,7 @@ public interface L3IsolationDomains {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the L3IsolationDomain resource definition.
+     * @return the L3 Isolation Domain resource definition.
      */
     L3IsolationDomain getByResourceGroup(String resourceGroupName, String l3IsolationDomainName);
 
@@ -76,7 +76,7 @@ public interface L3IsolationDomains {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of L3IsolationDomains as paginated response with {@link PagedIterable}.
+     * @return list of L3 Isolation Domains as paginated response with {@link PagedIterable}.
      */
     PagedIterable<L3IsolationDomain> listByResourceGroup(String resourceGroupName);
 
@@ -90,7 +90,7 @@ public interface L3IsolationDomains {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of L3IsolationDomains as paginated response with {@link PagedIterable}.
+     * @return list of L3 Isolation Domains as paginated response with {@link PagedIterable}.
      */
     PagedIterable<L3IsolationDomain> listByResourceGroup(String resourceGroupName, Context context);
 
@@ -101,7 +101,7 @@ public interface L3IsolationDomains {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of L3IsolationDomains as paginated response with {@link PagedIterable}.
+     * @return list of L3 Isolation Domains as paginated response with {@link PagedIterable}.
      */
     PagedIterable<L3IsolationDomain> list();
 
@@ -114,7 +114,7 @@ public interface L3IsolationDomains {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of L3IsolationDomains as paginated response with {@link PagedIterable}.
+     * @return list of L3 Isolation Domains as paginated response with {@link PagedIterable}.
      */
     PagedIterable<L3IsolationDomain> list(Context context);
 
@@ -124,13 +124,14 @@ public interface L3IsolationDomains {
      * <p>Enables racks for this Isolation Domain.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l3IsolationDomainName Name of the L3IsolationDomain.
+     * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param body Request payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return common response for device updates.
      */
-    void updateAdministrativeState(
+    CommonPostActionResponseForDeviceUpdate updateAdministrativeState(
         String resourceGroupName, String l3IsolationDomainName, UpdateAdministrativeState body);
 
     /**
@@ -139,106 +140,72 @@ public interface L3IsolationDomains {
      * <p>Enables racks for this Isolation Domain.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l3IsolationDomainName Name of the L3IsolationDomain.
+     * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param body Request payload.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return common response for device updates.
      */
-    void updateAdministrativeState(
+    CommonPostActionResponseForDeviceUpdate updateAdministrativeState(
         String resourceGroupName, String l3IsolationDomainName, UpdateAdministrativeState body, Context context);
 
     /**
-     * Update route targets on CE devices. List the CE network device ARM resource IDs in the request body payload.
-     *
-     * <p>Update administrative state of option B on CE devices.
+     * Validates the configuration of the resources.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l3IsolationDomainName Name of the L3IsolationDomain.
-     * @param body Request payload.
+     * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of the action validate configuration.
      */
-    void updateOptionBAdministrativeState(
-        String resourceGroupName, String l3IsolationDomainName, UpdateAdministrativeState body);
+    ValidateConfigurationResponse validateConfiguration(String resourceGroupName, String l3IsolationDomainName);
 
     /**
-     * Update route targets on CE devices. List the CE network device ARM resource IDs in the request body payload.
-     *
-     * <p>Update administrative state of option B on CE devices.
+     * Validates the configuration of the resources.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l3IsolationDomainName Name of the L3IsolationDomain.
-     * @param body Request payload.
+     * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of the action validate configuration.
      */
-    void updateOptionBAdministrativeState(
-        String resourceGroupName, String l3IsolationDomainName, UpdateAdministrativeState body, Context context);
+    ValidateConfigurationResponse validateConfiguration(
+        String resourceGroupName, String l3IsolationDomainName, Context context);
 
     /**
-     * executes clear ARP operation to the underlying resources.
+     * Execute the commit on the resources.
      *
-     * <p>Clears ARP tables for this Isolation Domain.
+     * <p>Commits the configuration of the given resources.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l3IsolationDomainName Name of the L3IsolationDomain.
-     * @param body Request payload.
+     * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return common response for the state updates.
      */
-    void clearArpTable(String resourceGroupName, String l3IsolationDomainName, EnableDisableOnResources body);
+    CommonPostActionResponseForStateUpdate commitConfiguration(String resourceGroupName, String l3IsolationDomainName);
 
     /**
-     * executes clear ARP operation to the underlying resources.
+     * Execute the commit on the resources.
      *
-     * <p>Clears ARP tables for this Isolation Domain.
+     * <p>Commits the configuration of the given resources.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l3IsolationDomainName Name of the L3IsolationDomain.
-     * @param body Request payload.
+     * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return common response for the state updates.
      */
-    void clearArpTable(
-        String resourceGroupName, String l3IsolationDomainName, EnableDisableOnResources body, Context context);
-
-    /**
-     * executes ipv6 clear neighbor tables operation to the underlying resources.
-     *
-     * <p>Clears IPv6 neighbor tables for this Isolation Domain.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l3IsolationDomainName Name of the L3IsolationDomain.
-     * @param body Request payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void clearNeighborTable(String resourceGroupName, String l3IsolationDomainName, EnableDisableOnResources body);
-
-    /**
-     * executes ipv6 clear neighbor tables operation to the underlying resources.
-     *
-     * <p>Clears IPv6 neighbor tables for this Isolation Domain.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l3IsolationDomainName Name of the L3IsolationDomain.
-     * @param body Request payload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void clearNeighborTable(
-        String resourceGroupName, String l3IsolationDomainName, EnableDisableOnResources body, Context context);
+    CommonPostActionResponseForStateUpdate commitConfiguration(
+        String resourceGroupName, String l3IsolationDomainName, Context context);
 
     /**
      * Gets a L3 Isolation Domain.
@@ -249,7 +216,7 @@ public interface L3IsolationDomains {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the L3IsolationDomain resource definition along with {@link Response}.
+     * @return the L3 Isolation Domain resource definition along with {@link Response}.
      */
     L3IsolationDomain getById(String id);
 
@@ -263,7 +230,7 @@ public interface L3IsolationDomains {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the L3IsolationDomain resource definition along with {@link Response}.
+     * @return the L3 Isolation Domain resource definition along with {@link Response}.
      */
     Response<L3IsolationDomain> getByIdWithResponse(String id, Context context);
 

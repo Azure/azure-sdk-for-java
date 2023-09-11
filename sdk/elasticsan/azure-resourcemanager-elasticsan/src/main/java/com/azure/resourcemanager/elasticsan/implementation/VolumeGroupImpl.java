@@ -6,15 +6,18 @@ package com.azure.resourcemanager.elasticsan.implementation;
 
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
+import com.azure.resourcemanager.elasticsan.fluent.models.PrivateEndpointConnectionInner;
 import com.azure.resourcemanager.elasticsan.fluent.models.VolumeGroupInner;
 import com.azure.resourcemanager.elasticsan.models.EncryptionType;
 import com.azure.resourcemanager.elasticsan.models.NetworkRuleSet;
+import com.azure.resourcemanager.elasticsan.models.PrivateEndpointConnection;
 import com.azure.resourcemanager.elasticsan.models.ProvisioningStates;
 import com.azure.resourcemanager.elasticsan.models.StorageTargetType;
 import com.azure.resourcemanager.elasticsan.models.VolumeGroup;
 import com.azure.resourcemanager.elasticsan.models.VolumeGroupUpdate;
 import java.util.Collections;
-import java.util.Map;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public final class VolumeGroupImpl implements VolumeGroup, VolumeGroup.Definition, VolumeGroup.Update {
     private VolumeGroupInner innerObject;
@@ -37,15 +40,6 @@ public final class VolumeGroupImpl implements VolumeGroup, VolumeGroup.Definitio
         return this.innerModel().systemData();
     }
 
-    public Map<String, String> tags() {
-        Map<String, String> inner = this.innerModel().tags();
-        if (inner != null) {
-            return Collections.unmodifiableMap(inner);
-        } else {
-            return Collections.emptyMap();
-        }
-    }
-
     public ProvisioningStates provisioningState() {
         return this.innerModel().provisioningState();
     }
@@ -60,6 +54,20 @@ public final class VolumeGroupImpl implements VolumeGroup, VolumeGroup.Definitio
 
     public NetworkRuleSet networkAcls() {
         return this.innerModel().networkAcls();
+    }
+
+    public List<PrivateEndpointConnection> privateEndpointConnections() {
+        List<PrivateEndpointConnectionInner> inner = this.innerModel().privateEndpointConnections();
+        if (inner != null) {
+            return Collections
+                .unmodifiableList(
+                    inner
+                        .stream()
+                        .map(inner1 -> new PrivateEndpointConnectionImpl(inner1, this.manager()))
+                        .collect(Collectors.toList()));
+        } else {
+            return Collections.emptyList();
+        }
     }
 
     public String resourceGroupName() {
@@ -162,16 +170,6 @@ public final class VolumeGroupImpl implements VolumeGroup, VolumeGroup.Definitio
                 .getWithResponse(resourceGroupName, elasticSanName, volumeGroupName, context)
                 .getValue();
         return this;
-    }
-
-    public VolumeGroupImpl withTags(Map<String, String> tags) {
-        if (isInCreateMode()) {
-            this.innerModel().withTags(tags);
-            return this;
-        } else {
-            this.updateParameters.withTags(tags);
-            return this;
-        }
     }
 
     public VolumeGroupImpl withProtocolType(StorageTargetType protocolType) {

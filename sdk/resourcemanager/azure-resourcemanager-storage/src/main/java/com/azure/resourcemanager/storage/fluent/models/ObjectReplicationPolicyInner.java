@@ -20,6 +20,10 @@ public final class ObjectReplicationPolicyInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private ObjectReplicationPolicyProperties innerProperties;
 
+    /** Creates an instance of ObjectReplicationPolicyInner class. */
+    public ObjectReplicationPolicyInner() {
+    }
+
     /**
      * Get the innerProperties property: Returns the Storage Account Object Replication Policy.
      *

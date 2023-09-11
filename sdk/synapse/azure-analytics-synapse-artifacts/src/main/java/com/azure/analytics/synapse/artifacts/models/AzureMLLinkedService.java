@@ -66,6 +66,13 @@ public class AzureMLLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;
 
+    /*
+     * Type of authentication (Required to specify MSI) used to connect to AzureML. Type: string (or Expression with
+     * resultType string).
+     */
+    @JsonProperty(value = "typeProperties.authentication")
+    private Object authentication;
+
     /** Creates an instance of AzureMLLinkedService class. */
     public AzureMLLinkedService() {}
 
@@ -218,6 +225,28 @@ public class AzureMLLinkedService extends LinkedService {
      */
     public AzureMLLinkedService setEncryptedCredential(Object encryptedCredential) {
         this.encryptedCredential = encryptedCredential;
+        return this;
+    }
+
+    /**
+     * Get the authentication property: Type of authentication (Required to specify MSI) used to connect to AzureML.
+     * Type: string (or Expression with resultType string).
+     *
+     * @return the authentication value.
+     */
+    public Object getAuthentication() {
+        return this.authentication;
+    }
+
+    /**
+     * Set the authentication property: Type of authentication (Required to specify MSI) used to connect to AzureML.
+     * Type: string (or Expression with resultType string).
+     *
+     * @param authentication the authentication value to set.
+     * @return the AzureMLLinkedService object itself.
+     */
+    public AzureMLLinkedService setAuthentication(Object authentication) {
+        this.authentication = authentication;
         return this;
     }
 

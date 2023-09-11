@@ -4,6 +4,9 @@ variables:
   JavaBuildVersion: '1.17'
   # This is the default Java test version. It's the version used when running tests.
   JavaTestVersion: '1.17'
+  # This is the latest Java version released. It's used to run a non-failing job to validate the latest Java version.
+  LatestNonLtsJavaVersion: '1.20'
+  LatestNonLtsJdkFeatureVersion: '20'
   # This is the version of Python used by various tools in the Java build/release processes
   PythonVersion: '3.9'
 
@@ -40,6 +43,7 @@ variables:
   TestFromSource: false
   # This will be overwritten by the test matrix, if configured.
   RunAggregateReports: false
+  IsLatestNonLtsJdk: false
 
   skipComponentGovernanceDetection: true
   DisableDockerDetector: true

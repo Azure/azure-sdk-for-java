@@ -7,7 +7,7 @@ package com.azure.resourcemanager.managednetworkfabric.generated;
 /** Samples for NetworkFabrics Deprovision. */
 public final class NetworkFabricsDeprovisionSamples {
     /*
-     * x-ms-original-file: specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/preview/2023-02-01-preview/examples/NetworkFabrics_deprovision_MaximumSet_Gen.json
+     * x-ms-original-file: specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/NetworkFabrics_deprovision_MaximumSet_Gen.json
      */
     /**
      * Sample code: NetworkFabrics_deprovision_MaximumSet_Gen.
@@ -16,6 +16,6 @@ public final class NetworkFabricsDeprovisionSamples {
      */
     public static void networkFabricsDeprovisionMaximumSetGen(
         com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager manager) {
-        manager.networkFabrics().deprovision("resourceGroupName", "FabricName", com.azure.core.util.Context.NONE);
+        manager.networkFabrics().deprovision("example-rg", "example-fabric", com.azure.core.util.Context.NONE);
     }
 }

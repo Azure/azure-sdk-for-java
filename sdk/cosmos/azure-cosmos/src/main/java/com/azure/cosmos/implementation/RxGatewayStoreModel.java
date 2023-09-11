@@ -6,7 +6,6 @@ import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosContainerProactiveInitConfig;
 import com.azure.cosmos.CosmosException;
-import com.azure.cosmos.implementation.apachecommons.lang.NotImplementedException;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.caches.RxClientCollectionCache;
 import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
@@ -15,6 +14,7 @@ import com.azure.cosmos.implementation.directconnectivity.HttpUtils;
 import com.azure.cosmos.implementation.directconnectivity.RequestHelper;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
 import com.azure.cosmos.implementation.directconnectivity.WebExceptionUtility;
+import com.azure.cosmos.implementation.faultinjection.GatewayServerErrorInjector;
 import com.azure.cosmos.implementation.faultinjection.IFaultInjectorProvider;
 import com.azure.cosmos.implementation.http.HttpClient;
 import com.azure.cosmos.implementation.http.HttpHeaders;
@@ -67,6 +67,7 @@ public class RxGatewayStoreModel implements RxStoreModel {
     private RxPartitionKeyRangeCache partitionKeyRangeCache;
     private GatewayServiceConfigurationReader gatewayServiceConfigurationReader;
     private RxClientCollectionCache collectionCache;
+    private GatewayServerErrorInjector gatewayServerErrorInjector;
 
     public RxGatewayStoreModel(
         DiagnosticsClientContext clientContext,
@@ -247,6 +248,12 @@ public class RxGatewayStoreModel implements RxStoreModel {
             }
 
             Mono<HttpResponse> httpResponseMono = this.httpClient.send(httpRequest, responseTimeout);
+
+            if (this.gatewayServerErrorInjector != null) {
+                httpResponseMono = this.gatewayServerErrorInjector.injectGatewayErrors(responseTimeout, httpRequest, request, httpResponseMono);
+                return toDocumentServiceResponse(httpResponseMono, request, httpRequest);
+            }
+
             return toDocumentServiceResponse(httpResponseMono, request, httpRequest);
 
         } catch (Exception e) {
@@ -354,9 +361,24 @@ public class RxGatewayStoreModel implements RxStoreModel {
                     StoreResponse rsp = new StoreResponse(httpResponseStatus,
                         HttpUtils.unescape(httpResponseHeaders.toMap()),
                         content);
+
                     if (reactorNettyRequestRecord != null) {
                         rsp.setRequestTimeline(reactorNettyRequestRecord.takeTimelineSnapshot());
+
+                        if (this.gatewayServerErrorInjector != null) {
+                            // only configure when fault injection is used
+                            rsp.setFaultInjectionRuleId(
+                                request
+                                    .faultInjectionRequestContext
+                                    .getFaultInjectionRuleId(reactorNettyRequestRecord.getTransportRequestId()));
+
+                            rsp.setFaultInjectionRuleEvaluationResults(
+                                request
+                                    .faultInjectionRequestContext
+                                    .getFaultInjectionRuleEvaluationResults(reactorNettyRequestRecord.getTransportRequestId()));
+                        }
                     }
+
                     if (request.requestContext.cosmosDiagnostics != null) {
                         BridgeInternal.recordGatewayResponse(request.requestContext.cosmosDiagnostics, request, rsp, globalEndpointManager);
                     }
@@ -416,7 +438,24 @@ public class RxGatewayStoreModel implements RxStoreModel {
 
             if (request.requestContext.cosmosDiagnostics != null) {
                 if (httpRequest.reactorNettyRequestRecord() != null) {
-                    BridgeInternal.setRequestTimeline(dce, httpRequest.reactorNettyRequestRecord().takeTimelineSnapshot());
+                    ReactorNettyRequestRecord reactorNettyRequestRecord = httpRequest.reactorNettyRequestRecord();
+                    BridgeInternal.setRequestTimeline(dce, reactorNettyRequestRecord.takeTimelineSnapshot());
+
+                    ImplementationBridgeHelpers
+                        .CosmosExceptionHelper
+                        .getCosmosExceptionAccessor()
+                        .setFaultInjectionRuleId(
+                            dce,
+                            request.faultInjectionRequestContext
+                                .getFaultInjectionRuleId(reactorNettyRequestRecord.getTransportRequestId()));
+
+                    ImplementationBridgeHelpers
+                        .CosmosExceptionHelper
+                        .getCosmosExceptionAccessor()
+                        .setFaultInjectionEvaluationResults(
+                            dce,
+                            request.faultInjectionRequestContext
+                                .getFaultInjectionRuleEvaluationResults(reactorNettyRequestRecord.getTransportRequestId()));
                 }
 
                 BridgeInternal.recordGatewayResponse(request.requestContext.cosmosDiagnostics, request, dce, globalEndpointManager);
@@ -483,9 +522,12 @@ public class RxGatewayStoreModel implements RxStoreModel {
     }
 
     private Mono<RxDocumentServiceResponse> invokeAsync(RxDocumentServiceRequest request) {
-
         Callable<Mono<RxDocumentServiceResponse>> funcDelegate = () -> invokeAsyncInternal(request).single();
-        return BackoffRetryUtility.executeRetry(funcDelegate, new WebExceptionRetryPolicy(BridgeInternal.getRetryContext(request.requestContext.cosmosDiagnostics)));
+
+        MetadataRequestRetryPolicy metadataRequestRetryPolicy = new MetadataRequestRetryPolicy(this.globalEndpointManager);
+        metadataRequestRetryPolicy.onBeforeSendRequest(request);
+
+        return BackoffRetryUtility.executeRetry(funcDelegate, metadataRequestRetryPolicy);
     }
 
     @Override
@@ -536,8 +578,12 @@ public class RxGatewayStoreModel implements RxStoreModel {
     }
 
     @Override
-    public void configureFaultInjectorProvider(IFaultInjectorProvider injectorProvider) {
-        throw new NotImplementedException("configureFaultInjectorProvider is not supported in RxGatewayStoreModel");
+    public void configureFaultInjectorProvider(IFaultInjectorProvider injectorProvider, Configs configs) {
+        if (this.gatewayServerErrorInjector == null) {
+            this.gatewayServerErrorInjector = new GatewayServerErrorInjector(configs);
+        }
+
+        this.gatewayServerErrorInjector.registerServerErrorInjector(injectorProvider.getServerErrorInjector());
     }
 
     @Override

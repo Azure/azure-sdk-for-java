@@ -6,6 +6,7 @@ package com.azure.resourcemanager.cognitiveservices.models;
 
 import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.cognitiveservices.fluent.models.AccountModelInner;
+import java.util.List;
 import java.util.Map;
 
 /** An immutable client-side representation of AccountModel. */
@@ -25,11 +26,20 @@ public interface AccountModel {
     String name();
 
     /**
-     * Gets the version property: Deployment model version.
+     * Gets the version property: Optional. Deployment model version. If version is not specified, a default version
+     * will be assigned. The default version is different for different models and might change when there is new
+     * version available for a model. Default version for a model could be found from list models API.
      *
      * @return the version value.
      */
     String version();
+
+    /**
+     * Gets the source property: Optional. Deployment model source ARM resource ID.
+     *
+     * @return the source value.
+     */
+    String source();
 
     /**
      * Gets the callRateLimit property: The call rate limit Cognitive Services account.
@@ -44,6 +54,20 @@ public interface AccountModel {
      * @return the baseModel value.
      */
     DeploymentModel baseModel();
+
+    /**
+     * Gets the isDefaultVersion property: If the model is default version.
+     *
+     * @return the isDefaultVersion value.
+     */
+    Boolean isDefaultVersion();
+
+    /**
+     * Gets the skus property: The list of Model Sku.
+     *
+     * @return the skus value.
+     */
+    List<ModelSku> skus();
 
     /**
      * Gets the maxCapacity property: The max capacity.

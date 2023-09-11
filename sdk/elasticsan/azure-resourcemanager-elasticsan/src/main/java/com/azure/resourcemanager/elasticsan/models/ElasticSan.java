@@ -49,7 +49,7 @@ public interface ElasticSan {
     Map<String, String> tags();
 
     /**
-     * Gets the systemData property: Resource metadata required by ARM RPC.
+     * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
      *
      * @return the systemData value.
      */
@@ -126,6 +126,13 @@ public interface ElasticSan {
     Long totalSizeTiB();
 
     /**
+     * Gets the privateEndpointConnections property: The list of Private Endpoint Connections.
+     *
+     * @return the privateEndpointConnections value.
+     */
+    List<PrivateEndpointConnection> privateEndpointConnections();
+
+    /**
      * Gets the region of the resource.
      *
      * @return the region of the resource.
@@ -163,11 +170,13 @@ public interface ElasticSan {
             DefinitionStages.WithExtendedCapacitySizeTiB,
             DefinitionStages.WithCreate {
     }
+
     /** The ElasticSan definition stages. */
     interface DefinitionStages {
         /** The first stage of the ElasticSan definition. */
         interface Blank extends WithLocation {
         }
+
         /** The stage of the ElasticSan definition allowing to specify location. */
         interface WithLocation {
             /**
@@ -186,6 +195,7 @@ public interface ElasticSan {
              */
             WithResourceGroup withRegion(String location);
         }
+
         /** The stage of the ElasticSan definition allowing to specify parent resource. */
         interface WithResourceGroup {
             /**
@@ -196,6 +206,7 @@ public interface ElasticSan {
              */
             WithSku withExistingResourceGroup(String resourceGroupName);
         }
+
         /** The stage of the ElasticSan definition allowing to specify sku. */
         interface WithSku {
             /**
@@ -206,6 +217,7 @@ public interface ElasticSan {
              */
             WithBaseSizeTiB withSku(Sku sku);
         }
+
         /** The stage of the ElasticSan definition allowing to specify baseSizeTiB. */
         interface WithBaseSizeTiB {
             /**
@@ -216,6 +228,7 @@ public interface ElasticSan {
              */
             WithExtendedCapacitySizeTiB withBaseSizeTiB(long baseSizeTiB);
         }
+
         /** The stage of the ElasticSan definition allowing to specify extendedCapacitySizeTiB. */
         interface WithExtendedCapacitySizeTiB {
             /**
@@ -226,6 +239,7 @@ public interface ElasticSan {
              */
             WithCreate withExtendedCapacitySizeTiB(long extendedCapacitySizeTiB);
         }
+
         /**
          * The stage of the ElasticSan definition which contains all the minimum required properties for the resource to
          * be created, but also allows for any other optional properties to be specified.
@@ -246,6 +260,7 @@ public interface ElasticSan {
              */
             ElasticSan create(Context context);
         }
+
         /** The stage of the ElasticSan definition allowing to specify tags. */
         interface WithTags {
             /**
@@ -256,6 +271,7 @@ public interface ElasticSan {
              */
             WithCreate withTags(Map<String, String> tags);
         }
+
         /** The stage of the ElasticSan definition allowing to specify availabilityZones. */
         interface WithAvailabilityZones {
             /**
@@ -267,6 +283,7 @@ public interface ElasticSan {
             WithCreate withAvailabilityZones(List<String> availabilityZones);
         }
     }
+
     /**
      * Begins update for the ElasticSan resource.
      *
@@ -291,6 +308,7 @@ public interface ElasticSan {
          */
         ElasticSan apply(Context context);
     }
+
     /** The ElasticSan update stages. */
     interface UpdateStages {
         /** The stage of the ElasticSan update allowing to specify tags. */
@@ -304,6 +322,7 @@ public interface ElasticSan {
             Update withTags(Map<String, String> tags);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

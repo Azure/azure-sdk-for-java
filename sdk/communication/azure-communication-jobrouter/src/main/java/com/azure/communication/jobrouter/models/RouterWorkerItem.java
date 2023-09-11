@@ -5,6 +5,7 @@
 package com.azure.communication.jobrouter.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.ETag;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Paged instance of RouterWorker. */
@@ -13,32 +14,32 @@ public final class RouterWorkerItem {
     /*
      * An entity for jobs to be routed to
      */
-    @JsonProperty(value = "routerWorker")
-    private RouterWorker routerWorker;
+    @JsonProperty(value = "worker")
+    private RouterWorker worker;
 
     /*
      * (Optional) The Concurrency Token.
      */
     @JsonProperty(value = "etag")
-    private String etag;
+    private ETag etag;
 
     /**
-     * Get the routerWorker property: An entity for jobs to be routed to.
+     * Get the worker property: An entity for jobs to be routed to.
      *
-     * @return the routerWorker value.
+     * @return the worker value.
      */
-    public RouterWorker getRouterWorker() {
-        return this.routerWorker;
+    public RouterWorker getWorker() {
+        return this.worker;
     }
 
     /**
-     * Set the routerWorker property: An entity for jobs to be routed to.
+     * Set the worker property: An entity for jobs to be routed to.
      *
-     * @param routerWorker the routerWorker value to set.
+     * @param worker the worker value to set.
      * @return the RouterWorkerItem object itself.
      */
-    public RouterWorkerItem setRouterWorker(RouterWorker routerWorker) {
-        this.routerWorker = routerWorker;
+    public RouterWorkerItem setWorker(RouterWorker worker) {
+        this.worker = worker;
         return this;
     }
 
@@ -47,7 +48,7 @@ public final class RouterWorkerItem {
      *
      * @return the etag value.
      */
-    public String getEtag() {
+    public ETag getEtag() {
         return this.etag;
     }
 
@@ -57,7 +58,7 @@ public final class RouterWorkerItem {
      * @param etag the etag value to set.
      * @return the RouterWorkerItem object itself.
      */
-    public RouterWorkerItem setEtag(String etag) {
+    public RouterWorkerItem setEtag(ETag etag) {
         this.etag = etag;
         return this;
     }

@@ -7,7 +7,7 @@ package com.azure.resourcemanager.avs.generated;
 /** Samples for Authorizations Get. */
 public final class AuthorizationsGetSamples {
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2022-05-01/examples/Authorizations_Get.json
+     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/Authorizations_Get.json
      */
     /**
      * Sample code: Authorizations_Get.

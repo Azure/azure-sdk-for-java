@@ -24,7 +24,7 @@ public interface NamedValuesClient {
     /**
      * Lists a collection of named values defined within a service instance.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -37,7 +37,7 @@ public interface NamedValuesClient {
     /**
      * Lists a collection of named values defined within a service instance.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param filter | Field | Usage | Supported operators | Supported functions
      *     |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| tags | filter | ge, le, eq,
@@ -66,20 +66,7 @@ public interface NamedValuesClient {
     /**
      * Gets the entity state (Etag) version of the named value specified by its identifier.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param serviceName The name of the API Management service.
-     * @param namedValueId Identifier of the NamedValue.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void getEntityTag(String resourceGroupName, String serviceName, String namedValueId);
-
-    /**
-     * Gets the entity state (Etag) version of the named value specified by its identifier.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param namedValueId Identifier of the NamedValue.
      * @param context The context to associate with this operation.
@@ -93,23 +80,22 @@ public interface NamedValuesClient {
         String resourceGroupName, String serviceName, String namedValueId, Context context);
 
     /**
-     * Gets the details of the named value specified by its identifier.
+     * Gets the entity state (Etag) version of the named value specified by its identifier.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param namedValueId Identifier of the NamedValue.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of the named value specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    NamedValueContractInner get(String resourceGroupName, String serviceName, String namedValueId);
+    void getEntityTag(String resourceGroupName, String serviceName, String namedValueId);
 
     /**
      * Gets the details of the named value specified by its identifier.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param namedValueId Identifier of the NamedValue.
      * @param context The context to associate with this operation.
@@ -123,13 +109,26 @@ public interface NamedValuesClient {
         String resourceGroupName, String serviceName, String namedValueId, Context context);
 
     /**
+     * Gets the details of the named value specified by its identifier.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serviceName The name of the API Management service.
+     * @param namedValueId Identifier of the NamedValue.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the details of the named value specified by its identifier.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    NamedValueContractInner get(String resourceGroupName, String serviceName, String namedValueId);
+
+    /**
      * Creates or updates named value.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param namedValueId Identifier of the NamedValue.
      * @param parameters Create parameters.
-     * @param ifMatch ETag of the Entity. Not required when creating an entity, but required when updating an entity.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -137,16 +136,12 @@ public interface NamedValuesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<NamedValueContractInner>, NamedValueContractInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String serviceName,
-        String namedValueId,
-        NamedValueCreateContract parameters,
-        String ifMatch);
+        String resourceGroupName, String serviceName, String namedValueId, NamedValueCreateContract parameters);
 
     /**
      * Creates or updates named value.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param namedValueId Identifier of the NamedValue.
      * @param parameters Create parameters.
@@ -169,28 +164,7 @@ public interface NamedValuesClient {
     /**
      * Creates or updates named value.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param serviceName The name of the API Management service.
-     * @param namedValueId Identifier of the NamedValue.
-     * @param parameters Create parameters.
-     * @param ifMatch ETag of the Entity. Not required when creating an entity, but required when updating an entity.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return namedValue details.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    NamedValueContractInner createOrUpdate(
-        String resourceGroupName,
-        String serviceName,
-        String namedValueId,
-        NamedValueCreateContract parameters,
-        String ifMatch);
-
-    /**
-     * Creates or updates named value.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param namedValueId Identifier of the NamedValue.
      * @param parameters Create parameters.
@@ -206,7 +180,7 @@ public interface NamedValuesClient {
     /**
      * Creates or updates named value.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param namedValueId Identifier of the NamedValue.
      * @param parameters Create parameters.
@@ -229,7 +203,7 @@ public interface NamedValuesClient {
     /**
      * Updates the specific named value.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param namedValueId Identifier of the NamedValue.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
@@ -251,7 +225,7 @@ public interface NamedValuesClient {
     /**
      * Updates the specific named value.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param namedValueId Identifier of the NamedValue.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
@@ -275,7 +249,7 @@ public interface NamedValuesClient {
     /**
      * Updates the specific named value.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param namedValueId Identifier of the NamedValue.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
@@ -297,7 +271,7 @@ public interface NamedValuesClient {
     /**
      * Updates the specific named value.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param namedValueId Identifier of the NamedValue.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
@@ -321,22 +295,7 @@ public interface NamedValuesClient {
     /**
      * Deletes specific named value from the API Management service instance.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param serviceName The name of the API Management service.
-     * @param namedValueId Identifier of the NamedValue.
-     * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String resourceGroupName, String serviceName, String namedValueId, String ifMatch);
-
-    /**
-     * Deletes specific named value from the API Management service instance.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param namedValueId Identifier of the NamedValue.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
@@ -352,23 +311,24 @@ public interface NamedValuesClient {
         String resourceGroupName, String serviceName, String namedValueId, String ifMatch, Context context);
 
     /**
-     * Gets the secret of the named value specified by its identifier.
+     * Deletes specific named value from the API Management service instance.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param namedValueId Identifier of the NamedValue.
+     * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
+     *     request or it should be * for unconditional update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the secret of the named value specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    NamedValueSecretContractInner listValue(String resourceGroupName, String serviceName, String namedValueId);
+    void delete(String resourceGroupName, String serviceName, String namedValueId, String ifMatch);
 
     /**
      * Gets the secret of the named value specified by its identifier.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param namedValueId Identifier of the NamedValue.
      * @param context The context to associate with this operation.
@@ -382,9 +342,23 @@ public interface NamedValuesClient {
         String resourceGroupName, String serviceName, String namedValueId, Context context);
 
     /**
+     * Gets the secret of the named value specified by its identifier.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serviceName The name of the API Management service.
+     * @param namedValueId Identifier of the NamedValue.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the secret of the named value specified by its identifier.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    NamedValueSecretContractInner listValue(String resourceGroupName, String serviceName, String namedValueId);
+
+    /**
      * Refresh the secret of the named value specified by its identifier.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param namedValueId Identifier of the NamedValue.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -399,7 +373,7 @@ public interface NamedValuesClient {
     /**
      * Refresh the secret of the named value specified by its identifier.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param namedValueId Identifier of the NamedValue.
      * @param context The context to associate with this operation.
@@ -415,7 +389,7 @@ public interface NamedValuesClient {
     /**
      * Refresh the secret of the named value specified by its identifier.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param namedValueId Identifier of the NamedValue.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -429,7 +403,7 @@ public interface NamedValuesClient {
     /**
      * Refresh the secret of the named value specified by its identifier.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param namedValueId Identifier of the NamedValue.
      * @param context The context to associate with this operation.

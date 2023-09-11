@@ -4,14 +4,13 @@
 
 package com.azure.resourcemanager.storage.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.storage.fluent.models.LegalHoldInner;
 import java.util.Arrays;
 
 /** Samples for BlobContainers ClearLegalHold. */
 public final class BlobContainersClearLegalHoldSamples {
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2022-09-01/examples/BlobContainersClearLegalHold.json
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-01-01/examples/BlobContainersClearLegalHold.json
      */
     /**
      * Sample code: ClearLegalHoldContainers.
@@ -29,6 +28,6 @@ public final class BlobContainersClearLegalHoldSamples {
                 "sto7280",
                 "container8723",
                 new LegalHoldInner().withTags(Arrays.asList("tag1", "tag2", "tag3")),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

@@ -17,12 +17,12 @@ public final class AzureBackupFindRestorableTimeRangesResponseResourceInnerTests
         AzureBackupFindRestorableTimeRangesResponseResourceInner model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"restorableTimeRanges\":[{\"startTime\":\"zjuzgwyz\",\"endTime\":\"htxongmtsavjc\",\"objectType\":\"wxqpsrknftguvri\"},{\"startTime\":\"hprwmdyv\",\"endTime\":\"qtayri\",\"objectType\":\"ro\"},{\"startTime\":\"qbex\",\"endTime\":\"mcqibycnojv\",\"objectType\":\"mefqsgzvahapjyzh\"},{\"startTime\":\"vgqzcjrvxd\",\"endTime\":\"zlmwlxkvugfhz\",\"objectType\":\"awjvzunluthnnp\"}],\"objectType\":\"xipeilpjzuaejx\"},\"id\":\"ltskzbbtd\",\"name\":\"umveekgpwozuhkf\",\"type\":\"bsjyofdx\"}")
+                    "{\"properties\":{\"restorableTimeRanges\":[{\"startTime\":\"thnzd\",\"endTime\":\"dslgnayqigynduh\",\"objectType\":\"hqlkthumaqo\"},{\"startTime\":\"bgycduiertgccym\",\"endTime\":\"aolps\",\"objectType\":\"qlfmmdnbb\"}],\"objectType\":\"zpswiydmc\"},\"id\":\"hzdxssadbzm\",\"name\":\"vdfznudaodvxzb\",\"type\":\"cblylpstdbhhxsr\"}")
                 .toObject(AzureBackupFindRestorableTimeRangesResponseResourceInner.class);
-        Assertions.assertEquals("zjuzgwyz", model.properties().restorableTimeRanges().get(0).startTime());
-        Assertions.assertEquals("htxongmtsavjc", model.properties().restorableTimeRanges().get(0).endTime());
-        Assertions.assertEquals("wxqpsrknftguvri", model.properties().restorableTimeRanges().get(0).objectType());
-        Assertions.assertEquals("xipeilpjzuaejx", model.properties().objectType());
+        Assertions.assertEquals("thnzd", model.properties().restorableTimeRanges().get(0).startTime());
+        Assertions.assertEquals("dslgnayqigynduh", model.properties().restorableTimeRanges().get(0).endTime());
+        Assertions.assertEquals("hqlkthumaqo", model.properties().restorableTimeRanges().get(0).objectType());
+        Assertions.assertEquals("zpswiydmc", model.properties().objectType());
     }
 
     @org.junit.jupiter.api.Test
@@ -35,26 +35,18 @@ public final class AzureBackupFindRestorableTimeRangesResponseResourceInnerTests
                             Arrays
                                 .asList(
                                     new RestorableTimeRange()
-                                        .withStartTime("zjuzgwyz")
-                                        .withEndTime("htxongmtsavjc")
-                                        .withObjectType("wxqpsrknftguvri"),
+                                        .withStartTime("thnzd")
+                                        .withEndTime("dslgnayqigynduh")
+                                        .withObjectType("hqlkthumaqo"),
                                     new RestorableTimeRange()
-                                        .withStartTime("hprwmdyv")
-                                        .withEndTime("qtayri")
-                                        .withObjectType("ro"),
-                                    new RestorableTimeRange()
-                                        .withStartTime("qbex")
-                                        .withEndTime("mcqibycnojv")
-                                        .withObjectType("mefqsgzvahapjyzh"),
-                                    new RestorableTimeRange()
-                                        .withStartTime("vgqzcjrvxd")
-                                        .withEndTime("zlmwlxkvugfhz")
-                                        .withObjectType("awjvzunluthnnp")))
-                        .withObjectType("xipeilpjzuaejx"));
+                                        .withStartTime("bgycduiertgccym")
+                                        .withEndTime("aolps")
+                                        .withObjectType("qlfmmdnbb")))
+                        .withObjectType("zpswiydmc"));
         model = BinaryData.fromObject(model).toObject(AzureBackupFindRestorableTimeRangesResponseResourceInner.class);
-        Assertions.assertEquals("zjuzgwyz", model.properties().restorableTimeRanges().get(0).startTime());
-        Assertions.assertEquals("htxongmtsavjc", model.properties().restorableTimeRanges().get(0).endTime());
-        Assertions.assertEquals("wxqpsrknftguvri", model.properties().restorableTimeRanges().get(0).objectType());
-        Assertions.assertEquals("xipeilpjzuaejx", model.properties().objectType());
+        Assertions.assertEquals("thnzd", model.properties().restorableTimeRanges().get(0).startTime());
+        Assertions.assertEquals("dslgnayqigynduh", model.properties().restorableTimeRanges().get(0).endTime());
+        Assertions.assertEquals("hqlkthumaqo", model.properties().restorableTimeRanges().get(0).objectType());
+        Assertions.assertEquals("zpswiydmc", model.properties().objectType());
     }
 }

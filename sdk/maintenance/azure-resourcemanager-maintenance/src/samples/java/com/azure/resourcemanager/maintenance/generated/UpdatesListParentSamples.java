@@ -7,7 +7,7 @@ package com.azure.resourcemanager.maintenance.generated;
 /** Samples for Updates ListParent. */
 public final class UpdatesListParentSamples {
     /*
-     * x-ms-original-file: specification/maintenance/resource-manager/Microsoft.Maintenance/stable/2021-05-01/examples/Updates_ListParent.json
+     * x-ms-original-file: specification/maintenance/resource-manager/Microsoft.Maintenance/stable/2023-04-01/examples/Updates_ListParent.json
      */
     /**
      * Sample code: Updates_ListParent.

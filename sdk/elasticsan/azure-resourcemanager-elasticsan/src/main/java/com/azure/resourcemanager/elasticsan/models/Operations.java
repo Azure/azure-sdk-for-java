@@ -16,7 +16,7 @@ public interface Operations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of ElasticSan operations as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<ElasticSanRPOperation> list();
+    PagedIterable<Operation> list();
 
     /**
      * Gets a list of ElasticSan operations.
@@ -27,5 +27,5 @@ public interface Operations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of ElasticSan operations as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<ElasticSanRPOperation> list(Context context);
+    PagedIterable<Operation> list(Context context);
 }

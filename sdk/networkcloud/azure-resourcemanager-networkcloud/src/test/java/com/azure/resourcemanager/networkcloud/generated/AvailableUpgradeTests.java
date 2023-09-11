@@ -12,7 +12,7 @@ public final class AvailableUpgradeTests {
     public void testDeserialize() throws Exception {
         AvailableUpgrade model =
             BinaryData
-                .fromString("{\"availabilityLifecycle\":\"Preview\",\"version\":\"mifthnzdnd\"}")
+                .fromString("{\"availabilityLifecycle\":\"GenerallyAvailable\",\"version\":\"iuhprwmdyvxqta\"}")
                 .toObject(AvailableUpgrade.class);
     }
 

@@ -31,7 +31,7 @@ public final class ScriptExecutionsGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"scriptCmdletId\":\"uyturml\",\"parameters\":[],\"hiddenParameters\":[],\"failureReason\":\"bauiropi\",\"timeout\":\"nszonwpngaj\",\"retention\":\"nixjawrtmjfjmy\",\"submittedAt\":\"2021-04-05T08:29:20Z\",\"startedAt\":\"2021-11-22T17:29:03Z\",\"finishedAt\":\"2021-09-20T20:46:09Z\",\"provisioningState\":\"Pending\",\"output\":[\"nekhenlusfnrdtj\",\"txrdcqtjvi\",\"ttgepuslvyjtcv\",\"wkasiziesf\"],\"namedOutputs\":{\"gtuhxuicbu\":\"datahtuqfecjxe\",\"pusxjb\":\"datawmrswnjlxuzrh\",\"hzjqatucoige\":\"dataqehgpd\"},\"information\":[\"cnwfepbnwgfmxjg\",\"g\",\"jbgdlfgtdysnaquf\"],\"warnings\":[\"ctqhamzjrwdk\",\"zeqyjleziun\",\"xdfzantkw\"],\"errors\":[\"yamlbnse\",\"ac\",\"jvpilguooqja\",\"m\"]},\"id\":\"itgueiookjbs\",\"name\":\"hrtdtpdelq\",\"type\":\"cslmotoebnfxo\"}";
+            "{\"properties\":{\"scriptCmdletId\":\"zydmxzjijpvuaurk\",\"parameters\":[{\"type\":\"ScriptExecutionParameter\",\"name\":\"irldefxr\"}],\"hiddenParameters\":[{\"type\":\"ScriptExecutionParameter\",\"name\":\"xnbkkj\"},{\"type\":\"ScriptExecutionParameter\",\"name\":\"nurnnq\"},{\"type\":\"ScriptExecutionParameter\",\"name\":\"nqbpi\"},{\"type\":\"ScriptExecutionParameter\",\"name\":\"xqltgrd\"}],\"failureReason\":\"ypxrx\",\"timeout\":\"bfihw\",\"retention\":\"vctafsrb\",\"submittedAt\":\"2021-08-17T18:59:51Z\",\"startedAt\":\"2021-06-04T08:10:19Z\",\"finishedAt\":\"2021-02-19T23:36:25Z\",\"provisioningState\":\"Succeeded\",\"output\":[\"hspnxwqagnepz\",\"aklsbsbq\",\"qagwwrxaomz\",\"sgl\"],\"namedOutputs\":{\"oawjqoyueay\":\"datazezkhhltnjadh\",\"lbyrru\":\"databpcms\",\"igdhxiidlo\":\"dataqthwmgnmbscbb\"},\"information\":[\"bwdpyqyyb\",\"ubmdnafcbqwre\",\"jelaqacigele\",\"hdbvqvwzkjop\"],\"warnings\":[\"onrlkwzdqybxceak\",\"cptsoqfyiase\",\"chkrttzr\",\"zisgykiuemvanb\"],\"errors\":[\"hmnr\"]},\"id\":\"xbsojkli\",\"name\":\"hmdp\",\"type\":\"ysprq\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,13 +62,15 @@ public final class ScriptExecutionsGetWithResponseMockTests {
         ScriptExecution response =
             manager
                 .scriptExecutions()
-                .getWithResponse("fugsnnfhyetefy", "oc", "ctfjgtixr", com.azure.core.util.Context.NONE)
+                .getWithResponse("ssffxuifmc", "ypobkdqzr", "zsylollgt", com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals("uyturml", response.scriptCmdletId());
-        Assertions.assertEquals("bauiropi", response.failureReason());
-        Assertions.assertEquals("nszonwpngaj", response.timeout());
-        Assertions.assertEquals("nixjawrtmjfjmy", response.retention());
-        Assertions.assertEquals("nekhenlusfnrdtj", response.output().get(0));
+        Assertions.assertEquals("zydmxzjijpvuaurk", response.scriptCmdletId());
+        Assertions.assertEquals("irldefxr", response.parameters().get(0).name());
+        Assertions.assertEquals("xnbkkj", response.hiddenParameters().get(0).name());
+        Assertions.assertEquals("ypxrx", response.failureReason());
+        Assertions.assertEquals("bfihw", response.timeout());
+        Assertions.assertEquals("vctafsrb", response.retention());
+        Assertions.assertEquals("hspnxwqagnepz", response.output().get(0));
     }
 }

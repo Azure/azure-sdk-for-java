@@ -9,11 +9,11 @@ import com.azure.resourcemanager.managednetworkfabric.fluent.models.InternalNetw
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** List of InternalNetworks. */
+/** List of Internal Networks. */
 @Fluent
 public final class InternalNetworksList {
     /*
-     * List of InternalNetworks resources.
+     * List of Internal Network resources.
      */
     @JsonProperty(value = "value")
     private List<InternalNetworkInner> value;
@@ -29,7 +29,7 @@ public final class InternalNetworksList {
     }
 
     /**
-     * Get the value property: List of InternalNetworks resources.
+     * Get the value property: List of Internal Network resources.
      *
      * @return the value value.
      */
@@ -38,7 +38,7 @@ public final class InternalNetworksList {
     }
 
     /**
-     * Set the value property: List of InternalNetworks resources.
+     * Set the value property: List of Internal Network resources.
      *
      * @param value the value value to set.
      * @return the InternalNetworksList object itself.

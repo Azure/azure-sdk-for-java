@@ -88,6 +88,10 @@ public final class UserContractImpl implements UserContract, UserContract.Defini
         }
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public UserContractInner innerModel() {
         return this.innerObject;
     }
@@ -205,22 +209,22 @@ public final class UserContractImpl implements UserContract, UserContract.Defini
         return this;
     }
 
-    public GenerateSsoUrlResult generateSsoUrl() {
-        return serviceManager.users().generateSsoUrl(resourceGroupName, serviceName, userId);
-    }
-
     public Response<GenerateSsoUrlResult> generateSsoUrlWithResponse(Context context) {
         return serviceManager.users().generateSsoUrlWithResponse(resourceGroupName, serviceName, userId, context);
     }
 
-    public UserTokenResult getSharedAccessToken(UserTokenParameters parameters) {
-        return serviceManager.users().getSharedAccessToken(resourceGroupName, serviceName, userId, parameters);
+    public GenerateSsoUrlResult generateSsoUrl() {
+        return serviceManager.users().generateSsoUrl(resourceGroupName, serviceName, userId);
     }
 
     public Response<UserTokenResult> getSharedAccessTokenWithResponse(UserTokenParameters parameters, Context context) {
         return serviceManager
             .users()
             .getSharedAccessTokenWithResponse(resourceGroupName, serviceName, userId, parameters, context);
+    }
+
+    public UserTokenResult getSharedAccessToken(UserTokenParameters parameters) {
+        return serviceManager.users().getSharedAccessToken(resourceGroupName, serviceName, userId, parameters);
     }
 
     public UserContractImpl withEmail(String email) {

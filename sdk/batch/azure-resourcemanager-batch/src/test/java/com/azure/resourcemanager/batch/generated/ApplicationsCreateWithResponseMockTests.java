@@ -31,7 +31,7 @@ public final class ApplicationsCreateWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"displayName\":\"hqamvdkf\",\"allowUpdates\":true,\"defaultVersion\":\"cvtbv\"},\"etag\":\"yhmtnvyqiat\",\"id\":\"zwpcnpwzcjaesg\",\"name\":\"v\",\"type\":\"ccyajg\"}";
+            "{\"properties\":{\"displayName\":\"ttaugzxnfaazp\",\"allowUpdates\":false,\"defaultVersion\":\"kdmkqjjlwuenvrkp\"},\"etag\":\"uaibrebqaaysj\",\"id\":\"ixqtn\",\"name\":\"ttezlw\",\"type\":\"ffiakp\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,15 +62,15 @@ public final class ApplicationsCreateWithResponseMockTests {
         Application response =
             manager
                 .applications()
-                .define("wws")
-                .withExistingBatchAccount("tvsexsowuel", "qhhahhxvrhmzkwpj")
-                .withDisplayName("hftqsxhqxujxukn")
+                .define("wslolbqp")
+                .withExistingBatchAccount("waekrrjreafxtsgu", "hjglikk")
+                .withDisplayName("lmv")
                 .withAllowUpdates(true)
-                .withDefaultVersion("grjguufzd")
+                .withDefaultVersion("ktgplcr")
                 .create();
 
-        Assertions.assertEquals("hqamvdkf", response.displayName());
-        Assertions.assertEquals(true, response.allowUpdates());
-        Assertions.assertEquals("cvtbv", response.defaultVersion());
+        Assertions.assertEquals("ttaugzxnfaazp", response.displayName());
+        Assertions.assertEquals(false, response.allowUpdates());
+        Assertions.assertEquals("kdmkqjjlwuenvrkp", response.defaultVersion());
     }
 }
