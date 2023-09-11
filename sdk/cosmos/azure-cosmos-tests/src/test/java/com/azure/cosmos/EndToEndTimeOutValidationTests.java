@@ -9,6 +9,7 @@ import com.azure.cosmos.implementation.guava25.base.Function;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
+import com.azure.cosmos.models.CosmosPatchOperations;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.SqlQuerySpec;
@@ -77,11 +78,20 @@ public class EndToEndTimeOutValidationTests extends TestSuiteBase {
             = (opWrapper) -> executeCreateOperation(opWrapper);
         Function<CosmosOperationWrapper, Mono<CosmosItemResponse<Object>>> deleteOperationExecutor
             = (opWrapper) -> executeDeleteOperation(opWrapper);
+        Function<CosmosOperationWrapper, Mono<CosmosItemResponse<Object>>> replaceOperationExecutor
+            = (opWrapper) -> executeReplaceOperation(opWrapper);
+        Function<CosmosOperationWrapper, Mono<CosmosItemResponse<Object>>> upsertOperationExecutor
+            = (opWrapper) -> executeUpsertOperation(opWrapper);
+        Function<CosmosOperationWrapper, Mono<CosmosItemResponse<TestObject>>> patchOperationExecutor
+            = (opWrapper) -> executePatchOperation(opWrapper);
 
         return new Object[][] {
             {readOperationExecutor, FaultInjectionOperationType.READ_ITEM},
             {createOperationExecutor, FaultInjectionOperationType.CREATE_ITEM},
-            {deleteOperationExecutor, FaultInjectionOperationType.DELETE_ITEM}
+            {deleteOperationExecutor, FaultInjectionOperationType.DELETE_ITEM},
+            {replaceOperationExecutor, FaultInjectionOperationType.REPLACE_ITEM},
+            {upsertOperationExecutor, FaultInjectionOperationType.UPSERT_ITEM},
+            {patchOperationExecutor, FaultInjectionOperationType.PATCH_ITEM},
         };
     }
 
@@ -337,7 +347,7 @@ public class EndToEndTimeOutValidationTests extends TestSuiteBase {
                 ), cosmosAsyncContainer));
 
             // with increased endToEndOperationTimeout, we shouldn't see
-            // an end-to-end timeout
+            // an end-to-end timeout based cancellation
             StepVerifier.create(cosmosItemResponseMonoWithHigherE2ETimeout)
                         .expectNextCount(1)
                         .expectComplete()
@@ -372,6 +382,40 @@ public class EndToEndTimeOutValidationTests extends TestSuiteBase {
         cosmosAsyncContainer.createItem(testObject).block();
 
         return cosmosAsyncContainer.deleteItem(testObject.getId(), new PartitionKey(testObject.getMypk()));
+    }
+
+    private static Mono<CosmosItemResponse<Object>> executeReplaceOperation(CosmosOperationWrapper operationWrapper) {
+        CosmosAsyncContainer cosmosAsyncContainer = operationWrapper.cosmosAsyncContainer;
+        TestObject testObject = operationWrapper.testObject;
+
+        cosmosAsyncContainer.createItem(testObject).block();
+
+        testObject.prop = testObject.prop + 1;
+
+        return cosmosAsyncContainer.replaceItem(testObject, testObject.getId(), new PartitionKey(testObject.getMypk()));
+    }
+
+    private static Mono<CosmosItemResponse<Object>> executeUpsertOperation(CosmosOperationWrapper operationWrapper) {
+        CosmosAsyncContainer cosmosAsyncContainer = operationWrapper.cosmosAsyncContainer;
+        TestObject testObject = operationWrapper.testObject;
+
+        cosmosAsyncContainer.createItem(testObject).block();
+
+        testObject.prop = testObject.prop + 1;
+
+        return cosmosAsyncContainer.upsertItem(testObject, new PartitionKey(testObject.getMypk()), null);
+    }
+
+    private static Mono<CosmosItemResponse<TestObject>> executePatchOperation(CosmosOperationWrapper operationWrapper) {
+        CosmosAsyncContainer cosmosAsyncContainer = operationWrapper.cosmosAsyncContainer;
+        TestObject testObject = operationWrapper.testObject;
+
+        cosmosAsyncContainer.createItem(testObject).block();
+
+        CosmosPatchOperations patchOperations = CosmosPatchOperations.create().add("/" + "newProperty", "newVal");
+        CosmosItemRequestOptions itemRequestOptions = new CosmosItemRequestOptions();
+
+        return cosmosAsyncContainer.patchItem(testObject.getId(), new PartitionKey(testObject.getMypk()), patchOperations, TestObject.class);
     }
 
     private FaultInjectionRule injectFailure(
