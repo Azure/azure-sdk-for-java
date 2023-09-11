@@ -1786,6 +1786,27 @@ public final class OpenAIClientImpl {
                 Context.NONE);
     }
 
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> getAudioTranslationLeakingHttpImplDetails(
+        String deploymentOrModelName,
+        String multipartBoundary,
+        long contentLength,
+        BinaryData audioTranslationOptionsPlainText,
+        RequestOptions requestOptions) {
+        final String contentType = "multipart/form-data;" + " boundary=" + multipartBoundary;
+        final String accept = "application/json";
+        return service.getAudioTranslationPlainTextSync(
+            this.getEndpoint(),
+            this.getServiceVersion().getVersion(),
+            deploymentOrModelName,
+            contentType,
+            contentLength,
+            accept,
+            audioTranslationOptionsPlainText,
+            requestOptions,
+            Context.NONE);
+    }
+
     /**
      * Transcribes and translates input audio into English text.
      *

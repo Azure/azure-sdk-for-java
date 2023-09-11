@@ -719,12 +719,7 @@ public final class OpenAIClient {
         MultipartDataHelper.SerializationResult result =
                 helper.serializeAudioTranscriptionOption(audioTranslationOptions, fileName);
         // TODO define a method that looks into responseFormat and calls the right method
-        // return getAudioTranslationWithResponse(
-        BinaryData value =
-                getAudioTranslationPlainTextWithResponse(
-                                deploymentOrModelName, result.getDataLength(), result.getData(), requestOptions)
-                        .getValue();
-        return value.toString();
+        return getAudioTranslation(deploymentOrModelName, result, helper.getBoundary(), requestOptions).toString();
     }
 
     public AudioTranscription getAudioTranslation(
@@ -742,11 +737,19 @@ public final class OpenAIClient {
         MultipartDataHelper.SerializationResult result =
                 helper.serializeAudioTranscriptionOption(audioTranslationOptions, fileName);
         // TODO define a method that looks into responseFormat and calls the right method
-        // return getAudioTranslationWithResponse(
-        return getAudioTranslationSimpleJsonWithResponse(
-                        deploymentOrModelName, result.getDataLength(), result.getData(), requestOptions)
-                .getValue()
+        return getAudioTranslation(
+                        deploymentOrModelName, result, helper.getBoundary(), requestOptions)
                 .toObject(AudioTranscription.class);
+    }
+
+    BinaryData getAudioTranslation(String deploymentOrModelName, MultipartDataHelper.SerializationResult requestData, String multipartBoundary, RequestOptions requestOptions) {
+        return this.serviceClient.getAudioTranslationLeakingHttpImplDetails(
+                deploymentOrModelName,
+                multipartBoundary,
+                requestData.getDataLength(),
+                requestData.getData(),
+                requestOptions)
+            .getValue();
     }
 
     /**
