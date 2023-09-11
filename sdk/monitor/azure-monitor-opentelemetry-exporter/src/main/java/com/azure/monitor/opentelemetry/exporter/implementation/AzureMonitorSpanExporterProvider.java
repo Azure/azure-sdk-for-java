@@ -9,7 +9,7 @@ import io.opentelemetry.sdk.trace.export.SpanExporter;
 
 import java.util.Collection;
 
-public class AzureMonitorSpanExporterProvider implements ConfigurableSpanExporterProvider {
+public final class AzureMonitorSpanExporterProvider implements ConfigurableSpanExporterProvider {
     @Override
     public SpanExporter createExporter(ConfigProperties configProperties) {
         if (configProperties.getBoolean(AzureMonitorExporterProviderKeys.INTERNAL_USING_BUILDER, false)) {
