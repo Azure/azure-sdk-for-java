@@ -1045,7 +1045,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
     }
 
     @DataProvider
-    public static Object[][] simpleClientBuildersWithDirectTcpWithoutRetryOnThrottledRequests() {
+    public static Object[][] simpleClientBuildersWithoutRetryOnThrottledRequests() {
         return new Object[][]{
             { createDirectRxDocumentClient(ConsistencyLevel.SESSION, Protocol.TCP, false, null, true, false) },
             { createGatewayRxDocumentClient(ConsistencyLevel.SESSION, false, null, true, false) }
