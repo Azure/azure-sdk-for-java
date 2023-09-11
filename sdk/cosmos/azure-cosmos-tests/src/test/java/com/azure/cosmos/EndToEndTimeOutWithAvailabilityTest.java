@@ -8,6 +8,8 @@ import com.azure.cosmos.implementation.DatabaseAccountLocation;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.RxDocumentClientImpl;
+import com.azure.cosmos.implementation.TestConfigurations;
+import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
 import com.azure.cosmos.implementation.throughputControl.TestItem;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
@@ -114,7 +116,7 @@ public class EndToEndTimeOutWithAvailabilityTest extends TestSuiteBase {
         // This is to wait for the item to be replicated to the secondary region
         Thread.sleep(2000);
         FaultInjectionRule rule = injectFailure(cosmosAsyncContainer, faultInjectionOperationType);
-        CosmosDiagnostics cosmosDiagnostics = performDocumentOperation(cosmosAsyncContainer, operationType, createdItem, options);
+        CosmosDiagnostics cosmosDiagnostics = performDocumentOperation(cosmosAsyncContainer, operationType, createdItem, options, null);
         assertThat(cosmosDiagnostics.getContactedRegionNames().size()).isGreaterThan(1);
         ObjectNode diagnosticsNode = null;
         try {
@@ -123,7 +125,121 @@ public class EndToEndTimeOutWithAvailabilityTest extends TestSuiteBase {
                     .isEqualTo(regions.get(1).toLowerCase(Locale.ROOT));
             } else {
                 diagnosticsNode = (ObjectNode) OBJECT_MAPPER.readTree(cosmosDiagnostics.toString());
-                assertResponseFromSpeculatedRegion(diagnosticsNode);
+                assertResponseFromSpeculatedRegion(diagnosticsNode, false);
+            }
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+        rule.disable();
+    }
+
+    @Test(groups = {"multi-master"}, dataProvider = "faultInjectionArgProvider", timeOut = TIMEOUT*100)
+    public void testThresholdAvailabilityStrategyMutation(OperationType operationType, FaultInjectionOperationType faultInjectionOperationType) throws InterruptedException {
+        if (this.preferredRegionList.size() <= 1) {
+            throw new SkipException("excludeRegionTest_SkipFirstPreferredRegion can only be tested for multi-master with multi-regions");
+        }
+
+        if (getClientBuilder().buildConnectionPolicy().getConnectionMode() != ConnectionMode.DIRECT) {
+            throw new SkipException("Failure injection only supported for DIRECT mode");
+        }
+
+        // an availability strategy setting which is reluctant to hedge the request to other regions
+        ThresholdBasedAvailabilityStrategy thresholdBasedAvailabilityStrategy = new ThresholdBasedAvailabilityStrategy(
+            Duration.ofSeconds(10),
+            Duration.ofSeconds(1)
+        );
+
+        CosmosEndToEndOperationLatencyPolicyConfig endToEndLatencyPolicyConfigWithAvailabilityStrategyMutation =
+            new CosmosEndToEndOperationLatencyPolicyConfigBuilder(Duration.ofSeconds(4))
+            .availabilityStrategy(thresholdBasedAvailabilityStrategy)
+            .build();
+
+        CosmosAsyncClient clientWithPreferredRegions = this.getClientBuilder()
+            .endpoint(TestConfigurations.HOST)
+            .key(TestConfigurations.MASTER_KEY)
+            .preferredRegions(this.preferredRegionList)
+            .endToEndOperationLatencyPolicyConfig(endToEndLatencyPolicyConfigWithAvailabilityStrategyMutation)
+            .setNonIdempotentWriteRetryPolicy(true, true)
+            .buildAsyncClient();
+
+        CosmosAsyncContainer asyncContainerFromClientWithPreferredRegions
+            = getSharedMultiPartitionCosmosContainerWithIdAsPartitionKey(clientWithPreferredRegions);
+
+        TestItem createdItem = TestItem.createNewItem();
+        asyncContainerFromClientWithPreferredRegions.createItem(createdItem).block();
+
+        // This is to wait for the item to be replicated to the secondary region
+        Thread.sleep(2000);
+
+        // before mutation
+        FaultInjectionRule rule = injectFailure(asyncContainerFromClientWithPreferredRegions, faultInjectionOperationType);
+        CosmosDiagnostics cosmosDiagnostics = null;
+
+        try {
+            cosmosDiagnostics = performDocumentOperation(
+                asyncContainerFromClientWithPreferredRegions,
+                operationType,
+                createdItem,
+                null,
+                endToEndLatencyPolicyConfigWithAvailabilityStrategyMutation);
+        } catch (Exception exception) {
+            if (exception instanceof CosmosException) {
+                CosmosException cosmosException = Utils.as(exception, CosmosException.class);
+                cosmosDiagnostics = cosmosException.getDiagnostics();
+            }
+        }
+
+        assertThat(cosmosDiagnostics.getContactedRegionNames().size()).isEqualTo(1);
+        ObjectNode diagnosticsNode = null;
+
+        try {
+            if (operationType == OperationType.Query) {
+                assertThat(cosmosDiagnostics.getClientSideRequestStatistics().iterator().next().getResponseStatisticsList().get(0).getRegionName())
+                    .isEqualTo(regions.get(0).toLowerCase(Locale.ROOT));
+            } else {
+                diagnosticsNode = (ObjectNode) OBJECT_MAPPER.readTree(cosmosDiagnostics.toString());
+                assertResponseFromSpeculatedRegion(diagnosticsNode, true);
+            }
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+
+        // after mutation
+        thresholdBasedAvailabilityStrategy.setThreshold(Duration.ofMillis(100));
+        thresholdBasedAvailabilityStrategy.setThresholdStep(Duration.ofMillis(10));
+
+        // create new item to prevent 409 conflict errors
+        createdItem = TestItem.createNewItem();
+
+        asyncContainerFromClientWithPreferredRegions.createItem(createdItem).block();
+
+        // This is to wait for the item to be replicated to the secondary region
+        Thread.sleep(2000);
+
+        // injects a response delay in the first preferred region
+        try {
+            cosmosDiagnostics = performDocumentOperation(
+                asyncContainerFromClientWithPreferredRegions,
+                operationType,
+                createdItem,
+                null,
+                endToEndLatencyPolicyConfigWithAvailabilityStrategyMutation);
+        } catch (Exception exception) {
+            if (exception instanceof CosmosException) {
+                CosmosException cosmosException = Utils.as(exception, CosmosException.class);
+                cosmosDiagnostics = cosmosException.getDiagnostics();
+            }
+        }
+
+        assertThat(cosmosDiagnostics.getContactedRegionNames().size()).isGreaterThan(1);
+
+        try {
+            if (operationType == OperationType.Query) {
+                assertThat(cosmosDiagnostics.getClientSideRequestStatistics().iterator().next().getResponseStatisticsList().get(0).getRegionName())
+                    .isEqualTo(regions.get(1).toLowerCase(Locale.ROOT));
+            } else {
+                diagnosticsNode = (ObjectNode) OBJECT_MAPPER.readTree(cosmosDiagnostics.toString());
+                assertResponseFromSpeculatedRegion(diagnosticsNode, false);
             }
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
@@ -143,12 +259,21 @@ public class EndToEndTimeOutWithAvailabilityTest extends TestSuiteBase {
         };
     }
 
-    private void assertResponseFromSpeculatedRegion(ObjectNode diagnosticsNode) {
-        JsonNode responseStatisticsList = diagnosticsNode.get("responseStatisticsList");
-        assertThat(responseStatisticsList.isArray()).isTrue();
-        assertThat(responseStatisticsList.size()).isGreaterThan(0);
-        JsonNode storeResult = responseStatisticsList.get(0).get("storeResult");
-        assertThat(storeResult.get("storePhysicalAddress").toString()).contains(StringUtils.deleteWhitespace(regions.get(1).toLowerCase(Locale.ROOT)));
+    private void assertResponseFromSpeculatedRegion(ObjectNode diagnosticsNode, boolean isReluctantAvailabilityStrategy) {
+
+        if (isReluctantAvailabilityStrategy) {
+            JsonNode responseStatisticsList = diagnosticsNode.get("responseStatisticsList");
+            assertThat(responseStatisticsList.isArray()).isTrue();
+            assertThat(responseStatisticsList.size()).isGreaterThan(0);
+            JsonNode storeResult = responseStatisticsList.get(0).get("storeResult");
+            assertThat(storeResult.get("storePhysicalAddress").toString()).contains(StringUtils.deleteWhitespace(regions.get(0).toLowerCase(Locale.ROOT)));
+        } else {
+            JsonNode responseStatisticsList = diagnosticsNode.get("responseStatisticsList");
+            assertThat(responseStatisticsList.isArray()).isTrue();
+            assertThat(responseStatisticsList.size()).isGreaterThan(0);
+            JsonNode storeResult = responseStatisticsList.get(0).get("storeResult");
+            assertThat(storeResult.get("storePhysicalAddress").toString()).contains(StringUtils.deleteWhitespace(regions.get(1).toLowerCase(Locale.ROOT)));
+        }
     }
 
     private FaultInjectionRule injectFailure(
@@ -217,16 +342,28 @@ public class EndToEndTimeOutWithAvailabilityTest extends TestSuiteBase {
         CosmosAsyncContainer cosmosAsyncContainer,
         OperationType operationType,
         TestItem createdItem,
-        CosmosItemRequestOptions cosmosItemRequestOptions) {
+        CosmosItemRequestOptions cosmosItemRequestOptions,
+        CosmosEndToEndOperationLatencyPolicyConfig clientLevelEndToEndOpLatencyCfg) {
+
         CosmosEndToEndOperationLatencyPolicyConfig config = new CosmosEndToEndOperationLatencyPolicyConfigBuilder(Duration.ofSeconds(4))
             .availabilityStrategy(new ThresholdBasedAvailabilityStrategy(Duration.ofMillis(100), Duration.ofMillis(200)))
             .build();
-        cosmosItemRequestOptions.setCosmosEndToEndOperationLatencyPolicyConfig(config);
-        cosmosItemRequestOptions.setNonIdempotentWriteRetryPolicy(true, true);
+
+        // fallback to cosmosItemRequestOptions when clientLevelEndToEndOpLatencyCfg is not set
+        if (cosmosItemRequestOptions != null) {
+            cosmosItemRequestOptions.setCosmosEndToEndOperationLatencyPolicyConfig(config);
+            cosmosItemRequestOptions.setNonIdempotentWriteRetryPolicy(true, true);
+        }
 
         if (operationType == OperationType.Query) {
             CosmosQueryRequestOptions queryRequestOptions = new CosmosQueryRequestOptions();
-            queryRequestOptions.setCosmosEndToEndOperationLatencyPolicyConfig(config);
+
+            if (clientLevelEndToEndOpLatencyCfg != null) {
+                queryRequestOptions.setCosmosEndToEndOperationLatencyPolicyConfig(clientLevelEndToEndOpLatencyCfg);
+            } else {
+                queryRequestOptions.setCosmosEndToEndOperationLatencyPolicyConfig(config);
+            }
+
             String query = String.format("SELECT * from c where c.id = '%s'", createdItem.getId());
             FeedResponse<TestItem> itemFeedResponse =
                 cosmosAsyncContainer.queryItems(query, queryRequestOptions, TestItem.class).byPage().blockFirst();
@@ -280,7 +417,13 @@ public class EndToEndTimeOutWithAvailabilityTest extends TestSuiteBase {
 
                 CosmosPatchItemRequestOptions patchItemRequestOptions = new CosmosPatchItemRequestOptions();
                 patchItemRequestOptions.setNonIdempotentWriteRetryPolicy(true, true);
-                patchItemRequestOptions.setCosmosEndToEndOperationLatencyPolicyConfig(config);
+
+                if (clientLevelEndToEndOpLatencyCfg != null) {
+                    patchItemRequestOptions.setCosmosEndToEndOperationLatencyPolicyConfig(clientLevelEndToEndOpLatencyCfg);
+                } else {
+                    patchItemRequestOptions.setCosmosEndToEndOperationLatencyPolicyConfig(config);
+                }
+
                 return cosmosAsyncContainer
                     .patchItem(createdItem.getId(), new PartitionKey(createdItem.getMypk()), patchOperations, patchItemRequestOptions, TestItem.class)
                     .block().getDiagnostics();
