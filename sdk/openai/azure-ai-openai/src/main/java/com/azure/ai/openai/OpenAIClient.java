@@ -759,8 +759,9 @@ public final class OpenAIClient {
      *     file: byte[] (Required)
      *     prompt: String (Optional)
      *     temperature: Double (Optional)
+     *     model: String (Optional)
      *     language: String (Optional)
-     *     response_format: String(json/text/srt/verbose_json/vtt) (Optional)
+     *     response_format: String(json/verbose_json/text/srt/vtt) (Optional)
      * }
      * }</pre>
      *
@@ -775,13 +776,14 @@ public final class OpenAIClient {
      * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
      *     (when using non-Azure OpenAI) to use for this request.
      * @param contentLength The content length of the operation. This needs to be provided by the caller.
-     * @param audioTranscriptionOptionsSimpleJson Lorem ipsum.
+     * @param audioTranscriptionOptionsSimpleJson This format will return an JSON structure containing a single "text"
+     *     with the transcription.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return lorem ipsum along with {@link Response}.
+     * @return transcription response containing only the transcribed text along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -804,8 +806,9 @@ public final class OpenAIClient {
      *     file: byte[] (Required)
      *     prompt: String (Optional)
      *     temperature: Double (Optional)
+     *     model: String (Optional)
      *     language: String (Optional)
-     *     response_format: String(json/text/srt/verbose_json/vtt) (Optional)
+     *     response_format: String(json/verbose_json/text/srt/vtt) (Optional)
      * }
      * }</pre>
      *
@@ -839,7 +842,8 @@ public final class OpenAIClient {
      * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
      *     (when using non-Azure OpenAI) to use for this request.
      * @param contentLength The content length of the operation. This needs to be provided by the caller.
-     * @param audioTranscriptionOptionsVerboseJson Lorem ipsum.
+     * @param audioTranscriptionOptionsVerboseJson This format will return an JSON structure containing an enriched
+     *     structure with the transcription.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -868,8 +872,9 @@ public final class OpenAIClient {
      *     file: byte[] (Required)
      *     prompt: String (Optional)
      *     temperature: Double (Optional)
+     *     model: String (Optional)
      *     language: String (Optional)
-     *     response_format: String(json/text/srt/verbose_json/vtt) (Optional)
+     *     response_format: String(json/verbose_json/text/srt/vtt) (Optional)
      * }
      * }</pre>
      *
@@ -882,7 +887,7 @@ public final class OpenAIClient {
      * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
      *     (when using non-Azure OpenAI) to use for this request.
      * @param contentLength The content length of the operation. This needs to be provided by the caller.
-     * @param audioTranscriptionOptionsPlainText Lorem ipsum.
+     * @param audioTranscriptionOptionsPlainText This will make the response return the transcription as plain/text.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -911,8 +916,9 @@ public final class OpenAIClient {
      *     file: byte[] (Required)
      *     prompt: String (Optional)
      *     temperature: Double (Optional)
+     *     model: String (Optional)
      *     language: String (Optional)
-     *     response_format: String(json/text/srt/verbose_json/vtt) (Optional)
+     *     response_format: String(json/verbose_json/text/srt/vtt) (Optional)
      * }
      * }</pre>
      *
@@ -925,7 +931,8 @@ public final class OpenAIClient {
      * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
      *     (when using non-Azure OpenAI) to use for this request.
      * @param contentLength The content length of the operation. This needs to be provided by the caller.
-     * @param audioTranscriptionOptionsSrt Lorem ipsum.
+     * @param audioTranscriptionOptionsSrt The transcription will be provided in SRT format (SubRip Text) in the form of
+     *     plain/text.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -954,8 +961,9 @@ public final class OpenAIClient {
      *     file: byte[] (Required)
      *     prompt: String (Optional)
      *     temperature: Double (Optional)
+     *     model: String (Optional)
      *     language: String (Optional)
-     *     response_format: String(json/text/srt/verbose_json/vtt) (Optional)
+     *     response_format: String(json/verbose_json/text/srt/vtt) (Optional)
      * }
      * }</pre>
      *
@@ -968,7 +976,8 @@ public final class OpenAIClient {
      * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
      *     (when using non-Azure OpenAI) to use for this request.
      * @param contentLength The content length of the operation. This needs to be provided by the caller.
-     * @param audioTranscriptionOptionsVtt Lorem ipsum.
+     * @param audioTranscriptionOptionsVtt The transcription will be provided in VTT format (Web Video Text Tracks) in
+     *     the form of plain/text.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -997,7 +1006,8 @@ public final class OpenAIClient {
      *     file: byte[] (Required)
      *     prompt: String (Optional)
      *     temperature: Double (Optional)
-     *     response_format: String(json/text/srt/verbose_json/vtt) (Optional)
+     *     model: String (Optional)
+     *     response_format: String(json/verbose_json/text/srt/vtt) (Optional)
      * }
      * }</pre>
      *
@@ -1012,13 +1022,14 @@ public final class OpenAIClient {
      * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
      *     (when using non-Azure OpenAI) to use for this request.
      * @param contentLength The content length of the operation. This needs to be provided by the caller.
-     * @param audioTranslationOptionsSimpleJson Lorem ipsum.
+     * @param audioTranslationOptionsSimpleJson This format will return an JSON structure containing a single "text"
+     *     with the translation.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return lorem ipsum along with {@link Response}.
+     * @return transcription response containing only the transcribed text along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1041,7 +1052,8 @@ public final class OpenAIClient {
      *     file: byte[] (Required)
      *     prompt: String (Optional)
      *     temperature: Double (Optional)
-     *     response_format: String(json/text/srt/verbose_json/vtt) (Optional)
+     *     model: String (Optional)
+     *     response_format: String(json/verbose_json/text/srt/vtt) (Optional)
      * }
      * }</pre>
      *
@@ -1075,7 +1087,8 @@ public final class OpenAIClient {
      * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
      *     (when using non-Azure OpenAI) to use for this request.
      * @param contentLength The content length of the operation. This needs to be provided by the caller.
-     * @param audioTranslationOptionsVerboseJson Lorem ipsum.
+     * @param audioTranslationOptionsVerboseJson This format will return an JSON structure containing an enriched
+     *     structure with the translation.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1104,7 +1117,8 @@ public final class OpenAIClient {
      *     file: byte[] (Required)
      *     prompt: String (Optional)
      *     temperature: Double (Optional)
-     *     response_format: String(json/text/srt/verbose_json/vtt) (Optional)
+     *     model: String (Optional)
+     *     response_format: String(json/verbose_json/text/srt/vtt) (Optional)
      * }
      * }</pre>
      *
@@ -1117,7 +1131,8 @@ public final class OpenAIClient {
      * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
      *     (when using non-Azure OpenAI) to use for this request.
      * @param contentLength The content length of the operation. This needs to be provided by the caller.
-     * @param audioTranslationOptionsSrt Lorem ipsum.
+     * @param audioTranslationOptionsSrt The translation will be provided in SRT format (SubRip Text) in the form of
+     *     plain/text.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1146,7 +1161,8 @@ public final class OpenAIClient {
      *     file: byte[] (Required)
      *     prompt: String (Optional)
      *     temperature: Double (Optional)
-     *     response_format: String(json/text/srt/verbose_json/vtt) (Optional)
+     *     model: String (Optional)
+     *     response_format: String(json/verbose_json/text/srt/vtt) (Optional)
      * }
      * }</pre>
      *
@@ -1159,7 +1175,8 @@ public final class OpenAIClient {
      * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
      *     (when using non-Azure OpenAI) to use for this request.
      * @param contentLength The content length of the operation. This needs to be provided by the caller.
-     * @param audioTranslationOptionsVtt Lorem ipsum.
+     * @param audioTranslationOptionsVtt The translation will be provided in VTT format (Web Video Text Tracks) in the
+     *     form of plain/text.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1188,7 +1205,8 @@ public final class OpenAIClient {
      *     file: byte[] (Required)
      *     prompt: String (Optional)
      *     temperature: Double (Optional)
-     *     response_format: String(json/text/srt/verbose_json/vtt) (Optional)
+     *     model: String (Optional)
+     *     response_format: String(json/verbose_json/text/srt/vtt) (Optional)
      * }
      * }</pre>
      *
@@ -1201,7 +1219,7 @@ public final class OpenAIClient {
      * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
      *     (when using non-Azure OpenAI) to use for this request.
      * @param contentLength The content length of the operation. This needs to be provided by the caller.
-     * @param audioTranslationOptionsPlainText Lorem ipsum.
+     * @param audioTranslationOptionsPlainText This will make the response return the translation as plain/text.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
