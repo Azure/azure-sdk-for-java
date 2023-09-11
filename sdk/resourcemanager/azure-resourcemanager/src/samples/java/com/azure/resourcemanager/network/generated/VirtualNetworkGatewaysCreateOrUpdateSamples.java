@@ -27,7 +27,7 @@ import java.util.Arrays;
 /** Samples for VirtualNetworkGateways CreateOrUpdate. */
 public final class VirtualNetworkGatewaysCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-02-01/examples/VirtualNetworkGatewayUpdate.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-05-01/examples/VirtualNetworkGatewayUpdate.json
      */
     /**
      * Sample code: UpdateVirtualNetworkGateway.
@@ -101,6 +101,79 @@ public final class VirtualNetworkGatewaysCreateOrUpdateSamples {
                                 new VirtualNetworkGatewayNatRuleInner()
                                     .withId(
                                         "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworkGateways/vpngw/natRules/natRule2")
+                                    .withName("natRule2")
+                                    .withTypePropertiesType(VpnNatRuleType.STATIC)
+                                    .withMode(VpnNatRuleMode.INGRESS_SNAT)
+                                    .withInternalMappings(
+                                        Arrays.asList(new VpnNatRuleMapping().withAddressSpace("20.10.0.0/24")))
+                                    .withExternalMappings(
+                                        Arrays.asList(new VpnNatRuleMapping().withAddressSpace("30.0.0.0/24")))
+                                    .withIpConfigurationId("")))
+                    .withEnableBgpRouteTranslationForNat(false)
+                    .withAllowVirtualWanTraffic(false)
+                    .withAllowRemoteVnetTraffic(false),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-05-01/examples/VirtualNetworkScalableGatewayUpdate.json
+     */
+    /**
+     * Sample code: UpdateVirtualNetworkScalableGateway.
+     *
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void updateVirtualNetworkScalableGateway(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure
+            .networks()
+            .manager()
+            .serviceClient()
+            .getVirtualNetworkGateways()
+            .createOrUpdate(
+                "rg1",
+                "ergw",
+                new VirtualNetworkGatewayInner()
+                    .withLocation("centralus")
+                    .withIpConfigurations(
+                        Arrays
+                            .asList(
+                                new VirtualNetworkGatewayIpConfigurationInner()
+                                    .withName("gwipconfig1")
+                                    .withPrivateIpAllocationMethod(IpAllocationMethod.STATIC)
+                                    .withSubnet(
+                                        new SubResource()
+                                            .withId(
+                                                "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/vnet1/subnets/GatewaySubnet"))
+                                    .withPublicIpAddress(
+                                        new SubResource()
+                                            .withId(
+                                                "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/publicIPAddresses/gwpip"))))
+                    .withGatewayType(VirtualNetworkGatewayType.EXPRESS_ROUTE)
+                    .withVpnType(VpnType.POLICY_BASED)
+                    .withEnableBgp(false)
+                    .withActive(false)
+                    .withDisableIpSecReplayProtection(false)
+                    .withSku(
+                        new VirtualNetworkGatewaySku()
+                            .withName(VirtualNetworkGatewaySkuName.fromString("ErGwScale"))
+                            .withTier(VirtualNetworkGatewaySkuTier.fromString("ErGwScale")))
+                    .withNatRules(
+                        Arrays
+                            .asList(
+                                new VirtualNetworkGatewayNatRuleInner()
+                                    .withId(
+                                        "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworkGateways/ergw/natRules/natRule1")
+                                    .withName("natRule1")
+                                    .withTypePropertiesType(VpnNatRuleType.STATIC)
+                                    .withMode(VpnNatRuleMode.EGRESS_SNAT)
+                                    .withInternalMappings(
+                                        Arrays.asList(new VpnNatRuleMapping().withAddressSpace("10.10.0.0/24")))
+                                    .withExternalMappings(
+                                        Arrays.asList(new VpnNatRuleMapping().withAddressSpace("50.0.0.0/24")))
+                                    .withIpConfigurationId(""),
+                                new VirtualNetworkGatewayNatRuleInner()
+                                    .withId(
+                                        "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworkGateways/ergw/natRules/natRule2")
                                     .withName("natRule2")
                                     .withTypePropertiesType(VpnNatRuleType.STATIC)
                                     .withMode(VpnNatRuleMode.INGRESS_SNAT)

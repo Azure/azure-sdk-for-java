@@ -31,6 +31,10 @@ public final class FilteringTag {
     @JsonProperty(value = "action")
     private TagAction action;
 
+    /** Creates an instance of FilteringTag class. */
+    public FilteringTag() {
+    }
+
     /**
      * Get the name property: The name (also known as the key) of the tag.
      *

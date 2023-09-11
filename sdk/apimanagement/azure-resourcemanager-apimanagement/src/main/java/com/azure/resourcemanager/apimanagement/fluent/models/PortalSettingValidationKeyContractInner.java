@@ -16,6 +16,10 @@ public final class PortalSettingValidationKeyContractInner {
     @JsonProperty(value = "validationKey")
     private String validationKey;
 
+    /** Creates an instance of PortalSettingValidationKeyContractInner class. */
+    public PortalSettingValidationKeyContractInner() {
+    }
+
     /**
      * Get the validationKey property: This is secret value of the validation key in portal settings.
      *

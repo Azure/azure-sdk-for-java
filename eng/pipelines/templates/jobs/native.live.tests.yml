@@ -67,6 +67,7 @@ jobs:
             parameters:
               SubscriptionConfiguration: ${{ parameters.CloudConfig.SubscriptionConfiguration }}
               SubscriptionConfigurations: ${{ parameters.CloudConfig.SubscriptionConfigurations }}
+              EnvVars: ${{ parameters.EnvVars }}
 
           - ${{ if parameters.TestResourceDirectories }}:
               - ${{ each directory in parameters.TestResourceDirectories }}:

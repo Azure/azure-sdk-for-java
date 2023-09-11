@@ -35,6 +35,10 @@ public final class ResourceLocationDataContract {
     @JsonProperty(value = "countryOrRegion")
     private String countryOrRegion;
 
+    /** Creates an instance of ResourceLocationDataContract class. */
+    public ResourceLocationDataContract() {
+    }
+
     /**
      * Get the name property: A canonical name for the geographic or physical location.
      *

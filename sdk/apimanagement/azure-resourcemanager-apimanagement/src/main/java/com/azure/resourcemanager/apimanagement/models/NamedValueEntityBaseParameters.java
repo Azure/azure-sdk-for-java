@@ -12,18 +12,20 @@ import java.util.List;
 @Fluent
 public class NamedValueEntityBaseParameters {
     /*
-     * Optional tags that when provided can be used to filter the NamedValue
-     * list.
+     * Optional tags that when provided can be used to filter the NamedValue list.
      */
     @JsonProperty(value = "tags")
     private List<String> tags;
 
     /*
-     * Determines whether the value is a secret and should be encrypted or not.
-     * Default value is false.
+     * Determines whether the value is a secret and should be encrypted or not. Default value is false.
      */
     @JsonProperty(value = "secret")
     private Boolean secret;
+
+    /** Creates an instance of NamedValueEntityBaseParameters class. */
+    public NamedValueEntityBaseParameters() {
+    }
 
     /**
      * Get the tags property: Optional tags that when provided can be used to filter the NamedValue list.

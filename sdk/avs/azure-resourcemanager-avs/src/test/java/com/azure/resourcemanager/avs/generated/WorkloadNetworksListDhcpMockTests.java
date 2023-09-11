@@ -32,7 +32,7 @@ public final class WorkloadNetworksListDhcpMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"dhcpType\":\"WorkloadNetworkDhcpEntity\",\"displayName\":\"zhe\",\"segments\":[\"h\",\"hujswtwkozzwcul\",\"bawpfajnjwltlwt\",\"j\"],\"provisioningState\":\"Succeeded\",\"revision\":8518213803289262805},\"id\":\"hsnvkcdmxzrp\",\"name\":\"aimlnwiaaom\",\"type\":\"l\"}]}";
+            "{\"value\":[{\"properties\":{\"dhcpType\":\"WorkloadNetworkDhcpEntity\",\"displayName\":\"dwfmvigorqjb\",\"segments\":[\"h\",\"aglkafhon\",\"juj\"],\"provisioningState\":\"Updating\",\"revision\":6687319297826159039},\"id\":\"vcpopmxe\",\"name\":\"nwcl\",\"type\":\"yjede\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -61,9 +61,9 @@ public final class WorkloadNetworksListDhcpMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<WorkloadNetworkDhcp> response =
-            manager.workloadNetworks().listDhcp("toqbeitpkxztmoob", "lftidgfcwqmpim", com.azure.core.util.Context.NONE);
+            manager.workloadNetworks().listDhcp("wcrojphslhcaw", "u", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("zhe", response.iterator().next().properties().displayName());
-        Assertions.assertEquals(8518213803289262805L, response.iterator().next().properties().revision());
+        Assertions.assertEquals("dwfmvigorqjb", response.iterator().next().properties().displayName());
+        Assertions.assertEquals(6687319297826159039L, response.iterator().next().properties().revision());
     }
 }

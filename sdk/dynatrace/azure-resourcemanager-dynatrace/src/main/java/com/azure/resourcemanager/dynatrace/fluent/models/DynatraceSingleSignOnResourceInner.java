@@ -28,6 +28,10 @@ public final class DynatraceSingleSignOnResourceInner extends ProxyResource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
+    /** Creates an instance of DynatraceSingleSignOnResourceInner class. */
+    public DynatraceSingleSignOnResourceInner() {
+    }
+
     /**
      * Get the innerProperties property: The resource-specific properties for this resource.
      *

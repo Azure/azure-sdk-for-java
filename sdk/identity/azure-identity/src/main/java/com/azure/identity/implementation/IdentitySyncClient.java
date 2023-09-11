@@ -327,7 +327,8 @@ public class IdentitySyncClient extends IdentityClientBase {
             throw LOGGER.logExceptionAsError(new RuntimeException(e));
         }
 
-        InteractiveRequestParameters.InteractiveRequestParametersBuilder builder = buildInteractiveRequestParameters(request, loginHint, redirectUri);
+        InteractiveRequestParameters.InteractiveRequestParametersBuilder builder =
+            buildInteractiveRequestParameters(request, loginHint, redirectUri);
         PublicClientApplication pc =  getPublicClientInstance(request).getValue();
         try {
             return new MsalToken(pc.acquireToken(builder.build()).get());

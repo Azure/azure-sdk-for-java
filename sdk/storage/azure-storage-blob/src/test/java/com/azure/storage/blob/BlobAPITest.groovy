@@ -3236,6 +3236,22 @@ class BlobAPITest extends APISpec {
         cc.delete()
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2021_12_02")
+    def "Set tier archive status rehydrate pending to cold"() {
+        setup:
+        def cc = primaryBlobServiceClient.createBlobContainer(generateBlobName())
+        def bc = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
+        bc.upload(data.defaultInputStream, data.defaultDataSize)
+
+        when:
+        bc.setAccessTier(AccessTier.ARCHIVE)
+        bc.setAccessTier(AccessTier.COLD)
+
+        then:
+        bc.getProperties().getArchiveStatus() == ArchiveStatus.REHYDRATE_PENDING_TO_COLD
+        cc.listBlobs().iterator().next().getProperties().getArchiveStatus() == ArchiveStatus.REHYDRATE_PENDING_TO_COLD
+    }
+
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     @Unroll
     def "Set tier rehydrate priority"() {

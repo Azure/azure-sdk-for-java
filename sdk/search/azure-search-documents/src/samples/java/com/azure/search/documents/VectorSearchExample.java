@@ -67,7 +67,7 @@ public class VectorSearchExample {
             singleVectorSearch(searchClient);
             singleVectorSearchWithFilter(searchClient);
             simpleHybridSearch(searchClient);
-
+            multiVectorSearch(searchClient);
             //The availability of Semantic Search is limited to specific regions, as indicated in the list provided here:
             // https://azure.microsoft.com/explore/global-infrastructure/products-by-region/?products=search.
             // Due to this limitation, this sample is disabled by default.
@@ -154,7 +154,7 @@ public class VectorSearchExample {
             .setFields("DescriptionVector");
 
         SearchPagedIterable searchResults = searchClient.search(null,
-                new SearchOptions().setVector(searchQueryVector), Context.NONE);
+                new SearchOptions().setVectors(searchQueryVector), Context.NONE);
 
         int count = 0;
         System.out.println("Single Vector Search Results:");
@@ -181,7 +181,7 @@ public class VectorSearchExample {
             .setFields("DescriptionVector");
 
         SearchPagedIterable searchResults = searchClient.search(null, new SearchOptions()
-            .setVector(searchQueryVector)
+            .setVectors(searchQueryVector)
             .setFilter("Category eq 'Luxury'"), Context.NONE);
 
         int count = 0;
@@ -209,7 +209,7 @@ public class VectorSearchExample {
             .setFields("DescriptionVector");
 
         SearchPagedIterable searchResults = searchClient.search("Top hotels in town", new SearchOptions()
-            .setVector(searchQueryVector), Context.NONE);
+            .setVectors(searchQueryVector), Context.NONE);
 
         int count = 0;
         System.out.println("Simple Hybrid Search Results:");
@@ -239,7 +239,7 @@ public class VectorSearchExample {
             .setFields("DescriptionVector");
 
         SearchOptions searchOptions = new SearchOptions()
-            .setVector(searchQueryVector)
+            .setVectors(searchQueryVector)
             .setQueryType(QueryType.SEMANTIC)
             .setQueryLanguage(QueryLanguage.EN_US)
             .setSemanticConfigurationName("my-semantic-config")
@@ -274,6 +274,43 @@ public class VectorSearchExample {
             }
         }
 
+        System.out.println("Total number of search results: " + count);
+    }
+
+    public static void multiVectorSearch(SearchClient searchClient) {
+        // Example of using multiple vectors in search without using a search query or any filters.
+        List<Float> vectorizedResult = VectorSearchEmbeddings.HOTEL1_VECTORIZE_DESCRIPTION;
+        SearchQueryVector searchQueryVector = new SearchQueryVector()
+            .setValue(vectorizedResult)
+            .setKNearestNeighborsCount(3)
+            // Set the fields to compare the vector against. This is a comma-delimited list of field names.
+            .setFields("DescriptionVector");
+
+        List<Float> secondVectorizedResult = VectorSearchEmbeddings.HOTEL2_VECTORIZE_DESCRIPTION;
+        SearchQueryVector secondSearchQueryVector = new SearchQueryVector()
+            .setValue(secondVectorizedResult)
+            .setKNearestNeighborsCount(3)
+            // Set the fields to compare the vector against. This is a comma-delimited list of field names.
+            .setFields("DescriptionVector");
+
+        List<Float> thirdVectorizedResult = VectorSearchEmbeddings.HOTEL3_VECTORIZE_DESCRIPTION;
+        SearchQueryVector thirdQueryVector = new SearchQueryVector()
+            .setValue(thirdVectorizedResult)
+            .setKNearestNeighborsCount(3)
+            // Set the fields to compare the vector against. This is a comma-delimited list of field names.
+            .setFields("DescriptionVector");
+
+        SearchPagedIterable searchResults = searchClient.search(null,
+                new SearchOptions()
+                    .setVectors(searchQueryVector, secondSearchQueryVector, thirdQueryVector), Context.NONE);
+
+        int count = 0;
+        System.out.println("Multi Vector Search Results:");
+        for (SearchResult searchResult : searchResults) {
+            count++;
+            VectorHotel doc = searchResult.getDocument(VectorHotel.class);
+            System.out.printf("%s: %s%n", doc.getHotelId(), doc.getHotelName());
+        }
         System.out.println("Total number of search results: " + count);
     }
 

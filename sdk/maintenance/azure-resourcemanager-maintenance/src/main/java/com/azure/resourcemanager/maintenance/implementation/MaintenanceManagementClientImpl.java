@@ -25,6 +25,9 @@ import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.maintenance.fluent.ApplyUpdateForResourceGroupsClient;
 import com.azure.resourcemanager.maintenance.fluent.ApplyUpdatesClient;
 import com.azure.resourcemanager.maintenance.fluent.ConfigurationAssignmentsClient;
+import com.azure.resourcemanager.maintenance.fluent.ConfigurationAssignmentsForResourceGroupsClient;
+import com.azure.resourcemanager.maintenance.fluent.ConfigurationAssignmentsForSubscriptionsClient;
+import com.azure.resourcemanager.maintenance.fluent.ConfigurationAssignmentsWithinSubscriptionsClient;
 import com.azure.resourcemanager.maintenance.fluent.MaintenanceConfigurationsClient;
 import com.azure.resourcemanager.maintenance.fluent.MaintenanceConfigurationsForResourceGroupsClient;
 import com.azure.resourcemanager.maintenance.fluent.MaintenanceManagementClient;
@@ -191,6 +194,42 @@ public final class MaintenanceManagementClientImpl implements MaintenanceManagem
         return this.applyUpdateForResourceGroups;
     }
 
+    /** The ConfigurationAssignmentsWithinSubscriptionsClient object to access its operations. */
+    private final ConfigurationAssignmentsWithinSubscriptionsClient configurationAssignmentsWithinSubscriptions;
+
+    /**
+     * Gets the ConfigurationAssignmentsWithinSubscriptionsClient object to access its operations.
+     *
+     * @return the ConfigurationAssignmentsWithinSubscriptionsClient object.
+     */
+    public ConfigurationAssignmentsWithinSubscriptionsClient getConfigurationAssignmentsWithinSubscriptions() {
+        return this.configurationAssignmentsWithinSubscriptions;
+    }
+
+    /** The ConfigurationAssignmentsForSubscriptionsClient object to access its operations. */
+    private final ConfigurationAssignmentsForSubscriptionsClient configurationAssignmentsForSubscriptions;
+
+    /**
+     * Gets the ConfigurationAssignmentsForSubscriptionsClient object to access its operations.
+     *
+     * @return the ConfigurationAssignmentsForSubscriptionsClient object.
+     */
+    public ConfigurationAssignmentsForSubscriptionsClient getConfigurationAssignmentsForSubscriptions() {
+        return this.configurationAssignmentsForSubscriptions;
+    }
+
+    /** The ConfigurationAssignmentsForResourceGroupsClient object to access its operations. */
+    private final ConfigurationAssignmentsForResourceGroupsClient configurationAssignmentsForResourceGroups;
+
+    /**
+     * Gets the ConfigurationAssignmentsForResourceGroupsClient object to access its operations.
+     *
+     * @return the ConfigurationAssignmentsForResourceGroupsClient object.
+     */
+    public ConfigurationAssignmentsForResourceGroupsClient getConfigurationAssignmentsForResourceGroups() {
+        return this.configurationAssignmentsForResourceGroups;
+    }
+
     /** The OperationsClient object to access its operations. */
     private final OperationsClient operations;
 
@@ -238,7 +277,7 @@ public final class MaintenanceManagementClientImpl implements MaintenanceManagem
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2021-05-01";
+        this.apiVersion = "2023-04-01";
         this.publicMaintenanceConfigurations = new PublicMaintenanceConfigurationsClientImpl(this);
         this.applyUpdates = new ApplyUpdatesClientImpl(this);
         this.configurationAssignments = new ConfigurationAssignmentsClientImpl(this);
@@ -246,6 +285,10 @@ public final class MaintenanceManagementClientImpl implements MaintenanceManagem
         this.maintenanceConfigurationsForResourceGroups =
             new MaintenanceConfigurationsForResourceGroupsClientImpl(this);
         this.applyUpdateForResourceGroups = new ApplyUpdateForResourceGroupsClientImpl(this);
+        this.configurationAssignmentsWithinSubscriptions =
+            new ConfigurationAssignmentsWithinSubscriptionsClientImpl(this);
+        this.configurationAssignmentsForSubscriptions = new ConfigurationAssignmentsForSubscriptionsClientImpl(this);
+        this.configurationAssignmentsForResourceGroups = new ConfigurationAssignmentsForResourceGroupsClientImpl(this);
         this.operations = new OperationsClientImpl(this);
         this.updates = new UpdatesClientImpl(this);
     }

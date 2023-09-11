@@ -45,10 +45,10 @@ public class ManageDocumentClassifiers {
             System.out.printf("Classifier ID: %s%n", documentClassifier.getClassifierId());
             System.out.printf("Classifier Description: %s%n", documentClassifier.getDescription());
             System.out.printf("Classifier created on: %s%n", documentClassifier.getCreatedOn());
-            documentClassifier.getDocumentTypeDetails().forEach((key, documentTypeDetails) -> {
-                if (documentTypeDetails.getTrainingDataContentSource() instanceof BlobContentSource) {
+            documentClassifier.getDocumentTypes().forEach((key, documentTypeDetails) -> {
+                if (documentTypeDetails.getContentSource() instanceof BlobContentSource) {
                     System.out.printf("Blob Source container Url: %s", ((BlobContentSource) documentTypeDetails
-                        .getTrainingDataContentSource()).getContainerUrl());
+                        .getContentSource()).getContainerUrl());
                 }
             });
         });

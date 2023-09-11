@@ -25,6 +25,10 @@ public final class BlobRestoreParameters {
     @JsonProperty(value = "blobRanges", required = true)
     private List<BlobRestoreRange> blobRanges;
 
+    /** Creates an instance of BlobRestoreParameters class. */
+    public BlobRestoreParameters() {
+    }
+
     /**
      * Get the timeToRestore property: Restore blob to the specified time.
      *

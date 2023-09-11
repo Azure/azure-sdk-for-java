@@ -30,7 +30,7 @@ public final class LocationsCheckQuotaAvailabilityWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"hostsRemaining\":{\"jzhpjbibgjmfx\":202093948,\"vfcluyovwxnbkfe\":504672156,\"xscyhwzdgirujbz\":1794198042,\"mvzzbtdcqvp\":1993887274},\"quotaEnabled\":\"Disabled\"}";
+            "{\"hostsRemaining\":{\"cdmxzrpoaiml\":1513334542,\"iaaomylweazul\":871489167},\"quotaEnabled\":\"Disabled\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -59,6 +59,9 @@ public final class LocationsCheckQuotaAvailabilityWithResponseMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         Quota response =
-            manager.locations().checkQuotaAvailabilityWithResponse("grvk", com.azure.core.util.Context.NONE).getValue();
+            manager
+                .locations()
+                .checkQuotaAvailabilityWithResponse("lwtjjguktalh", com.azure.core.util.Context.NONE)
+                .getValue();
     }
 }

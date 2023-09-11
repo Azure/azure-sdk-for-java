@@ -12,6 +12,7 @@ import com.azure.monitor.opentelemetry.exporter.implementation.models.TelemetryI
 import com.azure.monitor.opentelemetry.exporter.implementation.pipeline.TelemetryItemExporter;
 import com.azure.monitor.opentelemetry.exporter.implementation.pipeline.TelemetryPipeline;
 import com.azure.monitor.opentelemetry.exporter.implementation.utils.TestUtils;
+import io.opentelemetry.sdk.resources.Resource;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
@@ -72,7 +73,8 @@ public class IntegrationTests {
             new TelemetryItemExporter(
                 telemetryPipeline,
                 new LocalStorageTelemetryPipelineListener(
-                    50, tempFolder, telemetryPipeline, LocalStorageStats.noop(), false));
+                    50, tempFolder, telemetryPipeline, LocalStorageStats.noop(), false),
+                    Resource.empty());
     }
 
     @Test

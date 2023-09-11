@@ -30,7 +30,7 @@ public final class DaprComponentsListSecretsWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"name\":\"drtc\",\"value\":\"kdqkkyihzt\"},{\"name\":\"qm\",\"value\":\"zgwldoychillcec\"},{\"name\":\"huwaoaguhic\",\"value\":\"lizst\"},{\"name\":\"sjvh\",\"value\":\"eftkwqe\"}]}";
+            "{\"value\":[{\"name\":\"sbede\",\"value\":\"exkxbhx\"},{\"name\":\"cnulgmnhjevdy\",\"value\":\"fajs\"},{\"name\":\"skmqozzkivyhj\",\"value\":\"iizjixlqfhefkwa\"},{\"name\":\"olro\",\"value\":\"qlmgnlqxsjxt\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -61,7 +61,7 @@ public final class DaprComponentsListSecretsWithResponseMockTests {
         DaprSecretsCollection response =
             manager
                 .daprComponents()
-                .listSecretsWithResponse("jxl", "bsjuscvsfx", "gctmgxuupbezq", com.azure.core.util.Context.NONE)
+                .listSecretsWithResponse("xaurs", "ftibtyibuyvpirfq", "pnqn", com.azure.core.util.Context.NONE)
                 .getValue();
     }
 }

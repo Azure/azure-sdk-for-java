@@ -3,11 +3,14 @@
 
 package com.azure.messaging.servicebus.implementation;
 
+import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.messaging.servicebus.TestUtils;
 import com.azure.messaging.servicebus.administration.implementation.EntityHelper;
 import com.azure.messaging.servicebus.administration.implementation.ServiceBusManagementSerializer;
 import com.azure.messaging.servicebus.administration.implementation.models.AuthorizationRuleImpl;
 import com.azure.messaging.servicebus.administration.implementation.models.CorrelationFilterImpl;
+import com.azure.messaging.servicebus.administration.implementation.models.CreateTopicBodyContentImpl;
+import com.azure.messaging.servicebus.administration.implementation.models.CreateTopicBodyImpl;
 import com.azure.messaging.servicebus.administration.implementation.models.EmptyRuleActionImpl;
 import com.azure.messaging.servicebus.administration.implementation.models.FalseFilterImpl;
 import com.azure.messaging.servicebus.administration.implementation.models.KeyValueImpl;
@@ -30,6 +33,7 @@ import com.azure.messaging.servicebus.administration.implementation.models.Subsc
 import com.azure.messaging.servicebus.administration.implementation.models.SubscriptionDescriptionFeedImpl;
 import com.azure.messaging.servicebus.administration.implementation.models.SubscriptionDescriptionImpl;
 import com.azure.messaging.servicebus.administration.implementation.models.TitleImpl;
+import com.azure.messaging.servicebus.administration.implementation.models.TopicDescriptionImpl;
 import com.azure.messaging.servicebus.administration.implementation.models.TrueFilterImpl;
 import com.azure.messaging.servicebus.administration.models.AccessRights;
 import com.azure.messaging.servicebus.administration.models.AuthorizationRule;
@@ -761,6 +765,39 @@ class ServiceBusManagementSerializerTest {
 
         // Assert
         assertRuleEntryEquals(expected, actual);
+    }
+
+    @Test
+    void serializeTopicDescriptionXML() throws IOException {
+        // Arrange
+        AuthorizationRuleImpl rule = new AuthorizationRuleImpl()
+            .setKeyName("test")
+            .setType("SharedAccessAuthorizationRule")
+            .setRights(Arrays.asList(AccessRights.MANAGE, AccessRights.LISTEN, AccessRights.SEND));
+
+        TopicDescriptionImpl topicDescription = new TopicDescriptionImpl()
+            .setAuthorizationRules(Arrays.asList(rule));
+
+        CreateTopicBodyImpl createTopicBody = new CreateTopicBodyImpl()
+            .setContent(new CreateTopicBodyContentImpl().setTopicDescription(topicDescription));
+
+        // Act
+        String serialized = SERIALIZER.serialize(createTopicBody, SerializerEncoding.XML);
+
+        // Assert
+        assertNotNull(serialized);
+
+        // Note: Technically, the XML created by the serializer is already valid/correct. However, the Azure Service
+        // that consumes the payload does not accept prefixed AuthorizationRule
+        // (ie. wstxns1:AuthorizationRule xmlns:wstxns1=...), so special care needs to be taken to create usable XML.
+
+        // Must contain correct default namespace
+        assertTrue(serialized.contains("<TopicDescription xmlns=\"http://schemas.microsoft.com/netservices/2010/10/servicebus/connect\""),
+            "Serialized payload does not contain correct default namespace");
+
+        // Must not contain prefixed namespace
+        assertTrue(serialized.contains("<AuthorizationRule"),
+            "Serialized payload does not contain AuthorizationRule in default namespace");
     }
 
     /**

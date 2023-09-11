@@ -12,6 +12,7 @@ import com.azure.core.http.HttpPipelineNextSyncPolicy;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.test.models.TestProxyRecordingOptions;
 import com.azure.core.test.models.RecordFilePayload;
 import com.azure.core.test.models.TestProxySanitizer;
 import com.azure.core.test.utils.HttpURLConnectionHttpClient;
@@ -20,6 +21,8 @@ import com.azure.core.util.Context;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import reactor.core.publisher.Mono;
 
 import java.io.File;
@@ -187,6 +190,25 @@ public class TestProxyRecordPolicy implements HttpPipelinePolicy {
 
     private boolean isRecording() {
         return xRecordingId != null;
+    }
+
+    /**
+     * Set transport layer test proxy recording options
+     * @param testProxyRecordingOptions the transport layer test proxy recording options to set
+     * @throws IllegalArgumentException if testProxyRecordingOptions cannot be serialized
+     */
+    public void setRecordingOptions(TestProxyRecordingOptions testProxyRecordingOptions) {
+        HttpRequest request = new HttpRequest(HttpMethod.POST, String.format("%s/admin/setrecordingoptions", proxyUrl.toString()));
+        String body;
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            body = mapper.writeValueAsString(testProxyRecordingOptions);
+        } catch (JsonProcessingException ex) {
+            throw new IllegalArgumentException("Failed to process JSON input", ex);
+        }
+        request.setBody(body);
+        request.getHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/json");
+        client.sendSync(request, Context.NONE);
     }
 }
 

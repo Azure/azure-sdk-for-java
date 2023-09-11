@@ -59,6 +59,15 @@ public final class TemplateName extends ExpandableStringEnum<TemplateName> {
         fromString("requestDeveloperNotificationMessage");
 
     /**
+     * Creates a new instance of TemplateName value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public TemplateName() {
+    }
+
+    /**
      * Creates or finds a TemplateName from its string representation.
      *
      * @param name a name to look for.
@@ -69,7 +78,11 @@ public final class TemplateName extends ExpandableStringEnum<TemplateName> {
         return fromString(name, TemplateName.class);
     }
 
-    /** @return known TemplateName values. */
+    /**
+     * Gets known TemplateName values.
+     *
+     * @return known TemplateName values.
+     */
     public static Collection<TemplateName> values() {
         return values(TemplateName.class);
     }

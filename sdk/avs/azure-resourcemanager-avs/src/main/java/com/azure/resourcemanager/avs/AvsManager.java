@@ -263,7 +263,7 @@ public final class AvsManager {
                 .append("-")
                 .append("com.azure.resourcemanager.avs")
                 .append("/")
-                .append("1.0.0");
+                .append("1.1.0");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder
                     .append(" (")
@@ -516,8 +516,10 @@ public final class AvsManager {
     }
 
     /**
-     * @return Wrapped service client AvsClient providing direct access to the underlying auto-generated API
-     *     implementation, based on Azure REST API.
+     * Gets wrapped service client AvsClient providing direct access to the underlying auto-generated API
+     * implementation, based on Azure REST API.
+     *
+     * @return Wrapped service client AvsClient.
      */
     public AvsClient serviceClient() {
         return this.clientObject;

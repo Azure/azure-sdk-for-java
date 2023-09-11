@@ -34,6 +34,9 @@ public final class KeyValuePair {
     @JsonProperty(value = "confidence", required = true)
     private float confidence;
 
+    /** Creates an instance of KeyValuePair class. */
+    public KeyValuePair() {}
+
     /**
      * Get the label property: A user defined label for the key/value pair entry.
      *

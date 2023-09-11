@@ -23,6 +23,10 @@ public final class BlobRestoreRange {
     @JsonProperty(value = "endRange", required = true)
     private String endRange;
 
+    /** Creates an instance of BlobRestoreRange class. */
+    public BlobRestoreRange() {
+    }
+
     /**
      * Get the startRange property: Blob start range. This is inclusive. Empty means account start.
      *
