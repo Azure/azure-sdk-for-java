@@ -54,10 +54,10 @@ to tell what would be the best name here.
  * and null. These are defined by the JsonObject, JsonArray, JsonString, JsonNumber,
  * JsonBoolean, and JsonNull classes respectively.
  */
-public abstract class JsonElement extends StringWriter {
+public abstract class JsonElement {
     /**
      * Default constructor.
-     * 
+     *
      * TODO: may need to remove this due to design guidelines? Unnecessary having
      * this constructor defined in the source code if compiler is already adding
      * this constructor implicitly when no other constructor is defined.
@@ -65,13 +65,13 @@ public abstract class JsonElement extends StringWriter {
     public JsonElement() {}
 
     /**
-     * Abstract method that should be defined in a JsonElement sub class to 
-     * handle how to serialize the given JsonElement. 
-     * 
-     * @param jsonWriter JsonWriter to serialize the JsonElement to. 
-     * @return JsonWriter after the given JsonElement has been serialized and 
-     * written to it. 
-     * @throws IOException thrown by the given JsonElement's serialize implementation 
+     * Abstract method that should be defined in a JsonElement sub class to
+     * handle how to serialize the given JsonElement.
+     *
+     * @param jsonWriter JsonWriter to serialize the JsonElement to.
+     * @return JsonWriter after the given JsonElement has been serialized and
+     * written to it.
+     * @throws IOException thrown by the given JsonElement's serialize implementation
      */
     public abstract JsonWriter serialize(JsonWriter jsonWriter) throws IOException;
 
@@ -84,14 +84,14 @@ public abstract class JsonElement extends StringWriter {
     public abstract String toString();
 
     /**
-     * JsonElement it in of itself cannot be converted to JSON. Subclasses of 
-     * JsonElement are expected to implement toJson. 
-     * 
-     * @return String object with the corresponding String representation of the 
-     * JSON. 
-     * @throws IOException Thrown by the toJson implementation.  
-     * 
-     * TODO: should this be an abstract method? 
+     * JsonElement it in of itself cannot be converted to JSON. Subclasses of
+     * JsonElement are expected to implement toJson.
+     *
+     * @return String object with the corresponding String representation of the
+     * JSON.
+     * @throws IOException Thrown by the toJson implementation.
+     *
+     * TODO: should this be an abstract method?
      */
     public String toJson() throws IOException {
         return null;
@@ -106,7 +106,7 @@ public abstract class JsonElement extends StringWriter {
 
     // All throw unless isArray is true.
     /**
-     * 
+     *
      * @param element
      * @return
      * @throws IllegalArgumentException
@@ -119,7 +119,7 @@ public abstract class JsonElement extends StringWriter {
     }
 
     /**
-     * 
+     *
      * @param index
      * @param element
      * @return
@@ -134,7 +134,7 @@ public abstract class JsonElement extends StringWriter {
     }
 
     /**
-     * 
+     *
      * @param index
      * @param element
      * @return
@@ -149,7 +149,7 @@ public abstract class JsonElement extends StringWriter {
     }
 
     /**
-     * 
+     *
      * @param index
      * @return
      * @throws IndexOutOfBoundsException
@@ -162,7 +162,7 @@ public abstract class JsonElement extends StringWriter {
     }
 
     /**
-     * 
+     *
      * @param index
      * @return
      * @throws IndexOutOfBoundsException
@@ -231,20 +231,6 @@ public abstract class JsonElement extends StringWriter {
     public JsonElement removeProperty(String key) throws InvalidJsonDataTypeException {
         // Case:
         if(this.isObject()) { return (this.asObject()).removeProperty(key); }
-        // Case:
-        else { throw new InvalidJsonDataTypeException(); }
-    }
-
-    /**
-     *
-     * @param value
-     * @return
-     * @throws InvalidJsonDataTypeException
-     * @throws IllegalArgumentException
-     */
-    public String getKeyByValue(JsonElement value) throws InvalidJsonDataTypeException, IllegalArgumentException {
-        // Case:
-        if(this.isObject()) { return (this.asObject()).getKeyByValue(value); }
         // Case:
         else { throw new InvalidJsonDataTypeException(); }
     }
