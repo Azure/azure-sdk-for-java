@@ -37,7 +37,10 @@ import com.azure.resourcemanager.network.models.ApplicationGatewayRequestRouting
 import com.azure.resourcemanager.network.models.ApplicationGatewaySku;
 import com.azure.resourcemanager.network.models.ApplicationGatewaySkuName;
 import com.azure.resourcemanager.network.models.ApplicationGatewaySslCertificate;
+import com.azure.resourcemanager.network.models.ApplicationGatewaySslCipherSuite;
 import com.azure.resourcemanager.network.models.ApplicationGatewaySslPolicy;
+import com.azure.resourcemanager.network.models.ApplicationGatewaySslPolicyName;
+import com.azure.resourcemanager.network.models.ApplicationGatewaySslPolicyType;
 import com.azure.resourcemanager.network.models.ApplicationGatewaySslProtocol;
 import com.azure.resourcemanager.network.models.ApplicationGatewayTier;
 import com.azure.resourcemanager.network.models.ApplicationGatewayUrlPathMap;
@@ -691,6 +694,29 @@ class ApplicationGatewayImpl
         return this;
     }
 
+    @Override
+    public ApplicationGatewayImpl withPredefinedSslPolicy(ApplicationGatewaySslPolicyName policyName) {
+        return withSslPolicy(
+            new ApplicationGatewaySslPolicy()
+                .withPolicyName(policyName)
+                .withPolicyType(ApplicationGatewaySslPolicyType.PREDEFINED));
+    }
+
+    @Override
+    public ApplicationGatewayImpl withCustomV2SslPolicy(ApplicationGatewaySslProtocol minProtocolVersion, List<ApplicationGatewaySslCipherSuite> cipherSuites) {
+        return withSslPolicy(
+            new ApplicationGatewaySslPolicy()
+                .withPolicyType(ApplicationGatewaySslPolicyType.CUSTOM_V2)
+                .withMinProtocolVersion(minProtocolVersion)
+                .withCipherSuites(cipherSuites));
+    }
+
+    @Override
+    public ApplicationGatewayImpl withSslPolicy(ApplicationGatewaySslPolicy sslPolicy) {
+        this.innerModel().withSslPolicy(sslPolicy);
+        return this;
+    }
+
     enum CreationState {
         Found,
         NeedToCreate,
@@ -758,7 +784,7 @@ class ApplicationGatewayImpl
     @Override
     public ApplicationGatewayImpl withInstanceCount(int capacity) {
         if (this.innerModel().sku() == null) {
-            this.withSize(ApplicationGatewaySkuName.STANDARD_SMALL);
+            this.withSize(ApplicationGatewaySkuName.BASIC);
         }
 
         this.innerModel().sku().withCapacity(capacity);
@@ -1504,6 +1530,11 @@ class ApplicationGatewayImpl
     }
 
     @Override
+    public ApplicationGatewaySslPolicy sslPolicy() {
+        return this.innerModel().sslPolicy();
+    }
+
+    @Override
     public Map<String, ApplicationGatewayAuthenticationCertificate> authenticationCertificates() {
         return Collections.unmodifiableMap(this.authCertificates);
     }
@@ -1818,12 +1849,13 @@ class ApplicationGatewayImpl
     }
 
     /*
-     * Only V2 Gateway supports priority.
+     * Legacy Gateways don't support priority.
      */
     private boolean supportsRulePriority() {
         ApplicationGatewayTier tier = tier();
         ApplicationGatewaySkuName sku = size();
         return tier != ApplicationGatewayTier.STANDARD
+            && tier != ApplicationGatewayTier.WAF
             && sku != ApplicationGatewaySkuName.STANDARD_SMALL && sku != ApplicationGatewaySkuName.STANDARD_MEDIUM
             && sku != ApplicationGatewaySkuName.STANDARD_LARGE && sku != ApplicationGatewaySkuName.WAF_MEDIUM
             && sku != ApplicationGatewaySkuName.WAF_LARGE;

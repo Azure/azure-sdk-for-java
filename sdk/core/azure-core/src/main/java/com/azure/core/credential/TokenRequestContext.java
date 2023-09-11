@@ -114,7 +114,7 @@ public class TokenRequestContext {
      * the requested token.
      * @return the updated TokenRequestContext.
      */
-    public TokenRequestContext setEnableCae(boolean enableCae) {
+    public TokenRequestContext setCaeEnabled(boolean enableCae) {
         this.enableCae = enableCae;
         return this;
     }

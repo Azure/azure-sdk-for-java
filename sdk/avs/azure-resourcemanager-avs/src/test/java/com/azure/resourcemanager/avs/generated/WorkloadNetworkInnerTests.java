@@ -12,7 +12,7 @@ public final class WorkloadNetworkInnerTests {
     public void testDeserialize() throws Exception {
         WorkloadNetworkInner model =
             BinaryData
-                .fromString("{\"id\":\"lcuhxwtctyqiklb\",\"name\":\"ovplw\",\"type\":\"bhvgy\"}")
+                .fromString("{\"id\":\"wab\",\"name\":\"ets\",\"type\":\"hszhedplvwiwu\"}")
                 .toObject(WorkloadNetworkInner.class);
     }
 

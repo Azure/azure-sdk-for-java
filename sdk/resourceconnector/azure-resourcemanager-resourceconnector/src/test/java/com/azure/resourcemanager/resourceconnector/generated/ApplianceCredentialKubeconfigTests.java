@@ -12,7 +12,7 @@ public final class ApplianceCredentialKubeconfigTests {
     public void testDeserialize() throws Exception {
         ApplianceCredentialKubeconfig model =
             BinaryData
-                .fromString("{\"name\":\"clusterUser\",\"value\":\"rwfndiod\"}")
+                .fromString("{\"name\":\"clusterCustomerUser\",\"value\":\"xinpmqnjaq\"}")
                 .toObject(ApplianceCredentialKubeconfig.class);
     }
 

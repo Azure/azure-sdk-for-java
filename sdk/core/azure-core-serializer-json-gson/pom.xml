@@ -71,12 +71,12 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.42.0-beta.2</version> <!-- {x-version-update;com.azure:azure-core;current} -->
+      <version>1.44.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-json</artifactId>
-      <version>1.0.1</version> <!-- {x-version-update;com.azure:azure-json;dependency} -->
+      <version>1.1.0</version> <!-- {x-version-update;com.azure:azure-json;dependency} -->
     </dependency>
 
     <dependency>
@@ -88,7 +88,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-json</artifactId>
-      <version>1.0.1</version> <!-- {x-version-update;com.azure:azure-json;dependency} -->
+      <version>1.1.0</version> <!-- {x-version-update;com.azure:azure-json;dependency} -->
       <type>test-jar</type>
       <scope>test</scope>
     </dependency>
@@ -120,7 +120,7 @@
     <dependency>
       <groupId>io.projectreactor</groupId>
       <artifactId>reactor-test</artifactId>
-      <version>3.4.30</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
+      <version>3.4.31</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>

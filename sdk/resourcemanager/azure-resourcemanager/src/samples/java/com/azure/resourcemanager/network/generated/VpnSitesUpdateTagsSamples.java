@@ -11,7 +11,7 @@ import java.util.Map;
 /** Samples for VpnSites UpdateTags. */
 public final class VpnSitesUpdateTagsSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-02-01/examples/VpnSiteUpdateTags.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-05-01/examples/VpnSiteUpdateTags.json
      */
     /**
      * Sample code: VpnSiteUpdate.

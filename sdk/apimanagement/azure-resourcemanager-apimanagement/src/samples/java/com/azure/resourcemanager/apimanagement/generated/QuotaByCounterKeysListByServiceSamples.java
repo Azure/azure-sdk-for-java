@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.apimanagement.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for QuotaByCounterKeys ListByService. */
 public final class QuotaByCounterKeysListByServiceSamples {
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementGetQuotaCounterKeys.json
+     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementGetQuotaCounterKeys.json
      */
     /**
      * Sample code: ApiManagementGetQuotaCounterKeys.
@@ -18,6 +16,8 @@ public final class QuotaByCounterKeysListByServiceSamples {
      */
     public static void apiManagementGetQuotaCounterKeys(
         com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
-        manager.quotaByCounterKeys().listByServiceWithResponse("rg1", "apimService1", "ba", Context.NONE);
+        manager
+            .quotaByCounterKeys()
+            .listByServiceWithResponse("rg1", "apimService1", "ba", com.azure.core.util.Context.NONE);
     }
 }

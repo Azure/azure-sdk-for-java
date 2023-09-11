@@ -34,6 +34,7 @@ public final class DocumentModelDetailsHelper {
         void setTags(DocumentModelDetails documentModelDetails, Map<String, String> tags);
 
         void setExpiresOn(DocumentModelDetails documentModelDetails, OffsetDateTime expiresOn);
+        void setServiceVersion(DocumentModelDetails documentModelDetails, String apiVersion);
     }
 
     /**
@@ -67,5 +68,9 @@ public final class DocumentModelDetailsHelper {
 
     static void setExpiresOn(DocumentModelDetails documentModelDetails, OffsetDateTime expirationDateTime) {
         accessor.setExpiresOn(documentModelDetails, expirationDateTime);
+    }
+
+    static void setServiceVersion(DocumentModelDetails documentModelDetails, String serviceVersion) {
+        accessor.setServiceVersion(documentModelDetails, serviceVersion);
     }
 }

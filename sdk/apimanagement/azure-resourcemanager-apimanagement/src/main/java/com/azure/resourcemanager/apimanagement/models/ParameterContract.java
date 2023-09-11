@@ -69,6 +69,10 @@ public final class ParameterContract {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, ParameterExampleContract> examples;
 
+    /** Creates an instance of ParameterContract class. */
+    public ParameterContract() {
+    }
+
     /**
      * Get the name property: Parameter name.
      *

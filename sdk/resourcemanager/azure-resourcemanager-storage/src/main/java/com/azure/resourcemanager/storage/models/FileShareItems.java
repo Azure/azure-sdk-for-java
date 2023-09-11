@@ -28,6 +28,10 @@ public final class FileShareItems {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
+    /** Creates an instance of FileShareItems class. */
+    public FileShareItems() {
+    }
+
     /**
      * Get the value property: List of file shares returned.
      *

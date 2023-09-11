@@ -462,19 +462,17 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
                 FeedResponse<InternalObjectNode> feedResponse = iterator.next();
                 queryDiagnostics = feedResponse.getCosmosDiagnostics().toString();
                 if (feedResponseCounter == 0) {
-                    assertThat(queryDiagnostics).contains("QueryPlan Start Time (UTC)=");
-                    assertThat(queryDiagnostics).contains("QueryPlan End Time (UTC)=");
-                    assertThat(queryDiagnostics).contains("QueryPlan Duration (ms)=");
+                    assertThat(queryDiagnostics).contains("queryPlanDiagnosticsContext");
+                    assertThat(queryDiagnostics).contains("startTimeUTC");
+                    assertThat(queryDiagnostics).contains("endTimeUTC");
+                    assertThat(queryDiagnostics).contains("durationInMilliSecs");
                     String requestTimeLine = OBJECT_MAPPER.writeValueAsString(feedResponse.getCosmosDiagnostics().getFeedResponseDiagnostics().getQueryPlanDiagnosticsContext().getRequestTimeline());
                     assertThat(requestTimeLine).contains("connectionConfigured");
                     assertThat(requestTimeLine).contains("requestSent");
                     assertThat(requestTimeLine).contains("transitTime");
                     assertThat(requestTimeLine).contains("received");
                 } else {
-                    assertThat(queryDiagnostics).doesNotContain("QueryPlan Start Time (UTC)=");
-                    assertThat(queryDiagnostics).doesNotContain("QueryPlan End Time (UTC)=");
-                    assertThat(queryDiagnostics).doesNotContain("QueryPlan Duration (ms)=");
-                    assertThat(queryDiagnostics).doesNotContain("QueryPlan RequestTimeline =");
+                    assertThat(queryDiagnostics).contains("\"queryPlanDiagnosticsContext\":null");
                 }
                 feedResponseCounter++;
             }
@@ -841,25 +839,23 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
         Boolean qmEnabled,
         boolean expectQueryPlanDiagnostics) {
         if (qmEnabled == null || qmEnabled) {
-            assertThat(queryDiagnostics).contains("Retrieved Document Count");
-            assertThat(queryDiagnostics).contains("Query Preparation Times");
-            assertThat(queryDiagnostics).contains("Runtime Execution Times");
-            assertThat(queryDiagnostics).contains("Partition Execution Timeline");
+            assertThat(queryDiagnostics).contains("retrievedDocumentCount");
+            assertThat(queryDiagnostics).contains("queryPreparationTimes");
+            assertThat(queryDiagnostics).contains("runtimeExecutionTimes");
+            assertThat(queryDiagnostics).contains("fetchExecutionRanges");
         } else {
-            assertThat(queryDiagnostics).doesNotContain("Retrieved Document Count");
-            assertThat(queryDiagnostics).doesNotContain("Query Preparation Times");
-            assertThat(queryDiagnostics).doesNotContain("Runtime Execution Times");
-            assertThat(queryDiagnostics).doesNotContain("Partition Execution Timeline");
+            assertThat(queryDiagnostics).doesNotContain("retrievedDocumentCount");
+            assertThat(queryDiagnostics).doesNotContain("queryPreparationTimes");
+            assertThat(queryDiagnostics).doesNotContain("runtimeExecutionTimes");
+            assertThat(queryDiagnostics).doesNotContain("fetchExecutionRanges");
         }
 
         if (expectQueryPlanDiagnostics) {
-            assertThat(queryDiagnostics).contains("QueryPlan Start Time (UTC)=");
-            assertThat(queryDiagnostics).contains("QueryPlan End Time (UTC)=");
-            assertThat(queryDiagnostics).contains("QueryPlan Duration (ms)=");
+            assertThat(queryDiagnostics).contains("queryPlanDiagnosticsContext");
+            assertThat(queryDiagnostics).contains("startTimeUTC");
+            assertThat(queryDiagnostics).contains("endTimeUTC");
         } else {
-            assertThat(queryDiagnostics).doesNotContain("QueryPlan Start Time (UTC)=");
-            assertThat(queryDiagnostics).doesNotContain("QueryPlan End Time (UTC)=");
-            assertThat(queryDiagnostics).doesNotContain("QueryPlan Duration (ms)=");
+            assertThat(queryDiagnostics).contains("\"queryPlanDiagnosticsContext\":null");
         }
     }
 
@@ -1405,6 +1401,79 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
             if (faultInjectionRule != null) {
                 faultInjectionRule.disable();
             }
+            safeClose(client);
+        }
+    }
+
+    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
+    public void negativeE2ETimeoutWithPointOperation() {
+        CosmosAsyncClient client = null;
+        String databaseId = DatabaseForTest.generateId();
+
+        try {
+            client = new CosmosClientBuilder()
+                .key(TestConfigurations.MASTER_KEY)
+                .endpoint(TestConfigurations.HOST)
+                .buildAsyncClient();
+
+            createDatabase(client, databaseId);
+            CosmosAsyncContainer container = createCollection(client, databaseId, getCollectionDefinition());
+
+            TestItem testItem = TestItem.createNewItem();
+            CosmosItemRequestOptions requestOptions = new CosmosItemRequestOptions();
+            requestOptions.setCosmosEndToEndOperationLatencyPolicyConfig(
+                new CosmosEndToEndOperationLatencyPolicyConfigBuilder(Duration.ofSeconds(-1)).build()
+            );
+            container.createItem(testItem, requestOptions).block();
+            fail("This should have failed with an exception");
+        } catch(OperationCancelledException cancelledException) {
+            assertThat(cancelledException).isNotNull();
+            assertThat(cancelledException.getStatusCode()).isEqualTo(408);
+            assertThat(cancelledException.getSubStatusCode())
+                .isEqualTo(HttpConstants.SubStatusCodes.NEGATIVE_TIMEOUT_PROVIDED);
+            assertThat(cancelledException.getDiagnostics()).isNotNull();
+            logger.info("Expected request timeout: ", cancelledException);
+        }
+        finally {
+            safeClose(client);
+        }
+    }
+
+    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
+    public void negativeE2ETimeoutWithQueryOperation() {
+        CosmosAsyncClient client = null;
+        String databaseId = DatabaseForTest.generateId();
+
+        try {
+            client = new CosmosClientBuilder()
+                .key(TestConfigurations.MASTER_KEY)
+                .endpoint(TestConfigurations.HOST)
+                .buildAsyncClient();
+
+            createDatabase(client, databaseId);
+            CosmosAsyncContainer container = createCollection(client, databaseId, getCollectionDefinition());
+
+            TestItem testItem = TestItem.createNewItem();
+            container.createItem(testItem).block();
+            
+            CosmosQueryRequestOptions requestOptions = new CosmosQueryRequestOptions();
+            requestOptions.setCosmosEndToEndOperationLatencyPolicyConfig(
+                new CosmosEndToEndOperationLatencyPolicyConfigBuilder(Duration.ofSeconds(-1)).build()
+            );
+            CosmosPagedFlux<ObjectNode> flux = container.readAllItems(requestOptions, ObjectNode.class);
+            List<ObjectNode> results = flux.collectList().block();
+                
+            fail("This should have failed with an exception");
+        } catch(OperationCancelledException cancelledException) {
+            assertThat(cancelledException).isNotNull();
+            assertThat(cancelledException.getStatusCode()).isEqualTo(408);
+            assertThat(cancelledException.getSubStatusCode())
+                .isEqualTo(HttpConstants.SubStatusCodes.NEGATIVE_TIMEOUT_PROVIDED);
+            // No pending requests - so, diagnostics are not guaranteed to be there
+            // assertThat(cancelledException.getDiagnostics()).isNotNull();
+            logger.info("Expected request timeout: ", cancelledException);
+        }
+        finally {
             safeClose(client);
         }
     }

@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.apimanagement.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ApiSchema Get. */
 public final class ApiSchemaGetSamples {
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementGetApiSchema.json
+     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementGetApiSchema.json
      */
     /**
      * Sample code: ApiManagementGetApiSchema.
@@ -24,6 +22,6 @@ public final class ApiSchemaGetSamples {
                 "apimService1",
                 "59d6bb8f1f7fab13dc67ec9b",
                 "ec12520d-9d48-4e7b-8f39-698ca2ac63f1",
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

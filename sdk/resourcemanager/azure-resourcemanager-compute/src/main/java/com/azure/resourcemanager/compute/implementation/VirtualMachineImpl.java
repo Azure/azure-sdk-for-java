@@ -9,6 +9,7 @@ import com.azure.core.management.SubResource;
 import com.azure.core.management.provider.IdentifierProvider;
 import com.azure.core.management.serializer.SerializerFactory;
 import com.azure.core.util.Context;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
@@ -110,14 +111,18 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.Callable;
+import java.util.stream.Collectors;
 
 /** The implementation for VirtualMachine and its create and update interfaces. */
 class VirtualMachineImpl
@@ -1999,6 +2004,28 @@ class VirtualMachineImpl
     }
 
     @Override
+    public DeleteOptions primaryNetworkInterfaceDeleteOptions() {
+        String nicId = primaryNetworkInterfaceId();
+        return networkInterfaceDeleteOptions(nicId);
+    }
+
+    @Override
+    public DeleteOptions networkInterfaceDeleteOptions(String networkInterfaceId) {
+        if (CoreUtils.isNullOrEmpty(networkInterfaceId)
+            || this.innerModel().networkProfile() == null
+            || this.innerModel().networkProfile().networkInterfaces() == null) {
+            return null;
+        }
+        return this.innerModel().networkProfile()
+            .networkInterfaces()
+            .stream()
+            .filter(nic -> networkInterfaceId.equalsIgnoreCase(nic.id()))
+            .findAny()
+            .map(NetworkInterfaceReference::deleteOption)
+            .orElse(null);
+    }
+
+    @Override
     public VirtualMachinePriorityTypes priority() {
         return this.innerModel().priority();
     }
@@ -2175,6 +2202,7 @@ class VirtualMachineImpl
         creatableSecondaryNetworkInterfaceKeys.clear();
         existingSecondaryNetworkInterfacesToAssociate.clear();
         secondaryNetworkInterfaceDeleteOptions.clear();
+        primaryNetworkInterfaceDeleteOptions = null;
     }
 
     VirtualMachineImpl withUnmanagedDataDisk(UnmanagedDataDiskImpl dataDisk) {
@@ -2208,8 +2236,58 @@ class VirtualMachineImpl
     }
 
     @Override
+    public VirtualMachineImpl withOsDiskDeleteOptions(DeleteOptions deleteOptions) {
+        if (deleteOptions == null
+            || this.innerModel().storageProfile() == null || this.innerModel().storageProfile().osDisk() == null) {
+            return null;
+        }
+        this.innerModel().storageProfile().osDisk().withDeleteOption(diskDeleteOptionsFromDeleteOptions(deleteOptions));
+        return this;
+    }
+
+    @Override
     public VirtualMachineImpl withPrimaryNetworkInterfaceDeleteOptions(DeleteOptions deleteOptions) {
         this.primaryNetworkInterfaceDeleteOptions = deleteOptions;
+        return this;
+    }
+
+    @Override
+    public VirtualMachineImpl withNetworkInterfacesDeleteOptions(DeleteOptions deleteOptions, String... nicIds) {
+        if (nicIds == null || nicIds.length == 0) {
+            throw new IllegalArgumentException("No nicIds specified for `withNetworkInterfacesDeleteOptions`");
+        }
+        if (this.innerModel().networkProfile() != null
+            && this.innerModel().networkProfile().networkInterfaces() != null) {
+            Set<String> nicIdSet = Arrays.stream(nicIds).map(nicId -> nicId.toLowerCase(Locale.ROOT)).collect(Collectors.toSet());
+            this.innerModel().networkProfile().networkInterfaces().forEach(
+                nic -> {
+                    if (nicIdSet.contains(nic.id().toLowerCase(Locale.ROOT))) {
+                        nic.withDeleteOption(deleteOptions);
+                    }
+                }
+            );
+        }
+        return this;
+    }
+
+    @Override
+    public VirtualMachineImpl withDataDisksDeleteOptions(DeleteOptions deleteOptions, Integer... luns) {
+        if (luns == null || luns.length == 0) {
+            throw new IllegalArgumentException("No luns specified for `withDataDisksDeleteOptions`");
+        }
+        Set<Integer> lunSet = Arrays.stream(luns).filter(Objects::nonNull).collect(Collectors.toSet());
+        if (lunSet.isEmpty()) {
+            throw new IllegalArgumentException("No non-null luns specified for `withDataDisksDeleteOptions`");
+        }
+        if (this.innerModel().storageProfile() != null && this.innerModel().storageProfile().dataDisks() != null) {
+            this.innerModel().storageProfile().dataDisks().forEach(
+                dataDisk -> {
+                    if (lunSet.contains(dataDisk.lun())) {
+                        dataDisk.withDeleteOption(diskDeleteOptionsFromDeleteOptions(deleteOptions));
+                    }
+                }
+            );
+        }
         return this;
     }
 
@@ -2397,10 +2475,17 @@ class VirtualMachineImpl
                 NetworkInterfaceReference nicReference = new NetworkInterfaceReference();
                 nicReference.withPrimary(true);
                 nicReference.withId(primaryNetworkInterface.id());
-                if (this.primaryNetworkInterfaceDeleteOptions != null) {
-                    nicReference.withDeleteOption(this.primaryNetworkInterfaceDeleteOptions);
-                }
                 this.innerModel().networkProfile().networkInterfaces().add(nicReference);
+            }
+        }
+
+        // sets the delete options for primary network interface
+        if (this.primaryNetworkInterfaceDeleteOptions != null) {
+            String primaryNetworkInterfaceId = primaryNetworkInterfaceId();
+            if (primaryNetworkInterfaceId != null) {
+                this.innerModel().networkProfile().networkInterfaces().stream()
+                    .filter(nic -> primaryNetworkInterfaceId.equals(nic.id()))
+                    .forEach(nic -> nic.withDeleteOption(this.primaryNetworkInterfaceDeleteOptions));
             }
         }
 

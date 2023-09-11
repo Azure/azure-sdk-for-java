@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.apimanagement.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for GatewayHostnameConfiguration ListByService. */
 public final class GatewayHostnameConfigurationListByServiceSamples {
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementListGatewayHostnameConfigurations.json
+     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementListGatewayHostnameConfigurations.json
      */
     /**
      * Sample code: ApiManagementListGatewayHostnameConfigurations.
@@ -20,6 +18,6 @@ public final class GatewayHostnameConfigurationListByServiceSamples {
         com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
         manager
             .gatewayHostnameConfigurations()
-            .listByService("rg1", "apimService1", "gw1", null, null, null, Context.NONE);
+            .listByService("rg1", "apimService1", "gw1", null, null, null, com.azure.core.util.Context.NONE);
     }
 }

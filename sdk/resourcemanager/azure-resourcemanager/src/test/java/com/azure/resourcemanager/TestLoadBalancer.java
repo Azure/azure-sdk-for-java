@@ -621,6 +621,9 @@ public class TestLoadBalancer {
             Assertions.assertEquals(TransportProtocol.TCP, lbrule.protocol());
             Assertions.assertNotNull(lbrule.backend());
 
+            List<LoadBalancerBackend> backends = lbrule.backends();
+            Assertions.assertEquals(1, backends.size());
+
             // Verify backends
             Assertions.assertEquals(1, lb.backends().size());
             LoadBalancerBackend backend = lb.backends().values().iterator().next();
@@ -714,6 +717,9 @@ public class TestLoadBalancer {
             Assertions.assertNotNull(lbRule.probe());
             Assertions.assertEquals(tcpProbe.name(), lbRule.probe().name());
 
+            List<LoadBalancerBackend> backends = lbRule.backends();
+            Assertions.assertEquals(0, backends.size());
+
             lbRule = resource.loadBalancingRules().get("lbrule2");
             Assertions.assertNotNull(lbRule);
             Assertions.assertEquals(22, lbRule.frontendPort());
@@ -722,6 +728,10 @@ public class TestLoadBalancer {
             Assertions.assertEquals(TransportProtocol.UDP, lbRule.protocol());
             Assertions.assertNotNull(lbRule.backend());
             Assertions.assertTrue("backend2".equalsIgnoreCase(lbRule.backend().name()));
+
+            backends = lbRule.backends();
+            Assertions.assertEquals(1, backends.size());
+            Assertions.assertTrue("backend2".equalsIgnoreCase(lbRule.backends().get(0).name()));
 
             return resource;
         }
@@ -843,10 +853,9 @@ public class TestLoadBalancer {
                     .withProtocol(TransportProtocol.UDP)
                     .fromFrontend(lbRule.frontend().name())
                     .fromFrontendPort(22)
-                    .toBackend("backend2")
+                    .toBackend(backend.name())
                     .withProbe("httpprobe")
                     .attach()
-                    .withoutBackend(backend.name())
                     .withTag("tag1", "value1")
                     .withTag("tag2", "value2")
                     .apply();
@@ -880,18 +889,18 @@ public class TestLoadBalancer {
 
             // Verify backends
             Assertions.assertEquals(1, resource.backends().size());
-            Assertions.assertTrue(resource.backends().containsKey("backend2"));
-            Assertions.assertTrue(!resource.backends().containsKey(backend.name()));
+            Assertions.assertTrue(resource.backends().containsKey(backend.name()));
 
             // Verify load balancing rules
             lbRule = resource.loadBalancingRules().get("lbrule1");
             Assertions.assertNotNull(lbRule);
-            Assertions.assertNull(lbRule.backend());
             Assertions.assertEquals(8080, lbRule.backendPort());
             Assertions.assertNotNull(lbRule.frontend());
             Assertions.assertEquals(11, lbRule.idleTimeoutInMinutes());
             Assertions.assertNotNull(lbRule.probe());
             Assertions.assertEquals(tcpProbe.name(), lbRule.probe().name());
+            Assertions.assertNotNull(lbRule.backend());
+            Assertions.assertTrue(backend.name().equalsIgnoreCase(lbRule.backend().name()));
 
             lbRule = resource.loadBalancingRules().get("lbrule2");
             Assertions.assertNotNull(lbRule);
@@ -900,7 +909,7 @@ public class TestLoadBalancer {
             Assertions.assertTrue("httpprobe".equalsIgnoreCase(lbRule.probe().name()));
             Assertions.assertEquals(TransportProtocol.UDP, lbRule.protocol());
             Assertions.assertNotNull(lbRule.backend());
-            Assertions.assertTrue("backend2".equalsIgnoreCase(lbRule.backend().name()));
+            Assertions.assertTrue(backend.name().equalsIgnoreCase(lbRule.backend().name()));
 
             return resource;
         }

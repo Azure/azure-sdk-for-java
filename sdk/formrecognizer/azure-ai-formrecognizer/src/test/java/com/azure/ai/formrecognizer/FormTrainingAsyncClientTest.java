@@ -36,9 +36,6 @@ import java.util.List;
 
 import static com.azure.ai.formrecognizer.FormRecognizerClientTestBase.MODEL_ID_NOT_FOUND_ERROR_CODE;
 import static com.azure.ai.formrecognizer.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
-import static com.azure.ai.formrecognizer.TestUtils.INVALID_MODEL_ID;
-import static com.azure.ai.formrecognizer.TestUtils.INVALID_MODEL_ID_ERROR;
-import static com.azure.ai.formrecognizer.TestUtils.NULL_SOURCE_URL_ERROR;
 import static com.azure.ai.formrecognizer.implementation.Utility.toFluxByteBuffer;
 import static io.netty.handler.codec.http.HttpResponseStatus.BAD_REQUEST;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -83,28 +80,6 @@ public class FormTrainingAsyncClientTest extends FormTrainingClientTestBase {
             syncPoller.waitForCompletion();
             assertNotNull(syncPoller.getFinalResult());
         });
-    }
-
-    /**
-     * Verifies that an exception is thrown for null model Id parameter.
-     */
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-    public void getCustomModelNullModelId(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
-        client = getFormTrainingAsyncClient(httpClient, serviceVersion);
-        StepVerifier.create(client.getCustomModel(null)).verifyError();
-    }
-
-    /**
-     * Verifies that an exception is thrown for invalid model Id.
-     */
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-    public void getCustomModelInvalidModelId(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
-        client = getFormTrainingAsyncClient(httpClient, serviceVersion);
-        getCustomModelInvalidModelIdRunner(invalidModelId -> StepVerifier.create(client.getCustomModel(invalidModelId))
-            .expectErrorMatches(throwable -> throwable instanceof IllegalArgumentException
-                && throwable.getMessage().equals(INVALID_MODEL_ID_ERROR)).verify());
     }
 
     /**
@@ -198,19 +173,6 @@ public class FormTrainingAsyncClientTest extends FormTrainingClientTestBase {
             .verifyComplete();
     }
 
-    /**
-     * Verifies that an exception is thrown for invalid status model Id.
-     */
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-    public void deleteModelInvalidModelId(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
-        client = getFormTrainingAsyncClient(httpClient, serviceVersion);
-        StepVerifier.create(client.deleteModel(INVALID_MODEL_ID))
-            .expectErrorMatches(throwable -> throwable instanceof IllegalArgumentException
-                && throwable.getMessage().equals(INVALID_MODEL_ID_ERROR))
-            .verify();
-    }
-
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
     public void deleteModelValidModelIdWithResponse(HttpClient httpClient,
@@ -277,21 +239,6 @@ public class FormTrainingAsyncClientTest extends FormTrainingClientTestBase {
                 && customFormModelInfo.getTrainingStartedOn() != null
                 && customFormModelInfo.getTrainingCompletedOn() != null && customFormModelInfo.getStatus() != null)
             .verifyComplete();
-    }
-
-    /**
-     * Verifies that an exception is thrown for null source url input.
-     */
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-    public void beginTrainingNullInput(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
-        client = getFormTrainingAsyncClient(httpClient, serviceVersion);
-        NullPointerException thrown = assertThrows(
-            NullPointerException.class,
-            () -> client.beginTraining(null, false,
-                new TrainingOptions().setPollInterval(durationTestMode)).getSyncPoller().getFinalResult());
-
-        assertEquals(NULL_SOURCE_URL_ERROR, thrown.getMessage());
     }
 
     /**

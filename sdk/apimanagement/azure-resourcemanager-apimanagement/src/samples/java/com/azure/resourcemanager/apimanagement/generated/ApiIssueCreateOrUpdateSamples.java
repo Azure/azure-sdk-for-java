@@ -10,7 +10,7 @@ import java.time.OffsetDateTime;
 /** Samples for ApiIssue CreateOrUpdate. */
 public final class ApiIssueCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementCreateApiIssue.json
+     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementCreateApiIssue.json
      */
     /**
      * Sample code: ApiManagementCreateApiIssue.

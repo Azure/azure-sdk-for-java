@@ -449,7 +449,7 @@ More examples can be found at:
 - [Event Hubs Azure Storage checkpoint store samples][README-Samples-Blobs]
 
 <!-- Links -->
-[azure-messaging-eventhubs-checkpointstore-blob]: https://search.maven.org/artifact/com.azure/azure-messaging-eventhubs-checkpointstore-blob
+[azure-messaging-eventhubs-checkpointstore-blob]: https://central.sonatype.com/artifact/com.azure/azure-messaging-eventhubs-checkpointstore-blob
 [CheckpointStore]: https://azuresdkdocs.blob.core.windows.net/$web/java/azure-messaging-eventhubs/latest/com/azure/messaging/eventhubs/CheckpointStore.html
 [CreateBatchOptions]: https://azuresdkdocs.blob.core.windows.net/$web/java/azure-messaging-eventhubs/latest/com/azure/messaging/eventhubs/models/CreateBatchOptions.html
 [EventData]: https://azuresdkdocs.blob.core.windows.net/$web/java/azure-messaging-eventhubs/latest/com/azure/messaging/eventhubs/EventData.html

@@ -28,6 +28,10 @@ public class TagDescriptionBaseProperties {
     @JsonProperty(value = "externalDocsDescription")
     private String externalDocsDescription;
 
+    /** Creates an instance of TagDescriptionBaseProperties class. */
+    public TagDescriptionBaseProperties() {
+    }
+
     /**
      * Get the description property: Description of the Tag.
      *

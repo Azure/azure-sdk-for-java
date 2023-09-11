@@ -5,11 +5,9 @@ package com.azure.ai.openai.usage;
 
 import com.azure.ai.openai.OpenAIAsyncClient;
 import com.azure.ai.openai.OpenAIClientBuilder;
-import com.azure.ai.openai.models.ChatChoice;
 import com.azure.ai.openai.models.ChatCompletionsOptions;
 import com.azure.ai.openai.models.ChatMessage;
 import com.azure.ai.openai.models.ChatRole;
-import com.azure.ai.openai.models.CompletionsUsage;
 import com.azure.core.credential.AzureKeyCredential;
 
 import java.util.ArrayList;
@@ -47,24 +45,35 @@ public class GetChatCompletionsStreamAsyncSample {
         chatMessages.add(new ChatMessage(ChatRole.USER, "What's the best way to train a parrot?"));
 
         client.getChatCompletionsStream(deploymentOrModelId, new ChatCompletionsOptions(chatMessages))
-            .subscribe(chatCompletions -> {
-                System.out.printf("Model ID=%s is created at %s.%n", chatCompletions.getId(), chatCompletions.getCreatedAt());
-                for (ChatChoice choice : chatCompletions.getChoices()) {
-                    ChatMessage message = choice.getDelta();
-                    if (message != null) {
-                        System.out.printf("Index: %d, Chat Role: %s.%n", choice.getIndex(), message.getRole());
-                        System.out.println("Message:");
-                        System.out.println(message.getContent());
-                    }
-                }
+            // Remove .skip(1) when using Non-Azure OpenAI API
+            // Note: the first chat completions can be ignored when using Azure OpenAI service which is a known service bug.
+            // TODO: remove .skip(1) when service fix the issue.
+            .skip(1)
+            .map(chatCompletions -> {
+                /* The delta is the message content for a streaming response.
+                 * Subsequence of streaming delta will be like:
+                 * "delta": {
+                 *     "role": "assistant"
+                 * },
+                 * "delta": {
+                 *     "content": "Why"
+                 * },
+                 * "delta": {
+                 *     "content": " don"
+                 * },
+                 * "delta": {
+                 *     "content": "'t"
+                 * }
+                 */
+                ChatMessage delta = chatCompletions.getChoices().get(0).getDelta();
 
-                CompletionsUsage usage = chatCompletions.getUsage();
-                if (usage != null) {
-                    System.out.printf("Usage: number of prompt token is %d, "
-                            + "number of completion token is %d, and number of total tokens in request and response is %d.%n",
-                        usage.getPromptTokens(), usage.getCompletionTokens(), usage.getTotalTokens());
+                if (delta.getRole() != null) {
+                    System.out.println("Role = " + delta.getRole());
                 }
-            },
+                return delta.getContent() == null ? "" : delta.getContent();
+            })
+            .subscribe(
+                System.out::print,
                 error -> System.err.println("There was an error getting chat completions." + error),
                 () -> System.out.println("Completed called getChatCompletions."));
 

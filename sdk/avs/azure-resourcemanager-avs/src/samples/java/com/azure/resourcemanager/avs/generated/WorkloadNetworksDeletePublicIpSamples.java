@@ -7,7 +7,7 @@ package com.azure.resourcemanager.avs.generated;
 /** Samples for WorkloadNetworks DeletePublicIp. */
 public final class WorkloadNetworksDeletePublicIpSamples {
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2022-05-01/examples/WorkloadNetworks_DeletePublicIPs.json
+     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/WorkloadNetworks_DeletePublicIPs.json
      */
     /**
      * Sample code: WorkloadNetworks_DeletePublicIP.

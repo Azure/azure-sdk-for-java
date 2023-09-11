@@ -4,14 +4,13 @@
 
 package com.azure.resourcemanager.apimanagement.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.apimanagement.models.IdentityProviderContract;
 import com.azure.resourcemanager.apimanagement.models.IdentityProviderType;
 
 /** Samples for IdentityProvider Update. */
 public final class IdentityProviderUpdateSamples {
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementUpdateIdentityProvider.json
+     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementUpdateIdentityProvider.json
      */
     /**
      * Sample code: ApiManagementUpdateIdentityProvider.
@@ -23,12 +22,12 @@ public final class IdentityProviderUpdateSamples {
         IdentityProviderContract resource =
             manager
                 .identityProviders()
-                .getWithResponse("rg1", "apimService1", IdentityProviderType.FACEBOOK, Context.NONE)
+                .getWithResponse("rg1", "apimService1", IdentityProviderType.FACEBOOK, com.azure.core.util.Context.NONE)
                 .getValue();
         resource
             .update()
             .withClientId("updatedfacebookid")
-            .withClientSecret("fakeUpdatedSecretPlaceholder")
+            .withClientSecret("updatedfacebooksecret")
             .withIfMatch("*")
             .apply();
     }

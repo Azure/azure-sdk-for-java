@@ -20,11 +20,15 @@ public final class ApiManagementSkusResult {
     private List<ApiManagementSkuInner> value;
 
     /*
-     * The URI to fetch the next page of Resource Skus. Call ListNext() with
-     * this URI to fetch the next page of Resource Skus
+     * The URI to fetch the next page of Resource Skus. Call ListNext() with this URI to fetch the next page of
+     * Resource Skus
      */
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
+
+    /** Creates an instance of ApiManagementSkusResult class. */
+    public ApiManagementSkusResult() {
+    }
 
     /**
      * Get the value property: The list of skus available for the subscription.

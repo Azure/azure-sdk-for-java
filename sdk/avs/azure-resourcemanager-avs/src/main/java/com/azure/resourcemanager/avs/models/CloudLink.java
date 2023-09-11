@@ -62,11 +62,13 @@ public interface CloudLink {
     interface Definition
         extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
+
     /** The CloudLink definition stages. */
     interface DefinitionStages {
         /** The first stage of the CloudLink definition. */
         interface Blank extends WithParentResource {
         }
+
         /** The stage of the CloudLink definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
@@ -78,6 +80,7 @@ public interface CloudLink {
              */
             WithCreate withExistingPrivateCloud(String resourceGroupName, String privateCloudName);
         }
+
         /**
          * The stage of the CloudLink definition which contains all the minimum required properties for the resource to
          * be created, but also allows for any other optional properties to be specified.
@@ -98,6 +101,7 @@ public interface CloudLink {
              */
             CloudLink create(Context context);
         }
+
         /** The stage of the CloudLink definition allowing to specify linkedCloud. */
         interface WithLinkedCloud {
             /**
@@ -109,6 +113,7 @@ public interface CloudLink {
             WithCreate withLinkedCloud(String linkedCloud);
         }
     }
+
     /**
      * Begins update for the CloudLink resource.
      *
@@ -133,6 +138,7 @@ public interface CloudLink {
          */
         CloudLink apply(Context context);
     }
+
     /** The CloudLink update stages. */
     interface UpdateStages {
         /** The stage of the CloudLink update allowing to specify linkedCloud. */
@@ -146,6 +152,7 @@ public interface CloudLink {
             Update withLinkedCloud(String linkedCloud);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

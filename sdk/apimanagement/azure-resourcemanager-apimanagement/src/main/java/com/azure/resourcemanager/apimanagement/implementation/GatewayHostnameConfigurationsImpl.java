@@ -50,24 +50,13 @@ public final class GatewayHostnameConfigurationsImpl implements GatewayHostnameC
         return Utils.mapPage(inner, inner1 -> new GatewayHostnameConfigurationContractImpl(inner1, this.manager()));
     }
 
-    public void getEntityTag(String resourceGroupName, String serviceName, String gatewayId, String hcId) {
-        this.serviceClient().getEntityTag(resourceGroupName, serviceName, gatewayId, hcId);
-    }
-
     public GatewayHostnameConfigurationsGetEntityTagResponse getEntityTagWithResponse(
         String resourceGroupName, String serviceName, String gatewayId, String hcId, Context context) {
         return this.serviceClient().getEntityTagWithResponse(resourceGroupName, serviceName, gatewayId, hcId, context);
     }
 
-    public GatewayHostnameConfigurationContract get(
-        String resourceGroupName, String serviceName, String gatewayId, String hcId) {
-        GatewayHostnameConfigurationContractInner inner =
-            this.serviceClient().get(resourceGroupName, serviceName, gatewayId, hcId);
-        if (inner != null) {
-            return new GatewayHostnameConfigurationContractImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+    public void getEntityTag(String resourceGroupName, String serviceName, String gatewayId, String hcId) {
+        this.serviceClient().getEntityTag(resourceGroupName, serviceName, gatewayId, hcId);
     }
 
     public Response<GatewayHostnameConfigurationContract> getWithResponse(
@@ -85,8 +74,15 @@ public final class GatewayHostnameConfigurationsImpl implements GatewayHostnameC
         }
     }
 
-    public void delete(String resourceGroupName, String serviceName, String gatewayId, String hcId, String ifMatch) {
-        this.serviceClient().delete(resourceGroupName, serviceName, gatewayId, hcId, ifMatch);
+    public GatewayHostnameConfigurationContract get(
+        String resourceGroupName, String serviceName, String gatewayId, String hcId) {
+        GatewayHostnameConfigurationContractInner inner =
+            this.serviceClient().get(resourceGroupName, serviceName, gatewayId, hcId);
+        if (inner != null) {
+            return new GatewayHostnameConfigurationContractImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public Response<Void> deleteWithResponse(
@@ -94,6 +90,10 @@ public final class GatewayHostnameConfigurationsImpl implements GatewayHostnameC
         return this
             .serviceClient()
             .deleteWithResponse(resourceGroupName, serviceName, gatewayId, hcId, ifMatch, context);
+    }
+
+    public void delete(String resourceGroupName, String serviceName, String gatewayId, String hcId, String ifMatch) {
+        this.serviceClient().delete(resourceGroupName, serviceName, gatewayId, hcId, ifMatch);
     }
 
     public GatewayHostnameConfigurationContract getById(String id) {

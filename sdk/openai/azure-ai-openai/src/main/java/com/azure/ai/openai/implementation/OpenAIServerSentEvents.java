@@ -15,11 +15,13 @@ import java.io.UnsupportedEncodingException;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public final class OpenAIServerSentEvents<T> {
 
-    private static final String STREAM_COMPLETION_EVENT = "data: [DONE]";
+    private static final List<String> STREAM_COMPLETION_EVENT = Arrays.asList("data: [DONE]", "data:[DONE]");
+
     private static final ClientLogger LOGGER = new ClientLogger(OpenAIServerSentEvents.class);
     private final Flux<ByteBuffer> source;
     private final Class<T> type;
@@ -78,7 +80,7 @@ public final class OpenAIServerSentEvents<T> {
     }
 
     private void handleCurrentLine(String currentLine, List<T> values) throws JsonProcessingException {
-        if (currentLine.isEmpty() || STREAM_COMPLETION_EVENT.equals(currentLine)) {
+        if (currentLine.isEmpty() || STREAM_COMPLETION_EVENT.contains(currentLine)) {
             return;
         }
 

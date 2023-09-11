@@ -15,7 +15,7 @@ import java.util.Map;
 /** Samples for BmcKeySets Update. */
 public final class BmcKeySetsUpdateSamples {
     /*
-     * x-ms-original-file: specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2023-05-01-preview/examples/BmcKeySets_Patch.json
+     * x-ms-original-file: specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2023-07-01/examples/BmcKeySets_Patch.json
      */
     /**
      * Sample code: Patch baseboard management controller key set of cluster.
@@ -31,7 +31,7 @@ public final class BmcKeySetsUpdateSamples {
                 .getValue();
         resource
             .update()
-            .withTags(mapOf("key1", "myvalue1", "key2", "myvalue2"))
+            .withTags(mapOf("key1", "fakeTokenPlaceholder", "key2", "fakeTokenPlaceholder"))
             .withExpiration(OffsetDateTime.parse("2022-12-31T23:59:59.008Z"))
             .withUserList(
                 Arrays
@@ -47,6 +47,7 @@ public final class BmcKeySetsUpdateSamples {
             .apply();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

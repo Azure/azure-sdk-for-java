@@ -199,7 +199,7 @@ public class CallMediaAsyncUnitTests {
         callMedia = callConnection.getCallMediaAsync();
         StepVerifier.create(
                 callMedia.stopContinuousDtmfRecognitionWithResponse(new CommunicationUserIdentifier("id"),
-                    "operationContext")
+                    "operationContext", null)
             )
             .consumeNextWith(response -> assertEquals(200, response.getStatusCode()))
             .verifyComplete();
@@ -210,7 +210,8 @@ public class CallMediaAsyncUnitTests {
         StepVerifier.create(
                 callMedia.sendDtmfWithResponse(
                         Stream.of(DtmfTone.ONE, DtmfTone.TWO, DtmfTone.THREE).collect(Collectors.toList()), new CommunicationUserIdentifier("id"),
-                        "operationContext"
+                        "operationContext",
+                        null
                 )
             ).consumeNextWith(response -> assertEquals(202, response.getStatusCode()))
             .verifyComplete();

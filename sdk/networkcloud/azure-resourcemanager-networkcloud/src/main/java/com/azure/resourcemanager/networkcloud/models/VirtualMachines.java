@@ -121,78 +121,6 @@ public interface VirtualMachines {
     void delete(String resourceGroupName, String virtualMachineName, Context context);
 
     /**
-     * Attach volume to the virtual machine.
-     *
-     * <p>Attach volume to the provided virtual machine.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualMachineName The name of the virtual machine.
-     * @param virtualMachineAttachVolumeParameters The request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void attachVolume(
-        String resourceGroupName,
-        String virtualMachineName,
-        VirtualMachineVolumeParameters virtualMachineAttachVolumeParameters);
-
-    /**
-     * Attach volume to the virtual machine.
-     *
-     * <p>Attach volume to the provided virtual machine.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualMachineName The name of the virtual machine.
-     * @param virtualMachineAttachVolumeParameters The request body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void attachVolume(
-        String resourceGroupName,
-        String virtualMachineName,
-        VirtualMachineVolumeParameters virtualMachineAttachVolumeParameters,
-        Context context);
-
-    /**
-     * Detach volume from the virtual machine.
-     *
-     * <p>Detach volume from the provided virtual machine.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualMachineName The name of the virtual machine.
-     * @param virtualMachineDetachVolumeParameters The request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void detachVolume(
-        String resourceGroupName,
-        String virtualMachineName,
-        VirtualMachineVolumeParameters virtualMachineDetachVolumeParameters);
-
-    /**
-     * Detach volume from the virtual machine.
-     *
-     * <p>Detach volume from the provided virtual machine.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param virtualMachineName The name of the virtual machine.
-     * @param virtualMachineDetachVolumeParameters The request body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void detachVolume(
-        String resourceGroupName,
-        String virtualMachineName,
-        VirtualMachineVolumeParameters virtualMachineDetachVolumeParameters,
-        Context context);
-
-    /**
      * Power off the virtual machine.
      *
      * <p>Power off the provided virtual machine.
@@ -202,8 +130,9 @@ public interface VirtualMachines {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
-    void powerOff(String resourceGroupName, String virtualMachineName);
+    OperationStatusResult powerOff(String resourceGroupName, String virtualMachineName);
 
     /**
      * Power off the virtual machine.
@@ -217,8 +146,9 @@ public interface VirtualMachines {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
-    void powerOff(
+    OperationStatusResult powerOff(
         String resourceGroupName,
         String virtualMachineName,
         VirtualMachinePowerOffParameters virtualMachinePowerOffParameters,
@@ -234,8 +164,9 @@ public interface VirtualMachines {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
-    void reimage(String resourceGroupName, String virtualMachineName);
+    OperationStatusResult reimage(String resourceGroupName, String virtualMachineName);
 
     /**
      * Reimage the virtual machine.
@@ -248,8 +179,9 @@ public interface VirtualMachines {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
-    void reimage(String resourceGroupName, String virtualMachineName, Context context);
+    OperationStatusResult reimage(String resourceGroupName, String virtualMachineName, Context context);
 
     /**
      * Restart the virtual machine.
@@ -261,8 +193,9 @@ public interface VirtualMachines {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
-    void restart(String resourceGroupName, String virtualMachineName);
+    OperationStatusResult restart(String resourceGroupName, String virtualMachineName);
 
     /**
      * Restart the virtual machine.
@@ -275,8 +208,9 @@ public interface VirtualMachines {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
-    void restart(String resourceGroupName, String virtualMachineName, Context context);
+    OperationStatusResult restart(String resourceGroupName, String virtualMachineName, Context context);
 
     /**
      * Start the virtual machine.
@@ -288,8 +222,9 @@ public interface VirtualMachines {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
-    void start(String resourceGroupName, String virtualMachineName);
+    OperationStatusResult start(String resourceGroupName, String virtualMachineName);
 
     /**
      * Start the virtual machine.
@@ -302,8 +237,9 @@ public interface VirtualMachines {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
-    void start(String resourceGroupName, String virtualMachineName, Context context);
+    OperationStatusResult start(String resourceGroupName, String virtualMachineName, Context context);
 
     /**
      * Retrieve the virtual machine.

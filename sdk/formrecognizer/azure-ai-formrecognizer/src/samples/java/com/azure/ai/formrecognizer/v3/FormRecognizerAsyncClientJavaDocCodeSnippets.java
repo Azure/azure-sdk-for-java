@@ -121,7 +121,7 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link FormRecognizerAsyncClient#beginRecognizeCustomForms}
+     * Code snippet for {@link FormRecognizerAsyncClient#beginRecognizeCustomForms(String, Flux, long, RecognizeCustomFormsOptions)}
      *
      * @throws IOException Exception thrown when there is an error in reading all the bytes from the File.
      */
@@ -228,7 +228,7 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link FormRecognizerAsyncClient#beginRecognizeContent}
+     * Code snippet for {@link FormRecognizerAsyncClient#beginRecognizeContent(Flux, long, RecognizeContentOptions)}
      *
      * @throws IOException Exception thrown when there is an error in reading all the bytes from the File.
      */

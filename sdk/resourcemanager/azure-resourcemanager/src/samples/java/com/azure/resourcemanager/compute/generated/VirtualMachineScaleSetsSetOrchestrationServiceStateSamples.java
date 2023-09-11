@@ -11,7 +11,7 @@ import com.azure.resourcemanager.compute.models.OrchestrationServiceStateInput;
 /** Samples for VirtualMachineScaleSets SetOrchestrationServiceState. */
 public final class VirtualMachineScaleSetsSetOrchestrationServiceStateSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSet_SetOrchestrationServiceState_MinimumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-07-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSet_SetOrchestrationServiceState_MinimumSet_Gen.json
      */
     /**
      * Sample code: VirtualMachineScaleSet_SetOrchestrationServiceState_MinimumSet_Gen.
@@ -35,7 +35,7 @@ public final class VirtualMachineScaleSetsSetOrchestrationServiceStateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSet_SetOrchestrationServiceState_MaximumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-07-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSet_SetOrchestrationServiceState_MaximumSet_Gen.json
      */
     /**
      * Sample code: VirtualMachineScaleSet_SetOrchestrationServiceState_MaximumSet_Gen.

@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.apimanagement.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Product ListByTags. */
 public final class ProductListByTagsSamples {
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementListProductsByTags.json
+     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementListProductsByTags.json
      */
     /**
      * Sample code: ApiManagementListProductsByTags.
@@ -18,6 +16,6 @@ public final class ProductListByTagsSamples {
      */
     public static void apiManagementListProductsByTags(
         com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
-        manager.products().listByTags("rg1", "apimService1", null, null, null, null, Context.NONE);
+        manager.products().listByTags("rg1", "apimService1", null, null, null, null, com.azure.core.util.Context.NONE);
     }
 }

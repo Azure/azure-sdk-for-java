@@ -176,6 +176,7 @@ public class ImplementationBridgeHelpers {
 
         public interface PartitionKeyAccessor {
             PartitionKey toPartitionKey(PartitionKeyInternal partitionKeyInternal);
+            PartitionKey toPartitionKey(Object objectKey, PartitionKeyInternal partitionKeyInternal);
         }
     }
 

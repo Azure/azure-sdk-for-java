@@ -250,6 +250,20 @@
         },
         {
           "regex": true,
+          "code": "java.annotation.removed",
+          "old": "class com.azure.spring.cloud.autoconfigure.aad.configuration.(AadResourceServerConfiguration.DefaultAadResourceServerWebSecurityConfigurerAdapter|AadWebApplicationConfiguration.DefaultAadWebSecurityConfigurerAdapter)",
+          "new": "class com.azure.spring.cloud.autoconfigure.aad.configuration.(AadResourceServerConfiguration.DefaultAadResourceServerWebSecurityConfigurerAdapter|AadWebApplicationConfiguration.DefaultAadWebSecurityConfigurerAdapter)",
+          "justification": "Element no longer annotated with 'org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean'."
+        },
+        {
+          "regex": true,
+          "code" : "java.annotation.added",
+          "old" : "class com.azure.spring.cloud.autoconfigure.aad.configuration.(AadResourceServerConfiguration.DefaultAadResourceServerWebSecurityConfigurerAdapter|AadWebApplicationConfiguration.DefaultAadWebSecurityConfigurerAdapter)",
+          "new" : "class com.azure.spring.cloud.autoconfigure.aad.configuration.(AadResourceServerConfiguration.DefaultAadResourceServerWebSecurityConfigurerAdapter|AadWebApplicationConfiguration.DefaultAadWebSecurityConfigurerAdapter)",
+          "justification": "Element newly annotated with 'org.springframework.boot.autoconfigure.security.ConditionalOnDefaultWebSecurity"
+        },
+        {
+          "regex": true,
           "code": "java\\.annotation\\.removed",
           "old": ".*? com\\.azure\\.security\\.keyvault\\.administration\\.models.*",
           "justification": "Removing Jackson annotations from KeyVault Administration in transition to stream-style."

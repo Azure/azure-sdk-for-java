@@ -123,7 +123,7 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2023-03-01";
+        final String apiVersion = "2023-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -176,7 +176,7 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2023-03-01";
+        final String apiVersion = "2023-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -386,7 +386,7 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2023-03-01";
+        final String apiVersion = "2023-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -438,7 +438,7 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2023-03-01";
+        final String apiVersion = "2023-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

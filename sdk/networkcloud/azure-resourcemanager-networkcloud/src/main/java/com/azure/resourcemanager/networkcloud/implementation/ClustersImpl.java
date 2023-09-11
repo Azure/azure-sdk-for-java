@@ -11,10 +11,12 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.networkcloud.fluent.ClustersClient;
 import com.azure.resourcemanager.networkcloud.fluent.models.ClusterInner;
+import com.azure.resourcemanager.networkcloud.fluent.models.OperationStatusResultInner;
 import com.azure.resourcemanager.networkcloud.models.Cluster;
 import com.azure.resourcemanager.networkcloud.models.ClusterDeployParameters;
 import com.azure.resourcemanager.networkcloud.models.ClusterUpdateVersionParameters;
 import com.azure.resourcemanager.networkcloud.models.Clusters;
+import com.azure.resourcemanager.networkcloud.models.OperationStatusResult;
 
 public final class ClustersImpl implements Clusters {
     private static final ClientLogger LOGGER = new ClientLogger(ClustersImpl.class);
@@ -81,29 +83,52 @@ public final class ClustersImpl implements Clusters {
         this.serviceClient().delete(resourceGroupName, clusterName, context);
     }
 
-    public void deploy(String resourceGroupName, String clusterName) {
-        this.serviceClient().deploy(resourceGroupName, clusterName);
+    public OperationStatusResult deploy(String resourceGroupName, String clusterName) {
+        OperationStatusResultInner inner = this.serviceClient().deploy(resourceGroupName, clusterName);
+        if (inner != null) {
+            return new OperationStatusResultImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
-    public void deploy(
+    public OperationStatusResult deploy(
         String resourceGroupName,
         String clusterName,
         ClusterDeployParameters clusterDeployParameters,
         Context context) {
-        this.serviceClient().deploy(resourceGroupName, clusterName, clusterDeployParameters, context);
+        OperationStatusResultInner inner =
+            this.serviceClient().deploy(resourceGroupName, clusterName, clusterDeployParameters, context);
+        if (inner != null) {
+            return new OperationStatusResultImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
-    public void updateVersion(
+    public OperationStatusResult updateVersion(
         String resourceGroupName, String clusterName, ClusterUpdateVersionParameters clusterUpdateVersionParameters) {
-        this.serviceClient().updateVersion(resourceGroupName, clusterName, clusterUpdateVersionParameters);
+        OperationStatusResultInner inner =
+            this.serviceClient().updateVersion(resourceGroupName, clusterName, clusterUpdateVersionParameters);
+        if (inner != null) {
+            return new OperationStatusResultImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
-    public void updateVersion(
+    public OperationStatusResult updateVersion(
         String resourceGroupName,
         String clusterName,
         ClusterUpdateVersionParameters clusterUpdateVersionParameters,
         Context context) {
-        this.serviceClient().updateVersion(resourceGroupName, clusterName, clusterUpdateVersionParameters, context);
+        OperationStatusResultInner inner =
+            this.serviceClient().updateVersion(resourceGroupName, clusterName, clusterUpdateVersionParameters, context);
+        if (inner != null) {
+            return new OperationStatusResultImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public Cluster getById(String id) {

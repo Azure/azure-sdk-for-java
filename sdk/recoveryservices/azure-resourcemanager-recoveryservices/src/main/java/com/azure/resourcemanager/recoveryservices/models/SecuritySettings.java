@@ -16,6 +16,18 @@ public final class SecuritySettings {
     @JsonProperty(value = "immutabilitySettings")
     private ImmutabilitySettings immutabilitySettings;
 
+    /*
+     * Soft delete Settings of a vault
+     */
+    @JsonProperty(value = "softDeleteSettings")
+    private SoftDeleteSettings softDeleteSettings;
+
+    /*
+     * MUA Settings of a vault
+     */
+    @JsonProperty(value = "multiUserAuthorization", access = JsonProperty.Access.WRITE_ONLY)
+    private MultiUserAuthorization multiUserAuthorization;
+
     /** Creates an instance of SecuritySettings class. */
     public SecuritySettings() {
     }
@@ -41,6 +53,35 @@ public final class SecuritySettings {
     }
 
     /**
+     * Get the softDeleteSettings property: Soft delete Settings of a vault.
+     *
+     * @return the softDeleteSettings value.
+     */
+    public SoftDeleteSettings softDeleteSettings() {
+        return this.softDeleteSettings;
+    }
+
+    /**
+     * Set the softDeleteSettings property: Soft delete Settings of a vault.
+     *
+     * @param softDeleteSettings the softDeleteSettings value to set.
+     * @return the SecuritySettings object itself.
+     */
+    public SecuritySettings withSoftDeleteSettings(SoftDeleteSettings softDeleteSettings) {
+        this.softDeleteSettings = softDeleteSettings;
+        return this;
+    }
+
+    /**
+     * Get the multiUserAuthorization property: MUA Settings of a vault.
+     *
+     * @return the multiUserAuthorization value.
+     */
+    public MultiUserAuthorization multiUserAuthorization() {
+        return this.multiUserAuthorization;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -48,6 +89,9 @@ public final class SecuritySettings {
     public void validate() {
         if (immutabilitySettings() != null) {
             immutabilitySettings().validate();
+        }
+        if (softDeleteSettings() != null) {
+            softDeleteSettings().validate();
         }
     }
 }

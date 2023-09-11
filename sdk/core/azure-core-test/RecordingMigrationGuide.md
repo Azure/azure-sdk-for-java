@@ -52,7 +52,7 @@ either directly from an `azure-sdk-tools` repo clone or with a local download of
 your current working directory, use the following PowerShell command:
 
 ```PowerShell
-Invoke-WebRequest -OutFile "generate-assets-json.ps1" https://raw.githubusercontent.com/Azure/azure-sdk-for-java/eng/common/testproxy/transition-scripts/generate-assets-json.ps1
+Invoke-WebRequest -OutFile "generate-assets-json.ps1" https://raw.githubusercontent.com/Azure/azure-sdk-for-java/main/eng/common/testproxy/onboarding/generate-assets-json.ps1
 ```
 
 ### Migration script prerequisites
@@ -116,8 +116,8 @@ primary ways:
 
 [azure_sdk_assets]: https://github.com/Azure/azure-sdk-assets
 [detailed_docs]: https://github.com/Azure/azure-sdk-tools/blob/main/tools/test-proxy/documentation/asset-sync/README.md
-[generate_assets_json]: https://github.com/Azure/azure-sdk-for-java/blob/main/eng/common/testproxy/transition-scripts/generate-assets-json.ps1
+[generate_assets_json]: https://github.com/Azure/azure-sdk-tools/blob/main/eng/common/testproxy/onboarding/generate-assets-json.ps1
 [git_setup]: https://git-scm.com/book/en/v2/Getting-Started-First-Time-Git-Setup
 [git_token]: https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token
 [powershell]: https://learn.microsoft.com/powershell/scripting/install/installing-powershell?view=powershell-latest
-[transition_script]: https://github.com/Azure/azure-sdk-for-java/tree/main/eng/common/testproxy/transition-scripts
+[transition_script]: https://github.com/Azure/azure-sdk-for-java/blob/main/eng/common/testproxy/onboarding/README.me

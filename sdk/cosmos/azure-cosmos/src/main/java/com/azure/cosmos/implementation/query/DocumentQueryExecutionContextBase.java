@@ -259,10 +259,15 @@ implements IDocumentQueryExecutionContext<T> {
             requestHeaders.put(HttpConstants.HttpHeaders.POPULATE_QUERY_METRICS, String.valueOf(cosmosQueryRequestOptions.isQueryMetricsEnabled()));
         }
 
-        if (cosmosQueryRequestOptions.getDedicatedGatewayRequestOptions() != null &&
-            cosmosQueryRequestOptions.getDedicatedGatewayRequestOptions().getMaxIntegratedCacheStaleness() != null) {
-            requestHeaders.put(HttpConstants.HttpHeaders.DEDICATED_GATEWAY_PER_REQUEST_CACHE_STALENESS,
-                String.valueOf(Utils.getMaxIntegratedCacheStalenessInMillis(cosmosQueryRequestOptions.getDedicatedGatewayRequestOptions())));
+        if (cosmosQueryRequestOptions.getDedicatedGatewayRequestOptions() != null) {
+            if (cosmosQueryRequestOptions.getDedicatedGatewayRequestOptions().getMaxIntegratedCacheStaleness() != null) {
+                requestHeaders.put(HttpConstants.HttpHeaders.DEDICATED_GATEWAY_PER_REQUEST_CACHE_STALENESS,
+                    String.valueOf(Utils.getMaxIntegratedCacheStalenessInMillis(cosmosQueryRequestOptions.getDedicatedGatewayRequestOptions())));
+            }
+            if (cosmosQueryRequestOptions.getDedicatedGatewayRequestOptions().isIntegratedCacheBypassed()) {
+                requestHeaders.put(HttpConstants.HttpHeaders.DEDICATED_GATEWAY_PER_REQUEST_BYPASS_CACHE,
+                    String.valueOf(cosmosQueryRequestOptions.getDedicatedGatewayRequestOptions().isIntegratedCacheBypassed()));
+            }
         }
 
         if (cosmosQueryRequestOptions.isIndexMetricsEnabled()) {

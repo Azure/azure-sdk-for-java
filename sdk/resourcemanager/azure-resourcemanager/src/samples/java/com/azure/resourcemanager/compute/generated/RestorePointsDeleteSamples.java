@@ -7,7 +7,7 @@ package com.azure.resourcemanager.compute.generated;
 /** Samples for RestorePoints Delete. */
 public final class RestorePointsDeleteSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/restorePointExamples/RestorePoint_Delete_MinimumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-07-01/examples/restorePointExamples/RestorePoint_Delete_MinimumSet_Gen.json
      */
     /**
      * Sample code: RestorePoint_Delete_MinimumSet_Gen.
@@ -24,7 +24,7 @@ public final class RestorePointsDeleteSamples {
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/restorePointExamples/RestorePoint_Delete_MaximumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-07-01/examples/restorePointExamples/RestorePoint_Delete_MaximumSet_Gen.json
      */
     /**
      * Sample code: RestorePoint_Delete_MaximumSet_Gen.

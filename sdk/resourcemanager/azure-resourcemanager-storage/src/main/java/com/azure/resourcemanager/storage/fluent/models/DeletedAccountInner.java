@@ -4,18 +4,22 @@
 
 package com.azure.resourcemanager.storage.fluent.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.management.ProxyResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Deleted storage account. */
-@Fluent
+@Immutable
 public final class DeletedAccountInner extends ProxyResource {
     /*
      * Properties of the deleted account.
      */
     @JsonProperty(value = "properties")
     private DeletedAccountProperties innerProperties;
+
+    /** Creates an instance of DeletedAccountInner class. */
+    public DeletedAccountInner() {
+    }
 
     /**
      * Get the innerProperties property: Properties of the deleted account.

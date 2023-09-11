@@ -17,6 +17,15 @@ public final class LeaseStatus extends ExpandableStringEnum<LeaseStatus> {
     public static final LeaseStatus UNLOCKED = fromString("Unlocked");
 
     /**
+     * Creates a new instance of LeaseStatus value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public LeaseStatus() {
+    }
+
+    /**
      * Creates or finds a LeaseStatus from its string representation.
      *
      * @param name a name to look for.
