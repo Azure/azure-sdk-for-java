@@ -10,29 +10,39 @@ public class JsonNumber extends JsonElement {
      * Stores the String representation of the current state of the JsonNumber
      * object.
      */
-    private String numberValue;
+    private Number numberValue;
 
     /**
      * Default constructor.
      * Default sets numberValue to "0" through the other constructor.
-     * 
+     *
      * TODO: may need to remove this due to design guidelines? May only want to
      * have the public JsonNumber(Number value) constructor.
-     * 
+     *
      * TODO: may need to double check that 0 is correctly cast to a Number type
      */
     public JsonNumber() { this(0); }
 
-    public JsonNumber(String value) { this.numberValue = value; }
+    public JsonNumber(String value) {
+        try {
+            this.numberValue = Integer.parseInt(value);
+        } catch (Exception e){
+            try {
+                this.numberValue = Float.parseFloat(value);
+            } catch (Exception x){
+                x.printStackTrace();
+            }
+        }
+    }
 
     /**
      * Constructor used to explicitly set the number value of the JsonNumber object
      *
      * @param value specifies the number this JsonNumber object represents
-     * 
+     *
      * TODO: check for invalid number values or types
      */
-    public JsonNumber(Number value) { this.numberValue = value.toString(); }
+    public JsonNumber(Number value) { this.numberValue = value; }
 
     /**
      * Returns the String representation of the JsonNumber object
@@ -41,7 +51,7 @@ public class JsonNumber extends JsonElement {
      * current state of this JsonNumber object.
      */
     @Override
-    public String toString() { return this.numberValue; }
+    public String toString() { return this.numberValue.toString(); }
 
     /**
      * @return boolean of whether this JsonElement object is of type JsonNumber.
@@ -60,17 +70,17 @@ public class JsonNumber extends JsonElement {
 
     */
 
-    /** 
-     * @param jsonWriter JsonWriter that the serialized JsonNumber is written to. 
-     * @return JsonWriter state after the serialized JsonNumber has been written 
-     * to it. 
-     * @throws IOException Thrown when JsonWriter.write* calls throw an IOException. 
-     * 
+    /**
+     * @param jsonWriter JsonWriter that the serialized JsonNumber is written to.
+     * @return JsonWriter state after the serialized JsonNumber has been written
+     * to it.
+     * @throws IOException Thrown when JsonWriter.write* calls throw an IOException.
+     *
      * TODO: this needs to be extended to consider all of the number values
      */
     @Override
     public JsonWriter serialize(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeInt(Integer.parseInt(this.numberValue));
+        jsonWriter.writeInt(this.numberValue.intValue());
         return jsonWriter;
     }
 }
