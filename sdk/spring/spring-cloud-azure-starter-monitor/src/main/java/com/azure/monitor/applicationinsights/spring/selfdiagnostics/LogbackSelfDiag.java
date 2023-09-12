@@ -47,8 +47,7 @@ class LogbackSelfDiag implements CommandLineRunner {
 
     private static List<Appender<ILoggingEvent>> findLogAppenders(LoggerContext loggerFactorySpi) {
         List<Appender<ILoggingEvent>> appenders = new ArrayList<>();
-        LoggerContext loggerContext = loggerFactorySpi;
-        for (ch.qos.logback.classic.Logger logger : loggerContext.getLoggerList()) {
+        for (ch.qos.logback.classic.Logger logger : loggerFactorySpi.getLoggerList()) {
             logger
                     .iteratorForAppenders()
                     .forEachRemaining(
