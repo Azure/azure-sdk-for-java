@@ -113,19 +113,25 @@ consumer requests more data until the consumer finishes processing or all pages 
 `PollerFlux` manages sending an initial service request and requesting processing updates on a fix interval until
 polling is cancelled or reaches a terminal state.
 
-### Configuring Client Builders
+### Configuring Builders
 
-Client builders are used to create service clients. They can be configured with a variety of options, including
-`HttpPipeline` and `HttpClient` for HTTP-based service clients and more general options such as `Configuration` and
-`endpoint`. To allow for simpler integration into frameworks such as Spring and to allow generic methods to be used
-for all client builders `azure-core` provides a set of interfaces that can be implemented to provide the necessary
-functionality.
+Builders are used to create service clients and some `TokenCredential` implementations. They can be configured with a 
+variety of options, including `HttpPipeline` and `HttpClient` for HTTP-based clients and more general options such as 
+`Configuration` and`endpoint`. To allow for simpler integration into frameworks such as Spring and to allow generic 
+methods to be used for all builders `azure-core` provides a set of interfaces that can be implemented to provide
+the necessary functionality.
 
 #### HttpTrait<T>
 
-`HttpTrait<T>` contains methods for setting key configurations for HTTP-based service clients. This interface will allow
-you to configure the `HttpClient`, `HttpPipeline`, `HttpPipelinePolicy`s, `RetryOptions`, `HttpLogOptions`, and
-`ClientOptions` (preferable `HttpClientOptions` as it is more specific for HTTP-based service clients).
+`HttpTrait<T>` contains methods for setting key configurations for HTTP-based clients. This interface will allow you to
+configure the `HttpClient`, `HttpPipeline`, `HttpPipelinePolicy`s, `RetryOptions`, `HttpLogOptions`, and `ClientOptions` 
+(preferably `HttpClientOptions` as it is more specific for HTTP-based service clients).
+
+For builders that expose `HttpTrait<T>`, if an `HttpPipeline` or `HttpClient` isn't set a default instance will be 
+created based on classpath configurations and the `ClientOptions` based to the builder. This can cause confusion if 
+you're expecting specific behavior for your client, such as using a proxy that wasn't loaded from the environment. To 
+avoid this, it is recommended to always set the `HttpPipeline` or `HttpClient` in all clients if you're building if your 
+configurations aren't based on the environment running the application.
 
 #### Credential Traits
 
