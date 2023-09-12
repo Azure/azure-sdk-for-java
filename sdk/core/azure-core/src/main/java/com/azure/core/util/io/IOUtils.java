@@ -31,6 +31,10 @@ public final class IOUtils {
     private static final ClientLogger LOGGER = new ClientLogger(IOUtils.class);
 
     private static final int DEFAULT_BUFFER_SIZE = 8192;
+    private static final int SIXTY_FOUR_KB = 64 * 1024;
+    private static final int THIRTY_TWO_KB = 32 * 1024;
+    private static final int MB = 1024 * 1024;
+    private static final int GB = 1024 * MB;
 
     /**
      * Adapts {@link AsynchronousFileChannel} to {@link AsynchronousByteChannel}.
@@ -245,10 +249,10 @@ public final class IOUtils {
     }
 
     private static int getBufferSize(long dataSize) {
-        if (dataSize > 1024 * 1024 * 1024) {
-            return 65536;
-        } else if (dataSize > 1024 * 1024) {
-            return 32768;
+        if (dataSize > GB) {
+            return SIXTY_FOUR_KB;
+        } else if (dataSize > MB) {
+            return THIRTY_TWO_KB;
         } else {
             return DEFAULT_BUFFER_SIZE;
         }
