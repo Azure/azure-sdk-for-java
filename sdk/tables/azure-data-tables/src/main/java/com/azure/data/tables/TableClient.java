@@ -837,7 +837,7 @@ public final class TableClient {
 
         String finalETag = ifUnchanged ? eTag : "*";
 
-        if (isNullOrEmpty(partitionKey) || isNullOrEmpty(rowKey)) {
+        if (partitionKey == null || rowKey == null) {
             throw logger.logExceptionAsError(new IllegalArgumentException("'partitionKey' and 'rowKey' cannot be null"));
         }
 
