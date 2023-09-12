@@ -14,6 +14,7 @@ import java.util.Map;
 
 import static com.azure.data.appconfiguration.models.FeatureFlagConfigurationSetting.KEY_PREFIX;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class FeatureFlagSettingUnitTest {
@@ -94,8 +95,15 @@ public class FeatureFlagSettingUnitTest {
         FeatureFlagConfigurationSetting setting = getFeatureFlagConfigurationSetting(NEW_KEY, DESCRIPTION_VALUE,
             DISPLAY_NAME_VALUE, IS_ENABLED, featureFlagFilters);
 
-        // Throws IllegalStateException when setting value to non-JSON
-        assertThrows(IllegalStateException.class, () -> setting.setValue("Hello World"));
+        // User are still able to set the non-feature flag value as configuration setting value. However, when user
+        // try to get a feature flag property, it will throw exception.
+        setting.setValue("Hello World");
+
+        assertThrows(IllegalArgumentException.class, () -> setting.getFeatureId());
+        assertThrows(IllegalArgumentException.class, () -> setting.getDescription());
+        assertThrows(IllegalArgumentException.class, () -> setting.getDisplayName());
+        assertThrows(IllegalArgumentException.class, () -> setting.isEnabled());
+        assertThrows(IllegalArgumentException.class, () -> setting.getClientFilters());
     }
 
     @Test

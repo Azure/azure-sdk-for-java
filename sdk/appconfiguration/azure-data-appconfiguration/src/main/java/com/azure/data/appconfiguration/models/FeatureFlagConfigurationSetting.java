@@ -15,8 +15,8 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -47,7 +47,7 @@ public final class FeatureFlagConfigurationSetting extends ConfigurationSetting 
     private String originalValue;
     private boolean isValidValue;
 
-    private final Map<String, Object> parsedProperties = new HashMap<>(10);
+    private final Map<String, Object> parsedProperties = new LinkedHashMap<>(10);
 
     private final List<String> requiredJsonProperties = Arrays.asList(ID, ENABLED, CONDITIONS);
     private final List<String> allJsonProperties = Arrays.asList(ID, DESCRIPTION, DISPLAY_NAME, ENABLED, CONDITIONS);
@@ -77,13 +77,12 @@ public final class FeatureFlagConfigurationSetting extends ConfigurationSetting 
     public String getValue() {
         // Lazily update: only update the all property values when the user call this getValue() method.
 
-
         // Case 0: If the value wasn't valid, return it verbatim.
         if (!isValidValue) {
             return originalValue;
         }
 
-        final Set<String> knownProperties = new HashSet<>(allJsonProperties);
+        final Set<String> knownProperties = new LinkedHashSet<>(allJsonProperties);
         try {
             final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
             final JsonWriter writer = JsonProviders.createWriter(outputStream);
@@ -206,29 +205,57 @@ public final class FeatureFlagConfigurationSetting extends ConfigurationSetting 
     private boolean tryParseValue(String value) {
         parsedProperties.clear();
 
-        final Set<String> requiredPropertiesCopy = new HashSet<>(requiredJsonProperties);
+        final Set<String> requiredPropertiesCopy = new LinkedHashSet<>(requiredJsonProperties);
         try (JsonReader jsonReader = JsonProviders.createReader(value)) {
             return jsonReader.readObject(reader -> {
+
+                String featureIdCopy = this.featureId;
+                String descriptionCopy = this.description;
+                String displayNameCopy = this.displayName;
+                boolean isEnabledCopy = this.isEnabled;
+                List<FeatureFlagFilter> featureFlagFiltersCopy = this.clientFilters;
+
                 while (reader.nextToken() != JsonToken.END_OBJECT) {
                     final String fieldName = reader.getFieldName();
                     reader.nextToken();
 
                     if (ID.equals(fieldName)) {
-                        parsedProperties.put(ID, reader.getString());
+                        final String id = reader.getString();
+                        featureIdCopy = id;
+                        parsedProperties.put(ID, id);
+
                     } else if (DESCRIPTION.equals(fieldName)) {
-                        parsedProperties.put(DESCRIPTION, reader.getString());
+                        final String description = reader.getString();
+                        descriptionCopy = description;
+                        parsedProperties.put(DESCRIPTION, description);
                     } else if (DISPLAY_NAME.equals(fieldName)) {
-                        parsedProperties.put(DISPLAY_NAME, reader.getString());
+                        final String displayName = reader.getString();
+                        displayNameCopy = displayName;
+                        parsedProperties.put(DISPLAY_NAME, displayName);
                     } else if (ENABLED.equals(fieldName)) {
-                        parsedProperties.put(ENABLED, reader.getBoolean());
+                        final boolean isEnabled = reader.getBoolean();
+                        isEnabledCopy = isEnabled;
+                        parsedProperties.put(ENABLED, isEnabled);
                     } else if (CONDITIONS.equals(fieldName)) {
-                        parsedProperties.put(CONDITIONS, readConditions(reader));
+                        final Conditions conditions = readConditions(reader);
+                        if (conditions != null) {
+                            List<FeatureFlagFilter> featureFlagFilters = conditions.getFeatureFlagFilters();
+                            featureFlagFiltersCopy = featureFlagFilters;
+                            parsedProperties.put(CONDITIONS, conditions);
+                        }
                     } else {
                         // The extension property is possible, we should not skip it.
                         parsedProperties.put(fieldName, reader.readUntyped());
                     }
                     requiredPropertiesCopy.remove(fieldName);
                 }
+
+                this.featureId = featureIdCopy;
+                this.description = descriptionCopy;
+                this.displayName = displayNameCopy;
+                this.isEnabled = isEnabledCopy;
+                this.clientFilters = featureFlagFiltersCopy;
+
                 return requiredPropertiesCopy.isEmpty();
             });
         } catch (IOException e) {
