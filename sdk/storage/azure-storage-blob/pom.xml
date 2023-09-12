@@ -56,6 +56,7 @@
       --add-reads com.azure.storage.internal.avro=ALL-UNNAMED
     </javaModulesSurefireArgLine>
     <graalvm.disable>false</graalvm.disable>
+    <parallelizeLiveTests>true</parallelizeLiveTests>
   </properties>
 
   <dependencies>
@@ -112,7 +113,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.10.0</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.10.1</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
