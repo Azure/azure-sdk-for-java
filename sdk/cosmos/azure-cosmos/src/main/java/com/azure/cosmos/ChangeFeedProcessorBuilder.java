@@ -13,6 +13,7 @@ import com.azure.cosmos.util.Beta;
 import com.fasterxml.jackson.databind.JsonNode;
 
 import java.util.List;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
@@ -62,7 +63,9 @@ public class ChangeFeedProcessorBuilder {
     private ChangeFeedProcessorOptions changeFeedProcessorOptions;
     private Consumer<List<JsonNode>> incrementalModeLeaseConsumerPkRangeIdVersion;
     private Consumer<List<ChangeFeedProcessorItem>> incrementalModeLeaseConsumerEpkVersion;
+    private BiConsumer<List<ChangeFeedProcessorItem>, ChangeFeedProcessorContext<ChangeFeedProcessorItem>> incrementalModeLeaseConsumerWithContextEpkVersion;
     private Consumer<List<ChangeFeedProcessorItem>> fullFidelityModeLeaseConsumer;
+    private BiConsumer<List<ChangeFeedProcessorItem>, ChangeFeedProcessorContext<ChangeFeedProcessorItem>> fullFidelityModeLeaseWithContextConsumer;
     private ChangeFeedMode changeFeedMode = ChangeFeedMode.INCREMENTAL;
     private LeaseVersion leaseVersion = LeaseVersion.PARTITION_KEY_BASED_LEASE;
 
@@ -165,6 +168,22 @@ public class ChangeFeedProcessorBuilder {
         return this;
     }
 
+    public ChangeFeedProcessorBuilder handleLatestVersionChanges(BiConsumer<List<ChangeFeedProcessorItem>, ChangeFeedProcessorContext<ChangeFeedProcessorItem>> biConsumer) {
+
+        checkArgument(
+            this.incrementalModeLeaseConsumerPkRangeIdVersion == null,
+            "handleChanges consumer has already been defined");
+        checkArgument(
+            this.incrementalModeLeaseConsumerEpkVersion == null,
+            "handleLatestVersionChanges consumer has already been defined");
+        checkNotNull(biConsumer, "Argument 'biConsumer' can not be null");
+
+        this.incrementalModeLeaseConsumerWithContextEpkVersion = biConsumer;
+        this.changeFeedMode = ChangeFeedMode.INCREMENTAL;
+        this.leaseVersion = LeaseVersion.EPK_RANGE_BASED_LEASE;
+        return this;
+    }
+
     /**
      * Sets a consumer function which will be called to process changes for AllVersionsAndDeletes change feed mode.
      *
@@ -184,6 +203,16 @@ public class ChangeFeedProcessorBuilder {
     @Beta(value = Beta.SinceVersion.V4_37_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public ChangeFeedProcessorBuilder handleAllVersionsAndDeletesChanges(Consumer<List<ChangeFeedProcessorItem>> consumer) {
         this.fullFidelityModeLeaseConsumer = consumer;
+        this.changeFeedMode = ChangeFeedMode.FULL_FIDELITY;
+        this.leaseVersion = LeaseVersion.EPK_RANGE_BASED_LEASE;
+        return this;
+    }
+
+
+    public ChangeFeedProcessorBuilder handleAllVersionsAndDeletesChanges(
+        BiConsumer<List<ChangeFeedProcessorItem>, ChangeFeedProcessorContext<ChangeFeedProcessorItem>> biConsumer) {
+
+        this.fullFidelityModeLeaseWithContextConsumer = biConsumer;
         this.changeFeedMode = ChangeFeedMode.FULL_FIDELITY;
         this.leaseVersion = LeaseVersion.EPK_RANGE_BASED_LEASE;
         return this;
@@ -225,20 +254,40 @@ public class ChangeFeedProcessorBuilder {
         if (this.leaseVersion == LeaseVersion.EPK_RANGE_BASED_LEASE) {
             switch (this.changeFeedMode) {
                 case FULL_FIDELITY:
-                    changeFeedProcessor = new FullFidelityChangeFeedProcessorImpl(
+
+                    if (this.fullFidelityModeLeaseConsumer != null) {
+                        changeFeedProcessor = new FullFidelityChangeFeedProcessorImpl(
                             this.hostName,
                             this.feedContainer,
                             this.leaseContainer,
                             this.fullFidelityModeLeaseConsumer,
                             this.changeFeedProcessorOptions);
+                    } else if (this.fullFidelityModeLeaseWithContextConsumer != null) {
+                        changeFeedProcessor = new FullFidelityChangeFeedProcessorImpl(
+                            this.hostName,
+                            this.feedContainer,
+                            this.leaseContainer,
+                            this.fullFidelityModeLeaseWithContextConsumer,
+                            this.changeFeedProcessorOptions);
+                    }
                     break;
                 case INCREMENTAL:
-                    changeFeedProcessor = new com.azure.cosmos.implementation.changefeed.epkversion.IncrementalChangeFeedProcessorImpl(
+
+                    if (this.incrementalModeLeaseConsumerEpkVersion != null) {
+                        changeFeedProcessor = new com.azure.cosmos.implementation.changefeed.epkversion.IncrementalChangeFeedProcessorImpl(
                             this.hostName,
                             this.feedContainer,
                             this.leaseContainer,
                             this.incrementalModeLeaseConsumerEpkVersion,
                             this.changeFeedProcessorOptions);
+                    } else if (this.fullFidelityModeLeaseWithContextConsumer != null) {
+                        changeFeedProcessor = new com.azure.cosmos.implementation.changefeed.epkversion.IncrementalChangeFeedProcessorImpl(
+                            this.hostName,
+                            this.feedContainer,
+                            this.leaseContainer,
+                            this.incrementalModeLeaseConsumerWithContextEpkVersion,
+                            this.changeFeedProcessorOptions);
+                    }
                     break;
                 default:
                     throw new IllegalStateException("ChangeFeed mode " + this.changeFeedMode + " is not supported");
