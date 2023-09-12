@@ -2,6 +2,9 @@ package com.azure.json;
 
 
 import org.junit.jupiter.api.*;
+
+import java.io.IOException;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public class JsonTesting {
@@ -66,49 +69,49 @@ public class JsonTesting {
     }
 
     @Test
-    public void convertJsonStringToNumber(){
+    public void convertJsonStringToNumber() throws IOException {
         JsonElement test = new JsonString("1");
         assertEquals("1", test.asNumber().toString()); //If string, it would be ""1"";
     }
 
     @Test
-    public void convertJsonStringToBoolean(){
+    public void convertJsonStringToBoolean() throws IOException {
         JsonElement test = new JsonString("true");
         assertEquals("true", test.asBoolean().toString());
     }
 
     @Test
-    public void convertJsonStringToNull(){
+    public void convertJsonStringToNull() throws IOException {
         JsonElement test = new JsonString("Input shouldn't matter");
         assertEquals("null", test.asNull().toString());
     }
 
     @Test
-    public void convertJsonNumberToString(){
+    public void convertJsonNumberToString() throws IOException {
         JsonElement test = new JsonNumber(5);
         assertEquals("\"5\"", test.asString().toString());
     }
 
     @Test
-    public void convertJsonNumberToBoolean(){
+    public void convertJsonNumberToBoolean() throws IOException {
         JsonElement test = new JsonNumber(0);
         assertEquals("false", test.asBoolean().toString());
     }
 
     @Test
-    public void convertJsonBooleanToString(){
+    public void convertJsonBooleanToString() throws IOException {
         JsonElement test = new JsonBoolean(true);
         assertEquals("\"true\"", test.asString().toString());
     }
 
     @Test
-    public void convertJsonBooleanToNumber(){
+    public void convertJsonBooleanToNumber() throws IOException {
         JsonElement test = new JsonBoolean(false);
         assertEquals("0", test.asNumber().toString());
     }
 
     @Test
-    public void convertAnythingToNull(){
+    public void convertAnythingToNull() throws IOException {
         JsonElement test = new JsonNumber(5);
         assertEquals("null", test.asNull().toString());
     }
@@ -190,7 +193,7 @@ public class JsonTesting {
 
     @Test
     public void objectArrayNumbers(){ //Convert int values into a JsonElement type, then add to JsonObject
-        String expected = "{\"intList\":[3,1,4,1,5,9]}";
+        String expected = "{\"intList\": [3, 1, 4, 1, 5, 9]}";
         int[] values = new int[]{3, 1, 4, 1, 5, 9};
         JsonArray intList = new JsonArray();
         for (int a: values){
@@ -202,7 +205,7 @@ public class JsonTesting {
 
     @Test
     public void objectArrayStringsDirect(){ //I am unsure where we are supposed to be able to directly add arrays. Might be standard practice to convert them to JsonArrays beforehand.
-        String expected = "{\"Value1\":[\"aaa\",\"bbb\"]}";
+        String expected = "{\"Value1\": [\"aaa\", \"bbb\"]}";
         String[] stringArray = new String[]{"aaa", "bbb"};
         String actual = new JsonObject().addProperty("Value1", stringArray).toJson();
         assertEquals(expected, actual);

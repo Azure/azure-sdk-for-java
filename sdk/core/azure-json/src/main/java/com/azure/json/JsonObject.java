@@ -7,6 +7,7 @@ import java.io.Writer;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 
 /**
  * Class representing the JSON object type.
@@ -295,8 +296,62 @@ public class JsonObject extends JsonElement {
     /**
      * @return boolean of whether this JsonElement object is of type JsonObject.
      */
+
+    @Override
+    public JsonObject removeProperty(String key){
+        this.properties.remove(key);
+        return this;
+    }
+
+
     @Override
     public boolean isObject() { return true; }
+
+    @Override
+    public JsonArray asArray() {
+        JsonArray output = new JsonArray();
+        Set<String> keys = properties.keySet();
+        for (String key: keys){
+            output.addElement(properties.get(key));
+        }
+        return output;
+    }
+
+    @Override
+    public JsonObject asObject() {
+        return this;
+    }
+
+    @Override
+    public JsonBoolean asBoolean() {
+        if (properties.size() >= 1){
+            return properties.get(properties.keySet().iterator().next()).asBoolean(); //Should only get the first element.
+        } else {
+            return new JsonBoolean();
+        }
+    }
+
+    @Override
+    public JsonNumber asNumber() {
+        if (properties.size() >= 1){
+            return properties.get(properties.keySet().iterator().next()).asNumber(); //Should only get the first element.
+        } else {
+            return new JsonNumber();
+        }
+    }
+    @Override
+    public JsonString asString() {
+        if (properties.size() >= 1){
+            return properties.get(properties.keySet().iterator().next()).asString(); //Should only get the first element.
+        } else {
+            return new JsonString();
+        }
+    }
+
+
+
+
+
 
     /**
      * @return String representation of the JsonObject. This functionality is

@@ -15,7 +15,7 @@ public class JsonNull extends JsonElement{
 
     /**
      * Default constructor.
-     * 
+     *
      * TODO: may need to remove this due to design guidelines? Unnecessary having
      * this constructor defined in the source code if compiler is already adding
      * this constructor implicitly when no other constructor is defined.
@@ -37,12 +37,29 @@ public class JsonNull extends JsonElement{
     @Override
     public boolean isNull() { return true; }
 
-    /** 
-     * @param jsonWriter JsonWriter that the serialized JsonNull is written to. 
-     * @return JsonWriter state after the serialized JsonNull has been written 
-     * to it. 
-     * @throws IOException Thrown when JsonWriter.writeNull call throws an 
-     * IOException. 
+    @Override
+    public JsonArray asArray() {
+        JsonArray output = new JsonArray();
+        output.addElement(this);
+        return output;
+    }
+
+    @Override
+    public JsonObject asObject() {
+        JsonObject output = new JsonObject();
+        output.addProperty("Value", this);
+        return output;
+    }
+
+    @Override
+    public JsonString asString() { return new JsonString(nullValue); }
+
+    /**
+     * @param jsonWriter JsonWriter that the serialized JsonNull is written to.
+     * @return JsonWriter state after the serialized JsonNull has been written
+     * to it.
+     * @throws IOException Thrown when JsonWriter.writeNull call throws an
+     * IOException.
      */
     @Override
     public JsonWriter serialize(JsonWriter jsonWriter) throws IOException {

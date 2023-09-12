@@ -228,9 +228,13 @@ public abstract class JsonElement {
      * @return
      * @throws InvalidJsonDataTypeException
      */
-    public JsonElement removeProperty(String key) throws InvalidJsonDataTypeException {
+    public JsonObject removeProperty(String key) throws InvalidJsonDataTypeException {
         // Case:
-        if(this.isObject()) { return (this.asObject()).removeProperty(key); }
+        if(this.isObject()){
+            JsonObject output = this.asObject();
+            output.removeProperty(key);
+            return output;
+        }
         // Case:
         else { throw new InvalidJsonDataTypeException(); }
     }
@@ -295,27 +299,28 @@ public abstract class JsonElement {
     /**
      * @return
      */
-    public JsonArray asArray() { return (JsonArray)this; }
+    public JsonArray asArray() { return new JsonArray();}
+
 
     /**
      * @return
      */
-    public JsonObject asObject() { return (JsonObject)this; }
+    public JsonObject asObject() { return new JsonObject(); }
 
     /**
      * @return
      */
-    public JsonBoolean asBoolean() { return (JsonBoolean)this; }
+    public JsonBoolean asBoolean() { return new JsonBoolean(); }
 
     /**
      * @return
      */
-    public JsonNull asNull() { return (JsonNull)this; }
+    public JsonNull asNull() { return new JsonNull(); }
 
     /**
      * @return
      */
-    public JsonNumber asNumber() { return (JsonNumber)this; }
+    public JsonNumber asNumber() { return new JsonNumber(); }
 
     /**
      * @return
