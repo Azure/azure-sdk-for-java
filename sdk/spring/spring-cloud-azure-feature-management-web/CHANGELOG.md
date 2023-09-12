@@ -1,14 +1,11 @@
 # Release History
 
-## 5.6.0-beta.1 (Unreleased)
+## 5.6.0-beta.1 (2023-09-11)
 
-### Features Added
+ ### Features Added
 
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
+ * Snapshot support using, `spring.cloud.azure.appconfiguration.stores[0].selects[0].snapshot-name`.
+ * Support for trimming prefixes from keys, default value is the key-filter when key-filter is used. `spring.cloud.azure.appconfiguration.stores[0].trim-key-prefix`
 
 ## 5.5.0 (2023-08-28)
 
