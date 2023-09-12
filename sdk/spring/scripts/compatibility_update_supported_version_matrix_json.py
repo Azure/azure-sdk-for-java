@@ -5,7 +5,7 @@
 # 1. python .\sdk\spring\scripts\compatibility_update_supported_version_matrix_json.py
 # 2. python .\sdk\spring\scripts\compatibility_update_supported_version_matrix_json.py -m 3
 #
-# The script must be run at the root of azure-sdk-for-java.import time
+# The script must be run at the root of azure-sdk-for-java.
 
 
 import time
