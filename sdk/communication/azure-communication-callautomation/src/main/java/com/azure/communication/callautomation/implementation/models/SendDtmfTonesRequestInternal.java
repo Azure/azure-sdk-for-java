@@ -29,6 +29,9 @@ public final class SendDtmfTonesRequestInternal {
     @JsonProperty(value = "operationContext")
     private String operationContext;
 
+    /** Creates an instance of SendDtmfTonesRequestInternal class. */
+    public SendDtmfTonesRequestInternal() {}
+
     /**
      * Get the tones property: List of tones to be sent to target participant.
      *
