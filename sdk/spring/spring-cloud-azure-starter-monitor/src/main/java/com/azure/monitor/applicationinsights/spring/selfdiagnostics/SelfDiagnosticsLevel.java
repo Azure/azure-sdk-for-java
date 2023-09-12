@@ -3,11 +3,19 @@
 
 package com.azure.monitor.applicationinsights.spring.selfdiagnostics;
 
-/**
- * This enum allows you to define a self-diagnostics level.
- */
+/** This enum allows you to define a self-diagnostics level. */
 public enum SelfDiagnosticsLevel {
 
-    ERROR, WARN, INFO, DEBUG, TRACE
+  /** Error self-diagnostics level */
+  ERROR,
+  /** Warn self-diagnostics level */
+  WARN,
+  /** Info self-diagnostics level */
+  INFO,
 
+  /** Debug self-diagnostics level */
+  DEBUG,
+
+  /** Trace self-diagnostics level */
+  TRACE
 }

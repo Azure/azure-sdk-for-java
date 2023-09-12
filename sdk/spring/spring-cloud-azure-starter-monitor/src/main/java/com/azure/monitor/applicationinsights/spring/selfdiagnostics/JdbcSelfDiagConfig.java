@@ -96,8 +96,9 @@ public class JdbcSelfDiagConfig {
 
     /**
      * A bean execute the JDBC self-diagnostics
-     * @param selfDiagnosticsLogger The self-diagnostics logger
-     * @return A CommandLineRunner bean execute the JDBC self-diagnostics
+     * @param dataSource A DataSource
+     * @param selfDiagnosticsLogger he self-diagnostics logger
+     * @return A CommandLineRunner bean to execute the JDBC self-diagnostics
      */
     @Bean
     public CommandLineRunner jdbcSelfDiagnostics(DataSource dataSource, Logger selfDiagnosticsLogger) {

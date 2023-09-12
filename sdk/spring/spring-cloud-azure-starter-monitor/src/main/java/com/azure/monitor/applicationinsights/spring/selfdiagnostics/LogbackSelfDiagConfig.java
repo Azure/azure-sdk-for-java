@@ -21,6 +21,7 @@ public class LogbackSelfDiagConfig {
 
     /**
      * To define a logger for self-diagnostics.
+     * @param selfDiagnosticsLevel The self-diagnostics level
      * @return A logger for self-diagnostics
      */
     @Bean
