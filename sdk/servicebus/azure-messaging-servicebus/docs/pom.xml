@@ -50,7 +50,7 @@
         <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
-            <version>1.4.8</version> <!-- {x-version-update;ch.qos.logback:logback-classic;external_dependency} -->
+            <version>1.4.11</version> <!-- {x-version-update;ch.qos.logback:logback-classic;external_dependency} -->
         </dependency>
         <dependency>
             <groupId>org.codehaus.janino</groupId>
