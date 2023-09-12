@@ -472,7 +472,7 @@ public final class AttestationAdministrationClientBuilder implements
         HttpPipeline pipeline = this.pipeline;
         if (pipeline == null) {
             ClientOptions localClientOptions = clientOptions != null ? clientOptions : DEFAULT_CLIENT_OPTIONS;
-            
+
             // Closest to API goes first, closest to wire goes last.
             final List<HttpPipelinePolicy> policies = new ArrayList<>();
             policies.add(new UserAgentPolicy(
@@ -494,12 +494,10 @@ public final class AttestationAdministrationClientBuilder implements
             }
             policies.addAll(perRetryPolicies);
 
-            if (localClientOptions != null) {
-                List<HttpHeader> httpHeaderList = new ArrayList<>();
-                localClientOptions.getHeaders().forEach(
-                    header -> httpHeaderList.add(new HttpHeader(header.getName(), header.getValue())));
-                policies.add(new AddHeadersPolicy(new HttpHeaders(httpHeaderList)));
-            }
+            List<HttpHeader> httpHeaderList = new ArrayList<>();
+            localClientOptions.getHeaders().forEach(
+                header -> httpHeaderList.add(new HttpHeader(header.getName(), header.getValue())));
+            policies.add(new AddHeadersPolicy(new HttpHeaders(httpHeaderList)));
 
             HttpPolicyProviders.addAfterRetryPolicies(policies);
             policies.add(new HttpLoggingPolicy(httpLogOptions));
