@@ -15,7 +15,7 @@
     <name>Microsoft Azure SDK for eventgrid</name>
     <description>This package contains Microsoft Azure EventGrid SDK.${line.separator}
       This library has been replaced by new Azure SDKs, you can read about them at https://aka.ms/azsdkvalueprop. The latest libraries to interact with the Azure EventGrid service are:${line.separator}
-      https://search.maven.org/artifact/com.azure/azure-messaging-eventgrid${line.separator}
+      https://central.sonatype.com/artifact/com.azure/azure-messaging-eventgrid${line.separator}
       It is recommended that you move to the new package.
     </description>
     <parent>

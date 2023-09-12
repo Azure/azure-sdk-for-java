@@ -116,6 +116,7 @@ jobs:
           AdditionalLintingOptions: ${{ parameters.AdditionalLintingOptions }}
           BuildParallelization: ${{ parameters.BuildParallelization }}
           ContinueOnError: true
+          SDKType: ${{ parameters.SDKType }}
 
       - template: /eng/pipelines/templates/steps/build-and-test.yml
         parameters:
