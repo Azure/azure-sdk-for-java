@@ -79,16 +79,6 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
 
     private DocumentAnalysisAsyncClient client;
 
-    @BeforeAll
-    static void beforeAll() {
-        StepVerifier.setDefaultTimeout(Duration.ofSeconds(30));
-    }
-
-    @AfterAll
-    static void afterAll() {
-        StepVerifier.resetDefaultTimeout();
-    }
-
     private HttpClient buildAsyncAssertingClient(HttpClient httpClient) {
         return new AssertingHttpClientBuilder(httpClient)
             .skipRequest((ignored1, ignored2) -> false)
@@ -1205,7 +1195,7 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
                 .setPollInterval(durationTestMode).getSyncPoller();
             AnalyzeResult analyzeResult = syncPoller.getFinalResult();
             Assertions.assertNotNull(analyzeResult);
-            Assertions.assertNotNull("de", analyzeResult.getLanguages().get(0).getLocale());
+            Assertions.assertEquals("de", analyzeResult.getLanguages().get(0).getLocale());
         }, GERMAN_PNG);
     }
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
