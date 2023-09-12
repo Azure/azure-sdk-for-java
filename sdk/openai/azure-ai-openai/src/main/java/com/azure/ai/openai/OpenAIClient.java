@@ -728,7 +728,14 @@ public final class OpenAIClient {
             .toObject(AudioTranscription.class);
     }
 
-    BinaryData getAudioTranslation(String deploymentOrModelName, MultipartDataSerializationResult requestData, String multipartBoundary, RequestOptions requestOptions) {
+    BinaryData getAudioTranslation(
+        String deploymentOrModelName,
+        MultipartDataSerializationResult requestData,
+        String multipartBoundary,
+        RequestOptions requestOptions) {
+        requestOptions
+            .setHeader(HttpHeaderName.CONTENT_TYPE,  "multipart/form-data;" + " boundary=" + multipartBoundary)
+            .setHeader(HttpHeaderName.CONTENT_LENGTH, String.valueOf(requestData.getData()));
         return this.serviceClient.getAudioTranslationAsPlainTextWithResponse(
                 deploymentOrModelName,
                 requestData.getData(),
