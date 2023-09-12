@@ -4,10 +4,10 @@ package com.azure.monitor.applicationinsights.spring;
 
 import io.opentelemetry.sdk.resources.Resource;
 import io.opentelemetry.semconv.resource.attributes.ResourceAttributes;
-import org.springframework.boot.CommandLineRunner;
-import org.springframework.stereotype.Component;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.stereotype.Component;
 
 /**
  * This component alerts the user to the fact that the OpenTelemetry version used is not compatible
@@ -53,17 +53,23 @@ public class OpenTelemetryVersionCheckRunner implements CommandLineRunner {
         }
     }
 
-    private static void checkOpenTelemetryVersion(
-        OTelVersion currentOTelVersion, OTelVersion starterOTelVersion) {
-        if (!currentOTelVersion.hasSameMajorVersionAs(starterOTelVersion) && currentOTelVersion.isLessThan(starterOTelVersion)) {
-            LOG.warn(
-                "The OpenTelemetry version is not compatible with the spring-cloud-azure-starter-monitor dependency. The OpenTelemetry version should be "
-                    + STARTER_OTEL_VERSION
-                    + ". "
-                    + "Please look at the spring-cloud-azure-starter-monitor documentation to fix this.");
-        } else if (currentOTelVersion.isGreaterThan(starterOTelVersion)) {
-            LOG.info(
-                "A new version of spring-cloud-azure-starter-monitor dependency may be available.");
-        }
+  private static void checkOpenTelemetryVersion(
+      OTelVersion currentOTelVersion, OTelVersion starterOTelVersion) {
+    if (!currentOTelVersion.hasSameMajorVersionAs(starterOTelVersion)) {
+      LOG.warn(
+          "Spring Boot and the spring-cloud-azure-starter-monitor dependency have different OpenTelemetry major versions (respectively "
+              + currentOTelVersion.majorVersion
+              + " and "
+              + starterOTelVersion.majorVersion
+              + ") . The spring-cloud-azure-starter-monitor dependency is supposed to create unexpected behaviors. We recommend removing it.");
+    } else if (currentOTelVersion.isLessThan(starterOTelVersion)) {
+      LOG.warn(
+          "The OpenTelemetry version is not compatible with the spring-cloud-azure-starter-monitor dependency. The OpenTelemetry version should be "
+              + STARTER_OTEL_VERSION
+              + ". "
+              + "Please look at the spring-cloud-azure-starter-monitor documentation to fix this.");
+    } else if (currentOTelVersion.isGreaterThan(starterOTelVersion)) {
+      LOG.info("A new version of spring-cloud-azure-starter-monitor dependency may be available.");
     }
+  }
 }

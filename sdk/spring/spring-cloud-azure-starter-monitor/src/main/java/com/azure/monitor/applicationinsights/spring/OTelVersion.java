@@ -2,15 +2,31 @@
 // Licensed under the MIT License.
 package com.azure.monitor.applicationinsights.spring;
 
+import java.util.Comparator;
+
 class OTelVersion {
 
-    private final String otelVersionAsString;
-    private final int majorVersion;
+    private static final Comparator<OTelVersion> VERSION_COMPARATOR = Comparator.comparingInt(OTelVersion::getMajorVersion)
+        .thenComparing(OTelVersion::getMinorVersion)
+        .thenComparing(OTelVersion::getPatchVersion);
+    final int majorVersion;
     private final int minorVersion;
     private final int patchVersion;
 
+
+    private int getMajorVersion() {
+        return majorVersion;
+    }
+
+    private int getMinorVersion() {
+        return minorVersion;
+    }
+
+    private  int getPatchVersion() {
+        return patchVersion;
+    }
+
     OTelVersion(String otelVersionAsString) {
-        this.otelVersionAsString = otelVersionAsString;
         String[] versionComponents = otelVersionAsString.split("\\.");
         this.majorVersion = Integer.parseInt(versionComponents[0]);
         this.minorVersion = Integer.parseInt(versionComponents[1]);
@@ -18,26 +34,11 @@ class OTelVersion {
     }
 
     boolean isLessThan(OTelVersion oTelVersion) {
-        if (this.otelVersionAsString.equals(oTelVersion.otelVersionAsString)) {
-            return false;
-        }
-        return !isGreaterThan(oTelVersion);
+        return VERSION_COMPARATOR.compare(this, oTelVersion) < 0;
     }
 
     boolean isGreaterThan(OTelVersion oTelVersion) {
-        if (this.otelVersionAsString.equals(oTelVersion.otelVersionAsString)) {
-            return false;
-        }
-        if (this.majorVersion > oTelVersion.majorVersion) {
-            return true;
-        }
-        if (this.minorVersion > oTelVersion.minorVersion) {
-            return true;
-        }
-        if (this.patchVersion > oTelVersion.patchVersion) {
-            return true;
-        }
-        return false;
+    return VERSION_COMPARATOR.compare(this, oTelVersion) > 0;
     }
 
     boolean hasSameMajorVersionAs(OTelVersion oTelVersion) {
