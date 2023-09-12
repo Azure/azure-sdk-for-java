@@ -193,7 +193,7 @@
                     <plugin>
                         <groupId>org.graalvm.buildtools</groupId>
                         <artifactId>native-maven-plugin</artifactId>
-                        <version>0.9.23</version> <!-- {x-version-update;org.graalvm.buildtools:native-maven-plugin;external_dependency} -->
+                        <version>0.9.24</version> <!-- {x-version-update;org.graalvm.buildtools:native-maven-plugin;external_dependency} -->
                         <configuration>
                             <mainClass>com.azure.aot.graalvm.samples.AzureGraalVmSamples</mainClass>
                             <imageName>azure-aot-graalvm-sample</imageName>

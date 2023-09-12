@@ -25,7 +25,7 @@
         <dependency>
             <groupId>io.projectreactor</groupId>
             <artifactId>reactor-core</artifactId>
-            <version>3.5.8</version> <!-- {x-version-update;io.projectreactor:reactor-core;external_dependency} -->
+            <version>3.5.9</version> <!-- {x-version-update;io.projectreactor:reactor-core;external_dependency} -->
         </dependency>
 
         <!-- Dependencies required for Log4j2 -->
@@ -55,7 +55,7 @@
         <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
-            <version>1.4.8</version> <!-- {x-version-update;ch.qos.logback:logback-classic;external_dependency} -->
+            <version>1.4.11</version> <!-- {x-version-update;ch.qos.logback:logback-classic;external_dependency} -->
         </dependency>
         <dependency>
             <groupId>org.codehaus.janino</groupId>
