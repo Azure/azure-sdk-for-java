@@ -434,12 +434,9 @@ public abstract class CertificateClientTestBase extends TestProxyTestBase {
 
     void listDeletedCertificatesRunner(Consumer<List<String>> testRunner) {
         List<String> certificates = new ArrayList<>();
-        String certificateName;
 
         for (int i = 0; i < 3; i++) {
-            certificateName = testResourceNamer.randomName("listDeletedCert", 25);
-
-            certificates.add(certificateName);
+            certificates.add(testResourceNamer.randomName("listDeletedCert", 25));
         }
 
         testRunner.accept(certificates);

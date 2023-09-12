@@ -9,7 +9,6 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonWriter;
 import com.azure.security.keyvault.certificates.implementation.CertificateOperationHelper;
 import com.azure.security.keyvault.certificates.implementation.IdMetadata;
-import com.azure.security.keyvault.certificates.implementation.models.IssuerBundle;
 
 import java.io.IOException;
 
