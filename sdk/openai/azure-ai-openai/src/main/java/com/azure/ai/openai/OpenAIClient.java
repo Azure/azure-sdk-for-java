@@ -5,6 +5,7 @@ package com.azure.ai.openai;
 
 import com.azure.ai.openai.implementation.CompletionsUtils;
 import com.azure.ai.openai.implementation.MultipartDataHelper;
+import com.azure.ai.openai.implementation.MultipartDataSerializationResult;
 import com.azure.ai.openai.implementation.MultipartField;
 import com.azure.ai.openai.implementation.NonAzureOpenAIClientImpl;
 import com.azure.ai.openai.implementation.OpenAIClientImpl;
@@ -35,6 +36,9 @@ import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.SyncPoller;
 import java.nio.ByteBuffer;
+
+import com.fasterxml.jackson.annotation.JsonKey;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import reactor.core.publisher.Flux;
 
 /** Initializes a new instance of the synchronous OpenAIClient type. */
@@ -708,17 +712,7 @@ public final class OpenAIClient {
             String deploymentOrModelName, AudioTranslationOptions audioTranslationOptions, String fileName) {
         RequestOptions requestOptions = new RequestOptions();
         MultipartDataHelper helper = new MultipartDataHelper();
-        helper.addFields(
-                (fields) -> {
-                    if (audioTranslationOptions.getResponseFormat() != null) {
-                        fields.add(
-                                new MultipartField(
-                                        "response_format", audioTranslationOptions.getResponseFormat().toString()));
-                    }
-                });
-        MultipartDataHelper.SerializationResult result =
-                helper.serializeAudioTranscriptionOption(audioTranslationOptions, fileName);
-        // TODO define a method that looks into responseFormat and calls the right method
+        MultipartDataSerializationResult result = helper.serializeRequest(audioTranslationOptions, fileName);
         return getAudioTranslation(deploymentOrModelName, result, helper.getBoundary(), requestOptions).toString();
     }
 
@@ -726,23 +720,15 @@ public final class OpenAIClient {
             String deploymentOrModelName, AudioTranslationOptions audioTranslationOptions, String fileName) {
         RequestOptions requestOptions = new RequestOptions();
         MultipartDataHelper helper = new MultipartDataHelper();
-        helper.addFields(
-                (fields) -> {
-                    if (audioTranslationOptions.getResponseFormat() != null) {
-                        fields.add(
-                                new MultipartField(
-                                        "response_format", audioTranslationOptions.getResponseFormat().toString()));
-                    }
-                });
-        MultipartDataHelper.SerializationResult result =
-                helper.serializeAudioTranscriptionOption(audioTranslationOptions, fileName);
-        // TODO define a method that looks into responseFormat and calls the right method
+        MultipartDataSerializationResult result =
+                helper.serializeRequest(audioTranslationOptions, fileName);
+
         return getAudioTranslation(
                         deploymentOrModelName, result, helper.getBoundary(), requestOptions)
                 .toObject(AudioTranscription.class);
     }
 
-    BinaryData getAudioTranslation(String deploymentOrModelName, MultipartDataHelper.SerializationResult requestData, String multipartBoundary, RequestOptions requestOptions) {
+    BinaryData getAudioTranslation(String deploymentOrModelName, MultipartDataSerializationResult requestData, String multipartBoundary, RequestOptions requestOptions) {
         return this.serviceClient.getAudioTranslationLeakingHttpImplDetails(
                 deploymentOrModelName,
                 multipartBoundary,
