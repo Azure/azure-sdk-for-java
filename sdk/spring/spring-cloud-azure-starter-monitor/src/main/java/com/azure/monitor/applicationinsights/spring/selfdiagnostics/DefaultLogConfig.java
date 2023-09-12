@@ -10,6 +10,9 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingClas
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+/**
+ * Default self-diagnostics features for logging when Logback is not found.
+ */
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnMissingClass({"ch.qos.logback.classic.LoggerContext"})
 public class DefaultLogConfig {

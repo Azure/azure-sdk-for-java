@@ -16,12 +16,15 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+/**
+ * JDBC self-diagnostics features.
+ */
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnClass({DataSource.class})
 public class JdbcSelfDiagConfig {
     private static final class JdbcSelfDiagnostics implements CommandLineRunner {
 
-        public static final String OPEN_TELEMETRY_DATA_SOURCE_CLASS_NAME = "io.opentelemetry.instrumentation.jdbc.datasource.OpenTelemetryDataSource";
+        private static final String OPEN_TELEMETRY_DATA_SOURCE_CLASS_NAME = "io.opentelemetry.instrumentation.jdbc.datasource.OpenTelemetryDataSource";
         private final DataSource dataSource;
         private final Logger selfDiagnosticsLogger;
 
