@@ -13,6 +13,13 @@ import java.util.Collection;
  * Defines values for DataFeedStatus.
  */
 public final class DataFeedStatus extends ExpandableStringEnum<DataFeedStatus> {
+
+    /**
+     * Constructs a DataFeedStatus object.
+     */
+    public DataFeedStatus() {
+    }
+
     /**
      * Static value Active for DataFeedStatus.
      */
@@ -36,6 +43,7 @@ public final class DataFeedStatus extends ExpandableStringEnum<DataFeedStatus> {
     }
 
     /**
+     * Returns known DataFeedStatus values.
      * @return known DataFeedStatus values.
      */
     public static Collection<DataFeedStatus> values() {

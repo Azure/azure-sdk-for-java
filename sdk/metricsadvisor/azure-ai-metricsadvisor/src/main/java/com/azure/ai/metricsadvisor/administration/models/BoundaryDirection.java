@@ -11,6 +11,13 @@ import java.util.Collection;
  * Describes the direction of boundary used in anomaly boundary conditions.
  */
 public final class BoundaryDirection extends ExpandableStringEnum<BoundaryDirection> {
+
+    /**
+     * Constructs a BoundaryDirection object.
+     */
+    public BoundaryDirection() {
+    }
+
     /**
      * Defines the lower boundary in a boundary condition.
      */
@@ -36,6 +43,7 @@ public final class BoundaryDirection extends ExpandableStringEnum<BoundaryDirect
     }
 
     /**
+     * Returns the known BoundaryDirection values.
      * @return known BoundaryDirection values.
      */
     public static Collection<BoundaryDirection> values() {

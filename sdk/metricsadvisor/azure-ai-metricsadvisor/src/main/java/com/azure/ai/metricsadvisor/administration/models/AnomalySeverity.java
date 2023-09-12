@@ -10,6 +10,13 @@ import java.util.Collection;
 
 /** Defines values for AnomalySeverity. */
 public final class AnomalySeverity extends ExpandableStringEnum<AnomalySeverity> {
+
+    /**
+     * Constructs a AnomalySeverity object.
+     */
+    public AnomalySeverity() {
+    }
+
     /** Static value Low for AnomalySeverity. */
     public static final AnomalySeverity LOW = fromString("Low");
 
@@ -30,7 +37,10 @@ public final class AnomalySeverity extends ExpandableStringEnum<AnomalySeverity>
         return fromString(name, AnomalySeverity.class);
     }
 
-    /** @return known AnomalySeverity values. */
+    /**
+     * Returns the known AnomalySeverity values.
+     * @return known AnomalySeverity values.
+     */
     public static Collection<AnomalySeverity> values() {
         return values(AnomalySeverity.class);
     }

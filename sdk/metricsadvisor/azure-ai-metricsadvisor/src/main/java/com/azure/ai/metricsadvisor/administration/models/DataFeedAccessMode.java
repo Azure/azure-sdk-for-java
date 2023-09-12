@@ -11,6 +11,13 @@ import java.util.Collection;
  * Defines values for DataFeedAccessMode.
  */
 public final class DataFeedAccessMode extends ExpandableStringEnum<DataFeedAccessMode> {
+
+    /**
+     * Constructs a DataFeedAccessMode object.
+     */
+    public DataFeedAccessMode() {
+    }
+
     /**
      * Static value Private for DataFeedAccessMode.
      */
@@ -25,7 +32,6 @@ public final class DataFeedAccessMode extends ExpandableStringEnum<DataFeedAcces
      * Creates or finds a DataFeedAccessMode from its string representation.
      *
      * @param name a name to look for.
-     *
      * @return the corresponding DataFeedAccessMode.
      */
     public static DataFeedAccessMode fromString(String name) {
@@ -33,6 +39,7 @@ public final class DataFeedAccessMode extends ExpandableStringEnum<DataFeedAcces
     }
 
     /**
+     * Returns the known DataFeedAccessMode values.
      * @return known DataFeedAccessMode values.
      */
     public static Collection<DataFeedAccessMode> values() {

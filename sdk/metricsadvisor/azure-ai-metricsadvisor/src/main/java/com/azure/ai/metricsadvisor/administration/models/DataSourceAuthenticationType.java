@@ -10,6 +10,13 @@ import java.util.Collection;
 
 /** Defines values for DataSourceAuthenticationType. */
 public final class DataSourceAuthenticationType extends ExpandableStringEnum<DataSourceAuthenticationType> {
+
+    /**
+     * Constructs a DataSourceAuthenticationType object.
+     */
+    public DataSourceAuthenticationType() {
+    }
+
     /** Static value Basic for DataSourceAuthenticationType. */
     public static final DataSourceAuthenticationType BASIC = fromString("Basic");
 
@@ -40,7 +47,10 @@ public final class DataSourceAuthenticationType extends ExpandableStringEnum<Dat
         return fromString(name, DataSourceAuthenticationType.class);
     }
 
-    /** @return known AuthenticationTypeEnum values. */
+    /**
+     * Returns known AuthenticationTypeEnum values.
+     * @return known AuthenticationTypeEnum values.
+     */
     public static Collection<DataSourceAuthenticationType> values() {
         return values(DataSourceAuthenticationType.class);
     }

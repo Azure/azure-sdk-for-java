@@ -4,9 +4,6 @@
 package com.azure.ai.metricsadvisor;
 
 import com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClientBuilder;
-import com.azure.ai.metricsadvisor.administration.models.AnomalyDetectionConfiguration;
-import com.azure.ai.metricsadvisor.administration.models.DataFeed;
-import com.azure.ai.metricsadvisor.administration.models.NotificationHook;
 import com.azure.ai.metricsadvisor.implementation.MetricsAdvisorImpl;
 import com.azure.ai.metricsadvisor.implementation.models.AlertingResultQuery;
 import com.azure.ai.metricsadvisor.implementation.models.AnomalyDimensionQuery;
@@ -120,7 +117,7 @@ import static com.azure.ai.metricsadvisor.implementation.util.Utility.validateSt
  *     <li>Fetch incidents triggered for a particular detection configuration using the
  *     {@link com.azure.ai.metricsadvisor.MetricsAdvisorClient#listIncidentsForDetectionConfig(String, OffsetDateTime, OffsetDateTime, ListIncidentsDetectedOptions, Context)}
  *     method.</li>
- *     <li>Fetch all the anomalies detected for a particular detction configuration using the
+ *     <li>Fetch all the anomalies detected for a particular detection configuration using the
  *     {@link com.azure.ai.metricsadvisor.MetricsAdvisorClient#listAnomaliesForDetectionConfig(String, OffsetDateTime, OffsetDateTime)}
  *     method./li>
  * </ol>

@@ -10,6 +10,13 @@ import java.util.Collection;
 
 /** Defines values for AnomalyDetectorDirection. */
 public final class AnomalyDetectorDirection extends ExpandableStringEnum<AnomalyDetectorDirection> {
+
+    /**
+     * Constructs a AnomalyDetectorDirection object.
+     */
+    public AnomalyDetectorDirection() {
+    }
+
     /** Static value Both for AnomalyDetectorDirection. */
     public static final AnomalyDetectorDirection BOTH = fromString("Both");
 
@@ -30,7 +37,10 @@ public final class AnomalyDetectorDirection extends ExpandableStringEnum<Anomaly
         return fromString(name, AnomalyDetectorDirection.class);
     }
 
-    /** @return known AnomalyDetectorDirection values. */
+    /**
+     * Returns the known AnomalyDetectorDirection values.
+     * @return known AnomalyDetectorDirection values.
+     */
     public static Collection<AnomalyDetectorDirection> values() {
         return values(AnomalyDetectorDirection.class);
     }

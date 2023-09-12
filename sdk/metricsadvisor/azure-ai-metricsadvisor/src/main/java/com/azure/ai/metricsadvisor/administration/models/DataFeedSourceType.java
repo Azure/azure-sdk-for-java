@@ -13,6 +13,12 @@ import java.util.Collection;
 public final class DataFeedSourceType extends ExpandableStringEnum<DataFeedSourceType> {
 
     /**
+     * Constructs a DataFeedSourceType object.
+     */
+    public DataFeedSourceType() {
+    }
+
+    /**
      * Static value AzureApplicationInsights for DataFeedSourceType.
      */
     public static final  DataFeedSourceType AZURE_APP_INSIGHTS = fromString("AzureApplicationInsights");
@@ -89,6 +95,7 @@ public final class DataFeedSourceType extends ExpandableStringEnum<DataFeedSourc
     }
 
     /**
+     * Returns known DataFeedSourceType values.
      * @return known DataFeedSourceType values.
      */
     public static Collection<DataFeedSourceType> values() {

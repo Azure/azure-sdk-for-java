@@ -10,6 +10,13 @@ import java.util.Collection;
 
 /** Defines values for AnomalyIncidentStatus. */
 public final class AnomalyIncidentStatus extends ExpandableStringEnum<AnomalyIncidentStatus> {
+
+    /**
+     * Constructs a AnomalyIncidentStatus object.
+     */
+    public AnomalyIncidentStatus() {
+    }
+
     /** Static value Active for AnomalyIncidentStatus. */
     public static final AnomalyIncidentStatus ACTIVE = fromString("Active");
 
@@ -27,7 +34,10 @@ public final class AnomalyIncidentStatus extends ExpandableStringEnum<AnomalyInc
         return fromString(name, AnomalyIncidentStatus.class);
     }
 
-    /** @return known AnomalyIncidentStatus values. */
+    /**
+     * Returns the known AnomalyIncidentStatus values.
+     * @return known AnomalyIncidentStatus values.
+     */
     public static Collection<AnomalyIncidentStatus> values() {
         return values(AnomalyIncidentStatus.class);
     }

@@ -17,6 +17,12 @@ public final class ListDataFeedFilter {
     private DataFeedGranularityType dataFeedGranularityType;
 
     /**
+     * Creates an instance of ListDataFeedFilter.
+     */
+    public ListDataFeedFilter() {
+    }
+
+    /**
      * Gets the data feed name.
      *
      * @return the data feed name.

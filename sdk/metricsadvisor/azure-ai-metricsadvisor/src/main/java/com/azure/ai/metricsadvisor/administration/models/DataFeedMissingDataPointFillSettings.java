@@ -14,6 +14,12 @@ public final class DataFeedMissingDataPointFillSettings {
     private Double customFillValue;
 
     /**
+     * Create a new instance of DataFeedMissingDataPointFillSettings.
+     */
+    public DataFeedMissingDataPointFillSettings() {
+    }
+
+    /**
      * Get the type of fill missing point for anomaly detection.
      *
      * @return the type of fill missing point for anomaly detection.
