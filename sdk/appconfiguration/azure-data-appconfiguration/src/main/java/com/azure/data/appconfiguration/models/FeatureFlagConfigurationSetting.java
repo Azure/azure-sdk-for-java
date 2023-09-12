@@ -4,14 +4,32 @@
 package com.azure.data.appconfiguration.models;
 
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.data.appconfiguration.implementation.Conditions;
+import com.azure.json.JsonProviders;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
-import static com.azure.data.appconfiguration.implementation.ConfigurationSettingDeserializationHelper.parseFeatureFlagValue;
-import static com.azure.data.appconfiguration.implementation.ConfigurationSettingSerializationHelper.writeFeatureFlagConfigurationSetting;
+import static com.azure.data.appconfiguration.implementation.Utility.CLIENT_FILTERS;
+import static com.azure.data.appconfiguration.implementation.Utility.CONDITIONS;
+import static com.azure.data.appconfiguration.implementation.Utility.DESCRIPTION;
+import static com.azure.data.appconfiguration.implementation.Utility.DISPLAY_NAME;
+import static com.azure.data.appconfiguration.implementation.Utility.ENABLED;
+import static com.azure.data.appconfiguration.implementation.Utility.ID;
+import static com.azure.data.appconfiguration.implementation.Utility.NAME;
+import static com.azure.data.appconfiguration.implementation.Utility.PARAMETERS;
 
 /**
  * {@link FeatureFlagConfigurationSetting} allows you to customize your own feature flags to dynamically administer a
@@ -27,6 +45,14 @@ public final class FeatureFlagConfigurationSetting extends ConfigurationSetting 
     private String displayName;
     private List<FeatureFlagFilter> clientFilters;
 
+    private String originalValue;
+    private boolean isValidValue;
+
+    Map<String, Object> parsedProperties = new HashMap<>(10);
+
+    private final List<String> requiredJsonProperties = Arrays.asList(ID, ENABLED, CONDITIONS);
+    private final List<String> allJsonProperties = Arrays.asList(ID, DESCRIPTION, DISPLAY_NAME, ENABLED, CONDITIONS);
+
     /**
      * A prefix is used to construct a feature flag configuration setting's key.
      */
@@ -40,10 +66,72 @@ public final class FeatureFlagConfigurationSetting extends ConfigurationSetting 
      * @param isEnabled A boolean value to turn on/off the feature flag setting.
      */
     public FeatureFlagConfigurationSetting(String featureId, boolean isEnabled) {
+        isValidValue = true;
+
         this.featureId = featureId;
         this.isEnabled = isEnabled;
         super.setKey(KEY_PREFIX + featureId);
         super.setContentType(FEATURE_FLAG_CONTENT_TYPE);
+    }
+
+    @Override
+    public String getValue() {
+        // Lazily update: only update the all property values when the user call this getValue() method.
+
+
+        // Case 0: If the value wasn't valid, return it verbatim.
+        if (!isValidValue) {
+            return originalValue;
+        }
+
+        final Set<String> knownProperties = new HashSet<>(allJsonProperties);
+        try {
+            final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            final JsonWriter writer = JsonProviders.createWriter(outputStream);
+
+            writer.writeStartObject();
+            // Case 1: If the value was valid, we need to parse the value and write it back.
+            int size = parsedProperties.size();
+            Iterator<Map.Entry<String, Object>> iterator = parsedProperties.entrySet().iterator();
+
+            if (parsedProperties != null) {
+                for (Map.Entry<String, Object> entry : parsedProperties.entrySet()) {
+                    final String name = entry.getKey();
+                    final Object jsonValue = entry.getValue();
+                    try {
+                        // Try to write the known property. If it is a known property, we need to remove it from the
+                        // properties bag.
+                        if (tryWriteKnownProperty(name, null, writer, true)) {
+                            knownProperties.remove(name);
+                        } else {
+                            // Unknown extension property. We need to keep it.
+                            writer.writeUntypedField(name, jsonValue);
+                        }
+                    } catch (IOException e) {
+                        throw LOGGER.logExceptionAsError(new RuntimeException(e));
+                    }
+                }
+            }
+
+            // Case 2: No parsed value which means not raw value is been set.
+            for (final String propertyName : knownProperties) {
+                tryWriteKnownProperty(propertyName, null, writer, false);
+            }
+
+            writer.writeEndObject();
+            writer.flush();
+            originalValue = outputStream.toString(StandardCharsets.UTF_8.name());
+            outputStream.close();
+
+
+        } catch (IOException exception) {
+            LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Can't parse Feature Flag configuration setting value.", exception));
+        }
+
+        super.setValue(originalValue);
+
+        return originalValue;
     }
 
     /**
@@ -69,15 +157,137 @@ public final class FeatureFlagConfigurationSetting extends ConfigurationSetting 
      */
     @Override
     public FeatureFlagConfigurationSetting setValue(String value) {
+        originalValue = value;
         super.setValue(value);
-        // update strongly-typed properties.
-        final FeatureFlagConfigurationSetting updatedSetting = parseFeatureFlagValue(value);
-        this.featureId = updatedSetting.getFeatureId();
-        this.description = updatedSetting.getDescription();
-        this.isEnabled = updatedSetting.isEnabled();
-        this.displayName = updatedSetting.getDisplayName();
-        this.clientFilters = new ArrayList<>(updatedSetting.getClientFilters());
+        isValidValue = tryParseValue(value);
         return this;
+    }
+
+    private boolean tryWriteKnownProperty(String propertyName, Object propertyValue, JsonWriter writer,
+                                          boolean includeOptionalWhenNull) throws IOException {
+        switch (propertyName) {
+            case ID:
+                writer.writeStringField(ID, featureId);
+                break;
+            case DESCRIPTION:
+                if (includeOptionalWhenNull || description != null) {
+                    writer.writeStringField(DESCRIPTION, description);
+                }
+                break;
+            case DISPLAY_NAME:
+                if (includeOptionalWhenNull || displayName != null) {
+                    writer.writeStringField(DISPLAY_NAME, displayName);
+                }
+                break;
+            case ENABLED:
+                writer.writeBooleanField(ENABLED, isEnabled);
+                break;
+            case CONDITIONS:
+                tryWriteConditions(propertyName, propertyValue, writer);
+                break;
+            default:
+                return false;
+        }
+        return true;
+    }
+
+    private void tryWriteConditions(String propertyName, Object propertyValue, JsonWriter writer) throws IOException {
+        writer.writeStartObject(CONDITIONS);
+
+        if (propertyValue != null) {
+            Conditions propertyValue1 = (Conditions) propertyValue;
+            for (Object unknownCondition : propertyValue1.getUnknownConditions()) {
+                writer.writeUntyped(unknownCondition);
+            }
+        }
+
+        writer.writeArrayField(CLIENT_FILTERS, this.getClientFilters(), (jsonWriter, filter) -> {
+            jsonWriter.writeStartObject();
+            jsonWriter.writeStringField(NAME, filter.getName());
+            jsonWriter.writeMapField(PARAMETERS, filter.getParameters(), JsonWriter::writeUntyped);
+            jsonWriter.writeEndObject(); // each filter object
+        });
+
+        writer.writeEndObject();
+    }
+
+    private boolean tryParseValue(String value) {
+        parsedProperties.clear();
+
+        final Set<String> requiredPropertiesCopy = new HashSet<>(requiredJsonProperties);
+        try (final JsonReader jsonReader = JsonProviders.createReader(value)) {
+            return jsonReader.readObject(reader -> {
+                while (reader.nextToken() != JsonToken.END_OBJECT) {
+                    final String fieldName = reader.getFieldName();
+                    reader.nextToken();
+
+                    if (ID.equals(fieldName)) {
+                        parsedProperties.put(ID, reader.getString());
+                    } else if (DESCRIPTION.equals(fieldName)) {
+                        parsedProperties.put(DESCRIPTION, reader.getString());
+                    } else if (DISPLAY_NAME.equals(fieldName)) {
+                        parsedProperties.put(DISPLAY_NAME, reader.getString());
+                    } else if (ENABLED.equals(fieldName)) {
+                        parsedProperties.put(ENABLED, reader.getBoolean());
+                    } else if (CONDITIONS.equals(fieldName)) {
+                        parsedProperties.put(CONDITIONS, readConditions(reader));
+                    } else {
+                        // The extension property is possible, we should not skip it.
+                        parsedProperties.put(fieldName, reader.readUntyped());
+                    }
+                    requiredPropertiesCopy.remove(fieldName);
+                }
+                return requiredPropertiesCopy.isEmpty();
+            });
+        } catch (IOException e) {
+            return false;
+        }
+    }
+
+    // Feature flag configuration setting: conditions
+    private Conditions readConditions(JsonReader jsonReader) throws IOException {
+
+        Conditions conditions = new Conditions();
+
+        List<Object> unknownCondition = conditions.getUnknownConditions();
+        return jsonReader.readObject(reader -> {
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if (CLIENT_FILTERS.equals(fieldName)) {
+                    conditions.setFeatureFlagFilters(reader.readArray(FeatureFlagConfigurationSetting::readClientFilter));
+                } else {
+                    unknownCondition.add(reader.readUntyped());
+                }
+            }
+            conditions.setUnknownConditions(unknownCondition);
+
+
+            return conditions;
+        });
+    }
+
+    private static FeatureFlagFilter readClientFilter(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String name = null;
+            Map<String, Object> parameters = null;
+
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if (NAME.equals(fieldName)) {
+                    name = reader.getString();
+                } else if (PARAMETERS.equals(fieldName)) {
+                    parameters = reader.readMap(JsonReader::readUntyped);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return new FeatureFlagFilter(name).setParameters(parameters);
+        });
     }
 
     /**
@@ -139,6 +349,7 @@ public final class FeatureFlagConfigurationSetting extends ConfigurationSetting 
      * @return the feature ID of this configuration setting.
      */
     public String getFeatureId() {
+        checkValid();
         return featureId;
     }
 
@@ -151,9 +362,9 @@ public final class FeatureFlagConfigurationSetting extends ConfigurationSetting 
      * @throws IllegalArgumentException if the setting's {@code value} is an invalid JSON format.
      */
     public FeatureFlagConfigurationSetting setFeatureId(String featureId) {
+        checkValid();
         this.featureId = featureId;
         super.setKey(KEY_PREFIX + featureId);
-        updateSettingValue();
         return this;
     }
 
@@ -163,6 +374,7 @@ public final class FeatureFlagConfigurationSetting extends ConfigurationSetting 
      * @return the boolean indicator to show if the setting is turn on or off.
      */
     public boolean isEnabled() {
+        checkValid();
         return this.isEnabled;
     }
 
@@ -175,8 +387,8 @@ public final class FeatureFlagConfigurationSetting extends ConfigurationSetting 
      * @throws IllegalArgumentException if the setting's {@code value} is an invalid JSON format.
      */
     public FeatureFlagConfigurationSetting setEnabled(boolean isEnabled) {
+        checkValid();
         this.isEnabled = isEnabled;
-        updateSettingValue();
         return this;
     }
 
@@ -186,6 +398,7 @@ public final class FeatureFlagConfigurationSetting extends ConfigurationSetting 
      * @return the description of this configuration setting.
      */
     public String getDescription() {
+        checkValid();
         return description;
     }
 
@@ -198,8 +411,8 @@ public final class FeatureFlagConfigurationSetting extends ConfigurationSetting 
      * @throws IllegalArgumentException if the setting's {@code value} is an invalid JSON format.
      */
     public FeatureFlagConfigurationSetting setDescription(String description) {
+        checkValid();
         this.description = description;
-        updateSettingValue();
         return this;
     }
 
@@ -209,6 +422,7 @@ public final class FeatureFlagConfigurationSetting extends ConfigurationSetting 
      * @return the display name of this configuration setting.
      */
     public String getDisplayName() {
+        checkValid();
         return displayName;
     }
 
@@ -221,8 +435,8 @@ public final class FeatureFlagConfigurationSetting extends ConfigurationSetting 
      * @throws IllegalArgumentException if the setting's {@code value} is an invalid JSON format.
      */
     public FeatureFlagConfigurationSetting setDisplayName(String displayName) {
+        checkValid();
         this.displayName = displayName;
-        updateSettingValue();
         return this;
     }
 
@@ -232,6 +446,7 @@ public final class FeatureFlagConfigurationSetting extends ConfigurationSetting 
      * @return the feature flag filters of this configuration setting.
      */
     public List<FeatureFlagFilter> getClientFilters() {
+        checkValid();
         if (clientFilters == null) {
             clientFilters = new ArrayList<>();
         }
@@ -247,8 +462,8 @@ public final class FeatureFlagConfigurationSetting extends ConfigurationSetting 
      * @throws IllegalArgumentException if the setting's {@code value} is an invalid JSON format.
      */
     public FeatureFlagConfigurationSetting setClientFilters(List<FeatureFlagFilter> clientFilters) {
+        checkValid();
         this.clientFilters = clientFilters;
-        updateSettingValue();
         return this;
     }
 
@@ -260,20 +475,17 @@ public final class FeatureFlagConfigurationSetting extends ConfigurationSetting 
      * @return The updated {@link FeatureFlagConfigurationSetting} object.
      */
     public FeatureFlagConfigurationSetting addClientFilter(FeatureFlagFilter clientFilter) {
+        checkValid();
         if (clientFilters == null) {
             clientFilters = new ArrayList<>();
         }
         clientFilters.add(clientFilter);
-        updateSettingValue();
         return this;
     }
 
-    private void updateSettingValue() {
-        try {
-            super.setValue(writeFeatureFlagConfigurationSetting(this));
-        } catch (IOException exception) {
-            LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Can't parse Feature Flag configuration setting value.", exception));
+    private void checkValid() {
+        if (!isValidValue) {
+            throw new IllegalArgumentException("The content of the " + super.getValue() + " property do not represent a valid feature flag object");
         }
     }
 }
