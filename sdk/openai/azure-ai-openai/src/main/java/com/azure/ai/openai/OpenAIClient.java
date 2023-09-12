@@ -5,6 +5,7 @@ package com.azure.ai.openai;
 
 import com.azure.ai.openai.implementation.CompletionsUtils;
 import com.azure.ai.openai.implementation.MultipartDataHelper;
+import com.azure.ai.openai.implementation.MultipartDataSerializationResult;
 import com.azure.ai.openai.implementation.MultipartField;
 import com.azure.ai.openai.implementation.NonAzureOpenAIClientImpl;
 import com.azure.ai.openai.implementation.OpenAIClientImpl;
@@ -30,6 +31,7 @@ import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
@@ -707,48 +709,31 @@ public final class OpenAIClient {
     }
 
     public String getAudioTranslationText(
-            String deploymentOrModelName, AudioTranslationOptions audioTranslationOptions, String fileName) {
+        String deploymentOrModelName, AudioTranslationOptions audioTranslationOptions, String fileName) {
         RequestOptions requestOptions = new RequestOptions();
         MultipartDataHelper helper = new MultipartDataHelper();
-        helper.addFields(
-                (fields) -> {
-                    if (audioTranslationOptions.getResponseFormat() != null) {
-                        fields.add(
-                                new MultipartField(
-                                        "response_format", audioTranslationOptions.getResponseFormat().toString()));
-                    }
-                });
-        MultipartDataHelper.SerializationResult result =
-                helper.serializeAudioTranscriptionOption(audioTranslationOptions, fileName);
-        // TODO define a method that looks into responseFormat and calls the right method
-        // return getAudioTranslationWithResponse(
-        BinaryData value =
-                getAudioTranslationPlainTextWithResponse(
-                                deploymentOrModelName, result.getDataLength(), result.getData(), requestOptions)
-                        .getValue();
-        return value.toString();
+        MultipartDataSerializationResult result = helper.serializeRequest(audioTranslationOptions, fileName);
+        return getAudioTranslation(deploymentOrModelName, result, helper.getBoundary(), requestOptions).toString();
     }
 
     public AudioTranscription getAudioTranslation(
-            String deploymentOrModelName, AudioTranslationOptions audioTranslationOptions, String fileName) {
+        String deploymentOrModelName, AudioTranslationOptions audioTranslationOptions, String fileName) {
         RequestOptions requestOptions = new RequestOptions();
         MultipartDataHelper helper = new MultipartDataHelper();
-        helper.addFields(
-                (fields) -> {
-                    if (audioTranslationOptions.getResponseFormat() != null) {
-                        fields.add(
-                                new MultipartField(
-                                        "response_format", audioTranslationOptions.getResponseFormat().toString()));
-                    }
-                });
-        MultipartDataHelper.SerializationResult result =
-                helper.serializeAudioTranscriptionOption(audioTranslationOptions, fileName);
-        // TODO define a method that looks into responseFormat and calls the right method
-        // return getAudioTranslationWithResponse(
-        return getAudioTranslationSimpleJsonWithResponse(
-                        deploymentOrModelName, result.getDataLength(), result.getData(), requestOptions)
-                .getValue()
-                .toObject(AudioTranscription.class);
+        MultipartDataSerializationResult result =
+            helper.serializeRequest(audioTranslationOptions, fileName);
+
+        return getAudioTranslation(
+            deploymentOrModelName, result, helper.getBoundary(), requestOptions)
+            .toObject(AudioTranscription.class);
+    }
+
+    BinaryData getAudioTranslation(String deploymentOrModelName, MultipartDataSerializationResult requestData, String multipartBoundary, RequestOptions requestOptions) {
+        return this.serviceClient.getAudioTranslationAsPlainTextWithResponse(
+                deploymentOrModelName,
+                requestData.getData(),
+                requestOptions)
+            .getValue();
     }
 
     /**
