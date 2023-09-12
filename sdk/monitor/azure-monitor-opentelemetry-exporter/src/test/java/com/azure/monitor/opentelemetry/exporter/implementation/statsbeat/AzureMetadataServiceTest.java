@@ -19,6 +19,7 @@ public class AzureMetadataServiceTest {
 
     @Test
     public void testParseJsonResponseLinux() throws IOException {
+        RpAttachType.setRpAttachType(RpAttachType.MANUAL);
         Path path =
             new File(getClass().getClassLoader().getResource("metadata_instance_linux.json").getPath())
                 .toPath();
