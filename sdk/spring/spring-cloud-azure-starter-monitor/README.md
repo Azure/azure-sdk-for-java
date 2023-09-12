@@ -87,15 +87,28 @@ You can then configure the connection string in two different ways:
 You can configure additional instrumentations with [OpenTelemetry instrumentations libraries](https://github.com/open-telemetry/opentelemetry-java-instrumentation/blob/main/docs/supported-libraries.md#libraries--frameworks).
 
 ### Build your Spring native application
-At this step, you can build your application as a native image and start the native image.
-
-An example:
+At this step, you can build your application as a native image and start the native image:
 
 ```
 mvn -Pnative spring-boot:build-image
-docker run -e APPLICATIONINSIGHTS_CONNECTION_STRING="{CONNECTION_STRING}" {image-name} 
+docker run -e APPLICATIONINSIGHTS_CONNECTION_STRING="{CONNECTION_STRING}" {native-image-name} 
 ```
-where you have to replace `{CONNECTION_STRING}` and `{image-name}` by your connection string and the image name.
+where you have to replace `{CONNECTION_STRING}` and `{native-image-name}` by your connection string and the native image name.
+
+## Debug your Spring native application
+
+If something does not work as expected, you can enable self-diagnostics features at DEBUG level to get some insights.
+
+You can configure the self-diagnostics level by using the APPLICATIONINSIGHTS_SELF_DIAGNOSTICS_LEVEL environment variable. You can configure the level with ERROR, WARN, INFO, DEBUG, or TRACE.
+
+_The APPLICATIONINSIGHTS_SELF_DIAGNOSTICS_LEVEL environment variable only works for Logback today._
+
+The following line shows you how to add self-diagnostics at the DEBUG level to a Spring native image:
+```
+docker run -e -e APPLICATIONINSIGHTS_SELF_DIAGNOSTICS_LEVEL=DEBUG {native-image-name}
+```
+
+You have to replace `{native-image-name}` by your native image name.
 
 ## Contributing
 
