@@ -36,7 +36,7 @@ import java.time.LocalDateTime
 import java.time.OffsetDateTime
 import java.time.ZoneOffset
 
-class SasClientTests extends APISpec {
+class SasClientTest extends APISpec {
 
     BlockBlobClient sasClient
     String blobName

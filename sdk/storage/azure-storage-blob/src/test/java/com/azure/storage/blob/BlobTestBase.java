@@ -899,6 +899,10 @@ public class BlobTestBase extends TestProxyTestBase {
         return olderThan(BlobServiceVersion.V2019_12_12);
     }
 
+    private static boolean olderThan20200210ServiceVersion() {
+        return olderThan(BlobServiceVersion.V2020_02_10);
+    }
+
     protected static boolean olderThan20201206ServiceVersion() {
         return olderThan(BlobServiceVersion.V2020_12_06);
     }
