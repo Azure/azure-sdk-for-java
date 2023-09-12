@@ -16,8 +16,6 @@ public final class Point {
      * Creates a Point object.
      */
     public Point() {
-        this.setX(xCoordinate);
-        this.setY(yCoordinate);
     }
 
     /*
