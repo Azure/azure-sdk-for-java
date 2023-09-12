@@ -17,7 +17,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -48,7 +47,7 @@ public final class FeatureFlagConfigurationSetting extends ConfigurationSetting 
     private String originalValue;
     private boolean isValidValue;
 
-    Map<String, Object> parsedProperties = new HashMap<>(10);
+    private final Map<String, Object> parsedProperties = new HashMap<>(10);
 
     private final List<String> requiredJsonProperties = Arrays.asList(ID, ENABLED, CONDITIONS);
     private final List<String> allJsonProperties = Arrays.asList(ID, DESCRIPTION, DISPLAY_NAME, ENABLED, CONDITIONS);
@@ -90,30 +89,25 @@ public final class FeatureFlagConfigurationSetting extends ConfigurationSetting 
             final JsonWriter writer = JsonProviders.createWriter(outputStream);
 
             writer.writeStartObject();
-            // Case 1: If the value was valid, we need to parse the value and write it back.
-            int size = parsedProperties.size();
-            Iterator<Map.Entry<String, Object>> iterator = parsedProperties.entrySet().iterator();
-
-            if (parsedProperties != null) {
-                for (Map.Entry<String, Object> entry : parsedProperties.entrySet()) {
-                    final String name = entry.getKey();
-                    final Object jsonValue = entry.getValue();
-                    try {
-                        // Try to write the known property. If it is a known property, we need to remove it from the
-                        // properties bag.
-                        if (tryWriteKnownProperty(name, null, writer, true)) {
-                            knownProperties.remove(name);
-                        } else {
-                            // Unknown extension property. We need to keep it.
-                            writer.writeUntypedField(name, jsonValue);
-                        }
-                    } catch (IOException e) {
-                        throw LOGGER.logExceptionAsError(new RuntimeException(e));
+            // Case 1: If 'value' has value and it is a valid JSON, we need to parse it and write it back.
+            for (Map.Entry<String, Object> entry : parsedProperties.entrySet()) {
+                final String name = entry.getKey();
+                final Object jsonValue = entry.getValue();
+                try {
+                    // Try to write the known property. If it is a known property, we need to remove it from the
+                    // temporary 'knownProperties' bag.
+                    if (tryWriteKnownProperty(name, null, writer, true)) {
+                        knownProperties.remove(name);
+                    } else {
+                        // Unknown extension property. We need to keep it.
+                        writer.writeUntypedField(name, jsonValue);
                     }
+                } catch (IOException e) {
+                    throw LOGGER.logExceptionAsError(new RuntimeException(e));
                 }
             }
 
-            // Case 2: No parsed value which means not raw value is been set.
+            // Case 2: Remaining known properties we are not processed yet after 'parsedProperties'.
             for (final String propertyName : knownProperties) {
                 tryWriteKnownProperty(propertyName, null, writer, false);
             }
@@ -122,8 +116,6 @@ public final class FeatureFlagConfigurationSetting extends ConfigurationSetting 
             writer.flush();
             originalValue = outputStream.toString(StandardCharsets.UTF_8.name());
             outputStream.close();
-
-
         } catch (IOException exception) {
             LOGGER.logExceptionAsError(new IllegalArgumentException(
                 "Can't parse Feature Flag configuration setting value.", exception));
@@ -183,7 +175,7 @@ public final class FeatureFlagConfigurationSetting extends ConfigurationSetting 
                 writer.writeBooleanField(ENABLED, isEnabled);
                 break;
             case CONDITIONS:
-                tryWriteConditions(propertyName, propertyValue, writer);
+                tryWriteConditions(propertyValue, writer);
                 break;
             default:
                 return false;
@@ -191,7 +183,7 @@ public final class FeatureFlagConfigurationSetting extends ConfigurationSetting 
         return true;
     }
 
-    private void tryWriteConditions(String propertyName, Object propertyValue, JsonWriter writer) throws IOException {
+    private void tryWriteConditions(Object propertyValue, JsonWriter writer) throws IOException {
         writer.writeStartObject(CONDITIONS);
 
         if (propertyValue != null) {
@@ -215,7 +207,7 @@ public final class FeatureFlagConfigurationSetting extends ConfigurationSetting 
         parsedProperties.clear();
 
         final Set<String> requiredPropertiesCopy = new HashSet<>(requiredJsonProperties);
-        try (final JsonReader jsonReader = JsonProviders.createReader(value)) {
+        try (JsonReader jsonReader = JsonProviders.createReader(value)) {
             return jsonReader.readObject(reader -> {
                 while (reader.nextToken() != JsonToken.END_OBJECT) {
                     final String fieldName = reader.getFieldName();
@@ -485,7 +477,8 @@ public final class FeatureFlagConfigurationSetting extends ConfigurationSetting 
 
     private void checkValid() {
         if (!isValidValue) {
-            throw new IllegalArgumentException("The content of the " + super.getValue() + " property do not represent a valid feature flag object");
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("The content of the " + super.getValue()
+                + " property do not represent a valid feature flag object"));
         }
     }
 }
