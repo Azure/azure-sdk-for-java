@@ -64,7 +64,7 @@ public class MultipartDataHelper {
 
         byte[] totalData = byteArrayOutputStream.toByteArray();
         // Uncomment to verify as string. Seems to check out with structure observed in the curl traces
-        System.out.println(new String(totalData, StandardCharsets.US_ASCII));
+//        System.out.println(new String(totalData, StandardCharsets.US_ASCII));
         return new MultipartDataSerializationResult(BinaryData.fromBytes(totalData), totalData.length);
     }
 

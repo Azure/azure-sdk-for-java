@@ -6,11 +6,9 @@ package com.azure.ai.openai;
 import com.azure.ai.openai.implementation.CompletionsUtils;
 import com.azure.ai.openai.implementation.MultipartDataHelper;
 import com.azure.ai.openai.implementation.MultipartDataSerializationResult;
-import com.azure.ai.openai.implementation.MultipartField;
 import com.azure.ai.openai.implementation.NonAzureOpenAIClientImpl;
 import com.azure.ai.openai.implementation.OpenAIClientImpl;
 import com.azure.ai.openai.implementation.OpenAIServerSentEvents;
-import com.azure.ai.openai.implementation.models.AudioTranscription;
 import com.azure.ai.openai.models.AudioTranscription;
 import com.azure.ai.openai.models.AudioTranscriptionOptions;
 import com.azure.ai.openai.models.AudioTranslationOptions;
@@ -709,7 +707,7 @@ public final class OpenAIClient {
     }
 
     public String getAudioTranslationText(
-        String deploymentOrModelName, AudioTranslationOptions audioTranslationOptions, String fileName) {
+            String deploymentOrModelName, AudioTranslationOptions audioTranslationOptions, String fileName) {
         RequestOptions requestOptions = new RequestOptions();
         MultipartDataHelper helper = new MultipartDataHelper();
         MultipartDataSerializationResult result = helper.serializeRequest(audioTranslationOptions, fileName);
@@ -717,30 +715,26 @@ public final class OpenAIClient {
     }
 
     public AudioTranscription getAudioTranslation(
-        String deploymentOrModelName, AudioTranslationOptions audioTranslationOptions, String fileName) {
+            String deploymentOrModelName, AudioTranslationOptions audioTranslationOptions, String fileName) {
         RequestOptions requestOptions = new RequestOptions();
         MultipartDataHelper helper = new MultipartDataHelper();
-        MultipartDataSerializationResult result =
-            helper.serializeRequest(audioTranslationOptions, fileName);
-
-        return getAudioTranslation(
-            deploymentOrModelName, result, helper.getBoundary(), requestOptions)
-            .toObject(AudioTranscription.class);
+        MultipartDataSerializationResult result = helper.serializeRequest(audioTranslationOptions, fileName);
+        return getAudioTranslation(deploymentOrModelName, result, helper.getBoundary(), requestOptions)
+                .toObject(AudioTranscription.class);
     }
 
     BinaryData getAudioTranslation(
-        String deploymentOrModelName,
-        MultipartDataSerializationResult requestData,
-        String multipartBoundary,
-        RequestOptions requestOptions) {
+            String deploymentOrModelName,
+            MultipartDataSerializationResult requestData,
+            String multipartBoundary,
+            RequestOptions requestOptions) {
         requestOptions
-            .setHeader(HttpHeaderName.CONTENT_TYPE,  "multipart/form-data;" + " boundary=" + multipartBoundary)
-            .setHeader(HttpHeaderName.CONTENT_LENGTH, String.valueOf(requestData.getData()));
-        return this.serviceClient.getAudioTranslationAsPlainTextWithResponse(
-                deploymentOrModelName,
-                requestData.getData(),
-                requestOptions)
-            .getValue();
+                .setHeader(HttpHeaderName.CONTENT_TYPE, "multipart/form-data;" + " boundary=" + multipartBoundary)
+                .setHeader(HttpHeaderName.CONTENT_LENGTH, String.valueOf(requestData.getData()));
+        return this.serviceClient
+                .getAudioTranslationAsPlainTextWithResponse(
+                        deploymentOrModelName, requestData.getData(), requestOptions)
+                .getValue();
     }
 
     /**
