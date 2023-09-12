@@ -1,6 +1,6 @@
 # Python version 3.4 or higher is required to run this script.
 #
-# This script is used to update sdk\spring\\pipeline\supported-version-matrix.json before compatibility check.
+# This script is used to update sdk\spring\pipeline\supported-version-matrix.json before compatibility check.
 # Sample:
 # 1. python .\sdk\spring\scripts\monitor_update_monitor_matrix_json.py
 #
