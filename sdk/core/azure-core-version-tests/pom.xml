@@ -153,7 +153,7 @@
                 <include>com.fasterxml.jackson.core:jackson-databind:[2.15.2]</include> <!-- {x-include-update;com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
                 <include>com.fasterxml.jackson.dataformat:jackson-dataformat-xml:[2.15.2]</include> <!-- {x-include-update;com.fasterxml.jackson.dataformat:jackson-dataformat-xml;external_dependency} -->
                 <include>com.fasterxml.jackson.datatype:jackson-datatype-jsr310:[2.15.2]</include> <!-- {x-include-update;com.fasterxml.jackson.datatype:jackson-datatype-jsr310;external_dependency} -->
-                <include>org.slf4j:slf4j-api:[2.0.7]</include> <!-- {x-include-update;org.slf4j:slf4j-api;external_dependency} -->
+                <include>org.slf4j:slf4j-api:[1.7.36]</include> <!-- {x-include-update;org.slf4j:slf4j-api;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>
