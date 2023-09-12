@@ -17,18 +17,18 @@ public class LogbackSelfDiagConfig {
 
     @Bean
     public Logger selfDiagnosticsLogger(SelfDiagnosticsLevel selfDiagnosticsLevel) {
-        Logger sl4jLoggger = LoggerFactory.getLogger(SelfDiagnostics.class);
-        ch.qos.logback.classic.Logger logbackLogger = (ch.qos.logback.classic.Logger) sl4jLoggger;
-        Level logbackLevel = findLogbackLevelFrom(selfDiagnosticsLevel, sl4jLoggger);
+        Logger slf4jLog = LoggerFactory.getLogger(SelfDiagnostics.class);
+        ch.qos.logback.classic.Logger logbackLogger = (ch.qos.logback.classic.Logger) slf4jLog;
+        Level logbackLevel = findLogbackLevelFrom(selfDiagnosticsLevel, slf4jLog);
         logbackLogger.setLevel(logbackLevel);
         return logbackLogger;
     }
 
-    private static Level findLogbackLevelFrom(SelfDiagnosticsLevel selfDiagnosticsLevel, Logger sl4jLoggger) {
+    private static Level findLogbackLevelFrom(SelfDiagnosticsLevel selfDiagnosticsLevel, Logger slf4jLog) {
         try {
             return Level.valueOf(selfDiagnosticsLevel.name());
         } catch (IllegalArgumentException e) {
-            sl4jLoggger.warn("Unable to find Logback " + selfDiagnosticsLevel.name() + " level.", e);
+            slf4jLog.warn("Unable to find Logback " + selfDiagnosticsLevel.name() + " level.", e);
             return Level.INFO;
         }
     }
