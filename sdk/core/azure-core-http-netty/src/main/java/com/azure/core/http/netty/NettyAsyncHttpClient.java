@@ -134,22 +134,27 @@ class NettyAsyncHttpClient implements HttpClient {
         return nettyRequest.single()
             .flatMap(response -> {
                 if (addProxyHandler && response.getStatusCode() == 407) {
-                    return Mono.error(new ProxyConnectException("First attempt to connect to proxy failed."));
+                    return proxyRetry
+                        ? Mono.error(new ProxyConnectException("Connection to proxy failed."))
+                        : Mono.error(new ProxyConnectException("First attempt to connect to proxy failed."));
                 } else {
                     return Mono.just(response);
                 }
             })
-            .onErrorResume(throwable -> {
-                // The exception was an SSLException that was caused by a failure to connect to a proxy.
-                // Extract the inner ProxyConnectException and propagate that instead.
-                if (!proxyRetry && addProxyHandler && throwable instanceof ProxyConnectException
-                    || (throwable instanceof SSLException && throwable.getCause() instanceof ProxyConnectException)) {
-                    return attemptAsync(request, eagerlyReadResponse, ignoreResponseBody, headersEagerlyConverted,
-                        responseTimeout, progressReporter, true);
-                }
+            .onErrorResume(throwable -> shouldRetryProxyError(proxyRetry, throwable)
+                ? attemptAsync(request, eagerlyReadResponse, ignoreResponseBody, headersEagerlyConverted,
+                        responseTimeout, progressReporter, true)
+                : Mono.error(throwable));
+    }
 
-                return Mono.error(throwable);
-            });
+    private static boolean shouldRetryProxyError(boolean proxyRetry, Throwable throwable) {
+        // Only retry if this is the first attempt to connect to a proxy and the exception was caused by a failure to
+        // connect to the proxy.
+        // Sometimes connecting to the proxy may return an SSLException that wraps the ProxyConnectException, this
+        // generally happens if the proxy is using SSL.
+        return !proxyRetry
+               && (throwable instanceof ProxyConnectException
+                   || (throwable instanceof SSLException && throwable.getCause() instanceof ProxyConnectException));
     }
 
     @Override
