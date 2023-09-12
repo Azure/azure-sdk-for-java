@@ -98,6 +98,7 @@ public interface DiagnosticsClientContext {
         private String httpConfigAsString;
         private String otherCfgAsString;
         private String preferredRegionsAsString;
+        private String excludeRegionsAsString;
         private String proactivelyInitializedContainersAsString;
         private boolean endpointDiscoveryEnabled;
         private boolean multipleWriteRegionsEnabled;
@@ -142,6 +143,18 @@ public interface DiagnosticsClientContext {
                 this.preferredRegionsAsString = "";
             } else {
                 this.preferredRegionsAsString = preferredRegions
+                    .stream()
+                    .map(r -> DiagnosticsClientConfigSerializer.SPACE_PATTERN.matcher(r.toLowerCase(Locale.ROOT)).replaceAll(""))
+                    .collect(Collectors.joining(","));
+            }
+            return this;
+        }
+
+        public DiagnosticsClientConfig withExcludeRegions(List<String> excludeRegions) {
+            if (excludeRegions == null || excludeRegions.isEmpty()) {
+                this.excludeRegionsAsString = "";
+            } else {
+                this.excludeRegionsAsString = excludeRegions
                     .stream()
                     .map(r -> DiagnosticsClientConfigSerializer.SPACE_PATTERN.matcher(r.toLowerCase(Locale.ROOT)).replaceAll(""))
                     .collect(Collectors.joining(","));
@@ -228,9 +241,10 @@ public interface DiagnosticsClientContext {
         }
 
         private String consistencyRelatedConfigInternal() {
-            return Strings.lenientFormat("(consistency: %s, mm: %s, prgns: [%s])", this.consistencyLevel,
+            return Strings.lenientFormat("(consistency: %s, mm: %s, prgns: [%s], excrgns: [%s])", this.consistencyLevel,
                 this.multipleWriteRegionsEnabled,
-                preferredRegionsAsString);
+                preferredRegionsAsString,
+                this.excludeRegionsAsString);
         }
     }
 }

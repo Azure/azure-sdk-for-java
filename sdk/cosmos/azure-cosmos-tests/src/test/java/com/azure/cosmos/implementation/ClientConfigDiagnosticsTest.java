@@ -203,6 +203,7 @@ public class ClientConfigDiagnosticsTest {
         httpConfig.withNetworkRequestTimeout(Duration.ofSeconds(18));
         diagnosticsClientConfig.withGatewayHttpClientConfig(httpConfig.toDiagnosticsString());
         diagnosticsClientConfig.withPreferredRegions(ImmutableList.of("west us 1", "west us 2"));
+        diagnosticsClientConfig.withExcludeRegions(ImmutableList.of("west us 2"));
         diagnosticsClientConfig.withConnectionSharingAcrossClientsEnabled(true);
         diagnosticsClientConfig.withEndpointDiscoveryEnabled(true);
         diagnosticsClientConfig.withClientMap(new HashMap<>());
@@ -220,7 +221,7 @@ public class ClientConfigDiagnosticsTest {
         assertThat(objectNode.get("id").asInt()).isEqualTo(1);
         assertThat(objectNode.get("machineId").asText()).isEqualTo(machineId);
         assertThat(objectNode.get("numberOfClients").asInt()).isEqualTo(2);
-        assertThat(objectNode.get("consistencyCfg").asText()).isEqualTo("(consistency: null, mm: false, prgns: [westus1,westus2])");
+        assertThat(objectNode.get("consistencyCfg").asText()).isEqualTo("(consistency: null, mm: false, prgns: [westus1,westus2], excrgns: [westus2])");
         assertThat(objectNode.get("connCfg").get("rntbd").asText()).isEqualTo("null");
         assertThat(objectNode.get("connCfg").get("gw").asText()).isEqualTo("(cps:500, nrto:PT18S, icto:PT17S, p:false)");
         assertThat(objectNode.get("connCfg").get("other").asText()).isEqualTo("(ed: true, cs: true, rv: false)");
