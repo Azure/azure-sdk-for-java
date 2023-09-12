@@ -8,6 +8,6 @@ package com.azure.monitor.applicationinsights.spring.selfdiagnostics;
  */
 public enum SelfDiagnosticsLevel {
 
-    OFF, ERROR, WARN, INFO, DEBUG, TRACE
+    ERROR, WARN, INFO, DEBUG, TRACE
 
 }

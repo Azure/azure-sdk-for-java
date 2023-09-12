@@ -18,6 +18,11 @@ import org.springframework.context.annotation.Configuration;
 @ConditionalOnClass(ch.qos.logback.classic.LoggerContext.class)
 public class LogbackSelfDiagConfig {
 
+
+    /**
+     * To define a logger for self-diagnostics.
+     * @return A logger for self-diagnostics
+     */
     @Bean
     public Logger selfDiagnosticsLogger(SelfDiagnosticsLevel selfDiagnosticsLevel) {
         Logger slf4jLog = LoggerFactory.getLogger(SelfDiagnostics.class);
@@ -36,6 +41,11 @@ public class LogbackSelfDiagConfig {
         }
     }
 
+    /**
+     * A bean execute the Logback self-diagnostics
+     * @param selfDiagnosticsLogger The self-diagnostics logger
+     * @return A CommandLineRunner bean execute the Logback self-diagnostics
+     */
     @Bean
     public CommandLineRunner logbackSelfDiagnostics(Logger selfDiagnosticsLogger) {
         return new LogbackSelfDiag(selfDiagnosticsLogger);

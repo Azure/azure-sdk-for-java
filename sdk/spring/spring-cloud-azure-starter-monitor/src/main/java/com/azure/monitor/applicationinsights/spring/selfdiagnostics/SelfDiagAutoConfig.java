@@ -10,6 +10,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
+/**
+ Main configuration entry point of the self-diagnostics
+ **/
 @Configuration(proxyBeanMethods = false)
 @Import({DefaultLogConfig.class, LogbackSelfDiagConfig.class, JdbcSelfDiagConfig.class})
 public class SelfDiagAutoConfig {

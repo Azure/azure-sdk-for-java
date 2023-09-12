@@ -16,6 +16,11 @@ import org.springframework.context.annotation.Configuration;
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnMissingClass({"ch.qos.logback.classic.LoggerContext"})
 public class DefaultLogConfig {
+
+    /**
+     * To define a logger for self-diagnostics.
+     * @return A logger for self-diagnostics
+     */
     @Bean
     public Logger selfDiagnosticsLogger() {
         Logger logger = LoggerFactory.getLogger(SelfDiagnostics.class);

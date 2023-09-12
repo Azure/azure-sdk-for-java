@@ -33,6 +33,11 @@ public class JdbcSelfDiagConfig {
             this.selfDiagnosticsLogger = selfDiagnosticsLogger;
         }
 
+
+        /**
+         * To execute the JDBC self-diagnostics.
+         * @param args Incoming main method arguments
+         */
         @Override
         public void run(String... args) {
             try {
@@ -89,6 +94,11 @@ public class JdbcSelfDiagConfig {
         return driverClassNames;
     }
 
+    /**
+     * A bean execute the JDBC self-diagnostics
+     * @param selfDiagnosticsLogger The self-diagnostics logger
+     * @return A CommandLineRunner bean execute the JDBC self-diagnostics
+     */
     @Bean
     public CommandLineRunner jdbcSelfDiagnostics(DataSource dataSource, Logger selfDiagnosticsLogger) {
         return new JdbcSelfDiagnostics(dataSource, selfDiagnosticsLogger);
