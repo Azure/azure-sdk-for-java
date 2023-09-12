@@ -21,6 +21,12 @@ public final class RecognizeCustomFormsOptions {
     private Duration pollInterval = DEFAULT_POLL_INTERVAL;
 
     /**
+     * Create a {@code RecognizeCustomFormsOptions} object.
+     */
+    public RecognizeCustomFormsOptions() {
+    }
+
+    /**
      * Get the type of the form. Supported Media types including .pdf, .jpg, .png, .tiff or .bmp type file stream.
      *
      * @return the {@code contentType} value.

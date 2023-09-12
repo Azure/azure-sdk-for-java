@@ -11,6 +11,13 @@ import java.util.Collection;
 /** Defines values for DocumentSelectionMarkState. */
 @Immutable
 public final class DocumentSelectionMarkState extends ExpandableStringEnum<DocumentSelectionMarkState> {
+
+    /**
+     * Creates a DocumentSelectionMarkState object.
+     */
+    public DocumentSelectionMarkState() {
+    }
+
     /** Static value selected for DocumentSelectionMarkState. */
     public static final DocumentSelectionMarkState SELECTED = fromString("selected");
 
@@ -27,7 +34,10 @@ public final class DocumentSelectionMarkState extends ExpandableStringEnum<Docum
         return fromString(name, DocumentSelectionMarkState.class);
     }
 
-    /** @return known DocumentSelectionMarkState values. */
+    /**
+     * Returns known DocumentSelectionMarkState values.
+     * @return known DocumentSelectionMarkState values.
+     */
     public static Collection<DocumentSelectionMarkState> values() {
         return values(DocumentSelectionMarkState.class);
     }

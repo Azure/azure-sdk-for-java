@@ -11,6 +11,13 @@ import java.util.Collection;
 /** Defines values for DocumentAnalysisAudience. */
 @Immutable
 public final class DocumentAnalysisAudience extends ExpandableStringEnum<DocumentAnalysisAudience> {
+
+    /**
+     * Constructs a DocumentAnalysisAudience object.
+     */
+    public DocumentAnalysisAudience() {
+    }
+
     /** Static value AZURE_RESOURCE_MANAGER_CHINA for DocumentAnalysisAudience. */
     public static final DocumentAnalysisAudience AZURE_CHINA = fromString("https://cognitiveservices.azure.cn");
 
@@ -30,7 +37,10 @@ public final class DocumentAnalysisAudience extends ExpandableStringEnum<Documen
         return fromString(name, DocumentAnalysisAudience.class);
     }
 
-    /** @return known DocumentAnalysisAudience values. */
+    /**
+     * Returns known DocumentAnalysisAudience values.
+     * @return known DocumentAnalysisAudience values.
+     */
     public static Collection<DocumentAnalysisAudience> values() {
         return values(DocumentAnalysisAudience.class);
     }

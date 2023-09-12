@@ -11,6 +11,12 @@ import java.util.Collection;
 /** Type of content source. */
 public final class ContentSourceKind extends ExpandableStringEnum<ContentSourceKind> {
 
+    /**
+     * Creates or finds a ContentSourceKind from its string representation.
+     */
+    public ContentSourceKind() {
+    }
+
     /** Enum value azureBlob. */
     public static final ContentSourceKind AZURE_BLOB = fromString("azureBlob");
 

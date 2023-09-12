@@ -9,6 +9,13 @@ import com.azure.core.util.ExpandableStringEnum;
  * Defines values for SelectionMarkState. i.e., Selected or Unselected.
  */
 public final class SelectionMarkState extends ExpandableStringEnum<SelectionMarkState> {
+
+    /**
+     * Constructs a SelectionMarkState object.
+     */
+    public SelectionMarkState() {
+    }
+
     /**
      * Static value SELECTED for SelectionMarkState.
      */

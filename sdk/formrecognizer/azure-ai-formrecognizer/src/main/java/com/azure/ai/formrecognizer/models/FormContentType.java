@@ -11,6 +11,12 @@ import com.azure.core.util.ExpandableStringEnum;
 public final class FormContentType extends ExpandableStringEnum<FormContentType> {
 
     /**
+     * Creates a FormContentType object.
+     */
+    public FormContentType() {
+    }
+
+    /**
      * Static value Line for FormContentType.
      */
     public static final FormContentType APPLICATION_PDF = fromString("application/pdf");

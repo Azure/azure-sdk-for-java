@@ -13,6 +13,12 @@ import java.util.Collection;
 public final class DocumentModelBuildMode extends ExpandableStringEnum<DocumentModelBuildMode> {
 
     /**
+     * Creates a DocumentModelBuildMode object.
+     */
+    public DocumentModelBuildMode() {
+    }
+
+    /**
      * Used for documents with fixed visual templates.
      */
     public static final DocumentModelBuildMode TEMPLATE = fromString("template");
@@ -32,7 +38,10 @@ public final class DocumentModelBuildMode extends ExpandableStringEnum<DocumentM
         return fromString(name, DocumentModelBuildMode.class);
     }
 
-    /** @return known DocumentModelBuildMode values. */
+    /**
+     * Returns known DocumentModelBuildMode values.
+     * @return known DocumentModelBuildMode values.
+     */
     public static Collection<DocumentModelBuildMode> values() {
         return values(DocumentModelBuildMode.class);
     }
