@@ -70,6 +70,7 @@ public class SchemaRegistryApacheAvroSerializerJavaDocCodeSamples {
         Person person = Person.newBuilder()
             .setName("Chase")
             .setFavouriteColour("Turquoise")
+            .setFavouriteNumber(3)
             .build();
 
         MessageContent message = serializer.serialize(person,
@@ -96,6 +97,7 @@ public class SchemaRegistryApacheAvroSerializerJavaDocCodeSamples {
         Person person = Person.newBuilder()
             .setName("Chase")
             .setFavouriteColour("Turquoise")
+            .setFavouriteNumber(3)
             .build();
 
         EventData eventData = serializer.serialize(person, TypeReference.createInstance(EventData.class));
@@ -121,6 +123,7 @@ public class SchemaRegistryApacheAvroSerializerJavaDocCodeSamples {
         Person person = Person.newBuilder()
             .setName("Chase")
             .setFavouriteColour("Turquoise")
+            .setFavouriteNumber(3)
             .build();
 
         // Serializes and creates an instance of ComplexMessage using the messageFactory function.
@@ -165,6 +168,7 @@ public class SchemaRegistryApacheAvroSerializerJavaDocCodeSamples {
     public void deserializeEventData() {
         Person person = Person.newBuilder()
             .setName("Foo Bar")
+            .setFavouriteNumber(3)
             .setFavouriteNumber(3)
             .build();
 
