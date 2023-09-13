@@ -18,7 +18,6 @@ import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.azure.monitor.opentelemetry.exporter.implementation.statsbeat.RpAttachType.MANUAL;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class AttachStatsbeatTest {
@@ -27,7 +26,6 @@ public class AttachStatsbeatTest {
 
     @BeforeEach
     public void setup() {
-        RpAttachType.setRpAttachType(MANUAL);
         attachStatsbeat = new AttachStatsbeat(new CustomDimensions());
     }
 
