@@ -377,8 +377,9 @@ public final class OpenAIClientImpl {
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @PathParam("deploymentId") String deploymentOrModelName,
+                @HeaderParam("content-type") String contentType,
                 @HeaderParam("accept") String accept,
-                @BodyParam("application/json") BinaryData audioTranscriptionOptions,
+                @BodyParam("multipart/form-data;") BinaryData audioTranscriptionOptions,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -398,8 +399,9 @@ public final class OpenAIClientImpl {
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @PathParam("deploymentId") String deploymentOrModelName,
+                @HeaderParam("content-type") String contentType,
                 @HeaderParam("accept") String accept,
-                @BodyParam("application/json") BinaryData audioTranscriptionOptions,
+                @BodyParam("multipart/form-data;") BinaryData audioTranscriptionOptions,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -419,8 +421,9 @@ public final class OpenAIClientImpl {
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @PathParam("deploymentId") String deploymentOrModelName,
+                @HeaderParam("content-type") String contentType,
                 @HeaderParam("accept") String accept,
-                @BodyParam("application/json") BinaryData audioTranscriptionOptions,
+                @BodyParam("multipart/form-data;") BinaryData audioTranscriptionOptions,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -440,8 +443,9 @@ public final class OpenAIClientImpl {
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @PathParam("deploymentId") String deploymentOrModelName,
+                @HeaderParam("content-type") String contentType,
                 @HeaderParam("accept") String accept,
-                @BodyParam("application/json") BinaryData audioTranscriptionOptions,
+                @BodyParam("multipart/form-data;") BinaryData audioTranscriptionOptions,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -461,8 +465,9 @@ public final class OpenAIClientImpl {
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @PathParam("deploymentId") String deploymentOrModelName,
+                @HeaderParam("content-type") String contentType,
                 @HeaderParam("accept") String accept,
-                @BodyParam("application/json") BinaryData audioTranslationOptions,
+                @BodyParam("multipart/form-data;") BinaryData audioTranslationOptions,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -482,8 +487,9 @@ public final class OpenAIClientImpl {
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @PathParam("deploymentId") String deploymentOrModelName,
+                @HeaderParam("content-type") String contentType,
                 @HeaderParam("accept") String accept,
-                @BodyParam("application/json") BinaryData audioTranslationOptions,
+                @BodyParam("multipart/form-data;") BinaryData audioTranslationOptions,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -503,8 +509,9 @@ public final class OpenAIClientImpl {
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @PathParam("deploymentId") String deploymentOrModelName,
+                @HeaderParam("content-type") String contentType,
                 @HeaderParam("accept") String accept,
-                @BodyParam("application/json") BinaryData audioTranslationOptions,
+                @BodyParam("multipart/form-data;") BinaryData audioTranslationOptions,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -524,8 +531,9 @@ public final class OpenAIClientImpl {
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @PathParam("deploymentId") String deploymentOrModelName,
+                @HeaderParam("content-type") String contentType,
                 @HeaderParam("accept") String accept,
-                @BodyParam("application/json") BinaryData audioTranslationOptions,
+                @BodyParam("multipart/form-data;") BinaryData audioTranslationOptions,
                 RequestOptions requestOptions,
                 Context context);
     }
@@ -1808,6 +1816,7 @@ public final class OpenAIClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getAudioTranscriptionAsResponseObjectWithResponseAsync(
             String deploymentOrModelName, BinaryData audioTranscriptionOptions, RequestOptions requestOptions) {
+        final String contentType = "multipart/form-data;";
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
@@ -1815,6 +1824,7 @@ public final class OpenAIClientImpl {
                                 this.getEndpoint(),
                                 this.getServiceVersion().getVersion(),
                                 deploymentOrModelName,
+                                contentType,
                                 accept,
                                 audioTranscriptionOptions,
                                 requestOptions,
@@ -1878,11 +1888,13 @@ public final class OpenAIClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getAudioTranscriptionAsResponseObjectWithResponse(
             String deploymentOrModelName, BinaryData audioTranscriptionOptions, RequestOptions requestOptions) {
+        final String contentType = "multipart/form-data;";
         final String accept = "application/json";
         return service.getAudioTranscriptionAsResponseObjectSync(
                 this.getEndpoint(),
                 this.getServiceVersion().getVersion(),
                 deploymentOrModelName,
+                contentType,
                 accept,
                 audioTranscriptionOptions,
                 requestOptions,
@@ -1926,6 +1938,7 @@ public final class OpenAIClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getAudioTranscriptionAsPlainTextWithResponseAsync(
             String deploymentOrModelName, BinaryData audioTranscriptionOptions, RequestOptions requestOptions) {
+        final String contentType = "multipart/form-data;";
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
@@ -1933,6 +1946,7 @@ public final class OpenAIClientImpl {
                                 this.getEndpoint(),
                                 this.getServiceVersion().getVersion(),
                                 deploymentOrModelName,
+                                contentType,
                                 accept,
                                 audioTranscriptionOptions,
                                 requestOptions,
@@ -1975,11 +1989,13 @@ public final class OpenAIClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getAudioTranscriptionAsPlainTextWithResponse(
             String deploymentOrModelName, BinaryData audioTranscriptionOptions, RequestOptions requestOptions) {
+        final String contentType = "multipart/form-data;";
         final String accept = "application/json";
         return service.getAudioTranscriptionAsPlainTextSync(
                 this.getEndpoint(),
                 this.getServiceVersion().getVersion(),
                 deploymentOrModelName,
+                contentType,
                 accept,
                 audioTranscriptionOptions,
                 requestOptions,
@@ -2042,6 +2058,7 @@ public final class OpenAIClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getAudioTranslationAsResponseObjectWithResponseAsync(
             String deploymentOrModelName, BinaryData audioTranslationOptions, RequestOptions requestOptions) {
+        final String contentType = "multipart/form-data;";
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
@@ -2049,6 +2066,7 @@ public final class OpenAIClientImpl {
                                 this.getEndpoint(),
                                 this.getServiceVersion().getVersion(),
                                 deploymentOrModelName,
+                                contentType,
                                 accept,
                                 audioTranslationOptions,
                                 requestOptions,
@@ -2111,11 +2129,13 @@ public final class OpenAIClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getAudioTranslationAsResponseObjectWithResponse(
             String deploymentOrModelName, BinaryData audioTranslationOptions, RequestOptions requestOptions) {
+        final String contentType = "multipart/form-data;";
         final String accept = "application/json";
         return service.getAudioTranslationAsResponseObjectSync(
                 this.getEndpoint(),
                 this.getServiceVersion().getVersion(),
                 deploymentOrModelName,
+                contentType,
                 accept,
                 audioTranslationOptions,
                 requestOptions,
@@ -2157,6 +2177,7 @@ public final class OpenAIClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getAudioTranslationAsPlainTextWithResponseAsync(
             String deploymentOrModelName, BinaryData audioTranslationOptions, RequestOptions requestOptions) {
+        final String contentType = "multipart/form-data;";
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
@@ -2164,6 +2185,7 @@ public final class OpenAIClientImpl {
                                 this.getEndpoint(),
                                 this.getServiceVersion().getVersion(),
                                 deploymentOrModelName,
+                                contentType,
                                 accept,
                                 audioTranslationOptions,
                                 requestOptions,
@@ -2205,11 +2227,13 @@ public final class OpenAIClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getAudioTranslationAsPlainTextWithResponse(
             String deploymentOrModelName, BinaryData audioTranslationOptions, RequestOptions requestOptions) {
+        final String contentType = "multipart/form-data;";
         final String accept = "application/json";
         return service.getAudioTranslationAsPlainTextSync(
                 this.getEndpoint(),
                 this.getServiceVersion().getVersion(),
                 deploymentOrModelName,
+                contentType,
                 accept,
                 audioTranslationOptions,
                 requestOptions,
