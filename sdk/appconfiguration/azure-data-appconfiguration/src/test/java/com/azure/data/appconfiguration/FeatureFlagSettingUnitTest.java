@@ -14,7 +14,6 @@ import java.util.Map;
 
 import static com.azure.data.appconfiguration.models.FeatureFlagConfigurationSetting.KEY_PREFIX;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class FeatureFlagSettingUnitTest {
@@ -65,16 +64,12 @@ public class FeatureFlagSettingUnitTest {
 
     @Test
     public void accessingValueAfterChangingStronglyTypedProperties() {
-        // Create a new feature flag configuration setting,
-        final List<FeatureFlagFilter> featureFlagFilters = Arrays.asList(
-            getFlagFilter(FILTER_NAME, getFilterParameters()));
-        FeatureFlagConfigurationSetting setting = getFeatureFlagConfigurationSetting(NEW_KEY, DESCRIPTION_VALUE,
-            DISPLAY_NAME_VALUE, IS_ENABLED, featureFlagFilters);
-
+        FeatureFlagConfigurationSetting setting = createFeatureFlagConfigurationSetting();
         String expectedNewSettingValue = getFeatureFlagConfigurationSettingValue(NEW_KEY, DESCRIPTION_VALUE,
             DISPLAY_NAME_VALUE, IS_ENABLED);
+        // Test getValue()
         assertEquals(expectedNewSettingValue, setting.getValue());
-        // Change  strongly-type properties.
+        // Update strongly-type properties.
         setting.setFeatureId(UPDATED_KEY);
         setting.setDescription(UPDATED_DESCRIPTION_VALUE);
         setting.setDisplayName(UPDATED_DISPLAY_NAME_VALUE);
@@ -89,16 +84,14 @@ public class FeatureFlagSettingUnitTest {
 
     @Test
     public void throwExceptionWhenInvalidNonJsonFeatureFlagValue() {
-        // Create a new feature flag configuration setting,
-        final List<FeatureFlagFilter> featureFlagFilters = Arrays.asList(
-            getFlagFilter(FILTER_NAME, getFilterParameters()));
-        FeatureFlagConfigurationSetting setting = getFeatureFlagConfigurationSetting(NEW_KEY, DESCRIPTION_VALUE,
-            DISPLAY_NAME_VALUE, IS_ENABLED, featureFlagFilters);
+        FeatureFlagConfigurationSetting setting = createFeatureFlagConfigurationSetting();
 
         // User are still able to set the non-feature flag value as configuration setting value. However, when user
         // try to get a feature flag property, it will throw exception.
-        setting.setValue("Hello World");
+        String invalidValue = "invalidValueForFeatureFlagSetting";
+        setting.setValue(invalidValue);
 
+        assertEquals(invalidValue, setting.getValue());
         assertThrows(IllegalArgumentException.class, () -> setting.getFeatureId());
         assertThrows(IllegalArgumentException.class, () -> setting.getDescription());
         assertThrows(IllegalArgumentException.class, () -> setting.getDisplayName());
@@ -107,11 +100,41 @@ public class FeatureFlagSettingUnitTest {
     }
 
     @Test
+    public void shouldNotOverrideAdditionalExtendedConditions() {
+        FeatureFlagConfigurationSetting setting = createFeatureFlagConfigurationSetting();
+
+        String valueWithAdditionalCondition = String.format("{\"id\":\"%s\",\"description\":\"%s\",\"display_name\":\"%s\",\"enabled\":%s,"
+                + "\"conditions\":{\"requirement_type\":\"All\",\"client_filters\":"
+                + "[{\"name\":\"Microsoft.Percentage\",\"parameters\":{\"Value\":\"30\"}}]"
+                + "}}",
+            setting.getFeatureId(), setting.getDescription(), setting.getDisplayName(), setting.isEnabled());
+
+        setting.setValue(valueWithAdditionalCondition);
+        assertEquals(valueWithAdditionalCondition, setting.getValue());
+
+        String valueWithAdditionalFieldAtFirstLayer = String.format("{\"id\":\"%s\",\"additional_field_1\":\"additional_value_1\",\"description\":\"%s\",\"display_name\":\"%s\",\"enabled\":%s,"
+                + "\"conditions\":{\"requirement_type\":\"All\",\"client_filters\":"
+                + "[{\"name\":\"Microsoft.Percentage\",\"parameters\":{\"Value\":\"30\"}}]"
+                + "},\"additional_field\":\"additional_value\"}",
+            setting.getFeatureId(), setting.getDescription(), setting.getDisplayName(), setting.isEnabled());
+        setting.setValue(valueWithAdditionalFieldAtFirstLayer);
+        assertEquals(valueWithAdditionalFieldAtFirstLayer, setting.getValue());
+    }
+
+    @Test
     public void addFilter() {
         FeatureFlagConfigurationSetting setting = new FeatureFlagConfigurationSetting("featureID", true);
         assertEquals(0, setting.getClientFilters().size());
         setting.addClientFilter(new FeatureFlagFilter("filterName"));
         assertEquals(1, setting.getClientFilters().size());
+    }
+
+    private FeatureFlagConfigurationSetting createFeatureFlagConfigurationSetting() {
+        // Create a new feature flag configuration setting,
+        final List<FeatureFlagFilter> featureFlagFilters = Arrays.asList(
+            getFlagFilter(FILTER_NAME, getFilterParameters()));
+        return getFeatureFlagConfigurationSetting(NEW_KEY, DESCRIPTION_VALUE,
+            DISPLAY_NAME_VALUE, IS_ENABLED, featureFlagFilters);
     }
 
     private FeatureFlagConfigurationSetting getFeatureFlagConfigurationSetting(String id, String description,

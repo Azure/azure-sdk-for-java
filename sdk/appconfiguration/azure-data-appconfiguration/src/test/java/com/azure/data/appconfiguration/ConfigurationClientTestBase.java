@@ -185,6 +185,25 @@ public abstract class ConfigurationClientTestBase extends TestProxyTestBase {
     }
 
     @Test
+    public abstract void featureFlagConfigurationSettingUnknownAttributesArePreserved(HttpClient httpClient,
+        ConfigurationServiceVersion serviceVersion);
+
+    void featureFlagConfigurationSettingUnknownAttributesArePreservedRunner(
+        Consumer<FeatureFlagConfigurationSetting> testRunner) {
+        String key = getKey();
+        FeatureFlagConfigurationSetting featureFlagX = getFeatureFlagConfigurationSetting(key, "Feature Flag X");
+        String valueWithAdditionalFieldAtFirstLayer =
+            String.format(
+                "{\"id\":\"%s\",\"k1\":\"v1\",\"description\":\"%s\",\"display_name\":\"%s\",\"enabled\":%s,"
+                + "\"conditions\":{\"requirement_type\":\"All\",\"client_filters\":"
+                + "[{\"name\":\"Microsoft.Percentage\",\"parameters\":{\"Value\":\"30\"}}]"
+                + "},\"additional_field\":\"additional_value\"}", featureFlagX.getFeatureId(),
+                featureFlagX.getDescription(), featureFlagX.getDisplayName(), featureFlagX.isEnabled());
+        featureFlagX.setValue(valueWithAdditionalFieldAtFirstLayer);
+        testRunner.accept(featureFlagX);
+    }
+
+    @Test
     public abstract void setSecretReferenceConfigurationSettingConvenience(HttpClient httpClient,
         ConfigurationServiceVersion serviceVersion);
 

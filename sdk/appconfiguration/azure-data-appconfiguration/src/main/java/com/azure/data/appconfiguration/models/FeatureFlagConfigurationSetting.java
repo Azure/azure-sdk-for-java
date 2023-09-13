@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import static com.azure.data.appconfiguration.implementation.ConfigurationSettingDeserializationHelper.readConditions;
 import static com.azure.data.appconfiguration.implementation.Utility.CLIENT_FILTERS;
 import static com.azure.data.appconfiguration.implementation.Utility.CONDITIONS;
 import static com.azure.data.appconfiguration.implementation.Utility.DESCRIPTION;
@@ -38,24 +39,34 @@ public final class FeatureFlagConfigurationSetting extends ConfigurationSetting 
     private static final ClientLogger LOGGER = new ClientLogger(FeatureFlagConfigurationSetting.class);
     private static final String FEATURE_FLAG_CONTENT_TYPE = "application/vnd.microsoft.appconfig.ff+json;charset=utf-8";
 
+    /**
+     * A prefix is used to construct a feature flag configuration setting's key.
+     */
+    public static final String KEY_PREFIX = ".appconfig.featureflag/";
     private String featureId;
     private boolean isEnabled;
     private String description;
     private String displayName;
     private List<FeatureFlagFilter> clientFilters;
 
+    // The original 'value' field value. It is a temporary field to store the original 'value' field value.
     private String originalValue;
+
+    // The flag to indicate if the 'value' field is valid. It is a temporary field to store the flag.
+    // If the 'value' field is not valid, we will throw an exception when user try to access the strongly-typed
+    // properties.
     private boolean isValidValue;
 
-    private final Map<String, Object> parsedProperties = new LinkedHashMap<>(10);
+    // This used to store the parsed properties from the 'value' field. Given initial capacity is 5, it is enough for
+    // current json schema. It should be equal to the number of properties defined in the swagger schema at first level.
+    private final Map<String, Object> parsedProperties = new LinkedHashMap<>(5);
 
+    // The required properties defined in the swagger schema.
     private final List<String> requiredJsonProperties = Arrays.asList(ID, ENABLED, CONDITIONS);
-    private final List<String> allJsonProperties = Arrays.asList(ID, DESCRIPTION, DISPLAY_NAME, ENABLED, CONDITIONS);
 
-    /**
-     * A prefix is used to construct a feature flag configuration setting's key.
-     */
-    public static final String KEY_PREFIX = ".appconfig.featureflag/";
+    // Swagger schema defined properties at first level of FeatureFlagConfigurationSetting.
+    private final List<String> requiredOrOptionalJsonProperties =
+        Arrays.asList(ID, DESCRIPTION, DISPLAY_NAME, ENABLED, CONDITIONS);
 
     /**
      * The constructor for a feature flag configuration setting.
@@ -75,27 +86,27 @@ public final class FeatureFlagConfigurationSetting extends ConfigurationSetting 
 
     @Override
     public String getValue() {
-        // Lazily update: only update the all property values when the user call this getValue() method.
+        // Lazily update: Update 'value' by all latest property values when this getValue() method is called.
 
-        // Case 0: If the value wasn't valid, return it verbatim.
+        // If the 'value' wasn't valid, return the original 'value'.
         if (!isValidValue) {
             return originalValue;
         }
 
-        final Set<String> knownProperties = new LinkedHashSet<>(allJsonProperties);
+        final Set<String> knownProperties = new LinkedHashSet<>(requiredOrOptionalJsonProperties);
         try {
             final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
             final JsonWriter writer = JsonProviders.createWriter(outputStream);
 
             writer.writeStartObject();
-            // Case 1: If 'value' has value and it is a valid JSON, we need to parse it and write it back.
+            // If 'value' has value, and it is a valid JSON, we need to parse it and write it back.
             for (Map.Entry<String, Object> entry : parsedProperties.entrySet()) {
                 final String name = entry.getKey();
                 final Object jsonValue = entry.getValue();
                 try {
                     // Try to write the known property. If it is a known property, we need to remove it from the
                     // temporary 'knownProperties' bag.
-                    if (tryWriteKnownProperty(name, null, writer, true)) {
+                    if (tryWriteKnownProperty(name, jsonValue, writer, true)) {
                         knownProperties.remove(name);
                     } else {
                         // Unknown extension property. We need to keep it.
@@ -105,13 +116,12 @@ public final class FeatureFlagConfigurationSetting extends ConfigurationSetting 
                     throw LOGGER.logExceptionAsError(new RuntimeException(e));
                 }
             }
-
-            // Case 2: Remaining known properties we are not processed yet after 'parsedProperties'.
+            // Remaining known properties we are not processed yet after 'parsedProperties'.
             for (final String propertyName : knownProperties) {
                 tryWriteKnownProperty(propertyName, null, writer, false);
             }
-
             writer.writeEndObject();
+
             writer.flush();
             originalValue = outputStream.toString(StandardCharsets.UTF_8.name());
             outputStream.close();
@@ -121,7 +131,6 @@ public final class FeatureFlagConfigurationSetting extends ConfigurationSetting 
         }
 
         super.setValue(originalValue);
-
         return originalValue;
     }
 
@@ -152,161 +161,6 @@ public final class FeatureFlagConfigurationSetting extends ConfigurationSetting 
         super.setValue(value);
         isValidValue = tryParseValue(value);
         return this;
-    }
-
-    private boolean tryWriteKnownProperty(String propertyName, Object propertyValue, JsonWriter writer,
-                                          boolean includeOptionalWhenNull) throws IOException {
-        switch (propertyName) {
-            case ID:
-                writer.writeStringField(ID, featureId);
-                break;
-            case DESCRIPTION:
-                if (includeOptionalWhenNull || description != null) {
-                    writer.writeStringField(DESCRIPTION, description);
-                }
-                break;
-            case DISPLAY_NAME:
-                if (includeOptionalWhenNull || displayName != null) {
-                    writer.writeStringField(DISPLAY_NAME, displayName);
-                }
-                break;
-            case ENABLED:
-                writer.writeBooleanField(ENABLED, isEnabled);
-                break;
-            case CONDITIONS:
-                tryWriteConditions(propertyValue, writer);
-                break;
-            default:
-                return false;
-        }
-        return true;
-    }
-
-    private void tryWriteConditions(Object propertyValue, JsonWriter writer) throws IOException {
-        writer.writeStartObject(CONDITIONS);
-
-        if (propertyValue != null) {
-            Conditions propertyValue1 = (Conditions) propertyValue;
-            for (Object unknownCondition : propertyValue1.getUnknownConditions()) {
-                writer.writeUntyped(unknownCondition);
-            }
-        }
-
-        writer.writeArrayField(CLIENT_FILTERS, this.getClientFilters(), (jsonWriter, filter) -> {
-            jsonWriter.writeStartObject();
-            jsonWriter.writeStringField(NAME, filter.getName());
-            jsonWriter.writeMapField(PARAMETERS, filter.getParameters(), JsonWriter::writeUntyped);
-            jsonWriter.writeEndObject(); // each filter object
-        });
-
-        writer.writeEndObject();
-    }
-
-    private boolean tryParseValue(String value) {
-        parsedProperties.clear();
-
-        final Set<String> requiredPropertiesCopy = new LinkedHashSet<>(requiredJsonProperties);
-        try (JsonReader jsonReader = JsonProviders.createReader(value)) {
-            return jsonReader.readObject(reader -> {
-
-                String featureIdCopy = this.featureId;
-                String descriptionCopy = this.description;
-                String displayNameCopy = this.displayName;
-                boolean isEnabledCopy = this.isEnabled;
-                List<FeatureFlagFilter> featureFlagFiltersCopy = this.clientFilters;
-
-                while (reader.nextToken() != JsonToken.END_OBJECT) {
-                    final String fieldName = reader.getFieldName();
-                    reader.nextToken();
-
-                    if (ID.equals(fieldName)) {
-                        final String id = reader.getString();
-                        featureIdCopy = id;
-                        parsedProperties.put(ID, id);
-
-                    } else if (DESCRIPTION.equals(fieldName)) {
-                        final String description = reader.getString();
-                        descriptionCopy = description;
-                        parsedProperties.put(DESCRIPTION, description);
-                    } else if (DISPLAY_NAME.equals(fieldName)) {
-                        final String displayName = reader.getString();
-                        displayNameCopy = displayName;
-                        parsedProperties.put(DISPLAY_NAME, displayName);
-                    } else if (ENABLED.equals(fieldName)) {
-                        final boolean isEnabled = reader.getBoolean();
-                        isEnabledCopy = isEnabled;
-                        parsedProperties.put(ENABLED, isEnabled);
-                    } else if (CONDITIONS.equals(fieldName)) {
-                        final Conditions conditions = readConditions(reader);
-                        if (conditions != null) {
-                            List<FeatureFlagFilter> featureFlagFilters = conditions.getFeatureFlagFilters();
-                            featureFlagFiltersCopy = featureFlagFilters;
-                            parsedProperties.put(CONDITIONS, conditions);
-                        }
-                    } else {
-                        // The extension property is possible, we should not skip it.
-                        parsedProperties.put(fieldName, reader.readUntyped());
-                    }
-                    requiredPropertiesCopy.remove(fieldName);
-                }
-
-                this.featureId = featureIdCopy;
-                this.description = descriptionCopy;
-                this.displayName = displayNameCopy;
-                this.isEnabled = isEnabledCopy;
-                this.clientFilters = featureFlagFiltersCopy;
-
-                return requiredPropertiesCopy.isEmpty();
-            });
-        } catch (IOException e) {
-            return false;
-        }
-    }
-
-    // Feature flag configuration setting: conditions
-    private Conditions readConditions(JsonReader jsonReader) throws IOException {
-
-        Conditions conditions = new Conditions();
-
-        List<Object> unknownCondition = conditions.getUnknownConditions();
-        return jsonReader.readObject(reader -> {
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-
-                if (CLIENT_FILTERS.equals(fieldName)) {
-                    conditions.setFeatureFlagFilters(reader.readArray(FeatureFlagConfigurationSetting::readClientFilter));
-                } else {
-                    unknownCondition.add(reader.readUntyped());
-                }
-            }
-            conditions.setUnknownConditions(unknownCondition);
-
-
-            return conditions;
-        });
-    }
-
-    private static FeatureFlagFilter readClientFilter(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            String name = null;
-            Map<String, Object> parameters = null;
-
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-
-                if (NAME.equals(fieldName)) {
-                    name = reader.getString();
-                } else if (PARAMETERS.equals(fieldName)) {
-                    parameters = reader.readMap(JsonReader::readUntyped);
-                } else {
-                    reader.skipChildren();
-                }
-            }
-
-            return new FeatureFlagFilter(name).setParameters(parameters);
-        });
     }
 
     /**
@@ -506,6 +360,120 @@ public final class FeatureFlagConfigurationSetting extends ConfigurationSetting 
         if (!isValidValue) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException("The content of the " + super.getValue()
                 + " property do not represent a valid feature flag object"));
+        }
+    }
+
+    // Try to write the known property. If it is a known property, return true. Otherwise, return false.
+    private boolean tryWriteKnownProperty(String propertyName, Object propertyValue, JsonWriter writer,
+                                          boolean includeOptionalWhenNull) throws IOException {
+        switch (propertyName) {
+            case ID:
+                writer.writeStringField(ID, featureId);
+                break;
+            case DESCRIPTION:
+                if (includeOptionalWhenNull || description != null) {
+                    writer.writeStringField(DESCRIPTION, description);
+                }
+                break;
+            case DISPLAY_NAME:
+                if (includeOptionalWhenNull || displayName != null) {
+                    writer.writeStringField(DISPLAY_NAME, displayName);
+                }
+                break;
+            case ENABLED:
+                writer.writeBooleanField(ENABLED, isEnabled);
+                break;
+            case CONDITIONS:
+                tryWriteConditions(propertyValue, writer);
+                break;
+            default:
+                return false;
+        }
+        return true;
+    }
+
+    // Helper method: try to write the 'conditions' property.
+    private void tryWriteConditions(Object propertyValue, JsonWriter writer) throws IOException {
+        writer.writeStartObject(CONDITIONS);
+
+        if (propertyValue != null && propertyValue instanceof Conditions) {
+            Conditions propertyValueClone = (Conditions) propertyValue;
+            for (Map.Entry<String, Object> entry : propertyValueClone.getUnknownConditions().entrySet()) {
+                String key = entry.getKey();
+                Object value = entry.getValue();
+                writer.writeUntypedField(key, value);
+            }
+        }
+
+        writer.writeArrayField(CLIENT_FILTERS, this.getClientFilters(), (jsonWriter, filter) -> {
+            jsonWriter.writeStartObject();
+            jsonWriter.writeStringField(NAME, filter.getName());
+            jsonWriter.writeMapField(PARAMETERS, filter.getParameters(), JsonWriter::writeUntyped);
+            jsonWriter.writeEndObject(); // each filter object
+        });
+
+        writer.writeEndObject();
+    }
+
+    // Given JSON string value, try to parse it and set the parsed properties to the 'parsedProperties' field.
+    // If the parsing is successful, return true. Otherwise, return false
+    private boolean tryParseValue(String value) {
+        parsedProperties.clear();
+
+        final Set<String> requiredPropertiesCopy = new LinkedHashSet<>(requiredJsonProperties);
+        try (JsonReader jsonReader = JsonProviders.createReader(value)) {
+            return jsonReader.readObject(reader -> {
+
+                String featureIdCopy = this.featureId;
+                String descriptionCopy = this.description;
+                String displayNameCopy = this.displayName;
+                boolean isEnabledCopy = this.isEnabled;
+                List<FeatureFlagFilter> featureFlagFiltersCopy = this.clientFilters;
+
+                while (reader.nextToken() != JsonToken.END_OBJECT) {
+                    final String fieldName = reader.getFieldName();
+                    reader.nextToken();
+
+                    if (ID.equals(fieldName)) {
+                        final String id = reader.getString();
+                        featureIdCopy = id;
+                        parsedProperties.put(ID, id);
+                    } else if (DESCRIPTION.equals(fieldName)) {
+                        final String description = reader.getString();
+                        descriptionCopy = description;
+                        parsedProperties.put(DESCRIPTION, description);
+                    } else if (DISPLAY_NAME.equals(fieldName)) {
+                        final String displayName = reader.getString();
+                        displayNameCopy = displayName;
+                        parsedProperties.put(DISPLAY_NAME, displayName);
+                    } else if (ENABLED.equals(fieldName)) {
+                        final boolean isEnabled = reader.getBoolean();
+                        isEnabledCopy = isEnabled;
+                        parsedProperties.put(ENABLED, isEnabled);
+                    } else if (CONDITIONS.equals(fieldName)) {
+                        final Conditions conditions = readConditions(reader);
+                        if (conditions != null) {
+                            List<FeatureFlagFilter> featureFlagFilters = conditions.getFeatureFlagFilters();
+                            featureFlagFiltersCopy = featureFlagFilters;
+                            parsedProperties.put(CONDITIONS, conditions);
+                        }
+                    } else {
+                        // The extension property is possible, we should not skip it.
+                        parsedProperties.put(fieldName, reader.readUntyped());
+                    }
+                    requiredPropertiesCopy.remove(fieldName);
+                }
+
+                this.featureId = featureIdCopy;
+                this.description = descriptionCopy;
+                this.displayName = displayNameCopy;
+                this.isEnabled = isEnabledCopy;
+                this.clientFilters = featureFlagFiltersCopy;
+
+                return requiredPropertiesCopy.isEmpty();
+            });
+        } catch (IOException e) {
+            return false;
         }
     }
 }
