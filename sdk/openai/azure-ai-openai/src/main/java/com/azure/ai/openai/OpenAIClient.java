@@ -738,7 +738,7 @@ public final class OpenAIClient {
                 .setHeader(
                         HttpHeaderName.CONTENT_TYPE,
                         "multipart/form-data;" + " boundary=" + multipartBoundary)
-                .setHeader(HttpHeaderName.CONTENT_LENGTH, String.valueOf(requestData.getData()));
+                .setHeader(HttpHeaderName.CONTENT_LENGTH, String.valueOf(requestData.getDataLength()));
         return this.serviceClient
                 .getAudioTranslationAsPlainTextWithResponse(
                         deploymentOrModelName, requestData.getData(), requestOptions)
