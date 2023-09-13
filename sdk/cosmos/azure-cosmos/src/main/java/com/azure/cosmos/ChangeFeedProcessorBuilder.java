@@ -254,7 +254,6 @@ public class ChangeFeedProcessorBuilder {
         if (this.leaseVersion == LeaseVersion.EPK_RANGE_BASED_LEASE) {
             switch (this.changeFeedMode) {
                 case FULL_FIDELITY:
-
                     if (this.fullFidelityModeLeaseConsumer != null) {
                         changeFeedProcessor = new FullFidelityChangeFeedProcessorImpl(
                             this.hostName,
@@ -272,7 +271,6 @@ public class ChangeFeedProcessorBuilder {
                     }
                     break;
                 case INCREMENTAL:
-
                     if (this.incrementalModeLeaseConsumerEpkVersion != null) {
                         changeFeedProcessor = new com.azure.cosmos.implementation.changefeed.epkversion.IncrementalChangeFeedProcessorImpl(
                             this.hostName,
@@ -280,7 +278,7 @@ public class ChangeFeedProcessorBuilder {
                             this.leaseContainer,
                             this.incrementalModeLeaseConsumerEpkVersion,
                             this.changeFeedProcessorOptions);
-                    } else if (this.fullFidelityModeLeaseWithContextConsumer != null) {
+                    } else if (this.incrementalModeLeaseConsumerPkRangeIdVersion != null) {
                         changeFeedProcessor = new com.azure.cosmos.implementation.changefeed.epkversion.IncrementalChangeFeedProcessorImpl(
                             this.hostName,
                             this.feedContainer,
