@@ -69,11 +69,10 @@ public class JsonObject extends JsonElement {
         if(element != null) {
             // Case: element is a String or Character, therefore value stores
             // element as a JsonString
-            if(
-                (element instanceof String)
-                ||
-                (element instanceof Character)
-            ) { value = new JsonString(String.valueOf(element)); }
+            if((element instanceof String) || (element instanceof Character)) { 
+                value = new JsonString(String.valueOf(element)); 
+            }
+
             // Case: element is a Number, therefore value stores element as a
             // JsonNumber
             else if(element instanceof Number) {
