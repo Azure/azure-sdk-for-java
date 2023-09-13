@@ -14,7 +14,6 @@ import com.azure.core.client.traits.EndpointTrait;
 import com.azure.core.client.traits.HttpTrait;
 import com.azure.core.client.traits.KeyCredentialTrait;
 import com.azure.core.client.traits.TokenCredentialTrait;
-import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.KeyCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
@@ -175,16 +174,6 @@ public final class OpenAIClientBuilder
     public OpenAIClientBuilder credential(TokenCredential tokenCredential) {
         this.tokenCredential = tokenCredential;
         return this;
-    }
-
-    /**
-     * The KeyCredential used for OpenAi authentication. It could be either of Azure or Non-Azure OpenAI API key.
-     *
-     * @param azureKeyCredential The credential for OpenAI authentication.
-     * @return the object itself.
-     */
-    public OpenAIClientBuilder credential(AzureKeyCredential azureKeyCredential) {
-        return this.credential((KeyCredential) azureKeyCredential);
     }
 
     /** The KeyCredential used for OpenAi authentication. It could be either of Azure or Non-Azure OpenAI API key. */
