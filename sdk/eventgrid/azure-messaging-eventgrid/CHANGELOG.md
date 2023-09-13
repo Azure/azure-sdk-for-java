@@ -3,6 +3,7 @@
 ## 4.18.0-beta.1 (Unreleased)
 
 ### Features Added
+- New events for EventGrid and AppConfig
 
 ### Breaking Changes
 

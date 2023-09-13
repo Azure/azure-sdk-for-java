@@ -5,6 +5,7 @@ import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.httpurlconnection.implementation.HttpUrlConnectionResponse;
+import reactor.core.publisher.Flux;
 
 import javax.net.ssl.SSLSocket;
 import javax.net.ssl.SSLSocketFactory;
@@ -12,6 +13,7 @@ import java.io.*;
 import java.net.ProtocolException;
 import java.net.Socket;
 import java.net.URL;
+import java.nio.ByteBuffer;
 import java.util.*;
 
 /**
@@ -158,23 +160,23 @@ class SocketClient {
         int statusCode = Integer.parseInt(statusLine.substring(dotIndex+3, dotIndex+6));
         // Read the headers until reaching a newline
         // Extract each key/value pair, add to headers
-        HttpHeaders headers = new HttpHeaders();
+        Map<String, List<String>> headers = new HashMap<>();
         String line;
         while ((line = reader.readLine()) != null && !line.isEmpty()) {
             String k = line.split(": ")[0];
             String v = line.split(": ")[1];
-            headers.set(HttpHeaderName.fromString(k), v);
+            headers.computeIfAbsent(k, key -> new ArrayList<>()).add(v);
         }
         // Read the newline through
         reader.readLine();
         // The remainder of the response is the body
         StringBuilder bodyString = new StringBuilder();
         while ((line = reader.readLine()) != null) {
-            bodyString.append(line);
+            bodyString.append(line).append("\n"); // Preserve newline characters
         }
-        // Convert the body String to a byte array needed for the HttpResponse
-        byte[] body = bodyString.toString().getBytes();
+        // Convert the body String to a Flux<ByteBuffer> needed for the HttpResponse
+        Flux<ByteBuffer> body = Flux.just(ByteBuffer.wrap(bodyString.toString().getBytes()));
 
-        return new HttpUrlConnectionResponse(httpRequest, headers, statusCode, body);
+        return new HttpUrlConnectionResponse(httpRequest, statusCode, headers, body);
     }
 }

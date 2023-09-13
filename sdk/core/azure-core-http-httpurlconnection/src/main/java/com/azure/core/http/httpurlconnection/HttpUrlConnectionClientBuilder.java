@@ -5,59 +5,49 @@ import com.azure.core.http.ProxyOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 
+import java.net.Authenticator;
+import java.net.PasswordAuthentication;
 import java.time.Duration;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.Objects;
-
-import static com.azure.core.util.Configuration.PROPERTY_AZURE_REQUEST_CONNECT_TIMEOUT;
-import static com.azure.core.util.Configuration.PROPERTY_AZURE_REQUEST_READ_TIMEOUT;
-import static com.azure.core.util.Configuration.PROPERTY_AZURE_REQUEST_RESPONSE_TIMEOUT;
-import static com.azure.core.util.Configuration.PROPERTY_AZURE_REQUEST_WRITE_TIMEOUT;
-import static com.azure.core.util.CoreUtils.getDefaultTimeoutFromEnvironment;
+import java.util.Properties;
+import java.util.Set;
+import java.util.TreeSet;
+import java.util.concurrent.Executor;
 
 public class HttpUrlConnectionClientBuilder {
-    private static final long DEFAULT_CONNECT_TIMEOUT;
-    private static final long DEFAULT_WRITE_TIMEOUT;
-    private static final long DEFAULT_RESPONSE_TIMEOUT;
-    private static final long DEFAULT_READ_TIMEOUT;
+
+    private static final Duration DEFAULT_CONNECT_TIMEOUT = Duration.ofSeconds(60);
+    private static final String JAVA_HOME = System.getProperty("java.home");
+    private static final String HTTPURLCONNECTIONCLIENT_ALLOW_RESTRICTED_HEADERS = "httpurlconnectionclient.allowRestrictedHeaders";
+
+    static final Set<String> DEFAULT_RESTRICTED_HEADERS;
+
+    static {
+        Set<String> treeSet = new TreeSet<>(String.CASE_INSENSITIVE_ORDER);
+        Collections.addAll(treeSet, "connection", "content-length", "expect", "host", "upgrade");
+        DEFAULT_RESTRICTED_HEADERS = Collections.unmodifiableSet(treeSet);
+    }
 
     private static final ClientLogger LOGGER = new ClientLogger(HttpUrlConnectionClientBuilder.class);
 
-    static {
-        Configuration configuration = Configuration.getGlobalConfiguration();
-
-        DEFAULT_CONNECT_TIMEOUT = getDefaultTimeoutFromEnvironment(configuration,
-            PROPERTY_AZURE_REQUEST_CONNECT_TIMEOUT, Duration.ofSeconds(10), LOGGER).toMillis();
-        DEFAULT_WRITE_TIMEOUT = getDefaultTimeoutFromEnvironment(configuration,
-            PROPERTY_AZURE_REQUEST_WRITE_TIMEOUT, Duration.ofSeconds(60), LOGGER).toMillis();
-        DEFAULT_RESPONSE_TIMEOUT = getDefaultTimeoutFromEnvironment(configuration,
-            PROPERTY_AZURE_REQUEST_RESPONSE_TIMEOUT, Duration.ofSeconds(60), LOGGER).toMillis();
-        DEFAULT_READ_TIMEOUT = getDefaultTimeoutFromEnvironment(configuration,
-            PROPERTY_AZURE_REQUEST_READ_TIMEOUT, Duration.ofSeconds(60), LOGGER).toMillis();
-    }
-
-    private HttpClient baseHttpClient;
-    private Configuration configuration;
+    private Duration connectionTimeout;
     private ProxyOptions proxyOptions;
-    private int port = 80;
-    private Boolean disableBufferCopy;
-    private Duration connectTimeout;
+    private Configuration configuration;
+    private Executor executor;
 
     public HttpUrlConnectionClientBuilder() {
-        this.baseHttpClient = null;
     }
 
-    public HttpUrlConnectionClientBuilder(HttpClient HttpUrlClient) {
-        this.baseHttpClient = Objects.requireNonNull(HttpUrlClient, "'HttpUrlConnectionClient' cannot be null.");
-    }
-
-    public HttpUrlConnectionClientBuilder configuration(Configuration configuration) {
-        this.configuration = configuration;
+    public HttpUrlConnectionClientBuilder executor(Executor executor) {
+        this.executor = Objects.requireNonNull(executor, "executor can not be null");
         return this;
     }
 
-    public HttpClient build() {
-        HttpUrlConnectionClient client = new HttpUrlConnectionClient();
-        return client;
+    public HttpUrlConnectionClientBuilder connectionTimeout(Duration connectionTimeout) {
+        this.connectionTimeout = connectionTimeout;
+        return this;
     }
 
     public HttpUrlConnectionClientBuilder proxy(ProxyOptions proxyOptions) {
@@ -65,18 +55,77 @@ public class HttpUrlConnectionClientBuilder {
         return this;
     }
 
-    public HttpUrlConnectionClientBuilder port(int port) {
-        this.port = port;
+    public HttpUrlConnectionClientBuilder configuration(Configuration configuration) {
+        this.configuration = configuration;
         return this;
     }
 
-    public HttpUrlConnectionClientBuilder disableBufferCopy(boolean disableBufferCopy) {
-        this.disableBufferCopy = disableBufferCopy;
-        return this;
+
+    public HttpClient build() {
+        Configuration buildConfiguration = (configuration == null)
+            ? Configuration.getGlobalConfiguration()
+            : configuration;
+
+        ProxyOptions buildProxyOptions = (proxyOptions == null)
+            ? ProxyOptions.fromConfiguration(buildConfiguration)
+            : proxyOptions;
+
+        if (buildProxyOptions != null && buildProxyOptions.getUsername() != null) {
+            Authenticator.setDefault(new ProxyAuthenticator(buildProxyOptions.getUsername(),
+                buildProxyOptions.getPassword()));
+        }
+
+        return new HttpUrlConnectionClient(connectionTimeout, buildProxyOptions, executor, buildConfiguration);
     }
 
-    public HttpUrlConnectionClientBuilder connectionTimeout(Duration connectTimeout) {
-        this.connectTimeout = connectTimeout;
-        return this;
+    Set<String> getRestrictedHeaders() {
+        Set<String> allowRestrictedHeaders = getAllowRestrictedHeaders();
+        Set<String> restrictedHeaders = new HashSet<>(DEFAULT_RESTRICTED_HEADERS);
+        restrictedHeaders.removeAll(allowRestrictedHeaders);
+        return restrictedHeaders;
+    }
+
+    private Set<String> getAllowRestrictedHeaders() {
+        Properties properties = getNetworkProperties();
+        String[] allowRestrictedHeadersNetProperties = properties.getProperty(HTTPURLCONNECTIONCLIENT_ALLOW_RESTRICTED_HEADERS, "").split(",");
+
+        Configuration config = (this.configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
+        String[] allowRestrictedHeadersSystemProperties = config.get(HTTPURLCONNECTIONCLIENT_ALLOW_RESTRICTED_HEADERS, "").split(",");
+
+        Set<String> allowRestrictedHeaders = new TreeSet<>(String.CASE_INSENSITIVE_ORDER);
+        for (String header : allowRestrictedHeadersSystemProperties) {
+            allowRestrictedHeaders.add(header.trim());
+        }
+
+        for (String header : allowRestrictedHeadersNetProperties) {
+            allowRestrictedHeaders.add(header.trim());
+        }
+
+        return allowRestrictedHeaders;
+    }
+
+    Properties getNetworkProperties() {
+        Properties properties = new Properties();
+        try {
+            properties.load(ClassLoader.getSystemResourceAsStream("net.properties"));
+        } catch (Exception e) {
+            LOGGER.warning("Cannot read net properties file", e);
+        }
+        return properties;
+    }
+
+    private static class ProxyAuthenticator extends Authenticator {
+        private final String userName;
+        private final String password;
+
+        ProxyAuthenticator(String userName, String password) {
+            this.userName = userName;
+            this.password = password;
+        }
+
+        @Override
+        protected PasswordAuthentication getPasswordAuthentication() {
+            return new PasswordAuthentication(this.userName, password.toCharArray());
+        }
     }
 }
