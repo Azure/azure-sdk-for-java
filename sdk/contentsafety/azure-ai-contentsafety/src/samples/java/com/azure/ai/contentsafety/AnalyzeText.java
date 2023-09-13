@@ -21,9 +21,9 @@ public class AnalyzeText {
             .endpoint(endpoint).buildClient();
 
         AnalyzeTextResult response;
-        try{
+        try {
             response = contentSafetyClient.analyzeText(new AnalyzeTextOptions("This is text example"));
-        }catch(HttpResponseException ex){
+        } catch (HttpResponseException ex) {
             System.out.println(String.format("Analyze text failed.\nStatus code: %s, Error message: %s",
                 ex.getResponse().getStatusCode(), ex.getMessage()));
             throw ex;

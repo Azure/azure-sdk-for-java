@@ -26,17 +26,19 @@ public class AnalyzeImage {
             .endpoint(endpoint).buildClient();
 
         ImageData image = new ImageData();
+        String cwd = System.getProperty("user.dir");
+        String absolutePath = cwd + "./src/image.jpg";
         try {
-            image.setContent(Files.readAllBytes(Paths.get("../image.jpg")));
+            image.setContent(Files.readAllBytes(Paths.get(absolutePath)));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
 
         AnalyzeImageResult response;
-        try{
+        try {
             response =
                 contentSafetyClient.analyzeImage(new AnalyzeImageOptions(image));
-        }catch(HttpResponseException ex){
+        } catch (HttpResponseException ex) {
             System.out.println(String.format("Analyze text failed.\nStatus code: %s, Error message: %s",
                 ex.getResponse().getStatusCode(), ex.getMessage()));
             throw ex;

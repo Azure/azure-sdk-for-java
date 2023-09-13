@@ -4,7 +4,15 @@
 
 package com.azure.ai.contentsafety;
 
-import com.azure.ai.contentsafety.models.*;
+import com.azure.ai.contentsafety.models.TextBlockItem;
+import com.azure.ai.contentsafety.models.TextBlocklistMatchResult;
+import com.azure.ai.contentsafety.models.AddBlockItemsResult;
+import com.azure.ai.contentsafety.models.TextBlockItemInfo;
+import com.azure.ai.contentsafety.models.RemoveBlockItemsOptions;
+import com.azure.ai.contentsafety.models.AnalyzeTextOptions;
+import com.azure.ai.contentsafety.models.AnalyzeTextResult;
+import com.azure.ai.contentsafety.models.TextBlocklist;
+import com.azure.ai.contentsafety.models.AddBlockItemsOptions;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.PagedIterable;
@@ -80,7 +88,7 @@ public class ManageTextBlocklist {
         // END:com.azure.ai.contentsafety.analyzetextwithblocklist
 
         // BEGIN:com.azure.ai.contentsafety.listtextblocklists
-        PagedIterable<TextBlocklist> allTextBlocklists= contentSafetyClient.listTextBlocklists();
+        PagedIterable<TextBlocklist> allTextBlocklists = contentSafetyClient.listTextBlocklists();
         System.out.println("\nList Blocklist:");
         for (TextBlocklist blocklist : allTextBlocklists) {
             System.out.println("Blocklist: " + blocklist.getBlocklistName() + ", Description: " + blocklist.getDescription());
