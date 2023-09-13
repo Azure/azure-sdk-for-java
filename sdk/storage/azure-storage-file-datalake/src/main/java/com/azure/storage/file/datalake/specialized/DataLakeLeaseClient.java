@@ -115,8 +115,11 @@ public final class DataLakeLeaseClient {
      *
      * <!-- src_embed com.azure.storage.file.datalake.specialized.DataLakeLeaseClient.acquireLeaseWithResponse#int-RequestConditions-Duration-Context -->
      * <pre>
-     * RequestConditions modifiedRequestConditions = new RequestConditions&#40;&#41;
-     *     .setIfModifiedSince&#40;OffsetDateTime.now&#40;&#41;.minusDays&#40;3&#41;&#41;;
+     * &#47;&#47; Optional HTTP request conditions that can be used to narrow the scope of the request.
+     * &#47;&#47; The request conditions can be used to have the leasing request only succeed if the resource has been
+     * &#47;&#47; modified and&#47;or unmodified within a certain time frame and&#47;or matches and&#47;or doesn't match a specific ETag,
+     * &#47;&#47; or any ETag.
+     * RequestConditions modifiedRequestConditions = yourOptionalRequestConditions;
      *
      * System.out.printf&#40;&quot;Lease ID is %s%n&quot;, client
      *     .acquireLeaseWithResponse&#40;60, modifiedRequestConditions, timeout, new Context&#40;key, value&#41;&#41;
@@ -164,8 +167,11 @@ public final class DataLakeLeaseClient {
      *
      * <!-- src_embed com.azure.storage.file.datalake.specialized.DataLakeLeaseClient.renewLeaseWithResponse#RequestConditions-Duration-Context -->
      * <pre>
-     * RequestConditions modifiedRequestConditions = new RequestConditions&#40;&#41;
-     *     .setIfUnmodifiedSince&#40;OffsetDateTime.now&#40;&#41;.minusDays&#40;3&#41;&#41;;
+     * &#47;&#47; Optional HTTP request conditions that can be used to narrow the scope of the request.
+     * &#47;&#47; The request conditions can be used to have the leasing request only succeed if the resource has been
+     * &#47;&#47; modified and&#47;or unmodified within a certain time frame and&#47;or matches and&#47;or doesn't match a specific ETag,
+     * &#47;&#47; or any ETag.
+     * RequestConditions modifiedRequestConditions = yourOptionalRequestConditions;
      *
      * System.out.printf&#40;&quot;Renewed lease ID is %s%n&quot;,
      *     client.renewLeaseWithResponse&#40;modifiedRequestConditions, timeout, new Context&#40;key, value&#41;&#41;
@@ -211,8 +217,11 @@ public final class DataLakeLeaseClient {
      *
      * <!-- src_embed com.azure.storage.file.datalake.specialized.DataLakeLeaseClient.releaseLeaseWithResponse#RequestConditions-Duration-Context -->
      * <pre>
-     * RequestConditions modifiedRequestConditions = new RequestConditions&#40;&#41;
-     *     .setIfUnmodifiedSince&#40;OffsetDateTime.now&#40;&#41;.minusDays&#40;3&#41;&#41;;
+     * &#47;&#47; Optional HTTP request conditions that can be used to narrow the scope of the request.
+     * &#47;&#47; The request conditions can be used to have the leasing request only succeed if the resource has been
+     * &#47;&#47; modified and&#47;or unmodified within a certain time frame and&#47;or matches and&#47;or doesn't match a specific ETag,
+     * &#47;&#47; or any ETag.
+     * RequestConditions modifiedRequestConditions = yourOptionalRequestConditions;
      *
      * System.out.printf&#40;&quot;Release lease completed with status %d%n&quot;,
      *     client.releaseLeaseWithResponse&#40;modifiedRequestConditions, timeout, new Context&#40;key, value&#41;&#41;
@@ -263,8 +272,11 @@ public final class DataLakeLeaseClient {
      * <!-- src_embed com.azure.storage.file.datalake.specialized.DataLakeLeaseClient.breakLeaseWithResponse#Integer-RequestConditions-Duration-Context -->
      * <pre>
      * Integer retainLeaseInSeconds = 5;
-     * RequestConditions modifiedRequestConditions = new RequestConditions&#40;&#41;
-     *     .setIfUnmodifiedSince&#40;OffsetDateTime.now&#40;&#41;.minusDays&#40;3&#41;&#41;;
+     * &#47;&#47; Optional HTTP request conditions that can be used to narrow the scope of the request.
+     * &#47;&#47; The request conditions can be used to have the leasing request only succeed if the resource has been
+     * &#47;&#47; modified and&#47;or unmodified within a certain time frame and&#47;or matches and&#47;or doesn't match a specific ETag,
+     * &#47;&#47; or any ETag.
+     * RequestConditions modifiedRequestConditions = yourOptionalRequestConditions;
      *
      * System.out.printf&#40;&quot;The broken lease has %d seconds remaining on the lease&quot;, client
      *     .breakLeaseWithResponse&#40;retainLeaseInSeconds, modifiedRequestConditions, timeout, new Context&#40;key, value&#41;&#41;
@@ -317,8 +329,11 @@ public final class DataLakeLeaseClient {
      *
      * <!-- src_embed com.azure.storage.file.datalake.specialized.DataLakeLeaseClient.changeLeaseWithResponse#String-RequestConditions-Duration-Context -->
      * <pre>
-     * RequestConditions modifiedRequestConditions = new RequestConditions&#40;&#41;
-     *     .setIfUnmodifiedSince&#40;OffsetDateTime.now&#40;&#41;.minusDays&#40;3&#41;&#41;;
+     * &#47;&#47; Optional HTTP request conditions that can be used to narrow the scope of the request.
+     * &#47;&#47; The request conditions can be used to have the leasing request only succeed if the resource has been
+     * &#47;&#47; modified and&#47;or unmodified within a certain time frame and&#47;or matches and&#47;or doesn't match a specific ETag,
+     * &#47;&#47; or any ETag.
+     * RequestConditions modifiedRequestConditions = yourOptionalRequestConditions;
      *
      * System.out.printf&#40;&quot;Changed lease ID is %s%n&quot;,
      *     client.changeLeaseWithResponse&#40;&quot;proposedId&quot;, modifiedRequestConditions, timeout, new Context&#40;key, value&#41;&#41;
