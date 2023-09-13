@@ -67,11 +67,6 @@
       <artifactId>azure-core-http-netty</artifactId>
       <version>1.13.6</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
     </dependency>
-    <dependency>
-      <groupId>com.azure</groupId>
-      <artifactId>azure-core-experimental</artifactId>
-      <version>1.0.0-beta.42</version> <!-- {x-version-update;com.azure:azure-core-experimental;dependency} -->
-    </dependency>
 
     <!-- provided scope -->
     <dependency>
