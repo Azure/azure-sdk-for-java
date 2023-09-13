@@ -91,9 +91,9 @@ At this step, you can build your application as a native image and start the nat
 
 ```
 mvn -Pnative spring-boot:build-image
-docker run -e APPLICATIONINSIGHTS_CONNECTION_STRING="{CONNECTION_STRING}" {native-image-name} 
+docker run -e APPLICATIONINSIGHTS_CONNECTION_STRING="{CONNECTION_STRING}" {image-name} 
 ```
-where you have to replace `{CONNECTION_STRING}` and `{native-image-name}` by your connection string and the native image name.
+where you have to replace `{CONNECTION_STRING}` and `{image-name}` by your connection string and the native image name.
 
 ## Debug your Spring native application
 
@@ -105,10 +105,10 @@ _The APPLICATIONINSIGHTS_SELF_DIAGNOSTICS_LEVEL environment variable only works 
 
 The following line shows you how to add self-diagnostics at the DEBUG level to a Spring native image:
 ```
-docker run -e -e APPLICATIONINSIGHTS_SELF_DIAGNOSTICS_LEVEL=DEBUG {native-image-name}
+docker run -e APPLICATIONINSIGHTS_SELF_DIAGNOSTICS_LEVEL=DEBUG {image-name}
 ```
 
-You have to replace `{native-image-name}` by your native image name.
+You have to replace `{image-name}` by your native image name.
 
 ## Contributing
 
