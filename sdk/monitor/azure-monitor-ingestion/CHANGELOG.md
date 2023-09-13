@@ -1,6 +1,9 @@
 # Release History
 
-## 1.0.7 (2023-09-13)
+## 1.1.0 (2023-09-13)
+
+### Features Added
+- `LogsIngestionClient` now implements `AutoCloseable` interface and can be used in try-with-resources block.
 
 ### Other Changes
 
