@@ -828,6 +828,7 @@ public final class TableAsyncClient {
      * @return A {@link Mono} containing the {@link Response HTTP response}.
      *
      * @throws TableServiceException If the request is rejected by the service.
+     * @throws IllegalArgumentException If 'partitionKey' or 'rowKey' is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteEntityWithResponse(TableEntity entity, boolean ifUnchanged) {
@@ -840,7 +841,7 @@ public final class TableAsyncClient {
         context = TableUtils.setContext(context);
         eTag = ifUnchanged ? eTag : "*";
 
-        if (isNullOrEmpty(partitionKey) || isNullOrEmpty(rowKey)) {
+        if (partitionKey == null || rowKey == null) {
             return monoError(logger, new IllegalArgumentException("'partitionKey' and 'rowKey' cannot be null."));
         }
 

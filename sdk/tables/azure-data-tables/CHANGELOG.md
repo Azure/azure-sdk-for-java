@@ -7,6 +7,7 @@
 ### Breaking Changes
 
 ### Bugs Fixed
+- Fixed bug where delete entities did not work on entities with empty primary keys.
 
 ### Other Changes
 - Migrate test recordings to assets repo

@@ -1219,4 +1219,20 @@ public class TableAsyncClientTest extends TableClientTestBase {
             .expectComplete()
             .verify(DEFAULT_TIMEOUT);
     }
+
+    // tests that you can delete a table entity with an empty string partition key and empty string row key
+    @Test
+    public void allowDeleteEntityWithEmptyPrimaryKey() {
+        Assumptions.assumeFalse(IS_COSMOS_TEST,
+            "Empty row or partition keys are not supported on Cosmos endpoints.");
+        TableEntity entity = new TableEntity("", "");
+        String entityName = testResourceNamer.randomName("name", 10);
+        entity.addProperty("Name", entityName);
+        tableClient.createEntity(entity).block();
+        StepVerifier.create(tableClient.deleteEntityWithResponse("", "", "*", false, null))
+            .assertNext(response -> assertEquals(204, response.getStatusCode()))
+            .expectComplete()
+            .verify();
+    }
+
 }
