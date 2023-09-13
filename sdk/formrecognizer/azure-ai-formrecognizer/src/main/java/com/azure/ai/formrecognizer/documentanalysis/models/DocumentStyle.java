@@ -13,6 +13,14 @@ import java.util.List;
  */
 @Immutable
 public final class DocumentStyle {
+
+    /**
+     * Creates a DocumentStyle object.
+     */
+    public DocumentStyle() {
+
+    }
+
     /*
      * Is content handwritten?
      */

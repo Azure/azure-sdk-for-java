@@ -4545,7 +4545,11 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                     this.connectionPolicy.getConnectionMode(),
                     this.partitionKeyRangeCache);
 
-            this.storeModel.enableThroughputControl(throughputControlStore);
+            if (ConnectionMode.DIRECT == this.connectionPolicy.getConnectionMode()) {
+                this.storeModel.enableThroughputControl(throughputControlStore);
+            } else {
+                this.gatewayProxy.enableThroughputControl(throughputControlStore);
+            }
         }
 
         this.throughputControlStore.enableThroughputControlGroup(group, throughputQueryMono);

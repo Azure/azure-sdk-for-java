@@ -1,15 +1,22 @@
 # Release History
 
-## 12.23.0-beta.2 (Unreleased)
+## 12.24.0-beta.1 (Unreleased)
 
 ### Features Added
 
 ### Breaking Changes
 
 ### Bugs Fixed
-- Fixed bug where a blob's contents could not be decrypted if the metadata's key set on the blob had any uppercase letters. The metadata key is now able to handle any casing.
 
 ### Other Changes
+
+## 12.23.0 (2023-09-12)
+
+### Features Added
+- Added support for service versions 2023-05-03 and 2023-08-03.
+
+### Bugs Fixed
+- Fixed bug where a blob's contents could not be decrypted if the metadata's key set on the blob had any uppercase letters. The metadata key is now able to handle any casing.
 
 ## 12.22.1 (2023-08-18)
 

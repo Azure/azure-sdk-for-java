@@ -1,6 +1,6 @@
 # Release History
 
-## 12.23.0-beta.2 (Unreleased)
+## 12.24.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,11 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 12.23.0 (2023-09-12)
+
+### Features Added
+- Added support for service versions 2023-05-03 and 2023-08-03.
 
 ## 12.22.1 (2023-08-18)
 
