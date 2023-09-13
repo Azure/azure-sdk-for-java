@@ -169,7 +169,7 @@ public class SchemaRegistryApacheAvroSerializerJavaDocCodeSamples {
         Person person = Person.newBuilder()
             .setName("Foo Bar")
             .setFavouriteNumber(3)
-            .setFavouriteNumber(3)
+            .setFavouriteColour("Turquoise")
             .build();
 
         // BEGIN: com.azure.data.schemaregistry.apacheavro.schemaregistryapacheavroserializer.deserialize-eventdata
