@@ -65,7 +65,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import static com.azure.core.util.CoreUtils.isNullOrEmpty;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
 import static com.azure.data.tables.implementation.TableUtils.applyOptionalTimeout;

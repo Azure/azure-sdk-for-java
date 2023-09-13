@@ -71,7 +71,6 @@ import java.util.concurrent.TimeUnit;
 import java.util.function.BiConsumer;
 import java.util.stream.Collectors;
 
-import static com.azure.core.util.CoreUtils.isNullOrEmpty;
 import static com.azure.data.tables.implementation.TableUtils.mapThrowableToTableServiceException;
 import static com.azure.data.tables.implementation.TableUtils.toTableServiceError;
 
