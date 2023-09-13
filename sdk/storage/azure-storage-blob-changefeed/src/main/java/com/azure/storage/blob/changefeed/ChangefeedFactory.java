@@ -19,7 +19,7 @@ class ChangefeedFactory {
     private static final ClientLogger LOGGER = new ClientLogger(ChangefeedFactory.class);
 
     private final SegmentFactory segmentFactory;
-    private final BlobContainerAsyncClient client;
+    final BlobContainerAsyncClient client;
 
     /**
      * Creates a SegmentFactory with the designated factories.

@@ -347,6 +347,7 @@ jobs:
           AdditionalLintingOptions: ${{ parameters.AdditionalLintingOptions }}
           BuildParallelization: ${{ parameters.BuildParallelization }}
           RunLinting: true
+          SDKType: ${{ parameters.SDKType }}
 
       - template: /eng/pipelines/templates/steps/upload-repository-on-failure.yml
 

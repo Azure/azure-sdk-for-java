@@ -476,7 +476,7 @@ public class CertificateClientImpl {
                                                                              Context context);
 
         @Post("certificates/{certificate-name}/pending/merge")
-        @ExpectedResponses({200})
+        @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<KeyVaultCertificateWithPolicy>> mergeCertificateAsync(@HostParam("url") String url,
                                                                             @PathParam("certificate-name") String certificateName,
@@ -858,7 +858,7 @@ public class CertificateClientImpl {
                                                                   Context context);
 
         @Post("certificates/{certificate-name}/pending/merge")
-        @ExpectedResponses({200})
+        @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<KeyVaultCertificateWithPolicy> mergeCertificate(@HostParam("url") String url,
                                                                  @PathParam("certificate-name") String certificateName,

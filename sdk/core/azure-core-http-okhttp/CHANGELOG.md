@@ -10,6 +10,17 @@
 
 ### Other Changes
 
+- Changed buffer read size from `4096` to `8192` when returning `Flux<ByteBuffer>` in `HttpResponse` to reduce number
+  of reads and elements emitted by the `Flux`.
+
+## 1.11.13 (2023-09-07)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.42.0` to `1.43.0`.
+
 ## 1.11.12 (2023-08-04)
 
 ### Other Changes

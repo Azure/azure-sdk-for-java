@@ -155,6 +155,9 @@ public class VirtualMachineCustomImageOperationsTest extends ComputeManagementTe
         Assertions.assertNotNull(customImageGen2.dataDiskImages());
         Assertions.assertEquals(customImageGen2.dataDiskImages().size(), 0);
         Assertions.assertTrue(customImageGen2.hyperVGeneration().equals(HyperVGenerationTypes.V2));
+
+        customImageGen2 = this.computeManager.virtualMachineCustomImages().getById(customImageGen2.id());
+        Assertions.assertEquals(HyperVGenerationTypes.V2, customImageGen2.hyperVGeneration());
     }
 
     @Test
@@ -204,7 +207,6 @@ public class VirtualMachineCustomImageOperationsTest extends ComputeManagementTe
         final String vmName = generateRandomResourceName("vm7-", 20);
         final String storageAccountName = generateRandomResourceName("stg", 17);
         final String uname = "juser";
-        final String password = password();
 
         VirtualMachine nativeVm =
             computeManager
@@ -344,7 +346,6 @@ public class VirtualMachineCustomImageOperationsTest extends ComputeManagementTe
     private VirtualMachine prepareGeneralizedVmWith2EmptyDataDisks(
         String rgName, String vmName, Region region, ComputeManager computeManager) {
         final String uname = "javauser";
-        final String password = password();
         final KnownLinuxVirtualMachineImage linuxImage = KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS;
         final String publicIpDnsLabel = generateRandomResourceName("pip", 20);
 

@@ -49,10 +49,12 @@ extends:
         groupId: com.azure
         safeName: azureaotgraalvmsupport
         releaseInBatch: ${{ parameters.release_azureaotgraalvmsupport }}
+        skipPublishDocMs: true
       - name: azure-aot-graalvm-support-netty
         groupId: com.azure
         safeName: azureaotgraalvmsupportnetty
         releaseInBatch: ${{ parameters.release_azureaotgraalvmsupportnetty }}
+        skipPublishDocMs: true
     AdditionalModules:
       - name: azure-aot-graalvm-samples
         groupId: com.azure
