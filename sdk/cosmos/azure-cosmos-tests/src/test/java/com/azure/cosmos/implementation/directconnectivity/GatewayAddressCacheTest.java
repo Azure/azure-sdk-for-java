@@ -1232,8 +1232,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
             null,
             null,
             ConnectionPolicy.getDefaultPolicy(),
-            proactiveOpenConnectionsProcessorMock,
-            null);
+            proactiveOpenConnectionsProcessorMock);
 
         RxDocumentServiceRequest req =
             RxDocumentServiceRequest.create(
