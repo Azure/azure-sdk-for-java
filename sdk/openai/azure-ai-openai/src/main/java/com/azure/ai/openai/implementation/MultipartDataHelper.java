@@ -6,6 +6,7 @@ import com.azure.core.util.BinaryData;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,12 +14,25 @@ import java.util.UUID;
 
 public class MultipartDataHelper {
 
-    private final String boundary = UUID.randomUUID().toString().substring(0, 16);
+    private final String boundary;
 
-    private final String partSeparator = "--" + boundary;
-    private final String endMarker = partSeparator + "--";
+    private final String partSeparator;
+
+    private final String endMarker;
+
+    private final Charset encoderCharset = StandardCharsets.US_ASCII;
 
     private final String CRLF = "\r\n";
+
+    public MultipartDataHelper() {
+        this(() -> UUID.randomUUID().toString().substring(0, 16));
+    }
+
+    public MultipartDataHelper(MultipartBoundaryGenerator boundaryGenerator) {
+        this.boundary = boundaryGenerator.generateBoundary();
+        partSeparator = "--" + boundary;
+        endMarker = partSeparator + "--";
+    }
 
     public String getBoundary() {
         return boundary;
@@ -52,14 +66,14 @@ public class MultipartDataHelper {
             + CRLF + "Content-Type: application/octet-stream" + CRLF + CRLF;
         try {
             // Writing the file into the request as a byte stream
-            byteArrayOutputStream.write(fileFieldPreamble.getBytes(StandardCharsets.US_ASCII));
+            byteArrayOutputStream.write(fileFieldPreamble.getBytes(encoderCharset));
             byteArrayOutputStream.write(file);
 
             // Adding other fields to the request
             for (MultipartField field : fields) {
                 byteArrayOutputStream.write(serializeField(field));
             }
-            byteArrayOutputStream.write((CRLF + endMarker).getBytes(StandardCharsets.US_ASCII));
+            byteArrayOutputStream.write((CRLF + endMarker).getBytes(encoderCharset));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -116,11 +130,11 @@ public class MultipartDataHelper {
     }
 
     private byte[] serializeField(MultipartField field) {
-        String toSerizalise = CRLF + partSeparator
+        String serialized = CRLF + partSeparator
             + CRLF + "Content-Disposition: form-data; name=\""
             + field.getWireName() + "\"" + CRLF + CRLF
             + field.getValue();
 
-        return toSerizalise.getBytes(StandardCharsets.US_ASCII);
+        return serialized.getBytes(encoderCharset);
     }
 }
