@@ -424,12 +424,28 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
-    public void testGetAudioTranslation(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+    public void testGetAudioTranslationJson(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getOpenAIClient(httpClient, serviceVersion);
 
         getAudioTranslationRunner((deploymentName, fileName) -> {
             byte[] file = BinaryData.fromFile(openTestResourceFile(fileName)).toBytes();
             AudioTranslationOptions translationOptions = new AudioTranslationOptions(file);
+            translationOptions.setResponseFormat(AudioTranscriptionFormat.JSON);
+
+            AudioTranscription transcription = client.getAudioTranslation(deploymentName, translationOptions, fileName);
+            assertNotNull(transcription);
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    public void testGetAudioTranslationVerboseJson(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        client = getOpenAIClient(httpClient, serviceVersion);
+
+        getAudioTranslationRunner((deploymentName, fileName) -> {
+            byte[] file = BinaryData.fromFile(openTestResourceFile(fileName)).toBytes();
+            AudioTranslationOptions translationOptions = new AudioTranslationOptions(file);
+            translationOptions.setResponseFormat(AudioTranscriptionFormat.VERBOSE_JSON);
 
             AudioTranscription transcription = client.getAudioTranslation(deploymentName, translationOptions, fileName);
             assertNotNull(transcription);
