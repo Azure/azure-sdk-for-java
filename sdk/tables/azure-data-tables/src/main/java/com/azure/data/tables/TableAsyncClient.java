@@ -1097,7 +1097,7 @@ public final class TableAsyncClient {
             queryOptions.setSelect(String.join(",", select));
         }
 
-        if (isNullOrEmpty(partitionKey) || isNullOrEmpty(rowKey)) {
+        if (partitionKey == null || rowKey == null) {
             return monoError(logger, new IllegalArgumentException("'partitionKey' and 'rowKey' cannot be null."));
         }
 
