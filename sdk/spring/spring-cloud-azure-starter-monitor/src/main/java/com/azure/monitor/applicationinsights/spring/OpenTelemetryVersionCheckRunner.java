@@ -61,7 +61,7 @@ public class OpenTelemetryVersionCheckRunner implements CommandLineRunner {
               + currentOTelVersion.majorVersion
               + " and "
               + starterOTelVersion.majorVersion
-              + ") . The spring-cloud-azure-starter-monitor dependency is supposed to create unexpected behaviors. We recommend removing it.");
+              + ") . This will likely cause unexpected behaviors.");
     } else if (currentOTelVersion.isLessThan(starterOTelVersion)) {
       LOG.warn(
           "The OpenTelemetry version is not compatible with the spring-cloud-azure-starter-monitor dependency. The OpenTelemetry version should be "
