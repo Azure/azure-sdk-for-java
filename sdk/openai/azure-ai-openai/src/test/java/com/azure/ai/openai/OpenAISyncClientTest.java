@@ -450,4 +450,51 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
             assertEquals("It's raining today.\n", transcription);
         });
     }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    public void testGetAudioTranslationTextPlainWrongFormats(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        client = getOpenAIClient(httpClient, serviceVersion);
+
+        getAudioTranslationRunner((deploymentName, fileName) -> {
+            byte[] file = BinaryData.fromFile(openTestResourceFile(fileName)).toBytes();
+            AudioTranslationOptions translationOptions = new AudioTranslationOptions(file);
+
+            translationOptions.setResponseFormat(AudioTranscriptionFormat.JSON);
+            assertThrows(IllegalArgumentException.class, () -> {
+                client.getAudioTranslationText(deploymentName, translationOptions, fileName);
+            });
+
+            translationOptions.setResponseFormat(AudioTranscriptionFormat.VERBOSE_JSON);
+            assertThrows(IllegalArgumentException.class, () -> {
+                client.getAudioTranslationText(deploymentName, translationOptions, fileName);
+            });
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    public void testGetAudioTranslationJsonWrongFormats(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        client = getOpenAIClient(httpClient, serviceVersion);
+
+        getAudioTranslationRunner((deploymentName, fileName) -> {
+            byte[] file = BinaryData.fromFile(openTestResourceFile(fileName)).toBytes();
+            AudioTranslationOptions translationOptions = new AudioTranslationOptions(file);
+
+            translationOptions.setResponseFormat(AudioTranscriptionFormat.TEXT);
+            assertThrows(IllegalArgumentException.class, () -> {
+                client.getAudioTranslation(deploymentName, translationOptions, fileName);
+            });
+
+            translationOptions.setResponseFormat(AudioTranscriptionFormat.SRT);
+            assertThrows(IllegalArgumentException.class, () -> {
+                client.getAudioTranslation(deploymentName, translationOptions, fileName);
+            });
+
+            translationOptions.setResponseFormat(AudioTranscriptionFormat.VTT);
+            assertThrows(IllegalArgumentException.class, () -> {
+                client.getAudioTranslation(deploymentName, translationOptions, fileName);
+            });
+        });
+    }
 }

@@ -9,18 +9,7 @@ import com.azure.ai.openai.implementation.MultipartDataSerializationResult;
 import com.azure.ai.openai.implementation.NonAzureOpenAIClientImpl;
 import com.azure.ai.openai.implementation.OpenAIClientImpl;
 import com.azure.ai.openai.implementation.OpenAIServerSentEvents;
-import com.azure.ai.openai.models.AudioTranscription;
-import com.azure.ai.openai.models.AudioTranscriptionOptions;
-import com.azure.ai.openai.models.AudioTranslationOptions;
-import com.azure.ai.openai.models.ChatCompletions;
-import com.azure.ai.openai.models.ChatCompletionsOptions;
-import com.azure.ai.openai.models.Completions;
-import com.azure.ai.openai.models.CompletionsOptions;
-import com.azure.ai.openai.models.Embeddings;
-import com.azure.ai.openai.models.EmbeddingsOptions;
-import com.azure.ai.openai.models.ImageGenerationOptions;
-import com.azure.ai.openai.models.ImageOperationResponse;
-import com.azure.ai.openai.models.ImageResponse;
+import com.azure.ai.openai.models.*;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -37,6 +26,9 @@ import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.SyncPoller;
 import java.nio.ByteBuffer;
+import java.util.ArrayList;
+import java.util.List;
+
 import reactor.core.publisher.Flux;
 
 /** Initializes a new instance of the synchronous OpenAIClient type. */
@@ -714,26 +706,37 @@ public final class OpenAIClient {
 
     public String getAudioTranslationText(
             String deploymentOrModelName, AudioTranslationOptions audioTranslationOptions, String fileName) {
-        RequestOptions requestOptions = new RequestOptions();
+        List<AudioTranscriptionFormat> acceptedFormats = new ArrayList<>();
+        acceptedFormats.add(AudioTranscriptionFormat.TEXT);
+        acceptedFormats.add(AudioTranscriptionFormat.VTT);
+        acceptedFormats.add(AudioTranscriptionFormat.SRT);
+        if(!acceptedFormats.contains(audioTranslationOptions.getResponseFormat())) {
+            throw new IllegalArgumentException("This operation does not support the requested audio format");
+        }
         MultipartDataHelper helper = new MultipartDataHelper();
         MultipartDataSerializationResult result = helper.serializeRequest(audioTranslationOptions, fileName);
-        return getAudioTranslation(deploymentOrModelName, result, helper.getBoundary(), requestOptions).toString();
+        return getAudioTranslation(deploymentOrModelName, result, helper.getBoundary()).toString();
     }
 
     public AudioTranscription getAudioTranslation(
             String deploymentOrModelName, AudioTranslationOptions audioTranslationOptions, String fileName) {
-        RequestOptions requestOptions = new RequestOptions();
+        List<AudioTranscriptionFormat> acceptedFormats = new ArrayList<>();
+        acceptedFormats.add(AudioTranscriptionFormat.JSON);
+        acceptedFormats.add(AudioTranscriptionFormat.VERBOSE_JSON);
+        if(!acceptedFormats.contains(audioTranslationOptions.getResponseFormat())) {
+            throw new IllegalArgumentException("This operation does not support the requested audio format");
+        }
         MultipartDataHelper helper = new MultipartDataHelper();
         MultipartDataSerializationResult result = helper.serializeRequest(audioTranslationOptions, fileName);
-        return getAudioTranslation(deploymentOrModelName, result, helper.getBoundary(), requestOptions)
+        return getAudioTranslation(deploymentOrModelName, result, helper.getBoundary())
                 .toObject(AudioTranscription.class);
     }
 
     BinaryData getAudioTranslation(
             String deploymentOrModelName,
             MultipartDataSerializationResult requestData,
-            String multipartBoundary,
-            RequestOptions requestOptions) {
+            String multipartBoundary) {
+        RequestOptions requestOptions = new RequestOptions();
         requestOptions
                 .setHeader(HttpHeaderName.CONTENT_TYPE, "multipart/form-data;" + " boundary=" + multipartBoundary)
                 .setHeader(HttpHeaderName.CONTENT_LENGTH, String.valueOf(requestData.getDataLength()));
