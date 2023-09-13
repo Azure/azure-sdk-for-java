@@ -1,14 +1,11 @@
 # Release History
 
-## 12.17.0-beta.2 (Unreleased)
+## 12.17.0 (2023-09-12)
 
 ### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
+- Added support for service versions 2023-05-03 and 2023-08-03.
+- Added `DataLakeDirectoryClient.deleteRecursively()` which allows users to delete a directory and all of its contents recursively.
+- Added support for paginated directory delete when using AAD authentication. Note that this feature only applies to HNS storage accounts and when using token authentication.
 
 ## 12.16.1 (2023-08-18)
 
