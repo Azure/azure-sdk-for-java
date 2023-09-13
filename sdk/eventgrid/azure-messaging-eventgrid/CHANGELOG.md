@@ -1,6 +1,6 @@
 # Release History
 
-## 4.18.0 (2003-09-13)
+## 4.18.0 (2023-09-13)
 
 ### Features Added
 - New events for EventGrid and AppConfig
