@@ -22,10 +22,7 @@ public final class ThresholdBasedAvailabilityStrategy extends AvailabilityStrate
     public ThresholdBasedAvailabilityStrategy() {
         this.threshold = DEFAULT_THRESHOLD;
         this.thresholdStep = DEFAULT_THRESHOLD_STEP;
-        this.toStringValue = "{" +
-            "threshold=" + this.threshold +
-            ", step=" + this.thresholdStep +
-            "}";
+        this.toStringValue = getCachedStringValue(DEFAULT_THRESHOLD, DEFAULT_THRESHOLD_STEP);
     }
 
     /**
@@ -39,10 +36,11 @@ public final class ThresholdBasedAvailabilityStrategy extends AvailabilityStrate
         validateDuration(thresholdStep);
         this.threshold = threshold;
         this.thresholdStep = thresholdStep;
-        this.toStringValue = "{" +
-            "threshold=" + this.threshold +
-            ", step=" + this.thresholdStep +
-            "}";
+        this.toStringValue = getCachedStringValue(threshold, thresholdStep);
+    }
+
+    private static String getCachedStringValue(Duration threshold, Duration thresholdStep) {
+        return "{" + "threshold=" + threshold + ", step=" + thresholdStep + "}";
     }
 
     private static void validateDuration(Duration threshold) {

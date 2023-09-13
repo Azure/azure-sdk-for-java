@@ -432,51 +432,7 @@ public class CosmosException extends AzureException {
 
     @Override
     public String toString() {
-        try {
-            ObjectNode exceptionMessageNode = mapper.createObjectNode();
-            exceptionMessageNode.put("ClassName", getClass().getSimpleName());
-            exceptionMessageNode.put(USER_AGENT_KEY, this.getUserAgent());
-            exceptionMessageNode.put("statusCode", statusCode);
-            exceptionMessageNode.put("resourceAddress", resourceAddress);
-            if (cosmosError != null) {
-                exceptionMessageNode.put("error", cosmosError.toJson());
-            }
-
-            exceptionMessageNode.put("innerErrorMessage", innerErrorMessage());
-            exceptionMessageNode.put("causeInfo", causeInfo());
-            if (responseHeaders != null) {
-                exceptionMessageNode.put("responseHeaders", responseHeaders.toString());
-            }
-
-            List<Map.Entry<String, String>> filterRequestHeaders = filterSensitiveData(requestHeaders);
-            if (filterRequestHeaders != null) {
-                exceptionMessageNode.put("requestHeaders", filterRequestHeaders.toString());
-            }
-
-            if (StringUtils.isNotEmpty(this.faultInjectionRuleId)) {
-                exceptionMessageNode.put("faultInjectionRuleId", this.faultInjectionRuleId);
-            }
-
-            if(this.cosmosDiagnostics != null) {
-                cosmosDiagnostics.fillCosmosDiagnostics(exceptionMessageNode, null);
-            }
-
-            return mapper.writeValueAsString(exceptionMessageNode);
-        } catch (JsonProcessingException ex) {
-            return String.format(
-                "%s {%s=%s, error=%s, resourceAddress=%s, statusCode=%s, message=%s, causeInfo=%s, responseHeaders=%s, requestHeaders=%s, faultInjectionRuleId=[%s] }",
-                getClass().getSimpleName(),
-                USER_AGENT_KEY,
-                this.getUserAgent(),
-                cosmosError,
-                resourceAddress,
-                statusCode,
-                getMessage(),
-                causeInfo(),
-                responseHeaders,
-                filterSensitiveData(requestHeaders),
-                this.faultInjectionRuleId);
-        }
+        return toString(true);
     }
 
     String toString(boolean includeDiagnostics) {
@@ -661,14 +617,6 @@ public class CosmosException extends AzureException {
                     @Override
                     public CosmosException createCosmosException(int statusCode, Exception innerException) {
                         return new CosmosException(statusCode, innerException);
-                    }
-
-                    @Override
-                    public CosmosException createCosmosException(int statusCode,
-                                                                        String message,
-                                                                        Map<String, String> responseHeaders,
-                                                                        Exception exception) {
-                        return new CosmosException(statusCode, message, responseHeaders, exception);
                     }
 
                     @Override

@@ -133,9 +133,9 @@ import static com.azure.cosmos.models.ModelBridgeInternal.serializeJsonToByteBuf
 public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorizationTokenProvider, CpuMemoryListener,
     DiagnosticsClientContext {
 
-    private final static List<String> EMPTY_REGION_LIST = UnmodifiableList.unmodifiableList(new ArrayList<>());
+    private final static List<String> EMPTY_REGION_LIST = Collections.emptyList();
 
-    private final static List<URI> EMPTY_ENDPOINT_LIST = UnmodifiableList.unmodifiableList(new ArrayList<>());
+    private final static List<URI> EMPTY_ENDPOINT_LIST = Collections.emptyList();
 
     private final static
     ImplementationBridgeHelpers.CosmosDiagnosticsHelper.CosmosDiagnosticsAccessor diagnosticsAccessor =
@@ -1736,11 +1736,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             options,
             content);
 
-        if (serverBatchRequest instanceof PartitionKeyRangeServerBatchRequest) {
-            PartitionKeyRangeServerBatchRequest partitionKeyRangeServerBatchRequest = (PartitionKeyRangeServerBatchRequest) serverBatchRequest;
-            request.setPartitionBasedGoneNotifier(partitionKeyRangeServerBatchRequest.getPartitionBasedGoneNotifier());
-        }
-
         if (options != null) {
             request.requestContext.setExcludeRegions(options.getExcludeRegions());
         }
@@ -2708,7 +2703,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         DocumentClientRetryPolicy retryPolicyInstance = this.resetSessionTokenRetryPolicy.getRequestPolicy(clientContextOverride);
         return ObservableHelper.inlineIfPossibleAsObs(() -> readDocumentInternal(documentLink, options, retryPolicyInstance, endToEndPolicyConfig, clientContextOverride), retryPolicyInstance);
     }
-
 
     private Mono<ResourceResponse<Document>> readDocumentInternal(String documentLink, RequestOptions options,
                                                                   DocumentClientRetryPolicy retryPolicyInstance,
@@ -5362,6 +5356,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             return EMPTY_REGION_LIST;
         }
 
+        if (operationType.isWriteOperation() && !this.globalEndpointManager.canUseMultipleWriteLocations()) {
+            return EMPTY_REGION_LIST;
+        }
+
         if (!(endToEndPolicyConfig.getAvailabilityStrategy() instanceof ThresholdBasedAvailabilityStrategy)) {
             return EMPTY_REGION_LIST;
         }
@@ -5439,8 +5437,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         @Override
         public CosmosDiagnostics createDiagnostics() {
-            assert !this.isMerged.get() : "Not allowed to create new diagnostics after merging.";
-
             CosmosDiagnostics diagnostics = inner.createDiagnostics();
             createdDiagnostics.add(diagnostics);
             return diagnostics;

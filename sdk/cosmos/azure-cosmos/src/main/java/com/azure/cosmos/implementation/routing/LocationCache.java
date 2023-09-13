@@ -615,7 +615,7 @@ public class LocationCache {
         return (UnmodifiableMap<String, URI>) UnmodifiableMap.<String, URI>unmodifiableMap(endpointsByLocation);
     }
 
-    private boolean canUseMultipleWriteLocations() {
+    public boolean canUseMultipleWriteLocations() {
         return this.useMultipleWriteLocations && this.enableMultipleWriteLocations;
     }
 

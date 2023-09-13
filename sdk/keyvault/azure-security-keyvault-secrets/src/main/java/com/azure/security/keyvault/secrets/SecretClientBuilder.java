@@ -149,7 +149,7 @@ public final class SecretClientBuilder implements
      * and {@link #retryPolicy(RetryPolicy)} have been set.
      */
     public SecretClient buildClient() {
-        return new SecretClient(buildInnerClient());
+        return new SecretClient(buildInnerClient(), vaultUrl);
     }
 
     /**
@@ -171,7 +171,7 @@ public final class SecretClientBuilder implements
      * and {@link #retryPolicy(RetryPolicy)} have been set.
      */
     public SecretAsyncClient buildAsyncClient() {
-        return new SecretAsyncClient(buildInnerClient());
+        return new SecretAsyncClient(buildInnerClient(), vaultUrl);
     }
 
 
@@ -188,7 +188,7 @@ public final class SecretClientBuilder implements
         SecretServiceVersion serviceVersion = version != null ? version : SecretServiceVersion.getLatest();
 
         if (pipeline != null) {
-            return new SecretClientImpl(vaultUrl, pipeline, serviceVersion);
+            return new SecretClientImpl(pipeline, serviceVersion.getVersion());
         }
 
         if (credential == null) {
@@ -238,7 +238,7 @@ public final class SecretClientBuilder implements
             .tracer(tracer)
             .build();
 
-        return new SecretClientImpl(vaultUrl, pipeline, serviceVersion);
+        return new SecretClientImpl(pipeline, serviceVersion.getVersion());
     }
 
     /**
