@@ -11,6 +11,15 @@ import java.util.Collection;
 /** Known values for operation status. */
 @Immutable
 public final class OperationStatus extends ExpandableStringEnum<OperationStatus> {
+
+    /**
+     * Creates a OperationStatus object.
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public OperationStatus() {
+    }
+
     /** Static value notStarted for OperationStatus. */
     public static final OperationStatus NOT_STARTED = fromString("notStarted");
 
@@ -36,7 +45,10 @@ public final class OperationStatus extends ExpandableStringEnum<OperationStatus>
         return fromString(name, OperationStatus.class);
     }
 
-    /** @return known OperationStatus values. */
+    /**
+     * Returns known OperationStatus values.
+     * @return known OperationStatus values.
+     */
     public static Collection<OperationStatus> values() {
         return values(OperationStatus.class);
     }

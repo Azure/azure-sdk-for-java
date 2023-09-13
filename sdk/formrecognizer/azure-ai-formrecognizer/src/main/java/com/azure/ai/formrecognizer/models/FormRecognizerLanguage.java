@@ -12,6 +12,15 @@ import com.azure.core.util.ExpandableStringEnum;
  * <a href="https://docs.microsoft.com/azure/cognitive-services/form-recognizer/language-support?tabs=v2-1">here</a>.
  */
 public final class FormRecognizerLanguage extends ExpandableStringEnum<FormRecognizerLanguage> {
+
+    /**
+     * Creates a FormRecognizerLanguage object.
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public FormRecognizerLanguage() {
+    }
+
     /** Static value af for FormRecognizerLanguage. */
     public static final FormRecognizerLanguage AF = fromString("af");
 

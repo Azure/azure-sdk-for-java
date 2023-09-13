@@ -11,6 +11,15 @@ import java.util.Collection;
 /** Defines values for DocumentPageLengthUnit. */
 @Immutable
 public final class DocumentPageLengthUnit extends ExpandableStringEnum<DocumentPageLengthUnit> {
+
+    /**
+     * Creates a DocumentPageLengthUnit object.
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public DocumentPageLengthUnit() {
+    }
+
     /** Static value pixel for DocumentPageLengthUnit. */
     public static final DocumentPageLengthUnit PIXEL = fromString("pixel");
 
@@ -27,7 +36,10 @@ public final class DocumentPageLengthUnit extends ExpandableStringEnum<DocumentP
         return fromString(name, DocumentPageLengthUnit.class);
     }
 
-    /** @return known DocumentPageLengthUnit values. */
+    /**
+     * Returns known DocumentPageLengthUnit values.
+     * @return known DocumentPageLengthUnit values.
+     */
     public static Collection<DocumentPageLengthUnit> values() {
         return values(DocumentPageLengthUnit.class);
     }
