@@ -26,7 +26,7 @@ class ExecutionEnvSelfDiag implements CommandLineRunner {
     private void executeExecutionEnvSelfDiagnostics() {
         if (selfDiagnosticsLogger.isDebugEnabled()) {
             boolean nativeRuntimeExecution = isNativeRuntimeExecution();
-            selfDiagnosticsLogger.debug("GraalVM native:" + nativeRuntimeExecution);
+            selfDiagnosticsLogger.debug("GraalVM native: " + nativeRuntimeExecution);
         }
         if (selfDiagnosticsLogger.isTraceEnabled()) {
             selfDiagnosticsLogger.trace("OS: " + System.getProperty("os.name"));
