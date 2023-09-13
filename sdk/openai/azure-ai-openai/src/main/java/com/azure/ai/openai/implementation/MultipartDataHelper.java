@@ -25,12 +25,14 @@ public class MultipartDataHelper {
     }
 
     public <T> MultipartDataSerializationResult serializeRequest(T requestOptions, String fileName) {
-        if(requestOptions instanceof AudioTranslationOptions audioTranslationOptions) {
+        if (requestOptions instanceof AudioTranslationOptions) {
+            AudioTranslationOptions audioTranslationOptions = (AudioTranslationOptions) requestOptions;
             byte[] file = audioTranslationOptions.getFile();
             List<MultipartField> fields = formatAudioTranslationOptions(audioTranslationOptions);
             return serializeRequestFields(file, fields, fileName);
         }
-        else if (requestOptions instanceof AudioTranscriptionOptions audioTranscriptionOptions) {
+        else if (requestOptions instanceof AudioTranscriptionOptions) {
+            AudioTranscriptionOptions audioTranscriptionOptions = (AudioTranscriptionOptions) requestOptions;
             byte[] file = audioTranscriptionOptions.getFile();
             List<MultipartField> fields = formatAudioTranscriptionOptions(audioTranscriptionOptions);
             return serializeRequestFields(file, fields, fileName);
