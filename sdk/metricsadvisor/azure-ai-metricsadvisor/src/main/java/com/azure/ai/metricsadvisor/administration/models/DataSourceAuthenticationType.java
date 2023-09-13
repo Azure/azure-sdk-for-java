@@ -13,7 +13,9 @@ public final class DataSourceAuthenticationType extends ExpandableStringEnum<Dat
 
     /**
      * Constructs a DataSourceAuthenticationType object.
+     * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Deprecated
     public DataSourceAuthenticationType() {
     }
 

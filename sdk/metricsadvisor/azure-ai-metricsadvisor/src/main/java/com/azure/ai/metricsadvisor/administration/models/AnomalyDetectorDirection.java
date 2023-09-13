@@ -13,7 +13,9 @@ public final class AnomalyDetectorDirection extends ExpandableStringEnum<Anomaly
 
     /**
      * Constructs a AnomalyDetectorDirection object.
+     * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Deprecated
     public AnomalyDetectorDirection() {
     }
 

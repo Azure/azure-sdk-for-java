@@ -13,7 +13,9 @@ public final class AlertQueryTimeMode extends ExpandableStringEnum<AlertQueryTim
 
     /**
      * Constructs a AlertQueryTimeMode object.
+     * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Deprecated
     public AlertQueryTimeMode() {
     }
 

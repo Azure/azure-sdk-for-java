@@ -18,7 +18,9 @@ public final class BoundaryMeasureType extends ExpandableStringEnum<BoundaryMeas
 
     /**
      * Constructs a BoundaryMeasureType object.
+     * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Deprecated
     public BoundaryMeasureType() {
     }
 

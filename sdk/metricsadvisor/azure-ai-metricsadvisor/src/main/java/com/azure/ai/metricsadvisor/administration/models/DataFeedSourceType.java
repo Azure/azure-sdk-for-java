@@ -14,7 +14,9 @@ public final class DataFeedSourceType extends ExpandableStringEnum<DataFeedSourc
 
     /**
      * Constructs a DataFeedSourceType object.
+     * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Deprecated
     public DataFeedSourceType() {
     }
 

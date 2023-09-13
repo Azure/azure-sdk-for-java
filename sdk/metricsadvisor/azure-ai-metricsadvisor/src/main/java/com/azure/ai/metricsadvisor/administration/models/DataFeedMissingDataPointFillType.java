@@ -10,7 +10,9 @@ public final class DataFeedMissingDataPointFillType extends ExpandableStringEnum
 
     /**
      * Constructs a DataFeedMissingDataPointFillType object.
+     * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Deprecated
     public DataFeedMissingDataPointFillType() {
     }
 

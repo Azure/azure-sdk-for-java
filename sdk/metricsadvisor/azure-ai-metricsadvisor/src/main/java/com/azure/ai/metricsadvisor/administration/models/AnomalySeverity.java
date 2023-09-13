@@ -13,7 +13,9 @@ public final class AnomalySeverity extends ExpandableStringEnum<AnomalySeverity>
 
     /**
      * Constructs a AnomalySeverity object.
+     * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Deprecated
     public AnomalySeverity() {
     }
 

@@ -14,7 +14,9 @@ public final class DataFeedRollupType extends ExpandableStringEnum<DataFeedRollu
 
     /**
      * Constructs a DataFeedRollupType object.
+     * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Deprecated
     public DataFeedRollupType() {
     }
 

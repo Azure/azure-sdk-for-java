@@ -13,7 +13,9 @@ public final class AnomalyIncidentStatus extends ExpandableStringEnum<AnomalyInc
 
     /**
      * Constructs a AnomalyIncidentStatus object.
+     * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Deprecated
     public AnomalyIncidentStatus() {
     }
 

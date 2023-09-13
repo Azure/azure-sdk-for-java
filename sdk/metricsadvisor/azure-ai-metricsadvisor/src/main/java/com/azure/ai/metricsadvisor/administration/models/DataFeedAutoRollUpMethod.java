@@ -14,7 +14,9 @@ public final class DataFeedAutoRollUpMethod extends ExpandableStringEnum<DataFee
 
     /**
      * Constructs a DataFeedAutoRollUpMethod object.
+     * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Deprecated
     public DataFeedAutoRollUpMethod() {
     }
 

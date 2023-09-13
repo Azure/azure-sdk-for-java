@@ -13,7 +13,9 @@ import java.util.Collection;
 public final class MetricAnomalyAlertScopeType extends ExpandableStringEnum<MetricAnomalyAlertScopeType> {
     /**
      * Constructs a MetricAnomalyAlertScopeType object.
+     * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Deprecated
     public MetricAnomalyAlertScopeType() {
     }
 

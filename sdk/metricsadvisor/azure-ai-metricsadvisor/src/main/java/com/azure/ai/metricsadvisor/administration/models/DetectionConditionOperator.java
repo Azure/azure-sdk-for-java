@@ -15,7 +15,9 @@ public final class DetectionConditionOperator
 
     /**
      * Constructs a {@link DetectionConditionOperator} object.
+     * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Deprecated
     public DetectionConditionOperator() {
     }
 

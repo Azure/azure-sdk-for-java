@@ -13,7 +13,9 @@ public final class SnoozeScope extends ExpandableStringEnum<SnoozeScope> {
 
     /**
      * Constructs a SnoozeScope object.
+     * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Deprecated
     public SnoozeScope() {
     }
 

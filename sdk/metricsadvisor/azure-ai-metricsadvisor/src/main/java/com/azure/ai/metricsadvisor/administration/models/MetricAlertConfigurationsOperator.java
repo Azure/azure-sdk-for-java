@@ -15,7 +15,9 @@ public final class MetricAlertConfigurationsOperator
 
     /**
      * Constructs a {@link MetricAlertConfigurationsOperator} object.
+     * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Deprecated
     public MetricAlertConfigurationsOperator() {
     }
 

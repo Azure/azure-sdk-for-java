@@ -16,7 +16,9 @@ public final class DataFeedStatus extends ExpandableStringEnum<DataFeedStatus> {
 
     /**
      * Constructs a DataFeedStatus object.
+     * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Deprecated
     public DataFeedStatus() {
     }
 

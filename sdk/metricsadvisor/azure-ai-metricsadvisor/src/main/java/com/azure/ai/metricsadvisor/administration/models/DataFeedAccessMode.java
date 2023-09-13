@@ -14,7 +14,9 @@ public final class DataFeedAccessMode extends ExpandableStringEnum<DataFeedAcces
 
     /**
      * Constructs a DataFeedAccessMode object.
+     * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Deprecated
     public DataFeedAccessMode() {
     }
 

@@ -14,7 +14,9 @@ public final class DataFeedGranularityType extends ExpandableStringEnum<DataFeed
 
     /**
      * Constructs a DataFeedGranularityType object.
+     * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Deprecated
     public DataFeedGranularityType() {
     }
 
