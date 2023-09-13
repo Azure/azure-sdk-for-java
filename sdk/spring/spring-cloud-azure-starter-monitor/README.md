@@ -103,7 +103,7 @@ You can configure the self-diagnostics level by using the APPLICATIONINSIGHTS_SE
 
 _The APPLICATIONINSIGHTS_SELF_DIAGNOSTICS_LEVEL environment variable only works for Logback today._
 
-The following line shows you how to add self-diagnostics at the DEBUG level to a Spring native image:
+The following line shows you how to add self-diagnostics at the DEBUG level when running a docker container:
 ```
 docker run -e APPLICATIONINSIGHTS_SELF_DIAGNOSTICS_LEVEL=DEBUG {image-name}
 ```
