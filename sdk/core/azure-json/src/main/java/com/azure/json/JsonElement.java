@@ -112,10 +112,11 @@ public abstract class JsonElement {
      * @throws IllegalArgumentException
      */
     public JsonArray addElement(JsonElement element) throws IllegalArgumentException  {
-        // Case:
-        if(this.isArray()) { return (this.asArray()).addElement(element); }
-        // Case:
-        else { throw new InvalidJsonDataTypeException(); }
+        if (this.isArray()) {
+            return (this.asArray()).addElement(element);
+        } else {
+            throw new InvalidJsonDataTypeException();
+        }
     }
 
     /**
@@ -127,10 +128,11 @@ public abstract class JsonElement {
      * @throws IndexOutOfBoundsException
      */
     public JsonArray addElement(int index, JsonElement element) throws IllegalArgumentException, IndexOutOfBoundsException {
-        // Case:
-        if(this.isArray()) { return (this.asArray()).addElement(index, element); }
-        // Case:
-        else { throw new InvalidJsonDataTypeException(); }
+        if (this.isArray()) {
+            return (this.asArray()).addElement(index, element);
+        } else {
+            throw new InvalidJsonDataTypeException();
+        }
     }
 
     /**
@@ -142,10 +144,11 @@ public abstract class JsonElement {
      * @throws IndexOutOfBoundsException
      */
     public JsonArray setElement(int index, JsonElement element) throws IllegalArgumentException, IndexOutOfBoundsException {
-        // Case:
-        if(this.isArray()) { return (this.asArray()).setElement(index, element); }
-        // Case:
-        else { throw new InvalidJsonDataTypeException(); }
+        if (this.isArray()) {
+            return (this.asArray()).setElement(index, element);
+        } else {
+            throw new InvalidJsonDataTypeException();
+        }
     }
 
     /**
@@ -155,10 +158,11 @@ public abstract class JsonElement {
      * @throws IndexOutOfBoundsException
      */
     public JsonElement getElement(int index) throws IndexOutOfBoundsException {
-        // Case:
-        if(this.isArray()) {return (this.asArray()).getElement(index); }
-        // Case:
-        else { throw new InvalidJsonDataTypeException(); }
+        if (this.isArray()) {
+            return (this.asArray()).getElement(index);
+        } else {
+            throw new InvalidJsonDataTypeException();
+        }
     }
 
     /**
@@ -168,10 +172,11 @@ public abstract class JsonElement {
      * @throws IndexOutOfBoundsException
      */
     public JsonElement removeElement(int index) throws IndexOutOfBoundsException {
-        // Case:
-        if(this.isArray()) { return (this.asArray()).removeElement(index); }
-        // Case:
-        else { throw new InvalidJsonDataTypeException(); }
+        if (this.isArray()) {
+            return (this.asArray()).removeElement(index);
+        } else {
+            throw new InvalidJsonDataTypeException();
+        }
     }
 
     //------------------------------------------------------------------------//
@@ -189,10 +194,11 @@ public abstract class JsonElement {
      * @throws InvalidJsonDataTypeException
      */
     public JsonObject addProperty(String key, Object element) throws InvalidJsonDataTypeException {
-        // Case:
-        if(this.isObject()) { return (this.asObject()).addProperty(key, element); }
-        // Case:
-        else { throw new InvalidJsonDataTypeException(); }
+        if(this.isObject()) {
+            return (this.asObject()).addProperty(key, element);
+        } else {
+            throw new InvalidJsonDataTypeException();
+        }
     }
 
     /**
@@ -203,10 +209,11 @@ public abstract class JsonElement {
      * @throws InvalidJsonDataTypeException
      */
     public JsonObject setProperty(String key, Object element) throws InvalidJsonDataTypeException {
-        // Case:
-        if(this.isObject()) { return (this.asObject()).setProperty(key, element); }
-        // Case:
-        else { throw new InvalidJsonDataTypeException(); }
+        if(this.isObject()) {
+            return (this.asObject()).setProperty(key, element);
+        } else {
+            throw new InvalidJsonDataTypeException();
+        }
     }
 
     /**
@@ -216,10 +223,11 @@ public abstract class JsonElement {
      * @throws InvalidJsonDataTypeException
      */
     public JsonElement getProperty(String key) throws InvalidJsonDataTypeException {
-        // Case:
-        if(this.isObject()) { return (this.asObject()).getProperty(key); }
-        // Case:
-        else { throw new InvalidJsonDataTypeException(); }
+        if(this.isObject()) {
+            return (this.asObject()).getProperty(key);
+        } else {
+            throw new InvalidJsonDataTypeException();
+        }
     }
 
     /**
@@ -229,10 +237,11 @@ public abstract class JsonElement {
      * @throws InvalidJsonDataTypeException
      */
     public JsonElement removeProperty(String key) throws InvalidJsonDataTypeException {
-        // Case:
-        if(this.isObject()) { return (this.asObject()).removeProperty(key); }
-        // Case:
-        else { throw new InvalidJsonDataTypeException(); }
+        if (this.isObject()) {
+            return (this.asObject()).removeProperty(key);
+        } else {
+            throw new InvalidJsonDataTypeException();
+        }
     }
 
     /**
@@ -242,10 +251,11 @@ public abstract class JsonElement {
      * @throws InvalidJsonDataTypeException
      */
     public JsonElement getValueByKey(String key) throws InvalidJsonDataTypeException {
-        // Case:
-        if(this.isObject()) { return (this.asObject()).getValueByKey(key); }
-        // Case:
-        else { throw new InvalidJsonDataTypeException(); }
+        if (this.isObject()) {
+            return (this.asObject()).getValueByKey(key);
+        } else {
+            throw new InvalidJsonDataTypeException();
+        }
     }
 
     //------------------------------------------------------------------------//
