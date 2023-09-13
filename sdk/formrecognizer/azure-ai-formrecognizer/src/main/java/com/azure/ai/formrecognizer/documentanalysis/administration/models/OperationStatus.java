@@ -14,7 +14,9 @@ public final class OperationStatus extends ExpandableStringEnum<OperationStatus>
 
     /**
      * Creates a OperationStatus object.
+     * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Deprecated
     public OperationStatus() {
     }
 

@@ -15,7 +15,9 @@ public final class FormRecognizerLanguage extends ExpandableStringEnum<FormRecog
 
     /**
      * Creates a FormRecognizerLanguage object.
+     * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Deprecated
     public FormRecognizerLanguage() {
     }
 

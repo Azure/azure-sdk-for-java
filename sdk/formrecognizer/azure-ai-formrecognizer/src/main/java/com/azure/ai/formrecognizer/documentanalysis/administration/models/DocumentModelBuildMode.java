@@ -14,7 +14,9 @@ public final class DocumentModelBuildMode extends ExpandableStringEnum<DocumentM
 
     /**
      * Creates a DocumentModelBuildMode object.
+     * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Deprecated
     public DocumentModelBuildMode() {
     }
 

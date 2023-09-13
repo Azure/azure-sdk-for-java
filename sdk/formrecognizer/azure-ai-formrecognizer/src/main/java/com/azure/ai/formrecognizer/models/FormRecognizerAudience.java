@@ -14,7 +14,9 @@ public final class FormRecognizerAudience extends ExpandableStringEnum<FormRecog
 
     /**
      * Creates a FormRecognizerAudience object.
+     * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Deprecated
     public FormRecognizerAudience() {
     }
 

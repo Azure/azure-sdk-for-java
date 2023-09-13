@@ -14,7 +14,9 @@ public final class DocumentPageLengthUnit extends ExpandableStringEnum<DocumentP
 
     /**
      * Creates a DocumentPageLengthUnit object.
+     * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Deprecated
     public DocumentPageLengthUnit() {
     }
 

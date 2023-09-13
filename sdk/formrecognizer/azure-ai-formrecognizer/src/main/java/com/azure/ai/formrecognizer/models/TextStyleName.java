@@ -16,7 +16,9 @@ public final class TextStyleName extends ExpandableStringEnum<TextStyleName> {
 
     /**
      * Constructs a TextStyleName object
+     * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Deprecated
     public TextStyleName() {
     }
 

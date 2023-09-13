@@ -12,7 +12,9 @@ public final class FormReadingOrder extends ExpandableStringEnum<FormReadingOrde
 
     /**
      * Creates a FormReadingOrder object.
+     * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Deprecated
     public FormReadingOrder() {
     }
 

@@ -14,7 +14,9 @@ public final class DocumentTableCellKind extends ExpandableStringEnum<DocumentTa
 
     /**
      * Creates a DocumentTableCellKind object.
+     * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Deprecated
     public DocumentTableCellKind() {
     }
 

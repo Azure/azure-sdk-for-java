@@ -13,7 +13,9 @@ public final class FormRecognizerLocale extends ExpandableStringEnum<FormRecogni
 
     /**
      * Creates a FormRecognizerLocale object.
+     * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Deprecated
     public FormRecognizerLocale() {
     }
 

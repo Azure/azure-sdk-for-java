@@ -14,7 +14,9 @@ public final class DocumentAnalysisAudience extends ExpandableStringEnum<Documen
 
     /**
      * Constructs a DocumentAnalysisAudience object.
+     * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Deprecated
     public DocumentAnalysisAudience() {
     }
 

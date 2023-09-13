@@ -14,7 +14,9 @@ public final class DocumentFieldType extends ExpandableStringEnum<DocumentFieldT
 
     /**
      * Constructs a DocumentFieldType object.
+     * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Deprecated
     public DocumentFieldType() {
     }
 

@@ -14,7 +14,9 @@ public final class DocumentSelectionMarkState extends ExpandableStringEnum<Docum
 
     /**
      * Creates a DocumentSelectionMarkState object.
+     * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Deprecated
     public DocumentSelectionMarkState() {
     }
 

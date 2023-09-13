@@ -13,7 +13,9 @@ public final class ContentSourceKind extends ExpandableStringEnum<ContentSourceK
 
     /**
      * Creates or finds a ContentSourceKind from its string representation.
+     * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Deprecated
     public ContentSourceKind() {
     }
 

@@ -12,7 +12,9 @@ public final class FormContentType extends ExpandableStringEnum<FormContentType>
 
     /**
      * Creates a FormContentType object.
+     * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Deprecated
     public FormContentType() {
     }
 
