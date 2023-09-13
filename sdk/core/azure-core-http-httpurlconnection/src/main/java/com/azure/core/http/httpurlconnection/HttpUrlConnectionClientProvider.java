@@ -6,10 +6,7 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.HttpClientOptions;
 
 /**
- * An {@link HttpClientProvider} that provides an implementation of HttpClient based on native JDK HttpUrlConnection.
- * <p>
- * NOTE: This implementation is only available in Java 8+ as that is when {@link java.net.http.HttpUrlConnection} was
- * introduced.
+ * An {@link HttpClientProvider} that provides an implementation of HttpClient based on native JDK HttpURLConnection.
  */
 public class HttpUrlConnectionClientProvider implements HttpClientProvider {
     private static final boolean AZURE_ENABLE_HTTP_CLIENT_SHARING =
