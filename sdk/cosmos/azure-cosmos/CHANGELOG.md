@@ -3,6 +3,7 @@
 ### 4.50.0-beta.1 (Unreleased)
 
 #### Features Added
+* Added throughput control support for `gateway mode`. See [PR 36687](https://github.com/Azure/azure-sdk-for-java/pull/36687)
 
 #### Breaking Changes
 
