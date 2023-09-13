@@ -56,8 +56,6 @@ public final class BackupInstancesSuspendBackupsMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager
-            .backupInstances()
-            .suspendBackups("qizxfpxtgqscjavf", "juhdqazkmtgguwpi", "r", com.azure.core.util.Context.NONE);
+        manager.backupInstances().suspendBackups("u", "i", "dwfmvigorqjb", com.azure.core.util.Context.NONE);
     }
 }

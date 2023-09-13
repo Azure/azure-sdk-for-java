@@ -32,7 +32,7 @@ public class ReadFeedPkrTests extends TestSuiteBase {
         super(clientBuilder);
     }
 
-    @Test(groups = { "emulator" }, timeOut = FEED_TIMEOUT)
+    @Test(groups = { "query" }, timeOut = FEED_TIMEOUT)
     public void readPartitionKeyRanges() throws Exception {
 
         CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
@@ -47,7 +47,7 @@ public class ReadFeedPkrTests extends TestSuiteBase {
         validateQuerySuccess(feedObservable, validator, FEED_TIMEOUT);
     }
 
-    @BeforeClass(groups = { "emulator" }, timeOut = SETUP_TIMEOUT)
+    @BeforeClass(groups = { "query" }, timeOut = SETUP_TIMEOUT)
     public void before_ReadFeedPkrTests() {
         client = CosmosBridgeInternal.getAsyncDocumentClient(getClientBuilder().buildAsyncClient());
         createdDatabase = getSharedCosmosDatabase(getClientBuilder().buildAsyncClient());
@@ -56,7 +56,7 @@ public class ReadFeedPkrTests extends TestSuiteBase {
                                              new CosmosContainerRequestOptions());
     }
 
-    @AfterClass(groups = { "emulator" }, timeOut = SETUP_TIMEOUT, alwaysRun = true)
+    @AfterClass(groups = { "query" }, timeOut = SETUP_TIMEOUT, alwaysRun = true)
     public void afterClass() {
         safeDeleteCollection(createdCollection);
         client.close();

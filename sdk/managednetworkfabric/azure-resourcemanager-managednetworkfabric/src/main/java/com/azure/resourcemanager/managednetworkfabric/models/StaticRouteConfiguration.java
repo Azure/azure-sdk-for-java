@@ -8,9 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** staticRouteConfiguration model. */
+/** Static Route Configuration properties. */
 @Fluent
-public final class StaticRouteConfiguration {
+public class StaticRouteConfiguration {
     /*
      * BFD configuration properties
      */
@@ -18,13 +18,13 @@ public final class StaticRouteConfiguration {
     private BfdConfiguration bfdConfiguration;
 
     /*
-     * List with object IPv4Routes.
+     * List of IPv4 Routes.
      */
     @JsonProperty(value = "ipv4Routes")
     private List<StaticRouteProperties> ipv4Routes;
 
     /*
-     * List with object IPv6Routes.
+     * List of IPv6 Routes.
      */
     @JsonProperty(value = "ipv6Routes")
     private List<StaticRouteProperties> ipv6Routes;
@@ -54,7 +54,7 @@ public final class StaticRouteConfiguration {
     }
 
     /**
-     * Get the ipv4Routes property: List with object IPv4Routes.
+     * Get the ipv4Routes property: List of IPv4 Routes.
      *
      * @return the ipv4Routes value.
      */
@@ -63,7 +63,7 @@ public final class StaticRouteConfiguration {
     }
 
     /**
-     * Set the ipv4Routes property: List with object IPv4Routes.
+     * Set the ipv4Routes property: List of IPv4 Routes.
      *
      * @param ipv4Routes the ipv4Routes value to set.
      * @return the StaticRouteConfiguration object itself.
@@ -74,7 +74,7 @@ public final class StaticRouteConfiguration {
     }
 
     /**
-     * Get the ipv6Routes property: List with object IPv6Routes.
+     * Get the ipv6Routes property: List of IPv6 Routes.
      *
      * @return the ipv6Routes value.
      */
@@ -83,7 +83,7 @@ public final class StaticRouteConfiguration {
     }
 
     /**
-     * Set the ipv6Routes property: List with object IPv6Routes.
+     * Set the ipv6Routes property: List of IPv6 Routes.
      *
      * @param ipv6Routes the ipv6Routes value to set.
      * @return the StaticRouteConfiguration object itself.

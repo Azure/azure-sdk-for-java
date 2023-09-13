@@ -7,7 +7,7 @@ package com.azure.resourcemanager.paloaltonetworks.ngfw.generated;
 /** Samples for PreRules GetCounters. */
 public final class PreRulesGetCountersSamples {
     /*
-     * x-ms-original-file: specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/preview/2022-08-29-preview/examples/PreRules_getCounters_MinimumSet_Gen.json
+     * x-ms-original-file: specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/stable/2022-08-29/examples/PreRules_getCounters_MinimumSet_Gen.json
      */
     /**
      * Sample code: PreRules_getCounters_MinimumSet_Gen.
@@ -20,7 +20,7 @@ public final class PreRulesGetCountersSamples {
     }
 
     /*
-     * x-ms-original-file: specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/preview/2022-08-29-preview/examples/PreRules_getCounters_MaximumSet_Gen.json
+     * x-ms-original-file: specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/stable/2022-08-29/examples/PreRules_getCounters_MaximumSet_Gen.json
      */
     /**
      * Sample code: PreRules_getCounters_MaximumSet_Gen.

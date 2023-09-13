@@ -9,11 +9,11 @@ import com.azure.resourcemanager.managednetworkfabric.fluent.models.ExternalNetw
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** List of ExternalNetworks. */
+/** List of External Networks. */
 @Fluent
 public final class ExternalNetworksList {
     /*
-     * List of ExternalNetworks resources.
+     * List of External Network resources.
      */
     @JsonProperty(value = "value")
     private List<ExternalNetworkInner> value;
@@ -29,7 +29,7 @@ public final class ExternalNetworksList {
     }
 
     /**
-     * Get the value property: List of ExternalNetworks resources.
+     * Get the value property: List of External Network resources.
      *
      * @return the value value.
      */
@@ -38,7 +38,7 @@ public final class ExternalNetworksList {
     }
 
     /**
-     * Set the value property: List of ExternalNetworks resources.
+     * Set the value property: List of External Network resources.
      *
      * @param value the value value to set.
      * @return the ExternalNetworksList object itself.

@@ -7,7 +7,7 @@ package com.azure.resourcemanager.managednetworkfabric.generated;
 /** Samples for IpCommunities Delete. */
 public final class IpCommunitiesDeleteSamples {
     /*
-     * x-ms-original-file: specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/preview/2023-02-01-preview/examples/IpCommunities_Delete_MaximumSet_Gen.json
+     * x-ms-original-file: specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/IpCommunities_Delete_MaximumSet_Gen.json
      */
     /**
      * Sample code: IpCommunities_Delete_MaximumSet_Gen.
@@ -16,6 +16,6 @@ public final class IpCommunitiesDeleteSamples {
      */
     public static void ipCommunitiesDeleteMaximumSetGen(
         com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager manager) {
-        manager.ipCommunities().delete("resourceGroupName", "IpCommunityList1", com.azure.core.util.Context.NONE);
+        manager.ipCommunities().delete("example-rg", "example-ipcommunity", com.azure.core.util.Context.NONE);
     }
 }

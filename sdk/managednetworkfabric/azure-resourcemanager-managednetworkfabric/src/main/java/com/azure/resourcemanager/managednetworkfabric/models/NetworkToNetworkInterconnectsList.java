@@ -9,7 +9,7 @@ import com.azure.resourcemanager.managednetworkfabric.fluent.models.NetworkToNet
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** List of NetworkToNetworkInterconnects. */
+/** List of Network To Network Interconnects. */
 @Fluent
 public final class NetworkToNetworkInterconnectsList {
     /*

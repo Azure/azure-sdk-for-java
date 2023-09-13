@@ -5,41 +5,60 @@
 package com.azure.resourcemanager.managednetworkfabric.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonInclude;
+import com.azure.resourcemanager.managednetworkfabric.fluent.models.IpCommunityPatchableProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 import java.util.Map;
 
-/** The IPCommunity patch resource definition. */
+/** The IP Community patch resource definition. */
 @Fluent
-public final class IpCommunityPatch {
+public final class IpCommunityPatch extends TagsUpdate {
     /*
-     * Resource tags
+     * IP Community patchable properties.
      */
-    @JsonProperty(value = "tags")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
-    private Map<String, String> tags;
+    @JsonProperty(value = "properties")
+    private IpCommunityPatchableProperties innerProperties;
 
     /** Creates an instance of IpCommunityPatch class. */
     public IpCommunityPatch() {
     }
 
     /**
-     * Get the tags property: Resource tags.
+     * Get the innerProperties property: IP Community patchable properties.
      *
-     * @return the tags value.
+     * @return the innerProperties value.
      */
-    public Map<String, String> tags() {
-        return this.tags;
+    private IpCommunityPatchableProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public IpCommunityPatch withTags(Map<String, String> tags) {
+        super.withTags(tags);
+        return this;
     }
 
     /**
-     * Set the tags property: Resource tags.
+     * Get the ipCommunityRules property: List of IP Community Rules.
      *
-     * @param tags the tags value to set.
+     * @return the ipCommunityRules value.
+     */
+    public List<IpCommunityRule> ipCommunityRules() {
+        return this.innerProperties() == null ? null : this.innerProperties().ipCommunityRules();
+    }
+
+    /**
+     * Set the ipCommunityRules property: List of IP Community Rules.
+     *
+     * @param ipCommunityRules the ipCommunityRules value to set.
      * @return the IpCommunityPatch object itself.
      */
-    public IpCommunityPatch withTags(Map<String, String> tags) {
-        this.tags = tags;
+    public IpCommunityPatch withIpCommunityRules(List<IpCommunityRule> ipCommunityRules) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new IpCommunityPatchableProperties();
+        }
+        this.innerProperties().withIpCommunityRules(ipCommunityRules);
         return this;
     }
 
@@ -48,6 +67,11 @@ public final class IpCommunityPatch {
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
+    @Override
     public void validate() {
+        super.validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

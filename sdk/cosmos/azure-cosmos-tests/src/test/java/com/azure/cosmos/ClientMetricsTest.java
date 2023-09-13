@@ -16,6 +16,7 @@ import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.RxDocumentClientImpl;
 import com.azure.cosmos.implementation.clienttelemetry.MetricCategory;
 import com.azure.cosmos.implementation.clienttelemetry.TagName;
+import com.azure.cosmos.implementation.directconnectivity.AddressSelector;
 import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
 import com.azure.cosmos.implementation.directconnectivity.RntbdTransportClient;
 import com.azure.cosmos.implementation.directconnectivity.Uri;
@@ -50,6 +51,7 @@ import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.Tag;
 import io.micrometer.core.instrument.Timer;
 import io.netty.handler.codec.http.HttpResponseStatus;
+import org.apache.commons.lang3.reflect.FieldUtils;
 import org.testng.SkipException;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
@@ -991,7 +993,7 @@ public class ClientMetricsTest extends BatchTestBase {
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
-    public void endpointMetricsAreDurable() {
+    public void endpointMetricsAreDurable() throws IllegalAccessException {
         this.beforeTest(CosmosMetricCategory.ALL);
         try {
             if (client.asyncClient().getConnectionPolicy().getConnectionMode() != ConnectionMode.DIRECT) {
@@ -1003,14 +1005,15 @@ public class ClientMetricsTest extends BatchTestBase {
                 (RntbdServiceEndpoint.Provider) ReflectionUtils.getRntbdEndpointProvider(transportClient);
             ProactiveOpenConnectionsProcessor proactiveOpenConnectionsProcessor =
                     ReflectionUtils.getProactiveOpenConnectionsProcessor(transportClient);
+            AddressSelector addressSelector = (AddressSelector) FieldUtils.readField(transportClient, "addressSelector", true);
 
             String address = "https://localhost:12345";
-            RntbdEndpoint firstEndpoint = endpointProvider.createIfAbsent(URI.create(address), new Uri(address), proactiveOpenConnectionsProcessor, Configs.getMinConnectionPoolSizePerEndpoint());
+            RntbdEndpoint firstEndpoint = endpointProvider.createIfAbsent(URI.create(address), new Uri(address), proactiveOpenConnectionsProcessor, Configs.getMinConnectionPoolSizePerEndpoint(), addressSelector);
             RntbdDurableEndpointMetrics firstDurableMetricsInstance = firstEndpoint.durableEndpointMetrics();
             firstEndpoint.close();
             assertThat(firstEndpoint.durableEndpointMetrics().getEndpoint()).isNull();
 
-            RntbdEndpoint secondEndpoint = endpointProvider.createIfAbsent(URI.create(address), new Uri(address), proactiveOpenConnectionsProcessor, Configs.getMinConnectionPoolSizePerEndpoint());
+            RntbdEndpoint secondEndpoint = endpointProvider.createIfAbsent(URI.create(address), new Uri(address), proactiveOpenConnectionsProcessor, Configs.getMinConnectionPoolSizePerEndpoint(), addressSelector);
 
             // ensure metrics are durable across multiple endpoint instances
             assertThat(firstEndpoint).isNotSameAs(secondEndpoint);

@@ -31,6 +31,10 @@ public final class DeleteRetentionPolicy {
     @JsonProperty(value = "allowPermanentDelete")
     private Boolean allowPermanentDelete;
 
+    /** Creates an instance of DeleteRetentionPolicy class. */
+    public DeleteRetentionPolicy() {
+    }
+
     /**
      * Get the enabled property: Indicates whether DeleteRetentionPolicy is enabled.
      *

@@ -16,6 +16,7 @@ import com.azure.resourcemanager.appcontainers.models.EnvironmentAuthToken;
 import com.azure.resourcemanager.appcontainers.models.EnvironmentProvisioningState;
 import com.azure.resourcemanager.appcontainers.models.KedaConfiguration;
 import com.azure.resourcemanager.appcontainers.models.ManagedEnvironment;
+import com.azure.resourcemanager.appcontainers.models.ManagedEnvironmentPropertiesPeerAuthentication;
 import com.azure.resourcemanager.appcontainers.models.VnetConfiguration;
 import com.azure.resourcemanager.appcontainers.models.WorkloadProfile;
 import java.util.Collections;
@@ -124,6 +125,10 @@ public final class ManagedEnvironmentImpl
 
     public String infrastructureResourceGroup() {
         return this.innerModel().infrastructureResourceGroup();
+    }
+
+    public ManagedEnvironmentPropertiesPeerAuthentication peerAuthentication() {
+        return this.innerModel().peerAuthentication();
     }
 
     public Region region() {
@@ -308,6 +313,12 @@ public final class ManagedEnvironmentImpl
 
     public ManagedEnvironmentImpl withInfrastructureResourceGroup(String infrastructureResourceGroup) {
         this.innerModel().withInfrastructureResourceGroup(infrastructureResourceGroup);
+        return this;
+    }
+
+    public ManagedEnvironmentImpl withPeerAuthentication(
+        ManagedEnvironmentPropertiesPeerAuthentication peerAuthentication) {
+        this.innerModel().withPeerAuthentication(peerAuthentication);
         return this;
     }
 }

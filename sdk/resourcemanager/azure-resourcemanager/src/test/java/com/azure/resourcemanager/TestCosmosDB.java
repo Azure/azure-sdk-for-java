@@ -22,7 +22,7 @@ public class TestCosmosDB extends TestTemplate<CosmosDBAccount, CosmosDBAccounts
                 .withKind(DatabaseAccountKind.GLOBAL_DOCUMENT_DB)
                 .withSessionConsistency()
                 .withWriteReplication(Region.US_EAST)
-                .withReadReplication(Region.US_CENTRAL)
+                .withReadReplication(Region.US_WEST3)
                 .withIpRangeFilter("")
                 .create();
         Assertions.assertEquals(databaseAccount.name(), newName.toLowerCase());

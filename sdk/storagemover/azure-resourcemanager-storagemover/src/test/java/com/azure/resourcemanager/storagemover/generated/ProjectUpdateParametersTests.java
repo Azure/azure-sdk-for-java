@@ -13,15 +13,15 @@ public final class ProjectUpdateParametersTests {
     public void testDeserialize() throws Exception {
         ProjectUpdateParameters model =
             BinaryData
-                .fromString("{\"properties\":{\"description\":\"coejctbzaqs\"}}")
+                .fromString("{\"properties\":{\"description\":\"fufsrpymzi\"}}")
                 .toObject(ProjectUpdateParameters.class);
-        Assertions.assertEquals("coejctbzaqs", model.description());
+        Assertions.assertEquals("fufsrpymzi", model.description());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ProjectUpdateParameters model = new ProjectUpdateParameters().withDescription("coejctbzaqs");
+        ProjectUpdateParameters model = new ProjectUpdateParameters().withDescription("fufsrpymzi");
         model = BinaryData.fromObject(model).toObject(ProjectUpdateParameters.class);
-        Assertions.assertEquals("coejctbzaqs", model.description());
+        Assertions.assertEquals("fufsrpymzi", model.description());
     }
 }

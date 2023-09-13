@@ -11,8 +11,8 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
+import com.azure.resourcemanager.managednetworkfabric.fluent.models.CommonPostActionResponseForStateUpdateInner;
 import com.azure.resourcemanager.managednetworkfabric.fluent.models.ExternalNetworkInner;
-import com.azure.resourcemanager.managednetworkfabric.models.EnableDisableOnResources;
 import com.azure.resourcemanager.managednetworkfabric.models.ExternalNetworkPatch;
 import com.azure.resourcemanager.managednetworkfabric.models.UpdateAdministrativeState;
 
@@ -24,13 +24,13 @@ public interface ExternalNetworksClient {
      * <p>Creates ExternalNetwork PUT method.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l3IsolationDomainName Name of the L3IsolationDomain.
-     * @param externalNetworkName Name of the ExternalNetwork.
+     * @param l3IsolationDomainName Name of the L3 Isolation Domain.
+     * @param externalNetworkName Name of the External Network.
      * @param body Request payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of defines the ExternalNetwork item.
+     * @return the {@link SyncPoller} for polling of defines the External Network resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ExternalNetworkInner>, ExternalNetworkInner> beginCreate(
@@ -42,14 +42,14 @@ public interface ExternalNetworksClient {
      * <p>Creates ExternalNetwork PUT method.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l3IsolationDomainName Name of the L3IsolationDomain.
-     * @param externalNetworkName Name of the ExternalNetwork.
+     * @param l3IsolationDomainName Name of the L3 Isolation Domain.
+     * @param externalNetworkName Name of the External Network.
      * @param body Request payload.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of defines the ExternalNetwork item.
+     * @return the {@link SyncPoller} for polling of defines the External Network resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ExternalNetworkInner>, ExternalNetworkInner> beginCreate(
@@ -65,13 +65,13 @@ public interface ExternalNetworksClient {
      * <p>Creates ExternalNetwork PUT method.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l3IsolationDomainName Name of the L3IsolationDomain.
-     * @param externalNetworkName Name of the ExternalNetwork.
+     * @param l3IsolationDomainName Name of the L3 Isolation Domain.
+     * @param externalNetworkName Name of the External Network.
      * @param body Request payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines the ExternalNetwork item.
+     * @return defines the External Network resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     ExternalNetworkInner create(
@@ -83,14 +83,14 @@ public interface ExternalNetworksClient {
      * <p>Creates ExternalNetwork PUT method.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l3IsolationDomainName Name of the L3IsolationDomain.
-     * @param externalNetworkName Name of the ExternalNetwork.
+     * @param l3IsolationDomainName Name of the L3 Isolation Domain.
+     * @param externalNetworkName Name of the External Network.
      * @param body Request payload.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines the ExternalNetwork item.
+     * @return defines the External Network resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     ExternalNetworkInner create(
@@ -106,13 +106,13 @@ public interface ExternalNetworksClient {
      * <p>Implements ExternalNetworks GET method.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l3IsolationDomainName Name of the L3IsolationDomain.
-     * @param externalNetworkName Name of the ExternalNetwork.
+     * @param l3IsolationDomainName Name of the L3 Isolation Domain.
+     * @param externalNetworkName Name of the External Network.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines the ExternalNetwork item along with {@link Response}.
+     * @return defines the External Network resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<ExternalNetworkInner> getWithResponse(
@@ -124,48 +124,48 @@ public interface ExternalNetworksClient {
      * <p>Implements ExternalNetworks GET method.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l3IsolationDomainName Name of the L3IsolationDomain.
-     * @param externalNetworkName Name of the ExternalNetwork.
+     * @param l3IsolationDomainName Name of the L3 Isolation Domain.
+     * @param externalNetworkName Name of the External Network.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines the ExternalNetwork item.
+     * @return defines the External Network resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     ExternalNetworkInner get(String resourceGroupName, String l3IsolationDomainName, String externalNetworkName);
 
     /**
-     * Updates a ExternalNetworks.
+     * Updates a External Networks.
      *
      * <p>API to update certain properties of the ExternalNetworks resource.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l3IsolationDomainName Name of the L3IsolationDomain.
-     * @param externalNetworkName Name of the ExternalNetwork.
+     * @param l3IsolationDomainName Name of the L3 Isolation Domain.
+     * @param externalNetworkName Name of the External Network.
      * @param body ExternalNetwork properties to update. Only annotations are supported.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of defines the ExternalNetwork item.
+     * @return the {@link SyncPoller} for polling of defines the External Network resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ExternalNetworkInner>, ExternalNetworkInner> beginUpdate(
         String resourceGroupName, String l3IsolationDomainName, String externalNetworkName, ExternalNetworkPatch body);
 
     /**
-     * Updates a ExternalNetworks.
+     * Updates a External Networks.
      *
      * <p>API to update certain properties of the ExternalNetworks resource.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l3IsolationDomainName Name of the L3IsolationDomain.
-     * @param externalNetworkName Name of the ExternalNetwork.
+     * @param l3IsolationDomainName Name of the L3 Isolation Domain.
+     * @param externalNetworkName Name of the External Network.
      * @param body ExternalNetwork properties to update. Only annotations are supported.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of defines the ExternalNetwork item.
+     * @return the {@link SyncPoller} for polling of defines the External Network resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ExternalNetworkInner>, ExternalNetworkInner> beginUpdate(
@@ -176,37 +176,37 @@ public interface ExternalNetworksClient {
         Context context);
 
     /**
-     * Updates a ExternalNetworks.
+     * Updates a External Networks.
      *
      * <p>API to update certain properties of the ExternalNetworks resource.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l3IsolationDomainName Name of the L3IsolationDomain.
-     * @param externalNetworkName Name of the ExternalNetwork.
+     * @param l3IsolationDomainName Name of the L3 Isolation Domain.
+     * @param externalNetworkName Name of the External Network.
      * @param body ExternalNetwork properties to update. Only annotations are supported.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines the ExternalNetwork item.
+     * @return defines the External Network resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     ExternalNetworkInner update(
         String resourceGroupName, String l3IsolationDomainName, String externalNetworkName, ExternalNetworkPatch body);
 
     /**
-     * Updates a ExternalNetworks.
+     * Updates a External Networks.
      *
      * <p>API to update certain properties of the ExternalNetworks resource.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l3IsolationDomainName Name of the L3IsolationDomain.
-     * @param externalNetworkName Name of the ExternalNetwork.
+     * @param l3IsolationDomainName Name of the L3 Isolation Domain.
+     * @param externalNetworkName Name of the External Network.
      * @param body ExternalNetwork properties to update. Only annotations are supported.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines the ExternalNetwork item.
+     * @return defines the External Network resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     ExternalNetworkInner update(
@@ -222,8 +222,8 @@ public interface ExternalNetworksClient {
      * <p>Implements ExternalNetworks DELETE method.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l3IsolationDomainName Name of the L3IsolationDomain.
-     * @param externalNetworkName Name of the ExternalNetwork.
+     * @param l3IsolationDomainName Name of the L3 Isolation Domain.
+     * @param externalNetworkName Name of the External Network.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -239,8 +239,8 @@ public interface ExternalNetworksClient {
      * <p>Implements ExternalNetworks DELETE method.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l3IsolationDomainName Name of the L3IsolationDomain.
-     * @param externalNetworkName Name of the ExternalNetwork.
+     * @param l3IsolationDomainName Name of the L3 Isolation Domain.
+     * @param externalNetworkName Name of the External Network.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -257,8 +257,8 @@ public interface ExternalNetworksClient {
      * <p>Implements ExternalNetworks DELETE method.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l3IsolationDomainName Name of the L3IsolationDomain.
-     * @param externalNetworkName Name of the ExternalNetwork.
+     * @param l3IsolationDomainName Name of the L3 Isolation Domain.
+     * @param externalNetworkName Name of the External Network.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -272,8 +272,8 @@ public interface ExternalNetworksClient {
      * <p>Implements ExternalNetworks DELETE method.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l3IsolationDomainName Name of the L3IsolationDomain.
-     * @param externalNetworkName Name of the ExternalNetwork.
+     * @param l3IsolationDomainName Name of the L3 Isolation Domain.
+     * @param externalNetworkName Name of the External Network.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -288,14 +288,14 @@ public interface ExternalNetworksClient {
      * <p>Implements External Networks list by resource group GET method.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l3IsolationDomainName Name of the L3IsolationDomain.
+     * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of ExternalNetworks as paginated response with {@link PagedIterable}.
+     * @return list of External Networks as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ExternalNetworkInner> list(String resourceGroupName, String l3IsolationDomainName);
+    PagedIterable<ExternalNetworkInner> listByL3IsolationDomain(String resourceGroupName, String l3IsolationDomainName);
 
     /**
      * Executes list operation to display External Networks within an isolation domain.
@@ -303,15 +303,16 @@ public interface ExternalNetworksClient {
      * <p>Implements External Networks list by resource group GET method.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l3IsolationDomainName Name of the L3IsolationDomain.
+     * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of ExternalNetworks as paginated response with {@link PagedIterable}.
+     * @return list of External Networks as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ExternalNetworkInner> list(String resourceGroupName, String l3IsolationDomainName, Context context);
+    PagedIterable<ExternalNetworkInner> listByL3IsolationDomain(
+        String resourceGroupName, String l3IsolationDomainName, Context context);
 
     /**
      * Implements the operation to the underlying resources.
@@ -319,16 +320,62 @@ public interface ExternalNetworksClient {
      * <p>Executes update operation to enable or disable administrative State for externalNetwork.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l3IsolationDomainName Name of the L3IsolationDomain.
-     * @param externalNetworkName Name of the ExternalNetwork.
+     * @param l3IsolationDomainName Name of the L3 Isolation Domain.
+     * @param externalNetworkName Name of the External Network.
      * @param body Request payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of common response for the state updates.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginUpdateAdministrativeState(
+    SyncPoller<PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
+        beginUpdateAdministrativeState(
+            String resourceGroupName,
+            String l3IsolationDomainName,
+            String externalNetworkName,
+            UpdateAdministrativeState body);
+
+    /**
+     * Implements the operation to the underlying resources.
+     *
+     * <p>Executes update operation to enable or disable administrative State for externalNetwork.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param l3IsolationDomainName Name of the L3 Isolation Domain.
+     * @param externalNetworkName Name of the External Network.
+     * @param body Request payload.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of common response for the state updates.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
+        beginUpdateAdministrativeState(
+            String resourceGroupName,
+            String l3IsolationDomainName,
+            String externalNetworkName,
+            UpdateAdministrativeState body,
+            Context context);
+
+    /**
+     * Implements the operation to the underlying resources.
+     *
+     * <p>Executes update operation to enable or disable administrative State for externalNetwork.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param l3IsolationDomainName Name of the L3 Isolation Domain.
+     * @param externalNetworkName Name of the External Network.
+     * @param body Request payload.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return common response for the state updates.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    CommonPostActionResponseForStateUpdateInner updateAdministrativeState(
         String resourceGroupName,
         String l3IsolationDomainName,
         String externalNetworkName,
@@ -340,17 +387,17 @@ public interface ExternalNetworksClient {
      * <p>Executes update operation to enable or disable administrative State for externalNetwork.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l3IsolationDomainName Name of the L3IsolationDomain.
-     * @param externalNetworkName Name of the ExternalNetwork.
+     * @param l3IsolationDomainName Name of the L3 Isolation Domain.
+     * @param externalNetworkName Name of the External Network.
      * @param body Request payload.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return common response for the state updates.
      */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginUpdateAdministrativeState(
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    CommonPostActionResponseForStateUpdateInner updateAdministrativeState(
         String resourceGroupName,
         String l3IsolationDomainName,
         String externalNetworkName,
@@ -358,388 +405,92 @@ public interface ExternalNetworksClient {
         Context context);
 
     /**
-     * Implements the operation to the underlying resources.
+     * Executes Static Route BFD state update operation to the underlying resources.
      *
-     * <p>Executes update operation to enable or disable administrative State for externalNetwork.
+     * <p>Update Static Route BFD for external Network.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l3IsolationDomainName Name of the L3IsolationDomain.
-     * @param externalNetworkName Name of the ExternalNetwork.
+     * @param l3IsolationDomainName Name of the L3 Isolation Domain.
+     * @param externalNetworkName Name of the External Network.
      * @param body Request payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of common response for the state updates.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
+        beginUpdateStaticRouteBfdAdministrativeState(
+            String resourceGroupName,
+            String l3IsolationDomainName,
+            String externalNetworkName,
+            UpdateAdministrativeState body);
+
+    /**
+     * Executes Static Route BFD state update operation to the underlying resources.
+     *
+     * <p>Update Static Route BFD for external Network.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param l3IsolationDomainName Name of the L3 Isolation Domain.
+     * @param externalNetworkName Name of the External Network.
+     * @param body Request payload.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of common response for the state updates.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
+        beginUpdateStaticRouteBfdAdministrativeState(
+            String resourceGroupName,
+            String l3IsolationDomainName,
+            String externalNetworkName,
+            UpdateAdministrativeState body,
+            Context context);
+
+    /**
+     * Executes Static Route BFD state update operation to the underlying resources.
+     *
+     * <p>Update Static Route BFD for external Network.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param l3IsolationDomainName Name of the L3 Isolation Domain.
+     * @param externalNetworkName Name of the External Network.
+     * @param body Request payload.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return common response for the state updates.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void updateAdministrativeState(
+    CommonPostActionResponseForStateUpdateInner updateStaticRouteBfdAdministrativeState(
         String resourceGroupName,
         String l3IsolationDomainName,
         String externalNetworkName,
         UpdateAdministrativeState body);
 
     /**
-     * Implements the operation to the underlying resources.
+     * Executes Static Route BFD state update operation to the underlying resources.
      *
-     * <p>Executes update operation to enable or disable administrative State for externalNetwork.
+     * <p>Update Static Route BFD for external Network.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l3IsolationDomainName Name of the L3IsolationDomain.
-     * @param externalNetworkName Name of the ExternalNetwork.
+     * @param l3IsolationDomainName Name of the L3 Isolation Domain.
+     * @param externalNetworkName Name of the External Network.
      * @param body Request payload.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return common response for the state updates.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void updateAdministrativeState(
+    CommonPostActionResponseForStateUpdateInner updateStaticRouteBfdAdministrativeState(
         String resourceGroupName,
         String l3IsolationDomainName,
         String externalNetworkName,
         UpdateAdministrativeState body,
-        Context context);
-
-    /**
-     * Executes BGP state update operation to the underlying resources.
-     *
-     * <p>Update BGP for externalNetwork.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l3IsolationDomainName Name of the L3IsolationDomain.
-     * @param externalNetworkName Name of the ExternalNetwork.
-     * @param body Request payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginUpdateBgpAdministrativeState(
-        String resourceGroupName,
-        String l3IsolationDomainName,
-        String externalNetworkName,
-        UpdateAdministrativeState body);
-
-    /**
-     * Executes BGP state update operation to the underlying resources.
-     *
-     * <p>Update BGP for externalNetwork.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l3IsolationDomainName Name of the L3IsolationDomain.
-     * @param externalNetworkName Name of the ExternalNetwork.
-     * @param body Request payload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginUpdateBgpAdministrativeState(
-        String resourceGroupName,
-        String l3IsolationDomainName,
-        String externalNetworkName,
-        UpdateAdministrativeState body,
-        Context context);
-
-    /**
-     * Executes BGP state update operation to the underlying resources.
-     *
-     * <p>Update BGP for externalNetwork.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l3IsolationDomainName Name of the L3IsolationDomain.
-     * @param externalNetworkName Name of the ExternalNetwork.
-     * @param body Request payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void updateBgpAdministrativeState(
-        String resourceGroupName,
-        String l3IsolationDomainName,
-        String externalNetworkName,
-        UpdateAdministrativeState body);
-
-    /**
-     * Executes BGP state update operation to the underlying resources.
-     *
-     * <p>Update BGP for externalNetwork.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l3IsolationDomainName Name of the L3IsolationDomain.
-     * @param externalNetworkName Name of the ExternalNetwork.
-     * @param body Request payload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void updateBgpAdministrativeState(
-        String resourceGroupName,
-        String l3IsolationDomainName,
-        String externalNetworkName,
-        UpdateAdministrativeState body,
-        Context context);
-
-    /**
-     * Execute BfdForBgp update operation to the underlying resources.
-     *
-     * <p>Update BfdForBgp for externalNetwork.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l3IsolationDomainName Name of the L3IsolationDomain.
-     * @param externalNetworkName Name of the ExternalNetwork.
-     * @param body Request payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginUpdateBfdForBgpAdministrativeState(
-        String resourceGroupName,
-        String l3IsolationDomainName,
-        String externalNetworkName,
-        UpdateAdministrativeState body);
-
-    /**
-     * Execute BfdForBgp update operation to the underlying resources.
-     *
-     * <p>Update BfdForBgp for externalNetwork.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l3IsolationDomainName Name of the L3IsolationDomain.
-     * @param externalNetworkName Name of the ExternalNetwork.
-     * @param body Request payload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginUpdateBfdForBgpAdministrativeState(
-        String resourceGroupName,
-        String l3IsolationDomainName,
-        String externalNetworkName,
-        UpdateAdministrativeState body,
-        Context context);
-
-    /**
-     * Execute BfdForBgp update operation to the underlying resources.
-     *
-     * <p>Update BfdForBgp for externalNetwork.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l3IsolationDomainName Name of the L3IsolationDomain.
-     * @param externalNetworkName Name of the ExternalNetwork.
-     * @param body Request payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void updateBfdForBgpAdministrativeState(
-        String resourceGroupName,
-        String l3IsolationDomainName,
-        String externalNetworkName,
-        UpdateAdministrativeState body);
-
-    /**
-     * Execute BfdForBgp update operation to the underlying resources.
-     *
-     * <p>Update BfdForBgp for externalNetwork.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l3IsolationDomainName Name of the L3IsolationDomain.
-     * @param externalNetworkName Name of the ExternalNetwork.
-     * @param body Request payload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void updateBfdForBgpAdministrativeState(
-        String resourceGroupName,
-        String l3IsolationDomainName,
-        String externalNetworkName,
-        UpdateAdministrativeState body,
-        Context context);
-
-    /**
-     * Executes clearIpv6Neighbors table operation to the underlying resources.
-     *
-     * <p>clearIpv6Neighbors for externalNetwork.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l3IsolationDomainName Name of the L3IsolationDomain.
-     * @param externalNetworkName Name of the ExternalNetwork.
-     * @param body Request payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginClearIpv6Neighbors(
-        String resourceGroupName,
-        String l3IsolationDomainName,
-        String externalNetworkName,
-        EnableDisableOnResources body);
-
-    /**
-     * Executes clearIpv6Neighbors table operation to the underlying resources.
-     *
-     * <p>clearIpv6Neighbors for externalNetwork.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l3IsolationDomainName Name of the L3IsolationDomain.
-     * @param externalNetworkName Name of the ExternalNetwork.
-     * @param body Request payload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginClearIpv6Neighbors(
-        String resourceGroupName,
-        String l3IsolationDomainName,
-        String externalNetworkName,
-        EnableDisableOnResources body,
-        Context context);
-
-    /**
-     * Executes clearIpv6Neighbors table operation to the underlying resources.
-     *
-     * <p>clearIpv6Neighbors for externalNetwork.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l3IsolationDomainName Name of the L3IsolationDomain.
-     * @param externalNetworkName Name of the ExternalNetwork.
-     * @param body Request payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void clearIpv6Neighbors(
-        String resourceGroupName,
-        String l3IsolationDomainName,
-        String externalNetworkName,
-        EnableDisableOnResources body);
-
-    /**
-     * Executes clearIpv6Neighbors table operation to the underlying resources.
-     *
-     * <p>clearIpv6Neighbors for externalNetwork.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l3IsolationDomainName Name of the L3IsolationDomain.
-     * @param externalNetworkName Name of the ExternalNetwork.
-     * @param body Request payload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void clearIpv6Neighbors(
-        String resourceGroupName,
-        String l3IsolationDomainName,
-        String externalNetworkName,
-        EnableDisableOnResources body,
-        Context context);
-
-    /**
-     * Implements the operation to the underlying resources.
-     *
-     * <p>clearArpEntries for externalNetwork.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l3IsolationDomainName Name of the L3IsolationDomain.
-     * @param externalNetworkName Name of the ExternalNetwork.
-     * @param body Request payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginClearArpEntries(
-        String resourceGroupName,
-        String l3IsolationDomainName,
-        String externalNetworkName,
-        EnableDisableOnResources body);
-
-    /**
-     * Implements the operation to the underlying resources.
-     *
-     * <p>clearArpEntries for externalNetwork.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l3IsolationDomainName Name of the L3IsolationDomain.
-     * @param externalNetworkName Name of the ExternalNetwork.
-     * @param body Request payload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginClearArpEntries(
-        String resourceGroupName,
-        String l3IsolationDomainName,
-        String externalNetworkName,
-        EnableDisableOnResources body,
-        Context context);
-
-    /**
-     * Implements the operation to the underlying resources.
-     *
-     * <p>clearArpEntries for externalNetwork.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l3IsolationDomainName Name of the L3IsolationDomain.
-     * @param externalNetworkName Name of the ExternalNetwork.
-     * @param body Request payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void clearArpEntries(
-        String resourceGroupName,
-        String l3IsolationDomainName,
-        String externalNetworkName,
-        EnableDisableOnResources body);
-
-    /**
-     * Implements the operation to the underlying resources.
-     *
-     * <p>clearArpEntries for externalNetwork.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l3IsolationDomainName Name of the L3IsolationDomain.
-     * @param externalNetworkName Name of the ExternalNetwork.
-     * @param body Request payload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void clearArpEntries(
-        String resourceGroupName,
-        String l3IsolationDomainName,
-        String externalNetworkName,
-        EnableDisableOnResources body,
         Context context);
 }

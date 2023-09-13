@@ -7,6 +7,7 @@ package com.azure.resourcemanager.dataprotection.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.dataprotection.fluent.models.ClientDiscoveryValueForSingleApiInner;
 import com.azure.resourcemanager.dataprotection.models.ClientDiscoveryDisplay;
+import com.azure.resourcemanager.dataprotection.models.ClientDiscoveryForLogSpecification;
 import com.azure.resourcemanager.dataprotection.models.ClientDiscoveryForProperties;
 import com.azure.resourcemanager.dataprotection.models.ClientDiscoveryForServiceSpecification;
 import java.util.Arrays;
@@ -18,15 +19,24 @@ public final class ClientDiscoveryValueForSingleApiInnerTests {
         ClientDiscoveryValueForSingleApiInner model =
             BinaryData
                 .fromString(
-                    "{\"display\":{\"description\":\"pgrjbz\",\"operation\":\"rcjxvsnbyxqabn\",\"provider\":\"cpc\",\"resource\":\"hurzafblj\"},\"name\":\"pbtoqcjmkl\",\"isDataAction\":false,\"origin\":\"qidtqajzyu\",\"properties\":{\"serviceSpecification\":{\"logSpecifications\":[]}}}")
+                    "{\"display\":{\"description\":\"zdmohctbqvu\",\"operation\":\"xdn\",\"provider\":\"vo\",\"resource\":\"ujjugwdkcglh\"},\"name\":\"azjdyggd\",\"isDataAction\":true,\"origin\":\"hbkuofqwey\",\"properties\":{\"serviceSpecification\":{\"logSpecifications\":[{\"blobDuration\":\"vfyexfw\",\"displayName\":\"bcibvyvdcsitynn\",\"name\":\"mdectehfiqscjey\"}]}}}")
                 .toObject(ClientDiscoveryValueForSingleApiInner.class);
-        Assertions.assertEquals("pgrjbz", model.display().description());
-        Assertions.assertEquals("rcjxvsnbyxqabn", model.display().operation());
-        Assertions.assertEquals("cpc", model.display().provider());
-        Assertions.assertEquals("hurzafblj", model.display().resource());
-        Assertions.assertEquals("pbtoqcjmkl", model.name());
-        Assertions.assertEquals(false, model.isDataAction());
-        Assertions.assertEquals("qidtqajzyu", model.origin());
+        Assertions.assertEquals("zdmohctbqvu", model.display().description());
+        Assertions.assertEquals("xdn", model.display().operation());
+        Assertions.assertEquals("vo", model.display().provider());
+        Assertions.assertEquals("ujjugwdkcglh", model.display().resource());
+        Assertions.assertEquals("azjdyggd", model.name());
+        Assertions.assertEquals(true, model.isDataAction());
+        Assertions.assertEquals("hbkuofqwey", model.origin());
+        Assertions
+            .assertEquals(
+                "vfyexfw", model.properties().serviceSpecification().logSpecifications().get(0).blobDuration());
+        Assertions
+            .assertEquals(
+                "bcibvyvdcsitynn", model.properties().serviceSpecification().logSpecifications().get(0).displayName());
+        Assertions
+            .assertEquals(
+                "mdectehfiqscjey", model.properties().serviceSpecification().logSpecifications().get(0).name());
     }
 
     @org.junit.jupiter.api.Test
@@ -35,24 +45,40 @@ public final class ClientDiscoveryValueForSingleApiInnerTests {
             new ClientDiscoveryValueForSingleApiInner()
                 .withDisplay(
                     new ClientDiscoveryDisplay()
-                        .withDescription("pgrjbz")
-                        .withOperation("rcjxvsnbyxqabn")
-                        .withProvider("cpc")
-                        .withResource("hurzafblj"))
-                .withName("pbtoqcjmkl")
-                .withIsDataAction(false)
-                .withOrigin("qidtqajzyu")
+                        .withDescription("zdmohctbqvu")
+                        .withOperation("xdn")
+                        .withProvider("vo")
+                        .withResource("ujjugwdkcglh"))
+                .withName("azjdyggd")
+                .withIsDataAction(true)
+                .withOrigin("hbkuofqwey")
                 .withProperties(
                     new ClientDiscoveryForProperties()
                         .withServiceSpecification(
-                            new ClientDiscoveryForServiceSpecification().withLogSpecifications(Arrays.asList())));
+                            new ClientDiscoveryForServiceSpecification()
+                                .withLogSpecifications(
+                                    Arrays
+                                        .asList(
+                                            new ClientDiscoveryForLogSpecification()
+                                                .withBlobDuration("vfyexfw")
+                                                .withDisplayName("bcibvyvdcsitynn")
+                                                .withName("mdectehfiqscjey")))));
         model = BinaryData.fromObject(model).toObject(ClientDiscoveryValueForSingleApiInner.class);
-        Assertions.assertEquals("pgrjbz", model.display().description());
-        Assertions.assertEquals("rcjxvsnbyxqabn", model.display().operation());
-        Assertions.assertEquals("cpc", model.display().provider());
-        Assertions.assertEquals("hurzafblj", model.display().resource());
-        Assertions.assertEquals("pbtoqcjmkl", model.name());
-        Assertions.assertEquals(false, model.isDataAction());
-        Assertions.assertEquals("qidtqajzyu", model.origin());
+        Assertions.assertEquals("zdmohctbqvu", model.display().description());
+        Assertions.assertEquals("xdn", model.display().operation());
+        Assertions.assertEquals("vo", model.display().provider());
+        Assertions.assertEquals("ujjugwdkcglh", model.display().resource());
+        Assertions.assertEquals("azjdyggd", model.name());
+        Assertions.assertEquals(true, model.isDataAction());
+        Assertions.assertEquals("hbkuofqwey", model.origin());
+        Assertions
+            .assertEquals(
+                "vfyexfw", model.properties().serviceSpecification().logSpecifications().get(0).blobDuration());
+        Assertions
+            .assertEquals(
+                "bcibvyvdcsitynn", model.properties().serviceSpecification().logSpecifications().get(0).displayName());
+        Assertions
+            .assertEquals(
+                "mdectehfiqscjey", model.properties().serviceSpecification().logSpecifications().get(0).name());
     }
 }

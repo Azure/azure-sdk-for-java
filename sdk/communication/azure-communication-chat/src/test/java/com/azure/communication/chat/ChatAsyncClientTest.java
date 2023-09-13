@@ -3,43 +3,39 @@
 
 package com.azure.communication.chat;
 
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
-import com.azure.core.http.rest.Response;
-import com.azure.core.test.http.NoOpHttpClient;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.MethodSource;
-
-import reactor.core.publisher.Mono;
-import reactor.test.StepVerifier;
-
+import com.azure.communication.chat.implementation.ChatOptionsProvider;
+import com.azure.communication.chat.models.ChatThreadItem;
+import com.azure.communication.chat.models.ChatThreadProperties;
+import com.azure.communication.chat.models.CreateChatThreadOptions;
+import com.azure.communication.chat.models.CreateChatThreadResult;
+import com.azure.communication.chat.models.ListChatThreadsOptions;
+import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.communication.identity.CommunicationIdentityClient;
 import com.azure.communication.identity.models.CommunicationTokenScope;
-import com.azure.communication.common.CommunicationUserIdentifier;
-import com.azure.communication.chat.implementation.ChatOptionsProvider;
-import com.azure.communication.chat.models.*;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.http.rest.Response;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
+import reactor.test.StepVerifier;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicReference;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Set the AZURE_TEST_MODE environment variable to either PLAYBACK or RECORD to determine if tests are playback or
  * live. By default, tests are run in playback mode.
  */
 public class ChatAsyncClientTest extends ChatClientTestBase {
-
-    private ClientLogger logger = new ClientLogger(ChatClientTest.class);
-
-    private CommunicationIdentityClient communicationClient;
     private ChatAsyncClient client;
 
     private CommunicationUserIdentifier firstThreadMember;
@@ -51,7 +47,8 @@ public class ChatAsyncClientTest extends ChatClientTestBase {
     }
 
     private void setupTest(HttpClient httpClient, String testName) {
-        communicationClient = getCommunicationIdentityClientBuilder(httpClient).buildClient();
+        CommunicationIdentityClient communicationClient =
+            getCommunicationIdentityClientBuilder(httpClient).buildClient();
         assertNotNull(communicationClient);
 
         firstThreadMember = communicationClient.createUser();
@@ -384,40 +381,5 @@ public class ChatAsyncClientTest extends ChatClientTestBase {
 
                 assertTrue(returnedThreads.size() == 2);
             });
-    }
-
-    @ParameterizedTest
-    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void canProcessInvalidParticipantsOnCreateChatThread(HttpClient httpClient) {
-
-        CreateChatThreadOptions threadRequest = new CreateChatThreadOptions("topic");
-
-        threadRequest.addParticipant(new ChatParticipant()
-            .setCommunicationIdentifier(new CommunicationUserIdentifier("valid"))
-        );
-
-        CommunicationUserIdentifier invalidUser = new CommunicationUserIdentifier("invalid");
-        threadRequest.addParticipant(new ChatParticipant()
-            .setCommunicationIdentifier(invalidUser));
-
-        HttpClient mockHttpClient = new NoOpHttpClient() {
-            @Override
-            public Mono<HttpResponse> send(HttpRequest request) {
-                return Mono.just(ChatResponseMocker.createChatThreadInvalidParticipantResponse(request, threadRequest, invalidUser));
-            }
-        };
-
-        String mockToken = "eyJhbGciOiJSUzI1NiIsImtpZCI6IjEwMl9pbnQiLCJ0eXAiOiJKV1QifQ.eyJza3lwZWlkIjoic3Bvb2w6NTdiOWJhYzktZGY2Yy00ZDM5LWE3M2ItMjZlOTQ0YWRmNmVhXzNmMDExNi03YzAwOTQ5MGRjIiwic2NwIjoxNzkyLCJjc2kiOiIxNTk3ODcyMDgyIiwiaWF0IjoxNTk3ODcyMDgyLCJleHAiOjE1OTc5NTg0ODIsImFjc1Njb3BlIjoiY2hhdCIsInJlc291cmNlSWQiOiI1N2I5YmFjOS1kZjZjLTRkMzktYTczYi0yNmU5NDRhZGY2ZWEifQ.l2UXI0KH2LXZQoz7FPsfLZS0CX8cYsnW3CMECfqwuncV8WqrTD7RbqZDfAaYXn0t5sHrGM4CRbpx4LwIZhXOlmsmOdTdHSsPUCIqJscwNjQmltvOrIt11DOmObQ63w0kYq9QrlB-lyZNzTEAED2FhMwBAbhZOokRtFajYD7KvJb1w9oUXousQ_z6zZqjbt1Cy4Ll3zO1GR4G7yRV8vK3bLnN2IWPaEkoqx8PHeHLa9Cb4joowseRfQxFHv28xcCF3r9SBCauUeJcmbwBmnOAOLS-EAJTLiGhil7m3BNyLN5RnYbsK5ComtL2-02TbkPilpy21OhW0MJkicSFlCbYvg";
-        client = getChatClientBuilder(mockToken, mockHttpClient).buildAsyncClient();
-
-        StepVerifier.create(client.createChatThread(threadRequest))
-            .assertNext(result -> {
-                assertNotNull(result);
-                assertNotNull(result.getChatThread());
-                assertNotNull(result.getChatThread().getId());
-                assertEquals(1, result.getInvalidParticipants().size());
-                assertEquals(invalidUser.getId(), result.getInvalidParticipants().stream().findFirst().get().getTarget());
-            })
-            .verifyComplete();
     }
 }

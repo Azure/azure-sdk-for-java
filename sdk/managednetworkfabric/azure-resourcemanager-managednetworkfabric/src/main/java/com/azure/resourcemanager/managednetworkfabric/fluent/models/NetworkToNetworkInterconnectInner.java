@@ -6,29 +6,28 @@ package com.azure.resourcemanager.managednetworkfabric.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.management.SystemData;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.managednetworkfabric.models.AdministrativeState;
 import com.azure.resourcemanager.managednetworkfabric.models.BooleanEnumProperty;
-import com.azure.resourcemanager.managednetworkfabric.models.EnabledDisabledState;
+import com.azure.resourcemanager.managednetworkfabric.models.ConfigurationState;
+import com.azure.resourcemanager.managednetworkfabric.models.ExportRoutePolicyInformation;
+import com.azure.resourcemanager.managednetworkfabric.models.ImportRoutePolicyInformation;
+import com.azure.resourcemanager.managednetworkfabric.models.IsManagementType;
 import com.azure.resourcemanager.managednetworkfabric.models.Layer2Configuration;
-import com.azure.resourcemanager.managednetworkfabric.models.Layer3Configuration;
+import com.azure.resourcemanager.managednetworkfabric.models.NetworkToNetworkInterconnectPropertiesOptionBLayer3Configuration;
 import com.azure.resourcemanager.managednetworkfabric.models.NniType;
+import com.azure.resourcemanager.managednetworkfabric.models.NpbStaticRouteConfiguration;
 import com.azure.resourcemanager.managednetworkfabric.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The NetworkToNetworkInterconnect resource definition. */
+/** The Network To Network Interconnect resource definition. */
 @Fluent
 public final class NetworkToNetworkInterconnectInner extends ProxyResource {
     /*
      * Resource properties.
      */
-    @JsonProperty(value = "properties")
-    private NetworkToNetworkInterconnectProperties innerProperties;
-
-    /*
-     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
-    private SystemData systemData;
+    @JsonProperty(value = "properties", required = true)
+    private NetworkToNetworkInterconnectProperties innerProperties = new NetworkToNetworkInterconnectProperties();
 
     /** Creates an instance of NetworkToNetworkInterconnectInner class. */
     public NetworkToNetworkInterconnectInner() {
@@ -41,15 +40,6 @@ public final class NetworkToNetworkInterconnectInner extends ProxyResource {
      */
     private NetworkToNetworkInterconnectProperties innerProperties() {
         return this.innerProperties;
-    }
-
-    /**
-     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
-     * @return the systemData value.
-     */
-    public SystemData systemData() {
-        return this.systemData;
     }
 
     /**
@@ -76,20 +66,11 @@ public final class NetworkToNetworkInterconnectInner extends ProxyResource {
     }
 
     /**
-     * Get the administrativeState property: Gets the administrativeState of the resource. Example -Enabled/Disabled.
-     *
-     * @return the administrativeState value.
-     */
-    public EnabledDisabledState administrativeState() {
-        return this.innerProperties() == null ? null : this.innerProperties().administrativeState();
-    }
-
-    /**
      * Get the isManagementType property: Configuration to use NNI for Infrastructure Management. Example: True/False.
      *
      * @return the isManagementType value.
      */
-    public BooleanEnumProperty isManagementType() {
+    public IsManagementType isManagementType() {
         return this.innerProperties() == null ? null : this.innerProperties().isManagementType();
     }
 
@@ -99,7 +80,7 @@ public final class NetworkToNetworkInterconnectInner extends ProxyResource {
      * @param isManagementType the isManagementType value to set.
      * @return the NetworkToNetworkInterconnectInner object itself.
      */
-    public NetworkToNetworkInterconnectInner withIsManagementType(BooleanEnumProperty isManagementType) {
+    public NetworkToNetworkInterconnectInner withIsManagementType(IsManagementType isManagementType) {
         if (this.innerProperties() == null) {
             this.innerProperties = new NetworkToNetworkInterconnectProperties();
         }
@@ -108,7 +89,7 @@ public final class NetworkToNetworkInterconnectInner extends ProxyResource {
     }
 
     /**
-     * Get the useOptionB property: Based on this parameter the layer2/layer3 is made as mandatory. Example: True/False.
+     * Get the useOptionB property: Based on this option layer3 parameters are mandatory. Example: True/False.
      *
      * @return the useOptionB value.
      */
@@ -117,7 +98,7 @@ public final class NetworkToNetworkInterconnectInner extends ProxyResource {
     }
 
     /**
-     * Set the useOptionB property: Based on this parameter the layer2/layer3 is made as mandatory. Example: True/False.
+     * Set the useOptionB property: Based on this option layer3 parameters are mandatory. Example: True/False.
      *
      * @param useOptionB the useOptionB value to set.
      * @return the NetworkToNetworkInterconnectInner object itself.
@@ -131,7 +112,7 @@ public final class NetworkToNetworkInterconnectInner extends ProxyResource {
     }
 
     /**
-     * Get the layer2Configuration property: Common properties for Layer2Configuration.
+     * Get the layer2Configuration property: Common properties for Layer2 Configuration.
      *
      * @return the layer2Configuration value.
      */
@@ -140,7 +121,7 @@ public final class NetworkToNetworkInterconnectInner extends ProxyResource {
     }
 
     /**
-     * Set the layer2Configuration property: Common properties for Layer2Configuration.
+     * Set the layer2Configuration property: Common properties for Layer2 Configuration.
      *
      * @param layer2Configuration the layer2Configuration value to set.
      * @return the NetworkToNetworkInterconnectInner object itself.
@@ -154,30 +135,156 @@ public final class NetworkToNetworkInterconnectInner extends ProxyResource {
     }
 
     /**
-     * Get the layer3Configuration property: Common properties for Layer3Configuration.
+     * Get the optionBLayer3Configuration property: Common properties for Layer3Configuration.
      *
-     * @return the layer3Configuration value.
+     * @return the optionBLayer3Configuration value.
      */
-    public Layer3Configuration layer3Configuration() {
-        return this.innerProperties() == null ? null : this.innerProperties().layer3Configuration();
+    public NetworkToNetworkInterconnectPropertiesOptionBLayer3Configuration optionBLayer3Configuration() {
+        return this.innerProperties() == null ? null : this.innerProperties().optionBLayer3Configuration();
     }
 
     /**
-     * Set the layer3Configuration property: Common properties for Layer3Configuration.
+     * Set the optionBLayer3Configuration property: Common properties for Layer3Configuration.
      *
-     * @param layer3Configuration the layer3Configuration value to set.
+     * @param optionBLayer3Configuration the optionBLayer3Configuration value to set.
      * @return the NetworkToNetworkInterconnectInner object itself.
      */
-    public NetworkToNetworkInterconnectInner withLayer3Configuration(Layer3Configuration layer3Configuration) {
+    public NetworkToNetworkInterconnectInner withOptionBLayer3Configuration(
+        NetworkToNetworkInterconnectPropertiesOptionBLayer3Configuration optionBLayer3Configuration) {
         if (this.innerProperties() == null) {
             this.innerProperties = new NetworkToNetworkInterconnectProperties();
         }
-        this.innerProperties().withLayer3Configuration(layer3Configuration);
+        this.innerProperties().withOptionBLayer3Configuration(optionBLayer3Configuration);
         return this;
     }
 
     /**
-     * Get the provisioningState property: Gets the provisioning state of the resource.
+     * Get the npbStaticRouteConfiguration property: NPB Static Route Configuration properties.
+     *
+     * @return the npbStaticRouteConfiguration value.
+     */
+    public NpbStaticRouteConfiguration npbStaticRouteConfiguration() {
+        return this.innerProperties() == null ? null : this.innerProperties().npbStaticRouteConfiguration();
+    }
+
+    /**
+     * Set the npbStaticRouteConfiguration property: NPB Static Route Configuration properties.
+     *
+     * @param npbStaticRouteConfiguration the npbStaticRouteConfiguration value to set.
+     * @return the NetworkToNetworkInterconnectInner object itself.
+     */
+    public NetworkToNetworkInterconnectInner withNpbStaticRouteConfiguration(
+        NpbStaticRouteConfiguration npbStaticRouteConfiguration) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new NetworkToNetworkInterconnectProperties();
+        }
+        this.innerProperties().withNpbStaticRouteConfiguration(npbStaticRouteConfiguration);
+        return this;
+    }
+
+    /**
+     * Get the importRoutePolicy property: Import Route Policy configuration.
+     *
+     * @return the importRoutePolicy value.
+     */
+    public ImportRoutePolicyInformation importRoutePolicy() {
+        return this.innerProperties() == null ? null : this.innerProperties().importRoutePolicy();
+    }
+
+    /**
+     * Set the importRoutePolicy property: Import Route Policy configuration.
+     *
+     * @param importRoutePolicy the importRoutePolicy value to set.
+     * @return the NetworkToNetworkInterconnectInner object itself.
+     */
+    public NetworkToNetworkInterconnectInner withImportRoutePolicy(ImportRoutePolicyInformation importRoutePolicy) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new NetworkToNetworkInterconnectProperties();
+        }
+        this.innerProperties().withImportRoutePolicy(importRoutePolicy);
+        return this;
+    }
+
+    /**
+     * Get the exportRoutePolicy property: Export Route Policy configuration.
+     *
+     * @return the exportRoutePolicy value.
+     */
+    public ExportRoutePolicyInformation exportRoutePolicy() {
+        return this.innerProperties() == null ? null : this.innerProperties().exportRoutePolicy();
+    }
+
+    /**
+     * Set the exportRoutePolicy property: Export Route Policy configuration.
+     *
+     * @param exportRoutePolicy the exportRoutePolicy value to set.
+     * @return the NetworkToNetworkInterconnectInner object itself.
+     */
+    public NetworkToNetworkInterconnectInner withExportRoutePolicy(ExportRoutePolicyInformation exportRoutePolicy) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new NetworkToNetworkInterconnectProperties();
+        }
+        this.innerProperties().withExportRoutePolicy(exportRoutePolicy);
+        return this;
+    }
+
+    /**
+     * Get the egressAclId property: Egress Acl. ARM resource ID of Access Control Lists.
+     *
+     * @return the egressAclId value.
+     */
+    public String egressAclId() {
+        return this.innerProperties() == null ? null : this.innerProperties().egressAclId();
+    }
+
+    /**
+     * Set the egressAclId property: Egress Acl. ARM resource ID of Access Control Lists.
+     *
+     * @param egressAclId the egressAclId value to set.
+     * @return the NetworkToNetworkInterconnectInner object itself.
+     */
+    public NetworkToNetworkInterconnectInner withEgressAclId(String egressAclId) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new NetworkToNetworkInterconnectProperties();
+        }
+        this.innerProperties().withEgressAclId(egressAclId);
+        return this;
+    }
+
+    /**
+     * Get the ingressAclId property: Ingress Acl. ARM resource ID of Access Control Lists.
+     *
+     * @return the ingressAclId value.
+     */
+    public String ingressAclId() {
+        return this.innerProperties() == null ? null : this.innerProperties().ingressAclId();
+    }
+
+    /**
+     * Set the ingressAclId property: Ingress Acl. ARM resource ID of Access Control Lists.
+     *
+     * @param ingressAclId the ingressAclId value to set.
+     * @return the NetworkToNetworkInterconnectInner object itself.
+     */
+    public NetworkToNetworkInterconnectInner withIngressAclId(String ingressAclId) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new NetworkToNetworkInterconnectProperties();
+        }
+        this.innerProperties().withIngressAclId(ingressAclId);
+        return this;
+    }
+
+    /**
+     * Get the configurationState property: Configuration state of the resource.
+     *
+     * @return the configurationState value.
+     */
+    public ConfigurationState configurationState() {
+        return this.innerProperties() == null ? null : this.innerProperties().configurationState();
+    }
+
+    /**
+     * Get the provisioningState property: Provisioning state of the resource.
      *
      * @return the provisioningState value.
      */
@@ -186,13 +293,29 @@ public final class NetworkToNetworkInterconnectInner extends ProxyResource {
     }
 
     /**
+     * Get the administrativeState property: Administrative state of the resource.
+     *
+     * @return the administrativeState value.
+     */
+    public AdministrativeState administrativeState() {
+        return this.innerProperties() == null ? null : this.innerProperties().administrativeState();
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (innerProperties() != null) {
+        if (innerProperties() == null) {
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property innerProperties in model NetworkToNetworkInterconnectInner"));
+        } else {
             innerProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(NetworkToNetworkInterconnectInner.class);
 }

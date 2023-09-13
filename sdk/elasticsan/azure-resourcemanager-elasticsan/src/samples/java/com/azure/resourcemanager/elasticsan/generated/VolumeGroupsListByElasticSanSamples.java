@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.elasticsan.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for VolumeGroups ListByElasticSan. */
 public final class VolumeGroupsListByElasticSanSamples {
     /*
-     * x-ms-original-file: specification/elasticsan/resource-manager/Microsoft.ElasticSan/preview/2021-11-20-preview/examples/VolumeGroups_ListByElasticSan_MinimumSet_Gen.json
+     * x-ms-original-file: specification/elasticsan/resource-manager/Microsoft.ElasticSan/preview/2022-12-01-preview/examples/VolumeGroups_ListByElasticSan_MinimumSet_Gen.json
      */
     /**
      * Sample code: VolumeGroups_ListByElasticSan_MinimumSet_Gen.
@@ -18,11 +16,13 @@ public final class VolumeGroupsListByElasticSanSamples {
      */
     public static void volumeGroupsListByElasticSanMinimumSetGen(
         com.azure.resourcemanager.elasticsan.ElasticSanManager manager) {
-        manager.volumeGroups().listByElasticSan("rgelasticsan", "ti7q-k952-1qB3J_5", Context.NONE);
+        manager
+            .volumeGroups()
+            .listByElasticSan("resourcegroupname", "elasticsanname", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/elasticsan/resource-manager/Microsoft.ElasticSan/preview/2021-11-20-preview/examples/VolumeGroups_ListByElasticSan_MaximumSet_Gen.json
+     * x-ms-original-file: specification/elasticsan/resource-manager/Microsoft.ElasticSan/preview/2022-12-01-preview/examples/VolumeGroups_ListByElasticSan_MaximumSet_Gen.json
      */
     /**
      * Sample code: VolumeGroups_ListByElasticSan_MaximumSet_Gen.
@@ -31,6 +31,8 @@ public final class VolumeGroupsListByElasticSanSamples {
      */
     public static void volumeGroupsListByElasticSanMaximumSetGen(
         com.azure.resourcemanager.elasticsan.ElasticSanManager manager) {
-        manager.volumeGroups().listByElasticSan("rgelasticsan", "ti7q-k952-1qB3J_5", Context.NONE);
+        manager
+            .volumeGroups()
+            .listByElasticSan("resourcegroupname", "elasticsanname", com.azure.core.util.Context.NONE);
     }
 }

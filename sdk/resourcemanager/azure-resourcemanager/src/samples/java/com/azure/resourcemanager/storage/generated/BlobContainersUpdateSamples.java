@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.storage.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.storage.fluent.models.BlobContainerInner;
 import com.azure.resourcemanager.storage.models.PublicAccess;
 import java.util.HashMap;
@@ -13,7 +12,7 @@ import java.util.Map;
 /** Samples for BlobContainers Update. */
 public final class BlobContainersUpdateSamples {
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2022-09-01/examples/BlobContainersPatch.json
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-01-01/examples/BlobContainersPatch.json
      */
     /**
      * Sample code: UpdateContainers.
@@ -33,9 +32,10 @@ public final class BlobContainersUpdateSamples {
                 new BlobContainerInner()
                     .withPublicAccess(PublicAccess.CONTAINER)
                     .withMetadata(mapOf("metadata", "true")),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

@@ -35,6 +35,10 @@ public final class RestorePolicyProperties {
     @JsonProperty(value = "minRestoreTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime minRestoreTime;
 
+    /** Creates an instance of RestorePolicyProperties class. */
+    public RestorePolicyProperties() {
+    }
+
     /**
      * Get the enabled property: Blob restore is enabled if set to true.
      *

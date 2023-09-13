@@ -7,7 +7,7 @@ package com.azure.resourcemanager.appcontainers.generated;
 /** Samples for ManagedEnvironmentDiagnostics ListDetectors. */
 public final class ManagedEnvironmentDiagnosticsListDetectorsSamples {
     /*
-     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/preview/2022-11-01-preview/examples/ManagedEnvironmentDiagnostics_List.json
+     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/stable/2023-05-01/examples/ManagedEnvironmentDiagnostics_List.json
      */
     /**
      * Sample code: Get the list of available diagnostic data for a managed environments.

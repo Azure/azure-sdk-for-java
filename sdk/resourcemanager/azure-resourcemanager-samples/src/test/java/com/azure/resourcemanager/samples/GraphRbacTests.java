@@ -15,7 +15,7 @@ import com.azure.resourcemanager.authorization.samples.ManageServicePrincipalCre
 import com.azure.resourcemanager.authorization.samples.ManageUsersGroupsAndRoles;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
-import com.azure.resourcemanager.test.ResourceManagerTestBase;
+import com.azure.resourcemanager.test.ResourceManagerTestProxyTestBase;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -23,12 +23,12 @@ import java.io.IOException;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 
-public class GraphRbacTests extends ResourceManagerTestBase {
+public class GraphRbacTests extends ResourceManagerTestProxyTestBase {
     private AzureResourceManager azureResourceManager;
     private AzureProfile profile;
 
     @Test
-    @DoNotRecord
+    @DoNotRecord(skipInPlayback = true)
     public void testManageUsersGroupsAndRoles() {
         if (skipInPlayback()) {
             return;
@@ -43,7 +43,7 @@ public class GraphRbacTests extends ResourceManagerTestBase {
 //    }
 
     @Test
-    @DoNotRecord
+    @DoNotRecord(skipInPlayback = true)
     public void testManageServicePrincipalCredentials() throws IOException {
         if (skipInPlayback()) {
             return;

@@ -376,7 +376,7 @@ public final class CertificateClientJavaDocCodeSnippets {
      */
     public void recoverDeletedCertificateCodeSnippets() {
         CertificateClient certificateClient = getCertificateClient();
-        // BEGIN: com.azure.security.certificatevault.certificates.CertificateClient.beginRecoverDeletedCertificate#String
+        // BEGIN: com.azure.security.keyvault.certificates.CertificateClient.beginRecoverDeletedCertificate#String
         SyncPoller<KeyVaultCertificateWithPolicy, Void> recoverDeletedCertPoller = certificateClient
             .beginRecoverDeletedCertificate("deletedCertificateName");
         // Recovered certificate is accessible as soon as polling beings
@@ -385,7 +385,7 @@ public final class CertificateClientJavaDocCodeSnippets {
             recoverDeletedCertPollResponse.getValue().getProperties().getName(),
             recoverDeletedCertPollResponse.getValue().getProperties().getId());
         recoverDeletedCertPoller.waitForCompletion();
-        // END: com.azure.security.certificatevault.certificates.CertificateClient.beginRecoverDeletedCertificate#String
+        // END: com.azure.security.keyvault.certificates.CertificateClient.beginRecoverDeletedCertificate#String
     }
 
     /**

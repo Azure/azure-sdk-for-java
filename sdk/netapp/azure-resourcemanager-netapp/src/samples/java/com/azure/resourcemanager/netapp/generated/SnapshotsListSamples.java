@@ -7,7 +7,7 @@ package com.azure.resourcemanager.netapp.generated;
 /** Samples for Snapshots List. */
 public final class SnapshotsListSamples {
     /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-09-01/examples/Snapshots_List.json
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-11-01/examples/Snapshots_List.json
      */
     /**
      * Sample code: Snapshots_List.

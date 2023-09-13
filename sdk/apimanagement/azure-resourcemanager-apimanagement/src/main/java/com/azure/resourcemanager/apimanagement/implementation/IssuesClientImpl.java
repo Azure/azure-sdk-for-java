@@ -55,11 +55,10 @@ public final class IssuesClientImpl implements IssuesClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "ApiManagementClientI")
-    private interface IssuesService {
+    public interface IssuesService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement"
-                + "/service/{serviceName}/issues")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/issues")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<IssueCollection>> listByService(
@@ -76,8 +75,7 @@ public final class IssuesClientImpl implements IssuesClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement"
-                + "/service/{serviceName}/issues/{issueId}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/issues/{issueId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<IssuesGetResponse> get(
@@ -104,7 +102,7 @@ public final class IssuesClientImpl implements IssuesClient {
     /**
      * Lists a collection of issues in the specified service instance.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param filter | Field | Usage | Supported operators | Supported functions
      *     |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| name | filter | ge, le, eq,
@@ -174,7 +172,7 @@ public final class IssuesClientImpl implements IssuesClient {
     /**
      * Lists a collection of issues in the specified service instance.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param filter | Field | Usage | Supported operators | Supported functions
      *     |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| name | filter | ge, le, eq,
@@ -242,7 +240,7 @@ public final class IssuesClientImpl implements IssuesClient {
     /**
      * Lists a collection of issues in the specified service instance.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param filter | Field | Usage | Supported operators | Supported functions
      *     |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| name | filter | ge, le, eq,
@@ -269,7 +267,7 @@ public final class IssuesClientImpl implements IssuesClient {
     /**
      * Lists a collection of issues in the specified service instance.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -289,7 +287,7 @@ public final class IssuesClientImpl implements IssuesClient {
     /**
      * Lists a collection of issues in the specified service instance.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param filter | Field | Usage | Supported operators | Supported functions
      *     |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| name | filter | ge, le, eq,
@@ -317,7 +315,7 @@ public final class IssuesClientImpl implements IssuesClient {
     /**
      * Lists a collection of issues in the specified service instance.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -335,7 +333,7 @@ public final class IssuesClientImpl implements IssuesClient {
     /**
      * Lists a collection of issues in the specified service instance.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param filter | Field | Usage | Supported operators | Supported functions
      *     |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| name | filter | ge, le, eq,
@@ -361,7 +359,7 @@ public final class IssuesClientImpl implements IssuesClient {
     /**
      * Gets API Management issue details.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param issueId Issue identifier. Must be unique in the current API Management service instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -413,7 +411,7 @@ public final class IssuesClientImpl implements IssuesClient {
     /**
      * Gets API Management issue details.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param issueId Issue identifier. Must be unique in the current API Management service instance.
      * @param context The context to associate with this operation.
@@ -464,7 +462,7 @@ public final class IssuesClientImpl implements IssuesClient {
     /**
      * Gets API Management issue details.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param issueId Issue identifier. Must be unique in the current API Management service instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -475,36 +473,13 @@ public final class IssuesClientImpl implements IssuesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<IssueContractInner> getAsync(String resourceGroupName, String serviceName, String issueId) {
         return getWithResponseAsync(resourceGroupName, serviceName, issueId)
-            .flatMap(
-                (IssuesGetResponse res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Gets API Management issue details.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param serviceName The name of the API Management service.
-     * @param issueId Issue identifier. Must be unique in the current API Management service instance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return aPI Management issue details.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public IssueContractInner get(String resourceGroupName, String serviceName, String issueId) {
-        return getAsync(resourceGroupName, serviceName, issueId).block();
-    }
-
-    /**
-     * Gets API Management issue details.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param issueId Issue identifier. Must be unique in the current API Management service instance.
      * @param context The context to associate with this operation.
@@ -520,9 +495,26 @@ public final class IssuesClientImpl implements IssuesClient {
     }
 
     /**
+     * Gets API Management issue details.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serviceName The name of the API Management service.
+     * @param issueId Issue identifier. Must be unique in the current API Management service instance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return aPI Management issue details.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public IssueContractInner get(String resourceGroupName, String serviceName, String issueId) {
+        return getWithResponse(resourceGroupName, serviceName, issueId, Context.NONE).getValue();
+    }
+
+    /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -558,7 +550,8 @@ public final class IssuesClientImpl implements IssuesClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

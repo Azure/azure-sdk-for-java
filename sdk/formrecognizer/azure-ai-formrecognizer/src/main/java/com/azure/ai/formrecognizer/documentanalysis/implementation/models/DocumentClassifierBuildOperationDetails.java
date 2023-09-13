@@ -4,18 +4,17 @@
 
 package com.azure.ai.formrecognizer.documentanalysis.implementation.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.time.OffsetDateTime;
-import java.util.Map;
 
 /** Get Operation response object. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
 @JsonTypeName("documentClassifierBuild")
-@Fluent
+@Immutable
 public final class DocumentClassifierBuildOperationDetails extends OperationDetails {
     /*
      * Operation result upon success.
@@ -33,7 +32,7 @@ public final class DocumentClassifierBuildOperationDetails extends OperationDeta
      * @param resourceLocation the resourceLocation value to set.
      */
     @JsonCreator
-    public DocumentClassifierBuildOperationDetails(
+    private DocumentClassifierBuildOperationDetails(
             @JsonProperty(value = "operationId", required = true) String operationId,
             @JsonProperty(value = "status", required = true) OperationStatus status,
             @JsonProperty(value = "createdDateTime", required = true) OffsetDateTime createdDateTime,
@@ -49,44 +48,5 @@ public final class DocumentClassifierBuildOperationDetails extends OperationDeta
      */
     public DocumentClassifierDetails getResult() {
         return this.result;
-    }
-
-    /**
-     * Set the result property: Operation result upon success.
-     *
-     * @param result the result value to set.
-     * @return the DocumentClassifierBuildOperationDetails object itself.
-     */
-    public DocumentClassifierBuildOperationDetails setResult(DocumentClassifierDetails result) {
-        this.result = result;
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public DocumentClassifierBuildOperationDetails setPercentCompleted(Integer percentCompleted) {
-        super.setPercentCompleted(percentCompleted);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public DocumentClassifierBuildOperationDetails setApiVersion(String apiVersion) {
-        super.setApiVersion(apiVersion);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public DocumentClassifierBuildOperationDetails setTags(Map<String, String> tags) {
-        super.setTags(tags);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public DocumentClassifierBuildOperationDetails setError(Error error) {
-        super.setError(error);
-        return this;
     }
 }

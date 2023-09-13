@@ -23,9 +23,9 @@ import static org.mockito.Mockito.verify;
 /**
  *
  */
-class CertificateClientBuilderFactoryTests extends 
+class CertificateClientBuilderFactoryTests extends
     AzureHttpClientBuilderFactoryBaseTests<
-        CertificateClientBuilder, 
+        CertificateClientBuilder,
         AzureKeyVaultCertificateTestProperties,
         CertificateClientBuilderFactoryTests.CertificateClientBuilderFactoryExt> {
 
@@ -52,11 +52,13 @@ class CertificateClientBuilderFactoryTests extends
         AzureKeyVaultCertificateTestProperties properties = new AzureKeyVaultCertificateTestProperties();
         properties.setServiceVersion(CertificateServiceVersion.V7_0);
         properties.setEndpoint(ENDPOINT);
+        properties.setChallengeResourceVerificationEnabled(false);
 
         final CertificateClientBuilderFactoryExt factoryExt = new CertificateClientBuilderFactoryExt(properties);
         final CertificateClientBuilder builder = factoryExt.build();
         verify(builder, times(1)).serviceVersion(CertificateServiceVersion.V7_0);
         verify(builder, times(1)).vaultUrl(ENDPOINT);
+        verify(builder, times(1)).disableChallengeResourceVerification();
     }
 
     @Override
@@ -88,7 +90,7 @@ class CertificateClientBuilderFactoryTests extends
     protected List<HttpPipelinePolicy> getHttpPipelinePolicies(CertificateClientBuilderFactoryExt builderFactory) {
         return builderFactory.getHttpPipelinePolicies();
     }
-    
+
 
     static class CertificateClientBuilderFactoryExt extends CertificateClientBuilderFactory {
 

@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.managednetworkfabric.generated;
 
 import com.azure.core.util.BinaryData;
+import com.azure.resourcemanager.managednetworkfabric.models.RoutePolicyConditionType;
 import com.azure.resourcemanager.managednetworkfabric.models.StatementConditionProperties;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
@@ -15,23 +16,26 @@ public final class StatementConditionPropertiesTests {
         StatementConditionProperties model =
             BinaryData
                 .fromString(
-                    "{\"ipPrefixId\":\"bp\",\"ipExtendedCommunityIds\":[\"f\"],\"ipCommunityIds\":[\"vntjlrigjk\",\"kyrioovzid\",\"xwaabzmifrygznmm\",\"xrizkzobgop\"]}")
+                    "{\"type\":\"Or\",\"ipPrefixId\":\"nfff\",\"ipExtendedCommunityIds\":[\"daw\",\"lmlcufbbjiu\"],\"ipCommunityIds\":[\"fhoajjylsyqyjn\"]}")
                 .toObject(StatementConditionProperties.class);
-        Assertions.assertEquals("vntjlrigjk", model.ipCommunityIds().get(0));
-        Assertions.assertEquals("bp", model.ipPrefixId());
-        Assertions.assertEquals("f", model.ipExtendedCommunityIds().get(0));
+        Assertions.assertEquals("fhoajjylsyqyjn", model.ipCommunityIds().get(0));
+        Assertions.assertEquals(RoutePolicyConditionType.OR, model.type());
+        Assertions.assertEquals("nfff", model.ipPrefixId());
+        Assertions.assertEquals("daw", model.ipExtendedCommunityIds().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         StatementConditionProperties model =
             new StatementConditionProperties()
-                .withIpCommunityIds(Arrays.asList("vntjlrigjk", "kyrioovzid", "xwaabzmifrygznmm", "xrizkzobgop"))
-                .withIpPrefixId("bp")
-                .withIpExtendedCommunityIds(Arrays.asList("f"));
+                .withIpCommunityIds(Arrays.asList("fhoajjylsyqyjn"))
+                .withType(RoutePolicyConditionType.OR)
+                .withIpPrefixId("nfff")
+                .withIpExtendedCommunityIds(Arrays.asList("daw", "lmlcufbbjiu"));
         model = BinaryData.fromObject(model).toObject(StatementConditionProperties.class);
-        Assertions.assertEquals("vntjlrigjk", model.ipCommunityIds().get(0));
-        Assertions.assertEquals("bp", model.ipPrefixId());
-        Assertions.assertEquals("f", model.ipExtendedCommunityIds().get(0));
+        Assertions.assertEquals("fhoajjylsyqyjn", model.ipCommunityIds().get(0));
+        Assertions.assertEquals(RoutePolicyConditionType.OR, model.type());
+        Assertions.assertEquals("nfff", model.ipPrefixId());
+        Assertions.assertEquals("daw", model.ipExtendedCommunityIds().get(0));
     }
 }

@@ -18,15 +18,15 @@ public final class L2IsolationDomainsListResultTests {
         L2IsolationDomainsListResult model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"properties\":{\"networkFabricId\":\"j\",\"vlanId\":1640197955,\"mtu\":9347197,\"disabledOnResources\":[],\"administrativeState\":\"Enabled\",\"provisioningState\":\"Succeeded\",\"annotation\":\"gjljyoxgvc\"},\"location\":\"bgsncghkjeszzhb\",\"tags\":{\"fsm\":\"txfvgx\",\"odebfqkkrbmpu\":\"nehmpvecx\",\"wflzlfbxzpuzy\":\"gr\",\"y\":\"ispnqzahmgkbrp\"},\"id\":\"hibnuqqkpika\",\"name\":\"rgvtqag\",\"type\":\"buynhijggm\"}],\"nextLink\":\"fsiarbutr\"}")
+                    "{\"value\":[{\"properties\":{\"networkFabricId\":\"egw\",\"vlanId\":397812436,\"mtu\":1816525505,\"configurationState\":\"Accepted\",\"provisioningState\":\"Updating\",\"administrativeState\":\"MAT\",\"annotation\":\"thaokgkskj\"},\"location\":\"bs\",\"tags\":{\"kpeexpgeumilh\":\"jqf\"},\"id\":\"uitrdexyiono\",\"name\":\"ninbdbzsxcwqqrs\",\"type\":\"pcbbprtugav\"},{\"properties\":{\"networkFabricId\":\"zbcyksiv\",\"vlanId\":284686585,\"mtu\":406980993,\"configurationState\":\"Accepted\",\"provisioningState\":\"Deleting\",\"administrativeState\":\"MAT\",\"annotation\":\"krftsjcwjjxsg\"},\"location\":\"awvifdxke\",\"tags\":{\"xvcmufunlcp\":\"hocjxwkloozrv\"},\"id\":\"xvi\",\"name\":\"yeyng\",\"type\":\"g\"},{\"properties\":{\"networkFabricId\":\"rquv\",\"vlanId\":563018487,\"mtu\":915199284,\"configurationState\":\"Deprovisioned\",\"provisioningState\":\"Failed\",\"administrativeState\":\"RMA\",\"annotation\":\"ueljtiahxmfqryar\"},\"location\":\"x\",\"tags\":{\"btl\":\"glcjkayspthzod\",\"kfmkmfdjxyxgbk\":\"jtgblios\",\"l\":\"qvjcteoe\",\"xv\":\"slskkz\"},\"id\":\"nzdpvoco\",\"name\":\"hpcnabxzfsn\",\"type\":\"gyte\"}],\"nextLink\":\"zilmhivzkww\"}")
                 .toObject(L2IsolationDomainsListResult.class);
-        Assertions.assertEquals("bgsncghkjeszzhb", model.value().get(0).location());
-        Assertions.assertEquals("txfvgx", model.value().get(0).tags().get("fsm"));
-        Assertions.assertEquals("j", model.value().get(0).networkFabricId());
-        Assertions.assertEquals(1640197955, model.value().get(0).vlanId());
-        Assertions.assertEquals(9347197, model.value().get(0).mtu());
-        Assertions.assertEquals("gjljyoxgvc", model.value().get(0).annotation());
-        Assertions.assertEquals("fsiarbutr", model.nextLink());
+        Assertions.assertEquals("bs", model.value().get(0).location());
+        Assertions.assertEquals("jqf", model.value().get(0).tags().get("kpeexpgeumilh"));
+        Assertions.assertEquals("egw", model.value().get(0).networkFabricId());
+        Assertions.assertEquals(397812436, model.value().get(0).vlanId());
+        Assertions.assertEquals(1816525505, model.value().get(0).mtu());
+        Assertions.assertEquals("thaokgkskj", model.value().get(0).annotation());
+        Assertions.assertEquals("zilmhivzkww", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
@@ -37,30 +37,44 @@ public final class L2IsolationDomainsListResultTests {
                     Arrays
                         .asList(
                             new L2IsolationDomainInner()
-                                .withLocation("bgsncghkjeszzhb")
+                                .withLocation("bs")
+                                .withTags(mapOf("kpeexpgeumilh", "jqf"))
+                                .withNetworkFabricId("egw")
+                                .withVlanId(397812436)
+                                .withMtu(1816525505)
+                                .withAnnotation("thaokgkskj"),
+                            new L2IsolationDomainInner()
+                                .withLocation("awvifdxke")
+                                .withTags(mapOf("xvcmufunlcp", "hocjxwkloozrv"))
+                                .withNetworkFabricId("zbcyksiv")
+                                .withVlanId(284686585)
+                                .withMtu(406980993)
+                                .withAnnotation("krftsjcwjjxsg"),
+                            new L2IsolationDomainInner()
+                                .withLocation("x")
                                 .withTags(
                                     mapOf(
-                                        "fsm",
-                                        "txfvgx",
-                                        "odebfqkkrbmpu",
-                                        "nehmpvecx",
-                                        "wflzlfbxzpuzy",
-                                        "gr",
-                                        "y",
-                                        "ispnqzahmgkbrp"))
-                                .withNetworkFabricId("j")
-                                .withVlanId(1640197955)
-                                .withMtu(9347197)
-                                .withAnnotation("gjljyoxgvc")))
-                .withNextLink("fsiarbutr");
+                                        "btl",
+                                        "glcjkayspthzod",
+                                        "kfmkmfdjxyxgbk",
+                                        "jtgblios",
+                                        "l",
+                                        "qvjcteoe",
+                                        "xv",
+                                        "slskkz"))
+                                .withNetworkFabricId("rquv")
+                                .withVlanId(563018487)
+                                .withMtu(915199284)
+                                .withAnnotation("ueljtiahxmfqryar")))
+                .withNextLink("zilmhivzkww");
         model = BinaryData.fromObject(model).toObject(L2IsolationDomainsListResult.class);
-        Assertions.assertEquals("bgsncghkjeszzhb", model.value().get(0).location());
-        Assertions.assertEquals("txfvgx", model.value().get(0).tags().get("fsm"));
-        Assertions.assertEquals("j", model.value().get(0).networkFabricId());
-        Assertions.assertEquals(1640197955, model.value().get(0).vlanId());
-        Assertions.assertEquals(9347197, model.value().get(0).mtu());
-        Assertions.assertEquals("gjljyoxgvc", model.value().get(0).annotation());
-        Assertions.assertEquals("fsiarbutr", model.nextLink());
+        Assertions.assertEquals("bs", model.value().get(0).location());
+        Assertions.assertEquals("jqf", model.value().get(0).tags().get("kpeexpgeumilh"));
+        Assertions.assertEquals("egw", model.value().get(0).networkFabricId());
+        Assertions.assertEquals(397812436, model.value().get(0).vlanId());
+        Assertions.assertEquals(1816525505, model.value().get(0).mtu());
+        Assertions.assertEquals("thaokgkskj", model.value().get(0).annotation());
+        Assertions.assertEquals("zilmhivzkww", model.nextLink());
     }
 
     @SuppressWarnings("unchecked")

@@ -12,8 +12,8 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.elasticsan.ElasticSanManager;
+import com.azure.resourcemanager.elasticsan.models.Action;
 import com.azure.resourcemanager.elasticsan.models.EncryptionType;
 import com.azure.resourcemanager.elasticsan.models.StorageTargetType;
 import com.azure.resourcemanager.elasticsan.models.VolumeGroup;
@@ -35,7 +35,7 @@ public final class VolumeGroupsListByElasticSanMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"Creating\",\"protocolType\":\"None\",\"encryption\":\"EncryptionAtRestWithPlatformKey\",\"networkAcls\":{\"virtualNetworkRules\":[]}},\"tags\":{\"xytxhpzxbz\":\"jswztsdbpg\",\"lcuhxwtctyqiklb\":\"fzab\",\"bhvgy\":\"ovplw\"},\"id\":\"gu\",\"name\":\"svmkfssxquk\",\"type\":\"fpl\"}]}";
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Failed\",\"protocolType\":\"None\",\"encryption\":\"EncryptionAtRestWithPlatformKey\",\"networkAcls\":{\"virtualNetworkRules\":[{\"id\":\"lpqblylsyxk\",\"action\":\"Allow\",\"state\":\"failed\"},{\"id\":\"ervtiagxs\",\"action\":\"Allow\",\"state\":\"deprovisioning\"},{\"id\":\"mpsbzkfzbeyv\",\"action\":\"Allow\",\"state\":\"provisioning\"},{\"id\":\"vinvkj\",\"action\":\"Allow\",\"state\":\"networkSourceDeleted\"}]},\"privateEndpointConnections\":[{\"properties\":{\"provisioningState\":\"Canceled\",\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"groupIds\":[\"ewyhml\",\"paztzpofncck\",\"yfzqwhxxbu\"]},\"id\":\"a\",\"name\":\"zfeqztppri\",\"type\":\"lxorjaltolmncws\"},{\"properties\":{\"provisioningState\":\"Updating\",\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"groupIds\":[\"dbnw\",\"cf\",\"ucqdpfuvglsb\",\"jcanvxbvtvudut\"]},\"id\":\"ormrlxqtvcofudfl\",\"name\":\"kgjubgdknnqvsazn\",\"type\":\"n\"},{\"properties\":{\"provisioningState\":\"Failed\",\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"groupIds\":[\"gsahmkycgrauw\",\"uetae\",\"uruv\"]},\"id\":\"ovsm\",\"name\":\"l\",\"type\":\"wabm\"},{\"properties\":{\"provisioningState\":\"Failed\",\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"groupIds\":[\"frvtpuqu\",\"mqlgk\"]},\"id\":\"tndoaongbjc\",\"name\":\"tujitcjedft\",\"type\":\"waezkojvd\"}]},\"id\":\"zfoqouicybxar\",\"name\":\"gszufoxciqopid\",\"type\":\"amcio\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -64,11 +64,16 @@ public final class VolumeGroupsListByElasticSanMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<VolumeGroup> response =
-            manager.volumeGroups().listByElasticSan("zyoxaepdkzjan", "ux", Context.NONE);
+            manager.volumeGroups().listByElasticSan("nfwjlfltkacjvefk", "lfoakg", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("jswztsdbpg", response.iterator().next().tags().get("xytxhpzxbz"));
         Assertions.assertEquals(StorageTargetType.NONE, response.iterator().next().protocolType());
         Assertions
             .assertEquals(EncryptionType.ENCRYPTION_AT_REST_WITH_PLATFORM_KEY, response.iterator().next().encryption());
+        Assertions
+            .assertEquals(
+                "lpqblylsyxk",
+                response.iterator().next().networkAcls().virtualNetworkRules().get(0).virtualNetworkResourceId());
+        Assertions
+            .assertEquals(Action.ALLOW, response.iterator().next().networkAcls().virtualNetworkRules().get(0).action());
     }
 }

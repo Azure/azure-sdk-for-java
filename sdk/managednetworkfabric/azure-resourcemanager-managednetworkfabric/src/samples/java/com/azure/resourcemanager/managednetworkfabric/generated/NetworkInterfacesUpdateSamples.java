@@ -9,7 +9,7 @@ import com.azure.resourcemanager.managednetworkfabric.models.NetworkInterface;
 /** Samples for NetworkInterfaces Update. */
 public final class NetworkInterfacesUpdateSamples {
     /*
-     * x-ms-original-file: specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/preview/2023-02-01-preview/examples/NetworkInterfaces_Update_MaximumSet_Gen.json
+     * x-ms-original-file: specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/NetworkInterfaces_Update_MaximumSet_Gen.json
      */
     /**
      * Sample code: NetworkInterfaces_Update_MaximumSet_Gen.
@@ -21,9 +21,8 @@ public final class NetworkInterfacesUpdateSamples {
         NetworkInterface resource =
             manager
                 .networkInterfaces()
-                .getWithResponse(
-                    "resourceGroupName", "networkDeviceName", "networkInterfaceName", com.azure.core.util.Context.NONE)
+                .getWithResponse("example-rg", "example-device", "example-interface", com.azure.core.util.Context.NONE)
                 .getValue();
-        resource.update().withAnnotation("null").apply();
+        resource.update().withAnnotation("annotation").apply();
     }
 }

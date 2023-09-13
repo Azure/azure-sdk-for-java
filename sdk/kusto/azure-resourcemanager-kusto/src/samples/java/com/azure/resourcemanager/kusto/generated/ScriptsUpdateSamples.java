@@ -9,7 +9,7 @@ import com.azure.resourcemanager.kusto.models.Script;
 /** Samples for Scripts Update. */
 public final class ScriptsUpdateSamples {
     /*
-     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2022-12-29/examples/KustoScriptsUpdate.json
+     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-05-02/examples/KustoScriptsUpdate.json
      */
     /**
      * Sample code: KustoScriptsUpdate.

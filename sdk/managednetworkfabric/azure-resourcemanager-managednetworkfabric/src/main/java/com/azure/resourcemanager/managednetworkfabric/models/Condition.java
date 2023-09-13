@@ -19,6 +19,9 @@ public final class Condition extends ExpandableStringEnum<Condition> {
     /** Static value LesserThanOrEqualTo for Condition. */
     public static final Condition LESSER_THAN_OR_EQUAL_TO = fromString("LesserThanOrEqualTo");
 
+    /** Static value Range for Condition. */
+    public static final Condition RANGE = fromString("Range");
+
     /**
      * Creates a new instance of Condition value.
      *

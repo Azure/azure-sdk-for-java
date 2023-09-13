@@ -16,6 +16,10 @@ public final class KeyVaultContractProperties extends KeyVaultContractCreateProp
     @JsonProperty(value = "lastStatus")
     private KeyVaultLastAccessStatusContractProperties lastStatus;
 
+    /** Creates an instance of KeyVaultContractProperties class. */
+    public KeyVaultContractProperties() {
+    }
+
     /**
      * Get the lastStatus property: Last time sync and refresh status of secret from key vault.
      *

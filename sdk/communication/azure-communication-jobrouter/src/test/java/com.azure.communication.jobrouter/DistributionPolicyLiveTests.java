@@ -3,13 +3,13 @@
 
 package com.azure.communication.jobrouter;
 
-import com.azure.communication.jobrouter.models.AzureFunctionRule;
-import com.azure.communication.jobrouter.models.AzureFunctionRuleCredential;
+import com.azure.communication.jobrouter.models.AzureFunctionRouterRule;
+import com.azure.communication.jobrouter.models.AzureFunctionRouterRuleCredential;
 import com.azure.communication.jobrouter.models.BestWorkerMode;
+import com.azure.communication.jobrouter.models.CreateDistributionPolicyOptions;
 import com.azure.communication.jobrouter.models.DistributionPolicy;
 import com.azure.communication.jobrouter.models.LongestIdleMode;
 import com.azure.communication.jobrouter.models.RoundRobinMode;
-import com.azure.communication.jobrouter.models.options.CreateDistributionPolicyOptions;
 import com.azure.core.http.HttpClient;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -19,7 +19,7 @@ import java.time.Duration;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class DistributionPolicyLiveTests extends JobRouterTestBase {
-    private RouterAdministrationClient routerAdminClient;
+    private JobRouterAdministrationClient routerAdminClient;
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
@@ -56,9 +56,9 @@ public class DistributionPolicyLiveTests extends JobRouterTestBase {
         String bestWorkerModeDistributionPolicyId = String.format("%s-BestWorkerAzureFunctionRule-DistributionPolicy", JAVA_LIVE_TESTS);
         String bestWorkerModeDistributionPolicyName = String.format("%s-Name", bestWorkerModeDistributionPolicyId);
 
-        AzureFunctionRule azureFunctionRule = new AzureFunctionRule()
+        AzureFunctionRouterRule azureFunctionRule = new AzureFunctionRouterRule()
             .setFunctionUrl("https://my.function.app/api/myfunction?code=Kg==")
-            .setCredential(new AzureFunctionRuleCredential()
+            .setCredential(new AzureFunctionRouterRuleCredential()
                 .setAppKey("MyAppKey")
                 .setClientId("MyClientId"));
 
@@ -96,7 +96,7 @@ public class DistributionPolicyLiveTests extends JobRouterTestBase {
             new LongestIdleMode()
                 .setMinConcurrentOffers(1)
                 .setMaxConcurrentOffers(10)
-        )
+            )
             .setName(longestIdleModeDistributionPolicyName);
 
         // Action

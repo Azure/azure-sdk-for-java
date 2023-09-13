@@ -55,10 +55,10 @@ public final class DialogSensitivityUpdate {
     private String dialogId;
 
     /*
-     * SensitiveFlag data from the Conversation Conductor
+     * SensitiveMask
      */
-    @JsonProperty(value = "sensitiveFlag", access = JsonProperty.Access.WRITE_ONLY)
-    private SensitiveFlag sensitiveFlag;
+    @JsonProperty(value = "sensitiveMask", access = JsonProperty.Access.WRITE_ONLY)
+    private Boolean sensitiveMask;
 
     /**
      * Get the callConnectionId property: Call connection ID.
@@ -160,11 +160,11 @@ public final class DialogSensitivityUpdate {
     }
 
     /**
-     * Get the sensitiveFlag property: SensitiveFlag data from the Conversation Conductor.
+     * Get the sensitiveMask property: SensitiveMask.
      *
-     * @return the sensitiveFlag value.
+     * @return the sensitiveMask value.
      */
-    public SensitiveFlag getSensitiveFlag() {
-        return this.sensitiveFlag;
+    public Boolean isSensitiveMask() {
+        return this.sensitiveMask;
     }
 }

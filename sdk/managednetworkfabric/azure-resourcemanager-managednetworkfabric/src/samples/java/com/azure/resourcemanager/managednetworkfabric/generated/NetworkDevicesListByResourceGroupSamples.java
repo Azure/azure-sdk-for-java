@@ -7,7 +7,7 @@ package com.azure.resourcemanager.managednetworkfabric.generated;
 /** Samples for NetworkDevices ListByResourceGroup. */
 public final class NetworkDevicesListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/preview/2023-02-01-preview/examples/NetworkDevices_ListByResourceGroup_MaximumSet_Gen.json
+     * x-ms-original-file: specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/NetworkDevices_ListByResourceGroup_MaximumSet_Gen.json
      */
     /**
      * Sample code: NetworkDevices_ListByResourceGroup_MaximumSet_Gen.
@@ -16,6 +16,6 @@ public final class NetworkDevicesListByResourceGroupSamples {
      */
     public static void networkDevicesListByResourceGroupMaximumSetGen(
         com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager manager) {
-        manager.networkDevices().listByResourceGroup("resourceGroupName", com.azure.core.util.Context.NONE);
+        manager.networkDevices().listByResourceGroup("example-rg", com.azure.core.util.Context.NONE);
     }
 }

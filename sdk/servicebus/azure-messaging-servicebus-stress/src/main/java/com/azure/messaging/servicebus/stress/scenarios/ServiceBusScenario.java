@@ -3,9 +3,7 @@
 
 package com.azure.messaging.servicebus.stress.scenarios;
 
-import com.azure.messaging.servicebus.stress.config.RateMeter;
 import com.azure.messaging.servicebus.stress.util.ScenarioOptions;
-import com.microsoft.applicationinsights.TelemetryClient;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
@@ -14,12 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 public abstract class ServiceBusScenario {
     @Autowired
     protected ScenarioOptions options;
-
-    @Autowired
-    protected TelemetryClient telemetryClient;
-
-    @Autowired
-    protected RateMeter rateMeter;
 
     /**
      * Run test scenario

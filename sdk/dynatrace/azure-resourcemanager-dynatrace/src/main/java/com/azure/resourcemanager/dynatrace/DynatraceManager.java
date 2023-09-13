@@ -215,7 +215,7 @@ public final class DynatraceManager {
                 .append("-")
                 .append("com.azure.resourcemanager.dynatrace")
                 .append("/")
-                .append("1.0.0-beta.2");
+                .append("1.0.0-beta.3");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder
                     .append(" (")
@@ -321,8 +321,10 @@ public final class DynatraceManager {
     }
 
     /**
-     * @return Wrapped service client DynatraceObservability providing direct access to the underlying auto-generated
-     *     API implementation, based on Azure REST API.
+     * Gets wrapped service client DynatraceObservability providing direct access to the underlying auto-generated API
+     * implementation, based on Azure REST API.
+     *
+     * @return Wrapped service client DynatraceObservability.
      */
     public DynatraceObservability serviceClient() {
         return this.clientObject;

@@ -6,33 +6,25 @@ package com.azure.resourcemanager.managednetworkfabric.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.managednetworkfabric.fluent.models.AccessControlListPatchProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/** The AccessControlList patch resource definition. */
+/** The Access Control Lists patch resource definition. */
 @Fluent
-public final class AccessControlListPatch {
+public final class AccessControlListPatch extends TagsUpdate {
     /*
-     * Resource properties.
+     * Access Control Lists patch properties.
      */
     @JsonProperty(value = "properties")
     private AccessControlListPatchProperties innerProperties;
-
-    /*
-     * Resource tags
-     */
-    @JsonProperty(value = "tags")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
-    private Map<String, String> tags;
 
     /** Creates an instance of AccessControlListPatch class. */
     public AccessControlListPatch() {
     }
 
     /**
-     * Get the innerProperties property: Resource properties.
+     * Get the innerProperties property: Access Control Lists patch properties.
      *
      * @return the innerProperties value.
      */
@@ -40,69 +32,10 @@ public final class AccessControlListPatch {
         return this.innerProperties;
     }
 
-    /**
-     * Get the tags property: Resource tags.
-     *
-     * @return the tags value.
-     */
-    public Map<String, String> tags() {
-        return this.tags;
-    }
-
-    /**
-     * Set the tags property: Resource tags.
-     *
-     * @param tags the tags value to set.
-     * @return the AccessControlListPatch object itself.
-     */
+    /** {@inheritDoc} */
+    @Override
     public AccessControlListPatch withTags(Map<String, String> tags) {
-        this.tags = tags;
-        return this;
-    }
-
-    /**
-     * Get the addressFamily property: IP address family. Example: ipv4 | ipv6.
-     *
-     * @return the addressFamily value.
-     */
-    public AddressFamily addressFamily() {
-        return this.innerProperties() == null ? null : this.innerProperties().addressFamily();
-    }
-
-    /**
-     * Set the addressFamily property: IP address family. Example: ipv4 | ipv6.
-     *
-     * @param addressFamily the addressFamily value to set.
-     * @return the AccessControlListPatch object itself.
-     */
-    public AccessControlListPatch withAddressFamily(AddressFamily addressFamily) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new AccessControlListPatchProperties();
-        }
-        this.innerProperties().withAddressFamily(addressFamily);
-        return this;
-    }
-
-    /**
-     * Get the conditions property: Access Control List conditions.
-     *
-     * @return the conditions value.
-     */
-    public List<AccessControlListConditionProperties> conditions() {
-        return this.innerProperties() == null ? null : this.innerProperties().conditions();
-    }
-
-    /**
-     * Set the conditions property: Access Control List conditions.
-     *
-     * @param conditions the conditions value to set.
-     * @return the AccessControlListPatch object itself.
-     */
-    public AccessControlListPatch withConditions(List<AccessControlListConditionProperties> conditions) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new AccessControlListPatchProperties();
-        }
-        this.innerProperties().withConditions(conditions);
+        super.withTags(tags);
         return this;
     }
 
@@ -130,11 +63,107 @@ public final class AccessControlListPatch {
     }
 
     /**
+     * Get the configurationType property: Input method to configure Access Control List.
+     *
+     * @return the configurationType value.
+     */
+    public ConfigurationType configurationType() {
+        return this.innerProperties() == null ? null : this.innerProperties().configurationType();
+    }
+
+    /**
+     * Set the configurationType property: Input method to configure Access Control List.
+     *
+     * @param configurationType the configurationType value to set.
+     * @return the AccessControlListPatch object itself.
+     */
+    public AccessControlListPatch withConfigurationType(ConfigurationType configurationType) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AccessControlListPatchProperties();
+        }
+        this.innerProperties().withConfigurationType(configurationType);
+        return this;
+    }
+
+    /**
+     * Get the aclsUrl property: Access Control List file URL.
+     *
+     * @return the aclsUrl value.
+     */
+    public String aclsUrl() {
+        return this.innerProperties() == null ? null : this.innerProperties().aclsUrl();
+    }
+
+    /**
+     * Set the aclsUrl property: Access Control List file URL.
+     *
+     * @param aclsUrl the aclsUrl value to set.
+     * @return the AccessControlListPatch object itself.
+     */
+    public AccessControlListPatch withAclsUrl(String aclsUrl) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AccessControlListPatchProperties();
+        }
+        this.innerProperties().withAclsUrl(aclsUrl);
+        return this;
+    }
+
+    /**
+     * Get the matchConfigurations property: List of match configurations.
+     *
+     * @return the matchConfigurations value.
+     */
+    public List<AccessControlListMatchConfiguration> matchConfigurations() {
+        return this.innerProperties() == null ? null : this.innerProperties().matchConfigurations();
+    }
+
+    /**
+     * Set the matchConfigurations property: List of match configurations.
+     *
+     * @param matchConfigurations the matchConfigurations value to set.
+     * @return the AccessControlListPatch object itself.
+     */
+    public AccessControlListPatch withMatchConfigurations(
+        List<AccessControlListMatchConfiguration> matchConfigurations) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AccessControlListPatchProperties();
+        }
+        this.innerProperties().withMatchConfigurations(matchConfigurations);
+        return this;
+    }
+
+    /**
+     * Get the dynamicMatchConfigurations property: List of dynamic match configurations.
+     *
+     * @return the dynamicMatchConfigurations value.
+     */
+    public List<CommonDynamicMatchConfiguration> dynamicMatchConfigurations() {
+        return this.innerProperties() == null ? null : this.innerProperties().dynamicMatchConfigurations();
+    }
+
+    /**
+     * Set the dynamicMatchConfigurations property: List of dynamic match configurations.
+     *
+     * @param dynamicMatchConfigurations the dynamicMatchConfigurations value to set.
+     * @return the AccessControlListPatch object itself.
+     */
+    public AccessControlListPatch withDynamicMatchConfigurations(
+        List<CommonDynamicMatchConfiguration> dynamicMatchConfigurations) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AccessControlListPatchProperties();
+        }
+        this.innerProperties().withDynamicMatchConfigurations(dynamicMatchConfigurations);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
+    @Override
     public void validate() {
+        super.validate();
         if (innerProperties() != null) {
             innerProperties().validate();
         }

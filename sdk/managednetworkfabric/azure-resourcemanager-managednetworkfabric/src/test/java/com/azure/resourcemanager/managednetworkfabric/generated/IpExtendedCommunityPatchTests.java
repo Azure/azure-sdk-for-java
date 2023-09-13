@@ -5,7 +5,10 @@
 package com.azure.resourcemanager.managednetworkfabric.generated;
 
 import com.azure.core.util.BinaryData;
+import com.azure.resourcemanager.managednetworkfabric.models.CommunityActionTypes;
 import com.azure.resourcemanager.managednetworkfabric.models.IpExtendedCommunityPatch;
+import com.azure.resourcemanager.managednetworkfabric.models.IpExtendedCommunityRule;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
@@ -15,17 +18,39 @@ public final class IpExtendedCommunityPatchTests {
     public void testDeserialize() throws Exception {
         IpExtendedCommunityPatch model =
             BinaryData
-                .fromString("{\"tags\":{\"aqw\":\"c\",\"xnj\":\"ochcbonqvpkvl\"}}")
+                .fromString(
+                    "{\"properties\":{\"annotation\":\"kiofkbt\",\"ipExtendedCommunityRules\":[{\"action\":\"Deny\",\"sequenceNumber\":1656288056476844717,\"routeTargets\":[\"nldpvcbhhezyquwu\",\"qxutrpbrruyuua\",\"vlm\"]},{\"action\":\"Permit\",\"sequenceNumber\":9171918442354377344,\"routeTargets\":[\"lbmxlbnwtpcpah\"]}]},\"tags\":{\"hngxnoqrxtd\":\"rvxhmtfhocnxzcm\"}}")
                 .toObject(IpExtendedCommunityPatch.class);
-        Assertions.assertEquals("c", model.tags().get("aqw"));
+        Assertions.assertEquals("rvxhmtfhocnxzcm", model.tags().get("hngxnoqrxtd"));
+        Assertions.assertEquals("kiofkbt", model.annotation());
+        Assertions.assertEquals(CommunityActionTypes.DENY, model.ipExtendedCommunityRules().get(0).action());
+        Assertions.assertEquals(1656288056476844717L, model.ipExtendedCommunityRules().get(0).sequenceNumber());
+        Assertions.assertEquals("nldpvcbhhezyquwu", model.ipExtendedCommunityRules().get(0).routeTargets().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         IpExtendedCommunityPatch model =
-            new IpExtendedCommunityPatch().withTags(mapOf("aqw", "c", "xnj", "ochcbonqvpkvl"));
+            new IpExtendedCommunityPatch()
+                .withTags(mapOf("hngxnoqrxtd", "rvxhmtfhocnxzcm"))
+                .withAnnotation("kiofkbt")
+                .withIpExtendedCommunityRules(
+                    Arrays
+                        .asList(
+                            new IpExtendedCommunityRule()
+                                .withAction(CommunityActionTypes.DENY)
+                                .withSequenceNumber(1656288056476844717L)
+                                .withRouteTargets(Arrays.asList("nldpvcbhhezyquwu", "qxutrpbrruyuua", "vlm")),
+                            new IpExtendedCommunityRule()
+                                .withAction(CommunityActionTypes.PERMIT)
+                                .withSequenceNumber(9171918442354377344L)
+                                .withRouteTargets(Arrays.asList("lbmxlbnwtpcpah"))));
         model = BinaryData.fromObject(model).toObject(IpExtendedCommunityPatch.class);
-        Assertions.assertEquals("c", model.tags().get("aqw"));
+        Assertions.assertEquals("rvxhmtfhocnxzcm", model.tags().get("hngxnoqrxtd"));
+        Assertions.assertEquals("kiofkbt", model.annotation());
+        Assertions.assertEquals(CommunityActionTypes.DENY, model.ipExtendedCommunityRules().get(0).action());
+        Assertions.assertEquals(1656288056476844717L, model.ipExtendedCommunityRules().get(0).sequenceNumber());
+        Assertions.assertEquals("nldpvcbhhezyquwu", model.ipExtendedCommunityRules().get(0).routeTargets().get(0));
     }
 
     @SuppressWarnings("unchecked")

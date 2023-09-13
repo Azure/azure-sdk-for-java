@@ -17,11 +17,13 @@ public final class CompleteJobRequest {
     private String assignmentId;
 
     /*
-     * (Optional) A note that will be appended to the jobs' Notes collection
-     * with the current timestamp.
+     * (Optional) A note that will be appended to the jobs' Notes collection with the current timestamp.
      */
     @JsonProperty(value = "note")
     private String note;
+
+    /** Creates an instance of CompleteJobRequest class. */
+    public CompleteJobRequest() {}
 
     /**
      * Get the assignmentId property: The assignment within the job to complete.

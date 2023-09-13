@@ -4,14 +4,17 @@
 
 package com.azure.resourcemanager.managednetworkfabric.generated;
 
+import com.azure.resourcemanager.managednetworkfabric.models.CommunityActionTypes;
 import com.azure.resourcemanager.managednetworkfabric.models.IpExtendedCommunity;
+import com.azure.resourcemanager.managednetworkfabric.models.IpExtendedCommunityRule;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
 /** Samples for IpExtendedCommunities Update. */
 public final class IpExtendedCommunitiesUpdateSamples {
     /*
-     * x-ms-original-file: specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/preview/2023-02-01-preview/examples/IpExtendedCommunities_Update_MaximumSet_Gen.json
+     * x-ms-original-file: specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/IpExtendedCommunities_Update_MaximumSet_Gen.json
      */
     /**
      * Sample code: IpExtendedCommunities_Update_MaximumSet_Gen.
@@ -24,9 +27,19 @@ public final class IpExtendedCommunitiesUpdateSamples {
             manager
                 .ipExtendedCommunities()
                 .getByResourceGroupWithResponse(
-                    "rgIpExtendedCommunityLists", "example_ipExtendedCommunity", com.azure.core.util.Context.NONE)
+                    "example-rg", "example-ipExtendedCommunity", com.azure.core.util.Context.NONE)
                 .getValue();
-        resource.update().withTags(mapOf("key5054", "key1")).apply();
+        resource
+            .update()
+            .withTags(mapOf("keyID", "fakeTokenPlaceholder"))
+            .withIpExtendedCommunityRules(
+                Arrays
+                    .asList(
+                        new IpExtendedCommunityRule()
+                            .withAction(CommunityActionTypes.PERMIT)
+                            .withSequenceNumber(4155123341L)
+                            .withRouteTargets(Arrays.asList("1234:2345"))))
+            .apply();
     }
 
     @SuppressWarnings("unchecked")

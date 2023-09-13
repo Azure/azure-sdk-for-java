@@ -15,14 +15,21 @@ public final class SubscriptionQuotaItemListTests {
         SubscriptionQuotaItemList model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"properties\":{\"current\":411376072,\"default\":187934940},\"id\":\"tjaodxobnb\",\"name\":\"xkqpxo\",\"type\":\"ajionpimexgstxg\"}]}")
+                    "{\"value\":[{\"properties\":{\"current\":1201119723,\"default\":682758161},\"id\":\"wwzjuqkhrsajiwku\",\"name\":\"foskghsauuimj\",\"type\":\"vxieduugidyj\"},{\"properties\":{\"current\":857489891,\"default\":786534004},\"id\":\"svexcsonpclhoco\",\"name\":\"slkevle\",\"type\":\"gz\"},{\"properties\":{\"current\":635098272,\"default\":1240175495},\"id\":\"faxkffeii\",\"name\":\"hl\",\"type\":\"m\"},{\"properties\":{\"current\":72720177,\"default\":1090911341},\"id\":\"mzsb\",\"name\":\"zoggigrxwburvjxx\",\"type\":\"nspydptkoenkoukn\"}]}")
                 .toObject(SubscriptionQuotaItemList.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SubscriptionQuotaItemList model =
-            new SubscriptionQuotaItemList().withValue(Arrays.asList(new SubscriptionQuotaItemInner()));
+            new SubscriptionQuotaItemList()
+                .withValue(
+                    Arrays
+                        .asList(
+                            new SubscriptionQuotaItemInner(),
+                            new SubscriptionQuotaItemInner(),
+                            new SubscriptionQuotaItemInner(),
+                            new SubscriptionQuotaItemInner()));
         model = BinaryData.fromObject(model).toObject(SubscriptionQuotaItemList.class);
     }
 }

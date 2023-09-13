@@ -33,7 +33,7 @@ public final class AccountsListUsagesWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"unit\":\"Bytes\",\"quotaPeriod\":\"uq\",\"limit\":92.17927923376674,\"currentValue\":83.973841997124,\"nextResetTime\":\"dnkfx\",\"status\":\"Unknown\"},{\"unit\":\"CountPerSecond\",\"quotaPeriod\":\"rmuhapfcq\",\"limit\":35.749186293792256,\"currentValue\":59.310411991053805,\"nextResetTime\":\"svuo\",\"status\":\"Included\"}]}";
+            "{\"nextLink\":\"pzlrphw\",\"value\":[{\"unit\":\"Percent\",\"name\":{\"value\":\"yuqdu\",\"localizedValue\":\"mnnrwr\"},\"quotaPeriod\":\"ork\",\"limit\":33.80598367891427,\"currentValue\":65.86009286032747,\"nextResetTime\":\"gdnhxmsiv\",\"status\":\"Unknown\"},{\"unit\":\"Milliseconds\",\"name\":{\"value\":\"ggdufiqndieu\",\"localizedValue\":\"ofjchvcyyysf\"},\"quotaPeriod\":\"otcubi\",\"limit\":77.02580661377183,\"currentValue\":2.414000523273596,\"nextResetTime\":\"onmacjekniz\",\"status\":\"Included\"},{\"unit\":\"Seconds\",\"name\":{\"value\":\"pevf\",\"localizedValue\":\"b\"},\"quotaPeriod\":\"rilbywdx\",\"limit\":15.215514950847652,\"currentValue\":71.46991928606101,\"nextResetTime\":\"fscjfnynszquji\",\"status\":\"Blocked\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -64,14 +64,17 @@ public final class AccountsListUsagesWithResponseMockTests {
         UsageListResult response =
             manager
                 .accounts()
-                .listUsagesWithResponse("yhmtnvyqiat", "zwpcnpwzcjaesg", "v", com.azure.core.util.Context.NONE)
+                .listUsagesWithResponse("xgibbda", "confozauors", "kokwbqplhlvnu", com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals(UnitType.BYTES, response.value().get(0).unit());
-        Assertions.assertEquals("uq", response.value().get(0).quotaPeriod());
-        Assertions.assertEquals(92.17927923376674D, response.value().get(0).limit());
-        Assertions.assertEquals(83.973841997124D, response.value().get(0).currentValue());
-        Assertions.assertEquals("dnkfx", response.value().get(0).nextResetTime());
+        Assertions.assertEquals("pzlrphw", response.nextLink());
+        Assertions.assertEquals(UnitType.PERCENT, response.value().get(0).unit());
+        Assertions.assertEquals("yuqdu", response.value().get(0).name().value());
+        Assertions.assertEquals("mnnrwr", response.value().get(0).name().localizedValue());
+        Assertions.assertEquals("ork", response.value().get(0).quotaPeriod());
+        Assertions.assertEquals(33.80598367891427D, response.value().get(0).limit());
+        Assertions.assertEquals(65.86009286032747D, response.value().get(0).currentValue());
+        Assertions.assertEquals("gdnhxmsiv", response.value().get(0).nextResetTime());
         Assertions.assertEquals(QuotaUsageStatus.UNKNOWN, response.value().get(0).status());
     }
 }

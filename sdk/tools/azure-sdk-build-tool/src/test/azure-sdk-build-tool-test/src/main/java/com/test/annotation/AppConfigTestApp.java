@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.test.annotation;
 
 import com.azure.data.appconfiguration.ConfigurationClient;
@@ -18,5 +21,10 @@ public class AppConfigTestApp {
         System.out.println("Done: " + setting.getLastModified());
         setting = configurationClient.getConfigurationSetting("key", "label");
         System.out.println("Retrieved setting again, value is " + setting.getValue());
+        callSetConfigurationFromMethod(configurationClient);
+    }
+
+    private static void callSetConfigurationFromMethod(ConfigurationClient configurationClient) {
+        ConfigurationSetting setting = configurationClient.setConfigurationSetting("key", "label", "value");
     }
 }

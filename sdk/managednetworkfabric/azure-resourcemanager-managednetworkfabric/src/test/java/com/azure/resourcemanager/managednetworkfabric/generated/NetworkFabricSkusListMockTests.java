@@ -32,7 +32,7 @@ public final class NetworkFabricSkusListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"type\":\"jfdoesxxhm\",\"maxComputeRacks\":1553192945,\"minSupportedVer\":\"ck\",\"maxSupportedVer\":\"ikxkxhneg\",\"detailsUri\":\"jzrbhtmeplv\",\"provisioningState\":\"Deleting\"},\"id\":\"brlbpgs\",\"name\":\"bagn\",\"type\":\"hjhgem\"}]}";
+            "{\"value\":[{\"properties\":{\"type\":\"MultiRack\",\"maxComputeRacks\":1861846779,\"maximumServerCount\":1040205889,\"supportedVersions\":[\"ylaqh\"],\"details\":\"vf\",\"provisioningState\":\"Updating\"},\"id\":\"vjhwgkynxlwrjgo\",\"name\":\"dtmck\",\"type\":\"kalhpiybfnkylz\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,6 +62,7 @@ public final class NetworkFabricSkusListMockTests {
 
         PagedIterable<NetworkFabricSku> response = manager.networkFabricSkus().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(1553192945, response.iterator().next().maxComputeRacks());
+        Assertions.assertEquals(1861846779, response.iterator().next().maxComputeRacks());
+        Assertions.assertEquals(1040205889, response.iterator().next().maximumServerCount());
     }
 }

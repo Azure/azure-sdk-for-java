@@ -9,6 +9,7 @@ import com.azure.resourcemanager.kusto.models.DatabaseShareOrigin;
 import com.azure.resourcemanager.kusto.models.DatabaseStatistics;
 import com.azure.resourcemanager.kusto.models.PrincipalsModificationKind;
 import com.azure.resourcemanager.kusto.models.ProvisioningState;
+import com.azure.resourcemanager.kusto.models.SuspensionDetails;
 import com.azure.resourcemanager.kusto.models.TableLevelSharingProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.Duration;
@@ -75,6 +76,13 @@ public final class ReadOnlyFollowingDatabaseProperties {
      */
     @JsonProperty(value = "databaseShareOrigin", access = JsonProperty.Access.WRITE_ONLY)
     private DatabaseShareOrigin databaseShareOrigin;
+
+    /*
+     * The database suspension details. If the database is suspended, this object contains information related to the
+     * database's suspension state.
+     */
+    @JsonProperty(value = "suspensionDetails", access = JsonProperty.Access.WRITE_ONLY)
+    private SuspensionDetails suspensionDetails;
 
     /** Creates an instance of ReadOnlyFollowingDatabaseProperties class. */
     public ReadOnlyFollowingDatabaseProperties() {
@@ -184,6 +192,16 @@ public final class ReadOnlyFollowingDatabaseProperties {
     }
 
     /**
+     * Get the suspensionDetails property: The database suspension details. If the database is suspended, this object
+     * contains information related to the database's suspension state.
+     *
+     * @return the suspensionDetails value.
+     */
+    public SuspensionDetails suspensionDetails() {
+        return this.suspensionDetails;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -194,6 +212,9 @@ public final class ReadOnlyFollowingDatabaseProperties {
         }
         if (tableLevelSharingProperties() != null) {
             tableLevelSharingProperties().validate();
+        }
+        if (suspensionDetails() != null) {
+            suspensionDetails().validate();
         }
     }
 }

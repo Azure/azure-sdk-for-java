@@ -6,7 +6,16 @@ package com.azure.resourcemanager.managednetworkfabric.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.managednetworkfabric.fluent.models.RoutePolicyInner;
+import com.azure.resourcemanager.managednetworkfabric.models.ActionIpCommunityProperties;
+import com.azure.resourcemanager.managednetworkfabric.models.ActionIpExtendedCommunityProperties;
+import com.azure.resourcemanager.managednetworkfabric.models.AddressFamilyType;
+import com.azure.resourcemanager.managednetworkfabric.models.IpCommunityIdList;
+import com.azure.resourcemanager.managednetworkfabric.models.IpExtendedCommunityIdList;
+import com.azure.resourcemanager.managednetworkfabric.models.RoutePolicyActionType;
+import com.azure.resourcemanager.managednetworkfabric.models.RoutePolicyConditionType;
 import com.azure.resourcemanager.managednetworkfabric.models.RoutePolicyStatementProperties;
+import com.azure.resourcemanager.managednetworkfabric.models.StatementActionProperties;
+import com.azure.resourcemanager.managednetworkfabric.models.StatementConditionProperties;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -18,46 +27,74 @@ public final class RoutePolicyInnerTests {
         RoutePolicyInner model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"statements\":[{\"sequenceNumber\":738730611020453628,\"annotation\":\"odawopqhewjptmcg\"},{\"sequenceNumber\":7587339093272860703,\"annotation\":\"t\"}],\"provisioningState\":\"Canceled\",\"annotation\":\"dlat\"},\"location\":\"mzlbiojlvfhrb\",\"tags\":{\"prprsnmokay\":\"eqvcwwyyurmoch\",\"pcpil\":\"ejnhlbkpb\",\"hol\":\"hahzvechndbnwi\",\"efqsfapaqtferrqw\":\"wjwiuub\"},\"id\":\"x\",\"name\":\"kmfx\",\"type\":\"pjwogqqno\"}")
+                    "{\"properties\":{\"networkFabricId\":\"oyxontbwdq\",\"addressFamilyType\":\"IPv6\",\"configurationState\":\"Provisioned\",\"provisioningState\":\"Updating\",\"administrativeState\":\"MAT\",\"statements\":[{\"sequenceNumber\":218261522892442603,\"condition\":{\"type\":\"And\",\"ipPrefixId\":\"fewxatktwjrppi\",\"ipExtendedCommunityIds\":[\"rqvelrmdcizhvksb\",\"jklwjp\",\"wy\"],\"ipCommunityIds\":[\"ksmpye\",\"zolbfnf\",\"ytfxu\"]},\"action\":{\"localPreference\":3076530262907663120,\"actionType\":\"Continue\",\"ipCommunityProperties\":{\"delete\":{},\"set\":{},\"add\":{}},\"ipExtendedCommunityProperties\":{\"delete\":{},\"set\":{},\"add\":{}}},\"annotation\":\"pwsnliyznghuqzg\"}],\"annotation\":\"glkfvdwrgav\"},\"location\":\"yzse\",\"tags\":{\"fdmc\":\"zukryxpijvapea\"},\"id\":\"dliklxkyoddoq\",\"name\":\"a\",\"type\":\"qtrkicw\"}")
                 .toObject(RoutePolicyInner.class);
-        Assertions.assertEquals("mzlbiojlvfhrb", model.location());
-        Assertions.assertEquals("eqvcwwyyurmoch", model.tags().get("prprsnmokay"));
-        Assertions.assertEquals("odawopqhewjptmcg", model.statements().get(0).annotation());
-        Assertions.assertEquals(738730611020453628L, model.statements().get(0).sequenceNumber());
-        Assertions.assertEquals("dlat", model.annotation());
+        Assertions.assertEquals("yzse", model.location());
+        Assertions.assertEquals("zukryxpijvapea", model.tags().get("fdmc"));
+        Assertions.assertEquals("oyxontbwdq", model.networkFabricId());
+        Assertions.assertEquals(AddressFamilyType.IPV6, model.addressFamilyType());
+        Assertions.assertEquals("pwsnliyznghuqzg", model.statements().get(0).annotation());
+        Assertions.assertEquals(218261522892442603L, model.statements().get(0).sequenceNumber());
+        Assertions.assertEquals("ksmpye", model.statements().get(0).condition().ipCommunityIds().get(0));
+        Assertions.assertEquals(RoutePolicyConditionType.AND, model.statements().get(0).condition().type());
+        Assertions.assertEquals("fewxatktwjrppi", model.statements().get(0).condition().ipPrefixId());
+        Assertions
+            .assertEquals("rqvelrmdcizhvksb", model.statements().get(0).condition().ipExtendedCommunityIds().get(0));
+        Assertions.assertEquals(3076530262907663120L, model.statements().get(0).action().localPreference());
+        Assertions.assertEquals(RoutePolicyActionType.CONTINUE, model.statements().get(0).action().actionType());
+        Assertions.assertEquals("glkfvdwrgav", model.annotation());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         RoutePolicyInner model =
             new RoutePolicyInner()
-                .withLocation("mzlbiojlvfhrb")
-                .withTags(
-                    mapOf(
-                        "prprsnmokay",
-                        "eqvcwwyyurmoch",
-                        "pcpil",
-                        "ejnhlbkpb",
-                        "hol",
-                        "hahzvechndbnwi",
-                        "efqsfapaqtferrqw",
-                        "wjwiuub"))
+                .withLocation("yzse")
+                .withTags(mapOf("fdmc", "zukryxpijvapea"))
+                .withNetworkFabricId("oyxontbwdq")
+                .withAddressFamilyType(AddressFamilyType.IPV6)
                 .withStatements(
                     Arrays
                         .asList(
                             new RoutePolicyStatementProperties()
-                                .withAnnotation("odawopqhewjptmcg")
-                                .withSequenceNumber(738730611020453628L),
-                            new RoutePolicyStatementProperties()
-                                .withAnnotation("t")
-                                .withSequenceNumber(7587339093272860703L)))
-                .withAnnotation("dlat");
+                                .withAnnotation("pwsnliyznghuqzg")
+                                .withSequenceNumber(218261522892442603L)
+                                .withCondition(
+                                    new StatementConditionProperties()
+                                        .withIpCommunityIds(Arrays.asList("ksmpye", "zolbfnf", "ytfxu"))
+                                        .withType(RoutePolicyConditionType.AND)
+                                        .withIpPrefixId("fewxatktwjrppi")
+                                        .withIpExtendedCommunityIds(Arrays.asList("rqvelrmdcizhvksb", "jklwjp", "wy")))
+                                .withAction(
+                                    new StatementActionProperties()
+                                        .withLocalPreference(3076530262907663120L)
+                                        .withActionType(RoutePolicyActionType.CONTINUE)
+                                        .withIpCommunityProperties(
+                                            new ActionIpCommunityProperties()
+                                                .withAdd(new IpCommunityIdList())
+                                                .withDelete(new IpCommunityIdList())
+                                                .withSet(new IpCommunityIdList()))
+                                        .withIpExtendedCommunityProperties(
+                                            new ActionIpExtendedCommunityProperties()
+                                                .withAdd(new IpExtendedCommunityIdList())
+                                                .withDelete(new IpExtendedCommunityIdList())
+                                                .withSet(new IpExtendedCommunityIdList())))))
+                .withAnnotation("glkfvdwrgav");
         model = BinaryData.fromObject(model).toObject(RoutePolicyInner.class);
-        Assertions.assertEquals("mzlbiojlvfhrb", model.location());
-        Assertions.assertEquals("eqvcwwyyurmoch", model.tags().get("prprsnmokay"));
-        Assertions.assertEquals("odawopqhewjptmcg", model.statements().get(0).annotation());
-        Assertions.assertEquals(738730611020453628L, model.statements().get(0).sequenceNumber());
-        Assertions.assertEquals("dlat", model.annotation());
+        Assertions.assertEquals("yzse", model.location());
+        Assertions.assertEquals("zukryxpijvapea", model.tags().get("fdmc"));
+        Assertions.assertEquals("oyxontbwdq", model.networkFabricId());
+        Assertions.assertEquals(AddressFamilyType.IPV6, model.addressFamilyType());
+        Assertions.assertEquals("pwsnliyznghuqzg", model.statements().get(0).annotation());
+        Assertions.assertEquals(218261522892442603L, model.statements().get(0).sequenceNumber());
+        Assertions.assertEquals("ksmpye", model.statements().get(0).condition().ipCommunityIds().get(0));
+        Assertions.assertEquals(RoutePolicyConditionType.AND, model.statements().get(0).condition().type());
+        Assertions.assertEquals("fewxatktwjrppi", model.statements().get(0).condition().ipPrefixId());
+        Assertions
+            .assertEquals("rqvelrmdcizhvksb", model.statements().get(0).condition().ipExtendedCommunityIds().get(0));
+        Assertions.assertEquals(3076530262907663120L, model.statements().get(0).action().localPreference());
+        Assertions.assertEquals(RoutePolicyActionType.CONTINUE, model.statements().get(0).action().actionType());
+        Assertions.assertEquals("glkfvdwrgav", model.annotation());
     }
 
     @SuppressWarnings("unchecked")

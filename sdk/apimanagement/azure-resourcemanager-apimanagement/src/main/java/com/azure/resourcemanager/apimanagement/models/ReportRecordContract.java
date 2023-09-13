@@ -112,7 +112,7 @@ public interface ReportRecordContract {
     Integer callCountBlocked();
 
     /**
-     * Gets the callCountFailed property: Number of calls failed due to proxy or backend errors. This includes calls
+     * Gets the callCountFailed property: Number of calls failed due to gateway or backend errors. This includes calls
      * returning HttpStatusCode.BadRequest(400) and any Code between HttpStatusCode.InternalServerError (500) and 600.
      *
      * @return the callCountFailed value.

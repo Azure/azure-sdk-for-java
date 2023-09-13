@@ -2,8 +2,7 @@
 
 Azure Communication Job Router contains the APIs used in job router applications for Azure Communication Services.
 
-[Source code][source] | [Package (Maven)][package] | [API reference documentation][api_documentation]
-| [Product documentation][product_docs]
+[Source code][source_code] | [Package (Maven)][package] | [API reference documentation][api_documentation] | [Product documentation][product_docs]
 
 ## Getting started
 
@@ -135,12 +134,12 @@ To initialize the JobRouter Client, the connection string can be used to instant
 Alternatively, you can also use Active Directory authentication using DefaultAzureCredential.
 
 ```java 
-RouterClient routerClient = new RouterClientBuilder()
-    .connectionString(connectionString);
-    .buildClient();
+JobRouterClient jobRouterClient = new JobRouterClientBuilder()
+            .connectionString(connectionString)
+            .buildClient();
 ```
 
-Using `RouterClient` created from builder, create Job Router entities as described below.
+Using `JobRouterClient` created from builder, create Job Router entities as described below.
 
 ### Create a Distribution Policy
 
@@ -152,14 +151,14 @@ CreateDistributionPolicyOptions createDistributionPolicyOptions = new CreateDist
         .setMinConcurrentOffers(1)
         .setMaxConcurrentOffers(10)
 );
-DistributionPolicy distributionPolicy = routerClient.createDistributionPolicy(createDistributionPolicyOptions);
+DistributionPolicy distributionPolicy = jobRouterClient.createDistributionPolicy(createDistributionPolicyOptions);
 ```
 
 ### Create a Queue
 
 ```java 
 CreateQueueOptions createQueueOptions = new CreateQueueOptions("queue-id", distributionPolicy.getId());
-JobQueue jobQueue = routerClient.createQueue(createQueueOptions);
+RouterQueue jobQueue = jobRouterClient.createQueue(createQueueOptions);
 ```
 
 ### Create a Job
@@ -170,13 +169,13 @@ CreateJobOptions createJobOptions = new CreateJobOptions("job-id", "chat-channel
             .setChannelReference("12345")
             .setRequestedWorkerSelectors(
                 new ArrayList<>() {{
-                    new WorkerSelector()
+                    new RouterWorkerSelector()
                         .setKey("Some-skill")
                         .setLabelOperator(LabelOperator.GREATER_THAN)
-                        .setValue(10);
+                        .setValue(new LabelValue(10));
                 }}
             );
-RouterJob routerJob = routerClient.createJob(createJobOptions);
+RouterJob routerJob = jobRouterClient.createJob(createJobOptions);
 ```
 
 ### Create a Worker
@@ -188,9 +187,9 @@ Map<String, LabelValue> labels = new HashMap<String, LabelValue>() {
     }
 };
 
-Map<String, Object> tags = new HashMap<String, Object>() {
+Map<String, LabelValue> tags = new HashMap<String, LabelValue>() {
     {
-        put("Tag", "Value");
+        put("Tag", new LabelValue("Value"));
     }
 };
 
@@ -200,20 +199,20 @@ Map<String, ChannelConfiguration> channelConfigurations = new HashMap<String, Ch
     }
 };
 
-Map<String, QueueAssignment> queueAssignments = new HashMap<String, QueueAssignment>() {
+Map<String, RouterQueueAssignment> queueAssignments = new HashMap<String, RouterQueueAssignment>() {
     {
-        put(jobQueue.getId(), new Object());
+        put(jobQueue.getId(), new RouterQueueAssignment());
     }
 };
 
 CreateWorkerOptions createWorkerOptions = new CreateWorkerOptions(workerId, 10)
     .setLabels(labels)
     .setTags(tags)
-    .setAvailableForOffers(false)
+    .setAvailableForOffers(true)
     .setChannelConfigurations(channelConfigurations)
     .setQueueAssignments(queueAssignments);
 
-RouterWorker routerWorker = routerClient.createWorker(createWorkerOptions);
+RouterWorker routerWorker = jobRouterClient.createWorker(createWorkerOptions);
 ```
 
 ## Troubleshooting
@@ -234,3 +233,16 @@ This project welcomes contributions and suggestions. Most contributions require 
 When you submit a pull request, a CLA-bot will automatically determine whether you need to provide a CLA and decorate the PR appropriately (e.g., label, comment). Simply follow the instructions provided by the bot. You will only need to do this once across all repos using our CLA.
 
 This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For more information see the [Code of Conduct FAQ][coc_faq] or contact [opencode@microsoft.com][coc_contact] with any additional questions or comments.
+
+<!-- LINKS -->
+[source_code]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/communication/azure-communication-jobrouter/src
+[jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
+[package]: https://search.maven.org/artifact/com.azure/azure-communication-jobrouter
+[api_documentation]: https://aka.ms/java-docs
+[rest_docs]: https://learn.microsoft.com/rest/api/communication/
+[product_docs]: https://learn.microsoft.com/azure/communication-services/
+[cla]: https://cla.microsoft.com
+[coc]: https://opensource.microsoft.com/codeofconduct/
+[coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/
+[coc_contact]: mailto:opencode@microsoft.com
+![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fcommunication%2Fazure-communication-jobrouter%2FREADME.png)

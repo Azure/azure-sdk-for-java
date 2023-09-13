@@ -15,7 +15,7 @@ import scala.collection.mutable.ListBuffer
 import scala.util.Random
 
 class CosmosConfigSpec extends UnitSpec {
-  //scalastyle:off multiple.string.literals
+//scalastyle:off multiple.string.literals
 
   private val sampleProdEndpoint = "https://boson-test.documents.azure.com:443/"
   private val defaultPatchOperationType = CosmosPatchOperationTypes.Replace
@@ -1016,6 +1016,131 @@ class CosmosConfigSpec extends UnitSpec {
           }
       }
     })
+  }
+
+  "Default patchBulkUpdate config" should "be valid" in {
+      val schema = CosmosPatchTestHelper.getPatchConfigTestSchema()
+      val userConfig = Map(
+          "spark.cosmos.write.strategy" -> "ItemBulkUpdate",
+      )
+      val writeConfig: CosmosWriteConfig = CosmosWriteConfig.parseWriteConfig(userConfig, schema)
+      writeConfig should not be null
+      writeConfig.patchConfigs.isDefined shouldEqual true
+      val patchConfigs = writeConfig.patchConfigs.get
+
+      patchConfigs.filter.isDefined shouldEqual false
+
+      patchConfigs.columnConfigsMap.size shouldEqual 0
+  }
+
+  it should "validate column configs for patchBulkUpdate configs" in {
+      val schema = CosmosPatchTestHelper.getPatchConfigTestSchema()
+      val testParameters = new ListBuffer[PatchColumnConfigParameterTest]
+
+      testParameters +=
+          PatchColumnConfigParameterTest(isValid = true, columnName = "", overrideConfigsString = "")
+      testParameters +=
+          PatchColumnConfigParameterTest(isValid = true, columnName = "", overrideConfigsString = "[]")
+      testParameters +=
+          PatchColumnConfigParameterTest(isValid = true, columnName = "", overrideConfigsString = " [  ] ")
+      testParameters +=
+          PatchColumnConfigParameterTest(
+              isValid = false,
+              columnName = "",
+              overrideConfigsString = "[",
+              errorMessage = Some("invalid configuration for spark.cosmos.write.bulkUpdate.columnConfigs:["))
+      testParameters +=
+          PatchColumnConfigParameterTest(
+              isValid = false,
+              columnName = "",
+              overrideConfigsString = "[col(column.path.random]",
+              errorMessage = Some("invalid configuration for spark.cosmos.write.bulkUpdate.columnConfigs:[col(column.path.random]"))
+
+      // Add other test cases which will covered different columns combined with different match pattern (different cases of all the key words)
+      val columnKeyWords = new ListBuffer[String]
+      CosmosPatchTestHelper.getAllPermutationsOfKeyWord("col", "", columnKeyWords)
+      val columnKeyWordRandom = new Random()
+
+      val pathKeyWords = new ListBuffer[String]
+      CosmosPatchTestHelper.getAllPermutationsOfKeyWord("path", "", pathKeyWords)
+      val pathKeyWordRandom = new Random()
+
+      val usePathKeyword = new Random()
+      val useRawJson = new Random()
+
+      schema.fields.foreach(field => {
+          var isValid = true
+          var errorMessage = ""
+          var mappingPath = s"/${field.name}"
+          var configString = "["
+          val columnKeyWord = columnKeyWords(columnKeyWordRandom.nextInt(columnKeyWords.size))
+          configString += s"$columnKeyWord(${field.name})"
+
+          if (usePathKeyword.nextBoolean()) {
+              val pathKeyWord = pathKeyWords(pathKeyWordRandom.nextInt(pathKeyWords.size))
+              mappingPath = s"$mappingPath-1"
+              configString += s".$pathKeyWord(${mappingPath})"
+          }
+
+          if (useRawJson.nextBoolean()) {
+              configString += s".rawJson"
+          }
+
+          configString += "]"
+
+          if (isValid) {
+              testParameters +=
+                  PatchColumnConfigParameterTest(
+                      isValid,
+                      field.name,
+                      configString,
+                      Some(CosmosPatchColumnConfig(field.name, CosmosPatchOperationTypes.Set, mappingPath, false)))
+          } else {
+              testParameters +=
+                  PatchColumnConfigParameterTest(
+                      isValid,
+                      field.name,
+                      configString,
+                      Some(CosmosPatchColumnConfig(field.name, CosmosPatchOperationTypes.Set, mappingPath, false)),
+                      Some(errorMessage))
+          }
+      })
+
+      testParameters.foreach(testParameter => {
+
+          val userConfig = Map(
+              "spark.cosmos.write.strategy" -> "ItemBulkUpdate",
+              "spark.cosmos.write.bulkUpdate.columnConfigs" -> s"${testParameter.overrideConfigsString}"
+          )
+
+          testParameter.isValid match {
+              case true =>
+                  val writeConfig: CosmosWriteConfig = CosmosWriteConfig.parseWriteConfig(userConfig, schema)
+                  writeConfig.patchConfigs.isDefined shouldEqual true
+
+                  val patchConfigs = writeConfig.patchConfigs.get
+                  patchConfigs.filter.isDefined shouldEqual false
+
+                  patchConfigs.columnConfigsMap.values.foreach(
+                      config => {
+                          if (testParameter.columnName == config.columnName && testParameter.overrideColumnConfig.isDefined) {
+                              config.mappingPath shouldEqual testParameter.overrideColumnConfig.get.mappingPath
+                              config.operationType shouldEqual testParameter.overrideColumnConfig.get.operationType
+                          } else {
+                              config.mappingPath shouldEqual s"/${config.columnName}"
+                              config.operationType shouldEqual defaultPatchOperationType
+                          }
+                      }
+                  )
+              case _ =>
+                  try {
+                      CosmosWriteConfig.parseWriteConfig(userConfig, schema)
+                      fail(s"The test should have failed due to ${testParameter.errorMessage.get}")
+                  } catch {
+                      case e: Exception => e.getMessage should startWith(testParameter.errorMessage.get)
+                  }
+          }
+      })
   }
 
   private case class PatchColumnConfigParameterTest

@@ -31,7 +31,7 @@ public final class ManagedPrivateEndpointsGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"privateLinkResourceId\":\"cttadi\",\"privateLinkResourceRegion\":\"eukmr\",\"groupId\":\"ieekpndzaa\",\"requestMessage\":\"udqmeqwigpibudq\",\"provisioningState\":\"Running\"},\"id\":\"beybpmzznrtffyaq\",\"name\":\"tmhheioqa\",\"type\":\"hvseufuqyrx\"}";
+            "{\"properties\":{\"privateLinkResourceId\":\"gcgbjb\",\"privateLinkResourceRegion\":\"lfgtdysnaquflqbc\",\"groupId\":\"q\",\"requestMessage\":\"mzjr\",\"provisioningState\":\"Creating\"},\"id\":\"zeqyjleziun\",\"name\":\"xdfzantkw\",\"type\":\"eg\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,12 +62,12 @@ public final class ManagedPrivateEndpointsGetWithResponseMockTests {
         ManagedPrivateEndpoint response =
             manager
                 .managedPrivateEndpoints()
-                .getWithResponse("jpahlxvea", "f", "xnmwmqtibxyijddt", com.azure.core.util.Context.NONE)
+                .getWithResponse("jqatucoigebxn", "nwfepbnwg", "m", com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals("cttadi", response.privateLinkResourceId());
-        Assertions.assertEquals("eukmr", response.privateLinkResourceRegion());
-        Assertions.assertEquals("ieekpndzaa", response.groupId());
-        Assertions.assertEquals("udqmeqwigpibudq", response.requestMessage());
+        Assertions.assertEquals("gcgbjb", response.privateLinkResourceId());
+        Assertions.assertEquals("lfgtdysnaquflqbc", response.privateLinkResourceRegion());
+        Assertions.assertEquals("q", response.groupId());
+        Assertions.assertEquals("mzjr", response.requestMessage());
     }
 }

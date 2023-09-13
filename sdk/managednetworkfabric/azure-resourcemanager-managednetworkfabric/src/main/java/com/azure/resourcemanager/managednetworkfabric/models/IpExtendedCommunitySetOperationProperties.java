@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public class IpExtendedCommunitySetOperationProperties {
     /*
-     * IP Extended Community Id list properties.
+     * List of IP Extended Community IDs.
      */
     @JsonProperty(value = "set")
     private IpExtendedCommunityIdList set;
@@ -21,7 +21,7 @@ public class IpExtendedCommunitySetOperationProperties {
     }
 
     /**
-     * Get the set property: IP Extended Community Id list properties.
+     * Get the set property: List of IP Extended Community IDs.
      *
      * @return the set value.
      */
@@ -30,7 +30,7 @@ public class IpExtendedCommunitySetOperationProperties {
     }
 
     /**
-     * Set the set property: IP Extended Community Id list properties.
+     * Set the set property: List of IP Extended Community IDs.
      *
      * @param set the set value to set.
      * @return the IpExtendedCommunitySetOperationProperties object itself.

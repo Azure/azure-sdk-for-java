@@ -11,12 +11,12 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.managednetworkfabric.fluent.models.ArpPropertiesInner;
+import com.azure.resourcemanager.managednetworkfabric.fluent.models.CommonPostActionResponseForDeviceUpdateInner;
+import com.azure.resourcemanager.managednetworkfabric.fluent.models.CommonPostActionResponseForStateUpdateInner;
 import com.azure.resourcemanager.managednetworkfabric.fluent.models.L2IsolationDomainInner;
-import com.azure.resourcemanager.managednetworkfabric.models.EnableDisableOnResources;
+import com.azure.resourcemanager.managednetworkfabric.fluent.models.ValidateConfigurationResponseInner;
 import com.azure.resourcemanager.managednetworkfabric.models.L2IsolationDomainPatch;
 import com.azure.resourcemanager.managednetworkfabric.models.UpdateAdministrativeState;
-import java.util.Map;
 
 /** An instance of this class provides access to all the operations defined in L2IsolationDomainsClient. */
 public interface L2IsolationDomainsClient {
@@ -32,7 +32,7 @@ public interface L2IsolationDomainsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the L2IsolationDomain resource definition.
+     * @return the {@link SyncPoller} for polling of the L2 Isolation Domain resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<L2IsolationDomainInner>, L2IsolationDomainInner> beginCreate(
@@ -51,7 +51,7 @@ public interface L2IsolationDomainsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the L2IsolationDomain resource definition.
+     * @return the {@link SyncPoller} for polling of the L2 Isolation Domain resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<L2IsolationDomainInner>, L2IsolationDomainInner> beginCreate(
@@ -69,7 +69,7 @@ public interface L2IsolationDomainsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the L2IsolationDomain resource definition.
+     * @return the L2 Isolation Domain resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     L2IsolationDomainInner create(String resourceGroupName, String l2IsolationDomainName, L2IsolationDomainInner body);
@@ -87,7 +87,7 @@ public interface L2IsolationDomainsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the L2IsolationDomain resource definition.
+     * @return the L2 Isolation Domain resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     L2IsolationDomainInner create(
@@ -104,7 +104,7 @@ public interface L2IsolationDomainsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the L2IsolationDomain resource definition along with {@link Response}.
+     * @return the L2 Isolation Domain resource definition along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<L2IsolationDomainInner> getByResourceGroupWithResponse(
@@ -120,13 +120,13 @@ public interface L2IsolationDomainsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the L2IsolationDomain resource definition.
+     * @return the L2 Isolation Domain resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     L2IsolationDomainInner getByResourceGroup(String resourceGroupName, String l2IsolationDomainName);
 
     /**
-     * Updates a L2 Isolation Domain.
+     * Updates the L2 Isolation Domain.
      *
      * <p>API to update certain properties of the L2 Isolation Domain resource.
      *
@@ -136,14 +136,14 @@ public interface L2IsolationDomainsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the L2IsolationDomain resource definition.
+     * @return the {@link SyncPoller} for polling of the L2 Isolation Domain resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<L2IsolationDomainInner>, L2IsolationDomainInner> beginUpdate(
         String resourceGroupName, String l2IsolationDomainName, L2IsolationDomainPatch body);
 
     /**
-     * Updates a L2 Isolation Domain.
+     * Updates the L2 Isolation Domain.
      *
      * <p>API to update certain properties of the L2 Isolation Domain resource.
      *
@@ -154,14 +154,14 @@ public interface L2IsolationDomainsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the L2IsolationDomain resource definition.
+     * @return the {@link SyncPoller} for polling of the L2 Isolation Domain resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<L2IsolationDomainInner>, L2IsolationDomainInner> beginUpdate(
         String resourceGroupName, String l2IsolationDomainName, L2IsolationDomainPatch body, Context context);
 
     /**
-     * Updates a L2 Isolation Domain.
+     * Updates the L2 Isolation Domain.
      *
      * <p>API to update certain properties of the L2 Isolation Domain resource.
      *
@@ -171,13 +171,13 @@ public interface L2IsolationDomainsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the L2IsolationDomain resource definition.
+     * @return the L2 Isolation Domain resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     L2IsolationDomainInner update(String resourceGroupName, String l2IsolationDomainName, L2IsolationDomainPatch body);
 
     /**
-     * Updates a L2 Isolation Domain.
+     * Updates the L2 Isolation Domain.
      *
      * <p>API to update certain properties of the L2 Isolation Domain resource.
      *
@@ -188,14 +188,14 @@ public interface L2IsolationDomainsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the L2IsolationDomain resource definition.
+     * @return the L2 Isolation Domain resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     L2IsolationDomainInner update(
         String resourceGroupName, String l2IsolationDomainName, L2IsolationDomainPatch body, Context context);
 
     /**
-     * Deletes named L2 Isolation Domain
+     * Deletes the L2 Isolation Domain.
      *
      * <p>Deletes layer 2 connectivity between compute nodes by managed by named L2 Isolation name.
      *
@@ -210,7 +210,7 @@ public interface L2IsolationDomainsClient {
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String l2IsolationDomainName);
 
     /**
-     * Deletes named L2 Isolation Domain
+     * Deletes the L2 Isolation Domain.
      *
      * <p>Deletes layer 2 connectivity between compute nodes by managed by named L2 Isolation name.
      *
@@ -227,7 +227,7 @@ public interface L2IsolationDomainsClient {
         String resourceGroupName, String l2IsolationDomainName, Context context);
 
     /**
-     * Deletes named L2 Isolation Domain
+     * Deletes the L2 Isolation Domain.
      *
      * <p>Deletes layer 2 connectivity between compute nodes by managed by named L2 Isolation name.
      *
@@ -241,7 +241,7 @@ public interface L2IsolationDomainsClient {
     void delete(String resourceGroupName, String l2IsolationDomainName);
 
     /**
-     * Deletes named L2 Isolation Domain
+     * Deletes the L2 Isolation Domain.
      *
      * <p>Deletes layer 2 connectivity between compute nodes by managed by named L2 Isolation name.
      *
@@ -261,15 +261,52 @@ public interface L2IsolationDomainsClient {
      * <p>Enables isolation domain across the fabric or on specified racks.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l2IsolationDomainName Name of the L2IsolationDomain.
+     * @param l2IsolationDomainName Name of the L2 Isolation Domain.
      * @param body Request payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of common response for device updates.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginUpdateAdministrativeState(
+    SyncPoller<PollResult<CommonPostActionResponseForDeviceUpdateInner>, CommonPostActionResponseForDeviceUpdateInner>
+        beginUpdateAdministrativeState(
+            String resourceGroupName, String l2IsolationDomainName, UpdateAdministrativeState body);
+
+    /**
+     * Implements the operation to the underlying resources.
+     *
+     * <p>Enables isolation domain across the fabric or on specified racks.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param l2IsolationDomainName Name of the L2 Isolation Domain.
+     * @param body Request payload.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of common response for device updates.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<CommonPostActionResponseForDeviceUpdateInner>, CommonPostActionResponseForDeviceUpdateInner>
+        beginUpdateAdministrativeState(
+            String resourceGroupName, String l2IsolationDomainName, UpdateAdministrativeState body, Context context);
+
+    /**
+     * Implements the operation to the underlying resources.
+     *
+     * <p>Enables isolation domain across the fabric or on specified racks.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param l2IsolationDomainName Name of the L2 Isolation Domain.
+     * @param body Request payload.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return common response for device updates.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    CommonPostActionResponseForDeviceUpdateInner updateAdministrativeState(
         String resourceGroupName, String l2IsolationDomainName, UpdateAdministrativeState body);
 
     /**
@@ -278,248 +315,139 @@ public interface L2IsolationDomainsClient {
      * <p>Enables isolation domain across the fabric or on specified racks.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l2IsolationDomainName Name of the L2IsolationDomain.
+     * @param l2IsolationDomainName Name of the L2 Isolation Domain.
      * @param body Request payload.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return common response for device updates.
      */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginUpdateAdministrativeState(
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    CommonPostActionResponseForDeviceUpdateInner updateAdministrativeState(
         String resourceGroupName, String l2IsolationDomainName, UpdateAdministrativeState body, Context context);
 
     /**
-     * Implements the operation to the underlying resources.
-     *
-     * <p>Enables isolation domain across the fabric or on specified racks.
+     * Validates the configuration of the resources.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l2IsolationDomainName Name of the L2IsolationDomain.
-     * @param body Request payload.
+     * @param l2IsolationDomainName Name of the L2 Isolation Domain.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of the response of the action validate configuration.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void updateAdministrativeState(
-        String resourceGroupName, String l2IsolationDomainName, UpdateAdministrativeState body);
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<ValidateConfigurationResponseInner>, ValidateConfigurationResponseInner>
+        beginValidateConfiguration(String resourceGroupName, String l2IsolationDomainName);
 
     /**
-     * Implements the operation to the underlying resources.
-     *
-     * <p>Enables isolation domain across the fabric or on specified racks.
+     * Validates the configuration of the resources.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l2IsolationDomainName Name of the L2IsolationDomain.
-     * @param body Request payload.
+     * @param l2IsolationDomainName Name of the L2 Isolation Domain.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of the response of the action validate configuration.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void updateAdministrativeState(
-        String resourceGroupName, String l2IsolationDomainName, UpdateAdministrativeState body, Context context);
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<ValidateConfigurationResponseInner>, ValidateConfigurationResponseInner>
+        beginValidateConfiguration(String resourceGroupName, String l2IsolationDomainName, Context context);
 
     /**
-     * Implements the operation to the underlying resources.
-     *
-     * <p>Clears ARP tables for this Isolation Domain.
+     * Validates the configuration of the resources.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l2IsolationDomainName Name of the L2IsolationDomain.
-     * @param body Request payload.
+     * @param l2IsolationDomainName Name of the L2 Isolation Domain.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the response of the action validate configuration.
      */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginClearArpTable(
-        String resourceGroupName, String l2IsolationDomainName, EnableDisableOnResources body);
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ValidateConfigurationResponseInner validateConfiguration(String resourceGroupName, String l2IsolationDomainName);
 
     /**
-     * Implements the operation to the underlying resources.
-     *
-     * <p>Clears ARP tables for this Isolation Domain.
+     * Validates the configuration of the resources.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l2IsolationDomainName Name of the L2IsolationDomain.
-     * @param body Request payload.
+     * @param l2IsolationDomainName Name of the L2 Isolation Domain.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginClearArpTable(
-        String resourceGroupName, String l2IsolationDomainName, EnableDisableOnResources body, Context context);
-
-    /**
-     * Implements the operation to the underlying resources.
-     *
-     * <p>Clears ARP tables for this Isolation Domain.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l2IsolationDomainName Name of the L2IsolationDomain.
-     * @param body Request payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of the action validate configuration.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void clearArpTable(String resourceGroupName, String l2IsolationDomainName, EnableDisableOnResources body);
-
-    /**
-     * Implements the operation to the underlying resources.
-     *
-     * <p>Clears ARP tables for this Isolation Domain.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l2IsolationDomainName Name of the L2IsolationDomain.
-     * @param body Request payload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void clearArpTable(
-        String resourceGroupName, String l2IsolationDomainName, EnableDisableOnResources body, Context context);
-
-    /**
-     * Implements the operation to the underlying resources.
-     *
-     * <p>Clears IPv6 neighbors for this Isolation Domain.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l2IsolationDomainName Name of the L2IsolationDomain.
-     * @param body Request payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginClearNeighborTable(
-        String resourceGroupName, String l2IsolationDomainName, EnableDisableOnResources body);
-
-    /**
-     * Implements the operation to the underlying resources.
-     *
-     * <p>Clears IPv6 neighbors for this Isolation Domain.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l2IsolationDomainName Name of the L2IsolationDomain.
-     * @param body Request payload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginClearNeighborTable(
-        String resourceGroupName, String l2IsolationDomainName, EnableDisableOnResources body, Context context);
-
-    /**
-     * Implements the operation to the underlying resources.
-     *
-     * <p>Clears IPv6 neighbors for this Isolation Domain.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l2IsolationDomainName Name of the L2IsolationDomain.
-     * @param body Request payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void clearNeighborTable(String resourceGroupName, String l2IsolationDomainName, EnableDisableOnResources body);
-
-    /**
-     * Implements the operation to the underlying resources.
-     *
-     * <p>Clears IPv6 neighbors for this Isolation Domain.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l2IsolationDomainName Name of the L2IsolationDomain.
-     * @param body Request payload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void clearNeighborTable(
-        String resourceGroupName, String l2IsolationDomainName, EnableDisableOnResources body, Context context);
-
-    /**
-     * Implements the operation to the underlying resources.
-     *
-     * <p>Clears IPv6 neighbors for this Isolation Domain.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l2IsolationDomainName Name of the L2IsolationDomain.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of show ARP entries response per network device.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Map<String, ArpPropertiesInner>>, Map<String, ArpPropertiesInner>> beginGetArpEntries(
-        String resourceGroupName, String l2IsolationDomainName);
-
-    /**
-     * Implements the operation to the underlying resources.
-     *
-     * <p>Clears IPv6 neighbors for this Isolation Domain.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l2IsolationDomainName Name of the L2IsolationDomain.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of show ARP entries response per network device.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Map<String, ArpPropertiesInner>>, Map<String, ArpPropertiesInner>> beginGetArpEntries(
+    ValidateConfigurationResponseInner validateConfiguration(
         String resourceGroupName, String l2IsolationDomainName, Context context);
 
     /**
-     * Implements the operation to the underlying resources.
+     * Execute the commit on the resources.
      *
-     * <p>Clears IPv6 neighbors for this Isolation Domain.
+     * <p>Commits the configuration of the given resources.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l2IsolationDomainName Name of the L2IsolationDomain.
+     * @param l2IsolationDomainName Name of the L2 Isolation Domain.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return show ARP entries response per network device.
+     * @return the {@link SyncPoller} for polling of common response for the state updates.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Map<String, ArpPropertiesInner> getArpEntries(String resourceGroupName, String l2IsolationDomainName);
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
+        beginCommitConfiguration(String resourceGroupName, String l2IsolationDomainName);
 
     /**
-     * Implements the operation to the underlying resources.
+     * Execute the commit on the resources.
      *
-     * <p>Clears IPv6 neighbors for this Isolation Domain.
+     * <p>Commits the configuration of the given resources.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l2IsolationDomainName Name of the L2IsolationDomain.
+     * @param l2IsolationDomainName Name of the L2 Isolation Domain.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return show ARP entries response per network device.
+     * @return the {@link SyncPoller} for polling of common response for the state updates.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
+        beginCommitConfiguration(String resourceGroupName, String l2IsolationDomainName, Context context);
+
+    /**
+     * Execute the commit on the resources.
+     *
+     * <p>Commits the configuration of the given resources.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param l2IsolationDomainName Name of the L2 Isolation Domain.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return common response for the state updates.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Map<String, ArpPropertiesInner> getArpEntries(
+    CommonPostActionResponseForStateUpdateInner commitConfiguration(
+        String resourceGroupName, String l2IsolationDomainName);
+
+    /**
+     * Execute the commit on the resources.
+     *
+     * <p>Commits the configuration of the given resources.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param l2IsolationDomainName Name of the L2 Isolation Domain.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return common response for the state updates.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    CommonPostActionResponseForStateUpdateInner commitConfiguration(
         String resourceGroupName, String l2IsolationDomainName, Context context);
 
     /**
@@ -531,7 +459,7 @@ public interface L2IsolationDomainsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of L2IsolationDomains as paginated response with {@link PagedIterable}.
+     * @return list of L2 Isolation Domains as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<L2IsolationDomainInner> listByResourceGroup(String resourceGroupName);
@@ -546,7 +474,7 @@ public interface L2IsolationDomainsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of L2IsolationDomains as paginated response with {@link PagedIterable}.
+     * @return list of L2 Isolation Domains as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<L2IsolationDomainInner> listByResourceGroup(String resourceGroupName, Context context);
@@ -558,7 +486,7 @@ public interface L2IsolationDomainsClient {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of L2IsolationDomains as paginated response with {@link PagedIterable}.
+     * @return list of L2 Isolation Domains as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<L2IsolationDomainInner> list();
@@ -572,7 +500,7 @@ public interface L2IsolationDomainsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of L2IsolationDomains as paginated response with {@link PagedIterable}.
+     * @return list of L2 Isolation Domains as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<L2IsolationDomainInner> list(Context context);

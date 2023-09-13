@@ -63,4 +63,8 @@ public final class PollingConstants {
      * The polling status indicating the long running operation has succeeded.
      */
     public static final String STATUS_SUCCEEDED = "Succeeded";
+    /**
+     * The polling status indicating the long running operation has been cancelled.
+     */
+    public static final String STATUS_CANCELLED = "Canceled";
 }

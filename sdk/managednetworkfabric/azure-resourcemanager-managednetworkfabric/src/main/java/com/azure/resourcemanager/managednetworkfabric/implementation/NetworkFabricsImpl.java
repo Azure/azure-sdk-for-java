@@ -10,9 +10,18 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.managednetworkfabric.fluent.NetworkFabricsClient;
+import com.azure.resourcemanager.managednetworkfabric.fluent.models.CommonPostActionResponseForDeviceUpdateInner;
+import com.azure.resourcemanager.managednetworkfabric.fluent.models.CommonPostActionResponseForStateUpdateInner;
 import com.azure.resourcemanager.managednetworkfabric.fluent.models.NetworkFabricInner;
+import com.azure.resourcemanager.managednetworkfabric.fluent.models.ValidateConfigurationResponseInner;
+import com.azure.resourcemanager.managednetworkfabric.models.CommonPostActionResponseForDeviceUpdate;
+import com.azure.resourcemanager.managednetworkfabric.models.CommonPostActionResponseForStateUpdate;
 import com.azure.resourcemanager.managednetworkfabric.models.NetworkFabric;
 import com.azure.resourcemanager.managednetworkfabric.models.NetworkFabrics;
+import com.azure.resourcemanager.managednetworkfabric.models.UpdateAdministrativeState;
+import com.azure.resourcemanager.managednetworkfabric.models.UpdateVersion;
+import com.azure.resourcemanager.managednetworkfabric.models.ValidateConfigurationProperties;
+import com.azure.resourcemanager.managednetworkfabric.models.ValidateConfigurationResponse;
 
 public final class NetworkFabricsImpl implements NetworkFabrics {
     private static final ClientLogger LOGGER = new ClientLogger(NetworkFabricsImpl.class);
@@ -80,20 +89,203 @@ public final class NetworkFabricsImpl implements NetworkFabrics {
         return Utils.mapPage(inner, inner1 -> new NetworkFabricImpl(inner1, this.manager()));
     }
 
-    public void provision(String resourceGroupName, String networkFabricName) {
-        this.serviceClient().provision(resourceGroupName, networkFabricName);
+    public CommonPostActionResponseForDeviceUpdate provision(String resourceGroupName, String networkFabricName) {
+        CommonPostActionResponseForDeviceUpdateInner inner =
+            this.serviceClient().provision(resourceGroupName, networkFabricName);
+        if (inner != null) {
+            return new CommonPostActionResponseForDeviceUpdateImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
-    public void provision(String resourceGroupName, String networkFabricName, Context context) {
-        this.serviceClient().provision(resourceGroupName, networkFabricName, context);
+    public CommonPostActionResponseForDeviceUpdate provision(
+        String resourceGroupName, String networkFabricName, Context context) {
+        CommonPostActionResponseForDeviceUpdateInner inner =
+            this.serviceClient().provision(resourceGroupName, networkFabricName, context);
+        if (inner != null) {
+            return new CommonPostActionResponseForDeviceUpdateImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
-    public void deprovision(String resourceGroupName, String networkFabricName) {
-        this.serviceClient().deprovision(resourceGroupName, networkFabricName);
+    public CommonPostActionResponseForDeviceUpdate deprovision(String resourceGroupName, String networkFabricName) {
+        CommonPostActionResponseForDeviceUpdateInner inner =
+            this.serviceClient().deprovision(resourceGroupName, networkFabricName);
+        if (inner != null) {
+            return new CommonPostActionResponseForDeviceUpdateImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
-    public void deprovision(String resourceGroupName, String networkFabricName, Context context) {
-        this.serviceClient().deprovision(resourceGroupName, networkFabricName, context);
+    public CommonPostActionResponseForDeviceUpdate deprovision(
+        String resourceGroupName, String networkFabricName, Context context) {
+        CommonPostActionResponseForDeviceUpdateInner inner =
+            this.serviceClient().deprovision(resourceGroupName, networkFabricName, context);
+        if (inner != null) {
+            return new CommonPostActionResponseForDeviceUpdateImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public CommonPostActionResponseForStateUpdate upgrade(
+        String resourceGroupName, String networkFabricName, UpdateVersion body) {
+        CommonPostActionResponseForStateUpdateInner inner =
+            this.serviceClient().upgrade(resourceGroupName, networkFabricName, body);
+        if (inner != null) {
+            return new CommonPostActionResponseForStateUpdateImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public CommonPostActionResponseForStateUpdate upgrade(
+        String resourceGroupName, String networkFabricName, UpdateVersion body, Context context) {
+        CommonPostActionResponseForStateUpdateInner inner =
+            this.serviceClient().upgrade(resourceGroupName, networkFabricName, body, context);
+        if (inner != null) {
+            return new CommonPostActionResponseForStateUpdateImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public CommonPostActionResponseForStateUpdate refreshConfiguration(
+        String resourceGroupName, String networkFabricName) {
+        CommonPostActionResponseForStateUpdateInner inner =
+            this.serviceClient().refreshConfiguration(resourceGroupName, networkFabricName);
+        if (inner != null) {
+            return new CommonPostActionResponseForStateUpdateImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public CommonPostActionResponseForStateUpdate refreshConfiguration(
+        String resourceGroupName, String networkFabricName, Context context) {
+        CommonPostActionResponseForStateUpdateInner inner =
+            this.serviceClient().refreshConfiguration(resourceGroupName, networkFabricName, context);
+        if (inner != null) {
+            return new CommonPostActionResponseForStateUpdateImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public CommonPostActionResponseForStateUpdate updateWorkloadManagementBfdConfiguration(
+        String resourceGroupName, String networkFabricName, UpdateAdministrativeState body) {
+        CommonPostActionResponseForStateUpdateInner inner =
+            this.serviceClient().updateWorkloadManagementBfdConfiguration(resourceGroupName, networkFabricName, body);
+        if (inner != null) {
+            return new CommonPostActionResponseForStateUpdateImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public CommonPostActionResponseForStateUpdate updateWorkloadManagementBfdConfiguration(
+        String resourceGroupName, String networkFabricName, UpdateAdministrativeState body, Context context) {
+        CommonPostActionResponseForStateUpdateInner inner =
+            this
+                .serviceClient()
+                .updateWorkloadManagementBfdConfiguration(resourceGroupName, networkFabricName, body, context);
+        if (inner != null) {
+            return new CommonPostActionResponseForStateUpdateImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public CommonPostActionResponseForStateUpdate updateInfraManagementBfdConfiguration(
+        String resourceGroupName, String networkFabricName, UpdateAdministrativeState body) {
+        CommonPostActionResponseForStateUpdateInner inner =
+            this.serviceClient().updateInfraManagementBfdConfiguration(resourceGroupName, networkFabricName, body);
+        if (inner != null) {
+            return new CommonPostActionResponseForStateUpdateImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public CommonPostActionResponseForStateUpdate updateInfraManagementBfdConfiguration(
+        String resourceGroupName, String networkFabricName, UpdateAdministrativeState body, Context context) {
+        CommonPostActionResponseForStateUpdateInner inner =
+            this
+                .serviceClient()
+                .updateInfraManagementBfdConfiguration(resourceGroupName, networkFabricName, body, context);
+        if (inner != null) {
+            return new CommonPostActionResponseForStateUpdateImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public ValidateConfigurationResponse validateConfiguration(
+        String resourceGroupName, String networkFabricName, ValidateConfigurationProperties body) {
+        ValidateConfigurationResponseInner inner =
+            this.serviceClient().validateConfiguration(resourceGroupName, networkFabricName, body);
+        if (inner != null) {
+            return new ValidateConfigurationResponseImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public ValidateConfigurationResponse validateConfiguration(
+        String resourceGroupName, String networkFabricName, ValidateConfigurationProperties body, Context context) {
+        ValidateConfigurationResponseInner inner =
+            this.serviceClient().validateConfiguration(resourceGroupName, networkFabricName, body, context);
+        if (inner != null) {
+            return new ValidateConfigurationResponseImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public ValidateConfigurationResponse getTopology(String resourceGroupName, String networkFabricName) {
+        ValidateConfigurationResponseInner inner =
+            this.serviceClient().getTopology(resourceGroupName, networkFabricName);
+        if (inner != null) {
+            return new ValidateConfigurationResponseImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public ValidateConfigurationResponse getTopology(
+        String resourceGroupName, String networkFabricName, Context context) {
+        ValidateConfigurationResponseInner inner =
+            this.serviceClient().getTopology(resourceGroupName, networkFabricName, context);
+        if (inner != null) {
+            return new ValidateConfigurationResponseImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public CommonPostActionResponseForStateUpdate commitConfiguration(
+        String resourceGroupName, String networkFabricName) {
+        CommonPostActionResponseForStateUpdateInner inner =
+            this.serviceClient().commitConfiguration(resourceGroupName, networkFabricName);
+        if (inner != null) {
+            return new CommonPostActionResponseForStateUpdateImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public CommonPostActionResponseForStateUpdate commitConfiguration(
+        String resourceGroupName, String networkFabricName, Context context) {
+        CommonPostActionResponseForStateUpdateInner inner =
+            this.serviceClient().commitConfiguration(resourceGroupName, networkFabricName, context);
+        if (inner != null) {
+            return new CommonPostActionResponseForStateUpdateImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public NetworkFabric getById(String id) {

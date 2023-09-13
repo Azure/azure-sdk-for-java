@@ -6,16 +6,19 @@ package com.azure.resourcemanager.managednetworkfabric.generated;
 
 import com.azure.resourcemanager.managednetworkfabric.models.AggregateRoute;
 import com.azure.resourcemanager.managednetworkfabric.models.AggregateRouteConfiguration;
+import com.azure.resourcemanager.managednetworkfabric.models.ConnectedSubnetRoutePolicy;
+import com.azure.resourcemanager.managednetworkfabric.models.L3ExportRoutePolicy;
 import com.azure.resourcemanager.managednetworkfabric.models.L3IsolationDomain;
-import com.azure.resourcemanager.managednetworkfabric.models.L3IsolationDomainPatchPropertiesConnectedSubnetRoutePolicy;
 import com.azure.resourcemanager.managednetworkfabric.models.RedistributeConnectedSubnets;
 import com.azure.resourcemanager.managednetworkfabric.models.RedistributeStaticRoutes;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 /** Samples for L3IsolationDomains Update. */
 public final class L3IsolationDomainsUpdateSamples {
     /*
-     * x-ms-original-file: specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/preview/2023-02-01-preview/examples/L3IsolationDomains_Update_MaximumSet_Gen.json
+     * x-ms-original-file: specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/L3IsolationDomains_Update_MaximumSet_Gen.json
      */
     /**
      * Sample code: L3IsolationDomains_Update_MaximumSet_Gen.
@@ -27,22 +30,39 @@ public final class L3IsolationDomainsUpdateSamples {
         L3IsolationDomain resource =
             manager
                 .l3IsolationDomains()
-                .getByResourceGroupWithResponse(
-                    "resourceGroupName", "example-l3domain", com.azure.core.util.Context.NONE)
+                .getByResourceGroupWithResponse("example-rg", "example-l3domain", com.azure.core.util.Context.NONE)
                 .getValue();
         resource
             .update()
+            .withTags(mapOf("key4953", "fakeTokenPlaceholder"))
             .withRedistributeConnectedSubnets(RedistributeConnectedSubnets.TRUE)
             .withRedistributeStaticRoutes(RedistributeStaticRoutes.FALSE)
             .withAggregateRouteConfiguration(
                 new AggregateRouteConfiguration()
                     .withIpv4Routes(Arrays.asList(new AggregateRoute().withPrefix("10.0.0.0/24")))
                     .withIpv6Routes(Arrays.asList(new AggregateRoute().withPrefix("3FFE:FFFF:0:CD30::a0/29"))))
-            .withDescription("creating L3 isolation domain")
             .withConnectedSubnetRoutePolicy(
-                new L3IsolationDomainPatchPropertiesConnectedSubnetRoutePolicy()
+                new ConnectedSubnetRoutePolicy()
                     .withExportRoutePolicyId(
-                        "/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/routePolicies/routePolicyName"))
+                        "/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/routePolicies/routePolicyName")
+                    .withExportRoutePolicy(
+                        new L3ExportRoutePolicy()
+                            .withExportIpv4RoutePolicyId(
+                                "/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/routePolicies/example-routePolicy1")
+                            .withExportIpv6RoutePolicyId(
+                                "/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/routePolicies/example-routePolicy1")))
+            .withAnnotation("annotation1")
             .apply();
+    }
+
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
     }
 }

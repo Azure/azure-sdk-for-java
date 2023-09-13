@@ -6,6 +6,9 @@ package com.azure.resourcemanager.managednetworkfabric.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.managednetworkfabric.fluent.models.IpPrefixInner;
+import com.azure.resourcemanager.managednetworkfabric.models.CommunityActionTypes;
+import com.azure.resourcemanager.managednetworkfabric.models.Condition;
+import com.azure.resourcemanager.managednetworkfabric.models.IpPrefixRule;
 import com.azure.resourcemanager.managednetworkfabric.models.IpPrefixesListResult;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -18,12 +21,17 @@ public final class IpPrefixesListResultTests {
         IpPrefixesListResult model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"properties\":{\"ipPrefixRules\":[],\"provisioningState\":\"Failed\",\"annotation\":\"pulexxbczw\"},\"location\":\"uwiqzb\",\"tags\":{\"zdobpxjmflbvvnch\":\"sovmyokacspkwl\",\"ajiwkuo\":\"kcciwwzjuqkhr\",\"sauuimj\":\"oskg\"},\"id\":\"vxieduugidyj\",\"name\":\"rfbyaosvexcso\",\"type\":\"pclhocohslk\"}],\"nextLink\":\"leggzfbu\"}")
+                    "{\"value\":[{\"properties\":{\"configurationState\":\"DeferredControl\",\"provisioningState\":\"Deleting\",\"administrativeState\":\"MAT\",\"ipPrefixRules\":[{\"action\":\"Permit\",\"sequenceNumber\":4132053011483254842,\"networkPrefix\":\"jsvkskmqozzkivy\",\"condition\":\"EqualTo\",\"subnetMaskLength\":\"iizjixlqfhefkwa\"},{\"action\":\"Deny\",\"sequenceNumber\":3579630685360942512,\"networkPrefix\":\"ron\",\"condition\":\"LesserThanOrEqualTo\",\"subnetMaskLength\":\"gn\"}],\"annotation\":\"xsjxtelexhvuqboz\"},\"location\":\"lzqocark\",\"tags\":{\"ndtsnxawqytll\":\"bc\",\"yckzex\":\"dyz\"},\"id\":\"xak\",\"name\":\"kywymxgaabj\",\"type\":\"dtfohfaog\"},{\"properties\":{\"configurationState\":\"DeferredControl\",\"provisioningState\":\"Accepted\",\"administrativeState\":\"MAT\",\"ipPrefixRules\":[{\"action\":\"Permit\",\"sequenceNumber\":118162518124769892,\"networkPrefix\":\"quryk\",\"condition\":\"LesserThanOrEqualTo\",\"subnetMaskLength\":\"ueekcsue\"},{\"action\":\"Permit\",\"sequenceNumber\":4151407068847251052,\"networkPrefix\":\"dac\",\"condition\":\"LesserThanOrEqualTo\",\"subnetMaskLength\":\"ydl\"},{\"action\":\"Deny\",\"sequenceNumber\":130832318700138063,\"networkPrefix\":\"wmhmptyrilkfbnr\",\"condition\":\"Range\",\"subnetMaskLength\":\"ztpb\"},{\"action\":\"Permit\",\"sequenceNumber\":7773880630728112607,\"networkPrefix\":\"txjt\",\"condition\":\"GreaterThanOrEqualTo\",\"subnetMaskLength\":\"swbnfddepldwqjns\"}],\"annotation\":\"ygleexa\"},\"location\":\"mywhsb\",\"tags\":{\"jjzyvoaqajuve\":\"ryc\",\"pfulube\":\"zptdmkrrbh\",\"ununm\":\"gybpmfb\",\"kdschlzvfictnkjj\":\"zkrvfyi\"},\"id\":\"gcwn\",\"name\":\"hbkgfyrt\",\"type\":\"gm\"},{\"properties\":{\"configurationState\":\"Succeeded\",\"provisioningState\":\"Deleting\",\"administrativeState\":\"Enabled\",\"ipPrefixRules\":[{\"action\":\"Deny\",\"sequenceNumber\":5070835468402893482,\"networkPrefix\":\"wtyg\",\"condition\":\"LesserThanOrEqualTo\",\"subnetMaskLength\":\"mseharx\"}],\"annotation\":\"vqnrxtmbpj\"},\"location\":\"nvwjhrsidqpxl\",\"tags\":{\"twmykyut\":\"akftng\",\"wmfjhp\":\"ym\",\"wkqp\":\"cvjqdv\"},\"id\":\"drlefgnaavuag\",\"name\":\"tetaoutnpdctuhs\",\"type\":\"fefyihduyeuyld\"}],\"nextLink\":\"mtybkcgsu\"}")
                 .toObject(IpPrefixesListResult.class);
-        Assertions.assertEquals("uwiqzb", model.value().get(0).location());
-        Assertions.assertEquals("sovmyokacspkwl", model.value().get(0).tags().get("zdobpxjmflbvvnch"));
-        Assertions.assertEquals("pulexxbczw", model.value().get(0).annotation());
-        Assertions.assertEquals("leggzfbu", model.nextLink());
+        Assertions.assertEquals("lzqocark", model.value().get(0).location());
+        Assertions.assertEquals("bc", model.value().get(0).tags().get("ndtsnxawqytll"));
+        Assertions.assertEquals(CommunityActionTypes.PERMIT, model.value().get(0).ipPrefixRules().get(0).action());
+        Assertions.assertEquals(4132053011483254842L, model.value().get(0).ipPrefixRules().get(0).sequenceNumber());
+        Assertions.assertEquals("jsvkskmqozzkivy", model.value().get(0).ipPrefixRules().get(0).networkPrefix());
+        Assertions.assertEquals(Condition.EQUAL_TO, model.value().get(0).ipPrefixRules().get(0).condition());
+        Assertions.assertEquals("iizjixlqfhefkwa", model.value().get(0).ipPrefixRules().get(0).subnetMaskLength());
+        Assertions.assertEquals("xsjxtelexhvuqboz", model.value().get(0).annotation());
+        Assertions.assertEquals("mtybkcgsu", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
@@ -34,23 +42,88 @@ public final class IpPrefixesListResultTests {
                     Arrays
                         .asList(
                             new IpPrefixInner()
-                                .withLocation("uwiqzb")
+                                .withLocation("lzqocark")
+                                .withTags(mapOf("ndtsnxawqytll", "bc", "yckzex", "dyz"))
+                                .withIpPrefixRules(
+                                    Arrays
+                                        .asList(
+                                            new IpPrefixRule()
+                                                .withAction(CommunityActionTypes.PERMIT)
+                                                .withSequenceNumber(4132053011483254842L)
+                                                .withNetworkPrefix("jsvkskmqozzkivy")
+                                                .withCondition(Condition.EQUAL_TO)
+                                                .withSubnetMaskLength("iizjixlqfhefkwa"),
+                                            new IpPrefixRule()
+                                                .withAction(CommunityActionTypes.DENY)
+                                                .withSequenceNumber(3579630685360942512L)
+                                                .withNetworkPrefix("ron")
+                                                .withCondition(Condition.LESSER_THAN_OR_EQUAL_TO)
+                                                .withSubnetMaskLength("gn")))
+                                .withAnnotation("xsjxtelexhvuqboz"),
+                            new IpPrefixInner()
+                                .withLocation("mywhsb")
                                 .withTags(
                                     mapOf(
-                                        "zdobpxjmflbvvnch",
-                                        "sovmyokacspkwl",
-                                        "ajiwkuo",
-                                        "kcciwwzjuqkhr",
-                                        "sauuimj",
-                                        "oskg"))
-                                .withIpPrefixRules(Arrays.asList())
-                                .withAnnotation("pulexxbczw")))
-                .withNextLink("leggzfbu");
+                                        "jjzyvoaqajuve",
+                                        "ryc",
+                                        "pfulube",
+                                        "zptdmkrrbh",
+                                        "ununm",
+                                        "gybpmfb",
+                                        "kdschlzvfictnkjj",
+                                        "zkrvfyi"))
+                                .withIpPrefixRules(
+                                    Arrays
+                                        .asList(
+                                            new IpPrefixRule()
+                                                .withAction(CommunityActionTypes.PERMIT)
+                                                .withSequenceNumber(118162518124769892L)
+                                                .withNetworkPrefix("quryk")
+                                                .withCondition(Condition.LESSER_THAN_OR_EQUAL_TO)
+                                                .withSubnetMaskLength("ueekcsue"),
+                                            new IpPrefixRule()
+                                                .withAction(CommunityActionTypes.PERMIT)
+                                                .withSequenceNumber(4151407068847251052L)
+                                                .withNetworkPrefix("dac")
+                                                .withCondition(Condition.LESSER_THAN_OR_EQUAL_TO)
+                                                .withSubnetMaskLength("ydl"),
+                                            new IpPrefixRule()
+                                                .withAction(CommunityActionTypes.DENY)
+                                                .withSequenceNumber(130832318700138063L)
+                                                .withNetworkPrefix("wmhmptyrilkfbnr")
+                                                .withCondition(Condition.RANGE)
+                                                .withSubnetMaskLength("ztpb"),
+                                            new IpPrefixRule()
+                                                .withAction(CommunityActionTypes.PERMIT)
+                                                .withSequenceNumber(7773880630728112607L)
+                                                .withNetworkPrefix("txjt")
+                                                .withCondition(Condition.GREATER_THAN_OR_EQUAL_TO)
+                                                .withSubnetMaskLength("swbnfddepldwqjns")))
+                                .withAnnotation("ygleexa"),
+                            new IpPrefixInner()
+                                .withLocation("nvwjhrsidqpxl")
+                                .withTags(mapOf("twmykyut", "akftng", "wmfjhp", "ym", "wkqp", "cvjqdv"))
+                                .withIpPrefixRules(
+                                    Arrays
+                                        .asList(
+                                            new IpPrefixRule()
+                                                .withAction(CommunityActionTypes.DENY)
+                                                .withSequenceNumber(5070835468402893482L)
+                                                .withNetworkPrefix("wtyg")
+                                                .withCondition(Condition.LESSER_THAN_OR_EQUAL_TO)
+                                                .withSubnetMaskLength("mseharx")))
+                                .withAnnotation("vqnrxtmbpj")))
+                .withNextLink("mtybkcgsu");
         model = BinaryData.fromObject(model).toObject(IpPrefixesListResult.class);
-        Assertions.assertEquals("uwiqzb", model.value().get(0).location());
-        Assertions.assertEquals("sovmyokacspkwl", model.value().get(0).tags().get("zdobpxjmflbvvnch"));
-        Assertions.assertEquals("pulexxbczw", model.value().get(0).annotation());
-        Assertions.assertEquals("leggzfbu", model.nextLink());
+        Assertions.assertEquals("lzqocark", model.value().get(0).location());
+        Assertions.assertEquals("bc", model.value().get(0).tags().get("ndtsnxawqytll"));
+        Assertions.assertEquals(CommunityActionTypes.PERMIT, model.value().get(0).ipPrefixRules().get(0).action());
+        Assertions.assertEquals(4132053011483254842L, model.value().get(0).ipPrefixRules().get(0).sequenceNumber());
+        Assertions.assertEquals("jsvkskmqozzkivy", model.value().get(0).ipPrefixRules().get(0).networkPrefix());
+        Assertions.assertEquals(Condition.EQUAL_TO, model.value().get(0).ipPrefixRules().get(0).condition());
+        Assertions.assertEquals("iizjixlqfhefkwa", model.value().get(0).ipPrefixRules().get(0).subnetMaskLength());
+        Assertions.assertEquals("xsjxtelexhvuqboz", model.value().get(0).annotation());
+        Assertions.assertEquals("mtybkcgsu", model.nextLink());
     }
 
     @SuppressWarnings("unchecked")

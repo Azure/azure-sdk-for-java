@@ -10,8 +10,8 @@ import java.util.Collection;
 
 /** Trigger type of the job. */
 public final class TriggerType extends ExpandableStringEnum<TriggerType> {
-    /** Static value Scheduled for TriggerType. */
-    public static final TriggerType SCHEDULED = fromString("Scheduled");
+    /** Static value Schedule for TriggerType. */
+    public static final TriggerType SCHEDULE = fromString("Schedule");
 
     /** Static value Event for TriggerType. */
     public static final TriggerType EVENT = fromString("Event");

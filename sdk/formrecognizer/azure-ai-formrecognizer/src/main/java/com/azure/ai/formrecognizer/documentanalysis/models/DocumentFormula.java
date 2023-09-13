@@ -24,7 +24,7 @@ public final class DocumentFormula {
     /*
      * Bounding polygon of the formula.
      */
-    private List<Float> polygon;
+    private List<Point> polygon;
 
     /*
      * Location of the formula in the reading order concatenated content.
@@ -59,7 +59,7 @@ public final class DocumentFormula {
      *
      * @return the polygon value.
      */
-    public List<Float> getBoundingPolygon() {
+    public List<Point> getBoundingPolygon() {
         return this.polygon;
     }
 
@@ -67,9 +67,8 @@ public final class DocumentFormula {
      * Set the polygon property: Bounding polygon of the formula.
      *
      * @param polygon the polygon value to set.
-     * @return the DocumentFormula object itself.
      */
-    void setPolygon(List<Float> polygon) {
+    void setPolygon(List<Point> polygon) {
         this.polygon = polygon;
     }
 
@@ -127,6 +126,11 @@ public final class DocumentFormula {
             @Override
             public void setValue(DocumentFormula documentFormula, String value) {
                 documentFormula.setValue(value);
+            }
+
+            @Override
+            public void setPolygon(DocumentFormula documentFormula, List<Point> polygon) {
+                documentFormula.setPolygon(polygon);
             }
         });
     }

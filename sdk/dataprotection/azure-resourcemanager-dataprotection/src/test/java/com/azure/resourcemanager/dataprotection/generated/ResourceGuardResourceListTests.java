@@ -19,42 +19,68 @@ public final class ResourceGuardResourceListTests {
         ResourceGuardResourceList model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"properties\":{\"provisioningState\":\"Updating\",\"allowAutoApprovals\":true,\"resourceGuardOperations\":[],\"vaultCriticalOperationExclusionList\":[],\"description\":\"morppxebmnzbtbh\"},\"eTag\":\"glkfg\",\"location\":\"dneu\",\"tags\":{\"fikdowwqu\":\"phsdyhto\",\"zx\":\"v\",\"hcohfwdsjnk\":\"lvithhqzonosgg\",\"swacffgdkzz\":\"ljuti\"},\"id\":\"wkfvhqcrailvp\",\"name\":\"ppfufl\",\"type\":\"wdmhdlxyjrxs\"}],\"nextLink\":\"afcnih\"}")
+                    "{\"value\":[{\"properties\":{\"provisioningState\":\"Failed\",\"allowAutoApprovals\":false,\"resourceGuardOperations\":[{\"vaultCriticalOperation\":\"qqu\",\"requestResourceType\":\"ik\"},{\"vaultCriticalOperation\":\"ggxkallatmelwuip\",\"requestResourceType\":\"cjzkzivgvvcna\"},{\"vaultCriticalOperation\":\"hyrnxxmu\",\"requestResourceType\":\"dndrdvstkwqqtche\"}],\"vaultCriticalOperationExclusionList\":[\"fmtdaaygdvwvgp\",\"ohgwxrtfudxepxg\",\"qagvrvm\"],\"description\":\"k\"},\"eTag\":\"ghimdblx\",\"location\":\"imfnjhfjx\",\"tags\":{\"foqreyfkzik\":\"zk\",\"wczelpci\":\"jawneaiv\",\"abfatkl\":\"elsfeaen\"},\"id\":\"dxbjhwuaanozj\",\"name\":\"sphyoulpjrvxa\",\"type\":\"l\"},{\"properties\":{\"provisioningState\":\"Succeeded\",\"allowAutoApprovals\":true,\"resourceGuardOperations\":[{\"vaultCriticalOperation\":\"tx\",\"requestResourceType\":\"cskfcktqumiekk\"},{\"vaultCriticalOperation\":\"zikhl\",\"requestResourceType\":\"jhdgqggebdunyga\"},{\"vaultCriticalOperation\":\"idb\",\"requestResourceType\":\"atpxl\"},{\"vaultCriticalOperation\":\"xcyjmoadsuvarmy\",\"requestResourceType\":\"mjsjqb\"}],\"vaultCriticalOperationExclusionList\":[\"yxxrwlycoduh\",\"kxkgymareqna\",\"xqugjhkycubedd\",\"ssofwqmzqa\"],\"description\":\"rmnjijpx\"},\"eTag\":\"q\",\"location\":\"dfnbyxbaaabjyv\",\"tags\":{\"nevfdnw\":\"fimrzrtuzqogse\",\"euzsoi\":\"wmewzsyy\",\"thzvaytdwkqbrqu\":\"judpfrxt\",\"xiilivpdtiirqt\":\"paxh\"},\"id\":\"qoaxoruzfgs\",\"name\":\"uyfxrxxleptramxj\",\"type\":\"zwl\"},{\"properties\":{\"provisioningState\":\"Unknown\",\"allowAutoApprovals\":false,\"resourceGuardOperations\":[{\"vaultCriticalOperation\":\"y\",\"requestResourceType\":\"patdooaojkniodko\"},{\"vaultCriticalOperation\":\"bw\",\"requestResourceType\":\"jhemms\"},{\"vaultCriticalOperation\":\"dkcrodt\",\"requestResourceType\":\"nfwjlfltkacjvefk\"}],\"vaultCriticalOperationExclusionList\":[\"oakggkfpag\",\"owpulpq\"],\"description\":\"ylsyxkqjnsje\"},\"eTag\":\"tiagx\",\"location\":\"sz\",\"tags\":{\"icvi\":\"psbzkfzbeyvpn\",\"jjxd\":\"v\",\"ztzp\":\"rbuukzclewyhmlwp\"},\"id\":\"fn\",\"name\":\"ckw\",\"type\":\"fz\"}],\"nextLink\":\"hxx\"}")
                 .toObject(ResourceGuardResourceList.class);
-        Assertions.assertEquals("afcnih", model.nextLink());
-        Assertions.assertEquals("dneu", model.value().get(0).location());
-        Assertions.assertEquals("phsdyhto", model.value().get(0).tags().get("fikdowwqu"));
-        Assertions.assertEquals("glkfg", model.value().get(0).etag());
+        Assertions.assertEquals("hxx", model.nextLink());
+        Assertions.assertEquals("imfnjhfjx", model.value().get(0).location());
+        Assertions.assertEquals("zk", model.value().get(0).tags().get("foqreyfkzik"));
+        Assertions.assertEquals("ghimdblx", model.value().get(0).etag());
+        Assertions
+            .assertEquals(
+                "fmtdaaygdvwvgp", model.value().get(0).properties().vaultCriticalOperationExclusionList().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ResourceGuardResourceList model =
             new ResourceGuardResourceList()
-                .withNextLink("afcnih")
+                .withNextLink("hxx")
                 .withValue(
                     Arrays
                         .asList(
                             new ResourceGuardResourceInner()
-                                .withLocation("dneu")
+                                .withLocation("imfnjhfjx")
+                                .withTags(mapOf("foqreyfkzik", "zk", "wczelpci", "jawneaiv", "abfatkl", "elsfeaen"))
+                                .withEtag("ghimdblx")
+                                .withProperties(
+                                    new ResourceGuard()
+                                        .withVaultCriticalOperationExclusionList(
+                                            Arrays.asList("fmtdaaygdvwvgp", "ohgwxrtfudxepxg", "qagvrvm"))),
+                            new ResourceGuardResourceInner()
+                                .withLocation("dfnbyxbaaabjyv")
                                 .withTags(
                                     mapOf(
-                                        "fikdowwqu",
-                                        "phsdyhto",
-                                        "zx",
-                                        "v",
-                                        "hcohfwdsjnk",
-                                        "lvithhqzonosgg",
-                                        "swacffgdkzz",
-                                        "ljuti"))
-                                .withEtag("glkfg")
+                                        "nevfdnw",
+                                        "fimrzrtuzqogse",
+                                        "euzsoi",
+                                        "wmewzsyy",
+                                        "thzvaytdwkqbrqu",
+                                        "judpfrxt",
+                                        "xiilivpdtiirqt",
+                                        "paxh"))
+                                .withEtag("q")
                                 .withProperties(
-                                    new ResourceGuard().withVaultCriticalOperationExclusionList(Arrays.asList()))));
+                                    new ResourceGuard()
+                                        .withVaultCriticalOperationExclusionList(
+                                            Arrays
+                                                .asList(
+                                                    "yxxrwlycoduh", "kxkgymareqna", "xqugjhkycubedd", "ssofwqmzqa"))),
+                            new ResourceGuardResourceInner()
+                                .withLocation("sz")
+                                .withTags(mapOf("icvi", "psbzkfzbeyvpn", "jjxd", "v", "ztzp", "rbuukzclewyhmlwp"))
+                                .withEtag("tiagx")
+                                .withProperties(
+                                    new ResourceGuard()
+                                        .withVaultCriticalOperationExclusionList(
+                                            Arrays.asList("oakggkfpag", "owpulpq")))));
         model = BinaryData.fromObject(model).toObject(ResourceGuardResourceList.class);
-        Assertions.assertEquals("afcnih", model.nextLink());
-        Assertions.assertEquals("dneu", model.value().get(0).location());
-        Assertions.assertEquals("phsdyhto", model.value().get(0).tags().get("fikdowwqu"));
-        Assertions.assertEquals("glkfg", model.value().get(0).etag());
+        Assertions.assertEquals("hxx", model.nextLink());
+        Assertions.assertEquals("imfnjhfjx", model.value().get(0).location());
+        Assertions.assertEquals("zk", model.value().get(0).tags().get("foqreyfkzik"));
+        Assertions.assertEquals("ghimdblx", model.value().get(0).etag());
+        Assertions
+            .assertEquals(
+                "fmtdaaygdvwvgp", model.value().get(0).properties().vaultCriticalOperationExclusionList().get(0));
     }
 
     @SuppressWarnings("unchecked")

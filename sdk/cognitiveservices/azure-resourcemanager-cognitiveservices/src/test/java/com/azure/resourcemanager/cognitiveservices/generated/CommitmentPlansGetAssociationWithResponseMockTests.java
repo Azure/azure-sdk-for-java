@@ -31,7 +31,7 @@ public final class CommitmentPlansGetAssociationWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"etag\":\"cxjmonfdgnwncyp\",\"properties\":{\"accountId\":\"w\"},\"id\":\"tvuqjctzenkeifzz\",\"name\":\"mkdasv\",\"type\":\"lyhb\"}";
+            "{\"etag\":\"gm\",\"properties\":{\"accountId\":\"ahzjmucftb\"},\"id\":\"r\",\"name\":\"lrohkpig\",\"type\":\"fusuckzmkwklsno\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,9 +62,9 @@ public final class CommitmentPlansGetAssociationWithResponseMockTests {
         CommitmentPlanAccountAssociation response =
             manager
                 .commitmentPlans()
-                .getAssociationWithResponse("xlpm", "erbdk", "lvidizozs", com.azure.core.util.Context.NONE)
+                .getAssociationWithResponse("uuuybnchrsziz", "yuel", "etndnbfqyggagf", com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals("w", response.accountId());
+        Assertions.assertEquals("ahzjmucftb", response.accountId());
     }
 }

@@ -56,27 +56,32 @@ public interface IpExtendedCommunity {
     SystemData systemData();
 
     /**
-     * Gets the action property: Action to be taken on the configuration. Example: Permit | Deny.
+     * Gets the configurationState property: Configuration state of the resource.
      *
-     * @return the action value.
+     * @return the configurationState value.
      */
-    CommunityActionTypes action();
+    ConfigurationState configurationState();
 
     /**
-     * Gets the routeTargets property: Route Target List.The expected formats are ASN(plain):NN &gt;&gt; example
-     * 4294967294:50, ASN.ASN:NN &gt;&gt; example 65533.65333:40, IP-address:NN &gt;&gt; example 10.10.10.10:65535. The
-     * possible values of ASN,NN are in range of 0-65535, ASN(plain) is in range of 0-4294967295.
-     *
-     * @return the routeTargets value.
-     */
-    List<String> routeTargets();
-
-    /**
-     * Gets the provisioningState property: Gets the provisioning state of the resource.
+     * Gets the provisioningState property: Provisioning state of the resource.
      *
      * @return the provisioningState value.
      */
     ProvisioningState provisioningState();
+
+    /**
+     * Gets the administrativeState property: Administrative state of the resource.
+     *
+     * @return the administrativeState value.
+     */
+    AdministrativeState administrativeState();
+
+    /**
+     * Gets the ipExtendedCommunityRules property: List of IP Extended Community Rules.
+     *
+     * @return the ipExtendedCommunityRules value.
+     */
+    List<IpExtendedCommunityRule> ipExtendedCommunityRules();
 
     /**
      * Gets the annotation property: Switch configuration description.
@@ -118,13 +123,16 @@ public interface IpExtendedCommunity {
         extends DefinitionStages.Blank,
             DefinitionStages.WithLocation,
             DefinitionStages.WithResourceGroup,
+            DefinitionStages.WithIpExtendedCommunityRules,
             DefinitionStages.WithCreate {
     }
+
     /** The IpExtendedCommunity definition stages. */
     interface DefinitionStages {
         /** The first stage of the IpExtendedCommunity definition. */
         interface Blank extends WithLocation {
         }
+
         /** The stage of the IpExtendedCommunity definition allowing to specify location. */
         interface WithLocation {
             /**
@@ -143,6 +151,7 @@ public interface IpExtendedCommunity {
              */
             WithResourceGroup withRegion(String location);
         }
+
         /** The stage of the IpExtendedCommunity definition allowing to specify parent resource. */
         interface WithResourceGroup {
             /**
@@ -151,17 +160,25 @@ public interface IpExtendedCommunity {
              * @param resourceGroupName The name of the resource group. The name is case insensitive.
              * @return the next definition stage.
              */
-            WithCreate withExistingResourceGroup(String resourceGroupName);
+            WithIpExtendedCommunityRules withExistingResourceGroup(String resourceGroupName);
         }
+
+        /** The stage of the IpExtendedCommunity definition allowing to specify ipExtendedCommunityRules. */
+        interface WithIpExtendedCommunityRules {
+            /**
+             * Specifies the ipExtendedCommunityRules property: List of IP Extended Community Rules..
+             *
+             * @param ipExtendedCommunityRules List of IP Extended Community Rules.
+             * @return the next definition stage.
+             */
+            WithCreate withIpExtendedCommunityRules(List<IpExtendedCommunityRule> ipExtendedCommunityRules);
+        }
+
         /**
          * The stage of the IpExtendedCommunity definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate
-            extends DefinitionStages.WithTags,
-                DefinitionStages.WithAction,
-                DefinitionStages.WithRouteTargets,
-                DefinitionStages.WithAnnotation {
+        interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithAnnotation {
             /**
              * Executes the create request.
              *
@@ -177,6 +194,7 @@ public interface IpExtendedCommunity {
              */
             IpExtendedCommunity create(Context context);
         }
+
         /** The stage of the IpExtendedCommunity definition allowing to specify tags. */
         interface WithTags {
             /**
@@ -187,32 +205,7 @@ public interface IpExtendedCommunity {
              */
             WithCreate withTags(Map<String, String> tags);
         }
-        /** The stage of the IpExtendedCommunity definition allowing to specify action. */
-        interface WithAction {
-            /**
-             * Specifies the action property: Action to be taken on the configuration. Example: Permit | Deny..
-             *
-             * @param action Action to be taken on the configuration. Example: Permit | Deny.
-             * @return the next definition stage.
-             */
-            WithCreate withAction(CommunityActionTypes action);
-        }
-        /** The stage of the IpExtendedCommunity definition allowing to specify routeTargets. */
-        interface WithRouteTargets {
-            /**
-             * Specifies the routeTargets property: Route Target List.The expected formats are ASN(plain):NN &gt;&gt;
-             * example 4294967294:50, ASN.ASN:NN &gt;&gt; example 65533.65333:40, IP-address:NN &gt;&gt; example
-             * 10.10.10.10:65535. The possible values of ASN,NN are in range of 0-65535, ASN(plain) is in range of
-             * 0-4294967295..
-             *
-             * @param routeTargets Route Target List.The expected formats are ASN(plain):NN &gt;&gt; example
-             *     4294967294:50, ASN.ASN:NN &gt;&gt; example 65533.65333:40, IP-address:NN &gt;&gt; example
-             *     10.10.10.10:65535. The possible values of ASN,NN are in range of 0-65535, ASN(plain) is in range of
-             *     0-4294967295.
-             * @return the next definition stage.
-             */
-            WithCreate withRouteTargets(List<String> routeTargets);
-        }
+
         /** The stage of the IpExtendedCommunity definition allowing to specify annotation. */
         interface WithAnnotation {
             /**
@@ -224,6 +217,7 @@ public interface IpExtendedCommunity {
             WithCreate withAnnotation(String annotation);
         }
     }
+
     /**
      * Begins update for the IpExtendedCommunity resource.
      *
@@ -232,7 +226,8 @@ public interface IpExtendedCommunity {
     IpExtendedCommunity.Update update();
 
     /** The template for IpExtendedCommunity update. */
-    interface Update extends UpdateStages.WithTags {
+    interface Update
+        extends UpdateStages.WithTags, UpdateStages.WithAnnotation, UpdateStages.WithIpExtendedCommunityRules {
         /**
          * Executes the update request.
          *
@@ -248,6 +243,7 @@ public interface IpExtendedCommunity {
          */
         IpExtendedCommunity apply(Context context);
     }
+
     /** The IpExtendedCommunity update stages. */
     interface UpdateStages {
         /** The stage of the IpExtendedCommunity update allowing to specify tags. */
@@ -260,7 +256,30 @@ public interface IpExtendedCommunity {
              */
             Update withTags(Map<String, String> tags);
         }
+
+        /** The stage of the IpExtendedCommunity update allowing to specify annotation. */
+        interface WithAnnotation {
+            /**
+             * Specifies the annotation property: Switch configuration description..
+             *
+             * @param annotation Switch configuration description.
+             * @return the next definition stage.
+             */
+            Update withAnnotation(String annotation);
+        }
+
+        /** The stage of the IpExtendedCommunity update allowing to specify ipExtendedCommunityRules. */
+        interface WithIpExtendedCommunityRules {
+            /**
+             * Specifies the ipExtendedCommunityRules property: List of IP Extended Community Rules..
+             *
+             * @param ipExtendedCommunityRules List of IP Extended Community Rules.
+             * @return the next definition stage.
+             */
+            Update withIpExtendedCommunityRules(List<IpExtendedCommunityRule> ipExtendedCommunityRules);
+        }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

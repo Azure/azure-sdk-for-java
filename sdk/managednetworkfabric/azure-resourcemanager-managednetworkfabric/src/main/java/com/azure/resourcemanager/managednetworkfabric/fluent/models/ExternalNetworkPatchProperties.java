@@ -6,8 +6,10 @@ package com.azure.resourcemanager.managednetworkfabric.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.managednetworkfabric.models.AnnotationResource;
-import com.azure.resourcemanager.managednetworkfabric.models.Layer3OptionAProperties;
-import com.azure.resourcemanager.managednetworkfabric.models.OptionBProperties;
+import com.azure.resourcemanager.managednetworkfabric.models.ExportRoutePolicy;
+import com.azure.resourcemanager.managednetworkfabric.models.ExternalNetworkPatchPropertiesOptionAProperties;
+import com.azure.resourcemanager.managednetworkfabric.models.ImportRoutePolicy;
+import com.azure.resourcemanager.managednetworkfabric.models.L3OptionBProperties;
 import com.azure.resourcemanager.managednetworkfabric.models.PeeringOption;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -24,25 +26,37 @@ public final class ExternalNetworkPatchProperties extends AnnotationResource {
      * option B properties object
      */
     @JsonProperty(value = "optionBProperties")
-    private OptionBProperties optionBProperties;
+    private L3OptionBProperties optionBProperties;
 
     /*
      * option A properties object
      */
     @JsonProperty(value = "optionAProperties")
-    private Layer3OptionAProperties optionAProperties;
+    private ExternalNetworkPatchPropertiesOptionAProperties optionAProperties;
 
     /*
-     * ARM resource ID of importRoutePolicy.
+     * ARM Resource ID of the RoutePolicy. This is used for the backward compatibility.
      */
     @JsonProperty(value = "importRoutePolicyId")
     private String importRoutePolicyId;
 
     /*
-     * ARM resource ID of exportRoutePolicy.
+     * ARM Resource ID of the RoutePolicy. This is used for the backward compatibility.
      */
     @JsonProperty(value = "exportRoutePolicyId")
     private String exportRoutePolicyId;
+
+    /*
+     * Import Route Policy either IPv4 or IPv6.
+     */
+    @JsonProperty(value = "importRoutePolicy")
+    private ImportRoutePolicy importRoutePolicy;
+
+    /*
+     * Export Route Policy either IPv4 or IPv6.
+     */
+    @JsonProperty(value = "exportRoutePolicy")
+    private ExportRoutePolicy exportRoutePolicy;
 
     /** Creates an instance of ExternalNetworkPatchProperties class. */
     public ExternalNetworkPatchProperties() {
@@ -73,7 +87,7 @@ public final class ExternalNetworkPatchProperties extends AnnotationResource {
      *
      * @return the optionBProperties value.
      */
-    public OptionBProperties optionBProperties() {
+    public L3OptionBProperties optionBProperties() {
         return this.optionBProperties;
     }
 
@@ -83,7 +97,7 @@ public final class ExternalNetworkPatchProperties extends AnnotationResource {
      * @param optionBProperties the optionBProperties value to set.
      * @return the ExternalNetworkPatchProperties object itself.
      */
-    public ExternalNetworkPatchProperties withOptionBProperties(OptionBProperties optionBProperties) {
+    public ExternalNetworkPatchProperties withOptionBProperties(L3OptionBProperties optionBProperties) {
         this.optionBProperties = optionBProperties;
         return this;
     }
@@ -93,7 +107,7 @@ public final class ExternalNetworkPatchProperties extends AnnotationResource {
      *
      * @return the optionAProperties value.
      */
-    public Layer3OptionAProperties optionAProperties() {
+    public ExternalNetworkPatchPropertiesOptionAProperties optionAProperties() {
         return this.optionAProperties;
     }
 
@@ -103,13 +117,15 @@ public final class ExternalNetworkPatchProperties extends AnnotationResource {
      * @param optionAProperties the optionAProperties value to set.
      * @return the ExternalNetworkPatchProperties object itself.
      */
-    public ExternalNetworkPatchProperties withOptionAProperties(Layer3OptionAProperties optionAProperties) {
+    public ExternalNetworkPatchProperties withOptionAProperties(
+        ExternalNetworkPatchPropertiesOptionAProperties optionAProperties) {
         this.optionAProperties = optionAProperties;
         return this;
     }
 
     /**
-     * Get the importRoutePolicyId property: ARM resource ID of importRoutePolicy.
+     * Get the importRoutePolicyId property: ARM Resource ID of the RoutePolicy. This is used for the backward
+     * compatibility.
      *
      * @return the importRoutePolicyId value.
      */
@@ -118,7 +134,8 @@ public final class ExternalNetworkPatchProperties extends AnnotationResource {
     }
 
     /**
-     * Set the importRoutePolicyId property: ARM resource ID of importRoutePolicy.
+     * Set the importRoutePolicyId property: ARM Resource ID of the RoutePolicy. This is used for the backward
+     * compatibility.
      *
      * @param importRoutePolicyId the importRoutePolicyId value to set.
      * @return the ExternalNetworkPatchProperties object itself.
@@ -129,7 +146,8 @@ public final class ExternalNetworkPatchProperties extends AnnotationResource {
     }
 
     /**
-     * Get the exportRoutePolicyId property: ARM resource ID of exportRoutePolicy.
+     * Get the exportRoutePolicyId property: ARM Resource ID of the RoutePolicy. This is used for the backward
+     * compatibility.
      *
      * @return the exportRoutePolicyId value.
      */
@@ -138,13 +156,54 @@ public final class ExternalNetworkPatchProperties extends AnnotationResource {
     }
 
     /**
-     * Set the exportRoutePolicyId property: ARM resource ID of exportRoutePolicy.
+     * Set the exportRoutePolicyId property: ARM Resource ID of the RoutePolicy. This is used for the backward
+     * compatibility.
      *
      * @param exportRoutePolicyId the exportRoutePolicyId value to set.
      * @return the ExternalNetworkPatchProperties object itself.
      */
     public ExternalNetworkPatchProperties withExportRoutePolicyId(String exportRoutePolicyId) {
         this.exportRoutePolicyId = exportRoutePolicyId;
+        return this;
+    }
+
+    /**
+     * Get the importRoutePolicy property: Import Route Policy either IPv4 or IPv6.
+     *
+     * @return the importRoutePolicy value.
+     */
+    public ImportRoutePolicy importRoutePolicy() {
+        return this.importRoutePolicy;
+    }
+
+    /**
+     * Set the importRoutePolicy property: Import Route Policy either IPv4 or IPv6.
+     *
+     * @param importRoutePolicy the importRoutePolicy value to set.
+     * @return the ExternalNetworkPatchProperties object itself.
+     */
+    public ExternalNetworkPatchProperties withImportRoutePolicy(ImportRoutePolicy importRoutePolicy) {
+        this.importRoutePolicy = importRoutePolicy;
+        return this;
+    }
+
+    /**
+     * Get the exportRoutePolicy property: Export Route Policy either IPv4 or IPv6.
+     *
+     * @return the exportRoutePolicy value.
+     */
+    public ExportRoutePolicy exportRoutePolicy() {
+        return this.exportRoutePolicy;
+    }
+
+    /**
+     * Set the exportRoutePolicy property: Export Route Policy either IPv4 or IPv6.
+     *
+     * @param exportRoutePolicy the exportRoutePolicy value to set.
+     * @return the ExternalNetworkPatchProperties object itself.
+     */
+    public ExternalNetworkPatchProperties withExportRoutePolicy(ExportRoutePolicy exportRoutePolicy) {
+        this.exportRoutePolicy = exportRoutePolicy;
         return this;
     }
 
@@ -168,6 +227,12 @@ public final class ExternalNetworkPatchProperties extends AnnotationResource {
         }
         if (optionAProperties() != null) {
             optionAProperties().validate();
+        }
+        if (importRoutePolicy() != null) {
+            importRoutePolicy().validate();
+        }
+        if (exportRoutePolicy() != null) {
+            exportRoutePolicy().validate();
         }
     }
 }

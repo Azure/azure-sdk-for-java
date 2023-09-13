@@ -8,6 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.managednetworkfabric.models.AddressFamilyType;
+import com.azure.resourcemanager.managednetworkfabric.models.AdministrativeState;
+import com.azure.resourcemanager.managednetworkfabric.models.ConfigurationState;
 import com.azure.resourcemanager.managednetworkfabric.models.ProvisioningState;
 import com.azure.resourcemanager.managednetworkfabric.models.RoutePolicyStatementProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -66,6 +69,81 @@ public final class RoutePolicyInner extends Resource {
     }
 
     /**
+     * Get the networkFabricId property: Arm Resource ID of Network Fabric.
+     *
+     * @return the networkFabricId value.
+     */
+    public String networkFabricId() {
+        return this.innerProperties() == null ? null : this.innerProperties().networkFabricId();
+    }
+
+    /**
+     * Set the networkFabricId property: Arm Resource ID of Network Fabric.
+     *
+     * @param networkFabricId the networkFabricId value to set.
+     * @return the RoutePolicyInner object itself.
+     */
+    public RoutePolicyInner withNetworkFabricId(String networkFabricId) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RoutePolicyProperties();
+        }
+        this.innerProperties().withNetworkFabricId(networkFabricId);
+        return this;
+    }
+
+    /**
+     * Get the addressFamilyType property: AddressFamilyType. This parameter decides whether the given ipv4 or ipv6
+     * route policy.
+     *
+     * @return the addressFamilyType value.
+     */
+    public AddressFamilyType addressFamilyType() {
+        return this.innerProperties() == null ? null : this.innerProperties().addressFamilyType();
+    }
+
+    /**
+     * Set the addressFamilyType property: AddressFamilyType. This parameter decides whether the given ipv4 or ipv6
+     * route policy.
+     *
+     * @param addressFamilyType the addressFamilyType value to set.
+     * @return the RoutePolicyInner object itself.
+     */
+    public RoutePolicyInner withAddressFamilyType(AddressFamilyType addressFamilyType) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RoutePolicyProperties();
+        }
+        this.innerProperties().withAddressFamilyType(addressFamilyType);
+        return this;
+    }
+
+    /**
+     * Get the configurationState property: Configuration state of the resource.
+     *
+     * @return the configurationState value.
+     */
+    public ConfigurationState configurationState() {
+        return this.innerProperties() == null ? null : this.innerProperties().configurationState();
+    }
+
+    /**
+     * Get the provisioningState property: Provisioning state of the resource.
+     *
+     * @return the provisioningState value.
+     */
+    public ProvisioningState provisioningState() {
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
+     * Get the administrativeState property: Administrative state of the resource.
+     *
+     * @return the administrativeState value.
+     */
+    public AdministrativeState administrativeState() {
+        return this.innerProperties() == null ? null : this.innerProperties().administrativeState();
+    }
+
+    /**
      * Get the statements property: Route Policy statements.
      *
      * @return the statements value.
@@ -86,15 +164,6 @@ public final class RoutePolicyInner extends Resource {
         }
         this.innerProperties().withStatements(statements);
         return this;
-    }
-
-    /**
-     * Get the provisioningState property: Gets the provisioning state of the resource.
-     *
-     * @return the provisioningState value.
-     */
-    public ProvisioningState provisioningState() {
-        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**

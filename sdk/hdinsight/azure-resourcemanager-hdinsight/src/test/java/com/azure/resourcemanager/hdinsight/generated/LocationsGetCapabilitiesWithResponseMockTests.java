@@ -11,7 +11,6 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.hdinsight.HDInsightManager;
 import com.azure.resourcemanager.hdinsight.models.CapabilitiesResult;
 import java.nio.ByteBuffer;
@@ -32,7 +31,7 @@ public final class LocationsGetCapabilitiesWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"versions\":{\"y\":{\"available\":[]},\"xakjsqzhzb\":{\"available\":[]}},\"regions\":{\"kzyb\":{\"available\":[\"msidxasicddyvv\",\"skgfmocwahpq\",\"atjeaahh\",\"jhhn\"]},\"xkyxvxevblbj\":{\"available\":[\"idjks\"]},\"gwklnsr\":{\"available\":[\"ljlageuaulxu\",\"smjbnkppxyn\",\"nlsvxeiz\"]}},\"features\":[\"eycxcktpiymertee\",\"mmxqiekkkzddrtk\",\"doj\"],\"quota\":{\"coresUsed\":2124241015903648306,\"maxCoresAllowed\":6657276478448220579,\"regionalQuotas\":[]}}";
+            "{\"versions\":{\"vxnqmhrpqpd\":{\"available\":[{\"friendlyName\":\"mguaml\",\"displayName\":\"l\",\"isDefault\":true,\"componentVersions\":{\"nxkympqanxrjk\":\"lzgaufcshhvnew\",\"ypnyghshxc\":\"xtwbta\",\"ycphdrwjjkhvyo\":\"lhkgmnsghp\",\"u\":\"ac\"}}]},\"opedbwdpyqyybxub\":{\"available\":[{\"friendlyName\":\"oi\",\"displayName\":\"css\",\"isDefault\":true,\"componentVersions\":{\"zr\":\"fmcsypobkd\",\"czzydmxzjij\":\"zsylollgt\",\"hci\":\"vuaurk\",\"kkjanurnnqbnqbp\":\"ldefxrdcoxn\"}},{\"friendlyName\":\"xqltgrd\",\"displayName\":\"ypxrx\",\"isDefault\":false,\"componentVersions\":{\"ctafsrbxrblm\":\"wuh\",\"spnxwqagnepzw\":\"iowxi\",\"rxaomzisglrrcze\":\"klsbsbqqqagw\"}},{\"friendlyName\":\"hhltnjadhqo\",\"displayName\":\"jqoyueayfbpcm\",\"isDefault\":false,\"componentVersions\":{\"mbscbbx\":\"rrueqthwmg\",\"d\":\"gdhxi\"}}]},\"qvapcohhoucq\":{\"available\":[{\"friendlyName\":\"fcbqwremjela\",\"displayName\":\"cigeleohdbvqvw\",\"isDefault\":true,\"componentVersions\":{\"x\":\"wbeonrlkwzdqy\",\"seqchkrt\":\"eakxcptsoqfyi\"}},{\"friendlyName\":\"razisg\",\"displayName\":\"iuemvanbwzohmnr\",\"isDefault\":false,\"componentVersions\":{\"dptysprqs\":\"jklinh\",\"fiqwoy\":\"nzxojpslsvjgpli\"}}]}},\"regions\":{\"tjzmi\":{\"available\":[\"cxzrzdcgdzben\",\"ibcawetzqddtjw\",\"ljhznamtuatmzwcj\",\"nc\"]}},\"features\":[\"bgatzu\",\"vbxngr\",\"bwggahtt\"],\"quota\":{\"coresUsed\":5012267039710812753,\"maxCoresAllowed\":8685578675388239679,\"regionalQuotas\":[{\"regionName\":\"lx\",\"coresUsed\":8142650207393641540,\"coresAvailable\":9197287039568468333},{\"regionName\":\"wqrjzfrg\",\"coresUsed\":1666719420079000960,\"coresAvailable\":6972744056743819269},{\"regionName\":\"uocnjrohmbpyr\",\"coresUsed\":3555567142611740957,\"coresAvailable\":8489336253229945435},{\"regionName\":\"dyvkfkmr\",\"coresUsed\":2786568529817022163,\"coresAvailable\":5427029931191366862}]}}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -61,9 +60,16 @@ public final class LocationsGetCapabilitiesWithResponseMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         CapabilitiesResult response =
-            manager.locations().getCapabilitiesWithResponse("fajuwas", Context.NONE).getValue();
+            manager.locations().getCapabilitiesWithResponse("gyeewxeiq", com.azure.core.util.Context.NONE).getValue();
 
-        Assertions.assertEquals("msidxasicddyvv", response.regions().get("kzyb").available().get(0));
-        Assertions.assertEquals("eycxcktpiymertee", response.features().get(0));
+        Assertions.assertEquals("mguaml", response.versions().get("vxnqmhrpqpd").available().get(0).friendlyName());
+        Assertions.assertEquals("l", response.versions().get("vxnqmhrpqpd").available().get(0).displayName());
+        Assertions.assertEquals(true, response.versions().get("vxnqmhrpqpd").available().get(0).isDefault());
+        Assertions
+            .assertEquals(
+                "lzgaufcshhvnew",
+                response.versions().get("vxnqmhrpqpd").available().get(0).componentVersions().get("nxkympqanxrjk"));
+        Assertions.assertEquals("cxzrzdcgdzben", response.regions().get("tjzmi").available().get(0));
+        Assertions.assertEquals("bgatzu", response.features().get(0));
     }
 }

@@ -33,11 +33,14 @@ public final class LoggerUpdateParameters {
     private Map<String, String> credentials;
 
     /*
-     * Whether records are buffered in the logger before publishing. Default is
-     * assumed to be true.
+     * Whether records are buffered in the logger before publishing. Default is assumed to be true.
      */
     @JsonProperty(value = "isBuffered")
     private Boolean isBuffered;
+
+    /** Creates an instance of LoggerUpdateParameters class. */
+    public LoggerUpdateParameters() {
+    }
 
     /**
      * Get the loggerType property: Logger type.

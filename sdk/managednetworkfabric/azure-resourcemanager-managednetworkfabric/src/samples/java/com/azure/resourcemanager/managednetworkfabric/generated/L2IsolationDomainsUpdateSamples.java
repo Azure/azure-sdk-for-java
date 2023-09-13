@@ -5,11 +5,13 @@
 package com.azure.resourcemanager.managednetworkfabric.generated;
 
 import com.azure.resourcemanager.managednetworkfabric.models.L2IsolationDomain;
+import java.util.HashMap;
+import java.util.Map;
 
 /** Samples for L2IsolationDomains Update. */
 public final class L2IsolationDomainsUpdateSamples {
     /*
-     * x-ms-original-file: specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/preview/2023-02-01-preview/examples/L2IsolationDomains_Update_MaximumSet_Gen.json
+     * x-ms-original-file: specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/L2IsolationDomains_Update_MaximumSet_Gen.json
      */
     /**
      * Sample code: L2IsolationDomains_Update_MaximumSet_Gen.
@@ -21,9 +23,24 @@ public final class L2IsolationDomainsUpdateSamples {
         L2IsolationDomain resource =
             manager
                 .l2IsolationDomains()
-                .getByResourceGroupWithResponse(
-                    "resourceGroupName", "l2IsolationDomainName", com.azure.core.util.Context.NONE)
+                .getByResourceGroupWithResponse("example-rg", "example-l2Domain", com.azure.core.util.Context.NONE)
                 .getValue();
-        resource.update().withMtu(9000).apply();
+        resource
+            .update()
+            .withTags(mapOf("keyID", "fakeTokenPlaceholder"))
+            .withMtu(6000)
+            .withAnnotation("annotation1")
+            .apply();
+    }
+
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
     }
 }

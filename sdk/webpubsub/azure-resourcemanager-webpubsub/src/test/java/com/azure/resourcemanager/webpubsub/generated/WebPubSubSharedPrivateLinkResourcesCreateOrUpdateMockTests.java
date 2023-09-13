@@ -31,7 +31,7 @@ public final class WebPubSubSharedPrivateLinkResourcesCreateOrUpdateMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"groupId\":\"zejntps\",\"privateLinkResourceId\":\"wgioilqukry\",\"provisioningState\":\"Succeeded\",\"requestMessage\":\"mieoxorgguf\",\"status\":\"Pending\"},\"id\":\"omtbghhavgrvkff\",\"name\":\"vjzhpjbib\",\"type\":\"jmfxumvf\"}";
+            "{\"properties\":{\"groupId\":\"hr\",\"privateLinkResourceId\":\"s\",\"provisioningState\":\"Succeeded\",\"requestMessage\":\"iiiovgqcgxuugq\",\"status\":\"Rejected\"},\"id\":\"otiowlxteqd\",\"name\":\"tjgwdtguk\",\"type\":\"anblwphqlkccu\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,15 +62,15 @@ public final class WebPubSubSharedPrivateLinkResourcesCreateOrUpdateMockTests {
         SharedPrivateLinkResource response =
             manager
                 .webPubSubSharedPrivateLinkResources()
-                .define("zh")
-                .withExistingWebPubSub("tw", "sgogczhonnxk")
-                .withGroupId("nyhmossxkkgthr")
-                .withPrivateLinkResourceId("gh")
-                .withRequestMessage("hqxvcxgfrpdsofbs")
+                .define("xzecpaxwkufykhvu")
+                .withExistingWebPubSub("xepmrut", "nabaobnslujd")
+                .withGroupId("tymkmvguihywart")
+                .withPrivateLinkResourceId("pphkixkykxds")
+                .withRequestMessage("mmuc")
                 .create();
 
-        Assertions.assertEquals("zejntps", response.groupId());
-        Assertions.assertEquals("wgioilqukry", response.privateLinkResourceId());
-        Assertions.assertEquals("mieoxorgguf", response.requestMessage());
+        Assertions.assertEquals("hr", response.groupId());
+        Assertions.assertEquals("s", response.privateLinkResourceId());
+        Assertions.assertEquals("iiiovgqcgxuugq", response.requestMessage());
     }
 }

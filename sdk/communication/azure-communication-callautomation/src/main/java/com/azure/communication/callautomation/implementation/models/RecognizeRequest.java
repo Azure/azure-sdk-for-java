@@ -41,6 +41,12 @@ public final class RecognizeRequest {
     @JsonProperty(value = "operationContext")
     private String operationContext;
 
+    /*
+     * The callback URI to override the main callback URI.
+     */
+    @JsonProperty(value = "callbackUri")
+    private String callbackUri;
+
     /**
      * Get the recognizeInputType property: Determines the type of the recognition.
      *
@@ -140,6 +146,26 @@ public final class RecognizeRequest {
      */
     public RecognizeRequest setOperationContext(String operationContext) {
         this.operationContext = operationContext;
+        return this;
+    }
+
+    /**
+     * Get the callbackUri property: The callback URI to override the main callback URI.
+     *
+     * @return the callbackUri value.
+     */
+    public String getCallbackUri() {
+        return this.callbackUri;
+    }
+
+    /**
+     * Set the callbackUri property: The callback URI to override the main callback URI.
+     *
+     * @param callbackUri the callbackUri value to set.
+     * @return the RecognizeRequest object itself.
+     */
+    public RecognizeRequest setCallbackUri(String callbackUri) {
+        this.callbackUri = callbackUri;
         return this;
     }
 }

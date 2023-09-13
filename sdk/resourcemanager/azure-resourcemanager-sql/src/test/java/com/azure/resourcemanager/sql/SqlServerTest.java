@@ -14,7 +14,7 @@ import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.resources.ResourceManager;
 import com.azure.resourcemanager.storage.StorageManager;
-import com.azure.resourcemanager.test.ResourceManagerTestBase;
+import com.azure.resourcemanager.test.ResourceManagerTestProxyTestBase;
 import com.azure.resourcemanager.test.utils.TestDelayProvider;
 import com.azure.resourcemanager.test.utils.TestIdentifierProvider;
 
@@ -22,7 +22,7 @@ import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 
-public abstract class SqlServerTest extends ResourceManagerTestBase {
+public abstract class SqlServerTest extends ResourceManagerTestProxyTestBase {
     protected ResourceManager resourceManager;
     protected SqlServerManager sqlServerManager;
     protected StorageManager storageManager;

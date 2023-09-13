@@ -259,6 +259,20 @@ public class HDInsightMapReduceActivity extends ExecutionActivity {
 
     /** {@inheritDoc} */
     @Override
+    public HDInsightMapReduceActivity setState(ActivityState state) {
+        super.setState(state);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public HDInsightMapReduceActivity setOnInactiveMarkAs(ActivityOnInactiveMarkAs onInactiveMarkAs) {
+        super.setOnInactiveMarkAs(onInactiveMarkAs);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
     public HDInsightMapReduceActivity setDependsOn(List<ActivityDependency> dependsOn) {
         super.setDependsOn(dependsOn);
         return this;

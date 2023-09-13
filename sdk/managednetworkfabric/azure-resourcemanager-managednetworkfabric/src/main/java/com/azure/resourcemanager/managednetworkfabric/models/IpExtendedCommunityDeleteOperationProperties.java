@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public class IpExtendedCommunityDeleteOperationProperties {
     /*
-     * IP Extended Community Id list properties.
+     * List of IP Extended Community IDs.
      */
     @JsonProperty(value = "delete")
     private IpExtendedCommunityIdList delete;
@@ -21,7 +21,7 @@ public class IpExtendedCommunityDeleteOperationProperties {
     }
 
     /**
-     * Get the delete property: IP Extended Community Id list properties.
+     * Get the delete property: List of IP Extended Community IDs.
      *
      * @return the delete value.
      */
@@ -30,7 +30,7 @@ public class IpExtendedCommunityDeleteOperationProperties {
     }
 
     /**
-     * Set the delete property: IP Extended Community Id list properties.
+     * Set the delete property: List of IP Extended Community IDs.
      *
      * @param delete the delete value to set.
      * @return the IpExtendedCommunityDeleteOperationProperties object itself.

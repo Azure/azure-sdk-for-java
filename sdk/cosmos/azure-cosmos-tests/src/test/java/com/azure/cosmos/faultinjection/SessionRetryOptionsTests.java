@@ -69,7 +69,7 @@ public class SessionRetryOptionsTests extends TestSuiteBase {
         super(cosmosClientBuilder);
     }
 
-    @BeforeClass(groups = {"multi-region"}, timeOut = SETUP_TIMEOUT)
+    @BeforeClass(groups = {"multi-master"}, timeOut = SETUP_TIMEOUT)
     public void beforeClass() {
         cosmosAsyncClient = getClientBuilder().buildAsyncClient();
         AsyncDocumentClient asyncDocumentClient = BridgeInternal.getContextClient(cosmosAsyncClient);
@@ -107,7 +107,7 @@ public class SessionRetryOptionsTests extends TestSuiteBase {
         };
     }
 
-    @Test(groups = {"multi-region"}, dataProvider = "nonWriteOperationContextProvider", timeOut = TIMEOUT)
+    @Test(groups = {"multi-master"}, dataProvider = "nonWriteOperationContextProvider", timeOut = TIMEOUT)
     public void nonWriteOperation_WithReadSessionUnavailable_test(
         OperationType operationType,
         FaultInjectionOperationType faultInjectionOperationType,
@@ -184,7 +184,7 @@ public class SessionRetryOptionsTests extends TestSuiteBase {
         }
     }
 
-    @Test(groups = {"multi-region"}, dataProvider = "writeOperationContextProvider", timeOut = TIMEOUT)
+    @Test(groups = {"multi-master"}, dataProvider = "writeOperationContextProvider", timeOut = TIMEOUT)
     public void writeOperation_withReadSessionUnavailable_test(
         OperationType operationType,
         FaultInjectionOperationType faultInjectionOperationType,
@@ -258,7 +258,7 @@ public class SessionRetryOptionsTests extends TestSuiteBase {
         }
     }
 
-    @AfterClass(groups = {"multi-region"}, timeOut = SHUTDOWN_TIMEOUT)
+    @AfterClass(groups = {"multi-master"}, timeOut = SHUTDOWN_TIMEOUT)
     public void afterClass() {
         safeCloseAsync(cosmosAsyncClient);
     }

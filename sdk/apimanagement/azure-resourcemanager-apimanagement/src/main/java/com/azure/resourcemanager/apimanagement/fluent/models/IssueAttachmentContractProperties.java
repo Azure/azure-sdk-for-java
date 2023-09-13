@@ -18,8 +18,8 @@ public final class IssueAttachmentContractProperties {
     private String title;
 
     /*
-     * Either 'link' if content is provided via an HTTP link or the MIME type
-     * of the Base64-encoded binary data provided in the 'content' property.
+     * Either 'link' if content is provided via an HTTP link or the MIME type of the Base64-encoded binary data
+     * provided in the 'content' property.
      */
     @JsonProperty(value = "contentFormat", required = true)
     private String contentFormat;
@@ -29,6 +29,10 @@ public final class IssueAttachmentContractProperties {
      */
     @JsonProperty(value = "content", required = true)
     private String content;
+
+    /** Creates an instance of IssueAttachmentContractProperties class. */
+    public IssueAttachmentContractProperties() {
+    }
 
     /**
      * Get the title property: Filename by which the binary data will be saved.

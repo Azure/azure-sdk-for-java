@@ -10,14 +10,23 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /** Represents the capacity a job in this channel will consume from a worker. */
 @Fluent
 public final class ChannelConfiguration {
-    /*
+    /**
+     * Creates an instance of ChannelConfiguration class.
+     *
+     * @param capacityCostPerJob the capacityCostPerJob value to set.
+     */
+    public ChannelConfiguration(int capacityCostPerJob) {
+        this.capacityCostPerJob = capacityCostPerJob;
+    }
+
+    /**
      * The amount of capacity that an instance of a job of this channel will
-     * consume of the total worker capacity.
+     * consume of the total worker.
      */
     @JsonProperty(value = "capacityCostPerJob", required = true)
-    private int capacityCostPerJob;
+    private final int capacityCostPerJob;
 
-    /*
+    /**
      * The maximum number of jobs that can be supported concurrently for this
      * channel.
      */
@@ -32,18 +41,6 @@ public final class ChannelConfiguration {
      */
     public int getCapacityCostPerJob() {
         return this.capacityCostPerJob;
-    }
-
-    /**
-     * Set the capacityCostPerJob property: The amount of capacity that an instance of a job of this channel will
-     * consume of the total worker capacity.
-     *
-     * @param capacityCostPerJob the capacityCostPerJob value to set.
-     * @return the ChannelConfiguration object itself.
-     */
-    public ChannelConfiguration setCapacityCostPerJob(int capacityCostPerJob) {
-        this.capacityCostPerJob = capacityCostPerJob;
-        return this;
     }
 
     /**

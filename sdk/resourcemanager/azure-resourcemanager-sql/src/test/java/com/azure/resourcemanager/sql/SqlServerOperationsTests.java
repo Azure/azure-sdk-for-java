@@ -84,6 +84,9 @@ public class SqlServerOperationsTests extends SqlServerTest {
     private static final String START_IPADDRESS = "10.102.1.10";
     private static final String END_IPADDRESS = "10.102.1.12";
 
+    // Only one sync database is allowed per region per subscription
+    // canCRUDSqlSyncMember and canCRUDSqlSyncGroup need to be in 2 different region
+
     @Test
     public void canCRUDSqlSyncMember() throws Exception {
         final String dbName = "dbSample";
@@ -99,7 +102,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
             sqlServerManager
                 .sqlServers()
                 .define(sqlServerName)
-                .withRegion(Region.US_EAST)
+                .withRegion(Region.US_WEST3)
                 .withNewResourceGroup(rgName)
                 .withAdministratorLogin(administratorLogin)
                 .withAdministratorPassword(administratorPassword)
@@ -619,12 +622,16 @@ public class SqlServerOperationsTests extends SqlServerTest {
         Assertions.assertEquals(DatabaseEdition.BASIC, dbFromSample.edition());
 
         Assertions.assertTrue(sqlServer.isManagedServiceIdentityEnabled());
-        Assertions.assertEquals(sqlServerManager.tenantId(), sqlServer.systemAssignedManagedServiceIdentityTenantId());
+        if (!isPlaybackMode()) {
+            Assertions.assertEquals(sqlServerManager.tenantId(), sqlServer.systemAssignedManagedServiceIdentityTenantId());
+        }
         Assertions.assertNotNull(sqlServer.systemAssignedManagedServiceIdentityPrincipalId());
 
         sqlServer.update().withSystemAssignedManagedServiceIdentity().apply();
         Assertions.assertTrue(sqlServer.isManagedServiceIdentityEnabled());
-        Assertions.assertEquals(sqlServerManager.tenantId(), sqlServer.systemAssignedManagedServiceIdentityTenantId());
+        if (!isPlaybackMode()) {
+            Assertions.assertEquals(sqlServerManager.tenantId(), sqlServer.systemAssignedManagedServiceIdentityTenantId());
+        }
         Assertions.assertNotNull(sqlServer.systemAssignedManagedServiceIdentityPrincipalId());
 
         // cleanup

@@ -10,7 +10,7 @@ import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.models.MessageContent;
-import com.azure.core.test.TestBase;
+import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.util.serializer.TypeReference;
 import com.azure.data.schemaregistry.SchemaRegistryClient;
 import com.azure.data.schemaregistry.SchemaRegistryClientBuilder;
@@ -52,7 +52,7 @@ import static org.mockito.Mockito.when;
 /**
  * Tests end to end experience of the schema registry class.
  */
-public class SchemaRegistryApacheAvroSerializerIntegrationTest extends TestBase {
+public class SchemaRegistryApacheAvroSerializerIntegrationTest extends TestProxyTestBase {
     static final String SCHEMA_REGISTRY_AVRO_FULLY_QUALIFIED_NAMESPACE = "SCHEMA_REGISTRY_AVRO_FULLY_QUALIFIED_NAMESPACE";
     static final String SCHEMA_REGISTRY_GROUP = "SCHEMA_REGISTRY_GROUP";
     static final String SCHEMA_REGISTRY_AVRO_EVENT_HUB_NAME = "SCHEMA_REGISTRY_AVRO_EVENT_HUB_NAME";

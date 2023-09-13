@@ -5,75 +5,73 @@
 package com.azure.resourcemanager.managednetworkfabric.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.managednetworkfabric.models.AccessControlListConditionProperties;
-import com.azure.resourcemanager.managednetworkfabric.models.AddressFamily;
-import com.azure.resourcemanager.managednetworkfabric.models.AnnotationResource;
+import com.azure.resourcemanager.managednetworkfabric.models.AccessControlListMatchConfiguration;
+import com.azure.resourcemanager.managednetworkfabric.models.AccessControlListPatchableProperties;
+import com.azure.resourcemanager.managednetworkfabric.models.CommonDynamicMatchConfiguration;
+import com.azure.resourcemanager.managednetworkfabric.models.ConfigurationType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** AccessControlListPatchProperties define the patchable resource properties. */
+/** Access Control Lists patch properties. */
 @Fluent
-public final class AccessControlListPatchProperties extends AnnotationResource {
+public final class AccessControlListPatchProperties extends AccessControlListPatchableProperties {
     /*
-     * IP address family. Example: ipv4 | ipv6.
+     * Switch configuration description.
      */
-    @JsonProperty(value = "addressFamily")
-    private AddressFamily addressFamily;
-
-    /*
-     * Access Control List conditions.
-     */
-    @JsonProperty(value = "conditions")
-    private List<AccessControlListConditionProperties> conditions;
+    @JsonProperty(value = "annotation")
+    private String annotation;
 
     /** Creates an instance of AccessControlListPatchProperties class. */
     public AccessControlListPatchProperties() {
     }
 
     /**
-     * Get the addressFamily property: IP address family. Example: ipv4 | ipv6.
+     * Get the annotation property: Switch configuration description.
      *
-     * @return the addressFamily value.
+     * @return the annotation value.
      */
-    public AddressFamily addressFamily() {
-        return this.addressFamily;
+    public String annotation() {
+        return this.annotation;
     }
 
     /**
-     * Set the addressFamily property: IP address family. Example: ipv4 | ipv6.
+     * Set the annotation property: Switch configuration description.
      *
-     * @param addressFamily the addressFamily value to set.
+     * @param annotation the annotation value to set.
      * @return the AccessControlListPatchProperties object itself.
      */
-    public AccessControlListPatchProperties withAddressFamily(AddressFamily addressFamily) {
-        this.addressFamily = addressFamily;
-        return this;
-    }
-
-    /**
-     * Get the conditions property: Access Control List conditions.
-     *
-     * @return the conditions value.
-     */
-    public List<AccessControlListConditionProperties> conditions() {
-        return this.conditions;
-    }
-
-    /**
-     * Set the conditions property: Access Control List conditions.
-     *
-     * @param conditions the conditions value to set.
-     * @return the AccessControlListPatchProperties object itself.
-     */
-    public AccessControlListPatchProperties withConditions(List<AccessControlListConditionProperties> conditions) {
-        this.conditions = conditions;
+    public AccessControlListPatchProperties withAnnotation(String annotation) {
+        this.annotation = annotation;
         return this;
     }
 
     /** {@inheritDoc} */
     @Override
-    public AccessControlListPatchProperties withAnnotation(String annotation) {
-        super.withAnnotation(annotation);
+    public AccessControlListPatchProperties withConfigurationType(ConfigurationType configurationType) {
+        super.withConfigurationType(configurationType);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AccessControlListPatchProperties withAclsUrl(String aclsUrl) {
+        super.withAclsUrl(aclsUrl);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AccessControlListPatchProperties withMatchConfigurations(
+        List<AccessControlListMatchConfiguration> matchConfigurations) {
+        super.withMatchConfigurations(matchConfigurations);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AccessControlListPatchProperties withDynamicMatchConfigurations(
+        List<CommonDynamicMatchConfiguration> dynamicMatchConfigurations) {
+        super.withDynamicMatchConfigurations(dynamicMatchConfigurations);
         return this;
     }
 
@@ -85,8 +83,5 @@ public final class AccessControlListPatchProperties extends AnnotationResource {
     @Override
     public void validate() {
         super.validate();
-        if (conditions() != null) {
-            conditions().forEach(e -> e.validate());
-        }
     }
 }

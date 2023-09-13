@@ -5,44 +5,47 @@
 package com.azure.resourcemanager.managednetworkfabric.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.resourcemanager.managednetworkfabric.models.FabricSkuType;
 import com.azure.resourcemanager.managednetworkfabric.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
-/** NetworkFabricSkuProperties define the resource properties. */
+/** Network Fabric SKU Properties define properties of the resource. */
 @Fluent
 public final class NetworkFabricSkuProperties {
     /*
-     * Type of Network Fabric Sku.
+     * Type of Network Fabric SKU.
      */
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
-    private String type;
+    private FabricSkuType type;
 
     /*
-     * Maximum number of compute racks available for this Network Fabric SKU.
+     * Maximum number of compute racks available for this Network Fabric SKU. The value of max count racks is 4 for 4
+     * rack SKU and 8 for 8 rack SKU.
      */
     @JsonProperty(value = "maxComputeRacks")
     private Integer maxComputeRacks;
 
     /*
-     * Minimum supported version.
+     * Maximum number of servers available for this Network Fabric SKU.
      */
-    @JsonProperty(value = "minSupportedVer", access = JsonProperty.Access.WRITE_ONLY)
-    private String minSupportedVer;
+    @JsonProperty(value = "maximumServerCount")
+    private Integer maximumServerCount;
 
     /*
-     * Maximum supported version.
+     * List of supported Network Fabric SKU versions.
      */
-    @JsonProperty(value = "maxSupportedVer", access = JsonProperty.Access.WRITE_ONLY)
-    private String maxSupportedVer;
+    @JsonProperty(value = "supportedVersions", access = JsonProperty.Access.WRITE_ONLY)
+    private List<String> supportedVersions;
 
     /*
-     * The URI gives full details of sku.
+     * URL providing detailed configuration of the fabric SKU.
      */
-    @JsonProperty(value = "detailsUri", access = JsonProperty.Access.WRITE_ONLY)
-    private String detailsUri;
+    @JsonProperty(value = "details", access = JsonProperty.Access.WRITE_ONLY)
+    private String details;
 
     /*
-     * Gets the provisioning state of the resource.
+     * Provisioning state of the resource.
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
@@ -52,16 +55,17 @@ public final class NetworkFabricSkuProperties {
     }
 
     /**
-     * Get the type property: Type of Network Fabric Sku.
+     * Get the type property: Type of Network Fabric SKU.
      *
      * @return the type value.
      */
-    public String type() {
+    public FabricSkuType type() {
         return this.type;
     }
 
     /**
-     * Get the maxComputeRacks property: Maximum number of compute racks available for this Network Fabric SKU.
+     * Get the maxComputeRacks property: Maximum number of compute racks available for this Network Fabric SKU. The
+     * value of max count racks is 4 for 4 rack SKU and 8 for 8 rack SKU.
      *
      * @return the maxComputeRacks value.
      */
@@ -70,7 +74,8 @@ public final class NetworkFabricSkuProperties {
     }
 
     /**
-     * Set the maxComputeRacks property: Maximum number of compute racks available for this Network Fabric SKU.
+     * Set the maxComputeRacks property: Maximum number of compute racks available for this Network Fabric SKU. The
+     * value of max count racks is 4 for 4 rack SKU and 8 for 8 rack SKU.
      *
      * @param maxComputeRacks the maxComputeRacks value to set.
      * @return the NetworkFabricSkuProperties object itself.
@@ -81,34 +86,45 @@ public final class NetworkFabricSkuProperties {
     }
 
     /**
-     * Get the minSupportedVer property: Minimum supported version.
+     * Get the maximumServerCount property: Maximum number of servers available for this Network Fabric SKU.
      *
-     * @return the minSupportedVer value.
+     * @return the maximumServerCount value.
      */
-    public String minSupportedVer() {
-        return this.minSupportedVer;
+    public Integer maximumServerCount() {
+        return this.maximumServerCount;
     }
 
     /**
-     * Get the maxSupportedVer property: Maximum supported version.
+     * Set the maximumServerCount property: Maximum number of servers available for this Network Fabric SKU.
      *
-     * @return the maxSupportedVer value.
+     * @param maximumServerCount the maximumServerCount value to set.
+     * @return the NetworkFabricSkuProperties object itself.
      */
-    public String maxSupportedVer() {
-        return this.maxSupportedVer;
+    public NetworkFabricSkuProperties withMaximumServerCount(Integer maximumServerCount) {
+        this.maximumServerCount = maximumServerCount;
+        return this;
     }
 
     /**
-     * Get the detailsUri property: The URI gives full details of sku.
+     * Get the supportedVersions property: List of supported Network Fabric SKU versions.
      *
-     * @return the detailsUri value.
+     * @return the supportedVersions value.
      */
-    public String detailsUri() {
-        return this.detailsUri;
+    public List<String> supportedVersions() {
+        return this.supportedVersions;
     }
 
     /**
-     * Get the provisioningState property: Gets the provisioning state of the resource.
+     * Get the details property: URL providing detailed configuration of the fabric SKU.
+     *
+     * @return the details value.
+     */
+    public String details() {
+        return this.details;
+    }
+
+    /**
+     * Get the provisioningState property: Provisioning state of the resource.
      *
      * @return the provisioningState value.
      */

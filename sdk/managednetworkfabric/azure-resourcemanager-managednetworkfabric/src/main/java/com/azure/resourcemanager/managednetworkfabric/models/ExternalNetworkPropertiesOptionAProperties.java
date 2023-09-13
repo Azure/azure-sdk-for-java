@@ -5,39 +5,183 @@
 package com.azure.resourcemanager.managednetworkfabric.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** option A properties object. */
 @Fluent
-public final class ExternalNetworkPropertiesOptionAProperties extends Layer3OptionAProperties {
+public final class ExternalNetworkPropertiesOptionAProperties extends Layer3IpPrefixProperties {
+    /*
+     * MTU to use for option A peering.
+     */
+    @JsonProperty(value = "mtu")
+    private Integer mtu;
+
+    /*
+     * Vlan identifier. Example : 501
+     */
+    @JsonProperty(value = "vlanId")
+    private Integer vlanId;
+
+    /*
+     * Fabric ASN number. Example 65001
+     */
+    @JsonProperty(value = "fabricASN", access = JsonProperty.Access.WRITE_ONLY)
+    private Long fabricAsn;
+
+    /*
+     * Peer ASN number.Example : 28
+     */
+    @JsonProperty(value = "peerASN")
+    private Long peerAsn;
+
+    /*
+     * BFD configuration properties
+     */
+    @JsonProperty(value = "bfdConfiguration")
+    private BfdConfiguration bfdConfiguration;
+
+    /*
+     * Ingress Acl. ARM resource ID of Access Control Lists.
+     */
+    @JsonProperty(value = "ingressAclId")
+    private String ingressAclId;
+
+    /*
+     * Egress Acl. ARM resource ID of Access Control Lists.
+     */
+    @JsonProperty(value = "egressAclId")
+    private String egressAclId;
+
     /** Creates an instance of ExternalNetworkPropertiesOptionAProperties class. */
     public ExternalNetworkPropertiesOptionAProperties() {
     }
 
-    /** {@inheritDoc} */
-    @Override
+    /**
+     * Get the mtu property: MTU to use for option A peering.
+     *
+     * @return the mtu value.
+     */
+    public Integer mtu() {
+        return this.mtu;
+    }
+
+    /**
+     * Set the mtu property: MTU to use for option A peering.
+     *
+     * @param mtu the mtu value to set.
+     * @return the ExternalNetworkPropertiesOptionAProperties object itself.
+     */
     public ExternalNetworkPropertiesOptionAProperties withMtu(Integer mtu) {
-        super.withMtu(mtu);
+        this.mtu = mtu;
         return this;
     }
 
-    /** {@inheritDoc} */
-    @Override
+    /**
+     * Get the vlanId property: Vlan identifier. Example : 501.
+     *
+     * @return the vlanId value.
+     */
+    public Integer vlanId() {
+        return this.vlanId;
+    }
+
+    /**
+     * Set the vlanId property: Vlan identifier. Example : 501.
+     *
+     * @param vlanId the vlanId value to set.
+     * @return the ExternalNetworkPropertiesOptionAProperties object itself.
+     */
     public ExternalNetworkPropertiesOptionAProperties withVlanId(Integer vlanId) {
-        super.withVlanId(vlanId);
+        this.vlanId = vlanId;
         return this;
     }
 
-    /** {@inheritDoc} */
-    @Override
-    public ExternalNetworkPropertiesOptionAProperties withPeerAsn(Integer peerAsn) {
-        super.withPeerAsn(peerAsn);
+    /**
+     * Get the fabricAsn property: Fabric ASN number. Example 65001.
+     *
+     * @return the fabricAsn value.
+     */
+    public Long fabricAsn() {
+        return this.fabricAsn;
+    }
+
+    /**
+     * Get the peerAsn property: Peer ASN number.Example : 28.
+     *
+     * @return the peerAsn value.
+     */
+    public Long peerAsn() {
+        return this.peerAsn;
+    }
+
+    /**
+     * Set the peerAsn property: Peer ASN number.Example : 28.
+     *
+     * @param peerAsn the peerAsn value to set.
+     * @return the ExternalNetworkPropertiesOptionAProperties object itself.
+     */
+    public ExternalNetworkPropertiesOptionAProperties withPeerAsn(Long peerAsn) {
+        this.peerAsn = peerAsn;
         return this;
     }
 
-    /** {@inheritDoc} */
-    @Override
+    /**
+     * Get the bfdConfiguration property: BFD configuration properties.
+     *
+     * @return the bfdConfiguration value.
+     */
+    public BfdConfiguration bfdConfiguration() {
+        return this.bfdConfiguration;
+    }
+
+    /**
+     * Set the bfdConfiguration property: BFD configuration properties.
+     *
+     * @param bfdConfiguration the bfdConfiguration value to set.
+     * @return the ExternalNetworkPropertiesOptionAProperties object itself.
+     */
     public ExternalNetworkPropertiesOptionAProperties withBfdConfiguration(BfdConfiguration bfdConfiguration) {
-        super.withBfdConfiguration(bfdConfiguration);
+        this.bfdConfiguration = bfdConfiguration;
+        return this;
+    }
+
+    /**
+     * Get the ingressAclId property: Ingress Acl. ARM resource ID of Access Control Lists.
+     *
+     * @return the ingressAclId value.
+     */
+    public String ingressAclId() {
+        return this.ingressAclId;
+    }
+
+    /**
+     * Set the ingressAclId property: Ingress Acl. ARM resource ID of Access Control Lists.
+     *
+     * @param ingressAclId the ingressAclId value to set.
+     * @return the ExternalNetworkPropertiesOptionAProperties object itself.
+     */
+    public ExternalNetworkPropertiesOptionAProperties withIngressAclId(String ingressAclId) {
+        this.ingressAclId = ingressAclId;
+        return this;
+    }
+
+    /**
+     * Get the egressAclId property: Egress Acl. ARM resource ID of Access Control Lists.
+     *
+     * @return the egressAclId value.
+     */
+    public String egressAclId() {
+        return this.egressAclId;
+    }
+
+    /**
+     * Set the egressAclId property: Egress Acl. ARM resource ID of Access Control Lists.
+     *
+     * @param egressAclId the egressAclId value to set.
+     * @return the ExternalNetworkPropertiesOptionAProperties object itself.
+     */
+    public ExternalNetworkPropertiesOptionAProperties withEgressAclId(String egressAclId) {
+        this.egressAclId = egressAclId;
         return this;
     }
 
@@ -77,5 +221,8 @@ public final class ExternalNetworkPropertiesOptionAProperties extends Layer3Opti
     @Override
     public void validate() {
         super.validate();
+        if (bfdConfiguration() != null) {
+            bfdConfiguration().validate();
+        }
     }
 }

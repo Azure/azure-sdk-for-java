@@ -113,7 +113,7 @@ public final class IpPrefixesClientImpl implements IpPrefixesClient {
         @Headers({"Content-Type: application/json"})
         @Delete(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/ipPrefixes/{ipPrefixName}")
-        @ExpectedResponses({200, 202, 204})
+        @ExpectedResponses({202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
             @HostParam("$host") String endpoint,
@@ -180,7 +180,7 @@ public final class IpPrefixesClientImpl implements IpPrefixesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the IPPrefix resource definition along with {@link Response} on successful completion of {@link Mono}.
+     * @return the IP Prefix resource definition along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
@@ -238,7 +238,7 @@ public final class IpPrefixesClientImpl implements IpPrefixesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the IPPrefix resource definition along with {@link Response} on successful completion of {@link Mono}.
+     * @return the IP Prefix resource definition along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
@@ -292,7 +292,7 @@ public final class IpPrefixesClientImpl implements IpPrefixesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of the IPPrefix resource definition.
+     * @return the {@link PollerFlux} for polling of the IP Prefix resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<IpPrefixInner>, IpPrefixInner> beginCreateAsync(
@@ -320,7 +320,7 @@ public final class IpPrefixesClientImpl implements IpPrefixesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of the IPPrefix resource definition.
+     * @return the {@link PollerFlux} for polling of the IP Prefix resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<IpPrefixInner>, IpPrefixInner> beginCreateAsync(
@@ -344,7 +344,7 @@ public final class IpPrefixesClientImpl implements IpPrefixesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the IPPrefix resource definition.
+     * @return the {@link SyncPoller} for polling of the IP Prefix resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<IpPrefixInner>, IpPrefixInner> beginCreate(
@@ -364,7 +364,7 @@ public final class IpPrefixesClientImpl implements IpPrefixesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the IPPrefix resource definition.
+     * @return the {@link SyncPoller} for polling of the IP Prefix resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<IpPrefixInner>, IpPrefixInner> beginCreate(
@@ -383,7 +383,7 @@ public final class IpPrefixesClientImpl implements IpPrefixesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the IPPrefix resource definition on successful completion of {@link Mono}.
+     * @return the IP Prefix resource definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<IpPrefixInner> createAsync(String resourceGroupName, String ipPrefixName, IpPrefixInner body) {
@@ -404,7 +404,7 @@ public final class IpPrefixesClientImpl implements IpPrefixesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the IPPrefix resource definition on successful completion of {@link Mono}.
+     * @return the IP Prefix resource definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<IpPrefixInner> createAsync(
@@ -425,7 +425,7 @@ public final class IpPrefixesClientImpl implements IpPrefixesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the IPPrefix resource definition.
+     * @return the IP Prefix resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public IpPrefixInner create(String resourceGroupName, String ipPrefixName, IpPrefixInner body) {
@@ -444,7 +444,7 @@ public final class IpPrefixesClientImpl implements IpPrefixesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the IPPrefix resource definition.
+     * @return the IP Prefix resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public IpPrefixInner create(String resourceGroupName, String ipPrefixName, IpPrefixInner body, Context context) {
@@ -461,7 +461,7 @@ public final class IpPrefixesClientImpl implements IpPrefixesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the IPPrefix resource definition along with {@link Response} on successful completion of {@link Mono}.
+     * @return the IP Prefix resource definition along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<IpPrefixInner>> getByResourceGroupWithResponseAsync(
@@ -512,7 +512,7 @@ public final class IpPrefixesClientImpl implements IpPrefixesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the IPPrefix resource definition along with {@link Response} on successful completion of {@link Mono}.
+     * @return the IP Prefix resource definition along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<IpPrefixInner>> getByResourceGroupWithResponseAsync(
@@ -559,7 +559,7 @@ public final class IpPrefixesClientImpl implements IpPrefixesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the IPPrefix resource definition on successful completion of {@link Mono}.
+     * @return the IP Prefix resource definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<IpPrefixInner> getByResourceGroupAsync(String resourceGroupName, String ipPrefixName) {
@@ -578,7 +578,7 @@ public final class IpPrefixesClientImpl implements IpPrefixesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the IPPrefix resource definition along with {@link Response}.
+     * @return the IP Prefix resource definition along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<IpPrefixInner> getByResourceGroupWithResponse(
@@ -596,7 +596,7 @@ public final class IpPrefixesClientImpl implements IpPrefixesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the IPPrefix resource definition.
+     * @return the IP Prefix resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public IpPrefixInner getByResourceGroup(String resourceGroupName, String ipPrefixName) {
@@ -614,7 +614,7 @@ public final class IpPrefixesClientImpl implements IpPrefixesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the IPPrefix resource definition along with {@link Response} on successful completion of {@link Mono}.
+     * @return the IP Prefix resource definition along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
@@ -672,7 +672,7 @@ public final class IpPrefixesClientImpl implements IpPrefixesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the IPPrefix resource definition along with {@link Response} on successful completion of {@link Mono}.
+     * @return the IP Prefix resource definition along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
@@ -726,7 +726,7 @@ public final class IpPrefixesClientImpl implements IpPrefixesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of the IPPrefix resource definition.
+     * @return the {@link PollerFlux} for polling of the IP Prefix resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<IpPrefixInner>, IpPrefixInner> beginUpdateAsync(
@@ -754,7 +754,7 @@ public final class IpPrefixesClientImpl implements IpPrefixesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of the IPPrefix resource definition.
+     * @return the {@link PollerFlux} for polling of the IP Prefix resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<IpPrefixInner>, IpPrefixInner> beginUpdateAsync(
@@ -778,7 +778,7 @@ public final class IpPrefixesClientImpl implements IpPrefixesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the IPPrefix resource definition.
+     * @return the {@link SyncPoller} for polling of the IP Prefix resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<IpPrefixInner>, IpPrefixInner> beginUpdate(
@@ -798,7 +798,7 @@ public final class IpPrefixesClientImpl implements IpPrefixesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the IPPrefix resource definition.
+     * @return the {@link SyncPoller} for polling of the IP Prefix resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<IpPrefixInner>, IpPrefixInner> beginUpdate(
@@ -817,7 +817,7 @@ public final class IpPrefixesClientImpl implements IpPrefixesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the IPPrefix resource definition on successful completion of {@link Mono}.
+     * @return the IP Prefix resource definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<IpPrefixInner> updateAsync(String resourceGroupName, String ipPrefixName, IpPrefixPatch body) {
@@ -838,7 +838,7 @@ public final class IpPrefixesClientImpl implements IpPrefixesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the IPPrefix resource definition on successful completion of {@link Mono}.
+     * @return the IP Prefix resource definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<IpPrefixInner> updateAsync(
@@ -859,7 +859,7 @@ public final class IpPrefixesClientImpl implements IpPrefixesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the IPPrefix resource definition.
+     * @return the IP Prefix resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public IpPrefixInner update(String resourceGroupName, String ipPrefixName, IpPrefixPatch body) {
@@ -878,7 +878,7 @@ public final class IpPrefixesClientImpl implements IpPrefixesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the IPPrefix resource definition.
+     * @return the IP Prefix resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public IpPrefixInner update(String resourceGroupName, String ipPrefixName, IpPrefixPatch body, Context context) {
@@ -1141,7 +1141,7 @@ public final class IpPrefixesClientImpl implements IpPrefixesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of IpPrefixes along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return list of IP Prefixes along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<IpPrefixInner>> listByResourceGroupSinglePageAsync(String resourceGroupName) {
@@ -1195,7 +1195,7 @@ public final class IpPrefixesClientImpl implements IpPrefixesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of IpPrefixes along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return list of IP Prefixes along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<IpPrefixInner>> listByResourceGroupSinglePageAsync(
@@ -1246,7 +1246,7 @@ public final class IpPrefixesClientImpl implements IpPrefixesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of IpPrefixes as paginated response with {@link PagedFlux}.
+     * @return list of IP Prefixes as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<IpPrefixInner> listByResourceGroupAsync(String resourceGroupName) {
@@ -1265,7 +1265,7 @@ public final class IpPrefixesClientImpl implements IpPrefixesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of IpPrefixes as paginated response with {@link PagedFlux}.
+     * @return list of IP Prefixes as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<IpPrefixInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
@@ -1283,7 +1283,7 @@ public final class IpPrefixesClientImpl implements IpPrefixesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of IpPrefixes as paginated response with {@link PagedIterable}.
+     * @return list of IP Prefixes as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<IpPrefixInner> listByResourceGroup(String resourceGroupName) {
@@ -1300,7 +1300,7 @@ public final class IpPrefixesClientImpl implements IpPrefixesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of IpPrefixes as paginated response with {@link PagedIterable}.
+     * @return list of IP Prefixes as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<IpPrefixInner> listByResourceGroup(String resourceGroupName, Context context) {
@@ -1314,7 +1314,7 @@ public final class IpPrefixesClientImpl implements IpPrefixesClient {
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of IpPrefixes along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return list of IP Prefixes along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<IpPrefixInner>> listSinglePageAsync() {
@@ -1362,7 +1362,7 @@ public final class IpPrefixesClientImpl implements IpPrefixesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of IpPrefixes along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return list of IP Prefixes along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<IpPrefixInner>> listSinglePageAsync(Context context) {
@@ -1405,7 +1405,7 @@ public final class IpPrefixesClientImpl implements IpPrefixesClient {
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of IpPrefixes as paginated response with {@link PagedFlux}.
+     * @return list of IP Prefixes as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<IpPrefixInner> listAsync() {
@@ -1422,7 +1422,7 @@ public final class IpPrefixesClientImpl implements IpPrefixesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of IpPrefixes as paginated response with {@link PagedFlux}.
+     * @return list of IP Prefixes as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<IpPrefixInner> listAsync(Context context) {
@@ -1437,7 +1437,7 @@ public final class IpPrefixesClientImpl implements IpPrefixesClient {
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of IpPrefixes as paginated response with {@link PagedIterable}.
+     * @return list of IP Prefixes as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<IpPrefixInner> list() {
@@ -1453,7 +1453,7 @@ public final class IpPrefixesClientImpl implements IpPrefixesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of IpPrefixes as paginated response with {@link PagedIterable}.
+     * @return list of IP Prefixes as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<IpPrefixInner> list(Context context) {
@@ -1468,7 +1468,7 @@ public final class IpPrefixesClientImpl implements IpPrefixesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of IpPrefixes along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return list of IP Prefixes along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<IpPrefixInner>> listByResourceGroupNextSinglePageAsync(String nextLink) {
@@ -1506,7 +1506,7 @@ public final class IpPrefixesClientImpl implements IpPrefixesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of IpPrefixes along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return list of IP Prefixes along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<IpPrefixInner>> listByResourceGroupNextSinglePageAsync(
@@ -1543,7 +1543,7 @@ public final class IpPrefixesClientImpl implements IpPrefixesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of IpPrefixes along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return list of IP Prefixes along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<IpPrefixInner>> listBySubscriptionNextSinglePageAsync(String nextLink) {
@@ -1581,7 +1581,7 @@ public final class IpPrefixesClientImpl implements IpPrefixesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of IpPrefixes along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return list of IP Prefixes along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<IpPrefixInner>> listBySubscriptionNextSinglePageAsync(String nextLink, Context context) {

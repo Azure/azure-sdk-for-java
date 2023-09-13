@@ -7,7 +7,7 @@ package com.azure.resourcemanager.compute.generated;
 /** Samples for VirtualMachineScaleSetVMs RetrieveBootDiagnosticsData. */
 public final class VirtualMachineScaleSetVMsRetrieveBootDiagnosticsDataSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSetVM_RetrieveBootDiagnosticsData.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-07-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSetVM_RetrieveBootDiagnosticsData.json
      */
     /**
      * Sample code: RetrieveBootDiagnosticsData of a virtual machine.

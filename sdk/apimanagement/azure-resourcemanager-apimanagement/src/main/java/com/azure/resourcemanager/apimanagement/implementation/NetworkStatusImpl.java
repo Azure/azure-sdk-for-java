@@ -31,21 +31,6 @@ public final class NetworkStatusImpl implements NetworkStatus {
         this.serviceManager = serviceManager;
     }
 
-    public List<NetworkStatusContractByLocation> listByService(String resourceGroupName, String serviceName) {
-        List<NetworkStatusContractByLocationInner> inner =
-            this.serviceClient().listByService(resourceGroupName, serviceName);
-        if (inner != null) {
-            return Collections
-                .unmodifiableList(
-                    inner
-                        .stream()
-                        .map(inner1 -> new NetworkStatusContractByLocationImpl(inner1, this.manager()))
-                        .collect(Collectors.toList()));
-        } else {
-            return Collections.emptyList();
-        }
-    }
-
     public Response<List<NetworkStatusContractByLocation>> listByServiceWithResponse(
         String resourceGroupName, String serviceName, Context context) {
         Response<List<NetworkStatusContractByLocationInner>> inner =
@@ -65,13 +50,18 @@ public final class NetworkStatusImpl implements NetworkStatus {
         }
     }
 
-    public NetworkStatusContract listByLocation(String resourceGroupName, String serviceName, String locationName) {
-        NetworkStatusContractInner inner =
-            this.serviceClient().listByLocation(resourceGroupName, serviceName, locationName);
+    public List<NetworkStatusContractByLocation> listByService(String resourceGroupName, String serviceName) {
+        List<NetworkStatusContractByLocationInner> inner =
+            this.serviceClient().listByService(resourceGroupName, serviceName);
         if (inner != null) {
-            return new NetworkStatusContractImpl(inner, this.manager());
+            return Collections
+                .unmodifiableList(
+                    inner
+                        .stream()
+                        .map(inner1 -> new NetworkStatusContractByLocationImpl(inner1, this.manager()))
+                        .collect(Collectors.toList()));
         } else {
-            return null;
+            return Collections.emptyList();
         }
     }
 
@@ -85,6 +75,16 @@ public final class NetworkStatusImpl implements NetworkStatus {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new NetworkStatusContractImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public NetworkStatusContract listByLocation(String resourceGroupName, String serviceName, String locationName) {
+        NetworkStatusContractInner inner =
+            this.serviceClient().listByLocation(resourceGroupName, serviceName, locationName);
+        if (inner != null) {
+            return new NetworkStatusContractImpl(inner, this.manager());
         } else {
             return null;
         }

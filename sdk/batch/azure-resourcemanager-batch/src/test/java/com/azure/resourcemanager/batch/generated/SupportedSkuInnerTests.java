@@ -6,20 +6,19 @@ package com.azure.resourcemanager.batch.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.batch.fluent.models.SupportedSkuInner;
-import org.junit.jupiter.api.Test;
 
 public final class SupportedSkuInnerTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         SupportedSkuInner model =
             BinaryData
                 .fromString(
-                    "{\"name\":\"l\",\"familyName\":\"x\",\"capabilities\":[{\"name\":\"tzxdpnqbqqwx\",\"value\":\"feallnwsu\"}]}")
+                    "{\"name\":\"uhrhcffcyddgl\",\"familyName\":\"t\",\"capabilities\":[{\"name\":\"wpyeicxmqciwqvh\",\"value\":\"ixuigdtopbobj\"},{\"name\":\"hm\",\"value\":\"u\"},{\"name\":\"a\",\"value\":\"rzayv\"}]}")
                 .toObject(SupportedSkuInner.class);
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         SupportedSkuInner model = new SupportedSkuInner();
         model = BinaryData.fromObject(model).toObject(SupportedSkuInner.class);
     }

@@ -119,6 +119,20 @@ public class ExecutionActivity extends Activity {
 
     /** {@inheritDoc} */
     @Override
+    public ExecutionActivity setState(ActivityState state) {
+        super.setState(state);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ExecutionActivity setOnInactiveMarkAs(ActivityOnInactiveMarkAs onInactiveMarkAs) {
+        super.setOnInactiveMarkAs(onInactiveMarkAs);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
     public ExecutionActivity setDependsOn(List<ActivityDependency> dependsOn) {
         super.setDependsOn(dependsOn);
         return this;

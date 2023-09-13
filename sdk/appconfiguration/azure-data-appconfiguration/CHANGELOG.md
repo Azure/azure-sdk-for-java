@@ -1,14 +1,58 @@
 # Release History
 
-## 1.5.0-beta.1 (Unreleased)
+## 1.5.0-beta.2 (Unreleased)
 
 ### Features Added
 
+- Added `SnapshotFields` enum to support fields selection for snapshot.
+- Added a property `List<SnapshotFields> fields` in class `SnapshotSelector` to support fields selection for snapshot.
+
 ### Breaking Changes
+Note: Below breaking changes only affect the version `1.5.0-beta.1`.
+
+- Changed `listConfigurationSettingsForSnapshot` method's `SettingFields[] fields` parameter type to `List<SettingFields> fields`.
+- Renamed `ConfigurationSettingSnapshot` to `ConfigurationSettingsSnapshot`.
+- Renamed `ConfigurationSettingSnapshot`'s property name, `size` to `sizeInBytes`.
 
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.4.8 (2023-08-18)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.41.0` to version `1.42.0`.
+- Upgraded `azure-core-http-netty` from `1.13.5` to version `1.13.6`.
+
+## 1.4.7 (2023-07-25)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.40.0` to version `1.41.0`.
+- Upgraded `azure-core-http-netty` from `1.13.4` to version `1.13.5`.
+
+
+## 1.5.0-beta.1 (2023-07-11)
+
+### Features Added
+
+- Added new feature, `Configuration Setting Snapshot` to the library. You can create, get,
+  update(archive and recover) a snapshot, and list snapshots.
+- Added new APIs to support listing configuration settings by given snapshot name and setting 
+  fields.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Added a new dependency `azure-json`, version `1.0.1`.
+- Upgraded `azure-core` from `1.40.0` to version `1.40.1`.
+- Upgraded `azure-core-http-netty` from `1.13.4` to version `1.13.5`.
 
 ## 1.4.6 (2023-06-20)
 

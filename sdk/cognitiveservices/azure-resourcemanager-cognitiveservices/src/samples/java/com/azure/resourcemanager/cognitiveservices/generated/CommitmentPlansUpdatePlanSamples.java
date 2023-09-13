@@ -11,7 +11,7 @@ import java.util.Map;
 /** Samples for CommitmentPlans UpdatePlan. */
 public final class CommitmentPlansUpdatePlanSamples {
     /*
-     * x-ms-original-file: specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2022-12-01/examples/UpdateSharedCommitmentPlan.json
+     * x-ms-original-file: specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2023-05-01/examples/UpdateSharedCommitmentPlan.json
      */
     /**
      * Sample code: Create Commitment Plan.

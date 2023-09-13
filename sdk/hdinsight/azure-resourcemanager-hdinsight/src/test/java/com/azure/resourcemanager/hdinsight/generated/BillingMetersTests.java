@@ -7,27 +7,26 @@ package com.azure.resourcemanager.hdinsight.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.hdinsight.models.BillingMeters;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class BillingMetersTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         BillingMeters model =
             BinaryData
-                .fromString("{\"meterParameter\":\"t\",\"meter\":\"fhpagmhrskdsnf\",\"unit\":\"doakgtdlmkkzevdl\"}")
+                .fromString("{\"meterParameter\":\"fqntcyp\",\"meter\":\"jv\",\"unit\":\"imwkslircizj\"}")
                 .toObject(BillingMeters.class);
-        Assertions.assertEquals("t", model.meterParameter());
-        Assertions.assertEquals("fhpagmhrskdsnf", model.meter());
-        Assertions.assertEquals("doakgtdlmkkzevdl", model.unit());
+        Assertions.assertEquals("fqntcyp", model.meterParameter());
+        Assertions.assertEquals("jv", model.meter());
+        Assertions.assertEquals("imwkslircizj", model.unit());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         BillingMeters model =
-            new BillingMeters().withMeterParameter("t").withMeter("fhpagmhrskdsnf").withUnit("doakgtdlmkkzevdl");
+            new BillingMeters().withMeterParameter("fqntcyp").withMeter("jv").withUnit("imwkslircizj");
         model = BinaryData.fromObject(model).toObject(BillingMeters.class);
-        Assertions.assertEquals("t", model.meterParameter());
-        Assertions.assertEquals("fhpagmhrskdsnf", model.meter());
-        Assertions.assertEquals("doakgtdlmkkzevdl", model.unit());
+        Assertions.assertEquals("fqntcyp", model.meterParameter());
+        Assertions.assertEquals("jv", model.meter());
+        Assertions.assertEquals("imwkslircizj", model.unit());
     }
 }

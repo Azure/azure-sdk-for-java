@@ -16,10 +16,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class BatchDocumentTranslationRestClientTests extends BatchDocumentTranslationClientTestBase {
     @Test
     public void testGetSupportedDocumentFormats() {
-        BatchDocumentTranslationRestClient client = getClient();
-        String response = client.getSupportedDocumentFormats()
-            .send()
-            .getBody()
+        BatchDocumentTranslationClient client = getClient();
+        String response = client.getSupportedDocumentFormatsWithResponse(null)
+            .getValue()
             .toString();
 
         assertNotNull(response);
@@ -33,10 +32,9 @@ public class BatchDocumentTranslationRestClientTests extends BatchDocumentTransl
 
     @Test
     public void testGetSupportedGlossaryFormats() {
-        BatchDocumentTranslationRestClient client = getClient();
-        String response = client.getSupportedGlossaryFormats()
-            .send()
-            .getBody()
+        BatchDocumentTranslationClient client = getClient();
+        String response = client.getSupportedGlossaryFormatsWithResponse(null)
+            .getValue()
             .toString();
 
         assertNotNull(response);

@@ -7,7 +7,7 @@ package com.azure.resourcemanager.kusto.generated;
 /** Samples for PrivateLinkResources Get. */
 public final class PrivateLinkResourcesGetSamples {
     /*
-     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2022-12-29/examples/KustoPrivateLinkResourcesGet.json
+     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-05-02/examples/KustoPrivateLinkResourcesGet.json
      */
     /**
      * Sample code: Gets private endpoint connection.

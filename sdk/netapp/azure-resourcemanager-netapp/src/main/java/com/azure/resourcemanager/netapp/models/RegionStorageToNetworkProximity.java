@@ -23,8 +23,20 @@ public final class RegionStorageToNetworkProximity extends ExpandableStringEnum<
     /** Static value T2 for RegionStorageToNetworkProximity. */
     public static final RegionStorageToNetworkProximity T2 = fromString("T2");
 
+    /** Static value AcrossT2 for RegionStorageToNetworkProximity. */
+    public static final RegionStorageToNetworkProximity ACROSS_T2 = fromString("AcrossT2");
+
     /** Static value T1AndT2 for RegionStorageToNetworkProximity. */
     public static final RegionStorageToNetworkProximity T1AND_T2 = fromString("T1AndT2");
+
+    /** Static value T1AndAcrossT2 for RegionStorageToNetworkProximity. */
+    public static final RegionStorageToNetworkProximity T1AND_ACROSS_T2 = fromString("T1AndAcrossT2");
+
+    /** Static value T2AndAcrossT2 for RegionStorageToNetworkProximity. */
+    public static final RegionStorageToNetworkProximity T2AND_ACROSS_T2 = fromString("T2AndAcrossT2");
+
+    /** Static value T1AndT2AndAcrossT2 for RegionStorageToNetworkProximity. */
+    public static final RegionStorageToNetworkProximity T1AND_T2AND_ACROSS_T2 = fromString("T1AndT2AndAcrossT2");
 
     /**
      * Creates a new instance of RegionStorageToNetworkProximity value.

@@ -60,6 +60,7 @@ import com.microsoft.azure.management.apigeneration.Beta;
 
 import java.lang.reflect.Type;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 /**
@@ -184,7 +185,7 @@ final class SystemEventTypeMappings {
         if (eventType == null) {
             return null;
         } else {
-            return eventType.toLowerCase();
+            return eventType.toLowerCase(Locale.ROOT);
         }
     }
 }

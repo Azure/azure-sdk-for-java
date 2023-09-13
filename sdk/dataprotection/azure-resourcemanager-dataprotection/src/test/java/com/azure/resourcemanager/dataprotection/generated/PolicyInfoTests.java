@@ -19,9 +19,9 @@ public final class PolicyInfoTests {
         PolicyInfo model =
             BinaryData
                 .fromString(
-                    "{\"policyId\":\"mjmvxieduugidyjr\",\"policyVersion\":\"byao\",\"policyParameters\":{\"dataStoreParametersList\":[{\"objectType\":\"DataStoreParameters\",\"dataStoreType\":\"ArchiveStore\"}],\"backupDatasourceParametersList\":[{\"objectType\":\"BackupDatasourceParameters\"}]}}")
+                    "{\"policyId\":\"jn\",\"policyVersion\":\"ckhsmtxpsieb\",\"policyParameters\":{\"dataStoreParametersList\":[{\"objectType\":\"DataStoreParameters\",\"dataStoreType\":\"ArchiveStore\"},{\"objectType\":\"DataStoreParameters\",\"dataStoreType\":\"OperationalStore\"},{\"objectType\":\"DataStoreParameters\",\"dataStoreType\":\"VaultStore\"},{\"objectType\":\"DataStoreParameters\",\"dataStoreType\":\"OperationalStore\"}],\"backupDatasourceParametersList\":[{\"objectType\":\"BackupDatasourceParameters\"},{\"objectType\":\"BackupDatasourceParameters\"},{\"objectType\":\"BackupDatasourceParameters\"}]}}")
                 .toObject(PolicyInfo.class);
-        Assertions.assertEquals("mjmvxieduugidyjr", model.policyId());
+        Assertions.assertEquals("jn", model.policyId());
         Assertions
             .assertEquals(
                 DataStoreTypes.ARCHIVE_STORE,
@@ -32,14 +32,24 @@ public final class PolicyInfoTests {
     public void testSerialize() throws Exception {
         PolicyInfo model =
             new PolicyInfo()
-                .withPolicyId("mjmvxieduugidyjr")
+                .withPolicyId("jn")
                 .withPolicyParameters(
                     new PolicyParameters()
                         .withDataStoreParametersList(
-                            Arrays.asList(new DataStoreParameters().withDataStoreType(DataStoreTypes.ARCHIVE_STORE)))
-                        .withBackupDatasourceParametersList(Arrays.asList(new BackupDatasourceParameters())));
+                            Arrays
+                                .asList(
+                                    new DataStoreParameters().withDataStoreType(DataStoreTypes.ARCHIVE_STORE),
+                                    new DataStoreParameters().withDataStoreType(DataStoreTypes.OPERATIONAL_STORE),
+                                    new DataStoreParameters().withDataStoreType(DataStoreTypes.VAULT_STORE),
+                                    new DataStoreParameters().withDataStoreType(DataStoreTypes.OPERATIONAL_STORE)))
+                        .withBackupDatasourceParametersList(
+                            Arrays
+                                .asList(
+                                    new BackupDatasourceParameters(),
+                                    new BackupDatasourceParameters(),
+                                    new BackupDatasourceParameters())));
         model = BinaryData.fromObject(model).toObject(PolicyInfo.class);
-        Assertions.assertEquals("mjmvxieduugidyjr", model.policyId());
+        Assertions.assertEquals("jn", model.policyId());
         Assertions
             .assertEquals(
                 DataStoreTypes.ARCHIVE_STORE,

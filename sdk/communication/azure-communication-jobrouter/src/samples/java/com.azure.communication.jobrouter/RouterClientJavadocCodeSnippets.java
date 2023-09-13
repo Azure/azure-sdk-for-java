@@ -5,59 +5,59 @@ package com.azure.communication.jobrouter;
 
 public final class RouterClientJavadocCodeSnippets {
 
-    public RouterClient createRouterClient() {
+    public JobRouterClient createRouterClient() {
         String connectionString = "endpoint=https://<RESOURCE_NAME>.communication.azure.com;accesskey=<ACCESS_KEY>";
 
-        // BEGIN: com.azure.communication.jobrouter.routerclient.instantiation
-        // Initialize the router client builder
-        final RouterClientBuilder builder = new RouterClientBuilder()
+        // BEGIN: com.azure.communication.jobrouter.jobrouterclient.instantiation
+        // Initialize the jobrouter client builder
+        final JobRouterClientBuilder builder = new JobRouterClientBuilder()
             .connectionString(connectionString);
-        // Build the router client
-        RouterClient routerClient = builder.buildClient();
+        // Build the jobrouter client
+        JobRouterClient jobRouterClient = builder.buildClient();
 
-        // END: com.azure.communication.jobrouter.routerclient.instantiation
-        return routerClient;
+        // END: com.azure.communication.jobrouter.jobrouterclient.instantiation
+        return jobRouterClient;
     }
 
-    public RouterAsyncClient createRouterAsyncClient() {
+    public JobRouterAsyncClient createRouterAsyncClient() {
         String connectionString = "endpoint=https://<RESOURCE_NAME>.communication.azure.com;accesskey=<ACCESS_KEY>";
 
-        // BEGIN: com.azure.communication.jobrouter.routerasyncclient.instantiation
-        // Initialize the router client builder
-        final RouterClientBuilder builder = new RouterClientBuilder()
+        // BEGIN: com.azure.communication.jobrouter.jobrouterasyncclient.instantiation
+        // Initialize the jobrouter client builder
+        final JobRouterClientBuilder builder = new JobRouterClientBuilder()
             .connectionString(connectionString);
-        // Build the router client
-        RouterAsyncClient routerAsyncClient = builder.buildAsyncClient();
+        // Build the jobrouter client
+        JobRouterAsyncClient jobRouterAsyncClient = builder.buildAsyncClient();
 
-        // END: com.azure.communication.jobrouter.routerasyncclient.instantiation
-        return routerAsyncClient;
+        // END: com.azure.communication.jobrouter.jobrouterasyncclient.instantiation
+        return jobRouterAsyncClient;
     }
 
-    public RouterAdministrationClient createRouterAdminClient() {
+    public JobRouterAdministrationClient createRouterAdminClient() {
         String connectionString = "endpoint=https://<RESOURCE_NAME>.communication.azure.com;accesskey=<ACCESS_KEY>";
 
-        // BEGIN: com.azure.communication.jobrouter.routeradministrationclient.instantiation
-        // Initialize the router administration client builder
-        final RouterAdministrationClientBuilder builder = new RouterAdministrationClientBuilder()
+        // BEGIN: com.azure.communication.jobrouter.jobrouteradministrationclient.instantiation
+        // Initialize the jobrouter administration client builder
+        final JobRouterAdministrationClientBuilder builder = new JobRouterAdministrationClientBuilder()
             .connectionString(connectionString);
-        // Build the router administration client
-        RouterAdministrationClient routerAdministrationClient = builder.buildClient();
+        // Build the jobrouter administration client
+        JobRouterAdministrationClient jobRouterAdministrationClient = builder.buildClient();
 
-        // END: com.azure.communication.jobrouter.routeradministrationclient.instantiation
-        return routerAdministrationClient;
+        // END: com.azure.communication.jobrouter.jobrouteradministrationclient.instantiation
+        return jobRouterAdministrationClient;
     }
 
-    public RouterAdministrationAsyncClient createRouterAdminAsyncClient() {
+    public JobRouterAdministrationAsyncClient createRouterAdminAsyncClient() {
         String connectionString = "endpoint=https://<RESOURCE_NAME>.communication.azure.com;accesskey=<ACCESS_KEY>";
 
-        // BEGIN: com.azure.communication.jobrouter.routeradministrationasyncclient.instantiation
-        // Initialize the router administration client builder
-        final RouterAdministrationClientBuilder builder = new RouterAdministrationClientBuilder()
+        // BEGIN: com.azure.communication.jobrouter.jobrouteradministrationasyncclient.instantiation
+        // Initialize the jobrouter administration client builder
+        final JobRouterAdministrationClientBuilder builder = new JobRouterAdministrationClientBuilder()
             .connectionString(connectionString);
-        // Build the router administration client
-        RouterAdministrationAsyncClient routerAdministrationClient = builder.buildAsyncClient();
+        // Build the jobrouter administration client
+        JobRouterAdministrationAsyncClient jobrouterAdministrationClient = builder.buildAsyncClient();
 
-        // END: com.azure.communication.jobrouter.routeradministrationasyncclient.instantiation
-        return routerAdministrationClient;
+        // END: com.azure.communication.jobrouter.jobrouteradministrationasyncclient.instantiation
+        return jobrouterAdministrationClient;
     }
 }

@@ -15,10 +15,10 @@ public final class LanguageExtensionInnerTests {
     public void testDeserialize() throws Exception {
         LanguageExtensionInner model =
             BinaryData
-                .fromString("{\"languageExtensionName\":\"PYTHON\",\"languageExtensionImageName\":\"Python3_10_8\"}")
+                .fromString("{\"languageExtensionName\":\"PYTHON\",\"languageExtensionImageName\":\"Python3_6_5\"}")
                 .toObject(LanguageExtensionInner.class);
         Assertions.assertEquals(LanguageExtensionName.PYTHON, model.languageExtensionName());
-        Assertions.assertEquals(LanguageExtensionImageName.PYTHON3_10_8, model.languageExtensionImageName());
+        Assertions.assertEquals(LanguageExtensionImageName.PYTHON3_6_5, model.languageExtensionImageName());
     }
 
     @org.junit.jupiter.api.Test
@@ -26,9 +26,9 @@ public final class LanguageExtensionInnerTests {
         LanguageExtensionInner model =
             new LanguageExtensionInner()
                 .withLanguageExtensionName(LanguageExtensionName.PYTHON)
-                .withLanguageExtensionImageName(LanguageExtensionImageName.PYTHON3_10_8);
+                .withLanguageExtensionImageName(LanguageExtensionImageName.PYTHON3_6_5);
         model = BinaryData.fromObject(model).toObject(LanguageExtensionInner.class);
         Assertions.assertEquals(LanguageExtensionName.PYTHON, model.languageExtensionName());
-        Assertions.assertEquals(LanguageExtensionImageName.PYTHON3_10_8, model.languageExtensionImageName());
+        Assertions.assertEquals(LanguageExtensionImageName.PYTHON3_6_5, model.languageExtensionImageName());
     }
 }

@@ -206,6 +206,20 @@ public class AzureMLExecutePipelineActivity extends ExecutionActivity {
 
     /** {@inheritDoc} */
     @Override
+    public AzureMLExecutePipelineActivity setState(ActivityState state) {
+        super.setState(state);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureMLExecutePipelineActivity setOnInactiveMarkAs(ActivityOnInactiveMarkAs onInactiveMarkAs) {
+        super.setOnInactiveMarkAs(onInactiveMarkAs);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
     public AzureMLExecutePipelineActivity setDependsOn(List<ActivityDependency> dependsOn) {
         super.setDependsOn(dependsOn);
         return this;

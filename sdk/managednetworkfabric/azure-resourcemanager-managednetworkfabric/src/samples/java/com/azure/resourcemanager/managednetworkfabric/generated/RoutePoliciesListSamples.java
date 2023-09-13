@@ -7,7 +7,7 @@ package com.azure.resourcemanager.managednetworkfabric.generated;
 /** Samples for RoutePolicies List. */
 public final class RoutePoliciesListSamples {
     /*
-     * x-ms-original-file: specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/preview/2023-02-01-preview/examples/RoutePolicies_ListBySubscription_MaximumSet_Gen.json
+     * x-ms-original-file: specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/RoutePolicies_ListBySubscription_MaximumSet_Gen.json
      */
     /**
      * Sample code: RoutePolicies_ListBySubscription_MaximumSet_Gen.

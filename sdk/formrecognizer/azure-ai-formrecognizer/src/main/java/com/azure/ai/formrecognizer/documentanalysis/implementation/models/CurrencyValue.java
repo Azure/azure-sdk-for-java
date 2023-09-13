@@ -4,12 +4,12 @@
 
 package com.azure.ai.formrecognizer.documentanalysis.implementation.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Currency field value. */
-@Fluent
+@Immutable
 public final class CurrencyValue {
     /*
      * Currency amount.
@@ -35,7 +35,7 @@ public final class CurrencyValue {
      * @param amount the amount value to set.
      */
     @JsonCreator
-    public CurrencyValue(@JsonProperty(value = "amount", required = true) double amount) {
+    private CurrencyValue(@JsonProperty(value = "amount", required = true) double amount) {
         this.amount = amount;
     }
 
@@ -58,33 +58,11 @@ public final class CurrencyValue {
     }
 
     /**
-     * Set the currencySymbol property: Currency symbol label, if any.
-     *
-     * @param currencySymbol the currencySymbol value to set.
-     * @return the CurrencyValue object itself.
-     */
-    public CurrencyValue setCurrencySymbol(String currencySymbol) {
-        this.currencySymbol = currencySymbol;
-        return this;
-    }
-
-    /**
      * Get the currencyCode property: Resolved currency code (ISO 4217), if any.
      *
      * @return the currencyCode value.
      */
     public String getCurrencyCode() {
         return this.currencyCode;
-    }
-
-    /**
-     * Set the currencyCode property: Resolved currency code (ISO 4217), if any.
-     *
-     * @param currencyCode the currencyCode value to set.
-     * @return the CurrencyValue object itself.
-     */
-    public CurrencyValue setCurrencyCode(String currencyCode) {
-        this.currencyCode = currencyCode;
-        return this;
     }
 }

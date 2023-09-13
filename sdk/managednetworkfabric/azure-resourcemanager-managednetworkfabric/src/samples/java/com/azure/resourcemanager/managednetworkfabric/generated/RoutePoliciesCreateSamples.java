@@ -6,9 +6,11 @@ package com.azure.resourcemanager.managednetworkfabric.generated;
 
 import com.azure.resourcemanager.managednetworkfabric.models.ActionIpCommunityProperties;
 import com.azure.resourcemanager.managednetworkfabric.models.ActionIpExtendedCommunityProperties;
-import com.azure.resourcemanager.managednetworkfabric.models.CommunityActionTypes;
+import com.azure.resourcemanager.managednetworkfabric.models.AddressFamilyType;
 import com.azure.resourcemanager.managednetworkfabric.models.IpCommunityIdList;
 import com.azure.resourcemanager.managednetworkfabric.models.IpExtendedCommunityIdList;
+import com.azure.resourcemanager.managednetworkfabric.models.RoutePolicyActionType;
+import com.azure.resourcemanager.managednetworkfabric.models.RoutePolicyConditionType;
 import com.azure.resourcemanager.managednetworkfabric.models.RoutePolicyStatementProperties;
 import com.azure.resourcemanager.managednetworkfabric.models.StatementActionProperties;
 import com.azure.resourcemanager.managednetworkfabric.models.StatementConditionProperties;
@@ -19,7 +21,7 @@ import java.util.Map;
 /** Samples for RoutePolicies Create. */
 public final class RoutePoliciesCreateSamples {
     /*
-     * x-ms-original-file: specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/preview/2023-02-01-preview/examples/RoutePolicies_Create_MaximumSet_Gen.json
+     * x-ms-original-file: specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/RoutePolicies_Create_MaximumSet_Gen.json
      */
     /**
      * Sample code: RoutePolicies_Create_MaximumSet_Gen.
@@ -30,31 +32,36 @@ public final class RoutePoliciesCreateSamples {
         com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager manager) {
         manager
             .routePolicies()
-            .define("routePolicyName")
-            .withRegion("EastUS")
-            .withExistingResourceGroup("rgRoutePolicies")
+            .define("example-routePolicy")
+            .withRegion("eastus")
+            .withExistingResourceGroup("example-rg")
+            .withNetworkFabricId(
+                "/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkFabrics/example-fabric")
+            .withTags(mapOf("keyID", "fakeTokenPlaceholder"))
+            .withAddressFamilyType(AddressFamilyType.IPV4)
             .withStatements(
                 Arrays
                     .asList(
                         new RoutePolicyStatementProperties()
-                            .withAnnotation("annotationValue")
+                            .withAnnotation("annotation")
                             .withSequenceNumber(7L)
                             .withCondition(
                                 new StatementConditionProperties()
                                     .withIpCommunityIds(
                                         Arrays
                                             .asList(
-                                                "/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/ipCommunities/ipCommunityName"))
+                                                "/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/ipCommunities/example-ipCommunity"))
+                                    .withType(RoutePolicyConditionType.OR)
                                     .withIpPrefixId(
-                                        "subscriptions/xxxxxx/resourceGroups/resourcegroupname/providers/Microsoft.ManagedNetworkFabric/ipPrefixes/example-ipPrefix")
+                                        "/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/ipPrefixes/example-ipPrefix")
                                     .withIpExtendedCommunityIds(
                                         Arrays
                                             .asList(
-                                                "/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/ipExtendedCommunities/ipExtendedCommunityName")))
+                                                "/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/ipExtendedCommunities/example-ipExtendedCommunity")))
                             .withAction(
                                 new StatementActionProperties()
                                     .withLocalPreference(20L)
-                                    .withActionType(CommunityActionTypes.PERMIT)
+                                    .withActionType(RoutePolicyActionType.PERMIT)
                                     .withIpCommunityProperties(
                                         new ActionIpCommunityProperties()
                                             .withAdd(
@@ -62,19 +69,19 @@ public final class RoutePoliciesCreateSamples {
                                                     .withIpCommunityIds(
                                                         Arrays
                                                             .asList(
-                                                                "/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/ipCommunities/ipCommunityName")))
+                                                                "/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/ipCommunities/example-ipCommunity")))
                                             .withDelete(
                                                 new IpCommunityIdList()
                                                     .withIpCommunityIds(
                                                         Arrays
                                                             .asList(
-                                                                "/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/ipCommunities/ipCommunityName")))
+                                                                "/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/ipCommunities/example-ipCommunity")))
                                             .withSet(
                                                 new IpCommunityIdList()
                                                     .withIpCommunityIds(
                                                         Arrays
                                                             .asList(
-                                                                "/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/ipCommunities/ipCommunityName"))))
+                                                                "/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/ipCommunities/example-ipCommunity"))))
                                     .withIpExtendedCommunityProperties(
                                         new ActionIpExtendedCommunityProperties()
                                             .withAdd(
@@ -82,21 +89,20 @@ public final class RoutePoliciesCreateSamples {
                                                     .withIpExtendedCommunityIds(
                                                         Arrays
                                                             .asList(
-                                                                "/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/ipExtendedCommunities/ipExtendedCommunityName")))
+                                                                "/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/ipExtendedCommunities/example-ipExtendedCommunity")))
                                             .withDelete(
                                                 new IpExtendedCommunityIdList()
                                                     .withIpExtendedCommunityIds(
                                                         Arrays
                                                             .asList(
-                                                                "/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/ipExtendedCommunities/ipExtendedCommunityName")))
+                                                                "/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/ipExtendedCommunities/example-ipExtendedCommunity")))
                                             .withSet(
                                                 new IpExtendedCommunityIdList()
                                                     .withIpExtendedCommunityIds(
                                                         Arrays
                                                             .asList(
-                                                                "/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/ipExtendedCommunities/ipExtendedCommunityName")))))))
-            .withTags(mapOf("key8254", ""))
-            .withAnnotation("annotationValue")
+                                                                "/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/ipExtendedCommunities/example-ipExtendedCommunity")))))))
+            .withAnnotation("annotation")
             .create();
     }
 

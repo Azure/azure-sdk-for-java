@@ -12,18 +12,16 @@ public final class ResourceLogCategoryTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ResourceLogCategory model =
-            BinaryData
-                .fromString("{\"name\":\"vjtoqnermclfp\",\"enabled\":\"hoxus\"}")
-                .toObject(ResourceLogCategory.class);
-        Assertions.assertEquals("vjtoqnermclfp", model.name());
-        Assertions.assertEquals("hoxus", model.enabled());
+            BinaryData.fromString("{\"name\":\"z\",\"enabled\":\"mrv\"}").toObject(ResourceLogCategory.class);
+        Assertions.assertEquals("z", model.name());
+        Assertions.assertEquals("mrv", model.enabled());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ResourceLogCategory model = new ResourceLogCategory().withName("vjtoqnermclfp").withEnabled("hoxus");
+        ResourceLogCategory model = new ResourceLogCategory().withName("z").withEnabled("mrv");
         model = BinaryData.fromObject(model).toObject(ResourceLogCategory.class);
-        Assertions.assertEquals("vjtoqnermclfp", model.name());
-        Assertions.assertEquals("hoxus", model.enabled());
+        Assertions.assertEquals("z", model.name());
+        Assertions.assertEquals("mrv", model.enabled());
     }
 }

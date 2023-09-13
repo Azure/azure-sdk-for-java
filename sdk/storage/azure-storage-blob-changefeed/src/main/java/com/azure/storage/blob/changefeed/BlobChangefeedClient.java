@@ -18,7 +18,7 @@ import java.time.OffsetDateTime;
 @ServiceClient(builder = BlobChangefeedClientBuilder.class)
 public class BlobChangefeedClient {
 
-    private final BlobChangefeedAsyncClient client;
+    final BlobChangefeedAsyncClient client;
 
     /**
      * Package-private constructor for use by {@link BlobChangefeedClientBuilder}.

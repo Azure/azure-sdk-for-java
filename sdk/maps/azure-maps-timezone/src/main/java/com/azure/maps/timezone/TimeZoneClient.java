@@ -43,7 +43,7 @@ public final class TimeZoneClient {
     /**
      * Initializes an instance of TimeZoneClient client.
      *
-     * @param serviceClient the service client implementation.
+     * @param asyncClient the service client implementation.
      */
     TimeZoneClient(TimeZoneAsyncClient asyncClient) {
         this.asyncClient = asyncClient;
@@ -62,7 +62,7 @@ public final class TimeZoneClient {
      *
      * <p>This API returns current, historical, and future time zone information for the specified IANA time zone ID.
      *
-     * @param options contains parameters for get timezone by id 
+     * @param options contains parameters for get timezone by id
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -86,7 +86,7 @@ public final class TimeZoneClient {
      *
      * <p>This API returns current, historical, and future time zone information for the specified IANA time zone ID.
      *
-     * @param options contains parameters for get timezone by id 
+     * @param options contains parameters for get timezone by id
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.

@@ -5,52 +5,36 @@ package com.azure.communication.networktraversal;
 
 import com.azure.communication.common.implementation.CommunicationConnectionString;
 import com.azure.communication.identity.CommunicationIdentityClientBuilder;
-import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.AzureKeyCredential;
-import com.azure.core.credential.TokenCredential;
-import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpResponse;
-import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.test.TestProxyTestBase;
+import com.azure.core.test.models.CustomMatcher;
+import com.azure.core.test.models.TestProxySanitizer;
+import com.azure.core.test.models.TestProxySanitizerType;
+import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.Configuration;
-import com.azure.core.util.CoreUtils;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import reactor.core.publisher.Mono;
 
-import java.time.OffsetDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
-import java.util.Locale;
-import java.util.StringJoiner;
-import java.util.function.Function;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
-public class CommunicationRelayClientTestBase extends TestBase {
-    protected static final TestMode TEST_MODE = initializeTestMode();
-
+public class CommunicationRelayClientTestBase extends TestProxyTestBase {
     protected static final String CONNECTION_STRING = Configuration.getGlobalConfiguration()
         .get("COMMUNICATION_LIVETEST_DYNAMIC_CONNECTION_STRING", "endpoint=https://REDACTED.communication.azure.com/;accesskey=QWNjZXNzS2V5");
 
-    private static final StringJoiner JSON_PROPERTIES_TO_REDACT
-        = new StringJoiner("\":\"|\"", "\"", "\":\"")
-        .add("token")
-        .add("id")
-        .add("credential");
-    private static final StringJoiner JSON_PROPERTIES_TO_REDACT_ARRAY
-        = new StringJoiner("\":\\[\"|\"", "\"", "\":\\[\"")
-        .add("urls");
-
-    private static final Pattern JSON_PROPERTY_VALUE_REDACTION_PATTERN
-        = Pattern.compile(String.format("(?:%s)(.*?)(?:\",|\"})", JSON_PROPERTIES_TO_REDACT.toString()),
-        Pattern.CASE_INSENSITIVE);
-
-    private static final Pattern JSON_PROPERTY_ARRAY_REDACTION_PATTERN
-        = Pattern.compile(String.format("(?:%s)(.*?)(?:\"\\],|\"\\]})", JSON_PROPERTIES_TO_REDACT_ARRAY.toString()),
-        Pattern.CASE_INSENSITIVE);
+    private static final List<String> JSON_PROPERTIES_TO_REDACT
+        = new ArrayList<>(Arrays.asList("token", "id", "credential"));
+    private static List<TestProxySanitizer> addBodyKeySanitizer() {
+        return JSON_PROPERTIES_TO_REDACT.stream().map(key -> new TestProxySanitizer(String.format("$..%s", key), null,
+            "REDACTED",
+            TestProxySanitizerType.BODY_KEY)).collect(Collectors.toList());
+    }
 
     protected CommunicationRelayClientBuilder createClientBuilder(HttpClient httpClient) {
         CommunicationRelayClientBuilder builder = new CommunicationRelayClientBuilder();
@@ -64,12 +48,9 @@ public class CommunicationRelayClientTestBase extends TestBase {
             .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient);
 
         if (getTestMode() == TestMode.RECORD) {
-            List<Function<String, String>> redactors = new ArrayList<>();
-            redactors.add(data -> redact(data, JSON_PROPERTY_VALUE_REDACTION_PATTERN.matcher(data), "REDACTED"));
-            redactors.add(data -> redact(data, JSON_PROPERTY_ARRAY_REDACTION_PATTERN.matcher(data), "redacted.skype.com:3400"));
-            builder.addPolicy(interceptorManager.getRecordPolicy(redactors));
+            builder.addPolicy(interceptorManager.getRecordPolicy());
         }
-
+        addSanitizersAndMatchers();
         return builder;
     }
 
@@ -81,46 +62,18 @@ public class CommunicationRelayClientTestBase extends TestBase {
 
         builder
             .endpoint(communicationEndpoint)
-            .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient);
+            .httpClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient);
 
         if (getTestMode() == TestMode.PLAYBACK) {
-            builder.credential(new FakeCredentials());
+            builder.credential(new MockTokenCredential());
         } else {
             builder.credential(new DefaultAzureCredentialBuilder().build());
         }
 
         if (getTestMode() == TestMode.RECORD) {
-            List<Function<String, String>> redactors = new ArrayList<>();
-            redactors.add(data -> redact(data, JSON_PROPERTY_VALUE_REDACTION_PATTERN.matcher(data), "REDACTED"));
-            redactors.add(data -> redact(data, JSON_PROPERTY_ARRAY_REDACTION_PATTERN.matcher(data), "redacted.skype.com:3400"));
-            builder.addPolicy(interceptorManager.getRecordPolicy(redactors));
+            builder.addPolicy(interceptorManager.getRecordPolicy());
         }
-
-        return builder;
-    }
-
-    protected CommunicationIdentityClientBuilder createClientIdentityBuilderUsingManagedIdentity(HttpClient httpClient) {
-        CommunicationIdentityClientBuilder builder = new CommunicationIdentityClientBuilder();
-
-        CommunicationConnectionString communicationConnectionString = new CommunicationConnectionString(CONNECTION_STRING);
-        String communicationEndpoint = communicationConnectionString.getEndpoint();
-
-        builder
-            .endpoint(communicationEndpoint)
-            .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient);
-
-        if (getTestMode() == TestMode.PLAYBACK) {
-            builder.credential(new FakeCredentials());
-        } else {
-            builder.credential(new DefaultAzureCredentialBuilder().build());
-        }
-
-        if (getTestMode() == TestMode.RECORD) {
-            List<Function<String, String>> redactors = new ArrayList<>();
-            redactors.add(data -> redact(data, JSON_PROPERTY_VALUE_REDACTION_PATTERN.matcher(data), "REDACTED"));
-            builder.addPolicy(interceptorManager.getRecordPolicy(redactors));
-        }
-
+        addSanitizersAndMatchers();
         return builder;
     }
 
@@ -128,15 +81,12 @@ public class CommunicationRelayClientTestBase extends TestBase {
         CommunicationRelayClientBuilder builder = new CommunicationRelayClientBuilder();
         builder
             .connectionString(CONNECTION_STRING)
-            .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient);
+            .httpClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient);
 
         if (getTestMode() == TestMode.RECORD) {
-            List<Function<String, String>> redactors = new ArrayList<>();
-            redactors.add(data -> redact(data, JSON_PROPERTY_VALUE_REDACTION_PATTERN.matcher(data), "REDACTED"));
-            redactors.add(data -> redact(data, JSON_PROPERTY_ARRAY_REDACTION_PATTERN.matcher(data), "redacted.skype.com:3400"));
-            builder.addPolicy(interceptorManager.getRecordPolicy(redactors));
+            builder.addPolicy(interceptorManager.getRecordPolicy());
         }
-
+        addSanitizersAndMatchers();
         return builder;
     }
 
@@ -144,40 +94,22 @@ public class CommunicationRelayClientTestBase extends TestBase {
         CommunicationIdentityClientBuilder builder = new CommunicationIdentityClientBuilder();
         builder
             .connectionString(CONNECTION_STRING)
-            .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient);
+            .httpClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient);
 
         if (getTestMode() == TestMode.RECORD) {
-            List<Function<String, String>> redactors = new ArrayList<>();
-            redactors.add(data -> redact(data, JSON_PROPERTY_VALUE_REDACTION_PATTERN.matcher(data), "REDACTED"));
-            redactors.add(data -> redact(data, JSON_PROPERTY_ARRAY_REDACTION_PATTERN.matcher(data), "redacted.skype.com:3400"));
-            builder.addPolicy(interceptorManager.getRecordPolicy(redactors));
+            builder.addPolicy(interceptorManager.getRecordPolicy());
         }
-
+        addSanitizersAndMatchers();
         return builder;
     }
 
-    private static TestMode initializeTestMode() {
-        ClientLogger logger = new ClientLogger(CommunicationRelayClientTestBase.class);
-        String azureTestMode = Configuration.getGlobalConfiguration().get("AZURE_TEST_MODE");
-        if (azureTestMode != null) {
-            System.out.println("azureTestMode: " + azureTestMode);
-            try {
-                return TestMode.valueOf(azureTestMode.toUpperCase(Locale.US));
-            } catch (IllegalArgumentException var3) {
-                logger.error("Could not parse '{}' into TestEnum. Using 'Playback' mode.", azureTestMode);
-                return TestMode.PLAYBACK;
-            }
-        } else {
-            logger.info("Environment variable '{}' has not been set yet. Using 'Playback' mode.", "AZURE_TEST_MODE");
-            return TestMode.PLAYBACK;
-        }
+    private void addSanitizersAndMatchers() {
+        interceptorManager.addMatchers(Arrays.asList(new CustomMatcher().setHeadersKeyOnlyMatch(
+            Arrays.asList("x-ms-hmac-string-to-sign-base64", "x-ms-content-sha", "x-ms-content-sha256"))));
+        interceptorManager.addSanitizers(addBodyKeySanitizer());
     }
 
     protected CommunicationRelayClientBuilder addLoggingPolicy(CommunicationRelayClientBuilder builder, String testName) {
-        return builder.addPolicy((context, next) -> logHeaders(testName, next));
-    }
-
-    protected CommunicationIdentityClientBuilder addLoggingPolicyIdentity(CommunicationIdentityClientBuilder builder, String testName) {
         return builder.addPolicy((context, next) -> logHeaders(testName, next));
     }
 
@@ -191,23 +123,5 @@ public class CommunicationRelayClientTestBase extends TestBase {
                     + bufferedResponse.getRequest().getUrl() + ": " + bufferedResponse.getHeaderValue("MS-CV"));
                 return Mono.just(bufferedResponse);
             });
-    }
-
-    static class FakeCredentials implements TokenCredential {
-        @Override
-        public Mono<AccessToken> getToken(TokenRequestContext tokenRequestContext) {
-            return Mono.just(new AccessToken("someFakeToken", OffsetDateTime.MAX));
-        }
-    }
-
-    private String redact(String content, Matcher matcher, String replacement) {
-        while (matcher.find()) {
-            String captureGroup = matcher.group(1);
-            if (!CoreUtils.isNullOrEmpty(captureGroup)) {
-                content = content.replace(matcher.group(1), replacement);
-            }
-        }
-
-        return content;
     }
 }

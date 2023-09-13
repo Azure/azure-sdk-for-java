@@ -53,25 +53,25 @@ public final class AppliancesClientImpl implements AppliancesClient {
     private final AppliancesService service;
 
     /** The service client containing this operation class. */
-    private final AppliancesManagementClientImpl client;
+    private final ResourceConnectorImpl client;
 
     /**
      * Initializes an instance of AppliancesClientImpl.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    AppliancesClientImpl(AppliancesManagementClientImpl client) {
+    AppliancesClientImpl(ResourceConnectorImpl client) {
         this.service =
             RestProxy.create(AppliancesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for AppliancesManagementClientAppliances to be used by the proxy service
-     * to perform REST calls.
+     * The interface defining all the services for ResourceConnectorAppliances to be used by the proxy service to
+     * perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "AppliancesManagement")
+    @ServiceInterface(name = "ResourceConnectorApp")
     public interface AppliancesService {
         @Headers({"Content-Type: application/json"})
         @Get("/providers/Microsoft.ResourceConnector/operations")
@@ -201,6 +201,7 @@ public final class AppliancesClientImpl implements AppliancesClient {
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("resourceName") String resourceName,
+            @QueryParam("artifactType") String artifactType,
             @HeaderParam("Accept") String accept,
             Context context);
 
@@ -1840,6 +1841,7 @@ public final class AppliancesClientImpl implements AppliancesClient {
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName Appliances name.
+     * @param artifactType This sets the type of artifact being returned, when empty no artifact endpoint is returned.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1848,7 +1850,7 @@ public final class AppliancesClientImpl implements AppliancesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ApplianceListKeysResultsInner>> listKeysWithResponseAsync(
-        String resourceGroupName, String resourceName) {
+        String resourceGroupName, String resourceName, String artifactType) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -1879,6 +1881,7 @@ public final class AppliancesClientImpl implements AppliancesClient {
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             resourceName,
+                            artifactType,
                             accept,
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -1891,6 +1894,7 @@ public final class AppliancesClientImpl implements AppliancesClient {
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName Appliances name.
+     * @param artifactType This sets the type of artifact being returned, when empty no artifact endpoint is returned.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1900,7 +1904,7 @@ public final class AppliancesClientImpl implements AppliancesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ApplianceListKeysResultsInner>> listKeysWithResponseAsync(
-        String resourceGroupName, String resourceName, Context context) {
+        String resourceGroupName, String resourceName, String artifactType, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -1929,6 +1933,7 @@ public final class AppliancesClientImpl implements AppliancesClient {
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 resourceName,
+                artifactType,
                 accept,
                 context);
     }
@@ -1947,7 +1952,8 @@ public final class AppliancesClientImpl implements AppliancesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ApplianceListKeysResultsInner> listKeysAsync(String resourceGroupName, String resourceName) {
-        return listKeysWithResponseAsync(resourceGroupName, resourceName)
+        final String artifactType = null;
+        return listKeysWithResponseAsync(resourceGroupName, resourceName, artifactType)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -1958,6 +1964,7 @@ public final class AppliancesClientImpl implements AppliancesClient {
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName Appliances name.
+     * @param artifactType This sets the type of artifact being returned, when empty no artifact endpoint is returned.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1966,8 +1973,8 @@ public final class AppliancesClientImpl implements AppliancesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ApplianceListKeysResultsInner> listKeysWithResponse(
-        String resourceGroupName, String resourceName, Context context) {
-        return listKeysWithResponseAsync(resourceGroupName, resourceName, context).block();
+        String resourceGroupName, String resourceName, String artifactType, Context context) {
+        return listKeysWithResponseAsync(resourceGroupName, resourceName, artifactType, context).block();
     }
 
     /**
@@ -1984,7 +1991,8 @@ public final class AppliancesClientImpl implements AppliancesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ApplianceListKeysResultsInner listKeys(String resourceGroupName, String resourceName) {
-        return listKeysWithResponse(resourceGroupName, resourceName, Context.NONE).getValue();
+        final String artifactType = null;
+        return listKeysWithResponse(resourceGroupName, resourceName, artifactType, Context.NONE).getValue();
     }
 
     /**

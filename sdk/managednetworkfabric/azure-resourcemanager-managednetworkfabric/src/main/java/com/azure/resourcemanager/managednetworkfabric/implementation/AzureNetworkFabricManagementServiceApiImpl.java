@@ -26,19 +26,24 @@ import com.azure.resourcemanager.managednetworkfabric.fluent.AccessControlListsC
 import com.azure.resourcemanager.managednetworkfabric.fluent.AzureNetworkFabricManagementServiceApi;
 import com.azure.resourcemanager.managednetworkfabric.fluent.ExternalNetworksClient;
 import com.azure.resourcemanager.managednetworkfabric.fluent.InternalNetworksClient;
+import com.azure.resourcemanager.managednetworkfabric.fluent.InternetGatewayRulesClient;
+import com.azure.resourcemanager.managednetworkfabric.fluent.InternetGatewaysClient;
 import com.azure.resourcemanager.managednetworkfabric.fluent.IpCommunitiesClient;
 import com.azure.resourcemanager.managednetworkfabric.fluent.IpExtendedCommunitiesClient;
 import com.azure.resourcemanager.managednetworkfabric.fluent.IpPrefixesClient;
 import com.azure.resourcemanager.managednetworkfabric.fluent.L2IsolationDomainsClient;
 import com.azure.resourcemanager.managednetworkfabric.fluent.L3IsolationDomainsClient;
+import com.azure.resourcemanager.managednetworkfabric.fluent.NeighborGroupsClient;
 import com.azure.resourcemanager.managednetworkfabric.fluent.NetworkDeviceSkusClient;
 import com.azure.resourcemanager.managednetworkfabric.fluent.NetworkDevicesClient;
 import com.azure.resourcemanager.managednetworkfabric.fluent.NetworkFabricControllersClient;
 import com.azure.resourcemanager.managednetworkfabric.fluent.NetworkFabricSkusClient;
 import com.azure.resourcemanager.managednetworkfabric.fluent.NetworkFabricsClient;
 import com.azure.resourcemanager.managednetworkfabric.fluent.NetworkInterfacesClient;
-import com.azure.resourcemanager.managednetworkfabric.fluent.NetworkRackSkusClient;
+import com.azure.resourcemanager.managednetworkfabric.fluent.NetworkPacketBrokersClient;
 import com.azure.resourcemanager.managednetworkfabric.fluent.NetworkRacksClient;
+import com.azure.resourcemanager.managednetworkfabric.fluent.NetworkTapRulesClient;
+import com.azure.resourcemanager.managednetworkfabric.fluent.NetworkTapsClient;
 import com.azure.resourcemanager.managednetworkfabric.fluent.NetworkToNetworkInterconnectsClient;
 import com.azure.resourcemanager.managednetworkfabric.fluent.OperationsClient;
 import com.azure.resourcemanager.managednetworkfabric.fluent.RoutePoliciesClient;
@@ -54,11 +59,11 @@ import reactor.core.publisher.Mono;
 /** Initializes a new instance of the AzureNetworkFabricManagementServiceApiImpl type. */
 @ServiceClient(builder = AzureNetworkFabricManagementServiceApiBuilder.class)
 public final class AzureNetworkFabricManagementServiceApiImpl implements AzureNetworkFabricManagementServiceApi {
-    /** The ID of the target subscription. */
+    /** The ID of the target subscription. The value must be an UUID. */
     private final String subscriptionId;
 
     /**
-     * Gets The ID of the target subscription.
+     * Gets The ID of the target subscription. The value must be an UUID.
      *
      * @return the subscriptionId value.
      */
@@ -136,6 +141,30 @@ public final class AzureNetworkFabricManagementServiceApiImpl implements AzureNe
      */
     public AccessControlListsClient getAccessControlLists() {
         return this.accessControlLists;
+    }
+
+    /** The InternetGatewaysClient object to access its operations. */
+    private final InternetGatewaysClient internetGateways;
+
+    /**
+     * Gets the InternetGatewaysClient object to access its operations.
+     *
+     * @return the InternetGatewaysClient object.
+     */
+    public InternetGatewaysClient getInternetGateways() {
+        return this.internetGateways;
+    }
+
+    /** The InternetGatewayRulesClient object to access its operations. */
+    private final InternetGatewayRulesClient internetGatewayRules;
+
+    /**
+     * Gets the InternetGatewayRulesClient object to access its operations.
+     *
+     * @return the InternetGatewayRulesClient object.
+     */
+    public InternetGatewayRulesClient getInternetGatewayRules() {
+        return this.internetGatewayRules;
     }
 
     /** The IpCommunitiesClient object to access its operations. */
@@ -222,6 +251,18 @@ public final class AzureNetworkFabricManagementServiceApiImpl implements AzureNe
         return this.externalNetworks;
     }
 
+    /** The NeighborGroupsClient object to access its operations. */
+    private final NeighborGroupsClient neighborGroups;
+
+    /**
+     * Gets the NeighborGroupsClient object to access its operations.
+     *
+     * @return the NeighborGroupsClient object.
+     */
+    public NeighborGroupsClient getNeighborGroups() {
+        return this.neighborGroups;
+    }
+
     /** The NetworkDeviceSkusClient object to access its operations. */
     private final NetworkDeviceSkusClient networkDeviceSkus;
 
@@ -306,16 +347,16 @@ public final class AzureNetworkFabricManagementServiceApiImpl implements AzureNe
         return this.networkToNetworkInterconnects;
     }
 
-    /** The NetworkRackSkusClient object to access its operations. */
-    private final NetworkRackSkusClient networkRackSkus;
+    /** The NetworkPacketBrokersClient object to access its operations. */
+    private final NetworkPacketBrokersClient networkPacketBrokers;
 
     /**
-     * Gets the NetworkRackSkusClient object to access its operations.
+     * Gets the NetworkPacketBrokersClient object to access its operations.
      *
-     * @return the NetworkRackSkusClient object.
+     * @return the NetworkPacketBrokersClient object.
      */
-    public NetworkRackSkusClient getNetworkRackSkus() {
-        return this.networkRackSkus;
+    public NetworkPacketBrokersClient getNetworkPacketBrokers() {
+        return this.networkPacketBrokers;
     }
 
     /** The NetworkRacksClient object to access its operations. */
@@ -328,6 +369,30 @@ public final class AzureNetworkFabricManagementServiceApiImpl implements AzureNe
      */
     public NetworkRacksClient getNetworkRacks() {
         return this.networkRacks;
+    }
+
+    /** The NetworkTapRulesClient object to access its operations. */
+    private final NetworkTapRulesClient networkTapRules;
+
+    /**
+     * Gets the NetworkTapRulesClient object to access its operations.
+     *
+     * @return the NetworkTapRulesClient object.
+     */
+    public NetworkTapRulesClient getNetworkTapRules() {
+        return this.networkTapRules;
+    }
+
+    /** The NetworkTapsClient object to access its operations. */
+    private final NetworkTapsClient networkTaps;
+
+    /**
+     * Gets the NetworkTapsClient object to access its operations.
+     *
+     * @return the NetworkTapsClient object.
+     */
+    public NetworkTapsClient getNetworkTaps() {
+        return this.networkTaps;
     }
 
     /** The OperationsClient object to access its operations. */
@@ -361,7 +426,7 @@ public final class AzureNetworkFabricManagementServiceApiImpl implements AzureNe
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param defaultPollInterval The default poll interval for long-running operation.
      * @param environment The Azure environment.
-     * @param subscriptionId The ID of the target subscription.
+     * @param subscriptionId The ID of the target subscription. The value must be an UUID.
      * @param endpoint server parameter.
      */
     AzureNetworkFabricManagementServiceApiImpl(
@@ -376,8 +441,10 @@ public final class AzureNetworkFabricManagementServiceApiImpl implements AzureNe
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2023-02-01-preview";
+        this.apiVersion = "2023-06-15";
         this.accessControlLists = new AccessControlListsClientImpl(this);
+        this.internetGateways = new InternetGatewaysClientImpl(this);
+        this.internetGatewayRules = new InternetGatewayRulesClientImpl(this);
         this.ipCommunities = new IpCommunitiesClientImpl(this);
         this.ipExtendedCommunities = new IpExtendedCommunitiesClientImpl(this);
         this.ipPrefixes = new IpPrefixesClientImpl(this);
@@ -385,6 +452,7 @@ public final class AzureNetworkFabricManagementServiceApiImpl implements AzureNe
         this.l3IsolationDomains = new L3IsolationDomainsClientImpl(this);
         this.internalNetworks = new InternalNetworksClientImpl(this);
         this.externalNetworks = new ExternalNetworksClientImpl(this);
+        this.neighborGroups = new NeighborGroupsClientImpl(this);
         this.networkDeviceSkus = new NetworkDeviceSkusClientImpl(this);
         this.networkDevices = new NetworkDevicesClientImpl(this);
         this.networkInterfaces = new NetworkInterfacesClientImpl(this);
@@ -392,8 +460,10 @@ public final class AzureNetworkFabricManagementServiceApiImpl implements AzureNe
         this.networkFabricSkus = new NetworkFabricSkusClientImpl(this);
         this.networkFabrics = new NetworkFabricsClientImpl(this);
         this.networkToNetworkInterconnects = new NetworkToNetworkInterconnectsClientImpl(this);
-        this.networkRackSkus = new NetworkRackSkusClientImpl(this);
+        this.networkPacketBrokers = new NetworkPacketBrokersClientImpl(this);
         this.networkRacks = new NetworkRacksClientImpl(this);
+        this.networkTapRules = new NetworkTapRulesClientImpl(this);
+        this.networkTaps = new NetworkTapsClientImpl(this);
         this.operations = new OperationsClientImpl(this);
         this.routePolicies = new RoutePoliciesClientImpl(this);
     }

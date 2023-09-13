@@ -56,6 +56,6 @@ public final class BackupInstancesResumeBackupsMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.backupInstances().resumeBackups("aaomylweazu", "cse", "hwwn", com.azure.core.util.Context.NONE);
+        manager.backupInstances().resumeBackups("hv", "slkvntjl", "igjkskyrio", com.azure.core.util.Context.NONE);
     }
 }

@@ -60,8 +60,7 @@ public final class ScriptExecutionHistoriesClientImpl implements ScriptExecution
     public interface ScriptExecutionHistoriesService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HDInsight/clusters"
-                + "/{clusterName}/scriptExecutionHistory")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HDInsight/clusters/{clusterName}/scriptExecutionHistory")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ScriptActionExecutionHistoryList>> listByCluster(
@@ -75,8 +74,7 @@ public final class ScriptExecutionHistoriesClientImpl implements ScriptExecution
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HDInsight/clusters"
-                + "/{clusterName}/scriptExecutionHistory/{scriptExecutionId}/promote")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HDInsight/clusters/{clusterName}/scriptExecutionHistory/{scriptExecutionId}/promote")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> promote(

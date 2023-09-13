@@ -9,7 +9,7 @@ import com.azure.resourcemanager.recoveryservices.models.CheckNameAvailabilityPa
 /** Samples for RecoveryServices CheckNameAvailability. */
 public final class RecoveryServicesCheckNameAvailabilitySamples {
     /*
-     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2023-02-01/examples/CheckNameAvailability_Available.json
+     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2023-04-01/examples/CheckNameAvailability_Available.json
      */
     /**
      * Sample code: Availability status of Resource Name when no resource with same name, type and subscription exists,
@@ -32,7 +32,7 @@ public final class RecoveryServicesCheckNameAvailabilitySamples {
     }
 
     /*
-     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2023-02-01/examples/CheckNameAvailability_NotAvailable.json
+     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2023-04-01/examples/CheckNameAvailability_NotAvailable.json
      */
     /**
      * Sample code: Availability status of Resource Name when resource with same name, type and subscription exists.

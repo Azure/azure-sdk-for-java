@@ -16,12 +16,12 @@ public final class ReplicationInnerTests {
         ReplicationInner model =
             BinaryData
                 .fromString(
-                    "{\"endpointType\":\"dst\",\"replicationSchedule\":\"hourly\",\"remoteVolumeResourceId\":\"hashsfwxosow\",\"remoteVolumeRegion\":\"cugicjoox\"}")
+                    "{\"endpointType\":\"dst\",\"replicationSchedule\":\"_10minutely\",\"remoteVolumeResourceId\":\"nzbtbhj\",\"remoteVolumeRegion\":\"lkfg\"}")
                 .toObject(ReplicationInner.class);
         Assertions.assertEquals(EndpointType.DST, model.endpointType());
-        Assertions.assertEquals(ReplicationSchedule.HOURLY, model.replicationSchedule());
-        Assertions.assertEquals("hashsfwxosow", model.remoteVolumeResourceId());
-        Assertions.assertEquals("cugicjoox", model.remoteVolumeRegion());
+        Assertions.assertEquals(ReplicationSchedule.ONE_ZEROMINUTELY, model.replicationSchedule());
+        Assertions.assertEquals("nzbtbhj", model.remoteVolumeResourceId());
+        Assertions.assertEquals("lkfg", model.remoteVolumeRegion());
     }
 
     @org.junit.jupiter.api.Test
@@ -29,13 +29,13 @@ public final class ReplicationInnerTests {
         ReplicationInner model =
             new ReplicationInner()
                 .withEndpointType(EndpointType.DST)
-                .withReplicationSchedule(ReplicationSchedule.HOURLY)
-                .withRemoteVolumeResourceId("hashsfwxosow")
-                .withRemoteVolumeRegion("cugicjoox");
+                .withReplicationSchedule(ReplicationSchedule.ONE_ZEROMINUTELY)
+                .withRemoteVolumeResourceId("nzbtbhj")
+                .withRemoteVolumeRegion("lkfg");
         model = BinaryData.fromObject(model).toObject(ReplicationInner.class);
         Assertions.assertEquals(EndpointType.DST, model.endpointType());
-        Assertions.assertEquals(ReplicationSchedule.HOURLY, model.replicationSchedule());
-        Assertions.assertEquals("hashsfwxosow", model.remoteVolumeResourceId());
-        Assertions.assertEquals("cugicjoox", model.remoteVolumeRegion());
+        Assertions.assertEquals(ReplicationSchedule.ONE_ZEROMINUTELY, model.replicationSchedule());
+        Assertions.assertEquals("nzbtbhj", model.remoteVolumeResourceId());
+        Assertions.assertEquals("lkfg", model.remoteVolumeRegion());
     }
 }

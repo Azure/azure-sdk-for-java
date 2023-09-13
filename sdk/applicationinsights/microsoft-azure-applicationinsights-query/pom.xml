@@ -14,7 +14,7 @@
     <name>Microsoft Azure SDK for Application Insights Query API</name>
     <description>
         Please note, a newer package azure-monitor-query for querying logs from Azure Monitor is available at
-        https://search.maven.org/artifact/com.azure/azure-monitor-query as of October 2021. Read the migration guide
+        https://central.sonatype.com/artifact/com.azure/azure-monitor-query as of October 2021. Read the migration guide
         at https://aka.ms/azsdk/java/migrate/monitorquery for more details.</description>
     <url>https://github.com/Azure/azure-sdk-for-java</url>
     <parent>
@@ -62,7 +62,7 @@
         <dependency>
             <groupId>com.azure</groupId>
             <artifactId>azure-core-test</artifactId>
-            <version>1.18.0</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
+            <version>1.20.0</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -107,7 +107,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
-                <version>3.1.2</version> <!-- {x-version-update;org.apache.maven.plugins:maven-jar-plugin;external_dependency} -->
+                <version>3.2.2</version> <!-- {x-version-update;org.apache.maven.plugins:maven-jar-plugin;external_dependency} -->
                 <configuration>
                     <archive>
                         <manifest>
@@ -145,7 +145,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
-                <version>3.3.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
+                <version>3.4.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
                 <configuration>
                     <excludePackageNames>*.implementation.*;*.utils.*;com.microsoft.schemas._2003._10.serialization;*.blob.core.search</excludePackageNames>
                     <bottom>

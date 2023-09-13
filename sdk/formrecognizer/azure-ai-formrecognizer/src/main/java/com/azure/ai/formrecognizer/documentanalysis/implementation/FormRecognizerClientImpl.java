@@ -16,13 +16,13 @@ import com.azure.core.util.serializer.SerializerAdapter;
 public final class FormRecognizerClientImpl {
     /**
      * Supported Cognitive Services endpoints (protocol and hostname, for example:
-     * https://westus2.api.cognitive.microsoft.com).
+     * <a href="https://westus2.api.cognitive.microsoft.com">here</a>).
      */
     private final String endpoint;
 
     /**
      * Gets Supported Cognitive Services endpoints (protocol and hostname, for example:
-     * https://westus2.api.cognitive.microsoft.com).
+     * <a href="https://westus2.api.cognitive.microsoft.com">here</a>).
      *
      * @return the endpoint value.
      */
@@ -106,7 +106,7 @@ public final class FormRecognizerClientImpl {
      * Initializes an instance of FormRecognizerClient client.
      *
      * @param endpoint Supported Cognitive Services endpoints (protocol and hostname, for example:
-     *     https://westus2.api.cognitive.microsoft.com).
+     *     <a href="https://westus2.api.cognitive.microsoft.com">here</a>).
      * @param apiVersion Api Version.
      */
     FormRecognizerClientImpl(String endpoint, String apiVersion) {
@@ -124,7 +124,7 @@ public final class FormRecognizerClientImpl {
      *
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param endpoint Supported Cognitive Services endpoints (protocol and hostname, for example:
-     *     https://westus2.api.cognitive.microsoft.com).
+     *     <a href="https://westus2.api.cognitive.microsoft.com">here</a>).
      * @param apiVersion Api Version.
      */
     FormRecognizerClientImpl(HttpPipeline httpPipeline, String endpoint, String apiVersion) {
@@ -137,7 +137,7 @@ public final class FormRecognizerClientImpl {
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param endpoint Supported Cognitive Services endpoints (protocol and hostname, for example:
-     *     https://westus2.api.cognitive.microsoft.com).
+     *     <a href="https://westus2.api.cognitive.microsoft.com">here</a>).
      * @param apiVersion Api Version.
      */
     FormRecognizerClientImpl(

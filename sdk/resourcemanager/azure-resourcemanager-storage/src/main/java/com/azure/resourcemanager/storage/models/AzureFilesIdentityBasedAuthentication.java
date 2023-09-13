@@ -29,6 +29,10 @@ public final class AzureFilesIdentityBasedAuthentication {
     @JsonProperty(value = "defaultSharePermission")
     private DefaultSharePermission defaultSharePermission;
 
+    /** Creates an instance of AzureFilesIdentityBasedAuthentication class. */
+    public AzureFilesIdentityBasedAuthentication() {
+    }
+
     /**
      * Get the directoryServiceOptions property: Indicates the directory service used. Note that this enum may be
      * extended in the future.

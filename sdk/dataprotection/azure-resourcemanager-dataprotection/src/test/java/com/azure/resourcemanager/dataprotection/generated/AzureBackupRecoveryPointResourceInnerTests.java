@@ -14,7 +14,7 @@ public final class AzureBackupRecoveryPointResourceInnerTests {
         AzureBackupRecoveryPointResourceInner model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"objectType\":\"AzureBackupRecoveryPoint\"},\"id\":\"myskpbhenbtkcxy\",\"name\":\"ny\",\"type\":\"nrs\"}")
+                    "{\"properties\":{\"objectType\":\"AzureBackupRecoveryPoint\"},\"id\":\"bm\",\"name\":\"ow\",\"type\":\"wpr\"}")
                 .toObject(AzureBackupRecoveryPointResourceInner.class);
     }
 

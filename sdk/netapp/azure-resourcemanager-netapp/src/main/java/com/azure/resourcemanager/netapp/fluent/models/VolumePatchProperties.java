@@ -93,6 +93,13 @@ public final class VolumePatchProperties {
     @JsonProperty(value = "coolnessPeriod")
     private Integer coolnessPeriod;
 
+    /*
+     * If enabled (true) the volume will contain a read-only snapshot directory which provides access to each of the
+     * volume's snapshots.
+     */
+    @JsonProperty(value = "snapshotDirectoryVisible")
+    private Boolean snapshotDirectoryVisible;
+
     /** Creates an instance of VolumePatchProperties class. */
     public VolumePatchProperties() {
     }
@@ -348,6 +355,28 @@ public final class VolumePatchProperties {
      */
     public VolumePatchProperties withCoolnessPeriod(Integer coolnessPeriod) {
         this.coolnessPeriod = coolnessPeriod;
+        return this;
+    }
+
+    /**
+     * Get the snapshotDirectoryVisible property: If enabled (true) the volume will contain a read-only snapshot
+     * directory which provides access to each of the volume's snapshots.
+     *
+     * @return the snapshotDirectoryVisible value.
+     */
+    public Boolean snapshotDirectoryVisible() {
+        return this.snapshotDirectoryVisible;
+    }
+
+    /**
+     * Set the snapshotDirectoryVisible property: If enabled (true) the volume will contain a read-only snapshot
+     * directory which provides access to each of the volume's snapshots.
+     *
+     * @param snapshotDirectoryVisible the snapshotDirectoryVisible value to set.
+     * @return the VolumePatchProperties object itself.
+     */
+    public VolumePatchProperties withSnapshotDirectoryVisible(Boolean snapshotDirectoryVisible) {
+        this.snapshotDirectoryVisible = snapshotDirectoryVisible;
         return this;
     }
 

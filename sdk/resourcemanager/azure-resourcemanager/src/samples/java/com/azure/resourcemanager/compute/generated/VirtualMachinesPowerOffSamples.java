@@ -7,7 +7,7 @@ package com.azure.resourcemanager.compute.generated;
 /** Samples for VirtualMachines PowerOff. */
 public final class VirtualMachinesPowerOffSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/virtualMachineExamples/VirtualMachine_PowerOff_MinimumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-07-01/examples/virtualMachineExamples/VirtualMachine_PowerOff_MinimumSet_Gen.json
      */
     /**
      * Sample code: VirtualMachine_PowerOff_MinimumSet_Gen.
@@ -24,7 +24,7 @@ public final class VirtualMachinesPowerOffSamples {
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/virtualMachineExamples/VirtualMachine_PowerOff_MaximumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-07-01/examples/virtualMachineExamples/VirtualMachine_PowerOff_MaximumSet_Gen.json
      */
     /**
      * Sample code: VirtualMachine_PowerOff_MaximumSet_Gen.

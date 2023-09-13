@@ -5,6 +5,7 @@ module com.azure.messaging.servicebus {
     requires transitive com.azure.core.amqp;
 
     requires com.fasterxml.jackson.dataformat.xml;
+    requires transitive com.azure.core;
 
     exports com.azure.messaging.servicebus;
     exports com.azure.messaging.servicebus.administration;
@@ -15,4 +16,5 @@ module com.azure.messaging.servicebus {
     opens com.azure.messaging.servicebus.administration.models to com.fasterxml.jackson.databind, com.azure.core;
 
     uses com.azure.core.util.tracing.Tracer;
+    uses com.azure.core.util.metrics.Meter;
 }

@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.sdk.build.tool.util;
 
 import com.azure.sdk.build.tool.util.logging.Logger;
@@ -29,17 +32,29 @@ import static org.reflections8.util.Utils.name;
  * Utility class to check for annotations.
  */
 public final class AnnotationUtils {
-    private static Logger LOGGER = Logger.getInstance();
+    private static final Logger LOGGER = Logger.getInstance();
 
     private AnnotationUtils() {
         // no-op
     }
 
+    /**
+     * Returns a classloader that contains all the given paths.
+     *
+     * @param paths The paths to include in the classloader
+     * @return The classloader that contains the given paths.
+     */
     public static ClassLoader getCompleteClassLoader(final Stream<Path> paths) {
         final List<URL> urls = paths.map(AnnotationUtils::pathToUrl).collect(Collectors.toList());
         return URLClassLoader.newInstance(urls.toArray(new URL[0]));
     }
 
+    /**
+     * Returns the annotation class with the given name if found.
+     * @param name The name of the annotation to look for.
+     * @param classLoader The class loader to use to load the annotation.
+     * @return The annotation class if found, otherwise an empty optional.
+     */
     public static Optional<Class<? extends Annotation>> getAnnotation(String name, ClassLoader classLoader) {
         try {
             return Optional.of(Class.forName(name, false, classLoader).asSubclass(Annotation.class));
@@ -85,7 +100,7 @@ public final class AnnotationUtils {
                                     final Set<String> interestedPackages,
                                     final boolean recursive,
                                     final Set<AnnotatedMethodCallerResult> results,
-    ClassLoader classLoader) {
+                                    ClassLoader classLoader) {
         final Set<Member> callingMethods;
         try {
             String methodName = name(method);

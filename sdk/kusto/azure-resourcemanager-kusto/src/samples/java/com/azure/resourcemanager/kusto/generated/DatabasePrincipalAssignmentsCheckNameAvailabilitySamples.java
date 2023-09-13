@@ -9,7 +9,7 @@ import com.azure.resourcemanager.kusto.models.DatabasePrincipalAssignmentCheckNa
 /** Samples for DatabasePrincipalAssignments CheckNameAvailability. */
 public final class DatabasePrincipalAssignmentsCheckNameAvailabilitySamples {
     /*
-     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2022-12-29/examples/KustoDatabasePrincipalAssignmentsCheckNameAvailability.json
+     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-05-02/examples/KustoDatabasePrincipalAssignmentsCheckNameAvailability.json
      */
     /**
      * Sample code: KustoDatabaseCheckNameAvailability.

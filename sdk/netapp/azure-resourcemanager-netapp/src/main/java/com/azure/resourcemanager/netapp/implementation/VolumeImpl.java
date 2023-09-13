@@ -17,6 +17,8 @@ import com.azure.resourcemanager.netapp.models.BreakReplicationRequest;
 import com.azure.resourcemanager.netapp.models.EnableSubvolumes;
 import com.azure.resourcemanager.netapp.models.EncryptionKeySource;
 import com.azure.resourcemanager.netapp.models.FileAccessLogs;
+import com.azure.resourcemanager.netapp.models.GetGroupIdListForLdapUserRequest;
+import com.azure.resourcemanager.netapp.models.GetGroupIdListForLdapUserResponse;
 import com.azure.resourcemanager.netapp.models.NetworkFeatures;
 import com.azure.resourcemanager.netapp.models.PlacementKeyValuePairs;
 import com.azure.resourcemanager.netapp.models.PoolChangeRequest;
@@ -204,6 +206,10 @@ public final class VolumeImpl implements Volume, Volume.Definition, Volume.Updat
         return this.innerModel().throughputMibps();
     }
 
+    public Float actualThroughputMibps() {
+        return this.innerModel().actualThroughputMibps();
+    }
+
     public EncryptionKeySource encryptionKeySource() {
         return this.innerModel().encryptionKeySource();
     }
@@ -308,6 +314,10 @@ public final class VolumeImpl implements Volume, Volume.Definition, Volume.Updat
 
     public Boolean isLargeVolume() {
         return this.innerModel().isLargeVolume();
+    }
+
+    public String originatingResourceId() {
+        return this.innerModel().originatingResourceId();
     }
 
     public Region region() {
@@ -445,6 +455,19 @@ public final class VolumeImpl implements Volume, Volume.Definition, Volume.Updat
 
     public void breakFileLocks(BreakFileLocksRequest body, Context context) {
         serviceManager.volumes().breakFileLocks(resourceGroupName, accountName, poolName, volumeName, body, context);
+    }
+
+    public GetGroupIdListForLdapUserResponse listGetGroupIdListForLdapUser(GetGroupIdListForLdapUserRequest body) {
+        return serviceManager
+            .volumes()
+            .listGetGroupIdListForLdapUser(resourceGroupName, accountName, poolName, volumeName, body);
+    }
+
+    public GetGroupIdListForLdapUserResponse listGetGroupIdListForLdapUser(
+        GetGroupIdListForLdapUserRequest body, Context context) {
+        return serviceManager
+            .volumes()
+            .listGetGroupIdListForLdapUser(resourceGroupName, accountName, poolName, volumeName, body, context);
     }
 
     public void breakReplication() {
@@ -635,8 +658,13 @@ public final class VolumeImpl implements Volume, Volume.Definition, Volume.Updat
     }
 
     public VolumeImpl withSnapshotDirectoryVisible(Boolean snapshotDirectoryVisible) {
-        this.innerModel().withSnapshotDirectoryVisible(snapshotDirectoryVisible);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withSnapshotDirectoryVisible(snapshotDirectoryVisible);
+            return this;
+        } else {
+            this.updateBody.withSnapshotDirectoryVisible(snapshotDirectoryVisible);
+            return this;
+        }
     }
 
     public VolumeImpl withKerberosEnabled(Boolean kerberosEnabled) {

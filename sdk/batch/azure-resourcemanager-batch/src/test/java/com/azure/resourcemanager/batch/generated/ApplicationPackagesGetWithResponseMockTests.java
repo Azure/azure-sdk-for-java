@@ -11,7 +11,6 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.batch.BatchManager;
 import com.azure.resourcemanager.batch.models.ApplicationPackage;
 import java.nio.ByteBuffer;
@@ -31,7 +30,7 @@ public final class ApplicationPackagesGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"state\":\"Active\",\"format\":\"cccnxqhuexmktt\",\"storageUrl\":\"tvlz\",\"storageUrlExpiry\":\"2021-10-30T19:56:42Z\",\"lastActivationTime\":\"2021-08-13T19:06:52Z\"},\"etag\":\"rncsdtclu\",\"id\":\"iypbsfgytgusl\",\"name\":\"eadcygqukyhejhz\",\"type\":\"sx\"}";
+            "{\"properties\":{\"state\":\"Active\",\"format\":\"tqs\",\"storageUrl\":\"qxujxukndxd\",\"storageUrlExpiry\":\"2021-02-07T08:06:06Z\",\"lastActivationTime\":\"2021-10-07T00:58:49Z\"},\"etag\":\"ufzdmsyq\",\"id\":\"fi\",\"name\":\"whbotzingamv\",\"type\":\"phoszqz\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,7 +61,7 @@ public final class ApplicationPackagesGetWithResponseMockTests {
         ApplicationPackage response =
             manager
                 .applicationPackages()
-                .getWithResponse("scywuggwoluhc", "bwemhairs", "rgzdwmsweyp", "w", Context.NONE)
+                .getWithResponse("jnalghf", "vtvsexsowueluq", "hahhxvrhmzkwpj", "wws", com.azure.core.util.Context.NONE)
                 .getValue();
     }
 }

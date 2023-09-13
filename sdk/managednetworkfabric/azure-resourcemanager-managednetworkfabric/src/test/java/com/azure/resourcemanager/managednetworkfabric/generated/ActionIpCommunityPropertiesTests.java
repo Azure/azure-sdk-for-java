@@ -16,26 +16,26 @@ public final class ActionIpCommunityPropertiesTests {
         ActionIpCommunityProperties model =
             BinaryData
                 .fromString(
-                    "{\"delete\":{\"ipCommunityIds\":[\"qxeiiqbimhtmwwi\",\"h\",\"hfqpofv\"]},\"set\":{\"ipCommunityIds\":[\"lembnkbwvqvxkdi\",\"qihebw\",\"swbzuwfmdurage\",\"izvcjfe\"]},\"add\":{\"ipCommunityIds\":[\"jubggbqigkxkb\"]}}")
+                    "{\"delete\":{\"ipCommunityIds\":[\"ikuqirhs\",\"xpaowkgvnlfueyx\",\"zibrlr\"]},\"set\":{\"ipCommunityIds\":[\"febpiucenbvrl\",\"l\",\"fknb\",\"zwi\"]},\"add\":{\"ipCommunityIds\":[\"yiqjz\",\"wrduxntpfxxgja\",\"yxfwfctq\"]}}")
                 .toObject(ActionIpCommunityProperties.class);
-        Assertions.assertEquals("jubggbqigkxkb", model.add().ipCommunityIds().get(0));
-        Assertions.assertEquals("qxeiiqbimhtmwwi", model.delete().ipCommunityIds().get(0));
-        Assertions.assertEquals("lembnkbwvqvxkdi", model.set().ipCommunityIds().get(0));
+        Assertions.assertEquals("yiqjz", model.add().ipCommunityIds().get(0));
+        Assertions.assertEquals("ikuqirhs", model.delete().ipCommunityIds().get(0));
+        Assertions.assertEquals("febpiucenbvrl", model.set().ipCommunityIds().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ActionIpCommunityProperties model =
             new ActionIpCommunityProperties()
-                .withAdd(new IpCommunityIdList().withIpCommunityIds(Arrays.asList("jubggbqigkxkb")))
+                .withAdd(
+                    new IpCommunityIdList().withIpCommunityIds(Arrays.asList("yiqjz", "wrduxntpfxxgja", "yxfwfctq")))
                 .withDelete(
-                    new IpCommunityIdList().withIpCommunityIds(Arrays.asList("qxeiiqbimhtmwwi", "h", "hfqpofv")))
+                    new IpCommunityIdList().withIpCommunityIds(Arrays.asList("ikuqirhs", "xpaowkgvnlfueyx", "zibrlr")))
                 .withSet(
-                    new IpCommunityIdList()
-                        .withIpCommunityIds(Arrays.asList("lembnkbwvqvxkdi", "qihebw", "swbzuwfmdurage", "izvcjfe")));
+                    new IpCommunityIdList().withIpCommunityIds(Arrays.asList("febpiucenbvrl", "l", "fknb", "zwi")));
         model = BinaryData.fromObject(model).toObject(ActionIpCommunityProperties.class);
-        Assertions.assertEquals("jubggbqigkxkb", model.add().ipCommunityIds().get(0));
-        Assertions.assertEquals("qxeiiqbimhtmwwi", model.delete().ipCommunityIds().get(0));
-        Assertions.assertEquals("lembnkbwvqvxkdi", model.set().ipCommunityIds().get(0));
+        Assertions.assertEquals("yiqjz", model.add().ipCommunityIds().get(0));
+        Assertions.assertEquals("ikuqirhs", model.delete().ipCommunityIds().get(0));
+        Assertions.assertEquals("febpiucenbvrl", model.set().ipCommunityIds().get(0));
     }
 }

@@ -12,7 +12,7 @@ import com.azure.resourcemanager.avs.models.AddonVrProperties;
 /** Samples for Addons CreateOrUpdate. */
 public final class AddonsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2022-05-01/examples/Addons_CreateOrUpdate_HCX.json
+     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/Addons_CreateOrUpdate_HCX.json
      */
     /**
      * Sample code: Addons_CreateOrUpdate_HCX.
@@ -29,7 +29,7 @@ public final class AddonsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2022-05-01/examples/Addons_CreateOrUpdate_SRM.json
+     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/Addons_CreateOrUpdate_SRM.json
      */
     /**
      * Sample code: Addons_CreateOrUpdate_SRM.
@@ -46,7 +46,7 @@ public final class AddonsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2022-05-01/examples/Addons_CreateOrUpdate_ArcReg.json
+     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/Addons_CreateOrUpdate_ArcReg.json
      */
     /**
      * Sample code: Addons_CreateOrUpdate_Arc.
@@ -66,7 +66,7 @@ public final class AddonsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2022-05-01/examples/Addons_CreateOrUpdate_VR.json
+     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/Addons_CreateOrUpdate_VR.json
      */
     /**
      * Sample code: Addons_CreateOrUpdate_VR.
