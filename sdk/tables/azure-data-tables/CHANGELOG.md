@@ -3,7 +3,7 @@
 ## 12.3.15 (2023-09-13)
 
 ### Bugs Fixed
-- Fixed bug where delete entity did not work on entities with empty primary keys.
+- Fixed bug where delete entity did not work on entities with empty primary keys.[(33390)](https://github.com/Azure/azure-sdk-for-java/issues/36690)
 - Fixed bug where get entity did not work on entities with empty primary keys.
 
 ### Other Changes
