@@ -21,7 +21,7 @@ public abstract class NotificationHook {
     /**
      * Creates a new instance of NotificationHook.
      */
-    protected NotificationHook() {
+    public NotificationHook() {
         this.admins = Collections.emptyList();
     }
 
