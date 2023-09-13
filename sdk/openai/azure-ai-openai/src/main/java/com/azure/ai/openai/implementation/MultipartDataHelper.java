@@ -51,7 +51,7 @@ public class MultipartDataHelper {
             List<MultipartField> fields = formatAudioTranscriptionOptions(audioTranscriptionOptions);
             return serializeRequestFields(file, fields, fileName);
         } else {
-            throw new UnsupportedOperationException("Only AudioTranslationOptions and AudioTranscriptionOptions currently supported");
+            throw new IllegalArgumentException("Only AudioTranslationOptions and AudioTranscriptionOptions currently supported");
         }
     }
 
