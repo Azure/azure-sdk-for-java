@@ -841,7 +841,7 @@ public final class TableAsyncClient {
         eTag = ifUnchanged ? eTag : "*";
 
         if (partitionKey == null || rowKey == null) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("'partitionKey' and 'rowKey' cannot be null"));
+            return monoError(logger, new IllegalArgumentException("'partitionKey' and 'rowKey' cannot be null."));
         }
 
         try {
