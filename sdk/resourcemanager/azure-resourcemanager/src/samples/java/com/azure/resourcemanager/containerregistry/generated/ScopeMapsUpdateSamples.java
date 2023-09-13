@@ -10,7 +10,7 @@ import java.util.Arrays;
 /** Samples for ScopeMaps Update. */
 public final class ScopeMapsUpdateSamples {
     /*
-     * x-ms-original-file: specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/stable/2022-12-01/examples/ScopeMapUpdate.json
+     * x-ms-original-file: mgmt_containerregistry_add_readonly/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/stable/2023-07-01/examples/ScopeMapUpdate.json
      */
     /**
      * Sample code: ScopeMapUpdate.

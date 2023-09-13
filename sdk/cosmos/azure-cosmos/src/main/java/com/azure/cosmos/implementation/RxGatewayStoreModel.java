@@ -209,7 +209,7 @@ public class RxGatewayStoreModel implements RxStoreModel {
             request.requestContext.resourcePhysicalAddress = uri.toString();
 
             if (this.throughputControlStore != null) {
-                return this.throughputControlStore.processRequest(request, performRequestInternal(request, method, uri));
+                return this.throughputControlStore.processRequest(request, Mono.defer(() -> this.performRequestInternal(request, method, uri)));
             }
 
             return this.performRequestInternal(request, method, uri);
@@ -568,8 +568,7 @@ public class RxGatewayStoreModel implements RxStoreModel {
 
     @Override
     public void enableThroughputControl(ThroughputControlStore throughputControlStore) {
-        // no-op
-        // Disable throughput control for gateway mode
+        this.throughputControlStore = throughputControlStore;
     }
 
     @Override

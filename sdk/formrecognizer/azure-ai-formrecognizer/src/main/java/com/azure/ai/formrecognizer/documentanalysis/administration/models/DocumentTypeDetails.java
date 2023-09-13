@@ -13,6 +13,13 @@ import java.util.Map;
  */
 @Immutable
 public final class DocumentTypeDetails {
+
+    /**
+     * Creates a DocumentTypeDetails instance.
+     */
+    public DocumentTypeDetails() {
+    }
+
     /*
      * Model description.
      */
