@@ -88,18 +88,6 @@ class ServiceBusAdministrationClientTest {
     private final String dummyEndpoint = "endpoint.servicebus.foo";
 
     private AutoCloseable mockClosable;
-    private ServiceBusAdministrationAsyncClient asyncClient;
-    private HashMap<String, String> map = new HashMap<>();
-
-    @BeforeAll
-    static void beforeAll() {
-        StepVerifier.setDefaultTimeout(Duration.ofSeconds(5));
-    }
-
-    @AfterAll
-    static void afterAll() {
-        StepVerifier.resetDefaultTimeout();
-    }
 
     @BeforeEach
     void beforeEach() throws IOException {
@@ -121,7 +109,6 @@ class ServiceBusAdministrationClientTest {
         when(objectResponse.getValue()).thenReturn(queueDescriptionEntry);
         when(entitys.<QueueDescriptionEntryImpl>putWithResponse(any(), any(), any(), any())).thenReturn(objectResponse);
 
-        asyncClient = new ServiceBusAdministrationAsyncClient(serviceClient, serializer);
         client = new ServiceBusAdministrationClient(serviceClient, serializer);
     }
 

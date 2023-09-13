@@ -14,9 +14,7 @@ import com.azure.messaging.servicebus.implementation.ServiceBusReceiveLinkProces
 import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
 import org.apache.qpid.proton.amqp.transport.DeliveryState;
 import org.apache.qpid.proton.message.Message;
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInfo;
@@ -31,7 +29,6 @@ import reactor.test.publisher.TestPublisher;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.UUID;
-import java.util.function.Function;
 
 import static com.azure.messaging.servicebus.ReceiverOptions.createNamedSessionOptions;
 import static org.mockito.ArgumentMatchers.any;
@@ -48,6 +45,7 @@ import static org.mockito.Mockito.when;
 class ServiceBusAsyncConsumerTest {
     private static final String LINK_NAME = "some-link";
     private static final ClientLogger LOGGER = new ClientLogger(ServiceBusAsyncConsumer.class);
+    private static final Duration DEFAULT_TIMEOUT = Duration.ofSeconds(20);
 
     private final TestPublisher<ServiceBusReceiveLink> linkPublisher = TestPublisher.create();
     private final Flux<ServiceBusReceiveLink> linkFlux = linkPublisher.flux();
@@ -57,7 +55,6 @@ class ServiceBusAsyncConsumerTest {
     private final Flux<AmqpEndpointState> endpointStateFlux = endpointPublisher.flux();
 
     private ServiceBusReceiveLinkProcessor linkProcessor;
-    private Function<String, Mono<OffsetDateTime>> onRenewLock;
 
     @Mock
     private ServiceBusAmqpConnection connection;
@@ -67,18 +64,6 @@ class ServiceBusAsyncConsumerTest {
     private AmqpRetryPolicy retryPolicy;
     @Mock
     private MessageSerializer serializer;
-    @Mock
-    LockContainer<LockRenewalOperation> messageLockContainer;
-
-    @BeforeAll
-    static void beforeAll() {
-        StepVerifier.setDefaultTimeout(Duration.ofSeconds(20));
-    }
-
-    @AfterAll
-    static void afterAll() {
-        StepVerifier.resetDefaultTimeout();
-    }
 
     @BeforeEach
     void setup(TestInfo testInfo) {
@@ -94,7 +79,6 @@ class ServiceBusAsyncConsumerTest {
 
         when(connection.getEndpointStates()).thenReturn(Flux.create(sink -> sink.next(AmqpEndpointState.ACTIVE)));
         when(link.updateDisposition(anyString(), any(DeliveryState.class))).thenReturn(Mono.empty());
-        onRenewLock = (lockToken) -> Mono.just(OffsetDateTime.now().plusSeconds(1));
     }
 
     @AfterEach
@@ -150,7 +134,7 @@ class ServiceBusAsyncConsumerTest {
             .then(() -> messagePublisher.next(message2))
             .expectNext(receivedMessage2)
             .thenCancel()
-            .verify();
+            .verify(DEFAULT_TIMEOUT);
 
         verify(link, never()).updateDisposition(anyString(), any(DeliveryState.class));
     }
@@ -190,7 +174,8 @@ class ServiceBusAsyncConsumerTest {
                 linkPublisher.complete();
                 endpointPublisher.complete();
             })
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
 
         verify(link, never()).updateDisposition(anyString(), any(DeliveryState.class));
     }
@@ -234,7 +219,8 @@ class ServiceBusAsyncConsumerTest {
                 linkPublisher.error(new Throwable("fake error"));
                 endpointPublisher.complete();
             })
-            .verifyError();
+            .expectError()
+            .verify(DEFAULT_TIMEOUT);
 
         verify(link, never()).updateDisposition(anyString(), any(DeliveryState.class));
     }
