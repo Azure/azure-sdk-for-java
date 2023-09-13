@@ -828,6 +828,7 @@ public final class TableAsyncClient {
      * @return A {@link Mono} containing the {@link Response HTTP response}.
      *
      * @throws TableServiceException If the request is rejected by the service.
+     * @throws IllegalArgumentException If 'partitionKey' or 'rowKey' is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteEntityWithResponse(TableEntity entity, boolean ifUnchanged) {

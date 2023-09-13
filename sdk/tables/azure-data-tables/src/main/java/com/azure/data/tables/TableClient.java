@@ -754,6 +754,7 @@ public final class TableClient {
      * @throws IllegalArgumentException If the provided {@code partitionKey} or {@code rowKey} are {@code null} or
      * empty.
      * @throws TableServiceException If the request is rejected by the service.
+     * @throws IllegalArgumentException If 'partitionKey' or 'rowKey' is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteEntity(String partitionKey, String rowKey) {
@@ -822,6 +823,7 @@ public final class TableClient {
      * @return The {@link Response HTTP response}.
      *
      * @throws TableServiceException If the request is rejected by the service.
+     * @throws IllegalArgumentException If the entity has null 'partitionKey' or 'rowKey'.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteEntityWithResponse(TableEntity entity, boolean ifUnchanged, Duration timeout,
