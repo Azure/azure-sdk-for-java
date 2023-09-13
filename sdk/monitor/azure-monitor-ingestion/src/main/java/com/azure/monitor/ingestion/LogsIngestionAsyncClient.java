@@ -41,7 +41,7 @@ import static com.azure.monitor.ingestion.implementation.Utils.getConcurrency;
 import static com.azure.monitor.ingestion.implementation.Utils.gzipRequest;
 
 /**
- * This class provides an asynchronous client for uploading custom logs to Azure Monitor's Log Analytics workspace.
+ * This class provides an asynchronous client for uploading custom logs to an Azure Monitor Log Analytics workspace.
  *
  * <h2>Getting Started</h2>
  *
@@ -90,7 +90,7 @@ public final class LogsIngestionAsyncClient {
      * <p>
      * Each log in the input collection must be a valid JSON object. The JSON object should match the
      * <a href="https://learn.microsoft.com/azure/azure-monitor/essentials/data-collection-rule-structure#streamdeclarations">schema defined
-     * by the stream name</a>. The schema of the stream can be found in the Azure Portal.
+     * by the stream name</a>. The stream's schema can be found in the Azure portal.
      * </p>
      *
      * <p><strong>Upload logs to Azure Monitor</strong></p>
@@ -120,13 +120,13 @@ public final class LogsIngestionAsyncClient {
      * too large to be sent as a single request to the Azure Monitor service. In such cases, this method will split
      * the input logs into multiple smaller requests before sending to the service. If an
      * {@link LogsUploadOptions#setLogsUploadErrorConsumer(Consumer) error handler} is set,
-     * then the service errors are surfaced to the error handler and the subscriber of this method will not receive an
+     * then the service errors are surfaced to the error handler and the subscriber of this method won't receive an
      * error signal.
      *
      * <p>
      * Each log in the input collection must be a valid JSON object. The JSON object should match the
      * <a href="https://learn.microsoft.com/azure/azure-monitor/essentials/data-collection-rule-structure#streamdeclarations">schema defined
-     * by the stream name</a>. The schema of the stream can be found in the Azure Portal.
+     * by the stream name</a>. The stream's schema can be found in the Azure portal.
      * </p>
      *
      *
@@ -156,14 +156,14 @@ public final class LogsIngestionAsyncClient {
     }
 
     /**
-     * This method is used to upload logs to Azure Monitor with specified data collection rule id and stream name. This
+     * This method is used to upload logs to Azure Monitor Log Analytics with specified data collection rule id and stream name. This
      * upload method provides a more granular control of the HTTP request sent to the service. Use {@link RequestOptions}
      * to configure the HTTP request.
      *
      * <p>
      * The input logs should be a JSON array with each element in the array
      * matching the <a href="https://learn.microsoft.com/azure/azure-monitor/essentials/data-collection-rule-structure#streamdeclarations">schema defined
-     * by the stream name</a>. The schema of the stream can be found in the Azure Portal. This content will be gzipped before sending to the service.
+     * by the stream name</a>. The stream's schema can be found in the Azure portal. This content will be gzipped before sending to the service.
      * If the content is already gzipped, then set the {@code Content-Encoding} header to {@code gzip} using {@link RequestOptions#setHeader(HttpHeaderName, String) requestOptions}
      * and pass the content as is.
      * </p>

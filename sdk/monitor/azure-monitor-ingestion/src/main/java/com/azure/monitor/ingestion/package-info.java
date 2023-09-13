@@ -2,13 +2,13 @@
 // Licensed under the MIT License.
 
 /**
- * The Azure Monitor Ingestion client library is used to send custom logs to [Azure Monitor](https://learn.microsoft.com/azure/azure-monitor/overview)'s
+ * The Azure Monitor Ingestion client library is used to send custom logs to an [Azure Monitor](https://learn.microsoft.com/azure/azure-monitor/overview)
  * Log Analytics workspace.
  *
  * <h2>Getting Started</h2>
  *
  * <p><strong>Create the client</strong></p>
- * An authenticated client is required to upload logs to Azure Monitor. This package includes both synchronous and
+ * An authenticated client is required to upload logs to Azure Monitor Log Analytics workspace. This package includes both synchronous and
  * asynchronous forms of the clients. Use {@link com.azure.monitor.ingestion.LogsIngestionClientBuilder LogsIngestionClientBuilder} to
  * customize and create an instance of {@link com.azure.monitor.ingestion.LogsIngestionClient LogsIngestionClient} or
  * {@link com.azure.monitor.ingestion.LogsIngestionAsyncClient LogsIngestionAsyncClient}.
@@ -16,7 +16,7 @@
  * <p><strong>Authenticate the client</strong></p>
  * <p>
  * The {@code LogsIngestionClient} and {@code LogsIngestionAsyncClient} can be authenticated using Azure Active Directory.
- * To authenticate with Azure Active Directory, you will need to create a {@link com.azure.core.credential.TokenCredential TokenCredential}
+ * To authenticate with Azure Active Directory, create a {@link com.azure.core.credential.TokenCredential TokenCredential}
  * that can be passed to the {@code LogsIngestionClientBuilder}. The Azure Identity library provides implementations of
  * {@code TokenCredential} for multiple authentication flows. See
  * <a href="https://learn.microsoft.com/java/api/overview/azure/identity-readme?view=azure-java-stable">Azure Identity</a>

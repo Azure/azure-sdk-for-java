@@ -148,7 +148,7 @@ public final class LogsIngestionClientBuilder implements ConfigurationTrait<Logs
     }
 
     /**
-     * Sets he AAD authentication credential that has the "Monitoring Metrics Publisher" role assigned to it.
+     * Sets the AAD authentication credential that has the "Monitoring Metrics Publisher" role assigned to it.
      * <a href="https://learn.microsoft.com/java/api/overview/azure/identity-readme?view=azure-java-stable">Azure Identity</a>
      * provides a variety of AAD credential types that can be used.
      *
@@ -172,8 +172,8 @@ public final class LogsIngestionClientBuilder implements ConfigurationTrait<Logs
     }
 
     /**
-     * The service version to use when creating the client. By default, the latest service version is will be used.
-     * This is the value returned by {@link LogsIngestionServiceVersion#getLatest() getLatest} method.
+     * The service version to use when creating the client. By default, the latest service version is used.
+     * This is the value returned by the {@link LogsIngestionServiceVersion#getLatest() getLatest} method.
      *
      * @param serviceVersion The {@link LogsIngestionServiceVersion}.
      * @return the updated {@link LogsIngestionClientBuilder}.
