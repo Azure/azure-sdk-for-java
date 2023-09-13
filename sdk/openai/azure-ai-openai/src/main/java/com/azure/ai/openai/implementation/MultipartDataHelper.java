@@ -117,6 +117,12 @@ public class MultipartDataHelper {
                 "response_format",
                 audioTranscriptionOptions.getResponseFormat().toString()));
         }
+        if (audioTranscriptionOptions.getModel() != null) {
+            fields.add(new MultipartField(
+                    "model",
+                    audioTranscriptionOptions.getModel()
+            ));
+        }
         if (audioTranscriptionOptions.getPrompt() != null) {
             fields.add( new MultipartField(
                 "prompt",
