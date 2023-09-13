@@ -1214,8 +1214,7 @@ public class CryptographyClient {
                 } catch (RuntimeException e) {
                     localOperationNotSupported = true;
 
-                    LOGGER.logExceptionAsWarning(
-                        new RuntimeException("Defaulting to service use for cryptographic operations.", e));
+                    LOGGER.warning("Defaulting to service use for cryptographic operations.", e);
 
                     return false;
                 }
