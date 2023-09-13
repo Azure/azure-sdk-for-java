@@ -37,6 +37,7 @@ import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
 import org.junit.jupiter.api.Test;
 
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -212,6 +213,10 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
         testRunner.accept("whisper-deployment", "batman.wav");
     }
 
+    void getAudioTranslationRunner(BiConsumer<String, String> testRunner) {
+        testRunner.accept("whisper-deployment", "JP_it_is_rainy_today.wav");
+    }
+
     private List<ChatMessage> getChatMessages() {
         List<ChatMessage> chatMessages = new ArrayList<>();
         chatMessages.add(new ChatMessage(ChatRole.SYSTEM, "You are a helpful assistant. You will talk like a pirate."));
@@ -233,6 +238,10 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
         ChatCompletionsOptions chatCompletionOptions = new ChatCompletionsOptions(chatMessages);
         chatCompletionOptions.setFunctions(functions);
         return chatCompletionOptions;
+    }
+
+    static Path openTestResourceFile(String fileName) {
+        return Path.of("src/test/resources/" + fileName);
     }
 
     static void assertCompletions(int choicesPerPrompt, Completions actual) {

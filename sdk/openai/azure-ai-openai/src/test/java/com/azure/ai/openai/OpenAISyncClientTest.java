@@ -414,7 +414,7 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
         client = getOpenAIClient(httpClient, serviceVersion);
 
         getAudioTranscriptionRunner((deploymentName, fileName) -> {
-            byte[] file = BinaryData.fromFile(Path.of("src/test/resources/batman.wav")).toBytes();
+            byte[] file = BinaryData.fromFile(openTestResourceFile(fileName)).toBytes();
             AudioTranscriptionOptions transcriptionOptions = new AudioTranscriptionOptions(file);
 
 //            AudioTranscription transcription = client.getAudioTranscription(deploymentName, transcriptionOptions);
@@ -427,12 +427,11 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
     public void testGetAudioTranslation(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getOpenAIClient(httpClient, serviceVersion);
 
-        getAudioTranscriptionRunner((deploymentName, fileName) -> {
-            byte[] file = BinaryData.fromFile(Path.of("src/test/resources/JP_it_is_rainy_today.wav")).toBytes();
+        getAudioTranslationRunner((deploymentName, fileName) -> {
+            byte[] file = BinaryData.fromFile(openTestResourceFile(fileName)).toBytes();
             AudioTranslationOptions translationOptions = new AudioTranslationOptions(file);
 
-            AudioTranscription transcription = client.getAudioTranslation(
-                deploymentName, translationOptions, "JP_it_is_rainy_today.wav");
+            AudioTranscription transcription = client.getAudioTranslation(deploymentName, translationOptions, fileName);
             assertNotNull(transcription);
         });
     }
@@ -442,13 +441,12 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
     public void testGetAudioTranslationTextPlain(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getOpenAIClient(httpClient, serviceVersion);
 
-        getAudioTranscriptionRunner((deploymentName, fileName) -> {
-            byte[] file = BinaryData.fromFile(Path.of("src/test/resources/JP_it_is_rainy_today.wav")).toBytes();
+        getAudioTranslationRunner((deploymentName, fileName) -> {
+            byte[] file = BinaryData.fromFile(openTestResourceFile(fileName)).toBytes();
             AudioTranslationOptions translationOptions = new AudioTranslationOptions(file);
             translationOptions.setResponseFormat(AudioTranscriptionFormat.TEXT);
 
-            String transcription = client.getAudioTranslationText(
-                deploymentName, translationOptions, "JP_it_is_rainy_today.wav");
+            String transcription = client.getAudioTranslationText(deploymentName, translationOptions, fileName);
             assertEquals("It's raining today.\n", transcription);
         });
     }
