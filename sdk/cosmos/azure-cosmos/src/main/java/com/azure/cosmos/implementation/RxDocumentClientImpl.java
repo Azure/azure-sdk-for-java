@@ -972,7 +972,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 getEndToEndOperationLatencyPolicyConfig(requestOptions);
 
             if (endToEndPolicyConfig != null && endToEndPolicyConfig.isEnabled()) {
-                return getFeedResponseFluxWithTimeout(feedResponseFlux, endToEndPolicyConfig, options, isQueryCancelledOnTimeout);
+                return getFeedResponseFluxWithTimeout(feedResponseFlux, endToEndPolicyConfig, isQueryCancelledOnTimeout);
             }
 
             return feedResponseFlux;
@@ -985,7 +985,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     private static <T> Flux<FeedResponse<T>> getFeedResponseFluxWithTimeout(
         Flux<FeedResponse<T>> feedResponseFlux,
         CosmosEndToEndOperationLatencyPolicyConfig endToEndPolicyConfig,
-        CosmosQueryRequestOptions requestOptions,
         final AtomicBoolean isQueryCancelledOnTimeout) {
 
         return feedResponseFlux
@@ -994,46 +993,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 if (throwable instanceof TimeoutException) {
                     CosmosException exception = new OperationCancelledException();
                     exception.setStackTrace(throwable.getStackTrace());
-
                     isQueryCancelledOnTimeout.set(true);
-
-                    List<CosmosDiagnostics> cancelledRequestDiagnostics =
-                        ImplementationBridgeHelpers
-                            .CosmosQueryRequestOptionsHelper
-                            .getCosmosQueryRequestOptionsAccessor()
-                            .getCancelledRequestDiagnosticsTracker(requestOptions);
-
-                    // if there is any cancelled requests, collect cosmos diagnostics
-                    if (cancelledRequestDiagnostics != null && !cancelledRequestDiagnostics.isEmpty()) {
-                        // combine all the cosmos diagnostics
-                        CosmosDiagnostics aggregratedCosmosDiagnostics =
-                            cancelledRequestDiagnostics
-                                .stream()
-                                .reduce((first, toBeMerged) -> {
-                                    ClientSideRequestStatistics clientSideRequestStatistics =
-                                        ImplementationBridgeHelpers
-                                            .CosmosDiagnosticsHelper
-                                            .getCosmosDiagnosticsAccessor()
-                                            .getClientSideRequestStatisticsRaw(first);
-
-                                    ClientSideRequestStatistics toBeMergedClientSideRequestStatistics =
-                                        ImplementationBridgeHelpers
-                                            .CosmosDiagnosticsHelper
-                                            .getCosmosDiagnosticsAccessor()
-                                            .getClientSideRequestStatisticsRaw(first);
-
-                                    if (clientSideRequestStatistics == null) {
-                                        return toBeMerged;
-                                    } else {
-                                        clientSideRequestStatistics.mergeClientSideRequestStatistics(toBeMergedClientSideRequestStatistics);
-                                        return first;
-                                    }
-                                })
-                                .get();
-
-                        BridgeInternal.setCosmosDiagnostics(exception, aggregratedCosmosDiagnostics);
-                    }
-
                     return exception;
                 }
                 return throwable;
@@ -2895,6 +2855,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
             String resourceLink = parentResourceLinkToQueryLink(collectionLink, ResourceType.Document);
             UUID activityId = randomUuid();
+
+            final AtomicBoolean isQueryCancelledOnTimeout = new AtomicBoolean(false);
+
             IDocumentQueryClient queryClient = documentQueryClientImpl(RxDocumentClientImpl.this, getOperationContextAndListenerTuple(options));
 
             final CosmosQueryRequestOptions effectiveOptions =
@@ -2941,7 +2904,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                             classOfT, //Document.class
                             ResourceType.Document,
                             queryClient,
-                            activityId);
+                            activityId,
+                            isQueryCancelledOnTimeout);
                     });
                 },
                 invalidPartitionExceptionRetryPolicy);
