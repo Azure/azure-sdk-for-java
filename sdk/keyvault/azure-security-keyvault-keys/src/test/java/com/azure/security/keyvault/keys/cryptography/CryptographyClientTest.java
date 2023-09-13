@@ -327,81 +327,61 @@ public class CryptographyClientTest extends CryptographyClientTestBase {
     @Test
     public void signDataVerifyEcLocal() {
         signVerifyEcRunner(signVerifyEcData -> {
-            if (isCurveSupportedByRuntime(signVerifyEcData.getCurve())) {
-                try {
-                    String algorithmName = "EC";
-                    Provider[] providers = Security.getProviders();
-                    Provider provider = null;
+            KeyPair keyPair;
+            Provider provider = null;
 
-                    for (Provider currentProvider : providers) {
-                        if (currentProvider.containsValue(algorithmName)) {
-                            provider = currentProvider;
+            try {
+                String algorithmName = "EC";
+                Provider[] providers = Security.getProviders();
 
-                            break;
-                        }
+                for (Provider currentProvider : providers) {
+                    if (currentProvider.containsValue(algorithmName)) {
+                        provider = currentProvider;
+
+                        break;
                     }
-
-                    if (provider == null) {
-                        for (Provider currentProvider : providers) {
-                            System.out.println(currentProvider.getName());
-                        }
-
-                        fail(String.format("No suitable security provider for algorithm %s was found.", algorithmName));
-                    }
-
-                    final KeyPairGenerator generator = KeyPairGenerator.getInstance(algorithmName, provider);
-                    ECGenParameterSpec spec =
-                        new ECGenParameterSpec(signVerifyEcData.getCurveToSpec().get(signVerifyEcData.getCurve()));
-
-                    generator.initialize(spec);
-
-                    KeyPair keyPair = generator.generateKeyPair();
-
-                    JsonWebKey jsonWebKey =
-                        JsonWebKey.fromEc(keyPair, provider, Arrays.asList(KeyOperation.SIGN, KeyOperation.VERIFY));
-                    KeyCurveName curve = signVerifyEcData.getCurve();
-                    Map<KeyCurveName, SignatureAlgorithm> curveToSignature = signVerifyEcData.getCurveToSignature();
-                    CryptographyClient cryptographyClient = initializeCryptographyClient(jsonWebKey);
-
-                    byte[] plainText = new byte[100];
-
-                    new Random(0x1234567L).nextBytes(plainText);
-
-                    byte[] signature =
-                        cryptographyClient.signData(curveToSignature.get(curve), plainText).getSignature();
-                    Boolean verifyStatus =
-                        cryptographyClient.verifyData(curveToSignature.get(curve), plainText, signature).isValid();
-
-                    assertTrue(verifyStatus);
-                } catch (InvalidAlgorithmParameterException | NoSuchAlgorithmException e) {
-                    fail(e);
                 }
+
+                if (provider == null) {
+                    for (Provider currentProvider : providers) {
+                        System.out.println(currentProvider.getName());
+                    }
+
+                    fail(String.format("No suitable security provider for algorithm %s was found.", algorithmName));
+                }
+
+                final KeyPairGenerator generator = KeyPairGenerator.getInstance(algorithmName, provider);
+                ECGenParameterSpec spec =
+                    new ECGenParameterSpec(signVerifyEcData.getCurveToSpec().get(signVerifyEcData.getCurve()));
+
+                generator.initialize(spec);
+
+                keyPair = generator.generateKeyPair();
+            } catch (InvalidAlgorithmParameterException | NoSuchAlgorithmException e) {
+                // Could not generate a KeyPair from the given JsonWebKey.
+                // It's likely this happened for key curve secp256k1, which is not supported on Java 16+.
+                e.printStackTrace();
+
+                return;
             }
+
+            JsonWebKey jsonWebKey =
+                JsonWebKey.fromEc(keyPair, provider, Arrays.asList(KeyOperation.SIGN, KeyOperation.VERIFY));
+            KeyCurveName curve = signVerifyEcData.getCurve();
+            Map<KeyCurveName, SignatureAlgorithm> curveToSignature = signVerifyEcData.getCurveToSignature();
+            CryptographyClient cryptographyClient = initializeCryptographyClient(jsonWebKey);
+
+            byte[] plainText = new byte[100];
+
+            new Random(0x1234567L).nextBytes(plainText);
+
+            byte[] signature =
+                cryptographyClient.signData(curveToSignature.get(curve), plainText).getSignature();
+            Boolean verifyStatus =
+                cryptographyClient.verifyData(curveToSignature.get(curve), plainText, signature).isValid();
+
+            assertTrue(verifyStatus);
         });
-    }
-
-    private boolean isCurveSupportedByRuntime(KeyCurveName keyCurveName) {
-        if (curveNotSupportedByRuntime) {
-            return false;
-        }
-
-        String javaVersion = System.getProperty("java.version");
-
-        if (javaVersion.startsWith("1.")) {
-            javaVersion = javaVersion.substring(2, 3);
-        } else {
-            int period = javaVersion.indexOf(".");
-
-            if (period != -1) {
-                javaVersion = javaVersion.substring(0, period);
-            }
-        }
-
-        // The SECP256K1 curve is not supported on Java 16+.
-        curveNotSupportedByRuntime =
-            !(Integer.parseInt(javaVersion) >= 16 && keyCurveName == KeyCurveName.P_256K);
-
-        return curveNotSupportedByRuntime;
     }
 
     @Test

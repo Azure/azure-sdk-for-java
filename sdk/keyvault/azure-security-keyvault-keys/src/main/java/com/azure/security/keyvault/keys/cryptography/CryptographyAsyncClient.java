@@ -912,6 +912,10 @@ public class CryptographyAsyncClient {
     }
 
     private Mono<Boolean> isValidKeyLocallyAvailable() {
+        if (localOperationNotSupported) {
+            return Mono.defer(() -> Mono.just(false));
+        }
+
         boolean keyNotAvailable = (key == null && keyCollection != null);
 
         if (keyNotAvailable) {
