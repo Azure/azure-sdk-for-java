@@ -66,15 +66,14 @@ public class CryptographyClient {
     private static final ClientLogger LOGGER = new ClientLogger(CryptographyClient.class);
 
     private final String keyCollection;
-    private final HttpPipeline pipeline;
 
-    private boolean localOperationNotSupported = false;
+    private volatile boolean localOperationNotSupported = false;
     private LocalKeyCryptographyClient localKeyCryptographyClient;
 
     final CryptographyClientImpl implClient;
     final String keyId;
 
-    JsonWebKey key;
+    volatile JsonWebKey key;
 
     /**
      * Creates a {@link CryptographyClient} that uses a given {@link HttpPipeline pipeline} to service requests.
@@ -86,7 +85,6 @@ public class CryptographyClient {
     CryptographyClient(String keyId, HttpPipeline pipeline, CryptographyServiceVersion version) {
         this.keyCollection = unpackAndValidateId(keyId);
         this.keyId = keyId;
-        this.pipeline = pipeline;
         this.implClient = new CryptographyClientImpl(keyId, pipeline, version);
         this.key = null;
     }
@@ -115,7 +113,6 @@ public class CryptographyClient {
         this.keyCollection = null;
         this.key = jsonWebKey;
         this.keyId = jsonWebKey.getId();
-        this.pipeline = null;
         this.implClient = null;
         this.localKeyCryptographyClient = initializeCryptoClient(key, null);
     }
@@ -1196,7 +1193,7 @@ public class CryptographyClient {
         boolean keyNotAvailable = (key == null && keyCollection != null);
 
         if (keyNotAvailable) {
-            if (keyCollection.equals(CryptographyClientImpl.SECRETS_COLLECTION)) {
+            if (Objects.equals(keyCollection, CryptographyClientImpl.SECRETS_COLLECTION)) {
                 key = getSecretKey();
             } else {
                 key = getKey().getKey();

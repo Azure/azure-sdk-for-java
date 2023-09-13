@@ -70,13 +70,13 @@ public class CryptographyAsyncClient {
     private final String keyCollection;
     private final HttpPipeline pipeline;
 
-    private boolean localOperationNotSupported = false;
+    private volatile boolean localOperationNotSupported = false;
     private LocalKeyCryptographyClient localKeyCryptographyClient;
 
     final CryptographyClientImpl implClient;
     final String keyId;
 
-    JsonWebKey key;
+    volatile JsonWebKey key;
 
     /**
      * Creates a {@link CryptographyAsyncClient} that uses a given {@link HttpPipeline pipeline} to service requests.
@@ -913,13 +913,13 @@ public class CryptographyAsyncClient {
 
     private Mono<Boolean> isValidKeyLocallyAvailable() {
         if (localOperationNotSupported) {
-            return Mono.defer(() -> Mono.just(false));
+            return Mono.just(false);
         }
 
         boolean keyNotAvailable = (key == null && keyCollection != null);
 
         if (keyNotAvailable) {
-            if (keyCollection.equals(CryptographyClientImpl.SECRETS_COLLECTION)) {
+            if (Objects.equals(keyCollection, CryptographyClientImpl.SECRETS_COLLECTION)) {
                 return getSecretKey().map(jsonWebKey -> {
                     key = jsonWebKey;
 
@@ -965,11 +965,7 @@ public class CryptographyAsyncClient {
                 });
             }
         } else {
-            return Mono.defer(() -> Mono.just(true));
+            return Mono.just(true);
         }
-    }
-
-    CryptographyClientImpl getImplClient() {
-        return implClient;
     }
 }
