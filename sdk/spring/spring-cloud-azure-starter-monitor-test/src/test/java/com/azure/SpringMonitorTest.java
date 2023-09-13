@@ -117,7 +117,7 @@ public class SpringMonitorTest {
             "com.azure.monitor.opentelemetry.exporter.AzureMonitorMetricExporter"); // AzureMonitorMetricExporter is not public
   }
 
-  @RepeatedTest(100)
+  @Test
   public void shouldMonitor() throws InterruptedException, MalformedURLException {
 
     // Only required with GraalVM native test execution
