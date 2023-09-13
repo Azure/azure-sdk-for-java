@@ -112,6 +112,7 @@ public class BlobTestBase extends TestProxyTestBase {
     protected static final HttpHeaderName X_MS_REQUEST_ID = HttpHeaderName.fromString("x-ms-request-id");
     protected static final HttpHeaderName LAST_MODIFIED = HttpHeaderName.fromString("last-modified");
     protected static final HttpHeaderName X_MS_VERSION = HttpHeaderName.fromString("x-ms-version");
+    protected static final HttpHeaderName X_MS_VERSION_ID = HttpHeaderName.fromString("x-ms-version-id");
     protected static final HttpHeaderName X_MS_CONTENT_CRC64 = HttpHeaderName.fromString("x-ms-content-crc64");
     protected static final HttpHeaderName X_MS_REQUEST_SERVER_ENCRYPTED =
         HttpHeaderName.fromString("x-ms-request-server-encrypted");

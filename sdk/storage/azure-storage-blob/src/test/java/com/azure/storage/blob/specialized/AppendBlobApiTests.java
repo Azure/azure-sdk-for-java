@@ -25,6 +25,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.condition.DisabledIf;
+import org.junit.jupiter.api.condition.EnabledIf;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -794,7 +795,7 @@ public class AppendBlobApiTests extends BlobTestBase {
         );
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#isServiceVersionPresent")
+    @EnabledIf("com.azure.storage.blob.BlobTestBase#isServiceVersionPresent")
     // This tests the policy is in the right place because if it were added per retry, it would be after the credentials
     // and auth would fail because we changed a signed header.
     public void perCallPolicy() {
