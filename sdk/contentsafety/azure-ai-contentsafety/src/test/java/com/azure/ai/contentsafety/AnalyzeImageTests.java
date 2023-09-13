@@ -6,18 +6,27 @@ package com.azure.ai.contentsafety;
 
 import com.azure.ai.contentsafety.models.*;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
-@Disabled
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+
 public final class AnalyzeImageTests extends ContentSafetyClientTestBase {
     @Test
-    @Disabled
     public void testAnalyzeImageTests() {
         // method invocation
+        ImageData image = new ImageData();
+        String cwd = System.getProperty("user.dir");
+        String absolutePath = cwd + "./src/image.jpg";
+        try {
+            image.setContent(Files.readAllBytes(Paths.get(absolutePath)));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         AnalyzeImageResult response =
                 contentSafetyClient.analyzeImage(
-                        new AnalyzeImageOptions(new ImageData().setContent("Y29udGVudDE=".getBytes())));
+                        new AnalyzeImageOptions(image));
 
         // response assertion
         Assertions.assertNotNull(response);
@@ -33,21 +42,21 @@ public final class AnalyzeImageTests extends ContentSafetyClientTestBase {
         Assertions.assertNotNull(responseSelfHarmResult);
 
         ImageCategory responseSelfHarmResultCategory = responseSelfHarmResult.getCategory();
-        Assertions.assertEquals(ImageCategory.HATE, responseSelfHarmResultCategory);
+        Assertions.assertEquals(ImageCategory.SELF_HARM, responseSelfHarmResultCategory);
         int responseSelfHarmResultSeverity = responseSelfHarmResult.getSeverity();
         Assertions.assertEquals(0, responseSelfHarmResultSeverity);
         ImageAnalyzeSeverityResult responseSexualResult = response.getSexualResult();
         Assertions.assertNotNull(responseSexualResult);
 
         ImageCategory responseSexualResultCategory = responseSexualResult.getCategory();
-        Assertions.assertEquals(ImageCategory.HATE, responseSexualResultCategory);
+        Assertions.assertEquals(ImageCategory.SEXUAL, responseSexualResultCategory);
         int responseSexualResultSeverity = responseSexualResult.getSeverity();
         Assertions.assertEquals(0, responseSexualResultSeverity);
         ImageAnalyzeSeverityResult responseViolenceResult = response.getViolenceResult();
         Assertions.assertNotNull(responseViolenceResult);
 
         ImageCategory responseViolenceResultCategory = responseViolenceResult.getCategory();
-        Assertions.assertEquals(ImageCategory.HATE, responseViolenceResultCategory);
+        Assertions.assertEquals(ImageCategory.VIOLENCE, responseViolenceResultCategory);
         int responseViolenceResultSeverity = responseViolenceResult.getSeverity();
         Assertions.assertEquals(2, responseViolenceResultSeverity);
     }

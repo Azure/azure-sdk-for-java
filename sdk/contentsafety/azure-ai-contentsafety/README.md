@@ -171,7 +171,7 @@ ContentSafetyClient contentSafetyClient = new ContentSafetyClientBuilder()
 
 ImageData image = new ImageData();
 try {
-    image.setContent(Files.readAllBytes(Paths.get("./image.jpg")));
+    image.setContent(Files.readAllBytes(Paths.get("../image.jpg")));
 } catch (IOException e) {
     throw new RuntimeException(e);
 }
