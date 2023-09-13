@@ -530,7 +530,13 @@ public final class OpenAIAsyncClient {
      * <pre>{@code
      * {
      *     id: String (Required)
-     *     status: String (Required)
+     *     created: long (Required)
+     *     expires: Long (Optional)
+     *     result (Optional): {
+     *         created: long (Required)
+     *         data: DataModelBase (Required)
+     *     }
+     *     status: String(notRunning/running/succeeded/canceled/failed) (Required)
      *     error (Optional): {
      *         code: String (Required)
      *         message: String (Required)
@@ -552,7 +558,8 @@ public final class OpenAIAsyncClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link PollerFlux} for polling of status details for long running operations.
+     * @return the {@link PollerFlux} for polling of a polling status update or final response payload for an image
+     *     operation.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
