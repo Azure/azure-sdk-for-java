@@ -506,6 +506,7 @@ public final class AttestationAdministrationClientBuilder implements
             pipeline = new HttpPipelineBuilder()
                 .policies(policies.toArray(new HttpPipelinePolicy[0]))
                 .httpClient(httpClient)
+                .clientOptions(localClientOptions)
                 .build();
         }
 
