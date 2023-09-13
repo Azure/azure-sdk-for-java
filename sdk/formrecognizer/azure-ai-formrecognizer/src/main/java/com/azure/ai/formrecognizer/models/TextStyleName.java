@@ -5,7 +5,6 @@
 package com.azure.ai.formrecognizer.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 
 import java.util.Collection;
 
@@ -34,7 +33,6 @@ public final class TextStyleName extends ExpandableStringEnum<TextStyleName> {
      * @param name a name to look for.
      * @return the corresponding TextStyleName.
      */
-    @JsonCreator
     public static TextStyleName fromString(String name) {
         return fromString(name, TextStyleName.class);
     }

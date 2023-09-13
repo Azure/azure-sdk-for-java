@@ -5,7 +5,7 @@
 package com.azure.ai.formrecognizer.documentanalysis.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
+
 import java.util.Collection;
 
 /** Formula kind. */
@@ -30,7 +30,6 @@ public final class DocumentFormulaKind extends ExpandableStringEnum<DocumentForm
      * @param name a name to look for.
      * @return the corresponding DocumentFormulaKind.
      */
-    @JsonCreator
     public static DocumentFormulaKind fromString(String name) {
         return fromString(name, DocumentFormulaKind.class);
     }

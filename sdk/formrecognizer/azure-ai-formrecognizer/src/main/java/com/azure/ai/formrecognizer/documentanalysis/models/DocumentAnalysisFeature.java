@@ -5,7 +5,7 @@
 package com.azure.ai.formrecognizer.documentanalysis.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
+
 import java.util.Collection;
 
 /** Defines values for DocumentAnalysisFeature. */
@@ -42,7 +42,6 @@ public final class DocumentAnalysisFeature extends ExpandableStringEnum<Document
      * @param name a name to look for.
      * @return the corresponding DocumentAnalysisFeature.
      */
-    @JsonCreator
     public static DocumentAnalysisFeature fromString(String name) {
         return fromString(name, DocumentAnalysisFeature.class);
     }

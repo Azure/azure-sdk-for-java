@@ -5,7 +5,7 @@
 package com.azure.ai.formrecognizer.documentanalysis.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
+
 import java.util.Collection;
 
 /** Font weight. */
@@ -30,7 +30,6 @@ public final class FontWeight extends ExpandableStringEnum<FontWeight> {
      * @param name a name to look for.
      * @return the corresponding FontWeight.
      */
-    @JsonCreator
     public static FontWeight fromString(String name) {
         return fromString(name, FontWeight.class);
     }

@@ -3,6 +3,7 @@
 
 module com.azure.ai.formrecognizer {
     requires transitive com.azure.core;
+    requires com.azure.json;
 
     exports com.azure.ai.formrecognizer;
     exports com.azure.ai.formrecognizer.documentanalysis.models;

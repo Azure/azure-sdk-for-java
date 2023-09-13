@@ -4,7 +4,7 @@
 package com.azure.ai.formrecognizer.documentanalysis.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
+
 import java.util.Collection;
 
 /** Barcode kind. */
@@ -74,7 +74,6 @@ public final class DocumentBarcodeKind extends ExpandableStringEnum<DocumentBarc
      * @param name a name to look for.
      * @return the corresponding DocumentBarcodeKind.
      */
-    @JsonCreator
     public static DocumentBarcodeKind fromString(String name) {
         return fromString(name, DocumentBarcodeKind.class);
     }
