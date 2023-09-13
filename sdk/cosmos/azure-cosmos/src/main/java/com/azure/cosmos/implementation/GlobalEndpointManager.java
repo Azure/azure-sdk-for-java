@@ -161,6 +161,10 @@ public class GlobalEndpointManager implements AutoCloseable {
         this.locationCache.markEndpointUnavailableForWrite(endpoint);
     }
 
+    public boolean canUseMultipleWriteLocations() {
+        return this.locationCache.canUseMultipleWriteLocations();
+    }
+
     public boolean canUseMultipleWriteLocations(RxDocumentServiceRequest request) {
         return this.locationCache.canUseMultipleWriteLocations(request);
     }
