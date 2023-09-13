@@ -152,14 +152,14 @@ class EventHubAsyncClientIntegrationTest extends IntegrationTestBase {
         final EventData testData = new EventData(TEST_CONTENTS.getBytes(UTF_8));
 
         EventHubProducerAsyncClient asyncProducerClient = toClose(new EventHubClientBuilder()
-                .credential(fullyQualifiedNamespace, eventHubName,
-                        new AzureNamedKeyCredential(sharedAccessKeyName, sharedAccessKey))
-                .buildAsyncProducerClient());
+            .credential(fullyQualifiedNamespace, eventHubName,
+                new AzureNamedKeyCredential(sharedAccessKeyName, sharedAccessKey))
+            .buildAsyncProducerClient());
 
         StepVerifier.create(asyncProducerClient.createBatch().flatMap(batch -> {
-                assertTrue(batch.tryAdd(testData));
-                return asyncProducerClient.send(batch);
-            }))
+            assertTrue(batch.tryAdd(testData));
+            return asyncProducerClient.send(batch);
+        }))
             .expectComplete()
             .verify(TIMEOUT);
     }
@@ -182,9 +182,9 @@ class EventHubAsyncClientIntegrationTest extends IntegrationTestBase {
                 .buildAsyncProducerClient());
 
         StepVerifier.create(asyncProducerClient.createBatch().flatMap(batch -> {
-                assertTrue(batch.tryAdd(testData));
-                return asyncProducerClient.send(batch);
-            }))
+            assertTrue(batch.tryAdd(testData));
+            return asyncProducerClient.send(batch);
+        }))
             .expectComplete()
             .verify(TIMEOUT);
     }

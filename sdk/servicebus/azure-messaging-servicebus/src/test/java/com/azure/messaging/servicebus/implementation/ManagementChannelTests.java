@@ -632,7 +632,7 @@ class ManagementChannelTests {
 
         // Act & Assert
         StepVerifier.create(managementChannel.deleteRule(ruleName))
-            .expectError()
+            .expectComplete()
             .verify(TIMEOUT);
 
         verify(requestResponseChannel).sendWithAck(messageCaptor.capture(), isNull());

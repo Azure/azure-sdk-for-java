@@ -118,7 +118,7 @@ public class TokenCacheTests {
             .flatMap(integer -> {
                 cache.getTokenSync(new TokenRequestContext().addScopes("test" + integer + "/.default"), true);
                 return IntStream.of(integer);
-            }).forEach(ignored -> {});
+            }).forEach(ignored -> { });
 
         // Ensure that refresh attempts are made.
         assertEquals(5, refreshes.get());
@@ -142,7 +142,7 @@ public class TokenCacheTests {
             .flatMap(integer -> {
                 cache.getTokenSync(new TokenRequestContext(), false);
                 return IntStream.of(integer);
-            }).forEach(ignored -> {});
+            }).forEach(ignored -> { });
 
         // Ensure that only one refresh attempt is made.
         assertEquals(1, refreshes.get());
