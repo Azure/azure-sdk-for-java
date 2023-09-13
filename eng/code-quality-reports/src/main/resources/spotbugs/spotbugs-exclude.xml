@@ -2676,4 +2676,11 @@
     <Field name="instance"/>
     <Bug pattern="LI_LAZY_INIT_STATIC"/>
   </Match>
+
+  <!-- False positive, complaining about dereference of null 'source' on some paths, which can't happen based on the null validation checks. -->
+  <Match>
+    <Class name="com.azure.core.util.io.IOUtils"/>
+    <Method name="transfer"/>
+    <Bug pattern="NP_NULL_ON_SOME_PATH"/>
+  </Match>
 </FindBugsFilter>
