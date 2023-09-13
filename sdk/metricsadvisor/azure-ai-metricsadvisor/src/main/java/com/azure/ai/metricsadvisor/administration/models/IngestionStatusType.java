@@ -13,7 +13,9 @@ public final class IngestionStatusType extends ExpandableStringEnum<IngestionSta
 
     /**
      * Constructs a IngestionStatusType object.
+     * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Deprecated
     public IngestionStatusType() {
     }
 

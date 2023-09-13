@@ -14,7 +14,9 @@ public final class BoundaryDirection extends ExpandableStringEnum<BoundaryDirect
 
     /**
      * Constructs a BoundaryDirection object.
+     * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Deprecated
     public BoundaryDirection() {
     }
 
