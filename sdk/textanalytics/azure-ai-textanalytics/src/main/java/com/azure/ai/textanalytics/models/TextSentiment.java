@@ -35,6 +35,15 @@ public final class TextSentiment extends ExpandableStringEnum<TextSentiment> {
     public static final TextSentiment MIXED = fromString("mixed");
 
     /**
+     * Creates a new instance of {@link TextSentiment} value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public TextSentiment() {
+    }
+
+    /**
      * Creates or finds a {@link TextSentiment} from its string representation.
      *
      * @param name A name to look for.
@@ -45,7 +54,11 @@ public final class TextSentiment extends ExpandableStringEnum<TextSentiment> {
         return fromString(name, TextSentiment.class);
     }
 
-    /** @return known TextSentiment values. */
+    /**
+     * All known TextSentiment values.
+     *
+     * @return known TextSentiment values.
+     */
     public static Collection<TextSentiment> values() {
         return values(TextSentiment.class);
     }

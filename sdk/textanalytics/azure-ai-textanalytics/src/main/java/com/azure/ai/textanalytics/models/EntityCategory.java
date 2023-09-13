@@ -87,6 +87,15 @@ public final class EntityCategory extends ExpandableStringEnum<EntityCategory> {
     public static final EntityCategory QUANTITY = fromString("Quantity");
 
     /**
+     * Creates a new instance of {@link EntityCategory} value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public EntityCategory() {
+    }
+
+    /**
      * Creates or finds a {@link EntityCategory} from its string representation.
      *
      * @param name The string name to look for.
@@ -97,7 +106,11 @@ public final class EntityCategory extends ExpandableStringEnum<EntityCategory> {
         return fromString(name, EntityCategory.class);
     }
 
-    /** @return known EntityCategory values. */
+    /**
+     * All known EntityCategory values.
+     *
+     * @return known EntityCategory values.
+     */
     public static Collection<EntityCategory> values() {
         return values(EntityCategory.class);
     }

@@ -17,6 +17,12 @@ public final class AnalyzeSentimentAction {
     private boolean includeOpinionMining;
 
     /**
+     * Constructs a {@link AnalyzeSentimentAction} model.
+     */
+    public AnalyzeSentimentAction() {
+    }
+
+    /**
      * Get the name of action.
      *
      * @return the name of action.

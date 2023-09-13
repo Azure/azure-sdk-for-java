@@ -73,6 +73,12 @@ public final class PiiEntity {
     }
 
     /**
+     * Constructs a {@link PiiEntity} model.
+     */
+    public PiiEntity() {
+    }
+
+    /**
      * Gets the text property: PII entity text as appears in the request.
      *
      * @return The {@code text} value.

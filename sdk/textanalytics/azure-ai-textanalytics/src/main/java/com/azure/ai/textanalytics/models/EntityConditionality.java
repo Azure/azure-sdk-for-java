@@ -21,6 +21,15 @@ public final class EntityConditionality extends ExpandableStringEnum<EntityCondi
     public static final EntityConditionality CONDITIONAL = fromString("Conditional");
 
     /**
+     * Creates a new instance of {@link EntityConditionality} value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public EntityConditionality() {
+    }
+
+    /**
      * Creates or finds a {@link EntityConditionality} from its string representation.
      *
      * @param name The string name to look for.
@@ -31,7 +40,11 @@ public final class EntityConditionality extends ExpandableStringEnum<EntityCondi
         return fromString(name, EntityConditionality.class);
     }
 
-    /** @return known EntityConditionality values. */
+    /**
+     * All known EntityConditionality values.
+     *
+     * @return known EntityConditionality values.
+     */
     public static Collection<EntityConditionality> values() {
         return values(EntityConditionality.class);
     }

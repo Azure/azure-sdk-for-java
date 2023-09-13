@@ -20,6 +20,12 @@ public final class AbstractiveSummaryActionResult extends TextAnalyticsActionRes
     }
 
     /**
+     * Constructs a {@link AbstractiveSummaryActionResult} model.
+     */
+    public AbstractiveSummaryActionResult() {
+    }
+
+    /**
      * Gets the abstractive summarization action result.
      *
      * @return The abstractive summarization analysis action result.

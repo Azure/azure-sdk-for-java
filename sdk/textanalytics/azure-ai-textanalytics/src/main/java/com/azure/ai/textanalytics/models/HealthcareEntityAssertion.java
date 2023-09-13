@@ -49,6 +49,12 @@ public final class HealthcareEntityAssertion {
     }
 
     /**
+     * Constructs a {@link HealthcareEntityAssertion} model.
+     */
+    public HealthcareEntityAssertion() {
+    }
+
+    /**
      * Gets the conditionality property: Describes any conditionality on the entity.
      *
      * @return The conditionality value.

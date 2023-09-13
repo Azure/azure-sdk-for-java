@@ -38,6 +38,12 @@ public final class AbstractiveSummaryContext {
     }
 
     /**
+     * Constructs a {@link AbstractiveSummaryContext} model.
+     */
+    public AbstractiveSummaryContext() {
+    }
+
+    /**
      * Get the offset property: Start position for the context. Use of different 'stringIndexType' values can affect the
      * offset returned.
      *

@@ -98,6 +98,12 @@ public final class AnalyzeActionsResult {
     }
 
     /**
+     * Constructs a {@link AnalyzeActionsResult} model.
+     */
+    public AnalyzeActionsResult() {
+    }
+
+    /**
      * Gets the {@code recognizeEntitiesResults} property: The categorized entities recognition action results
      * property.
      *

@@ -26,6 +26,15 @@ public final class WarningCode extends ExpandableStringEnum<WarningCode> {
     public static final WarningCode DOCUMENT_TRUNCATED = fromString("DocumentTruncated");
 
     /**
+     * Creates a new instance of {@link WarningCode} value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public WarningCode() {
+    }
+
+    /**
      * Creates or finds a {@link WarningCode} from its string representation.
      *
      * @param name A name to look for.
@@ -36,7 +45,11 @@ public final class WarningCode extends ExpandableStringEnum<WarningCode> {
         return fromString(name, WarningCode.class);
     }
 
-    /** @return known WarningCode values. */
+    /**
+     * All known WarningCode values.
+     *
+     * @return known WarningCode values.
+     */
     public static Collection<WarningCode> values() {
         return values(WarningCode.class);
     }

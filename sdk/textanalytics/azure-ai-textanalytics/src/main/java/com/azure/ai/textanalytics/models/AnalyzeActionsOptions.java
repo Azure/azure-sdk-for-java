@@ -13,6 +13,12 @@ public final class AnalyzeActionsOptions {
     private boolean includeStatistics;
 
     /**
+     * Constructs a {@link AnalyzeActionsOptions} model.
+     */
+    public AnalyzeActionsOptions() {
+    }
+
+    /**
      * Gets the value of {@code includeStatistics}.
      *
      * @return The value of {@code includeStatistics}.

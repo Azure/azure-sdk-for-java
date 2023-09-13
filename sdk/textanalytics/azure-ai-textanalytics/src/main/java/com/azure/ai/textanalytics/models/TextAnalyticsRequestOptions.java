@@ -15,6 +15,12 @@ public class TextAnalyticsRequestOptions {
     private boolean disableServiceLogs;
 
     /**
+     * Constructs a {@link TextAnalyticsRequestOptions} model.
+     */
+    public TextAnalyticsRequestOptions() {
+    }
+
+    /**
      * Gets the version of the text analytics model used by this operation.
      *
      * @return The model version.

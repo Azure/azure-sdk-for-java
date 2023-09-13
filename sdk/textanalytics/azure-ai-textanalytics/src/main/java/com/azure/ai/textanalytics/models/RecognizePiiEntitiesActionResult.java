@@ -20,6 +20,12 @@ public final class RecognizePiiEntitiesActionResult extends TextAnalyticsActionR
     }
 
     /**
+     * Constructs a {@link RecognizePiiEntitiesActionResult} model.
+     */
+    public RecognizePiiEntitiesActionResult() {
+    }
+
+    /**
      * Gets the PII entities recognition action result.
      *
      * @return The PII entities recognition action result.

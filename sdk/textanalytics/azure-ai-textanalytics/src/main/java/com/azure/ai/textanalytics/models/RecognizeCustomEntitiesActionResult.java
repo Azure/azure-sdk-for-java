@@ -20,6 +20,12 @@ public final class RecognizeCustomEntitiesActionResult extends TextAnalyticsActi
     }
 
     /**
+     * Constructs a {@link RecognizeCustomEntitiesActionResult} model.
+     */
+    public RecognizeCustomEntitiesActionResult() {
+    }
+
+    /**
      * Gets the custom entities recognition action result.
      *
      * @return the custom entities recognition action result.

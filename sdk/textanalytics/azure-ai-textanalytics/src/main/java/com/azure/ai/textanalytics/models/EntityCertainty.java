@@ -30,6 +30,15 @@ public final class EntityCertainty extends ExpandableStringEnum<EntityCertainty>
     public static final EntityCertainty NEGATIVE = fromString("Negative");
 
     /**
+     * Creates a new instance of {@link EntityCertainty} value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public EntityCertainty() {
+    }
+
+    /**
      * Creates or finds a {@link EntityCertainty} from its string representation.
      *
      * @param name The string name to look for.
@@ -40,7 +49,11 @@ public final class EntityCertainty extends ExpandableStringEnum<EntityCertainty>
         return fromString(name, EntityCertainty.class);
     }
 
-    /** @return known EntityCertainty values. */
+    /**
+     * All known EntityCertainty values.
+     *
+     * @return known EntityCertainty values.
+     */
     public static Collection<EntityCertainty> values() {
         return values(EntityCertainty.class);
     }

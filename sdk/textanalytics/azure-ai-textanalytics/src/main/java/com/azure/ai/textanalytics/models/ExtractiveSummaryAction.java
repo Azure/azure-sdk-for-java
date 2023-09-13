@@ -18,6 +18,12 @@ public final class ExtractiveSummaryAction {
     private boolean disableServiceLogs;
 
     /**
+     * Constructs a {@link ExtractiveSummaryAction} model.
+     */
+    public ExtractiveSummaryAction() {
+    }
+
+    /**
      * Get the name of action.
      *
      * @return the name of action.

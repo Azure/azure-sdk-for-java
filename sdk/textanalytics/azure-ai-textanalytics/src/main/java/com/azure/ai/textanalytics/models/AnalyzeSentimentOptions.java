@@ -19,6 +19,12 @@ public final class AnalyzeSentimentOptions extends TextAnalyticsRequestOptions {
     private boolean includeOpinionMining;
 
     /**
+     * Constructs a {@link AnalyzeSentimentOptions} model.
+     */
+    public AnalyzeSentimentOptions() {
+    }
+
+    /**
      * Sets the model version. This value indicates which model will be used for scoring, e.g. "latest", "2019-10-01".
      * If a model-version is not specified, the API will default to the latest, non-preview version.
      *

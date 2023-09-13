@@ -20,6 +20,12 @@ public final class RecognizeLinkedEntitiesActionResult extends TextAnalyticsActi
     }
 
     /**
+     * Constructs a {@link RecognizeLinkedEntitiesActionResult} model.
+     */
+    public RecognizeLinkedEntitiesActionResult() {
+    }
+
+    /**
      * Gets the linked entities recognition action result.
      *
      * @return The linked entities recognition action result.

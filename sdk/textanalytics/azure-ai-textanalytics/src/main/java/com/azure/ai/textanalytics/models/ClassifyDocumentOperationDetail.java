@@ -55,6 +55,12 @@ public final class ClassifyDocumentOperationDetail {
     }
 
     /**
+     * Constructs a {@link ClassifyDocumentOperationDetail} model.
+     */
+    public ClassifyDocumentOperationDetail() {
+    }
+
+    /**
      * Gets the operationId property of the {@link ClassifyDocumentOperationDetail}.
      *
      * @return The operationId property of the {@link ClassifyDocumentOperationDetail}.

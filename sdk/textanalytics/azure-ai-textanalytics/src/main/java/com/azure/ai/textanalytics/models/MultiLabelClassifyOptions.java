@@ -15,6 +15,12 @@ public final class MultiLabelClassifyOptions {
     private boolean includeStatistics;
 
     /**
+     * Constructs a {@link MultiLabelClassifyOptions} model.
+     */
+    public MultiLabelClassifyOptions() {
+    }
+
+    /**
      * Gets display name of the operation.
      *
      * @return Display name of the operation.

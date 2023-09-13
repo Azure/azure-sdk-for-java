@@ -16,6 +16,12 @@ public final class RecognizeLinkedEntitiesAction {
     private boolean disableServiceLogs;
 
     /**
+     * Constructs a {@link RecognizeLinkedEntitiesAction} model.
+     */
+    public RecognizeLinkedEntitiesAction() {
+    }
+
+    /**
      * Get the name of action.
      *
      * @return the name of action.

@@ -20,6 +20,12 @@ public final class RecognizePiiEntitiesAction {
     private Iterable<PiiEntityCategory> categoriesFilter;
 
     /**
+     * Constructs a {@link RecognizePiiEntitiesAction} model.
+     */
+    public RecognizePiiEntitiesAction() {
+    }
+
+    /**
      * Get the name of action.
      *
      * @return the name of action.

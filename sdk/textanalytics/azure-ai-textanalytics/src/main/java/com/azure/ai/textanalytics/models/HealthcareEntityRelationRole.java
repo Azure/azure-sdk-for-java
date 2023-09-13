@@ -37,6 +37,12 @@ public final class HealthcareEntityRelationRole {
     }
 
     /**
+     * Constructs a {@link HealthcareEntityRelationRole} model.
+     */
+    public HealthcareEntityRelationRole() {
+    }
+
+    /**
      * Gets the role property: Role of entity in the relationship. For example: 'CD20-positive diffuse large B-cell
      * lymphoma' has the following entities with their roles in parenthesis: CD20 (GeneOrProtein), Positive
      * (Expression), diffuse large B-cell lymphoma (Diagnosis).

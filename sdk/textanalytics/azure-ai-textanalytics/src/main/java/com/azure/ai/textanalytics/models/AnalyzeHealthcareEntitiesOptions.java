@@ -14,6 +14,12 @@ public final class AnalyzeHealthcareEntitiesOptions extends TextAnalyticsRequest
     private Boolean disableServiceLogs;
 
     /**
+     * Constructs a {@link AnalyzeHealthcareEntitiesOptions} model.
+     */
+    public AnalyzeHealthcareEntitiesOptions() {
+    }
+
+    /**
      * Gets display name of the operation.
      *
      * @return Display name of the operation.

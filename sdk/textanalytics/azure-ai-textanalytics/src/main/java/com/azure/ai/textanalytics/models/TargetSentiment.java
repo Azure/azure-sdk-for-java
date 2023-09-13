@@ -47,6 +47,12 @@ public final class TargetSentiment {
     }
 
     /**
+     * Constructs a {@link TargetSentiment} model.
+     */
+    public TargetSentiment() {
+    }
+
+    /**
      * Gets the target text property.
      *
      * @return The text value.

@@ -77,6 +77,12 @@ public final class AnalyzeActionsOperationDetail {
     }
 
     /**
+     * Constructs a {@link AnalyzeActionsOperationDetail} model.
+     */
+    public AnalyzeActionsOperationDetail() {
+    }
+
+    /**
      * Gets the operationId property of the {@link AnalyzeActionsOperationDetail}.
      *
      * @return The operationId property of the {@link AnalyzeActionsOperationDetail}.

@@ -17,6 +17,12 @@ public final class AbstractiveSummaryAction {
     private Integer sentenceCount;
 
     /**
+     * Constructs a {@link AbstractiveSummaryAction} model.
+     */
+    public AbstractiveSummaryAction() {
+    }
+
+    /**
      * Get the name of action.
      *
      * @return the name of action.

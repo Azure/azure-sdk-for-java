@@ -21,6 +21,12 @@ public final class ExtractKeyPhrasesActionResult extends TextAnalyticsActionResu
     }
 
     /**
+     * Constructs a {@link ExtractKeyPhrasesActionResult} model.
+     */
+    public ExtractKeyPhrasesActionResult() {
+    }
+
+    /**
      * Gets the key phrases extraction action result.
      *
      * @return The key phrases extraction action result.

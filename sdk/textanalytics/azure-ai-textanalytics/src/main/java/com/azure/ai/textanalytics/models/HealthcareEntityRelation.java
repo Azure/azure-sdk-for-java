@@ -54,6 +54,12 @@ public final class HealthcareEntityRelation {
     }
 
     /**
+     * Constructs a {@link HealthcareEntityRelation} model.
+     */
+    public HealthcareEntityRelation() {
+    }
+
+    /**
      * Gets the relationType property: Type of relation. Examples include: `DosageOfMedication` or
      * 'FrequencyOfMedication', etc.
      *

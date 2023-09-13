@@ -16,6 +16,12 @@ public final class AnalyzeHealthcareEntitiesAction {
     private Boolean disableServiceLogs;
 
     /**
+     * Constructs a {@link AnalyzeHealthcareEntitiesAction} model.
+     */
+    public AnalyzeHealthcareEntitiesAction() {
+    }
+
+    /**
      * Get the name of action.
      *
      * @return the name of action.

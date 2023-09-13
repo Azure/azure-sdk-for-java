@@ -56,6 +56,12 @@ public final class RecognizeCustomEntitiesOperationDetail {
     }
 
     /**
+     * Constructs a {@link RecognizeCustomEntitiesOperationDetail} model.
+     */
+    public RecognizeCustomEntitiesOperationDetail() {
+    }
+
+    /**
      * Gets the operationId property of the {@link RecognizeCustomEntitiesOperationDetail}.
      *
      * @return The operationId property of the {@link RecognizeCustomEntitiesOperationDetail}.

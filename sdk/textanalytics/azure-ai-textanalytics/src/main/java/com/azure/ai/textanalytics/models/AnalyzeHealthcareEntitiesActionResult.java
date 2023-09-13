@@ -20,6 +20,12 @@ public final class AnalyzeHealthcareEntitiesActionResult extends TextAnalyticsAc
     }
 
     /**
+     * Constructs a {@link AnalyzeHealthcareEntitiesActionResult} model.
+     */
+    public AnalyzeHealthcareEntitiesActionResult() {
+    }
+
+    /**
      * Gets the healthcare entities analysis action result.
      *
      * @return The healthcare entities analysis action result.

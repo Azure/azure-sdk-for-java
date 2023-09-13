@@ -16,6 +16,12 @@ public final class ExtractKeyPhrasesAction {
     private boolean disableServiceLogs;
 
     /**
+     * Constructs a {@link ExtractKeyPhrasesAction} object.
+     */
+    public ExtractKeyPhrasesAction() {
+    }
+
+    /**
      * Get the name of action.
      *
      * @return the name of action.

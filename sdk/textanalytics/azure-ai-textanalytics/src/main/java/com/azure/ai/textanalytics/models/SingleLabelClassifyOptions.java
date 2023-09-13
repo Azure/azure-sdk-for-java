@@ -15,6 +15,12 @@ public final class SingleLabelClassifyOptions {
     private boolean includeStatistics;
 
     /**
+     * Constructs a {@link SingleLabelClassifyOptions} model.
+     */
+    public SingleLabelClassifyOptions() {
+    }
+
+    /**
      * Gets display name of the operation.
      *
      * @return Display name of the operation.

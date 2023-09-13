@@ -15,6 +15,12 @@ public final class RecognizeCustomEntitiesOptions {
     private boolean disableServiceLogs;
 
     /**
+     * Constructs a {@link RecognizeCustomEntitiesOptions} model.
+     */
+    public RecognizeCustomEntitiesOptions() {
+    }
+
+    /**
      * Gets display name of the operation.
      *
      * @return Display name of the operation.

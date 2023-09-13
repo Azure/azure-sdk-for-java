@@ -56,6 +56,12 @@ public final class AnalyzeHealthcareEntitiesOperationDetail {
     }
 
     /**
+     * Constructs a {@link AnalyzeHealthcareEntitiesOperationDetail} model.
+     */
+    public AnalyzeHealthcareEntitiesOperationDetail() {
+    }
+
+    /**
      * Gets the operationId property of the {@link AnalyzeHealthcareEntitiesOperationDetail}.
      *
      * @return The operationId property of the {@link AnalyzeHealthcareEntitiesOperationDetail}.

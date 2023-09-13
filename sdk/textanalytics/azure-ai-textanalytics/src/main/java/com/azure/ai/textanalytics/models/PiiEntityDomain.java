@@ -24,6 +24,15 @@ public final class PiiEntityDomain extends ExpandableStringEnum<PiiEntityDomain>
     public static final PiiEntityDomain NONE = fromString("none");
 
     /**
+     * Creates a new instance of {@link PiiEntityDomain} value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public PiiEntityDomain() {
+    }
+
+    /**
      * Creates or finds a {@link PiiEntityDomain} from its string representation.
      *
      * @param name The string name to look for.
@@ -33,7 +42,11 @@ public final class PiiEntityDomain extends ExpandableStringEnum<PiiEntityDomain>
         return fromString(name, PiiEntityDomain.class);
     }
 
-    /** @return known PiiEntityDomain values. */
+    /**
+     * All known PiiEntityDomain values.
+     *
+     * @return known PiiEntityDomain values.
+     */
     public static Collection<PiiEntityDomain> values() {
         return values(PiiEntityDomain.class);
     }

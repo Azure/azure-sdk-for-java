@@ -26,6 +26,12 @@ public final class TextAnalyticsActions {
     private Iterable<ExtractiveSummaryAction> extractiveSummaryActions;
 
     /**
+     * Constructs a {@link TextAnalyticsActions} model.
+     */
+    public TextAnalyticsActions() {
+    }
+
+    /**
      * Gets the custom name for the actions.
      *
      * @return the custom name for the actions.

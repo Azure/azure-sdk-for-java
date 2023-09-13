@@ -73,6 +73,12 @@ public final class HealthcareEntity {
     }
 
     /**
+     * Constructs a {@link HealthcareEntity} model.
+     */
+    public HealthcareEntity() {
+    }
+
+    /**
      * Gets the text property: Healthcare entity text as appears in the request.
      *
      * @return The text value.

@@ -20,6 +20,12 @@ public final class SingleLabelClassifyActionResult extends TextAnalyticsActionRe
     }
 
     /**
+     * Constructs a {@link SingleLabelClassifyActionResult} model.
+     */
+    public SingleLabelClassifyActionResult() {
+    }
+
+    /**
      * Gets the custom entities recognition action result.
      *
      * @return the custom entities recognition action result.

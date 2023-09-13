@@ -20,6 +20,12 @@ public final class ExtractiveSummaryActionResult extends TextAnalyticsActionResu
     }
 
     /**
+     * Constructs a {@link ExtractiveSummaryActionResult} model.
+     */
+    public ExtractiveSummaryActionResult() {
+    }
+
+    /**
      * Gets the extractive summarization action result.
      *
      * @return The extractive summarization action result.

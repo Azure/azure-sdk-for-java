@@ -54,6 +54,13 @@ public final class AbstractiveSummaryOperationDetail {
         );
     }
 
+
+    /**
+     * Constructs a {@link AbstractiveSummaryOperationDetail} model.
+     */
+    public AbstractiveSummaryOperationDetail() {
+    }
+
     /**
      * Gets the operationId property of the {@link AbstractiveSummaryOperationDetail}.
      *

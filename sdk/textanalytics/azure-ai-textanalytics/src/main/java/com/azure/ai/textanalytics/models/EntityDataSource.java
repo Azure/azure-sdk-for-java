@@ -38,6 +38,12 @@ public final class EntityDataSource {
     }
 
     /**
+     * Constructs a {@link EntityDataSource} model.
+     */
+    public EntityDataSource() {
+    }
+
+    /**
      * Gets the data source name property: Entity Catalog. Examples include: UMLS, CHV, MSH, etc.
      *
      * @return the data source name.

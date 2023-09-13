@@ -31,6 +31,12 @@ public final class SentenceOpinion {
     }
 
     /**
+     * Constructs a {@link SentenceOpinion} model.
+     */
+    public SentenceOpinion() {
+    }
+
+    /**
      * Gets the target sentiment in text, such as the attributes of products or services. For example, if a customer leaves
      * feedback about a hotel such as "the room was great, but the staff was unfriendly", opinion mining will locate
      * target sentiments in the text. The "room" and "staff" are two target sentiments recognized.

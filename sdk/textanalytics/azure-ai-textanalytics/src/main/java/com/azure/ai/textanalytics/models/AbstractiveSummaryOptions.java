@@ -15,6 +15,12 @@ public final class AbstractiveSummaryOptions extends TextAnalyticsRequestOptions
     private Integer sentenceCount;
 
     /**
+     * Constructs a {@link AbstractiveSummaryOptions} model.
+     */
+    public AbstractiveSummaryOptions() {
+    }
+
+    /**
      * Sets the model version. This value indicates which model will be used for scoring, e.g. "latest", "2019-10-01".
      * If a model-version is not specified, the API will default to the latest, non-preview version.
      *

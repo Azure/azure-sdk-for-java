@@ -24,6 +24,15 @@ public final class EntityAssociation extends ExpandableStringEnum<EntityAssociat
     public static final EntityAssociation OTHER = fromString("Other");
 
     /**
+     * Creates a new instance of {@link EntityAssociation} value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public EntityAssociation() {
+    }
+
+    /**
      * Creates or finds a {@link EntityAssociation} from its string representation.
      *
      * @param name The string name to look for.
@@ -33,7 +42,11 @@ public final class EntityAssociation extends ExpandableStringEnum<EntityAssociat
         return fromString(name, EntityAssociation.class);
     }
 
-    /** @return known EntityAssociation values. */
+    /**
+     * All known EntityAssociation values.
+     *
+     * @return known EntityAssociation values.
+     */
     public static Collection<EntityAssociation> values() {
         return values(EntityAssociation.class);
     }

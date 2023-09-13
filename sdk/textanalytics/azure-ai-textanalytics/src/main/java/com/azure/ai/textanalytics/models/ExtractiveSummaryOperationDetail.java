@@ -55,6 +55,12 @@ public final class ExtractiveSummaryOperationDetail {
     }
 
     /**
+     * Constructs a {@link ExtractiveSummaryOperationDetail} model.
+     */
+    public ExtractiveSummaryOperationDetail() {
+    }
+
+    /**
      * Gets the operationId property of the {@link ExtractiveSummaryOperationDetail}.
      *
      * @return The operationId property of the {@link ExtractiveSummaryOperationDetail}.

@@ -55,6 +55,12 @@ public final class AssessmentSentiment {
     }
 
     /**
+     * Constructs a {@link AssessmentSentiment} model.
+     */
+    public AssessmentSentiment() {
+    }
+
+    /**
      * Gets the opinion text property.
      *
      * @return The text value.

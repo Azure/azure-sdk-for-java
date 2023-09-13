@@ -43,6 +43,12 @@ public final class ExtractiveSummarySentence {
     }
 
     /**
+     * Constructs a {@link ExtractiveSummarySentence} model.
+     */
+    public ExtractiveSummarySentence() {
+    }
+
+    /**
      * Gets the text property: extractive summarization sentence text.
      *
      * @return The {@code text} value.

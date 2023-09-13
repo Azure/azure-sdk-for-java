@@ -48,6 +48,12 @@ public class TextAnalyticsActionResult {
     }
 
     /**
+     * Constructs a {@link TextAnalyticsActionResult} model.
+     */
+    public TextAnalyticsActionResult() {
+    }
+
+    /**
      * Get the customized action name.
      *
      * @return the name of action.

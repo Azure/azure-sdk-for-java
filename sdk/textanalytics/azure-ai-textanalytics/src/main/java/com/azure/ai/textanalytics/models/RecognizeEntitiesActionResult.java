@@ -20,6 +20,12 @@ public final class RecognizeEntitiesActionResult extends TextAnalyticsActionResu
     }
 
     /**
+     * Constructs a {@link RecognizeEntitiesActionResult} model.
+     */
+    public RecognizeEntitiesActionResult() {
+    }
+
+    /**
      * Gets the entities recognition action result.
      *
      * @return The entities recognition action result.

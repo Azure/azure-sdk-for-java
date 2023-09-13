@@ -155,6 +155,13 @@ public final class TextAnalyticsClientBuilder implements
     }
 
     /**
+     * Construct a {@link TextAnalyticsClientBuilder} object.
+     */
+    public TextAnalyticsClientBuilder() {
+
+    }
+
+    /**
      * Creates a {@link TextAnalyticsClient} based on options set in the builder. Every time {@code buildClient()} is
      * called a new instance of {@link TextAnalyticsClient} is created.
      *
@@ -253,7 +260,7 @@ public final class TextAnalyticsClientBuilder implements
             if (clientOptions != null) {
                 tracingOptions = clientOptions.getTracingOptions();
             }
-            
+
             Tracer tracer = TracerProvider.getDefaultProvider()
                 .createTracer(CLIENT_NAME, CLIENT_VERSION, COGNITIVE_TRACING_NAMESPACE_VALUE, tracingOptions);
 

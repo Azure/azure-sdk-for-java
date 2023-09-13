@@ -20,6 +20,12 @@ public final class MultiLabelClassifyActionResult extends TextAnalyticsActionRes
     }
 
     /**
+     * Constructs a {@link MultiLabelClassifyActionResult} model.
+     */
+    public MultiLabelClassifyActionResult() {
+    }
+
+    /**
      * Gets the custom entities recognition action result.
      *
      * @return the custom entities recognition action result.

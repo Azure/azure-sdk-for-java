@@ -20,6 +20,12 @@ public final class AnalyzeSentimentActionResult extends TextAnalyticsActionResul
     }
 
     /**
+     * Constructs a {@link AnalyzeSentimentActionResult} model.
+     */
+    public AnalyzeSentimentActionResult() {
+    }
+
+    /**
      * Gets the sentiment analysis action result.
      *
      * @return The sentiment analysis action result.
