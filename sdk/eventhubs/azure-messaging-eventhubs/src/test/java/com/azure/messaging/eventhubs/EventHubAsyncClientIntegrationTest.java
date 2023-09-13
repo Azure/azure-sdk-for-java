@@ -72,7 +72,7 @@ class EventHubAsyncClientIntegrationTest extends IntegrationTestBase {
             .take(NUMBER_OF_EVENTS))
             .expectNextCount(NUMBER_OF_EVENTS)
             .expectComplete()
-            .verify();
+            .verify(TIMEOUT);
     }
 
     /**
@@ -156,12 +156,12 @@ class EventHubAsyncClientIntegrationTest extends IntegrationTestBase {
                         new AzureNamedKeyCredential(sharedAccessKeyName, sharedAccessKey))
                 .buildAsyncProducerClient());
 
-        StepVerifier.create(
-                asyncProducerClient.createBatch().flatMap(batch -> {
-                    assertTrue(batch.tryAdd(testData));
-                    return asyncProducerClient.send(batch);
-                })
-        ).verifyComplete();
+        StepVerifier.create(asyncProducerClient.createBatch().flatMap(batch -> {
+                assertTrue(batch.tryAdd(testData));
+                return asyncProducerClient.send(batch);
+            }))
+            .expectComplete()
+            .verify(TIMEOUT);
     }
 
     @Test
@@ -181,11 +181,11 @@ class EventHubAsyncClientIntegrationTest extends IntegrationTestBase {
                         new AzureSasCredential(sharedAccessSignature))
                 .buildAsyncProducerClient());
 
-        StepVerifier.create(
-                asyncProducerClient.createBatch().flatMap(batch -> {
-                    assertTrue(batch.tryAdd(testData));
-                    return asyncProducerClient.send(batch);
-                })
-        ).verifyComplete();
+        StepVerifier.create(asyncProducerClient.createBatch().flatMap(batch -> {
+                assertTrue(batch.tryAdd(testData));
+                return asyncProducerClient.send(batch);
+            }))
+            .expectComplete()
+            .verify(TIMEOUT);
     }
 }
