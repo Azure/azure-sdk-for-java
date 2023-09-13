@@ -13,6 +13,7 @@ import java.net.*;
 import java.nio.ByteBuffer;
 import java.time.Duration;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Executor;
 
 /**
@@ -23,6 +24,8 @@ import java.util.concurrent.Executor;
  * @see HttpUrlConnectionClientBuilder
  */
 public class HttpUrlConnectionClient implements HttpClient {
+
+    private final ConcurrentHashMap<String, SocketClient> socketClientPool = new ConcurrentHashMap<>();
 
     private final Duration connectionTimeout;
     private final ProxyOptions proxyOptions;
@@ -55,7 +58,7 @@ public class HttpUrlConnectionClient implements HttpClient {
     }
 
     /**
-     * Asyncronously send the HttpRequest
+     * Asynchronously send the HttpRequest
      *
      * @param httpRequest The HTTP Request being sent
      * @param context The context of the request, for any additional changes
@@ -78,11 +81,17 @@ public class HttpUrlConnectionClient implements HttpClient {
     // Send a PATCH request via a SocketClient
     private Mono<HttpResponse> sendPatchViaSocket(HttpRequest httpRequest) {
         return Mono.fromCallable(() -> {
-            try {
-                return new SocketClient(httpRequest.getUrl()).sendPatchRequest(httpRequest);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+            URL url = httpRequest.getUrl();
+            String host = url.getHost();
+            int port = url.getPort() == -1 ? url.getDefaultPort() : url.getPort();
+
+            String key = host + ":" + port;
+
+            // Get or create a SocketClient for the current request
+            SocketClient socketClient = socketClientPool.computeIfAbsent(key, k -> new SocketClient(host, port));
+
+            // Now use socketClient to send the PATCH request
+            return socketClient.sendPatchRequest(httpRequest);
         });
     }
 
@@ -143,7 +152,7 @@ public class HttpUrlConnectionClient implements HttpClient {
             case PATCH:
             case DELETE:
                 return Mono.fromRunnable(() -> {
-                    try (OutputStream os = connection.getOutputStream()) {
+                    try (DataOutputStream os = new DataOutputStream(new BufferedOutputStream(connection.getOutputStream()))) {
                         httpRequest.getBody()
                             .doOnNext(buffer -> {
                                 try {
@@ -154,6 +163,7 @@ public class HttpUrlConnectionClient implements HttpClient {
                                     throw new RuntimeException(e);
                                 }
                             }).blockLast();
+                        os.flush();
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }
@@ -162,7 +172,6 @@ public class HttpUrlConnectionClient implements HttpClient {
                 return Mono.empty();
         }
     }
-
 
     // Read the response and construct the HttpResponse object
     private static Mono<HttpUrlConnectionResponse> readResponse(HttpURLConnection connection, HttpRequest httpRequest) {
@@ -194,6 +203,4 @@ public class HttpUrlConnectionClient implements HttpClient {
             );
         }).onErrorResume(e -> Mono.error(new RuntimeException("Error reading HTTP response", e)));
     }
-
-
 }
