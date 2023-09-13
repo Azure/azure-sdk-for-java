@@ -22,7 +22,7 @@ class OTelVersion {
         return minorVersion;
     }
 
-    private  int getPatchVersion() {
+    private int getPatchVersion() {
         return patchVersion;
     }
 
@@ -38,7 +38,7 @@ class OTelVersion {
     }
 
     boolean isGreaterThan(OTelVersion oTelVersion) {
-    return VERSION_COMPARATOR.compare(this, oTelVersion) > 0;
+        return VERSION_COMPARATOR.compare(this, oTelVersion) > 0;
     }
 
     boolean hasSameMajorVersionAs(OTelVersion oTelVersion) {
