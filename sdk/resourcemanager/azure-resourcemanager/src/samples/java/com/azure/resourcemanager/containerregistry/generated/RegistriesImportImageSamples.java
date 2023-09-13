@@ -12,7 +12,7 @@ import java.util.Arrays;
 /** Samples for Registries ImportImage. */
 public final class RegistriesImportImageSamples {
     /*
-     * x-ms-original-file: specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/stable/2022-12-01/examples/ImportImageFromPublicRegistry.json
+     * x-ms-original-file: mgmt_containerregistry_add_readonly/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/stable/2023-07-01/examples/ImportImageFromPublicRegistry.json
      */
     /**
      * Sample code: ImportImageFromPublicRegistry.
@@ -40,7 +40,7 @@ public final class RegistriesImportImageSamples {
     }
 
     /*
-     * x-ms-original-file: specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/stable/2022-12-01/examples/ImportImageByTag.json
+     * x-ms-original-file: mgmt_containerregistry_add_readonly/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/stable/2023-07-01/examples/ImportImageByTag.json
      */
     /**
      * Sample code: ImportImageByTag.
@@ -69,7 +69,7 @@ public final class RegistriesImportImageSamples {
     }
 
     /*
-     * x-ms-original-file: specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/stable/2022-12-01/examples/ImportImageByManifestDigest.json
+     * x-ms-original-file: mgmt_containerregistry_add_readonly/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/stable/2023-07-01/examples/ImportImageByManifestDigest.json
      */
     /**
      * Sample code: ImportImageByManifestDigest.
