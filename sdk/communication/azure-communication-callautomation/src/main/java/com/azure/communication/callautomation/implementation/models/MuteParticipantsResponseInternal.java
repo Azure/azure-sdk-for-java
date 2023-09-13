@@ -16,6 +16,9 @@ public final class MuteParticipantsResponseInternal {
     @JsonProperty(value = "operationContext")
     private String operationContext;
 
+    /** Creates an instance of MuteParticipantsResponseInternal class. */
+    public MuteParticipantsResponseInternal() {}
+
     /**
      * Get the operationContext property: The operation context provided by client.
      *

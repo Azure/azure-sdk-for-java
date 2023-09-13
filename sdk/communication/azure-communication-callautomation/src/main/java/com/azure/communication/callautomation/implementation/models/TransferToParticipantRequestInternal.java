@@ -23,8 +23,7 @@ public final class TransferToParticipantRequestInternal {
     private CustomContext customContext;
 
     /*
-     * Used by customers when calling mid-call actions to correlate the request
-     * to the response event.
+     * Used by customers when calling mid-call actions to correlate the request to the response event.
      */
     @JsonProperty(value = "operationContext")
     private String operationContext;
@@ -40,6 +39,9 @@ public final class TransferToParticipantRequestInternal {
      */
     @JsonProperty(value = "callbackUri")
     private String callbackUri;
+
+    /** Creates an instance of TransferToParticipantRequestInternal class. */
+    public TransferToParticipantRequestInternal() {}
 
     /**
      * Get the targetParticipant property: The identity of the target where call should be transferred to.

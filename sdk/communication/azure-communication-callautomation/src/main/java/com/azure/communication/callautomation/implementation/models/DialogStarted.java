@@ -23,15 +23,13 @@ public final class DialogStarted {
     private String serverCallId;
 
     /*
-     * Correlation ID for event to call correlation. Also called ChainId for
-     * skype chain ID.
+     * Correlation ID for event to call correlation. Also called ChainId for skype chain ID.
      */
     @JsonProperty(value = "correlationId")
     private String correlationId;
 
     /*
-     * Used by customers when calling answerCall action to correlate the
-     * request to the response event.
+     * Used by customers when calling answerCall action to correlate the request to the response event.
      */
     @JsonProperty(value = "operationContext", access = JsonProperty.Access.WRITE_ONLY)
     private String operationContext;
@@ -53,6 +51,9 @@ public final class DialogStarted {
      */
     @JsonProperty(value = "dialogId", access = JsonProperty.Access.WRITE_ONLY)
     private String dialogId;
+
+    /** Creates an instance of DialogStarted class. */
+    public DialogStarted() {}
 
     /**
      * Get the callConnectionId property: Call connection ID.

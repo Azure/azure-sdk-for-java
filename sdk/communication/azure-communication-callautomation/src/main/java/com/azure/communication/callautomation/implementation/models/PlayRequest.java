@@ -42,6 +42,9 @@ public final class PlayRequest {
     @JsonProperty(value = "callbackUri")
     private String callbackUri;
 
+    /** Creates an instance of PlayRequest class. */
+    public PlayRequest() {}
+
     /**
      * Get the playSourceInfo property: The source of the audio to be played.
      *

@@ -23,15 +23,13 @@ public final class DialogHangup {
     private String serverCallId;
 
     /*
-     * Correlation ID for event to call correlation. Also called ChainId for
-     * skype chain ID.
+     * Correlation ID for event to call correlation. Also called ChainId for skype chain ID.
      */
     @JsonProperty(value = "correlationId")
     private String correlationId;
 
     /*
-     * Used by customers when calling answerCall action to correlate the
-     * request to the response event.
+     * Used by customers when calling answerCall action to correlate the request to the response event.
      */
     @JsonProperty(value = "operationContext", access = JsonProperty.Access.WRITE_ONLY)
     private String operationContext;
@@ -59,6 +57,9 @@ public final class DialogHangup {
      */
     @JsonProperty(value = "ivrContext", access = JsonProperty.Access.WRITE_ONLY)
     private Object ivrContext;
+
+    /** Creates an instance of DialogHangup class. */
+    public DialogHangup() {}
 
     /**
      * Get the callConnectionId property: Call connection ID.

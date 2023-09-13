@@ -35,11 +35,13 @@ public final class PlaySourceInternal {
     private TextSourceInternal textSource;
 
     /*
-     * Defines the ssml(Speech Synthesis Markup Language) source info to be
-     * used for play
+     * Defines the ssml(Speech Synthesis Markup Language) source info to be used for play
      */
     @JsonProperty(value = "ssmlSource")
     private SsmlSourceInternal ssmlSource;
+
+    /** Creates an instance of PlaySourceInternal class. */
+    public PlaySourceInternal() {}
 
     /**
      * Get the sourceType property: Defines the type of the play source.

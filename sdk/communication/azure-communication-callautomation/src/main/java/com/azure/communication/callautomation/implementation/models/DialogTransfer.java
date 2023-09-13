@@ -23,15 +23,13 @@ public final class DialogTransfer {
     private String serverCallId;
 
     /*
-     * Correlation ID for event to call correlation. Also called ChainId for
-     * skype chain ID.
+     * Correlation ID for event to call correlation. Also called ChainId for skype chain ID.
      */
     @JsonProperty(value = "correlationId")
     private String correlationId;
 
     /*
-     * Used by customers when calling answerCall action to correlate the
-     * request to the response event.
+     * Used by customers when calling answerCall action to correlate the request to the response event.
      */
     @JsonProperty(value = "operationContext", access = JsonProperty.Access.WRITE_ONLY)
     private String operationContext;
@@ -71,6 +69,9 @@ public final class DialogTransfer {
      */
     @JsonProperty(value = "ivrContext", access = JsonProperty.Access.WRITE_ONLY)
     private Object ivrContext;
+
+    /** Creates an instance of DialogTransfer class. */
+    public DialogTransfer() {}
 
     /**
      * Get the callConnectionId property: Call connection ID.

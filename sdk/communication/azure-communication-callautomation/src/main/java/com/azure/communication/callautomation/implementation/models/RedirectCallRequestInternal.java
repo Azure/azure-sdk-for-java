@@ -28,6 +28,9 @@ public final class RedirectCallRequestInternal {
     @JsonProperty(value = "customContext")
     private CustomContext customContext;
 
+    /** Creates an instance of RedirectCallRequestInternal class. */
+    public RedirectCallRequestInternal() {}
+
     /**
      * Get the incomingCallContext property: The context associated with the call.
      *

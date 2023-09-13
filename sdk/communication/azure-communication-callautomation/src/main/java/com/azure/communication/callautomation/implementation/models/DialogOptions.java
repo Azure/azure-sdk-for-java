@@ -23,6 +23,9 @@ public final class DialogOptions {
     @JsonProperty(value = "dialogContext", required = true)
     private Map<String, Object> dialogContext;
 
+    /** Creates an instance of DialogOptions class. */
+    public DialogOptions() {}
+
     /**
      * Get the botAppId property: Bot identifier.
      *
