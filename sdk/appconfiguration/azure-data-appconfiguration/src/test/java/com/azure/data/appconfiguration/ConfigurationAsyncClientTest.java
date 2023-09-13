@@ -279,7 +279,8 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
                         (FeatureFlagConfigurationSetting) response))
                     .verifyComplete();
                 StepVerifier.create(client.deleteConfigurationSetting(expected))
-                    .assertNext(response -> assertConfigurationEquals(expected, response))
+                    .assertNext(response -> assertFeatureFlagConfigurationSettingEquals(expected,
+                        (FeatureFlagConfigurationSetting) response))
                     .verifyComplete();
                 StepVerifier.create(client.getConfigurationSetting(expected))
                     .verifyErrorSatisfies(
@@ -298,6 +299,38 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
                                           expected,
                                           (SecretReferenceConfigurationSetting) response))
                                       .verifyComplete());
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
+    public void secretReferenceConfigurationSettingUnknownAttributesArePreserved(HttpClient httpClient,
+        ConfigurationServiceVersion serviceVersion) {
+        client = getConfigurationAsyncClient(httpClient, serviceVersion);
+        secretReferenceConfigurationSettingUnknownAttributesArePreservedRunner(
+            (expected) -> {
+                StepVerifier.create(client.addConfigurationSetting(expected))
+                    .assertNext(response -> assertSecretReferenceConfigurationSettingEquals(
+                        expected,
+                        (SecretReferenceConfigurationSetting) response))
+                    .verifyComplete();
+                StepVerifier.create(client.setConfigurationSetting(expected))
+                    .assertNext(response -> assertSecretReferenceConfigurationSettingEquals(
+                        expected,
+                        (SecretReferenceConfigurationSetting) response))
+                    .verifyComplete();
+                StepVerifier.create(client.getConfigurationSetting(expected))
+                    .assertNext(response -> assertSecretReferenceConfigurationSettingEquals(
+                        expected,
+                        (SecretReferenceConfigurationSetting) response))
+                    .verifyComplete();
+                StepVerifier.create(client.deleteConfigurationSetting(expected))
+                    .assertNext(response -> assertSecretReferenceConfigurationSettingEquals(expected,
+                        (SecretReferenceConfigurationSetting) response))
+                    .verifyComplete();
+                StepVerifier.create(client.getConfigurationSetting(expected))
+                    .verifyErrorSatisfies(
+                        ex -> assertRestException(ex, HttpResponseException.class, HttpURLConnection.HTTP_NOT_FOUND));
+            });
     }
 
     /**

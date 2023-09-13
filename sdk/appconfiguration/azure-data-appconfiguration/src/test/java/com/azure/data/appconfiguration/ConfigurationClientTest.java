@@ -250,6 +250,26 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
                 (SecretReferenceConfigurationSetting) client.setConfigurationSetting(expected)));
     }
 
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
+    public void secretReferenceConfigurationSettingUnknownAttributesArePreserved(HttpClient httpClient,
+        ConfigurationServiceVersion serviceVersion) {
+        client = getConfigurationClient(httpClient, serviceVersion);
+        secretReferenceConfigurationSettingUnknownAttributesArePreservedRunner(
+            (expected) -> {
+                assertSecretReferenceConfigurationSettingEquals(expected,
+                    (SecretReferenceConfigurationSetting) client.addConfigurationSetting(expected));
+                assertSecretReferenceConfigurationSettingEquals(expected,
+                    (SecretReferenceConfigurationSetting) client.setConfigurationSetting(expected));
+                assertSecretReferenceConfigurationSettingEquals(expected,
+                    (SecretReferenceConfigurationSetting) client.getConfigurationSetting(expected));
+                assertSecretReferenceConfigurationSettingEquals(expected,
+                    (SecretReferenceConfigurationSetting) client.deleteConfigurationSetting(expected));
+                assertRestException(() -> client.getConfigurationSetting(expected.getKey(), expected.getLabel()),
+                    HttpResponseException.class, HttpURLConnection.HTTP_NOT_FOUND);
+            });
+    }
+
     /**
      * Tests that when an ETag is passed to set it will only set if the current representation of the setting has the
      * ETag. If the set ETag doesn't match anything the update won't happen, this will result in a 412. This will

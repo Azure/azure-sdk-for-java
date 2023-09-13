@@ -29,16 +29,6 @@ public class FeatureFlagSettingUnitTest {
     static final String UPDATED_DISPLAY_NAME_VALUE = "updatedDisplayName";
     static final boolean UPDATED_IS_ENABLED = true;
 
-    String getFeatureFlagConfigurationSettingValue(String id, String description, String displayName,
-        boolean isEnabled) {
-        return String.format("{\"id\":\"%s\",\"description\":\"%s\",\"display_name\":\"%s\","
-                          + "\"enabled\":%s,"
-                          + "\"conditions\":{\"client_filters\":"
-                          + "[{\"name\":\"Microsoft.Percentage\",\"parameters\":{\"Value\":\"30\"}}]"
-                                 + "}}",
-            id, description, displayName, isEnabled);
-    }
-
     @Test
     public void accessingStronglyTypedPropertiesAfterSettingDifferentFeatureFlagJSON() {
         // Create a new feature flag configuration setting,
@@ -100,25 +90,17 @@ public class FeatureFlagSettingUnitTest {
     }
 
     @Test
-    public void shouldNotOverrideAdditionalExtendedConditions() {
+    public void reserveUnknownPropertiesTest() {
         FeatureFlagConfigurationSetting setting = createFeatureFlagConfigurationSetting();
+        String newSettingValueJSON = getUnknownPropertiesFeatureFlagConfigurationSettingValue(
+            UPDATED_KEY, UPDATED_DESCRIPTION_VALUE, UPDATED_DISPLAY_NAME_VALUE, UPDATED_IS_ENABLED);
 
-        String valueWithAdditionalCondition = String.format("{\"id\":\"%s\",\"description\":\"%s\",\"display_name\":\"%s\",\"enabled\":%s,"
-                + "\"conditions\":{\"requirement_type\":\"All\",\"client_filters\":"
-                + "[{\"name\":\"Microsoft.Percentage\",\"parameters\":{\"Value\":\"30\"}}]"
-                + "}}",
-            setting.getFeatureId(), setting.getDescription(), setting.getDisplayName(), setting.isEnabled());
-
-        setting.setValue(valueWithAdditionalCondition);
-        assertEquals(valueWithAdditionalCondition, setting.getValue());
-
-        String valueWithAdditionalFieldAtFirstLayer = String.format("{\"id\":\"%s\",\"additional_field_1\":\"additional_value_1\",\"description\":\"%s\",\"display_name\":\"%s\",\"enabled\":%s,"
-                + "\"conditions\":{\"requirement_type\":\"All\",\"client_filters\":"
-                + "[{\"name\":\"Microsoft.Percentage\",\"parameters\":{\"Value\":\"30\"}}]"
-                + "},\"additional_field\":\"additional_value\"}",
-            setting.getFeatureId(), setting.getDescription(), setting.getDisplayName(), setting.isEnabled());
-        setting.setValue(valueWithAdditionalFieldAtFirstLayer);
-        assertEquals(valueWithAdditionalFieldAtFirstLayer, setting.getValue());
+        setting.setValue(newSettingValueJSON);
+        assertEquals(newSettingValueJSON, setting.getValue());
+        assertEquals(UPDATED_KEY, setting.getFeatureId());
+        assertEquals(UPDATED_DESCRIPTION_VALUE, setting.getDescription());
+        assertEquals(UPDATED_DISPLAY_NAME_VALUE, setting.getDisplayName());
+        assertEquals(UPDATED_IS_ENABLED, setting.isEnabled());
     }
 
     @Test
@@ -135,6 +117,26 @@ public class FeatureFlagSettingUnitTest {
             getFlagFilter(FILTER_NAME, getFilterParameters()));
         return getFeatureFlagConfigurationSetting(NEW_KEY, DESCRIPTION_VALUE,
             DISPLAY_NAME_VALUE, IS_ENABLED, featureFlagFilters);
+    }
+
+    private String getFeatureFlagConfigurationSettingValue(String id, String description, String displayName,
+                                                           boolean isEnabled) {
+        return String.format("{\"id\":\"%s\",\"description\":\"%s\",\"display_name\":\"%s\","
+                + "\"enabled\":%s,"
+                + "\"conditions\":{\"client_filters\":"
+                + "[{\"name\":\"Microsoft.Percentage\",\"parameters\":{\"Value\":\"30\"}}]"
+                + "}}",
+            id, description, displayName, isEnabled);
+    }
+
+    private String getUnknownPropertiesFeatureFlagConfigurationSettingValue(String id, String description,
+        String displayName, boolean isEnabled) {
+        return String.format("{\"id\":\"%s\",\"additional_field_1\":\"additional_value_1\",\"description\":\"%s\",\"display_name\":\"%s\",\"enabled\":%s,"
+                + "\"conditions\":{\"requirement_type\":\"All\",\"client_filters\":"
+                + "[{\"name\":\"Microsoft.Percentage\",\"parameters\":{\"Value\":\"30\"}}]"
+                + "},\"objectFiledName\":{\"unknown\":\"unknown\",\"unknown2\":\"unknown2\"},"
+                + "\"arrayFieldName\":[{\"name\":\"Microsoft.Percentage\",\"parameters\":{\"Value\":\"30\"}}]}",
+            id, description, displayName, isEnabled);
     }
 
     private FeatureFlagConfigurationSetting getFeatureFlagConfigurationSetting(String id, String description,

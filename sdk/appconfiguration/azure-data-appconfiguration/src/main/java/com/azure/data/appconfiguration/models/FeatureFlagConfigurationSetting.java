@@ -55,7 +55,7 @@ public final class FeatureFlagConfigurationSetting extends ConfigurationSetting 
     // The flag to indicate if the 'value' field is valid. It is a temporary field to store the flag.
     // If the 'value' field is not valid, we will throw an exception when user try to access the strongly-typed
     // properties.
-    private boolean isValidValue;
+    private boolean isValidFeatureFlagValue;
 
     // This used to store the parsed properties from the 'value' field. Given initial capacity is 5, it is enough for
     // current json schema. It should be equal to the number of properties defined in the swagger schema at first level.
@@ -76,7 +76,7 @@ public final class FeatureFlagConfigurationSetting extends ConfigurationSetting 
      * @param isEnabled A boolean value to turn on/off the feature flag setting.
      */
     public FeatureFlagConfigurationSetting(String featureId, boolean isEnabled) {
-        isValidValue = true;
+        isValidFeatureFlagValue = true;
 
         this.featureId = featureId;
         this.isEnabled = isEnabled;
@@ -88,8 +88,8 @@ public final class FeatureFlagConfigurationSetting extends ConfigurationSetting 
     public String getValue() {
         // Lazily update: Update 'value' by all latest property values when this getValue() method is called.
 
-        // If the 'value' wasn't valid, return the original 'value'.
-        if (!isValidValue) {
+        // If the 'value' wasn't valid for feature flag configuration setting, return it for configuration setting.
+        if (!isValidFeatureFlagValue) {
             return originalValue;
         }
 
@@ -159,7 +159,7 @@ public final class FeatureFlagConfigurationSetting extends ConfigurationSetting 
     public FeatureFlagConfigurationSetting setValue(String value) {
         originalValue = value;
         super.setValue(value);
-        isValidValue = tryParseValue(value);
+        isValidFeatureFlagValue = tryParseValue(value);
         return this;
     }
 
@@ -220,6 +220,7 @@ public final class FeatureFlagConfigurationSetting extends ConfigurationSetting 
      * Get the feature ID of this configuration setting.
      *
      * @return the feature ID of this configuration setting.
+     * @throws IllegalArgumentException if the setting's {@code value} is an invalid JSON format.
      */
     public String getFeatureId() {
         checkValid();
@@ -245,6 +246,7 @@ public final class FeatureFlagConfigurationSetting extends ConfigurationSetting 
      * Get the boolean indicator to show if the setting is turn on or off.
      *
      * @return the boolean indicator to show if the setting is turn on or off.
+     * @throws IllegalArgumentException if the setting's {@code value} is an invalid JSON format.
      */
     public boolean isEnabled() {
         checkValid();
@@ -269,6 +271,7 @@ public final class FeatureFlagConfigurationSetting extends ConfigurationSetting 
      * Get the description of this configuration setting.
      *
      * @return the description of this configuration setting.
+     * @throws IllegalArgumentException if the setting's {@code value} is an invalid JSON format.
      */
     public String getDescription() {
         checkValid();
@@ -293,6 +296,7 @@ public final class FeatureFlagConfigurationSetting extends ConfigurationSetting 
      * Get the display name of this configuration setting.
      *
      * @return the display name of this configuration setting.
+     * @throws IllegalArgumentException if the setting's {@code value} is an invalid JSON format.
      */
     public String getDisplayName() {
         checkValid();
@@ -317,6 +321,7 @@ public final class FeatureFlagConfigurationSetting extends ConfigurationSetting 
      * Gets the feature flag filters of this configuration setting.
      *
      * @return the feature flag filters of this configuration setting.
+     * @throws IllegalArgumentException if the setting's {@code value} is an invalid JSON format.
      */
     public List<FeatureFlagFilter> getClientFilters() {
         checkValid();
@@ -346,6 +351,7 @@ public final class FeatureFlagConfigurationSetting extends ConfigurationSetting 
      * @param clientFilter a feature flag filter to add to this configuration setting.
      *
      * @return The updated {@link FeatureFlagConfigurationSetting} object.
+     * @throws IllegalArgumentException if the setting's {@code value} is an invalid JSON format.
      */
     public FeatureFlagConfigurationSetting addClientFilter(FeatureFlagFilter clientFilter) {
         checkValid();
@@ -357,9 +363,9 @@ public final class FeatureFlagConfigurationSetting extends ConfigurationSetting 
     }
 
     private void checkValid() {
-        if (!isValidValue) {
+        if (!isValidFeatureFlagValue) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException("The content of the " + super.getValue()
-                + " property do not represent a valid feature flag object"));
+                + " property do not represent a valid feature flag configuration setting."));
         }
     }
 

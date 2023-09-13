@@ -215,6 +215,20 @@ public abstract class ConfigurationClientTestBase extends TestProxyTestBase {
     }
 
     @Test
+    public abstract void secretReferenceConfigurationSettingUnknownAttributesArePreserved(HttpClient httpClient,
+        ConfigurationServiceVersion serviceVersion);
+
+    void secretReferenceConfigurationSettingUnknownAttributesArePreservedRunner(
+        Consumer<SecretReferenceConfigurationSetting> testRunner) {
+        String key = getKey();
+        String valueWithAdditionalFields =
+            "{\"uri\":\"uriValue\",\"objectFiledName\":{\"unknown\":\"unknown\",\"unknown2\":\"unknown2\"},"
+                + "\"arrayFieldName\":[{\"name\":\"Microsoft.Percentage\",\"parameters\":{\"Value\":\"30\"}}]}";
+
+        testRunner.accept(new SecretReferenceConfigurationSetting(key, valueWithAdditionalFields));
+    }
+
+    @Test
     public abstract void setConfigurationSettingIfETag(HttpClient httpClient,
         ConfigurationServiceVersion serviceVersion);
 
