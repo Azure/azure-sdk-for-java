@@ -211,7 +211,7 @@ public class CosmosPagedFluxOptions {
                                                  CosmosAsyncClient cosmosAsyncClient,
                                                  String operationId,
                                                  ConsistencyLevel consistencyLevel,
-                                                 CosmosDiagnosticsThresholds thresholds,
+                                                 CosmosDiagnosticsThresholds thresholds
 
     ) {
         checkNotNull(tracerSpanName, "Argument 'tracerSpanName' must not be NULL.");
