@@ -177,21 +177,12 @@ public final class OpenAIClientBuilder
         return this;
     }
 
-    /** {@inheritDoc}. */
-    @Override
-    public OpenAIClientBuilder credential(AzureKeyCredential azureKeyCredential) {
-        return this.credential((KeyCredential) azureKeyCredential);
-    }
-
     /** The KeyCredential used for OpenAi authentication. It could be either of Azure or Non-Azure OpenAI API key. */
     private KeyCredential keyCredential;
 
-    /**
-     * The KeyCredential used for OpenAi authentication. It could be either of Azure or Non-Azure OpenAI API key.
-     *
-     * @param keyCredential The credential for OpenAI authentication.
-     * @return the object itself.
-     */
+    /** {@inheritDoc}. */
+    @Generated
+    @Override
     public OpenAIClientBuilder credential(KeyCredential keyCredential) {
         this.keyCredential = keyCredential;
         return this;
