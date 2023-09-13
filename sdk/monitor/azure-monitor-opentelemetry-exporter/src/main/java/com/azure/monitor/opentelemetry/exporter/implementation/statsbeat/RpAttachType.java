@@ -20,10 +20,7 @@ public enum RpAttachType {
         attachType = type;
     }
 
-    static String getRpAttachType() {
-        if (attachType == null) {
-          throw new AssertionError("RpAttachType.setRpAttachType() must be called first");
-        }
-        return attachType.label;
+    public static String getRpAttachType() {
+        return attachType != null ? attachType.label : null;
     }
 }
