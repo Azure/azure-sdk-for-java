@@ -108,7 +108,7 @@ The following line shows you how to add self-diagnostics at the DEBUG level when
 docker run -e APPLICATIONINSIGHTS_SELF_DIAGNOSTICS_LEVEL=DEBUG {image-name}
 ```
 
-You have to replace `{image-name}` by your native image name.
+You have to replace `{image-name}` by your docker image name.
 
 ## Contributing
 
