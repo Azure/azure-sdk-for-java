@@ -10,6 +10,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
+import java.util.Locale;
+
 /**
  Main configuration entry point of the self-diagnostics
  **/
@@ -26,7 +28,8 @@ public class SelfDiagAutoConfig {
             return SelfDiagnosticsLevel.INFO;
         }
         try {
-            return SelfDiagnosticsLevel.valueOf(selfDiagLevelEnvVar);
+            String upperCaseLevel = selfDiagLevelEnvVar.toUpperCase(Locale.ROOT);
+            return SelfDiagnosticsLevel.valueOf(upperCaseLevel);
         } catch (IllegalArgumentException e) {
             LOG.warn("Unable to find the self-diagnostics level related to " + selfDiagLevelEnvVar + "defined with " + SELF_DIAGNOSTICS_LEVEL_ENV_VAR + " environment variable.", e);
             return SelfDiagnosticsLevel.INFO;
