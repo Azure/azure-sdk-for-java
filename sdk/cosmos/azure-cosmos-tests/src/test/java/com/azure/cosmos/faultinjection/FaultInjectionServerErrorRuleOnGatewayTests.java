@@ -205,7 +205,8 @@ public class FaultInjectionServerErrorRuleOnGatewayTests extends TestSuiteBase {
             CosmosDiagnostics cosmosDiagnostics = this.performDocumentOperation(container, OperationType.Read, createdItem);
 
             this.validateHitCount(serverErrorRuleLocalRegion, 1, OperationType.Read, ResourceType.Document);
-            this.validateHitCount(serverErrorRuleRemoteRegion, 0, OperationType.Read, ResourceType.Document);
+            // 503/0 is retried in Client Retry policy
+            this.validateHitCount(serverErrorRuleRemoteRegion, 1, OperationType.Read, ResourceType.Document);
 
             this.validateFaultInjectionRuleApplied(
                 cosmosDiagnostics,
@@ -620,7 +621,7 @@ public class FaultInjectionServerErrorRuleOnGatewayTests extends TestSuiteBase {
                 }
                 assertThat(gatewayStatisticsList.size()).isEqualTo(2);
             } else {
-                assertThat(gatewayStatisticsList.size()).isOne();
+                assertThat(gatewayStatisticsList.size()).isEqualTo(3);
             }
             JsonNode gatewayStatistics = gatewayStatisticsList.get(0);
             assertThat(gatewayStatistics).isNotNull();
