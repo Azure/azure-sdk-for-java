@@ -287,12 +287,7 @@ public class NonAzureOpenAISyncClientTest extends OpenAIClientTestBase {
             translationOptions.setResponseFormat(AudioTranscriptionFormat.JSON);
 
             AudioTranscription translation = client.getAudioTranslation(modelId, translationOptions, fileName);
-            assertNotNull(translation);
-            assertEquals("It's raining today.", translation.getText());
-            assertNull(translation.getDuration());
-            assertNull(translation.getLanguage());
-            assertNull(translation.getTask());
-            assertNull(translation.getSegments());
+            assertAudioTranscriptionSimpleJson(translation,"It's raining today.");
         });
     }
 
@@ -307,13 +302,7 @@ public class NonAzureOpenAISyncClientTest extends OpenAIClientTestBase {
             translationOptions.setResponseFormat(AudioTranscriptionFormat.VERBOSE_JSON);
 
             AudioTranscription translation = client.getAudioTranslation(modelId, translationOptions, fileName);
-            assertNotNull(translation);
-            assertEquals("It's raining today.", translation.getText());
-            assertNotNull(translation.getDuration());
-            assertNotNull(translation.getLanguage());
-            assertEquals(AudioTaskLabel.TRANSLATE, translation.getTask());
-            assertNotNull(translation.getSegments());
-            assertFalse(translation.getSegments().isEmpty());
+            assertAudioTranscriptionVerboseJson(translation,"It's raining today.");
         });
     }
 

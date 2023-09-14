@@ -336,14 +336,9 @@ public class NonAzureOpenAIAsyncClientTest extends OpenAIClientTestBase {
             translationOptions.setResponseFormat(AudioTranscriptionFormat.JSON);
 
             StepVerifier.create(client.getAudioTranslation(modelId, translationOptions, fileName))
-                    .assertNext(translation -> {
-                        assertNotNull(translation);
-                        assertEquals("It's raining today.", translation.getText());
-                        assertNull(translation.getDuration());
-                        assertNull(translation.getLanguage());
-                        assertNull(translation.getTask());
-                        assertNull(translation.getSegments());
-                    }).verifyComplete();
+                    .assertNext(translation ->
+                        assertAudioTranscriptionSimpleJson(translation,"It's raining today."))
+                    .verifyComplete();
         });
     }
 
@@ -358,15 +353,9 @@ public class NonAzureOpenAIAsyncClientTest extends OpenAIClientTestBase {
             translationOptions.setResponseFormat(AudioTranscriptionFormat.VERBOSE_JSON);
 
             StepVerifier.create(client.getAudioTranslation(modelId, translationOptions, fileName))
-                    .assertNext(translation -> {
-                        assertNotNull(translation);
-                        assertEquals("It's raining today.", translation.getText());
-                        assertNotNull(translation.getDuration());
-                        assertNotNull(translation.getLanguage());
-                        assertEquals(AudioTaskLabel.TRANSLATE, translation.getTask());
-                        assertNotNull(translation.getSegments());
-                        assertFalse(translation.getSegments().isEmpty());
-                    }).verifyComplete();
+                    .assertNext(translation ->
+                        assertAudioTranscriptionVerboseJson(translation,"It's raining today."))
+                    .verifyComplete();
         });
     }
 

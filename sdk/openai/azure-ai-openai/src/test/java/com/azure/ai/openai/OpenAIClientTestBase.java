@@ -5,24 +5,7 @@
 package com.azure.ai.openai;
 
 import com.azure.ai.openai.functions.Parameters;
-import com.azure.ai.openai.models.AzureChatExtensionsMessageContext;
-import com.azure.ai.openai.models.ChatChoice;
-import com.azure.ai.openai.models.ChatCompletions;
-import com.azure.ai.openai.models.ChatCompletionsOptions;
-import com.azure.ai.openai.models.ChatMessage;
-import com.azure.ai.openai.models.ChatRole;
-import com.azure.ai.openai.models.Choice;
-import com.azure.ai.openai.models.Completions;
-import com.azure.ai.openai.models.CompletionsFinishReason;
-import com.azure.ai.openai.models.ContentFilterResults;
-import com.azure.ai.openai.models.ContentFilterSeverity;
-import com.azure.ai.openai.models.EmbeddingItem;
-import com.azure.ai.openai.models.Embeddings;
-import com.azure.ai.openai.models.EmbeddingsOptions;
-import com.azure.ai.openai.models.FunctionCall;
-import com.azure.ai.openai.models.FunctionDefinition;
-import com.azure.ai.openai.models.ImageGenerationOptions;
-import com.azure.ai.openai.models.ImageResponse;
+import com.azure.ai.openai.models.*;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.KeyCredential;
 import com.azure.core.http.HttpClient;
@@ -431,5 +414,24 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
                 assertNotNull(choices.get(0).getDelta().getContent());
             }
         }
+    }
+
+    static void assertAudioTranscriptionSimpleJson(AudioTranscription transcription, String expectedText) {
+        assertNotNull(transcription);
+        assertEquals(expectedText, transcription.getText());
+        assertNull(transcription.getDuration());
+        assertNull(transcription.getLanguage());
+        assertNull(transcription.getTask());
+        assertNull(transcription.getSegments());
+    }
+
+    static void assertAudioTranscriptionVerboseJson(AudioTranscription transcription, String expectedText) {
+        assertNotNull(transcription);
+        assertEquals(expectedText, transcription.getText());
+        assertNotNull(transcription.getDuration());
+        assertNotNull(transcription.getLanguage());
+        assertEquals(AudioTaskLabel.TRANSLATE, transcription.getTask());
+        assertNotNull(transcription.getSegments());
+        assertFalse(transcription.getSegments().isEmpty());
     }
 }
