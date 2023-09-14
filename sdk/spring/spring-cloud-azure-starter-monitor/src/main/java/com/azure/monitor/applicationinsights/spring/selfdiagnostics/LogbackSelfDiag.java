@@ -56,9 +56,8 @@ class LogbackSelfDiag implements CommandLineRunner {
         return appenders;
     }
 
-    private boolean hasOtelAppender(List<Appender<ILoggingEvent>> logAppenders) {
-        Optional<Appender<ILoggingEvent>> optionalAppender = logAppenders.stream().filter(appender -> appender.getClass().getName().equals("io.opentelemetry.instrumentation.logback.appender.v1_0.OpenTelemetryAppender")).findFirst();
-        return optionalAppender.isPresent();
+    private static boolean hasOtelAppender(List<Appender<ILoggingEvent>> logAppenders) {
+        return logAppenders.stream().anyMatch(appender -> appender.getClass().getName().equals("io.opentelemetry.instrumentation.logback.appender.v1_0.OpenTelemetryAppender"));
     }
 
     private void logAppendersAtTraceLevel(List<Appender<ILoggingEvent>> logAppenders) {
