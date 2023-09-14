@@ -8,6 +8,7 @@
 #### Breaking Changes
 
 #### Bugs Fixed
+* Suppressed `CosmosEndToEndOperationLatencyPolicyConfig` in `ChangeFeedProcessor`. See [PR 36775](https://github.com/Azure/azure-sdk-for-java/pull/36775) 
 
 #### Other Changes
 * Handling negative end-to-end timeouts provided more gracefully by throwing a `CosmsoException` (`OperationCancelledException`) instead of `IllegalArgumentException`. - See [PR 36507](https://github.com/Azure/azure-sdk-for-java/pull/36507)
