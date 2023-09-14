@@ -3477,9 +3477,9 @@ public class FileAsyncApiTests extends DataLakeTestBase {
         }
         b.append('}');
 
-        fc.create(true);
-        fc.append(BinaryData.fromString(b.toString()), 0);
-        fc.flush(b.length(), true);
+        fc.create(true).block();
+        fc.append(BinaryData.fromString(b.toString()), 0).block();
+        fc.flush(b.length(), true).block();
     }
 
     @DisabledIf("olderThan20191212ServiceVersion")
@@ -3544,20 +3544,9 @@ public class FileAsyncApiTests extends DataLakeTestBase {
         liveTestScenarioWithRetry(() -> {
             ByteArrayOutputStream queryData = new ByteArrayOutputStream();
 
-            fc.queryWithResponse(new FileQueryOptions(expression, queryData)
-                .setInputSerialization(serIn).setOutputSerialization(serOut))
-                .flatMap(piece -> {
-                    piece.getValue().flatMap(r -> {
-                        try {
-                            queryData.write(r.array());
-                        } catch (IOException ex) {
-                            throw new UncheckedIOException(ex);
-                        }
-                        return null;
-                    }).blockLast();
-                    return null;
-                }).block();
-            byte[] queryArray = queryData.toByteArray();
+            byte[] queryArray = fc.queryWithResponse(new FileQueryOptions(expression, queryData)
+                    .setInputSerialization(serIn).setOutputSerialization(serOut))
+                .flatMap(piece -> FluxUtil.collectBytesInByteBufferStream(piece.getValue())).block();
 
             if (headersPresentIn && !headersPresentOut) {
                 assertEquals(readArray.length - 16, queryArray.length);
@@ -3612,20 +3601,9 @@ public class FileAsyncApiTests extends DataLakeTestBase {
         liveTestScenarioWithRetry(() -> {
             ByteArrayOutputStream queryData = new ByteArrayOutputStream();
 
-            fc.queryWithResponse(new FileQueryOptions(expression, queryData)
+            byte[] queryArray = fc.queryWithResponse(new FileQueryOptions(expression, queryData)
                 .setInputSerialization(ser).setOutputSerialization(ser))
-                .flatMap(piece -> {
-                    piece.getValue().flatMap(r -> {
-                        try {
-                            queryData.write(r.array());
-                        } catch (IOException ex) {
-                            throw new UncheckedIOException(ex);
-                        }
-                        return Mono.empty();
-                    }).blockLast();
-                    return null;
-                }).block();
-            byte[] queryArray = queryData.toByteArray();
+                .flatMap(piece -> FluxUtil.collectBytesInByteBufferStream(piece.getValue())).block();
 
             TestUtils.assertArraysEqual(readArray, queryArray);
         });
@@ -3656,19 +3634,8 @@ public class FileAsyncApiTests extends DataLakeTestBase {
             FileQueryOptions optionsOs = new FileQueryOptions(expression, queryData)
                 .setInputSerialization(ser).setOutputSerialization(ser);
 
-            fc.queryWithResponse(optionsOs)
-                .flatMap(piece -> {
-                    piece.getValue().flatMap(r -> {
-                        try {
-                            queryData.write(r.array());
-                        } catch (IOException ex) {
-                            throw new UncheckedIOException(ex);
-                        }
-                        return Mono.empty();
-                    }).blockLast();
-                    return null;
-                }).block();
-            byte[] queryArray = queryData.toByteArray();
+            byte[] queryArray = fc.queryWithResponse(optionsOs)
+                .flatMap(piece -> FluxUtil.collectBytesInByteBufferStream(piece.getValue())).block();
 
             TestUtils.assertArraysEqual(readArray, queryArray);
         });
@@ -3703,19 +3670,9 @@ public class FileAsyncApiTests extends DataLakeTestBase {
             FileQueryOptions optionsOs = new FileQueryOptions(expression, queryData).setInputSerialization(inSer)
                 .setOutputSerialization(outSer);
 
-            fc.queryWithResponse(optionsOs)
-                .flatMap(piece -> {
-                    piece.getValue().flatMap(r -> {
-                        try {
-                            queryData.write(r.array());
-                        } catch (IOException ex) {
-                            throw new UncheckedIOException(ex);
-                        }
-                        return Mono.empty();
-                    }).blockLast();
-                    return null;
-                }).block();
-            byte[] queryArray = queryData.toByteArray();
+            byte[] queryArray = fc.queryWithResponse(optionsOs)
+                .flatMap(piece -> FluxUtil.collectBytesInByteBufferStream(piece.getValue())).block();
+
             TestUtils.assertArraysEqual(expectedData, 0, queryArray, 0, expectedData.length);
         });
     }
@@ -3740,19 +3697,9 @@ public class FileAsyncApiTests extends DataLakeTestBase {
             FileQueryOptions optionsOs = new FileQueryOptions(expression, queryData).setInputSerialization(inSer)
                 .setOutputSerialization(outSer);
 
-            fc.queryWithResponse(optionsOs)
-                .flatMap(piece -> {
-                    piece.getValue().flatMap(r -> {
-                        try {
-                            queryData.write(r.array());
-                        } catch (IOException ex) {
-                            throw new UncheckedIOException(ex);
-                        }
-                        return Mono.empty();
-                    }).blockLast();
-                    return null;
-                }).block();
-            byte[] queryArray = queryData.toByteArray();
+            byte[] queryArray = fc.queryWithResponse(optionsOs)
+                .flatMap(piece -> FluxUtil.collectBytesInByteBufferStream(piece.getValue())).block();
+
             TestUtils.assertArraysEqual(expectedData, queryArray);
         });
     }
@@ -3900,7 +3847,6 @@ public class FileAsyncApiTests extends DataLakeTestBase {
                     .setInputSerialization(inSer)
                     .setOutputSerialization(outSer)))
                 .verifyError(IllegalArgumentException.class);
-
         });
     }
 
