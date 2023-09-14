@@ -68,7 +68,11 @@ import java.util.function.Supplier;
 import java.util.zip.CRC32;
 
 import static com.azure.core.test.utils.TestUtils.assertArraysEqual;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  * Base class for Azure Storage File DataLake tests.

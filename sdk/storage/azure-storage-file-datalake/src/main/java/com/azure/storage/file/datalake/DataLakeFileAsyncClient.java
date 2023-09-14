@@ -1163,8 +1163,8 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
     Mono<Response<Void>> appendWithResponse(Flux<ByteBuffer> data, long fileOffset, long length,
         DataLakeFileAppendOptions appendOptions, Context context) {
 
-        if(data == null) {
-            return Mono.error(new NullPointerException("data cannot be null"));
+        if (data == null) {
+            return Mono.error(new NullPointerException("'data' cannot be null."));
         }
 
         appendOptions = appendOptions == null ? new DataLakeFileAppendOptions() : appendOptions;
