@@ -7,7 +7,7 @@ package com.azure.resourcemanager.redis.generated;
 /** Samples for AsyncOperationStatus Get. */
 public final class AsyncOperationStatusGetSamples {
     /*
-     * x-ms-original-file: specification/redis/resource-manager/Microsoft.Cache/stable/2023-04-01/examples/RedisCacheAsyncOperationStatus.json
+     * x-ms-original-file: specification/redis/resource-manager/Microsoft.Cache/stable/2023-08-01/examples/RedisCacheAsyncOperationStatus.json
      */
     /**
      * Sample code: RedisCacheAsyncOperationStatus.

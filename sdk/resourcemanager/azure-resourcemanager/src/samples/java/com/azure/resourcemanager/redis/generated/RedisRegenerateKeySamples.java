@@ -10,7 +10,7 @@ import com.azure.resourcemanager.redis.models.RedisRegenerateKeyParameters;
 /** Samples for Redis RegenerateKey. */
 public final class RedisRegenerateKeySamples {
     /*
-     * x-ms-original-file: specification/redis/resource-manager/Microsoft.Cache/stable/2023-04-01/examples/RedisCacheRegenerateKey.json
+     * x-ms-original-file: specification/redis/resource-manager/Microsoft.Cache/stable/2023-08-01/examples/RedisCacheRegenerateKey.json
      */
     /**
      * Sample code: RedisCacheRegenerateKey.
