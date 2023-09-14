@@ -25,7 +25,6 @@ public class Messages {
     public static final String INVALID_OPERATION_DISPOSED_RECEIVER = getMessage("INVALID_OPERATION_DISPOSED_RECEIVER");
     public static final String INVALID_OPERATION_DISPOSED_SENDER = getMessage("INVALID_OPERATION_DISPOSED_SENDER");
     public static final String INVALID_OPERATION_DISPOSED_RULE_MANAGER = getMessage("INVALID_OPERATION_DISPOSED_RULE_MANAGER");
-    public static final String MESSAGE_NOT_OF_TYPE = getMessage("MESSAGE_NOT_OF_TYPE");
 
     private static synchronized Properties getProperties() {
         if (properties != null) {

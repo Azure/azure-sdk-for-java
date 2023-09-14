@@ -20,8 +20,8 @@ import com.azure.ai.openai.models.EmbeddingsOptions;
 import com.azure.ai.openai.models.ImageGenerationOptions;
 import com.azure.ai.openai.models.ImageLocation;
 import com.azure.ai.openai.models.ImageResponse;
-import com.azure.ai.openai.models.NonAzureOpenAIKeyCredential;
 import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.credential.KeyCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.ProxyOptions;
 import com.azure.core.models.ResponseError;
@@ -64,7 +64,7 @@ public final class ReadmeSamples {
     public void createNonAzureSyncClientWithApiKey() {
         // BEGIN: readme-sample-createNonAzureOpenAISyncClientApiKey
         OpenAIClient client = new OpenAIClientBuilder()
-            .credential(new NonAzureOpenAIKeyCredential("{openai-secret-key}"))
+            .credential(new KeyCredential("{openai-secret-key}"))
             .buildClient();
         // END: readme-sample-createNonAzureOpenAISyncClientApiKey
     }
@@ -72,7 +72,7 @@ public final class ReadmeSamples {
     public void createNonAzureAsyncClientWithApiKey() {
         // BEGIN: readme-sample-createNonAzureOpenAIAsyncClientApiKey
         OpenAIAsyncClient client = new OpenAIClientBuilder()
-            .credential(new NonAzureOpenAIKeyCredential("{openai-secret-key}"))
+            .credential(new KeyCredential("{openai-secret-key}"))
             .buildAsyncClient();
         // END: readme-sample-createNonAzureOpenAIAsyncClientApiKey
     }

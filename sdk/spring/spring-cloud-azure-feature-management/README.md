@@ -247,16 +247,14 @@ An example web application that uses the targeting feature filter is available i
 To begin using the `TargetingFilter` in an application it must be added as a `@Bean` like any other Feature Filter. `TargetingFilter` relies on another `@Bean` to be added to the application, `ITargetingContextAccessor`. The `ITargetingContextAccessor` allows for defining the current `TargetingContext` to be used for defining the current user id and groups. An example of this is:
 
 ```java
-public class TargetingContextAccessor implements ITargetingContextAccessor {
+public class TargetingContextAccessorImpl implements TargetingContextAccessor {
 
     @Override
-    public Mono<TargetingContext> getContextAsync() {
-        TargetingContext context = new TargetingContext();
+    void configureTargetingContext(TargetingContext context) {
         context.setUserId("Jeff");
         ArrayList<String> groups = new ArrayList<String>();
         groups.add("Ring0");
         context.setGroups(groups);
-        return Mono.just(context);
     }
 
 }
@@ -268,7 +266,7 @@ Options are available to customize how targeting evaluation is performed across 
 
 ```java
     @Bean
-    public TargetingFilter targetingFilter(ITargetingContextAccessor contextAccessor) {
+    public TargetingFilter targetingFilter(TargetingContextAccessor contextAccessor) {
         return new TargetingFilter(contextAccessor, new TargetingEvaluationOptions().setIgnoreCase(true));
     }
 ```

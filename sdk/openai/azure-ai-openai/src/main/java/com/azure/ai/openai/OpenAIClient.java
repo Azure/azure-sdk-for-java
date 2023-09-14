@@ -30,10 +30,7 @@ import com.azure.core.util.BinaryData;
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.SyncPoller;
-import java.io.IOException;
-import java.io.UncheckedIOException;
 import java.nio.ByteBuffer;
-import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 
 /** Initializes a new instance of the synchronous OpenAIClient type. */
@@ -505,27 +502,10 @@ public final class OpenAIClient {
                     .getValue()
                     .toObject(ImageResponse.class);
         } else {
-            // TODO: Currently, we use async client block() to avoid a unknown LRO status "notRunning" which Azure Core
-            // will
-            //       fix the issue in August release and we will reuse the method
-            //       "SyncPoller<BinaryData, BinaryData> beginBeginAzureBatchImageGeneration()" after.
-            try {
-                return this.serviceClient
-                        .beginBeginAzureBatchImageGenerationAsync(imageGenerationOptionsBinaryData, requestOptions)
-                        .last()
-                        .flatMap(it -> it.getFinalResult())
-                        .map(it -> it.toObject(ImageOperationResponse.class).getResult())
-                        .block();
-            } catch (Exception e) {
-                Throwable unwrapped = Exceptions.unwrap(e);
-                if (unwrapped instanceof RuntimeException) {
-                    throw LOGGER.logExceptionAsError((RuntimeException) unwrapped);
-                } else if (unwrapped instanceof IOException) {
-                    throw LOGGER.logExceptionAsError(new UncheckedIOException((IOException) unwrapped));
-                } else {
-                    throw LOGGER.logExceptionAsError(new RuntimeException(unwrapped));
-                }
-            }
+            return beginBeginAzureBatchImageGeneration(imageGenerationOptionsBinaryData, requestOptions)
+                    .getFinalResult()
+                    .toObject(ImageOperationResponse.class)
+                    .getResult();
         }
     }
 
@@ -549,7 +529,13 @@ public final class OpenAIClient {
      * <pre>{@code
      * {
      *     id: String (Required)
-     *     status: String (Required)
+     *     created: long (Required)
+     *     expires: Long (Optional)
+     *     result (Optional): {
+     *         created: long (Required)
+     *         data: DataModelBase (Required)
+     *     }
+     *     status: String(notRunning/running/succeeded/canceled/failed) (Required)
      *     error (Optional): {
      *         code: String (Required)
      *         message: String (Required)
@@ -571,7 +557,7 @@ public final class OpenAIClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link SyncPoller} for polling of status details for long running operations.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)

@@ -14,6 +14,12 @@ import java.util.List;
 @Fluent
 public final class FirewallPolicyRuleCollectionGroupProperties {
     /*
+     * A read-only string that represents the size of the FirewallPolicyRuleCollectionGroupProperties in MB. (ex 1.2MB)
+     */
+    @JsonProperty(value = "size", access = JsonProperty.Access.WRITE_ONLY)
+    private String size;
+
+    /*
      * Priority of the Firewall Policy Rule Collection Group resource.
      */
     @JsonProperty(value = "priority")
@@ -33,6 +39,16 @@ public final class FirewallPolicyRuleCollectionGroupProperties {
 
     /** Creates an instance of FirewallPolicyRuleCollectionGroupProperties class. */
     public FirewallPolicyRuleCollectionGroupProperties() {
+    }
+
+    /**
+     * Get the size property: A read-only string that represents the size of the
+     * FirewallPolicyRuleCollectionGroupProperties in MB. (ex 1.2MB).
+     *
+     * @return the size value.
+     */
+    public String size() {
+        return this.size;
     }
 
     /**

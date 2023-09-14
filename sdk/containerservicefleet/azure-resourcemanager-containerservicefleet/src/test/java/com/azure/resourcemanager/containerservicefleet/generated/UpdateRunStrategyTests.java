@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.containerservicefleet.generated;
 
 import com.azure.core.util.BinaryData;
+import com.azure.resourcemanager.containerservicefleet.models.UpdateGroup;
 import com.azure.resourcemanager.containerservicefleet.models.UpdateRunStrategy;
 import com.azure.resourcemanager.containerservicefleet.models.UpdateStage;
 import java.util.Arrays;
@@ -16,10 +17,11 @@ public final class UpdateRunStrategyTests {
         UpdateRunStrategy model =
             BinaryData
                 .fromString(
-                    "{\"stages\":[{\"name\":\"dfvzwdzuhty\",\"groups\":[],\"afterStageWaitInSeconds\":396497881}]}")
+                    "{\"stages\":[{\"name\":\"hvmdajvnysounq\",\"groups\":[{\"name\":\"noae\"}],\"afterStageWaitInSeconds\":1901274446}]}")
                 .toObject(UpdateRunStrategy.class);
-        Assertions.assertEquals("dfvzwdzuhty", model.stages().get(0).name());
-        Assertions.assertEquals(396497881, model.stages().get(0).afterStageWaitInSeconds());
+        Assertions.assertEquals("hvmdajvnysounq", model.stages().get(0).name());
+        Assertions.assertEquals("noae", model.stages().get(0).groups().get(0).name());
+        Assertions.assertEquals(1901274446, model.stages().get(0).afterStageWaitInSeconds());
     }
 
     @org.junit.jupiter.api.Test
@@ -30,11 +32,12 @@ public final class UpdateRunStrategyTests {
                     Arrays
                         .asList(
                             new UpdateStage()
-                                .withName("dfvzwdzuhty")
-                                .withGroups(Arrays.asList())
-                                .withAfterStageWaitInSeconds(396497881)));
+                                .withName("hvmdajvnysounq")
+                                .withGroups(Arrays.asList(new UpdateGroup().withName("noae")))
+                                .withAfterStageWaitInSeconds(1901274446)));
         model = BinaryData.fromObject(model).toObject(UpdateRunStrategy.class);
-        Assertions.assertEquals("dfvzwdzuhty", model.stages().get(0).name());
-        Assertions.assertEquals(396497881, model.stages().get(0).afterStageWaitInSeconds());
+        Assertions.assertEquals("hvmdajvnysounq", model.stages().get(0).name());
+        Assertions.assertEquals("noae", model.stages().get(0).groups().get(0).name());
+        Assertions.assertEquals(1901274446, model.stages().get(0).afterStageWaitInSeconds());
     }
 }

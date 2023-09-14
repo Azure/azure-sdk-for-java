@@ -37,7 +37,7 @@
 /** Samples for FleetMembers Create. */
 public final class FleetMembersCreateSamples {
     /*
-     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/fleet/preview/2023-03-15-preview/examples/FleetMembers_Create.json
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/fleet/preview/2023-06-15-preview/examples/FleetMembers_Create.json
      */
     /**
      * Sample code: Creates a FleetMember resource with a long running operation.
@@ -63,7 +63,7 @@ public final class FleetMembersCreateSamples {
 /** Samples for FleetMembers Delete. */
 public final class FleetMembersDeleteSamples {
     /*
-     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/fleet/preview/2023-03-15-preview/examples/FleetMembers_Delete.json
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/fleet/preview/2023-06-15-preview/examples/FleetMembers_Delete.json
      */
     /**
      * Sample code: Deletes a FleetMember resource asynchronously with a long running operation.
@@ -83,7 +83,7 @@ public final class FleetMembersDeleteSamples {
 /** Samples for FleetMembers Get. */
 public final class FleetMembersGetSamples {
     /*
-     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/fleet/preview/2023-03-15-preview/examples/FleetMembers_Get.json
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/fleet/preview/2023-06-15-preview/examples/FleetMembers_Get.json
      */
     /**
      * Sample code: Gets a FleetMember resource.
@@ -103,7 +103,7 @@ public final class FleetMembersGetSamples {
 /** Samples for FleetMembers ListByFleet. */
 public final class FleetMembersListByFleetSamples {
     /*
-     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/fleet/preview/2023-03-15-preview/examples/FleetMembers_ListByFleet.json
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/fleet/preview/2023-06-15-preview/examples/FleetMembers_ListByFleet.json
      */
     /**
      * Sample code: Lists the members of a Fleet.
@@ -125,7 +125,7 @@ import com.azure.resourcemanager.containerservicefleet.models.FleetMember;
 /** Samples for FleetMembers Update. */
 public final class FleetMembersUpdateSamples {
     /*
-     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/fleet/preview/2023-03-15-preview/examples/FleetMembers_Update.json
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/fleet/preview/2023-06-15-preview/examples/FleetMembers_Update.json
      */
     /**
      * Sample code: Updates a FleetMember resource synchronously.
@@ -154,7 +154,7 @@ import java.util.Map;
 /** Samples for Fleets CreateOrUpdate. */
 public final class FleetsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/fleet/preview/2023-03-15-preview/examples/Fleets_CreateOrUpdate.json
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/fleet/preview/2023-06-15-preview/examples/Fleets_CreateOrUpdate.json
      */
     /**
      * Sample code: Creates a Fleet resource with a long running operation.
@@ -173,6 +173,7 @@ public final class FleetsCreateOrUpdateSamples {
             .create();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();
@@ -192,7 +193,7 @@ public final class FleetsCreateOrUpdateSamples {
 /** Samples for Fleets Delete. */
 public final class FleetsDeleteSamples {
     /*
-     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/fleet/preview/2023-03-15-preview/examples/Fleets_Delete.json
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/fleet/preview/2023-06-15-preview/examples/Fleets_Delete.json
      */
     /**
      * Sample code: Deletes a Fleet resource asynchronously with a long running operation.
@@ -212,7 +213,7 @@ public final class FleetsDeleteSamples {
 /** Samples for Fleets GetByResourceGroup. */
 public final class FleetsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/fleet/preview/2023-03-15-preview/examples/Fleets_Get.json
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/fleet/preview/2023-06-15-preview/examples/Fleets_Get.json
      */
     /**
      * Sample code: Gets a Fleet resource.
@@ -232,7 +233,7 @@ public final class FleetsGetByResourceGroupSamples {
 /** Samples for Fleets List. */
 public final class FleetsListSamples {
     /*
-     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/fleet/preview/2023-03-15-preview/examples/Fleets_ListBySub.json
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/fleet/preview/2023-06-15-preview/examples/Fleets_ListBySub.json
      */
     /**
      * Sample code: Lists the Fleet resources in a subscription.
@@ -252,7 +253,7 @@ public final class FleetsListSamples {
 /** Samples for Fleets ListByResourceGroup. */
 public final class FleetsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/fleet/preview/2023-03-15-preview/examples/Fleets_ListByResourceGroup.json
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/fleet/preview/2023-06-15-preview/examples/Fleets_ListByResourceGroup.json
      */
     /**
      * Sample code: Lists the Fleet resources in a resource group.
@@ -272,7 +273,7 @@ public final class FleetsListByResourceGroupSamples {
 /** Samples for Fleets ListCredentials. */
 public final class FleetsListCredentialsSamples {
     /*
-     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/fleet/preview/2023-03-15-preview/examples/Fleets_ListCredentialsResult.json
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/fleet/preview/2023-06-15-preview/examples/Fleets_ListCredentialsResult.json
      */
     /**
      * Sample code: Lists the user credentials of a Fleet.
@@ -296,7 +297,7 @@ import java.util.Map;
 /** Samples for Fleets Update. */
 public final class FleetsUpdateSamples {
     /*
-     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/fleet/preview/2023-03-15-preview/examples/Fleets_PatchTags.json
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/fleet/preview/2023-06-15-preview/examples/Fleets_PatchTags.json
      */
     /**
      * Sample code: Update a Fleet.
@@ -313,6 +314,7 @@ public final class FleetsUpdateSamples {
         resource.update().withTags(mapOf("env", "prod", "tier", "secure")).withIfMatch("dfjkwelr7384").apply();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();
@@ -332,7 +334,7 @@ public final class FleetsUpdateSamples {
 /** Samples for Operations List. */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/fleet/preview/2023-03-15-preview/examples/Operations_List.json
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/fleet/preview/2023-06-15-preview/examples/Operations_List.json
      */
     /**
      * Sample code: List the operations for the provider.
@@ -352,6 +354,8 @@ public final class OperationsListSamples {
 import com.azure.resourcemanager.containerservicefleet.models.ManagedClusterUpdate;
 import com.azure.resourcemanager.containerservicefleet.models.ManagedClusterUpgradeSpec;
 import com.azure.resourcemanager.containerservicefleet.models.ManagedClusterUpgradeType;
+import com.azure.resourcemanager.containerservicefleet.models.NodeImageSelection;
+import com.azure.resourcemanager.containerservicefleet.models.NodeImageSelectionType;
 import com.azure.resourcemanager.containerservicefleet.models.UpdateGroup;
 import com.azure.resourcemanager.containerservicefleet.models.UpdateRunStrategy;
 import com.azure.resourcemanager.containerservicefleet.models.UpdateStage;
@@ -360,7 +364,7 @@ import java.util.Arrays;
 /** Samples for UpdateRuns CreateOrUpdate. */
 public final class UpdateRunsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/fleet/preview/2023-03-15-preview/examples/UpdateRuns_CreateOrUpdate.json
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/fleet/preview/2023-06-15-preview/examples/UpdateRuns_CreateOrUpdate.json
      */
     /**
      * Sample code: Create an UpdateRun.
@@ -387,7 +391,8 @@ public final class UpdateRunsCreateOrUpdateSamples {
                     .withUpgrade(
                         new ManagedClusterUpgradeSpec()
                             .withType(ManagedClusterUpgradeType.FULL)
-                            .withKubernetesVersion("1.26.1")))
+                            .withKubernetesVersion("1.26.1"))
+                    .withNodeImageSelection(new NodeImageSelection().withType(NodeImageSelectionType.LATEST)))
             .create();
     }
 }
@@ -399,7 +404,7 @@ public final class UpdateRunsCreateOrUpdateSamples {
 /** Samples for UpdateRuns Delete. */
 public final class UpdateRunsDeleteSamples {
     /*
-     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/fleet/preview/2023-03-15-preview/examples/UpdateRuns_Delete.json
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/fleet/preview/2023-06-15-preview/examples/UpdateRuns_Delete.json
      */
     /**
      * Sample code: Delete an updateRun resource.
@@ -419,7 +424,7 @@ public final class UpdateRunsDeleteSamples {
 /** Samples for UpdateRuns Get. */
 public final class UpdateRunsGetSamples {
     /*
-     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/fleet/preview/2023-03-15-preview/examples/UpdateRuns_Get.json
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/fleet/preview/2023-06-15-preview/examples/UpdateRuns_Get.json
      */
     /**
      * Sample code: Gets an UpdateRun resource.
@@ -439,7 +444,7 @@ public final class UpdateRunsGetSamples {
 /** Samples for UpdateRuns ListByFleet. */
 public final class UpdateRunsListByFleetSamples {
     /*
-     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/fleet/preview/2023-03-15-preview/examples/UpdateRuns_ListByFleet.json
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/fleet/preview/2023-06-15-preview/examples/UpdateRuns_ListByFleet.json
      */
     /**
      * Sample code: Lists the UpdateRun resources by fleet.
@@ -459,7 +464,7 @@ public final class UpdateRunsListByFleetSamples {
 /** Samples for UpdateRuns Start. */
 public final class UpdateRunsStartSamples {
     /*
-     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/fleet/preview/2023-03-15-preview/examples/UpdateRuns_Start.json
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/fleet/preview/2023-06-15-preview/examples/UpdateRuns_Start.json
      */
     /**
      * Sample code: Starts an UpdateRun.
@@ -479,7 +484,7 @@ public final class UpdateRunsStartSamples {
 /** Samples for UpdateRuns Stop. */
 public final class UpdateRunsStopSamples {
     /*
-     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/fleet/preview/2023-03-15-preview/examples/UpdateRuns_Stop.json
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/fleet/preview/2023-06-15-preview/examples/UpdateRuns_Stop.json
      */
     /**
      * Sample code: Stops an UpdateRun.

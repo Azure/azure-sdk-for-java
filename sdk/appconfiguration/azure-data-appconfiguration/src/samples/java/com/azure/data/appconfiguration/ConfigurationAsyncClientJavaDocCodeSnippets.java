@@ -3,10 +3,12 @@
 
 package com.azure.data.appconfiguration;
 
+import com.azure.core.util.Configuration;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
-import com.azure.data.appconfiguration.models.ConfigurationSettingSnapshot;
+import com.azure.data.appconfiguration.models.ConfigurationSettingsSnapshot;
 import com.azure.data.appconfiguration.models.SettingFields;
 import com.azure.data.appconfiguration.models.SettingSelector;
+import com.azure.data.appconfiguration.models.SnapshotFields;
 import com.azure.data.appconfiguration.models.SnapshotSelector;
 import com.azure.data.appconfiguration.models.SnapshotSettingFilter;
 import reactor.util.context.Context;
@@ -15,6 +17,7 @@ import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -308,14 +311,13 @@ public class ConfigurationAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippets for {@link ConfigurationAsyncClient#listConfigurationSettingsForSnapshot(String, SettingFields[])}
+     * Code snippets for {@link ConfigurationAsyncClient#listConfigurationSettingsForSnapshot(String, List)}
      */
     public void listConfigurationSettingsForSnapshotMaxOverload() {
         ConfigurationAsyncClient client = getAsyncClient();
         // BEGIN: com.azure.data.appconfiguration.configurationasyncclient.listConfigurationSettingsForSnapshotMaxOverload
         String snapshotName = "{snapshotName}";
-        SettingFields[] fields = new SettingFields[] { SettingFields.KEY };
-
+        List<SettingFields> fields = Arrays.asList(SettingFields.KEY);
         client.listConfigurationSettingsForSnapshot(snapshotName, fields)
             .subscribe(setting ->
                 System.out.printf("Key: %s, Value: %s", setting.getKey(), setting.getValue()));
@@ -336,7 +338,7 @@ public class ConfigurationAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippets for {@link ConfigurationAsyncClient#beginCreateSnapshot(String, ConfigurationSettingSnapshot)}}
+     * Code snippets for {@link ConfigurationAsyncClient#beginCreateSnapshot(String, ConfigurationSettingsSnapshot)}}
      */
     public void beginCreateSnapshotMaxOverload() {
         ConfigurationAsyncClient client = getAsyncClient();
@@ -345,7 +347,7 @@ public class ConfigurationAsyncClientJavaDocCodeSnippets {
         // Key Name also supports RegExp but only support prefix end with "*", such as "k*" and is case-sensitive.
         filters.add(new SnapshotSettingFilter("{keyName}"));
         String snapshotName = "{snapshotName}";
-        client.beginCreateSnapshot(snapshotName, new ConfigurationSettingSnapshot(filters)
+        client.beginCreateSnapshot(snapshotName, new ConfigurationSettingsSnapshot(filters)
                 .setRetentionPeriod(Duration.ofHours(1)))
             .flatMap(result -> result.getFinalResult())
             .subscribe(
@@ -374,19 +376,27 @@ public class ConfigurationAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippets for {@link ConfigurationAsyncClient#getSnapshotWithResponse(String)} (}
+     * Code snippets for {@link ConfigurationAsyncClient#getSnapshotWithResponse(String, List)}
      */
     public void getSnapshotByNameMaxOverload() {
         ConfigurationAsyncClient client = getAsyncClient();
         // BEGIN: com.azure.data.appconfiguration.configurationasyncclient.getSnapshotByNameMaxOverload
         String snapshotName = "{snapshotName}";
-        client.getSnapshotWithResponse(snapshotName).subscribe(
-            response -> {
-                ConfigurationSettingSnapshot getSnapshot = response.getValue();
-                System.out.printf("Snapshot name=%s is created at %s, snapshot status is %s.%n",
-                    getSnapshot.getName(), getSnapshot.getCreatedAt(), getSnapshot.getStatus());
-            }
-        );
+
+        client.getSnapshotWithResponse(snapshotName, Arrays.asList(SnapshotFields.NAME, SnapshotFields.CREATED_AT,
+            SnapshotFields.STATUS, SnapshotFields.FILTERS))
+            .subscribe(
+                response -> {
+                    ConfigurationSettingsSnapshot getSnapshot = response.getValue();
+                    // Only properties `name`, `createAt`, `status` and `filters` have value, and expect null or
+                    // empty value other than the `fields` specified in the request.
+                    System.out.printf("Snapshot name=%s is created at %s, snapshot status is %s.%n",
+                        getSnapshot.getName(), getSnapshot.getCreatedAt(), getSnapshot.getStatus());
+                    List<SnapshotSettingFilter> filters = getSnapshot.getFilters();
+                    for (SnapshotSettingFilter filter : filters) {
+                        System.out.printf("Snapshot filter key=%s, label=%s.%n", filter.getKey(), filter.getLabel());
+                    }
+                });
         // END: com.azure.data.appconfiguration.configurationasyncclient.getSnapshotByNameMaxOverload
     }
 
@@ -407,18 +417,18 @@ public class ConfigurationAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippets for {@link ConfigurationAsyncClient#archiveSnapshotWithResponse(ConfigurationSettingSnapshot, boolean)}
+     * Code snippets for {@link ConfigurationAsyncClient#archiveSnapshotWithResponse(ConfigurationSettingsSnapshot, boolean)}
      */
     public void archiveSnapshotMaxOverload() {
         ConfigurationAsyncClient client = getAsyncClient();
         List<SnapshotSettingFilter> filters = new ArrayList<>();
         // Key Name also supports RegExp but only support prefix end with "*", such as "k*" and is case-sensitive.
         filters.add(new SnapshotSettingFilter("{keyName}"));
-        ConfigurationSettingSnapshot snapshot = new ConfigurationSettingSnapshot(filters);
+        ConfigurationSettingsSnapshot snapshot = new ConfigurationSettingsSnapshot(filters);
         // BEGIN: com.azure.data.appconfiguration.configurationasyncclient.archiveSnapshotMaxOverload
         client.archiveSnapshotWithResponse(snapshot, false).subscribe(
             response -> {
-                ConfigurationSettingSnapshot archivedSnapshot = response.getValue();
+                ConfigurationSettingsSnapshot archivedSnapshot = response.getValue();
                 System.out.printf("Archived snapshot name=%s is created at %s, snapshot status is %s.%n",
                     archivedSnapshot.getName(), archivedSnapshot.getCreatedAt(), archivedSnapshot.getStatus());
             }
@@ -443,18 +453,18 @@ public class ConfigurationAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippets for {@link ConfigurationAsyncClient#recoverSnapshotWithResponse(ConfigurationSettingSnapshot, boolean)}
+     * Code snippets for {@link ConfigurationAsyncClient#recoverSnapshotWithResponse(ConfigurationSettingsSnapshot, boolean)}
      */
     public void recoverSnapshotMaxOverload() {
         ConfigurationAsyncClient client = getAsyncClient();
         List<SnapshotSettingFilter> filters = new ArrayList<>();
         // Key Name also supports RegExp but only support prefix end with "*", such as "k*" and is case-sensitive.
         filters.add(new SnapshotSettingFilter("{keyName}"));
-        ConfigurationSettingSnapshot snapshot = new ConfigurationSettingSnapshot(filters);
+        ConfigurationSettingsSnapshot snapshot = new ConfigurationSettingsSnapshot(filters);
         // BEGIN: com.azure.data.appconfiguration.configurationasyncclient.recoverSnapshotMaxOverload
         client.recoverSnapshotWithResponse(snapshot, false).subscribe(
             response -> {
-                ConfigurationSettingSnapshot recoveredSnapshot = response.getValue();
+                ConfigurationSettingsSnapshot recoveredSnapshot = response.getValue();
                 System.out.printf("Recovered snapshot name=%s is created at %s, snapshot status is %s.%n",
                     recoveredSnapshot.getName(), recoveredSnapshot.getCreatedAt(), recoveredSnapshot.getStatus());
             }
@@ -484,6 +494,8 @@ public class ConfigurationAsyncClientJavaDocCodeSnippets {
      * @return {@code null}
      */
     private ConfigurationAsyncClient getAsyncClient() {
-        return new ConfigurationClientBuilder().connectionString("connectionString").buildAsyncClient();
+        return new ConfigurationClientBuilder()
+            .connectionString(Configuration.getGlobalConfiguration().get("AZURE_APPCONFIG_CONNECTION_STRING"))
+            .buildAsyncClient();
     }
 }
