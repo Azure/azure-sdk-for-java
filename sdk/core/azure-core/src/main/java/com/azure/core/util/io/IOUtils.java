@@ -31,6 +31,10 @@ public final class IOUtils {
     private static final ClientLogger LOGGER = new ClientLogger(IOUtils.class);
 
     private static final int DEFAULT_BUFFER_SIZE = 8192;
+    private static final int SIXTY_FOUR_KB = 64 * 1024;
+    private static final int THIRTY_TWO_KB = 32 * 1024;
+    private static final int MB = 1024 * 1024;
+    private static final int GB = 1024 * MB;
 
     /**
      * Adapts {@link AsynchronousFileChannel} to {@link AsynchronousByteChannel}.
@@ -40,8 +44,8 @@ public final class IOUtils {
      * @throws NullPointerException When {@code fileChannel} is null.
      * @throws IllegalArgumentException When {@code position} is negative.
      */
-    public static AsynchronousByteChannel toAsynchronousByteChannel(
-        AsynchronousFileChannel fileChannel, long position) {
+    public static AsynchronousByteChannel toAsynchronousByteChannel(AsynchronousFileChannel fileChannel,
+        long position) {
         Objects.requireNonNull(fileChannel, "'fileChannel' must not be null");
         if (position < 0) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException("'position' cannot be less than 0."));
@@ -51,16 +55,38 @@ public final class IOUtils {
 
     /**
      * Transfers bytes from {@link ReadableByteChannel} to {@link WritableByteChannel}.
+     *
      * @param source A source {@link ReadableByteChannel}.
      * @param destination A destination {@link WritableByteChannel}.
      * @throws IOException When I/O operation fails.
-     * @throws NullPointerException When {@code source} is null.
-     * @throws NullPointerException When {@code destination} is null.
+     * @throws NullPointerException When {@code source} or {@code destination} is null.
      */
     public static void transfer(ReadableByteChannel source, WritableByteChannel destination) throws IOException {
-        Objects.requireNonNull(source, "'source' must not be null");
-        Objects.requireNonNull(source, "'destination' must not be null");
-        ByteBuffer buffer = ByteBuffer.allocate(getBufferSize(source));
+        transfer(source, destination, null);
+    }
+
+    /**
+     * Transfers bytes from {@link ReadableByteChannel} to {@link WritableByteChannel}.
+     *
+     * @param source A source {@link ReadableByteChannel}.
+     * @param destination A destination {@link WritableByteChannel}.
+     * @param estimatedSourceSize An estimated size of the source channel, may be null. Used to better determine the
+     * size of the buffer used to transfer data in an attempt to reduce read and write calls.
+     * @throws IOException When I/O operation fails.
+     * @throws NullPointerException When {@code source} or {@code destination} is null.
+     */
+    public static void transfer(ReadableByteChannel source, WritableByteChannel destination, Long estimatedSourceSize)
+        throws IOException {
+        if (source == null && destination == null) {
+            throw new NullPointerException("'source' and 'destination' cannot be null.");
+        } else if (source == null) {
+            throw new NullPointerException("'source' cannot be null.");
+        } else if (destination == null) {
+            throw new NullPointerException("'destination' cannot be null.");
+        }
+
+        int bufferSize = (estimatedSourceSize == null) ? getBufferSize(source) : getBufferSize(estimatedSourceSize);
+        ByteBuffer buffer = ByteBuffer.allocate(bufferSize);
         int read;
         do {
             buffer.clear();
@@ -74,17 +100,39 @@ public final class IOUtils {
 
     /**
      * Transfers bytes from {@link ReadableByteChannel} to {@link AsynchronousByteChannel}.
+     *
      * @param source A source {@link ReadableByteChannel}.
      * @param destination A destination {@link AsynchronousByteChannel}.
      * @return A {@link Mono} that completes when transfer is finished.
-     * @throws NullPointerException When {@code source} is null.
-     * @throws NullPointerException When {@code destination} is null.
+     * @throws NullPointerException When {@code source} or {@code destination} is null.
      */
     public static Mono<Void> transferAsync(ReadableByteChannel source, AsynchronousByteChannel destination) {
-        Objects.requireNonNull(source, "'source' must not be null");
-        Objects.requireNonNull(source, "'destination' must not be null");
+        return transferAsync(source, destination, null);
+    }
+
+    /**
+     * Transfers bytes from {@link ReadableByteChannel} to {@link AsynchronousByteChannel}.
+     *
+     * @param source A source {@link ReadableByteChannel}.
+     * @param destination A destination {@link AsynchronousByteChannel}.
+     * @param estimatedSourceSize An estimated size of the source channel, may be null. Used to better determine the
+     * size of the buffer used to transfer data in an attempt to reduce read and write calls.
+     * @return A {@link Mono} that completes when transfer is finished.
+     * @throws NullPointerException When {@code source} or {@code destination} is null.
+     */
+    public static Mono<Void> transferAsync(ReadableByteChannel source, AsynchronousByteChannel destination,
+        Long estimatedSourceSize) {
+        if (source == null && destination == null) {
+            return Mono.error(new NullPointerException("'source' and 'destination' cannot be null."));
+        } else if (source == null) {
+            return Mono.error(new NullPointerException("'source' cannot be null."));
+        } else if (destination == null) {
+            return Mono.error(new NullPointerException("'destination' cannot be null."));
+        }
+
+        int bufferSize = (estimatedSourceSize == null) ? getBufferSize(source) : getBufferSize(estimatedSourceSize);
         return Mono.create(sink -> sink.onRequest(value -> {
-            ByteBuffer buffer = ByteBuffer.allocate(getBufferSize(source));
+            ByteBuffer buffer = ByteBuffer.allocate(bufferSize);
             try {
                 transferAsynchronously(source, destination, buffer, sink);
             } catch (IOException e) {
@@ -93,8 +141,7 @@ public final class IOUtils {
         }));
     }
 
-    private static void transferAsynchronously(
-        ReadableByteChannel source, AsynchronousByteChannel destination,
+    private static void transferAsynchronously(ReadableByteChannel source, AsynchronousByteChannel destination,
         ByteBuffer buffer, MonoSink<Void> sink) throws IOException {
         buffer.clear();
         int read = source.read(buffer);
@@ -194,17 +241,19 @@ public final class IOUtils {
             long size = seekableSource.size();
             long position = seekableSource.position();
 
-            long count = size - position;
-
-            if (count > 1024 * 1024 * 1024) {
-                return 65536;
-            } else if (count > 1024 * 1024) {
-                return 32768;
-            } else {
-                return DEFAULT_BUFFER_SIZE;
-            }
+            return getBufferSize(size - position);
         } catch (IOException ex) {
             // Don't let an IOException prevent transfer when we are only trying to gain information.
+            return DEFAULT_BUFFER_SIZE;
+        }
+    }
+
+    private static int getBufferSize(long dataSize) {
+        if (dataSize > GB) {
+            return SIXTY_FOUR_KB;
+        } else if (dataSize > MB) {
+            return THIRTY_TWO_KB;
+        } else {
             return DEFAULT_BUFFER_SIZE;
         }
     }

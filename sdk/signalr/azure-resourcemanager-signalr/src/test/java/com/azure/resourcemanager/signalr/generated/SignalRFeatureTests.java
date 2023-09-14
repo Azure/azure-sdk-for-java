@@ -17,26 +17,29 @@ public final class SignalRFeatureTests {
         SignalRFeature model =
             BinaryData
                 .fromString(
-                    "{\"flag\":\"EnableMessagingLogs\",\"value\":\"wxosowzxcug\",\"properties\":{\"wfvovbv\":\"ooxdjebwpuc\",\"jrwjueiotwm\":\"euecivyhzceuoj\",\"rjaw\":\"dytdxwitx\"}}")
+                    "{\"flag\":\"ServiceMode\",\"value\":\"phoszqz\",\"properties\":{\"ynwcvtbv\":\"hqamvdkf\",\"pcnp\":\"ayhmtnvyqiatkz\",\"jguq\":\"zcjaesgvvsccy\",\"lvdnkfx\":\"hwyg\"}}")
                 .toObject(SignalRFeature.class);
-        Assertions.assertEquals(FeatureFlags.ENABLE_MESSAGING_LOGS, model.flag());
-        Assertions.assertEquals("wxosowzxcug", model.value());
-        Assertions.assertEquals("ooxdjebwpuc", model.properties().get("wfvovbv"));
+        Assertions.assertEquals(FeatureFlags.SERVICE_MODE, model.flag());
+        Assertions.assertEquals("phoszqz", model.value());
+        Assertions.assertEquals("hqamvdkf", model.properties().get("ynwcvtbv"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SignalRFeature model =
             new SignalRFeature()
-                .withFlag(FeatureFlags.ENABLE_MESSAGING_LOGS)
-                .withValue("wxosowzxcug")
-                .withProperties(mapOf("wfvovbv", "ooxdjebwpuc", "jrwjueiotwm", "euecivyhzceuoj", "rjaw", "dytdxwitx"));
+                .withFlag(FeatureFlags.SERVICE_MODE)
+                .withValue("phoszqz")
+                .withProperties(
+                    mapOf(
+                        "ynwcvtbv", "hqamvdkf", "pcnp", "ayhmtnvyqiatkz", "jguq", "zcjaesgvvsccy", "lvdnkfx", "hwyg"));
         model = BinaryData.fromObject(model).toObject(SignalRFeature.class);
-        Assertions.assertEquals(FeatureFlags.ENABLE_MESSAGING_LOGS, model.flag());
-        Assertions.assertEquals("wxosowzxcug", model.value());
-        Assertions.assertEquals("ooxdjebwpuc", model.properties().get("wfvovbv"));
+        Assertions.assertEquals(FeatureFlags.SERVICE_MODE, model.flag());
+        Assertions.assertEquals("phoszqz", model.value());
+        Assertions.assertEquals("hqamvdkf", model.properties().get("ynwcvtbv"));
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

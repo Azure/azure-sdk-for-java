@@ -143,6 +143,7 @@ public class KeyVaultEnvironmentPostProcessor implements EnvironmentPostProcesso
         AzurePropertiesUtils.copyAzureCommonProperties(propertySourceProperties, secretProperties);
         secretProperties.setEndpoint(propertySourceProperties.getEndpoint());
         secretProperties.setServiceVersion(propertySourceProperties.getServiceVersion());
+        secretProperties.setChallengeResourceVerificationEnabled(propertySourceProperties.isChallengeResourceVerificationEnabled());
         return secretProperties;
     }
 
@@ -197,6 +198,7 @@ public class KeyVaultEnvironmentPostProcessor implements EnvironmentPostProcesso
         mergedProperties.setCaseSensitive(propertySourceProperties.isCaseSensitive());
         mergedProperties.setSecretKeys(propertySourceProperties.getSecretKeys());
         mergedProperties.setRefreshInterval(propertySourceProperties.getRefreshInterval());
+        mergedProperties.setChallengeResourceVerificationEnabled(propertySourceProperties.isChallengeResourceVerificationEnabled());
         return mergedProperties;
     }
 

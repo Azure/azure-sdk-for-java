@@ -12,18 +12,16 @@ public final class LiveTraceCategoryTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         LiveTraceCategory model =
-            BinaryData
-                .fromString("{\"name\":\"plrbpbewtghf\",\"enabled\":\"lcgwxzvlvqh\"}")
-                .toObject(LiveTraceCategory.class);
-        Assertions.assertEquals("plrbpbewtghf", model.name());
-        Assertions.assertEquals("lcgwxzvlvqh", model.enabled());
+            BinaryData.fromString("{\"name\":\"dkow\",\"enabled\":\"bqpc\"}").toObject(LiveTraceCategory.class);
+        Assertions.assertEquals("dkow", model.name());
+        Assertions.assertEquals("bqpc", model.enabled());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        LiveTraceCategory model = new LiveTraceCategory().withName("plrbpbewtghf").withEnabled("lcgwxzvlvqh");
+        LiveTraceCategory model = new LiveTraceCategory().withName("dkow").withEnabled("bqpc");
         model = BinaryData.fromObject(model).toObject(LiveTraceCategory.class);
-        Assertions.assertEquals("plrbpbewtghf", model.name());
-        Assertions.assertEquals("lcgwxzvlvqh", model.enabled());
+        Assertions.assertEquals("dkow", model.name());
+        Assertions.assertEquals("bqpc", model.enabled());
     }
 }

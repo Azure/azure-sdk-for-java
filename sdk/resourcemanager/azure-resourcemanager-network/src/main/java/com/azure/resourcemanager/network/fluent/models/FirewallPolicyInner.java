@@ -127,6 +127,16 @@ public final class FirewallPolicyInner extends Resource {
     }
 
     /**
+     * Get the size property: A read-only string that represents the size of the FirewallPolicyPropertiesFormat in MB.
+     * (ex 0.5MB).
+     *
+     * @return the size value.
+     */
+    public String size() {
+        return this.innerProperties() == null ? null : this.innerProperties().size();
+    }
+
+    /**
      * Get the ruleCollectionGroups property: List of references to FirewallPolicyRuleCollectionGroups.
      *
      * @return the ruleCollectionGroups value.

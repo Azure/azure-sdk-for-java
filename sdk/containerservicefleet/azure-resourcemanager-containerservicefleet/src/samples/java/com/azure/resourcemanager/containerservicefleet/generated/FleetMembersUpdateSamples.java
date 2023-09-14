@@ -9,7 +9,7 @@ import com.azure.resourcemanager.containerservicefleet.models.FleetMember;
 /** Samples for FleetMembers Update. */
 public final class FleetMembersUpdateSamples {
     /*
-     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/fleet/preview/2023-03-15-preview/examples/FleetMembers_Update.json
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/fleet/preview/2023-06-15-preview/examples/FleetMembers_Update.json
      */
     /**
      * Sample code: Updates a FleetMember resource synchronously.
