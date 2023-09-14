@@ -487,7 +487,7 @@ public final class ConnectionPolicy {
         return this;
     }
 
-    public synchronized List<String> getExcludeRegions() {
+    public List<String> getExcludeRegions() {
         synchronized (this.monitorObjectForExcludeRegions) {
             return this.excludeRegions;
         }
