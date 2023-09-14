@@ -5,6 +5,8 @@
 package com.azure.resourcemanager.containerservicefleet.generated;
 
 import com.azure.core.util.BinaryData;
+import com.azure.resourcemanager.containerservicefleet.models.AgentProfile;
+import com.azure.resourcemanager.containerservicefleet.models.ApiServerAccessProfile;
 import com.azure.resourcemanager.containerservicefleet.models.FleetHubProfile;
 import org.junit.jupiter.api.Assertions;
 
@@ -14,15 +16,31 @@ public final class FleetHubProfileTests {
         FleetHubProfile model =
             BinaryData
                 .fromString(
-                    "{\"dnsPrefix\":\"fdfdosygexpa\",\"fqdn\":\"akhmsbzjhcrz\",\"kubernetesVersion\":\"dphlxaolt\"}")
+                    "{\"dnsPrefix\":\"jaeq\",\"apiServerAccessProfile\":{\"enablePrivateCluster\":true,\"enableVnetIntegration\":false,\"subnetId\":\"v\"},\"agentProfile\":{\"subnetId\":\"jqul\"},\"fqdn\":\"sntnbybkzgcw\",\"kubernetesVersion\":\"clxxwrljdo\"}")
                 .toObject(FleetHubProfile.class);
-        Assertions.assertEquals("fdfdosygexpa", model.dnsPrefix());
+        Assertions.assertEquals("jaeq", model.dnsPrefix());
+        Assertions.assertEquals(true, model.apiServerAccessProfile().enablePrivateCluster());
+        Assertions.assertEquals(false, model.apiServerAccessProfile().enableVnetIntegration());
+        Assertions.assertEquals("v", model.apiServerAccessProfile().subnetId());
+        Assertions.assertEquals("jqul", model.agentProfile().subnetId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        FleetHubProfile model = new FleetHubProfile().withDnsPrefix("fdfdosygexpa");
+        FleetHubProfile model =
+            new FleetHubProfile()
+                .withDnsPrefix("jaeq")
+                .withApiServerAccessProfile(
+                    new ApiServerAccessProfile()
+                        .withEnablePrivateCluster(true)
+                        .withEnableVnetIntegration(false)
+                        .withSubnetId("v"))
+                .withAgentProfile(new AgentProfile().withSubnetId("jqul"));
         model = BinaryData.fromObject(model).toObject(FleetHubProfile.class);
-        Assertions.assertEquals("fdfdosygexpa", model.dnsPrefix());
+        Assertions.assertEquals("jaeq", model.dnsPrefix());
+        Assertions.assertEquals(true, model.apiServerAccessProfile().enablePrivateCluster());
+        Assertions.assertEquals(false, model.apiServerAccessProfile().enableVnetIntegration());
+        Assertions.assertEquals("v", model.apiServerAccessProfile().subnetId());
+        Assertions.assertEquals("jqul", model.agentProfile().subnetId());
     }
 }
