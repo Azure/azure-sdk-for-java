@@ -31,7 +31,8 @@ class BulkWriterITest extends IntegrationSpec with CosmosClient with AutoCleanab
     val containerProperties = container.read().block().getProperties
     val partitionKeyDefinition = containerProperties.getPartitionKeyDefinition
 
-    val writeConfig = CosmosWriteConfig(ItemWriteStrategy.ItemOverwrite, 5, bulkEnabled = true, bulkMaxPendingOperations = Some(900))
+    val writeConfig = CosmosWriteConfig(ItemWriteStrategy.ItemOverwrite, 5, bulkEnabled = true,
+        bulkMaxPendingOperations = Some(900), bulkExceptionListSize = Some(2))
 
     val bulkWriter = new BulkWriter(container, partitionKeyDefinition, writeConfig, DiagnosticsConfig(Option.empty, false, None))
 
@@ -55,55 +56,13 @@ class BulkWriterITest extends IntegrationSpec with CosmosClient with AutoCleanab
     }
   }
 
-
-  "Bulk Writer" can "upsert items and throw the ones with empty id causing 400" in  {
-    val container = getContainer
-    val containerProperties = container.read().block().getProperties
-    val partitionKeyDefinition = containerProperties.getPartitionKeyDefinition
-
-    val writeConfig = CosmosWriteConfig(ItemWriteStrategy.ItemOverwrite, 5, bulkEnabled = true, bulkMaxPendingOperations = Some(900))
-
-    val bulkWriter = new BulkWriter(container, partitionKeyDefinition, writeConfig, DiagnosticsConfig(Option.empty, false, None))
-
-    val items = mutable.Map[String, ObjectNode]()
-    for(i <- 0 until 4) {
-      var item = objectMapper.createObjectNode()
-      if (i == 1 || i == 3) {
-          item = getItem("")
-      } else {
-          item = getItem(UUID.randomUUID().toString)
-      }
-      val id = item.get("id").textValue()
-      items += (id -> item)
-      bulkWriter.scheduleWrite(new PartitionKey(item.get("id").textValue()), item)
-    }
-
-    val thrown = intercept[CosmosException] {
-        bulkWriter.flushAndClose()
-    }
-
-    // Verify 2 items were ingested in the CosmosDB
-    // Only the items that had the id field populated
-    // were successfully ingested, and the other were
-    // thrown as exceptions.
-    val allItems = readAllItems()
-    allItems should have size 2
-    for(itemFromDB <- allItems) {
-      items.contains(itemFromDB.get("id").textValue()) shouldBe true
-      val expectedItem = items(itemFromDB.get("id").textValue())
-      secondObjectNodeHasAllFieldsOfFirstObjectNode(expectedItem, itemFromDB) shouldEqual true
-    }
-
-    // verify that thrown is not null
-    thrown should not be null
-  }
-
   "Bulk Writer" can "upsert item with empty id causing 400" in  {
     val container = getContainer
     val containerProperties = container.read().block().getProperties
     val partitionKeyDefinition = containerProperties.getPartitionKeyDefinition
 
-    val writeConfig = CosmosWriteConfig(ItemWriteStrategy.ItemOverwrite, 5, bulkEnabled = true, bulkMaxPendingOperations = Some(900))
+    val writeConfig = CosmosWriteConfig(ItemWriteStrategy.ItemOverwrite, 5, bulkEnabled = true,
+        bulkMaxPendingOperations = Some(900), bulkExceptionListSize = Some(2))
 
     val bulkWriter = new BulkWriter(container, partitionKeyDefinition, writeConfig, DiagnosticsConfig(Option.empty, false, None))
 
@@ -119,8 +78,10 @@ class BulkWriterITest extends IntegrationSpec with CosmosClient with AutoCleanab
     }
 
     thrown should not be null
-    thrown.getStatusCode shouldEqual 400
+    thrown.getStatusCode shouldEqual 0
     thrown.getSubStatusCode shouldEqual 0
+    thrown.asInstanceOf[MultipleBulkOperationFailedExceptions].getExceptions.head.
+        asInstanceOf[BulkWriter.BulkOperationFailedException].getStatusCode shouldEqual 400
 
     val allItems = readAllItems()
 
@@ -145,7 +106,8 @@ class BulkWriterITest extends IntegrationSpec with CosmosClient with AutoCleanab
       cosmosClient.getDatabase(cosmosDatabase).getContainer(containerCreationResponse.getProperties.getId)
 
     try {
-      val writeConfig = CosmosWriteConfig(ItemWriteStrategy.ItemOverwrite, 5, bulkEnabled = true, bulkMaxPendingOperations = Some(900))
+      val writeConfig = CosmosWriteConfig(ItemWriteStrategy.ItemOverwrite, 5, bulkEnabled = true,
+          bulkMaxPendingOperations = Some(900), bulkExceptionListSize = Some(2))
 
       val bulkWriter = new BulkWriter(container, partitionKeyDefinition, writeConfig, DiagnosticsConfig(Option.empty, false, None))
 
@@ -172,9 +134,10 @@ class BulkWriterITest extends IntegrationSpec with CosmosClient with AutoCleanab
       }
 
       thrown should not be null
-      thrown.getStatusCode shouldEqual 409
+      thrown.getStatusCode shouldEqual 0
       thrown.getSubStatusCode shouldEqual 0
-
+      thrown.asInstanceOf[MultipleBulkOperationFailedExceptions].getExceptions.head.
+            asInstanceOf[BulkWriter.BulkOperationFailedException].getStatusCode shouldEqual 409
       val allItems = container
         .queryItems("SELECT * FROM r", classOf[ObjectNode])
         .toIterable
@@ -205,7 +168,8 @@ class BulkWriterITest extends IntegrationSpec with CosmosClient with AutoCleanab
       cosmosClient.getDatabase(cosmosDatabase).getContainer(containerCreationResponse.getProperties.getId)
 
     try {
-      val writeConfig = CosmosWriteConfig(ItemWriteStrategy.ItemAppend, 5, bulkEnabled = true, bulkMaxPendingOperations = Some(900))
+      val writeConfig = CosmosWriteConfig(ItemWriteStrategy.ItemAppend, 5, bulkEnabled = true,
+          bulkMaxPendingOperations = Some(900), bulkExceptionListSize = Some(2))
 
       val bulkWriter = new BulkWriter(container, partitionKeyDefinition, writeConfig, DiagnosticsConfig(Option.empty, false, None))
 
@@ -249,7 +213,8 @@ class BulkWriterITest extends IntegrationSpec with CosmosClient with AutoCleanab
     val containerProperties = container.read().block().getProperties
     val partitionKeyDefinition = containerProperties.getPartitionKeyDefinition
 
-    val writeConfig = CosmosWriteConfig(ItemWriteStrategy.ItemOverwrite, 5, bulkEnabled = true, bulkMaxPendingOperations = Some(900))
+    val writeConfig = CosmosWriteConfig(ItemWriteStrategy.ItemOverwrite, 5, bulkEnabled = true,
+        bulkMaxPendingOperations = Some(900), bulkExceptionListSize = Some(2))
 
     val bulkWriter = new BulkWriter(container, partitionKeyDefinition, writeConfig, DiagnosticsConfig(Option.empty, false, None))
 
@@ -276,7 +241,8 @@ class BulkWriterITest extends IntegrationSpec with CosmosClient with AutoCleanab
       ItemWriteStrategy.ItemDelete,
       5,
       bulkEnabled = true,
-      bulkMaxPendingOperations = Some(900))
+      bulkMaxPendingOperations = Some(900),
+      bulkExceptionListSize = Some(2))
 
     val bulkDeleter = new BulkWriter(container, partitionKeyDefinition, deleteConfig, DiagnosticsConfig(Option.empty, false, None))
 
@@ -296,7 +262,8 @@ class BulkWriterITest extends IntegrationSpec with CosmosClient with AutoCleanab
     val containerProperties = container.read().block().getProperties
     val partitionKeyDefinition = containerProperties.getPartitionKeyDefinition
 
-    val writeConfig = CosmosWriteConfig(ItemWriteStrategy.ItemOverwrite, 5, bulkEnabled = true, bulkMaxPendingOperations = Some(900))
+    val writeConfig = CosmosWriteConfig(ItemWriteStrategy.ItemOverwrite, 5, bulkEnabled = true,
+        bulkMaxPendingOperations = Some(900), bulkExceptionListSize = Some(2))
 
     val bulkWriter = new BulkWriter(container, partitionKeyDefinition, writeConfig, DiagnosticsConfig(Option.empty, false, None))
 
@@ -350,7 +317,8 @@ class BulkWriterITest extends IntegrationSpec with CosmosClient with AutoCleanab
       ItemWriteStrategy.ItemDeleteIfNotModified,
       5,
       bulkEnabled = true,
-      bulkMaxPendingOperations = Some(900))
+      bulkMaxPendingOperations = Some(900),
+      bulkExceptionListSize = Some(2))
 
     val bulkDeleter = new BulkWriter(container, partitionKeyDefinition, deleteConfig, DiagnosticsConfig(Option.empty, false, None))
 
@@ -369,7 +337,8 @@ class BulkWriterITest extends IntegrationSpec with CosmosClient with AutoCleanab
     val container = getContainer
     val containerProperties = container.read().block().getProperties
     val partitionKeyDefinition = containerProperties.getPartitionKeyDefinition
-    val writeConfig = CosmosWriteConfig(ItemWriteStrategy.ItemAppend, maxRetryCount = 5, bulkEnabled = true, Some(900))
+    val writeConfig = CosmosWriteConfig(ItemWriteStrategy.ItemAppend, maxRetryCount = 5, bulkEnabled = true,
+        Some(900), bulkExceptionListSize = Some(2))
     val bulkWriter = new BulkWriter(container, partitionKeyDefinition, writeConfig, DiagnosticsConfig(Option.empty, false, None))
     val items = new mutable.HashMap[String, mutable.Set[ObjectNode]] with mutable.MultiMap[String, ObjectNode]
 
@@ -402,7 +371,8 @@ class BulkWriterITest extends IntegrationSpec with CosmosClient with AutoCleanab
       ItemWriteStrategy.ItemOverwriteIfNotModified,
       5,
       bulkEnabled = true,
-      bulkMaxPendingOperations = Some(900)
+      bulkMaxPendingOperations = Some(900),
+      bulkExceptionListSize = Some(2)
     )
 
     var bulkWriter = new BulkWriter(container, partitionKeyDefinition, writeConfig, DiagnosticsConfig(Option.empty, false, None))
@@ -490,7 +460,8 @@ class BulkWriterITest extends IntegrationSpec with CosmosClient with AutoCleanab
       ItemWriteStrategy.ItemOverwrite,
       5,
       bulkEnabled = true,
-      bulkMaxPendingOperations = Some(900)
+      bulkMaxPendingOperations = Some(900),
+      bulkExceptionListSize = Some(2)
     )
 
     val bulkWriter = new BulkWriter(container, partitionKeyDefinition, writeConfig, DiagnosticsConfig(Option.empty, false, None))
@@ -586,7 +557,8 @@ class BulkWriterITest extends IntegrationSpec with CosmosClient with AutoCleanab
       ItemWriteStrategy.ItemOverwrite,
       5,
       bulkEnabled = true,
-      bulkMaxPendingOperations = Some(900)
+      bulkMaxPendingOperations = Some(900),
+      bulkExceptionListSize = Some(2)
     )
 
     val bulkWriter = new BulkWriter(container, partitionKeyDefinition, writeConfig, DiagnosticsConfig(Option.empty, false, None))
@@ -661,7 +633,8 @@ class BulkWriterITest extends IntegrationSpec with CosmosClient with AutoCleanab
       ItemWriteStrategy.ItemOverwrite,
       5,
       bulkEnabled = true,
-      bulkMaxPendingOperations = Some(900)
+      bulkMaxPendingOperations = Some(900),
+      bulkExceptionListSize = Some(2)
     )
 
     val bulkWriter = new BulkWriter(container, partitionKeyDefinition, writeConfig, DiagnosticsConfig(Option.empty, false, None))
@@ -738,7 +711,8 @@ class BulkWriterITest extends IntegrationSpec with CosmosClient with AutoCleanab
       ItemWriteStrategy.ItemOverwrite,
       5,
       bulkEnabled = true,
-      bulkMaxPendingOperations = Some(900)
+      bulkMaxPendingOperations = Some(900),
+      bulkExceptionListSize = Some(2)
     )
 
     val bulkWriter = new BulkWriter(container, partitionKeyDefinition, writeConfig, DiagnosticsConfig(Option.empty, false, None))
@@ -792,7 +766,8 @@ class BulkWriterITest extends IntegrationSpec with CosmosClient with AutoCleanab
       ItemWriteStrategy.ItemOverwrite,
       5,
       bulkEnabled = true,
-      bulkMaxPendingOperations = Some(900)
+      bulkMaxPendingOperations = Some(900),
+      bulkExceptionListSize = Some(2)
     )
 
     val bulkWriter = new BulkWriter(container, partitionKeyDefinition, writeConfig, DiagnosticsConfig(Option.empty, false, None))
@@ -863,7 +838,8 @@ class BulkWriterITest extends IntegrationSpec with CosmosClient with AutoCleanab
       ItemWriteStrategy.ItemOverwrite,
       5,
       bulkEnabled = true,
-      bulkMaxPendingOperations = Some(900)
+      bulkMaxPendingOperations = Some(900),
+      bulkExceptionListSize = Some(2)
     )
 
     val bulkWriter = new BulkWriter(container, partitionKeyDefinition, writeConfig, DiagnosticsConfig(Option.empty, false, None))
@@ -918,7 +894,8 @@ class BulkWriterITest extends IntegrationSpec with CosmosClient with AutoCleanab
       ItemWriteStrategy.ItemOverwrite,
       5,
       bulkEnabled = true,
-      bulkMaxPendingOperations = Some(900)
+      bulkMaxPendingOperations = Some(900),
+      bulkExceptionListSize = Some(2)
     )
 
     val bulkWriter = new BulkWriter(container, partitionKeyDefinition, writeConfig, DiagnosticsConfig(Option.empty, false, None))
@@ -988,7 +965,8 @@ class BulkWriterITest extends IntegrationSpec with CosmosClient with AutoCleanab
           ItemWriteStrategy.ItemOverwrite,
           5,
           bulkEnabled = true,
-          bulkMaxPendingOperations = Some(900)
+          bulkMaxPendingOperations = Some(900),
+          bulkExceptionListSize = Some(2)
         )
 
         val bulkWriter = new BulkWriter(createdContainer, partitionKeyDefinition, writeConfig, DiagnosticsConfig(Option.empty, false, None))
@@ -1043,7 +1021,8 @@ class BulkWriterITest extends IntegrationSpec with CosmosClient with AutoCleanab
       ItemWriteStrategy.ItemOverwrite,
       5,
       bulkEnabled = true,
-      bulkMaxPendingOperations = Some(900)
+      bulkMaxPendingOperations = Some(900),
+      bulkExceptionListSize = Some(2)
     )
 
     val bulkWriter = new BulkWriter(container, partitionKeyDefinition, writeConfig, DiagnosticsConfig(Option.empty, false, None))
@@ -1143,7 +1122,8 @@ class BulkWriterITest extends IntegrationSpec with CosmosClient with AutoCleanab
           5,
           bulkEnabled = true,
           bulkMaxPendingOperations = Some(900),
-          patchConfigs = Some(CosmosPatchConfigs(new TrieMap[String, CosmosPatchColumnConfig]())))
+          patchConfigs = Some(CosmosPatchConfigs(new TrieMap[String, CosmosPatchColumnConfig]())),
+          bulkExceptionListSize = Some(2))
 
       val bulkWriter = new BulkWriter(container, partitionKeyDefinition, writeConfig, DiagnosticsConfig(Option.empty, false, None))
 
@@ -1177,7 +1157,8 @@ class BulkWriterITest extends IntegrationSpec with CosmosClient with AutoCleanab
           5,
           bulkEnabled = true,
           bulkMaxPendingOperations = Some(900),
-          patchConfigs = Some(CosmosPatchConfigs(new TrieMap[String, CosmosPatchColumnConfig]())))
+          patchConfigs = Some(CosmosPatchConfigs(new TrieMap[String, CosmosPatchColumnConfig]())),
+          bulkExceptionListSize = Some(2))
 
       val bulkWriter = new BulkWriter(container, partitionKeyDefinition, writeConfig, DiagnosticsConfig(Option.empty, false, None))
 
@@ -1217,7 +1198,8 @@ class BulkWriterITest extends IntegrationSpec with CosmosClient with AutoCleanab
           ItemWriteStrategy.ItemOverwrite,
           5,
           bulkEnabled = true,
-          bulkMaxPendingOperations = Some(900)
+          bulkMaxPendingOperations = Some(900),
+          bulkExceptionListSize = Some(2)
       )
 
       val bulkWriter = new BulkWriter(container, partitionKeyDefinition, writeConfig, DiagnosticsConfig(Option.empty, false, None))
@@ -1286,7 +1268,8 @@ class BulkWriterITest extends IntegrationSpec with CosmosClient with AutoCleanab
           ItemWriteStrategy.ItemOverwrite,
           5,
           bulkEnabled = true,
-          bulkMaxPendingOperations = Some(900)
+          bulkMaxPendingOperations = Some(900),
+          bulkExceptionListSize = Some(2)
       )
 
       val bulkWriter = new BulkWriter(container, partitionKeyDefinition, writeConfig, DiagnosticsConfig(Option.empty, false, None))
@@ -1331,7 +1314,8 @@ class BulkWriterITest extends IntegrationSpec with CosmosClient with AutoCleanab
           ItemWriteStrategy.ItemOverwrite,
           5,
           bulkEnabled = true,
-          bulkMaxPendingOperations = Some(900)
+          bulkMaxPendingOperations = Some(900),
+          bulkExceptionListSize = Some(2)
       )
 
       val bulkWriter = new BulkWriter(container, partitionKeyDefinition, writeConfig, DiagnosticsConfig(Option.empty, false, None))
@@ -1384,7 +1368,8 @@ class BulkWriterITest extends IntegrationSpec with CosmosClient with AutoCleanab
           ItemWriteStrategy.ItemOverwrite,
           5,
           bulkEnabled = true,
-          bulkMaxPendingOperations = Some(900)
+          bulkMaxPendingOperations = Some(900),
+          bulkExceptionListSize = Some(2)
       )
 
       val bulkWriter = new BulkWriter(container, partitionKeyDefinition, writeConfig, DiagnosticsConfig(Option.empty, false, None))
@@ -1446,6 +1431,81 @@ class BulkWriterITest extends IntegrationSpec with CosmosClient with AutoCleanab
       updatedItem.get("family").get("textNode").asText shouldEqual "test"
       updatedItem.get("family").get("numberNode").asInt shouldEqual 12345
   }
+
+    "Bulk Writer" can "upsert items and throw only two exceptions with empty id causing 400 because the " +
+        "bulkExceptionListSize is set to 2" in {
+        val container = getContainer
+        val containerProperties = container.read().block().getProperties
+        val partitionKeyDefinition = containerProperties.getPartitionKeyDefinition
+
+        val writeConfig = CosmosWriteConfig(ItemWriteStrategy.ItemOverwrite, 5, bulkEnabled = true,
+            bulkMaxPendingOperations = Some(900), bulkExceptionListSize = Some(2))
+
+        val bulkWriter = new BulkWriter(container, partitionKeyDefinition, writeConfig, DiagnosticsConfig(Option.empty, false, None))
+
+        val items = mutable.Map[String, ObjectNode]()
+        for (i <- 0 until 20) {
+            var item = objectMapper.createObjectNode()
+            if (i >= 10 && i < 15) {
+                item = getItem("")
+            } else {
+                item = getItem(UUID.randomUUID().toString)
+            }
+            println(i)
+            val id = item.get("id").textValue()
+            items += (id -> item)
+            bulkWriter.scheduleWrite(new PartitionKey(item.get("id").textValue()), item)
+        }
+
+        val thrown = intercept[CosmosException] {
+            bulkWriter.flushAndClose()
+        }
+
+        // Verify that allItems is not null, only the items that had the id field populated were successfully ingested
+        val allItems = readAllItems()
+        allItems should not be null
+        for (itemFromDB <- allItems) {
+            items.contains(itemFromDB.get("id").textValue()) shouldBe true
+            val expectedItem = items(itemFromDB.get("id").textValue())
+            secondObjectNodeHasAllFieldsOfFirstObjectNode(expectedItem, itemFromDB) shouldEqual true
+        }
+
+        // verify that thrown is of size 2, as we have set the bulkExceptionListSize set to 2
+        thrown.asInstanceOf[MultipleBulkOperationFailedExceptions].getExceptions should have size 2
+    }
+
+    "Bulk Writer" can "upsert items and all are missing ids so exceptions with empty id causing 400 but the " +
+        "bulkExceptionListSize is set to 4" in {
+        val container = getContainer
+        val containerProperties = container.read().block().getProperties
+        val partitionKeyDefinition = containerProperties.getPartitionKeyDefinition
+
+        val writeConfig = CosmosWriteConfig(ItemWriteStrategy.ItemOverwrite, 5, bulkEnabled = true,
+            bulkMaxPendingOperations = Some(900), bulkExceptionListSize = Some(4))
+
+        val bulkWriter = new BulkWriter(container, partitionKeyDefinition, writeConfig, DiagnosticsConfig(Option.empty, false, None))
+
+        val items = mutable.Map[String, ObjectNode]()
+        for (i <- 0 until 10) {
+            var item = objectMapper.createObjectNode()
+            item = getItem("")
+            println(i)
+            val id = item.get("id").textValue()
+            items += (id -> item)
+            bulkWriter.scheduleWrite(new PartitionKey(item.get("id").textValue()), item)
+        }
+
+        val thrown = intercept[CosmosException] {
+            bulkWriter.flushAndClose()
+        }
+
+        // Verify that allItems is null because all the items are missing ids
+        val allItems = readAllItems()
+        allItems should have size 0
+
+        // verify that thrown is of size 4, as we have set the bulkExceptionListSize set to 4
+        thrown.asInstanceOf[MultipleBulkOperationFailedExceptions].getExceptions should have size 4
+    }
 
   private def getItem(id: String): ObjectNode = {
     val objectNode = objectMapper.createObjectNode()

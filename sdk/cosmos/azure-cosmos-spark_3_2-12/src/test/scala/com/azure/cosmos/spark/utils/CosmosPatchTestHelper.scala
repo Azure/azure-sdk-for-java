@@ -116,7 +116,8 @@ object CosmosPatchTestHelper {
    ItemWriteStrategy.ItemPatch,
    5,
    bulkEnabled = true,
-   patchConfigs = Some(patchConfigs))
+   patchConfigs = Some(patchConfigs),
+   bulkExceptionListSize = Some(10))
 
   new BulkWriter(container, partitionKeyDefinition, writeConfigForPatch, DiagnosticsConfig(Option.empty, false, None))
  }
@@ -130,7 +131,8 @@ object CosmosPatchTestHelper {
          ItemWriteStrategy.ItemBulkUpdate,
          5,
          bulkEnabled = true,
-         patchConfigs = Some(patchConfigs))
+         patchConfigs = Some(patchConfigs),
+         bulkExceptionListSize = Some(10))
 
      new BulkWriter(container, partitionKeyDefinition, writeConfigForPatch, DiagnosticsConfig(Option.empty, false, None))
  }
@@ -145,7 +147,8 @@ object CosmosPatchTestHelper {
    ItemWriteStrategy.ItemPatch,
    5,
    bulkEnabled = false,
-   patchConfigs = Some(patchConfigs))
+   patchConfigs = Some(patchConfigs),
+   bulkExceptionListSize = Some(10))
 
   new PointWriter(
    container, partitionKeyDefinition, writeConfigForPatch, DiagnosticsConfig(Option.empty, false, None), MockTaskContext.mockTaskContext())
@@ -161,7 +164,8 @@ object CosmosPatchTestHelper {
          ItemWriteStrategy.ItemBulkUpdate,
          5,
          bulkEnabled = false,
-         patchConfigs = Some(patchConfigs))
+         patchConfigs = Some(patchConfigs),
+         bulkExceptionListSize = Some(10))
 
      new PointWriter(
          container, partitionKeyDefinition, writeConfigForPatch, DiagnosticsConfig(Option.empty, false, None), MockTaskContext.mockTaskContext())

@@ -121,6 +121,7 @@ private[spark] object CosmosConfigNames {
   val MetricsEnabledForSlf4j = "spark.cosmos.metrics.slf4j.enabled"
   val MetricsIntervalInSeconds = "spark.cosmos.metrics.intervalInSeconds"
   val MetricsAzureMonitorConnectionString = "spark.cosmos.metrics.azureMonitor.connectionString"
+  val WriteBulkExceptionListSize = "spark.cosmos.write.bulk.exceptionListSize"
 
   // Only meant to be used when throughput control is configured without using dedicated containers
   // Then in this case, we are going to allocate the throughput budget equally across all executors
@@ -201,7 +202,8 @@ private[spark] object CosmosConfigNames {
     SerializationDateTimeConversionMode,
     MetricsEnabledForSlf4j,
     MetricsIntervalInSeconds,
-    MetricsAzureMonitorConnectionString
+    MetricsAzureMonitorConnectionString,
+    WriteBulkExceptionListSize
   )
 
   def validateConfigName(name: String): Unit = {
@@ -823,11 +825,13 @@ private case class CosmosWriteConfig(itemWriteStrategy: ItemWriteStrategy,
                                      patchConfigs: Option[CosmosPatchConfigs] = None,
                                      throughputControlConfig: Option[CosmosThroughputControlConfig] = None,
                                      maxMicroBatchPayloadSizeInBytes: Option[Int] = None,
-                                     initialMicroBatchSize: Option[Int] = None)
+                                     initialMicroBatchSize: Option[Int] = None,
+                                     bulkExceptionListSize: Option[Int])
 
 private object CosmosWriteConfig {
   private val DefaultMaxRetryCount = 10
   private val DefaultPatchOperationType = CosmosPatchOperationTypes.Replace
+  private val DefaultBulkExceptionListSize = 100
 
   private val bulkEnabled = CosmosConfigEntry[Boolean](key = CosmosConfigNames.WriteBulkEnabled,
     defaultValue = Option.apply(true),
@@ -934,6 +938,17 @@ private object CosmosWriteConfig {
           "2. col(column).path(patchInCosmosdb).rawJson - allows you to configure different mapping path in cosmosdb, and indicates the value of the column is in raw json format" +
           "3. col(column).rawJson - indicates the value of the column is in raw json format")
 
+  private val bulkExceptionListSize = CosmosConfigEntry[Int](key = CosmosConfigNames.WriteBulkExceptionListSize,
+    defaultValue = Option.apply(DefaultBulkExceptionListSize),
+    mandatory = false,
+    parseFromStringFunction = bulkExceptionListSize => {
+        val cnt = bulkExceptionListSize.toInt
+        if (cnt < 0) {
+            throw new IllegalArgumentException(s"expected a non-negative number")
+        }
+        cnt
+    },
+    helpMessage = "Cosmos DB Bulk Exceptions List size on bulk operation failure")
   def parseUserDefinedPatchColumnConfigs(patchColumnConfigsString: String): TrieMap[String, CosmosPatchColumnConfig] = {
     val columnConfigMap = new TrieMap[String, CosmosPatchColumnConfig]
 
@@ -1066,6 +1081,7 @@ private object CosmosWriteConfig {
     val throughputControlConfigOpt = CosmosThroughputControlConfig.parseThroughputControlConfig(cfg)
     val microBatchPayloadSizeInBytesOpt = CosmosConfigEntry.parse(cfg, microBatchPayloadSizeInBytes)
     val initialBatchSizeOpt = CosmosConfigEntry.parse(cfg, initialMicroBatchSize)
+    val bulkExceptionListSizeOpt = CosmosConfigEntry.parse(cfg, bulkExceptionListSize)
 
     assert(bulkEnabledOpt.isDefined)
 
@@ -1095,7 +1111,8 @@ private object CosmosWriteConfig {
       patchConfigs = patchConfigsOpt,
       throughputControlConfig = throughputControlConfigOpt,
       maxMicroBatchPayloadSizeInBytes = microBatchPayloadSizeInBytesOpt,
-      initialMicroBatchSize = initialBatchSizeOpt)
+      initialMicroBatchSize = initialBatchSizeOpt,
+      bulkExceptionListSize = bulkExceptionListSizeOpt)
   }
 
   def parsePatchColumnConfigs(cfg: Map[String, String], inputSchema: StructType): TrieMap[String, CosmosPatchColumnConfig] = {
