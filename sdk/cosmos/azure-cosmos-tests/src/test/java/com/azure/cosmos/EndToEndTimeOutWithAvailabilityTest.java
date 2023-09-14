@@ -142,9 +142,7 @@ public class EndToEndTimeOutWithAvailabilityTest extends TestSuiteBase {
             {OperationType.Replace, FaultInjectionOperationType.REPLACE_ITEM},
             {OperationType.Create, FaultInjectionOperationType.CREATE_ITEM},
             {OperationType.Delete, FaultInjectionOperationType.DELETE_ITEM},
-            // TODO @fabianm wire up clientContext - availability strategy not yet wired up for query
-            // reenable when adding query support
-            //{OperationType.Query, FaultInjectionOperationType.QUERY_ITEM},
+            {OperationType.Query, FaultInjectionOperationType.QUERY_ITEM},
             {OperationType.Patch, FaultInjectionOperationType.PATCH_ITEM}
         };
     }
