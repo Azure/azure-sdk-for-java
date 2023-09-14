@@ -704,6 +704,86 @@ public final class OpenAIClient {
                 deploymentOrModelName, chatCompletionsOptions, requestOptions);
     }
 
+    public AudioTranscription getAudioTranscription(
+            String deploymentOrModelName, AudioTranscriptionOptions audioTranscriptionOptions, String fileName) {
+        // checking allowed formats for a JSON response
+        List<AudioTranscriptionFormat> acceptedFormats = new ArrayList<>();
+        acceptedFormats.add(AudioTranscriptionFormat.JSON);
+        acceptedFormats.add(AudioTranscriptionFormat.VERBOSE_JSON);
+        if(!acceptedFormats.contains(audioTranscriptionOptions.getResponseFormat())) {
+            throw new IllegalArgumentException("This operation does not support the requested audio format");
+        }
+
+        // embedding the `model` in the request for non-Azure case
+        if (this.openAIServiceClient != null) {
+            audioTranscriptionOptions.setModel(deploymentOrModelName);
+        }
+
+        MultipartDataHelper helper = new MultipartDataHelper();
+        MultipartDataSerializationResult result = helper.serializeRequest(audioTranscriptionOptions, fileName);
+        return getAudioTranscription(deploymentOrModelName, result, helper.getBoundary());
+    }
+
+    public String getAudioTranscriptionText(
+            String deploymentOrModelName, AudioTranscriptionOptions audioTranscriptionOptions, String fileName) {
+        // checking allowed formats for a plain text response
+        List<AudioTranscriptionFormat> acceptedFormats = new ArrayList<>();
+        acceptedFormats.add(AudioTranscriptionFormat.TEXT);
+        acceptedFormats.add(AudioTranscriptionFormat.VTT);
+        acceptedFormats.add(AudioTranscriptionFormat.SRT);
+        if(!acceptedFormats.contains(audioTranscriptionOptions.getResponseFormat())) {
+            throw new IllegalArgumentException("This operation does not support the requested audio format");
+        }
+
+        // embedding the `model` in the request for non-Azure case
+        if (this.openAIServiceClient != null) {
+            audioTranscriptionOptions.setModel(deploymentOrModelName);
+        }
+
+        MultipartDataHelper helper = new MultipartDataHelper();
+        MultipartDataSerializationResult result = helper.serializeRequest(audioTranscriptionOptions, fileName);
+        return getAudioTranscriptionAsPlainText(deploymentOrModelName, result, helper.getBoundary());
+    }
+
+
+    AudioTranscription getAudioTranscription(
+            String deploymentOrModelName,
+            MultipartDataSerializationResult requestData,
+            String multipartBoundary) {
+
+        RequestOptions requestOptions = new RequestOptions();
+        requestOptions
+                .setHeader(HttpHeaderName.CONTENT_TYPE, "multipart/form-data;" + " boundary=" + multipartBoundary)
+                .setHeader(HttpHeaderName.CONTENT_LENGTH, String.valueOf(requestData.getDataLength()));
+
+        Response<BinaryData> response = openAIServiceClient != null ?
+                this.openAIServiceClient.getAudioTranscriptionAsPlainTextWithResponse(
+                        deploymentOrModelName, requestData.getData(), requestOptions) :
+                this.serviceClient.getAudioTranscriptionAsPlainTextWithResponse(
+                        deploymentOrModelName, requestData.getData(), requestOptions);
+
+        return response.getValue().toObject(AudioTranscription.class);
+    }
+
+    String getAudioTranscriptionAsPlainText(
+            String deploymentOrModelName,
+            MultipartDataSerializationResult requestData,
+            String multipartBoundary) {
+
+        RequestOptions requestOptions = new RequestOptions();
+        requestOptions
+                .setHeader(HttpHeaderName.CONTENT_TYPE, "multipart/form-data;" + " boundary=" + multipartBoundary)
+                .setHeader(HttpHeaderName.CONTENT_LENGTH, String.valueOf(requestData.getDataLength()));
+
+        Response<BinaryData> response = openAIServiceClient != null ?
+                this.openAIServiceClient.getAudioTranscriptionAsPlainTextWithResponse(
+                        deploymentOrModelName, requestData.getData(), requestOptions) :
+                this.serviceClient.getAudioTranscriptionAsPlainTextWithResponse(
+                        deploymentOrModelName, requestData.getData(), requestOptions);
+
+        return response.getValue().toString();
+    }
+
     public AudioTranscription getAudioTranslation(
             String deploymentOrModelName, AudioTranslationOptions audioTranslationOptions, String fileName) {
         // checking allowed formats for a JSON response

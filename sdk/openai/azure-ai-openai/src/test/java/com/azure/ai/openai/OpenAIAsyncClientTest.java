@@ -502,7 +502,7 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
 
             StepVerifier.create(client.getAudioTranslation(deploymentName, translationOptions, fileName))
                 .assertNext(translation ->
-                    assertAudioTranscriptionVerboseJson(translation,"It's raining today."))
+                    assertAudioTranscriptionVerboseJson(translation,"It's raining today.", AudioTaskLabel.TRANSLATE))
                 .verifyComplete();
         });
     }

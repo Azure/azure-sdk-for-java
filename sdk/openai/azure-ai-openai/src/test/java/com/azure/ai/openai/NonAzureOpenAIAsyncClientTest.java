@@ -354,7 +354,7 @@ public class NonAzureOpenAIAsyncClientTest extends OpenAIClientTestBase {
 
             StepVerifier.create(client.getAudioTranslation(modelId, translationOptions, fileName))
                     .assertNext(translation ->
-                        assertAudioTranscriptionVerboseJson(translation,"It's raining today."))
+                        assertAudioTranscriptionVerboseJson(translation,"It's raining today.", AudioTaskLabel.TRANSLATE))
                     .verifyComplete();
         });
     }
