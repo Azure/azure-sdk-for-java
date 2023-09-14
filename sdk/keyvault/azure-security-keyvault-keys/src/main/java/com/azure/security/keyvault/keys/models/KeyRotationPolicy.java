@@ -26,6 +26,11 @@ public final class KeyRotationPolicy {
     private OffsetDateTime updatedOn;
 
     /**
+     * Creates an instance of the {@link KeyRotationPolicy}
+     */
+    public KeyRotationPolicy() { }
+
+    /**
      * Get the identifier of the {@link KeyRotationPolicy policy}.
      *
      * <p>May be undefined if a {@link KeyRotationPolicy policy} has not been explicitly set.</p>

@@ -44,6 +44,11 @@ public final class DeletedSecret extends KeyVaultSecret {
     }
 
     /**
+     * Creates an instance of the {@link DeletedSecret}
+     */
+    public DeletedSecret() { }
+
+    /**
      * The url of the recovery object, used to identify and recover the deleted secret.
      */
     private String recoveryId;

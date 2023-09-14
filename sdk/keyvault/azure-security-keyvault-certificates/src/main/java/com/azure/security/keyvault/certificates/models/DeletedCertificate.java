@@ -23,6 +23,11 @@ import java.time.ZoneOffset;
 public final class DeletedCertificate extends KeyVaultCertificateWithPolicy {
 
     /**
+     * Creates an instance of the {@link DeletedCertificate}
+     */
+    public DeletedCertificate() { }
+
+    /**
      * The url of the recovery object, used to identify and recover the deleted
      * certificate.
      */

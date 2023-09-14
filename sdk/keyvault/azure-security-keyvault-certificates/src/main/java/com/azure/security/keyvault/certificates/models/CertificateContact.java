@@ -10,6 +10,12 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * The contact information for the vault certificates.
  */
 public final class CertificateContact {
+
+    /**
+     * Creates an instance of the {@link CertificateContact}
+     */
+    public CertificateContact() { }
+
     /**
      * Email address.
      */

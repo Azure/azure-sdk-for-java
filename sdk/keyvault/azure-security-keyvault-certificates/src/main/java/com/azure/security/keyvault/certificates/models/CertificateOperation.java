@@ -15,6 +15,12 @@ import java.util.Map;
  * A certificate operation is returned in case of long running service requests.
  */
 public final class CertificateOperation {
+
+    /**
+     * Creates an instance of the {@link CertificateOperation}
+     */
+    public CertificateOperation() { }
+
     private static final ClientLogger LOGGER = new ClientLogger(CertificateOperation.class);
 
     /**

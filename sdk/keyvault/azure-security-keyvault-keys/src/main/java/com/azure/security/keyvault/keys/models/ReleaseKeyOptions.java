@@ -4,6 +4,7 @@
 package com.azure.security.keyvault.keys.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.security.keyvault.keys.cryptography.models.KeyWrapAlgorithm;
 
 /**
  * Represents the configurable options to release a key.
@@ -19,6 +20,11 @@ public final class ReleaseKeyOptions {
      * The encryption algorithm to use to protected the exported key material
      */
     private KeyExportEncryptionAlgorithm algorithm;
+
+    /**
+     * Creates an instance of the {@link ReleaseKeyOptions}
+     */
+    public ReleaseKeyOptions() { }
 
     /**
      * Get a client provided nonce for freshness.

@@ -82,6 +82,11 @@ public class KeyProperties {
     String id;
 
     /**
+     * Creates an instance of the {@link KeyProperties}
+     */
+    public KeyProperties() { }
+
+    /**
      * Application specific metadata in the form of key-value pairs.
      */
     @JsonProperty(value = "tags")

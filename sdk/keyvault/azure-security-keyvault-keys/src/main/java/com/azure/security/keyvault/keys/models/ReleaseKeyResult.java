@@ -11,6 +11,12 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 @Immutable
 public final class ReleaseKeyResult {
+
+    /**
+     * Creates an instance of the {@link ReleaseKeyResult}
+     */
+    public ReleaseKeyResult() { }
+
     /*
      * A signed object containing the released key.
      */

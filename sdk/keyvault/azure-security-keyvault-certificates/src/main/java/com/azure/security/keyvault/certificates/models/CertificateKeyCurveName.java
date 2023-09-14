@@ -16,6 +16,11 @@ import java.util.Collection;
 public final class CertificateKeyCurveName extends ExpandableStringEnum<CertificateKeyCurveName> {
 
     /**
+     * Creates an instance of the {@link CertificateKeyCurveName}
+     */
+    public CertificateKeyCurveName() { }
+
+    /**
      * Static value P-256 for CertificateKeyCurveName.
      */
     public static final CertificateKeyCurveName P_256 = fromString("P-256");
@@ -47,6 +52,8 @@ public final class CertificateKeyCurveName extends ExpandableStringEnum<Certific
     }
 
     /**
+     * Returns the collection of {@link CertificateKeyCurveName} as values.
+     *
      * @return known CertificateKeyCurveName values.
      */
     public static Collection<CertificateKeyCurveName> values() {

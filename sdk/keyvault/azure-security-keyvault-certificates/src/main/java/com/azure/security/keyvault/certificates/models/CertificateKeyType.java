@@ -14,6 +14,11 @@ import java.util.Collection;
 public final class CertificateKeyType extends ExpandableStringEnum<CertificateKeyType> {
 
     /**
+     * Creates an instance of the {@link CertificateKeyType}
+     */
+    public CertificateKeyType() { }
+
+    /**
      * Static value EC for CertificateKeyType.
      */
     public static final CertificateKeyType EC = fromString("EC");
@@ -45,6 +50,8 @@ public final class CertificateKeyType extends ExpandableStringEnum<CertificateKe
     }
 
     /**
+     * Returns the collection of {@link CertificateKeyType} as values.
+     *
      * @return known CertificateKeyType values.
      */
     public static Collection<CertificateKeyType> values() {

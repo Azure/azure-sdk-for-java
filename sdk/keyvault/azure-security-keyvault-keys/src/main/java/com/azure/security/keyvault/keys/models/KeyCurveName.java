@@ -15,6 +15,11 @@ import java.util.Collection;
 public final class KeyCurveName extends ExpandableStringEnum<KeyCurveName> {
 
     /**
+     * Creates an instance of the {@link KeyCurveName}
+     */
+    public KeyCurveName() { }
+
+    /**
      * Static value P-256 for KeyCurveName.
      */
     public static final KeyCurveName P_256 = fromString("P-256");
@@ -46,6 +51,8 @@ public final class KeyCurveName extends ExpandableStringEnum<KeyCurveName> {
     }
 
     /**
+     * Returns the collection of {@link KeyCurveName} as values.
+     *
      * @return known KeyCurveName values.
      */
     public static Collection<KeyCurveName> values() {

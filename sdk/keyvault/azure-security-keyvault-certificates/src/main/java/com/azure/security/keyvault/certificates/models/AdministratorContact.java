@@ -11,6 +11,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public final class AdministratorContact {
 
     /**
+     * Creates an instance of the {@link AdministratorContact}
+     */
+    public AdministratorContact() { }
+
+    /**
      * First name.
      */
     @JsonProperty(value = "first_name")

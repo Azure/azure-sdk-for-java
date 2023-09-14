@@ -4,6 +4,7 @@
 package com.azure.security.keyvault.keys.cryptography.models;
 
 import com.azure.core.util.ExpandableStringEnum;
+import com.azure.security.keyvault.keys.models.DeletedKey;
 import com.fasterxml.jackson.annotation.JsonCreator;
 
 import java.util.Collection;
@@ -12,6 +13,11 @@ import java.util.Collection;
  * Defines values for EncryptionAlgorithm.
  */
 public final class EncryptionAlgorithm extends ExpandableStringEnum<EncryptionAlgorithm> {
+
+    /**
+     * Creates an instance of the {@link EncryptionAlgorithm}
+     */
+    public EncryptionAlgorithm() { }
 
     /**
      * Static value RSA_OAEP for EncryptionAlgorithm.
@@ -115,6 +121,8 @@ public final class EncryptionAlgorithm extends ExpandableStringEnum<EncryptionAl
     }
 
     /**
+     * Returns the collection of {@link EncryptionAlgorithm} as values.
+     *
      * @return known EncryptionAlgorithm values.
      */
     public static Collection<EncryptionAlgorithm> values() {

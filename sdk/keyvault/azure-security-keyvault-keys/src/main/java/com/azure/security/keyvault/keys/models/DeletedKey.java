@@ -22,6 +22,11 @@ import java.util.Map;
 public final class DeletedKey extends KeyVaultKey {
 
     /**
+     * Creates an instance of the {@link DeletedKey}
+     */
+    public DeletedKey() { }
+
+    /**
      * The url of the recovery object, used to identify and recover the deleted
      * key.
      */

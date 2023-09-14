@@ -22,6 +22,11 @@ public final class KeyExportEncryptionAlgorithm extends ExpandableStringEnum<Key
     public static final KeyExportEncryptionAlgorithm RSA_AES_KEY_WRAP_384 = fromString("RSA_AES_KEY_WRAP_384");
 
     /**
+     * Creates an instance of the {@link KeyExportEncryptionAlgorithm}
+     */
+    public KeyExportEncryptionAlgorithm() { }
+
+    /**
      * Creates or finds a {@link KeyExportEncryptionAlgorithm} from its string representation.
      *
      * @param name A name to look for.

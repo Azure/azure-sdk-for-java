@@ -15,6 +15,11 @@ import java.util.Collection;
 public final class KeyOperation extends ExpandableStringEnum<KeyOperation> {
 
     /**
+     * Creates an instance of the {@link KeyOperation}
+     */
+    public KeyOperation() { }
+
+    /**
      * Static value Encrypt for KeyOperation.
      */
     public static final KeyOperation ENCRYPT = fromString("encrypt");
@@ -61,6 +66,8 @@ public final class KeyOperation extends ExpandableStringEnum<KeyOperation> {
     }
 
     /**
+     * Returns a collection of {@link KeyOperation} as values.
+     *
      * @return known KeyOperation values.
      */
     public static Collection<KeyOperation> values() {

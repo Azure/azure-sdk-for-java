@@ -4,6 +4,7 @@
 package com.azure.security.keyvault.keys.cryptography.models;
 
 import com.azure.core.util.ExpandableStringEnum;
+import com.azure.security.keyvault.keys.models.KeyType;
 import com.fasterxml.jackson.annotation.JsonCreator;
 
 import java.util.Collection;
@@ -45,6 +46,11 @@ public final class KeyWrapAlgorithm extends ExpandableStringEnum<KeyWrapAlgorith
     public static final KeyWrapAlgorithm A256KW = fromString("A256KW");
 
     /**
+     * Creates an instance of the {@link KeyWrapAlgorithm}
+     */
+    public KeyWrapAlgorithm() { }
+
+    /**
      * Creates or finds a KeyWrapAlgorithm from its string representation.
      *
      * @param name a name to look for.
@@ -56,6 +62,8 @@ public final class KeyWrapAlgorithm extends ExpandableStringEnum<KeyWrapAlgorith
     }
 
     /**
+     * Returns the collection of {@link KeyWrapAlgorithm} as values.
+     *
      * @return known KeyWrapAlgorithm values.
      */
     public static Collection<KeyWrapAlgorithm> values() {

@@ -4,6 +4,7 @@
 package com.azure.security.keyvault.keys.cryptography.models;
 
 import com.azure.core.util.ExpandableStringEnum;
+import com.azure.security.keyvault.keys.models.ReleaseKeyResult;
 import com.fasterxml.jackson.annotation.JsonCreator;
 
 import java.util.Collection;
@@ -65,6 +66,11 @@ public final class SignatureAlgorithm extends ExpandableStringEnum<SignatureAlgo
     public static final SignatureAlgorithm ES256K = fromString("ES256K");
 
     /**
+     * Creates an instance of the {@link SignatureAlgorithm}
+     */
+    public SignatureAlgorithm() { }
+
+    /**
      * Creates or finds a SignatureAlgorithm from its string representation.
      *
      * @param name a name to look for.
@@ -76,6 +82,8 @@ public final class SignatureAlgorithm extends ExpandableStringEnum<SignatureAlgo
     }
 
     /**
+     * Returns the collection of {@link SignatureAlgorithm} as values.
+     *
      * @return known SignatureAlgorithm values.
      */
     public static Collection<SignatureAlgorithm> values() {

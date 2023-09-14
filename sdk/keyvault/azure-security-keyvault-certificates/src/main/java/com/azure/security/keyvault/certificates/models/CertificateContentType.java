@@ -14,6 +14,11 @@ import java.util.Collection;
 public final class CertificateContentType extends ExpandableStringEnum<CertificateContentType> {
 
     /**
+     * Creates an instance of the {@link CertificateContentType}
+     */
+    public CertificateContentType() { }
+
+    /**
      * Static value {@code PKCS12} for {@link CertificateContentType}.
      */
     public static final CertificateContentType PKCS12 = fromString("application/x-pkcs12");
@@ -35,6 +40,8 @@ public final class CertificateContentType extends ExpandableStringEnum<Certifica
     }
 
     /**
+     * Returns the collection of {@link CertificateContentType} as values.
+     *
      * @return Known {@link CertificateContentType} values.
      */
     public static Collection<CertificateContentType> values() {

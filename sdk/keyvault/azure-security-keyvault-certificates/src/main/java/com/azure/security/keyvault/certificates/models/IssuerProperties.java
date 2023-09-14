@@ -12,6 +12,12 @@ import java.net.URL;
  * Represents base properties of an {@link CertificateIssuer}.
  */
 public class IssuerProperties {
+
+    /**
+     * Creates an instance of the {@link IssuerProperties}
+     */
+    public IssuerProperties() { }
+
     /**
      * The issuer id.
      */

@@ -12,6 +12,11 @@ import com.azure.security.keyvault.certificates.CertificateClient;
 public class WellKnownIssuerNames {
 
     /**
+     * Creates an instance of the {@link WellKnownIssuerNames}
+     */
+    public WellKnownIssuerNames() { }
+
+    /**
      * Create a self-issued certificate.
      */
     public static final String SELF = "Self";

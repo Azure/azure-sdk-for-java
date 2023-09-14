@@ -4,6 +4,7 @@
 package com.azure.security.keyvault.keys.models;
 
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.security.keyvault.keys.cryptography.models.EncryptionAlgorithm;
 import com.azure.security.keyvault.keys.implementation.Base64UrlJsonDeserializer;
 import com.azure.security.keyvault.keys.implementation.Base64UrlJsonSerializer;
 import com.azure.security.keyvault.keys.implementation.ByteExtensions;
@@ -57,6 +58,11 @@ import java.util.Set;
 public class JsonWebKey {
     private static final ClientLogger LOGGER = new ClientLogger(JsonWebKey.class);
     private static final ObjectMapper MAPPER = new ObjectMapper();
+
+    /**
+     * Creates an instance of the {@link JsonWebKey}
+     */
+    public JsonWebKey() { }
 
     /**
      * Key Identifier.

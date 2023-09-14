@@ -14,6 +14,11 @@ import java.util.Collection;
 public final class CertificatePolicyAction extends ExpandableStringEnum<CertificatePolicyAction> {
 
     /**
+     * Creates an instance of the {@link CertificatePolicyAction}
+     */
+    public CertificatePolicyAction() { }
+
+    /**
      * Static value EmailContacts for CertificatePolicyAction.
      */
     public static final CertificatePolicyAction EMAIL_CONTACTS = fromString("EmailContacts");
@@ -35,6 +40,8 @@ public final class CertificatePolicyAction extends ExpandableStringEnum<Certific
     }
 
     /**
+     * Returns the collection of {@link CertificatePolicyAction} as values.
+     *
      * @return known CertificatePolicyAction values.
      */
     public static Collection<CertificatePolicyAction> values() {

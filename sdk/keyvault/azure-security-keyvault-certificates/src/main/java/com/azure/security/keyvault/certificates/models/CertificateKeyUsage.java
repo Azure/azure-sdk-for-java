@@ -12,7 +12,12 @@ import java.util.Collection;
  * Defines values for CertificateKeyUsage.
  */
 public final class CertificateKeyUsage extends ExpandableStringEnum<CertificateKeyUsage> {
-    
+
+    /**
+     * Creates an instance of the {@link CertificateKeyUsage}
+     */
+    public CertificateKeyUsage() { }
+
     /**
      * Static value Digital Signature for CertificateKeyUsage.
      */
@@ -37,7 +42,7 @@ public final class CertificateKeyUsage extends ExpandableStringEnum<CertificateK
      * Static value Key Agreement for CertificateKeyUsage.
      */
     public static final CertificateKeyUsage KEY_AGREEMENT = fromString("keyAgreement");
-    
+
     /**
      * Static value Key CertSign for CertificateKeyUsage.
      */
@@ -70,6 +75,8 @@ public final class CertificateKeyUsage extends ExpandableStringEnum<CertificateK
     }
 
     /**
+     * Returns the collection of {@link CertificateKeyUsage} as values.
+     *
      * @return known CertificateKeyUsage values.
      */
     public static Collection<CertificateKeyUsage> values() {
