@@ -13,7 +13,7 @@ public final class ClusterListTests {
         ClusterList model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"sku\":{\"name\":\"y\"},\"properties\":{\"clusterSize\":93185233,\"provisioningState\":\"Succeeded\",\"clusterId\":981492544,\"hosts\":[]},\"id\":\"npc\",\"name\":\"hocohslkev\",\"type\":\"eggzfb\"}],\"nextLink\":\"fmvfaxkffeiit\"}")
+                    "{\"value\":[{\"sku\":{\"name\":\"ag\"},\"properties\":{\"clusterSize\":230289658,\"provisioningState\":\"Cancelled\",\"clusterId\":683816537,\"hosts\":[\"hahvljuahaq\",\"hcdhmdual\",\"exq\",\"vfadmws\"]},\"id\":\"crgvxpvgom\",\"name\":\"lf\",\"type\":\"isgwbnbbeldawkz\"},{\"sku\":{\"name\":\"ali\"},\"properties\":{\"clusterSize\":952194839,\"provisioningState\":\"Deleting\",\"clusterId\":391809232,\"hosts\":[\"ashsfwxos\",\"w\",\"xcug\"]},\"id\":\"cjooxdjebwpucwwf\",\"name\":\"ovbvmeueciv\",\"type\":\"hzceuojgjrwjue\"},{\"sku\":{\"name\":\"otwmcdyt\"},\"properties\":{\"clusterSize\":384724385,\"provisioningState\":\"Canceled\",\"clusterId\":1070997174,\"hosts\":[\"wgqwgxhn\",\"skxfbk\",\"y\"]},\"id\":\"gklwn\",\"name\":\"nhjdauw\",\"type\":\"vylwzbtdhxuj\"},{\"sku\":{\"name\":\"nbmpowuwprzq\"},\"properties\":{\"clusterSize\":97995700,\"provisioningState\":\"Cancelled\",\"clusterId\":683546621,\"hosts\":[\"khfxobbcswsrt\"]},\"id\":\"riplrbpbewtg\",\"name\":\"fgb\",\"type\":\"c\"}],\"nextLink\":\"xzvlvqhjkbegib\"}")
                 .toObject(ClusterList.class);
     }
 

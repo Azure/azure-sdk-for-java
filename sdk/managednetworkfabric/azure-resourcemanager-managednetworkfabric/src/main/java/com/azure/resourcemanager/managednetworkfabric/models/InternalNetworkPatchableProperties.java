@@ -8,7 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The ExternalNetwork patchable properties. */
+/** The InternalNetwork patchable properties. */
 @Fluent
 public class InternalNetworkPatchableProperties {
     /*
@@ -18,40 +18,58 @@ public class InternalNetworkPatchableProperties {
     private Integer mtu;
 
     /*
-     * List with object connected IPv4 Subnets.
+     * List of Connected IPv4 Subnets.
      */
     @JsonProperty(value = "connectedIPv4Subnets")
     private List<ConnectedSubnet> connectedIPv4Subnets;
 
     /*
-     * List with object connected IPv6 Subnets.
+     * List of connected IPv6 Subnets.
      */
     @JsonProperty(value = "connectedIPv6Subnets")
     private List<ConnectedSubnet> connectedIPv6Subnets;
 
     /*
-     * Static Route Configuration properties.
-     */
-    @JsonProperty(value = "staticRouteConfiguration")
-    private StaticRouteConfiguration staticRouteConfiguration;
-
-    /*
-     * BGP configuration properties
-     */
-    @JsonProperty(value = "bgpConfiguration")
-    private BgpConfiguration bgpConfiguration;
-
-    /*
-     * ARM resource ID of importRoutePolicy.
+     * ARM Resource ID of the RoutePolicy. This is used for the backward compatibility.
      */
     @JsonProperty(value = "importRoutePolicyId")
     private String importRoutePolicyId;
 
     /*
-     * ARM resource ID of importRoutePolicy.
+     * ARM Resource ID of the RoutePolicy. This is used for the backward compatibility.
      */
     @JsonProperty(value = "exportRoutePolicyId")
     private String exportRoutePolicyId;
+
+    /*
+     * Import Route Policy either IPv4 or IPv6.
+     */
+    @JsonProperty(value = "importRoutePolicy")
+    private ImportRoutePolicy importRoutePolicy;
+
+    /*
+     * Export Route Policy either IPv4 or IPv6.
+     */
+    @JsonProperty(value = "exportRoutePolicy")
+    private ExportRoutePolicy exportRoutePolicy;
+
+    /*
+     * Ingress Acl. ARM resource ID of Access Control Lists.
+     */
+    @JsonProperty(value = "ingressAclId")
+    private String ingressAclId;
+
+    /*
+     * Egress Acl. ARM resource ID of Access Control Lists.
+     */
+    @JsonProperty(value = "egressAclId")
+    private String egressAclId;
+
+    /*
+     * To check whether monitoring of internal network is enabled or not.
+     */
+    @JsonProperty(value = "isMonitoringEnabled")
+    private IsMonitoringEnabled isMonitoringEnabled;
 
     /** Creates an instance of InternalNetworkPatchableProperties class. */
     public InternalNetworkPatchableProperties() {
@@ -78,7 +96,7 @@ public class InternalNetworkPatchableProperties {
     }
 
     /**
-     * Get the connectedIPv4Subnets property: List with object connected IPv4 Subnets.
+     * Get the connectedIPv4Subnets property: List of Connected IPv4 Subnets.
      *
      * @return the connectedIPv4Subnets value.
      */
@@ -87,7 +105,7 @@ public class InternalNetworkPatchableProperties {
     }
 
     /**
-     * Set the connectedIPv4Subnets property: List with object connected IPv4 Subnets.
+     * Set the connectedIPv4Subnets property: List of Connected IPv4 Subnets.
      *
      * @param connectedIPv4Subnets the connectedIPv4Subnets value to set.
      * @return the InternalNetworkPatchableProperties object itself.
@@ -98,7 +116,7 @@ public class InternalNetworkPatchableProperties {
     }
 
     /**
-     * Get the connectedIPv6Subnets property: List with object connected IPv6 Subnets.
+     * Get the connectedIPv6Subnets property: List of connected IPv6 Subnets.
      *
      * @return the connectedIPv6Subnets value.
      */
@@ -107,7 +125,7 @@ public class InternalNetworkPatchableProperties {
     }
 
     /**
-     * Set the connectedIPv6Subnets property: List with object connected IPv6 Subnets.
+     * Set the connectedIPv6Subnets property: List of connected IPv6 Subnets.
      *
      * @param connectedIPv6Subnets the connectedIPv6Subnets value to set.
      * @return the InternalNetworkPatchableProperties object itself.
@@ -118,48 +136,8 @@ public class InternalNetworkPatchableProperties {
     }
 
     /**
-     * Get the staticRouteConfiguration property: Static Route Configuration properties.
-     *
-     * @return the staticRouteConfiguration value.
-     */
-    public StaticRouteConfiguration staticRouteConfiguration() {
-        return this.staticRouteConfiguration;
-    }
-
-    /**
-     * Set the staticRouteConfiguration property: Static Route Configuration properties.
-     *
-     * @param staticRouteConfiguration the staticRouteConfiguration value to set.
-     * @return the InternalNetworkPatchableProperties object itself.
-     */
-    public InternalNetworkPatchableProperties withStaticRouteConfiguration(
-        StaticRouteConfiguration staticRouteConfiguration) {
-        this.staticRouteConfiguration = staticRouteConfiguration;
-        return this;
-    }
-
-    /**
-     * Get the bgpConfiguration property: BGP configuration properties.
-     *
-     * @return the bgpConfiguration value.
-     */
-    public BgpConfiguration bgpConfiguration() {
-        return this.bgpConfiguration;
-    }
-
-    /**
-     * Set the bgpConfiguration property: BGP configuration properties.
-     *
-     * @param bgpConfiguration the bgpConfiguration value to set.
-     * @return the InternalNetworkPatchableProperties object itself.
-     */
-    public InternalNetworkPatchableProperties withBgpConfiguration(BgpConfiguration bgpConfiguration) {
-        this.bgpConfiguration = bgpConfiguration;
-        return this;
-    }
-
-    /**
-     * Get the importRoutePolicyId property: ARM resource ID of importRoutePolicy.
+     * Get the importRoutePolicyId property: ARM Resource ID of the RoutePolicy. This is used for the backward
+     * compatibility.
      *
      * @return the importRoutePolicyId value.
      */
@@ -168,7 +146,8 @@ public class InternalNetworkPatchableProperties {
     }
 
     /**
-     * Set the importRoutePolicyId property: ARM resource ID of importRoutePolicy.
+     * Set the importRoutePolicyId property: ARM Resource ID of the RoutePolicy. This is used for the backward
+     * compatibility.
      *
      * @param importRoutePolicyId the importRoutePolicyId value to set.
      * @return the InternalNetworkPatchableProperties object itself.
@@ -179,7 +158,8 @@ public class InternalNetworkPatchableProperties {
     }
 
     /**
-     * Get the exportRoutePolicyId property: ARM resource ID of importRoutePolicy.
+     * Get the exportRoutePolicyId property: ARM Resource ID of the RoutePolicy. This is used for the backward
+     * compatibility.
      *
      * @return the exportRoutePolicyId value.
      */
@@ -188,13 +168,114 @@ public class InternalNetworkPatchableProperties {
     }
 
     /**
-     * Set the exportRoutePolicyId property: ARM resource ID of importRoutePolicy.
+     * Set the exportRoutePolicyId property: ARM Resource ID of the RoutePolicy. This is used for the backward
+     * compatibility.
      *
      * @param exportRoutePolicyId the exportRoutePolicyId value to set.
      * @return the InternalNetworkPatchableProperties object itself.
      */
     public InternalNetworkPatchableProperties withExportRoutePolicyId(String exportRoutePolicyId) {
         this.exportRoutePolicyId = exportRoutePolicyId;
+        return this;
+    }
+
+    /**
+     * Get the importRoutePolicy property: Import Route Policy either IPv4 or IPv6.
+     *
+     * @return the importRoutePolicy value.
+     */
+    public ImportRoutePolicy importRoutePolicy() {
+        return this.importRoutePolicy;
+    }
+
+    /**
+     * Set the importRoutePolicy property: Import Route Policy either IPv4 or IPv6.
+     *
+     * @param importRoutePolicy the importRoutePolicy value to set.
+     * @return the InternalNetworkPatchableProperties object itself.
+     */
+    public InternalNetworkPatchableProperties withImportRoutePolicy(ImportRoutePolicy importRoutePolicy) {
+        this.importRoutePolicy = importRoutePolicy;
+        return this;
+    }
+
+    /**
+     * Get the exportRoutePolicy property: Export Route Policy either IPv4 or IPv6.
+     *
+     * @return the exportRoutePolicy value.
+     */
+    public ExportRoutePolicy exportRoutePolicy() {
+        return this.exportRoutePolicy;
+    }
+
+    /**
+     * Set the exportRoutePolicy property: Export Route Policy either IPv4 or IPv6.
+     *
+     * @param exportRoutePolicy the exportRoutePolicy value to set.
+     * @return the InternalNetworkPatchableProperties object itself.
+     */
+    public InternalNetworkPatchableProperties withExportRoutePolicy(ExportRoutePolicy exportRoutePolicy) {
+        this.exportRoutePolicy = exportRoutePolicy;
+        return this;
+    }
+
+    /**
+     * Get the ingressAclId property: Ingress Acl. ARM resource ID of Access Control Lists.
+     *
+     * @return the ingressAclId value.
+     */
+    public String ingressAclId() {
+        return this.ingressAclId;
+    }
+
+    /**
+     * Set the ingressAclId property: Ingress Acl. ARM resource ID of Access Control Lists.
+     *
+     * @param ingressAclId the ingressAclId value to set.
+     * @return the InternalNetworkPatchableProperties object itself.
+     */
+    public InternalNetworkPatchableProperties withIngressAclId(String ingressAclId) {
+        this.ingressAclId = ingressAclId;
+        return this;
+    }
+
+    /**
+     * Get the egressAclId property: Egress Acl. ARM resource ID of Access Control Lists.
+     *
+     * @return the egressAclId value.
+     */
+    public String egressAclId() {
+        return this.egressAclId;
+    }
+
+    /**
+     * Set the egressAclId property: Egress Acl. ARM resource ID of Access Control Lists.
+     *
+     * @param egressAclId the egressAclId value to set.
+     * @return the InternalNetworkPatchableProperties object itself.
+     */
+    public InternalNetworkPatchableProperties withEgressAclId(String egressAclId) {
+        this.egressAclId = egressAclId;
+        return this;
+    }
+
+    /**
+     * Get the isMonitoringEnabled property: To check whether monitoring of internal network is enabled or not.
+     *
+     * @return the isMonitoringEnabled value.
+     */
+    public IsMonitoringEnabled isMonitoringEnabled() {
+        return this.isMonitoringEnabled;
+    }
+
+    /**
+     * Set the isMonitoringEnabled property: To check whether monitoring of internal network is enabled or not.
+     *
+     * @param isMonitoringEnabled the isMonitoringEnabled value to set.
+     * @return the InternalNetworkPatchableProperties object itself.
+     */
+    public InternalNetworkPatchableProperties withIsMonitoringEnabled(IsMonitoringEnabled isMonitoringEnabled) {
+        this.isMonitoringEnabled = isMonitoringEnabled;
         return this;
     }
 
@@ -210,11 +291,11 @@ public class InternalNetworkPatchableProperties {
         if (connectedIPv6Subnets() != null) {
             connectedIPv6Subnets().forEach(e -> e.validate());
         }
-        if (staticRouteConfiguration() != null) {
-            staticRouteConfiguration().validate();
+        if (importRoutePolicy() != null) {
+            importRoutePolicy().validate();
         }
-        if (bgpConfiguration() != null) {
-            bgpConfiguration().validate();
+        if (exportRoutePolicy() != null) {
+            exportRoutePolicy().validate();
         }
     }
 }

@@ -21,7 +21,7 @@ public interface NetworkFabricControllers {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the NetworkFabricController resource definition along with {@link Response}.
+     * @return the Network Fabric Controller resource definition along with {@link Response}.
      */
     Response<NetworkFabricController> getByResourceGroupWithResponse(
         String resourceGroupName, String networkFabricControllerName, Context context);
@@ -36,7 +36,7 @@ public interface NetworkFabricControllers {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the NetworkFabricController resource definition.
+     * @return the Network Fabric Controller resource definition.
      */
     NetworkFabricController getByResourceGroup(String resourceGroupName, String networkFabricControllerName);
 
@@ -76,7 +76,7 @@ public interface NetworkFabricControllers {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of NetworkFabricControllers as paginated response with {@link PagedIterable}.
+     * @return list of Network Fabric Controllers as paginated response with {@link PagedIterable}.
      */
     PagedIterable<NetworkFabricController> listByResourceGroup(String resourceGroupName);
 
@@ -90,7 +90,7 @@ public interface NetworkFabricControllers {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of NetworkFabricControllers as paginated response with {@link PagedIterable}.
+     * @return list of Network Fabric Controllers as paginated response with {@link PagedIterable}.
      */
     PagedIterable<NetworkFabricController> listByResourceGroup(String resourceGroupName, Context context);
 
@@ -101,7 +101,7 @@ public interface NetworkFabricControllers {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of NetworkFabricControllers as paginated response with {@link PagedIterable}.
+     * @return list of Network Fabric Controllers as paginated response with {@link PagedIterable}.
      */
     PagedIterable<NetworkFabricController> list();
 
@@ -114,64 +114,9 @@ public interface NetworkFabricControllers {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of NetworkFabricControllers as paginated response with {@link PagedIterable}.
+     * @return list of Network Fabric Controllers as paginated response with {@link PagedIterable}.
      */
     PagedIterable<NetworkFabricController> list(Context context);
-
-    /**
-     * Implements the operation to the underlying resources.
-     *
-     * <p>Enables the workloadManagementNetwork (Tenant Network).
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkFabricControllerName Name of the networkFabricController.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void enableWorkloadManagementNetwork(String resourceGroupName, String networkFabricControllerName);
-
-    /**
-     * Implements the operation to the underlying resources.
-     *
-     * <p>Enables the workloadManagementNetwork (Tenant Network).
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkFabricControllerName Name of the networkFabricController.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void enableWorkloadManagementNetwork(String resourceGroupName, String networkFabricControllerName, Context context);
-
-    /**
-     * Implements the operation to the underlying resources.
-     *
-     * <p>Disables the workloadManagementNetwork (Tenant Network).
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkFabricControllerName Name of the networkFabricController.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void disableWorkloadManagementNetwork(String resourceGroupName, String networkFabricControllerName);
-
-    /**
-     * Implements the operation to the underlying resources.
-     *
-     * <p>Disables the workloadManagementNetwork (Tenant Network).
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkFabricControllerName Name of the networkFabricController.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void disableWorkloadManagementNetwork(
-        String resourceGroupName, String networkFabricControllerName, Context context);
 
     /**
      * Gets a Network Fabric Controller.
@@ -182,7 +127,7 @@ public interface NetworkFabricControllers {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the NetworkFabricController resource definition along with {@link Response}.
+     * @return the Network Fabric Controller resource definition along with {@link Response}.
      */
     NetworkFabricController getById(String id);
 
@@ -196,7 +141,7 @@ public interface NetworkFabricControllers {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the NetworkFabricController resource definition along with {@link Response}.
+     * @return the Network Fabric Controller resource definition along with {@link Response}.
      */
     Response<NetworkFabricController> getByIdWithResponse(String id, Context context);
 

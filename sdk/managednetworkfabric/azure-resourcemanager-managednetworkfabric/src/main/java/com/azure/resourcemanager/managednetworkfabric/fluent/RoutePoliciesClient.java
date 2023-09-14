@@ -11,8 +11,12 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
+import com.azure.resourcemanager.managednetworkfabric.fluent.models.CommonPostActionResponseForDeviceUpdateInner;
+import com.azure.resourcemanager.managednetworkfabric.fluent.models.CommonPostActionResponseForStateUpdateInner;
 import com.azure.resourcemanager.managednetworkfabric.fluent.models.RoutePolicyInner;
+import com.azure.resourcemanager.managednetworkfabric.fluent.models.ValidateConfigurationResponseInner;
 import com.azure.resourcemanager.managednetworkfabric.models.RoutePolicyPatch;
+import com.azure.resourcemanager.managednetworkfabric.models.UpdateAdministrativeState;
 
 /** An instance of this class provides access to all the operations defined in RoutePoliciesClient. */
 public interface RoutePoliciesClient {
@@ -298,4 +302,198 @@ public interface RoutePoliciesClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<RoutePolicyInner> list(Context context);
+
+    /**
+     * Executes enable operation to the underlying resources.
+     *
+     * <p>Updated the admin state for this Route Policy.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param routePolicyName Name of the Route Policy.
+     * @param body Request payload.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of common response for device updates.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<CommonPostActionResponseForDeviceUpdateInner>, CommonPostActionResponseForDeviceUpdateInner>
+        beginUpdateAdministrativeState(
+            String resourceGroupName, String routePolicyName, UpdateAdministrativeState body);
+
+    /**
+     * Executes enable operation to the underlying resources.
+     *
+     * <p>Updated the admin state for this Route Policy.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param routePolicyName Name of the Route Policy.
+     * @param body Request payload.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of common response for device updates.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<CommonPostActionResponseForDeviceUpdateInner>, CommonPostActionResponseForDeviceUpdateInner>
+        beginUpdateAdministrativeState(
+            String resourceGroupName, String routePolicyName, UpdateAdministrativeState body, Context context);
+
+    /**
+     * Executes enable operation to the underlying resources.
+     *
+     * <p>Updated the admin state for this Route Policy.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param routePolicyName Name of the Route Policy.
+     * @param body Request payload.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return common response for device updates.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    CommonPostActionResponseForDeviceUpdateInner updateAdministrativeState(
+        String resourceGroupName, String routePolicyName, UpdateAdministrativeState body);
+
+    /**
+     * Executes enable operation to the underlying resources.
+     *
+     * <p>Updated the admin state for this Route Policy.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param routePolicyName Name of the Route Policy.
+     * @param body Request payload.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return common response for device updates.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    CommonPostActionResponseForDeviceUpdateInner updateAdministrativeState(
+        String resourceGroupName, String routePolicyName, UpdateAdministrativeState body, Context context);
+
+    /**
+     * Validates the configuration of the resources.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param routePolicyName Name of the Route Policy.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of the response of the action validate configuration.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<ValidateConfigurationResponseInner>, ValidateConfigurationResponseInner>
+        beginValidateConfiguration(String resourceGroupName, String routePolicyName);
+
+    /**
+     * Validates the configuration of the resources.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param routePolicyName Name of the Route Policy.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of the response of the action validate configuration.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<ValidateConfigurationResponseInner>, ValidateConfigurationResponseInner>
+        beginValidateConfiguration(String resourceGroupName, String routePolicyName, Context context);
+
+    /**
+     * Validates the configuration of the resources.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param routePolicyName Name of the Route Policy.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of the action validate configuration.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ValidateConfigurationResponseInner validateConfiguration(String resourceGroupName, String routePolicyName);
+
+    /**
+     * Validates the configuration of the resources.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param routePolicyName Name of the Route Policy.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of the action validate configuration.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ValidateConfigurationResponseInner validateConfiguration(
+        String resourceGroupName, String routePolicyName, Context context);
+
+    /**
+     * Execute the commit on the resources.
+     *
+     * <p>Commits the configuration of the given resources.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param routePolicyName Name of the Route Policy.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of common response for the state updates.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
+        beginCommitConfiguration(String resourceGroupName, String routePolicyName);
+
+    /**
+     * Execute the commit on the resources.
+     *
+     * <p>Commits the configuration of the given resources.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param routePolicyName Name of the Route Policy.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of common response for the state updates.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
+        beginCommitConfiguration(String resourceGroupName, String routePolicyName, Context context);
+
+    /**
+     * Execute the commit on the resources.
+     *
+     * <p>Commits the configuration of the given resources.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param routePolicyName Name of the Route Policy.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return common response for the state updates.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    CommonPostActionResponseForStateUpdateInner commitConfiguration(String resourceGroupName, String routePolicyName);
+
+    /**
+     * Execute the commit on the resources.
+     *
+     * <p>Commits the configuration of the given resources.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param routePolicyName Name of the Route Policy.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return common response for the state updates.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    CommonPostActionResponseForStateUpdateInner commitConfiguration(
+        String resourceGroupName, String routePolicyName, Context context);
 }

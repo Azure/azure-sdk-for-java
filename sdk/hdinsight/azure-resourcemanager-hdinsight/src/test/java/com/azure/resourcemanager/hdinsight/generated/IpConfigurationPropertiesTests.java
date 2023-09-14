@@ -9,34 +9,33 @@ import com.azure.resourcemanager.hdinsight.fluent.models.IpConfigurationProperti
 import com.azure.resourcemanager.hdinsight.models.PrivateIpAllocationMethod;
 import com.azure.resourcemanager.hdinsight.models.ResourceId;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class IpConfigurationPropertiesTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         IpConfigurationProperties model =
             BinaryData
                 .fromString(
-                    "{\"provisioningState\":\"Deleting\",\"primary\":true,\"privateIPAddress\":\"cxmqciwqvhkhix\",\"privateIPAllocationMethod\":\"static\",\"subnet\":{\"id\":\"opbobj\"}}")
+                    "{\"provisioningState\":\"Deleting\",\"primary\":false,\"privateIPAddress\":\"yq\",\"privateIPAllocationMethod\":\"dynamic\",\"subnet\":{\"id\":\"j\"}}")
                 .toObject(IpConfigurationProperties.class);
-        Assertions.assertEquals(true, model.primary());
-        Assertions.assertEquals("cxmqciwqvhkhix", model.privateIpAddress());
-        Assertions.assertEquals(PrivateIpAllocationMethod.STATIC, model.privateIpAllocationMethod());
-        Assertions.assertEquals("opbobj", model.subnet().id());
+        Assertions.assertEquals(false, model.primary());
+        Assertions.assertEquals("yq", model.privateIpAddress());
+        Assertions.assertEquals(PrivateIpAllocationMethod.DYNAMIC, model.privateIpAllocationMethod());
+        Assertions.assertEquals("j", model.subnet().id());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         IpConfigurationProperties model =
             new IpConfigurationProperties()
-                .withPrimary(true)
-                .withPrivateIpAddress("cxmqciwqvhkhix")
-                .withPrivateIpAllocationMethod(PrivateIpAllocationMethod.STATIC)
-                .withSubnet(new ResourceId().withId("opbobj"));
+                .withPrimary(false)
+                .withPrivateIpAddress("yq")
+                .withPrivateIpAllocationMethod(PrivateIpAllocationMethod.DYNAMIC)
+                .withSubnet(new ResourceId().withId("j"));
         model = BinaryData.fromObject(model).toObject(IpConfigurationProperties.class);
-        Assertions.assertEquals(true, model.primary());
-        Assertions.assertEquals("cxmqciwqvhkhix", model.privateIpAddress());
-        Assertions.assertEquals(PrivateIpAllocationMethod.STATIC, model.privateIpAllocationMethod());
-        Assertions.assertEquals("opbobj", model.subnet().id());
+        Assertions.assertEquals(false, model.primary());
+        Assertions.assertEquals("yq", model.privateIpAddress());
+        Assertions.assertEquals(PrivateIpAllocationMethod.DYNAMIC, model.privateIpAllocationMethod());
+        Assertions.assertEquals("j", model.subnet().id());
     }
 }

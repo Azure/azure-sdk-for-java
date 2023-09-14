@@ -103,26 +103,20 @@ class KeyVaultAdministrationUtil {
     static RoleAssignmentCreateParameters validateAndGetRoleAssignmentCreateParameters(KeyVaultRoleScope roleScope, String roleDefinitionId, String principalId, String roleAssignmentName) {
         validateRoleAssignmentParameters(roleScope, roleAssignmentName);
         Objects.requireNonNull(principalId,
-            String.format(KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED),
-                "'principalId'"));
+            String.format(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED, "'principalId'"));
         Objects.requireNonNull(roleDefinitionId,
-            String.format(KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED),
-                "'roleDefinitionId'"));
+            String.format(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED, "'roleDefinitionId'"));
 
         RoleAssignmentProperties roleAssignmentProperties = new RoleAssignmentProperties(roleDefinitionId, principalId);
         return new RoleAssignmentCreateParameters(roleAssignmentProperties);
     }
 
     static RoleDefinitionCreateParameters validateAndGetRoleDefinitionCreateParameters(SetRoleDefinitionOptions options) {
-        Objects.requireNonNull(options,
-            String.format(KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED),
-                "'options'"));
+        Objects.requireNonNull(options, String.format(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED, "'options'"));
         Objects.requireNonNull(options.getRoleScope(),
-            String.format(KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED),
-                "'options.getRoleScope()'"));
+            String.format(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED, "'options.getRoleScope()'"));
         Objects.requireNonNull(options.getRoleDefinitionName(),
-            String.format(KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED),
-                "'options.getRoleDefinitionName()'"));
+            String.format(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED, "'options.getRoleDefinitionName()'"));
 
         List<Permission> permissions = null;
 
@@ -146,21 +140,15 @@ class KeyVaultAdministrationUtil {
     }
 
     static void validateRoleAssignmentParameters(KeyVaultRoleScope roleScope, String roleAssignmentName) {
-        Objects.requireNonNull(roleScope,
-            String.format(KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED),
-                "'roleScope'"));
+        Objects.requireNonNull(roleScope, String.format(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED, "'roleScope'"));
         Objects.requireNonNull(roleAssignmentName,
-            String.format(KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED),
-                "'roleAssignmentName'"));
+            String.format(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED, "'roleAssignmentName'"));
     }
 
     static void validateRoleDefinitionParameters(KeyVaultRoleScope roleScope, String roleDefinitionName) {
-        Objects.requireNonNull(roleScope,
-            String.format(KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED),
-                "'roleScope'"));
+        Objects.requireNonNull(roleScope, String.format(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED, "'roleScope'"));
         Objects.requireNonNull(roleDefinitionName,
-            String.format(KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED),
-                "'roleDefinitionName'"));
+            String.format(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED, "'roleDefinitionName'"));
     }
 
     @SuppressWarnings("BoundedWildcard")

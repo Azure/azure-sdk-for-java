@@ -5,6 +5,7 @@
 package com.azure.communication.jobrouter.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.ETag;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Paged instance of ExceptionPolicy. */
@@ -20,7 +21,7 @@ public final class ExceptionPolicyItem {
      * (Optional) The Concurrency Token.
      */
     @JsonProperty(value = "etag")
-    private String etag;
+    private ETag etag;
 
     /**
      * Get the exceptionPolicy property: A policy that defines actions to execute when exception are triggered.
@@ -47,7 +48,7 @@ public final class ExceptionPolicyItem {
      *
      * @return the etag value.
      */
-    public String getEtag() {
+    public ETag getEtag() {
         return this.etag;
     }
 
@@ -57,7 +58,7 @@ public final class ExceptionPolicyItem {
      * @param etag the etag value to set.
      * @return the ExceptionPolicyItem object itself.
      */
-    public ExceptionPolicyItem setEtag(String etag) {
+    public ExceptionPolicyItem setEtag(ETag etag) {
         this.etag = etag;
         return this;
     }

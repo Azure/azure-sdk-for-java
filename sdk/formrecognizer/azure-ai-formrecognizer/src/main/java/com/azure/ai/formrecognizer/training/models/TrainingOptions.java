@@ -19,6 +19,12 @@ public final class TrainingOptions {
     private String modelName;
 
     /**
+     * Create a {@code TrainingOptions} object.
+     */
+    public TrainingOptions() {
+    }
+
+    /**
      * Get the filter to apply to the documents in the source path for training.
      *
      * @return the filter to apply to the documents in the source path for training.

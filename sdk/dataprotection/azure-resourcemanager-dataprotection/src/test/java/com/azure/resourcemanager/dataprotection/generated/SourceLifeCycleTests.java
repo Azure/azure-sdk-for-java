@@ -20,24 +20,24 @@ public final class SourceLifeCycleTests {
         SourceLifeCycle model =
             BinaryData
                 .fromString(
-                    "{\"deleteAfter\":{\"objectType\":\"DeleteOption\",\"duration\":\"vfvpdbodaciz\"},\"sourceDataStore\":{\"dataStoreType\":\"OperationalStore\",\"objectType\":\"q\"},\"targetDataStoreCopySettings\":[{\"copyAfter\":{\"objectType\":\"CopyOption\"},\"dataStore\":{\"dataStoreType\":\"ArchiveStore\",\"objectType\":\"r\"}},{\"copyAfter\":{\"objectType\":\"CopyOption\"},\"dataStore\":{\"dataStoreType\":\"ArchiveStore\",\"objectType\":\"deibqip\"}},{\"copyAfter\":{\"objectType\":\"CopyOption\"},\"dataStore\":{\"dataStoreType\":\"ArchiveStore\",\"objectType\":\"ghvxndzwmkrefa\"}}]}")
+                    "{\"deleteAfter\":{\"objectType\":\"DeleteOption\",\"duration\":\"zjxvydfcea\"},\"sourceDataStore\":{\"dataStoreType\":\"VaultStore\",\"objectType\":\"lhvygdyftu\"},\"targetDataStoreCopySettings\":[{\"copyAfter\":{\"objectType\":\"CopyOption\"},\"dataStore\":{\"dataStoreType\":\"ArchiveStore\",\"objectType\":\"nawjslbiwkojgcy\"}},{\"copyAfter\":{\"objectType\":\"CopyOption\"},\"dataStore\":{\"dataStoreType\":\"OperationalStore\",\"objectType\":\"sfmznbaeqphc\"}},{\"copyAfter\":{\"objectType\":\"CopyOption\"},\"dataStore\":{\"dataStoreType\":\"ArchiveStore\",\"objectType\":\"nrnrp\"}},{\"copyAfter\":{\"objectType\":\"CopyOption\"},\"dataStore\":{\"dataStoreType\":\"OperationalStore\",\"objectType\":\"huwrykqgaifm\"}}]}")
                 .toObject(SourceLifeCycle.class);
-        Assertions.assertEquals("vfvpdbodaciz", model.deleteAfter().duration());
-        Assertions.assertEquals(DataStoreTypes.OPERATIONAL_STORE, model.sourceDataStore().dataStoreType());
-        Assertions.assertEquals("q", model.sourceDataStore().objectType());
+        Assertions.assertEquals("zjxvydfcea", model.deleteAfter().duration());
+        Assertions.assertEquals(DataStoreTypes.VAULT_STORE, model.sourceDataStore().dataStoreType());
+        Assertions.assertEquals("lhvygdyftu", model.sourceDataStore().objectType());
         Assertions
             .assertEquals(
                 DataStoreTypes.ARCHIVE_STORE, model.targetDataStoreCopySettings().get(0).dataStore().dataStoreType());
-        Assertions.assertEquals("r", model.targetDataStoreCopySettings().get(0).dataStore().objectType());
+        Assertions.assertEquals("nawjslbiwkojgcy", model.targetDataStoreCopySettings().get(0).dataStore().objectType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SourceLifeCycle model =
             new SourceLifeCycle()
-                .withDeleteAfter(new DeleteOption().withDuration("vfvpdbodaciz"))
+                .withDeleteAfter(new DeleteOption().withDuration("zjxvydfcea"))
                 .withSourceDataStore(
-                    new DataStoreInfoBase().withDataStoreType(DataStoreTypes.OPERATIONAL_STORE).withObjectType("q"))
+                    new DataStoreInfoBase().withDataStoreType(DataStoreTypes.VAULT_STORE).withObjectType("lhvygdyftu"))
                 .withTargetDataStoreCopySettings(
                     Arrays
                         .asList(
@@ -46,26 +46,32 @@ public final class SourceLifeCycleTests {
                                 .withDataStore(
                                     new DataStoreInfoBase()
                                         .withDataStoreType(DataStoreTypes.ARCHIVE_STORE)
-                                        .withObjectType("r")),
+                                        .withObjectType("nawjslbiwkojgcy")),
+                            new TargetCopySetting()
+                                .withCopyAfter(new CopyOption())
+                                .withDataStore(
+                                    new DataStoreInfoBase()
+                                        .withDataStoreType(DataStoreTypes.OPERATIONAL_STORE)
+                                        .withObjectType("sfmznbaeqphc")),
                             new TargetCopySetting()
                                 .withCopyAfter(new CopyOption())
                                 .withDataStore(
                                     new DataStoreInfoBase()
                                         .withDataStoreType(DataStoreTypes.ARCHIVE_STORE)
-                                        .withObjectType("deibqip")),
+                                        .withObjectType("nrnrp")),
                             new TargetCopySetting()
                                 .withCopyAfter(new CopyOption())
                                 .withDataStore(
                                     new DataStoreInfoBase()
-                                        .withDataStoreType(DataStoreTypes.ARCHIVE_STORE)
-                                        .withObjectType("ghvxndzwmkrefa"))));
+                                        .withDataStoreType(DataStoreTypes.OPERATIONAL_STORE)
+                                        .withObjectType("huwrykqgaifm"))));
         model = BinaryData.fromObject(model).toObject(SourceLifeCycle.class);
-        Assertions.assertEquals("vfvpdbodaciz", model.deleteAfter().duration());
-        Assertions.assertEquals(DataStoreTypes.OPERATIONAL_STORE, model.sourceDataStore().dataStoreType());
-        Assertions.assertEquals("q", model.sourceDataStore().objectType());
+        Assertions.assertEquals("zjxvydfcea", model.deleteAfter().duration());
+        Assertions.assertEquals(DataStoreTypes.VAULT_STORE, model.sourceDataStore().dataStoreType());
+        Assertions.assertEquals("lhvygdyftu", model.sourceDataStore().objectType());
         Assertions
             .assertEquals(
                 DataStoreTypes.ARCHIVE_STORE, model.targetDataStoreCopySettings().get(0).dataStore().dataStoreType());
-        Assertions.assertEquals("r", model.targetDataStoreCopySettings().get(0).dataStore().objectType());
+        Assertions.assertEquals("nawjslbiwkojgcy", model.targetDataStoreCopySettings().get(0).dataStore().objectType());
     }
 }

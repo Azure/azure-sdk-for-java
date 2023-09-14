@@ -285,9 +285,7 @@ public final class DocumentClassifiersImpl {
     }
 
     /**
-     * Build document classifier
-     *
-     * <p>Builds a custom document classifier.
+     * Builds a custom document classifier.
      *
      * @param buildRequest Building request parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -306,9 +304,7 @@ public final class DocumentClassifiersImpl {
     }
 
     /**
-     * Build document classifier
-     *
-     * <p>Builds a custom document classifier.
+     * Builds a custom document classifier.
      *
      * @param buildRequest Building request parameters.
      * @param context The context to associate with this operation.
@@ -326,9 +322,7 @@ public final class DocumentClassifiersImpl {
     }
 
     /**
-     * Build document classifier
-     *
-     * <p>Builds a custom document classifier.
+     * Builds a custom document classifier.
      *
      * @param buildRequest Building request parameters.
      * @param context The context to associate with this operation.
@@ -346,9 +340,7 @@ public final class DocumentClassifiersImpl {
     }
 
     /**
-     * Build document classifier
-     *
-     * <p>Builds a custom document classifier.
+     * Builds a custom document classifier.
      *
      * @param buildRequest Building request parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -371,9 +363,7 @@ public final class DocumentClassifiersImpl {
     }
 
     /**
-     * Build document classifier
-     *
-     * <p>Builds a custom document classifier.
+     * Builds a custom document classifier.
      *
      * @param buildRequest Building request parameters.
      * @param context The context to associate with this operation.
@@ -398,9 +388,7 @@ public final class DocumentClassifiersImpl {
     }
 
     /**
-     * Build document classifier
-     *
-     * <p>Builds a custom document classifier.
+     * Builds a custom document classifier.
      *
      * @param buildRequest Building request parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -423,9 +411,7 @@ public final class DocumentClassifiersImpl {
     }
 
     /**
-     * Build document classifier
-     *
-     * <p>Builds a custom document classifier.
+     * Builds a custom document classifier.
      *
      * @param buildRequest Building request parameters.
      * @param context The context to associate with this operation.
@@ -450,9 +436,7 @@ public final class DocumentClassifiersImpl {
     }
 
     /**
-     * List document classifiers
-     *
-     * <p>List all document classifiers.
+     * List all document classifiers.
      *
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -478,9 +462,7 @@ public final class DocumentClassifiersImpl {
     }
 
     /**
-     * List document classifiers
-     *
-     * <p>List all document classifiers.
+     * List all document classifiers.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -505,9 +487,7 @@ public final class DocumentClassifiersImpl {
     }
 
     /**
-     * List document classifiers
-     *
-     * <p>List all document classifiers.
+     * List all document classifiers.
      *
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -520,9 +500,7 @@ public final class DocumentClassifiersImpl {
     }
 
     /**
-     * List document classifiers
-     *
-     * <p>List all document classifiers.
+     * List all document classifiers.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -538,9 +516,7 @@ public final class DocumentClassifiersImpl {
     }
 
     /**
-     * List document classifiers
-     *
-     * <p>List all document classifiers.
+     * List all document classifiers.
      *
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -562,9 +538,7 @@ public final class DocumentClassifiersImpl {
     }
 
     /**
-     * List document classifiers
-     *
-     * <p>List all document classifiers.
+     * List all document classifiers.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -587,9 +561,7 @@ public final class DocumentClassifiersImpl {
     }
 
     /**
-     * List document classifiers
-     *
-     * <p>List all document classifiers.
+     * List all document classifiers.
      *
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -602,9 +574,7 @@ public final class DocumentClassifiersImpl {
     }
 
     /**
-     * List document classifiers
-     *
-     * <p>List all document classifiers.
+     * List all document classifiers.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -619,9 +589,7 @@ public final class DocumentClassifiersImpl {
     }
 
     /**
-     * Get document classifier
-     *
-     * <p>Gets detailed document classifier information.
+     * Gets detailed document classifier information.
      *
      * @param classifierId Unique document classifier name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -640,9 +608,7 @@ public final class DocumentClassifiersImpl {
     }
 
     /**
-     * Get document classifier
-     *
-     * <p>Gets detailed document classifier information.
+     * Gets detailed document classifier information.
      *
      * @param classifierId Unique document classifier name.
      * @param context The context to associate with this operation.
@@ -661,9 +627,7 @@ public final class DocumentClassifiersImpl {
     }
 
     /**
-     * Get document classifier
-     *
-     * <p>Gets detailed document classifier information.
+     * Gets detailed document classifier information.
      *
      * @param classifierId Unique document classifier name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -677,9 +641,7 @@ public final class DocumentClassifiersImpl {
     }
 
     /**
-     * Get document classifier
-     *
-     * <p>Gets detailed document classifier information.
+     * Gets detailed document classifier information.
      *
      * @param classifierId Unique document classifier name.
      * @param context The context to associate with this operation.
@@ -694,9 +656,7 @@ public final class DocumentClassifiersImpl {
     }
 
     /**
-     * Get document classifier
-     *
-     * <p>Gets detailed document classifier information.
+     * Gets detailed document classifier information.
      *
      * @param classifierId Unique document classifier name.
      * @param context The context to associate with this operation.
@@ -713,9 +673,7 @@ public final class DocumentClassifiersImpl {
     }
 
     /**
-     * Get document classifier
-     *
-     * <p>Gets detailed document classifier information.
+     * Gets detailed document classifier information.
      *
      * @param classifierId Unique document classifier name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -729,9 +687,7 @@ public final class DocumentClassifiersImpl {
     }
 
     /**
-     * Delete document classifier
-     *
-     * <p>Deletes document classifier.
+     * Deletes document classifier.
      *
      * @param classifierId Unique document classifier name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -749,9 +705,7 @@ public final class DocumentClassifiersImpl {
     }
 
     /**
-     * Delete document classifier
-     *
-     * <p>Deletes document classifier.
+     * Deletes document classifier.
      *
      * @param classifierId Unique document classifier name.
      * @param context The context to associate with this operation.
@@ -768,9 +722,7 @@ public final class DocumentClassifiersImpl {
     }
 
     /**
-     * Delete document classifier
-     *
-     * <p>Deletes document classifier.
+     * Deletes document classifier.
      *
      * @param classifierId Unique document classifier name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -784,9 +736,7 @@ public final class DocumentClassifiersImpl {
     }
 
     /**
-     * Delete document classifier
-     *
-     * <p>Deletes document classifier.
+     * Deletes document classifier.
      *
      * @param classifierId Unique document classifier name.
      * @param context The context to associate with this operation.
@@ -801,9 +751,7 @@ public final class DocumentClassifiersImpl {
     }
 
     /**
-     * Delete document classifier
-     *
-     * <p>Deletes document classifier.
+     * Deletes document classifier.
      *
      * @param classifierId Unique document classifier name.
      * @param context The context to associate with this operation.
@@ -820,9 +768,7 @@ public final class DocumentClassifiersImpl {
     }
 
     /**
-     * Delete document classifier
-     *
-     * <p>Deletes document classifier.
+     * Deletes document classifier.
      *
      * @param classifierId Unique document classifier name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -835,9 +781,7 @@ public final class DocumentClassifiersImpl {
     }
 
     /**
-     * Classify document
-     *
-     * <p>Classifies document with document classifier.
+     * Classifies document with document classifier.
      *
      * @param classifierId Unique document classifier name.
      * @param stringIndexType Method used to compute string offset and length.
@@ -864,9 +808,7 @@ public final class DocumentClassifiersImpl {
     }
 
     /**
-     * Classify document
-     *
-     * <p>Classifies document with document classifier.
+     * Classifies document with document classifier.
      *
      * @param classifierId Unique document classifier name.
      * @param stringIndexType Method used to compute string offset and length.
@@ -895,9 +837,7 @@ public final class DocumentClassifiersImpl {
     }
 
     /**
-     * Classify document
-     *
-     * <p>Classifies document with document classifier.
+     * Classifies document with document classifier.
      *
      * @param classifierId Unique document classifier name.
      * @param stringIndexType Method used to compute string offset and length.
@@ -926,9 +866,7 @@ public final class DocumentClassifiersImpl {
     }
 
     /**
-     * Classify document
-     *
-     * <p>Classifies document with document classifier.
+     * Classifies document with document classifier.
      *
      * @param classifierId Unique document classifier name.
      * @param stringIndexType Method used to compute string offset and length.
@@ -954,9 +892,7 @@ public final class DocumentClassifiersImpl {
     }
 
     /**
-     * Classify document
-     *
-     * <p>Classifies document with document classifier.
+     * Classifies document with document classifier.
      *
      * @param classifierId Unique document classifier name.
      * @param stringIndexType Method used to compute string offset and length.
@@ -986,9 +922,7 @@ public final class DocumentClassifiersImpl {
     }
 
     /**
-     * Classify document
-     *
-     * <p>Classifies document with document classifier.
+     * Classifies document with document classifier.
      *
      * @param classifierId Unique document classifier name.
      * @param stringIndexType Method used to compute string offset and length.
@@ -1014,9 +948,7 @@ public final class DocumentClassifiersImpl {
     }
 
     /**
-     * Classify document
-     *
-     * <p>Classifies document with document classifier.
+     * Classifies document with document classifier.
      *
      * @param classifierId Unique document classifier name.
      * @param stringIndexType Method used to compute string offset and length.
@@ -1046,9 +978,7 @@ public final class DocumentClassifiersImpl {
     }
 
     /**
-     * Classify document
-     *
-     * <p>Classifies document with document classifier.
+     * Classifies document with document classifier.
      *
      * @param classifierId Unique document classifier name.
      * @param contentType Upload file type.
@@ -1083,9 +1013,7 @@ public final class DocumentClassifiersImpl {
     }
 
     /**
-     * Classify document
-     *
-     * <p>Classifies document with document classifier.
+     * Classifies document with document classifier.
      *
      * @param classifierId Unique document classifier name.
      * @param contentType Upload file type.
@@ -1120,9 +1048,7 @@ public final class DocumentClassifiersImpl {
     }
 
     /**
-     * Classify document
-     *
-     * <p>Classifies document with document classifier.
+     * Classifies document with document classifier.
      *
      * @param classifierId Unique document classifier name.
      * @param contentType Upload file type.
@@ -1156,9 +1082,7 @@ public final class DocumentClassifiersImpl {
     }
 
     /**
-     * Classify document
-     *
-     * <p>Classifies document with document classifier.
+     * Classifies document with document classifier.
      *
      * @param classifierId Unique document classifier name.
      * @param contentType Upload file type.
@@ -1194,9 +1118,7 @@ public final class DocumentClassifiersImpl {
     }
 
     /**
-     * Classify document
-     *
-     * <p>Classifies document with document classifier.
+     * Classifies document with document classifier.
      *
      * @param classifierId Unique document classifier name.
      * @param contentType Upload file type.
@@ -1231,9 +1153,7 @@ public final class DocumentClassifiersImpl {
     }
 
     /**
-     * Classify document
-     *
-     * <p>Classifies document with document classifier.
+     * Classifies document with document classifier.
      *
      * @param classifierId Unique document classifier name.
      * @param contentType Upload file type.
@@ -1268,9 +1188,7 @@ public final class DocumentClassifiersImpl {
     }
 
     /**
-     * Classify document
-     *
-     * <p>Classifies document with document classifier.
+     * Classifies document with document classifier.
      *
      * @param classifierId Unique document classifier name.
      * @param contentType Upload file type.
@@ -1305,9 +1223,7 @@ public final class DocumentClassifiersImpl {
     }
 
     /**
-     * Classify document
-     *
-     * <p>Classifies document with document classifier.
+     * Classifies document with document classifier.
      *
      * @param classifierId Unique document classifier name.
      * @param contentType Upload file type.
@@ -1341,9 +1257,7 @@ public final class DocumentClassifiersImpl {
     }
 
     /**
-     * Classify document
-     *
-     * <p>Classifies document with document classifier.
+     * Classifies document with document classifier.
      *
      * @param classifierId Unique document classifier name.
      * @param contentType Upload file type.
@@ -1379,9 +1293,7 @@ public final class DocumentClassifiersImpl {
     }
 
     /**
-     * Classify document
-     *
-     * <p>Classifies document with document classifier.
+     * Classifies document with document classifier.
      *
      * @param classifierId Unique document classifier name.
      * @param contentType Upload file type.
@@ -1420,9 +1332,7 @@ public final class DocumentClassifiersImpl {
     }
 
     /**
-     * Classify document
-     *
-     * <p>Classifies document with document classifier.
+     * Classifies document with document classifier.
      *
      * @param classifierId Unique document classifier name.
      * @param contentType Upload file type.
@@ -1458,9 +1368,7 @@ public final class DocumentClassifiersImpl {
     }
 
     /**
-     * Classify document
-     *
-     * <p>Classifies document with document classifier.
+     * Classifies document with document classifier.
      *
      * @param classifierId Unique document classifier name.
      * @param stringIndexType Method used to compute string offset and length.
@@ -1487,9 +1395,7 @@ public final class DocumentClassifiersImpl {
     }
 
     /**
-     * Classify document
-     *
-     * <p>Classifies document with document classifier.
+     * Classifies document with document classifier.
      *
      * @param classifierId Unique document classifier name.
      * @param stringIndexType Method used to compute string offset and length.
@@ -1515,9 +1421,7 @@ public final class DocumentClassifiersImpl {
     }
 
     /**
-     * Classify document
-     *
-     * <p>Classifies document with document classifier.
+     * Classifies document with document classifier.
      *
      * @param classifierId Unique document classifier name.
      * @param stringIndexType Method used to compute string offset and length.
@@ -1543,9 +1447,7 @@ public final class DocumentClassifiersImpl {
     }
 
     /**
-     * Classify document
-     *
-     * <p>Classifies document with document classifier.
+     * Classifies document with document classifier.
      *
      * @param classifierId Unique document classifier name.
      * @param stringIndexType Method used to compute string offset and length.
@@ -1571,9 +1473,7 @@ public final class DocumentClassifiersImpl {
     }
 
     /**
-     * Classify document
-     *
-     * <p>Classifies document with document classifier.
+     * Classifies document with document classifier.
      *
      * @param classifierId Unique document classifier name.
      * @param stringIndexType Method used to compute string offset and length.
@@ -1600,9 +1500,7 @@ public final class DocumentClassifiersImpl {
     }
 
     /**
-     * Classify document
-     *
-     * <p>Classifies document with document classifier.
+     * Classifies document with document classifier.
      *
      * @param classifierId Unique document classifier name.
      * @param stringIndexType Method used to compute string offset and length.
@@ -1628,9 +1526,7 @@ public final class DocumentClassifiersImpl {
     }
 
     /**
-     * Classify document
-     *
-     * <p>Classifies document with document classifier.
+     * Classifies document with document classifier.
      *
      * @param classifierId Unique document classifier name.
      * @param stringIndexType Method used to compute string offset and length.
@@ -1657,9 +1553,7 @@ public final class DocumentClassifiersImpl {
     }
 
     /**
-     * Get document classifier result
-     *
-     * <p>Gets the result of document classifier.
+     * Gets the result of document classifier.
      *
      * @param classifierId Unique document classifier name.
      * @param resultId Analyze operation result ID.
@@ -1684,9 +1578,7 @@ public final class DocumentClassifiersImpl {
     }
 
     /**
-     * Get document classifier result
-     *
-     * <p>Gets the result of document classifier.
+     * Gets the result of document classifier.
      *
      * @param classifierId Unique document classifier name.
      * @param resultId Analyze operation result ID.
@@ -1705,9 +1597,7 @@ public final class DocumentClassifiersImpl {
     }
 
     /**
-     * Get document classifier result
-     *
-     * <p>Gets the result of document classifier.
+     * Gets the result of document classifier.
      *
      * @param classifierId Unique document classifier name.
      * @param resultId Analyze operation result ID.
@@ -1723,9 +1613,7 @@ public final class DocumentClassifiersImpl {
     }
 
     /**
-     * Get document classifier result
-     *
-     * <p>Gets the result of document classifier.
+     * Gets the result of document classifier.
      *
      * @param classifierId Unique document classifier name.
      * @param resultId Analyze operation result ID.
@@ -1742,9 +1630,7 @@ public final class DocumentClassifiersImpl {
     }
 
     /**
-     * Get document classifier result
-     *
-     * <p>Gets the result of document classifier.
+     * Gets the result of document classifier.
      *
      * @param classifierId Unique document classifier name.
      * @param resultId Analyze operation result ID.
@@ -1763,9 +1649,7 @@ public final class DocumentClassifiersImpl {
     }
 
     /**
-     * Get document classifier result
-     *
-     * <p>Gets the result of document classifier.
+     * Gets the result of document classifier.
      *
      * @param classifierId Unique document classifier name.
      * @param resultId Analyze operation result ID.

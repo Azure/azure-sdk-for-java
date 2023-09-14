@@ -12,13 +12,12 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class SchemaContractProperties {
     /*
-     * Must be a valid a media type used in a Content-Type header as defined in
-     * the RFC 2616. Media type of the schema document (e.g. application/json,
-     * application/xml). </br> - `Swagger` Schema use
-     * `application/vnd.ms-azure-apim.swagger.definitions+json` </br> - `WSDL`
-     * Schema use `application/vnd.ms-azure-apim.xsd+xml` </br> - `OpenApi`
-     * Schema use `application/vnd.oai.openapi.components+json` </br> - `WADL
-     * Schema` use `application/vnd.ms-azure-apim.wadl.grammars+xml`.
+     * Must be a valid a media type used in a Content-Type header as defined in the RFC 2616. Media type of the schema
+     * document (e.g. application/json, application/xml). </br> - `Swagger` Schema use
+     * `application/vnd.ms-azure-apim.swagger.definitions+json` </br> - `WSDL` Schema use
+     * `application/vnd.ms-azure-apim.xsd+xml` </br> - `OpenApi` Schema use
+     * `application/vnd.oai.openapi.components+json` </br> - `WADL Schema` use
+     * `application/vnd.ms-azure-apim.wadl.grammars+xml`.
      */
     @JsonProperty(value = "contentType", required = true)
     private String contentType;
@@ -26,8 +25,12 @@ public final class SchemaContractProperties {
     /*
      * Create or update Properties of the API Schema Document.
      */
-    @JsonProperty(value = "document")
-    private SchemaDocumentProperties innerDocument;
+    @JsonProperty(value = "document", required = true)
+    private SchemaDocumentProperties innerDocument = new SchemaDocumentProperties();
+
+    /** Creates an instance of SchemaContractProperties class. */
+    public SchemaContractProperties() {
+    }
 
     /**
      * Get the contentType property: Must be a valid a media type used in a Content-Type header as defined in the RFC
@@ -151,7 +154,12 @@ public final class SchemaContractProperties {
                     new IllegalArgumentException(
                         "Missing required property contentType in model SchemaContractProperties"));
         }
-        if (innerDocument() != null) {
+        if (innerDocument() == null) {
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property innerDocument in model SchemaContractProperties"));
+        } else {
             innerDocument().validate();
         }
     }

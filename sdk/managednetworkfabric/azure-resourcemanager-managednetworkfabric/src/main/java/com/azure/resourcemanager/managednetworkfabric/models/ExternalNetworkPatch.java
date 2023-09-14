@@ -58,7 +58,7 @@ public final class ExternalNetworkPatch {
      *
      * @return the optionBProperties value.
      */
-    public OptionBProperties optionBProperties() {
+    public L3OptionBProperties optionBProperties() {
         return this.innerProperties() == null ? null : this.innerProperties().optionBProperties();
     }
 
@@ -68,7 +68,7 @@ public final class ExternalNetworkPatch {
      * @param optionBProperties the optionBProperties value to set.
      * @return the ExternalNetworkPatch object itself.
      */
-    public ExternalNetworkPatch withOptionBProperties(OptionBProperties optionBProperties) {
+    public ExternalNetworkPatch withOptionBProperties(L3OptionBProperties optionBProperties) {
         if (this.innerProperties() == null) {
             this.innerProperties = new ExternalNetworkPatchProperties();
         }
@@ -81,7 +81,7 @@ public final class ExternalNetworkPatch {
      *
      * @return the optionAProperties value.
      */
-    public Layer3OptionAProperties optionAProperties() {
+    public ExternalNetworkPatchPropertiesOptionAProperties optionAProperties() {
         return this.innerProperties() == null ? null : this.innerProperties().optionAProperties();
     }
 
@@ -91,7 +91,8 @@ public final class ExternalNetworkPatch {
      * @param optionAProperties the optionAProperties value to set.
      * @return the ExternalNetworkPatch object itself.
      */
-    public ExternalNetworkPatch withOptionAProperties(Layer3OptionAProperties optionAProperties) {
+    public ExternalNetworkPatch withOptionAProperties(
+        ExternalNetworkPatchPropertiesOptionAProperties optionAProperties) {
         if (this.innerProperties() == null) {
             this.innerProperties = new ExternalNetworkPatchProperties();
         }
@@ -100,7 +101,8 @@ public final class ExternalNetworkPatch {
     }
 
     /**
-     * Get the importRoutePolicyId property: ARM resource ID of importRoutePolicy.
+     * Get the importRoutePolicyId property: ARM Resource ID of the RoutePolicy. This is used for the backward
+     * compatibility.
      *
      * @return the importRoutePolicyId value.
      */
@@ -109,7 +111,8 @@ public final class ExternalNetworkPatch {
     }
 
     /**
-     * Set the importRoutePolicyId property: ARM resource ID of importRoutePolicy.
+     * Set the importRoutePolicyId property: ARM Resource ID of the RoutePolicy. This is used for the backward
+     * compatibility.
      *
      * @param importRoutePolicyId the importRoutePolicyId value to set.
      * @return the ExternalNetworkPatch object itself.
@@ -123,7 +126,8 @@ public final class ExternalNetworkPatch {
     }
 
     /**
-     * Get the exportRoutePolicyId property: ARM resource ID of exportRoutePolicy.
+     * Get the exportRoutePolicyId property: ARM Resource ID of the RoutePolicy. This is used for the backward
+     * compatibility.
      *
      * @return the exportRoutePolicyId value.
      */
@@ -132,7 +136,8 @@ public final class ExternalNetworkPatch {
     }
 
     /**
-     * Set the exportRoutePolicyId property: ARM resource ID of exportRoutePolicy.
+     * Set the exportRoutePolicyId property: ARM Resource ID of the RoutePolicy. This is used for the backward
+     * compatibility.
      *
      * @param exportRoutePolicyId the exportRoutePolicyId value to set.
      * @return the ExternalNetworkPatch object itself.
@@ -142,6 +147,52 @@ public final class ExternalNetworkPatch {
             this.innerProperties = new ExternalNetworkPatchProperties();
         }
         this.innerProperties().withExportRoutePolicyId(exportRoutePolicyId);
+        return this;
+    }
+
+    /**
+     * Get the importRoutePolicy property: Import Route Policy either IPv4 or IPv6.
+     *
+     * @return the importRoutePolicy value.
+     */
+    public ImportRoutePolicy importRoutePolicy() {
+        return this.innerProperties() == null ? null : this.innerProperties().importRoutePolicy();
+    }
+
+    /**
+     * Set the importRoutePolicy property: Import Route Policy either IPv4 or IPv6.
+     *
+     * @param importRoutePolicy the importRoutePolicy value to set.
+     * @return the ExternalNetworkPatch object itself.
+     */
+    public ExternalNetworkPatch withImportRoutePolicy(ImportRoutePolicy importRoutePolicy) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ExternalNetworkPatchProperties();
+        }
+        this.innerProperties().withImportRoutePolicy(importRoutePolicy);
+        return this;
+    }
+
+    /**
+     * Get the exportRoutePolicy property: Export Route Policy either IPv4 or IPv6.
+     *
+     * @return the exportRoutePolicy value.
+     */
+    public ExportRoutePolicy exportRoutePolicy() {
+        return this.innerProperties() == null ? null : this.innerProperties().exportRoutePolicy();
+    }
+
+    /**
+     * Set the exportRoutePolicy property: Export Route Policy either IPv4 or IPv6.
+     *
+     * @param exportRoutePolicy the exportRoutePolicy value to set.
+     * @return the ExternalNetworkPatch object itself.
+     */
+    public ExternalNetworkPatch withExportRoutePolicy(ExportRoutePolicy exportRoutePolicy) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ExternalNetworkPatchProperties();
+        }
+        this.innerProperties().withExportRoutePolicy(exportRoutePolicy);
         return this;
     }
 

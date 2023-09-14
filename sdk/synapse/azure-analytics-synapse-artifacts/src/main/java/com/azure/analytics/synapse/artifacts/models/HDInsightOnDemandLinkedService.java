@@ -227,6 +227,12 @@ public class HDInsightOnDemandLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties.subnetName")
     private Object subnetName;
 
+    /*
+     * The credential reference containing authentication information.
+     */
+    @JsonProperty(value = "typeProperties.credential")
+    private CredentialReference credential;
+
     /** Creates an instance of HDInsightOnDemandLinkedService class. */
     public HDInsightOnDemandLinkedService() {}
 
@@ -943,6 +949,26 @@ public class HDInsightOnDemandLinkedService extends LinkedService {
      */
     public HDInsightOnDemandLinkedService setSubnetName(Object subnetName) {
         this.subnetName = subnetName;
+        return this;
+    }
+
+    /**
+     * Get the credential property: The credential reference containing authentication information.
+     *
+     * @return the credential value.
+     */
+    public CredentialReference getCredential() {
+        return this.credential;
+    }
+
+    /**
+     * Set the credential property: The credential reference containing authentication information.
+     *
+     * @param credential the credential value to set.
+     * @return the HDInsightOnDemandLinkedService object itself.
+     */
+    public HDInsightOnDemandLinkedService setCredential(CredentialReference credential) {
+        this.credential = credential;
         return this;
     }
 

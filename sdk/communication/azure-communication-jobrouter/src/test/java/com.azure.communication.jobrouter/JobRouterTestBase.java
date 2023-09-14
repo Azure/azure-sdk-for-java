@@ -5,12 +5,16 @@ package com.azure.communication.jobrouter;
 
 import com.azure.communication.common.implementation.CommunicationConnectionString;
 import com.azure.communication.common.implementation.HmacAuthenticationPolicy;
+import com.azure.communication.jobrouter.models.CreateDistributionPolicyOptions;
+import com.azure.communication.jobrouter.models.CreateJobOptions;
+import com.azure.communication.jobrouter.models.CreateQueueOptions;
 import com.azure.communication.jobrouter.models.DistributionPolicy;
-import com.azure.communication.jobrouter.models.JobQueue;
+import com.azure.communication.jobrouter.models.LabelOperator;
 import com.azure.communication.jobrouter.models.LabelValue;
 import com.azure.communication.jobrouter.models.LongestIdleMode;
-import com.azure.communication.jobrouter.models.options.CreateDistributionPolicyOptions;
-import com.azure.communication.jobrouter.models.options.CreateQueueOptions;
+import com.azure.communication.jobrouter.models.RouterJob;
+import com.azure.communication.jobrouter.models.RouterQueue;
+import com.azure.communication.jobrouter.models.RouterWorkerSelector;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
@@ -46,22 +50,22 @@ class JobRouterTestBase extends TestProxyTestBase {
         return connectionString;
     }
 
-    protected RouterAdministrationClient getRouterAdministrationClient(HttpClient client) {
+    protected JobRouterAdministrationClient getRouterAdministrationClient(HttpClient client) {
         HttpPipeline httpPipeline = buildHttpPipeline(client);
-        RouterAdministrationClient routerAdministrationClient = new RouterAdministrationClientBuilder()
+        JobRouterAdministrationClient jobRouterAdministrationClient = new JobRouterAdministrationClientBuilder()
             .connectionString(getConnectionString())
             .pipeline(httpPipeline)
             .buildClient();
-        return routerAdministrationClient;
+        return jobRouterAdministrationClient;
     }
 
-    protected RouterClient getRouterClient(HttpClient client) {
+    protected JobRouterClient getRouterClient(HttpClient client) {
         HttpPipeline httpPipeline = buildHttpPipeline(client);
-        RouterClient routerClient = new RouterClientBuilder()
+        JobRouterClient jobRouterClient = new JobRouterClientBuilder()
             .connectionString(getConnectionString())
             .pipeline(httpPipeline)
             .buildClient();
-        return routerClient;
+        return jobRouterClient;
     }
 
     private HttpPipeline buildHttpPipeline(HttpClient httpClient) {
@@ -103,7 +107,7 @@ class JobRouterTestBase extends TestProxyTestBase {
             Arrays.asList("x-ms-hmac-string-to-sign-base64"))));
     }
 
-    protected JobQueue createQueue(RouterAdministrationClient routerAdminClient, String queueId, String distributionPolicyId) {
+    protected RouterQueue createQueue(JobRouterAdministrationClient routerAdminClient, String queueId, String distributionPolicyId) {
         String queueName = String.format("%s-Name", queueId);
         Map<String, LabelValue> queueLabels = new HashMap<String, LabelValue>() {
             {
@@ -118,7 +122,7 @@ class JobRouterTestBase extends TestProxyTestBase {
         return routerAdminClient.createQueue(createQueueOptions);
     }
 
-    protected DistributionPolicy createDistributionPolicy(RouterAdministrationClient routerAdminClient, String id) {
+    protected DistributionPolicy createDistributionPolicy(JobRouterAdministrationClient routerAdminClient, String id) {
         String distributionPolicyName = String.format("%s-Name", id);
 
         CreateDistributionPolicyOptions createDistributionPolicyOptions = new CreateDistributionPolicyOptions(
@@ -131,5 +135,19 @@ class JobRouterTestBase extends TestProxyTestBase {
             .setName(distributionPolicyName);
 
         return routerAdminClient.createDistributionPolicy(createDistributionPolicyOptions);
+    }
+
+    protected RouterJob createJob(JobRouterClient jobRouterClient, String queueId) {
+        CreateJobOptions createJobOptions = new CreateJobOptions("job-id", "chat-channel", queueId)
+            .setPriority(1)
+            .setChannelReference("12345")
+            .setRequestedWorkerSelectors(
+                new ArrayList<RouterWorkerSelector>() {
+                    {
+                        new RouterWorkerSelector("Some-skill", LabelOperator.GREATER_THAN, new LabelValue(10));
+                    }
+                }
+            );
+        return jobRouterClient.createJob(createJobOptions);
     }
 }

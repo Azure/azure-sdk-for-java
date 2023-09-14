@@ -16,10 +16,10 @@ public final class FollowerDatabaseListResultTests {
         FollowerDatabaseListResult model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"clusterResourceId\":\"wzrlovmclwhij\",\"attachedDatabaseConfigurationName\":\"oejctbzaqsqsy\",\"databaseName\":\"kbfkg\",\"tableLevelSharingProperties\":{\"tablesToInclude\":[],\"tablesToExclude\":[],\"externalTablesToInclude\":[],\"externalTablesToExclude\":[],\"materializedViewsToInclude\":[],\"materializedViewsToExclude\":[],\"functionsToInclude\":[],\"functionsToExclude\":[]},\"databaseShareOrigin\":\"DataShare\"},{\"clusterResourceId\":\"xaxcfjpgddtocjjx\",\"attachedDatabaseConfigurationName\":\"vpmouexhdzxib\",\"databaseName\":\"ojnxqbzvdd\",\"tableLevelSharingProperties\":{\"tablesToInclude\":[],\"tablesToExclude\":[],\"externalTablesToInclude\":[],\"externalTablesToExclude\":[],\"materializedViewsToInclude\":[],\"materializedViewsToExclude\":[],\"functionsToInclude\":[],\"functionsToExclude\":[]},\"databaseShareOrigin\":\"Other\"}]}")
+                    "{\"value\":[{\"clusterResourceId\":\"jbznorc\",\"attachedDatabaseConfigurationName\":\"xv\",\"databaseName\":\"byxqabn\",\"tableLevelSharingProperties\":{\"tablesToInclude\":[\"cyshurzafbljjgp\",\"toqcjmklja\"],\"tablesToExclude\":[\"idtqajzyu\",\"pku\",\"jkrlkhbzhfepg\"],\"externalTablesToInclude\":[\"e\"],\"externalTablesToExclude\":[\"ocxscpaierhhbcs\"],\"materializedViewsToInclude\":[\"mmajtjaodx\",\"bnbdxkqpxokajion\",\"imexgstxgcpodgma\"],\"materializedViewsToExclude\":[\"mvdjwzrlovmc\"],\"functionsToInclude\":[\"ijcoejctb\",\"aqsqsycbkbfk\"],\"functionsToExclude\":[\"dkexxppofm\",\"axcfjpgddtocjjx\"]},\"databaseShareOrigin\":\"DataShare\"}]}")
                 .toObject(FollowerDatabaseListResult.class);
-        Assertions.assertEquals("wzrlovmclwhij", model.value().get(0).clusterResourceId());
-        Assertions.assertEquals("oejctbzaqsqsy", model.value().get(0).attachedDatabaseConfigurationName());
+        Assertions.assertEquals("jbznorc", model.value().get(0).clusterResourceId());
+        Assertions.assertEquals("xv", model.value().get(0).attachedDatabaseConfigurationName());
     }
 
     @org.junit.jupiter.api.Test
@@ -30,13 +30,10 @@ public final class FollowerDatabaseListResultTests {
                     Arrays
                         .asList(
                             new FollowerDatabaseDefinitionInner()
-                                .withClusterResourceId("wzrlovmclwhij")
-                                .withAttachedDatabaseConfigurationName("oejctbzaqsqsy"),
-                            new FollowerDatabaseDefinitionInner()
-                                .withClusterResourceId("xaxcfjpgddtocjjx")
-                                .withAttachedDatabaseConfigurationName("vpmouexhdzxib")));
+                                .withClusterResourceId("jbznorc")
+                                .withAttachedDatabaseConfigurationName("xv")));
         model = BinaryData.fromObject(model).toObject(FollowerDatabaseListResult.class);
-        Assertions.assertEquals("wzrlovmclwhij", model.value().get(0).clusterResourceId());
-        Assertions.assertEquals("oejctbzaqsqsy", model.value().get(0).attachedDatabaseConfigurationName());
+        Assertions.assertEquals("jbznorc", model.value().get(0).clusterResourceId());
+        Assertions.assertEquals("xv", model.value().get(0).attachedDatabaseConfigurationName());
     }
 }

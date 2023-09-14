@@ -33,7 +33,7 @@ import java.util.Map;
 /** Samples for SignalR Update. */
 public final class SignalRUpdateSamples {
     /*
-     * x-ms-original-file: specification/signalr/resource-manager/Microsoft.SignalRService/stable/2023-02-01/examples/SignalR_Update.json
+     * x-ms-original-file: specification/signalr/resource-manager/Microsoft.SignalRService/preview/2023-06-01-preview/examples/SignalR_Update.json
      */
     /**
      * Sample code: SignalR_Update.
@@ -48,7 +48,7 @@ public final class SignalRUpdateSamples {
                 .getValue();
         resource
             .update()
-            .withTags(mapOf("key1", "value1"))
+            .withTags(mapOf("key1", "fakeTokenPlaceholder"))
             .withSku(new ResourceSku().withName("Premium_P1").withTier(SignalRSkuTier.PREMIUM).withCapacity(1))
             .withIdentity(new ManagedIdentity().withType(ManagedIdentityType.SYSTEM_ASSIGNED))
             .withTls(new SignalRTlsSettings().withClientCertEnabled(false))
@@ -109,6 +109,7 @@ public final class SignalRUpdateSamples {
             .apply();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

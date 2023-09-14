@@ -32,6 +32,13 @@ public class MongoDbAtlasLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties.database", required = true)
     private Object database;
 
+    /*
+     * The driver version that you want to choose. Allowed value are v1 and v2. Type: string (or Expression with
+     * resultType string).
+     */
+    @JsonProperty(value = "typeProperties.driverVersion")
+    private Object driverVersion;
+
     /** Creates an instance of MongoDbAtlasLinkedService class. */
     public MongoDbAtlasLinkedService() {}
 
@@ -76,6 +83,28 @@ public class MongoDbAtlasLinkedService extends LinkedService {
      */
     public MongoDbAtlasLinkedService setDatabase(Object database) {
         this.database = database;
+        return this;
+    }
+
+    /**
+     * Get the driverVersion property: The driver version that you want to choose. Allowed value are v1 and v2. Type:
+     * string (or Expression with resultType string).
+     *
+     * @return the driverVersion value.
+     */
+    public Object getDriverVersion() {
+        return this.driverVersion;
+    }
+
+    /**
+     * Set the driverVersion property: The driver version that you want to choose. Allowed value are v1 and v2. Type:
+     * string (or Expression with resultType string).
+     *
+     * @param driverVersion the driverVersion value to set.
+     * @return the MongoDbAtlasLinkedService object itself.
+     */
+    public MongoDbAtlasLinkedService setDriverVersion(Object driverVersion) {
+        this.driverVersion = driverVersion;
         return this;
     }
 

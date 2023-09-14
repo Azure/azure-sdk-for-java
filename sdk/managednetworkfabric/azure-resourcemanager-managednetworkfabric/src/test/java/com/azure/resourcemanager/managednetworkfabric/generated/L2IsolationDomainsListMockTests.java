@@ -32,7 +32,7 @@ public final class L2IsolationDomainsListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"networkFabricId\":\"tznabao\",\"vlanId\":1546365499,\"mtu\":1031830968,\"disabledOnResources\":[\"djltymkm\",\"guihywar\",\"spphk\",\"xkykxdssjp\"],\"administrativeState\":\"Disabled\",\"provisioningState\":\"Deleting\",\"annotation\":\"xhikkflrmymyin\"},\"location\":\"lhrisw\",\"tags\":{\"ctotiowlx\":\"iiiovgqcgxuugq\"},\"id\":\"e\",\"name\":\"dptjgwdtgukranb\",\"type\":\"wphqlkccuzgygqw\"}]}";
+            "{\"value\":[{\"properties\":{\"networkFabricId\":\"wtc\",\"vlanId\":1538967498,\"mtu\":1596627228,\"configurationState\":\"Deprovisioned\",\"provisioningState\":\"Succeeded\",\"administrativeState\":\"MAT\",\"annotation\":\"t\"},\"location\":\"ql\",\"tags\":{\"gq\":\"i\",\"dpfvlsqmmetwtla\":\"zk\"},\"id\":\"nkjtefbd\",\"name\":\"nuvhgcgrllyyfsm\",\"type\":\"cbx\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,11 +62,11 @@ public final class L2IsolationDomainsListMockTests {
 
         PagedIterable<L2IsolationDomain> response = manager.l2IsolationDomains().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("lhrisw", response.iterator().next().location());
-        Assertions.assertEquals("iiiovgqcgxuugq", response.iterator().next().tags().get("ctotiowlx"));
-        Assertions.assertEquals("tznabao", response.iterator().next().networkFabricId());
-        Assertions.assertEquals(1546365499, response.iterator().next().vlanId());
-        Assertions.assertEquals(1031830968, response.iterator().next().mtu());
-        Assertions.assertEquals("xhikkflrmymyin", response.iterator().next().annotation());
+        Assertions.assertEquals("ql", response.iterator().next().location());
+        Assertions.assertEquals("i", response.iterator().next().tags().get("gq"));
+        Assertions.assertEquals("wtc", response.iterator().next().networkFabricId());
+        Assertions.assertEquals(1538967498, response.iterator().next().vlanId());
+        Assertions.assertEquals(1596627228, response.iterator().next().mtu());
+        Assertions.assertEquals("t", response.iterator().next().annotation());
     }
 }

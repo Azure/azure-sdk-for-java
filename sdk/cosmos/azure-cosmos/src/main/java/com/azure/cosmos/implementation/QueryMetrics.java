@@ -5,8 +5,10 @@ package com.azure.cosmos.implementation;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.ImmutablePair;
 import com.azure.cosmos.implementation.query.metrics.ClientSideMetrics;
 import com.azure.cosmos.implementation.query.metrics.FetchExecutionRange;
-import com.azure.cosmos.implementation.query.metrics.QueryMetricsTextWriter;
 import com.azure.cosmos.implementation.query.metrics.SchedulingTimeSpan;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.time.Duration;
 import java.util.ArrayList;
@@ -16,11 +18,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.azure.cosmos.implementation.guava27.Strings.lenientFormat;
+
 /**
  * Query metrics in the Azure Cosmos database service.
  * This metric represents a moving average for a set of queries whose metrics have been aggregated together.
  */
 public final class QueryMetrics {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(QueryMetrics.class);
     private final long retrievedDocumentCount;
     private final long retrievedDocumentSize;
     private final long outputDocumentCount;
@@ -196,13 +202,6 @@ public final class QueryMetrics {
         }
     }
 
-    private String toTextString(int indentLevel) {
-        StringBuilder stringBuilder = new StringBuilder();
-        QueryMetricsTextWriter queryMetricsTextWriter = new QueryMetricsTextWriter(stringBuilder);
-        queryMetricsTextWriter.writeQueryMetrics(this);
-        return stringBuilder.toString();
-    }
-
     public static QueryMetrics createFromCollection(Collection<QueryMetrics> queryMetricsCollection) {
         long retrievedDocumentCount = 0;
         long retrievedDocumentSize = 0;
@@ -295,6 +294,15 @@ public final class QueryMetrics {
 
     @Override
     public String toString() {
-        return toTextString(0);
+        try {
+            return Utils.getDurationEnabledObjectMapper().writeValueAsString(this);
+        } catch (final JsonProcessingException error) {
+            LOGGER.debug("could not convert {} value to JSON due to:", this.getClass(), error);
+            try {
+                return lenientFormat("{\"error\":%s}", Utils.getDurationEnabledObjectMapper().writeValueAsString(error.toString()));
+            } catch (final JsonProcessingException exception) {
+                return "null";
+            }
+        }
     }
 }

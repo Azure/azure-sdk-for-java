@@ -44,10 +44,18 @@ public final class EntityRecognitionSkill extends SearchIndexerSkill {
 
     /**
      * Creates an instance of EntityRecognitionSkill class.
+     * <p>
+     * The instance of SentimentSkill uses {@link EntityRecognitionSkillVersion#V1}, to set the specific version of the
+     * skill use {@link #EntityRecognitionSkill(List, List, EntityRecognitionSkillVersion)}.
      *
      * @param inputs the inputs value to set.
      * @param outputs the outputs value to set.
+     * @deprecated Use {@link #EntityRecognitionSkill(List, List, EntityRecognitionSkillVersion)} as
+     * {@link EntityRecognitionSkillVersion#V1} is deprecated. See
+     * <a href="https://learn.microsoft.com/azure/search/cognitive-search-skill-deprecated">skill deprecation</a> for
+     * more information.
      */
+    @Deprecated
     public EntityRecognitionSkill(List<InputFieldMappingEntry> inputs, List<OutputFieldMappingEntry> outputs) {
         this(inputs, outputs, EntityRecognitionSkillVersion.V1);
     }

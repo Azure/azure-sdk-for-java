@@ -13,10 +13,6 @@ import java.util.List;
 /**
  * The helper class to set the non-public properties of an {@link DocumentKeyValueElement} instance.
  */
-
-/**
- * The helper class to set the non-public properties of an {@link DocumentKeyValueElement} instance.
- */
 public final class DocumentKeyValueElementHelper {
     private static DocumentKeyValueElementAccessor accessor;
 

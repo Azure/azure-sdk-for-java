@@ -5,7 +5,9 @@ package com.azure.monitor.opentelemetry.exporter.implementation.pipeline;
 
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.logging.LogLevel;
+import com.azure.monitor.opentelemetry.exporter.implementation.builders.MetricTelemetryBuilder;
 import com.azure.monitor.opentelemetry.exporter.implementation.logging.OperationLogger;
+import com.azure.monitor.opentelemetry.exporter.implementation.models.ContextTagKeys;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.TelemetryItem;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonGenerator;
@@ -13,6 +15,7 @@ import com.fasterxml.jackson.core.io.SerializedString;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import io.opentelemetry.sdk.common.CompletableResultCode;
+import io.opentelemetry.sdk.resources.Resource;
 
 import java.io.IOException;
 import java.io.StringWriter;
@@ -33,6 +36,8 @@ public class TelemetryItemExporter {
     // the number 100 was calculated as the max number of concurrent exports that the single worker
     // thread can drive, so anything higher than this should not increase throughput
     private static final int MAX_CONCURRENT_EXPORTS = 100;
+
+    private static final String _OTELRESOURCE_ = "_OTELRESOURCE_";
 
     private static final ClientLogger logger = new ClientLogger(TelemetryItemExporter.class);
 
@@ -61,29 +66,57 @@ public class TelemetryItemExporter {
 
     private final TelemetryPipeline telemetryPipeline;
     private final TelemetryPipelineListener listener;
+    // TODO (trask) should this be all the resources?
+    private final Resource environmentResource;
 
     private final Set<CompletableResultCode> activeExportResults =
         Collections.newSetFromMap(new ConcurrentHashMap<>());
 
     // e.g. construct with diagnostic listener and local storage listener
     public TelemetryItemExporter(
-        TelemetryPipeline telemetryPipeline, TelemetryPipelineListener listener) {
+            TelemetryPipeline telemetryPipeline, TelemetryPipelineListener listener, Resource environmentResource) {
         this.telemetryPipeline = telemetryPipeline;
         this.listener = listener;
+        this.environmentResource = environmentResource;
     }
 
     public CompletableResultCode send(List<TelemetryItem> telemetryItems) {
+        List<List<TelemetryItem>> result =
+            groupTelemetryItemsByConnectionStringAndRoleName(telemetryItems);
+        List<CompletableResultCode> resultCodeList = new ArrayList<>();
+        for (List<TelemetryItem> batch : result) {
+            resultCodeList.add(
+                internalSendByConnectionStringAndRoleName(batch, batch.get(0).getConnectionString()));
+        }
+        return maybeAddToActiveExportResults(resultCodeList);
+    }
+
+    // visible for tests
+    List<List<TelemetryItem>> groupTelemetryItemsByConnectionStringAndRoleName(
+        List<TelemetryItem> telemetryItems) {
         Map<String, List<TelemetryItem>> groupings = new HashMap<>();
+        // group TelemetryItem by connection string
         for (TelemetryItem telemetryItem : telemetryItems) {
             groupings
                 .computeIfAbsent(telemetryItem.getConnectionString(), k -> new ArrayList<>())
                 .add(telemetryItem);
         }
-        List<CompletableResultCode> resultCodeList = new ArrayList<>();
-        for (Map.Entry<String, List<TelemetryItem>> entry : groupings.entrySet()) {
-            resultCodeList.add(internalSendByConnectionString(entry.getValue(), entry.getKey()));
+
+        // and then group TelemetryItem by role name
+        List<List<TelemetryItem>> result = new ArrayList<>();
+        for (List<TelemetryItem> group : groupings.values()) {
+            Map<String, List<TelemetryItem>> roleNameGroupings = new HashMap<>();
+            for (TelemetryItem telemetryItem : group) {
+                String roleName = "";
+                if (telemetryItem.getTags() != null) { // Statsbeat doesn't have tags
+                    roleName = telemetryItem.getTags().get(ContextTagKeys.AI_CLOUD_ROLE.toString());
+                    roleName = roleName == null ? "" : roleName;
+                }
+                roleNameGroupings.computeIfAbsent(roleName, k -> new ArrayList<>()).add(telemetryItem);
+            }
+            result.addAll(roleNameGroupings.values());
         }
-        return maybeAddToActiveExportResults(resultCodeList);
+        return result;
     }
 
     private CompletableResultCode maybeAddToActiveExportResults(List<CompletableResultCode> results) {
@@ -114,9 +147,18 @@ public class TelemetryItemExporter {
         return listener.shutdown();
     }
 
-    CompletableResultCode internalSendByConnectionString(
+    CompletableResultCode internalSendByConnectionStringAndRoleName(
         List<TelemetryItem> telemetryItems, String connectionString) {
         List<ByteBuffer> byteBuffers;
+
+        // Don't send _OTELRESOURCE_ custom metric when OTEL_RESOURCE_ATTRIBUTES env var is empty
+        // Don't send _OTELRESOURCE_ custom metric to Statsbeat yet
+        // insert _OTELRESOURCE_ at the beginning of each batch
+        if (!environmentResource.getAttributes().isEmpty()
+            && !"Statsbeat".equals(telemetryItems.get(0).getName())) {
+            telemetryItems.add(
+                0, createOtelResourceMetric(telemetryItems.get(0).getTags(), connectionString));
+        }
         try {
             byteBuffers = encode(telemetryItems);
             encodeBatchOperationLogger.recordSuccess();
@@ -127,8 +169,27 @@ public class TelemetryItemExporter {
         return telemetryPipeline.send(byteBuffers, connectionString, listener);
     }
 
-    List<ByteBuffer> encode(List<TelemetryItem> telemetryItems) throws IOException {
+    private TelemetryItem createOtelResourceMetric(
+        Map<String, String> existingTags, String connectionString) {
+        MetricTelemetryBuilder builder = MetricTelemetryBuilder.create(_OTELRESOURCE_, 0);
+        // this is needed in order to stamp iKey onto the telemetry item during serialization
+        builder.setConnectionString(connectionString);
+        builder.addTag(
+            ContextTagKeys.AI_CLOUD_ROLE.toString(),
+            existingTags.get(ContextTagKeys.AI_CLOUD_ROLE.toString()));
+        builder.addTag(
+            ContextTagKeys.AI_CLOUD_ROLE_INSTANCE.toString(),
+            existingTags.get(ContextTagKeys.AI_CLOUD_ROLE_INSTANCE.toString()));
+        builder.addTag(
+            ContextTagKeys.AI_INTERNAL_SDK_VERSION.toString(),
+            existingTags.get(ContextTagKeys.AI_INTERNAL_SDK_VERSION.toString()));
 
+        environmentResource.getAttributes().forEach((k, v) -> builder.addProperty(k.getKey(), v.toString()));
+
+        return builder.build();
+    }
+
+    List<ByteBuffer> encode(List<TelemetryItem> telemetryItems) throws IOException {
         if (logger.canLogAtLevel(LogLevel.VERBOSE)) {
             StringWriter debug = new StringWriter();
             try (JsonGenerator jg = mapper.createGenerator(debug)) {

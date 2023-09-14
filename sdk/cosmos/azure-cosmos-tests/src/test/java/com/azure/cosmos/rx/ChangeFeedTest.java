@@ -91,7 +91,7 @@ public class ChangeFeedTest extends TestSuiteBase {
         subscriberValidationTimeout = TIMEOUT;
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    @Test(groups = { "query" }, timeOut = TIMEOUT)
     public void changeFeed_fromBeginning() throws Exception {
         String partitionKey = partitionKeyToDocuments.keySet().iterator().next();
         Collection<Document> expectedDocuments = partitionKeyToDocuments.get(partitionKey);
@@ -121,7 +121,7 @@ public class ChangeFeedTest extends TestSuiteBase {
         assertThat(count).as("the number of changes").isEqualTo(expectedDocuments.size());
     }
 
-    @Test(groups = { "simple" }, timeOut = 5 * TIMEOUT)
+    @Test(groups = { "query" }, timeOut = 5 * TIMEOUT)
     public void changesFromPartitionKeyRangeId_FromBeginning() {
         List<String> partitionKeyRangeIds = client.readPartitionKeyRanges(getCollectionLink(), null)
                 .flatMap(p -> Flux.fromIterable(p.getResults()), 1)
@@ -165,7 +165,7 @@ public class ChangeFeedTest extends TestSuiteBase {
         assertThat(count).as("the number of changes").isLessThan(partitionKeyToDocuments.size());
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    @Test(groups = { "query" }, timeOut = TIMEOUT)
     public void changeFeed_fromNow() throws Exception {
         // READ change feed from current.
         String partitionKey = partitionKeyToDocuments.keySet().iterator().next();
@@ -287,7 +287,7 @@ public class ChangeFeedTest extends TestSuiteBase {
         changeFeed_withUpdatesAndDelete(false);
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    @Test(groups = { "query" }, timeOut = TIMEOUT)
     public void changeFeed_fromStartDate() throws Exception {
 
         //setStartDateTime is not currently supported in multimaster mode. So skipping the test
@@ -335,7 +335,7 @@ public class ChangeFeedTest extends TestSuiteBase {
         assertThat(count).as("Change feed should have one newly created document").isEqualTo(1);
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    @Test(groups = { "query" }, timeOut = TIMEOUT)
     public void changesFromPartitionKey_AfterInsertingNewDocuments() throws Exception {
         String partitionKey = partitionKeyToDocuments.keySet().iterator().next();
         FeedRange feedRange = new FeedRangePartitionKeyImpl(
@@ -389,7 +389,7 @@ public class ChangeFeedTest extends TestSuiteBase {
             .isNotNull();
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT, enabled = false)
+    @Test(groups = { "query" }, timeOut = TIMEOUT, enabled = false)
     public void changeFeed_fromBeginning_withFeedRangeFiltering() throws Exception {
 
         ArrayList<Range<String>> ranges = new ArrayList<>();
@@ -475,14 +475,14 @@ public class ChangeFeedTest extends TestSuiteBase {
                    .map(ResourceResponse::getResource).collectList().block();
     }
 
-    @AfterMethod(groups = { "simple", "emulator" }, timeOut = SETUP_TIMEOUT)
+    @AfterMethod(groups = { "query", "emulator" }, timeOut = SETUP_TIMEOUT)
     public void removeCollection() {
         if (createdCollection != null) {
             deleteCollection(client, getCollectionLink());
         }
     }
 
-    @BeforeMethod(groups = { "simple", "emulator" }, timeOut = SETUP_TIMEOUT)
+    @BeforeMethod(groups = { "query", "emulator" }, timeOut = SETUP_TIMEOUT)
     public void populateDocuments(Method method) {
 
         checkNotNull(method, "Argument method must not be null.");
@@ -522,14 +522,14 @@ public class ChangeFeedTest extends TestSuiteBase {
         }
     }
 
-    @BeforeClass(groups = { "simple", "emulator" }, timeOut = SETUP_TIMEOUT)
+    @BeforeClass(groups = { "query", "emulator" }, timeOut = SETUP_TIMEOUT)
     public void before_ChangeFeedTest() throws Exception {
         // set up the client
         client = clientBuilder().build();
         createdDatabase = SHARED_DATABASE;
     }
 
-    @AfterClass(groups = { "simple", "emulator" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
+    @AfterClass(groups = { "query", "emulator" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
         safeClose(client);
     }

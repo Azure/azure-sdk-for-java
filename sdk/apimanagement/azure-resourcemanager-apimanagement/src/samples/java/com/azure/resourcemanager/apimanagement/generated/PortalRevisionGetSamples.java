@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.apimanagement.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for PortalRevision Get. */
 public final class PortalRevisionGetSamples {
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementGetPortalRevision.json
+     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementGetPortalRevision.json
      */
     /**
      * Sample code: ApiManagementGetPortalRevision.
@@ -18,6 +16,8 @@ public final class PortalRevisionGetSamples {
      */
     public static void apiManagementGetPortalRevision(
         com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
-        manager.portalRevisions().getWithResponse("rg1", "apimService1", "20201112101010", Context.NONE);
+        manager
+            .portalRevisions()
+            .getWithResponse("rg1", "apimService1", "20201112101010", com.azure.core.util.Context.NONE);
     }
 }

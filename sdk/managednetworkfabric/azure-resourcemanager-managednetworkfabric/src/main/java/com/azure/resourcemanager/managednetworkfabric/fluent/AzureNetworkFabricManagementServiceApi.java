@@ -10,7 +10,7 @@ import java.time.Duration;
 /** The interface for AzureNetworkFabricManagementServiceApi class. */
 public interface AzureNetworkFabricManagementServiceApi {
     /**
-     * Gets The ID of the target subscription.
+     * Gets The ID of the target subscription. The value must be an UUID.
      *
      * @return the subscriptionId value.
      */
@@ -50,6 +50,20 @@ public interface AzureNetworkFabricManagementServiceApi {
      * @return the AccessControlListsClient object.
      */
     AccessControlListsClient getAccessControlLists();
+
+    /**
+     * Gets the InternetGatewaysClient object to access its operations.
+     *
+     * @return the InternetGatewaysClient object.
+     */
+    InternetGatewaysClient getInternetGateways();
+
+    /**
+     * Gets the InternetGatewayRulesClient object to access its operations.
+     *
+     * @return the InternetGatewayRulesClient object.
+     */
+    InternetGatewayRulesClient getInternetGatewayRules();
 
     /**
      * Gets the IpCommunitiesClient object to access its operations.
@@ -101,6 +115,13 @@ public interface AzureNetworkFabricManagementServiceApi {
     ExternalNetworksClient getExternalNetworks();
 
     /**
+     * Gets the NeighborGroupsClient object to access its operations.
+     *
+     * @return the NeighborGroupsClient object.
+     */
+    NeighborGroupsClient getNeighborGroups();
+
+    /**
      * Gets the NetworkDeviceSkusClient object to access its operations.
      *
      * @return the NetworkDeviceSkusClient object.
@@ -150,11 +171,11 @@ public interface AzureNetworkFabricManagementServiceApi {
     NetworkToNetworkInterconnectsClient getNetworkToNetworkInterconnects();
 
     /**
-     * Gets the NetworkRackSkusClient object to access its operations.
+     * Gets the NetworkPacketBrokersClient object to access its operations.
      *
-     * @return the NetworkRackSkusClient object.
+     * @return the NetworkPacketBrokersClient object.
      */
-    NetworkRackSkusClient getNetworkRackSkus();
+    NetworkPacketBrokersClient getNetworkPacketBrokers();
 
     /**
      * Gets the NetworkRacksClient object to access its operations.
@@ -162,6 +183,20 @@ public interface AzureNetworkFabricManagementServiceApi {
      * @return the NetworkRacksClient object.
      */
     NetworkRacksClient getNetworkRacks();
+
+    /**
+     * Gets the NetworkTapRulesClient object to access its operations.
+     *
+     * @return the NetworkTapRulesClient object.
+     */
+    NetworkTapRulesClient getNetworkTapRules();
+
+    /**
+     * Gets the NetworkTapsClient object to access its operations.
+     *
+     * @return the NetworkTapsClient object.
+     */
+    NetworkTapsClient getNetworkTaps();
 
     /**
      * Gets the OperationsClient object to access its operations.

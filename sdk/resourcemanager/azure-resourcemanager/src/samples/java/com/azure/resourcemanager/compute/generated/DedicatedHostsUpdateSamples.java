@@ -13,7 +13,7 @@ import java.util.Map;
 /** Samples for DedicatedHosts Update. */
 public final class DedicatedHostsUpdateSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/dedicatedHostExamples/DedicatedHost_Update_Resize.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-07-01/examples/dedicatedHostExamples/DedicatedHost_Update_Resize.json
      */
     /**
      * Sample code: DedicatedHost_Update_Resize.
@@ -35,7 +35,7 @@ public final class DedicatedHostsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/dedicatedHostExamples/DedicatedHost_Update_MaximumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-07-01/examples/dedicatedHostExamples/DedicatedHost_Update_MaximumSet_Gen.json
      */
     /**
      * Sample code: DedicatedHost_Update_MaximumSet_Gen.
@@ -61,7 +61,7 @@ public final class DedicatedHostsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/dedicatedHostExamples/DedicatedHost_Update_MinimumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-07-01/examples/dedicatedHostExamples/DedicatedHost_Update_MinimumSet_Gen.json
      */
     /**
      * Sample code: DedicatedHost_Update_MinimumSet_Gen.

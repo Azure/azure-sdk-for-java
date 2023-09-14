@@ -4,14 +4,13 @@
 
 package com.azure.resourcemanager.apimanagement.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.apimanagement.models.ApiVersionSetContract;
 import com.azure.resourcemanager.apimanagement.models.VersioningScheme;
 
 /** Samples for ApiVersionSet Update. */
 public final class ApiVersionSetUpdateSamples {
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementUpdateApiVersionSet.json
+     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementUpdateApiVersionSet.json
      */
     /**
      * Sample code: ApiManagementUpdateApiVersionSet.
@@ -21,7 +20,10 @@ public final class ApiVersionSetUpdateSamples {
     public static void apiManagementUpdateApiVersionSet(
         com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
         ApiVersionSetContract resource =
-            manager.apiVersionSets().getWithResponse("rg1", "apimService1", "vs1", Context.NONE).getValue();
+            manager
+                .apiVersionSets()
+                .getWithResponse("rg1", "apimService1", "vs1", com.azure.core.util.Context.NONE)
+                .getValue();
         resource
             .update()
             .withDisplayName("api set 1")

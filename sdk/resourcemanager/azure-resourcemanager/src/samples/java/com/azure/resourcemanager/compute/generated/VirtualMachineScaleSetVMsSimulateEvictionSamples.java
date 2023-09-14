@@ -7,7 +7,7 @@ package com.azure.resourcemanager.compute.generated;
 /** Samples for VirtualMachineScaleSetVMs SimulateEviction. */
 public final class VirtualMachineScaleSetVMsSimulateEvictionSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSetVM_SimulateEviction.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-07-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSetVM_SimulateEviction.json
      */
     /**
      * Sample code: Simulate Eviction a virtual machine.

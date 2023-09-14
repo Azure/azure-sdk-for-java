@@ -33,7 +33,7 @@ public final class DataConnectionsCheckNameAvailabilityWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"nameAvailable\":true,\"name\":\"ixmonstshiyxg\",\"message\":\"lfcldu\",\"reason\":\"AlreadyExists\"}";
+            "{\"nameAvailable\":true,\"name\":\"qyzqedikdfrdb\",\"message\":\"mrjgeihfqlggwfi\",\"reason\":\"AlreadyExists\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -65,16 +65,16 @@ public final class DataConnectionsCheckNameAvailabilityWithResponseMockTests {
             manager
                 .dataConnections()
                 .checkNameAvailabilityWithResponse(
-                    "tdewemxswvruu",
-                    "zzjgehkfki",
-                    "rtixokff",
-                    new DataConnectionCheckNameRequest().withName("yinljqe"),
+                    "jpmcub",
+                    "mifoxxkub",
+                    "phavpmhbrb",
+                    new DataConnectionCheckNameRequest().withName("gvgovpbbttefjo"),
                     com.azure.core.util.Context.NONE)
                 .getValue();
 
         Assertions.assertEquals(true, response.nameAvailable());
-        Assertions.assertEquals("ixmonstshiyxg", response.name());
-        Assertions.assertEquals("lfcldu", response.message());
+        Assertions.assertEquals("qyzqedikdfrdb", response.name());
+        Assertions.assertEquals("mrjgeihfqlggwfi", response.message());
         Assertions.assertEquals(Reason.ALREADY_EXISTS, response.reason());
     }
 }

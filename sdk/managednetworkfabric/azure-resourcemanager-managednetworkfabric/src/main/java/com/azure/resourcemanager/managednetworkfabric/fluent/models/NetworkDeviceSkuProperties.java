@@ -7,14 +7,13 @@ package com.azure.resourcemanager.managednetworkfabric.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.managednetworkfabric.models.DeviceInterfaceProperties;
-import com.azure.resourcemanager.managednetworkfabric.models.DeviceLimits;
 import com.azure.resourcemanager.managednetworkfabric.models.NetworkDeviceRoleName;
 import com.azure.resourcemanager.managednetworkfabric.models.ProvisioningState;
 import com.azure.resourcemanager.managednetworkfabric.models.SupportedVersionProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** NetworkDeviceSkuProperties define the resource properties. */
+/** Network Device SKU Properties defines the properties of the resource. */
 @Fluent
 public final class NetworkDeviceSkuProperties {
     /*
@@ -30,16 +29,10 @@ public final class NetworkDeviceSkuProperties {
     private String manufacturer;
 
     /*
-     * List of network device interfaces.
+     * List of supported version details of network device.
      */
     @JsonProperty(value = "supportedVersions")
     private List<SupportedVersionProperties> supportedVersions;
-
-    /*
-     * Network device limits.
-     */
-    @JsonProperty(value = "limits")
-    private DeviceLimits limits;
 
     /*
      * Available roles for the network device.
@@ -54,7 +47,7 @@ public final class NetworkDeviceSkuProperties {
     private List<DeviceInterfaceProperties> interfaces;
 
     /*
-     * Gets the provisioning state of the resource.
+     * Provisioning state of the resource.
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
@@ -104,7 +97,7 @@ public final class NetworkDeviceSkuProperties {
     }
 
     /**
-     * Get the supportedVersions property: List of network device interfaces.
+     * Get the supportedVersions property: List of supported version details of network device.
      *
      * @return the supportedVersions value.
      */
@@ -113,33 +106,13 @@ public final class NetworkDeviceSkuProperties {
     }
 
     /**
-     * Set the supportedVersions property: List of network device interfaces.
+     * Set the supportedVersions property: List of supported version details of network device.
      *
      * @param supportedVersions the supportedVersions value to set.
      * @return the NetworkDeviceSkuProperties object itself.
      */
     public NetworkDeviceSkuProperties withSupportedVersions(List<SupportedVersionProperties> supportedVersions) {
         this.supportedVersions = supportedVersions;
-        return this;
-    }
-
-    /**
-     * Get the limits property: Network device limits.
-     *
-     * @return the limits value.
-     */
-    public DeviceLimits limits() {
-        return this.limits;
-    }
-
-    /**
-     * Set the limits property: Network device limits.
-     *
-     * @param limits the limits value to set.
-     * @return the NetworkDeviceSkuProperties object itself.
-     */
-    public NetworkDeviceSkuProperties withLimits(DeviceLimits limits) {
-        this.limits = limits;
         return this;
     }
 
@@ -184,7 +157,7 @@ public final class NetworkDeviceSkuProperties {
     }
 
     /**
-     * Get the provisioningState property: Gets the provisioning state of the resource.
+     * Get the provisioningState property: Provisioning state of the resource.
      *
      * @return the provisioningState value.
      */
@@ -206,9 +179,6 @@ public final class NetworkDeviceSkuProperties {
         }
         if (supportedVersions() != null) {
             supportedVersions().forEach(e -> e.validate());
-        }
-        if (limits() != null) {
-            limits().validate();
         }
         if (interfaces() != null) {
             interfaces().forEach(e -> e.validate());

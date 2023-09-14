@@ -6,29 +6,29 @@ package com.azure.resourcemanager.managednetworkfabric.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.managednetworkfabric.models.AnnotationResource;
+import com.azure.resourcemanager.managednetworkfabric.models.ControllerServices;
 import com.azure.resourcemanager.managednetworkfabric.models.ExpressRouteConnectionInformation;
-import com.azure.resourcemanager.managednetworkfabric.models.InfrastructureServices;
+import com.azure.resourcemanager.managednetworkfabric.models.IsWorkloadManagementNetworkEnabled;
 import com.azure.resourcemanager.managednetworkfabric.models.ManagedResourceGroupConfiguration;
-import com.azure.resourcemanager.managednetworkfabric.models.NetworkFabricControllerOperationalState;
+import com.azure.resourcemanager.managednetworkfabric.models.NfcSku;
 import com.azure.resourcemanager.managednetworkfabric.models.ProvisioningState;
-import com.azure.resourcemanager.managednetworkfabric.models.WorkloadServices;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** NetworkFabricControllerProperties define the resource properties. */
+/** NetworkFabricControllerProperties defines the resource properties. */
 @Fluent
 public final class NetworkFabricControllerProperties extends AnnotationResource {
     /*
      * InfrastructureServices IP ranges.
      */
     @JsonProperty(value = "infrastructureServices", access = JsonProperty.Access.WRITE_ONLY)
-    private InfrastructureServices infrastructureServices;
+    private ControllerServices infrastructureServices;
 
     /*
      * WorkloadServices IP ranges.
      */
     @JsonProperty(value = "workloadServices", access = JsonProperty.Access.WRITE_ONLY)
-    private WorkloadServices workloadServices;
+    private ControllerServices workloadServices;
 
     /*
      * Managed Resource Group configuration properties.
@@ -44,10 +44,24 @@ public final class NetworkFabricControllerProperties extends AnnotationResource 
 
     /*
      * A workload management network is required for all the tenant (workload) traffic. This traffic is only dedicated
-     * for Tenant workloads which are required to access internet or any other MSFT/Public endpoints.
+     * for Tenant workloads which are required to access internet or any other MSFT/Public endpoints. This is used for
+     * the backward compatibility.
      */
     @JsonProperty(value = "workloadManagementNetwork", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean workloadManagementNetwork;
+
+    /*
+     * A workload management network is required for all the tenant (workload) traffic. This traffic is only dedicated
+     * for Tenant workloads which are required to access internet or any other MSFT/Public endpoints.
+     */
+    @JsonProperty(value = "isWorkloadManagementNetworkEnabled")
+    private IsWorkloadManagementNetworkEnabled isWorkloadManagementNetworkEnabled;
+
+    /*
+     * List of tenant InternetGateway resource IDs
+     */
+    @JsonProperty(value = "tenantInternetGatewayIds", access = JsonProperty.Access.WRITE_ONLY)
+    private List<String> tenantInternetGatewayIds;
 
     /*
      * IPv4 Network Fabric Controller Address Space.
@@ -62,10 +76,10 @@ public final class NetworkFabricControllerProperties extends AnnotationResource 
     private String ipv6AddressSpace;
 
     /*
-     * The Operational Status would always be NULL. Look only in to the Provisioning state for the latest status.
+     * Network Fabric Controller SKU.
      */
-    @JsonProperty(value = "operationalState", access = JsonProperty.Access.WRITE_ONLY)
-    private NetworkFabricControllerOperationalState operationalState;
+    @JsonProperty(value = "nfcSku")
+    private NfcSku nfcSku;
 
     /*
      * Provides you the latest status of the NFC service, whether it is Accepted, updating, Succeeded or Failed. During
@@ -97,7 +111,7 @@ public final class NetworkFabricControllerProperties extends AnnotationResource 
      *
      * @return the infrastructureServices value.
      */
-    public InfrastructureServices infrastructureServices() {
+    public ControllerServices infrastructureServices() {
         return this.infrastructureServices;
     }
 
@@ -106,7 +120,7 @@ public final class NetworkFabricControllerProperties extends AnnotationResource 
      *
      * @return the workloadServices value.
      */
-    public WorkloadServices workloadServices() {
+    public ControllerServices workloadServices() {
         return this.workloadServices;
     }
 
@@ -144,12 +158,46 @@ public final class NetworkFabricControllerProperties extends AnnotationResource 
     /**
      * Get the workloadManagementNetwork property: A workload management network is required for all the tenant
      * (workload) traffic. This traffic is only dedicated for Tenant workloads which are required to access internet or
-     * any other MSFT/Public endpoints.
+     * any other MSFT/Public endpoints. This is used for the backward compatibility.
      *
      * @return the workloadManagementNetwork value.
      */
     public Boolean workloadManagementNetwork() {
         return this.workloadManagementNetwork;
+    }
+
+    /**
+     * Get the isWorkloadManagementNetworkEnabled property: A workload management network is required for all the tenant
+     * (workload) traffic. This traffic is only dedicated for Tenant workloads which are required to access internet or
+     * any other MSFT/Public endpoints.
+     *
+     * @return the isWorkloadManagementNetworkEnabled value.
+     */
+    public IsWorkloadManagementNetworkEnabled isWorkloadManagementNetworkEnabled() {
+        return this.isWorkloadManagementNetworkEnabled;
+    }
+
+    /**
+     * Set the isWorkloadManagementNetworkEnabled property: A workload management network is required for all the tenant
+     * (workload) traffic. This traffic is only dedicated for Tenant workloads which are required to access internet or
+     * any other MSFT/Public endpoints.
+     *
+     * @param isWorkloadManagementNetworkEnabled the isWorkloadManagementNetworkEnabled value to set.
+     * @return the NetworkFabricControllerProperties object itself.
+     */
+    public NetworkFabricControllerProperties withIsWorkloadManagementNetworkEnabled(
+        IsWorkloadManagementNetworkEnabled isWorkloadManagementNetworkEnabled) {
+        this.isWorkloadManagementNetworkEnabled = isWorkloadManagementNetworkEnabled;
+        return this;
+    }
+
+    /**
+     * Get the tenantInternetGatewayIds property: List of tenant InternetGateway resource IDs.
+     *
+     * @return the tenantInternetGatewayIds value.
+     */
+    public List<String> tenantInternetGatewayIds() {
+        return this.tenantInternetGatewayIds;
     }
 
     /**
@@ -193,13 +241,23 @@ public final class NetworkFabricControllerProperties extends AnnotationResource 
     }
 
     /**
-     * Get the operationalState property: The Operational Status would always be NULL. Look only in to the Provisioning
-     * state for the latest status.
+     * Get the nfcSku property: Network Fabric Controller SKU.
      *
-     * @return the operationalState value.
+     * @return the nfcSku value.
      */
-    public NetworkFabricControllerOperationalState operationalState() {
-        return this.operationalState;
+    public NfcSku nfcSku() {
+        return this.nfcSku;
+    }
+
+    /**
+     * Set the nfcSku property: Network Fabric Controller SKU.
+     *
+     * @param nfcSku the nfcSku value to set.
+     * @return the NetworkFabricControllerProperties object itself.
+     */
+    public NetworkFabricControllerProperties withNfcSku(NfcSku nfcSku) {
+        this.nfcSku = nfcSku;
+        return this;
     }
 
     /**

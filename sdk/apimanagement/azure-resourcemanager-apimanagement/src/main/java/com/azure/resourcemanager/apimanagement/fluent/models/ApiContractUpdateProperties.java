@@ -31,10 +31,9 @@ public final class ApiContractUpdateProperties extends ApiEntityBaseContract {
     private String serviceUrl;
 
     /*
-     * Relative URL uniquely identifying this API and all of its resource paths
-     * within the API Management service instance. It is appended to the API
-     * endpoint base URL specified during the service instance creation to form
-     * a public URL for this API.
+     * Relative URL uniquely identifying this API and all of its resource paths within the API Management service
+     * instance. It is appended to the API endpoint base URL specified during the service instance creation to form a
+     * public URL for this API.
      */
     @JsonProperty(value = "path")
     private String path;
@@ -44,6 +43,10 @@ public final class ApiContractUpdateProperties extends ApiEntityBaseContract {
      */
     @JsonProperty(value = "protocols")
     private List<Protocol> protocols;
+
+    /** Creates an instance of ApiContractUpdateProperties class. */
+    public ApiContractUpdateProperties() {
+    }
 
     /**
      * Get the displayName property: API name.

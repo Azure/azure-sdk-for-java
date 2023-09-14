@@ -31,7 +31,7 @@ public final class BackupVaultsCheckNameAvailabilityWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr = "{\"message\":\"ejd\",\"nameAvailable\":false,\"reason\":\"vdsrhnjiv\"}";
+        String responseStr = "{\"message\":\"wgdsl\",\"nameAvailable\":false,\"reason\":\"hrmooi\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -63,14 +63,14 @@ public final class BackupVaultsCheckNameAvailabilityWithResponseMockTests {
             manager
                 .backupVaults()
                 .checkNameAvailabilityWithResponse(
-                    "aeqphchqnr",
-                    "rpxeh",
-                    new CheckNameAvailabilityRequest().withName("rykqgaifmvikl").withType("dvk"),
+                    "kvyklxubyjaffmm",
+                    "bl",
+                    new CheckNameAvailabilityRequest().withName("cuubgq").withType("rtalmet"),
                     com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals("ejd", response.message());
+        Assertions.assertEquals("wgdsl", response.message());
         Assertions.assertEquals(false, response.nameAvailable());
-        Assertions.assertEquals("vdsrhnjiv", response.reason());
+        Assertions.assertEquals("hrmooi", response.reason());
     }
 }

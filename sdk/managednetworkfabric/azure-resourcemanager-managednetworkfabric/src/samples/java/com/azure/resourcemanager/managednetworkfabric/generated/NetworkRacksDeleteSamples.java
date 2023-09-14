@@ -7,7 +7,7 @@ package com.azure.resourcemanager.managednetworkfabric.generated;
 /** Samples for NetworkRacks Delete. */
 public final class NetworkRacksDeleteSamples {
     /*
-     * x-ms-original-file: specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/preview/2023-02-01-preview/examples/NetworkRacks_Delete_MaximumSet_Gen.json
+     * x-ms-original-file: specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/NetworkRacks_Delete_MaximumSet_Gen.json
      */
     /**
      * Sample code: NetworkRacks_Delete_MaximumSet_Gen.
@@ -16,6 +16,6 @@ public final class NetworkRacksDeleteSamples {
      */
     public static void networkRacksDeleteMaximumSetGen(
         com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager manager) {
-        manager.networkRacks().delete("resourceGroupName", "networkRackName", com.azure.core.util.Context.NONE);
+        manager.networkRacks().delete("example-rg", "example-rack", com.azure.core.util.Context.NONE);
     }
 }

@@ -62,6 +62,10 @@ public final class SkuInformationInner {
     @JsonProperty(value = "restrictions")
     private List<Restriction> restrictions;
 
+    /** Creates an instance of SkuInformationInner class. */
+    public SkuInformationInner() {
+    }
+
     /**
      * Get the name property: The SKU name. Required for account creation; optional for update. Note that in older
      * versions, SKU name was called accountType.

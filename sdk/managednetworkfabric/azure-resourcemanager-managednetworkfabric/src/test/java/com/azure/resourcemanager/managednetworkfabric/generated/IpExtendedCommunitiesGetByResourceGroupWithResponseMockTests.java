@@ -32,7 +32,7 @@ public final class IpExtendedCommunitiesGetByResourceGroupWithResponseMockTests 
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"action\":\"Permit\",\"routeTargets\":[\"kwklsnoxaxmq\",\"qalhhjnh\"],\"provisioningState\":\"Succeeded\",\"annotation\":\"yynfsvkhgbv\"},\"location\":\"anarfdlpukhpyrne\",\"tags\":{\"ddbhf\":\"cpeogkhnmgbrou\",\"ontacnpq\":\"pfpazjzoywjxhpdu\",\"xh\":\"tehtuevrhrljyoog\"},\"id\":\"sd\",\"name\":\"ugwbsreurfqkf\",\"type\":\"arenlvhhtklnvnaf\"}";
+            "{\"properties\":{\"configurationState\":\"Rejected\",\"provisioningState\":\"Failed\",\"administrativeState\":\"Disabled\",\"ipExtendedCommunityRules\":[{\"action\":\"Permit\",\"sequenceNumber\":6028044034409859067,\"routeTargets\":[\"ijtickzovguzp\",\"pxhhboigzxkop\",\"lrzhtocjzfppexu\"]},{\"action\":\"Permit\",\"sequenceNumber\":8525602463707733170,\"routeTargets\":[\"nkjwgiitvjcmimb\",\"swskbbbj\",\"yp\"]}],\"annotation\":\"odaq\"},\"location\":\"kp\",\"tags\":{\"brtvtgolmlplgtla\":\"fsobggvalcrqaxl\",\"oysxaqq\":\"yxhxj\"},\"id\":\"hdfhfaob\",\"name\":\"njc\",\"type\":\"bozvc\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -63,13 +63,14 @@ public final class IpExtendedCommunitiesGetByResourceGroupWithResponseMockTests 
         IpExtendedCommunity response =
             manager
                 .ipExtendedCommunities()
-                .getByResourceGroupWithResponse("ftbyrplro", "kpigqfusu", com.azure.core.util.Context.NONE)
+                .getByResourceGroupWithResponse("mpdvrjzwa", "pe", com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals("anarfdlpukhpyrne", response.location());
-        Assertions.assertEquals("cpeogkhnmgbrou", response.tags().get("ddbhf"));
-        Assertions.assertEquals(CommunityActionTypes.PERMIT, response.action());
-        Assertions.assertEquals("kwklsnoxaxmq", response.routeTargets().get(0));
-        Assertions.assertEquals("yynfsvkhgbv", response.annotation());
+        Assertions.assertEquals("kp", response.location());
+        Assertions.assertEquals("fsobggvalcrqaxl", response.tags().get("brtvtgolmlplgtla"));
+        Assertions.assertEquals(CommunityActionTypes.PERMIT, response.ipExtendedCommunityRules().get(0).action());
+        Assertions.assertEquals(6028044034409859067L, response.ipExtendedCommunityRules().get(0).sequenceNumber());
+        Assertions.assertEquals("ijtickzovguzp", response.ipExtendedCommunityRules().get(0).routeTargets().get(0));
+        Assertions.assertEquals("odaq", response.annotation());
     }
 }

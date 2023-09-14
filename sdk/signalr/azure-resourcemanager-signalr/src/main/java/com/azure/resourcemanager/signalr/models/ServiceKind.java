@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The kind of the service, it can be SignalR or RawWebSockets. */
+/** The kind of the service. */
 public final class ServiceKind extends ExpandableStringEnum<ServiceKind> {
     /** Static value SignalR for ServiceKind. */
     public static final ServiceKind SIGNALR = fromString("SignalR");

@@ -11,7 +11,10 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
+import com.azure.resourcemanager.managednetworkfabric.fluent.models.CommonPostActionResponseForStateUpdateInner;
 import com.azure.resourcemanager.managednetworkfabric.fluent.models.NetworkToNetworkInterconnectInner;
+import com.azure.resourcemanager.managednetworkfabric.models.NetworkToNetworkInterconnectPatch;
+import com.azure.resourcemanager.managednetworkfabric.models.UpdateAdministrativeState;
 
 /** An instance of this class provides access to all the operations defined in NetworkToNetworkInterconnectsClient. */
 public interface NetworkToNetworkInterconnectsClient {
@@ -21,13 +24,13 @@ public interface NetworkToNetworkInterconnectsClient {
      * <p>Configuration used to setup CE-PE connectivity PUT Method.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkFabricName Name of the NetworkFabric.
-     * @param networkToNetworkInterconnectName Name of the NetworkToNetworkInterconnectName.
+     * @param networkFabricName Name of the Network Fabric.
+     * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
      * @param body Request payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the NetworkToNetworkInterconnect resource definition.
+     * @return the {@link SyncPoller} for polling of the Network To Network Interconnect resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<NetworkToNetworkInterconnectInner>, NetworkToNetworkInterconnectInner> beginCreate(
@@ -42,14 +45,14 @@ public interface NetworkToNetworkInterconnectsClient {
      * <p>Configuration used to setup CE-PE connectivity PUT Method.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkFabricName Name of the NetworkFabric.
-     * @param networkToNetworkInterconnectName Name of the NetworkToNetworkInterconnectName.
+     * @param networkFabricName Name of the Network Fabric.
+     * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
      * @param body Request payload.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the NetworkToNetworkInterconnect resource definition.
+     * @return the {@link SyncPoller} for polling of the Network To Network Interconnect resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<NetworkToNetworkInterconnectInner>, NetworkToNetworkInterconnectInner> beginCreate(
@@ -65,13 +68,13 @@ public interface NetworkToNetworkInterconnectsClient {
      * <p>Configuration used to setup CE-PE connectivity PUT Method.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkFabricName Name of the NetworkFabric.
-     * @param networkToNetworkInterconnectName Name of the NetworkToNetworkInterconnectName.
+     * @param networkFabricName Name of the Network Fabric.
+     * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
      * @param body Request payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the NetworkToNetworkInterconnect resource definition.
+     * @return the Network To Network Interconnect resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     NetworkToNetworkInterconnectInner create(
@@ -86,14 +89,14 @@ public interface NetworkToNetworkInterconnectsClient {
      * <p>Configuration used to setup CE-PE connectivity PUT Method.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkFabricName Name of the NetworkFabric.
-     * @param networkToNetworkInterconnectName Name of the NetworkToNetworkInterconnectName.
+     * @param networkFabricName Name of the Network Fabric.
+     * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
      * @param body Request payload.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the NetworkToNetworkInterconnect resource definition.
+     * @return the Network To Network Interconnect resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     NetworkToNetworkInterconnectInner create(
@@ -109,13 +112,13 @@ public interface NetworkToNetworkInterconnectsClient {
      * <p>Implements NetworkToNetworkInterconnects GET method.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkFabricName Name of the NetworkFabric.
-     * @param networkToNetworkInterconnectName Name of the NetworkToNetworkInterconnect.
+     * @param networkFabricName Name of the Network Fabric.
+     * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the NetworkToNetworkInterconnect resource definition along with {@link Response}.
+     * @return the Network To Network Interconnect resource definition along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<NetworkToNetworkInterconnectInner> getWithResponse(
@@ -127,16 +130,104 @@ public interface NetworkToNetworkInterconnectsClient {
      * <p>Implements NetworkToNetworkInterconnects GET method.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkFabricName Name of the NetworkFabric.
-     * @param networkToNetworkInterconnectName Name of the NetworkToNetworkInterconnect.
+     * @param networkFabricName Name of the Network Fabric.
+     * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the NetworkToNetworkInterconnect resource definition.
+     * @return the Network To Network Interconnect resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     NetworkToNetworkInterconnectInner get(
         String resourceGroupName, String networkFabricName, String networkToNetworkInterconnectName);
+
+    /**
+     * Updates a Network To NetworkInterconnects.
+     *
+     * <p>Update certain properties of the Network To NetworkInterconnects resource.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkFabricName Name of the Network Fabric.
+     * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
+     * @param body Network to Network Interconnect properties to update.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of the Network To Network Interconnect resource definition.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<NetworkToNetworkInterconnectInner>, NetworkToNetworkInterconnectInner> beginUpdate(
+        String resourceGroupName,
+        String networkFabricName,
+        String networkToNetworkInterconnectName,
+        NetworkToNetworkInterconnectPatch body);
+
+    /**
+     * Updates a Network To NetworkInterconnects.
+     *
+     * <p>Update certain properties of the Network To NetworkInterconnects resource.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkFabricName Name of the Network Fabric.
+     * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
+     * @param body Network to Network Interconnect properties to update.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of the Network To Network Interconnect resource definition.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<NetworkToNetworkInterconnectInner>, NetworkToNetworkInterconnectInner> beginUpdate(
+        String resourceGroupName,
+        String networkFabricName,
+        String networkToNetworkInterconnectName,
+        NetworkToNetworkInterconnectPatch body,
+        Context context);
+
+    /**
+     * Updates a Network To NetworkInterconnects.
+     *
+     * <p>Update certain properties of the Network To NetworkInterconnects resource.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkFabricName Name of the Network Fabric.
+     * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
+     * @param body Network to Network Interconnect properties to update.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Network To Network Interconnect resource definition.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    NetworkToNetworkInterconnectInner update(
+        String resourceGroupName,
+        String networkFabricName,
+        String networkToNetworkInterconnectName,
+        NetworkToNetworkInterconnectPatch body);
+
+    /**
+     * Updates a Network To NetworkInterconnects.
+     *
+     * <p>Update certain properties of the Network To NetworkInterconnects resource.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkFabricName Name of the Network Fabric.
+     * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
+     * @param body Network to Network Interconnect properties to update.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Network To Network Interconnect resource definition.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    NetworkToNetworkInterconnectInner update(
+        String resourceGroupName,
+        String networkFabricName,
+        String networkToNetworkInterconnectName,
+        NetworkToNetworkInterconnectPatch body,
+        Context context);
 
     /**
      * Deletes a NetworkToNetworkInterconnects.
@@ -144,8 +235,8 @@ public interface NetworkToNetworkInterconnectsClient {
      * <p>Implements NetworkToNetworkInterconnects DELETE method.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkFabricName Name of the NetworkFabric.
-     * @param networkToNetworkInterconnectName Name of the NetworkToNetworkInterconnectName.
+     * @param networkFabricName Name of the Network Fabric.
+     * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -161,8 +252,8 @@ public interface NetworkToNetworkInterconnectsClient {
      * <p>Implements NetworkToNetworkInterconnects DELETE method.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkFabricName Name of the NetworkFabric.
-     * @param networkToNetworkInterconnectName Name of the NetworkToNetworkInterconnectName.
+     * @param networkFabricName Name of the Network Fabric.
+     * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -179,8 +270,8 @@ public interface NetworkToNetworkInterconnectsClient {
      * <p>Implements NetworkToNetworkInterconnects DELETE method.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkFabricName Name of the NetworkFabric.
-     * @param networkToNetworkInterconnectName Name of the NetworkToNetworkInterconnectName.
+     * @param networkFabricName Name of the Network Fabric.
+     * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -194,8 +285,8 @@ public interface NetworkToNetworkInterconnectsClient {
      * <p>Implements NetworkToNetworkInterconnects DELETE method.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkFabricName Name of the NetworkFabric.
-     * @param networkToNetworkInterconnectName Name of the NetworkToNetworkInterconnectName.
+     * @param networkFabricName Name of the Network Fabric.
+     * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -211,14 +302,15 @@ public interface NetworkToNetworkInterconnectsClient {
      * <p>Implements Network To Network Interconnects list by Network Fabric GET method.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkFabricName Name of the NetworkFabric.
+     * @param networkFabricName Name of the Network Fabric.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of NetworkToNetworkInterconnects as paginated response with {@link PagedIterable}.
+     * @return list of Network To Network Interconnects as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<NetworkToNetworkInterconnectInner> list(String resourceGroupName, String networkFabricName);
+    PagedIterable<NetworkToNetworkInterconnectInner> listByNetworkFabric(
+        String resourceGroupName, String networkFabricName);
 
     /**
      * Executes list operation to display Network To Network Interconnects within a Network Fabric.
@@ -226,14 +318,194 @@ public interface NetworkToNetworkInterconnectsClient {
      * <p>Implements Network To Network Interconnects list by Network Fabric GET method.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkFabricName Name of the NetworkFabric.
+     * @param networkFabricName Name of the Network Fabric.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of NetworkToNetworkInterconnects as paginated response with {@link PagedIterable}.
+     * @return list of Network To Network Interconnects as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<NetworkToNetworkInterconnectInner> list(
+    PagedIterable<NetworkToNetworkInterconnectInner> listByNetworkFabric(
         String resourceGroupName, String networkFabricName, Context context);
+
+    /**
+     * Implements the operation to the underlying resources.
+     *
+     * <p>Updates the NPB Static Route BFD Administrative State.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkFabricName Name of the Network Fabric.
+     * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
+     * @param body Request payload.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of common response for the state updates.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
+        beginUpdateNpbStaticRouteBfdAdministrativeState(
+            String resourceGroupName,
+            String networkFabricName,
+            String networkToNetworkInterconnectName,
+            UpdateAdministrativeState body);
+
+    /**
+     * Implements the operation to the underlying resources.
+     *
+     * <p>Updates the NPB Static Route BFD Administrative State.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkFabricName Name of the Network Fabric.
+     * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
+     * @param body Request payload.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of common response for the state updates.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
+        beginUpdateNpbStaticRouteBfdAdministrativeState(
+            String resourceGroupName,
+            String networkFabricName,
+            String networkToNetworkInterconnectName,
+            UpdateAdministrativeState body,
+            Context context);
+
+    /**
+     * Implements the operation to the underlying resources.
+     *
+     * <p>Updates the NPB Static Route BFD Administrative State.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkFabricName Name of the Network Fabric.
+     * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
+     * @param body Request payload.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return common response for the state updates.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    CommonPostActionResponseForStateUpdateInner updateNpbStaticRouteBfdAdministrativeState(
+        String resourceGroupName,
+        String networkFabricName,
+        String networkToNetworkInterconnectName,
+        UpdateAdministrativeState body);
+
+    /**
+     * Implements the operation to the underlying resources.
+     *
+     * <p>Updates the NPB Static Route BFD Administrative State.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkFabricName Name of the Network Fabric.
+     * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
+     * @param body Request payload.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return common response for the state updates.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    CommonPostActionResponseForStateUpdateInner updateNpbStaticRouteBfdAdministrativeState(
+        String resourceGroupName,
+        String networkFabricName,
+        String networkToNetworkInterconnectName,
+        UpdateAdministrativeState body,
+        Context context);
+
+    /**
+     * Implements the operation to the underlying resources.
+     *
+     * <p>Updates the Admin State.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkFabricName Name of the Network Fabric.
+     * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
+     * @param body Request payload.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of common response for the state updates.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
+        beginUpdateAdministrativeState(
+            String resourceGroupName,
+            String networkFabricName,
+            String networkToNetworkInterconnectName,
+            UpdateAdministrativeState body);
+
+    /**
+     * Implements the operation to the underlying resources.
+     *
+     * <p>Updates the Admin State.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkFabricName Name of the Network Fabric.
+     * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
+     * @param body Request payload.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of common response for the state updates.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
+        beginUpdateAdministrativeState(
+            String resourceGroupName,
+            String networkFabricName,
+            String networkToNetworkInterconnectName,
+            UpdateAdministrativeState body,
+            Context context);
+
+    /**
+     * Implements the operation to the underlying resources.
+     *
+     * <p>Updates the Admin State.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkFabricName Name of the Network Fabric.
+     * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
+     * @param body Request payload.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return common response for the state updates.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    CommonPostActionResponseForStateUpdateInner updateAdministrativeState(
+        String resourceGroupName,
+        String networkFabricName,
+        String networkToNetworkInterconnectName,
+        UpdateAdministrativeState body);
+
+    /**
+     * Implements the operation to the underlying resources.
+     *
+     * <p>Updates the Admin State.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkFabricName Name of the Network Fabric.
+     * @param networkToNetworkInterconnectName Name of the Network to Network Interconnect.
+     * @param body Request payload.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return common response for the state updates.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    CommonPostActionResponseForStateUpdateInner updateAdministrativeState(
+        String resourceGroupName,
+        String networkFabricName,
+        String networkToNetworkInterconnectName,
+        UpdateAdministrativeState body,
+        Context context);
 }

@@ -23,6 +23,10 @@ public final class ChangeFeed {
     @JsonProperty(value = "retentionInDays")
     private Integer retentionInDays;
 
+    /** Creates an instance of ChangeFeed class. */
+    public ChangeFeed() {
+    }
+
     /**
      * Get the enabled property: Indicates whether change feed event logging is enabled for the Blob service.
      *

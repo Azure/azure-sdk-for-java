@@ -72,7 +72,7 @@ public interface RxStoreModel {
      *
      * @param injectorProvider the fault injector provider.
      */
-    void configureFaultInjectorProvider(IFaultInjectorProvider injectorProvider);
+    void configureFaultInjectorProvider(IFaultInjectorProvider injectorProvider, Configs configs);
     void recordOpenConnectionsAndInitCachesCompleted(List<CosmosContainerIdentity> cosmosContainerIdentities);
     void recordOpenConnectionsAndInitCachesStarted(List<CosmosContainerIdentity> cosmosContainerIdentities);
 }

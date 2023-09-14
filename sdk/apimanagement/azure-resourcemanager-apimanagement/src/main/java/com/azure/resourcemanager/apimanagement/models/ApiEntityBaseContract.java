@@ -35,8 +35,7 @@ public class ApiEntityBaseContract {
     private ApiType apiType;
 
     /*
-     * Describes the revision of the API. If no value is provided, default
-     * revision 1 is created
+     * Describes the revision of the API. If no value is provided, default revision 1 is created
      */
     @JsonProperty(value = "apiRevision")
     private String apiRevision;
@@ -78,15 +77,13 @@ public class ApiEntityBaseContract {
     private String apiVersionSetId;
 
     /*
-     * Specifies whether an API or Product subscription is required for
-     * accessing the API.
+     * Specifies whether an API or Product subscription is required for accessing the API.
      */
     @JsonProperty(value = "subscriptionRequired")
     private Boolean subscriptionRequired;
 
     /*
-     * A URL to the Terms of Service for the API. MUST be in the format of a
-     * URL.
+     * A URL to the Terms of Service for the API. MUST be in the format of a URL.
      */
     @JsonProperty(value = "termsOfServiceUrl")
     private String termsOfServiceUrl;
@@ -102,6 +99,10 @@ public class ApiEntityBaseContract {
      */
     @JsonProperty(value = "license")
     private ApiLicenseInformation license;
+
+    /** Creates an instance of ApiEntityBaseContract class. */
+    public ApiEntityBaseContract() {
+    }
 
     /**
      * Get the description property: Description of the API. May include HTML formatting tags.

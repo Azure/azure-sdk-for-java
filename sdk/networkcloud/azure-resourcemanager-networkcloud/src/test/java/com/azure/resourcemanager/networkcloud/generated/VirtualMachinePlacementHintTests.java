@@ -17,26 +17,26 @@ public final class VirtualMachinePlacementHintTests {
         VirtualMachinePlacementHint model =
             BinaryData
                 .fromString(
-                    "{\"hintType\":\"AntiAffinity\",\"resourceId\":\"etoge\",\"schedulingExecution\":\"Soft\",\"scope\":\"Rack\"}")
+                    "{\"hintType\":\"Affinity\",\"resourceId\":\"inmfgvxirp\",\"schedulingExecution\":\"Soft\",\"scope\":\"Machine\"}")
                 .toObject(VirtualMachinePlacementHint.class);
-        Assertions.assertEquals(VirtualMachinePlacementHintType.ANTI_AFFINITY, model.hintType());
-        Assertions.assertEquals("etoge", model.resourceId());
+        Assertions.assertEquals(VirtualMachinePlacementHintType.AFFINITY, model.hintType());
+        Assertions.assertEquals("inmfgvxirp", model.resourceId());
         Assertions.assertEquals(VirtualMachineSchedulingExecution.SOFT, model.schedulingExecution());
-        Assertions.assertEquals(VirtualMachinePlacementHintPodAffinityScope.RACK, model.scope());
+        Assertions.assertEquals(VirtualMachinePlacementHintPodAffinityScope.MACHINE, model.scope());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         VirtualMachinePlacementHint model =
             new VirtualMachinePlacementHint()
-                .withHintType(VirtualMachinePlacementHintType.ANTI_AFFINITY)
-                .withResourceId("etoge")
+                .withHintType(VirtualMachinePlacementHintType.AFFINITY)
+                .withResourceId("inmfgvxirp")
                 .withSchedulingExecution(VirtualMachineSchedulingExecution.SOFT)
-                .withScope(VirtualMachinePlacementHintPodAffinityScope.RACK);
+                .withScope(VirtualMachinePlacementHintPodAffinityScope.MACHINE);
         model = BinaryData.fromObject(model).toObject(VirtualMachinePlacementHint.class);
-        Assertions.assertEquals(VirtualMachinePlacementHintType.ANTI_AFFINITY, model.hintType());
-        Assertions.assertEquals("etoge", model.resourceId());
+        Assertions.assertEquals(VirtualMachinePlacementHintType.AFFINITY, model.hintType());
+        Assertions.assertEquals("inmfgvxirp", model.resourceId());
         Assertions.assertEquals(VirtualMachineSchedulingExecution.SOFT, model.schedulingExecution());
-        Assertions.assertEquals(VirtualMachinePlacementHintPodAffinityScope.RACK, model.scope());
+        Assertions.assertEquals(VirtualMachinePlacementHintPodAffinityScope.MACHINE, model.scope());
     }
 }

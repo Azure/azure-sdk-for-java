@@ -174,7 +174,6 @@ public final class CallMediaAsync {
             if (recognizeOptions instanceof CallMediaRecognizeDtmfOptions) {
                 RecognizeRequest recognizeRequest = getRecognizeRequestFromDtmfConfiguration(recognizeOptions);
                 return contentsInternal.recognizeWithResponseAsync(callConnectionId, recognizeRequest, context);
-
             } else if (recognizeOptions instanceof CallMediaRecognizeChoiceOptions) {
                 RecognizeRequest recognizeRequest = getRecognizeRequestFromChoiceConfiguration(recognizeOptions);
                 return contentsInternal.recognizeWithResponseAsync(callConnectionId, recognizeRequest, context);
@@ -241,6 +240,7 @@ public final class CallMediaAsync {
             PlayOptions playOptions = new PlayOptions(options.getPlaySource(), Collections.emptyList());
             playOptions.setLoop(options.isLoop());
             playOptions.setOperationContext(options.getOperationContext());
+            playOptions.setCallbackUrl(options.getCallbackUrl());
 
             return playWithResponseInternal(playOptions, context);
         } catch (RuntimeException ex) {
@@ -269,6 +269,7 @@ public final class CallMediaAsync {
 
             request.setPlayOptions(new PlayOptionsInternal().setLoop(options.isLoop()));
             request.setOperationContext(options.getOperationContext());
+            request.setCallbackUri(options.getCallbackUrl());
 
             return request;
         }
@@ -384,7 +385,8 @@ public final class CallMediaAsync {
             .setInterruptCallMediaOperation(recognizeOptions.isInterruptCallMediaOperation())
             .setPlayPrompt(playSourceInternal)
             .setRecognizeOptions(recognizeOptionsInternal)
-            .setOperationContext(recognizeOptions.getOperationContext());
+            .setOperationContext(recognizeOptions.getOperationContext())
+            .setCallbackUri(recognizeOptions.getCallbackUrl());
 
         return recognizeRequest;
     }
@@ -418,7 +420,8 @@ public final class CallMediaAsync {
             .setInterruptCallMediaOperation(choiceRecognizeOptions.isInterruptCallMediaOperation())
             .setPlayPrompt(playSourceInternal)
             .setRecognizeOptions(recognizeOptionsInternal)
-            .setOperationContext(recognizeOptions.getOperationContext());
+            .setOperationContext(recognizeOptions.getOperationContext())
+            .setCallbackUri(recognizeOptions.getCallbackUrl());
 
         return recognizeRequest;
     }
@@ -448,7 +451,8 @@ public final class CallMediaAsync {
             .setInterruptCallMediaOperation(speechRecognizeOptions.isInterruptCallMediaOperation())
             .setPlayPrompt(playSourceInternal)
             .setRecognizeOptions(recognizeOptionsInternal)
-            .setOperationContext(recognizeOptions.getOperationContext());
+            .setOperationContext(recognizeOptions.getOperationContext())
+            .setCallbackUri(recognizeOptions.getCallbackUrl());
 
         return recognizeRequest;
     }
@@ -492,7 +496,8 @@ public final class CallMediaAsync {
             .setInterruptCallMediaOperation(speechOrDtmfRecognizeOptions.isInterruptCallMediaOperation())
             .setPlayPrompt(playSourceInternal)
             .setRecognizeOptions(recognizeOptionsInternal)
-            .setOperationContext(recognizeOptions.getOperationContext());
+            .setOperationContext(recognizeOptions.getOperationContext())
+            .setCallbackUri(recognizeOptions.getCallbackUrl());
 
         return recognizeRequest;
     }
@@ -514,7 +519,7 @@ public final class CallMediaAsync {
      * @return Response for successful sendDtmf request.
      */
     public Mono<Void> sendDtmf(List<DtmfTone> tones, CommunicationIdentifier targetParticipant) {
-        return sendDtmfWithResponse(tones, targetParticipant, null).then();
+        return sendDtmfWithResponse(tones, targetParticipant, null, null).then();
     }
 
     /**
@@ -523,13 +528,14 @@ public final class CallMediaAsync {
      * @param tones tones to be sent
      * @param targetParticipant the target participant
      * @param operationContext operationContext (pass null if not applicable)
+     * @param callbackUrl the call back URI override to set (pass null if not applicable)
      * @return Response for successful sendDtmf request.
      */
-    public Mono<Response<Void>> sendDtmfWithResponse(List<DtmfTone> tones, CommunicationIdentifier targetParticipant, String operationContext) {
-        return withContext(context -> sendDtmfWithResponseInternal(targetParticipant, tones, operationContext, context));
+    public Mono<Response<Void>> sendDtmfWithResponse(List<DtmfTone> tones, CommunicationIdentifier targetParticipant, String operationContext, String callbackUrl) {
+        return withContext(context -> sendDtmfWithResponseInternal(targetParticipant, tones, operationContext, callbackUrl, context));
     }
 
-    Mono<Response<Void>> sendDtmfWithResponseInternal(CommunicationIdentifier targetParticipant, List<DtmfTone> tones, String operationContext, Context context) {
+    Mono<Response<Void>> sendDtmfWithResponseInternal(CommunicationIdentifier targetParticipant, List<DtmfTone> tones, String operationContext, String callbackUrl, Context context) {
         try {
             context = context == null ? Context.NONE : context;
             SendDtmfRequestInternal requestInternal = new SendDtmfRequestInternal()
@@ -537,7 +543,8 @@ public final class CallMediaAsync {
                 .setTones(tones.stream()
                 .map(this::convertDtmfToneInternal)
                 .collect(Collectors.toList()))
-                .setOperationContext(operationContext);
+                .setOperationContext(operationContext)
+                .setCallbackUri(callbackUrl);
 
             return contentsInternal.sendDtmfWithResponseAsync(callConnectionId, requestInternal, context);
         } catch (RuntimeException e) {
@@ -585,25 +592,27 @@ public final class CallMediaAsync {
      * @return void
      */
     public Mono<Void> stopContinuousDtmfRecognition(CommunicationIdentifier targetParticipant) {
-        return stopContinuousDtmfRecognitionWithResponse(targetParticipant, null).then();
+        return stopContinuousDtmfRecognitionWithResponse(targetParticipant, null, null).then();
     }
 
     /**
      * Stops continuous Dtmf recognition.
      * @param targetParticipant the target participant
      * @param operationContext operationContext (pass null if not applicable)
+     * @param callbackUrl the call back URI override to set (pass null if not applicable)
      * @return Response for successful stop continuous dtmf recognition request.
      */
-    public Mono<Response<Void>> stopContinuousDtmfRecognitionWithResponse(CommunicationIdentifier targetParticipant, String operationContext) {
-        return withContext(context -> stopContinuousDtmfRecognitionWithResponseInternal(targetParticipant, operationContext, context));
+    public Mono<Response<Void>> stopContinuousDtmfRecognitionWithResponse(CommunicationIdentifier targetParticipant, String operationContext, String callbackUrl) {
+        return withContext(context -> stopContinuousDtmfRecognitionWithResponseInternal(targetParticipant, operationContext, callbackUrl, context));
     }
 
-    Mono<Response<Void>> stopContinuousDtmfRecognitionWithResponseInternal(CommunicationIdentifier targetParticipant, String operationContext, Context context) {
+    Mono<Response<Void>> stopContinuousDtmfRecognitionWithResponseInternal(CommunicationIdentifier targetParticipant, String operationContext, String callbackUrl, Context context) {
         try {
             context = context == null ? Context.NONE : context;
             ContinuousDtmfRecognitionRequestInternal requestInternal = new ContinuousDtmfRecognitionRequestInternal()
                 .setTargetParticipant(CommunicationIdentifierConverter.convert(targetParticipant))
-                .setOperationContext(operationContext);
+                .setOperationContext(operationContext)
+                .setCallbackUri(callbackUrl);
 
             return contentsInternal.stopContinuousDtmfRecognitionWithResponseAsync(callConnectionId, requestInternal, context);
         } catch (RuntimeException e) {

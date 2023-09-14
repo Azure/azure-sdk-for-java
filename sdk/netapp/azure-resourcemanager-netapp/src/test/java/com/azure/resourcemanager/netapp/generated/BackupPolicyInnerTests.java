@@ -16,33 +16,33 @@ public final class BackupPolicyInnerTests {
         BackupPolicyInner model =
             BinaryData
                 .fromString(
-                    "{\"etag\":\"uhpkxkgymar\",\"properties\":{\"backupPolicyId\":\"n\",\"provisioningState\":\"xqugjhkycubedd\",\"dailyBackupsToKeep\":2056337569,\"weeklyBackupsToKeep\":1063119881,\"monthlyBackupsToKeep\":1853639964,\"volumesAssigned\":1153520576,\"enabled\":false,\"volumeBackups\":[{\"volumeName\":\"mnjijpxacqqudf\",\"backupsCount\":1238431927,\"policyEnabled\":false},{\"volumeName\":\"aabjyvayffimrz\",\"backupsCount\":1007625802,\"policyEnabled\":true},{\"volumeName\":\"gsexne\",\"backupsCount\":779817958,\"policyEnabled\":false},{\"volumeName\":\"wmewzsyy\",\"backupsCount\":1091496648,\"policyEnabled\":true}]},\"location\":\"i\",\"tags\":{\"qbrqubpaxhexiili\":\"dpfrxtrthzvaytdw\"},\"id\":\"pdtii\",\"name\":\"q\",\"type\":\"d\"}")
+                    "{\"etag\":\"qtvcofudflvkgj\",\"properties\":{\"backupPolicyId\":\"gdknnqv\",\"provisioningState\":\"znqntoru\",\"dailyBackupsToKeep\":1292575401,\"weeklyBackupsToKeep\":63235261,\"monthlyBackupsToKeep\":1726398247,\"volumesAssigned\":332873704,\"enabled\":true,\"volumeBackups\":[{\"volumeName\":\"wjue\",\"backupsCount\":1169859080,\"policyEnabled\":false},{\"volumeName\":\"u\",\"backupsCount\":1850094254,\"policyEnabled\":true},{\"volumeName\":\"mz\",\"backupsCount\":866846651,\"policyEnabled\":false}]},\"location\":\"q\",\"tags\":{\"vtpuqujmqlgk\":\"kif\",\"ongbjcnt\":\"btndo\"},\"id\":\"jitcjedftwwaez\",\"name\":\"ojvdcpzfoqo\",\"type\":\"i\"}")
                 .toObject(BackupPolicyInner.class);
-        Assertions.assertEquals("i", model.location());
-        Assertions.assertEquals("dpfrxtrthzvaytdw", model.tags().get("qbrqubpaxhexiili"));
-        Assertions.assertEquals(2056337569, model.dailyBackupsToKeep());
-        Assertions.assertEquals(1063119881, model.weeklyBackupsToKeep());
-        Assertions.assertEquals(1853639964, model.monthlyBackupsToKeep());
-        Assertions.assertEquals(false, model.enabled());
+        Assertions.assertEquals("q", model.location());
+        Assertions.assertEquals("kif", model.tags().get("vtpuqujmqlgk"));
+        Assertions.assertEquals(1292575401, model.dailyBackupsToKeep());
+        Assertions.assertEquals(63235261, model.weeklyBackupsToKeep());
+        Assertions.assertEquals(1726398247, model.monthlyBackupsToKeep());
+        Assertions.assertEquals(true, model.enabled());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         BackupPolicyInner model =
             new BackupPolicyInner()
-                .withLocation("i")
-                .withTags(mapOf("qbrqubpaxhexiili", "dpfrxtrthzvaytdw"))
-                .withDailyBackupsToKeep(2056337569)
-                .withWeeklyBackupsToKeep(1063119881)
-                .withMonthlyBackupsToKeep(1853639964)
-                .withEnabled(false);
+                .withLocation("q")
+                .withTags(mapOf("vtpuqujmqlgk", "kif", "ongbjcnt", "btndo"))
+                .withDailyBackupsToKeep(1292575401)
+                .withWeeklyBackupsToKeep(63235261)
+                .withMonthlyBackupsToKeep(1726398247)
+                .withEnabled(true);
         model = BinaryData.fromObject(model).toObject(BackupPolicyInner.class);
-        Assertions.assertEquals("i", model.location());
-        Assertions.assertEquals("dpfrxtrthzvaytdw", model.tags().get("qbrqubpaxhexiili"));
-        Assertions.assertEquals(2056337569, model.dailyBackupsToKeep());
-        Assertions.assertEquals(1063119881, model.weeklyBackupsToKeep());
-        Assertions.assertEquals(1853639964, model.monthlyBackupsToKeep());
-        Assertions.assertEquals(false, model.enabled());
+        Assertions.assertEquals("q", model.location());
+        Assertions.assertEquals("kif", model.tags().get("vtpuqujmqlgk"));
+        Assertions.assertEquals(1292575401, model.dailyBackupsToKeep());
+        Assertions.assertEquals(63235261, model.weeklyBackupsToKeep());
+        Assertions.assertEquals(1726398247, model.monthlyBackupsToKeep());
+        Assertions.assertEquals(true, model.enabled());
     }
 
     @SuppressWarnings("unchecked")

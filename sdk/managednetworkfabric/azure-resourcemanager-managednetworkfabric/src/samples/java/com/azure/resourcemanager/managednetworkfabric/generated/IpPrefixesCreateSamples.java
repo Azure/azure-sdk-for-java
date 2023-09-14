@@ -6,7 +6,7 @@ package com.azure.resourcemanager.managednetworkfabric.generated;
 
 import com.azure.resourcemanager.managednetworkfabric.models.CommunityActionTypes;
 import com.azure.resourcemanager.managednetworkfabric.models.Condition;
-import com.azure.resourcemanager.managednetworkfabric.models.IpPrefixPropertiesIpPrefixRulesItem;
+import com.azure.resourcemanager.managednetworkfabric.models.IpPrefixRule;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -14,7 +14,7 @@ import java.util.Map;
 /** Samples for IpPrefixes Create. */
 public final class IpPrefixesCreateSamples {
     /*
-     * x-ms-original-file: specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/preview/2023-02-01-preview/examples/IpPrefixes_Create_MaximumSet_Gen.json
+     * x-ms-original-file: specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/IpPrefixes_Create_MaximumSet_Gen.json
      */
     /**
      * Sample code: IpPrefixes_Create_MaximumSet_Gen.
@@ -26,19 +26,19 @@ public final class IpPrefixesCreateSamples {
         manager
             .ipPrefixes()
             .define("example-ipPrefix")
-            .withRegion("EastUS")
-            .withExistingResourceGroup("resourcegroupname")
+            .withRegion("eastus")
+            .withExistingResourceGroup("example-rg")
+            .withTags(mapOf("keyID", "fakeTokenPlaceholder"))
             .withIpPrefixRules(
                 Arrays
                     .asList(
-                        new IpPrefixPropertiesIpPrefixRulesItem()
+                        new IpPrefixRule()
                             .withAction(CommunityActionTypes.PERMIT)
-                            .withSequenceNumber(12L)
-                            .withNetworkPrefix("1.1.1.0/24")
-                            .withCondition(Condition.EQUAL_TO)
-                            .withSubnetMaskLength(28)))
-            .withTags(mapOf("key6404", ""))
-            .withAnnotation("annotationValue")
+                            .withSequenceNumber(4155123341L)
+                            .withNetworkPrefix("10.10.10.10/30")
+                            .withCondition(Condition.GREATER_THAN_OR_EQUAL_TO)
+                            .withSubnetMaskLength("10")))
+            .withAnnotation("annotation")
             .create();
     }
 

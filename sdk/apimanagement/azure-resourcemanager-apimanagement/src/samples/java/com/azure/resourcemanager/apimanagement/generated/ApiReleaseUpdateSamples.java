@@ -4,13 +4,12 @@
 
 package com.azure.resourcemanager.apimanagement.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.apimanagement.models.ApiReleaseContract;
 
 /** Samples for ApiRelease Update. */
 public final class ApiReleaseUpdateSamples {
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementUpdateApiRelease.json
+     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementUpdateApiRelease.json
      */
     /**
      * Sample code: ApiManagementUpdateApiRelease.
@@ -20,7 +19,10 @@ public final class ApiReleaseUpdateSamples {
     public static void apiManagementUpdateApiRelease(
         com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
         ApiReleaseContract resource =
-            manager.apiReleases().getWithResponse("rg1", "apimService1", "a1", "testrev", Context.NONE).getValue();
+            manager
+                .apiReleases()
+                .getWithResponse("rg1", "apimService1", "a1", "testrev", com.azure.core.util.Context.NONE)
+                .getValue();
         resource
             .update()
             .withApiId(

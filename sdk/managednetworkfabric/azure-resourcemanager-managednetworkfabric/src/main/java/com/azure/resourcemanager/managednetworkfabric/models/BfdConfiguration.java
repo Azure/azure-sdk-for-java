@@ -4,28 +4,28 @@
 
 package com.azure.resourcemanager.managednetworkfabric.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** BFD configuration properties. */
-@Immutable
+@Fluent
 public final class BfdConfiguration {
     /*
      * Administrative state of the BfdConfiguration. Example: Enabled | Disabled.
      */
     @JsonProperty(value = "administrativeState", access = JsonProperty.Access.WRITE_ONLY)
-    private EnabledDisabledState administrativeState;
+    private BfdAdministrativeState administrativeState;
 
     /*
-     * interval in milliseconds. Example: 300.
+     * Interval in milliseconds. Example: 300.
      */
-    @JsonProperty(value = "interval", access = JsonProperty.Access.WRITE_ONLY)
-    private Integer interval;
+    @JsonProperty(value = "intervalInMilliSeconds")
+    private Integer intervalInMilliSeconds;
 
     /*
-     * Multiplier for the Bfd Configuration. Example: 3.
+     * Multiplier for the Bfd Configuration. Example: 5.
      */
-    @JsonProperty(value = "multiplier", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "multiplier")
     private Integer multiplier;
 
     /** Creates an instance of BfdConfiguration class. */
@@ -37,26 +37,48 @@ public final class BfdConfiguration {
      *
      * @return the administrativeState value.
      */
-    public EnabledDisabledState administrativeState() {
+    public BfdAdministrativeState administrativeState() {
         return this.administrativeState;
     }
 
     /**
-     * Get the interval property: interval in milliseconds. Example: 300.
+     * Get the intervalInMilliSeconds property: Interval in milliseconds. Example: 300.
      *
-     * @return the interval value.
+     * @return the intervalInMilliSeconds value.
      */
-    public Integer interval() {
-        return this.interval;
+    public Integer intervalInMilliSeconds() {
+        return this.intervalInMilliSeconds;
     }
 
     /**
-     * Get the multiplier property: Multiplier for the Bfd Configuration. Example: 3.
+     * Set the intervalInMilliSeconds property: Interval in milliseconds. Example: 300.
+     *
+     * @param intervalInMilliSeconds the intervalInMilliSeconds value to set.
+     * @return the BfdConfiguration object itself.
+     */
+    public BfdConfiguration withIntervalInMilliSeconds(Integer intervalInMilliSeconds) {
+        this.intervalInMilliSeconds = intervalInMilliSeconds;
+        return this;
+    }
+
+    /**
+     * Get the multiplier property: Multiplier for the Bfd Configuration. Example: 5.
      *
      * @return the multiplier value.
      */
     public Integer multiplier() {
         return this.multiplier;
+    }
+
+    /**
+     * Set the multiplier property: Multiplier for the Bfd Configuration. Example: 5.
+     *
+     * @param multiplier the multiplier value to set.
+     * @return the BfdConfiguration object itself.
+     */
+    public BfdConfiguration withMultiplier(Integer multiplier) {
+        this.multiplier = multiplier;
+        return this;
     }
 
     /**

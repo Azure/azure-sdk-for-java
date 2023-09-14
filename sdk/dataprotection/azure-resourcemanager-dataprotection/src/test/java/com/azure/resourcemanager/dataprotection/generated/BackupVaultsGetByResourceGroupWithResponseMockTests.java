@@ -12,7 +12,14 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.dataprotection.DataProtectionManager;
+import com.azure.resourcemanager.dataprotection.models.AlertsState;
 import com.azure.resourcemanager.dataprotection.models.BackupVaultResource;
+import com.azure.resourcemanager.dataprotection.models.CrossRegionRestoreState;
+import com.azure.resourcemanager.dataprotection.models.CrossSubscriptionRestoreState;
+import com.azure.resourcemanager.dataprotection.models.ImmutabilityState;
+import com.azure.resourcemanager.dataprotection.models.SoftDeleteState;
+import com.azure.resourcemanager.dataprotection.models.StorageSettingStoreTypes;
+import com.azure.resourcemanager.dataprotection.models.StorageSettingTypes;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
@@ -31,7 +38,7 @@ public final class BackupVaultsGetByResourceGroupWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"monitoringSettings\":{},\"provisioningState\":\"Unknown\",\"resourceMoveState\":\"Unknown\",\"resourceMoveDetails\":{\"operationId\":\"fmwncotmrfh\",\"startTimeUtc\":\"ctymoxoftp\",\"completionTimeUtc\":\"iwyczuh\",\"sourceResourcePath\":\"cpqjlihhyu\",\"targetResourcePath\":\"skasdvlmfwdgzxu\"},\"securitySettings\":{},\"storageSettings\":[],\"isVaultProtectedByResourceGuard\":true,\"featureSettings\":{}},\"identity\":{\"principalId\":\"uzvx\",\"tenantId\":\"i\",\"type\":\"nhn\"},\"eTag\":\"xifqjzgxm\",\"location\":\"ublwpcesutrg\",\"tags\":{\"qg\":\"auutpwoqhihe\",\"foimwkslircizjxv\":\"zpnfqntcypsxj\"},\"id\":\"dfcea\",\"name\":\"vlhv\",\"type\":\"gdyftumrtwna\"}";
+            "{\"properties\":{\"monitoringSettings\":{\"azureMonitorAlertSettings\":{\"alertsForAllJobFailures\":\"Disabled\"}},\"provisioningState\":\"Failed\",\"resourceMoveState\":\"CommitFailed\",\"resourceMoveDetails\":{\"operationId\":\"bunzozudh\",\"startTimeUtc\":\"gkmoyxcdyuibhmfd\",\"completionTimeUtc\":\"zydvfvf\",\"sourceResourcePath\":\"naeo\",\"targetResourcePath\":\"rvhmgor\"},\"securitySettings\":{\"softDeleteSettings\":{\"state\":\"On\",\"retentionDurationInDays\":71.74888692263151},\"immutabilitySettings\":{\"state\":\"Unlocked\"}},\"storageSettings\":[{\"datastoreType\":\"OperationalStore\",\"type\":\"ZoneRedundant\"},{\"datastoreType\":\"VaultStore\",\"type\":\"ZoneRedundant\"},{\"datastoreType\":\"ArchiveStore\",\"type\":\"GeoRedundant\"}],\"isVaultProtectedByResourceGuard\":false,\"featureSettings\":{\"crossSubscriptionRestoreSettings\":{\"state\":\"PermanentlyDisabled\"},\"crossRegionRestoreSettings\":{\"state\":\"Enabled\"}},\"secureScore\":\"Adequate\"},\"identity\":{\"principalId\":\"jfzqlqhycavodgg\",\"tenantId\":\"beesmieknlra\",\"type\":\"aawiuagydwqfb\",\"userAssignedIdentities\":{\"giagtcojo\":{\"principalId\":\"4c1b70df-e96d-4ef6-8c3e-2c9f8b042761\",\"clientId\":\"d69abbb5-dfe3-4eb5-a402-a6c2fb14a9f5\"}}},\"eTag\":\"wogfnzjvu\",\"location\":\"zldmozuxy\",\"tags\":{\"grjqctojcmi\":\"btkadpysownbtgkb\",\"eypefojyqd\":\"of\",\"hlhzdsqtzbsrgno\":\"cuplcplcwkhih\",\"teyowclu\":\"cjhfgmvecactxmw\"},\"id\":\"ovekqvgqouwi\",\"name\":\"zmpjwyiv\",\"type\":\"ikf\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,12 +69,39 @@ public final class BackupVaultsGetByResourceGroupWithResponseMockTests {
         BackupVaultResource response =
             manager
                 .backupVaults()
-                .getByResourceGroupWithResponse("n", "bgye", com.azure.core.util.Context.NONE)
+                .getByResourceGroupWithResponse("khocxvdfffwaf", "roud", com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals("ublwpcesutrg", response.location());
-        Assertions.assertEquals("auutpwoqhihe", response.tags().get("qg"));
-        Assertions.assertEquals("xifqjzgxm", response.etag());
-        Assertions.assertEquals("nhn", response.identity().type());
+        Assertions.assertEquals("zldmozuxy", response.location());
+        Assertions.assertEquals("btkadpysownbtgkb", response.tags().get("grjqctojcmi"));
+        Assertions.assertEquals("wogfnzjvu", response.etag());
+        Assertions.assertEquals("aawiuagydwqfb", response.identity().type());
+        Assertions
+            .assertEquals(
+                AlertsState.DISABLED,
+                response.properties().monitoringSettings().azureMonitorAlertSettings().alertsForAllJobFailures());
+        Assertions
+            .assertEquals(SoftDeleteState.ON, response.properties().securitySettings().softDeleteSettings().state());
+        Assertions
+            .assertEquals(
+                71.74888692263151D,
+                response.properties().securitySettings().softDeleteSettings().retentionDurationInDays());
+        Assertions
+            .assertEquals(
+                ImmutabilityState.UNLOCKED, response.properties().securitySettings().immutabilitySettings().state());
+        Assertions
+            .assertEquals(
+                StorageSettingStoreTypes.OPERATIONAL_STORE,
+                response.properties().storageSettings().get(0).datastoreType());
+        Assertions
+            .assertEquals(StorageSettingTypes.ZONE_REDUNDANT, response.properties().storageSettings().get(0).type());
+        Assertions
+            .assertEquals(
+                CrossSubscriptionRestoreState.PERMANENTLY_DISABLED,
+                response.properties().featureSettings().crossSubscriptionRestoreSettings().state());
+        Assertions
+            .assertEquals(
+                CrossRegionRestoreState.ENABLED,
+                response.properties().featureSettings().crossRegionRestoreSettings().state());
     }
 }

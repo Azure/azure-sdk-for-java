@@ -79,6 +79,12 @@ public class AzureDataLakeStoreLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;
 
+    /*
+     * The credential reference containing authentication information.
+     */
+    @JsonProperty(value = "typeProperties.credential")
+    private CredentialReference credential;
+
     /** Creates an instance of AzureDataLakeStoreLinkedService class. */
     public AzureDataLakeStoreLinkedService() {}
 
@@ -277,6 +283,26 @@ public class AzureDataLakeStoreLinkedService extends LinkedService {
      */
     public AzureDataLakeStoreLinkedService setEncryptedCredential(Object encryptedCredential) {
         this.encryptedCredential = encryptedCredential;
+        return this;
+    }
+
+    /**
+     * Get the credential property: The credential reference containing authentication information.
+     *
+     * @return the credential value.
+     */
+    public CredentialReference getCredential() {
+        return this.credential;
+    }
+
+    /**
+     * Set the credential property: The credential reference containing authentication information.
+     *
+     * @param credential the credential value to set.
+     * @return the AzureDataLakeStoreLinkedService object itself.
+     */
+    public AzureDataLakeStoreLinkedService setCredential(CredentialReference credential) {
+        this.credential = credential;
         return this;
     }
 

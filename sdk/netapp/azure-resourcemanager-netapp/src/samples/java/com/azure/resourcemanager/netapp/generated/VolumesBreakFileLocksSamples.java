@@ -9,7 +9,7 @@ import com.azure.resourcemanager.netapp.models.BreakFileLocksRequest;
 /** Samples for Volumes BreakFileLocks. */
 public final class VolumesBreakFileLocksSamples {
     /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-09-01/examples/Volumes_BreakFileLocks.json
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-11-01/examples/Volumes_BreakFileLocks.json
      */
     /**
      * Sample code: Volumes_BreakFileLocks.

@@ -32,6 +32,10 @@ public final class GatewayCertificateAuthorityContractImpl
         return this.innerModel().isTrusted();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public GatewayCertificateAuthorityContractInner innerModel() {
         return this.innerObject;
     }

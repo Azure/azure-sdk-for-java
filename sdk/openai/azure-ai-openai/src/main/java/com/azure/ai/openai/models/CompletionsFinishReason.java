@@ -52,4 +52,7 @@ public final class CompletionsFinishReason extends ExpandableStringEnum<Completi
     public static Collection<CompletionsFinishReason> values() {
         return values(CompletionsFinishReason.class);
     }
+
+    /** Completion ended normally, with the model requesting a function to be called. */
+    @Generated public static final CompletionsFinishReason FUNCTION_CALL = fromString("function_call");
 }

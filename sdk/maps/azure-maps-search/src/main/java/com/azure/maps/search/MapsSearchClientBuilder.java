@@ -63,19 +63,22 @@ public final class MapsSearchClientBuilder implements AzureKeyCredentialTrait<Ma
     TokenCredentialTrait<MapsSearchClientBuilder>, HttpTrait<MapsSearchClientBuilder>,
     ConfigurationTrait<MapsSearchClientBuilder>, EndpointTrait<MapsSearchClientBuilder> {
 
+    // constants
+    private static final ClientLogger LOGGER = new ClientLogger(MapsSearchClientBuilder.class);
+    private static final String SDK_NAME = "name";
+    private static final String SDK_VERSION = "version";
+    private static final String X_MS_CLIENT_ID = "x-ms-client-id";
+
+    //subscription-key
+    static final String MAPS_SUBSCRIPTION_KEY = "subscription-key";
     // auth scope
     static final String[] DEFAULT_SCOPES = new String[] {"https://atlas.microsoft.com/.default"};
 
-    // constants
-    private static final String SDK_NAME = "name";
-    private static final String SDK_VERSION = "version";
-    private static final String MAPS_SUBSCRIPTION_KEY = "subscription-key";
-    private static final String X_MS_CLIENT_ID = "x-ms-client-id";
-    //subscription-key
-
     // instance fields
-    private static final ClientLogger LOGGER = new ClientLogger(MapsSearchClientBuilder.class);
+
+    private final List<HttpPipelinePolicy> pipelinePolicies;
     private final Map<String, String> properties = new HashMap<>();
+
     private String endpoint;
     private MapsSearchServiceVersion serviceVersion;
     private String mapsClientId;
@@ -83,7 +86,6 @@ public final class MapsSearchClientBuilder implements AzureKeyCredentialTrait<Ma
     private HttpClient httpClient;
     private Configuration configuration;
     private HttpLogOptions httpLogOptions;
-    private final List<HttpPipelinePolicy> pipelinePolicies;
     private ClientOptions clientOptions;
     private RetryPolicy retryPolicy;
     private RetryOptions retryOptions;
@@ -151,7 +153,7 @@ public final class MapsSearchClientBuilder implements AzureKeyCredentialTrait<Ma
     public MapsSearchClientBuilder pipeline(HttpPipeline pipeline) {
         if (this.pipeline != null && pipeline == null) {
             LOGGER.info("Pipeline is being set to 'null' when it was previously configured.");
-    
+
         }
         this.pipeline = pipeline;
         return this;
@@ -167,7 +169,7 @@ public final class MapsSearchClientBuilder implements AzureKeyCredentialTrait<Ma
     public MapsSearchClientBuilder httpClient(HttpClient httpClient) {
         if (this.httpClient != null && httpClient == null) {
             LOGGER.info("HttpClient is being set to 'null' when it was previously configured.");
-    
+
         }
         this.httpClient = httpClient;
         return this;

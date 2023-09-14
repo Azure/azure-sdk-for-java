@@ -60,10 +60,28 @@ public class SynapseNotebookActivity extends ExecutionActivity {
 
     /*
      * Number of executors to launch for this session, which will override the 'numExecutors' of the notebook you
-     * provide.
+     * provide. Type: integer (or Expression with resultType integer).
      */
     @JsonProperty(value = "typeProperties.numExecutors")
-    private Integer numExecutors;
+    private Object numExecutors;
+
+    /*
+     * The type of the spark config.
+     */
+    @JsonProperty(value = "typeProperties.configurationType")
+    private ConfigurationType configurationType;
+
+    /*
+     * The spark configuration of the spark job.
+     */
+    @JsonProperty(value = "typeProperties.targetSparkConfiguration")
+    private SparkConfigurationParametrizationReference targetSparkConfiguration;
+
+    /*
+     * Spark configuration property.
+     */
+    @JsonProperty(value = "typeProperties.sparkConfig")
+    private Map<String, Object> sparkConfig;
 
     /** Creates an instance of SynapseNotebookActivity class. */
     public SynapseNotebookActivity() {}
@@ -200,23 +218,84 @@ public class SynapseNotebookActivity extends ExecutionActivity {
 
     /**
      * Get the numExecutors property: Number of executors to launch for this session, which will override the
-     * 'numExecutors' of the notebook you provide.
+     * 'numExecutors' of the notebook you provide. Type: integer (or Expression with resultType integer).
      *
      * @return the numExecutors value.
      */
-    public Integer getNumExecutors() {
+    public Object getNumExecutors() {
         return this.numExecutors;
     }
 
     /**
      * Set the numExecutors property: Number of executors to launch for this session, which will override the
-     * 'numExecutors' of the notebook you provide.
+     * 'numExecutors' of the notebook you provide. Type: integer (or Expression with resultType integer).
      *
      * @param numExecutors the numExecutors value to set.
      * @return the SynapseNotebookActivity object itself.
      */
-    public SynapseNotebookActivity setNumExecutors(Integer numExecutors) {
+    public SynapseNotebookActivity setNumExecutors(Object numExecutors) {
         this.numExecutors = numExecutors;
+        return this;
+    }
+
+    /**
+     * Get the configurationType property: The type of the spark config.
+     *
+     * @return the configurationType value.
+     */
+    public ConfigurationType getConfigurationType() {
+        return this.configurationType;
+    }
+
+    /**
+     * Set the configurationType property: The type of the spark config.
+     *
+     * @param configurationType the configurationType value to set.
+     * @return the SynapseNotebookActivity object itself.
+     */
+    public SynapseNotebookActivity setConfigurationType(ConfigurationType configurationType) {
+        this.configurationType = configurationType;
+        return this;
+    }
+
+    /**
+     * Get the targetSparkConfiguration property: The spark configuration of the spark job.
+     *
+     * @return the targetSparkConfiguration value.
+     */
+    public SparkConfigurationParametrizationReference getTargetSparkConfiguration() {
+        return this.targetSparkConfiguration;
+    }
+
+    /**
+     * Set the targetSparkConfiguration property: The spark configuration of the spark job.
+     *
+     * @param targetSparkConfiguration the targetSparkConfiguration value to set.
+     * @return the SynapseNotebookActivity object itself.
+     */
+    public SynapseNotebookActivity setTargetSparkConfiguration(
+            SparkConfigurationParametrizationReference targetSparkConfiguration) {
+        this.targetSparkConfiguration = targetSparkConfiguration;
+        return this;
+    }
+
+    /**
+     * Get the sparkConfig property: Spark configuration property.
+     *
+     * @return the sparkConfig value.
+     */
+    public Map<String, Object> getSparkConfig() {
+        return this.sparkConfig;
+    }
+
+    /**
+     * Set the sparkConfig property: Spark configuration property.
+     *
+     * @param sparkConfig the sparkConfig value to set.
+     * @return the SynapseNotebookActivity object itself.
+     */
+    public SynapseNotebookActivity setSparkConfig(Map<String, Object> sparkConfig) {
+        this.sparkConfig = sparkConfig;
         return this;
     }
 
@@ -245,6 +324,20 @@ public class SynapseNotebookActivity extends ExecutionActivity {
     @Override
     public SynapseNotebookActivity setDescription(String description) {
         super.setDescription(description);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SynapseNotebookActivity setState(ActivityState state) {
+        super.setState(state);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SynapseNotebookActivity setOnInactiveMarkAs(ActivityOnInactiveMarkAs onInactiveMarkAs) {
+        super.setOnInactiveMarkAs(onInactiveMarkAs);
         return this;
     }
 

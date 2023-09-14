@@ -8,7 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** List of IPv4 and IPv6 route configurations. */
+/** List of IPv4 and IPv6 aggregate routes. */
 @Fluent
 public final class AggregateRouteConfiguration {
     /*
@@ -18,7 +18,7 @@ public final class AggregateRouteConfiguration {
     private List<AggregateRoute> ipv4Routes;
 
     /*
-     * List of IPv6 Routes prefixes.
+     * List of Ipv6Routes prefixes.
      */
     @JsonProperty(value = "ipv6Routes")
     private List<AggregateRoute> ipv6Routes;
@@ -48,7 +48,7 @@ public final class AggregateRouteConfiguration {
     }
 
     /**
-     * Get the ipv6Routes property: List of IPv6 Routes prefixes.
+     * Get the ipv6Routes property: List of Ipv6Routes prefixes.
      *
      * @return the ipv6Routes value.
      */
@@ -57,7 +57,7 @@ public final class AggregateRouteConfiguration {
     }
 
     /**
-     * Set the ipv6Routes property: List of IPv6 Routes prefixes.
+     * Set the ipv6Routes property: List of Ipv6Routes prefixes.
      *
      * @param ipv6Routes the ipv6Routes value to set.
      * @return the AggregateRouteConfiguration object itself.

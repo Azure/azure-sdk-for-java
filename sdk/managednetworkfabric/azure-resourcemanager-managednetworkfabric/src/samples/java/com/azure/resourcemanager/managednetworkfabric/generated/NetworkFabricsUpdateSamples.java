@@ -4,15 +4,23 @@
 
 package com.azure.resourcemanager.managednetworkfabric.generated;
 
+import com.azure.resourcemanager.managednetworkfabric.models.BfdConfiguration;
+import com.azure.resourcemanager.managednetworkfabric.models.ManagementNetworkConfigurationPatchableProperties;
 import com.azure.resourcemanager.managednetworkfabric.models.NetworkFabric;
-import com.azure.resourcemanager.managednetworkfabric.models.TerminalServerPatchableProperties;
+import com.azure.resourcemanager.managednetworkfabric.models.NetworkFabricPatchablePropertiesTerminalServerConfiguration;
+import com.azure.resourcemanager.managednetworkfabric.models.OptionBProperties;
+import com.azure.resourcemanager.managednetworkfabric.models.PeeringOption;
+import com.azure.resourcemanager.managednetworkfabric.models.RouteTargetInformation;
+import com.azure.resourcemanager.managednetworkfabric.models.VpnConfigurationPatchableProperties;
+import com.azure.resourcemanager.managednetworkfabric.models.VpnConfigurationPatchablePropertiesOptionAProperties;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
 /** Samples for NetworkFabrics Update. */
 public final class NetworkFabricsUpdateSamples {
     /*
-     * x-ms-original-file: specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/preview/2023-02-01-preview/examples/NetworkFabrics_Update_MaximumSet_Gen.json
+     * x-ms-original-file: specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/NetworkFabrics_Update_MaximumSet_Gen.json
      */
     /**
      * Sample code: NetworkFabrics_Update_MaximumSet_Gen.
@@ -24,17 +32,80 @@ public final class NetworkFabricsUpdateSamples {
         NetworkFabric resource =
             manager
                 .networkFabrics()
-                .getByResourceGroupWithResponse("resourceGroupName", "FabricName", com.azure.core.util.Context.NONE)
+                .getByResourceGroupWithResponse("example-rg", "example-fabric", com.azure.core.util.Context.NONE)
                 .getValue();
         resource
             .update()
-            .withTags(mapOf("key1758", ""))
+            .withTags(mapOf("keyID", "fakeTokenPlaceholder"))
+            .withRackCount(6)
+            .withServerCountPerRack(10)
+            .withIpv4Prefix("10.18.0.0/17")
+            .withIpv6Prefix("3FFE:FFFF:0:CD40::/60")
+            .withFabricAsn(12345L)
             .withTerminalServerConfiguration(
-                new TerminalServerPatchableProperties()
-                    .withUsername("username")
+                new NetworkFabricPatchablePropertiesTerminalServerConfiguration()
+                    .withUsername("username1")
                     .withPassword("fakeTokenPlaceholder")
-                    .withSerialNumber("234567"))
-            .withAnnotation("annotationValue")
+                    .withSerialNumber("1234567")
+                    .withPrimaryIpv4Prefix("10.0.0.12/30")
+                    .withPrimaryIpv6Prefix("4FFE:FFFF:0:CD30::a8/127")
+                    .withSecondaryIpv4Prefix("40.0.0.14/30")
+                    .withSecondaryIpv6Prefix("6FFE:FFFF:0:CD30::ac/127"))
+            .withManagementNetworkConfiguration(
+                new ManagementNetworkConfigurationPatchableProperties()
+                    .withInfrastructureVpnConfiguration(
+                        new VpnConfigurationPatchableProperties()
+                            .withNetworkToNetworkInterconnectId(
+                                "/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkFabrics/example-fabric/networkToNetworkInterconnects/example-nni")
+                            .withPeeringOption(PeeringOption.OPTIONB)
+                            .withOptionBProperties(
+                                new OptionBProperties()
+                                    .withImportRouteTargets(Arrays.asList("65046:10050"))
+                                    .withExportRouteTargets(Arrays.asList("65046:10050"))
+                                    .withRouteTargets(
+                                        new RouteTargetInformation()
+                                            .withImportIpv4RouteTargets(Arrays.asList("65046:10050"))
+                                            .withImportIpv6RouteTargets(Arrays.asList("65046:10050"))
+                                            .withExportIpv4RouteTargets(Arrays.asList("65046:10050"))
+                                            .withExportIpv6RouteTargets(Arrays.asList("65046:10050"))))
+                            .withOptionAProperties(
+                                new VpnConfigurationPatchablePropertiesOptionAProperties()
+                                    .withMtu(1501)
+                                    .withVlanId(3001)
+                                    .withPeerAsn(1235L)
+                                    .withBfdConfiguration(
+                                        new BfdConfiguration().withIntervalInMilliSeconds(300).withMultiplier(10))
+                                    .withPrimaryIpv4Prefix("10.0.0.12/30")
+                                    .withPrimaryIpv6Prefix("4FFE:FFFF:0:CD30::a8/127")
+                                    .withSecondaryIpv4Prefix("20.0.0.13/30")
+                                    .withSecondaryIpv6Prefix("6FFE:FFFF:0:CD30::ac/127")))
+                    .withWorkloadVpnConfiguration(
+                        new VpnConfigurationPatchableProperties()
+                            .withNetworkToNetworkInterconnectId(
+                                "/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkFabrics/example-fabric/networkToNetworkInterconnects/example-nni")
+                            .withPeeringOption(PeeringOption.OPTIONA)
+                            .withOptionBProperties(
+                                new OptionBProperties()
+                                    .withImportRouteTargets(Arrays.asList("65046:10050"))
+                                    .withExportRouteTargets(Arrays.asList("65046:10050"))
+                                    .withRouteTargets(
+                                        new RouteTargetInformation()
+                                            .withImportIpv4RouteTargets(Arrays.asList("65046:10050"))
+                                            .withImportIpv6RouteTargets(Arrays.asList("65046:10050"))
+                                            .withExportIpv4RouteTargets(Arrays.asList("65046:10050"))
+                                            .withExportIpv6RouteTargets(Arrays.asList("65046:10050"))))
+                            .withOptionAProperties(
+                                new VpnConfigurationPatchablePropertiesOptionAProperties()
+                                    .withMtu(1500)
+                                    .withVlanId(3000)
+                                    .withPeerAsn(61234L)
+                                    .withBfdConfiguration(
+                                        new BfdConfiguration().withIntervalInMilliSeconds(300).withMultiplier(5))
+                                    .withPrimaryIpv4Prefix("10.0.0.14/30")
+                                    .withPrimaryIpv6Prefix("2FFE:FFFF:0:CD30::a7/126")
+                                    .withSecondaryIpv4Prefix("10.0.0.15/30")
+                                    .withSecondaryIpv6Prefix("2FFE:FFFF:0:CD30::ac/126"))))
+            .withAnnotation("annotation1")
             .apply();
     }
 

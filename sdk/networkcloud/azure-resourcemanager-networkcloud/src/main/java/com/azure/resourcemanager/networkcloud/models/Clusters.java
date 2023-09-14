@@ -127,8 +127,9 @@ public interface Clusters {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
-    void deploy(String resourceGroupName, String clusterName);
+    OperationStatusResult deploy(String resourceGroupName, String clusterName);
 
     /**
      * Deploy the cluster to the rack.
@@ -142,8 +143,9 @@ public interface Clusters {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
-    void deploy(
+    OperationStatusResult deploy(
         String resourceGroupName, String clusterName, ClusterDeployParameters clusterDeployParameters, Context context);
 
     /**
@@ -157,8 +159,9 @@ public interface Clusters {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
-    void updateVersion(
+    OperationStatusResult updateVersion(
         String resourceGroupName, String clusterName, ClusterUpdateVersionParameters clusterUpdateVersionParameters);
 
     /**
@@ -173,8 +176,9 @@ public interface Clusters {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
-    void updateVersion(
+    OperationStatusResult updateVersion(
         String resourceGroupName,
         String clusterName,
         ClusterUpdateVersionParameters clusterUpdateVersionParameters,

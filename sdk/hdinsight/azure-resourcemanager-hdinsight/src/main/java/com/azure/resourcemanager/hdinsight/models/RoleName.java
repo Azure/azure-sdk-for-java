@@ -14,6 +14,15 @@ public final class RoleName extends ExpandableStringEnum<RoleName> {
     public static final RoleName WORKERNODE = fromString("workernode");
 
     /**
+     * Creates a new instance of RoleName value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public RoleName() {
+    }
+
+    /**
      * Creates or finds a RoleName from its string representation.
      *
      * @param name a name to look for.

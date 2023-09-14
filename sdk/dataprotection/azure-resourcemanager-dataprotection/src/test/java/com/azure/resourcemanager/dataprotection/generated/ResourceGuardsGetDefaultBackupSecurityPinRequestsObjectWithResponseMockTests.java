@@ -29,7 +29,7 @@ public final class ResourceGuardsGetDefaultBackupSecurityPinRequestsObjectWithRe
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr = "{\"id\":\"xkbsazgakgac\",\"name\":\"cmjdmspof\",\"type\":\"vuhrylni\"}";
+        String responseStr = "{\"id\":\"yrneizjcpeo\",\"name\":\"hnmgbroux\",\"type\":\"bhfhpfpazjzoy\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -61,7 +61,7 @@ public final class ResourceGuardsGetDefaultBackupSecurityPinRequestsObjectWithRe
             manager
                 .resourceGuards()
                 .getDefaultBackupSecurityPinRequestsObjectWithResponse(
-                    "duragegizvc", "felisdjub", "gbqi", com.azure.core.util.Context.NONE)
+                    "alhhjnhgwydyynfs", "khgb", "qtanarfdlpuk", com.azure.core.util.Context.NONE)
                 .getValue();
     }
 }

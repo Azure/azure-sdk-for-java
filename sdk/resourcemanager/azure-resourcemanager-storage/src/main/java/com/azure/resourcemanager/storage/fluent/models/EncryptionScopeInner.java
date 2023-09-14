@@ -21,6 +21,10 @@ public final class EncryptionScopeInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private EncryptionScopeProperties innerEncryptionScopeProperties;
 
+    /** Creates an instance of EncryptionScopeInner class. */
+    public EncryptionScopeInner() {
+    }
+
     /**
      * Get the innerEncryptionScopeProperties property: Properties of the encryption scope.
      *

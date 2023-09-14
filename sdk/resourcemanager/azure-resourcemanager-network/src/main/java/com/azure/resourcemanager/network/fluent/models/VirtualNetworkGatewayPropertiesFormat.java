@@ -7,8 +7,10 @@ package com.azure.resourcemanager.network.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
 import com.azure.resourcemanager.network.models.AddressSpace;
+import com.azure.resourcemanager.network.models.AdminState;
 import com.azure.resourcemanager.network.models.BgpSettings;
 import com.azure.resourcemanager.network.models.ProvisioningState;
+import com.azure.resourcemanager.network.models.VirtualNetworkGatewayAutoScaleConfiguration;
 import com.azure.resourcemanager.network.models.VirtualNetworkGatewayPolicyGroup;
 import com.azure.resourcemanager.network.models.VirtualNetworkGatewaySku;
 import com.azure.resourcemanager.network.models.VirtualNetworkGatewayType;
@@ -21,6 +23,12 @@ import java.util.List;
 /** VirtualNetworkGateway properties. */
 @Fluent
 public final class VirtualNetworkGatewayPropertiesFormat {
+    /*
+     * Autoscale configuration for virutal network gateway
+     */
+    @JsonProperty(value = "autoScaleConfiguration")
+    private VirtualNetworkGatewayAutoScaleConfiguration autoScaleConfiguration;
+
     /*
      * IP configurations for virtual network gateway.
      */
@@ -164,8 +172,36 @@ public final class VirtualNetworkGatewayPropertiesFormat {
     @JsonProperty(value = "allowRemoteVnetTraffic")
     private Boolean allowRemoteVnetTraffic;
 
+    /*
+     * Property to indicate if the Express Route Gateway serves traffic when there are multiple Express Route Gateways
+     * in the vnet
+     */
+    @JsonProperty(value = "adminState")
+    private AdminState adminState;
+
     /** Creates an instance of VirtualNetworkGatewayPropertiesFormat class. */
     public VirtualNetworkGatewayPropertiesFormat() {
+    }
+
+    /**
+     * Get the autoScaleConfiguration property: Autoscale configuration for virutal network gateway.
+     *
+     * @return the autoScaleConfiguration value.
+     */
+    public VirtualNetworkGatewayAutoScaleConfiguration autoScaleConfiguration() {
+        return this.autoScaleConfiguration;
+    }
+
+    /**
+     * Set the autoScaleConfiguration property: Autoscale configuration for virutal network gateway.
+     *
+     * @param autoScaleConfiguration the autoScaleConfiguration value to set.
+     * @return the VirtualNetworkGatewayPropertiesFormat object itself.
+     */
+    public VirtualNetworkGatewayPropertiesFormat withAutoScaleConfiguration(
+        VirtualNetworkGatewayAutoScaleConfiguration autoScaleConfiguration) {
+        this.autoScaleConfiguration = autoScaleConfiguration;
+        return this;
     }
 
     /**
@@ -623,11 +659,36 @@ public final class VirtualNetworkGatewayPropertiesFormat {
     }
 
     /**
+     * Get the adminState property: Property to indicate if the Express Route Gateway serves traffic when there are
+     * multiple Express Route Gateways in the vnet.
+     *
+     * @return the adminState value.
+     */
+    public AdminState adminState() {
+        return this.adminState;
+    }
+
+    /**
+     * Set the adminState property: Property to indicate if the Express Route Gateway serves traffic when there are
+     * multiple Express Route Gateways in the vnet.
+     *
+     * @param adminState the adminState value to set.
+     * @return the VirtualNetworkGatewayPropertiesFormat object itself.
+     */
+    public VirtualNetworkGatewayPropertiesFormat withAdminState(AdminState adminState) {
+        this.adminState = adminState;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (autoScaleConfiguration() != null) {
+            autoScaleConfiguration().validate();
+        }
         if (ipConfigurations() != null) {
             ipConfigurations().forEach(e -> e.validate());
         }

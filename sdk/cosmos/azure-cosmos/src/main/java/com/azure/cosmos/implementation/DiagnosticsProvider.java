@@ -914,15 +914,13 @@ public final class DiagnosticsProvider {
             }
 
             //adding gateway statistics
-            if (clientSideRequestStatistics.getGatewayStatistics() != null) {
+            for (ClientSideRequestStatistics.GatewayStatistics gatewayStats : clientSideRequestStatistics.getGatewayStatisticsList()) {
                 attributes = new HashMap<>();
-                attributes.put(JSON_STRING,
-                    mapper.writeValueAsString(clientSideRequestStatistics.getGatewayStatistics()));
+                attributes.put(JSON_STRING, mapper.writeValueAsString(gatewayStats));
                 OffsetDateTime requestStartTime =
                     OffsetDateTime.ofInstant(clientSideRequestStatistics.getRequestStartTimeUTC(), ZoneOffset.UTC);
-                if (clientSideRequestStatistics.getGatewayStatistics().getRequestTimeline() != null) {
-                    for (RequestTimeline.Event event :
-                        clientSideRequestStatistics.getGatewayStatistics().getRequestTimeline()) {
+                if (gatewayStats.getRequestTimeline() != null) {
+                    for (RequestTimeline.Event event : gatewayStats.getRequestTimeline()) {
                         if (event.getName().equals("created")) {
                             requestStartTime = OffsetDateTime.ofInstant(event.getStartTime(), ZoneOffset.UTC);
                             break;
@@ -992,9 +990,9 @@ public final class DiagnosticsProvider {
                         + clientSideRequestStatistics.getResponseStatisticsList().get(0).getStoreResult().getStoreResponseDiagnostics().getPartitionKeyRangeId();
                 this.addEvent(eventName, attributes,
                     OffsetDateTime.ofInstant(clientSideRequestStatistics.getRequestStartTimeUTC(), ZoneOffset.UTC), context);
-            } else if (clientSideRequestStatistics.getGatewayStatistics() != null) {
+            } else if (clientSideRequestStatistics.getGatewayStatisticsList() != null && clientSideRequestStatistics.getGatewayStatisticsList().size() > 0) {
                 String eventName =
-                    "Diagnostics for PKRange " + clientSideRequestStatistics.getGatewayStatistics().getPartitionKeyRangeId();
+                    "Diagnostics for PKRange " + clientSideRequestStatistics.getGatewayStatisticsList().get(0).getPartitionKeyRangeId();
                 this.addEvent(eventName, attributes,
                     OffsetDateTime.ofInstant(clientSideRequestStatistics.getRequestStartTimeUTC(), ZoneOffset.UTC), context);
 

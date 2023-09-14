@@ -11,7 +11,6 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.batch.BatchManager;
 import com.azure.resourcemanager.batch.models.BatchLocationQuota;
 import java.nio.ByteBuffer;
@@ -30,7 +29,7 @@ public final class LocationsGetQuotasWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr = "{\"accountQuota\":376601626}";
+        String responseStr = "{\"accountQuota\":1028485886}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -58,6 +57,7 @@ public final class LocationsGetQuotasWithResponseMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        BatchLocationQuota response = manager.locations().getQuotasWithResponse("qfhwyg", Context.NONE).getValue();
+        BatchLocationQuota response =
+            manager.locations().getQuotasWithResponse("pqqmted", com.azure.core.util.Context.NONE).getValue();
     }
 }

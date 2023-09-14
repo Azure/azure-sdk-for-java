@@ -21,46 +21,25 @@ public final class CompletionsLogProbabilityModel {
     @JsonProperty(value = "tokens")
     private List<String> tokens;
 
-    /*
-     * A collection of log probability values for the tokens in this completions data.
-     */
-    @Generated
-    @JsonProperty(value = "token_logprobs")
-    private List<Double> tokenLogprobs;
-
-    /*
-     * A mapping of tokens to maximum log probability values in this completions data.
-     */
-    @Generated
-    @JsonProperty(value = "top_logprobs")
-    private List<Map<String, Double>> topLogprobs;
-
-    /*
-     * The text offsets associated with tokens in this completions data.
-     */
-    @Generated
-    @JsonProperty(value = "text_offset")
-    private List<Integer> textOffset;
-
     /**
      * Creates an instance of CompletionsLogProbabilityModel class.
      *
      * @param tokens the tokens value to set.
-     * @param tokenLogprobs the tokenLogprobs value to set.
-     * @param topLogprobs the topLogprobs value to set.
-     * @param textOffset the textOffset value to set.
+     * @param tokenLogProbabilities the tokenLogProbabilities value to set.
+     * @param topLogProbabilities the topLogProbabilities value to set.
+     * @param textOffsets the textOffsets value to set.
      */
     @Generated
     @JsonCreator
     private CompletionsLogProbabilityModel(
             @JsonProperty(value = "tokens") List<String> tokens,
-            @JsonProperty(value = "token_logprobs") List<Double> tokenLogprobs,
-            @JsonProperty(value = "top_logprobs") List<Map<String, Double>> topLogprobs,
-            @JsonProperty(value = "text_offset") List<Integer> textOffset) {
+            @JsonProperty(value = "token_logprobs") List<Double> tokenLogProbabilities,
+            @JsonProperty(value = "top_logprobs") List<Map<String, Double>> topLogProbabilities,
+            @JsonProperty(value = "text_offset") List<Integer> textOffsets) {
         this.tokens = tokens;
-        this.tokenLogprobs = tokenLogprobs;
-        this.topLogprobs = topLogprobs;
-        this.textOffset = textOffset;
+        this.tokenLogProbabilities = tokenLogProbabilities;
+        this.topLogProbabilities = topLogProbabilities;
+        this.textOffsets = textOffsets;
     }
 
     /**
@@ -73,33 +52,56 @@ public final class CompletionsLogProbabilityModel {
         return this.tokens;
     }
 
-    /**
-     * Get the tokenLogprobs property: A collection of log probability values for the tokens in this completions data.
-     *
-     * @return the tokenLogprobs value.
+    /*
+     * A collection of log probability values for the tokens in this completions data.
      */
     @Generated
-    public List<Double> getTokenLogprobs() {
-        return this.tokenLogprobs;
+    @JsonProperty(value = "token_logprobs")
+    private List<Double> tokenLogProbabilities;
+
+    /*
+     * A mapping of tokens to maximum log probability values in this completions data.
+     */
+    @Generated
+    @JsonProperty(value = "top_logprobs")
+    private List<Map<String, Double>> topLogProbabilities;
+
+    /*
+     * The text offsets associated with tokens in this completions data.
+     */
+    @Generated
+    @JsonProperty(value = "text_offset")
+    private List<Integer> textOffsets;
+
+    /**
+     * Get the tokenLogProbabilities property: A collection of log probability values for the tokens in this completions
+     * data.
+     *
+     * @return the tokenLogProbabilities value.
+     */
+    @Generated
+    public List<Double> getTokenLogProbabilities() {
+        return this.tokenLogProbabilities;
     }
 
     /**
-     * Get the topLogprobs property: A mapping of tokens to maximum log probability values in this completions data.
+     * Get the topLogProbabilities property: A mapping of tokens to maximum log probability values in this completions
+     * data.
      *
-     * @return the topLogprobs value.
+     * @return the topLogProbabilities value.
      */
     @Generated
-    public List<Map<String, Double>> getTopLogprobs() {
-        return this.topLogprobs;
+    public List<Map<String, Double>> getTopLogProbabilities() {
+        return this.topLogProbabilities;
     }
 
     /**
-     * Get the textOffset property: The text offsets associated with tokens in this completions data.
+     * Get the textOffsets property: The text offsets associated with tokens in this completions data.
      *
-     * @return the textOffset value.
+     * @return the textOffsets value.
      */
     @Generated
-    public List<Integer> getTextOffset() {
-        return this.textOffset;
+    public List<Integer> getTextOffsets() {
+        return this.textOffsets;
     }
 }

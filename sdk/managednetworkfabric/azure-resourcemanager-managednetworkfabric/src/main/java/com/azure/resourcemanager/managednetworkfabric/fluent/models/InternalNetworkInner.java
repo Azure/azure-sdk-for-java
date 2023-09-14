@@ -8,15 +8,20 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.managednetworkfabric.models.BgpConfiguration;
+import com.azure.resourcemanager.managednetworkfabric.models.AdministrativeState;
+import com.azure.resourcemanager.managednetworkfabric.models.ConfigurationState;
 import com.azure.resourcemanager.managednetworkfabric.models.ConnectedSubnet;
-import com.azure.resourcemanager.managednetworkfabric.models.EnabledDisabledState;
+import com.azure.resourcemanager.managednetworkfabric.models.ExportRoutePolicy;
+import com.azure.resourcemanager.managednetworkfabric.models.Extension;
+import com.azure.resourcemanager.managednetworkfabric.models.ImportRoutePolicy;
+import com.azure.resourcemanager.managednetworkfabric.models.InternalNetworkPropertiesBgpConfiguration;
+import com.azure.resourcemanager.managednetworkfabric.models.InternalNetworkPropertiesStaticRouteConfiguration;
+import com.azure.resourcemanager.managednetworkfabric.models.IsMonitoringEnabled;
 import com.azure.resourcemanager.managednetworkfabric.models.ProvisioningState;
-import com.azure.resourcemanager.managednetworkfabric.models.StaticRouteConfiguration;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Defines the InternalNetwork item. */
+/** Defines the Internal Network resource. */
 @Fluent
 public final class InternalNetworkInner extends ProxyResource {
     /*
@@ -54,64 +59,6 @@ public final class InternalNetworkInner extends ProxyResource {
     }
 
     /**
-     * Get the disabledOnResources property: List of resources the InternalNetwork is disabled on. Can be either entire
-     * NetworkFabric or NetworkRack.
-     *
-     * @return the disabledOnResources value.
-     */
-    public List<String> disabledOnResources() {
-        return this.innerProperties() == null ? null : this.innerProperties().disabledOnResources();
-    }
-
-    /**
-     * Get the administrativeState property: Administrative state of the InternalNetwork. Example: Enabled | Disabled.
-     *
-     * @return the administrativeState value.
-     */
-    public EnabledDisabledState administrativeState() {
-        return this.innerProperties() == null ? null : this.innerProperties().administrativeState();
-    }
-
-    /**
-     * Get the bgpDisabledOnResources property: List of resources the BGP is disabled on. Can be either entire
-     * NetworkFabric or NetworkRack.
-     *
-     * @return the bgpDisabledOnResources value.
-     */
-    public List<String> bgpDisabledOnResources() {
-        return this.innerProperties() == null ? null : this.innerProperties().bgpDisabledOnResources();
-    }
-
-    /**
-     * Get the bfdDisabledOnResources property: List of resources the BFD for BGP is disabled on. Can be either entire
-     * NetworkFabric or NetworkRack.
-     *
-     * @return the bfdDisabledOnResources value.
-     */
-    public List<String> bfdDisabledOnResources() {
-        return this.innerProperties() == null ? null : this.innerProperties().bfdDisabledOnResources();
-    }
-
-    /**
-     * Get the bfdForStaticRoutesDisabledOnResources property: List of resources the BFD of StaticRoutes is disabled on.
-     * Can be either entire NetworkFabric or NetworkRack.
-     *
-     * @return the bfdForStaticRoutesDisabledOnResources value.
-     */
-    public List<String> bfdForStaticRoutesDisabledOnResources() {
-        return this.innerProperties() == null ? null : this.innerProperties().bfdForStaticRoutesDisabledOnResources();
-    }
-
-    /**
-     * Get the provisioningState property: Gets the provisioning state of the resource.
-     *
-     * @return the provisioningState value.
-     */
-    public ProvisioningState provisioningState() {
-        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
-    }
-
-    /**
      * Get the vlanId property: Vlan identifier. Example: 1001.
      *
      * @return the vlanId value.
@@ -132,6 +79,80 @@ public final class InternalNetworkInner extends ProxyResource {
         }
         this.innerProperties().withVlanId(vlanId);
         return this;
+    }
+
+    /**
+     * Get the bgpConfiguration property: BGP configuration properties.
+     *
+     * @return the bgpConfiguration value.
+     */
+    public InternalNetworkPropertiesBgpConfiguration bgpConfiguration() {
+        return this.innerProperties() == null ? null : this.innerProperties().bgpConfiguration();
+    }
+
+    /**
+     * Set the bgpConfiguration property: BGP configuration properties.
+     *
+     * @param bgpConfiguration the bgpConfiguration value to set.
+     * @return the InternalNetworkInner object itself.
+     */
+    public InternalNetworkInner withBgpConfiguration(InternalNetworkPropertiesBgpConfiguration bgpConfiguration) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new InternalNetworkProperties();
+        }
+        this.innerProperties().withBgpConfiguration(bgpConfiguration);
+        return this;
+    }
+
+    /**
+     * Get the staticRouteConfiguration property: Static Route Configuration properties.
+     *
+     * @return the staticRouteConfiguration value.
+     */
+    public InternalNetworkPropertiesStaticRouteConfiguration staticRouteConfiguration() {
+        return this.innerProperties() == null ? null : this.innerProperties().staticRouteConfiguration();
+    }
+
+    /**
+     * Set the staticRouteConfiguration property: Static Route Configuration properties.
+     *
+     * @param staticRouteConfiguration the staticRouteConfiguration value to set.
+     * @return the InternalNetworkInner object itself.
+     */
+    public InternalNetworkInner withStaticRouteConfiguration(
+        InternalNetworkPropertiesStaticRouteConfiguration staticRouteConfiguration) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new InternalNetworkProperties();
+        }
+        this.innerProperties().withStaticRouteConfiguration(staticRouteConfiguration);
+        return this;
+    }
+
+    /**
+     * Get the configurationState property: Configuration state of the resource.
+     *
+     * @return the configurationState value.
+     */
+    public ConfigurationState configurationState() {
+        return this.innerProperties() == null ? null : this.innerProperties().configurationState();
+    }
+
+    /**
+     * Get the provisioningState property: Provisioning state of the resource.
+     *
+     * @return the provisioningState value.
+     */
+    public ProvisioningState provisioningState() {
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
+     * Get the administrativeState property: Administrative state of the resource.
+     *
+     * @return the administrativeState value.
+     */
+    public AdministrativeState administrativeState() {
+        return this.innerProperties() == null ? null : this.innerProperties().administrativeState();
     }
 
     /**
@@ -158,7 +179,7 @@ public final class InternalNetworkInner extends ProxyResource {
     }
 
     /**
-     * Get the connectedIPv4Subnets property: List with object connected IPv4 Subnets.
+     * Get the connectedIPv4Subnets property: List of Connected IPv4 Subnets.
      *
      * @return the connectedIPv4Subnets value.
      */
@@ -167,7 +188,7 @@ public final class InternalNetworkInner extends ProxyResource {
     }
 
     /**
-     * Set the connectedIPv4Subnets property: List with object connected IPv4 Subnets.
+     * Set the connectedIPv4Subnets property: List of Connected IPv4 Subnets.
      *
      * @param connectedIPv4Subnets the connectedIPv4Subnets value to set.
      * @return the InternalNetworkInner object itself.
@@ -181,7 +202,7 @@ public final class InternalNetworkInner extends ProxyResource {
     }
 
     /**
-     * Get the connectedIPv6Subnets property: List with object connected IPv6 Subnets.
+     * Get the connectedIPv6Subnets property: List of connected IPv6 Subnets.
      *
      * @return the connectedIPv6Subnets value.
      */
@@ -190,7 +211,7 @@ public final class InternalNetworkInner extends ProxyResource {
     }
 
     /**
-     * Set the connectedIPv6Subnets property: List with object connected IPv6 Subnets.
+     * Set the connectedIPv6Subnets property: List of connected IPv6 Subnets.
      *
      * @param connectedIPv6Subnets the connectedIPv6Subnets value to set.
      * @return the InternalNetworkInner object itself.
@@ -204,53 +225,8 @@ public final class InternalNetworkInner extends ProxyResource {
     }
 
     /**
-     * Get the staticRouteConfiguration property: Static Route Configuration properties.
-     *
-     * @return the staticRouteConfiguration value.
-     */
-    public StaticRouteConfiguration staticRouteConfiguration() {
-        return this.innerProperties() == null ? null : this.innerProperties().staticRouteConfiguration();
-    }
-
-    /**
-     * Set the staticRouteConfiguration property: Static Route Configuration properties.
-     *
-     * @param staticRouteConfiguration the staticRouteConfiguration value to set.
-     * @return the InternalNetworkInner object itself.
-     */
-    public InternalNetworkInner withStaticRouteConfiguration(StaticRouteConfiguration staticRouteConfiguration) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new InternalNetworkProperties();
-        }
-        this.innerProperties().withStaticRouteConfiguration(staticRouteConfiguration);
-        return this;
-    }
-
-    /**
-     * Get the bgpConfiguration property: BGP configuration properties.
-     *
-     * @return the bgpConfiguration value.
-     */
-    public BgpConfiguration bgpConfiguration() {
-        return this.innerProperties() == null ? null : this.innerProperties().bgpConfiguration();
-    }
-
-    /**
-     * Set the bgpConfiguration property: BGP configuration properties.
-     *
-     * @param bgpConfiguration the bgpConfiguration value to set.
-     * @return the InternalNetworkInner object itself.
-     */
-    public InternalNetworkInner withBgpConfiguration(BgpConfiguration bgpConfiguration) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new InternalNetworkProperties();
-        }
-        this.innerProperties().withBgpConfiguration(bgpConfiguration);
-        return this;
-    }
-
-    /**
-     * Get the importRoutePolicyId property: ARM resource ID of importRoutePolicy.
+     * Get the importRoutePolicyId property: ARM Resource ID of the RoutePolicy. This is used for the backward
+     * compatibility.
      *
      * @return the importRoutePolicyId value.
      */
@@ -259,7 +235,8 @@ public final class InternalNetworkInner extends ProxyResource {
     }
 
     /**
-     * Set the importRoutePolicyId property: ARM resource ID of importRoutePolicy.
+     * Set the importRoutePolicyId property: ARM Resource ID of the RoutePolicy. This is used for the backward
+     * compatibility.
      *
      * @param importRoutePolicyId the importRoutePolicyId value to set.
      * @return the InternalNetworkInner object itself.
@@ -273,7 +250,8 @@ public final class InternalNetworkInner extends ProxyResource {
     }
 
     /**
-     * Get the exportRoutePolicyId property: ARM resource ID of importRoutePolicy.
+     * Get the exportRoutePolicyId property: ARM Resource ID of the RoutePolicy. This is used for the backward
+     * compatibility.
      *
      * @return the exportRoutePolicyId value.
      */
@@ -282,7 +260,8 @@ public final class InternalNetworkInner extends ProxyResource {
     }
 
     /**
-     * Set the exportRoutePolicyId property: ARM resource ID of importRoutePolicy.
+     * Set the exportRoutePolicyId property: ARM Resource ID of the RoutePolicy. This is used for the backward
+     * compatibility.
      *
      * @param exportRoutePolicyId the exportRoutePolicyId value to set.
      * @return the InternalNetworkInner object itself.
@@ -292,6 +271,144 @@ public final class InternalNetworkInner extends ProxyResource {
             this.innerProperties = new InternalNetworkProperties();
         }
         this.innerProperties().withExportRoutePolicyId(exportRoutePolicyId);
+        return this;
+    }
+
+    /**
+     * Get the importRoutePolicy property: Import Route Policy either IPv4 or IPv6.
+     *
+     * @return the importRoutePolicy value.
+     */
+    public ImportRoutePolicy importRoutePolicy() {
+        return this.innerProperties() == null ? null : this.innerProperties().importRoutePolicy();
+    }
+
+    /**
+     * Set the importRoutePolicy property: Import Route Policy either IPv4 or IPv6.
+     *
+     * @param importRoutePolicy the importRoutePolicy value to set.
+     * @return the InternalNetworkInner object itself.
+     */
+    public InternalNetworkInner withImportRoutePolicy(ImportRoutePolicy importRoutePolicy) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new InternalNetworkProperties();
+        }
+        this.innerProperties().withImportRoutePolicy(importRoutePolicy);
+        return this;
+    }
+
+    /**
+     * Get the exportRoutePolicy property: Export Route Policy either IPv4 or IPv6.
+     *
+     * @return the exportRoutePolicy value.
+     */
+    public ExportRoutePolicy exportRoutePolicy() {
+        return this.innerProperties() == null ? null : this.innerProperties().exportRoutePolicy();
+    }
+
+    /**
+     * Set the exportRoutePolicy property: Export Route Policy either IPv4 or IPv6.
+     *
+     * @param exportRoutePolicy the exportRoutePolicy value to set.
+     * @return the InternalNetworkInner object itself.
+     */
+    public InternalNetworkInner withExportRoutePolicy(ExportRoutePolicy exportRoutePolicy) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new InternalNetworkProperties();
+        }
+        this.innerProperties().withExportRoutePolicy(exportRoutePolicy);
+        return this;
+    }
+
+    /**
+     * Get the ingressAclId property: Ingress Acl. ARM resource ID of Access Control Lists.
+     *
+     * @return the ingressAclId value.
+     */
+    public String ingressAclId() {
+        return this.innerProperties() == null ? null : this.innerProperties().ingressAclId();
+    }
+
+    /**
+     * Set the ingressAclId property: Ingress Acl. ARM resource ID of Access Control Lists.
+     *
+     * @param ingressAclId the ingressAclId value to set.
+     * @return the InternalNetworkInner object itself.
+     */
+    public InternalNetworkInner withIngressAclId(String ingressAclId) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new InternalNetworkProperties();
+        }
+        this.innerProperties().withIngressAclId(ingressAclId);
+        return this;
+    }
+
+    /**
+     * Get the egressAclId property: Egress Acl. ARM resource ID of Access Control Lists.
+     *
+     * @return the egressAclId value.
+     */
+    public String egressAclId() {
+        return this.innerProperties() == null ? null : this.innerProperties().egressAclId();
+    }
+
+    /**
+     * Set the egressAclId property: Egress Acl. ARM resource ID of Access Control Lists.
+     *
+     * @param egressAclId the egressAclId value to set.
+     * @return the InternalNetworkInner object itself.
+     */
+    public InternalNetworkInner withEgressAclId(String egressAclId) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new InternalNetworkProperties();
+        }
+        this.innerProperties().withEgressAclId(egressAclId);
+        return this;
+    }
+
+    /**
+     * Get the isMonitoringEnabled property: To check whether monitoring of internal network is enabled or not.
+     *
+     * @return the isMonitoringEnabled value.
+     */
+    public IsMonitoringEnabled isMonitoringEnabled() {
+        return this.innerProperties() == null ? null : this.innerProperties().isMonitoringEnabled();
+    }
+
+    /**
+     * Set the isMonitoringEnabled property: To check whether monitoring of internal network is enabled or not.
+     *
+     * @param isMonitoringEnabled the isMonitoringEnabled value to set.
+     * @return the InternalNetworkInner object itself.
+     */
+    public InternalNetworkInner withIsMonitoringEnabled(IsMonitoringEnabled isMonitoringEnabled) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new InternalNetworkProperties();
+        }
+        this.innerProperties().withIsMonitoringEnabled(isMonitoringEnabled);
+        return this;
+    }
+
+    /**
+     * Get the extension property: Extension. Example: NoExtension | NPB.
+     *
+     * @return the extension value.
+     */
+    public Extension extension() {
+        return this.innerProperties() == null ? null : this.innerProperties().extension();
+    }
+
+    /**
+     * Set the extension property: Extension. Example: NoExtension | NPB.
+     *
+     * @param extension the extension value to set.
+     * @return the InternalNetworkInner object itself.
+     */
+    public InternalNetworkInner withExtension(Extension extension) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new InternalNetworkProperties();
+        }
+        this.innerProperties().withExtension(extension);
         return this;
     }
 

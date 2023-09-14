@@ -16,27 +16,27 @@ public final class JobSubTaskTests {
         JobSubTask model =
             BinaryData
                 .fromString(
-                    "{\"additionalDetails\":{\"nbmpowuwprzq\":\"vylwzbtdhxuj\",\"pjmkhfxobbc\":\"veual\"},\"taskId\":1535328040,\"taskName\":\"s\",\"taskProgress\":\"jriplrbpbewtghf\",\"taskStatus\":\"blcg\"}")
+                    "{\"additionalDetails\":{\"bexilzznfqqnv\":\"fbjfdtwssotftpvj\",\"ujmkcjhwqy\":\"pmqtaru\"},\"taskId\":1656357002,\"taskName\":\"r\",\"taskProgress\":\"n\",\"taskStatus\":\"jewgdrjerv\"}")
                 .toObject(JobSubTask.class);
-        Assertions.assertEquals("vylwzbtdhxuj", model.additionalDetails().get("nbmpowuwprzq"));
-        Assertions.assertEquals(1535328040, model.taskId());
-        Assertions.assertEquals("s", model.taskName());
-        Assertions.assertEquals("blcg", model.taskStatus());
+        Assertions.assertEquals("fbjfdtwssotftpvj", model.additionalDetails().get("bexilzznfqqnv"));
+        Assertions.assertEquals(1656357002, model.taskId());
+        Assertions.assertEquals("r", model.taskName());
+        Assertions.assertEquals("jewgdrjerv", model.taskStatus());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         JobSubTask model =
             new JobSubTask()
-                .withAdditionalDetails(mapOf("nbmpowuwprzq", "vylwzbtdhxuj", "pjmkhfxobbc", "veual"))
-                .withTaskId(1535328040)
-                .withTaskName("s")
-                .withTaskStatus("blcg");
+                .withAdditionalDetails(mapOf("bexilzznfqqnv", "fbjfdtwssotftpvj", "ujmkcjhwqy", "pmqtaru"))
+                .withTaskId(1656357002)
+                .withTaskName("r")
+                .withTaskStatus("jewgdrjerv");
         model = BinaryData.fromObject(model).toObject(JobSubTask.class);
-        Assertions.assertEquals("vylwzbtdhxuj", model.additionalDetails().get("nbmpowuwprzq"));
-        Assertions.assertEquals(1535328040, model.taskId());
-        Assertions.assertEquals("s", model.taskName());
-        Assertions.assertEquals("blcg", model.taskStatus());
+        Assertions.assertEquals("fbjfdtwssotftpvj", model.additionalDetails().get("bexilzznfqqnv"));
+        Assertions.assertEquals(1656357002, model.taskId());
+        Assertions.assertEquals("r", model.taskName());
+        Assertions.assertEquals("jewgdrjerv", model.taskStatus());
     }
 
     @SuppressWarnings("unchecked")

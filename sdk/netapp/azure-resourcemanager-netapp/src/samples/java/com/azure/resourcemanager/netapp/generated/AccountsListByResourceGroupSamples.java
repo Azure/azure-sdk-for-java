@@ -7,7 +7,7 @@ package com.azure.resourcemanager.netapp.generated;
 /** Samples for Accounts ListByResourceGroup. */
 public final class AccountsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-09-01/examples/Accounts_List.json
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-11-01/examples/Accounts_List.json
      */
     /**
      * Sample code: Accounts_List.

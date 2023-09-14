@@ -8,13 +8,15 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.managednetworkfabric.models.IpPrefixPropertiesIpPrefixRulesItem;
+import com.azure.resourcemanager.managednetworkfabric.models.AdministrativeState;
+import com.azure.resourcemanager.managednetworkfabric.models.ConfigurationState;
+import com.azure.resourcemanager.managednetworkfabric.models.IpPrefixRule;
 import com.azure.resourcemanager.managednetworkfabric.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/** The IPPrefix resource definition. */
+/** The IP Prefix resource definition. */
 @Fluent
 public final class IpPrefixInner extends Resource {
     /*
@@ -66,35 +68,53 @@ public final class IpPrefixInner extends Resource {
     }
 
     /**
-     * Get the ipPrefixRules property: IpPrefix contains the list of IP PrefixRules objects.
+     * Get the configurationState property: Configuration state of the resource.
      *
-     * @return the ipPrefixRules value.
+     * @return the configurationState value.
      */
-    public List<IpPrefixPropertiesIpPrefixRulesItem> ipPrefixRules() {
-        return this.innerProperties() == null ? null : this.innerProperties().ipPrefixRules();
+    public ConfigurationState configurationState() {
+        return this.innerProperties() == null ? null : this.innerProperties().configurationState();
     }
 
     /**
-     * Set the ipPrefixRules property: IpPrefix contains the list of IP PrefixRules objects.
-     *
-     * @param ipPrefixRules the ipPrefixRules value to set.
-     * @return the IpPrefixInner object itself.
-     */
-    public IpPrefixInner withIpPrefixRules(List<IpPrefixPropertiesIpPrefixRulesItem> ipPrefixRules) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new IpPrefixProperties();
-        }
-        this.innerProperties().withIpPrefixRules(ipPrefixRules);
-        return this;
-    }
-
-    /**
-     * Get the provisioningState property: Gets the provisioning state of the resource.
+     * Get the provisioningState property: Provisioning state of the resource.
      *
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
         return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
+     * Get the administrativeState property: Administrative state of the resource.
+     *
+     * @return the administrativeState value.
+     */
+    public AdministrativeState administrativeState() {
+        return this.innerProperties() == null ? null : this.innerProperties().administrativeState();
+    }
+
+    /**
+     * Get the ipPrefixRules property: The list of IP Prefix Rules.
+     *
+     * @return the ipPrefixRules value.
+     */
+    public List<IpPrefixRule> ipPrefixRules() {
+        return this.innerProperties() == null ? null : this.innerProperties().ipPrefixRules();
+    }
+
+    /**
+     * Set the ipPrefixRules property: The list of IP Prefix Rules.
+     *
+     * @param ipPrefixRules the ipPrefixRules value to set.
+     * @return the IpPrefixInner object itself.
+     */
+    public IpPrefixInner withIpPrefixRules(List<IpPrefixRule> ipPrefixRules) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new IpPrefixProperties();
+        }
+        this.innerProperties().withIpPrefixRules(ipPrefixRules);
+        return this;
     }
 
     /**

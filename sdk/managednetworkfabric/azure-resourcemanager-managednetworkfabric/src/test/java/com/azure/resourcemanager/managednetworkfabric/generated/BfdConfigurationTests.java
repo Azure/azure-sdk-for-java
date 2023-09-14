@@ -6,19 +6,26 @@ package com.azure.resourcemanager.managednetworkfabric.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.managednetworkfabric.models.BfdConfiguration;
+import org.junit.jupiter.api.Assertions;
 
 public final class BfdConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         BfdConfiguration model =
             BinaryData
-                .fromString("{\"administrativeState\":\"Disabled\",\"interval\":1262943142,\"multiplier\":823230249}")
+                .fromString(
+                    "{\"administrativeState\":\"RMA\",\"intervalInMilliSeconds\":362770996,\"multiplier\":2098126283}")
                 .toObject(BfdConfiguration.class);
+        Assertions.assertEquals(362770996, model.intervalInMilliSeconds());
+        Assertions.assertEquals(2098126283, model.multiplier());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        BfdConfiguration model = new BfdConfiguration();
+        BfdConfiguration model =
+            new BfdConfiguration().withIntervalInMilliSeconds(362770996).withMultiplier(2098126283);
         model = BinaryData.fromObject(model).toObject(BfdConfiguration.class);
+        Assertions.assertEquals(362770996, model.intervalInMilliSeconds());
+        Assertions.assertEquals(2098126283, model.multiplier());
     }
 }

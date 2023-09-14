@@ -12,14 +12,17 @@ public final class StorageAppliancePatchPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         StorageAppliancePatchProperties model =
-            BinaryData.fromString("{\"serialNumber\":\"esfuught\"}").toObject(StorageAppliancePatchProperties.class);
-        Assertions.assertEquals("esfuught", model.serialNumber());
+            BinaryData
+                .fromString("{\"serialNumber\":\"efqyhqotoihiqaky\"}")
+                .toObject(StorageAppliancePatchProperties.class);
+        Assertions.assertEquals("efqyhqotoihiqaky", model.serialNumber());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        StorageAppliancePatchProperties model = new StorageAppliancePatchProperties().withSerialNumber("esfuught");
+        StorageAppliancePatchProperties model =
+            new StorageAppliancePatchProperties().withSerialNumber("efqyhqotoihiqaky");
         model = BinaryData.fromObject(model).toObject(StorageAppliancePatchProperties.class);
-        Assertions.assertEquals("esfuught", model.serialNumber());
+        Assertions.assertEquals("efqyhqotoihiqaky", model.serialNumber());
     }
 }

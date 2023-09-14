@@ -21,6 +21,7 @@ import com.azure.resourcemanager.networkcloud.models.ClusterType;
 import com.azure.resourcemanager.networkcloud.models.ClusterUpdateVersionParameters;
 import com.azure.resourcemanager.networkcloud.models.ExtendedLocation;
 import com.azure.resourcemanager.networkcloud.models.ManagedResourceGroupConfiguration;
+import com.azure.resourcemanager.networkcloud.models.OperationStatusResult;
 import com.azure.resourcemanager.networkcloud.models.RackDefinition;
 import com.azure.resourcemanager.networkcloud.models.ServicePrincipalInformation;
 import com.azure.resourcemanager.networkcloud.models.ValidationThreshold;
@@ -278,20 +279,21 @@ public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.U
         return this;
     }
 
-    public void deploy() {
-        serviceManager.clusters().deploy(resourceGroupName, clusterName);
+    public OperationStatusResult deploy() {
+        return serviceManager.clusters().deploy(resourceGroupName, clusterName);
     }
 
-    public void deploy(ClusterDeployParameters clusterDeployParameters, Context context) {
-        serviceManager.clusters().deploy(resourceGroupName, clusterName, clusterDeployParameters, context);
+    public OperationStatusResult deploy(ClusterDeployParameters clusterDeployParameters, Context context) {
+        return serviceManager.clusters().deploy(resourceGroupName, clusterName, clusterDeployParameters, context);
     }
 
-    public void updateVersion(ClusterUpdateVersionParameters clusterUpdateVersionParameters) {
-        serviceManager.clusters().updateVersion(resourceGroupName, clusterName, clusterUpdateVersionParameters);
+    public OperationStatusResult updateVersion(ClusterUpdateVersionParameters clusterUpdateVersionParameters) {
+        return serviceManager.clusters().updateVersion(resourceGroupName, clusterName, clusterUpdateVersionParameters);
     }
 
-    public void updateVersion(ClusterUpdateVersionParameters clusterUpdateVersionParameters, Context context) {
-        serviceManager
+    public OperationStatusResult updateVersion(
+        ClusterUpdateVersionParameters clusterUpdateVersionParameters, Context context) {
+        return serviceManager
             .clusters()
             .updateVersion(resourceGroupName, clusterName, clusterUpdateVersionParameters, context);
     }

@@ -22,12 +22,6 @@ public final class BillingSku extends ExpandableStringEnum<BillingSku> {
     /** Static value G2 for BillingSku. */
     public static final BillingSku G2 = fromString("G2");
 
-    /** Static value G3 for BillingSku. */
-    public static final BillingSku G3 = fromString("G3");
-
-    /** Static value G4 for BillingSku. */
-    public static final BillingSku G4 = fromString("G4");
-
     /** Static value G5 for BillingSku. */
     public static final BillingSku G5 = fromString("G5");
 

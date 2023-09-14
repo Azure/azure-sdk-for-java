@@ -19,47 +19,47 @@ public final class EventHubDataConnectionTests {
         EventHubDataConnection model =
             BinaryData
                 .fromString(
-                    "{\"kind\":\"EventHub\",\"properties\":{\"eventHubResourceId\":\"ho\",\"consumerGroup\":\"zqzudph\",\"tableName\":\"mvdk\",\"mappingRuleName\":\"ynwcvtbv\",\"dataFormat\":\"AVRO\",\"eventSystemProperties\":[\"tnvyqiatkzwp\",\"npwzcjaes\"],\"compression\":\"None\",\"provisioningState\":\"Deleting\",\"managedIdentityResourceId\":\"yajguqfhwygzlv\",\"managedIdentityObjectId\":\"kfxu\",\"databaseRouting\":\"Multi\",\"retrievalStartDate\":\"2021-02-14T09:42:03Z\"},\"location\":\"rmuhapfcq\",\"id\":\"psqxq\",\"name\":\"psvuoymgc\",\"type\":\"elvezrypq\"}")
+                    "{\"kind\":\"EventHub\",\"properties\":{\"eventHubResourceId\":\"ywdxsmic\",\"consumerGroup\":\"wrwfscjfnyns\",\"tableName\":\"ujiz\",\"mappingRuleName\":\"oqytibyowbblgy\",\"dataFormat\":\"CSV\",\"eventSystemProperties\":[\"thjoxoism\",\"ksbpimlqoljx\"],\"compression\":\"GZip\",\"provisioningState\":\"Running\",\"managedIdentityResourceId\":\"xsffgcviz\",\"managedIdentityObjectId\":\"dwl\",\"databaseRouting\":\"Multi\",\"retrievalStartDate\":\"2021-03-22T22:39:30Z\"},\"location\":\"pfgfbkjub\",\"id\":\"yhgk\",\"name\":\"minsgowzf\",\"type\":\"tsttktlahbq\"}")
                 .toObject(EventHubDataConnection.class);
-        Assertions.assertEquals("rmuhapfcq", model.location());
-        Assertions.assertEquals("ho", model.eventHubResourceId());
-        Assertions.assertEquals("zqzudph", model.consumerGroup());
-        Assertions.assertEquals("mvdk", model.tableName());
-        Assertions.assertEquals("ynwcvtbv", model.mappingRuleName());
-        Assertions.assertEquals(EventHubDataFormat.AVRO, model.dataFormat());
-        Assertions.assertEquals("tnvyqiatkzwp", model.eventSystemProperties().get(0));
-        Assertions.assertEquals(Compression.NONE, model.compression());
-        Assertions.assertEquals("yajguqfhwygzlv", model.managedIdentityResourceId());
+        Assertions.assertEquals("pfgfbkjub", model.location());
+        Assertions.assertEquals("ywdxsmic", model.eventHubResourceId());
+        Assertions.assertEquals("wrwfscjfnyns", model.consumerGroup());
+        Assertions.assertEquals("ujiz", model.tableName());
+        Assertions.assertEquals("oqytibyowbblgy", model.mappingRuleName());
+        Assertions.assertEquals(EventHubDataFormat.CSV, model.dataFormat());
+        Assertions.assertEquals("thjoxoism", model.eventSystemProperties().get(0));
+        Assertions.assertEquals(Compression.GZIP, model.compression());
+        Assertions.assertEquals("xsffgcviz", model.managedIdentityResourceId());
         Assertions.assertEquals(DatabaseRouting.MULTI, model.databaseRouting());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-02-14T09:42:03Z"), model.retrievalStartDate());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-03-22T22:39:30Z"), model.retrievalStartDate());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         EventHubDataConnection model =
             new EventHubDataConnection()
-                .withLocation("rmuhapfcq")
-                .withEventHubResourceId("ho")
-                .withConsumerGroup("zqzudph")
-                .withTableName("mvdk")
-                .withMappingRuleName("ynwcvtbv")
-                .withDataFormat(EventHubDataFormat.AVRO)
-                .withEventSystemProperties(Arrays.asList("tnvyqiatkzwp", "npwzcjaes"))
-                .withCompression(Compression.NONE)
-                .withManagedIdentityResourceId("yajguqfhwygzlv")
+                .withLocation("pfgfbkjub")
+                .withEventHubResourceId("ywdxsmic")
+                .withConsumerGroup("wrwfscjfnyns")
+                .withTableName("ujiz")
+                .withMappingRuleName("oqytibyowbblgy")
+                .withDataFormat(EventHubDataFormat.CSV)
+                .withEventSystemProperties(Arrays.asList("thjoxoism", "ksbpimlqoljx"))
+                .withCompression(Compression.GZIP)
+                .withManagedIdentityResourceId("xsffgcviz")
                 .withDatabaseRouting(DatabaseRouting.MULTI)
-                .withRetrievalStartDate(OffsetDateTime.parse("2021-02-14T09:42:03Z"));
+                .withRetrievalStartDate(OffsetDateTime.parse("2021-03-22T22:39:30Z"));
         model = BinaryData.fromObject(model).toObject(EventHubDataConnection.class);
-        Assertions.assertEquals("rmuhapfcq", model.location());
-        Assertions.assertEquals("ho", model.eventHubResourceId());
-        Assertions.assertEquals("zqzudph", model.consumerGroup());
-        Assertions.assertEquals("mvdk", model.tableName());
-        Assertions.assertEquals("ynwcvtbv", model.mappingRuleName());
-        Assertions.assertEquals(EventHubDataFormat.AVRO, model.dataFormat());
-        Assertions.assertEquals("tnvyqiatkzwp", model.eventSystemProperties().get(0));
-        Assertions.assertEquals(Compression.NONE, model.compression());
-        Assertions.assertEquals("yajguqfhwygzlv", model.managedIdentityResourceId());
+        Assertions.assertEquals("pfgfbkjub", model.location());
+        Assertions.assertEquals("ywdxsmic", model.eventHubResourceId());
+        Assertions.assertEquals("wrwfscjfnyns", model.consumerGroup());
+        Assertions.assertEquals("ujiz", model.tableName());
+        Assertions.assertEquals("oqytibyowbblgy", model.mappingRuleName());
+        Assertions.assertEquals(EventHubDataFormat.CSV, model.dataFormat());
+        Assertions.assertEquals("thjoxoism", model.eventSystemProperties().get(0));
+        Assertions.assertEquals(Compression.GZIP, model.compression());
+        Assertions.assertEquals("xsffgcviz", model.managedIdentityResourceId());
         Assertions.assertEquals(DatabaseRouting.MULTI, model.databaseRouting());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-02-14T09:42:03Z"), model.retrievalStartDate());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-03-22T22:39:30Z"), model.retrievalStartDate());
     }
 }

@@ -16,25 +16,25 @@ public final class AggregateRouteConfigurationTests {
         AggregateRouteConfiguration model =
             BinaryData
                 .fromString(
-                    "{\"ipv4Routes\":[{\"prefix\":\"pnvjtoqnermclf\"},{\"prefix\":\"phoxus\"}],\"ipv6Routes\":[{\"prefix\":\"bgyepsbj\"},{\"prefix\":\"zq\"}]}")
+                    "{\"ipv4Routes\":[{\"prefix\":\"qecroodl\"}],\"ipv6Routes\":[{\"prefix\":\"drdaasa\"},{\"prefix\":\"xob\"},{\"prefix\":\"mfkwiyjvzuk\"}]}")
                 .toObject(AggregateRouteConfiguration.class);
-        Assertions.assertEquals("pnvjtoqnermclf", model.ipv4Routes().get(0).prefix());
-        Assertions.assertEquals("bgyepsbj", model.ipv6Routes().get(0).prefix());
+        Assertions.assertEquals("qecroodl", model.ipv4Routes().get(0).prefix());
+        Assertions.assertEquals("drdaasa", model.ipv6Routes().get(0).prefix());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AggregateRouteConfiguration model =
             new AggregateRouteConfiguration()
-                .withIpv4Routes(
+                .withIpv4Routes(Arrays.asList(new AggregateRoute().withPrefix("qecroodl")))
+                .withIpv6Routes(
                     Arrays
                         .asList(
-                            new AggregateRoute().withPrefix("pnvjtoqnermclf"),
-                            new AggregateRoute().withPrefix("phoxus")))
-                .withIpv6Routes(
-                    Arrays.asList(new AggregateRoute().withPrefix("bgyepsbj"), new AggregateRoute().withPrefix("zq")));
+                            new AggregateRoute().withPrefix("drdaasa"),
+                            new AggregateRoute().withPrefix("xob"),
+                            new AggregateRoute().withPrefix("mfkwiyjvzuk")));
         model = BinaryData.fromObject(model).toObject(AggregateRouteConfiguration.class);
-        Assertions.assertEquals("pnvjtoqnermclf", model.ipv4Routes().get(0).prefix());
-        Assertions.assertEquals("bgyepsbj", model.ipv6Routes().get(0).prefix());
+        Assertions.assertEquals("qecroodl", model.ipv4Routes().get(0).prefix());
+        Assertions.assertEquals("drdaasa", model.ipv6Routes().get(0).prefix());
     }
 }

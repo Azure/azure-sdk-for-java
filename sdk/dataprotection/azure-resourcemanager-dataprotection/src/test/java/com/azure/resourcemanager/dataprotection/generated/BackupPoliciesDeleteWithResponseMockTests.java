@@ -56,8 +56,6 @@ public final class BackupPoliciesDeleteWithResponseMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager
-            .backupPolicies()
-            .deleteWithResponse("yhddvia", "egfnmntfpmvmemfn", "zdwvvbalxl", com.azure.core.util.Context.NONE);
+        manager.backupPolicies().deleteWithResponse("xzhczexrxz", "ujrtrhqvwr", "vk", com.azure.core.util.Context.NONE);
     }
 }

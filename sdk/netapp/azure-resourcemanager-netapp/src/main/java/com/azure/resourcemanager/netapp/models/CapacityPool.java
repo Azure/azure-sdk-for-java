@@ -171,11 +171,13 @@ public interface CapacityPool {
             DefinitionStages.WithServiceLevel,
             DefinitionStages.WithCreate {
     }
+
     /** The CapacityPool definition stages. */
     interface DefinitionStages {
         /** The first stage of the CapacityPool definition. */
         interface Blank extends WithLocation {
         }
+
         /** The stage of the CapacityPool definition allowing to specify location. */
         interface WithLocation {
             /**
@@ -194,6 +196,7 @@ public interface CapacityPool {
              */
             WithParentResource withRegion(String location);
         }
+
         /** The stage of the CapacityPool definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
@@ -205,6 +208,7 @@ public interface CapacityPool {
              */
             WithSize withExistingNetAppAccount(String resourceGroupName, String accountName);
         }
+
         /** The stage of the CapacityPool definition allowing to specify size. */
         interface WithSize {
             /**
@@ -220,6 +224,7 @@ public interface CapacityPool {
              */
             WithServiceLevel withSize(long size);
         }
+
         /** The stage of the CapacityPool definition allowing to specify serviceLevel. */
         interface WithServiceLevel {
             /**
@@ -233,6 +238,7 @@ public interface CapacityPool {
              */
             WithCreate withServiceLevel(ServiceLevel serviceLevel);
         }
+
         /**
          * The stage of the CapacityPool definition which contains all the minimum required properties for the resource
          * to be created, but also allows for any other optional properties to be specified.
@@ -257,6 +263,7 @@ public interface CapacityPool {
              */
             CapacityPool create(Context context);
         }
+
         /** The stage of the CapacityPool definition allowing to specify tags. */
         interface WithTags {
             /**
@@ -267,6 +274,7 @@ public interface CapacityPool {
              */
             WithCreate withTags(Map<String, String> tags);
         }
+
         /** The stage of the CapacityPool definition allowing to specify qosType. */
         interface WithQosType {
             /**
@@ -277,6 +285,7 @@ public interface CapacityPool {
              */
             WithCreate withQosType(QosType qosType);
         }
+
         /** The stage of the CapacityPool definition allowing to specify coolAccess. */
         interface WithCoolAccess {
             /**
@@ -287,6 +296,7 @@ public interface CapacityPool {
              */
             WithCreate withCoolAccess(Boolean coolAccess);
         }
+
         /** The stage of the CapacityPool definition allowing to specify encryptionType. */
         interface WithEncryptionType {
             /**
@@ -303,6 +313,7 @@ public interface CapacityPool {
             WithCreate withEncryptionType(EncryptionType encryptionType);
         }
     }
+
     /**
      * Begins update for the CapacityPool resource.
      *
@@ -328,6 +339,7 @@ public interface CapacityPool {
          */
         CapacityPool apply(Context context);
     }
+
     /** The CapacityPool update stages. */
     interface UpdateStages {
         /** The stage of the CapacityPool update allowing to specify tags. */
@@ -340,6 +352,7 @@ public interface CapacityPool {
              */
             Update withTags(Map<String, String> tags);
         }
+
         /** The stage of the CapacityPool update allowing to specify size. */
         interface WithSize {
             /**
@@ -355,6 +368,7 @@ public interface CapacityPool {
              */
             Update withSize(Long size);
         }
+
         /** The stage of the CapacityPool update allowing to specify qosType. */
         interface WithQosType {
             /**
@@ -365,6 +379,7 @@ public interface CapacityPool {
              */
             Update withQosType(QosType qosType);
         }
+
         /** The stage of the CapacityPool update allowing to specify coolAccess. */
         interface WithCoolAccess {
             /**
@@ -376,6 +391,7 @@ public interface CapacityPool {
             Update withCoolAccess(Boolean coolAccess);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

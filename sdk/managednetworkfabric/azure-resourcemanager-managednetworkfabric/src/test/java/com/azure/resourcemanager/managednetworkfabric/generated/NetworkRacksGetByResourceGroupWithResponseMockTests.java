@@ -13,6 +13,7 @@ import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager;
 import com.azure.resourcemanager.managednetworkfabric.models.NetworkRack;
+import com.azure.resourcemanager.managednetworkfabric.models.NetworkRackType;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
@@ -31,7 +32,7 @@ public final class NetworkRacksGetByResourceGroupWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"networkRackSku\":\"fajs\",\"networkFabricId\":\"kskmqozzkivyhjrl\",\"networkDevices\":[\"jixlqfhefkwabs\"],\"provisioningState\":\"Updating\",\"annotation\":\"nqqlmgnl\"},\"location\":\"sjxtel\",\"tags\":{\"zqocarku\":\"vuqbozoo\",\"nx\":\"lbcnndt\"},\"id\":\"wqy\",\"name\":\"llhdyzm\",\"type\":\"ckze\"}";
+            "{\"properties\":{\"networkRackType\":\"Aggregate\",\"networkFabricId\":\"vrexitpzri\",\"networkDevices\":[\"sc\",\"ujywwumbusnaw\",\"ncljkh\"],\"provisioningState\":\"Accepted\",\"annotation\":\"uahokiclrmmudv\"},\"location\":\"t\",\"tags\":{\"ysmzgbogdj\":\"idkwznwttlizd\"},\"id\":\"uybcp\",\"name\":\"dvuotkvkbpmk\",\"type\":\"pbnkcwauylkbdsk\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,13 +63,13 @@ public final class NetworkRacksGetByResourceGroupWithResponseMockTests {
         NetworkRack response =
             manager
                 .networkRacks()
-                .getByResourceGroupWithResponse("vucnulgmnh", "evdyz", com.azure.core.util.Context.NONE)
+                .getByResourceGroupWithResponse("wcxxccf", "fvoz", com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals("sjxtel", response.location());
-        Assertions.assertEquals("vuqbozoo", response.tags().get("zqocarku"));
-        Assertions.assertEquals("fajs", response.networkRackSku());
-        Assertions.assertEquals("kskmqozzkivyhjrl", response.networkFabricId());
-        Assertions.assertEquals("nqqlmgnl", response.annotation());
+        Assertions.assertEquals("t", response.location());
+        Assertions.assertEquals("idkwznwttlizd", response.tags().get("ysmzgbogdj"));
+        Assertions.assertEquals(NetworkRackType.AGGREGATE, response.networkRackType());
+        Assertions.assertEquals("vrexitpzri", response.networkFabricId());
+        Assertions.assertEquals("uahokiclrmmudv", response.annotation());
     }
 }

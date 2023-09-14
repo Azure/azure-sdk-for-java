@@ -35,10 +35,24 @@ public final class WebActivityAuthentication {
     private SecretBase password;
 
     /*
-     * Resource for which Azure Auth token will be requested when using MSI Authentication.
+     * Resource for which Azure Auth token will be requested when using MSI Authentication. Type: string (or Expression
+     * with resultType string).
      */
     @JsonProperty(value = "resource")
-    private String resource;
+    private Object resource;
+
+    /*
+     * TenantId for which Azure Auth token will be requested when using ServicePrincipal Authentication. Type: string
+     * (or Expression with resultType string).
+     */
+    @JsonProperty(value = "userTenant")
+    private Object userTenant;
+
+    /*
+     * The credential reference containing authentication information.
+     */
+    @JsonProperty(value = "credential")
+    private CredentialReference credential;
 
     /** Creates an instance of WebActivityAuthentication class. */
     public WebActivityAuthentication() {}
@@ -125,21 +139,65 @@ public final class WebActivityAuthentication {
 
     /**
      * Get the resource property: Resource for which Azure Auth token will be requested when using MSI Authentication.
+     * Type: string (or Expression with resultType string).
      *
      * @return the resource value.
      */
-    public String getResource() {
+    public Object getResource() {
         return this.resource;
     }
 
     /**
      * Set the resource property: Resource for which Azure Auth token will be requested when using MSI Authentication.
+     * Type: string (or Expression with resultType string).
      *
      * @param resource the resource value to set.
      * @return the WebActivityAuthentication object itself.
      */
-    public WebActivityAuthentication setResource(String resource) {
+    public WebActivityAuthentication setResource(Object resource) {
         this.resource = resource;
+        return this;
+    }
+
+    /**
+     * Get the userTenant property: TenantId for which Azure Auth token will be requested when using ServicePrincipal
+     * Authentication. Type: string (or Expression with resultType string).
+     *
+     * @return the userTenant value.
+     */
+    public Object getUserTenant() {
+        return this.userTenant;
+    }
+
+    /**
+     * Set the userTenant property: TenantId for which Azure Auth token will be requested when using ServicePrincipal
+     * Authentication. Type: string (or Expression with resultType string).
+     *
+     * @param userTenant the userTenant value to set.
+     * @return the WebActivityAuthentication object itself.
+     */
+    public WebActivityAuthentication setUserTenant(Object userTenant) {
+        this.userTenant = userTenant;
+        return this;
+    }
+
+    /**
+     * Get the credential property: The credential reference containing authentication information.
+     *
+     * @return the credential value.
+     */
+    public CredentialReference getCredential() {
+        return this.credential;
+    }
+
+    /**
+     * Set the credential property: The credential reference containing authentication information.
+     *
+     * @param credential the credential value to set.
+     * @return the WebActivityAuthentication object itself.
+     */
+    public WebActivityAuthentication setCredential(CredentialReference credential) {
+        this.credential = credential;
         return this;
     }
 }

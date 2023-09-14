@@ -68,7 +68,7 @@ public interface NetworkFabrics {
     void delete(String resourceGroupName, String networkFabricName, Context context);
 
     /**
-     * List NetworkFabrics by resource group.
+     * List Network Fabrics by resource group.
      *
      * <p>List all the Network Fabric resources in the given resource group.
      *
@@ -76,12 +76,12 @@ public interface NetworkFabrics {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of NetworkFabrics as paginated response with {@link PagedIterable}.
+     * @return list of Network Fabrics as paginated response with {@link PagedIterable}.
      */
     PagedIterable<NetworkFabric> listByResourceGroup(String resourceGroupName);
 
     /**
-     * List NetworkFabrics by resource group.
+     * List Network Fabrics by resource group.
      *
      * <p>List all the Network Fabric resources in the given resource group.
      *
@@ -90,23 +90,23 @@ public interface NetworkFabrics {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of NetworkFabrics as paginated response with {@link PagedIterable}.
+     * @return list of Network Fabrics as paginated response with {@link PagedIterable}.
      */
     PagedIterable<NetworkFabric> listByResourceGroup(String resourceGroupName, Context context);
 
     /**
-     * List NetworkFabrics by subscription.
+     * List Network Fabrics by subscription.
      *
      * <p>List all the Network Fabric resources in the given subscription.
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of NetworkFabrics as paginated response with {@link PagedIterable}.
+     * @return list of Network Fabrics as paginated response with {@link PagedIterable}.
      */
     PagedIterable<NetworkFabric> list();
 
     /**
-     * List NetworkFabrics by subscription.
+     * List Network Fabrics by subscription.
      *
      * <p>List all the Network Fabric resources in the given subscription.
      *
@@ -114,7 +114,7 @@ public interface NetworkFabrics {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of NetworkFabrics as paginated response with {@link PagedIterable}.
+     * @return list of Network Fabrics as paginated response with {@link PagedIterable}.
      */
     PagedIterable<NetworkFabric> list(Context context);
 
@@ -124,12 +124,13 @@ public interface NetworkFabrics {
      * <p>Provisions the underlying resources in the given Network Fabric instance.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkFabricName Name of the NetworkFabric.
+     * @param networkFabricName Name of the Network Fabric.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return common response for device updates.
      */
-    void provision(String resourceGroupName, String networkFabricName);
+    CommonPostActionResponseForDeviceUpdate provision(String resourceGroupName, String networkFabricName);
 
     /**
      * Implements the operation to the underlying resources.
@@ -137,13 +138,15 @@ public interface NetworkFabrics {
      * <p>Provisions the underlying resources in the given Network Fabric instance.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkFabricName Name of the NetworkFabric.
+     * @param networkFabricName Name of the Network Fabric.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return common response for device updates.
      */
-    void provision(String resourceGroupName, String networkFabricName, Context context);
+    CommonPostActionResponseForDeviceUpdate provision(
+        String resourceGroupName, String networkFabricName, Context context);
 
     /**
      * Implements the operation to the underlying resources.
@@ -151,12 +154,13 @@ public interface NetworkFabrics {
      * <p>Deprovisions the underlying resources in the given Network Fabric instance.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkFabricName Name of the NetworkFabric.
+     * @param networkFabricName Name of the Network Fabric.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return common response for device updates.
      */
-    void deprovision(String resourceGroupName, String networkFabricName);
+    CommonPostActionResponseForDeviceUpdate deprovision(String resourceGroupName, String networkFabricName);
 
     /**
      * Implements the operation to the underlying resources.
@@ -164,13 +168,240 @@ public interface NetworkFabrics {
      * <p>Deprovisions the underlying resources in the given Network Fabric instance.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkFabricName Name of the NetworkFabric.
+     * @param networkFabricName Name of the Network Fabric.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return common response for device updates.
      */
-    void deprovision(String resourceGroupName, String networkFabricName, Context context);
+    CommonPostActionResponseForDeviceUpdate deprovision(
+        String resourceGroupName, String networkFabricName, Context context);
+
+    /**
+     * Implements the operation to the underlying resources.
+     *
+     * <p>Upgrades the version of the underlying resources in the given Network Fabric instance.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkFabricName Name of the Network Fabric.
+     * @param body Network Fabric properties to update.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return common response for the state updates.
+     */
+    CommonPostActionResponseForStateUpdate upgrade(
+        String resourceGroupName, String networkFabricName, UpdateVersion body);
+
+    /**
+     * Implements the operation to the underlying resources.
+     *
+     * <p>Upgrades the version of the underlying resources in the given Network Fabric instance.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkFabricName Name of the Network Fabric.
+     * @param body Network Fabric properties to update.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return common response for the state updates.
+     */
+    CommonPostActionResponseForStateUpdate upgrade(
+        String resourceGroupName, String networkFabricName, UpdateVersion body, Context context);
+
+    /**
+     * Implements the operation to the underlying resources.
+     *
+     * <p>Refreshes the configuration of the underlying resources in the given Network Fabric instance.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkFabricName Name of the Network Fabric.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return common response for the state updates.
+     */
+    CommonPostActionResponseForStateUpdate refreshConfiguration(String resourceGroupName, String networkFabricName);
+
+    /**
+     * Implements the operation to the underlying resources.
+     *
+     * <p>Refreshes the configuration of the underlying resources in the given Network Fabric instance.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkFabricName Name of the Network Fabric.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return common response for the state updates.
+     */
+    CommonPostActionResponseForStateUpdate refreshConfiguration(
+        String resourceGroupName, String networkFabricName, Context context);
+
+    /**
+     * Implements the operation to the underlying resources.
+     *
+     * <p>Updates the Workload Management BFD Configuration of the underlying resources in the given Network Fabric
+     * instance.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkFabricName Name of the Network Fabric.
+     * @param body Request payload.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return common response for the state updates.
+     */
+    CommonPostActionResponseForStateUpdate updateWorkloadManagementBfdConfiguration(
+        String resourceGroupName, String networkFabricName, UpdateAdministrativeState body);
+
+    /**
+     * Implements the operation to the underlying resources.
+     *
+     * <p>Updates the Workload Management BFD Configuration of the underlying resources in the given Network Fabric
+     * instance.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkFabricName Name of the Network Fabric.
+     * @param body Request payload.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return common response for the state updates.
+     */
+    CommonPostActionResponseForStateUpdate updateWorkloadManagementBfdConfiguration(
+        String resourceGroupName, String networkFabricName, UpdateAdministrativeState body, Context context);
+
+    /**
+     * Implements the operation to the underlying resources.
+     *
+     * <p>Updates the Infra Management BFD Configuration of the underlying resources in the given Network Fabric
+     * instance.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkFabricName Name of the Network Fabric.
+     * @param body Request payload.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return common response for the state updates.
+     */
+    CommonPostActionResponseForStateUpdate updateInfraManagementBfdConfiguration(
+        String resourceGroupName, String networkFabricName, UpdateAdministrativeState body);
+
+    /**
+     * Implements the operation to the underlying resources.
+     *
+     * <p>Updates the Infra Management BFD Configuration of the underlying resources in the given Network Fabric
+     * instance.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkFabricName Name of the Network Fabric.
+     * @param body Request payload.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return common response for the state updates.
+     */
+    CommonPostActionResponseForStateUpdate updateInfraManagementBfdConfiguration(
+        String resourceGroupName, String networkFabricName, UpdateAdministrativeState body, Context context);
+
+    /**
+     * Implements the operation to the underlying resources.
+     *
+     * <p>Validates the configuration of the underlying resources in the given Network Fabric instance.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkFabricName Name of the Network Fabric.
+     * @param body Validate configuration properties.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of the action validate configuration.
+     */
+    ValidateConfigurationResponse validateConfiguration(
+        String resourceGroupName, String networkFabricName, ValidateConfigurationProperties body);
+
+    /**
+     * Implements the operation to the underlying resources.
+     *
+     * <p>Validates the configuration of the underlying resources in the given Network Fabric instance.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkFabricName Name of the Network Fabric.
+     * @param body Validate configuration properties.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of the action validate configuration.
+     */
+    ValidateConfigurationResponse validateConfiguration(
+        String resourceGroupName, String networkFabricName, ValidateConfigurationProperties body, Context context);
+
+    /**
+     * Implements the operation to the underlying resources.
+     *
+     * <p>Gets Topology of the underlying resources in the given Network Fabric instance.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkFabricName Name of the Network Fabric.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return topology of the underlying resources in the given Network Fabric instance.
+     */
+    ValidateConfigurationResponse getTopology(String resourceGroupName, String networkFabricName);
+
+    /**
+     * Implements the operation to the underlying resources.
+     *
+     * <p>Gets Topology of the underlying resources in the given Network Fabric instance.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkFabricName Name of the Network Fabric.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return topology of the underlying resources in the given Network Fabric instance.
+     */
+    ValidateConfigurationResponse getTopology(String resourceGroupName, String networkFabricName, Context context);
+
+    /**
+     * Implements the operation to the underlying resources.
+     *
+     * <p>Atomic update of the given Network Fabric instance. Sync update of NFA resources at Fabric level.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkFabricName Name of the Network Fabric.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return common response for the state updates.
+     */
+    CommonPostActionResponseForStateUpdate commitConfiguration(String resourceGroupName, String networkFabricName);
+
+    /**
+     * Implements the operation to the underlying resources.
+     *
+     * <p>Atomic update of the given Network Fabric instance. Sync update of NFA resources at Fabric level.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkFabricName Name of the Network Fabric.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return common response for the state updates.
+     */
+    CommonPostActionResponseForStateUpdate commitConfiguration(
+        String resourceGroupName, String networkFabricName, Context context);
 
     /**
      * Gets a Network Fabric.

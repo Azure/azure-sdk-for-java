@@ -30,7 +30,7 @@ stages:
         - name: azure-cosmos-benchmark
           groupId: com.azure
       TimeoutInMinutes: 120
-      MaxParallel: 8
+      MaxParallel: 15
       PreSteps:
         - template: /eng/pipelines/templates/steps/install-reporting-tools.yml
       TestGoals: 'verify'
@@ -47,7 +47,7 @@ stages:
             - $(sub-config-cosmos-azure-cloud-test-resources)
       MatrixConfigs:
         - Name: Cosmos_live_test_integration
-          Path: sdk/spring/cosmos-integration-matrix.json
+          Path: sdk/spring/pipeline/cosmos-integration-matrix.json
           Selection: all
           GenerateVMJobs: true
       ServiceDirectory: spring

@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.netapp.implementation;
 
 import com.azure.core.management.Region;
-import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.netapp.fluent.models.BackupInner;
 import com.azure.resourcemanager.netapp.models.Backup;
@@ -34,10 +33,6 @@ public final class BackupImpl implements Backup, Backup.Definition, Backup.Updat
 
     public String location() {
         return this.innerModel().location();
-    }
-
-    public SystemData systemData() {
-        return this.innerModel().systemData();
     }
 
     public String backupId() {

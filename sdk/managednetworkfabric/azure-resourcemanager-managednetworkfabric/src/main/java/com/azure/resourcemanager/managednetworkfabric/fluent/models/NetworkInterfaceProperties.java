@@ -5,35 +5,23 @@
 package com.azure.resourcemanager.managednetworkfabric.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.resourcemanager.managednetworkfabric.models.AdministrativeState;
 import com.azure.resourcemanager.managednetworkfabric.models.AnnotationResource;
-import com.azure.resourcemanager.managednetworkfabric.models.EnabledDisabledState;
 import com.azure.resourcemanager.managednetworkfabric.models.InterfaceType;
 import com.azure.resourcemanager.managednetworkfabric.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** NetworkInterfaceProperties define the resource properties. */
+/** Network Interface Properties defines the properties of the resource. */
 @Fluent
 public final class NetworkInterfaceProperties extends AnnotationResource {
     /*
-     * physicalIdentifier of the network interface.
+     * Physical Identifier of the network interface.
      */
     @JsonProperty(value = "physicalIdentifier", access = JsonProperty.Access.WRITE_ONLY)
     private String physicalIdentifier;
 
     /*
-     * administrativeState of the network interface. Example: Enabled | Disabled.
-     */
-    @JsonProperty(value = "administrativeState", access = JsonProperty.Access.WRITE_ONLY)
-    private EnabledDisabledState administrativeState;
-
-    /*
-     * Gets the provisioning state of the resource.
-     */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningState provisioningState;
-
-    /*
-     * The arm resource id of the interface or compute server its connected to.
+     * The ARM resource id of the interface or compute server its connected to.
      */
     @JsonProperty(value = "connectedTo", access = JsonProperty.Access.WRITE_ONLY)
     private String connectedTo;
@@ -45,23 +33,35 @@ public final class NetworkInterfaceProperties extends AnnotationResource {
     private InterfaceType interfaceType;
 
     /*
-     * ipv4Address.
+     * IPv4Address of the interface.
      */
     @JsonProperty(value = "ipv4Address", access = JsonProperty.Access.WRITE_ONLY)
     private String ipv4Address;
 
     /*
-     * ipv6Address.
+     * IPv6Address of the interface.
      */
     @JsonProperty(value = "ipv6Address", access = JsonProperty.Access.WRITE_ONLY)
     private String ipv6Address;
+
+    /*
+     * Provisioning state of the resource.
+     */
+    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
+    private ProvisioningState provisioningState;
+
+    /*
+     * Administrative state of the resource.
+     */
+    @JsonProperty(value = "administrativeState", access = JsonProperty.Access.WRITE_ONLY)
+    private AdministrativeState administrativeState;
 
     /** Creates an instance of NetworkInterfaceProperties class. */
     public NetworkInterfaceProperties() {
     }
 
     /**
-     * Get the physicalIdentifier property: physicalIdentifier of the network interface.
+     * Get the physicalIdentifier property: Physical Identifier of the network interface.
      *
      * @return the physicalIdentifier value.
      */
@@ -70,25 +70,7 @@ public final class NetworkInterfaceProperties extends AnnotationResource {
     }
 
     /**
-     * Get the administrativeState property: administrativeState of the network interface. Example: Enabled | Disabled.
-     *
-     * @return the administrativeState value.
-     */
-    public EnabledDisabledState administrativeState() {
-        return this.administrativeState;
-    }
-
-    /**
-     * Get the provisioningState property: Gets the provisioning state of the resource.
-     *
-     * @return the provisioningState value.
-     */
-    public ProvisioningState provisioningState() {
-        return this.provisioningState;
-    }
-
-    /**
-     * Get the connectedTo property: The arm resource id of the interface or compute server its connected to.
+     * Get the connectedTo property: The ARM resource id of the interface or compute server its connected to.
      *
      * @return the connectedTo value.
      */
@@ -106,7 +88,7 @@ public final class NetworkInterfaceProperties extends AnnotationResource {
     }
 
     /**
-     * Get the ipv4Address property: ipv4Address.
+     * Get the ipv4Address property: IPv4Address of the interface.
      *
      * @return the ipv4Address value.
      */
@@ -115,12 +97,30 @@ public final class NetworkInterfaceProperties extends AnnotationResource {
     }
 
     /**
-     * Get the ipv6Address property: ipv6Address.
+     * Get the ipv6Address property: IPv6Address of the interface.
      *
      * @return the ipv6Address value.
      */
     public String ipv6Address() {
         return this.ipv6Address;
+    }
+
+    /**
+     * Get the provisioningState property: Provisioning state of the resource.
+     *
+     * @return the provisioningState value.
+     */
+    public ProvisioningState provisioningState() {
+        return this.provisioningState;
+    }
+
+    /**
+     * Get the administrativeState property: Administrative state of the resource.
+     *
+     * @return the administrativeState value.
+     */
+    public AdministrativeState administrativeState() {
+        return this.administrativeState;
     }
 
     /** {@inheritDoc} */

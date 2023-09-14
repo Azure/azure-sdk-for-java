@@ -6,20 +6,19 @@ package com.azure.resourcemanager.batch.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.batch.fluent.models.PrivateLinkResourceInner;
-import org.junit.jupiter.api.Test;
 
 public final class PrivateLinkResourceInnerTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         PrivateLinkResourceInner model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"groupId\":\"debfqkkrbmpukgri\",\"requiredMembers\":[\"zlfbxzpuzycispnq\",\"ahmgkbrp\",\"y\"],\"requiredZoneNames\":[\"bnuqqkpik\",\"drgvtqagn\",\"uynhijg\"]},\"etag\":\"ebf\",\"id\":\"iarbutrcvpna\",\"name\":\"zmhjrunmp\",\"type\":\"ttdbhrbnl\"}")
+                    "{\"properties\":{\"groupId\":\"wankixzbi\",\"requiredMembers\":[\"pu\",\"tmryw\",\"uzoqft\",\"yqzrnkcqvyxlw\"],\"requiredZoneNames\":[\"sicohoqqnwvlry\",\"vwhheunmmqhgyx\",\"konocu\"]},\"etag\":\"klyaxuconu\",\"id\":\"szfkbe\",\"name\":\"pewr\",\"type\":\"jmwvvj\"}")
                 .toObject(PrivateLinkResourceInner.class);
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         PrivateLinkResourceInner model = new PrivateLinkResourceInner();
         model = BinaryData.fromObject(model).toObject(PrivateLinkResourceInner.class);
     }

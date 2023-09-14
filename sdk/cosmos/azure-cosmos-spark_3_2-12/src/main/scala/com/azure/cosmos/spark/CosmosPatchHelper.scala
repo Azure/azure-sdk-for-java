@@ -3,15 +3,18 @@
 
 package com.azure.cosmos.spark
 
-import com.azure.cosmos.implementation.{Constants, ImplementationBridgeHelpers, Utils}
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils
+import com.azure.cosmos.implementation.patch.{PatchOperationCore, PatchOperationType}
+import com.azure.cosmos.implementation.{Constants, ImplementationBridgeHelpers, Utils}
 import com.azure.cosmos.models.{CosmosPatchOperations, PartitionKeyDefinition}
 import com.azure.cosmos.spark.CosmosPredicates.{assertNotNull, assertNotNullOrEmpty}
 import com.azure.cosmos.spark.diagnostics.LoggerHelper
+import com.fasterxml.jackson.core.JsonPointer
+import com.fasterxml.jackson.databind.node.{ArrayNode, BigIntegerNode, DecimalNode, DoubleNode, FloatNode, IntNode, LongNode, MissingNode, ObjectNode, ShortNode}
 import com.fasterxml.jackson.databind.{JsonNode, ObjectMapper}
-import com.fasterxml.jackson.databind.node._
 
 import java.io.IOException
+import scala.collection.mutable.ListBuffer
 
 class CosmosPatchHelper(diagnosticsConfig: DiagnosticsConfig,
                         cosmosPatchConfigs: CosmosPatchConfigs) {
@@ -162,4 +165,120 @@ class CosmosPatchHelper(diagnosticsConfig: DiagnosticsConfig,
    throw new IllegalArgumentException(s"Increment operation is not supported for non-numeric type ${jsonNode.getClass}")
   }
  }
+
+  private[spark] def createCosmosPatchBulkUpdateOperations(objectNode: ObjectNode): List[PatchOperationCore[JsonNode]] = {
+
+      val cosmosPatchBulkUpdateOperations = new ListBuffer[PatchOperationCore[JsonNode]]()
+      val fieldIterator = objectNode.fields()
+      while (fieldIterator.hasNext) {
+          val fieldEntry = fieldIterator.next()
+
+          // check whether there is customized mapping path
+          cosmosPatchConfigs.columnConfigsMap.get(fieldEntry.getKey) match {
+              case Some(userDefinedColumnConfig) =>
+                  if (!systemProperties.contains(userDefinedColumnConfig.mappingPath.substring(1))) {
+                      val node = fieldEntry.getValue
+                      val effectiveNode = if (userDefinedColumnConfig.isRawJson) {
+                          objectMapper.readTree(node.asText())
+                      } else {
+                          node
+                      }
+
+                      userDefinedColumnConfig.operationType match {
+                          case CosmosPatchOperationTypes.Set =>
+                              cosmosPatchBulkUpdateOperations +=
+                                  new PatchOperationCore[JsonNode](PatchOperationType.SET, userDefinedColumnConfig.mappingPath, effectiveNode)
+                          case _ => throw new RuntimeException(s"Patch operation type is not supported for itemBulkUpdate write strategy")
+                      }
+                  }
+
+              case None =>
+                  if (!systemProperties.contains(fieldEntry.getKey)) {
+                      cosmosPatchBulkUpdateOperations +=
+                          new PatchOperationCore[JsonNode](PatchOperationType.SET, s"/${fieldEntry.getKey}", fieldEntry.getValue)
+                  }
+          }
+      }
+
+      cosmosPatchBulkUpdateOperations.toList
+  }
+
+  private[spark] def patchBulkUpdateItem(
+                                            itemToBeUpdatedOpt: Option[ObjectNode],
+                                            patchBulkUpdateOperations: List[PatchOperationCore[JsonNode]]): ObjectNode = {
+
+      // Do not do the modification on original objectNode, as it maybe used by other patchBulkUpdate operations
+      val rootNode = itemToBeUpdatedOpt match {
+          case Some(itemToBeUpdate) => Utils.getSimpleObjectMapper.createObjectNode().setAll(itemToBeUpdate)
+          case _ => Utils.getSimpleObjectMapper.createObjectNode()
+      }
+
+      patchBulkUpdateOperations.foreach(patchOperation => {
+          patchBulkUpdateFields(rootNode, patchOperation.getOperationType, patchOperation.getPath, patchOperation.getResource)
+      })
+
+      rootNode
+  }
+
+  private[this] def patchBulkUpdateFields(
+                                            rootNode: ObjectNode,
+                                            patchOperationType: PatchOperationType,
+                                            path: String,
+                                            pathValue: JsonNode): ObjectNode = {
+      patchOperationType match {
+          case PatchOperationType.SET =>
+              // CosmosDb mapping path: /parent/child1/item
+              // Loop through each path component. If the parent node does not exists, create one {}
+              var parentNode: JsonNode = rootNode
+              val pathArray = path.stripPrefix("/").split("/")
+
+              // get or create parent node
+              for (pathIndex <- 0 until pathArray.size - 1) {
+                  parentNode = getOrCreateNextParentNode(parentNode, s"/${pathArray(pathIndex)}")
+              }
+
+              // after looping through the structure, now set the field value
+              val fieldPath = pathArray(pathArray.size - 1)
+              parentNode match {
+                  case parentIsObjectNode: ObjectNode => parentIsObjectNode.set(fieldPath, pathValue)
+                  case parentIsArrayNode: ArrayNode =>
+                      val arrayIndex = Integer.parseInt(fieldPath)
+                      parentIsArrayNode.set(arrayIndex, pathValue)
+                  case _ => throw new RuntimeException(s"Unsupported parent node type ${parentNode.getClass} in bulkUpdateFields") // we should never reach here
+              }
+
+              rootNode
+          case _ => throw new RuntimeException(s"PatchOperationType $patchOperationType is not supported for ItemBulkUpdate") // we should have never reach here
+      }
+  }
+
+  private[this] def getOrCreateNextParentNode(parentNode: JsonNode, childPath: String): JsonNode = {
+
+      // Construct a json pointer
+      // Probably just a bad naming, but there is no background compiling activities etc, should be light weighted
+      // But if in the future we found this part causes perf issue etc, can reconsider using simple string type
+      val jsonPath = JsonPointer.compile(childPath)
+      val nextParentNode =
+          parentNode.at(jsonPath) match {
+              case _: MissingNode =>
+                  parentNode match {
+                      case objectNode: ObjectNode =>
+                          objectNode.set(jsonPath.getMatchingProperty, Utils.getSimpleObjectMapper().createObjectNode())
+                          objectNode
+                      case arrayNode: ArrayNode =>
+                          val arrayIndex = Integer.parseInt(jsonPath.getMatchingProperty)
+                          arrayNode.insert(arrayIndex, Utils.getSimpleObjectMapper().createObjectNode())
+                          arrayNode
+                      case _ => throw new RuntimeException(s"Unsupported parent node type ${parentNode.getClass}")
+                  }
+
+                  parentNode.at(jsonPath)
+              case existingNode: JsonNode => existingNode
+          }
+
+      nextParentNode match {
+          case _: ObjectNode | _: ArrayNode => nextParentNode
+          case _ => throw new RuntimeException(s"Unsupported next parent node type ${nextParentNode.getClass}")
+      }
+  }
 }

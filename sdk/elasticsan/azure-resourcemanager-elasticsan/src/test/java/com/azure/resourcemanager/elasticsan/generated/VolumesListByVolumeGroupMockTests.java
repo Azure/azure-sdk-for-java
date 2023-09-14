@@ -12,7 +12,6 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.elasticsan.ElasticSanManager;
 import com.azure.resourcemanager.elasticsan.models.Volume;
 import com.azure.resourcemanager.elasticsan.models.VolumeCreateOption;
@@ -34,7 +33,7 @@ public final class VolumesListByVolumeGroupMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"volumeId\":\"xy\",\"creationData\":{\"createSource\":\"None\",\"sourceUri\":\"rxv\"},\"sizeGiB\":328428173774055677,\"storageTarget\":{\"targetIqn\":\"zntxhdz\",\"targetPortalHostname\":\"rqjbhckfrl\",\"targetPortalPort\":367303674,\"provisioningState\":\"Failed\",\"status\":\"Stopped\"}},\"tags\":{\"uzbpzkafku\":\"ca\",\"rnwb\":\"b\",\"hspkdeemao\":\"ehhseyvjusrts\",\"gkvtmelmqkrhah\":\"mx\"},\"id\":\"ljuahaquhcdh\",\"name\":\"duala\",\"type\":\"xqpvfadmw\"}]}";
+            "{\"value\":[{\"properties\":{\"volumeId\":\"yqtfihwh\",\"creationData\":{\"createSource\":\"None\",\"sourceUri\":\"ngamvpphosz\"},\"sizeGiB\":5042367561387448154,\"storageTarget\":{\"targetIqn\":\"hqamvdkf\",\"targetPortalHostname\":\"nwcvtbvkayhmtnv\",\"targetPortalPort\":440993445,\"provisioningState\":\"Creating\",\"status\":\"Stopped\"}},\"id\":\"wp\",\"name\":\"npwzcjaes\",\"type\":\"vvsccyajguq\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,11 +61,13 @@ public final class VolumesListByVolumeGroupMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<Volume> response = manager.volumes().listByVolumeGroup("cq", "tcc", "g", Context.NONE);
+        PagedIterable<Volume> response =
+            manager
+                .volumes()
+                .listByVolumeGroup("jgwwspughftq", "xhqxujxukndxdigr", "guufzd", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("ca", response.iterator().next().tags().get("uzbpzkafku"));
         Assertions.assertEquals(VolumeCreateOption.NONE, response.iterator().next().creationData().createSource());
-        Assertions.assertEquals("rxv", response.iterator().next().creationData().sourceUri());
-        Assertions.assertEquals(328428173774055677L, response.iterator().next().sizeGiB());
+        Assertions.assertEquals("ngamvpphosz", response.iterator().next().creationData().sourceUri());
+        Assertions.assertEquals(5042367561387448154L, response.iterator().next().sizeGiB());
     }
 }

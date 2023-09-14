@@ -33,7 +33,7 @@ public final class ScriptsCheckNameAvailabilityWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"nameAvailable\":false,\"name\":\"cczurtlei\",\"message\":\"xbkwv\",\"reason\":\"AlreadyExists\"}";
+            "{\"nameAvailable\":true,\"name\":\"lbmoichd\",\"message\":\"nfpubntnbatz\",\"reason\":\"Invalid\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -65,16 +65,16 @@ public final class ScriptsCheckNameAvailabilityWithResponseMockTests {
             manager
                 .scripts()
                 .checkNameAvailabilityWithResponse(
-                    "zinkfkbgbzbowxeq",
-                    "clj",
-                    "ygvkzqkjj",
-                    new ScriptCheckNameRequest().withName("okbzef"),
+                    "qotoihiqakydiwfb",
+                    "kwpzdqtvh",
+                    "spodaqax",
+                    new ScriptCheckNameRequest().withName("ipietgbe"),
                     com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals(false, response.nameAvailable());
-        Assertions.assertEquals("cczurtlei", response.name());
-        Assertions.assertEquals("xbkwv", response.message());
-        Assertions.assertEquals(Reason.ALREADY_EXISTS, response.reason());
+        Assertions.assertEquals(true, response.nameAvailable());
+        Assertions.assertEquals("lbmoichd", response.name());
+        Assertions.assertEquals("nfpubntnbatz", response.message());
+        Assertions.assertEquals(Reason.INVALID, response.reason());
     }
 }

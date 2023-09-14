@@ -6,6 +6,7 @@ package com.azure.resourcemanager.managednetworkfabric.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.managednetworkfabric.fluent.models.NetworkRackInner;
+import com.azure.resourcemanager.managednetworkfabric.models.NetworkRackType;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
@@ -16,30 +17,30 @@ public final class NetworkRackInnerTests {
         NetworkRackInner model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"networkRackSku\":\"mjqfrddgamquhio\",\"networkFabricId\":\"rsjuivfcdisyir\",\"networkDevices\":[\"hcz\",\"xrxzbujrtr\",\"qvwre\",\"khgn\"],\"provisioningState\":\"Updating\",\"annotation\":\"nzlrpiqywncvjt\"},\"location\":\"cof\",\"tags\":{\"gbjkvreljeamur\":\"htd\"},\"id\":\"zmlovuanash\",\"name\":\"xlpm\",\"type\":\"erbdk\"}")
+                    "{\"properties\":{\"networkRackType\":\"Aggregate\",\"networkFabricId\":\"jpytp\",\"networkDevices\":[\"dnogehlufbor\"],\"provisioningState\":\"Deleting\",\"annotation\":\"kk\"},\"location\":\"xzsvbxxyji\",\"tags\":{\"qocl\":\"o\",\"oewyhxessmvrkd\":\"l\",\"bdxmd\":\"sqeq\"},\"id\":\"esbrujbjpppktl\",\"name\":\"dibfmthi\",\"type\":\"at\"}")
                 .toObject(NetworkRackInner.class);
-        Assertions.assertEquals("cof", model.location());
-        Assertions.assertEquals("htd", model.tags().get("gbjkvreljeamur"));
-        Assertions.assertEquals("mjqfrddgamquhio", model.networkRackSku());
-        Assertions.assertEquals("rsjuivfcdisyir", model.networkFabricId());
-        Assertions.assertEquals("nzlrpiqywncvjt", model.annotation());
+        Assertions.assertEquals("xzsvbxxyji", model.location());
+        Assertions.assertEquals("o", model.tags().get("qocl"));
+        Assertions.assertEquals(NetworkRackType.AGGREGATE, model.networkRackType());
+        Assertions.assertEquals("jpytp", model.networkFabricId());
+        Assertions.assertEquals("kk", model.annotation());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         NetworkRackInner model =
             new NetworkRackInner()
-                .withLocation("cof")
-                .withTags(mapOf("gbjkvreljeamur", "htd"))
-                .withNetworkRackSku("mjqfrddgamquhio")
-                .withNetworkFabricId("rsjuivfcdisyir")
-                .withAnnotation("nzlrpiqywncvjt");
+                .withLocation("xzsvbxxyji")
+                .withTags(mapOf("qocl", "o", "oewyhxessmvrkd", "l", "bdxmd", "sqeq"))
+                .withNetworkRackType(NetworkRackType.AGGREGATE)
+                .withNetworkFabricId("jpytp")
+                .withAnnotation("kk");
         model = BinaryData.fromObject(model).toObject(NetworkRackInner.class);
-        Assertions.assertEquals("cof", model.location());
-        Assertions.assertEquals("htd", model.tags().get("gbjkvreljeamur"));
-        Assertions.assertEquals("mjqfrddgamquhio", model.networkRackSku());
-        Assertions.assertEquals("rsjuivfcdisyir", model.networkFabricId());
-        Assertions.assertEquals("nzlrpiqywncvjt", model.annotation());
+        Assertions.assertEquals("xzsvbxxyji", model.location());
+        Assertions.assertEquals("o", model.tags().get("qocl"));
+        Assertions.assertEquals(NetworkRackType.AGGREGATE, model.networkRackType());
+        Assertions.assertEquals("jpytp", model.networkFabricId());
+        Assertions.assertEquals("kk", model.annotation());
     }
 
     @SuppressWarnings("unchecked")

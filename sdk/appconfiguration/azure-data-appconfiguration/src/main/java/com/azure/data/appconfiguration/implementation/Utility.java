@@ -11,7 +11,7 @@ import com.azure.data.appconfiguration.implementation.models.KeyValue;
 import com.azure.data.appconfiguration.implementation.models.SnapshotUpdateParameters;
 import com.azure.data.appconfiguration.implementation.models.UpdateSnapshotHeaders;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
-import com.azure.data.appconfiguration.models.ConfigurationSettingSnapshot;
+import com.azure.data.appconfiguration.models.ConfigurationSettingsSnapshot;
 import com.azure.data.appconfiguration.models.SettingFields;
 import com.azure.data.appconfiguration.models.SnapshotStatus;
 import reactor.core.publisher.Mono;
@@ -105,16 +105,16 @@ public class Utility {
      * Get HTTP header value, if-match or if-none-match.. Used to perform an operation only if the targeted resource's
      * etag matches the value provided.
      */
-    public static String getEtag(boolean isEtagRequired, ConfigurationSetting setting) {
-        return isEtagRequired ? getETagValue(setting.getETag()) : null;
+    public static String getETag(boolean isETagRequired, ConfigurationSetting setting) {
+        return isETagRequired ? getETagValue(setting.getETag()) : null;
     }
 
-    public static String getEtagSnapshot(boolean isEtagRequired, ConfigurationSettingSnapshot snapshot) {
-        if (!isEtagRequired) {
+    public static String getETagSnapshot(boolean isETagRequired, ConfigurationSettingsSnapshot snapshot) {
+        if (!isETagRequired) {
             return null;
         }
         Objects.requireNonNull(snapshot);
-        return getETagValue(snapshot.getEtag());
+        return getETagValue(snapshot.getETag());
     }
 
     /*
@@ -159,23 +159,23 @@ public class Utility {
         return context.addData(AZ_TRACING_NAMESPACE_KEY, APP_CONFIG_TRACING_NAMESPACE_VALUE);
     }
 
-    public static Response<ConfigurationSettingSnapshot> updateSnapshotSync(String snapshotName,
-        ConfigurationSettingSnapshot snapshot, SnapshotStatus status, boolean ifUnchanged,
+    public static Response<ConfigurationSettingsSnapshot> updateSnapshotSync(String snapshotName,
+        ConfigurationSettingsSnapshot snapshot, SnapshotStatus status, boolean ifUnchanged,
         AzureAppConfigurationImpl serviceClient, Context context) {
 
-        final ResponseBase<UpdateSnapshotHeaders, ConfigurationSettingSnapshot> response =
+        final ResponseBase<UpdateSnapshotHeaders, ConfigurationSettingsSnapshot> response =
             serviceClient.updateSnapshotWithResponse(snapshotName,
                 new SnapshotUpdateParameters().setStatus(status),
-                getEtagSnapshot(ifUnchanged, snapshot), null, context);
+                getETagSnapshot(ifUnchanged, snapshot), null, context);
         return new SimpleResponse<>(response, response.getValue());
     }
 
-    public static Mono<Response<ConfigurationSettingSnapshot>> updateSnapshotAsync(String snapshotName,
-        ConfigurationSettingSnapshot snapshot, SnapshotStatus status, boolean ifUnchanged,
+    public static Mono<Response<ConfigurationSettingsSnapshot>> updateSnapshotAsync(String snapshotName,
+        ConfigurationSettingsSnapshot snapshot, SnapshotStatus status, boolean ifUnchanged,
         AzureAppConfigurationImpl serviceClient) {
         return serviceClient.updateSnapshotWithResponseAsync(snapshotName,
                 new SnapshotUpdateParameters().setStatus(status),
-                getEtagSnapshot(ifUnchanged, snapshot),
+                getETagSnapshot(ifUnchanged, snapshot),
                 null)
             .map(response -> new SimpleResponse<>(response, response.getValue()));
     }

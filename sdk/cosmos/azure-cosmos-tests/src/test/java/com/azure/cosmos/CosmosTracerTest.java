@@ -1768,12 +1768,12 @@ public class CosmosTracerTest extends TestSuiteBase {
                             eventName,
                             clientSideStatistics.getRequestStartTimeUTC());
                     }
-                } else if (clientSideStatistics.getGatewayStatistics() != null) {
-                    String pkRangeId = clientSideStatistics.getGatewayStatistics().getPartitionKeyRangeId();
+                } else if (clientSideStatistics.getGatewayStatisticsList() != null && clientSideStatistics.getGatewayStatisticsList().size() > 0) {
+                    String pkRangeId = clientSideStatistics.getGatewayStatisticsList().get(0).getPartitionKeyRangeId();
 
                     if (pkRangeId != null) {
                         String eventName = "Diagnostics for PKRange "
-                            + clientSideStatistics.getGatewayStatistics().getPartitionKeyRangeId();
+                            + clientSideStatistics.getGatewayStatisticsList().get(0).getPartitionKeyRangeId();
                         assertEvent(
                             mockTracer,
                             eventName,

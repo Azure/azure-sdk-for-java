@@ -14,7 +14,6 @@ import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
 import com.azure.core.annotation.Patch;
 import com.azure.core.annotation.PathParam;
-import com.azure.core.annotation.Post;
 import com.azure.core.annotation.Put;
 import com.azure.core.annotation.QueryParam;
 import com.azure.core.annotation.ReturnType;
@@ -115,7 +114,7 @@ public final class NetworkFabricControllersClientImpl implements NetworkFabricCo
         @Headers({"Content-Type: application/json"})
         @Delete(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkFabricControllers/{networkFabricControllerName}")
-        @ExpectedResponses({200, 202, 204})
+        @ExpectedResponses({202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
             @HostParam("$host") String endpoint,
@@ -151,34 +150,6 @@ public final class NetworkFabricControllersClientImpl implements NetworkFabricCo
             Context context);
 
         @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkFabricControllers/{networkFabricControllerName}/enableWorkloadManagementNetwork")
-        @ExpectedResponses({202})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> enableWorkloadManagementNetwork(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("networkFabricControllerName") String networkFabricControllerName,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkFabricControllers/{networkFabricControllerName}/disableWorkloadManagementNetwork")
-        @ExpectedResponses({202})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> disableWorkloadManagementNetwork(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("networkFabricControllerName") String networkFabricControllerName,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -210,7 +181,7 @@ public final class NetworkFabricControllersClientImpl implements NetworkFabricCo
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the NetworkFabricController resource definition along with {@link Response} on successful completion of
+     * @return the Network Fabric Controller resource definition along with {@link Response} on successful completion of
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -272,7 +243,7 @@ public final class NetworkFabricControllersClientImpl implements NetworkFabricCo
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the NetworkFabricController resource definition along with {@link Response} on successful completion of
+     * @return the Network Fabric Controller resource definition along with {@link Response} on successful completion of
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -333,7 +304,7 @@ public final class NetworkFabricControllersClientImpl implements NetworkFabricCo
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of the NetworkFabricController resource definition.
+     * @return the {@link PollerFlux} for polling of the Network Fabric Controller resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<NetworkFabricControllerInner>, NetworkFabricControllerInner> beginCreateAsync(
@@ -362,7 +333,7 @@ public final class NetworkFabricControllersClientImpl implements NetworkFabricCo
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of the NetworkFabricController resource definition.
+     * @return the {@link PollerFlux} for polling of the Network Fabric Controller resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<NetworkFabricControllerInner>, NetworkFabricControllerInner> beginCreateAsync(
@@ -394,7 +365,7 @@ public final class NetworkFabricControllersClientImpl implements NetworkFabricCo
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the NetworkFabricController resource definition.
+     * @return the {@link SyncPoller} for polling of the Network Fabric Controller resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NetworkFabricControllerInner>, NetworkFabricControllerInner> beginCreate(
@@ -414,7 +385,7 @@ public final class NetworkFabricControllersClientImpl implements NetworkFabricCo
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the NetworkFabricController resource definition.
+     * @return the {@link SyncPoller} for polling of the Network Fabric Controller resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NetworkFabricControllerInner>, NetworkFabricControllerInner> beginCreate(
@@ -436,7 +407,7 @@ public final class NetworkFabricControllersClientImpl implements NetworkFabricCo
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the NetworkFabricController resource definition on successful completion of {@link Mono}.
+     * @return the Network Fabric Controller resource definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<NetworkFabricControllerInner> createAsync(
@@ -458,7 +429,7 @@ public final class NetworkFabricControllersClientImpl implements NetworkFabricCo
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the NetworkFabricController resource definition on successful completion of {@link Mono}.
+     * @return the Network Fabric Controller resource definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<NetworkFabricControllerInner> createAsync(
@@ -482,7 +453,7 @@ public final class NetworkFabricControllersClientImpl implements NetworkFabricCo
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the NetworkFabricController resource definition.
+     * @return the Network Fabric Controller resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NetworkFabricControllerInner create(
@@ -502,7 +473,7 @@ public final class NetworkFabricControllersClientImpl implements NetworkFabricCo
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the NetworkFabricController resource definition.
+     * @return the Network Fabric Controller resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NetworkFabricControllerInner create(
@@ -523,7 +494,7 @@ public final class NetworkFabricControllersClientImpl implements NetworkFabricCo
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the NetworkFabricController resource definition along with {@link Response} on successful completion of
+     * @return the Network Fabric Controller resource definition along with {@link Response} on successful completion of
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -578,7 +549,7 @@ public final class NetworkFabricControllersClientImpl implements NetworkFabricCo
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the NetworkFabricController resource definition along with {@link Response} on successful completion of
+     * @return the Network Fabric Controller resource definition along with {@link Response} on successful completion of
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -629,7 +600,7 @@ public final class NetworkFabricControllersClientImpl implements NetworkFabricCo
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the NetworkFabricController resource definition on successful completion of {@link Mono}.
+     * @return the Network Fabric Controller resource definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<NetworkFabricControllerInner> getByResourceGroupAsync(
@@ -649,7 +620,7 @@ public final class NetworkFabricControllersClientImpl implements NetworkFabricCo
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the NetworkFabricController resource definition along with {@link Response}.
+     * @return the Network Fabric Controller resource definition along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<NetworkFabricControllerInner> getByResourceGroupWithResponse(
@@ -667,7 +638,7 @@ public final class NetworkFabricControllersClientImpl implements NetworkFabricCo
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the NetworkFabricController resource definition.
+     * @return the Network Fabric Controller resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NetworkFabricControllerInner getByResourceGroup(
@@ -686,7 +657,7 @@ public final class NetworkFabricControllersClientImpl implements NetworkFabricCo
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the NetworkFabricController resource definition along with {@link Response} on successful completion of
+     * @return the Network Fabric Controller resource definition along with {@link Response} on successful completion of
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -748,7 +719,7 @@ public final class NetworkFabricControllersClientImpl implements NetworkFabricCo
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the NetworkFabricController resource definition along with {@link Response} on successful completion of
+     * @return the Network Fabric Controller resource definition along with {@link Response} on successful completion of
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -809,7 +780,7 @@ public final class NetworkFabricControllersClientImpl implements NetworkFabricCo
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of the NetworkFabricController resource definition.
+     * @return the {@link PollerFlux} for polling of the Network Fabric Controller resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<NetworkFabricControllerInner>, NetworkFabricControllerInner> beginUpdateAsync(
@@ -838,7 +809,7 @@ public final class NetworkFabricControllersClientImpl implements NetworkFabricCo
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of the NetworkFabricController resource definition.
+     * @return the {@link PollerFlux} for polling of the Network Fabric Controller resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<NetworkFabricControllerInner>, NetworkFabricControllerInner> beginUpdateAsync(
@@ -870,7 +841,7 @@ public final class NetworkFabricControllersClientImpl implements NetworkFabricCo
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the NetworkFabricController resource definition.
+     * @return the {@link SyncPoller} for polling of the Network Fabric Controller resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NetworkFabricControllerInner>, NetworkFabricControllerInner> beginUpdate(
@@ -890,7 +861,7 @@ public final class NetworkFabricControllersClientImpl implements NetworkFabricCo
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the NetworkFabricController resource definition.
+     * @return the {@link SyncPoller} for polling of the Network Fabric Controller resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NetworkFabricControllerInner>, NetworkFabricControllerInner> beginUpdate(
@@ -912,7 +883,7 @@ public final class NetworkFabricControllersClientImpl implements NetworkFabricCo
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the NetworkFabricController resource definition on successful completion of {@link Mono}.
+     * @return the Network Fabric Controller resource definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<NetworkFabricControllerInner> updateAsync(
@@ -934,7 +905,7 @@ public final class NetworkFabricControllersClientImpl implements NetworkFabricCo
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the NetworkFabricController resource definition on successful completion of {@link Mono}.
+     * @return the Network Fabric Controller resource definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<NetworkFabricControllerInner> updateAsync(
@@ -958,7 +929,7 @@ public final class NetworkFabricControllersClientImpl implements NetworkFabricCo
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the NetworkFabricController resource definition.
+     * @return the Network Fabric Controller resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NetworkFabricControllerInner update(
@@ -978,7 +949,7 @@ public final class NetworkFabricControllersClientImpl implements NetworkFabricCo
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the NetworkFabricController resource definition.
+     * @return the Network Fabric Controller resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NetworkFabricControllerInner update(
@@ -1257,7 +1228,7 @@ public final class NetworkFabricControllersClientImpl implements NetworkFabricCo
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of NetworkFabricControllers along with {@link PagedResponse} on successful completion of {@link
+     * @return list of Network Fabric Controllers along with {@link PagedResponse} on successful completion of {@link
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1313,7 +1284,7 @@ public final class NetworkFabricControllersClientImpl implements NetworkFabricCo
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of NetworkFabricControllers along with {@link PagedResponse} on successful completion of {@link
+     * @return list of Network Fabric Controllers along with {@link PagedResponse} on successful completion of {@link
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1365,7 +1336,7 @@ public final class NetworkFabricControllersClientImpl implements NetworkFabricCo
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of NetworkFabricControllers as paginated response with {@link PagedFlux}.
+     * @return list of Network Fabric Controllers as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<NetworkFabricControllerInner> listByResourceGroupAsync(String resourceGroupName) {
@@ -1384,7 +1355,7 @@ public final class NetworkFabricControllersClientImpl implements NetworkFabricCo
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of NetworkFabricControllers as paginated response with {@link PagedFlux}.
+     * @return list of Network Fabric Controllers as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<NetworkFabricControllerInner> listByResourceGroupAsync(
@@ -1403,7 +1374,7 @@ public final class NetworkFabricControllersClientImpl implements NetworkFabricCo
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of NetworkFabricControllers as paginated response with {@link PagedIterable}.
+     * @return list of Network Fabric Controllers as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NetworkFabricControllerInner> listByResourceGroup(String resourceGroupName) {
@@ -1420,7 +1391,7 @@ public final class NetworkFabricControllersClientImpl implements NetworkFabricCo
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of NetworkFabricControllers as paginated response with {@link PagedIterable}.
+     * @return list of Network Fabric Controllers as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NetworkFabricControllerInner> listByResourceGroup(String resourceGroupName, Context context) {
@@ -1434,7 +1405,7 @@ public final class NetworkFabricControllersClientImpl implements NetworkFabricCo
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of NetworkFabricControllers along with {@link PagedResponse} on successful completion of {@link
+     * @return list of Network Fabric Controllers along with {@link PagedResponse} on successful completion of {@link
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1483,7 +1454,7 @@ public final class NetworkFabricControllersClientImpl implements NetworkFabricCo
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of NetworkFabricControllers along with {@link PagedResponse} on successful completion of {@link
+     * @return list of Network Fabric Controllers along with {@link PagedResponse} on successful completion of {@link
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1527,7 +1498,7 @@ public final class NetworkFabricControllersClientImpl implements NetworkFabricCo
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of NetworkFabricControllers as paginated response with {@link PagedFlux}.
+     * @return list of Network Fabric Controllers as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<NetworkFabricControllerInner> listAsync() {
@@ -1544,7 +1515,7 @@ public final class NetworkFabricControllersClientImpl implements NetworkFabricCo
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of NetworkFabricControllers as paginated response with {@link PagedFlux}.
+     * @return list of Network Fabric Controllers as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<NetworkFabricControllerInner> listAsync(Context context) {
@@ -1559,7 +1530,7 @@ public final class NetworkFabricControllersClientImpl implements NetworkFabricCo
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of NetworkFabricControllers as paginated response with {@link PagedIterable}.
+     * @return list of Network Fabric Controllers as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NetworkFabricControllerInner> list() {
@@ -1575,545 +1546,11 @@ public final class NetworkFabricControllersClientImpl implements NetworkFabricCo
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of NetworkFabricControllers as paginated response with {@link PagedIterable}.
+     * @return list of Network Fabric Controllers as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NetworkFabricControllerInner> list(Context context) {
         return new PagedIterable<>(listAsync(context));
-    }
-
-    /**
-     * Implements the operation to the underlying resources.
-     *
-     * <p>Enables the workloadManagementNetwork (Tenant Network).
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkFabricControllerName Name of the networkFabricController.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> enableWorkloadManagementNetworkWithResponseAsync(
-        String resourceGroupName, String networkFabricControllerName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (networkFabricControllerName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter networkFabricControllerName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .enableWorkloadManagementNetwork(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            networkFabricControllerName,
-                            accept,
-                            context))
-            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Implements the operation to the underlying resources.
-     *
-     * <p>Enables the workloadManagementNetwork (Tenant Network).
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkFabricControllerName Name of the networkFabricController.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> enableWorkloadManagementNetworkWithResponseAsync(
-        String resourceGroupName, String networkFabricControllerName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (networkFabricControllerName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter networkFabricControllerName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .enableWorkloadManagementNetwork(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                networkFabricControllerName,
-                accept,
-                context);
-    }
-
-    /**
-     * Implements the operation to the underlying resources.
-     *
-     * <p>Enables the workloadManagementNetwork (Tenant Network).
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkFabricControllerName Name of the networkFabricController.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginEnableWorkloadManagementNetworkAsync(
-        String resourceGroupName, String networkFabricControllerName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            enableWorkloadManagementNetworkWithResponseAsync(resourceGroupName, networkFabricControllerName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
-    }
-
-    /**
-     * Implements the operation to the underlying resources.
-     *
-     * <p>Enables the workloadManagementNetwork (Tenant Network).
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkFabricControllerName Name of the networkFabricController.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginEnableWorkloadManagementNetworkAsync(
-        String resourceGroupName, String networkFabricControllerName, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            enableWorkloadManagementNetworkWithResponseAsync(resourceGroupName, networkFabricControllerName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
-    }
-
-    /**
-     * Implements the operation to the underlying resources.
-     *
-     * <p>Enables the workloadManagementNetwork (Tenant Network).
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkFabricControllerName Name of the networkFabricController.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginEnableWorkloadManagementNetwork(
-        String resourceGroupName, String networkFabricControllerName) {
-        return this
-            .beginEnableWorkloadManagementNetworkAsync(resourceGroupName, networkFabricControllerName)
-            .getSyncPoller();
-    }
-
-    /**
-     * Implements the operation to the underlying resources.
-     *
-     * <p>Enables the workloadManagementNetwork (Tenant Network).
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkFabricControllerName Name of the networkFabricController.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginEnableWorkloadManagementNetwork(
-        String resourceGroupName, String networkFabricControllerName, Context context) {
-        return this
-            .beginEnableWorkloadManagementNetworkAsync(resourceGroupName, networkFabricControllerName, context)
-            .getSyncPoller();
-    }
-
-    /**
-     * Implements the operation to the underlying resources.
-     *
-     * <p>Enables the workloadManagementNetwork (Tenant Network).
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkFabricControllerName Name of the networkFabricController.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> enableWorkloadManagementNetworkAsync(
-        String resourceGroupName, String networkFabricControllerName) {
-        return beginEnableWorkloadManagementNetworkAsync(resourceGroupName, networkFabricControllerName)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Implements the operation to the underlying resources.
-     *
-     * <p>Enables the workloadManagementNetwork (Tenant Network).
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkFabricControllerName Name of the networkFabricController.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> enableWorkloadManagementNetworkAsync(
-        String resourceGroupName, String networkFabricControllerName, Context context) {
-        return beginEnableWorkloadManagementNetworkAsync(resourceGroupName, networkFabricControllerName, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Implements the operation to the underlying resources.
-     *
-     * <p>Enables the workloadManagementNetwork (Tenant Network).
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkFabricControllerName Name of the networkFabricController.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void enableWorkloadManagementNetwork(String resourceGroupName, String networkFabricControllerName) {
-        enableWorkloadManagementNetworkAsync(resourceGroupName, networkFabricControllerName).block();
-    }
-
-    /**
-     * Implements the operation to the underlying resources.
-     *
-     * <p>Enables the workloadManagementNetwork (Tenant Network).
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkFabricControllerName Name of the networkFabricController.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void enableWorkloadManagementNetwork(
-        String resourceGroupName, String networkFabricControllerName, Context context) {
-        enableWorkloadManagementNetworkAsync(resourceGroupName, networkFabricControllerName, context).block();
-    }
-
-    /**
-     * Implements the operation to the underlying resources.
-     *
-     * <p>Disables the workloadManagementNetwork (Tenant Network).
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkFabricControllerName Name of the networkFabricController.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> disableWorkloadManagementNetworkWithResponseAsync(
-        String resourceGroupName, String networkFabricControllerName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (networkFabricControllerName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter networkFabricControllerName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .disableWorkloadManagementNetwork(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            networkFabricControllerName,
-                            accept,
-                            context))
-            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Implements the operation to the underlying resources.
-     *
-     * <p>Disables the workloadManagementNetwork (Tenant Network).
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkFabricControllerName Name of the networkFabricController.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> disableWorkloadManagementNetworkWithResponseAsync(
-        String resourceGroupName, String networkFabricControllerName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (networkFabricControllerName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter networkFabricControllerName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .disableWorkloadManagementNetwork(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                networkFabricControllerName,
-                accept,
-                context);
-    }
-
-    /**
-     * Implements the operation to the underlying resources.
-     *
-     * <p>Disables the workloadManagementNetwork (Tenant Network).
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkFabricControllerName Name of the networkFabricController.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDisableWorkloadManagementNetworkAsync(
-        String resourceGroupName, String networkFabricControllerName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            disableWorkloadManagementNetworkWithResponseAsync(resourceGroupName, networkFabricControllerName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
-    }
-
-    /**
-     * Implements the operation to the underlying resources.
-     *
-     * <p>Disables the workloadManagementNetwork (Tenant Network).
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkFabricControllerName Name of the networkFabricController.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDisableWorkloadManagementNetworkAsync(
-        String resourceGroupName, String networkFabricControllerName, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            disableWorkloadManagementNetworkWithResponseAsync(resourceGroupName, networkFabricControllerName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
-    }
-
-    /**
-     * Implements the operation to the underlying resources.
-     *
-     * <p>Disables the workloadManagementNetwork (Tenant Network).
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkFabricControllerName Name of the networkFabricController.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDisableWorkloadManagementNetwork(
-        String resourceGroupName, String networkFabricControllerName) {
-        return this
-            .beginDisableWorkloadManagementNetworkAsync(resourceGroupName, networkFabricControllerName)
-            .getSyncPoller();
-    }
-
-    /**
-     * Implements the operation to the underlying resources.
-     *
-     * <p>Disables the workloadManagementNetwork (Tenant Network).
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkFabricControllerName Name of the networkFabricController.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDisableWorkloadManagementNetwork(
-        String resourceGroupName, String networkFabricControllerName, Context context) {
-        return this
-            .beginDisableWorkloadManagementNetworkAsync(resourceGroupName, networkFabricControllerName, context)
-            .getSyncPoller();
-    }
-
-    /**
-     * Implements the operation to the underlying resources.
-     *
-     * <p>Disables the workloadManagementNetwork (Tenant Network).
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkFabricControllerName Name of the networkFabricController.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> disableWorkloadManagementNetworkAsync(
-        String resourceGroupName, String networkFabricControllerName) {
-        return beginDisableWorkloadManagementNetworkAsync(resourceGroupName, networkFabricControllerName)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Implements the operation to the underlying resources.
-     *
-     * <p>Disables the workloadManagementNetwork (Tenant Network).
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkFabricControllerName Name of the networkFabricController.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> disableWorkloadManagementNetworkAsync(
-        String resourceGroupName, String networkFabricControllerName, Context context) {
-        return beginDisableWorkloadManagementNetworkAsync(resourceGroupName, networkFabricControllerName, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Implements the operation to the underlying resources.
-     *
-     * <p>Disables the workloadManagementNetwork (Tenant Network).
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkFabricControllerName Name of the networkFabricController.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void disableWorkloadManagementNetwork(String resourceGroupName, String networkFabricControllerName) {
-        disableWorkloadManagementNetworkAsync(resourceGroupName, networkFabricControllerName).block();
-    }
-
-    /**
-     * Implements the operation to the underlying resources.
-     *
-     * <p>Disables the workloadManagementNetwork (Tenant Network).
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param networkFabricControllerName Name of the networkFabricController.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void disableWorkloadManagementNetwork(
-        String resourceGroupName, String networkFabricControllerName, Context context) {
-        disableWorkloadManagementNetworkAsync(resourceGroupName, networkFabricControllerName, context).block();
     }
 
     /**
@@ -2124,7 +1561,7 @@ public final class NetworkFabricControllersClientImpl implements NetworkFabricCo
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of NetworkFabricControllers along with {@link PagedResponse} on successful completion of {@link
+     * @return list of Network Fabric Controllers along with {@link PagedResponse} on successful completion of {@link
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -2163,7 +1600,7 @@ public final class NetworkFabricControllersClientImpl implements NetworkFabricCo
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of NetworkFabricControllers along with {@link PagedResponse} on successful completion of {@link
+     * @return list of Network Fabric Controllers along with {@link PagedResponse} on successful completion of {@link
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -2201,7 +1638,7 @@ public final class NetworkFabricControllersClientImpl implements NetworkFabricCo
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of NetworkFabricControllers along with {@link PagedResponse} on successful completion of {@link
+     * @return list of Network Fabric Controllers along with {@link PagedResponse} on successful completion of {@link
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -2240,7 +1677,7 @@ public final class NetworkFabricControllersClientImpl implements NetworkFabricCo
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of NetworkFabricControllers along with {@link PagedResponse} on successful completion of {@link
+     * @return list of Network Fabric Controllers along with {@link PagedResponse} on successful completion of {@link
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)

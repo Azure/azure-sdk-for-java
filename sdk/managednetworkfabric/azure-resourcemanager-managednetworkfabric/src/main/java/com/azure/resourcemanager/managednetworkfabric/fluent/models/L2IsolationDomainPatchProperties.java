@@ -8,11 +8,11 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.managednetworkfabric.models.AnnotationResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** L2IsolationDomainPatchProperties define the patchable resource properties. */
+/** L2 Isolation Domain Patch Properties defines the patchable properties of the resource. */
 @Fluent
 public final class L2IsolationDomainPatchProperties extends AnnotationResource {
     /*
-     * maximum transmission unit. Default value is 1500.
+     * Maximum transmission unit. Default value is 1500.
      */
     @JsonProperty(value = "mtu")
     private Integer mtu;
@@ -22,7 +22,7 @@ public final class L2IsolationDomainPatchProperties extends AnnotationResource {
     }
 
     /**
-     * Get the mtu property: maximum transmission unit. Default value is 1500.
+     * Get the mtu property: Maximum transmission unit. Default value is 1500.
      *
      * @return the mtu value.
      */
@@ -31,7 +31,7 @@ public final class L2IsolationDomainPatchProperties extends AnnotationResource {
     }
 
     /**
-     * Set the mtu property: maximum transmission unit. Default value is 1500.
+     * Set the mtu property: Maximum transmission unit. Default value is 1500.
      *
      * @param mtu the mtu value to set.
      * @return the L2IsolationDomainPatchProperties object itself.

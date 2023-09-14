@@ -7,6 +7,7 @@ package com.azure.resourcemanager.managednetworkfabric.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.managednetworkfabric.fluent.models.IpCommunityProperties;
 import com.azure.resourcemanager.managednetworkfabric.models.CommunityActionTypes;
+import com.azure.resourcemanager.managednetworkfabric.models.IpCommunityRule;
 import com.azure.resourcemanager.managednetworkfabric.models.WellKnownCommunities;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
@@ -17,26 +18,43 @@ public final class IpCommunityPropertiesTests {
         IpCommunityProperties model =
             BinaryData
                 .fromString(
-                    "{\"action\":\"Permit\",\"wellKnownCommunities\":[\"LocalAS\",\"GShut\"],\"communityMembers\":[\"itnwuizgazxufi\",\"uckyf\"],\"provisioningState\":\"Updating\",\"annotation\":\"idf\"}")
+                    "{\"configurationState\":\"Deprovisioned\",\"provisioningState\":\"Failed\",\"administrativeState\":\"Enabled\",\"ipCommunityRules\":[{\"action\":\"Deny\",\"sequenceNumber\":7243568569040001370,\"wellKnownCommunities\":[\"NoExport\",\"LocalAS\",\"GShut\",\"NoAdvertise\"],\"communityMembers\":[\"uzpjlxeehux\",\"qhzlray\"]}],\"annotation\":\"zxlskihmxr\"}")
                 .toObject(IpCommunityProperties.class);
-        Assertions.assertEquals("idf", model.annotation());
-        Assertions.assertEquals(CommunityActionTypes.PERMIT, model.action());
-        Assertions.assertEquals(WellKnownCommunities.LOCAL_AS, model.wellKnownCommunities().get(0));
-        Assertions.assertEquals("itnwuizgazxufi", model.communityMembers().get(0));
+        Assertions.assertEquals("zxlskihmxr", model.annotation());
+        Assertions.assertEquals(CommunityActionTypes.DENY, model.ipCommunityRules().get(0).action());
+        Assertions.assertEquals(7243568569040001370L, model.ipCommunityRules().get(0).sequenceNumber());
+        Assertions
+            .assertEquals(
+                WellKnownCommunities.NO_EXPORT, model.ipCommunityRules().get(0).wellKnownCommunities().get(0));
+        Assertions.assertEquals("uzpjlxeehux", model.ipCommunityRules().get(0).communityMembers().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         IpCommunityProperties model =
             new IpCommunityProperties()
-                .withAnnotation("idf")
-                .withAction(CommunityActionTypes.PERMIT)
-                .withWellKnownCommunities(Arrays.asList(WellKnownCommunities.LOCAL_AS, WellKnownCommunities.GSHUT))
-                .withCommunityMembers(Arrays.asList("itnwuizgazxufi", "uckyf"));
+                .withAnnotation("zxlskihmxr")
+                .withIpCommunityRules(
+                    Arrays
+                        .asList(
+                            new IpCommunityRule()
+                                .withAction(CommunityActionTypes.DENY)
+                                .withSequenceNumber(7243568569040001370L)
+                                .withWellKnownCommunities(
+                                    Arrays
+                                        .asList(
+                                            WellKnownCommunities.NO_EXPORT,
+                                            WellKnownCommunities.LOCAL_AS,
+                                            WellKnownCommunities.GSHUT,
+                                            WellKnownCommunities.NO_ADVERTISE))
+                                .withCommunityMembers(Arrays.asList("uzpjlxeehux", "qhzlray"))));
         model = BinaryData.fromObject(model).toObject(IpCommunityProperties.class);
-        Assertions.assertEquals("idf", model.annotation());
-        Assertions.assertEquals(CommunityActionTypes.PERMIT, model.action());
-        Assertions.assertEquals(WellKnownCommunities.LOCAL_AS, model.wellKnownCommunities().get(0));
-        Assertions.assertEquals("itnwuizgazxufi", model.communityMembers().get(0));
+        Assertions.assertEquals("zxlskihmxr", model.annotation());
+        Assertions.assertEquals(CommunityActionTypes.DENY, model.ipCommunityRules().get(0).action());
+        Assertions.assertEquals(7243568569040001370L, model.ipCommunityRules().get(0).sequenceNumber());
+        Assertions
+            .assertEquals(
+                WellKnownCommunities.NO_EXPORT, model.ipCommunityRules().get(0).wellKnownCommunities().get(0));
+        Assertions.assertEquals("uzpjlxeehux", model.ipCommunityRules().get(0).communityMembers().get(0));
     }
 }

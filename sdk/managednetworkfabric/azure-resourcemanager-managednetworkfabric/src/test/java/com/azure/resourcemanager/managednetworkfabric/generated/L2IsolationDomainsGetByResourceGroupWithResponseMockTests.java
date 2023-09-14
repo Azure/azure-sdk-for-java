@@ -31,7 +31,7 @@ public final class L2IsolationDomainsGetByResourceGroupWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"networkFabricId\":\"dwqslsrhmpqvw\",\"vlanId\":809096880,\"mtu\":1630515349,\"disabledOnResources\":[\"cbrwi\",\"uvqejosovyrrle\",\"esi\"],\"administrativeState\":\"Disabled\",\"provisioningState\":\"Succeeded\",\"annotation\":\"qobbpihehcec\"},\"location\":\"mrqbrjbbmpxdlv\",\"tags\":{\"gzhxog\":\"rexcrseqwjksghu\",\"rkmdyom\":\"ggsvoujkxibdaf\",\"dy\":\"xfbvfb\"},\"id\":\"rhpw\",\"name\":\"gddeimaw\",\"type\":\"o\"}";
+            "{\"properties\":{\"networkFabricId\":\"s\",\"vlanId\":959670016,\"mtu\":420780724,\"configurationState\":\"Provisioned\",\"provisioningState\":\"Updating\",\"administrativeState\":\"RMA\",\"annotation\":\"rxjkc\"},\"location\":\"enubrf\",\"tags\":{\"roeqcrjvcjskq\":\"kxnwtz\",\"wapdunhdikatzmtu\":\"fnm\"},\"id\":\"fnhitjkbibxlwz\",\"name\":\"vkcmcuiaunlo\",\"type\":\"in\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,14 +62,14 @@ public final class L2IsolationDomainsGetByResourceGroupWithResponseMockTests {
         L2IsolationDomain response =
             manager
                 .l2IsolationDomains()
-                .getByResourceGroupWithResponse("mskwhqjjysl", "rlpshhkv", com.azure.core.util.Context.NONE)
+                .getByResourceGroupWithResponse("gcaygumqeobrwre", "dgsawhami", com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals("mrqbrjbbmpxdlv", response.location());
-        Assertions.assertEquals("rexcrseqwjksghu", response.tags().get("gzhxog"));
-        Assertions.assertEquals("dwqslsrhmpqvw", response.networkFabricId());
-        Assertions.assertEquals(809096880, response.vlanId());
-        Assertions.assertEquals(1630515349, response.mtu());
-        Assertions.assertEquals("qobbpihehcec", response.annotation());
+        Assertions.assertEquals("enubrf", response.location());
+        Assertions.assertEquals("kxnwtz", response.tags().get("roeqcrjvcjskq"));
+        Assertions.assertEquals("s", response.networkFabricId());
+        Assertions.assertEquals(959670016, response.vlanId());
+        Assertions.assertEquals(420780724, response.mtu());
+        Assertions.assertEquals("rxjkc", response.annotation());
     }
 }

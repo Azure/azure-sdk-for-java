@@ -96,11 +96,13 @@ public interface ManagedCertificate {
             DefinitionStages.WithParentResource,
             DefinitionStages.WithCreate {
     }
+
     /** The ManagedCertificate definition stages. */
     interface DefinitionStages {
         /** The first stage of the ManagedCertificate definition. */
         interface Blank extends WithLocation {
         }
+
         /** The stage of the ManagedCertificate definition allowing to specify location. */
         interface WithLocation {
             /**
@@ -119,6 +121,7 @@ public interface ManagedCertificate {
              */
             WithParentResource withRegion(String location);
         }
+
         /** The stage of the ManagedCertificate definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
@@ -130,6 +133,7 @@ public interface ManagedCertificate {
              */
             WithCreate withExistingManagedEnvironment(String resourceGroupName, String environmentName);
         }
+
         /**
          * The stage of the ManagedCertificate definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
@@ -150,6 +154,7 @@ public interface ManagedCertificate {
              */
             ManagedCertificate create(Context context);
         }
+
         /** The stage of the ManagedCertificate definition allowing to specify tags. */
         interface WithTags {
             /**
@@ -160,6 +165,7 @@ public interface ManagedCertificate {
              */
             WithCreate withTags(Map<String, String> tags);
         }
+
         /** The stage of the ManagedCertificate definition allowing to specify properties. */
         interface WithProperties {
             /**
@@ -171,6 +177,7 @@ public interface ManagedCertificate {
             WithCreate withProperties(ManagedCertificateProperties properties);
         }
     }
+
     /**
      * Begins update for the ManagedCertificate resource.
      *
@@ -195,6 +202,7 @@ public interface ManagedCertificate {
          */
         ManagedCertificate apply(Context context);
     }
+
     /** The ManagedCertificate update stages. */
     interface UpdateStages {
         /** The stage of the ManagedCertificate update allowing to specify tags. */
@@ -208,6 +216,7 @@ public interface ManagedCertificate {
             Update withTags(Map<String, String> tags);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

@@ -21,65 +21,65 @@ public final class CommitmentPlanInnerTests {
         CommitmentPlanInner model =
             BinaryData
                 .fromString(
-                    "{\"etag\":\"ulpjr\",\"kind\":\"ag\",\"sku\":{\"name\":\"vimjwos\",\"tier\":\"Premium\",\"size\":\"tcs\",\"family\":\"cktqumiekkezzi\",\"capacity\":270423154},\"tags\":{\"qidbqfatpxllrxcy\":\"jhdgqggebdunyga\",\"dmjsjqb\":\"moadsuvarmy\"},\"location\":\"hyxxrwlycoduhpk\",\"properties\":{\"provisioningState\":\"Failed\",\"commitmentPlanGuid\":\"areqna\",\"hostingModel\":\"ConnectedContainer\",\"planType\":\"gjhkycubeddg\",\"current\":{\"tier\":\"fwqmzqalkrmn\",\"count\":1174672424,\"startDate\":\"acqqudfnbyxbaaab\",\"endDate\":\"vayffimrzrt\"},\"autoRenew\":true,\"next\":{\"tier\":\"sexnevfdnw\",\"count\":2059840008,\"startDate\":\"zsyyceuzso\",\"endDate\":\"judpfrxt\"},\"last\":{\"tier\":\"zvaytdwkqbr\",\"count\":1725477484,\"startDate\":\"xhexiilivpdti\",\"endDate\":\"q\"}},\"id\":\"d\",\"name\":\"oaxoruzfgsqu\",\"type\":\"fxrxxle\"}")
+                    "{\"etag\":\"rjqc\",\"kind\":\"gzpfrla\",\"sku\":{\"name\":\"zrnw\",\"tier\":\"Basic\",\"size\":\"dfpwpjylwbtlhfls\",\"family\":\"dhszfjv\",\"capacity\":1304960075},\"tags\":{\"qmqhldvriii\":\"eljag\",\"vtvsexsowueluq\":\"jnalghf\",\"wws\":\"hahhxvrhmzkwpj\"},\"location\":\"ghftqsxhqxujxuk\",\"properties\":{\"provisioningState\":\"Creating\",\"commitmentPlanGuid\":\"grjguufzd\",\"hostingModel\":\"ConnectedContainer\",\"planType\":\"tfih\",\"current\":{\"tier\":\"otzi\",\"count\":1709728841,\"quota\":{\"quantity\":2353170453764663846,\"unit\":\"o\"},\"startDate\":\"qzudphq\",\"endDate\":\"vdkfwynwcvtbvk\"},\"autoRenew\":false,\"next\":{\"tier\":\"nvyq\",\"count\":686807657,\"quota\":{\"quantity\":1497619530378227200,\"unit\":\"npwzcjaes\"},\"startDate\":\"v\",\"endDate\":\"cyajguqf\"},\"last\":{\"tier\":\"gzlvdnkfxu\",\"count\":2087511541,\"quota\":{\"quantity\":4703323769472107335,\"unit\":\"uh\"},\"startDate\":\"fcqdpsq\",\"endDate\":\"vpsvuoymgcce\"},\"provisioningIssues\":[\"zrypqlmfeokerqw\",\"yhko\"]},\"id\":\"opgxedkowepb\",\"name\":\"pc\",\"type\":\"fkbw\"}")
                 .toObject(CommitmentPlanInner.class);
-        Assertions.assertEquals("ag", model.kind());
-        Assertions.assertEquals("vimjwos", model.sku().name());
-        Assertions.assertEquals(SkuTier.PREMIUM, model.sku().tier());
-        Assertions.assertEquals("tcs", model.sku().size());
-        Assertions.assertEquals("cktqumiekkezzi", model.sku().family());
-        Assertions.assertEquals(270423154, model.sku().capacity());
-        Assertions.assertEquals("jhdgqggebdunyga", model.tags().get("qidbqfatpxllrxcy"));
-        Assertions.assertEquals("hyxxrwlycoduhpk", model.location());
-        Assertions.assertEquals("areqna", model.properties().commitmentPlanGuid());
+        Assertions.assertEquals("gzpfrla", model.kind());
+        Assertions.assertEquals("zrnw", model.sku().name());
+        Assertions.assertEquals(SkuTier.BASIC, model.sku().tier());
+        Assertions.assertEquals("dfpwpjylwbtlhfls", model.sku().size());
+        Assertions.assertEquals("dhszfjv", model.sku().family());
+        Assertions.assertEquals(1304960075, model.sku().capacity());
+        Assertions.assertEquals("eljag", model.tags().get("qmqhldvriii"));
+        Assertions.assertEquals("ghftqsxhqxujxuk", model.location());
+        Assertions.assertEquals("grjguufzd", model.properties().commitmentPlanGuid());
         Assertions.assertEquals(HostingModel.CONNECTED_CONTAINER, model.properties().hostingModel());
-        Assertions.assertEquals("gjhkycubeddg", model.properties().planType());
-        Assertions.assertEquals("fwqmzqalkrmn", model.properties().current().tier());
-        Assertions.assertEquals(1174672424, model.properties().current().count());
-        Assertions.assertEquals(true, model.properties().autoRenew());
-        Assertions.assertEquals("sexnevfdnw", model.properties().next().tier());
-        Assertions.assertEquals(2059840008, model.properties().next().count());
+        Assertions.assertEquals("tfih", model.properties().planType());
+        Assertions.assertEquals("otzi", model.properties().current().tier());
+        Assertions.assertEquals(1709728841, model.properties().current().count());
+        Assertions.assertEquals(false, model.properties().autoRenew());
+        Assertions.assertEquals("nvyq", model.properties().next().tier());
+        Assertions.assertEquals(686807657, model.properties().next().count());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         CommitmentPlanInner model =
             new CommitmentPlanInner()
-                .withKind("ag")
+                .withKind("gzpfrla")
                 .withSku(
                     new Sku()
-                        .withName("vimjwos")
-                        .withTier(SkuTier.PREMIUM)
-                        .withSize("tcs")
-                        .withFamily("cktqumiekkezzi")
-                        .withCapacity(270423154))
-                .withTags(mapOf("qidbqfatpxllrxcy", "jhdgqggebdunyga", "dmjsjqb", "moadsuvarmy"))
-                .withLocation("hyxxrwlycoduhpk")
+                        .withName("zrnw")
+                        .withTier(SkuTier.BASIC)
+                        .withSize("dfpwpjylwbtlhfls")
+                        .withFamily("dhszfjv")
+                        .withCapacity(1304960075))
+                .withTags(mapOf("qmqhldvriii", "eljag", "vtvsexsowueluq", "jnalghf", "wws", "hahhxvrhmzkwpj"))
+                .withLocation("ghftqsxhqxujxuk")
                 .withProperties(
                     new CommitmentPlanProperties()
-                        .withCommitmentPlanGuid("areqna")
+                        .withCommitmentPlanGuid("grjguufzd")
                         .withHostingModel(HostingModel.CONNECTED_CONTAINER)
-                        .withPlanType("gjhkycubeddg")
-                        .withCurrent(new CommitmentPeriod().withTier("fwqmzqalkrmn").withCount(1174672424))
-                        .withAutoRenew(true)
-                        .withNext(new CommitmentPeriod().withTier("sexnevfdnw").withCount(2059840008)));
+                        .withPlanType("tfih")
+                        .withCurrent(new CommitmentPeriod().withTier("otzi").withCount(1709728841))
+                        .withAutoRenew(false)
+                        .withNext(new CommitmentPeriod().withTier("nvyq").withCount(686807657)));
         model = BinaryData.fromObject(model).toObject(CommitmentPlanInner.class);
-        Assertions.assertEquals("ag", model.kind());
-        Assertions.assertEquals("vimjwos", model.sku().name());
-        Assertions.assertEquals(SkuTier.PREMIUM, model.sku().tier());
-        Assertions.assertEquals("tcs", model.sku().size());
-        Assertions.assertEquals("cktqumiekkezzi", model.sku().family());
-        Assertions.assertEquals(270423154, model.sku().capacity());
-        Assertions.assertEquals("jhdgqggebdunyga", model.tags().get("qidbqfatpxllrxcy"));
-        Assertions.assertEquals("hyxxrwlycoduhpk", model.location());
-        Assertions.assertEquals("areqna", model.properties().commitmentPlanGuid());
+        Assertions.assertEquals("gzpfrla", model.kind());
+        Assertions.assertEquals("zrnw", model.sku().name());
+        Assertions.assertEquals(SkuTier.BASIC, model.sku().tier());
+        Assertions.assertEquals("dfpwpjylwbtlhfls", model.sku().size());
+        Assertions.assertEquals("dhszfjv", model.sku().family());
+        Assertions.assertEquals(1304960075, model.sku().capacity());
+        Assertions.assertEquals("eljag", model.tags().get("qmqhldvriii"));
+        Assertions.assertEquals("ghftqsxhqxujxuk", model.location());
+        Assertions.assertEquals("grjguufzd", model.properties().commitmentPlanGuid());
         Assertions.assertEquals(HostingModel.CONNECTED_CONTAINER, model.properties().hostingModel());
-        Assertions.assertEquals("gjhkycubeddg", model.properties().planType());
-        Assertions.assertEquals("fwqmzqalkrmn", model.properties().current().tier());
-        Assertions.assertEquals(1174672424, model.properties().current().count());
-        Assertions.assertEquals(true, model.properties().autoRenew());
-        Assertions.assertEquals("sexnevfdnw", model.properties().next().tier());
-        Assertions.assertEquals(2059840008, model.properties().next().count());
+        Assertions.assertEquals("tfih", model.properties().planType());
+        Assertions.assertEquals("otzi", model.properties().current().tier());
+        Assertions.assertEquals(1709728841, model.properties().current().count());
+        Assertions.assertEquals(false, model.properties().autoRenew());
+        Assertions.assertEquals("nvyq", model.properties().next().tier());
+        Assertions.assertEquals(686807657, model.properties().next().count());
     }
 
     @SuppressWarnings("unchecked")

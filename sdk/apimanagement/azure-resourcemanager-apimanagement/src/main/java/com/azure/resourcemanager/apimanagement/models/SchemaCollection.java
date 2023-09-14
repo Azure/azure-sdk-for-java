@@ -30,6 +30,10 @@ public final class SchemaCollection {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
+    /** Creates an instance of SchemaCollection class. */
+    public SchemaCollection() {
+    }
+
     /**
      * Get the value property: API Schema Contract value.
      *

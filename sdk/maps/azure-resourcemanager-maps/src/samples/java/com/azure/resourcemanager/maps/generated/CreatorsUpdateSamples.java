@@ -11,7 +11,7 @@ import java.util.Map;
 /** Samples for Creators Update. */
 public final class CreatorsUpdateSamples {
     /*
-     * x-ms-original-file: specification/maps/resource-manager/Microsoft.Maps/stable/2021-02-01/examples/UpdateMapsCreator.json
+     * x-ms-original-file: specification/maps/resource-manager/Microsoft.Maps/stable/2023-06-01/examples/UpdateMapsCreator.json
      */
     /**
      * Sample code: Update Creator Resource.
@@ -27,6 +27,7 @@ public final class CreatorsUpdateSamples {
         resource.update().withTags(mapOf("specialTag", "true")).withStorageUnits(10).apply();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

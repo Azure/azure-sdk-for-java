@@ -55,11 +55,13 @@ public interface Addon {
     interface Definition
         extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
+
     /** The Addon definition stages. */
     interface DefinitionStages {
         /** The first stage of the Addon definition. */
         interface Blank extends WithParentResource {
         }
+
         /** The stage of the Addon definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
@@ -71,6 +73,7 @@ public interface Addon {
              */
             WithCreate withExistingPrivateCloud(String resourceGroupName, String privateCloudName);
         }
+
         /**
          * The stage of the Addon definition which contains all the minimum required properties for the resource to be
          * created, but also allows for any other optional properties to be specified.
@@ -91,6 +94,7 @@ public interface Addon {
              */
             Addon create(Context context);
         }
+
         /** The stage of the Addon definition allowing to specify properties. */
         interface WithProperties {
             /**
@@ -102,6 +106,7 @@ public interface Addon {
             WithCreate withProperties(AddonProperties properties);
         }
     }
+
     /**
      * Begins update for the Addon resource.
      *
@@ -126,6 +131,7 @@ public interface Addon {
          */
         Addon apply(Context context);
     }
+
     /** The Addon update stages. */
     interface UpdateStages {
         /** The stage of the Addon update allowing to specify properties. */
@@ -139,6 +145,7 @@ public interface Addon {
             Update withProperties(AddonProperties properties);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

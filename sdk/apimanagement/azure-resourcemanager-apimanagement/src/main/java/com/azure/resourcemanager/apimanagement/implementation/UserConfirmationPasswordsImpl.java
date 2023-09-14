@@ -25,13 +25,13 @@ public final class UserConfirmationPasswordsImpl implements UserConfirmationPass
         this.serviceManager = serviceManager;
     }
 
-    public void send(String resourceGroupName, String serviceName, String userId) {
-        this.serviceClient().send(resourceGroupName, serviceName, userId);
-    }
-
     public Response<Void> sendWithResponse(
         String resourceGroupName, String serviceName, String userId, AppType appType, Context context) {
         return this.serviceClient().sendWithResponse(resourceGroupName, serviceName, userId, appType, context);
+    }
+
+    public void send(String resourceGroupName, String serviceName, String userId) {
+        this.serviceClient().send(resourceGroupName, serviceName, userId);
     }
 
     private UserConfirmationPasswordsClient serviceClient() {

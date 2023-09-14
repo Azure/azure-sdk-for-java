@@ -61,15 +61,15 @@ public final class BackupsRestoreFilesMockTests {
         manager
             .backups()
             .restoreFiles(
-                "qcttadijaeukmrsi",
-                "ekpndzaapmudq",
-                "eqw",
-                "gp",
-                "bu",
+                "r",
+                "ochpprpr",
+                "nmokayzejnhlbk",
+                "bzpcpiljhahzvec",
+                "ndbnwieh",
                 new BackupRestoreFiles()
-                    .withFileList(Arrays.asList("wyxebeybpmzz", "rtffyaqitmh", "eioqaqhvse"))
-                    .withRestoreFilePath("uqyrxpdl")
-                    .withDestinationVolumeId("gql"),
+                    .withFileList(Arrays.asList("ewjwiuubw", "fqsfa", "aqtferr"))
+                    .withRestoreFilePath("ex")
+                    .withDestinationVolumeId("kmfx"),
                 com.azure.core.util.Context.NONE);
     }
 }

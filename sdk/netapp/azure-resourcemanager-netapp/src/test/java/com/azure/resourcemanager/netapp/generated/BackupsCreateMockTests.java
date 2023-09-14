@@ -31,7 +31,7 @@ public final class BackupsCreateMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"location\":\"nkeifz\",\"properties\":{\"backupId\":\"mkdasv\",\"creationDate\":\"2021-10-31T03:36:23Z\",\"provisioningState\":\"Succeeded\",\"size\":2167042291845318263,\"label\":\"ldforobwj\",\"backupType\":\"Scheduled\",\"failureReason\":\"bfhfovvacqp\",\"volumeName\":\"uodxesza\",\"useExistingSnapshot\":false},\"id\":\"awumuaslzkwrrwo\",\"name\":\"cqucwyhahnom\",\"type\":\"rkywuhpsvfuu\"}";
+            "{\"location\":\"kvntjlrigjkskyri\",\"properties\":{\"backupId\":\"vzidsxwaab\",\"creationDate\":\"2021-03-02T00:04:18Z\",\"provisioningState\":\"Succeeded\",\"size\":5668155844888351920,\"label\":\"opxlhslnelxieixy\",\"backupType\":\"Scheduled\",\"failureReason\":\"ecwcrojphslhcawj\",\"volumeName\":\"i\",\"useExistingSnapshot\":true},\"id\":\"fmvigorqjbttzh\",\"name\":\"aglkafhon\",\"type\":\"juj\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,15 +62,15 @@ public final class BackupsCreateMockTests {
         Backup response =
             manager
                 .backups()
-                .define("revkhgnlnzo")
-                .withRegion("zlrpiqywncvj")
-                .withExistingVolume("ismjqfrddgamqu", "iosrsjuivfcdis", "irnxz", "czexrxzbujrtrhqv")
-                .withLabel("ljeamu")
+                .define("ljgkyex")
+                .withRegion("oguyaip")
+                .withExistingVolume("pjwogqqno", "pud", "dabtqwp", "yawbzasqbu")
+                .withLabel("jw")
                 .withUseExistingSnapshot(true)
                 .create();
 
-        Assertions.assertEquals("nkeifz", response.location());
-        Assertions.assertEquals("ldforobwj", response.label());
-        Assertions.assertEquals(false, response.useExistingSnapshot());
+        Assertions.assertEquals("kvntjlrigjkskyri", response.location());
+        Assertions.assertEquals("opxlhslnelxieixy", response.label());
+        Assertions.assertEquals(true, response.useExistingSnapshot());
     }
 }

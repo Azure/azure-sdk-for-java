@@ -7,7 +7,7 @@ package com.azure.resourcemanager.compute.generated;
 /** Samples for VirtualMachineRunCommands Get. */
 public final class VirtualMachineRunCommandsGetSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/runCommandExamples/RunCommand_Get.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-07-01/examples/runCommandExamples/RunCommand_Get.json
      */
     /**
      * Sample code: VirtualMachineRunCommandGet.

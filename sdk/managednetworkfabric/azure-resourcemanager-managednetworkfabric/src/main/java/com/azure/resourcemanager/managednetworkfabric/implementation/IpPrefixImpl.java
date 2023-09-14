@@ -8,9 +8,11 @@ import com.azure.core.management.Region;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.managednetworkfabric.fluent.models.IpPrefixInner;
+import com.azure.resourcemanager.managednetworkfabric.models.AdministrativeState;
+import com.azure.resourcemanager.managednetworkfabric.models.ConfigurationState;
 import com.azure.resourcemanager.managednetworkfabric.models.IpPrefix;
 import com.azure.resourcemanager.managednetworkfabric.models.IpPrefixPatch;
-import com.azure.resourcemanager.managednetworkfabric.models.IpPrefixPropertiesIpPrefixRulesItem;
+import com.azure.resourcemanager.managednetworkfabric.models.IpPrefixRule;
 import com.azure.resourcemanager.managednetworkfabric.models.ProvisioningState;
 import java.util.Collections;
 import java.util.List;
@@ -50,17 +52,25 @@ public final class IpPrefixImpl implements IpPrefix, IpPrefix.Definition, IpPref
         return this.innerModel().systemData();
     }
 
-    public List<IpPrefixPropertiesIpPrefixRulesItem> ipPrefixRules() {
-        List<IpPrefixPropertiesIpPrefixRulesItem> inner = this.innerModel().ipPrefixRules();
+    public ConfigurationState configurationState() {
+        return this.innerModel().configurationState();
+    }
+
+    public ProvisioningState provisioningState() {
+        return this.innerModel().provisioningState();
+    }
+
+    public AdministrativeState administrativeState() {
+        return this.innerModel().administrativeState();
+    }
+
+    public List<IpPrefixRule> ipPrefixRules() {
+        List<IpPrefixRule> inner = this.innerModel().ipPrefixRules();
         if (inner != null) {
             return Collections.unmodifiableList(inner);
         } else {
             return Collections.emptyList();
         }
-    }
-
-    public ProvisioningState provisioningState() {
-        return this.innerModel().provisioningState();
     }
 
     public String annotation() {
@@ -182,11 +192,6 @@ public final class IpPrefixImpl implements IpPrefix, IpPrefix.Definition, IpPref
         return this;
     }
 
-    public IpPrefixImpl withIpPrefixRules(List<IpPrefixPropertiesIpPrefixRulesItem> ipPrefixRules) {
-        this.innerModel().withIpPrefixRules(ipPrefixRules);
-        return this;
-    }
-
     public IpPrefixImpl withTags(Map<String, String> tags) {
         if (isInCreateMode()) {
             this.innerModel().withTags(tags);
@@ -197,9 +202,24 @@ public final class IpPrefixImpl implements IpPrefix, IpPrefix.Definition, IpPref
         }
     }
 
+    public IpPrefixImpl withIpPrefixRules(List<IpPrefixRule> ipPrefixRules) {
+        if (isInCreateMode()) {
+            this.innerModel().withIpPrefixRules(ipPrefixRules);
+            return this;
+        } else {
+            this.updateBody.withIpPrefixRules(ipPrefixRules);
+            return this;
+        }
+    }
+
     public IpPrefixImpl withAnnotation(String annotation) {
-        this.innerModel().withAnnotation(annotation);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withAnnotation(annotation);
+            return this;
+        } else {
+            this.updateBody.withAnnotation(annotation);
+            return this;
+        }
     }
 
     private boolean isInCreateMode() {

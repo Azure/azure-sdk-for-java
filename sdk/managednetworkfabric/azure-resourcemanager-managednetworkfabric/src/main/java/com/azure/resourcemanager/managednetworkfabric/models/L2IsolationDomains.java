@@ -7,7 +7,6 @@ package com.azure.resourcemanager.managednetworkfabric.models;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-import java.util.Map;
 
 /** Resource collection API of L2IsolationDomains. */
 public interface L2IsolationDomains {
@@ -22,7 +21,7 @@ public interface L2IsolationDomains {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the L2IsolationDomain resource definition along with {@link Response}.
+     * @return the L2 Isolation Domain resource definition along with {@link Response}.
      */
     Response<L2IsolationDomain> getByResourceGroupWithResponse(
         String resourceGroupName, String l2IsolationDomainName, Context context);
@@ -37,12 +36,12 @@ public interface L2IsolationDomains {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the L2IsolationDomain resource definition.
+     * @return the L2 Isolation Domain resource definition.
      */
     L2IsolationDomain getByResourceGroup(String resourceGroupName, String l2IsolationDomainName);
 
     /**
-     * Deletes named L2 Isolation Domain
+     * Deletes the L2 Isolation Domain.
      *
      * <p>Deletes layer 2 connectivity between compute nodes by managed by named L2 Isolation name.
      *
@@ -55,7 +54,7 @@ public interface L2IsolationDomains {
     void deleteByResourceGroup(String resourceGroupName, String l2IsolationDomainName);
 
     /**
-     * Deletes named L2 Isolation Domain
+     * Deletes the L2 Isolation Domain.
      *
      * <p>Deletes layer 2 connectivity between compute nodes by managed by named L2 Isolation name.
      *
@@ -74,13 +73,14 @@ public interface L2IsolationDomains {
      * <p>Enables isolation domain across the fabric or on specified racks.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l2IsolationDomainName Name of the L2IsolationDomain.
+     * @param l2IsolationDomainName Name of the L2 Isolation Domain.
      * @param body Request payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return common response for device updates.
      */
-    void updateAdministrativeState(
+    CommonPostActionResponseForDeviceUpdate updateAdministrativeState(
         String resourceGroupName, String l2IsolationDomainName, UpdateAdministrativeState body);
 
     /**
@@ -89,104 +89,72 @@ public interface L2IsolationDomains {
      * <p>Enables isolation domain across the fabric or on specified racks.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l2IsolationDomainName Name of the L2IsolationDomain.
+     * @param l2IsolationDomainName Name of the L2 Isolation Domain.
      * @param body Request payload.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return common response for device updates.
      */
-    void updateAdministrativeState(
+    CommonPostActionResponseForDeviceUpdate updateAdministrativeState(
         String resourceGroupName, String l2IsolationDomainName, UpdateAdministrativeState body, Context context);
 
     /**
-     * Implements the operation to the underlying resources.
-     *
-     * <p>Clears ARP tables for this Isolation Domain.
+     * Validates the configuration of the resources.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l2IsolationDomainName Name of the L2IsolationDomain.
-     * @param body Request payload.
+     * @param l2IsolationDomainName Name of the L2 Isolation Domain.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of the action validate configuration.
      */
-    void clearArpTable(String resourceGroupName, String l2IsolationDomainName, EnableDisableOnResources body);
+    ValidateConfigurationResponse validateConfiguration(String resourceGroupName, String l2IsolationDomainName);
 
     /**
-     * Implements the operation to the underlying resources.
-     *
-     * <p>Clears ARP tables for this Isolation Domain.
+     * Validates the configuration of the resources.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l2IsolationDomainName Name of the L2IsolationDomain.
-     * @param body Request payload.
+     * @param l2IsolationDomainName Name of the L2 Isolation Domain.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of the action validate configuration.
      */
-    void clearArpTable(
-        String resourceGroupName, String l2IsolationDomainName, EnableDisableOnResources body, Context context);
+    ValidateConfigurationResponse validateConfiguration(
+        String resourceGroupName, String l2IsolationDomainName, Context context);
 
     /**
-     * Implements the operation to the underlying resources.
+     * Execute the commit on the resources.
      *
-     * <p>Clears IPv6 neighbors for this Isolation Domain.
+     * <p>Commits the configuration of the given resources.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l2IsolationDomainName Name of the L2IsolationDomain.
-     * @param body Request payload.
+     * @param l2IsolationDomainName Name of the L2 Isolation Domain.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return common response for the state updates.
      */
-    void clearNeighborTable(String resourceGroupName, String l2IsolationDomainName, EnableDisableOnResources body);
+    CommonPostActionResponseForStateUpdate commitConfiguration(String resourceGroupName, String l2IsolationDomainName);
 
     /**
-     * Implements the operation to the underlying resources.
+     * Execute the commit on the resources.
      *
-     * <p>Clears IPv6 neighbors for this Isolation Domain.
+     * <p>Commits the configuration of the given resources.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l2IsolationDomainName Name of the L2IsolationDomain.
-     * @param body Request payload.
+     * @param l2IsolationDomainName Name of the L2 Isolation Domain.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return common response for the state updates.
      */
-    void clearNeighborTable(
-        String resourceGroupName, String l2IsolationDomainName, EnableDisableOnResources body, Context context);
-
-    /**
-     * Implements the operation to the underlying resources.
-     *
-     * <p>Clears IPv6 neighbors for this Isolation Domain.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l2IsolationDomainName Name of the L2IsolationDomain.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return show ARP entries response per network device.
-     */
-    Map<String, ArpProperties> getArpEntries(String resourceGroupName, String l2IsolationDomainName);
-
-    /**
-     * Implements the operation to the underlying resources.
-     *
-     * <p>Clears IPv6 neighbors for this Isolation Domain.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l2IsolationDomainName Name of the L2IsolationDomain.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return show ARP entries response per network device.
-     */
-    Map<String, ArpProperties> getArpEntries(String resourceGroupName, String l2IsolationDomainName, Context context);
+    CommonPostActionResponseForStateUpdate commitConfiguration(
+        String resourceGroupName, String l2IsolationDomainName, Context context);
 
     /**
      * List L2IsolationDomains by resource group.
@@ -197,7 +165,7 @@ public interface L2IsolationDomains {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of L2IsolationDomains as paginated response with {@link PagedIterable}.
+     * @return list of L2 Isolation Domains as paginated response with {@link PagedIterable}.
      */
     PagedIterable<L2IsolationDomain> listByResourceGroup(String resourceGroupName);
 
@@ -211,7 +179,7 @@ public interface L2IsolationDomains {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of L2IsolationDomains as paginated response with {@link PagedIterable}.
+     * @return list of L2 Isolation Domains as paginated response with {@link PagedIterable}.
      */
     PagedIterable<L2IsolationDomain> listByResourceGroup(String resourceGroupName, Context context);
 
@@ -222,7 +190,7 @@ public interface L2IsolationDomains {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of L2IsolationDomains as paginated response with {@link PagedIterable}.
+     * @return list of L2 Isolation Domains as paginated response with {@link PagedIterable}.
      */
     PagedIterable<L2IsolationDomain> list();
 
@@ -235,7 +203,7 @@ public interface L2IsolationDomains {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of L2IsolationDomains as paginated response with {@link PagedIterable}.
+     * @return list of L2 Isolation Domains as paginated response with {@link PagedIterable}.
      */
     PagedIterable<L2IsolationDomain> list(Context context);
 
@@ -248,7 +216,7 @@ public interface L2IsolationDomains {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the L2IsolationDomain resource definition along with {@link Response}.
+     * @return the L2 Isolation Domain resource definition along with {@link Response}.
      */
     L2IsolationDomain getById(String id);
 
@@ -262,12 +230,12 @@ public interface L2IsolationDomains {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the L2IsolationDomain resource definition along with {@link Response}.
+     * @return the L2 Isolation Domain resource definition along with {@link Response}.
      */
     Response<L2IsolationDomain> getByIdWithResponse(String id, Context context);
 
     /**
-     * Deletes named L2 Isolation Domain
+     * Deletes the L2 Isolation Domain.
      *
      * <p>Deletes layer 2 connectivity between compute nodes by managed by named L2 Isolation name.
      *
@@ -279,7 +247,7 @@ public interface L2IsolationDomains {
     void deleteById(String id);
 
     /**
-     * Deletes named L2 Isolation Domain
+     * Deletes the L2 Isolation Domain.
      *
      * <p>Deletes layer 2 connectivity between compute nodes by managed by named L2 Isolation name.
      *

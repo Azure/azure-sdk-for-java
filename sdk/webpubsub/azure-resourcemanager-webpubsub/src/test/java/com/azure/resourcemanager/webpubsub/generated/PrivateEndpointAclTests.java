@@ -16,23 +16,33 @@ public final class PrivateEndpointAclTests {
         PrivateEndpointAcl model =
             BinaryData
                 .fromString(
-                    "{\"name\":\"zka\",\"allow\":[\"Trace\"],\"deny\":[\"ClientConnection\",\"ServerConnection\"]}")
+                    "{\"name\":\"fdsd\",\"allow\":[\"ServerConnection\",\"RESTAPI\",\"RESTAPI\"],\"deny\":[\"ClientConnection\",\"Trace\",\"ClientConnection\"]}")
                 .toObject(PrivateEndpointAcl.class);
-        Assertions.assertEquals(WebPubSubRequestType.TRACE, model.allow().get(0));
+        Assertions.assertEquals(WebPubSubRequestType.SERVER_CONNECTION, model.allow().get(0));
         Assertions.assertEquals(WebPubSubRequestType.CLIENT_CONNECTION, model.deny().get(0));
-        Assertions.assertEquals("zka", model.name());
+        Assertions.assertEquals("fdsd", model.name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         PrivateEndpointAcl model =
             new PrivateEndpointAcl()
-                .withAllow(Arrays.asList(WebPubSubRequestType.TRACE))
-                .withDeny(Arrays.asList(WebPubSubRequestType.CLIENT_CONNECTION, WebPubSubRequestType.SERVER_CONNECTION))
-                .withName("zka");
+                .withAllow(
+                    Arrays
+                        .asList(
+                            WebPubSubRequestType.SERVER_CONNECTION,
+                            WebPubSubRequestType.RESTAPI,
+                            WebPubSubRequestType.RESTAPI))
+                .withDeny(
+                    Arrays
+                        .asList(
+                            WebPubSubRequestType.CLIENT_CONNECTION,
+                            WebPubSubRequestType.TRACE,
+                            WebPubSubRequestType.CLIENT_CONNECTION))
+                .withName("fdsd");
         model = BinaryData.fromObject(model).toObject(PrivateEndpointAcl.class);
-        Assertions.assertEquals(WebPubSubRequestType.TRACE, model.allow().get(0));
+        Assertions.assertEquals(WebPubSubRequestType.SERVER_CONNECTION, model.allow().get(0));
         Assertions.assertEquals(WebPubSubRequestType.CLIENT_CONNECTION, model.deny().get(0));
-        Assertions.assertEquals("zka", model.name());
+        Assertions.assertEquals("fdsd", model.name());
     }
 }

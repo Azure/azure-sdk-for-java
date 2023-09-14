@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.storagemover.models;
 
-import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.storagemover.fluent.models.JobRunInner;
 import java.time.OffsetDateTime;
 
@@ -30,13 +29,6 @@ public interface JobRun {
      * @return the type value.
      */
     String type();
-
-    /**
-     * Gets the systemData property: Resource system metadata.
-     *
-     * @return the systemData value.
-     */
-    SystemData systemData();
 
     /**
      * Gets the status property: The state of the job execution.

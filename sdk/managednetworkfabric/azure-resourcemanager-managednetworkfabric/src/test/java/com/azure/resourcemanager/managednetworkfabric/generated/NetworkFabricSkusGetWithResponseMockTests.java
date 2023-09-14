@@ -31,7 +31,7 @@ public final class NetworkFabricSkusGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"type\":\"b\",\"maxComputeRacks\":757455184,\"minSupportedVer\":\"cpahprzrvxhm\",\"maxSupportedVer\":\"hocn\",\"detailsUri\":\"cmj\",\"provisioningState\":\"Failed\"},\"id\":\"noq\",\"name\":\"xtdisnjevhd\",\"type\":\"mydidwhepfw\"}";
+            "{\"properties\":{\"type\":\"SingleRack\",\"maxComputeRacks\":64386936,\"maximumServerCount\":1158976419,\"supportedVersions\":[\"vruuhyncppmmwh\"],\"details\":\"rlurgip\",\"provisioningState\":\"Deleting\"},\"id\":\"xlepsmck\",\"name\":\"pxdxgcqmguvd\",\"type\":\"oiihrfcowlas\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -60,8 +60,9 @@ public final class NetworkFabricSkusGetWithResponseMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         NetworkFabricSku response =
-            manager.networkFabricSkus().getWithResponse("atvlmbjwcolbm", com.azure.core.util.Context.NONE).getValue();
+            manager.networkFabricSkus().getWithResponse("psotbame", com.azure.core.util.Context.NONE).getValue();
 
-        Assertions.assertEquals(757455184, response.maxComputeRacks());
+        Assertions.assertEquals(64386936, response.maxComputeRacks());
+        Assertions.assertEquals(1158976419, response.maximumServerCount());
     }
 }

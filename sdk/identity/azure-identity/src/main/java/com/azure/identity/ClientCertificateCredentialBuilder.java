@@ -13,12 +13,12 @@ import java.io.InputStream;
  *
  * <p>The ClientCertificateCredential acquires a token via service principal authentication. It is a type of
  * authentication in Azure that enables a non-interactive login to
- * <a href="https://learn.microsoft.com/en-us/azure/active-directory/fundamentals/">Azure Active Directory (Azure AD)
+ * <a href="https://learn.microsoft.com/azure/active-directory/fundamentals/">Azure Active Directory (Azure AD)
  * </a>, allowing an application or service to authenticate itself with Azure resources.
  * A Service Principal is essentially an identity created for an application in Azure AD that can be used to
  * authenticate with Azure resources. It's like a "user identity" for the application or service, and it provides
  * a way for the application to authenticate itself with Azure resources without needing to use a user's credentials.
- * <a href="https://learn.microsoft.com/en-us/azure/active-directory/fundamentals/">Azure Active Directory
+ * <a href="https://learn.microsoft.com/azure/active-directory/fundamentals/">Azure Active Directory
  * (Azure AD)</a> allows users to register service principals which can be used as an identity for authentication.
  * A client certificate associated with the registered service principal is used as the password when authenticating
  * the service principal.
@@ -94,7 +94,7 @@ public class ClientCertificateCredentialBuilder extends AadCredentialBuilderBase
      * @param certificate the input stream containing the PEM certificate
      * @return An updated instance of this builder.
      */
-    ClientCertificateCredentialBuilder pemCertificate(InputStream certificate) {
+    public ClientCertificateCredentialBuilder pemCertificate(InputStream certificate) {
         this.clientCertificate = certificate;
         return this;
     }
@@ -102,10 +102,15 @@ public class ClientCertificateCredentialBuilder extends AadCredentialBuilderBase
     /**
      * Sets the path and password of the PFX certificate for authenticating to AAD.
      *
+     * @deprecated This API is deprecated and will be removed. Specify the PFX certificate via
+     * {@link ClientCertificateCredentialBuilder#pfxCertificate(String)} API and client certificate password via
+     * the {@link ClientCertificateCredentialBuilder#clientCertificatePassword(String)} API as applicable.
+     *
      * @param certificatePath the password protected PFX file containing the certificate
      * @param clientCertificatePassword the password protecting the PFX file
      * @return An updated instance of this builder.
      */
+    @Deprecated
     public ClientCertificateCredentialBuilder pfxCertificate(String certificatePath,
                                                              String clientCertificatePassword) {
         this.clientCertificatePath = certificatePath;
@@ -114,15 +119,34 @@ public class ClientCertificateCredentialBuilder extends AadCredentialBuilderBase
     }
 
     /**
+     * Sets the path of the PFX certificate for authenticating to AAD.
+     *
+     * @param certificatePath the password protected PFX file containing the certificate
+     * @return An updated instance of this builder.
+     */
+    public ClientCertificateCredentialBuilder pfxCertificate(String certificatePath) {
+        this.clientCertificatePath = certificatePath;
+        return this;
+    }
+
+    /**
      * Sets the input stream holding the PFX certificate and its password for authenticating to AAD.
      *
      * @param certificate the input stream containing the password protected PFX certificate
-     * @param clientCertificatePassword the password protecting the PFX file
      * @return An updated instance of this builder.
      */
-    ClientCertificateCredentialBuilder pfxCertificate(InputStream certificate,
-                                                             String clientCertificatePassword) {
+    public ClientCertificateCredentialBuilder pfxCertificate(InputStream certificate) {
         this.clientCertificate = certificate;
+        return this;
+    }
+
+    /**
+     * Sets the password of the client certificate for authenticating to AAD.
+     *
+     * @param clientCertificatePassword the password protecting the certificate
+     * @return An updated instance of this builder.
+     */
+    public ClientCertificateCredentialBuilder clientCertificatePassword(String clientCertificatePassword) {
         this.clientCertificatePassword = clientCertificatePassword;
         return this;
     }

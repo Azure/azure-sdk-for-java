@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class DocumentServiceRequestContext implements Cloneable {
     public volatile boolean forceAddressRefresh;
@@ -46,6 +47,7 @@ public class DocumentServiceRequestContext implements Cloneable {
     public volatile boolean replicaAddressValidationEnabled = Configs.isReplicaAddressValidationEnabled();
     private final Set<Uri> failedEndpoints = ConcurrentHashMap.newKeySet();
     private CosmosEndToEndOperationLatencyPolicyConfig endToEndOperationLatencyPolicyConfig;
+    private AtomicBoolean isRequestCancelledOnTimeout = null;
     private volatile List<String> excludeRegions;
 
     // For cancelled rntbd requests, track the response as OperationCancelledException which later will be used to populate the cosmosDiagnostics
@@ -141,6 +143,14 @@ public class DocumentServiceRequestContext implements Cloneable {
 
     public void setEndToEndOperationLatencyPolicyConfig(CosmosEndToEndOperationLatencyPolicyConfig endToEndOperationLatencyPolicyConfig) {
         this.endToEndOperationLatencyPolicyConfig = endToEndOperationLatencyPolicyConfig;
+    }
+
+    public void setIsRequestCancelledOnTimeout(AtomicBoolean isRequestCancelledOnTimeout) {
+        this.isRequestCancelledOnTimeout = isRequestCancelledOnTimeout;
+    }
+
+    public AtomicBoolean isRequestCancelledOnTimeout() {
+        return this.isRequestCancelledOnTimeout;
     }
 
     public List<String> getExcludeRegions() {
