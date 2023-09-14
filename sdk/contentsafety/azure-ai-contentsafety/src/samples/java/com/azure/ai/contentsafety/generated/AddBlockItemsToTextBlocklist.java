@@ -9,7 +9,7 @@ import com.azure.ai.contentsafety.ContentSafetyClientBuilder;
 import com.azure.ai.contentsafety.models.AddBlockItemsOptions;
 import com.azure.ai.contentsafety.models.AddBlockItemsResult;
 import com.azure.ai.contentsafety.models.TextBlockItemInfo;
-import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.credential.KeyCredential;
 import com.azure.core.util.Configuration;
 import java.util.Arrays;
 
@@ -17,7 +17,7 @@ public class AddBlockItemsToTextBlocklist {
     public static void main(String[] args) {
         ContentSafetyClient contentSafetyClient =
                 new ContentSafetyClientBuilder()
-                        .credential(new AzureKeyCredential(Configuration.getGlobalConfiguration().get("API_KEY")))
+                        .credential(new KeyCredential(Configuration.getGlobalConfiguration().get("API_KEY")))
                         .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
                         .buildClient();
         // BEGIN:com.azure.ai.contentsafety.generated.addblockitems.addblockitemstotextblocklist

@@ -7,7 +7,7 @@ package com.azure.ai.contentsafety.generated;
 import com.azure.ai.contentsafety.ContentSafetyClient;
 import com.azure.ai.contentsafety.ContentSafetyClientBuilder;
 import com.azure.ai.contentsafety.models.RemoveBlockItemsOptions;
-import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.credential.KeyCredential;
 import com.azure.core.util.Configuration;
 import java.util.Arrays;
 
@@ -15,7 +15,7 @@ public class RemoveBlockItemsFromTextBlocklist {
     public static void main(String[] args) {
         ContentSafetyClient contentSafetyClient =
                 new ContentSafetyClientBuilder()
-                        .credential(new AzureKeyCredential(Configuration.getGlobalConfiguration().get("API_KEY")))
+                        .credential(new KeyCredential(Configuration.getGlobalConfiguration().get("API_KEY")))
                         .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
                         .buildClient();
         // BEGIN:com.azure.ai.contentsafety.generated.removeblockitems.removeblockitemsfromtextblocklist
