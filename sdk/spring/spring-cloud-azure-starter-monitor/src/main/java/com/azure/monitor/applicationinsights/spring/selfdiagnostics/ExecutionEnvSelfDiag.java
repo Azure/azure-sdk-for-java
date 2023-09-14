@@ -3,7 +3,6 @@
 
 package com.azure.monitor.applicationinsights.spring.selfdiagnostics;
 
-import java.util.Properties;
 import org.slf4j.Logger;
 import org.springframework.boot.CommandLineRunner;
 
