@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.core.util.concurrent;
+package com.azure.core.implementation.concurrent;
 
 import java.util.Objects;
 import java.util.concurrent.CancellationException;
@@ -14,7 +14,7 @@ import java.util.concurrent.TimeoutException;
  *
  * @param <V> The type of value returned by the future.
  */
-public class AzureFuture<V> implements Future<V> {
+public final class AzureFuture<V> implements Future<V> {
     private final Future<V> wrappedFuture;
 
     /**

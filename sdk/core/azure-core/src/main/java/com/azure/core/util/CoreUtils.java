@@ -7,6 +7,8 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.implementation.ImplUtils;
+import com.azure.core.implementation.concurrent.AzureExecutorService;
+import com.azure.core.implementation.concurrent.AzureThreadFactory;
 import com.azure.core.util.logging.ClientLogger;
 import org.reactivestreams.Publisher;
 import reactor.core.publisher.Flux;
@@ -23,7 +25,13 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Properties;
 import java.util.UUID;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Future;
+import java.util.concurrent.RejectedExecutionHandler;
+import java.util.concurrent.SynchronousQueue;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -530,5 +538,22 @@ public final class CoreUtils {
         // Use new UUID(long, long) instead of UUID.randomUUID as UUID.randomUUID may be blocking.
         // For environments using Reactor's BlockHound this will raise an exception if called in non-blocking threads.
         return new UUID(msb, lsb);
+    }
+
+    private static final RejectedExecutionHandler REJECTED_EXECUTION_HANDLER = new ThreadPoolExecutor.AbortPolicy();
+
+    /**
+     * Creates a new cached {@link ExecutorService} that supports scaling up to {@code maxThreads} threads.
+     * <p>
+     * The {@link Future Futures} returned by the {@link ExecutorService} will cancel the running task if operation
+     * takes longer than the timeout applied. For example if {@code future.get(1, TimeUnit.SECONDS)} is called and the
+     * task hasn't completed within 1 second, the task will be cancelled.
+     *
+     * @param maxThreads The maximum number of threads to scale up to.
+     * @return A new cached {@link ExecutorService}.
+     */
+    public static ExecutorService createCachedExecutorService(int maxThreads) {
+        return new AzureExecutorService(new ThreadPoolExecutor(0, maxThreads, 60L, TimeUnit.SECONDS,
+            new SynchronousQueue<>(), new AzureThreadFactory(), REJECTED_EXECUTION_HANDLER));
     }
 }
