@@ -19,7 +19,7 @@ import java.util.Locale;
 @Import({DefaultLogConfig.class, LogbackSelfDiagConfig.class, JdbcSelfDiagConfig.class})
 public class SelfDiagAutoConfig {
     private static final Logger LOG = LoggerFactory.getLogger(SelfDiagAutoConfig.class);
-    private static final String SELF_DIAGNOSTICS_LEVEL_ENV_VAR = "APPLICATIONINSIGHTS_SELF_DIAGNOSTICS_LEVEL";
+    static final String SELF_DIAGNOSTICS_LEVEL_ENV_VAR = "APPLICATIONINSIGHTS_SELF_DIAGNOSTICS_LEVEL";
 
     @Bean
     SelfDiagnosticsLevel selfDiagnosticsLevel() {

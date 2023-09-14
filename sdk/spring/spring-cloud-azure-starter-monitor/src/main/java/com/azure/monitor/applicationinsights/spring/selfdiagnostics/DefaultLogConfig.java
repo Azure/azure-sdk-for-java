@@ -3,7 +3,6 @@
 
 package com.azure.monitor.applicationinsights.spring.selfdiagnostics;
 
-import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingClass;
@@ -19,32 +18,36 @@ public class DefaultLogConfig {
 
     /**
      * To define a logger for self-diagnostics.
+     *
      * @return A logger for self-diagnostics
      */
     @Bean
     public Logger selfDiagnosticsLogger() {
         Logger logger = LoggerFactory.getLogger(SelfDiagnostics.class);
-        Optional<SelfDiagnosticsLevel> selfDiagnosticsLevel = findSelfDiagnosticsLevel(logger);
-        logger.warn("Logback don't seem to be used." + (selfDiagnosticsLevel.isPresent() ? " The self-diagnostics level is " + selfDiagnosticsLevel.get().name() : ""));
+        String selfDiagLevelDefinedByUser = System.getenv(SelfDiagAutoConfig.SELF_DIAGNOSTICS_LEVEL_ENV_VAR);
+        if (selfDiagLevelDefinedByUser != null) {
+            String loggerLevel = findLevel(logger);
+            logger.warn("You have defined a self-diagnostics level at " + selfDiagLevelDefinedByUser + ". The self-diagnostics level was not set to this value because Logback is not used. The self-diagnostics level is " + loggerLevel + ".");
+        }
         return logger;
     }
 
-    private static Optional<SelfDiagnosticsLevel> findSelfDiagnosticsLevel(Logger logger) {
+    private static String findLevel(Logger logger) {
         if (logger.isErrorEnabled()) {
-            return Optional.of(SelfDiagnosticsLevel.ERROR);
+            return "ERROR";
         }
         if (logger.isWarnEnabled()) {
-            return Optional.of(SelfDiagnosticsLevel.WARN);
+            return "WARN";
         }
         if (logger.isInfoEnabled()) {
-            return Optional.of(SelfDiagnosticsLevel.INFO);
+            return "INFO";
         }
         if (logger.isDebugEnabled()) {
-            return Optional.of(SelfDiagnosticsLevel.DEBUG);
+            return "DEBUG";
         }
         if (logger.isTraceEnabled()) {
-            return Optional.of(SelfDiagnosticsLevel.TRACE);
+            return "TRACE";
         }
-        return Optional.empty();
+        return "UNKNOWN";
     }
 }
