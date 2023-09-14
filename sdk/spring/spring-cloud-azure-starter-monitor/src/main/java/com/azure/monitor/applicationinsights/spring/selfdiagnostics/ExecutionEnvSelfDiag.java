@@ -31,27 +31,12 @@ class ExecutionEnvSelfDiag implements CommandLineRunner {
         if (selfDiagnosticsLogger.isTraceEnabled()) {
             selfDiagnosticsLogger.trace("OS: " + System.getProperty("os.name"));
             selfDiagnosticsLogger.trace("Env: " + System.getenv());
-            selfDiagnosticsLogger.trace("System properties: " + findSystemProperties());
-            selfDiagnosticsLogger.trace("Classpath: " + System.getProperty("java.class.path"));
+            selfDiagnosticsLogger.trace("System properties: " + System.getProperties());
         }
     }
 
     private static boolean isNativeRuntimeExecution() {
         String imageCode = System.getProperty("org.graalvm.nativeimage.imagecode");
         return imageCode != null;
-    }
-
-    private static String findSystemProperties() {
-        Properties properties = System.getProperties();
-        StringBuilder propsBuilder = new StringBuilder();
-        properties.forEach(
-            (key, value) -> {
-                boolean firstProperty = propsBuilder.length() == 0;
-                if (!firstProperty) {
-                    propsBuilder.append(", ");
-                }
-                propsBuilder.append("(" + key + "=" + value + ")");
-            });
-        return propsBuilder.toString();
     }
 }
