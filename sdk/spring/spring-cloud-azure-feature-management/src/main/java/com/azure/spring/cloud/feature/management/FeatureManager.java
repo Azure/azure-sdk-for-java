@@ -11,7 +11,6 @@ import java.util.stream.Stream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
-import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.context.ApplicationContext;
 import org.springframework.util.ReflectionUtils;
 import org.springframework.util.StringUtils;
@@ -41,8 +40,6 @@ public class FeatureManager {
 
     private transient FeatureManagementConfigProperties properties;
 
-    private final ObjectProvider<VariantProperties> propertiesProvider;
-
     /**
      * Can be called to check if a feature is enabled or disabled.
      * 
@@ -51,11 +48,10 @@ public class FeatureManager {
      * @param properties FeatureManagementConfigProperties
      */
     FeatureManager(ApplicationContext context, FeatureManagementProperties featureManagementConfigurations,
-        FeatureManagementConfigProperties properties, ObjectProvider<VariantProperties> propertiesProvider) {
+        FeatureManagementConfigProperties properties) {
         this.context = context;
         this.featureManagementConfigurations = featureManagementConfigurations;
         this.properties = properties;
-        this.propertiesProvider = propertiesProvider;
     }
 
     /**
@@ -115,43 +111,39 @@ public class FeatureManager {
 
     /**
      * 
-     * @param <T> Type of Variant that is returned
      * @param feature Feature being checked.
      * @return Assigned Variant
      */
-    public <T> Variant<T> getVariant(String feature) {
-        return this.<T>generateVariant(feature, null);
+    public Variant getVariant(String feature) {
+        return this.generateVariant(feature, null);
     }
 
     /**
      * 
-     * @param <T> Type of Variant that is returned
      * @param feature Feature being checked.
      * @param featureContext Local context
      * @return Assigned Variant
      */
-    public <T> Variant<T> getVariant(String feature, Context featureContext) {
-        return this.<T>generateVariant(feature, featureContext);
+    public Variant getVariant(String feature, Context featureContext) {
+        return this.generateVariant(feature, featureContext);
     }
 
     /**
      * 
-     * @param <T> Type of Variant that is returned
      * @param feature Feature being checked.
      * @return Assigned Variant
      */
-    public <T> Mono<Variant<T>> getVariantAsync(String feature) {
+    public Mono<Variant> getVariantAsync(String feature) {
         return Mono.just(generateVariant(feature, null));
     }
 
     /**
      * 
-     * @param <T> Type of Variant that is returned
      * @param feature Feature being checked.
      * @param featureContext Local context
      * @return Assigned Variant
      */
-    public <T> Mono<Variant<T>> getVariantAsync(String feature, Context featureContext) {
+    public Mono<Variant> getVariantAsync(String feature, Context featureContext) {
         return Mono.just(generateVariant(feature, featureContext));
     }
 
@@ -206,9 +198,9 @@ public class FeatureManager {
         return false;
     }
 
-    private <T> Variant<T> generateVariant(String featureName, Context featureContext) {
+    private Variant generateVariant(String featureName, Context featureContext) {
 
-        VariantAssignment variantAssignment = new VariantAssignment(null, propertiesProvider);
+        VariantAssignment variantAssignment = new VariantAssignment(null);
 
         if (!StringUtils.hasText(featureName)) {
             throw new IllegalArgumentException("Feature Variant name can not be empty or null.");
@@ -224,7 +216,7 @@ public class FeatureManager {
 
         // Disabled?
         if (!feature.getEvaluate() || feature.getEnabledFor().size() == 0) {
-            return variantAssignment.getVariant(feature.getVariants(),
+            return variantAssignment.getVariant(feature.getVariants().values(),
                 feature.getAllocation().getDefautlWhenDisabled());
         }
 
@@ -243,11 +235,11 @@ public class FeatureManager {
         }
 
         if (!isEnabled) {
-            return variantAssignment.getVariant(feature.getVariants(),
+            return variantAssignment.getVariant(feature.getVariants().values(),
                 feature.getAllocation().getDefautlWhenDisabled());
         }
 
-        return variantAssignment.assignVariant(feature.getAllocation(), feature.getVariants());
+        return variantAssignment.assignVariant(feature.getAllocation(), feature.getVariants().values());
     }
 
     private void validateVariant(Feature feature, String featureName) {
@@ -255,19 +247,13 @@ public class FeatureManager {
             throw new FeatureManagementException("No assigned Variants");
         }
 
-        for (VariantReference variant : feature.getVariants()) {
+        for (VariantReference variant : feature.getVariants().values()) {
             if (!StringUtils.hasText(variant.getName())) {
                 throw new FeatureManagementException("Variant needs a name");
             }
 
-            if (StringUtils.hasText(variant.getConfigurationReference())
-                && StringUtils.hasText(variant.getConfigurationValue())) {
-                throw new FeatureManagementException("Can't have a configuration reference and Configuration Value");
-            }
-
-            if (!StringUtils.hasText(variant.getConfigurationReference())
-                && !StringUtils.hasText(variant.getConfigurationValue())) {
-                throw new FeatureManagementException("Need a configuration reference or Configuration Value");
+            if (!StringUtils.hasText(variant.getConfigurationValue())) {
+                throw new FeatureManagementException("Need a Configuration Value");
             }
         }
     }

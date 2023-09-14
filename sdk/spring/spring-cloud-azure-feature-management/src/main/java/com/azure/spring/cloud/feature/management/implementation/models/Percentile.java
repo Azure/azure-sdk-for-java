@@ -2,6 +2,9 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.feature.management.implementation.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Percentile {
 
     private String variant;

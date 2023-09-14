@@ -2,19 +2,15 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.feature.management;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.Collection;
+import java.util.LinkedHashMap;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.util.StringUtils;
 
 import com.azure.spring.cloud.feature.management.implementation.models.Allocation;
@@ -22,11 +18,12 @@ import com.azure.spring.cloud.feature.management.implementation.models.Percentil
 import com.azure.spring.cloud.feature.management.implementation.models.VariantAssignmentGroups;
 import com.azure.spring.cloud.feature.management.implementation.models.VariantAssignmentUsers;
 import com.azure.spring.cloud.feature.management.implementation.models.VariantReference;
-import com.azure.spring.cloud.feature.management.models.FeatureManagementException;
 import com.azure.spring.cloud.feature.management.models.TargetingException;
 import com.azure.spring.cloud.feature.management.targeting.TargetingContextAccessor;
 import com.azure.spring.cloud.feature.management.targeting.TargetingEvaluationOptions;
 import com.azure.spring.cloud.feature.management.targeting.TargetingFilterContext;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import reactor.core.publisher.Flux;
 
@@ -40,18 +37,16 @@ public final class VariantAssignment {
     private final TargetingContextAccessor contextAccessor;
 
     private final TargetingEvaluationOptions evaluationOptions;
-
-    private final ObjectProvider<VariantProperties> propertiesProvider;
+    
+    private static final ObjectMapper MAPPER = new ObjectMapper();
 
     /**
      * `Microsoft.TargetingFilter` evaluates a user/group/overall rollout of a feature.
      * 
      * @param contextAccessor Context for evaluating the users/groups.
-     * @param propertiesProvider ObjectProvider of Feature Variants
      */
-    VariantAssignment(TargetingContextAccessor contextAccessor,
-        ObjectProvider<VariantProperties> propertiesProvider) {
-        this(contextAccessor, new TargetingEvaluationOptions(), propertiesProvider);
+    VariantAssignment(TargetingContextAccessor contextAccessor) {
+        this(contextAccessor, new TargetingEvaluationOptions());
     }
 
     /**
@@ -59,13 +54,10 @@ public final class VariantAssignment {
      * 
      * @param contextAccessor Context for evaluating the users/groups.
      * @param options enables customization of the filter.
-     * @param propertiesProvider ObjectProvider of Feature Variants
      */
-    VariantAssignment(TargetingContextAccessor contextAccessor, TargetingEvaluationOptions options,
-        ObjectProvider<VariantProperties> propertiesProvider) {
+    VariantAssignment(TargetingContextAccessor contextAccessor, TargetingEvaluationOptions options) {
         this.contextAccessor = contextAccessor;
         this.evaluationOptions = options;
-        this.propertiesProvider = propertiesProvider;
     }
 
     /**
@@ -75,7 +67,7 @@ public final class VariantAssignment {
      * @param variants List of the possible variants.
      * @return Variant object containing an instance of the type
      */
-    <T> Variant<T> assignVariant(Allocation allocation, List<VariantReference> variants) {
+    Variant assignVariant(Allocation allocation, Collection<VariantReference> variants) {
         TargetingFilterContext targetingContext = new TargetingFilterContext();
 
         contextAccessor.configureTargetingContext(targetingContext);
@@ -85,16 +77,16 @@ public final class VariantAssignment {
             return null;
         }
 
-        for (VariantAssignmentUsers users : allocation.getUsers()) {
-            for (String user : users.getUsers()) {
+        for (VariantAssignmentUsers users : allocation.getUsers().values()) {
+            for (String user : users.getUsers().values()) {
                 if (user.equals(targetingContext.getUserId())) {
                     return getVariant(variants, users.getVariant());
                 }
             }
         }
 
-        for (VariantAssignmentGroups groups : allocation.getGroups()) {
-            for (String group : groups.getGroups()) {
+        for (VariantAssignmentGroups groups : allocation.getGroups().values()) {
+            for (String group : groups.getGroups().values()) {
                 if (targetingContext.getGroups().contains(group)) {
                     return getVariant(variants, groups.getVariant());
                 }
@@ -104,7 +96,7 @@ public final class VariantAssignment {
         String contextId = "";
         double value = isTargetedPercentage(contextId);
 
-        for (Percentile percentile : allocation.getPercentile()) {
+        for (Percentile percentile : allocation.getPercentile().values()) {
             if (percentile.getFrom().doubleValue() <= value && percentile.getTo().doubleValue() > value) {
                 return getVariant(variants, percentile.getVariant());
             }
@@ -120,57 +112,23 @@ public final class VariantAssignment {
      * @param variantName Name of the assigned variant
      * @return Variant object containing an instance of the type
      */
-    <T> Variant<T> getVariant(List<VariantReference> variants, String variantName) {
+    Variant getVariant(Collection<VariantReference> variants, String variantName) {
         return Flux.fromStream(
             variants.stream().filter(variant -> variant.getName().equals(variantName))
-                .map(variant -> this.<T>assignVariant(variant)))
+                .map(variant -> this.assignVariant(variant)))
             .blockFirst();
     }
 
     @SuppressWarnings("unchecked")
-    private <T> Variant<T> assignVariant(VariantReference variant) {
-        String reference = variant.getConfigurationReference();
-
-        String[] parts = reference.split("\\.");
-
-        String methodName = "get" + parts[0];
-        Method method = null;
-        Map<String, T> variantMap = null;
-
-        Optional<VariantProperties> variantProperties = propertiesProvider.stream().filter(properties -> {
-            try {
-                properties.getClass().getMethod(methodName);
-                return true;
-            } catch (NoSuchMethodException | SecurityException e) {
-                return false;
-            }
-        }).findFirst();
-
-        if (!variantProperties.isPresent()) {
-            String message = "Failed to load " + methodName + ". No ConfigurationProperties where found containing it."
-                + ". Make sure it exists and is publicly accessible.";
-            throw new FeatureManagementException(message);
-        }
-
-        // Dynamically Accesses @ConfigurationProperties and finds the matching method.
+    private Variant assignVariant(VariantReference variant) {
+        LinkedHashMap<String, Object> thing = new LinkedHashMap<String, Object>();
         try {
-            method = variantProperties.get().getClass().getMethod(methodName);
-        } catch (NoSuchMethodException | SecurityException e) {
-            String message = "Failed to load " + methodName + " in " + variantProperties.getClass()
-                + ". Make sure it exists and is publicly accessible.";
-            throw new FeatureManagementException(message, e);
-        }
-        // Calls method to get back an Object, this object contains multiple variants
-        // each has a get method.
-        try {
-            variantMap = (Map<String, T>) method.invoke(variantProperties.get());
-        } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-            String message = "Failed invoking " + methodName + " in " + variantProperties.getClass()
-                + ". Make sure it exists and is publicly accessible.";
-            throw new FeatureManagementException(message, e);
+            thing = MAPPER.readValue(variant.getConfigurationValue(), LinkedHashMap.class);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
         }
 
-        return new Variant<T>(variant.getName(), variantMap.get(parts[1]));
+        return new Variant(variant.getName(), thing);
     }
 
     private boolean validateTargetingContext(TargetingFilterContext targetingContext) {

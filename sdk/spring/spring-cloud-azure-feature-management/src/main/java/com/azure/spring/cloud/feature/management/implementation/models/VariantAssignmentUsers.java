@@ -2,13 +2,13 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.feature.management.implementation.models;
 
-import java.util.List;
+import java.util.Map;
 
 public class VariantAssignmentUsers {
 
     private String variant;
 
-    private List<String> users;
+    private Map<String, String> users;
 
     /**
      * @return the variant
@@ -27,14 +27,14 @@ public class VariantAssignmentUsers {
     /**
      * @return the users
      */
-    public List<String> getUsers() {
+    public Map<String, String> getUsers() {
         return users;
     }
 
     /**
      * @param users the users to set
      */
-    public void setUsers(List<String> users) {
+    public void setUsers(Map<String, String> users) {
         this.users = users;
     }
 

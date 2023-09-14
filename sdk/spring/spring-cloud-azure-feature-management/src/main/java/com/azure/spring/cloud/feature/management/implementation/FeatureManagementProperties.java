@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 import com.azure.spring.cloud.feature.management.implementation.models.Feature;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 
@@ -22,7 +23,8 @@ public class FeatureManagementProperties extends HashMap<String, Object> {
     private static final Logger LOGGER = LoggerFactory.getLogger(FeatureManagementProperties.class);
 
     private static final ObjectMapper MAPPER = new ObjectMapper()
-        .setPropertyNamingStrategy(PropertyNamingStrategies.KEBAB_CASE);
+        .setPropertyNamingStrategy(PropertyNamingStrategies.KEBAB_CASE)
+        .enable(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT);
 
     private static final long serialVersionUID = -1642032123104805346L;
 
@@ -89,7 +91,7 @@ public class FeatureManagementProperties extends HashMap<String, Object> {
                 LOGGER.error("Found invalid feature {} with value {}.", combined + key, featureValue.toString());
             }
             // When coming from a file "feature.flag" is not a possible flag name
-            if (feature != null && feature.getEnabledFor() == null && feature.getKey() == null) {
+            if (feature != null && !(feature.getEnabledFor() == null || feature.getAllocation() == null) && feature.getKey() == null) {
                 if (Map.class.isAssignableFrom(featureValue.getClass())) {
                     features = (Map<String, Object>) featureValue;
                     for (String fKey : features.keySet()) {

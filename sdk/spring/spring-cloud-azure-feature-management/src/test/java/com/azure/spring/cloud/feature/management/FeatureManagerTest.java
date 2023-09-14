@@ -52,7 +52,7 @@ public class FeatureManagerTest {
         MockitoAnnotations.openMocks(this);
         when(properties.isFailFast()).thenReturn(true);
 
-        featureManager = new FeatureManager(context, featureManagementPropertiesMock, properties, null);
+        featureManager = new FeatureManager(context, featureManagementPropertiesMock, properties);
     }
 
     @AfterEach
