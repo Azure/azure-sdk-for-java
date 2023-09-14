@@ -76,6 +76,7 @@
  * Person person = Person.newBuilder&#40;&#41;
  *     .setName&#40;&quot;Chase&quot;&#41;
  *     .setFavouriteColour&#40;&quot;Turquoise&quot;&#41;
+ *     .setFavouriteNumber&#40;3&#41;
  *     .build&#40;&#41;;
  *
  * EventData eventData = serializer.serialize&#40;person, TypeReference.createInstance&#40;EventData.class&#41;&#41;;
