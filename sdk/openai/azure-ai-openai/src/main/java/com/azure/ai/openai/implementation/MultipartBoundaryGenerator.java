@@ -3,6 +3,7 @@
 
 package com.azure.ai.openai.implementation;
 
+// TODO: docs
 public interface MultipartBoundaryGenerator {
     String generateBoundary();
 }

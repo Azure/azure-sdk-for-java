@@ -763,6 +763,8 @@ public final class OpenAIAsyncClient {
                 deploymentOrModelName, audioTranscriptionOptions, requestOptions);
     }
 
+    // TODO: docs
+
     public Mono<AudioTranscription> getAudioTranslation(
             String deploymentOrModelName, AudioTranslationOptions audioTranslationOptions, String fileName) {
         // checking allowed formats for a JSON response
@@ -782,6 +784,8 @@ public final class OpenAIAsyncClient {
         MultipartDataSerializationResult result = helper.serializeRequest(audioTranslationOptions, fileName);
         return getAudioTranslation(deploymentOrModelName, result, helper.getBoundary());
     }
+
+    // TODO: docs
 
     public Mono<String> getAudioTranslationText(
             String deploymentOrModelName, AudioTranslationOptions audioTranslationOptions, String fileName) {

@@ -704,6 +704,7 @@ public final class OpenAIClient {
                 deploymentOrModelName, chatCompletionsOptions, requestOptions);
     }
 
+    // TODO: docs
     public AudioTranscription getAudioTranscription(
             String deploymentOrModelName, AudioTranscriptionOptions audioTranscriptionOptions, String fileName) {
         // checking allowed formats for a JSON response
@@ -724,6 +725,7 @@ public final class OpenAIClient {
         return getAudioTranscription(deploymentOrModelName, result, helper.getBoundary());
     }
 
+    // TODO: docs
     public String getAudioTranscriptionText(
             String deploymentOrModelName, AudioTranscriptionOptions audioTranscriptionOptions, String fileName) {
         // checking allowed formats for a plain text response
@@ -784,6 +786,7 @@ public final class OpenAIClient {
         return response.getValue().toString();
     }
 
+    // TODO: docs
     public AudioTranscription getAudioTranslation(
             String deploymentOrModelName, AudioTranslationOptions audioTranslationOptions, String fileName) {
         // checking allowed formats for a JSON response
@@ -804,6 +807,7 @@ public final class OpenAIClient {
         return getAudioTranslation(deploymentOrModelName, result, helper.getBoundary());
     }
 
+    // TODO: docs
     public String getAudioTranslationText(
             String deploymentOrModelName, AudioTranslationOptions audioTranslationOptions, String fileName) {
         // checking allowed formats for a plain text response

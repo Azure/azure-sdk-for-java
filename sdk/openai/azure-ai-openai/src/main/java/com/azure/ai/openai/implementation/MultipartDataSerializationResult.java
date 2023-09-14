@@ -5,6 +5,7 @@ package com.azure.ai.openai.implementation;
 
 import com.azure.core.util.BinaryData;
 
+// TODO: docs
 public class MultipartDataSerializationResult {
 
     private final long dataLength;

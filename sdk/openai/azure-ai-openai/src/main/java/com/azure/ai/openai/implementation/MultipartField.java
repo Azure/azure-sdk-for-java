@@ -3,6 +3,7 @@
 
 package com.azure.ai.openai.implementation;
 
+// TODO: docs
 public class MultipartField {
     private final String wireName;
     private final String value;
