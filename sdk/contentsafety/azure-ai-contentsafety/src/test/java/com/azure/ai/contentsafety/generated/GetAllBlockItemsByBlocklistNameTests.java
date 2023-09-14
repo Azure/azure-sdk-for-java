@@ -22,12 +22,11 @@ public final class GetAllBlockItemsByBlocklistNameTests extends ContentSafetyCli
         Assertions.assertEquals(200, response.iterableByPage().iterator().next().getStatusCode());
         TextBlockItem firstItem = response.iterator().next();
         Assertions.assertNotNull(firstItem);
-
-        String firstItemBlockItemId = firstItem.getBlockItemId();
-        Assertions.assertEquals("9511969e-f1e3-4604-9127-05ee16c509ec", firstItemBlockItemId);
-        String firstItemDescription = firstItem.getDescription();
-        Assertions.assertEquals("Hate word", firstItemDescription);
-        String firstItemText = firstItem.getText();
-        Assertions.assertEquals("hate", firstItemText);
+        // verify property "blockItemId"
+        Assertions.assertEquals("9511969e-f1e3-4604-9127-05ee16c509ec", firstItem.getBlockItemId());
+        // verify property "description"
+        Assertions.assertEquals("Hate word", firstItem.getDescription());
+        // verify property "text"
+        Assertions.assertEquals("hate", firstItem.getText());
     }
 }
