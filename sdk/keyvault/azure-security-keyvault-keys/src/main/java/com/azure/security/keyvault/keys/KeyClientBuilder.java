@@ -75,7 +75,7 @@ import java.util.Map;
  * </pre>
  * <!-- end com.azure.security.keyvault.keys.KeyAsyncClient.instantiation.withHttpClient -->
  *
- * <p> The minimal configuration options required by {@link KeyClientBuilder secretClientBuilder} to build {@link
+ * <p> The minimal configuration options required by {@link KeyClientBuilder keyClientBuilder} to build {@link
  * KeyClient} are {@link String vaultUrl} and {@link TokenCredential credential}. </p>
  *
  * <!-- src_embed com.azure.security.keyvault.keys.KeyClient.instantiation -->
