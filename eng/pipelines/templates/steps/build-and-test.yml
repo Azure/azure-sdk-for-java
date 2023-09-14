@@ -175,9 +175,9 @@ steps:
       searchFolder: '$(System.DefaultWorkingDirectory)/sdk'
       mergeTestResults: true
       ${{ if ne(parameters.VersionOverride, '') }}:
-        testRunTitle: '$(Agent.JobName)_vo_${{ parameters.VersionOverride }}'
+        testRunTitle: '$(Agent.JobName)_vo_${{ parameters.VersionOverride }}_attempt_$(System.JobAttempt)'
       ${{ else }}:
-        testRunTitle: $(Agent.JobName)
+        testRunTitle: '$(Agent.JobName)_attempt_$(System.JobAttempt)'
       ${{ if ne(parameters.TestResultsFiles, '') }}:
         testResultsFiles: ${{ parameters.TestResultsFiles }}
 

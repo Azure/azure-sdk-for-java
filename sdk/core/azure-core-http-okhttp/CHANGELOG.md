@@ -1,5 +1,18 @@
 # Release History
 
+## 1.12.0-beta.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+- Changed buffer read size from `4096` to `8192` when returning `Flux<ByteBuffer>` in `HttpResponse` to reduce number
+  of reads and elements emitted by the `Flux`.
+
 ## 1.11.13 (2023-09-07)
 
 ### Other Changes
