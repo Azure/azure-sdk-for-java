@@ -1657,6 +1657,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
             assertEqualsConfigurationSettingSnapshot(name, SnapshotStatus.READY, filters, CompositionType.KEY,
                 MINIMUM_RETENTION_PERIOD, Long.valueOf(15000), Long.valueOf(50), null, snapshotResult);
 
+
             StepVerifier.create(client.listConfigurationSettingsForSnapshot(name))
                 .expectNextCount(numberExpected)
                 .verifyComplete();
