@@ -25,6 +25,8 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Properties;
 import java.util.UUID;
+import java.util.concurrent.CancellationException;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 import java.util.concurrent.RejectedExecutionHandler;
@@ -32,6 +34,7 @@ import java.util.concurrent.SynchronousQueue;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -567,13 +570,18 @@ public final class CoreUtils {
      * @param timeout The timeout value.
      * @param unit The {@link TimeUnit} of the timeout value.
      * @return The value from the {@code future}.
+     * @throws CancellationException If the computation was cancelled.
+     * @throws ExecutionException If the computation threw an exception.
+     * @throws InterruptedException If the current thread was interrupted while waiting.
+     * @throws TimeoutException If the wait timed out.
      */
-    public static <T> T getFutureWithCancellation(Future<T> future, long timeout, TimeUnit unit) {
+    public static <T> T getFutureWithCancellation(Future<T> future, long timeout, TimeUnit unit)
+        throws InterruptedException, ExecutionException, TimeoutException {
         try {
             return future.get(timeout, unit);
-        } catch (Exception e) {
+        } catch (TimeoutException e) {
             future.cancel(true);
-            throw new RuntimeException(e);
+            throw e;
         }
     }
 }
