@@ -666,6 +666,7 @@ import static com.azure.core.util.FluxUtil.monoError;
  *
  * <p><strong>Note:</strong> For synchronous sample, refer to {@link TextAnalyticsClient}.</p>
  *
+ * @see com.azure.ai.textanalytics
  * @see TextAnalyticsClientBuilder
  */
 @ServiceClient(builder = TextAnalyticsClientBuilder.class, isAsync = true)
