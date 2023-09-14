@@ -16,11 +16,11 @@ public final class PrivateEndpointAclTests {
         PrivateEndpointAcl model =
             BinaryData
                 .fromString(
-                    "{\"name\":\"zvszj\",\"allow\":[\"ServerConnection\",\"ClientConnection\",\"Trace\"],\"deny\":[\"ServerConnection\",\"ServerConnection\"]}")
+                    "{\"name\":\"evzhfsto\",\"allow\":[\"ServerConnection\",\"Trace\",\"Trace\",\"ServerConnection\"],\"deny\":[\"Trace\",\"Trace\"]}")
                 .toObject(PrivateEndpointAcl.class);
         Assertions.assertEquals(SignalRRequestType.SERVER_CONNECTION, model.allow().get(0));
-        Assertions.assertEquals(SignalRRequestType.SERVER_CONNECTION, model.deny().get(0));
-        Assertions.assertEquals("zvszj", model.name());
+        Assertions.assertEquals(SignalRRequestType.TRACE, model.deny().get(0));
+        Assertions.assertEquals("evzhfsto", model.name());
     }
 
     @org.junit.jupiter.api.Test
@@ -31,13 +31,14 @@ public final class PrivateEndpointAclTests {
                     Arrays
                         .asList(
                             SignalRRequestType.SERVER_CONNECTION,
-                            SignalRRequestType.CLIENT_CONNECTION,
-                            SignalRRequestType.TRACE))
-                .withDeny(Arrays.asList(SignalRRequestType.SERVER_CONNECTION, SignalRRequestType.SERVER_CONNECTION))
-                .withName("zvszj");
+                            SignalRRequestType.TRACE,
+                            SignalRRequestType.TRACE,
+                            SignalRRequestType.SERVER_CONNECTION))
+                .withDeny(Arrays.asList(SignalRRequestType.TRACE, SignalRRequestType.TRACE))
+                .withName("evzhfsto");
         model = BinaryData.fromObject(model).toObject(PrivateEndpointAcl.class);
         Assertions.assertEquals(SignalRRequestType.SERVER_CONNECTION, model.allow().get(0));
-        Assertions.assertEquals(SignalRRequestType.SERVER_CONNECTION, model.deny().get(0));
-        Assertions.assertEquals("zvszj", model.name());
+        Assertions.assertEquals(SignalRRequestType.TRACE, model.deny().get(0));
+        Assertions.assertEquals("evzhfsto", model.name());
     }
 }

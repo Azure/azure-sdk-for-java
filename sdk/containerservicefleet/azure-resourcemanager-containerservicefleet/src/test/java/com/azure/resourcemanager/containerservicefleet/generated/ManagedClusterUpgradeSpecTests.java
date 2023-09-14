@@ -14,10 +14,10 @@ public final class ManagedClusterUpgradeSpecTests {
     public void testDeserialize() throws Exception {
         ManagedClusterUpgradeSpec model =
             BinaryData
-                .fromString("{\"type\":\"NodeImageOnly\",\"kubernetesVersion\":\"nrosfqpte\"}")
+                .fromString("{\"type\":\"NodeImageOnly\",\"kubernetesVersion\":\"dxwzywqsmbsurexi\"}")
                 .toObject(ManagedClusterUpgradeSpec.class);
         Assertions.assertEquals(ManagedClusterUpgradeType.NODE_IMAGE_ONLY, model.type());
-        Assertions.assertEquals("nrosfqpte", model.kubernetesVersion());
+        Assertions.assertEquals("dxwzywqsmbsurexi", model.kubernetesVersion());
     }
 
     @org.junit.jupiter.api.Test
@@ -25,9 +25,9 @@ public final class ManagedClusterUpgradeSpecTests {
         ManagedClusterUpgradeSpec model =
             new ManagedClusterUpgradeSpec()
                 .withType(ManagedClusterUpgradeType.NODE_IMAGE_ONLY)
-                .withKubernetesVersion("nrosfqpte");
+                .withKubernetesVersion("dxwzywqsmbsurexi");
         model = BinaryData.fromObject(model).toObject(ManagedClusterUpgradeSpec.class);
         Assertions.assertEquals(ManagedClusterUpgradeType.NODE_IMAGE_ONLY, model.type());
-        Assertions.assertEquals("nrosfqpte", model.kubernetesVersion());
+        Assertions.assertEquals("dxwzywqsmbsurexi", model.kubernetesVersion());
     }
 }

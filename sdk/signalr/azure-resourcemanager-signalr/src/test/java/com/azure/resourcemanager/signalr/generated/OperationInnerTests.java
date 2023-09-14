@@ -6,6 +6,9 @@ package com.azure.resourcemanager.signalr.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.signalr.fluent.models.OperationInner;
+import com.azure.resourcemanager.signalr.models.Dimension;
+import com.azure.resourcemanager.signalr.models.LogSpecification;
+import com.azure.resourcemanager.signalr.models.MetricSpecification;
 import com.azure.resourcemanager.signalr.models.OperationDisplay;
 import com.azure.resourcemanager.signalr.models.OperationProperties;
 import com.azure.resourcemanager.signalr.models.ServiceSpecification;
@@ -18,43 +21,120 @@ public final class OperationInnerTests {
         OperationInner model =
             BinaryData
                 .fromString(
-                    "{\"name\":\"rh\",\"isDataAction\":true,\"display\":{\"provider\":\"hs\",\"resource\":\"urkdtmlx\",\"operation\":\"kuksjtxukcdm\",\"description\":\"rcryuanzwuxzdxta\"},\"origin\":\"lhmwhfpmrqobm\",\"properties\":{\"serviceSpecification\":{\"metricSpecifications\":[],\"logSpecifications\":[]}}}")
+                    "{\"name\":\"fcqhsmyurkd\",\"isDataAction\":false,\"display\":{\"provider\":\"ekuksjtx\",\"resource\":\"cdm\",\"operation\":\"rcryuanzwuxzdxta\",\"description\":\"lhmwhfpmrqobm\"},\"origin\":\"kknryrtihf\",\"properties\":{\"serviceSpecification\":{\"metricSpecifications\":[{\"name\":\"zvgnwzs\",\"displayName\":\"glzufc\",\"displayDescription\":\"kohdbiha\",\"unit\":\"fhfcb\",\"aggregationType\":\"s\",\"fillGapWithZero\":\"ithxqhabifpi\",\"category\":\"wczbys\",\"dimensions\":[{}]},{\"name\":\"x\",\"displayName\":\"ivyqniwbybrkxvd\",\"displayDescription\":\"jgrtfwvukxga\",\"unit\":\"ccsnhsjc\",\"aggregationType\":\"ejhkry\",\"fillGapWithZero\":\"napczwlokjy\",\"category\":\"kkvnipjox\",\"dimensions\":[{},{}]}],\"logSpecifications\":[{\"name\":\"ejspodmail\",\"displayName\":\"deh\"},{\"name\":\"wyahuxinpmqnja\",\"displayName\":\"ixjsprozvcputeg\"},{\"name\":\"wmfdatscmdvpjhul\",\"displayName\":\"uvm\"}]}}}")
                 .toObject(OperationInner.class);
-        Assertions.assertEquals("rh", model.name());
-        Assertions.assertEquals(true, model.isDataAction());
-        Assertions.assertEquals("hs", model.display().provider());
-        Assertions.assertEquals("urkdtmlx", model.display().resource());
-        Assertions.assertEquals("kuksjtxukcdm", model.display().operation());
-        Assertions.assertEquals("rcryuanzwuxzdxta", model.display().description());
-        Assertions.assertEquals("lhmwhfpmrqobm", model.origin());
+        Assertions.assertEquals("fcqhsmyurkd", model.name());
+        Assertions.assertEquals(false, model.isDataAction());
+        Assertions.assertEquals("ekuksjtx", model.display().provider());
+        Assertions.assertEquals("cdm", model.display().resource());
+        Assertions.assertEquals("rcryuanzwuxzdxta", model.display().operation());
+        Assertions.assertEquals("lhmwhfpmrqobm", model.display().description());
+        Assertions.assertEquals("kknryrtihf", model.origin());
+        Assertions
+            .assertEquals("zvgnwzs", model.properties().serviceSpecification().metricSpecifications().get(0).name());
+        Assertions
+            .assertEquals(
+                "glzufc", model.properties().serviceSpecification().metricSpecifications().get(0).displayName());
+        Assertions
+            .assertEquals(
+                "kohdbiha",
+                model.properties().serviceSpecification().metricSpecifications().get(0).displayDescription());
+        Assertions
+            .assertEquals("fhfcb", model.properties().serviceSpecification().metricSpecifications().get(0).unit());
+        Assertions
+            .assertEquals(
+                "s", model.properties().serviceSpecification().metricSpecifications().get(0).aggregationType());
+        Assertions
+            .assertEquals(
+                "ithxqhabifpi",
+                model.properties().serviceSpecification().metricSpecifications().get(0).fillGapWithZero());
+        Assertions
+            .assertEquals("wczbys", model.properties().serviceSpecification().metricSpecifications().get(0).category());
+        Assertions
+            .assertEquals("ejspodmail", model.properties().serviceSpecification().logSpecifications().get(0).name());
+        Assertions
+            .assertEquals("deh", model.properties().serviceSpecification().logSpecifications().get(0).displayName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         OperationInner model =
             new OperationInner()
-                .withName("rh")
-                .withIsDataAction(true)
+                .withName("fcqhsmyurkd")
+                .withIsDataAction(false)
                 .withDisplay(
                     new OperationDisplay()
-                        .withProvider("hs")
-                        .withResource("urkdtmlx")
-                        .withOperation("kuksjtxukcdm")
-                        .withDescription("rcryuanzwuxzdxta"))
-                .withOrigin("lhmwhfpmrqobm")
+                        .withProvider("ekuksjtx")
+                        .withResource("cdm")
+                        .withOperation("rcryuanzwuxzdxta")
+                        .withDescription("lhmwhfpmrqobm"))
+                .withOrigin("kknryrtihf")
                 .withProperties(
                     new OperationProperties()
                         .withServiceSpecification(
                             new ServiceSpecification()
-                                .withMetricSpecifications(Arrays.asList())
-                                .withLogSpecifications(Arrays.asList())));
+                                .withMetricSpecifications(
+                                    Arrays
+                                        .asList(
+                                            new MetricSpecification()
+                                                .withName("zvgnwzs")
+                                                .withDisplayName("glzufc")
+                                                .withDisplayDescription("kohdbiha")
+                                                .withUnit("fhfcb")
+                                                .withAggregationType("s")
+                                                .withFillGapWithZero("ithxqhabifpi")
+                                                .withCategory("wczbys")
+                                                .withDimensions(Arrays.asList(new Dimension())),
+                                            new MetricSpecification()
+                                                .withName("x")
+                                                .withDisplayName("ivyqniwbybrkxvd")
+                                                .withDisplayDescription("jgrtfwvukxga")
+                                                .withUnit("ccsnhsjc")
+                                                .withAggregationType("ejhkry")
+                                                .withFillGapWithZero("napczwlokjy")
+                                                .withCategory("kkvnipjox")
+                                                .withDimensions(Arrays.asList(new Dimension(), new Dimension()))))
+                                .withLogSpecifications(
+                                    Arrays
+                                        .asList(
+                                            new LogSpecification().withName("ejspodmail").withDisplayName("deh"),
+                                            new LogSpecification()
+                                                .withName("wyahuxinpmqnja")
+                                                .withDisplayName("ixjsprozvcputeg"),
+                                            new LogSpecification()
+                                                .withName("wmfdatscmdvpjhul")
+                                                .withDisplayName("uvm")))));
         model = BinaryData.fromObject(model).toObject(OperationInner.class);
-        Assertions.assertEquals("rh", model.name());
-        Assertions.assertEquals(true, model.isDataAction());
-        Assertions.assertEquals("hs", model.display().provider());
-        Assertions.assertEquals("urkdtmlx", model.display().resource());
-        Assertions.assertEquals("kuksjtxukcdm", model.display().operation());
-        Assertions.assertEquals("rcryuanzwuxzdxta", model.display().description());
-        Assertions.assertEquals("lhmwhfpmrqobm", model.origin());
+        Assertions.assertEquals("fcqhsmyurkd", model.name());
+        Assertions.assertEquals(false, model.isDataAction());
+        Assertions.assertEquals("ekuksjtx", model.display().provider());
+        Assertions.assertEquals("cdm", model.display().resource());
+        Assertions.assertEquals("rcryuanzwuxzdxta", model.display().operation());
+        Assertions.assertEquals("lhmwhfpmrqobm", model.display().description());
+        Assertions.assertEquals("kknryrtihf", model.origin());
+        Assertions
+            .assertEquals("zvgnwzs", model.properties().serviceSpecification().metricSpecifications().get(0).name());
+        Assertions
+            .assertEquals(
+                "glzufc", model.properties().serviceSpecification().metricSpecifications().get(0).displayName());
+        Assertions
+            .assertEquals(
+                "kohdbiha",
+                model.properties().serviceSpecification().metricSpecifications().get(0).displayDescription());
+        Assertions
+            .assertEquals("fhfcb", model.properties().serviceSpecification().metricSpecifications().get(0).unit());
+        Assertions
+            .assertEquals(
+                "s", model.properties().serviceSpecification().metricSpecifications().get(0).aggregationType());
+        Assertions
+            .assertEquals(
+                "ithxqhabifpi",
+                model.properties().serviceSpecification().metricSpecifications().get(0).fillGapWithZero());
+        Assertions
+            .assertEquals("wczbys", model.properties().serviceSpecification().metricSpecifications().get(0).category());
+        Assertions
+            .assertEquals("ejspodmail", model.properties().serviceSpecification().logSpecifications().get(0).name());
+        Assertions
+            .assertEquals("deh", model.properties().serviceSpecification().logSpecifications().get(0).displayName());
     }
 }

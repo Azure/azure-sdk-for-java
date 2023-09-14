@@ -32,7 +32,7 @@ public final class FleetMembersListByFleetMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"clusterResourceId\":\"zvyifqrvkdvj\",\"group\":\"lrmv\",\"provisioningState\":\"Updating\"},\"eTag\":\"atkpnp\",\"id\":\"exxbczwtr\",\"name\":\"wiqzbqjvsovmyo\",\"type\":\"acspkwl\"}]}";
+            "{\"value\":[{\"properties\":{\"clusterResourceId\":\"mqtaruoujmkcjh\",\"group\":\"ytjrybnwjewgdr\",\"provisioningState\":\"Succeeded\"},\"eTag\":\"naenqpehindo\",\"id\":\"mifthnzdnd\",\"name\":\"l\",\"type\":\"nayqi\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -61,9 +61,9 @@ public final class FleetMembersListByFleetMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<FleetMember> response =
-            manager.fleetMembers().listByFleet("uxh", "yudxorrqnbp", com.azure.core.util.Context.NONE);
+            manager.fleetMembers().listByFleet("sotftpvj", "bexilzznfqqnv", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("zvyifqrvkdvj", response.iterator().next().clusterResourceId());
-        Assertions.assertEquals("lrmv", response.iterator().next().group());
+        Assertions.assertEquals("mqtaruoujmkcjh", response.iterator().next().clusterResourceId());
+        Assertions.assertEquals("ytjrybnwjewgdr", response.iterator().next().group());
     }
 }
