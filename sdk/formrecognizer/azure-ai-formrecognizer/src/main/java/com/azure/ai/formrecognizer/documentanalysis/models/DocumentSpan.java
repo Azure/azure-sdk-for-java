@@ -11,6 +11,12 @@ import com.azure.core.annotation.Immutable;
  */
 @Immutable
 public final class DocumentSpan {
+    /**
+     * Creates a DocumentSpan object.
+     */
+    public DocumentSpan() {
+    }
+
     /*
      * Zero-based index of the content represented by the span.
      */

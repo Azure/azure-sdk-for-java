@@ -65,8 +65,8 @@ public class SchemaRegistryWithEventHubs {
         SchemaRegistryApacheAvroSerializer serializer) {
 
         List<PlayingCard> playingCards = Arrays.asList(
-            PlayingCard.newBuilder().setCardValue(5).setPlayingCardSuit(PlayingCardSuit.CLUBS).build(),
-            PlayingCard.newBuilder().setCardValue(10).setPlayingCardSuit(PlayingCardSuit.SPADES).build()
+            PlayingCard.newBuilder().setIsFaceCard(true).setCardValue(5).setPlayingCardSuit(PlayingCardSuit.CLUBS).build(),
+            PlayingCard.newBuilder().setIsFaceCard(true).setCardValue(10).setPlayingCardSuit(PlayingCardSuit.SPADES).build()
         );
 
         // Sending all events to partition 1.

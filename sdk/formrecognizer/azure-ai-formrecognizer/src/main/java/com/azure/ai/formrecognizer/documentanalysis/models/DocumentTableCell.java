@@ -13,6 +13,13 @@ import java.util.List;
  */
 @Immutable
 public final class DocumentTableCell {
+    /**
+     * Creates a DocumentTableCell object.
+     */
+    public DocumentTableCell() {
+
+    }
+
     /*
      * Table cell kind.
      */
