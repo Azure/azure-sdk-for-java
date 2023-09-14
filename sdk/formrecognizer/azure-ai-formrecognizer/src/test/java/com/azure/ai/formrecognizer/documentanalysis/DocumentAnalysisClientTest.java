@@ -24,15 +24,11 @@ import com.azure.core.test.http.AssertingHttpClientBuilder;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
-import reactor.test.StepVerifier;
 
-import java.time.Duration;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
@@ -75,15 +71,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
     private DocumentAnalysisClient client;
-    @BeforeAll
-    static void beforeAll() {
-        StepVerifier.setDefaultTimeout(Duration.ofSeconds(30));
-    }
-
-    @AfterAll
-    static void afterAll() {
-        StepVerifier.resetDefaultTimeout();
-    }
 
     private HttpClient buildSyncAssertingClient(HttpClient httpClient) {
         return new AssertingHttpClientBuilder(httpClient)
@@ -1486,8 +1473,7 @@ public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
         DocumentModelAdministrationClient adminClient = getDocumentModelAdminClient(httpClient, serviceVersion);
         AtomicReference<DocumentClassifierDetails> documentClassifierDetails = new AtomicReference<>();
         beginClassifierRunner((trainingFilesUrl) -> {
-            Map<String, ClassifierDocumentTypeDetails> documentTypeDetailsMap
-                = new HashMap<String, ClassifierDocumentTypeDetails>();
+            Map<String, ClassifierDocumentTypeDetails> documentTypeDetailsMap = new HashMap<>();
             documentTypeDetailsMap.put("IRS-1040-A",
                 new ClassifierDocumentTypeDetails(new BlobContentSource(trainingFilesUrl)
                     .setPrefix("IRS-1040-A/train")));
@@ -1536,8 +1522,7 @@ public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
         DocumentModelAdministrationClient adminClient = getDocumentModelAdminClient(httpClient, serviceVersion);
         AtomicReference<DocumentClassifierDetails> documentClassifierDetails = new AtomicReference<>();
         beginClassifierRunner((trainingFilesUrl) -> {
-            Map<String, ClassifierDocumentTypeDetails> documentTypeDetailsMap
-                = new HashMap<String, ClassifierDocumentTypeDetails>();
+            Map<String, ClassifierDocumentTypeDetails> documentTypeDetailsMap = new HashMap<>();
             documentTypeDetailsMap.put("IRS-1040-A",
                 new ClassifierDocumentTypeDetails(new BlobContentSource(trainingFilesUrl)
                     .setPrefix("IRS-1040-A/train")));

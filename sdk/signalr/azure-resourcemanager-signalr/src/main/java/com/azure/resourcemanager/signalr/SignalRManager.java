@@ -30,6 +30,7 @@ import com.azure.resourcemanager.signalr.implementation.SignalRCustomDomainsImpl
 import com.azure.resourcemanager.signalr.implementation.SignalRManagementClientBuilder;
 import com.azure.resourcemanager.signalr.implementation.SignalRPrivateEndpointConnectionsImpl;
 import com.azure.resourcemanager.signalr.implementation.SignalRPrivateLinkResourcesImpl;
+import com.azure.resourcemanager.signalr.implementation.SignalRReplicasImpl;
 import com.azure.resourcemanager.signalr.implementation.SignalRSharedPrivateLinkResourcesImpl;
 import com.azure.resourcemanager.signalr.implementation.SignalRsImpl;
 import com.azure.resourcemanager.signalr.implementation.UsagesImpl;
@@ -38,6 +39,7 @@ import com.azure.resourcemanager.signalr.models.SignalRCustomCertificates;
 import com.azure.resourcemanager.signalr.models.SignalRCustomDomains;
 import com.azure.resourcemanager.signalr.models.SignalRPrivateEndpointConnections;
 import com.azure.resourcemanager.signalr.models.SignalRPrivateLinkResources;
+import com.azure.resourcemanager.signalr.models.SignalRReplicas;
 import com.azure.resourcemanager.signalr.models.SignalRSharedPrivateLinkResources;
 import com.azure.resourcemanager.signalr.models.SignalRs;
 import com.azure.resourcemanager.signalr.models.Usages;
@@ -63,6 +65,8 @@ public final class SignalRManager {
     private SignalRPrivateEndpointConnections signalRPrivateEndpointConnections;
 
     private SignalRPrivateLinkResources signalRPrivateLinkResources;
+
+    private SignalRReplicas signalRReplicas;
 
     private SignalRSharedPrivateLinkResources signalRSharedPrivateLinkResources;
 
@@ -231,7 +235,7 @@ public final class SignalRManager {
                 .append("-")
                 .append("com.azure.resourcemanager.signalr")
                 .append("/")
-                .append("1.0.0-beta.6");
+                .append("1.0.0-beta.7");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder
                     .append(" (")
@@ -376,6 +380,18 @@ public final class SignalRManager {
     }
 
     /**
+     * Gets the resource collection API of SignalRReplicas. It manages Replica.
+     *
+     * @return Resource collection API of SignalRReplicas.
+     */
+    public SignalRReplicas signalRReplicas() {
+        if (this.signalRReplicas == null) {
+            this.signalRReplicas = new SignalRReplicasImpl(clientObject.getSignalRReplicas(), this);
+        }
+        return signalRReplicas;
+    }
+
+    /**
      * Gets the resource collection API of SignalRSharedPrivateLinkResources. It manages SharedPrivateLinkResource.
      *
      * @return Resource collection API of SignalRSharedPrivateLinkResources.
@@ -389,8 +405,10 @@ public final class SignalRManager {
     }
 
     /**
-     * @return Wrapped service client SignalRManagementClient providing direct access to the underlying auto-generated
-     *     API implementation, based on Azure REST API.
+     * Gets wrapped service client SignalRManagementClient providing direct access to the underlying auto-generated API
+     * implementation, based on Azure REST API.
+     *
+     * @return Wrapped service client SignalRManagementClient.
      */
     public SignalRManagementClient serviceClient() {
         return this.clientObject;

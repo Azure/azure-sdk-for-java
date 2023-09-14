@@ -13,7 +13,7 @@ public final class SkuTests {
         Sku model =
             BinaryData
                 .fromString(
-                    "{\"resourceType\":\"bzyh\",\"sku\":{\"name\":\"tsmypyynpcdp\",\"tier\":\"Standard\",\"size\":\"g\",\"family\":\"z\",\"capacity\":1417683929},\"capacity\":{\"minimum\":859745448,\"maximum\":1095888431,\"default\":1347586165,\"allowedValues\":[1287311603,1807799282],\"scaleType\":\"Automatic\"}}")
+                    "{\"resourceType\":\"xrkjpvdw\",\"sku\":{\"name\":\"zwiivwzjbhyzs\",\"tier\":\"Basic\",\"size\":\"ambtrnegvm\",\"family\":\"uqeqv\",\"capacity\":1032256402},\"capacity\":{\"minimum\":312186085,\"maximum\":1828448975,\"default\":1481750195,\"allowedValues\":[1616776415,1749479057],\"scaleType\":\"Automatic\"}}")
                 .toObject(Sku.class);
     }
 
