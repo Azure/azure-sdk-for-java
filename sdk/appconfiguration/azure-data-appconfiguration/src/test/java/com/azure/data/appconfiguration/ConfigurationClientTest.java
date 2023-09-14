@@ -21,7 +21,6 @@ import com.azure.data.appconfiguration.models.FeatureFlagConfigurationSetting;
 import com.azure.data.appconfiguration.models.SecretReferenceConfigurationSetting;
 import com.azure.data.appconfiguration.models.SettingFields;
 import com.azure.data.appconfiguration.models.SettingSelector;
-import com.azure.data.appconfiguration.models.SnapshotSelector;
 import com.azure.data.appconfiguration.models.SnapshotStatus;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
@@ -936,7 +935,6 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
      * Verifies that, given a ton of existing settings, we can list the ConfigurationSettings using pagination
      * (ie. where 'nextLink' has a URL pointing to the next page of results.)
      */
-    @Disabled("Error code 403 TOO_MANY_REQUESTS https://github.com/Azure/azure-sdk-for-java/issues/36602")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
     public void listConfigurationSettingsWithPagination(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
@@ -1007,8 +1005,11 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
             client.addConfigurationSettingWithResponse(expected, Context.NONE).getValue()));
 
         createSnapshotRunner((name, filters) -> {
+         // Retention period can be setup when creating a snapshot and cannot edit.
+            Duration retentionPeriod = Duration.ofMinutes(60);
+            
             ConfigurationSettingSnapshot snapshot = new ConfigurationSettingSnapshot(filters)
-                .setRetentionPeriod(MINIMUM_RETENTION_PERIOD);
+                .setRetentionPeriod(retentionPeriod);
             SyncPoller<CreateSnapshotOperationDetail, ConfigurationSettingSnapshot> poller =
                 client.beginCreateSnapshot(name, snapshot, Context.NONE);
             poller.setPollInterval(Duration.ofSeconds(10));
@@ -1017,7 +1018,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
 
             assertEqualsConfigurationSettingSnapshot(name,
                 SnapshotStatus.READY, filters, CompositionType.KEY,
-                MINIMUM_RETENTION_PERIOD, Long.valueOf(1000), Long.valueOf(0), null, snapshotResult);
+                retentionPeriod, Long.valueOf(1000), Long.valueOf(0), null, snapshotResult);
 
             // Archived the snapshot, it will be deleted automatically when retention period expires.
             assertEquals(SnapshotStatus.ARCHIVED, client.archiveSnapshot(name).getStatus());
@@ -1033,8 +1034,11 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
             client.addConfigurationSettingWithResponse(expected, Context.NONE).getValue()));
 
         createSnapshotRunner((name, filters) -> {
+         // Retention period can be setup when creating a snapshot and cannot edit.
+            Duration retentionPeriod = Duration.ofMinutes(60);
+            
             ConfigurationSettingSnapshot snapshot = new ConfigurationSettingSnapshot(filters)
-                .setRetentionPeriod(MINIMUM_RETENTION_PERIOD);
+                .setRetentionPeriod(retentionPeriod);
             SyncPoller<CreateSnapshotOperationDetail, ConfigurationSettingSnapshot> poller =
                 client.beginCreateSnapshot(name, snapshot, Context.NONE);
             poller.setPollInterval(Duration.ofSeconds(10));
@@ -1042,13 +1046,13 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
             ConfigurationSettingSnapshot snapshotResult = poller.getFinalResult();
 
             assertEqualsConfigurationSettingSnapshot(name, SnapshotStatus.READY, filters, CompositionType.KEY,
-                MINIMUM_RETENTION_PERIOD, Long.valueOf(1000), Long.valueOf(0), null, snapshotResult);
+                retentionPeriod, Long.valueOf(1000), Long.valueOf(0), null, snapshotResult);
 
             // Retrieve a snapshot after creation
             Response<ConfigurationSettingSnapshot> getSnapshot = client.getSnapshotWithResponse(name, Context.NONE);
             assertConfigurationSettingSnapshotWithResponse(200, name,
                 SnapshotStatus.READY, filters, CompositionType.KEY,
-                MINIMUM_RETENTION_PERIOD, Long.valueOf(1000), Long.valueOf(0), null, getSnapshot);
+                retentionPeriod, Long.valueOf(1000), Long.valueOf(0), null, getSnapshot);
 
             // Archived the snapshot, it will be deleted automatically when retention period expires.
             ConfigurationSettingSnapshot archivedSnapshot = client.archiveSnapshot(name);
@@ -1065,55 +1069,26 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
             client.addConfigurationSettingWithResponse(expected, Context.NONE).getValue()));
 
         createSnapshotRunner((name, filters) -> {
-            ConfigurationSettingSnapshot snapshot = new ConfigurationSettingSnapshot(filters)
-                .setRetentionPeriod(MINIMUM_RETENTION_PERIOD);
+         // Retention period can be setup when creating a snapshot and cannot edit.
+            Duration retentionPeriod = Duration.ofMinutes(60);
+            
             SyncPoller<CreateSnapshotOperationDetail, ConfigurationSettingSnapshot> poller =
-                client.beginCreateSnapshot(name, snapshot, Context.NONE);
+                client.beginCreateSnapshot(name, new ConfigurationSettingSnapshot(filters), Context.NONE);
             poller.setPollInterval(Duration.ofSeconds(10));
             poller.waitForCompletion();
             ConfigurationSettingSnapshot snapshotResult = poller.getFinalResult();
 
             assertEqualsConfigurationSettingSnapshot(name, SnapshotStatus.READY, filters, CompositionType.KEY,
-                MINIMUM_RETENTION_PERIOD, Long.valueOf(1000), Long.valueOf(0), null, snapshotResult);
+                retentionPeriod, Long.valueOf(1000), Long.valueOf(0), null, snapshotResult);
 
             // Retrieve a snapshot after creation
             assertEqualsConfigurationSettingSnapshot(name, SnapshotStatus.READY, filters, CompositionType.KEY,
-                MINIMUM_RETENTION_PERIOD, Long.valueOf(1000), Long.valueOf(0), null,
+                retentionPeriod, Long.valueOf(1000), Long.valueOf(0), null,
                 client.getSnapshot(name));
 
             // Archived the snapshot, it will be deleted automatically when retention period expires.
             ConfigurationSettingSnapshot archivedSnapshot = client.archiveSnapshot(name);
             assertEquals(SnapshotStatus.ARCHIVED, archivedSnapshot.getStatus());
-        });
-    }
-
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
-    public void archiveSnapshot(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
-        client = getConfigurationClient(httpClient, serviceVersion);
-        // Prepare a setting before creating a snapshot
-        addConfigurationSettingRunner((expected) -> assertConfigurationEquals(expected,
-            client.addConfigurationSettingWithResponse(expected, Context.NONE).getValue()));
-
-        createSnapshotRunner((name, filters) -> {
-            // Retention period can be setup when creating a snapshot and cannot edit.
-            ConfigurationSettingSnapshot snapshot = new ConfigurationSettingSnapshot(filters)
-                .setRetentionPeriod(MINIMUM_RETENTION_PERIOD);
-            SyncPoller<CreateSnapshotOperationDetail, ConfigurationSettingSnapshot> poller =
-                client.beginCreateSnapshot(name, snapshot, Context.NONE);
-            poller.setPollInterval(Duration.ofSeconds(10));
-            poller.waitForCompletion();
-            ConfigurationSettingSnapshot snapshotResult = poller.getFinalResult();
-
-            assertEqualsConfigurationSettingSnapshot(name, SnapshotStatus.READY, filters, CompositionType.KEY,
-                MINIMUM_RETENTION_PERIOD, Long.valueOf(1000), Long.valueOf(0), null, snapshotResult);
-
-            // Archived the snapshot, it will be deleted automatically when retention period expires.
-            Response<ConfigurationSettingSnapshot> response = client.archiveSnapshotWithResponse(snapshotResult,
-                false, Context.NONE);
-            assertConfigurationSettingSnapshotWithResponse(200, name,
-                SnapshotStatus.ARCHIVED, filters, CompositionType.KEY,
-                MINIMUM_RETENTION_PERIOD, Long.valueOf(1000), Long.valueOf(0), null, response);
         });
     }
 
@@ -1223,9 +1198,6 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
         client = getConfigurationClient(httpClient, serviceVersion);
 
         List<ConfigurationSettingSnapshot> allExistingSnapshots = new ArrayList<>();
-        client.listSnapshots(new SnapshotSelector().setSnapshotStatus(SnapshotStatus.READY))
-            .stream()
-            .map(snapshot -> allExistingSnapshots.add(snapshot));
 
         // Clean all ready snapshots
         for (ConfigurationSettingSnapshot existSnapshot : allExistingSnapshots) {
@@ -1275,7 +1247,6 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
 
         for (ConfigurationSettingSnapshot snapshot : actualSnapshots) {
             // List only the snapshot with a specific name
-            client.listSnapshots(new SnapshotSelector().setName(snapshot.getName()));
 
             // Archived the snapshot, it will be deleted automatically when retention period expires.
             assertEquals(SnapshotStatus.ARCHIVED, client.archiveSnapshot(snapshot.getName()).getStatus());
@@ -1336,4 +1307,5 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
             }
         });
     }
+
 }
