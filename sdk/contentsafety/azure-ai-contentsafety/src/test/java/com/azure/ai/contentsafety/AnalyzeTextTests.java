@@ -5,7 +5,6 @@
 package com.azure.ai.contentsafety;
 
 import com.azure.ai.contentsafety.models.*;
-import com.azure.core.test.annotation.DoNotRecord;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -13,7 +12,6 @@ import java.util.List;
 
 public final class AnalyzeTextTests extends ContentSafetyClientTestBase {
     @Test
-    @DoNotRecord(skipInPlayback = true)
     public void testAnalyzeTextTests() {
         // method invocation
         AnalyzeTextResult response = contentSafetyClient.analyzeText(new AnalyzeTextOptions("This is text example"));

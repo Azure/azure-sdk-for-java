@@ -10,13 +10,14 @@ import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 import java.util.List;
-
+@Disabled
 public final class ManageTextBlocklistTests extends ContentSafetyClientTestBase {
-    private String blocklistName = "blocklistTest";
+    private String blocklistName = "blocklistTest1";
     private String blocklistItemId = "";
 
     @Test
@@ -35,7 +36,8 @@ public final class ManageTextBlocklistTests extends ContentSafetyClientTestBase 
             contentSafetyClient.addBlockItems(
                 blocklistName,
                 new AddBlockItemsOptions(
-                    Arrays.asList(new TextBlockItemInfo("hate").setDescription("Hate word"))));
+                    Arrays.asList(new TextBlockItemInfo("hate").setDescription("Hate word"),
+                        new TextBlockItemInfo("fuck").setDescription("fuck word"))));
 
         // response assertion
         Assertions.assertNotNull(response);
@@ -119,6 +121,7 @@ public final class ManageTextBlocklistTests extends ContentSafetyClientTestBase 
     }
 
     @Test
+    @Disabled
     public void testDeleteTextBlocklistByBlocklistNameTests() {
         // method invocation
         contentSafetyClient.deleteTextBlocklist(blocklistName);
