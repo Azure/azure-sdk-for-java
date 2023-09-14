@@ -523,6 +523,7 @@ import static com.azure.ai.textanalytics.implementation.Utility.toTextAnalyticsE
  * <p><strong>Note:</strong> For asynchronous sample, refer to {@link TextAnalyticsAsyncClient}.</p>
  *
  * <h3>Multi-Label Classification</h3>
+ *
  * <p>The {@link TextAnalyticsClient#beginMultiLabelClassify(Iterable, String, String) beginMultiLabelClassify}
  * method returns a list of multi-label classification for the provided list of document.</p>
  *
@@ -615,6 +616,7 @@ import static com.azure.ai.textanalytics.implementation.Utility.toTextAnalyticsE
  *
  * <p><strong>Note:</strong> For asynchronous sample, refer to {@link TextAnalyticsAsyncClient}.</p>
  *
+ * @see com.azure.ai.textanalytics
  * @see TextAnalyticsClientBuilder
  */
 @ServiceClient(builder = TextAnalyticsClientBuilder.class)
