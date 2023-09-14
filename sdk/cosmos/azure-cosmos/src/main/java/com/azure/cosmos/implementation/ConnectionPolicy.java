@@ -52,6 +52,7 @@ public final class ConnectionPolicy {
     private int minConnectionPoolSizePerEndpoint;
     private int openConnectionsConcurrency;
     private int aggressiveWarmupConcurrency;
+    private final Object monitorObjectForExcludeRegions;
 
     /**
      * Constructor.
@@ -117,6 +118,7 @@ public final class ConnectionPolicy {
         this.minConnectionPoolSizePerEndpoint = Configs.getMinConnectionPoolSizePerEndpoint();
         this.openConnectionsConcurrency = Configs.getOpenConnectionsConcurrency();
         this.aggressiveWarmupConcurrency = Configs.getAggressiveWarmupConcurrency();
+        this.monitorObjectForExcludeRegions = new Object();
     }
 
     /**
@@ -474,18 +476,21 @@ public final class ConnectionPolicy {
         return this;
     }
 
-    public synchronized ConnectionPolicy setExcludeRegions(List<String> excludeRegions) {
-
-        if (excludeRegions != null) {
-            this.excludeRegions = new ArrayList<>();
-            this.excludeRegions.addAll(excludeRegions);
+    public ConnectionPolicy setExcludeRegions(List<String> excludeRegions) {
+        synchronized (this.monitorObjectForExcludeRegions) {
+            if (excludeRegions != null) {
+                this.excludeRegions = new ArrayList<>();
+                this.excludeRegions.addAll(excludeRegions);
+            }
         }
 
         return this;
     }
 
     public synchronized List<String> getExcludeRegions() {
-        return this.excludeRegions;
+        synchronized (this.monitorObjectForExcludeRegions) {
+            return this.excludeRegions;
+        }
     }
 
     /**
