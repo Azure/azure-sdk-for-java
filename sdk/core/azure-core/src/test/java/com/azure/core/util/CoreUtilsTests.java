@@ -6,7 +6,9 @@ package com.azure.core.util;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.util.logging.ClientLogger;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -25,7 +27,14 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
@@ -48,6 +57,18 @@ public class CoreUtilsTests {
 
     private static final String TIMEOUT_PROPERTY_NAME = "TIMEOUT_PROPERTY_NAME";
     private static final ConfigurationSource EMPTY_SOURCE = new TestConfigurationSource();
+
+    private static ExecutorService executorService;
+
+    @BeforeAll
+    public static void setupClass() {
+        executorService = Executors.newCachedThreadPool();
+    }
+
+    @AfterAll
+    public static void teardownClass() {
+        executorService.shutdownNow();
+    }
 
     @Test
     public void findFirstOfTypeEmptyArgs() {
@@ -495,5 +516,40 @@ public class CoreUtilsTests {
         }
 
         assertEquals(new UUID(msbForJava, lsbForJava), CoreUtils.randomUuid(msb, lsb));
+    }
+
+    @Test
+    public void futureCompletesBeforeTimeout() throws ExecutionException, InterruptedException, TimeoutException {
+        AtomicBoolean completed = new AtomicBoolean(false);
+        Future<?> future = executorService.submit(() -> {
+            Thread.sleep(10);
+            completed.set(true);
+            return null;
+        });
+
+        future.get(100, TimeUnit.MILLISECONDS);
+
+        assertTrue(completed.get());
+    }
+
+    @Test
+    public void futureTimesOutAndIsCancelled() throws InterruptedException {
+        AtomicBoolean completed = new AtomicBoolean(false);
+        Future<?> future = executorService.submit(() -> {
+            Thread.sleep(1000);
+            completed.set(true);
+            return null;
+        });
+
+        try {
+            future.get(100, TimeUnit.MILLISECONDS);
+        } catch (InterruptedException | ExecutionException | TimeoutException e) {
+            // Ignore
+        }
+
+        // Give time for the future to complete if cancellation didn't work.
+        Thread.sleep(1000);
+
+        assertFalse(completed.get());
     }
 }

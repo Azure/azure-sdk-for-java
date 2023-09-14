@@ -556,4 +556,24 @@ public final class CoreUtils {
         return new AzureExecutorService(new ThreadPoolExecutor(0, maxThreads, 60L, TimeUnit.SECONDS,
             new SynchronousQueue<>(), new AzureThreadFactory(), REJECTED_EXECUTION_HANDLER));
     }
+
+    /**
+     * Calls {@link Future#get(long, TimeUnit)} and returns the value if the {@code future} completes before the timeout
+     * is triggered. If the timeout is triggered, the {@code future} is {@link Future#cancel(boolean) cancelled}
+     * interrupting the running thread.
+     *
+     * @param <T> The type of value returned by the {@code future}.
+     * @param future The {@link Future} to get the value from.
+     * @param timeout The timeout value.
+     * @param unit The {@link TimeUnit} of the timeout value.
+     * @return The value from the {@code future}.
+     */
+    public static <T> T getFutureWithCancellation(Future<T> future, long timeout, TimeUnit unit) {
+        try {
+            return future.get(timeout, unit);
+        } catch (Exception e) {
+            future.cancel(true);
+            throw new RuntimeException(e);
+        }
+    }
 }
