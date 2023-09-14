@@ -1609,7 +1609,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
                 .verifyComplete();
         });
 
-        
+
         for (ConfigurationSettingSnapshot snapshot : actualSnapshots) {
             // List only the snapshot with a specific name
             StepVerifier.create(client.listSnapshots(
