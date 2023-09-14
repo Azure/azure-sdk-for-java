@@ -773,7 +773,7 @@ public class DataLakeTestBase extends TestProxyTestBase {
     }
 
     protected static void assertExceptionStatusCodeAndMessage(Throwable throwable, int expectedStatusCode,
-                                                           BlobErrorCode errMessage){
+                                                           BlobErrorCode errMessage) {
         DataLakeStorageException exception = assertInstanceOf(DataLakeStorageException.class, throwable);
         assertEquals(expectedStatusCode, exception.getStatusCode());
         assertEquals(errMessage.toString(), exception.getErrorCode());

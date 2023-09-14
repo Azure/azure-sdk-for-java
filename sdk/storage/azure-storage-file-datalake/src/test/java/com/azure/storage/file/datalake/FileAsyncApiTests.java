@@ -455,7 +455,7 @@ public class FileAsyncApiTests extends DataLakeTestBase {
         fc = dataLakeFileSystemAsyncClient.getFileAsyncClient(generatePathName());
 
         StepVerifier.create(fc.createIfNotExistsWithResponse(new DataLakePathCreateOptions(), null))
-            .assertNext( r -> {
+            .assertNext(r -> {
                 assertEquals(201, r.getStatusCode());
                 validateBasicHeaders(r.getHeaders());
             })
@@ -486,10 +486,10 @@ public class FileAsyncApiTests extends DataLakeTestBase {
     }
 
     @ParameterizedTest
-    @CsvSource(value={"null,null,null,null,null","control, disposition, encoding, language, type"})
-    public void createIfNotExistsHeaders(String cacheControl,String contentDisposition,String contentEncoding,
-                                       String contentLanguage,String contentType) {
-        PathHttpHeaders headers=new PathHttpHeaders().setCacheControl(cacheControl)
+    @CsvSource(value = {"null,null,null,null,null", "control, disposition, encoding, language, type"})
+    public void createIfNotExistsHeaders(String cacheControl, String contentDisposition, String contentEncoding,
+        String contentLanguage, String contentType) {
+        PathHttpHeaders headers = new PathHttpHeaders().setCacheControl(cacheControl)
             .setContentDisposition(contentDisposition)
             .setContentEncoding(contentEncoding)
             .setContentLanguage(contentLanguage)
@@ -508,8 +508,8 @@ public class FileAsyncApiTests extends DataLakeTestBase {
     }
 
     @ParameterizedTest
-    @CsvSource(value={"null,null,null,null","foo,bar,fizz,buzz"},nullValues="null")
-    public void createIfNotExistsMetadata(String key1,String value1,String key2,String value2) {
+    @CsvSource(value = {"null,null,null,null", "foo,bar,fizz,buzz"}, nullValues = "null")
+    public void createIfNotExistsMetadata(String key1, String value1, String key2, String value2) {
         Map<String, String> metadata = new HashMap<>();
         if (key1 != null) {
             metadata.put(key1, value1);
@@ -522,7 +522,7 @@ public class FileAsyncApiTests extends DataLakeTestBase {
         fc.createIfNotExistsWithResponse(new DataLakePathCreateOptions().setMetadata(metadata), Context.NONE).block();
 
         StepVerifier.create(fc.getProperties())
-            .assertNext(r -> assertEquals(metadata,r.getMetadata()))
+            .assertNext(r -> assertEquals(metadata, r.getMetadata()))
             .verifyComplete();
     }
 
@@ -531,7 +531,7 @@ public class FileAsyncApiTests extends DataLakeTestBase {
         fc = dataLakeFileSystemAsyncClient.getFileAsyncClient(generatePathName());
 
         assertAsyncResponseStatusCode(fc.createIfNotExistsWithResponse(new DataLakePathCreateOptions()
-            .setPermissions("0777").setUmask("0057"),Context.NONE), 201);
+            .setPermissions("0777").setUmask("0057"), Context.NONE), 201);
     }
 
     @DisabledIf("olderThan20210410ServiceVersion")
@@ -612,10 +612,10 @@ public class FileAsyncApiTests extends DataLakeTestBase {
     }
 
     @ParameterizedTest
-    @CsvSource(value={"null,null,null,null,null,application/octet-stream","control,disposition,encoding,language,null,type"},
-        nullValues="null")
-    public void createIfNotExistsOptionsWithPathHttpHeaders(String cacheControl, String contentDisposition,String contentEncoding,
-                                                          String contentLanguage, byte[] contentMD5,String contentType) {
+    @CsvSource(value = {"null,null,null,null,null,application/octet-stream", "control,disposition,encoding,language,null,type"},
+        nullValues = "null")
+    public void createIfNotExistsOptionsWithPathHttpHeaders(String cacheControl, String contentDisposition,
+        String contentEncoding, String contentLanguage, byte[] contentMD5, String contentType) {
         fc = dataLakeFileSystemAsyncClient.getFileAsyncClient(generatePathName());
 
         PathHttpHeaders putHeaders = new PathHttpHeaders()
@@ -632,7 +632,7 @@ public class FileAsyncApiTests extends DataLakeTestBase {
     }
 
     @ParameterizedTest
-    @CsvSource(value={"null,null,null,null","foo,bar,fizz,buzz"},nullValues="null")
+    @CsvSource(value = {"null,null,null,null", "foo,bar,fizz,buzz"}, nullValues = "null")
     public void createIfNotExistsOptionsWithMetadata(String key1, String value1, String key2, String value2) {
         fc = dataLakeFileSystemAsyncClient.getFileAsyncClient(generatePathName());
 
@@ -649,7 +649,7 @@ public class FileAsyncApiTests extends DataLakeTestBase {
 
         StepVerifier.create(fc.getProperties())
             .assertNext(r -> {
-                for(String k : metadata.keySet()){
+                for (String k : metadata.keySet()) {
                     assertTrue(r.getMetadata().containsKey(k));
                     assertEquals(metadata.get(k), r.getMetadata().get(k));
                 }
@@ -745,7 +745,7 @@ public class FileAsyncApiTests extends DataLakeTestBase {
 
     @Test
     public void deleteFileDoesNotExistAnymore() {
-        fc.deleteWithResponse(null,null,null).block();
+        fc.deleteWithResponse(null, null, null).block();
 
         StepVerifier.create(fc.getPropertiesWithResponse(null))
             .verifyErrorSatisfies(r -> DataLakeTestBase.assertExceptionStatusCodeAndMessage(r, 404,
@@ -754,7 +754,7 @@ public class FileAsyncApiTests extends DataLakeTestBase {
 
     @ParameterizedTest
     @MethodSource("modifiedMatchAndLeaseIdSupplier")
-    public void deleteAC(OffsetDateTime modified, OffsetDateTime unmodified, String match,String noneMatch,
+    public void deleteAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
                        String leaseID) {
         DataLakeRequestConditions drc = new DataLakeRequestConditions()
             .setLeaseId(setupPathLeaseCondition(fc, leaseID))
@@ -898,7 +898,7 @@ public class FileAsyncApiTests extends DataLakeTestBase {
     @Test
     public void setACLMin() {
         StepVerifier.create(fc.setAccessControlList(PATH_ACCESS_CONTROL_ENTRIES, GROUP, OWNER))
-            .assertNext(r ->{
+            .assertNext(r -> {
                 assertNotNull(r.getETag());
                 assertNotNull(r.getLastModified());
             })
@@ -1644,7 +1644,7 @@ public class FileAsyncApiTests extends DataLakeTestBase {
                 new ParallelTransferOptions().setBlockSizeLong(4L * 1024 * 1024),
          null, null, false, null))
             .assertNext(r -> {
-                compareFiles(file,outFile,0,fileSize);
+                compareFiles(file, outFile, 0, fileSize);
                 assertEquals(fileSize, r.getValue().getFileSize());
             })
             .verifyComplete();
@@ -2019,7 +2019,7 @@ public class FileAsyncApiTests extends DataLakeTestBase {
     @Test
     public void renameMin() {
         assertAsyncResponseStatusCode(fc.renameWithResponse(null, generatePathName(),
-            null,null, null), 201);
+            null, null, null), 201);
     }
 
     @Test
@@ -2078,8 +2078,8 @@ public class FileAsyncApiTests extends DataLakeTestBase {
             null, null, null))
             .assertNext(r -> {
                 assertEquals(201, r.getStatusCode());
-                r.getValue().getPropertiesWithResponse(null).flatMap(piece ->{
-                    assertEquals(200,piece.getStatusCode());
+                r.getValue().getPropertiesWithResponse(null).flatMap(piece -> {
+                    assertEquals(200, piece.getStatusCode());
                     return null;
                 });
             })
