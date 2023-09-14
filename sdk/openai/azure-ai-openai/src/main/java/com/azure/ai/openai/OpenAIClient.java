@@ -721,8 +721,7 @@ public final class OpenAIClient {
 
         MultipartDataHelper helper = new MultipartDataHelper();
         MultipartDataSerializationResult result = helper.serializeRequest(audioTranslationOptions, fileName);
-        return getAudioTranslation(deploymentOrModelName, result, helper.getBoundary())
-                .toObject(AudioTranscription.class);
+        return getAudioTranslation(deploymentOrModelName, result, helper.getBoundary());
     }
 
     public String getAudioTranslationText(
@@ -743,10 +742,10 @@ public final class OpenAIClient {
 
         MultipartDataHelper helper = new MultipartDataHelper();
         MultipartDataSerializationResult result = helper.serializeRequest(audioTranslationOptions, fileName);
-        return getAudioTranslationAsPlainText(deploymentOrModelName, result, helper.getBoundary()).toString();
+        return getAudioTranslationAsPlainText(deploymentOrModelName, result, helper.getBoundary());
     }
 
-    BinaryData getAudioTranslation(
+    AudioTranscription getAudioTranslation(
             String deploymentOrModelName,
             MultipartDataSerializationResult requestData,
             String multipartBoundary) {
@@ -756,16 +755,16 @@ public final class OpenAIClient {
                 .setHeader(HttpHeaderName.CONTENT_TYPE, "multipart/form-data;" + " boundary=" + multipartBoundary)
                 .setHeader(HttpHeaderName.CONTENT_LENGTH, String.valueOf(requestData.getDataLength()));
 
-        return openAIServiceClient != null ?
+        Response<BinaryData> response = openAIServiceClient != null ?
                 this.openAIServiceClient.getAudioTranslationAsPlainTextWithResponse(
-                                deploymentOrModelName, requestData.getData(), requestOptions)
-                        .getValue() :
+                                deploymentOrModelName, requestData.getData(), requestOptions) :
                 this.serviceClient.getAudioTranslationAsPlainTextWithResponse(
-                                deploymentOrModelName, requestData.getData(), requestOptions)
-                        .getValue();
+                                deploymentOrModelName, requestData.getData(), requestOptions);
+
+        return response.getValue().toObject(AudioTranscription.class);
     }
 
-    BinaryData getAudioTranslationAsPlainText(
+    String getAudioTranslationAsPlainText(
             String deploymentOrModelName,
             MultipartDataSerializationResult requestData,
             String multipartBoundary) {
@@ -775,13 +774,13 @@ public final class OpenAIClient {
                 .setHeader(HttpHeaderName.CONTENT_TYPE, "multipart/form-data;" + " boundary=" + multipartBoundary)
                 .setHeader(HttpHeaderName.CONTENT_LENGTH, String.valueOf(requestData.getDataLength()));
 
-        return openAIServiceClient != null ?
+        Response<BinaryData> response = openAIServiceClient != null ?
                 this.openAIServiceClient.getAudioTranslationAsPlainTextWithResponse(
-                                deploymentOrModelName, requestData.getData(), requestOptions)
-                        .getValue() :
+                                deploymentOrModelName, requestData.getData(), requestOptions) :
                 this.serviceClient.getAudioTranslationAsPlainTextWithResponse(
-                            deploymentOrModelName, requestData.getData(), requestOptions)
-                    .getValue();
+                            deploymentOrModelName, requestData.getData(), requestOptions);
+
+        return response.getValue().toString();
     }
 
     /**
