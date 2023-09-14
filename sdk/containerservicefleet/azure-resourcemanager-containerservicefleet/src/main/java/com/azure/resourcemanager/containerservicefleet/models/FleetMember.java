@@ -89,11 +89,13 @@ public interface FleetMember {
     interface Definition
         extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
+
     /** The FleetMember definition stages. */
     interface DefinitionStages {
         /** The first stage of the FleetMember definition. */
         interface Blank extends WithParentResource {
         }
+
         /** The stage of the FleetMember definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
@@ -105,6 +107,7 @@ public interface FleetMember {
              */
             WithCreate withExistingFleet(String resourceGroupName, String fleetName);
         }
+
         /**
          * The stage of the FleetMember definition which contains all the minimum required properties for the resource
          * to be created, but also allows for any other optional properties to be specified.
@@ -129,6 +132,7 @@ public interface FleetMember {
              */
             FleetMember create(Context context);
         }
+
         /** The stage of the FleetMember definition allowing to specify clusterResourceId. */
         interface WithClusterResourceId {
             /**
@@ -143,6 +147,7 @@ public interface FleetMember {
              */
             WithCreate withClusterResourceId(String clusterResourceId);
         }
+
         /** The stage of the FleetMember definition allowing to specify group. */
         interface WithGroup {
             /**
@@ -153,6 +158,7 @@ public interface FleetMember {
              */
             WithCreate withGroup(String group);
         }
+
         /** The stage of the FleetMember definition allowing to specify ifMatch. */
         interface WithIfMatch {
             /**
@@ -163,6 +169,7 @@ public interface FleetMember {
              */
             WithCreate withIfMatch(String ifMatch);
         }
+
         /** The stage of the FleetMember definition allowing to specify ifNoneMatch. */
         interface WithIfNoneMatch {
             /**
@@ -174,6 +181,7 @@ public interface FleetMember {
             WithCreate withIfNoneMatch(String ifNoneMatch);
         }
     }
+
     /**
      * Begins update for the FleetMember resource.
      *
@@ -198,6 +206,7 @@ public interface FleetMember {
          */
         FleetMember apply(Context context);
     }
+
     /** The FleetMember update stages. */
     interface UpdateStages {
         /** The stage of the FleetMember update allowing to specify group. */
@@ -210,6 +219,7 @@ public interface FleetMember {
              */
             Update withGroup(String group);
         }
+
         /** The stage of the FleetMember update allowing to specify ifMatch. */
         interface WithIfMatch {
             /**
@@ -221,6 +231,7 @@ public interface FleetMember {
             Update withIfMatch(String ifMatch);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *
