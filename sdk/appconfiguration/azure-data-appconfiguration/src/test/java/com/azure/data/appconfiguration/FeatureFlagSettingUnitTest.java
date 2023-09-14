@@ -75,13 +75,14 @@ public class FeatureFlagSettingUnitTest {
     @Test
     public void throwExceptionWhenInvalidNonJsonFeatureFlagValue() {
         FeatureFlagConfigurationSetting setting = createFeatureFlagConfigurationSetting();
+        String expectedValue = getFeatureFlagConfigurationSettingValue(NEW_KEY, DESCRIPTION_VALUE,
+            DISPLAY_NAME_VALUE, IS_ENABLED);
 
-        // User are still able to set the non-feature flag value as configuration setting value. However, when user
-        // try to get a feature flag property, it will throw exception.
-        String invalidValue = "invalidValueForFeatureFlagSetting";
-        setting.setValue(invalidValue);
+        String originalValue = setting.getValue();
+        assertEquals(expectedValue, originalValue);
 
-        assertEquals(invalidValue, setting.getValue());
+        assertThrows(IllegalArgumentException.class, () -> setting.setValue("invalidValueForFeatureFlagSetting"));
+        assertEquals(expectedValue, setting.getValue());
         assertThrows(IllegalArgumentException.class, () -> setting.getFeatureId());
         assertThrows(IllegalArgumentException.class, () -> setting.getDescription());
         assertThrows(IllegalArgumentException.class, () -> setting.getDisplayName());

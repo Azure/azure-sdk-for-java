@@ -49,9 +49,6 @@ public final class FeatureFlagConfigurationSetting extends ConfigurationSetting 
     private String displayName;
     private List<FeatureFlagFilter> clientFilters;
 
-    // The original 'value' field value. It is a temporary field to store the original 'value' field value.
-    private String originalValue;
-
     // The flag to indicate if the 'value' field is valid. It is a temporary field to store the flag.
     // If the 'value' field is not valid, we will throw an exception when user try to access the strongly-typed
     // properties.
@@ -87,16 +84,12 @@ public final class FeatureFlagConfigurationSetting extends ConfigurationSetting 
     @Override
     public String getValue() {
         // Lazily update: Update 'value' by all latest property values when this getValue() method is called.
-
-        // If the 'value' wasn't valid for feature flag configuration setting, return it for configuration setting.
-        if (!isValidFeatureFlagValue) {
-            return originalValue;
-        }
-
-        final Set<String> knownProperties = new LinkedHashSet<>(requiredOrOptionalJsonProperties);
+        String newValue = null;
         try {
             final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
             final JsonWriter writer = JsonProviders.createWriter(outputStream);
+
+            final Set<String> knownProperties = new LinkedHashSet<>(requiredOrOptionalJsonProperties);
 
             writer.writeStartObject();
             // If 'value' has value, and it is a valid JSON, we need to parse it and write it back.
@@ -123,15 +116,15 @@ public final class FeatureFlagConfigurationSetting extends ConfigurationSetting 
             writer.writeEndObject();
 
             writer.flush();
-            originalValue = outputStream.toString(StandardCharsets.UTF_8.name());
+            newValue = outputStream.toString(StandardCharsets.UTF_8.name());
             outputStream.close();
         } catch (IOException exception) {
             LOGGER.logExceptionAsError(new IllegalArgumentException(
                 "Can't parse Feature Flag configuration setting value.", exception));
         }
 
-        super.setValue(originalValue);
-        return originalValue;
+        super.setValue(newValue);
+        return newValue;
     }
 
     /**
@@ -157,9 +150,9 @@ public final class FeatureFlagConfigurationSetting extends ConfigurationSetting 
      */
     @Override
     public FeatureFlagConfigurationSetting setValue(String value) {
-        originalValue = value;
+        tryParseValue(value);
+        isValidFeatureFlagValue = true;
         super.setValue(value);
-        isValidFeatureFlagValue = tryParseValue(value);
         return this;
     }
 
@@ -411,7 +404,7 @@ public final class FeatureFlagConfigurationSetting extends ConfigurationSetting 
             }
         }
 
-        writer.writeArrayField(CLIENT_FILTERS, this.getClientFilters(), (jsonWriter, filter) -> {
+        writer.writeArrayField(CLIENT_FILTERS, this.clientFilters, (jsonWriter, filter) -> {
             jsonWriter.writeStartObject();
             jsonWriter.writeStringField(NAME, filter.getName());
             jsonWriter.writeMapField(PARAMETERS, filter.getParameters(), JsonWriter::writeUntyped);
@@ -421,15 +414,16 @@ public final class FeatureFlagConfigurationSetting extends ConfigurationSetting 
         writer.writeEndObject();
     }
 
-    // Given JSON string value, try to parse it and set the parsed properties to the 'parsedProperties' field.
-    // If the parsing is successful, return true. Otherwise, return false
-    private boolean tryParseValue(String value) {
+    // Given JSON string value, try to parse it and store the parsed properties to the 'parsedProperties' field.
+    // If the parsing is successful, updates the strongly-type property and preserves the unknown properties to
+    // 'parsedProperties' which we will use later in getValue() to get the unknown properties.
+    // Otherwise, set the flag variable 'isValidFeatureFlagValue' = false and throw an exception.
+    private void tryParseValue(String value) {
         parsedProperties.clear();
 
-        final Set<String> requiredPropertiesCopy = new LinkedHashSet<>(requiredJsonProperties);
         try (JsonReader jsonReader = JsonProviders.createReader(value)) {
-            return jsonReader.readObject(reader -> {
-
+            jsonReader.readObject(reader -> {
+                final Set<String> requiredPropertiesCopy = new LinkedHashSet<>(requiredJsonProperties);
                 String featureIdCopy = this.featureId;
                 String descriptionCopy = this.description;
                 String displayNameCopy = this.displayName;
@@ -479,7 +473,8 @@ public final class FeatureFlagConfigurationSetting extends ConfigurationSetting 
                 return requiredPropertiesCopy.isEmpty();
             });
         } catch (IOException e) {
-            return false;
+            isValidFeatureFlagValue = false;
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(e));
         }
     }
 }

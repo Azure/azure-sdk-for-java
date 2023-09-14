@@ -30,9 +30,6 @@ public final class SecretReferenceConfigurationSetting extends ConfigurationSett
     private static final String SECRET_REFERENCE_CONTENT_TYPE =
         "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8";
 
-    // The original 'value' field value. It is a temporary field to store the original 'value' field value.
-    private String originalValue;
-
     // The flag to indicate if the 'value' field is valid. It is a temporary field to store the flag.
     // If the 'value' field is not valid, we will throw an exception when user try to access the strongly-typed
     // properties.
@@ -94,16 +91,12 @@ public final class SecretReferenceConfigurationSetting extends ConfigurationSett
     @Override
     public String getValue() {
         // Lazily update: Update 'value' by all latest property values when this getValue() method is called.
-
-        // If the 'value' wasn't valid for secret reference configuration setting, return it for configuration setting.
-        if (!isValidSecretReferenceValue) {
-            return originalValue;
-        }
-
-        boolean isUriWritten = false;
+        String newValue = null;
         try {
             final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
             final JsonWriter writer = JsonProviders.createWriter(outputStream);
+
+            boolean isUriWritten = false;
 
             writer.writeStartObject();
             // If 'value' has value, and it is a valid JSON, we need to parse it and write it back.
@@ -132,15 +125,15 @@ public final class SecretReferenceConfigurationSetting extends ConfigurationSett
             writer.writeEndObject();
             writer.flush();
 
-            originalValue = outputStream.toString(StandardCharsets.UTF_8.name());
+            newValue = outputStream.toString(StandardCharsets.UTF_8.name());
             outputStream.close();
         } catch (IOException exception) {
             LOGGER.logExceptionAsError(new IllegalArgumentException(
                 "Can't parse Secret Reference configuration setting value.", exception));
         }
 
-        super.setValue(originalValue);
-        return originalValue;
+        super.setValue(newValue);
+        return newValue;
     }
 
     /**
@@ -153,9 +146,9 @@ public final class SecretReferenceConfigurationSetting extends ConfigurationSett
      */
     @Override
     public SecretReferenceConfigurationSetting setValue(String value) {
-        originalValue = value;
+        tryParseValue(value);
+        isValidSecretReferenceValue = true;
         super.setValue(value);
-        isValidSecretReferenceValue = tryParseValue(value);
         return this;
     }
 
@@ -215,13 +208,15 @@ public final class SecretReferenceConfigurationSetting extends ConfigurationSett
         }
     }
 
-    // Given JSON string value, try to parse it and set the parsed properties to the 'parsedProperties' field.
-    // If the parsing is successful, return true. Otherwise, return false
-    private boolean tryParseValue(String value) {
+    // Given JSON string value, try to parse it and store the parsed properties to the 'parsedProperties' field.
+    // If the parsing is successful, updates the strongly-type property and preserves the unknown properties to
+    // 'parsedProperties' which we will use later in getValue() to get the unknown properties.
+    // Otherwise, set the flag variable 'isValidSecretReferenceValue' = false and throw an exception.
+    private void tryParseValue(String value) {
         parsedProperties.clear();
 
         try (JsonReader jsonReader = JsonProviders.createReader(value)) {
-            return jsonReader.readObject(reader -> {
+            jsonReader.readObject(reader -> {
                 boolean isSecretIdUriValid = false;
                 String secreteIdUri = this.secretId;
 
@@ -245,7 +240,8 @@ public final class SecretReferenceConfigurationSetting extends ConfigurationSett
                 return isSecretIdUriValid;
             });
         } catch (IOException e) {
-            return false;
+            isValidSecretReferenceValue = false;
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(e));
         }
     }
 }

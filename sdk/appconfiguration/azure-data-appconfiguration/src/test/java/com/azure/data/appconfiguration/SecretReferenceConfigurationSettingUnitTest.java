@@ -47,12 +47,12 @@ public class SecretReferenceConfigurationSettingUnitTest {
     public void throwExceptionWhenInvalidNonJsonSecretReferenceValue() {
         // Create a new feature flag configuration setting,
         SecretReferenceConfigurationSetting setting = getSecretReferenceConfigurationSetting(NEW_KEY, SECRET_ID_VALUE);
-        // User are still able to set the non-secret reference value as configuration setting value. However, when user
-        // try to get a secret reference property, it will throw exception.
-        String invalidValue = "invalidValueForSecretReferenceConfigurationSetting";
-        setting.setValue(invalidValue);
 
-        assertEquals(invalidValue, setting.getValue());
+        String expectedValue = getSecretReferenceConfigurationSettingValue(SECRET_ID_VALUE);
+        String originalValue = setting.getValue();
+        assertEquals(expectedValue, originalValue);
+        assertThrows(IllegalArgumentException.class, () -> setting.setValue("invalidValueForSecretReferenceConfigurationSetting"));
+        assertEquals(originalValue, setting.getValue());
         assertThrows(IllegalArgumentException.class, () -> setting.getSecretId());
     }
 
