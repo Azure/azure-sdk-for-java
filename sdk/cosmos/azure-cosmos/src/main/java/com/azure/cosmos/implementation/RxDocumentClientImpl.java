@@ -1684,11 +1684,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             options,
             content);
 
-        if (serverBatchRequest instanceof PartitionKeyRangeServerBatchRequest) {
-            PartitionKeyRangeServerBatchRequest partitionKeyRangeServerBatchRequest = (PartitionKeyRangeServerBatchRequest) serverBatchRequest;
-            request.setPartitionBasedGoneNotifier(partitionKeyRangeServerBatchRequest.getPartitionBasedGoneNotifier());
-        }
-
         if (options != null) {
             request.requestContext.setExcludeRegions(options.getExcludeRegions());
         }
@@ -4550,7 +4545,11 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                     this.connectionPolicy.getConnectionMode(),
                     this.partitionKeyRangeCache);
 
-            this.storeModel.enableThroughputControl(throughputControlStore);
+            if (ConnectionMode.DIRECT == this.connectionPolicy.getConnectionMode()) {
+                this.storeModel.enableThroughputControl(throughputControlStore);
+            } else {
+                this.gatewayProxy.enableThroughputControl(throughputControlStore);
+            }
         }
 
         this.throughputControlStore.enableThroughputControlGroup(group, throughputQueryMono);

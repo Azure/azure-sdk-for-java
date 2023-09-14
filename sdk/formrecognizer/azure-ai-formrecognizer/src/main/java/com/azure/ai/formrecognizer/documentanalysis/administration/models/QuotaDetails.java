@@ -11,6 +11,13 @@ import java.time.OffsetDateTime;
 /** Quota used, limit, and next reset date/time. */
 @Immutable
 public final class QuotaDetails {
+
+    /**
+     * Creates a QuotaDetails object.
+     */
+    public QuotaDetails() {
+    }
+
     /*
      * Amount of the resource quota used.
      */

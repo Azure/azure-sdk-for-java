@@ -13,6 +13,12 @@ public final class CreateComposedModelOptions {
     private String modelName;
 
     /**
+     * Create a CreateComposedModelOptions instance.
+     */
+    public CreateComposedModelOptions() {
+    }
+
+    /**
      * Get the optional model name defined by the user.
      *
      * @return the modelName.

@@ -28,7 +28,7 @@ These samples demonstrate the following features:
 Getting started explained in detail [here][EVENTGRID_README_GETTING_STARTED]. 
 Please refer it to add dependency and configure authentication environment variables.
 
-For details on including this dependency in other build tools (Gradle, SBT, etc), refer [here](https://search.maven.org/artifact/com.azure/azure-core).
+For details on including this dependency in other build tools (Gradle, SBT, etc), refer [here](https://central.sonatype.com/artifact/com.azure/azure-core).
 
 ## Sample details
 

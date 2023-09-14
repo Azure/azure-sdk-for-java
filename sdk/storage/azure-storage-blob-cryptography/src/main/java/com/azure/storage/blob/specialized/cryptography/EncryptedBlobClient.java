@@ -486,12 +486,12 @@ public class EncryptedBlobClient extends BlobClient {
             this.getPropertiesWithResponse(requestConditions, timeout, context).getValue();
 
         requestConditions.setIfMatch(initialProperties.getETag());
-        if (initialProperties.getMetadata().get(ENCRYPTION_DATA_KEY) != null) {
-            context = context.addData(ENCRYPTION_DATA_KEY, EncryptionData.getAndValidateEncryptionData(
-                initialProperties.getMetadata().get(ENCRYPTION_DATA_KEY),
-                encryptedBlobAsyncClient.isEncryptionRequired()));
-        }
 
+        String encryptionDataKey = StorageImplUtils.getEncryptionDataKey(initialProperties.getMetadata());
+        if (encryptionDataKey != null) {
+            context = context.addData(ENCRYPTION_DATA_KEY, EncryptionData.getAndValidateEncryptionData(
+                encryptionDataKey, encryptedBlobAsyncClient.isEncryptionRequired()));
+        }
         return context;
     }
 

@@ -95,6 +95,7 @@
     <module>sdk/healthcareapis</module>
     <module>sdk/healthinsights</module>
     <module>sdk/hybridcompute</module>
+    <module>sdk/hybridconnectivity</module>
     <module>sdk/hybridcontainerservice</module>
     <module>sdk/hybridkubernetes</module>
     <module>sdk/hybridnetwork</module>

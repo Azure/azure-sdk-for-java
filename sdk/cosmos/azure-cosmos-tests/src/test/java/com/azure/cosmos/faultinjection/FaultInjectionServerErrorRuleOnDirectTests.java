@@ -128,7 +128,8 @@ public class FaultInjectionServerErrorRuleOnDirectTests extends TestSuiteBase {
             { FaultInjectionServerErrorType.READ_SESSION_NOT_AVAILABLE, true, 404, 1002 },
             { FaultInjectionServerErrorType.TIMEOUT, true, 410, HttpConstants.SubStatusCodes.SERVER_GENERATED_408 }, // for server return 408, SDK will wrap into 410/21010
             { FaultInjectionServerErrorType.PARTITION_IS_MIGRATING, true, 410, 1008 },
-            { FaultInjectionServerErrorType.PARTITION_IS_SPLITTING, true, 410, 1007 }
+            { FaultInjectionServerErrorType.PARTITION_IS_SPLITTING, true, 410, 1007 },
+            { FaultInjectionServerErrorType.SERVICE_UNAVAILABLE, false, 503, 21008 }
         };
     }
 
