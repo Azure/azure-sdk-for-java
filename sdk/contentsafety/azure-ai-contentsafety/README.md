@@ -196,7 +196,7 @@ System.out.println("Violence severity: " + response.getViolenceResult().getSever
 ### Manage text blocklist
 
 #### Create or update text blocklist
-```java com.azure.ai.contentsafety.createorupdatetextblocklist
+```java com.azure.ai.contentsafety.createtextblocklist
 String blocklistName = "TestBlocklist";
 BinaryData resource = BinaryData.fromString("{\"description\":\"Test Blocklist\"}");
 RequestOptions requestOptions = new RequestOptions();

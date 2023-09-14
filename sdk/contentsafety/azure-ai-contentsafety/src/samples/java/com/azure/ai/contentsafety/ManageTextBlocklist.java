@@ -36,7 +36,7 @@ public class ManageTextBlocklist {
             .endpoint(endpoint).buildClient();
         // END:com.azure.ai.contentsafety.createClient
 
-        // BEGIN:com.azure.ai.contentsafety.createorupdatetextblocklist
+        // BEGIN:com.azure.ai.contentsafety.createtextblocklist
         String blocklistName = "TestBlocklist";
         BinaryData resource = BinaryData.fromString("{\"description\":\"Test Blocklist\"}");
         RequestOptions requestOptions = new RequestOptions();
@@ -47,7 +47,7 @@ public class ManageTextBlocklist {
         } else if (response.getStatusCode() == 200) {
             System.out.println("\nBlocklist " + blocklistName + " updated.");
         }
-        // END:com.azure.ai.contentsafety.createorupdatetextblocklist
+        // END:com.azure.ai.contentsafety.createtextblocklist
 
         // BEGIN:com.azure.ai.contentsafety.addblockitems
         String blockItemText1 = "k*ll";
