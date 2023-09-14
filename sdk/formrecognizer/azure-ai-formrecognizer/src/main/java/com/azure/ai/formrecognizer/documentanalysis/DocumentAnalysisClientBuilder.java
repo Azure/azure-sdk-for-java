@@ -103,6 +103,12 @@ public final class DocumentAnalysisClientBuilder implements
     TokenCredentialTrait<DocumentAnalysisClientBuilder> {
     private final ClientLogger logger = new ClientLogger(DocumentAnalysisClientBuilder.class);
 
+    /**
+     * Create a DocumentAnalysisClientBuilder instance.
+     */
+    public DocumentAnalysisClientBuilder() {
+    }
+
     private final List<HttpPipelinePolicy> perCallPolicies = new ArrayList<>();
     private final List<HttpPipelinePolicy> perRetryPolicies = new ArrayList<>();
 

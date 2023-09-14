@@ -5,6 +5,7 @@ package com.azure.resourcemanager.compute;
 
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.management.Region;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.profile.AzureProfile;
@@ -63,6 +64,7 @@ import com.azure.resourcemanager.storage.models.StorageAccount;
 import com.azure.resourcemanager.storage.models.StorageAccountSkuType;
 import com.azure.security.keyvault.keys.models.KeyType;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
@@ -1704,6 +1706,110 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
         Assertions.assertEquals(DeleteOptions.DELETE, vm.primaryNetworkInterfaceDeleteOptions());
         Assertions.assertTrue(vm.networkInterfaceIds().stream().allMatch(nicId -> DeleteOptions.DELETE.equals(vm.networkInterfaceDeleteOptions(nicId))));
         Assertions.assertTrue(vm.dataDisks().values().stream().allMatch(disk -> DeleteOptions.DELETE.equals(disk.deleteOptions())));
+    }
+
+    @Test
+    public void testListVmByVmssId() {
+        String vmssName = generateRandomResourceName("vmss", 15);
+        String vmName = generateRandomResourceName("vm", 15);
+        String vmName2 = generateRandomResourceName("vm", 15);
+
+        VirtualMachineScaleSet vmss = computeManager.virtualMachineScaleSets()
+            .define(vmssName)
+            .withRegion(region)
+            .withNewResourceGroup(rgName)
+            .withFlexibleOrchestrationMode()
+            .create();
+
+        Assertions.assertEquals(0, computeManager.virtualMachines().listByVirtualMachineScaleSetId(vmss.id()).stream().count());
+
+        VirtualMachine vm = computeManager.virtualMachines()
+            .define(vmName)
+            .withRegion(region)
+            .withExistingResourceGroup(rgName)
+            .withNewPrimaryNetwork("10.0.0.0/28")
+            .withPrimaryPrivateIPAddressDynamic()
+            .withoutPrimaryPublicIPAddress()
+            .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
+            .withRootUsername("jvuser")
+            .withSsh(sshPublicKey())
+            .withExistingVirtualMachineScaleSet(vmss)
+            .create();
+
+        Assertions.assertNotNull(vm.virtualMachineScaleSetId());
+
+        VirtualMachine vm2 = computeManager.virtualMachines()
+            .define(vmName2)
+            .withRegion(region)
+            .withExistingResourceGroup(rgName)
+            .withNewPrimaryNetwork("10.0.0.16/28")
+            .withPrimaryPrivateIPAddressDynamic()
+            .withoutPrimaryPublicIPAddress()
+            .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
+            .withRootUsername("jvuser")
+            .withSsh(sshPublicKey())
+            .create();
+
+        Assertions.assertNull(vm2.virtualMachineScaleSetId());
+
+        Assertions.assertEquals(1, computeManager.virtualMachines().listByVirtualMachineScaleSetId(vmss.id()).stream().count());
+        Assertions.assertEquals(2, computeManager.virtualMachines().listByResourceGroup(rgName).stream().count());
+    }
+
+    @Test
+    @DoNotRecord(skipInPlayback = true)
+    @Disabled("This test is for listByVirtualMachineScaleSetId nextLink encoding. Backend pageSize may change, so we don't want to assert that.")
+    public void testListByVmssIdNextLink() throws Exception {
+        String vmssName = generateRandomResourceName("vmss", 15);
+        String vnetName = generateRandomResourceName("vnet", 15);
+        String vmName = generateRandomResourceName("vm", 15);
+        int vmssCapacity = 70;
+
+        // vm that's not in VMSS
+        computeManager.virtualMachines()
+            .define(vmName)
+            .withRegion(region)
+            .withNewResourceGroup(rgName)
+            .withNewPrimaryNetwork("10.0.1.0/24")
+            .withPrimaryPrivateIPAddressDynamic()
+            .withoutPrimaryPublicIPAddress()
+            .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
+            .withRootUsername("jvuser")
+            .withSsh(sshPublicKey())
+            .create();
+
+        Network network = networkManager.networks().define(vnetName)
+            .withRegion(region)
+            .withExistingResourceGroup(rgName)
+            .withAddressSpace("10.0.0.0/24")
+            .withSubnet("subnet1", "10.0.0.0/24")
+            .create();
+        LoadBalancer publicLoadBalancer = createHttpLoadBalancers(region, this.resourceManager.resourceGroups().getByName(rgName), "1", LoadBalancerSkuType.STANDARD, PublicIPSkuType.STANDARD, true);
+        VirtualMachineScaleSet vmss = computeManager.virtualMachineScaleSets()
+            .define(vmssName)
+            .withRegion(region)
+            .withExistingResourceGroup(rgName)
+            .withFlexibleOrchestrationMode()
+            .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_A0)
+            .withExistingPrimaryNetworkSubnet(network, "subnet1")
+            .withExistingPrimaryInternetFacingLoadBalancer(publicLoadBalancer)
+            .withoutPrimaryInternalLoadBalancer()
+            .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
+            .withRootUsername("jvuser")
+            .withSsh(sshPublicKey())
+            .withCapacity(vmssCapacity)
+            .create();
+
+        PagedIterable<VirtualMachine> vmPaged = computeManager.virtualMachines().listByVirtualMachineScaleSetId(vmss.id());
+        Iterable<PagedResponse<VirtualMachine>> vmIterable = vmPaged.iterableByPage();
+        int pageCount = 0;
+        for (PagedResponse<VirtualMachine> response : vmIterable) {
+            pageCount++;
+            Assertions.assertEquals(200, response.getStatusCode());
+        }
+
+        Assertions.assertEquals(vmssCapacity, vmPaged.stream().count());
+        Assertions.assertEquals(2, pageCount);
     }
 
     // *********************************** helper methods ***********************************

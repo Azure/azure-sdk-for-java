@@ -11,6 +11,13 @@ import java.util.List;
 /** A formula object. */
 @Fluent
 public final class DocumentFormula {
+
+    /**
+     * Constructs a DocumentFormula object.
+     */
+    public DocumentFormula() {
+    }
+
     /*
      * Formula kind.
      */

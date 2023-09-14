@@ -362,9 +362,13 @@
       "type": "string",
       "value": "[resourceId('Microsoft.OperationalInsights/workspaces', variables('workspaceName'))]"
     },
-    "AZURE_MONITOR_METRICS_RESOURCE_URI": {
+    "AZURE_MONITOR_METRICS_RESOURCE_URI_1": {
       "type": "string",
       "value": "[resourceId('Microsoft.Eventhub/Namespaces', variables('eventHubsNamespaceName'))]"
+    },
+    "AZURE_MONITOR_METRICS_RESOURCE_URI_2": {
+      "type": "string",
+      "value": "[resourceId('Microsoft.AppConfiguration/configurationStores',variables('uniqueAzConfigName'))]"
     }
   }
 }

@@ -13,7 +13,7 @@ public final class MemberUpdateStatusTests {
         MemberUpdateStatus model =
             BinaryData
                 .fromString(
-                    "{\"status\":{\"startTime\":\"2021-09-06T05:45:20Z\",\"completedTime\":\"2021-02-14T15:50:10Z\",\"state\":\"Completed\"},\"name\":\"djwzrlov\",\"clusterResourceId\":\"lwhijcoejctbzaq\",\"operationId\":\"sycbkbfk\"}")
+                    "{\"status\":{\"startTime\":\"2021-09-14T21:04:43Z\",\"completedTime\":\"2021-01-07T21:55:14Z\",\"state\":\"Stopping\"},\"name\":\"jzkdeslpvlopwi\",\"clusterResourceId\":\"ghxpkdw\",\"operationId\":\"aiuebbaumnyqu\",\"message\":\"deoj\"}")
                 .toObject(MemberUpdateStatus.class);
     }
 

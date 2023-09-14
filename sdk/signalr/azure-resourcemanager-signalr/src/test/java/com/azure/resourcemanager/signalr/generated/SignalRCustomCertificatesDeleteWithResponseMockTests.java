@@ -58,6 +58,6 @@ public final class SignalRCustomCertificatesDeleteWithResponseMockTests {
 
         manager
             .signalRCustomCertificates()
-            .deleteWithResponse("ffhmouwqlgzr", "zeeyebi", "ikayuhqlbjbsybb", com.azure.core.util.Context.NONE);
+            .deleteWithResponse("dxxewuninv", "db", "h", com.azure.core.util.Context.NONE);
     }
 }

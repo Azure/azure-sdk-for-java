@@ -2,8 +2,7 @@
 
 Azure Communication Job Router contains the APIs used in job router applications for Azure Communication Services.
 
-[Source code][source] | [Package (Maven)][package] | [API reference documentation][api_documentation]
-| [Product documentation][product_docs]
+[Source code][source_code] | [Package (Maven)][package] | [API reference documentation][api_documentation] | [Product documentation][product_docs]
 
 ## Getting started
 
@@ -234,3 +233,16 @@ This project welcomes contributions and suggestions. Most contributions require 
 When you submit a pull request, a CLA-bot will automatically determine whether you need to provide a CLA and decorate the PR appropriately (e.g., label, comment). Simply follow the instructions provided by the bot. You will only need to do this once across all repos using our CLA.
 
 This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For more information see the [Code of Conduct FAQ][coc_faq] or contact [opencode@microsoft.com][coc_contact] with any additional questions or comments.
+
+<!-- LINKS -->
+[source_code]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/communication/azure-communication-jobrouter/src
+[jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
+[package]: https://search.maven.org/artifact/com.azure/azure-communication-jobrouter
+[api_documentation]: https://aka.ms/java-docs
+[rest_docs]: https://learn.microsoft.com/rest/api/communication/
+[product_docs]: https://learn.microsoft.com/azure/communication-services/
+[cla]: https://cla.microsoft.com
+[coc]: https://opensource.microsoft.com/codeofconduct/
+[coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/
+[coc_contact]: mailto:opencode@microsoft.com
+![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fcommunication%2Fazure-communication-jobrouter%2FREADME.png)

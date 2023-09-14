@@ -18,7 +18,7 @@ More detail is defined at [file key concept][file_key_concept].
 ## Getting started
 Getting started explained in detail [here][SDK_README_GETTING_STARTED].
 
-For details on including this dependency in other build tools (Gradle, SBT, etc), refer [here](https://search.maven.org/artifact/com.azure/azure-core).
+For details on including this dependency in other build tools (Gradle, SBT, etc), refer [here](https://central.sonatype.com/artifact/com.azure/azure-core).
 
 ## Examples
 Following are examples for some common use-cases.

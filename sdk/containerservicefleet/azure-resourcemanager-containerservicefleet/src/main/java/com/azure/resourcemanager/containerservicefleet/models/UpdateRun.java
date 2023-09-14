@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.containerservicefleet.models;
 
-import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.containerservicefleet.fluent.models.UpdateRunInner;
 
@@ -40,13 +39,6 @@ public interface UpdateRun {
      * @return the etag value.
      */
     String etag();
-
-    /**
-     * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
-     * @return the systemData value.
-     */
-    SystemData systemData();
 
     /**
      * Gets the provisioningState property: The provisioning state of the UpdateRun resource.
@@ -97,11 +89,13 @@ public interface UpdateRun {
     interface Definition
         extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
+
     /** The UpdateRun definition stages. */
     interface DefinitionStages {
         /** The first stage of the UpdateRun definition. */
         interface Blank extends WithParentResource {
         }
+
         /** The stage of the UpdateRun definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
@@ -113,6 +107,7 @@ public interface UpdateRun {
              */
             WithCreate withExistingFleet(String resourceGroupName, String fleetName);
         }
+
         /**
          * The stage of the UpdateRun definition which contains all the minimum required properties for the resource to
          * be created, but also allows for any other optional properties to be specified.
@@ -137,6 +132,7 @@ public interface UpdateRun {
              */
             UpdateRun create(Context context);
         }
+
         /** The stage of the UpdateRun definition allowing to specify strategy. */
         interface WithStrategy {
             /**
@@ -153,6 +149,7 @@ public interface UpdateRun {
              */
             WithCreate withStrategy(UpdateRunStrategy strategy);
         }
+
         /** The stage of the UpdateRun definition allowing to specify managedClusterUpdate. */
         interface WithManagedClusterUpdate {
             /**
@@ -165,6 +162,7 @@ public interface UpdateRun {
              */
             WithCreate withManagedClusterUpdate(ManagedClusterUpdate managedClusterUpdate);
         }
+
         /** The stage of the UpdateRun definition allowing to specify ifMatch. */
         interface WithIfMatch {
             /**
@@ -175,6 +173,7 @@ public interface UpdateRun {
              */
             WithCreate withIfMatch(String ifMatch);
         }
+
         /** The stage of the UpdateRun definition allowing to specify ifNoneMatch. */
         interface WithIfNoneMatch {
             /**
@@ -186,6 +185,7 @@ public interface UpdateRun {
             WithCreate withIfNoneMatch(String ifNoneMatch);
         }
     }
+
     /**
      * Begins update for the UpdateRun resource.
      *
@@ -214,6 +214,7 @@ public interface UpdateRun {
          */
         UpdateRun apply(Context context);
     }
+
     /** The UpdateRun update stages. */
     interface UpdateStages {
         /** The stage of the UpdateRun update allowing to specify strategy. */
@@ -232,6 +233,7 @@ public interface UpdateRun {
              */
             Update withStrategy(UpdateRunStrategy strategy);
         }
+
         /** The stage of the UpdateRun update allowing to specify managedClusterUpdate. */
         interface WithManagedClusterUpdate {
             /**
@@ -244,6 +246,7 @@ public interface UpdateRun {
              */
             Update withManagedClusterUpdate(ManagedClusterUpdate managedClusterUpdate);
         }
+
         /** The stage of the UpdateRun update allowing to specify ifMatch. */
         interface WithIfMatch {
             /**
@@ -254,6 +257,7 @@ public interface UpdateRun {
              */
             Update withIfMatch(String ifMatch);
         }
+
         /** The stage of the UpdateRun update allowing to specify ifNoneMatch. */
         interface WithIfNoneMatch {
             /**
@@ -265,6 +269,7 @@ public interface UpdateRun {
             Update withIfNoneMatch(String ifNoneMatch);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *
