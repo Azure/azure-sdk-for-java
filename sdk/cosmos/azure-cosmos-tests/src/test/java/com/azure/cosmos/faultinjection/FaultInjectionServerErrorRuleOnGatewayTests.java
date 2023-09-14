@@ -214,7 +214,7 @@ public class FaultInjectionServerErrorRuleOnGatewayTests extends TestSuiteBase {
                 HttpConstants.StatusCodes.SERVICE_UNAVAILABLE,
                 HttpConstants.SubStatusCodes.SERVER_GENERATED_503,
                 localRegionRuleId,
-                false
+                true
             );
 
             serverErrorRuleLocalRegion.disable();
@@ -621,7 +621,7 @@ public class FaultInjectionServerErrorRuleOnGatewayTests extends TestSuiteBase {
                 }
                 assertThat(gatewayStatisticsList.size()).isEqualTo(2);
             } else {
-                assertThat(gatewayStatisticsList.size()).isEqualTo(3);
+                assertThat(gatewayStatisticsList.size()).isEqualTo(1);
             }
             JsonNode gatewayStatistics = gatewayStatisticsList.get(0);
             assertThat(gatewayStatistics).isNotNull();
