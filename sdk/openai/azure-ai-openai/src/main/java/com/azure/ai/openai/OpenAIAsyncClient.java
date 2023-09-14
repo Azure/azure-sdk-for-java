@@ -764,7 +764,87 @@ public final class OpenAIAsyncClient {
     }
 
     // TODO: docs
+    public Mono<AudioTranscription> getAudioTranscription(
+            String deploymentOrModelName, AudioTranscriptionOptions audioTranscriptionOptions, String fileName) {
+        // checking allowed formats for a JSON response
+        List<AudioTranscriptionFormat> acceptedFormats = new ArrayList<>();
+        acceptedFormats.add(AudioTranscriptionFormat.JSON);
+        acceptedFormats.add(AudioTranscriptionFormat.VERBOSE_JSON);
+        if(!acceptedFormats.contains(audioTranscriptionOptions.getResponseFormat())) {
+            return Mono.error(new IllegalArgumentException("This operation does not support the requested audio format"));
+        }
 
+        // embedding the `model` in the request for non-Azure case
+        if (this.openAIServiceClient != null) {
+            audioTranscriptionOptions.setModel(deploymentOrModelName);
+        }
+
+        MultipartDataHelper helper = new MultipartDataHelper();
+        MultipartDataSerializationResult result = helper.serializeRequest(audioTranscriptionOptions, fileName);
+        return getAudioTranscription(deploymentOrModelName, result, helper.getBoundary());
+    }
+
+    // TODO: docs
+    public Mono<String> getAudioTranscriptionText(
+            String deploymentOrModelName, AudioTranscriptionOptions audioTranscriptionOptions, String fileName) {
+        // checking allowed formats for a plain text response
+        List<AudioTranscriptionFormat> acceptedFormats = new ArrayList<>();
+        acceptedFormats.add(AudioTranscriptionFormat.TEXT);
+        acceptedFormats.add(AudioTranscriptionFormat.VTT);
+        acceptedFormats.add(AudioTranscriptionFormat.SRT);
+        if(!acceptedFormats.contains(audioTranscriptionOptions.getResponseFormat())) {
+            return Mono.error(new IllegalArgumentException("This operation does not support the requested audio format"));
+        }
+
+        // embedding the `model` in the request for non-Azure case
+        if (this.openAIServiceClient != null) {
+            audioTranscriptionOptions.setModel(deploymentOrModelName);
+        }
+
+        MultipartDataHelper helper = new MultipartDataHelper();
+        MultipartDataSerializationResult result = helper.serializeRequest(audioTranscriptionOptions, fileName);
+        return getAudioTranscriptionAsPlainText(deploymentOrModelName, result, helper.getBoundary());
+    }
+
+    Mono<AudioTranscription> getAudioTranscription(
+            String deploymentOrModelName,
+            MultipartDataSerializationResult requestData,
+            String multipartBoundary) {
+
+        RequestOptions requestOptions = new RequestOptions();
+        requestOptions
+                .setHeader(HttpHeaderName.CONTENT_TYPE, "multipart/form-data;" + " boundary=" + multipartBoundary)
+                .setHeader(HttpHeaderName.CONTENT_LENGTH, String.valueOf(requestData.getDataLength()));
+
+        Mono<Response<BinaryData>> response = openAIServiceClient != null ?
+                this.openAIServiceClient.getAudioTranscriptionAsResponseObjectWithResponseAsync(
+                        deploymentOrModelName, requestData.getData(), requestOptions) :
+                this.serviceClient.getAudioTranscriptionAsResponseObjectWithResponseAsync(
+                        deploymentOrModelName, requestData.getData(), requestOptions);
+
+        return response.map(binaryData -> binaryData.getValue().toObject(AudioTranscription.class));
+    }
+
+    Mono<String> getAudioTranscriptionAsPlainText(
+            String deploymentOrModelName,
+            MultipartDataSerializationResult requestData,
+            String multipartBoundary) {
+
+        RequestOptions requestOptions = new RequestOptions();
+        requestOptions
+                .setHeader(HttpHeaderName.CONTENT_TYPE, "multipart/form-data;" + " boundary=" + multipartBoundary)
+                .setHeader(HttpHeaderName.CONTENT_LENGTH, String.valueOf(requestData.getDataLength()));
+
+        Mono<Response<BinaryData>> response = openAIServiceClient != null ?
+                this.openAIServiceClient.getAudioTranscriptionAsPlainTextWithResponseAsync(
+                        deploymentOrModelName, requestData.getData(), requestOptions) :
+                this.serviceClient.getAudioTranscriptionAsPlainTextWithResponseAsync(
+                        deploymentOrModelName, requestData.getData(), requestOptions);
+
+        return response.map(binaryData -> binaryData.getValue().toString());
+    }
+
+    // TODO: docs
     public Mono<AudioTranscription> getAudioTranslation(
             String deploymentOrModelName, AudioTranslationOptions audioTranslationOptions, String fileName) {
         // checking allowed formats for a JSON response
@@ -786,7 +866,6 @@ public final class OpenAIAsyncClient {
     }
 
     // TODO: docs
-
     public Mono<String> getAudioTranslationText(
             String deploymentOrModelName, AudioTranslationOptions audioTranslationOptions, String fileName) {
         // checking allowed formats for a plain text response
