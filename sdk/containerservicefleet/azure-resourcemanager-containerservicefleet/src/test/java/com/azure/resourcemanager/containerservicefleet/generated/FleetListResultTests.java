@@ -6,7 +6,13 @@ package com.azure.resourcemanager.containerservicefleet.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.containerservicefleet.fluent.models.FleetInner;
+import com.azure.resourcemanager.containerservicefleet.models.AgentProfile;
+import com.azure.resourcemanager.containerservicefleet.models.ApiServerAccessProfile;
+import com.azure.resourcemanager.containerservicefleet.models.FleetHubProfile;
 import com.azure.resourcemanager.containerservicefleet.models.FleetListResult;
+import com.azure.resourcemanager.containerservicefleet.models.ManagedServiceIdentity;
+import com.azure.resourcemanager.containerservicefleet.models.ManagedServiceIdentityType;
+import com.azure.resourcemanager.containerservicefleet.models.UserAssignedIdentity;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -18,11 +24,19 @@ public final class FleetListResultTests {
         FleetListResult model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"properties\":{\"provisioningState\":\"Succeeded\"},\"eTag\":\"xqhabi\",\"location\":\"ikxwc\",\"tags\":{\"n\":\"scnpqxuhivy\",\"rkxvdum\":\"wby\"},\"id\":\"grtfwvu\",\"name\":\"xgaudccs\",\"type\":\"h\"}],\"nextLink\":\"cnyejhkryhtnapcz\"}")
+                    "{\"value\":[{\"properties\":{\"provisioningState\":\"Succeeded\",\"hubProfile\":{\"dnsPrefix\":\"xqhabi\",\"apiServerAccessProfile\":{\"enablePrivateCluster\":true,\"enableVnetIntegration\":false,\"subnetId\":\"zb\"},\"agentProfile\":{\"subnetId\":\"npqxuh\"},\"fqdn\":\"y\",\"kubernetesVersion\":\"iwbybrkxvdumjg\"}},\"eTag\":\"fwvuk\",\"identity\":{\"principalId\":\"f13a5f25-bc31-49d8-88d0-1d1d37a8afd8\",\"tenantId\":\"f0f5954e-03de-4469-9399-a9c8ed463061\",\"type\":\"None\",\"userAssignedIdentities\":{\"h\":{\"principalId\":\"046ae93b-53f0-4523-bb2b-2e39bf3db838\",\"clientId\":\"553980cf-a36b-4c15-ac0b-14656a544ba4\"}}},\"location\":\"cnyejhkryhtnapcz\",\"tags\":{\"ni\":\"kjyemkk\",\"ilzyd\":\"joxzjnchgejspodm\"},\"id\":\"h\",\"name\":\"jwyahuxinpmqnja\",\"type\":\"wixjsprozvcp\"}],\"nextLink\":\"eg\"}")
                 .toObject(FleetListResult.class);
-        Assertions.assertEquals("ikxwc", model.value().get(0).location());
-        Assertions.assertEquals("scnpqxuhivy", model.value().get(0).tags().get("n"));
-        Assertions.assertEquals("cnyejhkryhtnapcz", model.nextLink());
+        Assertions.assertEquals("cnyejhkryhtnapcz", model.value().get(0).location());
+        Assertions.assertEquals("kjyemkk", model.value().get(0).tags().get("ni"));
+        Assertions.assertEquals(ManagedServiceIdentityType.NONE, model.value().get(0).identity().type());
+        Assertions.assertEquals("xqhabi", model.value().get(0).hubProfile().dnsPrefix());
+        Assertions
+            .assertEquals(true, model.value().get(0).hubProfile().apiServerAccessProfile().enablePrivateCluster());
+        Assertions
+            .assertEquals(false, model.value().get(0).hubProfile().apiServerAccessProfile().enableVnetIntegration());
+        Assertions.assertEquals("zb", model.value().get(0).hubProfile().apiServerAccessProfile().subnetId());
+        Assertions.assertEquals("npqxuh", model.value().get(0).hubProfile().agentProfile().subnetId());
+        Assertions.assertEquals("eg", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
@@ -33,15 +47,37 @@ public final class FleetListResultTests {
                     Arrays
                         .asList(
                             new FleetInner()
-                                .withLocation("ikxwc")
-                                .withTags(mapOf("n", "scnpqxuhivy", "rkxvdum", "wby"))))
-                .withNextLink("cnyejhkryhtnapcz");
+                                .withLocation("cnyejhkryhtnapcz")
+                                .withTags(mapOf("ni", "kjyemkk", "ilzyd", "joxzjnchgejspodm"))
+                                .withIdentity(
+                                    new ManagedServiceIdentity()
+                                        .withType(ManagedServiceIdentityType.NONE)
+                                        .withUserAssignedIdentities(mapOf("h", new UserAssignedIdentity())))
+                                .withHubProfile(
+                                    new FleetHubProfile()
+                                        .withDnsPrefix("xqhabi")
+                                        .withApiServerAccessProfile(
+                                            new ApiServerAccessProfile()
+                                                .withEnablePrivateCluster(true)
+                                                .withEnableVnetIntegration(false)
+                                                .withSubnetId("zb"))
+                                        .withAgentProfile(new AgentProfile().withSubnetId("npqxuh")))))
+                .withNextLink("eg");
         model = BinaryData.fromObject(model).toObject(FleetListResult.class);
-        Assertions.assertEquals("ikxwc", model.value().get(0).location());
-        Assertions.assertEquals("scnpqxuhivy", model.value().get(0).tags().get("n"));
-        Assertions.assertEquals("cnyejhkryhtnapcz", model.nextLink());
+        Assertions.assertEquals("cnyejhkryhtnapcz", model.value().get(0).location());
+        Assertions.assertEquals("kjyemkk", model.value().get(0).tags().get("ni"));
+        Assertions.assertEquals(ManagedServiceIdentityType.NONE, model.value().get(0).identity().type());
+        Assertions.assertEquals("xqhabi", model.value().get(0).hubProfile().dnsPrefix());
+        Assertions
+            .assertEquals(true, model.value().get(0).hubProfile().apiServerAccessProfile().enablePrivateCluster());
+        Assertions
+            .assertEquals(false, model.value().get(0).hubProfile().apiServerAccessProfile().enableVnetIntegration());
+        Assertions.assertEquals("zb", model.value().get(0).hubProfile().apiServerAccessProfile().subnetId());
+        Assertions.assertEquals("npqxuh", model.value().get(0).hubProfile().agentProfile().subnetId());
+        Assertions.assertEquals("eg", model.nextLink());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

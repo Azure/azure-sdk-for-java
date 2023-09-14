@@ -6,7 +6,12 @@ package com.azure.resourcemanager.containerservicefleet.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.containerservicefleet.fluent.models.FleetInner;
+import com.azure.resourcemanager.containerservicefleet.models.AgentProfile;
+import com.azure.resourcemanager.containerservicefleet.models.ApiServerAccessProfile;
 import com.azure.resourcemanager.containerservicefleet.models.FleetHubProfile;
+import com.azure.resourcemanager.containerservicefleet.models.ManagedServiceIdentity;
+import com.azure.resourcemanager.containerservicefleet.models.ManagedServiceIdentityType;
+import com.azure.resourcemanager.containerservicefleet.models.UserAssignedIdentity;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
@@ -17,26 +22,51 @@ public final class FleetInnerTests {
         FleetInner model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"provisioningState\":\"Succeeded\",\"hubProfile\":{\"dnsPrefix\":\"emkkvnipjox\",\"fqdn\":\"nchgej\",\"kubernetesVersion\":\"odmailzyd\"}},\"eTag\":\"o\",\"location\":\"yahux\",\"tags\":{\"xj\":\"mqnjaqw\",\"atscmd\":\"prozvcputegjvwmf\"},\"id\":\"pjhulsuuvmkj\",\"name\":\"zkrwfn\",\"type\":\"iodjp\"}")
+                    "{\"properties\":{\"provisioningState\":\"Updating\",\"hubProfile\":{\"dnsPrefix\":\"atscmd\",\"apiServerAccessProfile\":{\"enablePrivateCluster\":true,\"enableVnetIntegration\":true,\"subnetId\":\"uuvmkjozkrwfnd\"},\"agentProfile\":{\"subnetId\":\"jpslwejd\"},\"fqdn\":\"wryoqpsoacc\",\"kubernetesVersion\":\"zakljlahbc\"}},\"eTag\":\"ffdfdosygexpa\",\"identity\":{\"principalId\":\"85d45763-c19d-4971-8084-dcabeb58057c\",\"tenantId\":\"7f15863e-a07c-47e4-b5db-0432db2c812e\",\"type\":\"SystemAssigned,"
+                        + " UserAssigned\",\"userAssignedIdentities\":{\"jhcrz\":{\"principalId\":\"f5411541-9b79-437b-9003-3ca62b03d24e\",\"clientId\":\"1d9cc6b6-b0b1-491d-ada1-15a9c0bd4987\"},\"phlxa\":{\"principalId\":\"d1f48034-a890-487e-955d-10e685f6d76b\",\"clientId\":\"574d17d4-5b47-4dba-9ecf-118d875fc370\"}}},\"location\":\"thqt\",\"tags\":{\"zfsinzgvf\":\"jbp\",\"j\":\"jrwzox\",\"fpjkjlxofp\":\"felluwfzitonpe\"},\"id\":\"vhpfxxypininmay\",\"name\":\"uybbkpodep\",\"type\":\"oginuvamiheognar\"}")
                 .toObject(FleetInner.class);
-        Assertions.assertEquals("yahux", model.location());
-        Assertions.assertEquals("mqnjaqw", model.tags().get("xj"));
-        Assertions.assertEquals("emkkvnipjox", model.hubProfile().dnsPrefix());
+        Assertions.assertEquals("thqt", model.location());
+        Assertions.assertEquals("jbp", model.tags().get("zfsinzgvf"));
+        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, model.identity().type());
+        Assertions.assertEquals("atscmd", model.hubProfile().dnsPrefix());
+        Assertions.assertEquals(true, model.hubProfile().apiServerAccessProfile().enablePrivateCluster());
+        Assertions.assertEquals(true, model.hubProfile().apiServerAccessProfile().enableVnetIntegration());
+        Assertions.assertEquals("uuvmkjozkrwfnd", model.hubProfile().apiServerAccessProfile().subnetId());
+        Assertions.assertEquals("jpslwejd", model.hubProfile().agentProfile().subnetId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         FleetInner model =
             new FleetInner()
-                .withLocation("yahux")
-                .withTags(mapOf("xj", "mqnjaqw", "atscmd", "prozvcputegjvwmf"))
-                .withHubProfile(new FleetHubProfile().withDnsPrefix("emkkvnipjox"));
+                .withLocation("thqt")
+                .withTags(mapOf("zfsinzgvf", "jbp", "j", "jrwzox", "fpjkjlxofp", "felluwfzitonpe"))
+                .withIdentity(
+                    new ManagedServiceIdentity()
+                        .withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
+                        .withUserAssignedIdentities(
+                            mapOf("jhcrz", new UserAssignedIdentity(), "phlxa", new UserAssignedIdentity())))
+                .withHubProfile(
+                    new FleetHubProfile()
+                        .withDnsPrefix("atscmd")
+                        .withApiServerAccessProfile(
+                            new ApiServerAccessProfile()
+                                .withEnablePrivateCluster(true)
+                                .withEnableVnetIntegration(true)
+                                .withSubnetId("uuvmkjozkrwfnd"))
+                        .withAgentProfile(new AgentProfile().withSubnetId("jpslwejd")));
         model = BinaryData.fromObject(model).toObject(FleetInner.class);
-        Assertions.assertEquals("yahux", model.location());
-        Assertions.assertEquals("mqnjaqw", model.tags().get("xj"));
-        Assertions.assertEquals("emkkvnipjox", model.hubProfile().dnsPrefix());
+        Assertions.assertEquals("thqt", model.location());
+        Assertions.assertEquals("jbp", model.tags().get("zfsinzgvf"));
+        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, model.identity().type());
+        Assertions.assertEquals("atscmd", model.hubProfile().dnsPrefix());
+        Assertions.assertEquals(true, model.hubProfile().apiServerAccessProfile().enablePrivateCluster());
+        Assertions.assertEquals(true, model.hubProfile().apiServerAccessProfile().enableVnetIntegration());
+        Assertions.assertEquals("uuvmkjozkrwfnd", model.hubProfile().apiServerAccessProfile().subnetId());
+        Assertions.assertEquals("jpslwejd", model.hubProfile().agentProfile().subnetId());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

@@ -12,8 +12,13 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.containerservicefleet.ContainerServiceFleetManager;
+import com.azure.resourcemanager.containerservicefleet.models.AgentProfile;
+import com.azure.resourcemanager.containerservicefleet.models.ApiServerAccessProfile;
 import com.azure.resourcemanager.containerservicefleet.models.Fleet;
 import com.azure.resourcemanager.containerservicefleet.models.FleetHubProfile;
+import com.azure.resourcemanager.containerservicefleet.models.ManagedServiceIdentity;
+import com.azure.resourcemanager.containerservicefleet.models.ManagedServiceIdentityType;
+import com.azure.resourcemanager.containerservicefleet.models.UserAssignedIdentity;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
@@ -34,7 +39,7 @@ public final class FleetsCreateOrUpdateMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"provisioningState\":\"Succeeded\",\"hubProfile\":{\"dnsPrefix\":\"q\",\"fqdn\":\"a\",\"kubernetesVersion\":\"ae\"}},\"eTag\":\"fhyhltrpmopjmcma\",\"location\":\"okth\",\"tags\":{\"xodpuozmyzydagfu\":\"uaodsfcpk\",\"dxwzywqsmbsurexi\":\"xbezyiuokktwh\"},\"id\":\"o\",\"name\":\"yocf\",\"type\":\"fksymddystki\"}";
+            "{\"properties\":{\"provisioningState\":\"Succeeded\",\"hubProfile\":{\"dnsPrefix\":\"xbpvjymjhx\",\"apiServerAccessProfile\":{\"enablePrivateCluster\":false,\"enableVnetIntegration\":false,\"subnetId\":\"ivkrtsw\"},\"agentProfile\":{\"subnetId\":\"zvszj\"},\"fqdn\":\"uvjfdxxive\",\"kubernetesVersion\":\"t\"}},\"eTag\":\"aqtdoqmcbx\",\"identity\":{\"principalId\":\"c62bc748-b481-4300-961b-de403530204b\",\"tenantId\":\"79f27822-bfb8-44f8-a1a1-37b52e172d1d\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"hsfxoblytkb\":{\"principalId\":\"2f26d9f4-2219-4c0d-a6ed-9ffde38acba1\",\"clientId\":\"9fc4dea0-57ec-4750-94b8-1ff25d1f6025\"},\"ewwwfbkrvrnsv\":{\"principalId\":\"55e46417-78a1-4e83-a17f-43d466b3dab0\",\"clientId\":\"30eeb6ee-258c-40fc-ba1e-3b93ee26bcfc\"}}},\"location\":\"q\",\"tags\":{\"sbfov\":\"xc\"},\"id\":\"srruvwbhsqfsubcg\",\"name\":\"birx\",\"type\":\"pybsrfbjfdtw\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -65,20 +70,49 @@ public final class FleetsCreateOrUpdateMockTests {
         Fleet response =
             manager
                 .fleets()
-                .define("ndnvo")
-                .withRegion("whybcib")
-                .withExistingResourceGroup("vudwx")
-                .withTags(mapOf("ynnaam", "dcsi", "qsc", "ectehf", "hcjrefovgmk", "eypvhezrkg"))
-                .withHubProfile(new FleetHubProfile().withDnsPrefix("gwdkcglhsl"))
-                .withIfMatch("jh")
-                .withIfNoneMatch("mdajv")
+                .define("dzumveekg")
+                .withRegion("tpnapnyiropuhpig")
+                .withExistingResourceGroup("skzbb")
+                .withTags(
+                    mapOf(
+                        "n", "ylgqgitxmedjvcsl", "rmgucnap", "wwncwzzhxgk", "oellwp", "t", "qrhhu", "fdygpfqbuaceopz"))
+                .withIdentity(
+                    new ManagedServiceIdentity()
+                        .withType(ManagedServiceIdentityType.NONE)
+                        .withUserAssignedIdentities(
+                            mapOf(
+                                "eli",
+                                new UserAssignedIdentity(),
+                                "rzt",
+                                new UserAssignedIdentity(),
+                                "hb",
+                                new UserAssignedIdentity(),
+                                "nalaulppg",
+                                new UserAssignedIdentity())))
+                .withHubProfile(
+                    new FleetHubProfile()
+                        .withDnsPrefix("kfpbs")
+                        .withApiServerAccessProfile(
+                            new ApiServerAccessProfile()
+                                .withEnablePrivateCluster(false)
+                                .withEnableVnetIntegration(false)
+                                .withSubnetId("uusdttouwa"))
+                        .withAgentProfile(new AgentProfile().withSubnetId("kqvkelnsmvbxwyjs")))
+                .withIfMatch("kdmoi")
+                .withIfNoneMatch("postmgrcfbunrm")
                 .create();
 
-        Assertions.assertEquals("okth", response.location());
-        Assertions.assertEquals("uaodsfcpk", response.tags().get("xodpuozmyzydagfu"));
-        Assertions.assertEquals("q", response.hubProfile().dnsPrefix());
+        Assertions.assertEquals("q", response.location());
+        Assertions.assertEquals("xc", response.tags().get("sbfov"));
+        Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, response.identity().type());
+        Assertions.assertEquals("xbpvjymjhx", response.hubProfile().dnsPrefix());
+        Assertions.assertEquals(false, response.hubProfile().apiServerAccessProfile().enablePrivateCluster());
+        Assertions.assertEquals(false, response.hubProfile().apiServerAccessProfile().enableVnetIntegration());
+        Assertions.assertEquals("ivkrtsw", response.hubProfile().apiServerAccessProfile().subnetId());
+        Assertions.assertEquals("zvszj", response.hubProfile().agentProfile().subnetId());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();
