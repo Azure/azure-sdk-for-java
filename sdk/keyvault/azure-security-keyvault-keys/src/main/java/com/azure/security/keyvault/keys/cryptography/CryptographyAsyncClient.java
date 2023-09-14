@@ -70,12 +70,13 @@ public class CryptographyAsyncClient {
     private final String keyCollection;
     private final HttpPipeline pipeline;
 
+    private volatile boolean localOperationNotSupported = false;
     private LocalKeyCryptographyClient localKeyCryptographyClient;
 
     final CryptographyClientImpl implClient;
     final String keyId;
 
-    JsonWebKey key;
+    volatile JsonWebKey key;
 
     /**
      * Creates a {@link CryptographyAsyncClient} that uses a given {@link HttpPipeline pipeline} to service requests.
@@ -331,7 +332,7 @@ public class CryptographyAsyncClient {
     }
 
     Mono<EncryptResult> encrypt(EncryptionAlgorithm algorithm, byte[] plaintext, Context context) {
-        return ensureValidKeyAvailable().flatMap(available -> {
+        return isValidKeyLocallyAvailable().flatMap(available -> {
             if (!available) {
                 return implClient.encryptAsync(algorithm, plaintext, context);
             }
@@ -346,7 +347,7 @@ public class CryptographyAsyncClient {
     }
 
     Mono<EncryptResult> encrypt(EncryptParameters encryptParameters, Context context) {
-        return ensureValidKeyAvailable().flatMap(available -> {
+        return isValidKeyLocallyAvailable().flatMap(available -> {
             if (!available) {
                 return implClient.encryptAsync(encryptParameters, context);
             }
@@ -477,7 +478,7 @@ public class CryptographyAsyncClient {
     }
 
     Mono<DecryptResult> decrypt(EncryptionAlgorithm algorithm, byte[] ciphertext, Context context) {
-        return ensureValidKeyAvailable().flatMap(available -> {
+        return isValidKeyLocallyAvailable().flatMap(available -> {
             if (!available) {
                 return implClient.decryptAsync(algorithm, ciphertext, context);
             }
@@ -492,7 +493,7 @@ public class CryptographyAsyncClient {
     }
 
     Mono<DecryptResult> decrypt(DecryptParameters decryptParameters, Context context) {
-        return ensureValidKeyAvailable().flatMap(available -> {
+        return isValidKeyLocallyAvailable().flatMap(available -> {
             if (!available) {
                 return implClient.decryptAsync(decryptParameters, context);
             }
@@ -559,7 +560,7 @@ public class CryptographyAsyncClient {
     }
 
     Mono<SignResult> sign(SignatureAlgorithm algorithm, byte[] digest, Context context) {
-        return ensureValidKeyAvailable().flatMap(available -> {
+        return isValidKeyLocallyAvailable().flatMap(available -> {
             if (!available) {
                 return implClient.signAsync(algorithm, digest, context);
             }
@@ -629,7 +630,7 @@ public class CryptographyAsyncClient {
     }
 
     Mono<VerifyResult> verify(SignatureAlgorithm algorithm, byte[] digest, byte[] signature, Context context) {
-        return ensureValidKeyAvailable().flatMap(available -> {
+        return isValidKeyLocallyAvailable().flatMap(available -> {
             if (!available) {
                 return implClient.verifyAsync(algorithm, digest, signature, context);
             }
@@ -694,7 +695,7 @@ public class CryptographyAsyncClient {
     }
 
     Mono<WrapResult> wrapKey(KeyWrapAlgorithm algorithm, byte[] key, Context context) {
-        return ensureValidKeyAvailable().flatMap(available -> {
+        return isValidKeyLocallyAvailable().flatMap(available -> {
             if (!available) {
                 return implClient.wrapKeyAsync(algorithm, key, context);
             }
@@ -762,7 +763,7 @@ public class CryptographyAsyncClient {
     }
 
     Mono<UnwrapResult> unwrapKey(KeyWrapAlgorithm algorithm, byte[] encryptedKey, Context context) {
-        return ensureValidKeyAvailable().flatMap(available -> {
+        return isValidKeyLocallyAvailable().flatMap(available -> {
             if (!available) {
                 return implClient.unwrapKeyAsync(algorithm, encryptedKey, context);
             }
@@ -827,7 +828,7 @@ public class CryptographyAsyncClient {
     }
 
     Mono<SignResult> signData(SignatureAlgorithm algorithm, byte[] data, Context context) {
-        return ensureValidKeyAvailable().flatMap(available -> {
+        return isValidKeyLocallyAvailable().flatMap(available -> {
             if (!available) {
                 return implClient.signDataAsync(algorithm, data, context);
             }
@@ -896,7 +897,7 @@ public class CryptographyAsyncClient {
     }
 
     Mono<VerifyResult> verifyData(SignatureAlgorithm algorithm, byte[] data, byte[] signature, Context context) {
-        return ensureValidKeyAvailable().flatMap(available -> {
+        return isValidKeyLocallyAvailable().flatMap(available -> {
             if (!available) {
                 return implClient.verifyDataAsync(algorithm, data, signature, context);
             }
@@ -910,18 +911,29 @@ public class CryptographyAsyncClient {
         });
     }
 
-    private Mono<Boolean> ensureValidKeyAvailable() {
-        boolean keyNotAvailable = (key == null && keyCollection != null);
-        boolean keyNotValid = (key != null && !key.isValid());
+    private Mono<Boolean> isValidKeyLocallyAvailable() {
+        if (localOperationNotSupported) {
+            return Mono.just(false);
+        }
 
-        if (keyNotAvailable || keyNotValid) {
-            if (keyCollection.equals(CryptographyClientImpl.SECRETS_COLLECTION)) {
+        boolean keyNotAvailable = (key == null && keyCollection != null);
+
+        if (keyNotAvailable) {
+            if (Objects.equals(keyCollection, CryptographyClientImpl.SECRETS_COLLECTION)) {
                 return getSecretKey().map(jsonWebKey -> {
-                    key = (jsonWebKey);
+                    key = jsonWebKey;
 
                     if (key.isValid()) {
                         if (localKeyCryptographyClient == null) {
-                            localKeyCryptographyClient = initializeCryptoClient(key, implClient);
+                            try {
+                                localKeyCryptographyClient = initializeCryptoClient(key, implClient);
+                            } catch (RuntimeException e) {
+                                localOperationNotSupported = true;
+
+                                LOGGER.warning("Defaulting to service use for cryptographic operations.", e);
+
+                                return false;
+                            }
                         }
 
                         return true;
@@ -931,11 +943,19 @@ public class CryptographyAsyncClient {
                 });
             } else {
                 return getKey().map(keyVaultKey -> {
-                    key = (keyVaultKey.getKey());
+                    key = keyVaultKey.getKey();
 
                     if (key.isValid()) {
                         if (localKeyCryptographyClient == null) {
-                            localKeyCryptographyClient = initializeCryptoClient(key, implClient);
+                            try {
+                                localKeyCryptographyClient = initializeCryptoClient(key, implClient);
+                            } catch (RuntimeException e) {
+                                localOperationNotSupported = true;
+
+                                LOGGER.warning("Defaulting to service use for cryptographic operations.", e);
+
+                                return false;
+                            }
                         }
 
                         return true;
@@ -945,11 +965,7 @@ public class CryptographyAsyncClient {
                 });
             }
         } else {
-            return Mono.defer(() -> Mono.just(true));
+            return Mono.just(true);
         }
-    }
-
-    CryptographyClientImpl getImplClient() {
-        return implClient;
     }
 }

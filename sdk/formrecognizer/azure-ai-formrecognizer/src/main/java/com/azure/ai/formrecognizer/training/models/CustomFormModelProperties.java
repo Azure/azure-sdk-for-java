@@ -11,6 +11,12 @@ import com.azure.ai.formrecognizer.implementation.CustomFormModelPropertiesHelpe
 public final class CustomFormModelProperties {
     private boolean isComposed;
 
+    /**
+     * Create a CustomFormModelProperties instance.
+     */
+    public CustomFormModelProperties() {
+    }
+
     static {
         CustomFormModelPropertiesHelper.setAccessor(
             new CustomFormModelPropertiesHelper.CustomFormModelPropertiesAccessor() {
