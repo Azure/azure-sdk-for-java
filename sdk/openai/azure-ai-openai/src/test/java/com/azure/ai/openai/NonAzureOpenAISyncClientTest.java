@@ -4,15 +4,7 @@
 package com.azure.ai.openai;
 
 import com.azure.ai.openai.functions.MyFunctionCallArguments;
-import com.azure.ai.openai.models.ChatChoice;
-import com.azure.ai.openai.models.ChatCompletions;
-import com.azure.ai.openai.models.ChatCompletionsOptions;
-import com.azure.ai.openai.models.ChatRole;
-import com.azure.ai.openai.models.Completions;
-import com.azure.ai.openai.models.CompletionsOptions;
-import com.azure.ai.openai.models.CompletionsUsage;
-import com.azure.ai.openai.models.Embeddings;
-import com.azure.ai.openai.models.FunctionCallConfig;
+import com.azure.ai.openai.models.*;
 import com.azure.core.credential.KeyCredential;
 import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.exception.HttpResponseException;
@@ -27,12 +19,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import java.util.Arrays;
 
 import static com.azure.ai.openai.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertInstanceOf;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class NonAzureOpenAISyncClientTest extends OpenAIClientTestBase {
     private OpenAIClient client;
@@ -272,6 +259,165 @@ public class NonAzureOpenAISyncClientTest extends OpenAIClientTestBase {
             assertCompletions(1, completions);
             assertNull(completions.getPromptFilterResults());
             assertNull(completions.getChoices().get(0).getContentFilterResults());
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    public void testGetAudioTranscription(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        client = getNonAzureOpenAISyncClient(httpClient);
+
+        getAudioTranscriptionRunner((deploymentName, fileName) -> {
+            byte[] file = BinaryData.fromFile(openTestResourceFile(fileName)).toBytes();
+            AudioTranscriptionOptions transcriptionOptions = new AudioTranscriptionOptions(file);
+
+//            AudioTranscription transcription = client.getAudioTranscription(deploymentName, transcriptionOptions);
+//            assertNotNull(transcription);
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    public void testGetAudioTranslationJson(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        client = getNonAzureOpenAISyncClient(httpClient);
+
+        getAudioTranslationRunnerForNonAzure((modelId, fileName) -> {
+            byte[] file = BinaryData.fromFile(openTestResourceFile(fileName)).toBytes();
+            AudioTranslationOptions translationOptions = new AudioTranslationOptions(file);
+            translationOptions.setResponseFormat(AudioTranscriptionFormat.JSON);
+
+            AudioTranscription translation = client.getAudioTranslation(modelId, translationOptions, fileName);
+            assertNotNull(translation);
+            assertEquals("It's raining today.", translation.getText());
+            assertNull(translation.getDuration());
+            assertNull(translation.getLanguage());
+            assertNull(translation.getTask());
+            assertNull(translation.getSegments());
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    public void testGetAudioTranslationVerboseJson(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        client = getNonAzureOpenAISyncClient(httpClient);
+
+        getAudioTranslationRunnerForNonAzure((modelId, fileName) -> {
+            byte[] file = BinaryData.fromFile(openTestResourceFile(fileName)).toBytes();
+            AudioTranslationOptions translationOptions = new AudioTranslationOptions(file);
+            translationOptions.setResponseFormat(AudioTranscriptionFormat.VERBOSE_JSON);
+
+            AudioTranscription translation = client.getAudioTranslation(modelId, translationOptions, fileName);
+            assertNotNull(translation);
+            assertEquals("It's raining today.", translation.getText());
+            assertNotNull(translation.getDuration());
+            assertNotNull(translation.getLanguage());
+            assertEquals(AudioTaskLabel.TRANSLATE, translation.getTask());
+            assertNotNull(translation.getSegments());
+            assertFalse(translation.getSegments().isEmpty());
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    public void testGetAudioTranslationTextPlain(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        client = getNonAzureOpenAISyncClient(httpClient);
+
+        getAudioTranslationRunnerForNonAzure((modelId, fileName) -> {
+            byte[] file = BinaryData.fromFile(openTestResourceFile(fileName)).toBytes();
+            AudioTranslationOptions translationOptions = new AudioTranslationOptions(file);
+            translationOptions.setResponseFormat(AudioTranscriptionFormat.TEXT);
+
+            String transcription = client.getAudioTranslationText(modelId, translationOptions, fileName);
+            assertEquals("It's raining today.\n", transcription);
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    public void testGetAudioTranslationSrt(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        client = getNonAzureOpenAISyncClient(httpClient);
+
+        getAudioTranslationRunnerForNonAzure((modelId, fileName) -> {
+            byte[] file = BinaryData.fromFile(openTestResourceFile(fileName)).toBytes();
+            AudioTranslationOptions translationOptions = new AudioTranslationOptions(file);
+            translationOptions.setResponseFormat(AudioTranscriptionFormat.SRT);
+
+            String transcription = client.getAudioTranslationText(modelId, translationOptions, fileName);
+            // Sequence number
+            assertTrue(transcription.contains("1\n"));
+            // First sequence starts at timestamp 0
+            assertTrue(transcription.contains("00:00:00,000 --> "));
+            // Actual translation value
+            assertTrue(transcription.contains("It's raining today."));
+        });
+    }
+
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    public void testGetAudioTranslationVtt(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        client = getNonAzureOpenAISyncClient(httpClient);
+
+        getAudioTranslationRunnerForNonAzure((modelId, fileName) -> {
+            byte[] file = BinaryData.fromFile(openTestResourceFile(fileName)).toBytes();
+            AudioTranslationOptions translationOptions = new AudioTranslationOptions(file);
+            translationOptions.setResponseFormat(AudioTranscriptionFormat.VTT);
+
+            String transcription = client.getAudioTranslationText(modelId, translationOptions, fileName);
+            // Start value according to spec
+            assertTrue(transcription.startsWith("WEBVTT\n"));
+            // First sequence starts at timestamp 0. Note: unlike SRT, the millisecond separator is a "."
+            assertTrue(transcription.contains("00:00:00.000 --> "));
+            // Actual translation value
+            assertTrue(transcription.contains("It's raining today."));
+        });
+    }
+
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    public void testGetAudioTranslationTextWrongFormats(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        client = getNonAzureOpenAISyncClient(httpClient);
+
+        getAudioTranslationRunnerForNonAzure((modelId, fileName) -> {
+            byte[] file = BinaryData.fromFile(openTestResourceFile(fileName)).toBytes();
+            AudioTranslationOptions translationOptions = new AudioTranslationOptions(file);
+
+            translationOptions.setResponseFormat(AudioTranscriptionFormat.JSON);
+            assertThrows(IllegalArgumentException.class, () -> {
+                client.getAudioTranslationText(modelId, translationOptions, fileName);
+            });
+
+            translationOptions.setResponseFormat(AudioTranscriptionFormat.VERBOSE_JSON);
+            assertThrows(IllegalArgumentException.class, () -> {
+                client.getAudioTranslationText(modelId, translationOptions, fileName);
+            });
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    public void testGetAudioTranslationJsonWrongFormats(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        client = getNonAzureOpenAISyncClient(httpClient);
+
+        getAudioTranslationRunnerForNonAzure((modelId, fileName) -> {
+            byte[] file = BinaryData.fromFile(openTestResourceFile(fileName)).toBytes();
+            AudioTranslationOptions translationOptions = new AudioTranslationOptions(file);
+
+            translationOptions.setResponseFormat(AudioTranscriptionFormat.TEXT);
+            assertThrows(IllegalArgumentException.class, () -> {
+                client.getAudioTranslation(modelId, translationOptions, fileName);
+            });
+
+            translationOptions.setResponseFormat(AudioTranscriptionFormat.SRT);
+            assertThrows(IllegalArgumentException.class, () -> {
+                client.getAudioTranslation(modelId, translationOptions, fileName);
+            });
+
+            translationOptions.setResponseFormat(AudioTranscriptionFormat.VTT);
+            assertThrows(IllegalArgumentException.class, () -> {
+                client.getAudioTranslation(modelId, translationOptions, fileName);
+            });
         });
     }
 }

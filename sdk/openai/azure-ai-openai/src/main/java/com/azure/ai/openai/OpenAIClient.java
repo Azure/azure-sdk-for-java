@@ -704,8 +704,30 @@ public final class OpenAIClient {
                 deploymentOrModelName, chatCompletionsOptions, requestOptions);
     }
 
+    public AudioTranscription getAudioTranslation(
+            String deploymentOrModelName, AudioTranslationOptions audioTranslationOptions, String fileName) {
+        // checking allowed formats for a JSON response
+        List<AudioTranscriptionFormat> acceptedFormats = new ArrayList<>();
+        acceptedFormats.add(AudioTranscriptionFormat.JSON);
+        acceptedFormats.add(AudioTranscriptionFormat.VERBOSE_JSON);
+        if(!acceptedFormats.contains(audioTranslationOptions.getResponseFormat())) {
+            throw new IllegalArgumentException("This operation does not support the requested audio format");
+        }
+
+        // embedding the `model` in the request for non-Azure case
+        if (this.openAIServiceClient != null) {
+            audioTranslationOptions.setModel(deploymentOrModelName);
+        }
+
+        MultipartDataHelper helper = new MultipartDataHelper();
+        MultipartDataSerializationResult result = helper.serializeRequest(audioTranslationOptions, fileName);
+        return getAudioTranslation(deploymentOrModelName, result, helper.getBoundary())
+                .toObject(AudioTranscription.class);
+    }
+
     public String getAudioTranslationText(
             String deploymentOrModelName, AudioTranslationOptions audioTranslationOptions, String fileName) {
+        // checking allowed formats for a plain text response
         List<AudioTranscriptionFormat> acceptedFormats = new ArrayList<>();
         acceptedFormats.add(AudioTranscriptionFormat.TEXT);
         acceptedFormats.add(AudioTranscriptionFormat.VTT);
@@ -713,37 +735,53 @@ public final class OpenAIClient {
         if(!acceptedFormats.contains(audioTranslationOptions.getResponseFormat())) {
             throw new IllegalArgumentException("This operation does not support the requested audio format");
         }
-        MultipartDataHelper helper = new MultipartDataHelper();
-        MultipartDataSerializationResult result = helper.serializeRequest(audioTranslationOptions, fileName);
-        return getAudioTranslation(deploymentOrModelName, result, helper.getBoundary()).toString();
-    }
 
-    public AudioTranscription getAudioTranslation(
-            String deploymentOrModelName, AudioTranslationOptions audioTranslationOptions, String fileName) {
-        List<AudioTranscriptionFormat> acceptedFormats = new ArrayList<>();
-        acceptedFormats.add(AudioTranscriptionFormat.JSON);
-        acceptedFormats.add(AudioTranscriptionFormat.VERBOSE_JSON);
-        if(!acceptedFormats.contains(audioTranslationOptions.getResponseFormat())) {
-            throw new IllegalArgumentException("This operation does not support the requested audio format");
+        // embedding the `model` in the request for non-Azure case
+        if (this.openAIServiceClient != null) {
+            audioTranslationOptions.setModel(deploymentOrModelName);
         }
+
         MultipartDataHelper helper = new MultipartDataHelper();
         MultipartDataSerializationResult result = helper.serializeRequest(audioTranslationOptions, fileName);
-        return getAudioTranslation(deploymentOrModelName, result, helper.getBoundary())
-                .toObject(AudioTranscription.class);
+        return getAudioTranslationAsPlainText(deploymentOrModelName, result, helper.getBoundary()).toString();
     }
 
     BinaryData getAudioTranslation(
             String deploymentOrModelName,
             MultipartDataSerializationResult requestData,
             String multipartBoundary) {
+
         RequestOptions requestOptions = new RequestOptions();
         requestOptions
                 .setHeader(HttpHeaderName.CONTENT_TYPE, "multipart/form-data;" + " boundary=" + multipartBoundary)
                 .setHeader(HttpHeaderName.CONTENT_LENGTH, String.valueOf(requestData.getDataLength()));
-        return this.serviceClient
-                .getAudioTranslationAsPlainTextWithResponse(
-                        deploymentOrModelName, requestData.getData(), requestOptions)
-                .getValue();
+
+        return openAIServiceClient != null ?
+                this.openAIServiceClient.getAudioTranslationAsPlainTextWithResponse(
+                                deploymentOrModelName, requestData.getData(), requestOptions)
+                        .getValue() :
+                this.serviceClient.getAudioTranslationAsPlainTextWithResponse(
+                                deploymentOrModelName, requestData.getData(), requestOptions)
+                        .getValue();
+    }
+
+    BinaryData getAudioTranslationAsPlainText(
+            String deploymentOrModelName,
+            MultipartDataSerializationResult requestData,
+            String multipartBoundary) {
+
+        RequestOptions requestOptions = new RequestOptions();
+        requestOptions
+                .setHeader(HttpHeaderName.CONTENT_TYPE, "multipart/form-data;" + " boundary=" + multipartBoundary)
+                .setHeader(HttpHeaderName.CONTENT_LENGTH, String.valueOf(requestData.getDataLength()));
+
+        return openAIServiceClient != null ?
+                this.openAIServiceClient.getAudioTranslationAsPlainTextWithResponse(
+                                deploymentOrModelName, requestData.getData(), requestOptions)
+                        .getValue() :
+                this.serviceClient.getAudioTranslationAsPlainTextWithResponse(
+                            deploymentOrModelName, requestData.getData(), requestOptions)
+                    .getValue();
     }
 
     /**
