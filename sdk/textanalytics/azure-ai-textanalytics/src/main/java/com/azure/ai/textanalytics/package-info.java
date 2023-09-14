@@ -52,6 +52,7 @@
  * Alternatively, you can use AAD authentication via
  * <a href="https://learn.microsoft.com/java/api/overview/azure/identity-readme?view=azure-java-stable">Azure Identity</a>
  * to connect to the service.</p>
+ 
  * <ol>
  *   <li>Azure Key Credential, see {@link com.azure.ai.textanalytics.TextAnalyticsClientBuilder#credential(
  *   com.azure.core.credential.AzureKeyCredential) AzureKeyCredential}.</li>
@@ -615,5 +616,9 @@
  *
  * <p><strong>Note:</strong> For asynchronous sample, refer to
  * {@link com.azure.ai.textanalytics.TextAnalyticsAsyncClient}.</p>
+ *
+ * @see TextAnalyticsClientBuilder
+ * @see TextAnalyticsAsyncClient
+ * @see TextAnalyticsClient
  */
 package com.azure.ai.textanalytics;
