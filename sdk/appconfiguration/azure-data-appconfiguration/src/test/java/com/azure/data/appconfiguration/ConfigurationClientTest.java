@@ -1140,8 +1140,9 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
             client.addConfigurationSettingWithResponse(expected, Context.NONE).getValue()));
 
         createSnapshotRunner((name, filters) -> {
-         // Retention period can be setup when creating a snapshot and cannot edit.
+            // Retention period can be setup when creating a snapshot and cannot edit.
             Duration retentionPeriod = Duration.ofMinutes(60);
+
             ConfigurationSettingSnapshot snapshot = new ConfigurationSettingSnapshot(filters)
                 .setRetentionPeriod(retentionPeriod);
             SyncPoller<CreateSnapshotOperationDetail, ConfigurationSettingSnapshot> poller =
@@ -1158,8 +1159,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
 
             // Recover the snapshot, it will be deleted automatically when retention period expires.
             assertEqualsConfigurationSettingSnapshot(name, SnapshotStatus.READY, filters, CompositionType.KEY,
-                retentionPeriod, Long.valueOf(1000), Long.valueOf(0), null,
-                client.recoverSnapshot(name));
+                retentionPeriod, Long.valueOf(1000), Long.valueOf(0), null, client.recoverSnapshot(name));
 
             // Archived the snapshot, it will be deleted automatically when retention period expires.
             assertEquals(SnapshotStatus.ARCHIVED, client.archiveSnapshot(name).getStatus());
