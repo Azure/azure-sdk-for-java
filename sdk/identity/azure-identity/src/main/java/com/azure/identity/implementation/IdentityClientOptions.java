@@ -15,10 +15,7 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.AzureAuthorityHosts;
 import com.azure.identity.AuthenticationRecord;
-<<<<<<< HEAD
-=======
 import com.azure.identity.BrowserCustomizationOptions;
->>>>>>> upstream/main
 import com.azure.identity.ChainedTokenCredential;
 import com.azure.identity.TokenCachePersistenceOptions;
 import com.azure.identity.implementation.util.IdentityConstants;
@@ -78,10 +75,7 @@ public final class IdentityClientOptions implements Cloneable {
     private Duration credentialProcessTimeout = Duration.ofSeconds(10);
 
     private boolean isChained;
-<<<<<<< HEAD
-=======
     private boolean enableUnsafeSupportLogging;
->>>>>>> upstream/main
 
     /**
      * Creates an instance of IdentityClientOptions with default settings.
@@ -732,8 +726,6 @@ public final class IdentityClientOptions implements Cloneable {
         return this;
     }
 
-<<<<<<< HEAD
-=======
     /**
      * Gets the status whether support logging is enabled or not.
      * @return the flag indicating if support logging is enabled or not.
@@ -751,7 +743,6 @@ public final class IdentityClientOptions implements Cloneable {
         return this;
     }
 
->>>>>>> upstream/main
     public IdentityClientOptions clone() {
         IdentityClientOptions clone =  new IdentityClientOptions()
             .setAdditionallyAllowedTenants(this.additionallyAllowedTenants)
