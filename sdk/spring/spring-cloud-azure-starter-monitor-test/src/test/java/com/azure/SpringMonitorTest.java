@@ -177,7 +177,6 @@ public class SpringMonitorTest {
     // TODO (alzimmer): In some test runs the 'Request' telemetry item is missing.
     if (requests.size() >= 1) {
         assertThat(requests).hasSize(1);
-        assertThat(requests).hasSize(1);
         TelemetryItem request = requests.get(0);
         MonitorDomain requestBaseData = request.getData().getBaseData();
         RequestData requestData = (RequestData) requestBaseData;
