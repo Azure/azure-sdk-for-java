@@ -212,7 +212,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct][code_of_con
 [azure_portal]: https://portal.azure.com
 [cancer_profiling_docs]: https://learn.microsoft.com/azure/azure-health-insights/oncophenotype/overview
 [cancer_profiling_client_class]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/healthinsights/azure-health-insights-cancerprofiling/src/main/java/com/azure/health/insights/cancerprofiling/CancerProfilingClient.java
-[package]: https://mvnrepository.com/artifact/com.azure/azure-health-insights-cancerprofiling
+[package]: https://central.sonatype.com/artifact/com.azure/azure-health-insights-cancerprofiling
 [source_code]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/healthinsights/azure-health-insights-cancerprofiling/src
 [cancer_profiling_api_documentation]: https://learn.microsoft.com/rest/api/cognitiveservices/healthinsights/onco-phenotype
 [product_documentation]: https://learn.microsoft.com/azure/azure-health-insights/oncophenotype/

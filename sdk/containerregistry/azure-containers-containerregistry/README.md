@@ -56,7 +56,7 @@ and then include the direct dependency in the dependencies section without the v
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-containers-containerregistry</artifactId>
-  <version>1.1.2</version>
+  <version>1.2.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -361,7 +361,7 @@ additional questions or comments.
 [source_code]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/containerregistry/azure-containers-containerregistry/src
 [jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
 [azure_subscription]: https://azure.microsoft.com/free
-[package]: https://search.maven.org/artifact/com.azure/azure-containers-containerregisty
+[package]: https://central.sonatype.com/artifact/com.azure/azure-containers-containerregistry
 [api_documentation]: https://aka.ms/java-docs
 [rest_docs]: https://docs.microsoft.com/rest/api/containerregistry/
 [product_docs]:  https://docs.microsoft.com/azure/container-registry

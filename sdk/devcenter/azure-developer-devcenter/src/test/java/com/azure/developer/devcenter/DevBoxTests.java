@@ -14,8 +14,8 @@ import org.junit.jupiter.api.Assertions;
 class DevBoxTests extends DevCenterClientTestBase {
     @Test
     public void testCreateDevBox() {
-        String projectName = Configuration.getGlobalConfiguration().get("DEFAULT_PROJECT_NAME", "sdk-project-hdhjgzht7tgyq");
-        String poolName = Configuration.getGlobalConfiguration().get("DEFAULT_POOL_NAME", "sdk-pool-bxwfu4kgo6dz6");
+        String projectName = Configuration.getGlobalConfiguration().get("DEFAULT_PROJECT_NAME", "sdk-project-kjqdmrwdctddo");
+        String poolName = Configuration.getGlobalConfiguration().get("DEFAULT_POOL_NAME", "sdk-pool-wjpd3g3vqn2do");
 
         // Provision a Dev Box
         BinaryData devBoxBody = BinaryData.fromString("{\"poolName\":\"" + poolName + "\"}");

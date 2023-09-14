@@ -18,15 +18,19 @@ import java.io.ByteArrayOutputStream;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.CountDownLatch;
 import java.util.zip.GZIPInputStream;
 
 class CustomValidationPolicy implements HttpPipelinePolicy {
+    private final ObjectMapper objectMapper = createObjectMapper();
 
     private final CountDownLatch countDown;
     volatile URL url;
-    final List<TelemetryItem> actualTelemetryItems = new CopyOnWriteArrayList<>();
+    final Queue<TelemetryItem> actualTelemetryItems = new ConcurrentLinkedQueue<>();
 
     CustomValidationPolicy(CountDownLatch countDown) {
         this.countDown = countDown;
@@ -35,18 +39,15 @@ class CustomValidationPolicy implements HttpPipelinePolicy {
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
         url = context.getHttpRequest().getUrl();
-        Mono<String> asyncBytes = FluxUtil.collectBytesInByteBufferStream(context.getHttpRequest().getBody()).map(CustomValidationPolicy::ungzip);
-        asyncBytes.subscribe(value -> {
-            ObjectMapper objectMapper = createObjectMapper();
-            try (MappingIterator<TelemetryItem> i = objectMapper.readerFor(TelemetryItem.class).readValues(value)) {
-                while (i.hasNext()) {
-                    actualTelemetryItems.add(i.next());
+        FluxUtil.collectBytesInByteBufferStream(context.getHttpRequest().getBody()).map(CustomValidationPolicy::ungzip)
+            .subscribe(value -> {
+                try (MappingIterator<TelemetryItem> i = objectMapper.readerFor(TelemetryItem.class).readValues(value)) {
+                    i.forEachRemaining(actualTelemetryItems::add);
+                    countDown.countDown();
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
                 }
-                countDown.countDown();
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
-        });
+            });
         return next.process();
     }
 

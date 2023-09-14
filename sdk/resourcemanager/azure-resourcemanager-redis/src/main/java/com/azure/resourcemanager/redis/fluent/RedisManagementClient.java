@@ -10,8 +10,7 @@ import java.time.Duration;
 /** The interface for RedisManagementClient class. */
 public interface RedisManagementClient {
     /**
-     * Gets Gets subscription credentials which uniquely identify the Microsoft Azure subscription. The subscription ID
-     * forms part of the URI for every service call.
+     * Gets The ID of the target subscription.
      *
      * @return the subscriptionId value.
      */
@@ -100,4 +99,18 @@ public interface RedisManagementClient {
      * @return the AsyncOperationStatusClient object.
      */
     AsyncOperationStatusClient getAsyncOperationStatus();
+
+    /**
+     * Gets the AccessPoliciesClient object to access its operations.
+     *
+     * @return the AccessPoliciesClient object.
+     */
+    AccessPoliciesClient getAccessPolicies();
+
+    /**
+     * Gets the AccessPolicyAssignmentsClient object to access its operations.
+     *
+     * @return the AccessPolicyAssignmentsClient object.
+     */
+    AccessPolicyAssignmentsClient getAccessPolicyAssignments();
 }

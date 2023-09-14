@@ -4,7 +4,7 @@ This Spring Boot starter provides telemetry data to Azure Monitor for Spring Boo
 
 _For a Spring Boot application running on a JVM (not with a GraalVM native image), we recommend using the [Application Insights Java agent][application_insights_java_agent_spring_boot].
 
-[Source code][source_code] | [Package (Maven)][package_mvn] | [API reference documentation][api_reference_doc] | [Product Documentation][product_documentation]
+[Source code][source_code] | (Package yet to release) | [API reference documentation][api_reference_doc] | [Product Documentation][product_documentation]
 
 ## Getting started
 
@@ -27,7 +27,47 @@ For more information, please read [introduction to Application Insights][applica
 ```
 [//]: # ({x-version-update-end})
 
-This dependency is a Spring Boot starter that provides telemetry data for HTTP requests.
+You may have to align the OpenTelemetry versions of Spring Boot 3 and `spring-cloud-azure-starter-monitor`. If this is the case, you will notice a WARN message during the application start-up:
+```
+WARN  c.a.m.a.s.OpenTelemetryVersionCheckRunner - The OpenTelemetry version is not compatible with the spring-cloud-azure-starter-monitor dependency. The OpenTelemetry version should be
+```
+To fix this with Maven, you can set the `opentelemetry.version` property:
+
+```xml
+<properties>
+   <opentelemetry.version>{otel-version-given-in-the-warn-log}</opentelemetry.version>
+</properties>
+```
+
+Another way is to declare the `opentelemetry-bom` BOM:
+
+```xml
+<dependencyManagement>
+    <dependencies>
+        <dependency>
+            <groupId>io.opentelemetry</groupId>
+            <artifactId>opentelemetry-bom</artifactId>
+            <version>{otel-version-given-in-the-warn-log}</version>
+            <type>pom</type>
+        </dependency>
+    </dependencies>
+</dependencyManagement>
+```
+
+With Gradle, you can fix the issue in this way:
+
+```
+plugins {
+    id 'org.springframework.boot'
+    id 'io.spring.dependency-management'
+}
+
+dependencyManagement {
+    imports {
+        mavenBom 'io.opentelemetry:opentelemetry-bom:{otel-version-given-in-the-warn-log}'
+    }
+}
+```
 
 ### Authentication
 
@@ -72,7 +112,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 
 <!-- LINKS -->
 [source_code]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/spring-cloud-azure-starter-monitor/src
-[package_mvn]: https://mvnrepository.com/artifact/com.azure/applicationinsights-spring-native
+<!-- [package_mvn]: https://central.sonatype.com/artifact/com.azure.spring/spring-cloud-azure-starter-monitor -->
 [api_reference_doc]: https://docs.microsoft.com/azure/azure-monitor/overview
 [product_documentation]: https://docs.microsoft.com/azure/azure-monitor/overview
 [azure_subscription]: https://azure.microsoft.com/free/

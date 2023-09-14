@@ -15,7 +15,7 @@ import java.util.Arrays;
 /** Samples for TaskRuns Update. */
 public final class TaskRunsUpdateSamples {
     /*
-     * x-ms-original-file: specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2019-06-01-preview/examples/TaskRunsUpdate.json
+     * x-ms-original-file: mgmt_containerregistry_add_readonly/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2019-06-01-preview/examples/TaskRunsUpdate.json
      */
     /**
      * Sample code: TaskRuns_Update.
