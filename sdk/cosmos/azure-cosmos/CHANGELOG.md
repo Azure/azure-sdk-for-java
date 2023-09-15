@@ -1,6 +1,6 @@
 ## Release History
 
-### 4.45.2-hotfix0 (Unreleased)
+### 4.45.2-hotfix (2023-09-15)
 
 #### Bugs Fixed
 * Added capability to mark a region as unavailable when a request is cancelled due to end-to-end timeout and connection issues
@@ -11,16 +11,6 @@ with the region in the direct connectivity mode. - See [PR 35586](https://github
 * Optimized the replica validation flow to validate replica health with `Unknown` health status only when the replica is
   used by a container which is also part of the connection warm-up flow. - See [PR 36225](https://github.com/Azure/azure-sdk-for-java/pull/36225)
 * Fixed possible `NullPointerException` issue if health-check flow kicks in before RNTBD context negotiation for a given channel - See [PR 36397](https://github.com/Azure/azure-sdk-for-java/pull/36397).
-
-### 4.45.2-hotfix0 (2023-09-15)
-
-#### Features Added
-
-#### Breaking Changes
-
-#### Bugs Fixed
-
-#### Other Changes
 
 ### 4.45.1 (2023-05-19)
 
