@@ -148,6 +148,27 @@ public final class DiagnosticsProvider {
         return this.tracer.isEnabled() && this.tracer != EnabledNoOpTracer.INSTANCE;
     }
 
+    public String getTraceConfigLog() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(this.isEnabled());
+        sb.append(", ");
+        sb.append(this.isRealTracer());
+        sb.append(", ");
+        sb.append(this.tracer.getClass().getCanonicalName());
+        if (!this.diagnosticHandlers.isEmpty()) {
+            sb.append(", [");
+            for (int i = 0; i < this.diagnosticHandlers.size(); i++) {
+                if (i > 0) {
+                    sb.append(", ");
+                }
+                sb.append(this.diagnosticHandlers.get(i).getClass().getCanonicalName());
+            }
+            sb.append("]");
+        }
+
+        return sb.toString();
+    }
+
     public CosmosClientTelemetryConfig getClientTelemetryConfig() {
         return this.telemetryConfig;
     }
@@ -449,7 +470,7 @@ public final class DiagnosticsProvider {
         ConsistencyLevel consistencyLevel,
         OperationType operationType,
         ResourceType resourceType,
-        CosmosDiagnosticsThresholds thresholds) {
+        RequestOptions requestOptions) {
 
         checkNotNull(client, "Argument 'client' must not be null.");
 
@@ -479,7 +500,7 @@ public final class DiagnosticsProvider {
 
                 return diagnostics;
             },
-            thresholds);
+            requestOptions);
     }
 
     public <T extends CosmosBatchResponse> Mono<T> traceEnabledBatchResponsePublisher(
@@ -492,7 +513,7 @@ public final class DiagnosticsProvider {
         ConsistencyLevel consistencyLevel,
         OperationType operationType,
         ResourceType resourceType,
-        CosmosDiagnosticsThresholds thresholds) {
+        RequestOptions requestOptions) {
 
         checkNotNull(client, "Argument 'client' must not be null.");
 
@@ -522,22 +543,23 @@ public final class DiagnosticsProvider {
 
                 return diagnostics;
             },
-            thresholds);
+            requestOptions);
     }
 
     public <T> Mono<CosmosItemResponse<T>> traceEnabledCosmosItemResponsePublisher(
-       Mono<CosmosItemResponse<T>> resultPublisher,
-       Context context,
-       String spanName,
-       String containerId,
-       String databaseId,
-       CosmosAsyncClient client,
-       ConsistencyLevel consistencyLevel,
-       OperationType operationType,
-       ResourceType resourceType,
-       CosmosDiagnosticsThresholds thresholds,
-       String trackingId) {
+        Mono<CosmosItemResponse<T>> resultPublisher,
+        Context context,
+        String spanName,
+        String containerId,
+        String databaseId,
+        CosmosAsyncClient client,
+        ConsistencyLevel consistencyLevel,
+        OperationType operationType,
+        ResourceType resourceType,
+        RequestOptions requestOptions,
+        String trackingId) {
 
+        checkNotNull(requestOptions, "Argument 'requestOptions' must not be null.");
         checkNotNull(client, "Argument 'client' must not be null.");
 
         String accountName = clientAccessor.getAccountTagValue(client);
@@ -566,7 +588,7 @@ public final class DiagnosticsProvider {
 
                 return diagnostics;
             },
-            thresholds);
+            requestOptions);
     }
 
     /**
@@ -668,22 +690,26 @@ public final class DiagnosticsProvider {
     }
 
     private <T> Mono<T> publisherWithDiagnostics(Mono<T> resultPublisher,
-                                                     Context context,
-                                                     String spanName,
-                                                     String containerId,
-                                                     String databaseId,
-                                                     String accountName,
-                                                     CosmosAsyncClient client,
-                                                     ConsistencyLevel consistencyLevel,
-                                                     OperationType operationType,
-                                                     ResourceType resourceType,
-                                                     String trackingId,
-                                                     Integer maxItemCount,
-                                                     Function<T, Integer> statusCodeFunc,
-                                                     Function<T, Integer> actualItemCountFunc,
-                                                     Function<T, Double> requestChargeFunc,
-                                                     BiFunction<T, Double, CosmosDiagnostics> diagnosticFunc,
-                                                     CosmosDiagnosticsThresholds thresholds) {
+                                                 Context context,
+                                                 String spanName,
+                                                 String containerId,
+                                                 String databaseId,
+                                                 String accountName,
+                                                 CosmosAsyncClient client,
+                                                 ConsistencyLevel consistencyLevel,
+                                                 OperationType operationType,
+                                                 ResourceType resourceType,
+                                                 String trackingId,
+                                                 Integer maxItemCount,
+                                                 Function<T, Integer> statusCodeFunc,
+                                                 Function<T, Integer> actualItemCountFunc,
+                                                 Function<T, Double> requestChargeFunc,
+                                                 BiFunction<T, Double, CosmosDiagnostics> diagnosticFunc,
+                                                 RequestOptions requestOptions) {
+
+        CosmosDiagnosticsThresholds thresholds = requestOptions != null
+            ? clientAccessor.getEffectiveDiagnosticsThresholds(client, requestOptions.getDiagnosticsThresholds())
+            : clientAccessor.getEffectiveDiagnosticsThresholds(client, null);
 
         CosmosDiagnosticsContext cosmosCtx = ctxAccessor.create(
             spanName,
@@ -700,6 +726,10 @@ public final class DiagnosticsProvider {
             trackingId,
             clientAccessor.getConnectionMode(client),
             clientAccessor.getUserAgent(client));
+
+        if (requestOptions != null) {
+            requestOptions.setDiagnosticsContext(cosmosCtx);
+        }
 
         return diagnosticsEnabledPublisher(
             cosmosCtx,

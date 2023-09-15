@@ -44,20 +44,107 @@ import static com.azure.security.keyvault.secrets.implementation.models.SecretsM
  * The SecretClient provides synchronous methods to manage {@link KeyVaultSecret secrets} in the Azure Key Vault. The
  * client supports creating, retrieving, updating, deleting, purging, backing up, restoring, and listing the
  * {@link KeyVaultSecret secrets}. The client also supports listing {@link DeletedSecret deleted secrets} for a
- * soft-delete enabled Azure Key Vault.
+ * soft-delete enabled key vault.
  *
- * <p><strong>Construct the sync client</strong></p>
+ * <h2>Getting Started</h2>
+ *
+ * <p>In order to interact with the Azure Key Vault service, you will need to create an instance of the
+ * {@link SecretClient} class, a vault url and a credential object.</p>
+ *
+ * <p>The examples shown in this document use a credential object named DefaultAzureCredential for authentication,
+ * which is appropriate for most scenarios, including local development and production environments. Additionally,
+ * we recommend using a
+ * <a href="https://learn.microsoft.com/azure/active-directory/managed-identities-azure-resources/">
+ * managed identity</a> for authentication in production environments.
+ * You can find more information on different ways of authenticating and their corresponding credential types in the
+ * <a href="https://learn.microsoft.com/java/api/overview/azure/identity-readme?view=azure-java-stable">
+ *     Azure Identity documentation"</a>.</p>
+ *
+ * <p><strong>Sample: Construct Synchronous Secret client</strong></p>
  * <!-- src_embed com.azure.security.keyvault.SecretClient.instantiation -->
  * <pre>
  * SecretClient secretClient = new SecretClientBuilder&#40;&#41;
  *     .credential&#40;new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;&#41;
  *     .vaultUrl&#40;&quot;&lt;your-key-vault-url&gt;&quot;&#41;
- *     .httpLogOptions&#40;new HttpLogOptions&#40;&#41;.setLogLevel&#40;HttpLogDetailLevel.BODY_AND_HEADERS&#41;&#41;
  *     .buildClient&#40;&#41;;
  * </pre>
  * <!-- end com.azure.security.keyvault.SecretClient.instantiation -->
  *
+ * <br/>
+ *
+ * <hr/>
+ *
+ * <h2>Create a Secret</h2>
+ * The {@link SecretClient} can be used to create a secret in the key vault.
+ *
+ * <p><strong>Code Sample:</strong></p>
+ * <p>The following code sample demonstrates how to synchronously create and store a secret in the key vault,
+ * using the {@link SecretClient#setSecret(String, String)} API.</p>
+ *
+ * <!-- src_embed com.azure.security.keyvault.SecretClient.setSecret#string-string -->
+ * <pre>
+ * KeyVaultSecret secret = secretClient.setSecret&#40;&quot;secretName&quot;, &quot;secretValue&quot;&#41;;
+ * System.out.printf&#40;&quot;Secret is created with name %s and value %s%n&quot;, secret.getName&#40;&#41;, secret.getValue&#40;&#41;&#41;;
+ * </pre>
+ * <!-- end com.azure.security.keyvault.SecretClient.setSecret#string-string -->
+ *
+ * <p><strong>Note:</strong> For the asynchronous sample, refer to
+ * {@link com.azure.security.keyvault.secrets.SecretAsyncClient}.</p>
+ *
+ * <br/>
+ *
+ * <hr/>
+ *
+ * <h2>Get a Secret</h2>
+ * The {@link SecretClient} can be used to retrieve a secret from the key vault.
+ *
+ * <p><strong>Code Sample:</strong></p>
+ * <p>The following code sample demonstrates how to synchronously retrieve a previously stored secret from the Azure
+ * KeyVault, using the {@link SecretClient#getSecret(String)} API.</p>
+ *
+ * <!-- src_embed com.azure.security.keyvault.SecretClient.getSecret#string -->
+ * <pre>
+ * KeyVaultSecret secret = secretClient.getSecret&#40;&quot;secretName&quot;&#41;;
+ * System.out.printf&#40;&quot;Secret is returned with name %s and value %s%n&quot;,
+ *     secret.getName&#40;&#41;, secret.getValue&#40;&#41;&#41;;
+ * </pre>
+ * <!-- end com.azure.security.keyvault.SecretClient.getSecret#string -->
+ *
+ * <p><strong>Note:</strong> For the asynchronous sample, refer to {@link SecretAsyncClient}.</p>
+ *
+ * <br/>
+ *
+ * <hr/>
+ *
+ * <h2>Delete a Secret</h2>
+ * The {@link SecretClient} can be used to delete a secret from the key vault.
+ *
+ * <p><strong>Code Sample:</strong></p>
+ * <p>The following code sample demonstrates how to delete a secret from the key vault, using
+ * the {@link SecretClient#beginDeleteSecret(String)} API.</p>
+ *
+ * <!-- src_embed com.azure.security.keyvault.SecretClient.deleteSecret#String -->
+ * <pre>
+ * SyncPoller&lt;DeletedSecret, Void&gt; deleteSecretPoller = secretClient.beginDeleteSecret&#40;&quot;secretName&quot;&#41;;
+ *
+ * &#47;&#47; Deleted Secret is accessible as soon as polling begins.
+ * PollResponse&lt;DeletedSecret&gt; deleteSecretPollResponse = deleteSecretPoller.poll&#40;&#41;;
+ *
+ * &#47;&#47; Deletion date only works for a SoftDelete-enabled Key Vault.
+ * System.out.println&#40;&quot;Deleted Date  %s&quot; + deleteSecretPollResponse.getValue&#40;&#41;
+ *     .getDeletedOn&#40;&#41;.toString&#40;&#41;&#41;;
+ * System.out.printf&#40;&quot;Deleted Secret's Recovery Id %s&quot;, deleteSecretPollResponse.getValue&#40;&#41;
+ *     .getRecoveryId&#40;&#41;&#41;;
+ *
+ * &#47;&#47; Secret is being deleted on server.
+ * deleteSecretPoller.waitForCompletion&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.security.keyvault.SecretClient.deleteSecret#String -->
+ *
+ * <p><strong>Note:</strong> For the asynchronous sample, refer to {@link SecretAsyncClient}.</p>
+ *
  * @see SecretClientBuilder
+ * @see SyncPoller
  * @see PagedIterable
  */
 @ServiceClient(builder = SecretClientBuilder.class, serviceInterfaces = SecretClientImpl.SecretClientService.class)
@@ -193,9 +280,9 @@ public final class SecretClient {
      * <p>Gets the latest version of the secret in the key vault. Prints out the details of the returned secret.</p>
      * <!-- src_embed com.azure.security.keyvault.SecretClient.getSecret#string -->
      * <pre>
-     * KeyVaultSecret secretWithoutVersion = secretClient.getSecret&#40;&quot;secretName&quot;, secretVersion&#41;;
+     * KeyVaultSecret secret = secretClient.getSecret&#40;&quot;secretName&quot;&#41;;
      * System.out.printf&#40;&quot;Secret is returned with name %s and value %s%n&quot;,
-     *     secretWithoutVersion.getName&#40;&#41;, secretWithoutVersion.getValue&#40;&#41;&#41;;
+     *     secret.getName&#40;&#41;, secret.getValue&#40;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.security.keyvault.SecretClient.getSecret#string -->
      *

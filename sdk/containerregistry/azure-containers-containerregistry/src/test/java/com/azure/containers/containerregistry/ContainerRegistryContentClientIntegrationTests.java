@@ -23,7 +23,6 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -65,6 +64,7 @@ import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 @Execution(ExecutionMode.SAME_THREAD)
 public class ContainerRegistryContentClientIntegrationTests extends ContainerRegistryClientsTestBase {
+    private static final Duration DEFAULT_TIMEOUT = Duration.ofSeconds(30);
     private ContainerRegistryContentClient client;
     private ContainerRegistryContentAsyncClient asyncClient;
     private static final Random RANDOM = new Random(42);
@@ -86,14 +86,8 @@ public class ContainerRegistryContentClientIntegrationTests extends ContainerReg
         importImage(TestUtils.getTestMode(), HELLO_WORLD_REPOSITORY_NAME, Collections.singletonList("latest"));
     }
 
-    @BeforeEach
-    void beforeEach() {
-        StepVerifier.setDefaultTimeout(Duration.ofSeconds(30));
-    }
-
     @AfterEach
     void afterEach() {
-        StepVerifier.resetDefaultTimeout();
         cleanupResources();
     }
 
@@ -200,7 +194,8 @@ public class ContainerRegistryContentClientIntegrationTests extends ContainerReg
                 assertEquals(MANIFEST_DIGEST, getManifestResult.getDigest());
                 validateManifest(MANIFEST, getManifestResult.getManifest().toObject(OciImageManifest.class));
             })
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -221,8 +216,9 @@ public class ContainerRegistryContentClientIntegrationTests extends ContainerReg
 
                     return asyncClient.getManifest(tag);
                 }))
-                .assertNext(getManifestResult -> assertEquals(digest, getManifestResult.getDigest()))
-                .verifyComplete();
+            .assertNext(getManifestResult -> assertEquals(digest, getManifestResult.getDigest()))
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
 
         validateTag("oci-artifact", digest, tag, httpClient);
     }
@@ -240,7 +236,7 @@ public class ContainerRegistryContentClientIntegrationTests extends ContainerReg
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getHttpClients")
-    public void canUploadHugeBlobInChunks(HttpClient httpClient) throws IOException, InterruptedException {
+    public void canUploadHugeBlobInChunks(HttpClient httpClient) throws IOException {
         // test is too long for innerloop
         assumeTrue(super.getTestMode() == TestMode.LIVE);
 
@@ -268,14 +264,14 @@ public class ContainerRegistryContentClientIntegrationTests extends ContainerReg
         long size = CHUNK_SIZE * 50;
         Mono<BinaryData> data = BinaryData.fromFlux(generateAsyncStream(size), size, false);
         AtomicLong download = new AtomicLong(0);
-        StepVerifier.setDefaultTimeout(Duration.ofMinutes(30));
         StepVerifier.create(data
                 .flatMap(content -> asyncClient.uploadBlob(content))
                 .flatMap(r -> asyncClient.downloadStream(r.getDigest()))
                 .flatMapMany(BinaryData::toFluxByteBuffer)
                 .doOnNext(bb -> download.addAndGet(bb.remaining()))
                 .then())
-            .verifyComplete();
+            .expectComplete()
+            .verify(Duration.ofMinutes(30));
 
         assertEquals(size, download.get());
     }
@@ -321,7 +317,8 @@ public class ContainerRegistryContentClientIntegrationTests extends ContainerReg
                     return asyncClient.downloadStream(uploadResult.getDigest());
                 })
                 .flatMap(r -> FluxUtil.writeToOutputStream(r.toFluxByteBuffer(), stream)))
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
 
         stream.flush();
         assertArrayEquals(content.toBytes(), stream.toByteArray());
@@ -342,7 +339,8 @@ public class ContainerRegistryContentClientIntegrationTests extends ContainerReg
                     return asyncClient.downloadStream(uploadResult.getDigest());
                 })
                 .flatMap(r -> FluxUtil.writeToOutputStream(r.toFluxByteBuffer(), stream)))
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
 
         stream.flush();
         assertArrayEquals(content.toBytes(), stream.toByteArray());
@@ -377,7 +375,8 @@ public class ContainerRegistryContentClientIntegrationTests extends ContainerReg
                 assertNotNull(returnedManifest);
                 validateManifest(MANIFEST, returnedManifest);
             })
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -441,7 +440,8 @@ public class ContainerRegistryContentClientIntegrationTests extends ContainerReg
                 assertEquals(dockerListType.toString(), list.getMediaType());
                 assertEquals(11, list.getManifests().size());
             })
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
     }
 
     private void validateTag(String repoName, String digest, String tag, HttpClient httpClient) {

@@ -96,6 +96,16 @@ public class GlobalEndpointManager implements AutoCloseable {
         return this.locationCache.getApplicableWriteEndpoints(request);
     }
 
+    public UnmodifiableList<URI> getApplicableReadEndpoints(List<String> excludedRegions) {
+        // readonly
+        return this.locationCache.getApplicableReadEndpoints(excludedRegions);
+    }
+
+    public UnmodifiableList<URI> getApplicableWriteEndpoints(List<String> excludedRegions) {
+        //readonly
+        return this.locationCache.getApplicableWriteEndpoints(excludedRegions);
+    }
+
     public List<URI> getAvailableReadEndpoints() {
         return this.locationCache.getAvailableReadEndpoints();
     }
@@ -149,6 +159,10 @@ public class GlobalEndpointManager implements AutoCloseable {
     public void markEndpointUnavailableForWrite(URI endpoint) {
         logger.debug("Marking  endpoint {} unavailable for Write",endpoint);
         this.locationCache.markEndpointUnavailableForWrite(endpoint);
+    }
+
+    public boolean canUseMultipleWriteLocations() {
+        return this.locationCache.canUseMultipleWriteLocations();
     }
 
     public boolean canUseMultipleWriteLocations(RxDocumentServiceRequest request) {
