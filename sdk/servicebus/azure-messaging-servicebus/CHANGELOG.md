@@ -36,7 +36,7 @@
 - Fixed issue causing updates to TopicProperties with AuthorizationRules to return 400 Bad request. ([#34880](https://github.com/Azure/azure-sdk-for-java/issues/34880))
 
 - Fixed `NullPointerException` that happens when session processor or receiver encounters an error and distributed tracing is enabled.
-  ([#TODO](https://github.com/Azure/azure-sdk-for-java/issues/TODO))
+  ([#36800](https://github.com/Azure/azure-sdk-for-java/issues/36800))
 
 ### Other Changes
 
