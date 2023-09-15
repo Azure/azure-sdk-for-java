@@ -137,6 +137,11 @@ public class HttpUrlConnectionClient implements HttpClient {
 
     // Write the body of the request if necessary
     private Mono<Void> writeRequestBody(HttpURLConnection connection, HttpRequest httpRequest) {
+        // Don't bother trying to write something if the body is null
+        if(httpRequest.getBody() == null) {
+            return Mono.empty();
+        }
+
         switch(httpRequest.getHttpMethod()) {
             case POST:
             case PUT:
