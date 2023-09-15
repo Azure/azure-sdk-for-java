@@ -8,7 +8,6 @@ import com.azure.ai.contentsafety.models.AnalyzeImageOptions;
 import com.azure.ai.contentsafety.models.AnalyzeImageResult;
 import com.azure.ai.contentsafety.models.ImageData;
 import com.azure.core.credential.AzureKeyCredential;
-import com.azure.core.exception.HttpResponseException;
 import com.azure.core.util.Configuration;
 
 import java.io.IOException;
@@ -16,7 +15,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 
 public class AnalyzeImage {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         // BEGIN:com.azure.ai.contentsafety.analyzeimage
         String endpoint = Configuration.getGlobalConfiguration().get("CONTENT_SAFETY_ENDPOINT");
         String key = Configuration.getGlobalConfiguration().get("CONTENT_SAFETY_KEY");
@@ -28,21 +27,11 @@ public class AnalyzeImage {
         ImageData image = new ImageData();
         String cwd = System.getProperty("user.dir");
         String absolutePath = cwd + "./src/image.jpg";
-        try {
-            image.setContent(Files.readAllBytes(Paths.get(absolutePath)));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        image.setContent(Files.readAllBytes(Paths.get(absolutePath)));
 
-        AnalyzeImageResult response;
-        try {
-            response =
+        AnalyzeImageResult response =
                 contentSafetyClient.analyzeImage(new AnalyzeImageOptions(image));
-        } catch (HttpResponseException ex) {
-            System.out.println(String.format("Analyze text failed.\nStatus code: %s, Error message: %s",
-                ex.getResponse().getStatusCode(), ex.getMessage()));
-            throw ex;
-        }
+
         System.out.println("Hate severity: " + response.getHateResult().getSeverity());
         System.out.println("SelfHarm severity: " + response.getSelfHarmResult().getSeverity());
         System.out.println("Sexual severity: " + response.getSexualResult().getSeverity());

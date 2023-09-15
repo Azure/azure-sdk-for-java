@@ -7,7 +7,6 @@ package com.azure.ai.contentsafety;
 import com.azure.ai.contentsafety.models.AnalyzeTextOptions;
 import com.azure.ai.contentsafety.models.AnalyzeTextResult;
 import com.azure.core.credential.AzureKeyCredential;
-import com.azure.core.exception.HttpResponseException;
 import com.azure.core.util.Configuration;
 
 
@@ -20,14 +19,8 @@ public class AnalyzeText {
             .credential(new AzureKeyCredential(key))
             .endpoint(endpoint).buildClient();
 
-        AnalyzeTextResult response;
-        try {
-            response = contentSafetyClient.analyzeText(new AnalyzeTextOptions("This is text example"));
-        } catch (HttpResponseException ex) {
-            System.out.println(String.format("Analyze text failed.\nStatus code: %s, Error message: %s",
-                ex.getResponse().getStatusCode(), ex.getMessage()));
-            throw ex;
-        }
+        AnalyzeTextResult response = contentSafetyClient.analyzeText(new AnalyzeTextOptions("This is text example"));
+
         System.out.println("Hate severity: " + response.getHateResult().getSeverity());
         System.out.println("SelfHarm severity: " + response.getSelfHarmResult().getSeverity());
         System.out.println("Sexual severity: " + response.getSexualResult().getSeverity());

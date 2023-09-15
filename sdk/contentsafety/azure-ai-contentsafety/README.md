@@ -122,14 +122,8 @@ ContentSafetyClient contentSafetyClient = new ContentSafetyClientBuilder()
     .credential(new AzureKeyCredential(key))
     .endpoint(endpoint).buildClient();
 
-AnalyzeTextResult response;
-try {
-    response = contentSafetyClient.analyzeText(new AnalyzeTextOptions("This is text example"));
-} catch (HttpResponseException ex) {
-    System.out.println(String.format("Analyze text failed.\nStatus code: %s, Error message: %s",
-        ex.getResponse().getStatusCode(), ex.getMessage()));
-    throw ex;
-}
+AnalyzeTextResult response = contentSafetyClient.analyzeText(new AnalyzeTextOptions("This is text example"));
+
 System.out.println("Hate severity: " + response.getHateResult().getSeverity());
 System.out.println("SelfHarm severity: " + response.getSelfHarmResult().getSeverity());
 System.out.println("Sexual severity: " + response.getSexualResult().getSeverity());
@@ -172,21 +166,11 @@ ContentSafetyClient contentSafetyClient = new ContentSafetyClientBuilder()
 ImageData image = new ImageData();
 String cwd = System.getProperty("user.dir");
 String absolutePath = cwd + "./src/image.jpg";
-try {
-    image.setContent(Files.readAllBytes(Paths.get(absolutePath)));
-} catch (IOException e) {
-    throw new RuntimeException(e);
-}
+image.setContent(Files.readAllBytes(Paths.get(absolutePath)));
 
-AnalyzeImageResult response;
-try {
-    response =
+AnalyzeImageResult response =
         contentSafetyClient.analyzeImage(new AnalyzeImageOptions(image));
-} catch (HttpResponseException ex) {
-    System.out.println(String.format("Analyze text failed.\nStatus code: %s, Error message: %s",
-        ex.getResponse().getStatusCode(), ex.getMessage()));
-    throw ex;
-}
+
 System.out.println("Hate severity: " + response.getHateResult().getSeverity());
 System.out.println("SelfHarm severity: " + response.getSelfHarmResult().getSeverity());
 System.out.println("Sexual severity: " + response.getSexualResult().getSeverity());
