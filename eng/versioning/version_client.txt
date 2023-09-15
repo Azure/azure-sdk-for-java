@@ -190,11 +190,11 @@ com.azure:azure-identity-extensions;1.1.7;1.2.0-beta.2
 com.azure:azure-analytics-purview-sharing;1.0.0-beta.2;1.0.0-beta.3
 com.azure.spring:azure-monitor-spring-native;1.0.0-beta.1;1.0.0-beta.1
 com.azure.spring:azure-monitor-spring-native-test;1.0.0-beta.1;1.0.0-beta.1
-com.azure.spring:spring-cloud-azure-appconfiguration-config-web;5.5.0;5.6.0-beta.1
-com.azure.spring:spring-cloud-azure-appconfiguration-config;5.5.0;5.6.0-beta.1
-com.azure.spring:spring-cloud-azure-feature-management-web;5.5.0;5.6.0-beta.1
-com.azure.spring:spring-cloud-azure-feature-management;5.5.0;5.6.0-beta.1
-com.azure.spring:spring-cloud-azure-starter-appconfiguration-config;5.5.0;5.6.0-beta.1
+com.azure.spring:spring-cloud-azure-appconfiguration-config-web;5.5.0;5.6.0-beta.2
+com.azure.spring:spring-cloud-azure-appconfiguration-config;5.5.0;5.6.0-beta.2
+com.azure.spring:spring-cloud-azure-feature-management-web;5.5.0;5.6.0-beta.2
+com.azure.spring:spring-cloud-azure-feature-management;5.5.0;5.6.0-beta.2
+com.azure.spring:spring-cloud-azure-starter-appconfiguration-config;5.5.0;5.6.0-beta.2
 com.azure.spring:spring-cloud-azure-dependencies;5.5.0;5.6.0-beta.1
 com.azure.spring:spring-messaging-azure;5.5.0;5.6.0-beta.1
 com.azure.spring:spring-messaging-azure-eventhubs;5.5.0;5.6.0-beta.1
