@@ -33,7 +33,7 @@ public class JsonTesting {
 
     @Test
     public void createJsonNull(){
-        JsonNull test = new JsonNull();
+        JsonNull test = JsonNull.getInstance();
         assertTrue(test.isNull());
     }
 

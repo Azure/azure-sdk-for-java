@@ -338,7 +338,7 @@ public class JsonObject extends JsonElement {
                     this.addProperty(fieldName, new JsonBoolean(reader.getBoolean()));
                     break;
                 case NULL:
-                    this.addProperty(fieldName, new JsonNull());
+                    this.addProperty(fieldName, JsonNull.getInstance());
                     break;
                 // END_DOCUMENT and END_OBJECT cases are picked up by the overall
                 // while statement. These cases should not be reached, assuming

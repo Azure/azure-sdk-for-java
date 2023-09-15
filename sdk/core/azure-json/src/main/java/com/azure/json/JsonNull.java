@@ -5,7 +5,18 @@ import java.io.IOException;
 /**
  * Class representing the JSON null type
  */
-public class JsonNull extends JsonElement{
+public final class JsonNull extends JsonElement {
+    
+    // Private constructor enforcing Singleton pattern.
+    private JsonNull() { }
+
+    /**
+     * Returns the single instance of JsonNull.
+     * 
+     * @return JsonNull instance.
+     */
+    public static final JsonNull INSTANCE = new JsonNull();
+
     /**
      * Stores the String representation of the current state of the JsonNull
      * object.
@@ -14,13 +25,11 @@ public class JsonNull extends JsonElement{
     private final String nullValue = "null";
 
     /**
-     * Default constructor.
+     * Returns the single instance of the JsonNull class.
      * 
-     * TODO: may need to remove this due to design guidelines? Unnecessary having
-     * this constructor defined in the source code if compiler is already adding
-     * this constructor implicitly when no other constructor is defined.
+     * @return The JsonNull instance, representing the JSON null value.
      */
-    public JsonNull() {}
+    public static JsonNull getInstance() { return INSTANCE; }
 
     /**
      * Returns the String representation of the JsonNull object

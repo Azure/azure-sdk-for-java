@@ -297,7 +297,7 @@ public class JsonArray extends JsonElement {
                     this.addElement(new JsonBoolean(reader.getBoolean()));
                     break;
                 case NULL:
-                    this.addElement(new JsonNull());
+                    this.addElement(JsonNull.getInstance());
                     break;
                 // END_DOCUMENT and END_ARRAY cases are picked up by the overall 
                 // while statement. These cases should not be reached, assuming 
