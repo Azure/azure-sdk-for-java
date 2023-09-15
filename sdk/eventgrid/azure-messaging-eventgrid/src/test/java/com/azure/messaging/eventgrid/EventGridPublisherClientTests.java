@@ -305,16 +305,8 @@ public class EventGridPublisherClientTests extends EventGridTestBase {
             .endpoint(getEndpoint(CUSTOM_ENDPOINT))
             .buildCustomEventPublisherAsyncClient();
 
-        BinaryData event = BinaryData.fromObject(new HashMap<String, String>() {
-            {
-                put("id", UUID.randomUUID().toString());
-                put("time", OffsetDateTime.now().toString());
-                put("subject", "Test");
-                put("foo", "bar");
-                put("type", "Microsoft.MockPublisher.TestEvent");
-            }
-        });
-        StepVerifier.create(egClient.sendEvent(event))
+        BinaryData customEvent = getCustomEvent();
+        StepVerifier.create(egClient.sendEvent(customEvent))
             .expectComplete()
             .verify(DEFAULT_TIMEOUT);
     }
