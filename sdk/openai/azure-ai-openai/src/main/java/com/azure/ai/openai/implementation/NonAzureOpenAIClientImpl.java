@@ -250,7 +250,7 @@ public final class NonAzureOpenAIClientImpl {
         Mono<Response<BinaryData>> getAudioTranscriptionAsResponseObject(
                 @HostParam("endpoint") String endpoint,
                 @HeaderParam("accept") String accept,
-                @BodyParam("application/json") BinaryData audioTranscriptionOptions,
+                @BodyParam("multipart/form-data") BinaryData audioTranscriptionOptions,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -269,7 +269,7 @@ public final class NonAzureOpenAIClientImpl {
         Response<BinaryData> getAudioTranscriptionAsResponseObjectSync(
                 @HostParam("endpoint") String endpoint,
                 @HeaderParam("accept") String accept,
-                @BodyParam("application/json") BinaryData audioTranscriptionOptions,
+                @BodyParam("multipart/form-data") BinaryData audioTranscriptionOptions,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -288,7 +288,7 @@ public final class NonAzureOpenAIClientImpl {
         Mono<Response<BinaryData>> getAudioTranscriptionAsPlainText(
                 @HostParam("endpoint") String endpoint,
                 @HeaderParam("accept") String accept,
-                @BodyParam("application/json") BinaryData audioTranscriptionOptions,
+                @BodyParam("multipart/form-data") BinaryData audioTranscriptionOptions,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -307,7 +307,7 @@ public final class NonAzureOpenAIClientImpl {
         Response<BinaryData> getAudioTranscriptionAsPlainTextSync(
                 @HostParam("endpoint") String endpoint,
                 @HeaderParam("accept") String accept,
-                @BodyParam("application/json") BinaryData audioTranscriptionOptions,
+                @BodyParam("multipart/form-data") BinaryData audioTranscriptionOptions,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -326,7 +326,7 @@ public final class NonAzureOpenAIClientImpl {
         Mono<Response<BinaryData>> getAudioTranslationAsResponseObject(
                 @HostParam("endpoint") String endpoint,
                 @HeaderParam("accept") String accept,
-                @BodyParam("application/json") BinaryData audioTranslationOptions,
+                @BodyParam("multipart/form-data") BinaryData audioTranslationOptions,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -345,7 +345,7 @@ public final class NonAzureOpenAIClientImpl {
         Response<BinaryData> getAudioTranslationAsResponseObjectSync(
                 @HostParam("endpoint") String endpoint,
                 @HeaderParam("accept") String accept,
-                @BodyParam("application/json") BinaryData audioTranslationOptions,
+                @BodyParam("multipart/form-data") BinaryData audioTranslationOptions,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -364,7 +364,7 @@ public final class NonAzureOpenAIClientImpl {
         Mono<Response<BinaryData>> getAudioTranslationAsPlainText(
                 @HostParam("endpoint") String endpoint,
                 @HeaderParam("accept") String accept,
-                @BodyParam("application/json") BinaryData audioTranslationOptions,
+                @BodyParam("multipart/form-data") BinaryData audioTranslationOptions,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -383,7 +383,7 @@ public final class NonAzureOpenAIClientImpl {
         Response<BinaryData> getAudioTranslationAsPlainTextSync(
                 @HostParam("endpoint") String endpoint,
                 @HeaderParam("accept") String accept,
-                @BodyParam("application/json") BinaryData audioTranslationOptions,
+                @BodyParam("multipart/form-data") BinaryData audioTranslationOptions,
                 RequestOptions requestOptions,
                 Context context);
     }
