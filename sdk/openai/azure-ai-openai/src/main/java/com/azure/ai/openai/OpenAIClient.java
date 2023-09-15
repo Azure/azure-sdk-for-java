@@ -726,7 +726,20 @@ public final class OpenAIClient {
         }
         MultipartDataHelper helper = new MultipartDataHelper();
         MultipartDataSerializationResult result = helper.serializeRequest(audioTranscriptionOptions, fileName);
-        return getAudioTranscription(deploymentOrModelName, result, helper.getBoundary());
+
+        String multipartBoundary = helper.getBoundary();
+        RequestOptions requestOptions = new RequestOptions();
+        requestOptions
+                .setHeader(HttpHeaderName.CONTENT_TYPE, "multipart/form-data;" + " boundary=" + multipartBoundary)
+                .setHeader(HttpHeaderName.CONTENT_LENGTH, String.valueOf(result.getDataLength()));
+
+        Response<BinaryData> response =
+                openAIServiceClient != null
+                        ? this.openAIServiceClient.getAudioTranscriptionAsPlainTextWithResponse(
+                        deploymentOrModelName, result.getData(), requestOptions)
+                        : this.serviceClient.getAudioTranscriptionAsPlainTextWithResponse(
+                        deploymentOrModelName, result.getData(), requestOptions);
+        return response.getValue().toObject(AudioTranscription.class);
     }
 
     // TODO: docs
@@ -746,36 +759,19 @@ public final class OpenAIClient {
         }
         MultipartDataHelper helper = new MultipartDataHelper();
         MultipartDataSerializationResult result = helper.serializeRequest(audioTranscriptionOptions, fileName);
-        return getAudioTranscriptionAsPlainText(deploymentOrModelName, result, helper.getBoundary());
-    }
+        String multipartBoundary = helper.getBoundary();
 
-    AudioTranscription getAudioTranscription(
-            String deploymentOrModelName, MultipartDataSerializationResult requestData, String multipartBoundary) {
         RequestOptions requestOptions = new RequestOptions();
         requestOptions
                 .setHeader(HttpHeaderName.CONTENT_TYPE, "multipart/form-data;" + " boundary=" + multipartBoundary)
-                .setHeader(HttpHeaderName.CONTENT_LENGTH, String.valueOf(requestData.getDataLength()));
-        Response<BinaryData> response =
-                openAIServiceClient != null
-                        ? this.openAIServiceClient.getAudioTranscriptionAsPlainTextWithResponse(
-                                deploymentOrModelName, requestData.getData(), requestOptions)
-                        : this.serviceClient.getAudioTranscriptionAsPlainTextWithResponse(
-                                deploymentOrModelName, requestData.getData(), requestOptions);
-        return response.getValue().toObject(AudioTranscription.class);
-    }
+                .setHeader(HttpHeaderName.CONTENT_LENGTH, String.valueOf(result.getDataLength()));
 
-    String getAudioTranscriptionAsPlainText(
-            String deploymentOrModelName, MultipartDataSerializationResult requestData, String multipartBoundary) {
-        RequestOptions requestOptions = new RequestOptions();
-        requestOptions
-                .setHeader(HttpHeaderName.CONTENT_TYPE, "multipart/form-data;" + " boundary=" + multipartBoundary)
-                .setHeader(HttpHeaderName.CONTENT_LENGTH, String.valueOf(requestData.getDataLength()));
         Response<BinaryData> response =
                 openAIServiceClient != null
                         ? this.openAIServiceClient.getAudioTranscriptionAsPlainTextWithResponse(
-                                deploymentOrModelName, requestData.getData(), requestOptions)
+                        deploymentOrModelName, result.getData(), requestOptions)
                         : this.serviceClient.getAudioTranscriptionAsPlainTextWithResponse(
-                                deploymentOrModelName, requestData.getData(), requestOptions);
+                        deploymentOrModelName, result.getData(), requestOptions);
         return response.getValue().toString();
     }
 
@@ -795,7 +791,20 @@ public final class OpenAIClient {
         }
         MultipartDataHelper helper = new MultipartDataHelper();
         MultipartDataSerializationResult result = helper.serializeRequest(audioTranslationOptions, fileName);
-        return getAudioTranslation(deploymentOrModelName, result, helper.getBoundary());
+
+        String multipartBoundary = helper.getBoundary();
+        RequestOptions requestOptions = new RequestOptions();
+        requestOptions
+                .setHeader(HttpHeaderName.CONTENT_TYPE, "multipart/form-data;" + " boundary=" + multipartBoundary)
+                .setHeader(HttpHeaderName.CONTENT_LENGTH, String.valueOf(result.getDataLength()));
+
+        Response<BinaryData> response =
+                openAIServiceClient != null
+                        ? this.openAIServiceClient.getAudioTranslationAsPlainTextWithResponse(
+                        deploymentOrModelName, result.getData(), requestOptions)
+                        : this.serviceClient.getAudioTranslationAsPlainTextWithResponse(
+                        deploymentOrModelName, result.getData(), requestOptions);
+        return response.getValue().toObject(AudioTranscription.class);
     }
 
     // TODO: docs
@@ -815,36 +824,19 @@ public final class OpenAIClient {
         }
         MultipartDataHelper helper = new MultipartDataHelper();
         MultipartDataSerializationResult result = helper.serializeRequest(audioTranslationOptions, fileName);
-        return getAudioTranslationAsPlainText(deploymentOrModelName, result, helper.getBoundary());
-    }
 
-    AudioTranscription getAudioTranslation(
-            String deploymentOrModelName, MultipartDataSerializationResult requestData, String multipartBoundary) {
+        String multipartBoundary = helper.getBoundary();
         RequestOptions requestOptions = new RequestOptions();
         requestOptions
                 .setHeader(HttpHeaderName.CONTENT_TYPE, "multipart/form-data;" + " boundary=" + multipartBoundary)
-                .setHeader(HttpHeaderName.CONTENT_LENGTH, String.valueOf(requestData.getDataLength()));
-        Response<BinaryData> response =
-                openAIServiceClient != null
-                        ? this.openAIServiceClient.getAudioTranslationAsPlainTextWithResponse(
-                                deploymentOrModelName, requestData.getData(), requestOptions)
-                        : this.serviceClient.getAudioTranslationAsPlainTextWithResponse(
-                                deploymentOrModelName, requestData.getData(), requestOptions);
-        return response.getValue().toObject(AudioTranscription.class);
-    }
+                .setHeader(HttpHeaderName.CONTENT_LENGTH, String.valueOf(result.getDataLength()));
 
-    String getAudioTranslationAsPlainText(
-            String deploymentOrModelName, MultipartDataSerializationResult requestData, String multipartBoundary) {
-        RequestOptions requestOptions = new RequestOptions();
-        requestOptions
-                .setHeader(HttpHeaderName.CONTENT_TYPE, "multipart/form-data;" + " boundary=" + multipartBoundary)
-                .setHeader(HttpHeaderName.CONTENT_LENGTH, String.valueOf(requestData.getDataLength()));
         Response<BinaryData> response =
                 openAIServiceClient != null
                         ? this.openAIServiceClient.getAudioTranslationAsPlainTextWithResponse(
-                                deploymentOrModelName, requestData.getData(), requestOptions)
+                        deploymentOrModelName, result.getData(), requestOptions)
                         : this.serviceClient.getAudioTranslationAsPlainTextWithResponse(
-                                deploymentOrModelName, requestData.getData(), requestOptions);
+                        deploymentOrModelName, result.getData(), requestOptions);
         return response.getValue().toString();
     }
 

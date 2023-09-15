@@ -787,7 +787,20 @@ public final class OpenAIAsyncClient {
         }
         MultipartDataHelper helper = new MultipartDataHelper();
         MultipartDataSerializationResult result = helper.serializeRequest(audioTranscriptionOptions, fileName);
-        return getAudioTranscription(deploymentOrModelName, result, helper.getBoundary());
+        String multipartBoundary = helper.getBoundary();
+
+        RequestOptions requestOptions = new RequestOptions();
+        requestOptions
+                .setHeader(HttpHeaderName.CONTENT_TYPE, "multipart/form-data;" + " boundary=" + multipartBoundary)
+                .setHeader(HttpHeaderName.CONTENT_LENGTH, String.valueOf(result.getDataLength()));
+
+        Mono<Response<BinaryData>> response =
+                openAIServiceClient != null
+                        ? this.openAIServiceClient.getAudioTranscriptionAsResponseObjectWithResponseAsync(
+                        deploymentOrModelName, result.getData(), requestOptions)
+                        : this.serviceClient.getAudioTranscriptionAsResponseObjectWithResponseAsync(
+                        deploymentOrModelName, result.getData(), requestOptions);
+        return response.map(binaryData -> binaryData.getValue().toObject(AudioTranscription.class));
     }
 
     // TODO: docs
@@ -808,36 +821,19 @@ public final class OpenAIAsyncClient {
         }
         MultipartDataHelper helper = new MultipartDataHelper();
         MultipartDataSerializationResult result = helper.serializeRequest(audioTranscriptionOptions, fileName);
-        return getAudioTranscriptionAsPlainText(deploymentOrModelName, result, helper.getBoundary());
-    }
 
-    Mono<AudioTranscription> getAudioTranscription(
-            String deploymentOrModelName, MultipartDataSerializationResult requestData, String multipartBoundary) {
+        String multipartBoundary = helper.getBoundary();
         RequestOptions requestOptions = new RequestOptions();
         requestOptions
                 .setHeader(HttpHeaderName.CONTENT_TYPE, "multipart/form-data;" + " boundary=" + multipartBoundary)
-                .setHeader(HttpHeaderName.CONTENT_LENGTH, String.valueOf(requestData.getDataLength()));
-        Mono<Response<BinaryData>> response =
-                openAIServiceClient != null
-                        ? this.openAIServiceClient.getAudioTranscriptionAsResponseObjectWithResponseAsync(
-                                deploymentOrModelName, requestData.getData(), requestOptions)
-                        : this.serviceClient.getAudioTranscriptionAsResponseObjectWithResponseAsync(
-                                deploymentOrModelName, requestData.getData(), requestOptions);
-        return response.map(binaryData -> binaryData.getValue().toObject(AudioTranscription.class));
-    }
+                .setHeader(HttpHeaderName.CONTENT_LENGTH, String.valueOf(result.getDataLength()));
 
-    Mono<String> getAudioTranscriptionAsPlainText(
-            String deploymentOrModelName, MultipartDataSerializationResult requestData, String multipartBoundary) {
-        RequestOptions requestOptions = new RequestOptions();
-        requestOptions
-                .setHeader(HttpHeaderName.CONTENT_TYPE, "multipart/form-data;" + " boundary=" + multipartBoundary)
-                .setHeader(HttpHeaderName.CONTENT_LENGTH, String.valueOf(requestData.getDataLength()));
         Mono<Response<BinaryData>> response =
                 openAIServiceClient != null
                         ? this.openAIServiceClient.getAudioTranscriptionAsPlainTextWithResponseAsync(
-                                deploymentOrModelName, requestData.getData(), requestOptions)
+                        deploymentOrModelName, result.getData(), requestOptions)
                         : this.serviceClient.getAudioTranscriptionAsPlainTextWithResponseAsync(
-                                deploymentOrModelName, requestData.getData(), requestOptions);
+                        deploymentOrModelName, result.getData(), requestOptions);
         return response.map(binaryData -> binaryData.getValue().toString());
     }
 
@@ -858,7 +854,20 @@ public final class OpenAIAsyncClient {
         }
         MultipartDataHelper helper = new MultipartDataHelper();
         MultipartDataSerializationResult result = helper.serializeRequest(audioTranslationOptions, fileName);
-        return getAudioTranslation(deploymentOrModelName, result, helper.getBoundary());
+
+        String multipartBoundary = helper.getBoundary();
+        RequestOptions requestOptions = new RequestOptions();
+        requestOptions
+                .setHeader(HttpHeaderName.CONTENT_TYPE, "multipart/form-data;" + " boundary=" + multipartBoundary)
+                .setHeader(HttpHeaderName.CONTENT_LENGTH, String.valueOf(result.getDataLength()));
+
+        Mono<Response<BinaryData>> response =
+                openAIServiceClient != null
+                        ? this.openAIServiceClient.getAudioTranslationAsResponseObjectWithResponseAsync(
+                        deploymentOrModelName, result.getData(), requestOptions)
+                        : this.serviceClient.getAudioTranslationAsResponseObjectWithResponseAsync(
+                        deploymentOrModelName, result.getData(), requestOptions);
+        return response.map(binaryData -> binaryData.getValue().toObject(AudioTranscription.class));
     }
 
     // TODO: docs
@@ -879,36 +888,19 @@ public final class OpenAIAsyncClient {
         }
         MultipartDataHelper helper = new MultipartDataHelper();
         MultipartDataSerializationResult result = helper.serializeRequest(audioTranslationOptions, fileName);
-        return getAudioTranslationAsPlainText(deploymentOrModelName, result, helper.getBoundary());
-    }
 
-    Mono<AudioTranscription> getAudioTranslation(
-            String deploymentOrModelName, MultipartDataSerializationResult requestData, String multipartBoundary) {
+        String multipartBoundary = helper.getBoundary();
         RequestOptions requestOptions = new RequestOptions();
         requestOptions
                 .setHeader(HttpHeaderName.CONTENT_TYPE, "multipart/form-data;" + " boundary=" + multipartBoundary)
-                .setHeader(HttpHeaderName.CONTENT_LENGTH, String.valueOf(requestData.getDataLength()));
-        Mono<Response<BinaryData>> response =
-                openAIServiceClient != null
-                        ? this.openAIServiceClient.getAudioTranslationAsResponseObjectWithResponseAsync(
-                                deploymentOrModelName, requestData.getData(), requestOptions)
-                        : this.serviceClient.getAudioTranslationAsResponseObjectWithResponseAsync(
-                                deploymentOrModelName, requestData.getData(), requestOptions);
-        return response.map(binaryData -> binaryData.getValue().toObject(AudioTranscription.class));
-    }
+                .setHeader(HttpHeaderName.CONTENT_LENGTH, String.valueOf(result.getDataLength()));
 
-    Mono<String> getAudioTranslationAsPlainText(
-            String deploymentOrModelName, MultipartDataSerializationResult requestData, String multipartBoundary) {
-        RequestOptions requestOptions = new RequestOptions();
-        requestOptions
-                .setHeader(HttpHeaderName.CONTENT_TYPE, "multipart/form-data;" + " boundary=" + multipartBoundary)
-                .setHeader(HttpHeaderName.CONTENT_LENGTH, String.valueOf(requestData.getDataLength()));
         Mono<Response<BinaryData>> response =
                 openAIServiceClient != null
                         ? this.openAIServiceClient.getAudioTranslationAsPlainTextWithResponseAsync(
-                                deploymentOrModelName, requestData.getData(), requestOptions)
+                        deploymentOrModelName, result.getData(), requestOptions)
                         : this.serviceClient.getAudioTranslationAsPlainTextWithResponseAsync(
-                                deploymentOrModelName, requestData.getData(), requestOptions);
+                        deploymentOrModelName, result.getData(), requestOptions);
         return response.map(binaryData -> binaryData.getValue().toString());
     }
 
