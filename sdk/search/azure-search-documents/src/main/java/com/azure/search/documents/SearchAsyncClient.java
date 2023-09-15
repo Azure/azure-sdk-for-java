@@ -43,6 +43,7 @@ import com.azure.search.documents.models.SuggestResult;
 import com.azure.search.documents.util.AutocompletePagedFlux;
 import com.azure.search.documents.util.AutocompletePagedResponse;
 import com.azure.search.documents.util.SearchPagedFlux;
+import com.azure.search.documents.util.SearchPagedIterable;
 import com.azure.search.documents.util.SearchPagedResponse;
 import com.azure.search.documents.util.SuggestPagedFlux;
 import com.azure.search.documents.util.SuggestPagedResponse;
@@ -749,6 +750,16 @@ public final class SearchAsyncClient {
      * If {@code searchText} is set to null or {@code "*"} all documents will be matched, see
      * <a href="https://docs.microsoft.com/rest/api/searchservice/Simple-query-syntax-in-Azure-Search">simple query
      * syntax in Azure Cognitive Search</a> for more information about search query syntax.
+     * <p>
+     * The {@link SearchPagedFlux} will iterate through search result pages until all search results are returned.
+     * Each page is determined by the {@code $skip} and {@code $top} values and the Search service has a limit on the
+     * number of documents that can be skipped, more information about the {@code $skip} limit can be found at
+     * <a href="https://learn.microsoft.com/rest/api/searchservice/search-documents>Search Documents REST API</a> and
+     * reading the {@code $skip} description. If the total number of results exceeds the {@code $skip} limit the
+     * {@link SearchPagedFlux} won't prevent you from exceeding the {@code $skip} limit, the total number of results
+     * can be determined if {@code $count} is set to true in the request and is accessible by
+     * {@link SearchPagedFlux#getTotalCount()}. To prevent exceeding the limit you can iterate by page and track
+     * the {@code $skip} value manually.
      *
      * <p><strong>Code Sample</strong></p>
      *
@@ -789,6 +800,16 @@ public final class SearchAsyncClient {
      * If {@code searchText} is set to null or {@code "*"} all documents will be matched, see
      * <a href="https://docs.microsoft.com/rest/api/searchservice/Simple-query-syntax-in-Azure-Search">simple query
      * syntax in Azure Cognitive Search</a> for more information about search query syntax.
+     * <p>
+     * The {@link SearchPagedFlux} will iterate through search result pages until all search results are returned.
+     * Each page is determined by the {@code $skip} and {@code $top} values and the Search service has a limit on the
+     * number of documents that can be skipped, more information about the {@code $skip} limit can be found at
+     * <a href="https://learn.microsoft.com/rest/api/searchservice/search-documents>Search Documents REST API</a> and
+     * reading the {@code $skip} description. If the total number of results exceeds the {@code $skip} limit the
+     * {@link SearchPagedFlux} won't prevent you from exceeding the {@code $skip} limit, the total number of results
+     * can be determined if {@code $count} is set to true in the request and is accessible by
+     * {@link SearchPagedFlux#getTotalCount()}. To prevent exceeding the limit you can iterate by page and track
+     * the {@code $skip} value manually.
      *
      * <p><strong>Code Sample</strong></p>
      *
