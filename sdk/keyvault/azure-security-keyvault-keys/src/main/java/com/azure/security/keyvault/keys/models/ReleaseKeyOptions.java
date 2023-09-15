@@ -4,7 +4,6 @@
 package com.azure.security.keyvault.keys.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.security.keyvault.keys.cryptography.models.KeyWrapAlgorithm;
 
 /**
  * Represents the configurable options to release a key.

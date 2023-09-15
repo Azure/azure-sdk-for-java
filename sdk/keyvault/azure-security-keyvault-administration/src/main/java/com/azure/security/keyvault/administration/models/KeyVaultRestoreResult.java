@@ -8,7 +8,7 @@ package com.azure.security.keyvault.administration.models;
 public final class KeyVaultRestoreResult {
 
     /**
-     * Creates an instance of the {@link KeyVaultRestoreResult}
+     * Creates an instance of {@link KeyVaultRestoreResult}.
      */
     public KeyVaultRestoreResult() { }
 }
