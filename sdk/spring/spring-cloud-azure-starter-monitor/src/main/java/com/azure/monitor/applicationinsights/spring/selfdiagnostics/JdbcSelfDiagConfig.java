@@ -7,10 +7,15 @@ import java.sql.Driver;
 import java.sql.DriverManager;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Enumeration;
 import java.util.List;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 import javax.sql.DataSource;
+
 import org.slf4j.Logger;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.context.annotation.Bean;
@@ -25,11 +30,11 @@ public class JdbcSelfDiagConfig {
     private static final class JdbcSelfDiagnostics implements CommandLineRunner {
 
         private static final String OPEN_TELEMETRY_DATA_SOURCE_CLASS_NAME = "io.opentelemetry.instrumentation.jdbc.datasource.OpenTelemetryDataSource";
-        private final DataSource dataSource;
+        private final ObjectProvider<List<DataSource>> dataSources;
         private final Logger selfDiagnosticsLogger;
 
-        private JdbcSelfDiagnostics(DataSource dataSource, Logger selfDiagnosticsLogger) {
-            this.dataSource = dataSource;
+        private JdbcSelfDiagnostics(ObjectProvider<List<DataSource>> dataSources, Logger selfDiagnosticsLogger) {
+            this.dataSources = dataSources;
             this.selfDiagnosticsLogger = selfDiagnosticsLogger;
         }
 
@@ -58,31 +63,19 @@ public class JdbcSelfDiagConfig {
                     return;
                 }
 
-                Enumeration<Driver> drivers = DriverManager.getDrivers();
-
-                if (!dataSource.getClass().getName().equals(OPEN_TELEMETRY_DATA_SOURCE_CLASS_NAME)
-                    && !hasOpenTelemetryDriver(drivers)) {
-                    selfDiagnosticsLogger.debug("You have not configured the JDBC instrumentation (data source configuration or JDBC driver configuration).");
+                Predicate<DataSource> otelDatasourcePredicate = dataSource -> !dataSource.getClass().getName().equals(OPEN_TELEMETRY_DATA_SOURCE_CLASS_NAME);
+                List<DataSource> notOtelDatasources = dataSources.getIfAvailable(Collections::emptyList).stream().filter(otelDatasourcePredicate).collect(Collectors.toList());
+                if (!notOtelDatasources.isEmpty()) {
+                    selfDiagnosticsLogger.debug("Data source configuration type - Not OpenTelemetry data sources: " + notOtelDatasources);
                 }
 
+                Enumeration<Driver> drivers = DriverManager.getDrivers();
                 Collection<String> driverClassNames = findDriverClassNames(drivers);
                 String driverClassNamesAsString = String.join(", ", driverClassNames);
-                selfDiagnosticsLogger.debug("Available JDBC drivers: " + driverClassNamesAsString);
-
+                selfDiagnosticsLogger.debug("JDBC driver configuration type - Available JDBC drivers: " + driverClassNamesAsString);
             }
         }
 
-    }
-
-    private static boolean hasOpenTelemetryDriver(Enumeration<Driver> drivers) {
-        while (drivers.hasMoreElements()) {
-            Driver driver = drivers.nextElement();
-            String driverClassName = driver.getClass().getName();
-            if ("io.opentelemetry.instrumentation.jdbc.OpenTelemetryDriver".equals(driverClassName)) {
-                return true;
-            }
-        }
-        return false;
     }
 
     private static Collection<String> findDriverClassNames(Enumeration<Driver> drivers) {
@@ -96,12 +89,13 @@ public class JdbcSelfDiagConfig {
 
     /**
      * A bean execute the JDBC self-diagnostics
-     * @param dataSource A DataSource
-     * @param selfDiagnosticsLogger he self-diagnostics logger
+     *
+     * @param dataSources Potentential SQL datasources
+     * @param selfDiagnosticsLogger The self-diagnostics logger
      * @return A CommandLineRunner bean to execute the JDBC self-diagnostics
      */
     @Bean
-    public CommandLineRunner jdbcSelfDiagnostics(DataSource dataSource, Logger selfDiagnosticsLogger) {
-        return new JdbcSelfDiagnostics(dataSource, selfDiagnosticsLogger);
+    public CommandLineRunner jdbcSelfDiagnostics(ObjectProvider<List<DataSource>> dataSources, Logger selfDiagnosticsLogger) {
+        return new JdbcSelfDiagnostics(dataSources, selfDiagnosticsLogger);
     }
 }
